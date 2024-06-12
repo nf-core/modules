@@ -227,184 +227,184 @@ jobs:
       fail-fast: false
       matrix:
         tags: ["${{ fromJson(needs.pytest-changes.outputs.tags) }}"]
-        profile: [conda, docker, singularity]
+        profile: [mamba, docker, singularity]
         exclude:
           - tags: nf-test
-          - profile: conda
+          - profile: mamba
             tags: backsub
-          - profile: conda
+          - profile: mamba
             tags: bases2fastq
           - profile: singularity
             tags: bases2fastq
-          - profile: conda
+          - profile: mamba
             tags: basicpy
-          - profile: conda
+          - profile: mamba
             tags: bcl2fastq
-          - profile: conda
+          - profile: mamba
             tags: bclconvert
-          - profile: conda
+          - profile: mamba
             tags: bwa/aln
-          - profile: conda
+          - profile: mamba
             tags: bwa/index
-          - profile: conda
+          - profile: mamba
             tags: bwa/mem
-          - profile: conda
+          - profile: mamba
             tags: bwa/sampe
-          - profile: conda
+          - profile: mamba
             tags: bwa/samse
-          - profile: conda
+          - profile: mamba
             tags: cellpose
-          - profile: conda
+          - profile: mamba
             tags: cellrangerarc/count
-          - profile: conda
+          - profile: mamba
             tags: cellrangerarc/mkfastq
-          - profile: conda
+          - profile: mamba
             tags: cellrangerarc/mkgtf
-          - profile: conda
+          - profile: mamba
             tags: cellrangerarc/mkref
-          - profile: conda
+          - profile: mamba
             tags: cellrangeratac/count
-          - profile: conda
+          - profile: mamba
             tags: cellrangeratac/mkfastq
-          - profile: conda
+          - profile: mamba
             tags: cellrangeratac/mkref
-          - profile: conda
+          - profile: mamba
             tags: checkm2/databasedownload
-          - profile: conda
+          - profile: mamba
             tags: checkm2/predict
-          - profile: conda
+          - profile: mamba
             tags: controlfreec/makegraph2
-          - profile: conda
+          - profile: mamba
             tags: coreograph
-          - profile: conda
+          - profile: mamba
             tags: deepcell/mesmer
-          - profile: conda
+          - profile: mamba
             tags: deepvariant
-          - profile: conda
+          - profile: mamba
             tags: fastani
-          - profile: conda
+          - profile: mamba
             tags: fastk/fastk
-          - profile: conda
+          - profile: mamba
             tags: fastk/histex
-          - profile: conda
+          - profile: mamba
             tags: fastk/merge
-          - profile: conda
+          - profile: mamba
             tags: fcs/fcsadaptor
-          - profile: conda
+          - profile: mamba
             tags: fcs/fcsgx
-          - profile: conda
+          - profile: mamba
             tags: gatk4/cnnscorevariants
-          - profile: conda
+          - profile: mamba
             tags: gatk4/determinegermlinecontigploidy
           - profile: singularity
             tags: gatk4/determinegermlinecontigploidy
-          - profile: conda
+          - profile: mamba
             tags: gatk4/germlinecnvcaller
-          - profile: conda
+          - profile: mamba
             tags: gatk4/postprocessgermlinecnvcalls
-          - profile: conda
+          - profile: mamba
             tags: genescopefk
-          - profile: conda
+          - profile: mamba
             tags: happy/sompy
-          - profile: conda
+          - profile: mamba
             tags: hlala/preparegraph
-          - profile: conda
+          - profile: mamba
             tags: ilastik/multicut
-          - profile: conda
+          - profile: mamba
             tags: ilastik/pixelclassification
-          - profile: conda
+          - profile: mamba
             tags: imputeme/vcftoprs
-          - profile: conda
+          - profile: mamba
             tags: islandpath
-          - profile: conda
+          - profile: mamba
             tags: manta/convertinversion
-          - profile: conda
+          - profile: mamba
             tags: mcquant
-          - profile: conda
+          - profile: mamba
             tags: medaka
-          - profile: conda
+          - profile: mamba
             tags: merquryfk/katcomp
-          - profile: conda
+          - profile: mamba
             tags: merquryfk/katgc
-          - profile: conda
+          - profile: mamba
             tags: merquryfk/merquryfk
-          - profile: conda
+          - profile: mamba
             tags: merquryfk/ploidyplot
-          - profile: conda
+          - profile: mamba
             tags: minimap2/align
-          - profile: conda
+          - profile: mamba
             tags: mitohifi/findmitoreference
-          - profile: conda
+          - profile: mamba
             tags: mitohifi/mitohifi
-          - profile: conda
+          - profile: mamba
             tags: nanoplot
-          - profile: conda
+          - profile: mamba
             tags: ncbitools/vecscreen
-          - profile: conda
+          - profile: mamba
             tags: parabricks/applybqsr
-          - profile: conda
+          - profile: mamba
             tags: parabricks/dbsnp
-          - profile: conda
+          - profile: mamba
             tags: parabricks/deepvariant
-          - profile: conda
+          - profile: mamba
             tags: parabricks/fq2bam
-          - profile: conda
+          - profile: mamba
             tags: parabricks/genotypegvcf
-          - profile: conda
+          - profile: mamba
             tags: parabricks/haplotypecaller
-          - profile: conda
+          - profile: mamba
             tags: parabricks/indexgvcf
-          - profile: conda
+          - profile: mamba
             tags: parabricks/mutectcaller
-          - profile: conda
+          - profile: mamba
             tags: picard/collecthsmetrics
-          - profile: conda
+          - profile: mamba
             tags: picard/collectwgsmetrics
-          - profile: conda
+          - profile: mamba
             tags: scimap/mcmicro
-          - profile: conda
+          - profile: mamba
             tags: sentieon/applyvarcal
-          - profile: conda
+          - profile: mamba
             tags: sentieon/bwaindex
-          - profile: conda
+          - profile: mamba
             tags: sentieon/bwamem
-          - profile: conda
+          - profile: mamba
             tags: sentieon/datametrics
-          - profile: conda
+          - profile: mamba
             tags: sentieon/dedup
-          - profile: conda
+          - profile: mamba
             tags: sentieon/dnamodelapply
-          - profile: conda
+          - profile: mamba
             tags: sentieon/dnascope
-          - profile: conda
+          - profile: mamba
             tags: sentieon/gvcftyper
-          - profile: conda
+          - profile: mamba
             tags: sentieon/haplotyper
-          - profile: conda
+          - profile: mamba
             tags: sentieon/readwriter
-          - profile: conda
+          - profile: mamba
             tags: sentieon/tnfilter
-          - profile: conda
+          - profile: mamba
             tags: sentieon/tnhaplotyper2
-          - profile: conda
+          - profile: mamba
             tags: sentieon/tnscope
-          - profile: conda
+          - profile: mamba
             tags: sentieon/varcal
-          - profile: conda
+          - profile: mamba
             tags: sentieon/wgsmetrics
-          - profile: conda
+          - profile: mamba
             tags: subworkflows/bam_qc_picard
-          - profile: conda
+          - profile: mamba
             tags: subworkflows/bcl_demultiplex
-          - profile: conda
+          - profile: mamba
             tags: subworkflows/fasta_clean_fcs
-          - profile: conda
+          - profile: mamba
             tags: svanalyzer/svbenchmark
-          - profile: conda
+          - profile: mamba
             tags: universc
           - profile: singularity
             tags: universc
-          - profile: conda
+          - profile: mamba
             tags: vt/decompose
     env:
       NXF_ANSI_LOG: false
@@ -448,20 +448,9 @@ jobs:
           mkdir -p $NXF_SINGULARITY_CACHEDIR
           mkdir -p $NXF_SINGULARITY_LIBRARYDIR
 
-      - name: Set up miniconda
-        uses: conda-incubator/setup-miniconda@a4260408e20b96e80095f42ff7f1a15b27dd94ca # v3
+      - uses: mamba-org/setup-micromamba@v1
         with:
-          miniconda-version: "latest"
-          channels: conda-forge,bioconda,defaults
-          python-version: ${{ matrix.python-version }}
-
-      - name: Conda setup
-        run: |
-          conda clean -a
-          conda install -n base conda-libmamba-solver
-          conda config --set solver libmamba
-          echo $(realpath $CONDA)/condabin >> $GITHUB_PATH
-          echo $(realpath python) >> $GITHUB_PATH
+          init-shell: bash
 
       # Set up secrets
       - name: Set up nextflow secrets
@@ -477,7 +466,7 @@ jobs:
 
       # Test the module
       - name: Run pytest-workflow
-        # only use one thread for pytest-workflow to avoid race condition on conda cache.
+        # only use one thread for pytest-workflow to avoid race condition on mamba cache.
         run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
 
       - name: Output log on failure
@@ -505,7 +494,7 @@ jobs:
             /home/ubuntu/pytest_workflow_*/*/log.out
             /home/ubuntu/pytest_workflow_*/*/log.err
             /home/ubuntu/pytest_workflow_*/*/work
-            !/home/ubuntu/pytest_workflow_*/*/work/conda
+            !/home/ubuntu/pytest_workflow_*/*/work/micromamba
             !/home/ubuntu/pytest_workflow_*/*/work/singularity
             !${{ github.workspace }}/.singularity
 
@@ -518,132 +507,132 @@ jobs:
       fail-fast: false
       matrix:
         path: ["${{ fromJson(needs.nf-test-changes.outputs.paths) }}"]
-        profile: [conda, docker_self_hosted, singularity]
+        profile: [mamba, docker_self_hosted, singularity]
         exclude:
           - path: modules/nf-core/nf-test
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/angsd/gl
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/annotsv/installannotations
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/happy/sompy
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/backsub
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/bakta/bakta
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/bakta/baktadbdownload
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/bases2fastq
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/bcl2fastq
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/bclconvert
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/celesta
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/cellpose
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/cellranger/count
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/cellranger/mkfastq
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/cellranger/mkgtf
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/cellranger/mkref
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/cellranger/mkvdjref
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/cellranger/multi
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/cellranger/vdj
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/custom/dumpsoftwareversions
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/deepcell/mesmer
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/deepvariant
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/ensemblvep/vep
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/fastk/fastk
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/fastk/histex
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/fastk/merge
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/fcs/fcsadaptor
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/fcs/fcsgx
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/ganon/buildcustom
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/ganon/classify
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/ganon/report
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/ganon/table
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/gatk4/cnnscorevariants
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/gatk4/determinegermlinecontigploidy
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/genescopefk
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/ilastik/multicut
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/ilastik/pixelclassification
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/imputeme/vcftoprs
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/mcquant
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/merquryfk/katcomp
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/merquryfk/katgc
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/merquryfk/merquryfk
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/merquryfk/ploidyplot
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/molkartgarage/clahe
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/quartonotebook
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/scimap/spatiallda
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/sentieon/bwaindex
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/sentieon/bwamem
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/spaceranger/mkgtf
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/spaceranger/mkref
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/spaceranger/count
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/spotiflow
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/svanalyzer/svbenchmark
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/universc
           - profile: singularity
             path: modules/nf-core/universc
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/vt/decompose
           - profile: singularity
             path: modules/nf-core/bases2fastq
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/wittyer
-          - profile: conda
+          - profile: mamba
             path: modules/nf-core/islandpath
-          - profile: conda
+          - profile: mamba
             path: subworkflows/nf-core/vcf_annotate_ensemblvep
-          - profile: conda
+          - profile: mamba
             path: subworkflows/nf-core/bcl_demultiplex
-          - profile: conda
+          - profile: mamba
             path: subworkflows/nf-core/fastq_align_bamcmp_bwa
-          - profile: conda
+          - profile: mamba
             path: subworkflows/nf-core/fastq_align_bwa
     env:
       NXF_ANSI_LOG: false
@@ -688,20 +677,9 @@ jobs:
       - name: Install Python dependencies
         run: python -m pip install --upgrade pip pdiff cryptography
 
-      - name: Set up miniconda
-        uses: conda-incubator/setup-miniconda@a4260408e20b96e80095f42ff7f1a15b27dd94ca # v3
+      - uses: mamba-org/setup-micromamba@v1
         with:
-          miniconda-version: "latest"
-          auto-update-conda: true
-          channels: conda-forge,bioconda,defaults
-
-      - name: Conda setup
-        run: |
-          conda clean -a
-          conda install -n base conda-libmamba-solver
-          conda config --set solver libmamba
-          echo $(realpath $CONDA)/condabin >> $GITHUB_PATH
-          echo $(realpath python) >> $GITHUB_PATH
+          init-shell: bash
 
       # Set up secrets
       - name: Set up nextflow secrets
