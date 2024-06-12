@@ -456,6 +456,7 @@ jobs:
       - uses: mamba-org/setup-micromamba@v1
         with:
           init-shell: bash
+          micromamba-binary-path: ${{ runner.temp }}/bin/micromamba
 
       # Set up secrets
       - name: Set up nextflow secrets
@@ -686,6 +687,7 @@ jobs:
       - uses: mamba-org/setup-micromamba@v1
         with:
           init-shell: bash
+          micromamba-binary-path: ${{ runner.temp }}/bin/micromamba
 
       # Set up secrets
       - name: Set up nextflow secrets
