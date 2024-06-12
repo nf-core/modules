@@ -47,7 +47,7 @@ process TAXPASTA_STANDARDISE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def taxonomy_option = taxonomy ? "--taxonomy ${taxonomy}" : ''
     """
-    touch ${prefix}.tsv
+    touch ${prefix}.${format}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -53,7 +53,7 @@ process TAXPASTA_MERGE {
     def taxonomy_option = taxonomy ? "--taxonomy ${taxonomy}" : ''
     def samplesheet_input = samplesheet ? "-s ${samplesheet}" : ''
     """
-    touch ${prefix}.tsv
+    touch ${prefix}.${format}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
