@@ -49,4 +49,19 @@ process BISCUIT_BLASTER {
         samblaster: \$( samblaster --version |& sed 's/^.*samblaster: Version //' )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bam
+    touch ${prefix}.bam.bai
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        biscuit: \$( biscuit version |& sed '1!d; s/^.*BISCUIT Version: //' )
+        samtools: \$( samtools --version |& sed '1!d; s/^.*samtools //' )
+        samblaster: \$( samblaster --version |& sed 's/^.*samblaster: Version //' )
+    END_VERSIONS
+    """
+
 }
