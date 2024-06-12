@@ -9,7 +9,6 @@ tools:
   - custom:
       description: "Make a GSEA class file (.cls) from tabular inputs"
       tool_dev_url: "https://github.com/nf-core/modules/blob/master/modules/nf-core/custom/tabulartogseacls/main.nf"
-
 input:
   - meta:
       type: map
@@ -23,10 +22,8 @@ input:
         compulsory here).
   - samples:
       type: file
-      description: Tabular (e.g. TSV/CSV) samples file with sample IDs by row
-        and variables by column.
+      description: Tabular (e.g. TSV/CSV) samples file with sample IDs by row and variables by column.
       pattern: "*.{csv,tsv}"
-
 output:
   - meta:
       type: map
@@ -43,6 +40,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@pinin4fjords"
+maintainers:
   - "@pinin4fjords"

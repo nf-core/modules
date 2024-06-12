@@ -3,13 +3,13 @@ description: Sorts vcf files
 keywords:
   - sort
   - vcf
+  - sortvcf
 tools:
   - picard:
       description: Java tools for working with NGS data in the BAM/CRAM/SAM and VCF format
       homepage: https://broadinstitute.github.io/picard/
       documentation: https://broadinstitute.github.io/picard/command-line-overview.html#SortVcf
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -20,7 +20,24 @@ input:
       type: file
       description: VCF file
       pattern: "*.{vcf,vcf.gz}"
-
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - fasta:
+      type: file
+      description: Reference genome fasta file
+      pattern: "*.{fasta,fa}"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - dict:
+      type: file
+      description: Reference genome dictionary file
+      pattern: "*.{dict}"
 output:
   - meta:
       type: map
@@ -35,6 +52,7 @@ output:
       type: file
       description: Sorted VCF file
       pattern: "*.{vcf}"
-
 authors:
+  - "@ramprasadn"
+maintainers:
   - "@ramprasadn"

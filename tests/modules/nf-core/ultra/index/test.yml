@@ -1,11 +1,12 @@
 - name: ultra index test_ultra_index
   command: nextflow run ./tests/modules/nf-core/ultra/index -entry test_ultra_index -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/ultra/index/nextflow.config
   tags:
-    - ultra
     - ultra/index
+    - ultra
   files:
-    - path: output/gffread/genome_sorted.gtf
-      md5sum: c0b034860c679a354cd093109ed90437
+    - path: output/gnu/genome_sorted.gtf
+      md5sum: 5cc4a890e302e08c88c8645e62be50d6
+    - path: output/gnu/versions.yml
     - path: output/ultra/all_splice_pairs_annotations.pickle
     - path: output/ultra/all_splice_sites_annotations.pickle
     - path: output/ultra/chr_to_id.pickle
@@ -27,3 +28,4 @@
     - path: output/ultra/segment_to_ref.pickle
     - path: output/ultra/splices_to_transcripts.pickle
     - path: output/ultra/transcripts_to_splices.pickle
+    - path: output/ultra/versions.yml

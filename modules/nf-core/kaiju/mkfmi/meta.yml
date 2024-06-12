@@ -1,0 +1,44 @@
+name: "kaiju_mkfmi"
+description: Make Kaiju FMI-index file from a protein FASTA file
+keywords:
+  - classify
+  - metagenomics
+  - fastq
+  - taxonomic profiling
+  - database
+  - index
+tools:
+  - "kaiju":
+      description: "Fast and sensitive taxonomic classification for metagenomics"
+      homepage: "https://bioinformatics-centre.github.io/kaiju/"
+      documentation: "https://github.com/bioinformatics-centre/kaiju/blob/master/README.md"
+      tool_dev_url: "https://github.com/bioinformatics-centre/kaiju"
+      doi: "10.1038/ncomms11257"
+      licence: ["GNU GPL v3"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - fasta:
+      type: file
+      description: Uncompressed Protein FASTA file (mandatory)
+      pattern: "*.{fa,faa,fasta}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - fmi:
+      type: file
+      description: Kaiju FM-index file
+      pattern: "*.{fmi}"
+
+authors:
+  - "@alxndrdiaz"

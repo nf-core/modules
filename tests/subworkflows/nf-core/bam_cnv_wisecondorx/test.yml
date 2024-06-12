@@ -1,0 +1,16 @@
+- name: "bam_cnv_wisecondorx test_bam_cnv_wisecondorx"
+  command: nextflow run ./tests/subworkflows/nf-core/bam_cnv_wisecondorx -entry test_bam_cnv_wisecondorx -c ./tests/config/nextflow.config -stub
+  tags:
+    - wisecondorx
+    - wisecondorx/convert
+    - wisecondorx/predict
+    - subworkflows
+    - subworkflows/bam_cnv_wisecondorx
+  files:
+    - path: "output/wisecondorx/test_aberrations.bed"
+    - path: "output/wisecondorx/test_bins.bed"
+    - path: "output/wisecondorx/test_chr_statistics.txt"
+    - path: "output/wisecondorx/test_segments.bed"
+    - path: "output/wisecondorx/chr22.png"
+    - path: "output/wisecondorx/chr1.png"
+    - path: "output/wisecondorx/genome_wide.png"
