@@ -32,4 +32,16 @@ process MD5SUM {
         md5sum: \$(echo \$(md5sum --version 2>&1 | head -n 1| sed 's/^.*) //;' ))
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    """
+    touch ${file}.md5
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        md5sum: \$(echo \$(md5sum --version 2>&1 | head -n 1| sed 's/^.*) //;' ))
+    END_VERSIONS
+    """
+
 }

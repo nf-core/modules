@@ -1,0 +1,191 @@
+nextflow_process {
+
+    name "Test Process PICARD_COLLECTHSMETRICS"
+    script "../main.nf"
+    process "PICARD_COLLECTHSMETRICS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "picard"
+    tag "picard/collecthsmetrics"
+
+    test("sarscov2 - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['genome']['baits_interval_list'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['genome']['targets_interval_list'], checkIfExists: true)
+                    ]
+                input[1] = [[id:'genome'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+                input[2] = [[id:'genome'], file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)]
+                input[3] = [[id:'genome'], file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            def size = path(process.out.metrics[0][1]).size()
+            def lines = path(process.out.metrics[0][1]).readLines()[0..212]
+            lines.remove(3)  // remove timestamp
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.metrics[0][1]).name,
+                    size,
+                    lines,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['genome']['baits_interval_list'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['genome']['targets_interval_list'], checkIfExists: true)
+                    ]
+                input[1] = [[id:'genome'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+                input[2] = [[id:'genome'], file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)]
+                input[3] = [[id:'genome'], file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - nofasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['genome']['baits_interval_list'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['genome']['targets_interval_list'], checkIfExists: true)
+                    ]
+                input[1] = [[:],[]]
+                input[2] = [[:],[]]
+                input[3] = [[:],[]]
+                """
+            }
+        }
+
+        then {
+            def size = path(process.out.metrics[0][1]).size()
+            def lines = path(process.out.metrics[0][1]).readLines()[0..212]
+            lines.remove(3)  // remove timestamp
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.metrics[0][1]).name,
+                    size,
+                    lines,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - bed") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['genome']['baits_bed'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
+                    ]
+
+                input[1] = [[id:'genome'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+                input[2] = [[id:'genome'], file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)]
+                input[3] = [[id:'genome'], file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            def size = path(process.out.metrics[0][1]).size()
+            def lines = path(process.out.metrics[0][1]).readLines()[0..212]
+            lines.remove(3)  // remove timestamp
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.metrics[0][1]).name,
+                    size,
+                    lines,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - samebed") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['genome']['baits_bed'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['genome']['baits_bed'], checkIfExists: true)
+                    ]
+
+                input[1] = [[id:'genome'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+                input[2] = [[id:'genome'], file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)]
+                input[3] = [[id:'genome'], file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            def size = path(process.out.metrics[0][1]).size()
+            def lines = path(process.out.metrics[0][1]).readLines()[0..212]
+            lines.remove(3)  // remove timestamp
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.metrics[0][1]).name,
+                    size,
+                    lines,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+}
