@@ -227,7 +227,9 @@ jobs:
       fail-fast: false
       matrix:
         tags: ["${{ fromJson(needs.pytest-changes.outputs.tags) }}"]
-        profile: [conda, docker, singularity]
+        # BUG conda and pytest-workflow won't be supported
+        # https://github.com/nextflow-io/nextflow/issues/4464#issuecomment-2160348935
+        profile: [docker, singularity]
         exclude:
           - tags: nf-test
           - profile: conda
