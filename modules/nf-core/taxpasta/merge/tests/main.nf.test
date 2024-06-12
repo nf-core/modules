@@ -64,7 +64,12 @@ nextflow_process {
                 input[1] = 'kraken2'
                 input[2] = 'tsv'
                 input[3] = []
-                input[4] = file(params.modules_testdata_base_path + 'delete_me/taxpasta/samplesheet.tsv', checkIfExists: true)
+                input[4] = Channel.of(
+                    'sample\tprofile',
+                    'test_1\t"test_1.kraken2.report.txt"',
+                    'test_2\t"test_2.kraken2.report.txt"'
+                    )
+                    .collectFile(name: 'samplesheet.tsv', newLine: true, sort: true)
                 """
             }
         }
