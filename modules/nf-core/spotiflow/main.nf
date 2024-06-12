@@ -2,8 +2,8 @@ process SPOTIFLOW {
     tag "$meta.id"
     label 'process_medium'
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/spotiflow:721a766a67180f64':
-        'community.wave.seqera.io/library/spotiflow:cc121f304a29a0c1' }"
+        'oras://community.wave.seqera.io/library/spotiflow:e9c44c3e56b954e9':
+        'community.wave.seqera.io/library/spotiflow:d353247491abfe49' }"
 
     input:
     tuple val(meta), path(image_2d)
