@@ -21,10 +21,6 @@ process TAXPASTA_STANDARDISE {
     task.ext.when == null || task.ext.when
 
     script:
-    // N.B.: Taxpasta requires a --output
-    // option with the output file name. The desired format will be parsed from
-    // the name and should correspond to the output pattern specified above,
-    // e.g., "--output ${task.ext.prefix}.tsv".
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def taxonomy_option = taxonomy ? "--taxonomy ${taxonomy}" : ''
@@ -47,7 +43,7 @@ process TAXPASTA_STANDARDISE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def taxonomy_option = taxonomy ? "--taxonomy ${taxonomy}" : ''
     """
-    touch ${prefix}.tsv
+    touch ${prefix}.${}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
