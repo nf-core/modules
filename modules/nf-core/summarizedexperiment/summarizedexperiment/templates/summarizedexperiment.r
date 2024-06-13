@@ -121,6 +121,9 @@ parse_metadata <- function(metadata_path, ids, metadata_id_col = NULL){
         metadata_id_col <- findColumnWithAllEntries(ids, metadata)
     }
 
+    # Remove any all-NA columns
+    metadata <-  metadata[, colSums(is.na(metadata)) != nrow(metadata)]
+
     # Allow for duplicate rows by the id column
     metadata <- aggregate(
         . ~ metadata[[metadata_id_col]],
@@ -130,7 +133,7 @@ parse_metadata <- function(metadata_path, ids, metadata_id_col = NULL){
 
     rownames(metadata) <- metadata[[metadata_id_col]]
 
-    metadata
+    metadata[ids,, drop=FALSE]
 }
 
 ################################################
@@ -154,7 +157,7 @@ if ('assay_names' %in% names(args_opt)){
 
 assay_list <- lapply(matrix_files, function(m){
     mat <- read_delim_flexible(m, row.names = 1, stringsAsFactors = FALSE)
-    mat[,sapply(mat, is.numeric)]
+    mat[,sapply(mat, is.numeric), drop = FALSE]
 })
 
 checkRowColNames(assay_list)
@@ -173,10 +176,6 @@ if ('$coldata' != ''){
         metadata_id_col = args_opt\$coldata_id_col
     )
 
-    assay_list <- lapply(assay_list, function(m){
-        m[,rownames(coldata)]
-    })
-
     colData(se) <- DataFrame(coldata)
 }
 
@@ -188,10 +187,6 @@ if ('$rowdata' != ''){
         ids = rownames(assay_list[[1]]),
         metadata_id_col = args_opt\$rowdata_id_col
     )
-
-    assay_list <- lapply(assay_list, function(m){
-        m[rownames(rowdata), ]
-    })
 
     rowData(se) <- DataFrame(rowdata)
 }
@@ -232,7 +227,6 @@ summarizedexperiment.version <- as.character(packageVersion('SummarizedExperimen
 writeLines(
     c(
         '"${task.process}":',
-        paste('    r-base:', r.version),
         paste('    bioconductor-summarizedexperiment:', summarizedexperiment.version)
     ),
 'versions.yml')

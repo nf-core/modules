@@ -38,10 +38,20 @@ input:
       type: file
       description: An optional bed file containing regions to exclude from the called VCF
       pattern: "*.bed"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing fasta information
+        e.g. [ id:'test', single_end:false ]
   - fasta:
       type: file
       description: The reference fasta file
       pattern: "*.{fasta,fa}"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing fasta index information
+        e.g. [ id:'test', single_end:false ]
   - fai:
       type: file
       description: Index of reference fasta file to identify split-reads

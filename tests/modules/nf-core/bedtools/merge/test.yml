@@ -1,8 +1,0 @@
-- name: bedtools merge
-  command: nextflow run ./tests/modules/nf-core/bedtools/merge -entry test_bedtools_merge -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bedtools/merge/nextflow.config
-  tags:
-    - bedtools
-    - bedtools/merge
-  files:
-    - path: ./output/bedtools/test_out.bed
-      md5sum: 0cf6ed2b6f470cd44a247da74ca4fe4e

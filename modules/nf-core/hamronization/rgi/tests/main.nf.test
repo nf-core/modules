@@ -9,22 +9,50 @@ nextflow_process {
     tag "hamronization"
     tag "hamronization/rgi"
     tag "rgi/main"
+    tag "rgi/cardannotation"
+    tag "untar"
 
     setup {
+
+        run("UNTAR") {
+            script "modules/nf-core/untar/main.nf"
+            process {
+            """
+            file('https://card.mcmaster.ca/latest/data', checkIfExists: true).copyTo('data.tar.gz')
+
+            input[0] = [
+                [ ],
+                file("data.tar.gz")
+            ]
+            """
+            }
+        }
+
+        run("RGI_CARDANNOTATION") {
+            script "modules/nf-core/rgi/cardannotation/main.nf"
+            process {
+                """
+                input[0] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+
         run("RGI_MAIN") {
-            script "../../../rgi/main/main.nf"
+            script "modules/nf-core/rgi/main/main.nf"
             process {
                 """
                 input[0] = [                                                                                                                                                                     
                     [ id:'test', single_end:false ], // meta map                                                                                                                              
                     file(params.test_data['haemophilus_influenzae']['genome']['genome_fna_gz'], checkIfExists: true)                                                                          
                 ]
+                input[1] = RGI_CARDANNOTATION.out.db
+                input[2] = []
                 """
             }
         }
     }
 
-    test("hamronization/amrfinderplus - haemophilus_influenzae - genome - fna.gz") {
+    test("hamronization/rgi - haemophilus_influenzae - genome - fna.gz") {
 
         when {
             process {
@@ -45,7 +73,7 @@ nextflow_process {
         }
     }
 
-    test("hamronization/amrfinderplus - haemophilus_influenzae - genome - fna.gz - stub") {
+    test("hamronization/rgi - haemophilus_influenzae - genome - fna.gz - stub") {
 
         options "-stub"
 

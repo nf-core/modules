@@ -13,19 +13,19 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
+                vcf = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     file(params.test_data['homo_sapiens']['illumina']['simulated_sv'], checkIfExists: true),
                     file(params.test_data['homo_sapiens']['illumina']['simulated_sv_tbi'], checkIfExists: true)
-                    ]
+                    ])
 
-                input[1] = Channel.of([
-                        "config.yaml", 
-                        "info:", 
-                        "  SVMETHOD:", 
-                        "    value: svync", 
-                        "    description: Type of approach used to detect SV", 
-                        "    number: 1", 
+                config = Channel.of([
+                        "config.yaml",
+                        "info:",
+                        "  SVMETHOD:",
+                        "    value: svync",
+                        "    description: Type of approach used to detect SV",
+                        "    number: 1",
                         "    type: string",
                         "format:",
                         "  GT:",
@@ -35,7 +35,9 @@ nextflow_process {
                         "    type: string"
                     ])
                     .collectFile(newLine:true, sort:'index')
-                    .map { [[], it] }
+                    .map { [[ id:'test', single_end:false ], it] }
+
+                input[0] = vcf.join(config)
                 """
             }
         }
@@ -59,15 +61,18 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
+                vcf = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     file(params.test_data['homo_sapiens']['illumina']['simulated_sv'], checkIfExists: true),
                     file(params.test_data['homo_sapiens']['illumina']['simulated_sv_tbi'], checkIfExists: true)
-                    ]
+                    ])
 
-                input[1] = Channel.of(["config.yaml", "info:", "  SVMETHOD:", "    value: svync", "    description: Type of approach used to detect SV", "    number: 1", "    type: string"])
+                config = Channel.of(["config.yaml", "info:", "  SVMETHOD:", "    value: svync", "    description: Type of approach used to detect SV", "    number: 1", "    type: string"])
                     .collectFile(newLine:true, sort:'index')
-                    .map { [[], it] }
+                    .map { [[ id:'test', single_end:false ], it] }
+
+                input[0] = vcf.join(config)
+
                 """
             }
         }

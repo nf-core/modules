@@ -15,9 +15,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test' ], file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true), file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists:true), []]
-                input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                input[2] = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
-                input[3] = file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+                input[1] = [ [ id:'reference' ], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+                input[2] = [ [ id:'reference' ], file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true) ]
+                input[3] = [ [ id:'reference' ], file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true) ]
                 """
             }
         }
@@ -37,9 +37,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test' ], file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true), file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists:true), file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)]
-                input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                input[2] = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
-                input[3] = file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+                input[1] = [ [ id:'reference' ], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+                input[2] = [ [ id:'reference' ], file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true) ]
+                input[3] = [ [ id:'reference' ], file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true) ]
                 """
             }
         }
@@ -61,9 +61,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test' ], file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true), [], []]
-                input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                input[2] = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
-                input[3] = file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+                input[1] = [ [ id:'reference' ], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+                input[2] = [ [ id:'reference' ], file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true) ]
+                input[3] = [ [ id:'reference' ], file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true) ]
                 """
             }
         }
