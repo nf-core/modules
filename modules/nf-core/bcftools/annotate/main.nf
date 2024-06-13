@@ -8,7 +8,10 @@ process BCFTOOLS_ANNOTATE {
         'biocontainers/bcftools:1.20--h8b25389_0' }"
 
     input:
-    tuple val(meta), path(input), path(index), path(annotations), path(annotations_index), path(header_lines)
+    tuple val(meta), path(input), path(index)
+    path(annotations)
+    path(annotations_index)
+    path(header_lines)
 
     output:
     tuple val(meta), path("*.{vcf,vcf.gz,bcf,bcf.gz}"), emit: vcf
@@ -29,9 +32,12 @@ process BCFTOOLS_ANNOTATE {
                     args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
                     args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
                     "vcf"
+    def index_command = !index ? "bcftools index $input" : ''
 
     if ("$input" == "${prefix}.${extension}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
+    $index_command
+
     bcftools \\
         annotate \\
         $args \\
