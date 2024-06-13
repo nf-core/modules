@@ -11,8 +11,8 @@ process GATK4_GATHERBQSRREPORTS {
     tuple val(meta), path(table)
 
     output:
-    tuple val(meta), path("*.table"), emit: table
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path("${prefix}.table"), emit: table
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

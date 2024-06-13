@@ -14,8 +14,8 @@ process GATK4_COMBINEGVCFS {
     path  dict
 
     output:
-    tuple val(meta), path("*.combined.g.vcf.gz"), emit: combined_gvcf
-    path "versions.yml"                         , emit: versions
+    tuple val(meta), path("${prefix}.combined.g.vcf.gz"), emit: combined_gvcf
+    path "versions.yml"                                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

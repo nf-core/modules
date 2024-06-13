@@ -16,8 +16,8 @@ process GATK4_GETPILEUPSUMMARIES {
     path  variants_tbi
 
     output:
-    tuple val(meta), path('*.pileups.table'), emit: table
-    path "versions.yml"                     , emit: versions
+    tuple val(meta), path('${prefix}.pileups.table'), emit: table
+    path "versions.yml"                             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
