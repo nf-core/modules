@@ -23,7 +23,7 @@ nextflow_process {
 	        ])
 		input[2] = Channel.of([
 		    [id:'test'], // meta3 map
-		    file('${moduleTestDir}/config-cli.json', checkIfExists: true)
+		    file(params.test_data['proteomics']['parameter']['sage_base_config'], checkIfExists: true)
 	        ])
                 """
             }
