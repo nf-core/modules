@@ -34,6 +34,11 @@ input:
       type: file
       description: proteome database in fasta format
       pattern: "*.{fasta, fasta.gz}"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing information about base_config
+        e.g. `[ id:'sample1']`
   - base_config:
       type: file
       description: sage configuration json
