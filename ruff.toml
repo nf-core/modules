@@ -1,16 +1,15 @@
-[tool.ruff]
 line-length = 120
 target-version = "py38"
 cache-dir = "~/.cache/ruff"
 
-[tool.ruff.lint]
+[lint]
 select = ["I", "E1", "E4", "E7", "E9", "F", "UP", "N"]
 
-[tool.ruff.lint.isort]
+[lint.isort]
 known-first-party = ["nf_core"]
 
-[tool.ruff.lint.per-file-ignores]
+[lint.per-file-ignores]
 "__init__.py" = ["E402", "F401"]
 
-[tool.ruff.lint.pep8-naming]
+[lint.pep8-naming]
 extend-ignore-names = ["mocked_*", "*allOf", "*URI*"]
