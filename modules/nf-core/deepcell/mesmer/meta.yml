@@ -1,0 +1,56 @@
+name: "deepcell_mesmer"
+description: Deepcell/mesmer segmentation for whole-cell
+keywords:
+  - imaging
+  - spatial_omics
+  - segmentation
+tools:
+  - "mesmer":
+      description: "Deep cell is a collection of tools to segment imaging data"
+      homepage: "https://github.com/vanvalenlab/deepcell-tf"
+      documentation: "https://github.com/vanvalenlab/intro-to-deepcell/tree/master/pretrained_models"
+      tool_dev_url: "https://githu/b.com/vanvalenlab/deepcell-tf"
+      doi: 10.1038/s41587-021-01094-0
+      licence: ["APACHE2"]
+input:
+  # Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - img:
+      type: file
+      description: Multichannel image file
+      pattern: "*.{tiff,tif,h5,hdf5}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - membrane_img:
+      type: file
+      description: Optional membrane image to be provided separately.
+      pattern: "*.{tiff,tif,h5,hdf5}"
+output:
+  #Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - mask:
+      type: file
+      description: File containing the mask.
+      pattern: "*.{tif, tiff}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@migueLib"
+  - "@chiarasch"
+maintainers:
+  - "@migueLib"
+  - "@chiarasch"

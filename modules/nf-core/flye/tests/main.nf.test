@@ -1,0 +1,258 @@
+// According to the issue https://github.com/fenderglass/Flye/issues/164
+// Some fluctuations are expected because of the heuristics
+// Here we check the that test.assembly_info.txt contains at least one contig
+
+nextflow_process {
+
+    name "Test Process FLYE"
+    script "../main.nf"
+    process "FLYE"
+    config "./nextflow.config"
+    tag "flye"
+    tag "modules"
+    tag "modules_nfcore"
+
+
+    test("flye_pacbio_raw") {
+        tag "flye_pacbio_raw"
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] =  [
+                                [ id:'test' ], // meta map
+                                file(params.test_data['homo_sapiens']['pacbio']['hifi'], checkIfExists: true)
+                            ]
+                input[1] = "--pacbio-raw"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.fasta.get(0).get(1) ==~ '.*/test.assembly.fasta.gz' },
+                { assert process.out.gfa.get(0).get(1) ==~ '.*/test.assembly_graph.gfa.gz' },
+                { assert process.out.gv.get(0).get(1) ==~ '.*/test.assembly_graph.gv.gz' },
+                { assert process.out.log.get(0).get(1) ==~ '.*/test.flye.log' },
+                { assert process.out.txt.get(0).get(1) ==~ '.*/test.assembly_info.txt' },
+                { assert process.out.json.get(0).get(1) ==~ '.*/test.params.json' },
+
+                // check for contig_1 in assembly_info
+                { assert path(process.out.txt.get(0).get(1)).text =~ /contig_1/ },
+                // Check if test.params.json matches
+                { assert snapshot(process.out.json).match() }
+
+
+
+            )
+        }
+
+    }
+
+
+    test("flye_pacbio_corr") {
+        tag "flye_pacbio_corr"
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] =  [
+                                [ id:'test' ], // meta map
+                                file(params.test_data['homo_sapiens']['pacbio']['hifi'], checkIfExists: true)
+                            ]
+                input[1] = "--pacbio-corr"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.fasta.get(0).get(1) ==~ '.*/test.assembly.fasta.gz' },
+                { assert process.out.gfa.get(0).get(1) ==~ '.*/test.assembly_graph.gfa.gz' },
+                { assert process.out.gv.get(0).get(1) ==~ '.*/test.assembly_graph.gv.gz' },
+                { assert process.out.log.get(0).get(1) ==~ '.*/test.flye.log' },
+                { assert process.out.txt.get(0).get(1) ==~ '.*/test.assembly_info.txt' },
+
+                // check for contig_1 in assembly_info
+                { assert path(process.out.txt.get(0).get(1)).text =~ /contig_1/ },
+                // Check if test.params.json matches
+                { assert snapshot(process.out.json).match() }
+
+
+
+
+            )
+        }
+
+    }
+
+    test("flye_pacbio_hifi") {
+        tag "flye_pacbio_hifi"
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] =  [
+                                [ id:'test' ], // meta map
+                                file(params.test_data['homo_sapiens']['pacbio']['hifi'], checkIfExists: true)
+                            ]
+                input[1] = "--pacbio-hifi"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.fasta.get(0).get(1) ==~ '.*/test.assembly.fasta.gz' },
+                { assert process.out.gfa.get(0).get(1) ==~ '.*/test.assembly_graph.gfa.gz' },
+                { assert process.out.gv.get(0).get(1) ==~ '.*/test.assembly_graph.gv.gz' },
+                { assert process.out.log.get(0).get(1) ==~ '.*/test.flye.log' },
+                { assert process.out.txt.get(0).get(1) ==~ '.*/test.assembly_info.txt' },
+
+                // check for contig_1 in assembly_info
+                { assert path(process.out.txt.get(0).get(1)).text =~ /contig_1/ },
+                // Check if test.params.json matches
+                { assert snapshot(process.out.json).match() }
+
+
+
+
+            )
+        }
+
+    }
+
+    test("flye_nano_raw") {
+        tag "flye_nano_raw"
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] =  [
+                                [ id:'test' ], // meta map
+                                file(params.test_data['homo_sapiens']['pacbio']['hifi'], checkIfExists: true)
+                            ]
+                input[1] = "--nano-raw"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.fasta.get(0).get(1) ==~ '.*/test.assembly.fasta.gz' },
+                { assert process.out.gfa.get(0).get(1) ==~ '.*/test.assembly_graph.gfa.gz' },
+                { assert process.out.gv.get(0).get(1) ==~ '.*/test.assembly_graph.gv.gz' },
+                { assert process.out.log.get(0).get(1) ==~ '.*/test.flye.log' },
+                { assert process.out.txt.get(0).get(1) ==~ '.*/test.assembly_info.txt' },
+                { assert process.out.json.get(0).get(1) ==~ '.*/test.params.json' },
+
+                // check for contig_1 in assembly_info
+                { assert path(process.out.txt.get(0).get(1)).text =~ /contig_1/ },
+                // Check if test.params.json matches
+                { assert snapshot(process.out.json).match() }
+
+
+
+            )
+        }
+
+    }
+
+    test("flye_nano_corr") {
+        tag "flye_nano_corr"
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] =  [
+                                [ id:'test' ], // meta map
+                                file(params.test_data['homo_sapiens']['pacbio']['hifi'], checkIfExists: true)
+                            ]
+                input[1] = "--nano-corr"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.fasta.get(0).get(1) ==~ '.*/test.assembly.fasta.gz' },
+                { assert process.out.gfa.get(0).get(1) ==~ '.*/test.assembly_graph.gfa.gz' },
+                { assert process.out.gv.get(0).get(1) ==~ '.*/test.assembly_graph.gv.gz' },
+                { assert process.out.log.get(0).get(1) ==~ '.*/test.flye.log' },
+                { assert process.out.txt.get(0).get(1) ==~ '.*/test.assembly_info.txt' },
+                { assert process.out.json.get(0).get(1) ==~ '.*/test.params.json' },
+
+                // check for contig_1 in assembly_info
+                { assert path(process.out.txt.get(0).get(1)).text =~ /contig_1/ },
+                // Check if test.params.json matches
+                { assert snapshot(process.out.json).match() }
+
+
+            )
+        }
+
+    }
+
+
+    test("flye_nano_hq") {
+        tag "flye_nano_hq"
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] =  [
+                                [ id:'test' ], // meta map
+                                file(params.test_data['homo_sapiens']['pacbio']['hifi'], checkIfExists: true)
+                            ]
+                input[1] = "--nano-hq"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.fasta.get(0).get(1) ==~ '.*/test.assembly.fasta.gz' },
+                { assert process.out.gfa.get(0).get(1) ==~ '.*/test.assembly_graph.gfa.gz' },
+                { assert process.out.gv.get(0).get(1) ==~ '.*/test.assembly_graph.gv.gz' },
+                { assert process.out.log.get(0).get(1) ==~ '.*/test.flye.log' },
+                { assert process.out.txt.get(0).get(1) ==~ '.*/test.assembly_info.txt' },
+                { assert process.out.json.get(0).get(1) ==~ '.*/test.params.json' },
+
+                // check for contig_1 in assembly_info
+                { assert path(process.out.txt.get(0).get(1)).text =~ /contig_1/ },
+                // Check if test.params.json matches
+                { assert snapshot(process.out.json).match() }
+
+
+            )
+        }
+
+    }
+
+
+
+}

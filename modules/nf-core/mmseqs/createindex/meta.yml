@@ -12,16 +12,19 @@ tools:
       homepage: "https://github.com/soedinglab/MMseqs2"
       documentation: "https://mmseqs.com/latest/userguide.pdf"
       tool_dev_url: "https://github.com/soedinglab/MMseqs2"
-      doi: "https://doi.org/10.1093/bioinformatics/btw006"
-      licence: "['GPL v3']"
-
+      doi: "10.1093/bioinformatics/btw006"
+      licence: ["GPL v3"]
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
   - db:
       type: directory
       description: |
         Directory containing the DB to be indexed
       pattern: "*"
-
 output:
   - versions:
       type: file
@@ -33,6 +36,7 @@ output:
       description: |
         Directory containing the DB and the generated indexes
       pattern: "*"
-
 authors:
+  - "@JoseEspinosa"
+maintainers:
   - "@JoseEspinosa"

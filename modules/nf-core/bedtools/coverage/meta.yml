@@ -15,8 +15,7 @@ tools:
       documentation: "https://bedtools.readthedocs.io/en/latest/content/bedtools-suite.html"
       tool_dev_url: "https://github.com/arq5x/bedtools2"
       doi: "10.1093/bioinformatics/btq033"
-      licence: "['GPL v2', 'MIT']"
-
+      licence: ["GPL v2", "MIT"]
 input:
   - meta:
       type: map
@@ -38,7 +37,6 @@ input:
         in the input files for use with the -sorted option.
         When `genome_file` is provided, `-sorted` option is added to the command.
       pattern: "*.{fai,txt,chromsizes}"
-
 output:
   - meta:
       type: map
@@ -53,6 +51,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@priyanka-surana"
+maintainers:
   - "@priyanka-surana"

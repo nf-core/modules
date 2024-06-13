@@ -1,0 +1,69 @@
+nextflow_process {
+
+    name "Test Process CUTADAPT"
+    script "../main.nf"
+    process "CUTADAPT"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cutadapt"
+
+    test("sarscov2 Illumina single end [fastq]") {
+
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id: 'test', single_end:true ],
+                    [
+                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert process.out.reads != null },
+                { assert process.out.reads.get(0).get(1) ==~ ".*.trim.fastq.gz" },
+                { assert snapshot(process.out.versions).match("versions_single_end") },
+                { assert snapshot(path(process.out.reads.get(0).get(1)).linesGzip[0]).match() }
+            )
+        }
+    }
+
+    test("sarscov2 Illumina paired-end [fastq]") {
+
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id: 'test', single_end:false ],
+                    [
+                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                        file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert process.out.reads != null },
+                { assert process.out.reads.get(0).get(1).get(0) ==~ ".*.1.trim.fastq.gz" },
+                { assert process.out.reads.get(0).get(1).get(1) ==~ ".*.2.trim.fastq.gz" },
+                { assert snapshot(path(process.out.reads.get(0).get(1).get(1)).linesGzip[0]).match() },
+                { assert snapshot(process.out.versions).match("versions_paired_end") }
+            )
+        }
+    }
+}

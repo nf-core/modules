@@ -20,7 +20,6 @@ tools:
       documentation: https://pydamage.readthedocs.io/
       tool_dev_url: https://github.com/maxibor/pydamage
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -35,7 +34,6 @@ input:
       type: file
       description: BAM/CRAM/SAM index file
       pattern: "*.{bai,crai,sai}"
-
 output:
   - meta:
       type: map
@@ -50,6 +48,7 @@ output:
       type: file
       description: PyDamage results as csv files
       pattern: "*.csv"
-
 authors:
+  - "@maxibor"
+maintainers:
   - "@maxibor"

@@ -9,12 +9,8 @@ keywords:
 tools:
   - samtools:
       description: Tools for dealing with SAM, BAM and CRAM files
-      homepage: None
       documentation: http://www.htslib.org/doc/1.1/samtools.html
-      tool_dev_url: None
-      doi: ""
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -70,8 +66,11 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@lescai"
+  - "@maxulysse"
+  - "@matthdsm"
+maintainers:
   - "@lescai"
   - "@maxulysse"
   - "@matthdsm"

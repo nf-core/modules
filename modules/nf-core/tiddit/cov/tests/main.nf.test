@@ -1,0 +1,160 @@
+nextflow_process {
+
+    name "Test Process TIDDIT_COV"
+    script "../main.nf"
+    process "TIDDIT_COV"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "tiddit"
+    tag "tiddit/cov"
+
+    test("homo_sapiens - cram - bed") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true)
+                ]
+
+                input[1] = [
+                    [:],  // meta map
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.cov).match("cov") },
+                { assert process.out.cov[0][1] ==~ ".*/test.bed" },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - bam - bed") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+                ]
+                input[1] = [ [:], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.cov).match("cov") },
+                { assert process.out.cov[0][1] ==~ ".*/test.bed" },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - cram - wig") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true)
+                ]
+
+                input[1] = [
+                    [:],  // meta map
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.wig).match("wig") },
+                { assert process.out.wig[0][1] ==~ ".*/test.wig" },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - bam - wig") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+                ]
+
+                input[1] = [ [:], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.wig).match("wig") },
+                { assert process.out.wig[0][1] ==~ ".*/test.wig" },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+
+    test("homo_sapiens - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true)
+                ]
+
+                input[1] = [
+                    [:],  // meta map
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.cov).match("cov - stub") },
+                { assert process.out.cov[0][1] ==~ ".*/test.bed" },
+                { assert snapshot(process.out.wig).match("wig - stub") },
+                { assert process.out.wig[0][1] ==~ ".*/test.wig" },
+                { assert snapshot(process.out.versions).match("versions - stub") }
+            )
+        }
+
+    }
+
+}

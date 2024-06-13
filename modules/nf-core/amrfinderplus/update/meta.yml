@@ -12,12 +12,7 @@ tools:
       tool_dev_url: https://github.com/ncbi/amr
       doi: "10.1038/s41598-021-91456-0"
       licence: ["Public Domain"]
-
-input:
-  - input_not_required:
-      type: null
-      description: module does not have an input
-
+# this module does have any input.
 output:
   - meta:
       type: map
@@ -32,6 +27,7 @@ output:
       type: file
       description: The latest AMRFinder+ database in a compressed tarball
       pattern: "*.tar.gz"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

@@ -12,7 +12,6 @@ tools:
       documentation: https://gatk.broadinstitute.org/hc/en-us/articles/360036712531-CreateSequenceDictionary-Picard-
       tool_dev_url: https://github.com/broadinstitute/picard
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -23,7 +22,6 @@ input:
       type: file
       description: The reference fasta file
       pattern: "*.fasta"
-
 output:
   - meta:
       type: map
@@ -34,12 +32,15 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - dict:
-    type: file
-    description: picard dictionary file
-    pattern: "*.{dict}"
-
+  - reference_dict:
+      type: file
+      description: picard dictionary file
+      pattern: "*.{dict}"
 authors:
+  - "@sateeshperi"
+  - "@mjcipriano"
+  - "@hseabolt"
+maintainers:
   - "@sateeshperi"
   - "@mjcipriano"
   - "@hseabolt"

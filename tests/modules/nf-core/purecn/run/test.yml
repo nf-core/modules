@@ -1,0 +1,10 @@
+- name: purecn run
+  command: nextflow run ./tests/modules/nf-core/purecn/run -entry test_purecn_run -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/purecn/run/nextflow.config -stub-run
+  tags:
+    - purecn
+    - purecn/run
+  files:
+    - path: output/purecn/test.pdf
+    - path: output/purecn/test_dnacopy.seg
+    - path: output/purecn/test_local_optima.pdf
+    - path: output/purecn/versions.yml
