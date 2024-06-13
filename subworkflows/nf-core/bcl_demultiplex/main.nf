@@ -68,7 +68,7 @@ workflow BCL_DEMULTIPLEX {
             // reshapes the channel from a single emit of [meta, [fastq, fastq, fastq...]]
             // to emits per fastq file like [meta, fastq]
             .transpose()
-            .map{ fc_meta, fastq ->
+            .map { fc_meta, fastq ->
                 def meta = [:]
                 meta.id = fastq.getSimpleName().toString() - ~/_R[0-9]_001.*$/
                 meta.samplename = fastq.getSimpleName().toString() - ~/_S[0-9]+.*$/
@@ -110,7 +110,7 @@ workflow BCL_DEMULTIPLEX {
                     println "No reads were found in FASTQ file: ${fastq}"
                     meta.readgroup = [:]
                     meta.empty = true
-                }
+                } 
                 return [meta, fastq]
             }
             // Group by the meta id so that we can find mate pairs if they exist
@@ -119,11 +119,16 @@ workflow BCL_DEMULTIPLEX {
                 meta.single_end = fastq.size() == 1
                 return [meta, fastq.flatten()]
             }
+            .branch {
+                fastq       : it[0].empty == true
+                empty_fastq : it[0].empty == true
+            }
 
     emit:
-        fastq    = ch_fastq_with_meta
-        reports  = ch_reports
-        stats    = ch_stats
-        interop  = ch_interop
-        versions = ch_versions
+        fastq       = ch_fastq_with_meta.fastq
+        empty_fastq = ch_fastq_with_meta.empty_fastq
+        reports     = ch_reports
+        stats       = ch_stats
+        interop     = ch_interop
+        versions    = ch_versions
 }
