@@ -8,11 +8,9 @@ tools:
   - "gatk4":
       description: "Genome Analysis Toolkit (GATK4)"
       homepage: "https://gatk.broadinstitute.org/hc/en-us"
-
       tool_dev_url: "https://github.com/broadinstitute/gatk"
       doi: "10.1158/1538-7445.AM2017-3590"
-      licence: "['BSD-3-clause']"
-
+      licence: ["BSD-3-clause"]
 input:
   - meta:
       type: map
@@ -39,7 +37,6 @@ input:
       type: file
       description: Sequence dictionary of the reference FASTA file needed when the input is a CRAM file
       pattern: "*.dict"
-
 output:
   - meta:
       type: map
@@ -58,6 +55,7 @@ output:
       type: file
       description: The condensed depth evidence
       pattern: "*.rd.txt.gz.tbi"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

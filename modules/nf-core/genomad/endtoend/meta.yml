@@ -1,5 +1,4 @@
 name: "genomad_endtoend"
-
 description: Identify mobile genetic elements present in genomic assemblies
 keywords:
   - metagenomics
@@ -9,7 +8,6 @@ keywords:
   - phage
   - virus
   - plasmid
-
 tools:
   - "genomad":
       description: "Identification of mobile genetic elements"
@@ -17,8 +15,7 @@ tools:
       documentation: https://portal.nersc.gov/genomad/
       tool_dev_url: https://github.com/apcamargo/genomad/
       doi: 10.1101/2023.03.05.531206
-      licence: "['Lawrence Berkeley National Labs BSD variant license']"
-
+      licence: ["Lawrence Berkeley National Labs BSD variant license"]
 input:
   - meta:
       type: map
@@ -35,7 +32,6 @@ input:
   - score_calibration:
       type: boolean
       description: true/false value to indicate if score calibration should be enabled
-
 output:
   - meta:
       type: map
@@ -98,6 +94,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@CarsonJM"
+maintainers:
   - "@CarsonJM"

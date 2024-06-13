@@ -16,7 +16,6 @@ tools:
       tool_dev_url: https://github.com/apeltzer/MTNucRatioCalculator
       doi: "10.1186/s13059-016-0918-z"
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -30,7 +29,6 @@ input:
   - mt_id:
       type: string
       description: Identifier of the contig/chromosome of interest (e.g. chromosome, contig) as in the aligned against reference FASTA file, e.g. mt or chrMT for mitochondria
-
 output:
   - meta:
       type: map
@@ -49,6 +47,7 @@ output:
       type: file
       description: JSON file, containing metadata map with sample name, tool name and version, and metrics as in txt file
       pattern: "*.json"
-
 authors:
+  - "@louperelo"
+maintainers:
   - "@louperelo"

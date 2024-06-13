@@ -2,7 +2,7 @@ process VSEARCH_USEARCHGLOBAL {
     tag "${meta.id}"
     label 'process_low'
 
-    conda "bioconda::vsearch=2.21.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/vsearch:2.21.1--h95f258a_0':
         'biocontainers/vsearch:2.21.1--h95f258a_0' }"

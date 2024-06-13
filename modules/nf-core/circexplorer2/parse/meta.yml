@@ -11,7 +11,6 @@ tools:
       documentation: "https://circexplorer2.readthedocs.io/en/latest/"
       doi: "10.1101/gr.202895.115"
       licence: "['MIT License']"
-
 input:
   - meta:
       type: map
@@ -22,7 +21,6 @@ input:
       type: file
       description: BAM (BWA), BED (Segemehl), TXT (MapSplice), or Junction (STAR) file. Aligner will be autodetected based on file suffix.
       pattern: "*.{bam,junction,bed,txt}"
-
 output:
   - meta:
       type: map
@@ -37,6 +35,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@BarryDigby"
+maintainers:
   - "@BarryDigby"

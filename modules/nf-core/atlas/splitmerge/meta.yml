@@ -13,14 +13,12 @@ tools:
       tool_dev_url: "https://bitbucket.org/wegmannlab/atlas"
       doi: "10.1101/105346"
       licence: "['GPL v3']"
-
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-
   - bam:
       type: file
       description: Single input BAM file.
@@ -43,28 +41,25 @@ input:
         blacklist.txt (optional), A txt file with blacklisted read names
         that should be ignored and just written to file, each on a new line
       pattern: "*.txt"
-
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
   - bam:
       type: file
       description: A BAM file with suffix_mergedReads.bam
       pattern: "*_mergedReads.bam"
-
   - filelist:
       type: file
       description: A file listing all reads that were filtered out in the merging process with suffix_ignoredReads.txt.gz
       pattern: "*.txt.gz"
-
 authors:
+  - "@merszym"
+maintainers:
   - "@merszym"

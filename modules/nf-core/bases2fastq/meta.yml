@@ -9,8 +9,7 @@ tools:
       description: "Demultiplexes sequencing data and converts base calls into FASTQ files for secondary analysis"
       homepage: "https://go.elementbiosciences.com/bases2fastq-download"
       documentation: "https://www.elementbiosciences.com/resources/user-guides/workflow/bases2fastq"
-      licence: "http://go.elembio.link/eula"
-
+      licence: ["http://go.elembio.link/eula"]
 input:
   - meta:
       type: map
@@ -24,7 +23,6 @@ input:
   - run_dir:
       type: directory
       description: "Input run directory containing optionally containing a RunManifest.json if run_manifest is not supplied"
-
 output:
   - meta:
       type: map
@@ -63,6 +61,7 @@ output:
       type: file
       description: Unassigned Sequences
       pattern: "output/UnassignedSequences.csv"
-
 authors:
-  - "@Emiller88"
+  - "@edmundmiller"
+maintainers:
+  - "@edmundmiller"

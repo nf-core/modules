@@ -12,8 +12,7 @@ tools:
       documentation: "https://odgi.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/pangenome/odgi"
       doi: "10.1093/bioinformatics/btac308"
-      licence: "['MIT']"
-
+      licence: ["MIT"]
 input:
   - meta:
       type: map
@@ -28,7 +27,6 @@ input:
       type: file
       description: 2D layout from 'odgi layout' in LAY binary format
       pattern: "*.{lay}"
-
 output:
   - meta:
       type: map
@@ -43,6 +41,7 @@ output:
       type: file
       description: File in PNG format containing a 2D drawing of a pangenome graph
       pattern: "*.{png}"
-
 authors:
+  - "@subwaystation"
+maintainers:
   - "@subwaystation"

@@ -2,7 +2,7 @@ process MINIASM {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::miniasm=0.3_r179"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/miniasm:0.3_r179--h5bf99c6_2' :
         'biocontainers/miniasm:0.3_r179--h5bf99c6_2' }"
@@ -38,4 +38,17 @@ process MINIASM {
         miniasm: \$( miniasm -V 2>&1 )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.gfa.gz
+    echo "" | gzip > ${prefix}.fasta.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        miniasm: \$( miniasm -V 2>&1 )
+    END_VERSIONS
+    """
+
 }

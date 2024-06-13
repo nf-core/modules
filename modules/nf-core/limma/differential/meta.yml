@@ -5,7 +5,6 @@ keywords:
   - expression
   - microarray
   - limma
-
 tools:
   - "limma":
       description: "Linear Models for Microarray Data"
@@ -13,8 +12,7 @@ tools:
       documentation: "https://bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf"
       tool_dev_url: https://github.com/cran/limma""
       doi: "10.18129/B9.bioc.limma"
-      licence: "['LGPL >=3']"
-
+      licence: ["LGPL >=3"]
 input:
   - meta:
       type: map
@@ -52,12 +50,10 @@ input:
       description: |
         Raw TSV or CSV format expression matrix with probes by row and samples
         by column
-
 output:
   - results:
       type: file
-      description: TSV-format table of differential expression information as
-        output by Limma
+      description: TSV-format table of differential expression information as output by Limma
       pattern: "*.limma.results.tsv"
   - md_plot:
       type: file
@@ -67,6 +63,10 @@ output:
       type: file
       description: Serialised MArrayLM object
       pattern: "*.MArrayLM.limma.rds"
+  - model:
+      type: file
+      description: TXT-format limma model
+      pattern: "*.limma.model.tsv"
   - session_info:
       type: file
       description: dump of R SessionInfo
@@ -75,6 +75,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@pinin4fjords"
+maintainers:
   - "@pinin4fjords"

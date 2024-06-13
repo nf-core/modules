@@ -2,10 +2,10 @@ process LAST_LASTAL {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::last=1418"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/last:1418--h5b5514e_0' :
-        'biocontainers/last:1418--h5b5514e_0' }"
+        'https://depot.galaxyproject.org/singularity/last:1542--h43eeafb_1' :
+        'biocontainers/last:1542--h43eeafb_1' }"
 
     input:
     tuple val(meta), path(fastx), path (param_file)
@@ -24,15 +24,30 @@ process LAST_LASTAL {
     def trained_params = param_file ? "-p ${param_file}"  : ''
     """
     INDEX_NAME=\$(basename \$(ls $index/*.des) .des)
+    set -o pipefail
     lastal \\
+        -P $task.cpus \\
         $trained_params \\
         $args \\
-        -P $task.cpus \\
         ${index}/\$INDEX_NAME \\
         $fastx \\
         | gzip --no-name > ${prefix}.\$INDEX_NAME.maf.gz
     # gzip needs --no-name otherwise it puts a timestamp in the file,
     # which makes its checksum non-reproducible.
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        last: \$(lastal --version 2>&1 | sed 's/lastal //')
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def trained_params = param_file ? "-p ${param_file}"  : ''
+    """
+    INDEX_NAME=STUB
+    echo stub | gzip --no-name > ${prefix}.\$INDEX_NAME.maf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

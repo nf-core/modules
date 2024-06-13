@@ -15,8 +15,7 @@ tools:
       documentation: "https://github.com/pirovc/ganon"
       tool_dev_url: "https://github.com/pirovc/ganon"
       doi: "10.1093/bioinformatics/btaa458"
-      licence: "['MIT License']"
-
+      licence: ["MIT"]
 input:
   - meta:
       type: map
@@ -27,11 +26,10 @@ input:
       type: file
       description: Single or paired FASTQ files, optionally gzipped
       pattern: "*.{fq,fq.gz,fastq,fastq.gz}"
-  - dbs:
+  - db:
       type: file
       description: Ganon database files from build or build-custom
       pattern: "*.{ibf,tax}"
-
 output:
   - meta:
       type: map
@@ -50,10 +48,10 @@ output:
       type: file
       description: Plain ganon report file with only targets with match
       pattern: "*.rep"
-  - lca:
+  - one:
       type: file
-      description: Information about the lowest common ancestor match of a given read
-      pattern: "*.lca"
+      description: Information about a single (best) match of a given read after EM or LCA algorithms
+      pattern: "*.one"
   - all:
       type: file
       description: Information of all matches to a given read
@@ -66,6 +64,7 @@ output:
       type: file
       description: Text file containing console output from ganon classify
       pattern: "*.log"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

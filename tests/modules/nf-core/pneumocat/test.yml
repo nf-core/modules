@@ -1,0 +1,8 @@
+- name: pneumocat test_pneumocat
+  command: nextflow run ./tests/modules/nf-core/pneumocat -entry test_pneumocat -stub-run -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/pneumocat/nextflow.config
+  tags:
+    - pneumocat
+  files:
+    - path: output/pneumocat/test.txt
+    - path: output/pneumocat/test.results.xml
+    - path: output/pneumocat/versions.yml

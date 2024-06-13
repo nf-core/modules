@@ -14,7 +14,6 @@ tools:
       tool_dev_url: "https://github.com/husonlab/megan-ce"
       doi: "10.1371/journal.pcbi.1004957"
       licence: "['GPL >=3']"
-
 input:
   - meta:
       type: map
@@ -28,7 +27,6 @@ input:
   - megan_summary:
       type: boolean
       description: Specify whether to generate a MEGAN summary file
-
 output:
   - meta:
       type: map
@@ -47,6 +45,7 @@ output:
       type: file
       description: Optionally generated MEGAN summary file
       pattern: "*.megan"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

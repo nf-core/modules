@@ -2,7 +2,7 @@ process PBPTYPER {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::pbptyper=1.0.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pbptyper:1.0.2--hdfd78af_0':
         'biocontainers/pbptyper:1.0.2--hdfd78af_0' }"

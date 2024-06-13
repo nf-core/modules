@@ -2,16 +2,16 @@ process ANTISMASH_ANTISMASHLITE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::antismash-lite=6.1.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/antismash-lite:6.1.1--pyhdfd78af_0' :
-        'biocontainers/antismash-lite:6.1.1--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/antismash-lite:7.1.0--pyhdfd78af_0' :
+        'biocontainers/antismash-lite:7.1.0--pyhdfd78af_0' }"
 
     containerOptions {
         workflow.containerEngine == 'singularity' ?
-        "-B $antismash_dir:/usr/local/lib/python3.8/site-packages/antismash" :
+        "-B $antismash_dir:/usr/local/lib/python3.10/site-packages/antismash" :
         workflow.containerEngine == 'docker' ?
-        "-v \$PWD/$antismash_dir:/usr/local/lib/python3.8/site-packages/antismash" :
+        "-v \$PWD/$antismash_dir:/usr/local/lib/python3.10/site-packages/antismash" :
         ''
         }
 
@@ -57,6 +57,7 @@ process ANTISMASH_ANTISMASHLITE {
         $gff_flag \\
         -c $task.cpus \\
         --output-dir $prefix \\
+        --output-basename $prefix \\
         --genefinding-tool none \\
         --logfile $prefix/${prefix}.log \\
         --databases $databases \\
@@ -64,7 +65,33 @@ process ANTISMASH_ANTISMASHLITE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        antismash-lite: \$(antismash --version | sed 's/antiSMASH //')
+        antismash-lite: \$(echo \$(antismash --version) | sed 's/antiSMASH //')
+    END_VERSIONS
+    """
+
+    stub:
+    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def VERSION = '7.1.0' // WARN: Version information not provided by tool during stub run. Please update this string when bumping container versions.
+    """
+    mkdir -p ${prefix}/css
+    mkdir ${prefix}/images
+    mkdir ${prefix}/js
+    touch ${prefix}/NZ_CP069563.1.region001.gbk
+    touch ${prefix}/NZ_CP069563.1.region002.gbk
+    touch ${prefix}/css/bacteria.css
+    touch ${prefix}/genome.gbk
+    touch ${prefix}/genome.json
+    touch ${prefix}/genome.zip
+    touch ${prefix}/images/about.svg
+    touch ${prefix}/index.html
+    touch ${prefix}/js/antismash.js
+    touch ${prefix}/js/jquery.js
+    touch ${prefix}/regions.js
+    touch ${prefix}/test.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        antismash-lite: $VERSION
     END_VERSIONS
     """
 }
