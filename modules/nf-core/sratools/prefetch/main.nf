@@ -32,4 +32,16 @@ process SRATOOLS_PREFETCH {
     }
 
     template 'retry_with_backoff.sh'
+
+    stub:
+    """
+    mkdir $id
+    touch $id/${id}.sra
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        sratools: \$(prefetch --version 2>&1 | grep -Eo '[0-9.]+')
+        curl: \$(curl --version | head -n 1 | sed 's/^curl //; s/ .*\$//')
+    END_VERSIONS
+    """
 }
