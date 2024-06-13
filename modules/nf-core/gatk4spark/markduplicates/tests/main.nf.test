@@ -2,6 +2,7 @@ nextflow_process {
 
     name "Test Process GATK4SPARK_MARKDUPLICATES"
     script "../main.nf"
+    config "./nextflow.config"
     process "GATK4SPARK_MARKDUPLICATES"
 
     tag "modules"

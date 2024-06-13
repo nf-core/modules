@@ -126,13 +126,13 @@ modules/nf-core/biscuit/mergecg/** @njspix
 modules/nf-core/biscuit/pileup/** @njspix
 modules/nf-core/biscuit/qc/** @njspix
 modules/nf-core/biscuit/vcf2bed/** @njspix
-modules/nf-core/bismark/align/** @phue
-modules/nf-core/bismark/coverage2cytosine/** @ewels
-modules/nf-core/bismark/deduplicate/** @phue
-modules/nf-core/bismark/genomepreparation/** @phue
-modules/nf-core/bismark/methylationextractor/** @phue
-modules/nf-core/bismark/report/** @phue
-modules/nf-core/bismark/summary/** @phue
+modules/nf-core/bismark/align/** @phue @FelixKrueger @ewels
+modules/nf-core/bismark/coverage2cytosine/** @FelixKrueger @ewels
+modules/nf-core/bismark/deduplicate/** @phue @FelixKrueger @ewels
+modules/nf-core/bismark/genomepreparation/** @phue @FelixKrueger @ewels
+modules/nf-core/bismark/methylationextractor/** @phue @FelixKrueger @ewels
+modules/nf-core/bismark/report/** @phue @FelixKrueger @ewels
+modules/nf-core/bismark/summary/** @phue @FelixKrueger @ewels
 modules/nf-core/blast/blastn/** @joseespinosa @drpatelh @vagkaratzas
 modules/nf-core/blast/blastp/** @vagkaratzas
 modules/nf-core/blast/makeblastdb/** @joseespinosa @drpatelh @vagkaratzas
@@ -306,7 +306,7 @@ modules/nf-core/fastk/fastk/** @mahesh-panchal
 modules/nf-core/fastk/histex/** @mahesh-panchal
 modules/nf-core/fastk/merge/** @mahesh-panchal
 modules/nf-core/fastp/** @drpatelh @kevinmenden
-modules/nf-core/fastqc/** @drpatelh @grst @ewels @FelixKrueger
+modules/nf-core/fastqc/** @drpatelh @grst @FelixKrueger
 modules/nf-core/fastqscan/** @rpetit3
 modules/nf-core/fasttree/** @aunderwo
 modules/nf-core/fcs/fcsadaptor/** @d4straub
@@ -654,7 +654,7 @@ modules/nf-core/msisensorpro/msisomatic/** @FriederikeHanssen
 modules/nf-core/msisensorpro/scan/** @FriederikeHanssen
 modules/nf-core/msisensor/scan/** @kevbrick
 modules/nf-core/mtnucratio/** @louperelo
-modules/nf-core/multiqc/** @abhi18av @bunop @drpatelh @jfy133
+modules/nf-core/multiqc/** @abhi18av @bunop @drpatelh @jfy133 @ewels
 modules/nf-core/multivcfanalyzer/** @jfy133
 modules/nf-core/mummer/** @mjcipriano @sateeshperi
 modules/nf-core/muscle5/super5/** @alessiovignoli
@@ -830,7 +830,7 @@ modules/nf-core/samtools/convert/** @FriederikeHanssen @maxulysse
 modules/nf-core/samtools/coverage/** @LouisLeNezet
 modules/nf-core/samtools/depth/** @louperelo @nevinwu
 modules/nf-core/samtools/dict/** @muffato
-modules/nf-core/samtools/faidx/** @drpatelh @ewels @phue
+modules/nf-core/samtools/faidx/** @drpatelh @phue
 modules/nf-core/samtools/fasta/** @priyanka-surana
 modules/nf-core/samtools/fastq/** @priyanka-surana @suzannejin
 modules/nf-core/samtools/fixmate/** @sppearce
@@ -838,12 +838,12 @@ modules/nf-core/samtools/flagstat/** @drpatelh
 modules/nf-core/samtools/getrg/** @matthdsm
 modules/nf-core/samtools/idxstats/** @drpatelh
 modules/nf-core/samtools/import/** @matthdsm
-modules/nf-core/samtools/index/** @drpatelh @ewels @maxulysse
+modules/nf-core/samtools/index/** @drpatelh @maxulysse
 modules/nf-core/samtools/markdup/** @priyanka-surana
 modules/nf-core/samtools/merge/** @drpatelh @yuukiiwa @maxulysse @FriederikeHanssen @ramprasadn
 modules/nf-core/samtools/mpileup/** @drpatelh @joseespinosa
 modules/nf-core/samtools/reheader/** @louislenezet
-modules/nf-core/samtools/sort/** @drpatelh @ewels
+modules/nf-core/samtools/sort/** @drpatelh
 modules/nf-core/samtools/stats/** @drpatelh @FriederikeHanssen @ramprasadn
 modules/nf-core/samtools/view/** @drpatelh @joseespinosa @FriederikeHanssen @priyanka-surana
 modules/nf-core/scimap/mcmicro/** @luiskuhn
@@ -983,7 +983,7 @@ modules/nf-core/tiddit/sv/** @maxulysse
 modules/nf-core/topas/gencons/** @aidaanva
 modules/nf-core/transdecoder/longorf/** @Danilo2771
 modules/nf-core/transdecoder/predict/** @Danilo2771
-modules/nf-core/trimgalore/** @drpatelh @ewels @FelixKrueger
+modules/nf-core/trimgalore/** @drpatelh @FelixKrueger
 modules/nf-core/trimmomatic/** @alyssa-ab
 modules/nf-core/trinity/** @timslittle
 modules/nf-core/truvari/bench/** @nvnieuwk
@@ -1058,7 +1058,7 @@ subworkflows/nf-core/bam_markduplicates_samtools/** @priyanka-surana
 subworkflows/nf-core/bam_ngscheckmate/** @SPPearce
 subworkflows/nf-core/bam_qc_picard/** @matthdsm
 subworkflows/nf-core/bam_rseqc/** @drpatelh @kevinmenden
-subworkflows/nf-core/bam_sort_stats_samtools/** @drpatelh @ewels
+subworkflows/nf-core/bam_sort_stats_samtools/** @drpatelh
 subworkflows/nf-core/bam_split_by_region/** @TCLamnidis
 subworkflows/nf-core/bam_stats_samtools/** @drpatelh
 subworkflows/nf-core/bam_tumor_normal_somatic_variant_calling_gatk/** @GCJMackenzie
