@@ -25,6 +25,11 @@ input:
       type: file
       description: mzML open source mass spectrometry raw data format
       pattern: "*.{mzML, mzML.gz}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing information about fasta_proteome
+        e.g. `[ id:'sample1']`
   - fasta_proteome:
       type: file
       description: proteome database in fasta format
