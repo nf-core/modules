@@ -3,7 +3,6 @@
 
 """Provide functions to merge multiple versions.yml files."""
 
-
 import yaml
 import platform
 from textwrap import dedent
@@ -58,9 +57,7 @@ def main():
     }
 
     with open("$versions") as f:
-        versions_by_process = (
-            yaml.load(f, Loader=yaml.BaseLoader) | versions_this_module
-        )
+        versions_by_process = yaml.load(f, Loader=yaml.BaseLoader) | versions_this_module
 
     # aggregate versions by the module name (derived from fully-qualified process name)
     versions_by_module = {}

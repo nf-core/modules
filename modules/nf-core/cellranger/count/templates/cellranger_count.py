@@ -4,6 +4,7 @@ Automatically rename staged files for input into cellranger count.
 
 Copyright (c) Gregor Sturm 2023 - MIT License
 """
+
 from subprocess import run
 from pathlib import Path
 from textwrap import dedent
@@ -58,13 +59,19 @@ for i, (r1, r2) in enumerate(chunk_iter(fastqs, 2), start=1):
 run(
     # fmt: off
     [
-        "cellranger", "count",
-        "--id", "${prefix}",
-        "--fastqs", str(fastq_all),
-        "--transcriptome", "${reference.name}",
-        "--localcores", "${task.cpus}",
-        "--localmem", "${task.memory.toGiga()}",
-        *shlex.split("""${args}""")
+        "cellranger",
+        "count",
+        "--id",
+        "${prefix}",
+        "--fastqs",
+        str(fastq_all),
+        "--transcriptome",
+        "${reference.name}",
+        "--localcores",
+        "${task.cpus}",
+        "--localmem",
+        "${task.memory.toGiga()}",
+        *shlex.split("""${args}"""),
     ],
     # fmt: on
     check=True,

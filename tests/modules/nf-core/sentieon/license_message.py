@@ -91,9 +91,7 @@ def parse_args(argv=None):
 
     subparsers = parser.add_subparsers(help="Available sub-commands")
 
-    gen_parser = subparsers.add_parser(
-        "generate_key", help="Generate a random key string"
-    )
+    gen_parser = subparsers.add_parser("generate_key", help="Generate a random key string")
     gen_parser.set_defaults(func=handle_generate_key)
 
     encrypt_parser = subparsers.add_parser("encrypt", help="Encrypt a message")
