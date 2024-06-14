@@ -56,26 +56,20 @@ for i, (r1, r2) in enumerate(chunk_iter(fastqs, 2), start=1):
     r1.rename(fastq_all / f"{sample_id}_S1_L{i:03d}_R1_001.fastq.gz")
     r2.rename(fastq_all / f"{sample_id}_S1_L{i:03d}_R2_001.fastq.gz")
 
-run(
-    # fmt: off
+# fmt: off
+run(   
     [
-        "cellranger",
-        "count",
-        "--id",
-        "${prefix}",
-        "--fastqs",
-        str(fastq_all),
-        "--transcriptome",
-        "${reference.name}",
-        "--localcores",
-        "${task.cpus}",
-        "--localmem",
-        "${task.memory.toGiga()}",
+        "cellranger", "count",
+        "--id", "${prefix}",
+        "--fastqs", str(fastq_all),
+        "--transcriptome", "${reference.name}",
+        "--localcores", "${task.cpus}",
+        "--localmem", "${task.memory.toGiga()}",
         *shlex.split("""${args}"""),
     ],
-    # fmt: on
     check=True,
 )
+# fmt: on
 
 # Output version information
 version = run(
