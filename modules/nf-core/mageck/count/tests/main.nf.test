@@ -10,7 +10,7 @@ nextflow_process {
     tag "mageck"
     tag "mageck/count"
 
-    test("mageck-count - fastq") {
+    test("mus_musculus - fastq") {
 
        // config "./nextflow.config"
 
@@ -31,13 +31,16 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                             process.out.versions,
-                            file(process.out.count.get(0).get(1)).readLines()[0]).match() }
+                            //file(process.out.count.get(0).get(1)).readLines()[0],
+                            file(process.out.norm.get(0).get(1)).readLines()[0]
+                        ).match()
+                }
             )
         }
 
     }
 
-    test("mageck-count - fastq - stub" ) {
+    test("mus_musculus - fastq - stub" ) {
 
         options "-stub"
         config "./nextflow.config"
