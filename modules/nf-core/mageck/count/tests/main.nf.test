@@ -18,10 +18,10 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test,test2', single_end:true] , // meta map
-                [file(params.modules_testdata_base_path + 'crisprseq/testdata/SRR23101364_1.small.fastq.gz', checkIfExists: true),
-                file(params.modules_testdata_base_path + 'crisprseq/testdata/SRR23101364_2.small.fastq.gz', checkIfExists: true)]
+                [file(params.test_data['mus_musculus']['illumina']['test_1_fastq_gz'],checkIfExists: true),
+                file(params.test_data['mus_musculus']['illumina']['test_2_fastq_gz'], checkIfExists: true)]
                 ]
-                input[1] = file(params.modules_testdata_base_path + 'crisprseq/testdata/brunello_target_sequence.txt', checkIfExists: true)
+                input[1] = file(params.test_data['mus_musculus']['csv']['library'], checkIfExists: true)
                 """
             }
         }
