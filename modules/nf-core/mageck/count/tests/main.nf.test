@@ -19,7 +19,6 @@ nextflow_process {
                 [file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/ERR376998.small.fastq.gz', checkIfExists: true),
                 file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/ERR376999.small.fastq.gz', checkIfExists: true)]
                 ]
-
                 input[1] = file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/yusa_library.csv')
                 """
             }
@@ -45,7 +44,6 @@ nextflow_process {
                 [file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/ERR376998.small.fastq.gz', checkIfExists: true),
                 file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/ERR376999.small.fastq.gz', checkIfExists: true)]
                 ]
-
                 input[1] = file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/yusa_library.csv')
                 """
             }
