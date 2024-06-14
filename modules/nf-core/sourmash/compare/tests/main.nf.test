@@ -30,11 +30,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = SOURMASH_SKETCH.out.signatures.collect { it[1] }.map { signatures ->
-                                                                                    def meta = [:]
-                                                                                    meta.id = "group1"
-                                                                                    [ meta, signatures ]
-                }
+                input[0] = SOURMASH_SKETCH.out.signatures.view().collect({ it[1] }, sort: true ).map { it -> [ [id:"group1"], it ] }
                 input[1] = []
                 input[2] = true // save_numpy_matrix
                 input[3] = true // save_csv
@@ -58,11 +54,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = SOURMASH_SKETCH.out.signatures.collect { it[1] }.map { signatures ->
-                                                                                    def meta = [:]
-                                                                                    meta.id = "group1"
-                                                                                    [ meta, signatures ]
-                }
+                input[0] = SOURMASH_SKETCH.out.signatures.collect { it[1] }.map { it -> [ [id:"group1"], it.sort() ] }
                 input[1] = []
                 input[2] = true // save_numpy_matrix
                 input[3] = true // save_csv
@@ -73,10 +65,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.matrix.collect { file(it[1]).getName() } +
-                                process.out.labels.collect { file(it[1]).getName() } +
-                                process.out.csv.collect { file(it).getName() } +
-                                process.out.versions ).match() }
+                { assert snapshot(process.out).match() }
             )
         }
 
