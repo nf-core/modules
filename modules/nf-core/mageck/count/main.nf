@@ -12,7 +12,7 @@ process MAGECK_COUNT {
     path(library)
 
     output:
-    tuple val(meta), path("*count*.txt")           , emit: count
+    tuple val(meta), path("*count.txt")           , emit: count
     tuple val(meta), path("*.count_normalized.txt"), emit: norm
     path "versions.yml"                            , emit: versions
 
@@ -46,6 +46,7 @@ process MAGECK_COUNT {
     def input_file = ("$inputfile".endsWith(".fastq.gz")) ? "--fastq ${inputfile}" : "-k ${inputfile}"
     def sample_label = ("$inputfile".endsWith(".fastq.gz") || "$inputfile".endsWith(".fq.gz")) ? "--sample-label ${meta.id}" : ''
     """
+    touch ${prefix}.count.txt
     touch ${prefix}.count_normalized.txt
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
