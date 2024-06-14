@@ -46,7 +46,7 @@ process MAGECK_COUNT {
     def input_file = ("$inputfile".endsWith(".fastq.gz")) ? "--fastq ${inputfile}" : "-k ${inputfile}"
     def sample_label = ("$inputfile".endsWith(".fastq.gz") || "$inputfile".endsWith(".fq.gz")) ? "--sample-label ${meta.id}" : ''
     """
-    touch count_table.count_normalized.txt
+    touch ${prefix}.count_normalized.txt
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         mageck: \$(mageck -v)
