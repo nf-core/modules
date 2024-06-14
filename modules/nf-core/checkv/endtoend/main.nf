@@ -41,4 +41,23 @@ process CHECKV_ENDTOEND {
         checkv: \$(checkv -h 2>&1  | sed -n 's/^.*CheckV v//; s/: assessing.*//; 1p')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    mkdir -p ${prefix}
+    touch ${prefix}/quality_summary.tsv
+    touch ${prefix}/completeness.tsv
+    touch ${prefix}/contamination.tsv
+    touch ${prefix}/complete_genomes.tsv
+    touch ${prefix}/proviruses.fna
+    touch ${prefix}/viruses.fna
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        checkv: \$(checkv -h 2>&1  | sed -n 's/^.*CheckV v//; s/: assessing.*//; 1p')
+    END_VERSIONS
+    """
 }

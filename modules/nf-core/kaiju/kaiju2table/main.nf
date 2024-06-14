@@ -4,11 +4,11 @@ process KAIJU_KAIJU2TABLE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/kaiju:1.8.2--h5b5514e_1':
-        'biocontainers/kaiju:1.8.2--h2e03b76_0' }"
+        'https://depot.galaxyproject.org/singularity/kaiju:1.10.0--h43eeafb_0':
+        'biocontainers/kaiju:1.10.0--h43eeafb_0' }"
 
     input:
-    tuple val(meta), path(results)
+    tuple val(meta), path(input)
     path db
     val taxon_rank
 
@@ -24,13 +24,25 @@ process KAIJU_KAIJU2TABLE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     dbnodes=`find -L ${db} -name "*nodes.dmp"`
-    dbname=`find -L ${db} -name "*.fmi" -not -name "._*"`
+    dbnames=`find -L ${db} -name "*names.dmp"`
     kaiju2table   $args \\
         -t \$dbnodes \\
-        -n \$dbname \\
+        -n \$dbnames \\
         -r ${taxon_rank} \\
         -o ${prefix}.txt \\
-        ${results}
+        ${input}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        kaiju: \$(echo \$( kaiju -h 2>&1 | sed -n 1p | sed 's/^.*Kaiju //' ))
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
