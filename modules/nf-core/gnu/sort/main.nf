@@ -4,8 +4,8 @@ process GNU_SORT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-    'https://depot.galaxyproject.org/singularity/coreutils:8.25--1' :
-    'biocontainers/coreutils:8.25--1' }"
+    'https://depot.galaxyproject.org/singularity/coreutils:9.3' :
+    'biocontainers/coreutils:9.3' }"
 
     input:
     tuple val(meta), path(input)
