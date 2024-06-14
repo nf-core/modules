@@ -9,6 +9,7 @@ process SOURMASH_INDEX {
 
     input:
     tuple val(meta), path(signatures)
+    val(ksize)
 
     output:
     tuple val(meta), path("*.sbt.zip"), emit: signature_index
@@ -23,6 +24,7 @@ process SOURMASH_INDEX {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     sourmash index \\
+        --ksize ${ksize} \\
         $args \\
         '${prefix}.sbt.zip' \\
         $signatures
