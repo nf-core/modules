@@ -14,7 +14,7 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end:true ], // meta map
-                    [ file(params.test_data['sarscov2']['genome']['lc_extrap_mr'], checkIfExists: true) ]
+                    [ file(params.modules_testdata_base_path + 'delete_me/preseq/SRR1003759_5M_subset.mr', checkIfExists: true) ]
                 ])
                 """
             }
@@ -36,7 +36,7 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    [ file(params.test_data['sarscov2']['genome']['lc_extrap_mr'], checkIfExists: true) ]
+                    [ file(params.modules_testdata_base_path + 'delete_me/preseq/SRR1003759_5M_subset.mr', checkIfExists: true) ]
                 ])
                 """
             }
@@ -50,4 +50,5 @@ nextflow_process {
                 { assert snapshot(process.out.versions).match("paired_end - versions") }
             )
         }
-    }}
+    }
+}

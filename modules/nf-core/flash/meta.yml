@@ -28,10 +28,18 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - reads:
+  - merged:
       type: file
       description: The merged fastq reads
-      pattern: "*fastq.gz"
+      pattern: ".extendedFrags.fastq.gz"
+  - notcombined:
+      type: file
+      description: Not combined reads from flash
+      pattern: ".notCombined_*.fastq.gz"
+  - histogram:
+      type: file
+      description: HistogramNumeric histogram of merged read lengths.
+      pattern: ".hist"
   - versions:
       type: file
       description: File containing software versions

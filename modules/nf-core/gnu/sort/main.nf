@@ -1,11 +1,11 @@
 process GNU_SORT {
-    tag "${meta.id}"
+    tag "$meta.id"
     label "process_low"
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-    'https://depot.galaxyproject.org/singularity/coreutils:8.25--1' :
-    'biocontainers/coreutils:8.25--1' }"
+        'https://depot.galaxyproject.org/singularity/coreutils:9.3':
+        'biocontainers/coreutils:9.3' }"
 
     input:
     tuple val(meta), path(input)
@@ -22,7 +22,7 @@ process GNU_SORT {
     def prefix      = task.ext.prefix   ?: "${meta.id}"
     suffix          = task.ext.suffix   ?: "${input.extension}"
     output_file     = "${prefix}.${suffix}"
-    def VERSION     = "9.1"             // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION     = "9.3"             // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     if ("$input" == "$output_file") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     sort ${args} ${input} > ${output_file}
@@ -34,15 +34,14 @@ process GNU_SORT {
     """
 
     stub:
-    def args        = task.ext.args     ?: ''
     def prefix      = task.ext.prefix   ?: "${meta.id}"
     suffix          = task.ext.suffix   ?: "${input.extension}"
     output_file     = "${prefix}.${suffix}"
-    def VERSION     = "9.1"
+    def VERSION     = "9.3"
 
     if ("$input" == "$output_file") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
-    sort ${args} ${input} > ${output_file}
+    touch ${output_file}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

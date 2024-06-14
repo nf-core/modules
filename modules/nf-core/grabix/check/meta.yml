@@ -1,0 +1,32 @@
+---
+name: "grabix_check"
+description: Checks if the input file is bgzip compressed or not
+keywords:
+  - compression
+  - bgzip
+  - grabix
+tools:
+  - grabix:
+      description: "a wee tool for random access into BGZF files."
+      homepage: "https://github.com/arq5x/grabix"
+      documentation: "https://github.com/arq5x/grabix"
+
+input:
+  - input:
+      type: file
+      pattern: "*.gz"
+      description: file to check compression
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - compress_bgzip:
+      type: string
+      description: environmental variable with value "yes" or "no"
+
+authors:
+  - "@MartaSantanaSilva"
+maintainers:
+  - "@MartaSantanaSilva"

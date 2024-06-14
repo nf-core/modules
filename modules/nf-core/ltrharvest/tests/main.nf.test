@@ -1,0 +1,60 @@
+nextflow_process {
+
+    name "Test Process LTRHARVEST"
+    script "../main.nf"
+    process "LTRHARVEST"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ltrharvest"
+
+    test("homo_sapiens-genome_21_fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.gff3).match("gff3") },
+                { assert path(process.out.scn[0][1]).text.contains("46510803 46520182 9380 46510803 46510940 138 46520042 46520182 141 86.52 0 chr21") },
+                { assert snapshot(path(process.out.versions[0]).text).match("script_versions") }
+            )
+        }
+
+    }
+
+    test("homo_sapiens-genome_fasta-stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert snapshot(path(process.out.versions[0]).text).match("stub_versions") }
+            )
+        }
+
+    }
+
+}
