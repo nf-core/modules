@@ -12,16 +12,15 @@ nextflow_process {
 
     test("mus_musculus - fastq") {
 
-       // config "./nextflow.config"
-
         when {
             process {
                 """
                 input[0] = [ [ id:'test,test2', single_end:true] , // meta map
-                [file(params.test_data['mus_musculus']['illumina']['test_1_fastq_gz'],checkIfExists: true),
-                file(params.test_data['mus_musculus']['illumina']['test_2_fastq_gz'], checkIfExists: true)]
+                [file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/ERR376998.small.fastq.gz', checkIfExists: true),
+                file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/ERR376999.small.fastq.gz', checkIfExists: true)]
                 ]
-                input[1] = file(params.test_data['mus_musculus']['csv']['library'], checkIfExists: true)
+
+                input[1] = file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/yusa_library.csv')
                 """
             }
         }
@@ -38,16 +37,16 @@ nextflow_process {
     test("mus_musculus - fastq - stub" ) {
 
         options "-stub"
-        config "./nextflow.config"
 
         when {
             process {
                 """
                 input[0] = [ [ id:'test,test2', single_end:true] , // meta map
-                [file(params.test_data['mus_musculus']['illumina']['test_1_fastq_gz'],checkIfExists: true),
-                file(params.test_data['mus_musculus']['illumina']['test_2_fastq_gz'], checkIfExists: true)]
+                [file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/ERR376998.small.fastq.gz', checkIfExists: true),
+                file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/ERR376999.small.fastq.gz', checkIfExists: true)]
                 ]
-                input[1] = file(params.test_data['mus_musculus']['csv']['library'], checkIfExists: true)
+
+                input[1] = file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/yusa_library.csv')
                 """
             }
         }
@@ -61,6 +60,4 @@ nextflow_process {
         }
 
     }
-
-
 }
