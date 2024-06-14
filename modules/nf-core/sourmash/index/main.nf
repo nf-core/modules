@@ -19,7 +19,6 @@ process SOURMASH_INDEX {
     task.ext.when == null || task.ext.when
 
     script:
-    // --ksize needs to be specified with the desired k-mer size to be selected in ext.args
     def args = task.ext.args ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
