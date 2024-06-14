@@ -16,12 +16,17 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing sample information
+        Groovy Map containing sample information for the fasta
         e.g. [ id:'test', single_end:false ]
   - fasta:
       type: file
       description: FASTA of the input genome
       pattern: "*.{fasta}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information for the bam file
+        e.g. [ id:'test', single_end:false ]
   - bam:
       type: file
       description: BAM file of reads aligned to the input genome

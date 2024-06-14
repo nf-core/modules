@@ -9,7 +9,7 @@ process PILON {
 
     input:
     tuple val(meta), path(fasta)
-    tuple val(meta_bam), path(bam), path(bai)
+    tuple val(meta2), path(bam), path(bai)
     val pilon_mode
 
     output:
@@ -40,4 +40,17 @@ process PILON {
     "${task.process}":
         pilon: \$(echo \$(pilon --version) | sed 's/^.*version //; s/ .*\$//' )
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def valid_mode = ["frags", "jumps", "unpaired", "bam"]
+    if ( !valid_mode.contains(pilon_mode) )  { error "Unrecognised mode to run Pilon. Options: ${valid_mode.join(', ')}" }
+    """
+    touch ${prefix}.fasta
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        pilon: \$(echo \$(pilon --version) | sed 's/^.*version //; s/ .*\$//' )
+    """
+
 }
