@@ -43,4 +43,19 @@ process UNICYCLER {
         unicycler: \$(echo \$(unicycler --version 2>&1) | sed 's/^.*Unicycler v//; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+
+    cat "" | gzip > ${prefix}.scaffolds.fa.gz
+    cat "" | gzip >  ${prefix}.assembly.gfa.gz
+    touch ${prefix}.unicycler.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        unicycler: \$(echo \$(unicycler --version 2>&1) | sed 's/^.*Unicycler v//; s/ .*\$//')
+    END_VERSIONS
+    """
+
 }
