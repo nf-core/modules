@@ -8,15 +8,15 @@ nextflow_process {
     tag "modules_nfcore"
     tag "unicycler"
 
-    test("bacteroides_fragilis - illumina - single end") {
+    test("bacteroides_fragilis - nanopore - single end") {
 
         when {
             process {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end:true ], // meta map
-                    [ file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz', checkIfExists: true)],
-                    []
+                    [],
+                    [ file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/nanopore/fastq/test.fastq.gz', checkIfExists: true)]
                 ])
                 """
             }
@@ -25,10 +25,11 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert path(process.out.scaffolds[0][1]).exists() },
-                { assert path(process.out.gfa[0][1]).exists() },
-                { assert path(process.out.log[0][1]).exists() },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(process.out.scaffolds,
+                                  process.out.gfa,
+                                  file(process.out.log.get(0).get(1)).name,
+                                  process.out.versions).match()
+                }
             )
         }
     }
