@@ -1,4 +1,4 @@
-name: "bbmap_filterbyname"
+name: bbmap_filterbyname
 description: Filter out sequences by sequence header name(s)
 keywords:
   - fastq
@@ -9,36 +9,9 @@ tools:
       description: BBMap is a short read aligner, as well as various other bioinformatic tools.
       homepage: https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/clumpify-guide/
       documentation: https://www.biostars.org/p/225338/
-      tool_dev_url: None
-      doi: ""
       licence: ["UC-LBL license (see package)"]
 
 input:
-  - args:
-      type: map
-      description: |
-        Groovy Map containing extra parameters.
-
-        This map MUST follow the structure/keywords below and be provided via
-        modules.config.Parameters must be set between quotes, unless it is a
-        boolean value.
-        All (optional) parameters can be removed from the map, if they are not
-        set.
-
-        "args" corresponds to parameters for the tool itself (see documentation
-        above)
-        The rest of keys control how the tool runs.
-
-        ```
-        {
-          [
-            "args"              : ""                    (optional),
-            "output_extension"  : "extension of $reads" (optional),
-            "interleaved_output": false                 (optional)
-          ]
-        }
-        ```
-
   - meta:
       type: map
       description: |
@@ -49,6 +22,18 @@ input:
       description: |
         List of input FastQ files of size 1 and 2 for single-end and
         paired-end data, respectively.
+  - names_to_filter:
+      type: string
+      description: |
+        String containing names of reads to filter out of the fastq files.
+  - output_format:
+      type: string
+      description: |
+        String with the format of the output file, e.g. fastq.gz, fasta, fasta.bz2
+  - interleaved_output:
+      type: boolean
+      description: |
+        Whether to produce an interleaved fastq output file
 
 output:
   - meta:
@@ -63,7 +48,7 @@ output:
   - reads:
       type: file
       description: The trimmed/modified fastq reads
-      pattern: "*${output_extension}"
+      pattern: "*${output_format}"
   - log:
       type: file
       description: filterbyname.sh log file

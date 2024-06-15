@@ -2,10 +2,10 @@ process BBMAP_FILTERBYNAME {
     tag "$meta.id"
     label 'process_single'
 
-    conda (params.enable_conda ? "bioconda::bbmap=39.01" : null)
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bbmap:39.01--h5c4e2a8_0':
-        'quay.io/biocontainers/bbmap:39.01--h5c4e2a8_0' }"
+        'biocontainers/bbmap:39.01--h5c4e2a8_0' }"
 
     input:
     tuple val(meta), path(reads)
