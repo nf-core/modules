@@ -1,0 +1,133 @@
+nextflow_process {
+
+    name "Test Process SHINYNGS_APP"
+    script "../main.nf"
+    process "SHINYNGS_APP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "shinyngs"
+    tag "shinyngs/app"
+
+    test("mouse - multi matrix") {
+
+        config './nextflow.config'
+
+        when {
+            process {
+                """
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                expression_sample_sheet = file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true)
+                expression_feature_meta = file(expression_test_data_dir + 'SRP254919.gene_meta.tsv', checkIfExists: true)
+                raw_expression_matrix_file = file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                expression_contrasts = file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true)
+                expression_differential = file(expression_test_data_dir + 'SRP254919.salmon.merged.deseq2.results.tsv', checkIfExists: true)
+
+                // Copy some inputs for testing the multi-matrix functionality
+                raw_expression_matrix_file.copyTo('normalised.tsv')
+                normalised_expression_matrix_file = file('normalised.tsv') 
+                expression_differential.copyTo('second_contrast_stats.tsv')
+                second_contrast_stats = file('second_contrast_stats.tsv')
+
+                contrast_stats_assay = Channel.value(1)
+
+                input[0] = [ [ "id":"SRP254919" ], expression_sample_sheet,  expression_feature_meta, [ raw_expression_matrix_file, normalised_expression_matrix_file ] ]
+                input[1] = [ [ "id":"SRP254919" ], expression_contrasts, [ expression_differential, second_contrast_stats  ] ]
+                input[2] = contrast_stats_assay 
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.app[0][1]).name,
+                    process.out.app[0][2],
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+    
+    test("mouse - single matrix") {
+
+        config './nextflow.config'
+        
+        when {
+            process {
+                """
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                expression_sample_sheet = file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true)
+                expression_feature_meta = file(expression_test_data_dir + 'SRP254919.gene_meta.tsv', checkIfExists: true)
+                raw_expression_matrix_file = file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                expression_contrasts = file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true)
+                expression_differential = file(expression_test_data_dir + 'SRP254919.salmon.merged.deseq2.results.tsv', checkIfExists: true)
+
+                // Copy some inputs for testing the multi-matrix functionality
+                expression_differential.copyTo('second_contrast_stats.tsv')
+                second_contrast_stats = file('second_contrast_stats.tsv')
+
+                contrast_stats_assay = Channel.value(1)
+
+                input[0] = [ [ "id":"SRP254919" ], expression_sample_sheet,  expression_feature_meta, [ raw_expression_matrix_file ] ]
+                input[1] = [ [ "id":"SRP254919" ], expression_contrasts, [ expression_differential, second_contrast_stats  ] ]
+                input[2] = contrast_stats_assay 
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.app[0][1]).name,
+                    process.out.app[0][2],
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+    
+    test("mouse - stub") {
+
+        options "-stub"
+        
+        when {
+            process {
+                """
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                expression_sample_sheet = file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true)
+                expression_feature_meta = file(expression_test_data_dir + 'SRP254919.gene_meta.tsv', checkIfExists: true)
+                raw_expression_matrix_file = file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                expression_contrasts = file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true)
+                expression_differential = file(expression_test_data_dir + 'SRP254919.salmon.merged.deseq2.results.tsv', checkIfExists: true)
+
+                // Copy some inputs for testing the multi-matrix functionality
+                expression_differential.copyTo('second_contrast_stats.tsv')
+                second_contrast_stats = file('second_contrast_stats.tsv')
+
+                contrast_stats_assay = Channel.value(1)
+
+                input[0] = [ [ "id":"SRP254919" ], expression_sample_sheet,  expression_feature_meta, [ raw_expression_matrix_file ] ]
+                input[1] = [ [ "id":"SRP254919" ], expression_contrasts, [ expression_differential, second_contrast_stats  ] ]
+                input[2] = contrast_stats_assay 
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.app[0][1]).name,
+                    process.out.app[0][2],
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+}

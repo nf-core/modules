@@ -1,0 +1,66 @@
+nextflow_process {
+
+    name "Test Process ISOSEQ_CLUSTER"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "ISOSEQ_CLUSTER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "isoseq"
+    tag "isoseq/cluster"
+
+    test("PacBio isoseq cluster - CCS clustering test") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.bam', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.bam).match("bam") },
+                { assert snapshot(process.out.pbi).match("pbi") },
+                { assert snapshot(process.out.cluster).match("cluster") },
+                { assert snapshot(process.out.cluster_report).match("cluster_report") },
+                { assert snapshot(process.out.hq_bam).match("hq_bam") },
+                { assert snapshot(process.out.hq_pbi).match("hq_pbi") },
+                { assert snapshot(process.out.lq_bam).match("lq_bam") },
+                { assert snapshot(process.out.lq_pbi).match("lq_pbi") },
+                { assert snapshot(process.out.singletons_bam).match("singletons_bam") },
+                { assert snapshot(process.out.singletons_pbi).match("singletons_pbi") },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
+
+    test("PacBio isoseq cluster - CCS clustering test - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.bam', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
