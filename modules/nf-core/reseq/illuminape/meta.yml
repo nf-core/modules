@@ -1,5 +1,5 @@
 ---
-name: "reseq"
+name: "reseq_illuminape"
 description: Generates synthetic data based on the reference genome and reads.
 keywords:
   - simulation
@@ -20,14 +20,19 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  - fasta:
-      type: file
-      description: Reference genome file in fasta format
-      pattern: "*.{fasta}"
   - bam:
       type: file
       description: Sorted BAM file
       pattern: "*.{bam}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing fasta information
+        e.g. `[ id:'human' ]`
+  - fasta:
+      type: file
+      description: Reference genome file in fasta format
+      pattern: "*.{fasta}"
 
 output:
   - meta:
@@ -35,7 +40,7 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  - simulated_fastqgz:
+  - simulated_reads:
       type: file
       description: Simulated reads as two matching fastq.gz files
       pattern: "*.{fastq.gz}"

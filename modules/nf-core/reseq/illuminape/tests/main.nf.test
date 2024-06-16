@@ -1,8 +1,8 @@
 nextflow_process {
 
-    name "Test Process RESEQ"
+    name "Test Process RESEQ_ILLUMINAPE"
     script "../main.nf"
-    process "RESEQ"
+    process "RESEQ_ILLUMINAPE"
     config "./nextflow.config"
 
     tag "modules"
@@ -15,11 +15,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                    [ id:'test_bam', single_end:false ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam", checkIfExists: true)
                     ]
                 input[1] = [
-                    [ id:'test_bam', single_end:false ],
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+                    [ id:'sarscov2' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true),
                     ]
                 """
             }
@@ -28,12 +29,38 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                // The md5 sums are changing between runs, even with a set seed - can't compare full snapshots
-                { assert snapshot(process.out.versions).match("versions") },
-                { assert file(process.out.simulated_fastqgz.get(0).get(1).find { file(it).name == "test_bam.1.fastq.gz" }).exists() },
-                { assert file(process.out.simulated_fastqgz.get(0).get(1).find { file(it).name == "test_bam.2.fastq.gz" }).exists() }
+                { assert snapshot(process.out).match() }
+                //{ assert file(process.out.simulated_fastqgz.get(0).get(1).find { file(it).name == "test_bam.1.fastq.gz" }).exists() },
+                //{ assert file(process.out.simulated_fastqgz.get(0).get(1).find { file(it).name == "test_bam.2.fastq.gz" }).exists() }
             )
         }
 
     }
+
+    test("homo sapiens - fasta + bam - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_bam', single_end:false ],
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam", checkIfExists: true)
+                    ]
+                input[1] = [
+                    [ id:'sarscov2' ],
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true),
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
 }
