@@ -9,25 +9,39 @@ process CLAIR3 {
 
     input:
     tuple val(meta), path(bam), path(bai)
-    path(fasta)
-    path(fai)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
+    val (platform)
+    val (model)
 
     output:
-    tuple val(meta), path("${meta.id}/*")        , emit: vcf
-    path "versions.yml"                  , emit: versions
+    tuple val(meta), path('${prefix}/*'), emit: vcf
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     run_clair3.sh \
     --bam_fn=$bam \
     --ref_fn=$fasta \
     --threads=$task.cpus \
     --output="${meta.id}" \
+    --platform=${platform} \
+    --model_path=${model}
     $args
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        clair3: \$( /usr/local/bin/run_clair3.sh --version | sed 's/Clair3 v//' )
+    END_VERSIONS
+    """
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir ${prefix}
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         clair3: \$( /usr/local/bin/run_clair3.sh --version | sed 's/Clair3 v//' )
