@@ -9,7 +9,7 @@ process HAPPY_FTXPY {
         'biocontainers/hap.py:0.3.14--py27h5c5a3ab_0' }"
 
     input:
-    tuple val(meta), val(feature_table), path(vcf), path(regions_bed), path(targets_bed), path(bam)
+    tuple val(meta), path(vcf), path(regions_bed), path(targets_bed), path(bam)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fasta_fai)
 
@@ -26,7 +26,6 @@ process HAPPY_FTXPY {
     def regions = regions_bed ? "-R ${regions_bed}" : ""
     def targets = targets_bed ? "-T ${targets_bed}" : ""
     def bams = bam ? "--bam ${bam}" : ""
-    def features = feature_table ? "--feature-table $feature_table" : "--feature-table generic"
     def VERSION = '0.3.14' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
@@ -35,7 +34,6 @@ process HAPPY_FTXPY {
         $regions \\
         $targets \\
         $bams \\
-        $features \\
         --reference ${fasta} \\
         $args \\
         $vcf
@@ -52,7 +50,6 @@ process HAPPY_FTXPY {
     def regions = regions_bed ? "-R ${regions_bed}" : ""
     def targets = targets_bed ? "-T ${targets_bed}" : ""
     def bams = bam ? "--bam ${bam}" : ""
-    def features = feature_table ? "--feature-table $feature_table" : "--feature-table generic"
     def VERSION = '0.3.14' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """

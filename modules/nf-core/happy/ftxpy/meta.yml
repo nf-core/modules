@@ -32,9 +32,6 @@ input:
       type: file
       description: VCF file to process
       pattern: "*.{vcf,vcf.gz}"
-  - feature_table:
-      type: string
-      description: Feature table to output. Select one from the feature set( generic, hcc.mutect.snv, hcc.mutect.indel,hcc.varscan2.snv, hcc.varscan2.indel, hcc.pisces.snv, hcc.pisces.indel, hcc.strelka.snv, hcc.strelka.indel, admix.strelka.snv, admix.strelka.indel  )
   - regions_bed:
       type: file
       description: BED file. Restrict analysis to given (sparse) regions.

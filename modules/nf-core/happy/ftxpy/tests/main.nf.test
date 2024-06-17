@@ -10,12 +10,14 @@ nextflow_process {
     tag "happy/ftxpy"
 
     test("homo_sapiens - illumina - mutect") {
+
+        config "./feature.config"
+
         when {
             process {
                 """
                 input[0] = [
                         [ id:'test' ], // meta map
-                        "hcc.mutect.snv",
                         file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_vcf_gz'], checkIfExists: true),
                         [],
                         [],
@@ -37,8 +39,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.features,
-                    process.out.versions
+                    process.out
                 ).match() }
             )
         }
@@ -50,7 +51,6 @@ nextflow_process {
                 """
                 input[0] = [
                         [ id:'test' ], // meta map
-                        [],
                         file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_vcf_gz'], checkIfExists: true),
                         [],
                         [],
@@ -72,8 +72,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.features,
-                    process.out.versions
+                    process.out
                 ).match() }
             )
         }
@@ -89,7 +88,6 @@ nextflow_process {
                 """
                 input[0] = [
                         [ id:'test' ], // meta map
-                        "hcc.mutect2.snv",
                         file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_vcf_gz'], checkIfExists: true),
                         [],
                         [],
@@ -111,8 +109,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.features,
-                    process.out.versions
+                    process.out
                 ).match() }
             )
         }
