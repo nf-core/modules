@@ -57,7 +57,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                             process.out.versions,
-                            file(process.out.r_script.get(0).get(1)).readLines()[0]
+                            file(process.out.gene_summary.get(0).get(1)[0]).readLines()[0],
+                            file(process.out.sgrna_summary.get(0).get(1)[0]).readLines()[0]
                             ).match()
                 }
             )

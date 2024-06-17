@@ -13,7 +13,7 @@ process MAGECK_TEST {
     output:
     tuple val(meta), path("*.gene_summary.txt")  , emit: gene_summary
     tuple val(meta), path("*.sgrna_summary.txt") , emit: sgrna_summary
-    tuple val(meta), path("*.R")                 , emit: r_script
+    tuple val(meta), path("*.R")                 , emit: r_script, optional: true
     path "versions.yml"                          , emit: versions
 
     when:
