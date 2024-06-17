@@ -2,20 +2,20 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "dysgu"
 ## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Dysgu calls structural variants (SVs) from mapped sequencing reads. It is designed for accurate and efficient detection of structural variations.
 keywords:
-  - sort
-  - example
-  - genomics
+  - structural variants
+  - sv
+  - vcf
 tools:
-  - "dysgu":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: "A collection of tools for calling structural variants using short or long reads"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
-      licence: ['MIT']
+  - dysgu:
+      description: Structural variant caller for mapped sequencing data
+      homepage: https://github.com/kcleal/dysgu
+      documentation: https://github.com/kcleal/dysgu/blob/master/README.rst
+      tool_dev_url: https://github.com/kcleal/dysgu
+      doi: "10.1093/nar/gkac039"
+      licence: ["GPL-3.0-or-later"]
+version: "1.6.2"
 
 ## TODO nf-core: Add a description of all of the variables used as input
 input:
@@ -25,31 +25,52 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+
+## TODO nf-core: Delete / customise this example input
+  - input_bam:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Input BAM file
+      pattern: "*.bam"
+  - input_bam_index:
+      type: file
+      description: BAM index file
+      pattern: "*.bai"
+  - fasta:
+      type: file
+      description: Genome reference FASTA file
+      pattern: "*.{fa,fasta}"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - fai:
+      type: file
+      description: Genome reference FASTA index file
+      pattern: "*.{fa.fai,fasta.fai}"
+  - temp_dir:
+      type: directory
+      description: Temporary directory for Dysgu
 
 ## TODO nf-core: Add a description of all of the variables used as output
+
 output:
   #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  
+        e.g. [ id:'test', single_end:false ]
+  - vcf:
+      type: file
+      description: VCF file with identified structural variants
+      pattern: "*.vcf"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+
+## TODO nf-core: Delete / customise this example output
 
 authors:
   - "@kcleal"
