@@ -9,7 +9,7 @@ process HAPPY_FTXPY {
         'biocontainers/hap.py:0.3.14--py27h5c5a3ab_0' }"
 
     input:
-    tuple val(meta),val(feature_table), path(vcf), path(regions_bed), path(targets_bed), path(bam)
+    tuple val(meta), val(feature_table), path(vcf), path(regions_bed), path(targets_bed), path(bam)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fasta_fai)
 
