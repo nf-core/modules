@@ -41,7 +41,7 @@ process DYSGU {
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*.vcf"), emit: vcf
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
     // TODO nf-core: List additional required output channels/values here
     path "versions.yml"           , emit: versions
 
