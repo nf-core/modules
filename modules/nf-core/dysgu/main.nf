@@ -25,8 +25,8 @@ process DYSGU {
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'biocontainers/YOUR-TOOL-HERE' }"
+        'https://depot.galaxyproject.org/singularity/dysgu:latest':
+        'biocontainers/dysgu:latest' }"
 
     input:
     // TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
@@ -35,11 +35,13 @@ process DYSGU {
     //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
     // TODO nf-core: Where applicable please provide/convert compressed files as input/output
     //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-    tuple val(meta), path(bam)
+    tuple val(meta), path(input_bam), path(input_bam_index)
+    tuple val(meta2), path(reference_fasta), path(reference_fasta.fai)
+    tuple val(meta3), path(temp_dir)
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.vcf"), emit: vcf
     // TODO nf-core: List additional required output channels/values here
     path "versions.yml"           , emit: versions
 
@@ -59,17 +61,15 @@ process DYSGU {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
-    samtools \\
-        sort \\
-        $args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
+    dysgu run \\
+        $reference \\
+        $temp_dir \\
+        $input_bam \\
+        > ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        dysgu: \$(samtools --version |& sed '1!d ; s/samtools //')
+        dysgu: \$(dysgu --version 2>&1)
     END_VERSIONS
     """
 
@@ -81,11 +81,11 @@ process DYSGU {
     //               Simple example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bcftools/annotate/main.nf#L47-L63
     //               Complex example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bedtools/split/main.nf#L38-L54
     """
-    touch ${prefix}.bam
+    touch ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        dysgu: \$(samtools --version |& sed '1!d ; s/samtools //')
+        dysgu: \$(dysgu --version 2>&1)
     END_VERSIONS
     """
 }
