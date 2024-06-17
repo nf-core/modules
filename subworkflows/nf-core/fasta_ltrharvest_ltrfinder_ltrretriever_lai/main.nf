@@ -25,14 +25,7 @@ workflow FASTA_LTRHARVEST_LTRFINDER_LTRRETRIEVER_LAI {
 
     // collectFile: Shorten IDs
     ch_shortidstsv_orig_fasta       = ch_fasta
-                                    | map { meta, fasta ->
-                                        def ids_descs = fasta.splitFasta( record: [ id: true, desc: true ] )
-                                        if ( ! do_ids_need_to_change(ids_descs) ) {
-                                            return [ "${meta.id}.short.ids.tsv", 'IDs have acceptable length and character. No change required.' ]
-                                        }
-
-                                        [ "${meta.id}.short.ids.tsv", shorten_ids( meta, ids_descs.collect { it.id } ) ]
-                                    }
+                                    | map { meta, fasta -> shorten_ids ( meta, fasta ) }
                                     | collectFile
                                     | map { tsv ->
                                         [ tsv.baseName.replace('.short.ids', ''), tsv ]
@@ -263,29 +256,22 @@ def restore_gff_ids(id, file_gff, short_ids_tsv) {
 
 }
 
-def do_ids_need_to_change(ids_descs) {
 
-    if ( ids_descs.collect { it.id.size() > 13      }.any() ) return true
+def shorten_ids(meta, fasta) {
 
-    if ( ids_descs.collect { ! ( it.id ==~ /\w+/ )  }.any() ) return true
+    def ids_descs = fasta.splitFasta( record: [ id: true, desc: true ] )
+    def ids = ids_descs.collect { it.id }
 
-    if ( ids_descs.collect { it.desc != null        }.any() ) return true
+    if ( ids_descs.every { it.id.size() <= 13 && it.id ==~ /\w+/ && it.desc == null } ) {
+        return [ "${meta.id}.short.ids.tsv", 'IDs have acceptable length and character. No change required.' ]
+    }
 
-    return false
-}
-
-
-def shorten_ids(meta, ids) {
-    def shortened_ids = ids.collect { id ->
-            if ( id.size() <= 13 && id ==~ /\w+/ ) return [ id, id ]
-
-            [ id, "Ctg${id.md5()[0..<10]}" ]
-        }
+    def shortened_ids = ids.collect { id -> ( id.size() <= 13 && id ==~ /\w+/ ) ? [ id, id ] : [ id, "Ctg${id.md5()[0..<10]}" ] }
 
     if ( shortened_ids.size() != shortened_ids.collect { it[1] }.unique().size() ) {
         error "Failed to create a unique set of Fasta IDs for sample ${meta.id}. Manual shortening of the Fasta IDs is required."
     } // The probability of this condition is very low but it is here to cover the edge cases
     // It assumes that the input fasta is valid and all the sequences have unique IDs
 
-    shortened_ids.collect { line -> line.join('\t') }.join('\n')
+    [ "${meta.id}.short.ids.tsv", shortened_ids.collect { line -> line.join('\t') }.join('\n') ]
 }
