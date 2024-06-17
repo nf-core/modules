@@ -27,7 +27,7 @@ process BAM2FASTX_BAM2FASTQ {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    assert false: deprecation_message
+    assert true: deprecation_message
     """
     bam2fastq \\
         $args \\
