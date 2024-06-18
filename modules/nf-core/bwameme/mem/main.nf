@@ -12,6 +12,7 @@ process BWAMEME_MEM {
     tuple val(meta2), path(index)
     tuple val(meta3), path(fasta)
     val   sort_bam
+    val   mbuffer
 
     output:
     tuple val(meta), path("*.sam")  , emit: sam , optional:true
@@ -29,14 +30,14 @@ process BWAMEME_MEM {
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def samtools_command = sort_bam ? 'sort' : 'view'
-    def mbuffer_mem = 3072
-    if (!task.memory) {
-        log.info '[bwameme-mbuffer] Available memory not known - defaulting to 3GB for mbuffer. Specify process memory requirements to change this.'
+    if (!mbuffer) {
+        log.info '[bwameme-mbuffer] Memory for mbuffer is not set - defaulting to 3072MB for mbuffer.'
+        mbuffer_mem = 3072
     } else {
-        mbuffer_mem = (task.memory.mega*0.5).intValue()
+        mbuffer_mem = mbuffer
     }
-    def mbuffer_command   = sort_bam ? "| mbuffer -m ${mbuffer_mem}M" : ""
-    def mem_per_thread    = sort_bam ? "-m "+ (mbuffer_mem/task.cpus).intValue()+"M" : ""
+    mbuffer_command   = sort_bam ? "| mbuffer -m ${mbuffer_mem}M" : ""
+    mem_per_thread    = sort_bam ? "-m "+ (mbuffer_mem/task.cpus).intValue()+"M" : ""
     def extension_pattern = /(--output-fmt|-O)+\s+(\S+)/
     def extension_matcher =  (args2 =~ extension_pattern)
     def extension = extension_matcher.getCount() > 0 ? extension_matcher[0][2].toLowerCase() : "bam"
