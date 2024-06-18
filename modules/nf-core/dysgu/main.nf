@@ -37,7 +37,7 @@ process DYSGU {
         $reference \\
         $temp_dir \\
         $input_bam \\
-        > ${prefix}.vcf
+       | bgzip ${args2} --threads ${task.cpus} --stdout > ${prefix}.vcf.gz
      tabix ${args3} ${prefix}.vcf.gz
      
     cat <<-END_VERSIONS > versions.yml
