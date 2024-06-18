@@ -110,7 +110,7 @@ workflow BCL_DEMULTIPLEX {
                     println "No reads were found in FASTQ file: ${fastq}"
                     meta.readgroup = [:]
                     meta.empty = true
-                } 
+                }
                 return [meta, fastq]
             }
             // Group by the meta id so that we can find mate pairs if they exist
