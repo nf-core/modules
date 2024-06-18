@@ -10,7 +10,7 @@ tools:
       homepage: "https://lomereiter.github.io/sambamba/docs/sambamba-view.html"
       documentation: "https://lomereiter.github.io/sambamba/docs/sambamba-view.html"
       tool_dev_url: "https://github.com/biod/sambamba"
-      licence: "['GPL v2']"
+      licence: ["GPL v2"]
 input:
   - meta:
       type: map
@@ -35,6 +35,10 @@ output:
       type: file
       description: Sorted BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
+  - bai:
+      type: file
+      description: An optional BAM index file.
+      pattern: "*.{bai}"
 authors:
   - "@BioInf2305"
 maintainers:

@@ -15,23 +15,21 @@ tools:
       documentation: "https://bioinf.shenwei.me/kmcp/usage/#profile"
       tool_dev_url: "https://github.com/shenwei356/kmcp"
       doi: "10.1093/bioinformatics/btac845"
-      licence: "['MIT']"
+      licence: ["MIT"]
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - db:
-      type: directory
-      description: Database directory containing taxdump files and taxid file
   - search_results:
       type: file
       description: Gzipped file output from kmcp search module
       pattern: "*.gz"
-  - mode:
-      type: integer
-      description: Profiling mode. 0-pathogen detection 1-higher recall 2-high recall 3-default 4-high precision 5-higher precision
+  - db:
+      type: directory
+      description: Database directory containing taxdump files and taxid file
+
 output:
   - meta:
       type: map

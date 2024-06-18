@@ -1,4 +1,6 @@
-name: last_mafconvert
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "last_mafconvert"
 description: Converts MAF alignments in another format.
 keywords:
   - LAST
@@ -6,18 +8,18 @@ keywords:
   - alignment
   - MAF
 tools:
-  - last:
-      description: LAST finds & aligns related regions of sequences.
-      homepage: https://gitlab.com/mcfrith/last
-      documentation: https://gitlab.com/mcfrith/last/-/blob/main/doc/
-      tool_dev_url: https://gitlab.com/mcfrith/last
+  - "last":
+      description: "LAST finds & aligns related regions of sequences."
+      homepage: "https://gitlab.com/mcfrith/last"
+      documentation: "https://gitlab.com/mcfrith/last/-/blob/main/doc/"
+      tool_dev_url: "https://gitlab.com/mcfrith/last"
       licence: ["GPL v3-or-later"]
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        e.g. `[ id:'sample1', single_end:false ]`
   - maf:
       type: file
       description: Multiple Aligment Format (MAF) file, optionally compressed with gzip
@@ -30,7 +32,7 @@ output:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        e.g. `[ id:'sample1', single_end:false ]`
   - versions:
       type: file
       description: File containing software versions
@@ -63,15 +65,16 @@ output:
       type: file
       description: Gzipped pairwise alignment in PSL (BLAT) format (optional)
       pattern: "*.psl.gz"
-  - SAM:
+  - sam_gz:
       type: file
       description: Gzipped pairwise alignment in SAM format (optional)
       pattern: "*.sam.gz"
-  - tab:
+  - tab_gz:
       type: file
       description: Gzipped pairwise alignment in TAB format (optional)
       pattern: "*.tab.gz"
 authors:
   - "@aleksandrabliznina"
+  - "@charles-plessy"
 maintainers:
-  - "@aleksandrabliznina"
+  - "@charles-plessy"
