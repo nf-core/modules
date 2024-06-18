@@ -31,7 +31,7 @@ process BWAMEME_MEM {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def samtools_command = sort_bam ? 'sort' : 'view'
     if (!mbuffer) {
-        log.info '[bwameme-mbuffer] Memory for mbuffer is not set - defaulting to 3GB for mbuffer.'
+        log.info '[bwameme-mbuffer] Memory for mbuffer is not set - defaulting to 3072MB for mbuffer.'
         mbuffer_mem = 3072
     } else {
         mbuffer_mem = mbuffer
