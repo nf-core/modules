@@ -25,7 +25,7 @@ process NGSCHECKMATE_PATTERNGENERATOR {
     if ("$fasta" == "${prefix}.fasta") error "makesnvpattern.pl generates a fasta file with the same name as the input fasta, use \"task.ext.prefix\" to disambiguate!"
 
     """
-    INDEX=`find -L ./ -name "*.3.ebwt" | sed 's/\\.3.ebwt\$//'`
+    INDEX=\$(find -L ./ -name "*.3.ebwt" | sed 's/\\.3.ebwt\$//')
 
     makesnvpattern.pl ${bed} ${fasta} \$INDEX . ${prefix}
 
