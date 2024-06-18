@@ -12,10 +12,10 @@ process BOWTIE_ALIGN {
     tuple val(meta2), path(index)
 
     output:
-    tuple val(meta), path('*.bam'), emit: bam
-    tuple val(meta), path('*.out'), emit: log
-    path  "versions.yml"          , emit: versions
-    tuple val(meta), path('*fastq.gz'), optional:true, emit: fastq
+    tuple val(meta), path('*.bam')     , emit: bam
+    tuple val(meta), path('*.out')     , emit: log
+    tuple val(meta), path('*fastq.gz') , emit: fastq, optional : true
+    path  "versions.yml"               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
