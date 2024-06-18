@@ -23,9 +23,28 @@ process BOWTIE_BUILD {
     """
     mkdir -p bowtie
     bowtie-build --threads $task.cpus $fasta bowtie/${prefix}
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         bowtie: \$(echo \$(bowtie --version 2>&1) | sed 's/^.*bowtie-align-s version //; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir -p bowtie
+    touch bowtie/${prefix}.1.ebwt
+    touch bowtie/${prefix}.2.ebwt
+    touch bowtie/${prefix}.3.ebwt
+    touch bowtie/${prefix}.4.ebwt
+    touch bowtie/${prefix}.rev.1.ebwt
+    touch bowtie/${prefix}.rev.2.ebwt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bowtie: \$(echo \$(bowtie --version 2>&1) | sed 's/^.*bowtie-align-s version //; s/ .*\$//')
+    END_VERSIONS
+    """
+
 }
