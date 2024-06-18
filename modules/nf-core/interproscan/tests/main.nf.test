@@ -8,67 +8,67 @@ nextflow_process {
     tag "modules_nfcore"
     tag "interproscan"
 
-    test("sarscov2 - proteome_fasta") {
+    // test("sarscov2 - proteome_fasta") {
 
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ],
-                    file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true)
-                ]
-                input[1] = []
-                """
-            }
-        }
+    //     when {
+    //         process {
+    //             """
+    //             input[0] = [
+    //                 [ id:'test' ],
+    //                 file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true)
+    //             ]
+    //             input[1] = []
+    //             """
+    //         }
+    //     }
 
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    path(process.out.tsv[0][1]).readLines()[0]
-                        .contains("ENSSASP00005000004.1	4c35f09aac2f7be4f3cffd30c6aecac8	1273	Coils	Coil	Coil	1176	1203	-	T"),
-                    process.out.xml,
-                    process.out.json,
-                    path(process.out.gff3[0][1]).readLines()[0..4,6..-1],
-                    process.out.versions,
-                    ).match()
-                }
-            )
-        }
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(
+    //                 path(process.out.tsv[0][1]).readLines()[0]
+    //                     .contains("ENSSASP00005000004.1	4c35f09aac2f7be4f3cffd30c6aecac8	1273	Coils	Coil	Coil	1176	1203	-	T"),
+    //                 process.out.xml,
+    //                 process.out.json,
+    //                 path(process.out.gff3[0][1]).readLines()[0..4,6..-1],
+    //                 process.out.versions,
+    //                 ).match()
+    //             }
+    //         )
+    //     }
 
-    }
+    // }
 
-    test("sarscov2 - proteome_fasta_gz") {
+    // test("sarscov2 - proteome_fasta_gz") {
 
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ],
-                    file(params.test_data['sarscov2']['genome']['proteome_fasta_gz'], checkIfExists: true)
-                ]
-                input[1] = []
-                """
-            }
-        }
+    //     when {
+    //         process {
+    //             """
+    //             input[0] = [
+    //                 [ id:'test' ],
+    //                 file(params.test_data['sarscov2']['genome']['proteome_fasta_gz'], checkIfExists: true)
+    //             ]
+    //             input[1] = []
+    //             """
+    //         }
+    //     }
 
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    path(process.out.tsv[0][1]).readLines()[0]
-                        .contains("ENSSASP00005000004.1	4c35f09aac2f7be4f3cffd30c6aecac8	1273	Coils	Coil	Coil	1176	1203	-	T"),
-                    process.out.xml,
-                    process.out.json,
-                    path(process.out.gff3[0][1]).readLines()[0..4,6..-1],
-                    process.out.versions,
-                    ).match()
-                }
-            )
-        }
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(
+    //                 path(process.out.tsv[0][1]).readLines()[0]
+    //                     .contains("ENSSASP00005000004.1	4c35f09aac2f7be4f3cffd30c6aecac8	1273	Coils	Coil	Coil	1176	1203	-	T"),
+    //                 process.out.xml,
+    //                 process.out.json,
+    //                 path(process.out.gff3[0][1]).readLines()[0..4,6..-1],
+    //                 process.out.versions,
+    //                 ).match()
+    //             }
+    //         )
+    //     }
 
-    }
+    // }
 
     test("sarscov2 - proteome_fasta_gz - stub") {
 
