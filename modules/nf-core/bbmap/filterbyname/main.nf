@@ -44,8 +44,7 @@ process BBMAP_FILTERBYNAME {
         $output \\
         $names_command \\
         $args \\
-        &> ${prefix}.log
-
+        | tee ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
