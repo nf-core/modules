@@ -1,0 +1,62 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "archr_createarrowfiles"
+## TODO nf-core: Add a description of the module and list keywords
+description: "ArchR: Robust and scaleable analysis of single-cell chromatin accessibility data"
+keywords:
+  - singlecell
+  - chromatin
+  - genomics
+tools:
+  - "archr":
+      description: "ArchR: Robust and scaleable analysis of single-cell chromatin accessibility data"
+      homepage: "https://www.archrproject.com/"
+      documentation: "https://www.archrproject.com/"
+      tool_dev_url: "https://github.com/GreenleafLab/ArchR"
+      licence: ["MIT"]
+
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - fragments:
+      type: file
+      description: fragments file
+      pattern: "*.fragments.tsv.gz"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - arrowfile:
+      type: file
+      description: arrowfile
+      pattern: "*.arrow"
+  - arrowmetadata:
+      type: file
+      description: rds file containing metadata to arrowfile
+      pattern: ".rds"
+  - qualitycontrolplots:
+      type: file
+      description: pdf
+      pattern: ".pdf"
+  - session_info: 
+      type: file
+      description: dump of R SessionInfo
+      pattern: "*.R_sessionInfo.log"
+
+
+authors:
+  - "@JuliaPhilipp"
+maintainers:
+  - "@JuliaPhilipp"
