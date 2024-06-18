@@ -15,7 +15,7 @@ tools:
       tool_dev_url: https://github.com/kcleal/dysgu
       doi: "10.1093/nar/gkac039"
       licence: ["GPL-3.0-or-later"]
-version: "1.6.2"
+
 
 
 input:
@@ -24,7 +24,7 @@ input:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
+        e.g. `[ id:'sample1' ]`
 
 
   - input_bam:
@@ -60,7 +60,7 @@ output:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        e.g. [ id:'sample1'  ]
   - vcf:
       type: file
       description: VCF file with identified structural variants
