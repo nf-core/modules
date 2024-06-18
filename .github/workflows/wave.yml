@@ -53,6 +53,13 @@ jobs:
           file: "${{ matrix.files }}"
           # TODO platform: ["linux-64", "osx-arm64"]
 
+      # Action runs on the issue comment, so we don't get the PR by default
+      # Use the gh cli to check out the PR
+      - name: Checkout Pull Request
+        run: gh pr checkout ${{ github.event.issue.number }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.nf_core_bot_auth_token }}
+
       - name: Commit condalock files to PR
         run: |
           if [[ $(git ls-files --modified --others) ]]; then
