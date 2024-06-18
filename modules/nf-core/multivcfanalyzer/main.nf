@@ -58,7 +58,7 @@ process MULTIVCFANALYZER {
         ${homozygous_freq}  \\
         ${heterozygous_freq}  \\
         ${cmd_gff_exclude}  \\
-        ${vcfs.join(" ")}
+        ${vcfs.sort().join(" ")}
 
     gzip \\
         $args2 \\
