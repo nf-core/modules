@@ -65,7 +65,6 @@ jobs:
           wave --conda-file "${{ matrix.files }}" \
               --freeze \
               --await \
-              --cache-repository quay.io/nf-core/wave-cache \
               --tower-token ${{ secrets.TOWER_ACCESS_TOKEN }} \
               --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }}
 
@@ -75,7 +74,6 @@ jobs:
           wave --conda-file "${{ matrix.files }}" \
               --freeze \
               --await \
-              --cache-repository quay.io/nf-core/wave-cache/singularity \
               --tower-token ${{ secrets.TOWER_ACCESS_TOKEN }} \
               --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }} \
               --singularity
