@@ -1,0 +1,39 @@
+nextflow_process {
+
+    name "Test Process MAGUS_GUIDETREE"
+    script "../main.nf"
+    process "MAGUS_GUIDETREE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "magus"
+    tag "magus/guidetree"
+
+    test("setoxin - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                             file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                           ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                //{ assert snapshot(process.out.tree).match("tree")},
+                // tests seem to be reproducible on a single machine, but not across different machines
+                // test the correct samples are in there
+                { assert path(process.out.tree[0][1]).getText().contains("1apf") },
+                { assert path(process.out.tree[0][1]).getText().contains("1ahl") },
+                { assert path(process.out.tree[0][1]).getText().contains("1atx") },
+                { assert path(process.out.tree[0][1]).getText().contains("1sh1") },
+                { assert path(process.out.tree[0][1]).getText().contains("1bds") },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
+}

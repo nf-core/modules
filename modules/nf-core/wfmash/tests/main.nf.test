@@ -30,7 +30,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-//                 { assert snapshot(process.out).exists() } // if run on more than 1 thread the lines in the resulting PAF will appear in a different order
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
 
