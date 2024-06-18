@@ -48,10 +48,30 @@ jobs:
     steps:
       - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
 
-      - uses: weiji14/conda-lock-refresh@main
+      - uses: mamba-org/setup-micromamba@v1
         with:
-          file: "${{ matrix.files }}"
-          # TODO platform: ["linux-64", "osx-arm64"]
+          environment-name: conda-lock-env
+          create-args: >-
+            python=3.11
+            conda-lock
+            mamba
+
+      # Print debugging information
+      # - name: Print debug info
+      #   run: |
+      #     conda-lock --version
+      #     mamba --version
+      #     echo Locking ${{ inputs.file }} file for ${{ inputs.platform }} platform.
+      #   shell: bash -l {0}
+
+      # Run conda-lock
+      - name: Run conda-lock
+        run: |
+          rm --force conda-lock.yml
+          conda-lock lock $MAMBA --file "${{ matrix.files }}" --kind lock --platform linux-64
+        env:
+          MAMBA: "--mamba"
+        shell: bash -l {0}
 
       - name: Commit and push changes
         uses: devops-infra/action-commit-push@master
