@@ -7,8 +7,9 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "multivcfanalyzer"
-tag "gunzip"
-tag "gatk/unifiedgenotyper"
+    tag "gunzip"
+    tag "gatk/unifiedgenotyper"
+
     setup {
             run("GATK_UNIFIEDGENOTYPER") {
                 script "../../gatk/unifiedgenotyper/main.nf"
