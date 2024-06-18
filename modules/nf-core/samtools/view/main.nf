@@ -3,7 +3,9 @@ process SAMTOOLS_VIEW {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "community.wave.seqera.io/library/htslib_samtools:1.20--11a4e6daa46930ec"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'oras://community.wave.seqera.io/library/htslib_samtools:1.20--9fb9031594b6902c' :
+        'community.wave.seqera.io/library/htslib_samtools:1.20--11a4e6daa46930ec' }"
 
     input:
     tuple val(meta), path(input), path(index)

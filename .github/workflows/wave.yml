@@ -69,15 +69,15 @@ jobs:
               --tower-token ${{ secrets.TOWER_ACCESS_TOKEN }} \
               --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }}
 
-      # - name: Build Singularity
-      #   if: matrix.profile == 'singularity'
-      #   run: |
-      #     wave --conda-file "${{ matrix.files }}" \
-      #         --freeze \
-      #         --await \
-      #         --cache-repository quay.io/nf-core/wave-cache/singularity \
-      #         --tower-token ${{ secrets.TOWER_ACCESS_TOKEN }} \
-      #         --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }} \
-      #         --singularity
+      - name: Build Singularity
+        if: matrix.profile == 'singularity'
+        run: |
+          wave --conda-file "${{ matrix.files }}" \
+              --freeze \
+              --await \
+              --cache-repository quay.io/nf-core/wave-cache/singularity \
+              --tower-token ${{ secrets.TOWER_ACCESS_TOKEN }} \
+              --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }} \
+              --singularity
 
     # TODO Build from Dockerfiles

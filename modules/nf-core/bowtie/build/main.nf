@@ -3,7 +3,9 @@ process BOWTIE_BUILD {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "community.wave.seqera.io/library/bowtie_samtools:772b3bee982574e4"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'oras://community.wave.seqera.io/library/bowtie_samtools:16f00b34cfc72399' :
+        'community.wave.seqera.io/library/bowtie_samtools:772b3bee982574e4' }"
 
     input:
     path fasta
