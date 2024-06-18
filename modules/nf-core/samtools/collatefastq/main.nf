@@ -13,11 +13,11 @@ process SAMTOOLS_COLLATEFASTQ {
     val(interleave)
 
     output:
-    tuple val(meta), path("*_{1,2}.fq.gz")          , optional:true, emit: fastq
-    tuple val(meta), path("*_interleaved.fq.gz")    , optional:true, emit: fastq_interleaved
-    tuple val(meta), path("*_other.fq.gz")          , emit: fastq_other
-    tuple val(meta), path("*_singleton.fq.gz")      , optional:true, emit: fastq_singleton
-    path "versions.yml"                             , emit: versions
+    tuple val(meta), path("*_{1,2}.fq.gz")     , optional:true, emit: fastq
+    tuple val(meta), path("*_interleaved.fq")  , optional:true, emit: fastq_interleaved
+    tuple val(meta), path("*_other.fq.gz")     , emit: fastq_other
+    tuple val(meta), path("*_singleton.fq.gz") , optional:true, emit: fastq_singleton
+    path "versions.yml"                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,7 +27,7 @@ process SAMTOOLS_COLLATEFASTQ {
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference = fasta ? "--reference ${fasta}" : ""
-    def output =    (interleave && ! meta.single_end) ? "> ${prefix}_interleaved.fq.gz"                     :
+    def output =    (interleave && ! meta.single_end) ? "> ${prefix}_interleaved.fq"                     :
                     meta.single_end                   ? "-1 ${prefix}_1.fq.gz -s ${prefix}_singleton.fq.gz" :
                     "-1 ${prefix}_1.fq.gz -2 ${prefix}_2.fq.gz -s ${prefix}_singleton.fq.gz"
 
@@ -46,6 +46,22 @@ process SAMTOOLS_COLLATEFASTQ {
         ${reference} \\
         -0 ${prefix}_other.fq.gz \\
         $output
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def outputcommand =    (interleave && ! meta.single_end) ? "echo '' | gzip > ${prefix}_interleaved.fq.gz"                     :
+                    meta.single_end                   ? "echo '' | gzip > ${prefix}_1.fq.gz ; echo '' | gzip > ${prefix}_singleton.fq.gz" :
+                    "echo '' | gzip > ${prefix}_1.fq.gz ; echo '' | gzip > ${prefix}_2.fq.gz ; echo '' | gzip > ${prefix}_singleton.fq.gz"
+
+    """
+    $outputcommand
+    echo "" | gzip > ${prefix}_other.fq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
