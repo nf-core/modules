@@ -35,7 +35,8 @@ process DYSGU {
         $temp_dir \\
         $input_bam \\
         > ${prefix}.vcf
-
+     tabix ${args3} ${prefix}.vcf.gz
+     
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         dysgu: \$(dysgu --version 2>&1)
