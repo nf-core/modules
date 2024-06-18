@@ -52,6 +52,9 @@ input:
       type: boolean
       description: use samtools sort (true) or samtools view (false)
       pattern: "true or false"
+  - mbuffer:
+      type: integer
+      description: memory for mbuffer in megabytes
 
 output:
   - meta:
