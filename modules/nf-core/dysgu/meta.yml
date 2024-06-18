@@ -1,7 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "dysgu"
-## TODO nf-core: Add a description of the module and list keywords
+
 description: Dysgu calls structural variants (SVs) from mapped sequencing reads. It is designed for accurate and efficient detection of structural variations.
 keywords:
   - structural variants
@@ -17,7 +17,7 @@ tools:
       licence: ["GPL-3.0-or-later"]
 version: "1.6.2"
 
-## TODO nf-core: Add a description of all of the variables used as input
+
 input:
   # Only when we have meta
   - meta:
@@ -26,7 +26,7 @@ input:
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
 
-## TODO nf-core: Delete / customise this example input
+
   - input_bam:
       type: file
       description: Input BAM file
@@ -52,7 +52,7 @@ input:
       type: directory
       description: Temporary directory for Dysgu
 
-## TODO nf-core: Add a description of all of the variables used as output
+
 
 output:
   #Only when we have meta
