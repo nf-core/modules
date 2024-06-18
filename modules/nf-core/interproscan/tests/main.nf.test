@@ -8,6 +8,9 @@ nextflow_process {
     tag "modules_nfcore"
     tag "interproscan"
 
+    // Note: Regular tests have been commented out because Interproscan has a harded coded a requirement of 10G memory,
+    // and so will therefore not run on the nf-core test runners without being killed.
+
     // test("sarscov2 - proteome_fasta") {
 
     //     when {
