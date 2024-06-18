@@ -90,7 +90,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.versions,
+                                  process.out.bam.collect { bam(it[1]).getHeaderMD5() },
+                                  process.out.bam.collect { bam(it[1]).getReadsMD5() },
+                                  process.out.log
+                                  ).match() }
             )
         }
 
