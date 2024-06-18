@@ -1,5 +1,9 @@
 name: Run tests
 on:
+  push:
+    branches:
+      # https://docs.renovatebot.com/key-concepts/automerge/#branch-vs-pr-automerging
+      - "renovate/**" # branches Renovate creates
   pull_request:
     branches: [master]
   merge_group:
