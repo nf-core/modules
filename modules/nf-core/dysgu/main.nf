@@ -18,7 +18,8 @@ process DYSGU {
 
     output:
 
-    tuple val(meta), path("*.vcf"), emit: vcf
+    tuple val(meta), path("*.vcf.gz")        , emit: vcf
+    tuple val(meta), path("*.vcf.gz.tbi")   , emit: tbi
     // TODO nf-core: List additional required output channels/values here
     path "versions.yml"           , emit: versions
 
