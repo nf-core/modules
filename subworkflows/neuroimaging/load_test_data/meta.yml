@@ -1,0 +1,45 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/scilus/nf-scil/main/subworkflows/meta-schema.json
+name: "load_test_data"
+
+description: |
+  Load test data from Scilpy in a local temporary directory. Archives names can be found at:
+    https://github.com/scilus/scilpy/blob/96ab12eb5d303754ef7ad74d7385137683cb9d47/scilpy/io/fetcher.py#L59
+keywords:
+  - load
+  - test
+  - data
+  - scilpy
+components:
+  - testdata/scilpy
+input:
+  - ch_archive:
+      type: string
+      description: |
+        Input archives to download and extract
+        Structure: [ val(archive_name) ]
+      pattern: "*.zip"
+
+  - test_data_prefix:
+      type: string
+      description: |
+        Prefix for the output test data directory
+        Structure: [ val(directory_prefix) ]
+      pattern: "*"
+
+output:
+  - test_data_directory:
+      type: file
+      description: |
+        Directory containing test data extracted from the archive
+        Structure: [ path(temporary_test_data_path) ]
+      pattern: "*/{prefix}_*/archive_name"
+
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+
+authors:
+  - "@AlexVCaron"
