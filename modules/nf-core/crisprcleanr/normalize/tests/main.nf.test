@@ -39,4 +39,30 @@ nextflow_process {
 
     }
 
+    test("homo_sapiens - [crispr_functional_counts, crispr_functional_library] - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['genome']['crispr_functional_counts'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['genome']['crispr_functional_library'], checkIfExists: true)
+                ]
+                input[1] = 30
+                input[2] = 5
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+
+        }
+
+    }
+
 }
