@@ -1,13 +1,11 @@
 
-
 process DYSGU {
     tag "$meta.id"
     label 'process_medium'
 
-
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/dysgu:latest':
+        'https://depot.galaxyproject.org/singularity/dysgu:latest' :
         'biocontainers/dysgu:latest' }"
 
     input:
@@ -18,10 +16,10 @@ process DYSGU {
 
     output:
 
-    tuple val(meta), path("*.vcf.gz")        , emit: vcf
-    tuple val(meta), path("*.vcf.gz.tbi")   , emit: tbi
-    // TODO nf-core: List additional required output channels/values here
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path('*.vcf.gz')        , emit: vcf
+    tuple val(meta), path('*.vcf.gz.tbi')   , emit: tbi
+
+    path 'versions.yml'           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,7 +37,7 @@ process DYSGU {
         $input_bam \\
        | bgzip ${args2} --threads ${task.cpus} --stdout > ${prefix}.vcf.gz
      tabix ${args3} ${prefix}.vcf.gz
-     
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         dysgu: \$(dysgu --version 2>&1)
