@@ -21,7 +21,7 @@ process ABRICATE_RUN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def datadir = databasedir ? '--datadir ${databasedir}' : ''
+    def datadir = databasedir ? "--datadir ${databasedir}" : ''
     """
     abricate \\
         $assembly \\
