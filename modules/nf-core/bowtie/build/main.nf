@@ -4,8 +4,8 @@ process BOWTIE_BUILD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bowtie:1.3.0--py38hed8969a_1' :
-        'biocontainers/bowtie:1.3.0--py38hed8969a_1' }"
+        'oras://community.wave.seqera.io/library/bowtie_samtools:16f00b34cfc72399' :
+        'community.wave.seqera.io/library/bowtie_samtools:772b3bee982574e4' }"
 
     input:
     path fasta
