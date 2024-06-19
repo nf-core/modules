@@ -102,7 +102,7 @@ def checkCondaChannels() {
 
     // Check that all channels are present
     // This channel list is ordered by required channel priority.
-    def required_channels_in_order = ['conda-forge', 'bioconda', 'defaults']
+    def required_channels_in_order = ['conda-forge', 'bioconda']
     def channels_missing = ((required_channels_in_order as Set) - (channels as Set)) as Boolean
 
     // Check that they are in the right order
