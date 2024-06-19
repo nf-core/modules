@@ -4,6 +4,8 @@ nextflow_process {
     script "../main.nf"
     process "CRISPRCLEANR_NORMALIZE"
 
+    config "./nextflow.config"
+
     tag "modules"
     tag "modules_nfcore"
     tag "crisprcleanr"
@@ -29,8 +31,8 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out.norm_count_file,
-                                  process.out.versions).match() }
+                { assert snapshot(process.out.norm_count_file).match("norm_count_file") },
+                { assert snapshot(process.out.versions).match("versions") }
             )
 
         }
