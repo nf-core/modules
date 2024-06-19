@@ -21,19 +21,13 @@ input:
   - query_vcf:
       type: file
       description: A VCF with called variants to benchmark against the standard
-      pattern: "*.{vcf,vcf.gz}"
-  - query_vcf_index:
-      type: file
-      description: The index of the called VCF (optional)
-      pattern: "*.tbi"
+      pattern: "*.{vcf}"
+
   - truth_vcf:
       type: file
       description: A standard VCF to compare against
-      pattern: "*.{vcf,vcf.gz}"
-  - truth_vcf_index:
-      type: file
-      description: The index of the standard VCF (optional)
-      pattern: "*.tbi"
+      pattern: "*.{vcf}"
+
   - bed:
       type: file
       description: A BED file specifying regions to be included in the analysis (optional)
