@@ -13,7 +13,7 @@ process BWAMEME_MEM {
     tuple val(meta3), path(fasta)
     val   sort_bam
     val   mbuffer
-    val   sort_threads
+    val   samtools_threads
 
     output:
     tuple val(meta), path("*.sam")  , emit: sam , optional:true
@@ -37,8 +37,14 @@ process BWAMEME_MEM {
     } else {
         mbuffer_mem = mbuffer
     }
+    if (!samtools_threads) {
+        log.info 'Number of threads for samtools is not set - defaulting to 2 threads.'
+        threads = 2
+    } else {
+        threads = samtools_threads
+    }
     mbuffer_command   = sort_bam ? "| mbuffer -m ${mbuffer_mem}M" : ""
-    mem_per_thread    = sort_bam ? "-m "+ (mbuffer_mem/sort_threads).intValue()+"M" : ""
+    mem_per_thread    = sort_bam ? "-m "+ (mbuffer_mem/threads).intValue()+"M" : ""
     def extension_pattern = /(--output-fmt|-O)+\s+(\S+)/
     def extension_matcher =  (args2 =~ extension_pattern)
     def extension = extension_matcher.getCount() > 0 ? extension_matcher[0][2].toLowerCase() : "bam"
@@ -55,7 +61,7 @@ process BWAMEME_MEM {
         \$INDEX \\
         $reads \\
         $mbuffer_command \\
-        | samtools $samtools_command $args2 $mem_per_thread -@ $sort_threads ${reference} -o ${prefix}.${extension} -
+        | samtools $samtools_command $args2 $mem_per_thread -@ $threads ${reference} -o ${prefix}.${extension} -
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

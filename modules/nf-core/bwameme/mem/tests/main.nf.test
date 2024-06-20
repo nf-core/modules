@@ -149,7 +149,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - [fastq1, fastq2], index, fasta, true, 2048, 4") {
+    test("sarscov2 - [fastq1, fastq2], index, fasta, true, 2048, ''") {
 
         setup {
             run("BWAMEME_INDEX") {
@@ -180,7 +180,7 @@ nextflow_process {
                 input[2] = Channel.of([[:], [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]])
                 input[3] = true
                 input[4] = 2048
-                input[5] = 4
+                input[5] = ""
                 """
             }
         }
