@@ -29,7 +29,7 @@ process ANTISMASH_ANTISMASHLITE {
     tuple val(meta), path("${prefix}/knownclusterblast/*_c*.txt")            , optional: true, emit: knownclusterblast_txt
     tuple val(meta), path("${prefix}/svg/clusterblast*.svg")                 , optional: true, emit: svg_files_clusterblast
     tuple val(meta), path("${prefix}/svg/knownclusterblast*.svg")            , optional: true, emit: svg_files_knownclusterblast
-    tuple val(meta), path("${prefix}/*.gbk")                                 , emit: gbk_input
+    tuple val(meta), path("${prefix}/${prefix}.gbk")                         , emit: gbk_input
     tuple val(meta), path("${prefix}/*.json")                                , emit: json_results
     tuple val(meta), path("${prefix}/*.log")                                 , emit: log
     tuple val(meta), path("${prefix}/*.zip")                                 , emit: zip
