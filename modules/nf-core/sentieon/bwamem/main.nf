@@ -39,6 +39,7 @@ process SENTIEON_BWAMEM {
     def sentieon_auth_data_base64 = task.ext.sentieon_auth_data_base64 ?: ''
 
     """
+    echo ''
     if [ "\${#SENTIEON_LICENSE_BASE64}" -lt "1500" ]; then  # If the string SENTIEON_LICENSE_BASE64 is short, then it is an encrypted url.
         export SENTIEON_LICENSE=\$(echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d)
     else  # Localhost license file
