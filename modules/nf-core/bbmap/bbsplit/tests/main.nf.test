@@ -8,6 +8,36 @@ nextflow_process {
     tag "bbmap"
     tag "bbmap/bbsplit"
 
+    test("sarscov2_se_fastq_fasta_chr22_fasta - index") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [[:],[]]
+                input[1] = []
+                input[2] = Channel.of(file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true))
+                input[3] = Channel.of([
+                    [ 'human' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/chr22_23800000-23980000.fa', checkIfExists: true)
+                ])
+                input[4] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert path("${process.out.index[0]}").exists() },
+            { assert path(process.out.log[0][1]).text.contains("No index available") },
+            { assert snapshot(process.out.versions).match() }
+            )
+        }
+    }
+
     test("sarscov2_se_fastq_fasta_chr22_fasta") {
 
         setup {
