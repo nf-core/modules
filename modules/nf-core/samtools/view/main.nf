@@ -13,12 +13,12 @@ process SAMTOOLS_VIEW {
     path qname
 
     output:
-    tuple val(meta), path("${prefix}.bam"),                                    emit: bam,            optional: true
-    tuple val(meta), path("${prefix}.cram"),                                   emit: cram,           optional: true
-    tuple val(meta), path("${prefix}.sam"),                                    emit: sam,            optional: true
-    tuple val(meta), path("${prefix}.${file_type}.bai"),                       emit: bai,            optional: true
-    tuple val(meta), path("${prefix}.${file_type}.csi"),                       emit: csi,            optional: true
-    tuple val(meta), path("${prefix}.${file_type}.crai"),                      emit: crai,           optional: true
+    tuple val(meta), path("${prefix}.bam"),                                    emit: bam,              optional: true
+    tuple val(meta), path("${prefix}.cram"),                                   emit: cram,             optional: true
+    tuple val(meta), path("${prefix}.sam"),                                    emit: sam,              optional: true
+    tuple val(meta), path("${prefix}.${file_type}.bai"),                       emit: bai,              optional: true
+    tuple val(meta), path("${prefix}.${file_type}.csi"),                       emit: csi,              optional: true
+    tuple val(meta), path("${prefix}.${file_type}.crai"),                      emit: crai,             optional: true
     tuple val(meta), path("${prefix}.unselected.${file_type}"),                emit: unselected,       optional: true
     tuple val(meta), path("${prefix}.unselected.${file_type}.{bai,csi,crsi}"), emit: unselected_index, optional: true
     path  "versions.yml",                                                      emit: versions
