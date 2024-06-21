@@ -13,11 +13,17 @@ include { FASTP                 } from '../../../modules/nf-core/fastp/main'
 import groovy.json.JsonSlurper
 
 def getFastpReadsAfterFiltering(json_file) {
+
+    if ( workflow.stubRun ) { return 0 }
+
     def Map json = (Map) new JsonSlurper().parseText(json_file.text).get('summary')
     return json['after_filtering']['total_reads'].toLong()
 }
 
 def getFastpAdapterSequence(json_file){
+
+    if ( workflow.stubRun ) { return "" }
+
     def Map json = (Map) new JsonSlurper().parseText(json_file.text)
     try{
         adapter = json['adapter_cutting']['read1_adapter_sequence']
