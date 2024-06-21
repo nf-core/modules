@@ -32,9 +32,9 @@ process SAMTOOLS_VIEW {
     prefix = task.ext.prefix ?: "${meta.id}"
     def reference = fasta ? "--reference ${fasta}" : ""
     file_type = args.contains("--output-fmt sam") ? "sam" :
-                    args.contains("--output-fmt bam") ? "bam" :
-                    args.contains("--output-fmt cram") ? "cram" :
-                    input.getExtension()
+                args.contains("--output-fmt bam") ? "bam" :
+                args.contains("--output-fmt cram") ? "cram" :
+                input.getExtension()
     readnames = qname ? "--qname-file ${qname} --output-unselected ${prefix}.unselected.${file_type}": ""
     if ("$input" == "${prefix}.${file_type}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
