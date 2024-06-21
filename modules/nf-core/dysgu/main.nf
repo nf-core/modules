@@ -28,7 +28,7 @@ process DYSGU {
 
     """
     dysgu run \\
-        $reference \\
+        $fasta \\
         --temp-directory ./temp \\
         $input_bam \\
         | bgzip ${args2} --threads ${task.cpus} --stdout > ${prefix}.vcf.gz
