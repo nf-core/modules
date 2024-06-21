@@ -8,7 +8,6 @@ keywords:
   - view
   - bcftools
   - VCF
-
 tools:
   - view:
       description: |
@@ -58,10 +57,21 @@ output:
       type: file
       description: VCF normalized output file
       pattern: "*.{vcf.gz}"
+  - csi:
+      type: file
+      description: Default VCF file index
+      pattern: "*.csi"
+  - tbi:
+      type: file
+      description: Alternative VCF file index
+      pattern: "*.tbi"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@abhi18av"
+  - "@LouisLeNezet"
+maintainers:
   - "@abhi18av"
   - "@LouisLeNezet"

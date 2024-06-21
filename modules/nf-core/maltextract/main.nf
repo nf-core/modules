@@ -2,19 +2,19 @@ process MALTEXTRACT {
 
     label 'process_medium'
 
-    conda "bioconda::hops=0.35"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hops:0.35--hdfd78af_1' :
         'biocontainers/hops:0.35--hdfd78af_1' }"
 
     input:
-    path rma6
+    tuple val(meta), path(rma6)
     path taxon_list
     path ncbi_dir
 
     output:
-    path "results"      , emit: results
-    path "versions.yml" , emit: versions
+    tuple val(meta), path("results")      , emit: results
+    path "versions.yml"                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

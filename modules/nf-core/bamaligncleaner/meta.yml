@@ -2,6 +2,8 @@ name: bamaligncleaner
 description: removes unused references from header of sorted BAM/CRAM files.
 keywords:
   - bam
+  - clean
+  - align
 tools:
   - bamaligncleaner:
       description: Removes unaligned references in aligned BAM alignment file
@@ -9,7 +11,6 @@ tools:
       documentation: https://github.com/maxibor/bamAlignCleaner
       tool_dev_url: https://github.com/maxibor/bamAlignCleaner
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -20,7 +21,6 @@ input:
       type: file
       description: BAM/CRAM file
       pattern: "*.{bam,cram}"
-
 output:
   - meta:
       type: map
@@ -35,6 +35,7 @@ output:
       type: file
       description: Sorted BAM/CRAM file
       pattern: "*.{bam,cram}"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

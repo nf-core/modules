@@ -1,11 +1,11 @@
 - name: mitohifi findmitoreference test_mitohifi_findmitoreference
-  command: nextflow run ./tests/modules/nf-core/mitohifi/findmitoreference -entry test_mitohifi_findmitoreference -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/mitohifi/findmitoreference/nextflow.config
+  command: nextflow run ./tests/modules/nf-core/mitohifi/findmitoreference -entry test_mitohifi_findmitoreference -c ./tests/config/nextflow.config
   tags:
-    - mitohifi/findmitoreference
     - mitohifi
+    - mitohifi/findmitoreference
   files:
-    - path: output/mitohifi/NC_072273.1.fasta
-      md5sum: 14c9906c7eccc0e57482112a452a031a
-    - path: output/mitohifi/NC_072273.1.gb
-      md5sum: 9063efc0ee83569566592f0198aa4eb5
+    - path: output/mitohifi/NC_016067.1.fasta
+      md5sum: ca39f522220f12582245bbbbb8e79fbc
+    - path: output/mitohifi/NC_016067.1.gb
+      md5sum: d73f4d89bdedeb51c0d657632d577b26
     - path: output/mitohifi/versions.yml

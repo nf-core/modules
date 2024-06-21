@@ -1,0 +1,32 @@
+- name: sentieon tnfilter test_sentieon_tnfilter_base
+  command: nextflow run ./tests/modules/nf-core/sentieon/tnfilter -entry test_sentieon_tnfilter_base -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/tnfilter/nextflow.config
+  tags:
+    - sentieon
+    - sentieon/tnfilter
+  files:
+    - path: output/sentieon/test.filtered.vcf.gz
+    - path: output/sentieon/test.filtered.vcf.gz.stats
+      md5sum: 0afebca9cbfe6a666ddf277fed2a6a53
+    - path: output/sentieon/test.filtered.vcf.gz.tbi
+    - path: output/sentieon/versions.yml
+- name: sentieon tnfilter test_sentieon_tnfilter_with_files
+  command: nextflow run ./tests/modules/nf-core/sentieon/tnfilter -entry test_sentieon_tnfilter_with_files -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/tnfilter/nextflow.config
+  tags:
+    - sentieon
+    - sentieon/tnfilter
+  files:
+    - path: output/sentieon/test.filtered.vcf.gz
+    - path: output/sentieon/test.filtered.vcf.gz.stats
+      md5sum: a3874025218d6540b7c9798b4ef64c59
+    - path: output/sentieon/test.filtered.vcf.gz.tbi
+    - path: output/sentieon/versions.yml
+- name: sentieon tnfilter test_sentieon_tnfilter_base_stubs
+  command: nextflow run ./tests/modules/nf-core/sentieon/tnfilter -entry test_sentieon_tnfilter_base_stubs -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/tnfilter/nextflow.config -stub-run
+  tags:
+    - sentieon
+    - sentieon/tnfilter
+  files:
+    - path: output/sentieon/test.filtered.vcf.gz
+    - path: output/sentieon/test.filtered.vcf.gz.stats
+    - path: output/sentieon/test.filtered.vcf.gz.tbi
+    - path: output/sentieon/versions.yml

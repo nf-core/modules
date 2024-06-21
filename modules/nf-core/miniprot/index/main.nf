@@ -2,7 +2,7 @@ process MINIPROT_INDEX {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::miniprot=0.11=he4a0461_2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/miniprot:0.11--he4a0461_2':
         'biocontainers/miniprot:0.11--he4a0461_2' }"

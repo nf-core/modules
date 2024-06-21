@@ -1,0 +1,51 @@
+nextflow_process {
+
+    name "Test Process GEOFETCH"
+    script "../main.nf"
+    process "GEOFETCH"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "geofetch"
+
+    test("fetch data from GEO") {
+
+        when {
+            process {
+                """
+                input[0] = 'GSE167447'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("fetch data from GEO - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = 'GSE167447'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

@@ -2,7 +2,7 @@ process MD5SUM {
     tag "$meta.id"
     label 'process_single'
 
-    conda "conda-forge::coreutils=9.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ubuntu:20.04' :
         'nf-core/ubuntu:20.04' }"
@@ -32,4 +32,16 @@ process MD5SUM {
         md5sum: \$(echo \$(md5sum --version 2>&1 | head -n 1| sed 's/^.*) //;' ))
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    """
+    touch ${file}.md5
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        md5sum: \$(echo \$(md5sum --version 2>&1 | head -n 1| sed 's/^.*) //;' ))
+    END_VERSIONS
+    """
+
 }

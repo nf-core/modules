@@ -16,7 +16,6 @@ tools:
       tool_dev_url: "https://github.com/BinPro/CONCOCT"
       doi: "10.1038/nmeth.3103"
       licence: "['FreeBSD']"
-
 input:
   - meta:
       type: map
@@ -30,7 +29,6 @@ input:
   - bed:
       type: boolean
       description: Specify whether to generate a BED file describing where each contig was cut up
-
 output:
   - meta:
       type: map
@@ -49,6 +47,7 @@ output:
       type: file
       description: Optional BED File containing locations on original contigs where they were cut up.
       pattern: "*.bed"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

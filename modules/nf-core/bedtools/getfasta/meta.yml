@@ -8,9 +8,14 @@ tools:
   - bedtools:
       description: |
         A set of tools for genomic analysis tasks, specifically enabling genome arithmetic (merge, count, complement) on various file types.
-      documentation: https://bedtools.readthedocs.io/en/latest/content/tools/intersect.html
+      documentation: https://bedtools.readthedocs.io/en/latest/content/tools/getfasta.html
       licence: ["MIT"]
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - bed:
       type: file
       description: Bed feature file
@@ -19,8 +24,12 @@ input:
       type: file
       description: Input fasta file
       pattern: "*.{fa,fasta}"
-
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - fasta:
       type: file
       description: Output fasta file with extracted sequences
@@ -30,5 +39,8 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@joseespinosa"
+  - "@drpatelh"
+maintainers:
   - "@joseespinosa"
   - "@drpatelh"

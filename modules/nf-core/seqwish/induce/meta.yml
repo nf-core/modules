@@ -28,7 +28,6 @@ input:
       type: file
       description: FASTA file used to generate alignments
       pattern: "*.{fa,fa.gz,fasta,fasta.gz}"
-
 output:
   - meta:
       type: map
@@ -44,4 +43,6 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@heuermh"
+maintainers:
   - "@heuermh"

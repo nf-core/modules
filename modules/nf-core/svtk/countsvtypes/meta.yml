@@ -13,7 +13,6 @@ tools:
       tool_dev_url: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
       doi: "10.1038/s41586-020-2287-8"
       licence: "['MIT']"
-
 input:
   - meta:
       type: map
@@ -24,7 +23,6 @@ input:
       type: file
       description: The VCF file containing structural variants
       pattern: "*.vcf.gz"
-
 output:
   - meta:
       type: map
@@ -39,6 +37,7 @@ output:
       type: file
       description: A tab-delimited file containing the counts of the SV types
       pattern: "*.tsv"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

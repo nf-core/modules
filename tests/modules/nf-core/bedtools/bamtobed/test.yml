@@ -1,8 +1,0 @@
-- name: bedtools bamtobed
-  command: nextflow run ./tests/modules/nf-core/bedtools/bamtobed -entry test_bedtools_bamtobed -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bedtools/bamtobed/nextflow.config
-  tags:
-    - bedtools
-    - bedtools/bamtobed
-  files:
-    - path: ./output/bedtools/test.bed
-      md5sum: a6a299bd39dc56225f8029c05ea97dcb

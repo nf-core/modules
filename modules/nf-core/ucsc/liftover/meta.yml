@@ -9,7 +9,6 @@ tools:
       description: Move annotations from one assembly to another
       homepage: http://hgdownload.cse.ucsc.edu/admin/exe/
       licence: ["varies; see http://genome.ucsc.edu/license"]
-
 input:
   - meta:
       type: map
@@ -20,7 +19,6 @@ input:
       type: file
       description: Browser Extensible Data (BED) file
       pattern: "*.{bed}"
-
 output:
   - meta:
       type: map
@@ -39,6 +37,7 @@ output:
       type: file
       description: BED file containing variants that couldn't be lifted
       pattern: "*.{unlifted.bed}"
-
 authors:
+  - "@nebfield"
+maintainers:
   - "@nebfield"

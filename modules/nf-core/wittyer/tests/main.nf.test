@@ -1,0 +1,145 @@
+nextflow_process {
+
+    name "Test Process WITTYER"
+    script "../main.nf"
+    process "WITTYER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "wittyer"
+    tag "tabix/bgzip"
+
+    test("human - simulatedSV - vcf_gz") {
+        config "./test.config"
+
+        setup {
+            run('TABIX_BGZIP', alias: 'TABIX_BGZIP_1') {
+                script "../../../nf-core/tabix/bgzip"
+
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.test_data['homo_sapiens']['illumina']['simulated_sv'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+
+            run('TABIX_BGZIP', alias: 'TABIX_BGZIP_2') {
+                script "../../../nf-core/tabix/bgzip"
+
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.test_data['homo_sapiens']['illumina']['simulated_sv2'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = TABIX_BGZIP_1.out.output.join(TABIX_BGZIP_2.out.output).map{meta, vcf1, vcf2 -> tuple(meta, vcf1, vcf2, [])}
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert snapshot(process.out.bench_vcf).match("bench_vcf") },
+                { assert snapshot(process.out.bench_vcf_tbi).match("bench_vcf_tbi") },
+                { assert snapshot(process.out.report).match("report") },
+                { assert snapshot(process.out.version).match("version") }
+            )
+        }
+
+    }
+        test("human - simulatedSV - vcf_gz - bed") {
+        config "./test.config"
+
+        setup {
+            run('TABIX_BGZIP', alias: 'TABIX_BGZIP_1') {
+                script "../../../nf-core/tabix/bgzip"
+
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.test_data['homo_sapiens']['illumina']['simulated_sv'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+
+            run('TABIX_BGZIP', alias: 'TABIX_BGZIP_2') {
+                script "../../../nf-core/tabix/bgzip"
+
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.test_data['homo_sapiens']['illumina']['simulated_sv2'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = TABIX_BGZIP_1.out.output
+                    .join(TABIX_BGZIP_2.out.output)
+                    .map{meta, vcf1, vcf2 ->
+                        tuple(meta, vcf1, vcf2,
+                            [file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)])
+                        }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert snapshot(process.out.bench_vcf).match("bench2_vcf") },
+                { assert snapshot(process.out.bench_vcf_tbi).match("bench2_vcf_tbi") },
+                { assert snapshot(process.out.report).match("report2") },
+                { assert snapshot(process.out.version).match("version2") }
+            )
+        }
+
+    }
+
+    test("human - simulatedSV - vcf_gz - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_stub', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['simulated_sv'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['simulated_sv2'], checkIfExists: true),
+                    []
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert snapshot(process.out.version).match("stub_version") }
+            )
+        }
+
+    }
+
+}

@@ -16,7 +16,6 @@ tools:
       tool_dev_url: https://bitbucket.org/srouxjgi/iphop/src/main/
       doi: "10.1371/journal.pbio.3002083"
       licence: "['Modified GPL v3']"
-
 input:
   - meta:
       type: map
@@ -30,7 +29,6 @@ input:
   - iphop_db:
       type: directory
       description: Directory pointing to iPHoP database
-
 output:
   - meta:
       type: map
@@ -53,6 +51,7 @@ output:
       type: file
       description: File containing each phage's top 5 hits via each method
       pattern: "Detailed_output_by_tool.csv"
-
 authors:
+  - "@CarsonJM"
+maintainers:
   - "@CarsonJM"

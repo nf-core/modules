@@ -1,36 +1,32 @@
 process MITOHIFI_FINDMITOREFERENCE {
-    tag '$species'
-    label 'process_low'
+    tag "$species"
+    label 'process_single'
 
-    // Docker image available at the biocontainers Dockerhub
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'docker://biocontainers/mitohifi:3.0.0_cv1':
-        'docker.io/biocontainers/mitohifi:3.0.0_cv1' }"
+    // Docker image available at the project github repository
+    container 'ghcr.io/marcelauliano/mitohifi:master'
 
     input:
-    val species
-    val email
-    val min_length
+    tuple val(meta), val(species)
 
     output:
-    path "*.fasta",                 emit: fasta
-    path "*.gb",                    emit: gb
-    path "versions.yml",            emit: versions
+    tuple val(meta), path("*.fasta"), emit: fasta
+    tuple val(meta), path("*.gb")   , emit: gb
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+    def args = task.ext.args ?: ''
     """
     findMitoReference.py \\
-        --species $species \\
-        --email $email \\
-        --min_length $min_length \\
-        --outfolder .
+        --species "$species" \\
+        --outfolder . \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mitohifi: \$( mitohifi.py --version 2>&1 | head -n1 | sed 's/^.*MitoHiFi //; s/ .*\$//' )
+        mitohifi: \$( mitohifi.py -v | sed 's/.* //' )
     END_VERSIONS
     """
 
@@ -41,7 +37,7 @@ process MITOHIFI_FINDMITOREFERENCE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mitohifi: \$( mitohifi.py --version 2>&1 | head -n1 | sed 's/^.*MitoHiFi //; s/ .*\$//' )
+        mitohifi: \$( mitohifi.py -v | sed 's/.* //' )
     END_VERSIONS
     """
 }
