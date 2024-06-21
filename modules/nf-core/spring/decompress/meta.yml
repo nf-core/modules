@@ -24,7 +24,8 @@ input:
       pattern: "*.{spring}"
   - write_one_fastq_gz:
       type: boolean
-      description: Controls whether spring should write one fastq.gz file with reads from both directions or two fastq.gz files with reads from distinct directions
+      description: |
+        Controls whether spring should write one fastq.gz file with reads from both directions or two fastq.gz files with reads from distinct directions
       pattern: "true or false"
 output:
   - meta:
