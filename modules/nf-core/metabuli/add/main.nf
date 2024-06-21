@@ -9,9 +9,8 @@ process METABULI_ADD {
 
     input:
     tuple val(meta), path(fasta)
-    path taxonomy_names, stageAs: 'taxonomy/names.dmp'
-    path taxonomy_nodes, stageAs: 'taxonomy/nodes.dmp'
-    path accession2taxid, stageAs: 'taxonomy/*'
+    path accession2taxid
+    path db
 
     output:
     tuple val(meta), path("${prefix}"), emit: db
@@ -25,33 +24,31 @@ process METABULI_ADD {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    samtools \\
-        sort \\
-        $args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
+    mkdir -p $prefix
+    mv $db/* $prefix
+
+    ls $fasta > fasta.txt
+    metabuli add-to-library \\
+        fasta.txt \\
+        $accession2taxid \\
+        $prefix \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        metabuli: \$(samtools --version |& sed '1!d ; s/samtools //')
+        metabuli: \$(metabuli version)
     END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // TODO nf-core: A stub section should mimic the execution of the original module as best as possible
-    //               Have a look at the following examples:
-    //               Simple example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bcftools/annotate/main.nf#L47-L63
-    //               Complex example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bedtools/split/main.nf#L38-L54
     """
-    touch ${prefix}.bam
+    mkdir -p $prefix
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        metabuli: \$(samtools --version |& sed '1!d ; s/samtools //')
+        metabuli: \$(metabuli version)
     END_VERSIONS
     """
 }

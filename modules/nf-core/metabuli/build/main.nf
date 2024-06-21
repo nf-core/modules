@@ -9,8 +9,6 @@ process METABULI_BUILD {
         'biocontainers/metabuli:1.0.5--pl5321h6a68c12_1' }"
 
     input:
-    tuple val(meta),path(genomes)
-    path(acc2taxid)
     path(db)
 
     output:
@@ -22,16 +20,7 @@ process METABULI_BUILD {
 
     script:
     def args = task.ext.args ?: ''
-    def args_lib = task.ext.args_lib ?: ''
-    // def skip_lib = params.skip_lib ?: false
     """
-    ls $genomes > fastas.txt
-    metabuli \\
-        add-to-library \\
-        fastas.txt \\
-        $acc2taxid \\
-        $db
-        $args_lib
 
     ls $db/library/* > lib.txt
     metabuli \\
@@ -41,10 +30,6 @@ process METABULI_BUILD {
         lib.txt \\
         $acc2taxid \\
         $args
-
-    rm -r $db/library
-    tar -czf metabuli_db.tar.gz $db
-    rm -r $db
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
