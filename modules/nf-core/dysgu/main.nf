@@ -1,19 +1,18 @@
-
 process DYSGU {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/dysgu:latest' :
-        'biocontainers/dysgu:latest' }"
+        'https://depot.galaxyproject.org/singularity/dysgu%3A1.6.2--py310h770aed0_0' :
+        'biocontainers/dysgu:1.6.2--py310h770aed0_0' }"
 
     input:
     tuple val(meta), path(input_bam), path(input_bam_index)
     tuple val(meta2), path(fasta), path(fai)
 
     output:
-    tuple val(meta), path('*.vcf.gz')        , emit: vcf
+    tuple val(meta), path('*.vcf.gz')       , emit: vcf
     tuple val(meta), path('*.vcf.gz.tbi')   , emit: tbi
     path 'versions.yml'                     , emit: versions
 
