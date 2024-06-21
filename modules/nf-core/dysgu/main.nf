@@ -13,7 +13,6 @@ process DYSGU {
     tuple val(meta), path(input_bam), path(input_bam_index)
     tuple val(meta3), path(fasta), path(fai)
 
-
     output:
 
     tuple val(meta), path('*.vcf.gz')        , emit: vcf
