@@ -5,17 +5,17 @@ process METABULI_BUILD {
 
     conda "bioconda::metabuli=1.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/metabuli:1.0.0--pl5321hf1761c0_0':
-        'biocontainers/metabuli:1.0.0--pl5321hf1761c0_0' }"
+        'https://depot.galaxyproject.org/singularity/metabuli:1.0.5--pl5321h6a68c12_1':
+        'biocontainers/metabuli:1.0.5--pl5321h6a68c12_1' }"
 
     input:
-    path(genomes)
+    tuple val(meta),path(genomes)
     path(acc2taxid)
     path(db)
 
     output:
     path "metabuli_db.tar.gz", emit: db
-    path "versions.yml"           , emit: versions
+    path "versions.yml"      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,7 +23,7 @@ process METABULI_BUILD {
     script:
     def args = task.ext.args ?: ''
     def args_lib = task.ext.args_lib ?: ''
-    def skip_lib = params.skip_lib ?: false 
+    // def skip_lib = params.skip_lib ?: false
     """
     ls $genomes > fastas.txt
     metabuli \\
@@ -41,7 +41,7 @@ process METABULI_BUILD {
         lib.txt \\
         $acc2taxid \\
         $args
-        
+
     rm -r $db/library
     tar -czf metabuli_db.tar.gz $db
     rm -r $db

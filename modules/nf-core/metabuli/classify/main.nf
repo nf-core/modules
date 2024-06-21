@@ -4,8 +4,8 @@ process METABULI_CLASSIFY {
 
     conda "bioconda::metabuli=1.0.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/metabuli:1.0.0--pl5321hf1761c0_0':
-        'biocontainers/metabuli:1.0.0--pl5321hf1761c0_0' }"
+        'https://depot.galaxyproject.org/singularity/metabuli:1.0.5--pl5321h6a68c12_1':
+        'biocontainers/metabuli:1.0.5--pl5321h6a68c12_1' }"
 
     input:
     tuple val(meta), path(fastas)
@@ -13,8 +13,8 @@ process METABULI_CLASSIFY {
 
     output:
     tuple val(meta), path("*/*_classifications.tsv"), emit: classification
-    tuple val(meta), path("*/*_report.tsv"), emit: report
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*/*_report.tsv")         , emit: report
+    path "versions.yml"                             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,7 +29,7 @@ process METABULI_CLASSIFY {
     } else if (is_compressed) {
       input =  "${fastas[0].baseName} ${fastas[1].baseName}"
     }
-    
+
     """
     if [ "$is_compressed" == "true" ]; then
     gzip -d *.gz
