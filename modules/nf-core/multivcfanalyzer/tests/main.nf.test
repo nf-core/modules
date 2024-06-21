@@ -74,18 +74,20 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.full_alignment,
-                                  process.out.snp_alignment,
-                                  process.out.snp_genome_alignment,
-                                  process.out.snpstatistics,
-                                  process.out.snptable,
+                { assert snapshot(
                                   process.out.snptable_snpeff,
-                                  process.out.snptable_uncertainty,
-                                  process.out.structure_genotypes,
-                                  process.out.structure_genotypes_nomissing,
                                   process.out.json,
                                   process.out.versions,
-                                  file(process.out.info_txt[0][1]).readLines().any { it.contains('Run finished:') }).match() }
+                                  file(process.out.info_txt[0][1]).readLines().any { it.contains('Run finished:') },
+                                  file(process.out.full_alignment[0][1]).readLines().any { it.contains('>') },
+                                  file(process.out.snp_alignment[0][1]).readLines().any { it.contains('>') },
+                                  file(process.out.snp_genome_alignment[0][1]).readLines().any { it.contains('>Reference') },
+                                  file(process.out.snpstatistics[0][1]).readLines().any { it.contains('SNP statistics for') },
+                                  file(process.out.snptable[0][1]).readLines().any { it.contains('Position') },
+                                  file(process.out.snptable_uncertainty[0][1]).readLines().any { it.contains('Position') },
+                                  file(process.out.structure_genotypes[0][1]).readLines().any { it.contains('-1') },
+                                  file(process.out.structure_genotypes_nomissing[0][1]).readLines().any { it.contains('-1') }).match()
+                                }
             )
         }
 
