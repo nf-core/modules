@@ -9,9 +9,8 @@ process DYSGU {
         'biocontainers/dysgu:latest' }"
 
     input:
-
     tuple val(meta), path(input_bam), path(input_bam_index)
-    tuple val(meta3), path(fasta), path(fai)
+    tuple val(meta2), path(fasta), path(fai)
 
     output:
 
