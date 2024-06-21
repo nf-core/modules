@@ -98,6 +98,11 @@
                                 "minItems": 1,
                                 "uniqueItems": true,
                                 "message": "Licence must be an array of one or more entries, e.g. [\"MIT\"]"
+                            },
+                            "identifier": {
+                                "type": "string",
+                                "description": "bio.tools identifier of the tool",
+                                "pattern": "^biotools:.*$"
                             }
                         },
                         "required": ["description"],
@@ -152,6 +157,20 @@
                                 "type": ["string", "number", "boolean", "array", "object"]
                             },
                             "uniqueItems": true
+                        },
+                        "ontologies": {
+                            "type": "array",
+                            "description": "List of ontologies for the channel",
+                            "uniqueItems": true,
+                            "items": {
+                                "type": "object",
+                                "patternProperties": {
+                                    ".*": {
+                                        "type": "string",
+                                        "pattern": "^(http|https)://.*"
+                                    }
+                                }
+                            }
                         }
                     },
                     "required": ["qualifier", "description"]
