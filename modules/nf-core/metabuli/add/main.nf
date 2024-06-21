@@ -9,28 +9,32 @@ process METABULI_ADD {
 
     input:
     tuple val(meta), path(fasta)
-    path accession2taxid
-    path db
+    path taxonomy_names, stageAs: 'taxonomy/names.dmp'
+    path taxonomy_nodes, stageAs: 'taxonomy/nodes.dmp'
+    path taxonomy_merged, stageAs: 'taxonomy/merged.dmp'
+    path accession2taxid, stageAs: 'taxonomy/*'
 
     output:
-    tuple val(meta), path("${prefix}"), emit: db
-    path "versions.yml"               , emit: versions
+    tuple val(meta), path("$prefix"), emit: db
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
+    make_merged = taxonomy_merged ? "" : "touch ${prefix}/taxonomy/merged.dmp"
 
     """
     mkdir -p $prefix
-    mv $db/* $prefix
+    mv "taxonomy" $prefix
+    $make_merged
 
-    ls $fasta > fasta.txt
+    realpath $fasta > fasta.txt
     metabuli add-to-library \\
         fasta.txt \\
-        $accession2taxid \\
+        $prefix/$accession2taxid \\
         $prefix \\
         $args
 
@@ -42,7 +46,7 @@ process METABULI_ADD {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p $prefix
 

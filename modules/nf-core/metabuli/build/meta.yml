@@ -8,31 +8,24 @@ keywords:
   - database
 tools:
   - "metabuli":
-      description: "Metabuli: specific and sensitive metagenomic classification via joint analysis of DNA and amino acid"
-      homepage: "https://github.com/steineggerlab/Metabuli"
-      documentation: "https://github.com/steineggerlab/Metabuli#readme"
-      tool_dev_url: "https://github.com/steineggerlab/Metabuli"
-      doi: "10.1101/2023.05.31.543018"
-      licence: "['GPL v3']"
+    description: "Metabuli: specific and sensitive metagenomic classification via joint analysis of DNA and amino acid"
+    homepage: "https://github.com/steineggerlab/Metabuli"
+    documentation: "https://github.com/steineggerlab/Metabuli#readme"
+    tool_dev_url: "https://github.com/steineggerlab/Metabuli"
+    doi: "10.1101/2023.05.31.543018"
+    licence: "['GPL v3']"
 
 input:
-  - genomes:
-      type: file
-      description: Genome files that serve as entries in the database
-      pattern: "*.{fa,fasta,fna}"
-  - acc2taxid:
-      type: file
-      description: |
-        Accession number to taxid file.
-        A four column tsv with the following header:
-        accession, accession.revision, taxid, gi.
+  - meta:
+    type: map
+    description: |
+      Groovy Map containing sample information
+      e.g. `[ id:'sample1', single_end:false ]`
   - db:
-      type: directory
-      description: |
-        Output folder name for the database.
-        If the taxonomy-path optional parameter is not set to a directory
-        containing names.dmp and nodes.dmp, this directory needs
-        to contain a folder named taxonomy containing those two files.
+    type: directory
+    description: |
+      contains required files to build the database
+      [ taxonomy/names.dmp, taxonomy/nodes.dmp, taxonomy/merged.dmp, acc2taxid, library/*.fna ]
 
 output:
   - versions:
@@ -42,7 +35,7 @@ output:
   - db:
       type: file
       description: Compressed metabuli database
-      pattern: "*.tar.gz"
+      pattern: "${prefix}/"
 
 authors:
   - "@TheOafidian"

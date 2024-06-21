@@ -2,19 +2,19 @@ process METABULI_CLASSIFY {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::metabuli=1.0.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/metabuli:1.0.5--pl5321h6a68c12_1':
         'biocontainers/metabuli:1.0.5--pl5321h6a68c12_1' }"
 
     input:
     tuple val(meta), path(fastas)
-    path(db)
+    tuple val(meta2), path(db)
 
     output:
-    tuple val(meta), path("*/*_classifications.tsv"), emit: classification
-    tuple val(meta), path("*/*_report.tsv")         , emit: report
-    path "versions.yml"                             , emit: versions
+    tuple val(meta), path("*classifications.tsv"), emit: classification
+    tuple val(meta), path("*report.tsv")         , emit: report
+    path "versions.yml"                          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,31 +22,33 @@ process METABULI_CLASSIFY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def is_compressed = meta.single_end ? fastas.getName().endsWith(".gz") : fastas[0].getName().endsWith(".gz")
-    def input = meta.single_end ? "--seq-mode 1 ${fastas}" : "${fastas[0]} ${fastas[1]}"
-    if (is_compressed && meta.single_end) {
-      input = "--seq-mode 1 ${fastas.baseName}"
-    } else if (is_compressed) {
-      input =  "${fastas[0].baseName} ${fastas[1].baseName}"
-    }
-
     """
-    if [ "$is_compressed" == "true" ]; then
-    gzip -d *.gz
-    fi
-
     metabuli \\
         classify \\
         $args \\
+        ${fastas} \\
         --threads $task.cpus \\
-        ${input} \\
+        --max-ram ${task.memory.toGiga()} \\
         ${db} \\
-        ${prefix}_out \\
+        . \\
         ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        metabuli: \$(metabuli | grep Version | sed 's/^metabuli Version: //';))
+        metabuli: \$(metabuli version)
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch "${prefix}_classifications.tsv"
+    touch "${prefix}_report.tsv"
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        metabuli: \$(metabuli version)
     END_VERSIONS
     """
 }

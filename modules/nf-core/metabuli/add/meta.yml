@@ -20,24 +20,27 @@ input:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        e.g. `[ id:'sample1', single_end:false ]`
   - fasta:
       type: file
-      description: Genome files that serve as entries in the database
-      pattern: "*.{fa,fasta,fna}"
+      description: fasta file that will be added to the database
+      pattern: "*.{fa,fasta,fna,ffn}"
+  - taxonomy_names:
+      type: file
+      description: used for associating sequences with taxonomy IDs
+      pattern: "*.dmp"
+  - taxonomy_nodes:
+      type: file
+      description: tree nodes using NCBI taxonomy nomenclature
+      pattern: "*.dmp"
+  - taxonomy_merged:
+      type: file
+      description: merged.dmp maps secondary taxids onto primary taxids for taxa that have been synonymized in the database
+      pattern: "*.dmp"
   - accession2taxid:
       type: file
-      description: |
-        Accession number to taxid file.
-        A four column tsv with the following header:
-        accession, accession.revision, taxid, gi.
-  - db:
-      type: directory
-      description: |
-        Output folder name for the database.
-        If the taxonomy-path optional parameter is not set to a directory
-        containing names.dmp and nodes.dmp, this directory needs
-        to contain a folder named taxonomy containing those two files.
+      description: associates sequence accession IDs to taxonomy IDs
+      pattern: "*.accession2taxid"
 
 output:
   - versions:
@@ -46,7 +49,7 @@ output:
       pattern: "versions.yml"
   - db:
       type: directory
-      description: Compressed metabuli database
+      description: Metabuli database
       pattern: "${prefix}/"
 
 authors:

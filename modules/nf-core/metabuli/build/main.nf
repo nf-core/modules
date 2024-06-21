@@ -1,48 +1,60 @@
 
 process METABULI_BUILD {
-    tag 'build'
+    tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::metabuli=1.0.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/metabuli:1.0.5--pl5321h6a68c12_1':
         'biocontainers/metabuli:1.0.5--pl5321h6a68c12_1' }"
 
     input:
-    path(db)
+    tuple val(meta), path(db)
+    path accession2taxid, stageAs: 'taxonomy/acc2taxid'
 
     output:
-    path "metabuli_db.tar.gz", emit: db
-    path "versions.yml"      , emit: versions
+    tuple val(meta), path("$prefix"), emit: db
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    acc2taxid = accession2taxid ? "${accession2taxid}" : "${db}/taxonomy/acc2taxid"
     """
+    find ${db}/library -type f -name '*.fna' > library-files.txt
 
-    ls $db/library/* > lib.txt
     metabuli \\
         build \\
-        --threads $task.cpus \\
-        $db \\
-        lib.txt \\
-        $acc2taxid \\
+        ${db} \\
+        library-files.txt \\
+        ${acc2taxid} \\
+        --db-name ${prefix} \\
+        --threads ${task.cpus} \\
         $args
+
+    if [[ \$(basename ${db}) != "${prefix}" ]]; then
+        mkdir -p ${prefix}
+        mv ${db}/* ${prefix}
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        metabuli: \$(metabuli | grep Version | sed 's/^metabuli Version: //';))
+        metabuli: \$(metabuli version)
     END_VERSIONS
     """
 
     stub:
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch metabuli_db.tar.gz
+    mkdir -p "$prefix"
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        metabuli: \$(metabuli | grep Version | sed 's/^metabuli Version: //';))
+        metabuli: \$(metabuli version)
     END_VERSIONS
     """
 }
