@@ -94,6 +94,7 @@ process HISAT2_ALIGN {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     def unaligned = params.save_unaligned ? "echo '' | gzip >  ${prefix}.unmapped_1.fastq.gz \n echo '' | gzip >  ${prefix}.unmapped_2.fastq.gz" : ''
+    def VERSION = '2.2.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     ${unaligned}
 
