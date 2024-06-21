@@ -11,8 +11,8 @@ process DYSGU {
     input:
 
     tuple val(meta), path(input_bam), path(input_bam_index)
-    tuple val(meta2), path(reference_fasta), path(reference_fasta.fai)
-    tuple val(meta3), path(temp_dir)
+    tuple val(meta3), path(fasta), path(fai)
+
 
     output:
 
@@ -33,7 +33,7 @@ process DYSGU {
     """
     dysgu run \\
         $reference \\
-        $temp_dir \\
+        --temp-directory ./temp \\
         $input_bam \\
         | bgzip ${args2} --threads ${task.cpus} --stdout > ${prefix}.vcf.gz
     tabix ${args3} ${prefix}.vcf.gz
