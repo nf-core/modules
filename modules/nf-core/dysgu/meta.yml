@@ -59,11 +59,11 @@ output:
   - vcf:
       type: file
       description: VCF file with identified structural variants
-      pattern: "*.vcf.gz"
-  - vcf_index:
+      pattern: "*.{vcf.gz}"
+  - tbi:
       type: file
       description: The index of the BCF/VCF file
-      pattern: "*.{tbi,csi}"
+      pattern: "*.{vcf.gz.tbi}"
   - versions:
       type: file
       description: File containing software versions
