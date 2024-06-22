@@ -2,18 +2,18 @@ process FREEBAYES {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::freebayes=1.3.6"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/freebayes:1.3.6--hbfe0e7f_2' :
         'biocontainers/freebayes:1.3.6--hbfe0e7f_2' }"
 
     input:
     tuple val(meta), path(input_1), path(input_1_index), path(input_2), path(input_2_index), path(target_bed)
-    path fasta
-    path fasta_fai
-    path samples
-    path populations
-    path cnv
+    tuple val(ref_meta), path(fasta)
+    tuple val(ref_idx_meta), path(fasta_fai)
+    tuple val(samples_meta), path(samples)
+    tuple val(populations_meta), path(populations)
+    tuple val(cnv_meta), path(cnv)
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf

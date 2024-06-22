@@ -13,9 +13,8 @@ tools:
       tool_dev_url: https://github.com/samtools/samtools
       doi: "10.1093/bioinformatics/btp352"
       licence: ["MIT"]
-
 input:
-  - meta:
+  - meta1:
       type: map
       description: |
         Groovy Map containing sample information
@@ -24,9 +23,17 @@ input:
       type: file
       description: sorted BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
-
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - intervals:
+      type: file
+      description: list of positions or regions in specified bed file
+      pattern: "*.{bed}"
 output:
-  - meta:
+  - meta1:
       type: map
       description: |
         Groovy Map containing sample information
@@ -39,6 +46,9 @@ output:
       type: file
       description: The output of samtools depth has three columns - the name of the contig or chromosome, the position and the number of reads aligned at that position
       pattern: "*.{tsv}"
-
 authors:
   - "@louperelo"
+  - "@nevinwu"
+maintainers:
+  - "@louperelo"
+  - "@nevinwu"

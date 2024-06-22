@@ -22,8 +22,12 @@ tools:
       tool_dev_url: https://github.com/rhuebler/hops
       doi: "10.1186/s13059-019-1903-0"
       licence: ["GPL 3"]
-
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - rma6:
       type: file
       description: RMA6 files from MALT
@@ -36,7 +40,6 @@ input:
       type: directory
       description: Directory containing NCBI taxonomy map and tre files
       pattern: "${ncbi_dir}/"
-
 output:
   - versions:
       type: file
@@ -46,6 +49,7 @@ output:
       type: directory
       description: Directory containing MaltExtract text results files
       pattern: "results/"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

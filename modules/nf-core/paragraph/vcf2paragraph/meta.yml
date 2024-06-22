@@ -12,7 +12,6 @@ tools:
       tool_dev_url: "https://github.com/Illumina/paragraph"
       doi: "10.1101/635011"
       licence: "['Apache License 2.0']"
-
 input:
   - meta:
       type: map
@@ -23,7 +22,6 @@ input:
       type: file
       description: The VCF/BCF file
       pattern: "*.{vcf,bcf}(.gz)?"
-
 output:
   - meta:
       type: map
@@ -38,6 +36,7 @@ output:
       type: file
       description: The created graph in BGZIP format
       pattern: "*.json.gz"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

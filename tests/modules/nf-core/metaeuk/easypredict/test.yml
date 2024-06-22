@@ -1,5 +1,5 @@
-- name: metaeuk easypredict test_metaeuk_easypredict
-  command: nextflow run ./tests/modules/nf-core/metaeuk/easypredict -entry test_metaeuk_easypredict -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/metaeuk/easypredict/nextflow.config
+- name: metaeuk easypredict test_metaeuk_easypredict_fasta
+  command: nextflow run ./tests/modules/nf-core/metaeuk/easypredict -entry test_metaeuk_easypredict_fasta -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/metaeuk/easypredict/nextflow.config
   tags:
     - metaeuk/easypredict
     - metaeuk
@@ -13,3 +13,27 @@
     - path: output/metaeuk/test.headersMap.tsv
       md5sum: b3628c76d7385d326bd8a7931d974cff
     - path: output/metaeuk/versions.yml
+
+- name: metaeuk easypredict test_metaeuk_easypredict_mmseqs
+  command: nextflow run ./tests/modules/nf-core/metaeuk/easypredict -entry test_metaeuk_easypredict_mmseqs -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/metaeuk/easypredict/nextflow.config
+  tags:
+    - metaeuk/easypredict
+    - metaeuk
+  files:
+    - path: output/metaeuk/test.codon.fas
+    - path: output/metaeuk/test.fas
+    - path: output/metaeuk/test.gff
+    - path: output/metaeuk/test.headersMap.tsv
+    - path: output/metaeuk/versions.yml
+    - path: output/mmseqs/mmseqs_database/database
+    - path: output/mmseqs/mmseqs_database/database.dbtype
+    - path: output/mmseqs/mmseqs_database/database.index
+    - path: output/mmseqs/mmseqs_database/database.lookup
+    - path: output/mmseqs/mmseqs_database/database.source
+    - path: output/mmseqs/mmseqs_database/database.version
+    - path: output/mmseqs/mmseqs_database/database_h
+    - path: output/mmseqs/mmseqs_database/database_h.dbtype
+    - path: output/mmseqs/mmseqs_database/database_h.index
+    - path: output/mmseqs/mmseqs_database/database_mapping
+    - path: output/mmseqs/mmseqs_database/database_taxonomy
+    - path: output/mmseqs/versions.yml

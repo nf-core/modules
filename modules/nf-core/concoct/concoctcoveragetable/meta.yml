@@ -16,8 +16,7 @@ tools:
       documentation: "https://concoct.readthedocs.io/en/latest/index.html"
       tool_dev_url: "https://github.com/BinPro/CONCOCT"
       doi: "10.1038/nmeth.3103"
-      licence: "['FreeBSD']"
-
+      licence: ["FreeBSD"]
 input:
   - meta:
       type: map
@@ -36,7 +35,6 @@ input:
       type: file
       description: A single or list of BAM index files (.bai) corresponding to BAM
       pattern: "*.bam"
-
 output:
   - meta:
       type: map
@@ -51,6 +49,7 @@ output:
       type: file
       description: Contig coverage table
       pattern: "*.tsv"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

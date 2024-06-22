@@ -2,14 +2,14 @@ process BCFTOOLS_MPILEUP {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::bcftools=1.17"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bcftools:1.17--haef29d1_0':
-        'biocontainers/bcftools:1.17--haef29d1_0' }"
+        'https://depot.galaxyproject.org/singularity/bcftools:1.20--h8b25389_0':
+        'biocontainers/bcftools:1.20--h8b25389_0' }"
 
     input:
     tuple val(meta), path(bam), path(intervals)
-    path fasta
+    tuple val(meta2), path(fasta)
     val save_mpileup
 
     output:
@@ -49,6 +49,20 @@ process BCFTOOLS_MPILEUP {
     tabix -p vcf -f ${prefix}.vcf.gz
 
     bcftools stats ${prefix}.vcf.gz > ${prefix}.bcftools_stats.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bcftools_stats.txt
+    echo "" | gzip > ${prefix}.vcf.gz
+    touch ${prefix}.vcf.gz.tbi
+    echo "" | gzip > ${prefix}.mpileup.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

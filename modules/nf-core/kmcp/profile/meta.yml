@@ -15,8 +15,7 @@ tools:
       documentation: "https://bioinf.shenwei.me/kmcp/usage/#profile"
       tool_dev_url: "https://github.com/shenwei356/kmcp"
       doi: "10.1093/bioinformatics/btac845"
-      licence: "['MIT']"
-
+      licence: ["MIT"]
 input:
   - meta:
       type: map
@@ -27,23 +26,10 @@ input:
       type: file
       description: Gzipped file output from kmcp search module
       pattern: "*.gz"
-  - taxdump:
+  - db:
       type: directory
-      description: Directory of NCBI taxonomy dump files - names.dmp, nodes.dmp
-      pattern: "*"
-  - taxid:
-      type: file
-      description: Tabular two-column file(s) mapping reference IDs to TaxIds.
-      pattern: "*.{csv,tsv}"
-  - mode:
-      type: integer
-      description: Profiling mode.
-        0-pathogen detection
-        1-higher recall
-        2-high recall
-        3-default
-        4-high precision
-        5-higher precision
+      description: Database directory containing taxdump files and taxid file
+
 output:
   - meta:
       type: map
@@ -58,6 +44,7 @@ output:
       type: file
       description: Tab-delimited format file with 17 columns.
       pattern: "*.profile"
-
 authors:
+  - "@sofstam"
+maintainers:
   - "@sofstam"

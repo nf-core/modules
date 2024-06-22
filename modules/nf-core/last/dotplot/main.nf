@@ -2,10 +2,10 @@ process LAST_DOTPLOT {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::last=1418"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/last:1418--h5b5514e_0' :
-        'biocontainers/last:1418--h5b5514e_0' }"
+        'https://depot.galaxyproject.org/singularity/last:1542--h43eeafb_1' :
+        'biocontainers/last:1542--h43eeafb_1' }"
 
     input:
     tuple val(meta), path(maf)
@@ -34,4 +34,18 @@ process LAST_DOTPLOT {
         last: \$(lastal --version | sed 's/lastal //')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch $prefix.$format
+
+    # last-dotplot has no --version option so let's use lastal from the same suite
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        last: \$(lastal --version | sed 's/lastal //')
+    END_VERSIONS
+    """
+
 }

@@ -7,7 +7,8 @@ include { GATK4_COLLECTREADCOUNTS                                               
 include { GATK4_DETERMINEGERMLINECONTIGPLOIDY as GATK4_DETERMINEGERMLINECONTIGPLOIDY_COHORT } from '../../../../../modules/nf-core/gatk4/determinegermlinecontigploidy/main.nf'
 include { GATK4_GERMLINECNVCALLER as GATK4_GERMLINECNVCALLER_COHORT                         } from '../../../../../modules/nf-core/gatk4/germlinecnvcaller/main.nf'
 include { GATK4_GERMLINECNVCALLER as GATK4_GERMLINECNVCALLER_CASE                           } from '../../../../../modules/nf-core/gatk4/germlinecnvcaller/main.nf'
-include { GATK4_POSTPROCESSGERMLINECNVCALLS                                                 } from '../../../../../modules/nf-core/gatk4/postprocessgermlinecnvcalls/main.nf'
+include { GATK4_POSTPROCESSGERMLINECNVCALLS as GATK4_POSTPROCESSGERMLINECNVCALLS_COHORT     } from '../../../../../modules/nf-core/gatk4/postprocessgermlinecnvcalls/main.nf'
+include { GATK4_POSTPROCESSGERMLINECNVCALLS as GATK4_POSTPROCESSGERMLINECNVCALLS_CASE       } from '../../../../../modules/nf-core/gatk4/postprocessgermlinecnvcalls/main.nf'
 
 workflow test_gatk4_postprocessgermlinecnvcalls {
      input = Channel.of([
@@ -61,15 +62,24 @@ workflow test_gatk4_postprocessgermlinecnvcalls {
     gcnvc_case_input = GATK4_COLLECTREADCOUNTS.out.tsv
             .first()
             .combine(GATK4_DETERMINEGERMLINECONTIGPLOIDY_COHORT.out.calls)
-            .combine(GATK4_GERMLINECNVCALLER_COHORT.out.model)
+            .combine(GATK4_GERMLINECNVCALLER_COHORT.out.cohortmodel)
             .map({ meta, counts, meta2, calls, meta3, model -> [ [id:'test'], counts, [], calls, model ]})
     GATK4_GERMLINECNVCALLER_CASE ( gcnvc_case_input )
 
-    GATK4_GERMLINECNVCALLER_CASE.out.calls
-        .combine(GATK4_GERMLINECNVCALLER_COHORT.out.model)
+    GATK4_GERMLINECNVCALLER_COHORT.out.cohortcalls
+        .combine(GATK4_GERMLINECNVCALLER_COHORT.out.cohortmodel)
         .combine(GATK4_DETERMINEGERMLINECONTIGPLOIDY_COHORT.out.calls)
         .map({ meta, calls, meta2, model, meta3, ploidy -> [ [id:'test'], calls, model, ploidy ]})
-        .set {postproc_in}
+        .set {postproc_in_cohort}
 
-    GATK4_POSTPROCESSGERMLINECNVCALLS ( postproc_in )
+    GATK4_POSTPROCESSGERMLINECNVCALLS_COHORT ( postproc_in_cohort )
+
+    GATK4_GERMLINECNVCALLER_CASE.out.casecalls
+        .combine(GATK4_GERMLINECNVCALLER_COHORT.out.cohortmodel)
+        .combine(GATK4_DETERMINEGERMLINECONTIGPLOIDY_COHORT.out.calls)
+        .map({ meta, calls, meta2, model, meta3, ploidy -> [ [id:'test'], calls, model, ploidy ]})
+        .set {postproc_in_calls}
+
+    GATK4_POSTPROCESSGERMLINECNVCALLS_CASE ( postproc_in_calls )
+
 }

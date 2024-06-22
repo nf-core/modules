@@ -14,7 +14,6 @@ tools:
       documentation: http://www.htslib.org/doc/samtools.html
       doi: 10.1093/bioinformatics/btp352
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -29,7 +28,19 @@ input:
       type: file
       description: BAM/CRAM index file
       pattern: "*.{bai,crai}"
-
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - fasta:
+      type: file
+      description: Reference genome file
+      pattern: "*.{fa,fasta}"
+  - fai:
+      type: file
+      description: Reference genome index file
+      pattern: "*.fai"
 output:
   - meta:
       type: map
@@ -44,6 +55,7 @@ output:
       type: file
       description: Tabulated text containing the coverage at each position or region or an ASCII-art histogram (with --histogram).
       pattern: "*.txt"
-
 authors:
+  - "@LouisLeNezet"
+maintainers:
   - "@LouisLeNezet"

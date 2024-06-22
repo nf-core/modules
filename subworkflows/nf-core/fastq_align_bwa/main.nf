@@ -10,7 +10,7 @@ workflow FASTQ_ALIGN_BWA {
     ch_reads        // channel (mandatory): [ val(meta), [ path(reads) ] ]
     ch_index        // channel (mandatory): [ val(meta2), path(index) ]
     val_sort_bam    // boolean (mandatory): true or false
-    ch_fasta        // channel (optional) : [ path(fasta) ]
+    ch_fasta        // channel (optional) : [ val(meta3), path(fasta) ]
 
     main:
     ch_versions = Channel.empty()
@@ -19,7 +19,7 @@ workflow FASTQ_ALIGN_BWA {
     // Map reads with BWA
     //
 
-    BWA_MEM ( ch_reads, ch_index, val_sort_bam )
+    BWA_MEM ( ch_reads, ch_index, ch_fasta, val_sort_bam )
     ch_versions = ch_versions.mix(BWA_MEM.out.versions.first())
 
     //

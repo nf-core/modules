@@ -12,17 +12,17 @@ process GLIMPSE2_PHASE {
     fi
     """
 
-    conda "bioconda::glimpse-bio=2.0.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/glimpse-bio:2.0.0--hf340a29_0':
-        'biocontainers/glimpse-bio:2.0.0--hf340a29_0' }"
+        'https://depot.galaxyproject.org/singularity/glimpse-bio:2.0.1--h46b9e50_1':
+        'biocontainers/glimpse-bio:2.0.1--h46b9e50_1' }"
 
     input:
         tuple val(meta) , path(input), path(input_index), path(samples_file), val(input_region), val(output_region), path(reference), path(reference_index), path(map)
         tuple val(meta2), path(fasta_reference), path(fasta_reference_index)
 
     output:
-        tuple val(meta), path("*.{vcf,bcf,bgen}"), emit: phased_variant
+        tuple val(meta), path("*.{vcf,bcf,bgen}"), emit: phased_variants
         tuple val(meta), path("*.txt.gz")        , emit: stats_coverage, optional: true
         path "versions.yml"                      , emit: versions
 
@@ -63,6 +63,20 @@ process GLIMPSE2_PHASE {
         $output_region_cmd \\
         --thread $task.cpus \\
         --output ${prefix}.${suffix}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        glimpse2: "\$(GLIMPSE2_phase --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
+    END_VERSIONS
+    """
+
+    stub:
+    def region = input_region    ? "${output_region.replace(":","_")}" : "${reference}"
+    def args   = task.ext.args   ?: ""
+    def prefix = task.ext.prefix ?: "${meta.id}_${region}"
+    def suffix = task.ext.suffix ?: "bcf"
+    """
+    touch ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

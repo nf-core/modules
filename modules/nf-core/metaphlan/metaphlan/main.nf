@@ -2,7 +2,7 @@ process METAPHLAN_METAPHLAN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::metaphlan=4.0.6"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/metaphlan:4.0.6--pyhca03a8a_0' :
         'biocontainers/metaphlan:4.0.6--pyhca03a8a_0' }"
@@ -28,8 +28,8 @@ process METAPHLAN_METAPHLAN {
     def bowtie2_out = "$input_type" == "--input_type bowtie2out" || "$input_type" == "--input_type sam" ? '' : "--bowtie2out ${prefix}.bowtie2out.txt"
 
     """
-    BT2_DB=`find -L "${metaphlan_db_latest}" -name "*rev.1.bt2l" -exec dirname {} \\;`
-    BT2_DB_INDEX=`find -L ${metaphlan_db_latest} -name "*.rev.1.bt2l" | sed 's/\\.rev.1.bt2l\$//' | sed 's/.*\\///'`
+    BT2_DB=`find -L "${metaphlan_db_latest}" -name "*rev.1.bt2*" -exec dirname {} \\;`
+    BT2_DB_INDEX=`find -L ${metaphlan_db_latest} -name "*.rev.1.bt2*" | sed 's/\\.rev.1.bt2.*\$//' | sed 's/.*\\///'`
 
     metaphlan \\
         --nproc $task.cpus \\

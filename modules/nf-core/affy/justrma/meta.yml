@@ -12,8 +12,7 @@ tools:
       documentation: "https://www.bioconductor.org/packages/release/bioc/html/affy.html"
       tool_dev_url: "https://github.com/Bioconductor/affy"
       doi: "10.1093/bioinformatics/btg405"
-      licence: "['LGPL >=2.0']"
-
+      licence: ["LGPL >=2.0"]
 input:
   - meta:
       type: map
@@ -32,7 +31,6 @@ input:
       type: file
       description: |
         Optional description file in MIAME format
-
 output:
   - meta:
       type: map
@@ -55,6 +53,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
+  - "@pinin4fjords"
+maintainers:
   - "@pinin4fjords"

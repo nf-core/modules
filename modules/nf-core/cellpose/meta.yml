@@ -11,8 +11,7 @@ tools:
       documentation: "https://cellpose.readthedocs.io/en/latest/command.html"
       tool_dev_url: "https://github.com/MouseLand/cellpose"
       doi: 10.1038/s41592-022-01663-4
-      licence: "BSD 3-Clause"
-
+      licence: ["BSD 3-Clause"]
 input:
   - meta:
       type: map
@@ -26,7 +25,6 @@ input:
   - model:
       type: file
       description: Optional input file. Cellpose 2 model trained by user using human-in-the-loop approach.
-
 output:
   - meta:
       type: map
@@ -41,6 +39,15 @@ output:
       type: file
       description: labelled mask output from cellpose in tif format
       pattern: "*.{tif, tiff}"
+  - flows:
+      type: file
+      description: cell flow output from cellpose
+      pattern: "*.{tif}"
 
 authors:
   - "@josenimo"
+  - "@FloWuenne"
+maintainers:
+  - "@josenimo"
+  - "@FloWuenne"
+  - "@kbestak"

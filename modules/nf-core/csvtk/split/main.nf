@@ -2,10 +2,10 @@ process CSVTK_SPLIT {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::csvtk=0.23.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/csvtk:0.23.0--h9ee0642_0' :
-        'biocontainers/csvtk:0.23.0--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/csvtk:0.30.0--h9ee0642_0' :
+        'biocontainers/csvtk:0.30.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(csv)
@@ -38,6 +38,19 @@ process CSVTK_SPLIT {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         csvtk: \$(echo \$( csvtk version | sed -e 's/csvtk v//g' ))
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    out_extension = args.contains('--out-delimiter "\t"') || args.contains('-D "\t"') || args.contains("-D \$'\t'") ? "tsv" : "csv"
+    """
+    touch ${prefix}.${out_extension}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        csvtk: \$(echo \$( csvtk version | sed -e "s/csvtk v//g" ))
     END_VERSIONS
     """
 }

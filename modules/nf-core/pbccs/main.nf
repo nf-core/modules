@@ -2,7 +2,7 @@ process PBCCS {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::pbccs=6.4.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pbccs:6.4.0--h9ee0642_0' :
         'biocontainers/pbccs:6.4.0--h9ee0642_0' }"
@@ -36,6 +36,23 @@ process PBCCS {
         --chunk $chunk_num/$chunk_on \\
         -j $task.cpus \\
         $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        pbccs: \$(echo \$(ccs --version 2>&1) | grep 'ccs' | sed 's/^.*ccs //; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch dummy.chunk1.bam
+    touch dummy.chunk1.bam.pbi
+    touch dummy.report.txt
+    touch dummy.report.json
+    echo "test" > dummy.metrics.json
+    gzip dummy.metrics.json
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

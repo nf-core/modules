@@ -1,16 +1,16 @@
 name: pairtools_parse
 description: Find ligation junctions in .sam, make .pairs
 keywords:
+  - ligation junctions
   - parse
+  - pairtools
 tools:
   - pairtools:
       description: CLI tools to process mapped Hi-C data
       homepage: http://pairtools.readthedocs.io/
       documentation: http://pairtools.readthedocs.io/
       tool_dev_url: https://github.com/mirnylab/pairtools
-
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -24,7 +24,6 @@ input:
   - chromsizes:
       type: file
       description: chromosome size file
-
 output:
   - meta:
       type: map
@@ -43,6 +42,7 @@ output:
       type: file
       description: stats of the pairs
       pattern: "*.{pairsam.stat}"
-
 authors:
+  - "@jianhong"
+maintainers:
   - "@jianhong"

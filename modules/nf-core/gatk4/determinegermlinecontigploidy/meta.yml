@@ -1,10 +1,10 @@
 name: "gatk4_determinegermlinecontigploidy"
 description: Determines the baseline contig ploidy for germline samples given counts data
 keywords:
-  - gatk4
-  - determinegermlinecontigploidy
-  - counts
   - copy number
+  - counts
+  - determinegermlinecontigploidy
+  - gatk4
 tools:
   - gatk4:
       description: |
@@ -15,7 +15,6 @@ tools:
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
       doi: 10.1158/1538-7445.AM2017-3590
       licence: ["Apache-2.0"]
-
 input:
   - meta:
       type: map
@@ -49,7 +48,6 @@ input:
         Optional - A folder containing the ploidy model.
         When a model is supplied to tool will run in CASE mode.
         pattern: '*-model/'
-
 output:
   - meta:
       type: map
@@ -70,6 +68,7 @@ output:
         A folder containing the model from the input files.
         This will only be created in COHORT mode (when no model is supplied to the process).
       pattern: "*-model/"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"
