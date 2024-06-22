@@ -24,8 +24,8 @@ process PILON {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args       = task.ext.args ?: ''
+    def prefix     = task.ext.prefix ?: "${meta.id}"
     def valid_mode = ["frags", "jumps", "unpaired", "bam"]
     if ( !valid_mode.contains(pilon_mode) )  { error "Unrecognised mode to run Pilon. Options: ${valid_mode.join(', ')}" }
     """
@@ -39,10 +39,11 @@ process PILON {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         pilon: \$(echo \$(pilon --version) | sed 's/^.*version //; s/ .*\$//' )
+    END_VERSIONS
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix     = task.ext.prefix ?: "${meta.id}"
     def valid_mode = ["frags", "jumps", "unpaired", "bam"]
     if ( !valid_mode.contains(pilon_mode) )  { error "Unrecognised mode to run Pilon. Options: ${valid_mode.join(', ')}" }
     """
@@ -51,6 +52,7 @@ process PILON {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         pilon: \$(echo \$(pilon --version) | sed 's/^.*version //; s/ .*\$//' )
+    END_VERSIONS
     """
 
 }
