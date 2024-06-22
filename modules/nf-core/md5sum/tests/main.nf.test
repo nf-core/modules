@@ -51,5 +51,74 @@ nextflow_process {
             }
         }
     }
-    
+
+    test("md5sum on hello.txt - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'hello' ],
+                    [ file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true) ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll {
+                { assert process.success }
+                { assert snapshot(process.out).match() }
+            }
+        }
+    }
+
+    test("md5sum on paired fastq files") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll {
+                { assert process.success }
+                { assert snapshot(process.out).match() }
+            }
+        }
+    }
+
+    test("md5sum on paired fastq files - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll {
+                { assert process.success }
+                { assert snapshot(process.out).match() }
+            }
+        }
+    }
+
 }
