@@ -13,7 +13,6 @@ tools:
       tool_dev_url: https://github.com/jenniferlu717/Bracken
       doi: "10.7717/peerj-cs.104"
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
@@ -28,7 +27,6 @@ input:
       type: file
       description: Directory containing the kraken2/Bracken files for analysis
       pattern: "*"
-
 output:
   - meta:
       type: map
@@ -43,6 +41,11 @@ output:
       type: file
       description: TSV output report of the re-estimated abundances
       pattern: "*.{tsv}"
-
+  - txt:
+      type: file
+      description: TXT file of bracken corrected results of Kraken2 report output
+      pattern: "*.txt"
 authors:
+  - "@Midnighter"
+maintainers:
   - "@Midnighter"

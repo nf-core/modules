@@ -1,0 +1,18 @@
+- name: vrhyme extractunbinned test_vrhyme_extractunbinned
+  command: nextflow run ./tests/modules/nf-core/vrhyme/extractunbinned -entry test_vrhyme_extractunbinned -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/vrhyme/extractunbinned/nextflow.config
+  tags:
+    - vrhyme
+    - vrhyme/extractunbinned
+  files:
+    - path: output/vrhyme/test_unbinned_sequences.fasta
+      md5sum: 816e986c8ad8f277eb4a4891a12d7aff
+    - path: output/vrhyme/versions.yml
+
+- name: vrhyme extractunbinned test_vrhyme_extractunbinned_stub
+  command: nextflow run ./tests/modules/nf-core/vrhyme/extractunbinned -entry test_vrhyme_extractunbinned -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/vrhyme/extractunbinned/nextflow.config -stub-run
+  tags:
+    - vrhyme
+    - vrhyme/extractunbinned
+  files:
+    - path: output/vrhyme/test_unbinned_sequences.fasta
+    - path: output/vrhyme/versions.yml

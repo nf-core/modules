@@ -4,10 +4,10 @@ process ART_ILLUMINA {
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::art=2016.06.05"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/art:2016.06.05--h589041f_9':
-        'quay.io/biocontainers/art:2016.06.05--h589041f_9' }"
+        'biocontainers/art:2016.06.05--h589041f_9' }"
 
     input:
     tuple val(meta), path(fasta)

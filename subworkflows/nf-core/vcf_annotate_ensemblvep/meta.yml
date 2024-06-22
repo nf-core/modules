@@ -1,17 +1,18 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: vcf_annotate_ensemblvep
 description: Perform annotation with ensemblvep and bgzip + tabix index the resulting VCF file
 keywords:
   - vcf
   - annotation
   - ensemblvep
-modules:
+components:
   - ensemblvep/vep
   - tabix/tabix
 input:
   - ch_vcf:
       description: |
         vcf file to annotate
-        Structure: [ val(meta), path(vcf) ]
+        Structure: [ val(meta), path(vcf), [path(custom_file1), path(custom_file2)... (optionnal)] ]
   - ch_fasta:
       description: |
         Reference genome fasta file (optional)
@@ -33,10 +34,6 @@ input:
       description: |
         any extra files needed by plugins for ensemblvep (optional)
         Structure: [ path(file1), path(file2)... ]
-  - ch_custom_extra_files:
-      description: |
-        any sample-specific extra files needed for `-custom` for ensemblvep (optional)
-        Structure: [ val(meta), [path(file1), path(file2)...] ]
 output:
   - vcf_tbi:
       description: |
@@ -59,6 +56,10 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@maxulysse"
+  - "@matthdsm"
+  - "@nvnieuwk"
+maintainers:
   - "@maxulysse"
   - "@matthdsm"
   - "@nvnieuwk"

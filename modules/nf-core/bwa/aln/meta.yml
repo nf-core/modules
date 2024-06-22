@@ -15,10 +15,9 @@ tools:
         BWA is a software package for mapping DNA sequences against
         a large reference genome, such as the human genome.
       homepage: http://bio-bwa.sourceforge.net/
-      documentation: http://bio-bwa.sourceforge.net/
+      documentation: https://bio-bwa.sourceforge.net/bwa.shtml
       doi: "10.1093/bioinformatics/btp324"
       licence: ["GPL-3.0-or-later"]
-
 input:
   - meta:
       type: map
@@ -39,7 +38,6 @@ input:
       type: file
       description: BWA genome index files
       pattern: "Directory containing BWA index *.{amb,ann,bwt,pac,sa}"
-
 output:
   - meta:
       type: map
@@ -54,6 +52,8 @@ output:
       type: file
       description: Single or paired SA coordinate files
       pattern: "*.sai"
-
 authors:
   - "@jfy133"
+maintainers:
+  - "@jfy133"
+  - "@gallvp"

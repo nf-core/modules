@@ -1,9 +1,0 @@
-- name: "wisecondorx predict"
-  command: nextflow run ./tests/modules/nf-core/wisecondorx/predict -entry test_wisecondorx_predict -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/wisecondorx/predict/nextflow.config -stub
-  tags:
-    - "wisecondorx"
-    - "wisecondorx/predict"
-  files:
-    - path: "output/wisecondorx/test.bed"
-    - path: "output/wisecondorx/test.png"
-    - path: "output/wisecondorx/versions.yml"

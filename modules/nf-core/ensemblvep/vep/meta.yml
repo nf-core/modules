@@ -1,4 +1,4 @@
-name: ENSEMBLVEP_VEP
+name: ensemblvep_vep
 description: Ensembl Variant Effect Predictor (VEP). The output-file-format is controlled through `task.ext.args`.
 keywords:
   - annotation
@@ -26,8 +26,7 @@ input:
   - custom_extra_files:
       type: file
       description: |
-        extra sample-specific files to be used with the `-custom` flag
-        => add this yourself in the `args`
+        extra sample-specific files to be used with the `--custom` flag to be configured with ext.args
         (optional)
   - genome:
       type: string
@@ -84,6 +83,10 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@maxulysse"
+  - "@matthdsm"
+  - "@nvnieuwk"
+maintainers:
   - "@maxulysse"
   - "@matthdsm"
   - "@nvnieuwk"

@@ -2,10 +2,10 @@ process SNPSIFT_SPLIT {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::snpsift=4.3.1t"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snpsift:4.3.1t--hdfd78af_3' :
-        'quay.io/biocontainers/snpsift:4.3.1t--hdfd78af_3' }"
+        'biocontainers/snpsift:4.3.1t--hdfd78af_3' }"
 
     input:
     tuple val(meta), path(vcf)

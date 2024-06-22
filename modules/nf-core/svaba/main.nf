@@ -3,10 +3,10 @@ process SVABA {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::svaba=1.1.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/svaba:1.1.0--h7d7f7ad_2':
-        'quay.io/biocontainers/svaba:1.1.0--h7d7f7ad_2' }"
+        'biocontainers/svaba:1.1.0--h7d7f7ad_2' }"
 
     input:
     tuple val(meta), path(tumorbam), path(tumorbai), path(normalbam), path(normalbai)
