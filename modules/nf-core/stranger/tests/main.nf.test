@@ -16,7 +16,7 @@ nextflow_process {
             process {
                 """
                  input[0] = [
-                    [ id:'test', gender:'male' ], // meta map
+                    [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
                 ]
