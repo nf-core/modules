@@ -26,6 +26,7 @@ process DYSGU {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
+    mkdir temp
     dysgu run \\
         $fasta \\
         --temp-directory ./temp \\
