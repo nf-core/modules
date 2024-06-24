@@ -82,7 +82,7 @@ nextflow_process {
                             [id: 'test', single_end: false],
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                         ]
-                input[0] = ch_input_for_extractfastabins = Channel.of(fasta).join(CONCOCT_MERGECUTUPCLUSTERING.out.csv)
+                input[0] = Channel.of(fasta).join(CONCOCT_MERGECUTUPCLUSTERING.out.csv)
                 """
             }
         }
@@ -107,7 +107,7 @@ nextflow_process {
                             [id: 'test', single_end: false],
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                         ]
-                input[0] = ch_input_for_extractfastabins = Channel.of(fasta).join(CONCOCT_MERGECUTUPCLUSTERING.out.csv)
+                input[0] = Channel.of(fasta).join(CONCOCT_MERGECUTUPCLUSTERING.out.csv)
                 """
             }
         }
