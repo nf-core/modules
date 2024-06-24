@@ -92,4 +92,19 @@ process CHROMAP_CHROMAP {
         END_VERSIONS
         """
     }
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.bed.gz
+    touch ${prefix}.bam
+    echo "" | gzip > ${prefix}.tagAlign.gz
+    echo "" | gzip > ${prefix}.pairs.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        chromap: \$(echo \$(chromap --version 2>&1))
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+    END_VERSIONS
+    """
 }
