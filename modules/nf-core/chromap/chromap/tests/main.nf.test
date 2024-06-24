@@ -11,6 +11,7 @@ nextflow_process {
     tag "chromap/index"
 
     setup {
+
         run("CHROMAP_INDEX") {
             script "../../index/main.nf"
             process {
@@ -22,6 +23,20 @@ nextflow_process {
                 """
             }
         }
+
+        run("CHROMAP_INDEX", alias: "CHROMAP_INDEX_STUB")  {
+            options "-stub"
+            script "../../index/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [:], // meta map
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                ])
+                """
+            }
+        }
+
     }
 
     test("sarscov2 - single_end") {
@@ -118,20 +133,6 @@ nextflow_process {
     test("sarscov2 - single_end - stub") {
 
         options "-stub"
-
-        setup {
-            run("CHROMAP_INDEX", alias: "CHROMAP_INDEX_STUB")  {
-                script "../../index/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of([
-                        [:], // meta map
-                        [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
-                    ])
-                    """
-                }
-            }
-        }
 
         when {
             process {
