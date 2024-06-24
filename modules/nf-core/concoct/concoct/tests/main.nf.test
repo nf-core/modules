@@ -88,10 +88,7 @@ nextflow_process {
         when {
             process {
                 """
-                ch_input_for_concoctconcoct = CONCOCT_CONCOCTCOVERAGETABLE.out.tsv
-                                                .join(CONCOCT_CUTUPFASTA.out.fasta)
-
-                input[0] = ch_input_for_concoctconcoct
+                input[0] = [ [id: 'test'], [], [] ]
                 """
             }
         }

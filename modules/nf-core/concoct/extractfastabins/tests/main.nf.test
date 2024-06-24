@@ -103,11 +103,11 @@ nextflow_process {
         when {
             process {
                 """
-                fasta = [
-                            [id: 'test', single_end: false],
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                        ]
-                input[0] = Channel.of(fasta).join(CONCOCT_MERGECUTUPCLUSTERING.out.csv)
+                input[0] =  [
+                                [id: 'test', single_end: false],
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                                []
+                            ]
                 """
             }
         }
