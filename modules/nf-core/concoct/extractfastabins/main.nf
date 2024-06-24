@@ -46,7 +46,7 @@ process CONCOCT_EXTRACTFASTABINS {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}
-    touch ${prefix}/${prefix}.fa.gz
+    echo "" | gzip > ${prefix}/${prefix}.fa.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
