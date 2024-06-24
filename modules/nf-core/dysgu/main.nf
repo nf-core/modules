@@ -29,7 +29,7 @@ process DYSGU {
 
     dysgu run \\
         $fasta \\
-        --temp-directory . \\
+        temp_dysgu \\
         $input_bam \\
         | bgzip ${args2} --threads ${task.cpus} --stdout > ${prefix}.vcf.gz
     tabix ${args3} ${prefix}.vcf.gz
