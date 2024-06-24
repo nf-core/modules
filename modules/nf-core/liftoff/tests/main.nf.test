@@ -1,0 +1,102 @@
+nextflow_process {
+
+    name "Test Process LIFTOFF"
+    script "../main.nf"
+    process "LIFTOFF"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "nf-core/gunzip"
+    tag "liftoff"
+    tag "gunzip"
+
+    test("homo_sapiens-genome_21_fasta-genome_1_fasta-genome_1_gtf") {
+
+        setup {
+            run("GUNZIP") {
+                script "../../../nf-core/gunzip"
+
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.test_data['homo_sapiens']['genome']['genome_1_fasta'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                ]
+                input[1] = GUNZIP.out.gunzip.map { meta, file -> file }
+                input[2] = [
+                    file(params.test_data['homo_sapiens']['genome']['genome_1_gtf'], checkIfExists: true)
+                ]
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.unmapped_txt).match("unmapped_txt") },
+                { assert file(process.out.gff3[0][1]).text.contains("chr21\tLiftoff\texon\t34608061\t34608118\t.\t+\t.") },
+                { assert file(process.out.polished_gff3[0][1]).text.contains("chr21\tLiftoff\texon\t34608061\t34608118\t.\t+\t.") },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+    test("homo_sapiens-genome_21_fasta-genome_1_fasta-genome_1_gtf-stub") {
+        options '-stub'
+
+        setup {
+            run("GUNZIP") {
+                script "../../../nf-core/gunzip"
+
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.test_data['homo_sapiens']['genome']['genome_1_fasta'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                ]
+                input[1] = GUNZIP.out.gunzip.map { meta, file -> file }
+                input[2] = [
+                    file(params.test_data['homo_sapiens']['genome']['genome_1_gtf'], checkIfExists: true)
+                ]
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

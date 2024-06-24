@@ -12,10 +12,10 @@ process MALT_RUN {
     path index
 
     output:
-    tuple val(meta), path("*.rma6")                          , emit: rma6
-    tuple val(meta), path("*.{tab,text,sam}"),  optional:true, emit: alignments
-    tuple val(meta), path("*.log")                           , emit: log
-    path "versions.yml"                                      , emit: versions
+    tuple val(meta), path("*.rma6")                                , emit: rma6
+    tuple val(meta), path("*.{tab,text,sam,tab.gz,text.gz,sam.gz}"),  optional:true, emit: alignments
+    tuple val(meta), path("*.log")                                 , emit: log
+    path "versions.yml"                                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,7 +23,6 @@ process MALT_RUN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     malt-run \\
         -t $task.cpus \\
@@ -32,6 +31,20 @@ process MALT_RUN {
         $args \\
         --inFile ${fastqs.join(' ')} \\
         --index $index/ |&tee ${prefix}-malt-run.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        malt: \$(malt-run --help  2>&1 | grep -o 'version.* ' | cut -f 1 -d ',' | cut -f2 -d ' ')
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}-malt-run.log
+    touch ${prefix}.rma6
+    touch ${prefix}.sam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

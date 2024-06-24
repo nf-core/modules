@@ -22,13 +22,33 @@ process NANOPLOT {
 
     script:
     def args = task.ext.args ?: ''
-    def input_file = ("$ontfile".endsWith(".fastq.gz")) ? "--fastq ${ontfile}" :
+    def input_file = ("$ontfile".endsWith(".fastq.gz") || "$ontfile".endsWith(".fq.gz")) ? "--fastq ${ontfile}" :
         ("$ontfile".endsWith(".txt")) ? "--summary ${ontfile}" : ''
     """
     NanoPlot \\
         $args \\
         -t $task.cpus \\
         $input_file
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        nanoplot: \$(echo \$(NanoPlot --version 2>&1) | sed 's/^.*NanoPlot //; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    """
+    touch LengthvsQualityScatterPlot_dot.html
+    touch LengthvsQualityScatterPlot_kde.html
+    touch NanoPlot-report.html
+    touch NanoPlot_20240301_1130.log
+    touch NanoStats.txt
+    touch Non_weightedHistogramReadlength.html
+    touch Non_weightedLogTransformed_HistogramReadlength.html
+    touch WeightedHistogramReadlength.html
+    touch WeightedLogTransformed_HistogramReadlength.html
+    touch Yield_By_Length.html
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

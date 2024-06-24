@@ -69,6 +69,22 @@ output:
       type: file
       description: This file shows how many ZMWs have been filtered, how ZMWs many are same/different, and how many reads have been filtered.
       pattern: "*.summary"
+  - fasta:
+      type: file
+      description: A fasta file of ccs purged of primers.
+      pattern: "*.fa"
+  - fastagz:
+      type: file
+      description: A fasta.gz file of ccs purged of primers.
+      pattern: "*.fasta.gz"
+  - fastq:
+      type: file
+      description: A fastq file of ccs purged of primers.
+      pattern: "*.fastq"
+  - fastqgz:
+      type: file
+      description: A fastq.gz file of ccs purged of primers.
+      pattern: "*.fastq.gz"
   - versions:
       type: file
       description: File containing software versions
