@@ -26,10 +26,10 @@ process DYSGU {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    mkdir temp
+
     dysgu run \\
         $fasta \\
-        --temp-directory ./temp \\
+        --temp-directory . \\
         $input_bam \\
         | bgzip ${args2} --threads ${task.cpus} --stdout > ${prefix}.vcf.gz
     tabix ${args3} ${prefix}.vcf.gz
