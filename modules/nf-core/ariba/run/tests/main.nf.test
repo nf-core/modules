@@ -17,7 +17,9 @@ nextflow_process {
                     script "../../../ariba/getref/main.nf"
                     process {
                         """
-                        input[0] =  "card"
+                        input[0] = [ [ id:'test' ], // meta map
+                            "card"
+                            ]
                         """
                     }
                 }
