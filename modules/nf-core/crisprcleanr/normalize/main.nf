@@ -49,4 +49,22 @@ process CRISPRCLEANR_NORMALIZE {
     close(f)
 
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    #!/usr/bin/env Rscript
+    write.table(data.frame(), file=paste0("${prefix}","_norm_table.tsv"),row.names=FALSE,quote=FALSE,sep="\t")
+
+    version_file_path <- "versions.yml"
+    version_crisprcleanr <- paste(unlist(packageVersion("CRISPRcleanR")), collapse = ".")
+    f <- file(version_file_path, "w")
+    writeLines('"${task.process}":', f)
+    writeLines("    crisprcleanr: ", f, sep = "")
+    writeLines(version_crisprcleanr, f)
+    close(f)
+    """
+
 }
