@@ -119,6 +119,20 @@ nextflow_process {
 
         options "-stub"
 
+        setup {
+            run("CHROMAP_INDEX", alias: "CHROMAP_INDEX_STUB")  {
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [:], // meta map
+                        [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                    ])
+                    """
+                }
+            }
+        }
+
         when {
             process {
                 """
@@ -127,7 +141,7 @@ nextflow_process {
                     [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
                 ])
                 input[1] = Channel.of([[:], [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]])
-                input[2] = CHROMAP_INDEX.out.index
+                input[2] = CHROMAP_INDEX_STUB.out.index
                 input[3] = []
                 input[4] = []
                 input[5] = []
