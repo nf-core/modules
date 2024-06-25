@@ -4,15 +4,15 @@ process DATAVZRD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/datavzrd:2.23.2':
-        'biocontainers/datavzrd:2.23.2' }"
+        'oras://community.wave.seqera.io/library/datavzrd:2.36.12--bb93c8c988b7a9af':
+        'community.wave.seqera.io/library/datavzrd:2.36.12--593eb75e566b7f2a' }"
 
     input:
-    tuple val(meta), file (config_file)
+    tuple val(meta), file (config_file), file(table)
 
     output:
     tuple val(meta), path ("output"), emit: report
-    path "versions.yml"           , emit: versions
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,27 +20,27 @@ process DATAVZRD {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
-
     """
     mkdir output
     datavzrd \\
+        ${args} \\
         ${config_file} \\
         --output output \\
-        ${args}
-
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        datavzrd: \$(echo \$( datavzrd version | sed -e "s/datavzrd v//g" ))
+        datavzrd: \$(echo \$( datavzrd --version | sed -e 's/[^0-9.]//g' ))
     END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
-
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    mkdir output
+    mkdir output/static
+    mkdir output/network
+    mkdir output/network/data
+    mkdir output/network/plots
     touch ./output/index.html
     touch ./output/static/bootstrap.min.css
     touch ./output/static/bootstrap-select.min.css
@@ -55,10 +55,9 @@ process DATAVZRD {
     touch ./output/network/data/data_1.js
     touch ./output/network/plots/plot_0.js
 
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        datavzrd: \$(echo \$( datavzrd version | sed -e "s/datavzrd v//g" ))
+        datavzrd: \$(echo \$( datavzrd --version | sed -e 's/[^0-9.]//g' ))
     END_VERSIONS
     """
 }

@@ -1,5 +1,3 @@
-// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
-// nf-core modules test datavzrd
 nextflow_process {
     name 'Test Process DATAVZRD'
     script '../main.nf'
@@ -9,74 +7,60 @@ nextflow_process {
     tag 'modules_nfcore'
     tag 'datavzrd'
 
-    test('datavzrd - csv') {
-
-        setup {
-                process {
-                    '''
-                    input[0] = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/generic/csv/test.csv")
-                    '''
-                }
-        }
+    test("csv") {
 
         when {
             process {
-                '''
-                input[0] = [[id: "csv_config"], file("https://raw.githubusercontent.com/vickylaram/test-datasets/modules/data/generic/config/config_test.datavzrd.yaml", checkIfExists: true)]
-                '''
+                """
+                input[0] = [ [id: "csv_config"],
+                    file("https://raw.githubusercontent.com/vickylaram/test-datasets/c2fec56607c6136fe0da26bdf5069967c8cda957/data/generic/config/config_test.datavzrd.yaml", checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/csv/test.csv', checkIfExists: true)
+                    ]
+                """
             }
         }
 
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.report.isEmpty },
-                { assert process.out.report.size() != 0 }
-                { assert snapshot(process.out).match() }
-            //TODO nf-core: Add all required assertions to verify the test output.
-            // See https://nf-co.re/docs/contributing/tutorials/nf-test_assertions for more information and examples.
+                { assert snapshot(process.out.versions).match("csv") }
             )
         }
     }
 
-    test('datavzrd - tsv') {
-        setup {
-                process {
-                    '''
-                    input[0] = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/generic/tsv/network.tsv", checkIfExists: true)
-                    '''
-                }
-
-        }
+    test("tsv") {
 
         when {
             process {
-                '''
-                input[0] = [[id: "tsv_config"], file("https://raw.githubusercontent.com/vickylaram/test-datasets/modules/data/generic/config/config_network.datavzrd.yaml", checkIfExists: true)]
-                '''
+                """
+                input[0] = [ [id: "tsv_config"],
+                    file("https://raw.githubusercontent.com/vickylaram/test-datasets/c2fec56607c6136fe0da26bdf5069967c8cda957/data/generic/config/config_network.datavzrd.yaml", checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/tsv/network.tsv', checkIfExists: true)
+                    ]
+                """
             }
         }
 
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.report != null },
-                { assert snapshot(process.out).match() }
-            //TODO nf-core: Add all required assertions to verify the test output.
-            // See https://nf-co.re/docs/contributing/tutorials/nf-test_assertions for more information and examples.
+                { assert snapshot(process.out.versions).match("tsv") }
             )
         }
     }
 
-    // TODO nf-core: Change the test name preferably indicating the test-data and file-format used but keep the " - stub" suffix.
-    test('datavzrd - stub') {
-        options '-stub'
+    test("csv - stub") {
+
+        options "-stub"
 
         when {
             process {
-                '''
-                input[0] = [[id: "csv_config"], file("https://raw.githubusercontent.com/vickylaram/test-datasets/modules/data/generic/config/config_test.datavzrd.yaml", checkIfExists: true)]
-                '''
+                """
+                input[0] = [ [id: "csv_config"],
+                    file("https://raw.githubusercontent.com/vickylaram/test-datasets/c2fec56607c6136fe0da26bdf5069967c8cda957/data/generic/config/config_test.datavzrd.yaml", checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/csv/test.csv', checkIfExists: true)
+                    ]
+                """
             }
         }
 
@@ -84,17 +68,16 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out).match() }
-            //TODO nf-core: Add all required assertions to verify the test output.
             )
         }
     }
 
-    test('datavzrd - no config file') {
+    test("no_config_file") {
         when {
             process {
-                '''
+                """
                 input[0] = []
-                '''
+                """
             }
         }
 
@@ -103,8 +86,6 @@ nextflow_process {
                 { assert process.failed },
                 { assert process.out['report'].isEmpty() },
                 { assert snapshot(process.out).match() }
-            //TODO nf-core: Add all required assertions to verify the test output.
-            // See https://nf-co.re/docs/contributing/tutorials/nf-test_assertions for more information and examples.
             )
         }
     }
