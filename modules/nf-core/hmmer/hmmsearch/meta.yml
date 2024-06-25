@@ -1,7 +1,7 @@
 name: hmmer_hmmsearch
 description: search profile(s) against a sequence database
 keywords:
-  - hidden Markov model
+  - Hidden Markov Model
   - HMM
   - hmmer
   - hmmsearch
@@ -28,14 +28,14 @@ input:
       description: Database of sequences in FASTA format
       pattern: "*.{fasta,fna,faa,fa,fasta.gz,fna.gz,faa.gz,fa.gz}"
   - write_align:
-      type: val
-      description: Flag to write optional alignment output. Specify with 'true' to output
+      type: boolean
+      description: Flag to save optional alignment output. Specify with 'true' to save.
   - write_target:
-      type: val
-      description: Flag to write optional per target summary . Specify with 'true' to output
+      type: boolean
+      description: Flag to save optional per target summary. Specify with 'true' to save.
   - write_domain:
-      type: val
-      description: Flag to write optional per domain summary. Specify with 'true' to output
+      type: boolean
+      description: Flag to save optional per domain summary. Specify with 'true' to save.
 output:
   - meta:
       type: map
