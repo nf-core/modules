@@ -8,10 +8,7 @@ nextflow_process {
 
     test("csv") {
 
-        config "./nextflow.config"
-
         when {
-            params.outdir = outputDir
             process {
                 """
                 input[0] = [ [id: "csv_config"],
@@ -25,12 +22,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                //{ assert snapshot(process.out.versions).match("csv") },
                 { assert snapshot(
                             process.out.versions,
-                            path("${outputDir}")
+                            path(process.out.report[0][1])
                                 .list()
-                                .collect { getRecursiveFileNames(it, outputDir) }
+                                .collect { getRecursiveFileNames(it, process.out.report[0][1]) }
                                 .flatten()
                         ).match("csv")
                     }
@@ -54,7 +50,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("tsv") },
+                { assert snapshot(
+                            process.out.versions,
+                            path(process.out.report[0][1])
+                                .list()
+                                .collect { getRecursiveFileNames(it, process.out.report[0][1]) }
+                                .flatten()
+                        ).match("tsv")
+                    }
             )
         }
     }
