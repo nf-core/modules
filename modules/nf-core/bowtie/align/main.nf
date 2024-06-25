@@ -10,6 +10,7 @@ process BOWTIE_ALIGN {
     input:
     tuple val(meta), path(reads)
     tuple val(meta2), path(index)
+    val (save_unaligned)
 
     output:
     tuple val(meta), path('*.bam')     , emit: bam
@@ -24,7 +25,7 @@ process BOWTIE_ALIGN {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def unaligned = params.save_unaligned ? "--un ${prefix}.unmapped.fastq" : ''
+    def unaligned = save_unaligned ? "--un ${prefix}.unmapped.fastq" : ''
     def endedness = meta.single_end ? "$reads" : "-1 ${reads[0]} -2 ${reads[1]}"
     """
     INDEX=\$(find -L ./ -name "*.3.ebwt" | sed 's/\\.3.ebwt\$//')
@@ -56,9 +57,9 @@ process BOWTIE_ALIGN {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def unaligned = params.save_unaligned ?
+    def unaligned = save_unaligned ?
                     meta.single_end ? "echo '' | gzip > ${prefix}.unmapped.fastq.gz" :
-                                    "echo '' | gzip > ${prefix}.unmapped_1.fastq.gz; echo '' | gzip > ${prefix}.unmapped_2.fastq.gz"
+                        "echo '' | gzip > ${prefix}.unmapped_1.fastq.gz; echo '' | gzip > ${prefix}.unmapped_2.fastq.gz"
                     : ''
     """
     touch ${prefix}.bam

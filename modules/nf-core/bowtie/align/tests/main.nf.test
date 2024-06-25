@@ -32,6 +32,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                     ]
                 input[1] = BOWTIE_BUILD.out.index
+                input[2] = false
                 """
             }
         }
@@ -60,6 +61,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                     ]
                 input[1] = BOWTIE_BUILD.out.index
+                input[2] = false
                 """
             }
         }
@@ -83,6 +85,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]
                     ]
                 input[1] = BOWTIE_BUILD.out.index
+                input[2] = true
                 """
             }
         }
@@ -93,6 +96,7 @@ nextflow_process {
                 { assert snapshot(process.out.versions,
                                   process.out.bam.collect { bam(it[1]).getHeaderMD5() },
                                   process.out.bam.collect { bam(it[1]).getReadsMD5() },
+                                  process.out.fastq,
                                   process.out.log
                                   ).match() }
             )
@@ -110,6 +114,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                     ]
                 input[1] = BOWTIE_BUILD.out.index
+                input[2] = true
                 """
             }
         }
