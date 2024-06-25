@@ -28,8 +28,9 @@ process DYSGU {
     """
 
     dysgu run \\
-        -p4 \\     
+        -p ${task.cpus} \\     
         $fasta \\
+        . \\
         $input_bam \\
         | bgzip ${args2} --threads ${task.cpus} --stdout > ${prefix}.vcf.gz
     tabix ${args3} ${prefix}.vcf.gz
