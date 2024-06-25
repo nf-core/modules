@@ -7,17 +7,28 @@ keywords:
   - tsv
   - csv
 tools:
-  - "datavzrd":
+  - datavzrd:
       description: Datavzrd is a tool to create visual HTML reports from collections of CSV/TSV tables.
       homepage: https://datavzrd.github.io/
       documentation: https://datavzrd.github.io/docs/index.html
       tool_dev_url: https://github.com/datavzrd/datavzrd
       licence: ["MIT"]
+
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - config_file:
       type: file
       description: configuration file used for visualisation
       pattern: "*.{yml,yaml}"
+  - table:
+      type: file
+      description: file used for visualisation
+      pattern: "*.{tsv,csv}"
+
 output:
   - versions:
       type: file
@@ -30,5 +41,6 @@ output:
 
 authors:
   - "@vickylaram"
+  - "@famosab"
 maintainers:
-  - "@vickylaram"
+  - "@famosab"

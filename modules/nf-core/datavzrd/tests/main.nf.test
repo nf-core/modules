@@ -1,11 +1,10 @@
 nextflow_process {
-    name 'Test Process DATAVZRD'
-    script '../main.nf'
-    process 'DATAVZRD'
-
-    tag 'modules'
-    tag 'modules_nfcore'
-    tag 'datavzrd'
+    name "Test Process DATAVZRD"
+    script "../main.nf"
+    process "DATAVZRD"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "datavzrd"
 
     test("csv") {
 
@@ -13,7 +12,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [id: "csv_config"],
-                    file("https://raw.githubusercontent.com/vickylaram/test-datasets/c2fec56607c6136fe0da26bdf5069967c8cda957/data/generic/config/config_test.datavzrd.yaml", checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/config/config_test.datavzrd.yaml', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'generic/csv/test.csv', checkIfExists: true)
                     ]
                 """
@@ -23,7 +22,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("csv") }
+                { assert snapshot(process.out.versions).match("csv") },
             )
         }
     }
@@ -34,7 +33,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [id: "tsv_config"],
-                    file("https://raw.githubusercontent.com/vickylaram/test-datasets/c2fec56607c6136fe0da26bdf5069967c8cda957/data/generic/config/config_network.datavzrd.yaml", checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/config/config_network.datavzrd.yaml', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'generic/tsv/network.tsv', checkIfExists: true)
                     ]
                 """
@@ -44,7 +43,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("tsv") }
+                { assert snapshot(process.out.versions).match("tsv") },
             )
         }
     }
@@ -57,7 +56,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [id: "csv_config"],
-                    file("https://raw.githubusercontent.com/vickylaram/test-datasets/c2fec56607c6136fe0da26bdf5069967c8cda957/data/generic/config/config_test.datavzrd.yaml", checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/config/config_test.datavzrd.yaml', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'generic/csv/test.csv', checkIfExists: true)
                     ]
                 """
