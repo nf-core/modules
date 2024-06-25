@@ -29,6 +29,7 @@ process DYSGU {
 
     dysgu run \\
         -p ${task.cpus} \\
+        -x \\
         $fasta \\
         . \\
         $input_bam \\
