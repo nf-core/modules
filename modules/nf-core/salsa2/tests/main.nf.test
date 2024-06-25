@@ -1,0 +1,39 @@
+nextflow_process {
+
+    name "Test Process SALSA2"
+    script "../main.nf"
+    process "SALSA2"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "salsa2"
+
+    test("Single-Read") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end: false ], // meta map
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+                ]
+                input[1] = [
+                    file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
+                ]
+                input[2] = []
+                input[3] = []
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out.fasta).match("fasta") },
+                { assert snapshot(process.out.agp).match("agp") },
+                 { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
+}
