@@ -1,14 +1,16 @@
 nextflow_process {
 
-    name "Test Process CONCOCT_CONCOCTCOVERAGETABLE"
+    name "Test Process CONCOCT_EXTRACTFASTABINS"
     script "../main.nf"
-    process "CONCOCT_CONCOCTCOVERAGETABLE"
-
+    process "CONCOCT_EXTRACTFASTABINS"
     tag "modules"
     tag "modules_nfcore"
     tag "concoct"
-    tag "concoct/concoctcoveragetable"
+    tag "concoct/extractfastabins"
     tag "concoct/cutupfasta"
+    tag "concoct/concoctcoveragetable"
+    tag "concoct/concoct"
+    tag "concoct/mergecutupclustering"
 
     setup {
         run("CONCOCT_CUTUPFASTA") {
@@ -23,11 +25,9 @@ nextflow_process {
                 """
             }
         }
-    }
 
-    test("sarscov2 - bam") {
-
-        when {
+        run("CONCOCT_CONCOCTCOVERAGETABLE") {
+            script "../../concoctcoveragetable/main.nf"
             process {
                 """
                 ch_bam_input = Channel
@@ -51,6 +51,42 @@ nextflow_process {
             }
         }
 
+        run("CONCOCT_CONCOCT") {
+            script "../../concoct/main.nf"
+            process {
+                """
+                ch_input_for_concoctconcoct = CONCOCT_CONCOCTCOVERAGETABLE.out.tsv
+                                                .join(CONCOCT_CUTUPFASTA.out.fasta)
+
+                input[0] = ch_input_for_concoctconcoct
+                """
+            }
+        }
+
+        run("CONCOCT_MERGECUTUPCLUSTERING") {
+            script "../../mergecutupclustering/main.nf"
+            process {
+                """
+                input[0] = CONCOCT_CONCOCT.out.clustering_csv
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - bam") {
+
+        when {
+            process {
+                """
+                fasta = [
+                            [id: 'test', single_end: false],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                        ]
+                input[0] = Channel.of(fasta).join(CONCOCT_MERGECUTUPCLUSTERING.out.csv)
+                """
+            }
+        }
+
         then {
             assertAll(
                 { assert process.success },
@@ -67,7 +103,11 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [id:'test'], [], [] ,[] ]
+                input[0] =  [
+                                [id: 'test', single_end: false],
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                                []
+                            ]
                 """
             }
         }
