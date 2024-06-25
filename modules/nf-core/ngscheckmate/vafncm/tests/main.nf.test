@@ -98,8 +98,8 @@ nextflow_process {
                         [
                             [ id:'test3', single_end:false ], // meta map
                             [
-                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_methylated_1.fastq.gz', checkIfExists: true),
-                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_methylated_2.fastq.gz', checkIfExists: true)
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true)
                             ]
                         ],
                     ]
