@@ -16,9 +16,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.test_data['sarscov2']['genome']['contigs_genome_maf_gz'], checkIfExists: true)
+                    file(params.test_data['sarscov2']['genome']['contigs_genome_maf_gz'], checkIfExists: true),
+                    []
                 ]
                 input[1] = channel.of("png")
+                input[2] = []
                 """
             }
         }
@@ -40,9 +42,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.test_data['sarscov2']['genome']['contigs_genome_maf_gz'], checkIfExists: true)
+                    file(params.test_data['sarscov2']['genome']['contigs_genome_maf_gz'], checkIfExists: true),
+                    []
                 ]
                 input[1] = channel.of("gif")
+                input[2] = []
                 """
             }
         }
@@ -65,9 +69,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.test_data['sarscov2']['genome']['contigs_genome_maf_gz'], checkIfExists: true)
+                    file(params.test_data['sarscov2']['genome']['contigs_genome_maf_gz'], checkIfExists: true),
+                    []
                 ]
                 input[1] = channel.of("png")
+                input[2] = []
                 """
             }
         }

@@ -8,8 +8,9 @@ process LAST_DOTPLOT {
         'biocontainers/last:1542--h43eeafb_1' }"
 
     input:
-    tuple val(meta), path(maf)
+    tuple val(meta), path(maf), path(annot_b)
     val(format)
+    path(annot_a)
 
     output:
     tuple val(meta), path("*.gif"), optional:true, emit: gif
@@ -22,9 +23,12 @@ process LAST_DOTPLOT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def annot_a_arg = annot_a ? "-a ${annot_a}" : ''
+    def annot_b_arg = annot_b ? "-b ${annot_b}" : ''
     """
     last-dotplot \\
         $args \\
+        $annot_a_arg $annot_b_arg \\
         $maf \\
         $prefix.$format
 
