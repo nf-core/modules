@@ -8,11 +8,11 @@ process DATAVZRD {
         'community.wave.seqera.io/library/datavzrd:2.36.12--593eb75e566b7f2a' }"
 
     input:
-    tuple val(meta), file (config_file), file(table)
+    tuple val(meta), file(config_file), file(table)
 
     output:
-    tuple val(meta), path ("output"), emit: report
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path("*"), emit: report
+    path "versions.yml"       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,11 +21,11 @@ process DATAVZRD {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir output
+    mkdir ${prefix}
     datavzrd \\
         ${args} \\
         ${config_file} \\
-        --output output \\
+        --output ${prefix} \\
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -36,24 +36,24 @@ process DATAVZRD {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir output
-    mkdir output/static
-    mkdir output/network
-    mkdir output/network/data
-    mkdir output/network/plots
-    touch ./output/index.html
-    touch ./output/static/bootstrap.min.css
-    touch ./output/static/bootstrap-select.min.css
-    touch ./output/static/bootstrap-table.min.css
-    touch ./output/static/bootstrap-table-fixed-columns.min.css
-    touch ./output/static/bundle.js
-    touch ./output/static/datavzrd.css
-    touch ./output/network/index_1.html
-    touch ./output/network/config.js
-    touch ./output/network/functions.js
-    touch ./output/network/heatmap.js
-    touch ./output/network/data/data_1.js
-    touch ./output/network/plots/plot_0.js
+    mkdir ${prefix}
+    mkdir ${prefix}/static
+    mkdir ${prefix}/network
+    mkdir ${prefix}/network/data
+    mkdir ${prefix}/network/plots
+    touch ./${prefix}/index.html
+    touch ./${prefix}/static/bootstrap.min.css
+    touch ./${prefix}/static/bootstrap-select.min.css
+    touch ./${prefix}/static/bootstrap-table.min.css
+    touch ./${prefix}/static/bootstrap-table-fixed-columns.min.css
+    touch ./${prefix}/static/bundle.js
+    touch ./${prefix}/static/datavzrd.css
+    touch ./${prefix}/network/index_1.html
+    touch ./${prefix}/network/config.js
+    touch ./${prefix}/network/functions.js
+    touch ./${prefix}/network/heatmap.js
+    touch ./${prefix}/network/data/data_1.js
+    touch ./${prefix}/network/plots/plot_0.js
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
