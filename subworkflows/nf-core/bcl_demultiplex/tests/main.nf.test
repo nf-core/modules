@@ -35,11 +35,11 @@ nextflow_workflow {
                     workflow.out.reports,
                     workflow.out.versions,
                     workflow.out.fastq,
-                    workflow.out.empty_fastq,
                     workflow.out.stats,
                     workflow.out.interop.get(0).get(1).findAll { file(it).name != "IndexMetricsOut.bin" },
                     ).match()
                 },
+                { assert file(workflow.out.empty_fastq).exists() },
                 { assert file(workflow.out.interop.get(0).get(1).find { file(it).name == "IndexMetricsOut.bin" }).exists() }
             )
         }
@@ -68,11 +68,11 @@ nextflow_workflow {
                     workflow.out.reports,
                     workflow.out.versions,
                     workflow.out.fastq,
-                    workflow.out.empty_fastq,
                     workflow.out.stats,
                     workflow.out.interop.get(0).get(1).findAll { file(it).name != "IndexMetricsOut.bin" },
                     ).match()
                 },
+                { assert file(workflow.out.empty_fastq).exists() },
                 { assert file(workflow.out.interop.get(0).get(1).find { file(it).name == "IndexMetricsOut.bin" }).exists() }
             )
         }
