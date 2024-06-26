@@ -1,0 +1,499 @@
+nextflow_process {
+
+    name "Test Process DESEQ2_DIFFERENTIAL"
+    script "../main.nf"
+    process "DESEQ2_DIFFERENTIAL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "deseq2"
+    tag "deseq2/differential"
+
+    test("mouse - contrasts - matrix") {
+
+        config './contrasts_matrix.config'
+        
+        when {
+            process {
+                """
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_matrix = [
+                    [id: 'test'], 
+                    file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+                ch_spikes = [[],[]]
+                ch_lengths = [[],[]]
+                
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.results,
+                    process.out.size_factors,
+                    process.out.normalised_counts,
+                    process.out.rlog_counts,
+                    process.out.vst_counts,
+                    process.out.model,
+                    process.out.versions,
+                    file(process.out.dispersion_plot[0][1]).name,
+                    file(process.out.rdata[0][1]).name
+                ).match() },
+                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }                
+            )
+        }
+    }
+
+    test("mouse - contrasts - matrix - lengths") {
+
+        config './contrasts_matrix.config'
+
+        when {
+            process {
+                """
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_matrix = [
+                    [id: 'test'], 
+                    file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+                ch_lengths = [
+                    [id: 'test'], 
+                    file(expression_test_data_dir + 'SRP254919.spoofed_lengths.tsv', checkIfExists: true)
+                ]
+                
+                ch_spikes = [[],[]]
+
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.results,
+                    process.out.size_factors,
+                    process.out.normalised_counts,
+                    process.out.rlog_counts,
+                    process.out.vst_counts,
+                    process.out.model,
+                    process.out.versions,
+                    file(process.out.dispersion_plot[0][1]).name,
+                    file(process.out.rdata[0][1]).name
+                ).match() },
+                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }                
+            )
+        }
+
+    }
+
+    test("mouse - contrasts - matrix - no blocking") {
+
+        config './contrasts_matrix_noblocking.config'
+        
+        when {
+            process {
+                """
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_matrix = [
+                    [id: 'test'], 
+                    file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+                ch_spikes = [[],[]]
+                ch_lengths = [[],[]]
+                
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.results,
+                    process.out.size_factors,
+                    process.out.normalised_counts,
+                    process.out.rlog_counts,
+                    process.out.vst_counts,
+                    process.out.model,
+                    process.out.versions,
+                    file(process.out.dispersion_plot[0][1]).name,
+                    file(process.out.rdata[0][1]).name
+                ).match() },
+                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }                
+            )
+        }
+    }
+
+    test("mouse - contrasts - matrix - spikes") {
+
+        config './contrasts_matrix_spikes.config'
+ 
+        when {
+            process {
+                """
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_matrix = [
+                    [id: 'test'], 
+                    file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+                ch_spikes = [
+                    ['id':'ERCC'], 
+                    file(expression_test_data_dir + 'SRP254919.spikes.tsv', checkIfExists: true)
+                ]
+                ch_lengths = [[],[]]
+                
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.results,
+                    process.out.size_factors,
+                    process.out.normalised_counts,
+                    process.out.rlog_counts,
+                    process.out.vst_counts,
+                    process.out.model,
+                    process.out.versions,
+                    file(process.out.dispersion_plot[0][1]).name,
+                    file(process.out.rdata[0][1]).name
+                ).match() },
+                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }                
+            )
+        }
+    }
+    
+    test("mouse - contrasts - matrix - strip spikes") {
+
+        config './contrasts_matrix.config'
+ 
+        when {
+            process {
+                """
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_matrix = [
+                    [id: 'test'], 
+                    file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+                ch_spikes = [
+                    ['id':'ERCC'], 
+                    file(expression_test_data_dir + 'SRP254919.spikes.tsv', checkIfExists: true)
+                ]
+                ch_lengths = [[],[]]
+                
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.results,
+                    process.out.size_factors,
+                    process.out.normalised_counts,
+                    process.out.rlog_counts,
+                    process.out.vst_counts,
+                    process.out.model,
+                    process.out.versions,
+                    file(process.out.dispersion_plot[0][1]).name,
+                    file(process.out.rdata[0][1]).name
+                ).match() },
+                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }                
+            )
+        }
+    }
+    
+    test("mouse - contrasts - matrix - csv") {
+
+        config './contrasts_matrix.config'
+        
+        when {
+            process {
+                """
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+
+                // Convert the matrix to a CSV first
+                ch_matrix = Channel.fromPath(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv')
+                    .splitCsv(header: false)
+                    .map{
+                        it.join('\t')
+                    }
+                    .collectFile(name: 'test.tsv', newLine: true, sort: false)
+                    .map{
+                        [ [ id:'test'], file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true), it]
+                }
+                ch_spikes = [[],[]]
+                ch_lengths = [[],[]]
+                
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.results,
+                    process.out.size_factors,
+                    process.out.normalised_counts,
+                    process.out.rlog_counts,
+                    process.out.vst_counts,
+                    process.out.model,
+                    process.out.versions,
+                    file(process.out.dispersion_plot[0][1]).name,
+                    file(process.out.rdata[0][1]).name
+                ).match() },
+                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }                
+            )
+        }
+    }
+    
+    test("mouse - contrasts - matrix - vst nsub") {
+
+        config './contrasts_matrix_vst_nsub.config'
+        
+        when {
+            process {
+                """
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_matrix = [
+                    [id: 'test'], 
+                    file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+                ch_spikes = [[],[]]
+                ch_lengths = [[],[]]
+                
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.results,
+                    process.out.size_factors,
+                    process.out.normalised_counts,
+                    process.out.rlog_counts,
+                    process.out.vst_counts,
+                    process.out.model,
+                    process.out.versions,
+                    file(process.out.dispersion_plot[0][1]).name,
+                    file(process.out.rdata[0][1]).name
+                ).match() },
+                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }                
+            )
+        }
+    }
+    
+    test("mouse - contrasts - matrix - subset to contrast") {
+
+        config './contrasts_matrix_subset_to_contrast.config'
+        
+        when {
+            process {
+                """
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_matrix = [
+                    [id: 'test'], 
+                    file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+                ch_spikes = [[],[]]
+                ch_lengths = [[],[]]
+                
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.results,
+                    process.out.size_factors,
+                    process.out.normalised_counts,
+                    process.out.rlog_counts,
+                    process.out.vst_counts,
+                    process.out.model,
+                    process.out.versions,
+                    file(process.out.dispersion_plot[0][1]).name,
+                    file(process.out.rdata[0][1]).name
+                ).match() },
+                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }                
+            )
+        }
+    }
+
+    test("mouse - contrasts - matrix - exclude samples") {
+
+        config './contrasts_matrix_exclude_samples.config'
+        
+        when {
+            process {
+                """
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_matrix = [
+                    [id: 'test'], 
+                    file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+                ch_spikes = [[],[]]
+                ch_lengths = [[],[]]
+                
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.results,
+                    process.out.size_factors,
+                    process.out.normalised_counts,
+                    process.out.rlog_counts,
+                    process.out.vst_counts,
+                    process.out.model,
+                    process.out.versions,
+                    file(process.out.dispersion_plot[0][1]).name,
+                    file(process.out.rdata[0][1]).name
+                ).match() },
+                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }                
+            )
+        }
+    }
+    test("mouse - contrasts - matrix - stub") {
+
+        config './contrasts_matrix.config'
+        
+        options "-stub"
+        
+        when {
+            process {
+                """
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_matrix = [
+                    [id: 'test'], 
+                    file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+                ch_spikes = [[],[]]
+                ch_lengths = [[],[]]
+                
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot( process.out).match() }
+            )
+        }
+    }
+}
