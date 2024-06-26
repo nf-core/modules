@@ -11,8 +11,8 @@ process DATAVZRD {
     tuple val(meta), file(config_file), file(table)
 
     output:
-    tuple val(meta), path("*"), emit: report
-    path "versions.yml"       , emit: versions
+    tuple val(meta), path("${meta.id}"), emit: report
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
