@@ -120,7 +120,7 @@ workflow BCL_DEMULTIPLEX {
                 return [meta, fastq.flatten()]
             }
             .branch {
-                fastq       : it[0].empty == true
+                fastq       : it[0].empty == false
                 empty_fastq : it[0].empty == true
             }
 
