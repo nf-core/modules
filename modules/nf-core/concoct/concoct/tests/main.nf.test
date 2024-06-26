@@ -1,14 +1,15 @@
 nextflow_process {
 
-    name "Test Process CONCOCT_CONCOCTCOVERAGETABLE"
+    name "Test Process CONCOCT_CONCOCT"
     script "../main.nf"
-    process "CONCOCT_CONCOCTCOVERAGETABLE"
+    process "CONCOCT_CONCOCT"
 
     tag "modules"
     tag "modules_nfcore"
     tag "concoct"
-    tag "concoct/concoctcoveragetable"
+    tag "concoct/concoct"
     tag "concoct/cutupfasta"
+    tag "concoct/concoctcoveragetable"
 
     setup {
         run("CONCOCT_CUTUPFASTA") {
@@ -23,11 +24,9 @@ nextflow_process {
                 """
             }
         }
-    }
 
-    test("sarscov2 - bam") {
-
-        when {
+        run("CONCOCT_CONCOCTCOVERAGETABLE") {
+            script "../../concoctcoveragetable/main.nf"
             process {
                 """
                 ch_bam_input = Channel
@@ -50,11 +49,33 @@ nextflow_process {
                 """
             }
         }
+    }
+
+    test("sarscov2 - bam") {
+
+        when {
+            process {
+                """
+                ch_input_for_concoctconcoct = CONCOCT_CONCOCTCOVERAGETABLE.out.tsv
+                                                .join(CONCOCT_CUTUPFASTA.out.fasta)
+
+                input[0] = ch_input_for_concoctconcoct
+                """
+            }
+        }
 
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                        process.out.args_txt,
+                        process.out.clustering_csv,
+                        process.out.original_data_csv,
+                        process.out.pca_components_csv,
+                        process.out.pca_transformed_csv,
+                        process.out.versions,
+                        file(process.out.log_txt[0][1]).readLines().last().contains("CONCOCT Finished, the log shows how it went.")
+                    ).match() }
             )
         }
 
@@ -67,7 +88,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [id:'test'], [], [] ,[] ]
+                input[0] = [ [id: 'test'], [], [] ]
                 """
             }
         }

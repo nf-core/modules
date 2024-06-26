@@ -1,14 +1,16 @@
 nextflow_process {
 
-    name "Test Process CONCOCT_CONCOCTCOVERAGETABLE"
+    name "Test Process CONCOCT_MERGECUTUPCLUSTERING"
     script "../main.nf"
-    process "CONCOCT_CONCOCTCOVERAGETABLE"
+    process "CONCOCT_MERGECUTUPCLUSTERING"
 
     tag "modules"
     tag "modules_nfcore"
     tag "concoct"
-    tag "concoct/concoctcoveragetable"
+    tag "concoct/mergecutupclustering"
     tag "concoct/cutupfasta"
+    tag "concoct/concoctcoveragetable"
+    tag "concoct/concoct"
 
     setup {
         run("CONCOCT_CUTUPFASTA") {
@@ -23,11 +25,9 @@ nextflow_process {
                 """
             }
         }
-    }
 
-    test("sarscov2 - bam") {
-
-        when {
+        run("CONCOCT_CONCOCTCOVERAGETABLE") {
+            script "../../concoctcoveragetable/main.nf"
             process {
                 """
                 ch_bam_input = Channel
@@ -51,6 +51,29 @@ nextflow_process {
             }
         }
 
+        run("CONCOCT_CONCOCT") {
+            script "../../concoct/main.nf"
+            process {
+                """
+                ch_input_for_concoctconcoct = CONCOCT_CONCOCTCOVERAGETABLE.out.tsv
+                                                .join(CONCOCT_CUTUPFASTA.out.fasta)
+
+                input[0] = ch_input_for_concoctconcoct
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - bam") {
+
+        when {
+            process {
+                """
+                input[0] = CONCOCT_CONCOCT.out.clustering_csv
+                """
+            }
+        }
+
         then {
             assertAll(
                 { assert process.success },
@@ -67,7 +90,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [id:'test'], [], [] ,[] ]
+                input[0] = [ [id: 'test'], []]
                 """
             }
         }
