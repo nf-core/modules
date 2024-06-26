@@ -15,6 +15,8 @@ process BCFTOOLS_CALL {
 
     output:
     tuple val(meta), path("*.gz") , emit: vcf
+    tuple val(meta), path("*.tbi"), emit: tbi, optional: true
+    tuple val(meta), path("*.csi"), emit: csi, optional: true
     path "versions.yml"           , emit: versions
 
     when:
@@ -43,9 +45,18 @@ process BCFTOOLS_CALL {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def index = args.contains("--write-index=tbi") || args.contains("-W=tbi") ? "tbi" :
+                args.contains("--write-index=csi") || args.contains("-W=csi") ? "csi" :
+                args.contains("--write-index") || args.contains("-W") ? "csi" :
+                ""
+
+    def create_index = index.matches("csi|tbi") ? "touch ${prefix}.vcf.gz.${index}" : ""
+
     """
-    touch ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
+    ${create_index}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -54,6 +54,14 @@ output:
       type: file
       description: VCF normalized output file
       pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+  - csi:
+      type: file
+      description: Default VCF file index
+      pattern: "*.csi"
+  - tbi:
+      type: file
+      description: Alternative VCF file index
+      pattern: "*.tbi"
   - versions:
       type: file
       description: File containing software versions

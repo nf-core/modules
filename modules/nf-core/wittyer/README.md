@@ -1,6 +1,7 @@
 # Updating the docker container and making a new module release
 
 witty.er is a commercial tool from Illumina. The container provided for the witty.er nf-core module is not provided nor supported by Illumina. Updating the witty.er versions in the container and pushing the update to Dockerhub needs to be done manually.
+NOTE: an updated version of Dockerfile than the official one in github is used to build nf-core/wittyer:0.5.2, which is inserted here ./Dockerfile.
 
 1. Navigate to the witty.er github repository. - [witty.er](https://github.com/Illumina/witty.er)
 2. Download the latest release.

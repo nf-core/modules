@@ -38,10 +38,11 @@ nextflow_process {
                     process.out.generated_run_manifest,
                     process.out.unassigned,
                     process.out.sample_fastq,
+                    process.out.versions,
                     file(process.out.qc_report[0][1]).name,
                     file(process.out.run_stats[0][1]).name,
-                    file(process.out.sample_json[0][1]).name
-                    ).match() 
+                    file(process.out.sample_json[0][1]).name,
+                ).match()
                 }
             )
         }
@@ -67,10 +68,11 @@ nextflow_process {
                     process.out.generated_run_manifest,
                     process.out.unassigned,
                     process.out.sample_fastq,
+                    process.out.versions,
                     file(process.out.qc_report[0][1]).name,
                     file(process.out.run_stats[0][1]).name,
-                    file(process.out.sample_json[0][1]).name
-                    ).match() 
+                    file(process.out.sample_json[0][1]).name,
+                ).match()
                 }
             )
         }

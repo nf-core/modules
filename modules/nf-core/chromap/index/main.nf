@@ -33,4 +33,15 @@ process CHROMAP_INDEX {
         chromap: \$(echo \$(chromap --version 2>&1))
     END_VERSIONS
     """
+
+    stub:
+    def prefix = fasta.baseName
+    """
+    touch ${prefix}.index
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        chromap: \$(echo \$(chromap --version 2>&1))
+    END_VERSIONS
+    """
 }

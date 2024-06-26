@@ -21,7 +21,7 @@ process SAMTOOLS_REHEADER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    if ("$bam" == "${meta.id}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     samtools \\
         reheader \\

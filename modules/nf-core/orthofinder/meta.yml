@@ -1,0 +1,50 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "orthofinder"
+description: OrthoFinder is a fast, accurate and comprehensive platform for comparative genomics.
+keywords:
+  - genomics
+  - orthogroup
+  - orthologs
+  - gene
+  - duplication
+  - tree
+  - phylogeny
+tools:
+  - "orthofinder":
+      description: "Accurate inference of orthogroups, orthologues, gene trees and rooted species tree made easy!"
+      homepage: "https://github.com/davidemms/OrthoFinder"
+      documentation: "https://github.com/davidemms/OrthoFinder"
+      tool_dev_url: "https://github.com/davidemms/OrthoFinder"
+      doi: "10.1186/s13059-019-1832-y"
+      licence: ["GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1' ]`
+  - fastas:
+      type: list
+      description: Input fasta files
+      pattern: "*.{fa,faa,fasta,fas,pep}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1' ]`
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - orthofinder:
+      type: directory
+      description: Orthofinder output directory
+
+authors:
+  - "@GallVp"
+maintainers:
+  - "@GallVp"

@@ -8,9 +8,9 @@ nextflow_process {
     tag "modules_nfcore"
     tag "nonpareil"
     tag "nonpareil/curve"
+    tag "nonpareil/nonpareil"
 
     test("candidatus_portiera_aleyrodidarum") {
-
 
         setup {
             run("NONPAREIL_NONPAREIL") {
@@ -40,10 +40,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        file(process.out.png[0][1]).name,
+                    process.out.versions,
+                    file(process.out.png[0][1]).name,
                     ).match()
-                },
-                { assert snapshot(process.out.versions).match("versions") },
+                }
             )
         }
 

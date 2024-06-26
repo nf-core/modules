@@ -9,6 +9,7 @@ process ABRICATE_RUN {
 
     input:
     tuple val(meta), path(assembly)
+    path databasedir
 
     output:
     tuple val(meta), path("*.txt"), emit: report
@@ -20,11 +21,27 @@ process ABRICATE_RUN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def datadir = databasedir ? "--datadir ${databasedir}" : ''
     """
     abricate \\
         $assembly \\
         $args \\
-        --threads $task.cpus > ${prefix}.txt
+        $datadir \\
+        --threads $task.cpus \\
+        > ${prefix}.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        abricate: \$(echo \$(abricate --version 2>&1) | sed 's/^.*abricate //' )
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def datadir = databasedir ? '--datadir ${databasedir}' : ''
+    """
+    touch ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -10,6 +10,7 @@ logging.basicConfig(format="%(name)s - %(asctime)s %(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+
 def get_rrna_intervals(gtf: str, rrna_transcripts: str):
     """
     Get lines containing ``#`` or ``gene_type rRNA`` or ```` or ``gene_type rRNA_pseudogene`` or ``gene_type MT_rRNA``
@@ -67,19 +68,16 @@ def format_yaml_like(data: dict, indent: int = 0) -> str:
 
 
 if __name__ == "__main__":
-    if '${task.ext.prefix}' != "null":
+    if "${task.ext.prefix}" != "null":
         prefix = "${task.ext.prefix}."
     else:
         prefix = "${task.ext.gtf}."
 
-    if not get_rrna_intervals('$gtf', f"{prefix}_rrna_intervals.gtf"):
+    if not get_rrna_intervals("$gtf", f"{prefix}_rrna_intervals.gtf"):
         logging.error("Failed to extract rrna transcipts.")
-
-
 
     # Write the versions
     versions_this_module = {}
     versions_this_module["${task.process}"] = {"python": platform.python_version()}
     with open("versions.yml", "w") as f:
         f.write(format_yaml_like(versions_this_module))
-

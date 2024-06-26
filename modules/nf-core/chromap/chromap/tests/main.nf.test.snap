@@ -1,68 +1,5 @@
 {
-    "test_chromap_chromap_paired_end": {
-        "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.bed.gz:md5,54c1feb6f714b72f73befae8435e242b"
-                    ]
-                ],
-                "1": [
-                    
-                ],
-                "2": [
-                    
-                ],
-                "3": [
-                    
-                ],
-                "4": [
-                    "versions.yml:md5,80647c2956e504334ad25ce31d33b539"
-                ],
-                "bam": [
-                    
-                ],
-                "bed": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.bed.gz:md5,54c1feb6f714b72f73befae8435e242b"
-                    ]
-                ],
-                "pairs": [
-                    
-                ],
-                "tagAlign": [
-                    
-                ],
-                "versions": [
-                    "versions.yml:md5,80647c2956e504334ad25ce31d33b539"
-                ]
-            }
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.1"
-        },
-        "timestamp": "2024-05-22T19:08:55.497043"
-    },
-    "test_chromap_chromap_paired_bam": {
-        "content": [
-            "test.bam"
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.1"
-        },
-        "timestamp": "2024-05-22T19:09:02.957218"
-    },
-    "test_chromap_chromap_single_end": {
+    "sarscov2 - single_end": {
         "content": [
             {
                 "0": [
@@ -111,9 +48,62 @@
         ],
         "meta": {
             "nf-test": "0.8.4",
-            "nextflow": "24.04.1"
+            "nextflow": "24.04.2"
         },
-        "timestamp": "2024-05-22T19:08:47.822066"
+        "timestamp": "2024-06-24T09:14:34.016756"
+    },
+    "sarscov2 - paired_end ": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bed.gz:md5,54c1feb6f714b72f73befae8435e242b"
+                    ]
+                ],
+                "1": [
+                    
+                ],
+                "2": [
+                    
+                ],
+                "3": [
+                    
+                ],
+                "4": [
+                    "versions.yml:md5,80647c2956e504334ad25ce31d33b539"
+                ],
+                "bam": [
+                    
+                ],
+                "bed": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bed.gz:md5,54c1feb6f714b72f73befae8435e242b"
+                    ]
+                ],
+                "pairs": [
+                    
+                ],
+                "tagAlign": [
+                    
+                ],
+                "versions": [
+                    "versions.yml:md5,80647c2956e504334ad25ce31d33b539"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "24.04.2"
+        },
+        "timestamp": "2024-06-24T09:18:23.379305"
     },
     "versions": {
         "content": [
@@ -126,5 +116,104 @@
             "nextflow": "24.04.1"
         },
         "timestamp": "2024-05-22T19:09:02.94685"
+    },
+    "sarscov2 - single_end - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.tagAlign.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "3": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.pairs.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "4": [
+                    "versions.yml:md5,80647c2956e504334ad25ce31d33b539"
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "bed": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "pairs": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.pairs.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "tagAlign": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.tagAlign.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,80647c2956e504334ad25ce31d33b539"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "24.04.2"
+        },
+        "timestamp": "2024-06-24T09:14:51.782404"
+    },
+    "sarscov2 - paired_end - bam": {
+        "content": [
+            "test.bam"
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "24.04.2"
+        },
+        "timestamp": "2024-06-24T09:14:46.389216"
     }
 }

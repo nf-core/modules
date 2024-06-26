@@ -1,0 +1,96 @@
+import groovy.io.FileType
+
+nextflow_process {
+
+    name "Test Process ORTHOFINDER"
+    script "../main.nf"
+    process "ORTHOFINDER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "orthofinder"
+
+    test("sarscov2 - candidatus_portiera_aleyrodidarum - proteome") {
+
+        when {
+            process {
+                """
+                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
+                    .copyTo("${workDir}/sarscov2.fasta")
+
+                file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
+                    .copyTo("${workDir}/candidatus_portiera_aleyrodidarum.fasta")
+
+                def file_a = file("${workDir}/sarscov2.fasta", checkIfExists:true)
+                def file_b = file("${workDir}/candidatus_portiera_aleyrodidarum.fasta", checkIfExists:true)
+
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    [ file_a, file_b ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            def all_files = []
+
+            file(process.out.orthofinder[0][1]).eachFileRecurse (FileType.FILES) { file ->
+                all_files << file
+            }
+
+            def all_file_names = all_files.collect { it.name }.sort(false)
+
+            def stable_file_names = [
+                'Statistics_PerSpecies.tsv',
+                'SpeciesTree_Gene_Duplications_0.5_Support.txt',
+                'SpeciesTree_rooted.txt'
+            ]
+
+            def stable_files = all_files.findAll { it.name in stable_file_names }
+
+            assert snapshot(
+                all_file_names,
+                stable_files,
+                process.out.versions[0]
+            ).match()
+        }
+
+    }
+
+    test("sarscov2 - candidatus_portiera_aleyrodidarum - proteome - stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
+                    .copyTo("${workDir}/sarscov2.fasta")
+
+                file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
+                    .copyTo("${workDir}/candidatus_portiera_aleyrodidarum.fasta")
+
+                def file_a = file("${workDir}/sarscov2.fasta", checkIfExists:true)
+                def file_b = file("${workDir}/candidatus_portiera_aleyrodidarum.fasta", checkIfExists:true)
+
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    [ file_a, file_b ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

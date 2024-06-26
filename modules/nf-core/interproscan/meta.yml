@@ -3,6 +3,8 @@ description: Produces protein annotations and predictions from an amino acids FA
 keywords:
   - annotation
   - fasta
+  - protein
+  - dna
   - interproscan
 tools:
   - "interproscan":
@@ -11,7 +13,7 @@ tools:
       documentation: "https://interproscan-docs.readthedocs.io"
       tool_dev_url: "https://github.com/ebi-pf-team/interproscan"
       doi: "10.1093/bioinformatics/btu031"
-      licence: "['GPL v3']"
+      licence: ["GPL v3"]
 input:
   - meta:
       type: map
@@ -20,12 +22,11 @@ input:
         e.g. [ id:'test', single_end:false ]
   - fasta:
       type: file
-      description: Input fasta file containing the amino acid query sequences
+      description: Input fasta file containing the amino acid or dna query sequences
       pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
-  - out_ext:
-      type: string
-      description: Specify the type of output file to be generated
-      pattern: "tsv|xml|gff3|json"
+  - interproscan_database:
+      type: directory
+      description: Path to the interproscan database (untarred http://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/${version_major}-${version_minor}/interproscan-${version_major}-${version_minor}-64-bit.tar.gz)
 output:
   - tsv:
       type: file
@@ -49,6 +50,8 @@ output:
       pattern: "versions.yml"
 authors:
   - "@toniher"
+  - "@mahesh-panchal"
 maintainers:
   - "@toniher"
   - "@vagkaratzas"
+  - "@mahesh-panchal"

@@ -36,6 +36,14 @@ output:
       type: file
       description: Sorted VCF file
       pattern: "*.{vcf.gz}"
+  - csi:
+      type: file
+      description: Default VCF file index
+      pattern: "*.csi"
+  - tbi:
+      type: file
+      description: Alternative VCF file index
+      pattern: "*.tbi"
 authors:
   - "@Gwennid"
 maintainers:

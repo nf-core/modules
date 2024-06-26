@@ -73,6 +73,15 @@ output:
       type: file
       description: optional CRAM file index
       pattern: "*.{crai}"
+  # unselected and unselected_index are created when passing a qname
+  - unselected:
+      type: file
+      description: optional file with unselected alignments
+      pattern: "*.unselected.{bam,cram,sam}"
+  - unselected_index:
+      type: file
+      description: index for the "unselected" file
+      pattern: "*.unselected.{bai,csi,crai}"
   - versions:
       type: file
       description: File containing software versions

@@ -66,6 +66,14 @@ output:
       type: file
       description: The resulting files of the scattering
       pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+  - csi:
+      type: file
+      description: Default VCF file index
+      pattern: "*.csi"
+  - tbi:
+      type: file
+      description: Alternative VCF file index
+      pattern: "*.tbi"
 authors:
   - "@nvnieuwk"
 maintainers:

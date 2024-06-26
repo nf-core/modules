@@ -36,6 +36,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                         process.out.kmcp,
+                        process.out.versions,
                         file(process.out.log[0][1]).any { it.contains('time elapsed') }
                     ).match()
                 }

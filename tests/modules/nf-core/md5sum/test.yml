@@ -1,8 +1,0 @@
-- name: md5sum test_md5sum
-  command: nextflow run ./tests/modules/nf-core/md5sum -entry test_md5sum -c ./tests/config/nextflow.config
-  tags:
-    - md5sum
-  files:
-    - path: output/md5sum/test.paired_end.bam.md5
-      md5sum: 1163095be8fdfb2acb3cc6c027389c4b
-    - path: output/md5sum/versions.yml
