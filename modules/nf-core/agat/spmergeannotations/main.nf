@@ -22,7 +22,7 @@ process AGAT_SPMERGEANNOTATIONS {
     def args            = task.ext.args ?: ''
     def prefix          = task.ext.prefix ?: "${meta.id}"
     def config_param    = config ? "--config $config" : ''
-    def gff_param       = "$gffs".split(' ').collect { "--gff $it" }.join(' ')
+    def gff_param       = gffs.split(' ').collect { "--gff $it" }.join(' ')
     def file_names      = gffs.collect { "$it" }
     if ( file_names.contains ( "${prefix}.gff" ) ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
