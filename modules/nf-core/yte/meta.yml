@@ -1,0 +1,43 @@
+name: yte
+description: A YAML template engine with Python expressions
+keywords:
+  - yaml
+  - template
+tools:
+  - yte:
+      description: "A YAML template engine with Python expressions"
+      homepage: "https://yte-template-engine.github.io/"
+      documentation: "https://yte-template-engine.github.io/"
+      tool_dev_url: "https://github.com/yte-template-engine/yte"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'template1' ]`
+  - template:
+      type: file
+      description: YTE template
+      pattern: "*.{yaml}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'rendered1' ]`
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - rendered:
+      type: file
+      description: Rendered YAML file
+      pattern: "*.{yaml}"
+
+authors:
+  - "@famosab"
+maintainers:
+  - "@famosab"
