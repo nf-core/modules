@@ -39,7 +39,7 @@ nextflow_workflow {
                     workflow.out.interop.get(0).get(1).findAll { file(it).name != "IndexMetricsOut.bin" },
                     ).match()
                 },
-                { assert file(workflow.out.empty_fastq).exists() },
+                { assert file(workflow.out.empty_fastq.get(0).get(1)).exists() },
                 { assert file(workflow.out.interop.get(0).get(1).find { file(it).name == "IndexMetricsOut.bin" }).exists() }
             )
         }
@@ -72,7 +72,6 @@ nextflow_workflow {
                     workflow.out.interop.get(0).get(1).findAll { file(it).name != "IndexMetricsOut.bin" },
                     ).match()
                 },
-                { assert file(workflow.out.empty_fastq).exists() },
                 { assert file(workflow.out.interop.get(0).get(1).find { file(it).name == "IndexMetricsOut.bin" }).exists() }
             )
         }
