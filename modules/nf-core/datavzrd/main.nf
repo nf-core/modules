@@ -11,15 +11,15 @@ process DATAVZRD {
     tuple val(meta), file(config_file), file(table)
 
     output:
-    tuple val(meta), path("${meta.id}"), emit: report
-    path "versions.yml"                , emit: versions
+    tuple val(meta), path("${prefix}"), emit: report
+    path "versions.yml"               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}
     datavzrd \\
@@ -34,7 +34,7 @@ process DATAVZRD {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}
     mkdir ${prefix}/static
