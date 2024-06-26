@@ -1,0 +1,111 @@
+nextflow_process {
+
+    name "Test Process TAXPASTA_MERGE"
+    script "../main.nf"
+    process "TAXPASTA_MERGE"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "taxpasta"
+    tag "taxpasta/merge"
+
+    test("sarscov2 - metagenome - kraken report") {
+
+        when {
+            process {
+                """
+                ch_test1_kraken = Channel.fromPath(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/test_1.kraken2.report.txt', checkIfExists: true).collectFile(name: 'test_1.kraken2.report.txt')
+                ch_test2_kraken = Channel.fromPath(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/test_1.kraken2.report.txt', checkIfExists: true).collectFile(name: 'test_2.kraken2.report.txt')
+
+                input[0] = ch_test1_kraken.mix ( ch_test2_kraken )
+                            .collect()
+                            .map { files ->
+                                        def meta = [:]
+                                        meta['id'] = 'kraken2'
+                                        meta['profiler'] = 'kraken2'
+                                    [meta, files.sort()]
+
+                            }
+                input[1] = 'kraken2'
+                input[2] = 'tsv'
+                input[3] = []
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        file(process.out.merged_profiles[0][1]).readLines().any { it.contains('2697049	100	100') },
+                        process.out.versions
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - metagenome - kraken report - samplesheet") {
+
+        when {
+            process {
+                """
+                ch_test1_kraken = Channel.fromPath(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/test_1.kraken2.report.txt', checkIfExists: true).collectFile(name: 'test_1.kraken2.report.txt')
+                ch_test2_kraken = Channel.fromPath(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/test_1.kraken2.report.txt', checkIfExists: true).collectFile(name: 'test_2.kraken2.report.txt')
+
+                input[0] = ch_test1_kraken.mix ( ch_test2_kraken )
+                            .collect()
+                            .map { files ->
+                                        def meta = [:]
+                                        meta['id'] = 'kraken2'
+                                        meta['profiler'] = 'kraken2'
+                                    [meta, files.sort()]
+                            }
+                input[1] = 'kraken2'
+                input[2] = 'tsv'
+                input[3] = []
+                input[4] = Channel.of(
+                    'sample\tprofile',
+                    'test_1\t"test_1.kraken2.report.txt"',
+                    'test_2\t"test_2.kraken2.report.txt"'
+                    )
+                    .collectFile(name: 'samplesheet.tsv', newLine: true, sort: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - metagenome - kraken report - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [[id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/test_1.kraken2.report.txt', checkIfExists: true)]
+                input[1] = 'kraken2'
+                input[2] = 'tsv'
+                input[3] = []
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

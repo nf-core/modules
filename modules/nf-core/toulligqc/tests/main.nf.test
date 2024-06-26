@@ -15,10 +15,6 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ], // meta map
                     file(params.test_data['sarscov2']['nanopore']['test2_sequencing_summary'], checkIfExists: true),
-                    [],
-                    []
-                    ]
-                input[1] = [
                     ]
                 """
             }
@@ -29,23 +25,21 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("toulligqc_versions_sequencing_summary") },
                 { assert snapshot(file(process.out.report_data.get(0).get(1)).readLines()[11..74]).match() },
-                { assert process.out.report_html[0] ==~ ".*/report.html"}
+                { assert process.out.report_html[0][1] ==~ ".*/report.html"}
             )
         }
 
     }
 
     test("sarscov2 - nanopore sequencing_summary + barcodes") {
+        config  "./nextflow.config"
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
                     file(params.test_data['sarscov2']['nanopore']['test2_sequencing_summary'], checkIfExists: true),
-                    [],
-                    []
                     ]
-                input[1] = 'barcode01,barcode02,barcode03,barcode04,barcode05,barcode06,barcode07,barcode08,barcode09,barcode10,barcode11,barcode12'
                 """
             }
         }
@@ -55,7 +49,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("toulligqc_versions_sequencing_summary_barcodes") },
                 { assert snapshot(file(process.out.report_data.get(0).get(1)).readLines()[11..74]).match() },
-                { assert process.out.report_html[0] ==~ ".*/report.html"}
+                { assert process.out.report_html[0][1] ==~ ".*/report.html"}
             )
         }
 
@@ -67,11 +61,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    [],
                     file(params.test_data['sarscov2']['nanopore']['test_fastq_gz'], checkIfExists: true),
-                    []
-                    ]
-                input[1] = [
                     ]
                 """
             }
@@ -82,7 +72,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("toulligqc_versions_fastq") },
                 { assert snapshot(file(process.out.report_data.get(0).get(1)).readLines()[11..67]).match() },
-                { assert process.out.report_html[0] ==~ ".*/report.html"}
+                { assert process.out.report_html[0][1] ==~ ".*/report.html"}
             )
         }
 
@@ -94,11 +84,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    [],
-                    [],
                     file(params.test_data['sarscov2']['nanopore']['test_sorted_bam'], checkIfExists: true)
-                    ]
-                input[1] = [
                     ]
                 """
             }
@@ -109,7 +95,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("toulligqc_versions_bam") },
                 { assert snapshot(file(process.out.report_data.get(0).get(1)).readLines()[11..74]).match() },
-                { assert process.out.report_html[0] ==~ ".*/report.html"}
+                { assert process.out.report_html[0][1] ==~ ".*/report.html"}
             )
         }
 
@@ -123,11 +109,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    [],
-                    [],
                     file(params.test_data['sarscov2']['nanopore']['test_sorted_bam'], checkIfExists: true)
-                    ]
-                input[1] = [
                     ]
                 """
             }
