@@ -1,11 +1,11 @@
-process STARSOLO {
+process STAR_STARSOLO {
     tag "$meta.id"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/star:2.7.10b--h9ee0642_0':
-        'biocontainers/star:2.7.10b--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/star:2.7.11b--h43eeafb_1' :
+        'biocontainers/star:2.7.11b--h43eeafb_1' }"
 
     input:
     tuple val(meta), val(solotype), path(reads)
@@ -80,11 +80,13 @@ process STARSOLO {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir ${prefix}.Solo.out/
-    touch ${prefix}.Solo.out/Log.final.out
-    touch ${prefix}.Solo.out/Log.out
-    touch ${prefix}.Solo.out/Log.progress.out
-    touch ${prefix}.Solo.out/Summary.csv
+    mkdir -p ${prefix}.Solo.out/Gene
+    touch ${prefix}.Solo.out/Barcodes.stats
+    touch ${prefix}.Solo.out/Gene/Summary.csv
+
+    touch ${prefix}.Log.final.out
+    touch ${prefix}.Log.out
+    touch ${prefix}.Log.progress.out
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
