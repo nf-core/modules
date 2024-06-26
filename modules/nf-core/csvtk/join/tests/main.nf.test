@@ -1,0 +1,64 @@
+nextflow_process {
+
+    name "Test Process CSVTK_JOIN"
+    script "../main.nf"
+    process "CSVTK_JOIN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "csvtk"
+    tag "csvtk/join"
+
+    test("join - csv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [
+                        file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_hybrid.csv", checkIfExists: true),
+                        file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_short.csv", checkIfExists: true),
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("join - csv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [
+                        file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_hybrid.csv", checkIfExists: true),
+                        file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_short.csv", checkIfExists: true),
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

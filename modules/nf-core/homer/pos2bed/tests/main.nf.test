@@ -1,0 +1,82 @@
+nextflow_process {
+
+    name "Test Process HOMER_POS2BED"
+    script "../main.nf"
+    process "HOMER_POS2BED"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "homer"
+    tag "homer/pos2bed"
+    tag "homer/findpeaks"
+    tag "homer/maketagdirectory"
+
+    setup {
+        run("HOMER_MAKETAGDIRECTORY") {
+            script "../../maketagdirectory/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test2.bed', checkIfExists: true)
+                    ]
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                """
+            }
+        }
+
+        run("HOMER_FINDPEAKS") {
+            script "../../findpeaks/main.nf"
+            process {
+                """
+                input[0] = HOMER_MAKETAGDIRECTORY.out.tagdir
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - peaks") {
+
+        when {
+            process {
+                """
+                input[0] = HOMER_FINDPEAKS.out.txt
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match("peaks") }
+            )
+        }
+
+    }
+
+    test("sarscov2 - peaks - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = HOMER_FINDPEAKS.out.txt
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match("stub") }
+            )
+        }
+
+    }
+
+}
