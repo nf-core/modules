@@ -4,8 +4,8 @@ process SHINYNGS_STATICDIFFERENTIAL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-shinyngs:1.8.5--r43hdfd78af_0' :
-        'biocontainers/r-shinyngs:1.8.5--r43hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/r-shinyngs:2.0.0--r43hdfd78af_0' :
+        'biocontainers/r-shinyngs:2.0.0--r43hdfd78af_0' }"
 
     input:
     tuple val(meta), path(differential_result)                              // Differential info: contrast and differential stats
