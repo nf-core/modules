@@ -30,7 +30,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = SOURMASH_SKETCH.out.signatures.view().collect({ it[1] }, sort: true ).map { it -> [ [id:"group1"], it ] }
+                input[0] = SOURMASH_SKETCH.out.signatures.collect({ it[1] }, sort: true ).map { it -> [ [id:"group1"], it ] }
                 input[1] = []
                 input[2] = true // save_numpy_matrix
                 input[3] = true // save_csv

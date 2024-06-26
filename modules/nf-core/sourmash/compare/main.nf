@@ -29,7 +29,7 @@ process SOURMASH_COMPARE {
     def csv    = save_csv          ? "--csv comp.csv" : ''
     if ( !save_numpy_matrix && !save_csv ) error "Supply either save_numpy_matrix, save_csv, or both or no output will be created"
     def ffile = file_list ? "--from-file ${file_list}" : ''
-    def sigs = signatures ? "${signatures.join(' ')}" : ''
+    def sigs = signatures ? "${signatures.sort().join(' ')}" : ''
     if ( !file_list && !signatures ) error "Supply either signatures, file_list, or both"
     """
     sourmash compare \\
