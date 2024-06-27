@@ -28,7 +28,8 @@ nextflow_process {
                 { assert snapshot(process.out.spp[0][1]).match() },
                 { assert snapshot(
                     process.out.uppercase.collect { it.collect { it instanceof String && file(it).exists() ? file(it).name : it }}
-                ).match("no md5sum single") }
+                ).match("no md5sum single") },
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
 
@@ -53,7 +54,8 @@ nextflow_process {
                 { assert snapshot(process.out.spp[0][1]).match() },
                 { assert snapshot(
                     process.out.uppercase.collect { it.collect { it instanceof String && file(it).exists() ? file(it).name : it }}
-                ).match("no md5sum paired") }
+                ).match("no md5sum paired") },
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
 
