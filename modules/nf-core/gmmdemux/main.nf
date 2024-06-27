@@ -36,7 +36,7 @@ process GMMDEMUX {
     if [[ ${summary_report} == true ]]; then
         cat /dev/null >  summary_report_${prefix}.txt
         echo "summary report file created"
-    fi 
+    fi
 
     GMM-demux $args \\
         $type_report \\
