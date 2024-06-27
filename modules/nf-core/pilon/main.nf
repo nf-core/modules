@@ -48,6 +48,10 @@ process PILON {
     if ( !valid_mode.contains(pilon_mode) )  { error "Unrecognised mode to run Pilon. Options: ${valid_mode.join(', ')}" }
     """
     touch ${prefix}.fasta
+    touch ${prefix}.vcf
+    touch ${prefix}.change
+    touch ${prefix}.bed
+    touch ${prefix}.wig
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
