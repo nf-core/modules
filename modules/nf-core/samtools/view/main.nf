@@ -4,8 +4,8 @@ process SAMTOOLS_VIEW {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.20--h50ea8bc_0' :
-        'biocontainers/samtools:1.20--h50ea8bc_0' }"
+        'oras://community.wave.seqera.io/library/htslib_samtools:1.20--9fb9031594b6902c' :
+        'community.wave.seqera.io/library/htslib_samtools:1.20--11a4e6daa46930ec' }"
 
     input:
     tuple val(meta), path(input), path(index)
