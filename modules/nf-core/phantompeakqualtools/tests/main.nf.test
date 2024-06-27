@@ -15,8 +15,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists: true)
                 ]
                 """
             }
@@ -25,11 +25,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.spp[0][1]).match() },
-                { assert snapshot(
-                    process.out.uppercase.collect { it.collect { it instanceof String && file(it).exists() ? file(it).name : it }}
-                ).match("no md5sum single") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.spp,
+                                  file(process.out.pdf.get(0).get(1)).name,
+                                  file(process.out.rdata.get(0).get(1)).name,
+                                  process.out.versions)
+                                  .match()
+                }
             )
         }
 
@@ -39,10 +40,10 @@ nextflow_process {
 
         when {
             process {
-                """                
+                """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
                 ]
                 """
             }
@@ -51,16 +52,17 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.spp[0][1]).match() },
-                { assert snapshot(
-                    process.out.uppercase.collect { it.collect { it instanceof String && file(it).exists() ? file(it).name : it }}
-                ).match("no md5sum paired") },
-                { assert snapshot(process.out.versions).match("versions paired" ) }
+                { assert snapshot(process.out.spp,
+                                  file(process.out.pdf.get(0).get(1)).name,
+                                  file(process.out.rdata.get(0).get(1)).name,
+                                  process.out.versions)
+                                  .match()
+                }
             )
         }
 
     }
-    
+
     test("sarscov2 - bam - stub") {
 
         options "-stub"
@@ -70,7 +72,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
                     ]
                 """
             }
