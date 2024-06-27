@@ -40,9 +40,9 @@ process GMMDEMUX {
 
     GMM-demux $args \\
         $type_report \\
-        $summary_rep \\
-        $skip \\
-        $hto_matrix \\
+        $summary_rep  \\
+        $skip         \\
+        $hto_matrix   \\
         $hto_names
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
