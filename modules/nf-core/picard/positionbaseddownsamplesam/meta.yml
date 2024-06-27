@@ -23,6 +23,9 @@ input:
       type: file
       description: BAM file
       pattern: "*.{bam,cram,sam}"
+  - fraction:
+      type: float
+      description: Fraction of reads to downsample to
 output:
   - meta:
       type: map
@@ -37,6 +40,9 @@ output:
       type: file
       description: An optional BAM index file. If desired, --CREATE_INDEX must be passed as a flag
       pattern: "*.{bai}"
+  - num_reads:
+      type: integer
+      description: The actual number of downsampled reads
   - versions:
       type: file
       description: File containing software versions

@@ -2,10 +2,10 @@ process PICARD_POSITIONBASEDDOWNSAMPLESAM {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::picard=3.0.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:3.0.0--hdfd78af_1' :
-        'biocontainers/picard:3.0.0--hdfd78af_1' }"
+        'https://depot.galaxyproject.org/singularity/picard:3.1.1--hdfd78af_0' :
+        'biocontainers/picard:3.1.1--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam), val(fraction)
@@ -51,8 +51,8 @@ process PICARD_POSITIONBASEDDOWNSAMPLESAM {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.bam
-    touch ${prefix}.bam.bai
+    touch ${prefix}.ds10.bam
+    touch ${prefix}.ds10.bam.bai
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
