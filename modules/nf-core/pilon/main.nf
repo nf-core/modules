@@ -9,7 +9,7 @@ process PILON {
 
     input:
     tuple val(meta), path(fasta)
-    tuple val(meta_bam), path(bam), path(bai)
+    tuple val(meta2), path(bam), path(bai)
     val pilon_mode
 
     output:
@@ -24,8 +24,8 @@ process PILON {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args       = task.ext.args ?: ''
+    def prefix     = task.ext.prefix ?: "${meta.id}"
     def valid_mode = ["frags", "jumps", "unpaired", "bam"]
     if ( !valid_mode.contains(pilon_mode) )  { error "Unrecognised mode to run Pilon. Options: ${valid_mode.join(', ')}" }
     """
@@ -39,5 +39,24 @@ process PILON {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         pilon: \$(echo \$(pilon --version) | sed 's/^.*version //; s/ .*\$//' )
+    END_VERSIONS
     """
+
+    stub:
+    def prefix     = task.ext.prefix ?: "${meta.id}"
+    def valid_mode = ["frags", "jumps", "unpaired", "bam"]
+    if ( !valid_mode.contains(pilon_mode) )  { error "Unrecognised mode to run Pilon. Options: ${valid_mode.join(', ')}" }
+    """
+    touch ${prefix}.fasta
+    touch ${prefix}.vcf
+    touch ${prefix}.change
+    touch ${prefix}.bed
+    touch ${prefix}.wig
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        pilon: \$(echo \$(pilon --version) | sed 's/^.*version //; s/ .*\$//' )
+    END_VERSIONS
+    """
+
 }
