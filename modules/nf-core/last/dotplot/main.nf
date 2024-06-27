@@ -28,7 +28,8 @@ process LAST_DOTPLOT {
     """
     last-dotplot \\
         $args \\
-        $annot_a_arg $annot_b_arg \\
+        $annot_a_arg \\
+        $annot_b_arg \\
         $maf \\
         $prefix.$format
 
