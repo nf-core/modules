@@ -34,4 +34,18 @@ process PHANTOMPEAKQUALTOOLS {
         phantompeakqualtools: $VERSION
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.2.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    touch ${prefix}.spp.pdf
+    touch ${prefix}.spp.Rdata
+    touch ${prefix}.spp.out
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        phantompeakqualtools: $VERSION
+    END_VERSIONS
+    """
 }
