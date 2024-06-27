@@ -1,0 +1,86 @@
+// nf-core modules test phantompeakqualtools
+nextflow_process {
+
+    name "Test Process PHANTOMPEAKQUALTOOLS"
+    script "../main.nf"
+    process "PHANTOMPEAKQUALTOOLS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "phantompeakqualtools"
+
+    test("sarscov2 - bam - single_end") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.spp[0][1]).match() },
+                { assert snapshot(
+                    process.out.uppercase.collect { it.collect { it instanceof String && file(it).exists() ? file(it).name : it }}
+                ).match("no md5sum") }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - paired_end") {
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.spp[0][1]).match() },
+                { assert snapshot(
+                    process.out.uppercase.collect { it.collect { it instanceof String && file(it).exists() ? file(it).name : it }}
+                ).match("no md5sum") }
+            )
+        }
+
+    }
+    
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
