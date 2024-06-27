@@ -25,11 +25,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.spp[0][1]).match() },
+                { assert snapshot(process.out.spp[0][1],
+                    process.out.versions).match() },
                 { assert snapshot(
                     process.out.uppercase.collect { it.collect { it instanceof String && file(it).exists() ? file(it).name : it }}
-                ).match("no md5sum single") },
-                { assert snapshot(process.out.versions).match("versions") }
+                ).match("no md5sum single") }
             )
         }
 
@@ -51,11 +51,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.spp[0][1]).match() },
+                { assert snapshot(process.out.spp[0][1],
+                    process.out.versions
+                    ).match() },
                 { assert snapshot(
                     process.out.uppercase.collect { it.collect { it instanceof String && file(it).exists() ? file(it).name : it }}
-                ).match("no md5sum paired") },
-                { assert snapshot(process.out.versions).match("versions") }
+                ).match("no md5sum paired") }
             )
         }
 
