@@ -226,17 +226,25 @@ class MyGene:
                 continue
             if self.go_category:
                 dic["go"] = {
+<<<<<<< HEAD
                     category: dic["go"][category]
                     for category in self.go_category.split(",")
                     if category in dic["go"]
+=======
+                    category: dic["go"][category] for category in self.go_category.split(",") if category in dic["go"]
+>>>>>>> master
                 }
             for category, go_list in dic["go"].items():
                 if not isinstance(go_list, list):
                     go_list = [go_list]
                 for go in go_list:
+<<<<<<< HEAD
                     if (self.go_evidence) and (
                         go["evidence"] not in self.go_evidence.split(",")
                     ):
+=======
+                    if (self.go_evidence) and (go["evidence"] not in self.go_evidence.split(",")):
+>>>>>>> master
                         continue
 
                     if go["id"] not in info:
@@ -260,17 +268,25 @@ class MyGene:
                 continue
             if self.go_category:
                 dic["go"] = {
+<<<<<<< HEAD
                     category: dic["go"][category]
                     for category in self.go_category.split(",")
                     if category in dic["go"]
+=======
+                    category: dic["go"][category] for category in self.go_category.split(",") if category in dic["go"]
+>>>>>>> master
                 }
             for category, go_list in dic["go"].items():
                 if not isinstance(go_list, list):
                     go_list = [go_list]
                 for go in go_list:
+<<<<<<< HEAD
                     if (self.go_evidence) and (
                         go["evidence"] not in self.go_evidence.split(",")
                     ):
+=======
+                    if (self.go_evidence) and (go["evidence"] not in self.go_evidence.split(",")):
+>>>>>>> master
                         continue
 
                     current_info = {
@@ -327,7 +343,11 @@ def load_list(filename: str, columname: str) -> list:
         sep = ","
     else:
         raise ValueError("The input file extension should be either tsv or csv.")
+<<<<<<< HEAD
     with open(filename) as f:
+=======
+    with open(filename, "r") as f:
+>>>>>>> master
         idx = f.readline().strip().split(sep).index(columname)
         return [line.strip().split(sep)[idx] for line in f]
 

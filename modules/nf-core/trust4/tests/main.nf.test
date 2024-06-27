@@ -20,6 +20,8 @@ nextflow_process {
                 ])
                 input[1] = [[ id:'test'],[file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true)]] // fasta
                 input[2] = [[ id:'test'],[]] // ref
+                input[3] = [[ id:'test'],[]] // barcode
+                input[4] = [[ id:'test'],[]] // umi
                 """
             }
         }
@@ -57,6 +59,8 @@ nextflow_process {
                 ])
                 input[1] = [[ id:'test'],[file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true)]] // fasta
                 input[2] = [[ id:'test'],[]] // ref
+                input[3] = [[ id:'test'], null] // barcode
+                input[4] = [[ id:'test'], null] // umi
                 """
             }
         }
@@ -94,7 +98,9 @@ nextflow_process {
                     [file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)]
                 ])
                 input[1] = [[ id:'test'],[file(params.test_data['sarscov2']['genome']['transcriptome_fasta'], checkIfExists: true)]]
-                input[2] = [[ id:'test'],[]]
+                input[2] = [[ id:'test'],[]] // ref
+                input[3] = [[ id:'test'],[]] // barcode
+                input[4] = [[ id:'test'],[]] // umi
                 """
             }
         }

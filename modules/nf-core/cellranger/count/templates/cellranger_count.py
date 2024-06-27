@@ -5,6 +5,13 @@ Automatically rename staged files for input into cellranger count.
 Copyright (c) Gregor Sturm 2023 - MIT License
 """
 
+<<<<<<< HEAD
+=======
+from subprocess import run
+from pathlib import Path
+from textwrap import dedent
+import shlex
+>>>>>>> master
 import re
 import shlex
 from pathlib import Path
@@ -56,9 +63,10 @@ for i, (r1, r2) in enumerate(chunk_iter(fastqs, 2), start=1):
     r1.rename(fastq_all / f"{sample_id}_S1_L{i:03d}_R1_001.fastq.gz")
     r2.rename(fastq_all / f"{sample_id}_S1_L{i:03d}_R2_001.fastq.gz")
 
+# fmt: off
 run(
-    # fmt: off
     [
+<<<<<<< HEAD
         "cellranger",
         "count",
         "--id",
@@ -71,11 +79,19 @@ run(
         "${task.cpus}",
         "--localmem",
         "${task.memory.toGiga()}",
+=======
+        "cellranger", "count",
+        "--id", "${prefix}",
+        "--fastqs", str(fastq_all),
+        "--transcriptome", "${reference.name}",
+        "--localcores", "${task.cpus}",
+        "--localmem", "${task.memory.toGiga()}",
+>>>>>>> master
         *shlex.split("""${args}"""),
     ],
-    # fmt: on
     check=True,
 )
+# fmt: on
 
 # Output version information
 version = run(
