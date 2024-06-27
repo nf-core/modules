@@ -9,8 +9,8 @@ process LAST_DOTPLOT {
 
     input:
     tuple val(meta), path(maf), path(annot_b)
+    tuple val(meta2), path(annot_a)
     val(format)
-    path(annot_a)
 
     output:
     tuple val(meta), path("*.gif"), optional:true, emit: gif
