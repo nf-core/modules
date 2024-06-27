@@ -9,12 +9,12 @@ process MERQURYFK_PLOIDYPLOT {
     tuple val(meta), path(fastk_hist), path(fastk_ktab)
 
     output:
-    tuple val(meta), path("*.fi.png"), emit: filled_plodiy_plot_png , optional: true
-    tuple val(meta), path("*.fi.pdf"), emit: filled_plodiy_plot_pdf , optional: true
-    tuple val(meta), path("*.ln.png"), emit: line_plodiy_plot_png   , optional: true
-    tuple val(meta), path("*.ln.pdf"), emit: line_plodiy_plot_pdf   , optional: true
-    tuple val(meta), path("*.st.png"), emit: stacked_plodiy_plot_png, optional: true
-    tuple val(meta), path("*.st.pdf"), emit: stacked_plodiy_plot_pdf, optional: true
+    tuple val(meta), path("*.fi.png"), emit: filled_ploidy_plot_png , optional: true
+    tuple val(meta), path("*.fi.pdf"), emit: filled_ploidy_plot_pdf , optional: true
+    tuple val(meta), path("*.ln.png"), emit: line_ploidy_plot_png   , optional: true
+    tuple val(meta), path("*.ln.pdf"), emit: line_ploidy_plot_pdf   , optional: true
+    tuple val(meta), path("*.st.png"), emit: stacked_ploidy_plot_png, optional: true
+    tuple val(meta), path("*.st.pdf"), emit: stacked_ploidy_plot_pdf, optional: true
     path "versions.yml"              , emit: versions
 
     when:

@@ -7,11 +7,12 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "fargene"
+    tag "gunzip"
 
     test("fargene - bacteroides fragilis - contigs.fa.gz") {
 
         setup {
- 
+
             run("GUNZIP") {
                 script "../../gunzip/main.nf"
                 process {
