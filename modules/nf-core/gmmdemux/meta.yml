@@ -22,15 +22,9 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1']`
-  - cell_hashing_matrix:
+  - hto_matrix:
       type: file
-      description: path to file containing matrix from cell hashing data, the tool receives either CSV files or TSV, type must be specified using parameters
-  - cell_hashing_barcodes:
-      type: file
-      description: path to file containing barcodes from cell hashing data, the tool receives either CSV files or TSV, type must be specified using parameters
-  - cell_hashing_features:
-      type: file
-      description: path to file containing features from cell hashing data, the tool receives either CSV files or TSV, type must be specified using parameters
+      description: path to matrix from cell hashing data, the tool receives either CSV files or TSV, type must be specified using parameters
   - hto_names:
       type: string
       description: |

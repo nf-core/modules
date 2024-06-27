@@ -9,7 +9,7 @@ process GMMDEMUX {
         'biocontainers/gmm-demux:0.2.2.3--pyh7cba7a3_0' }"
 
     input:
-    tuple val(meta), path(cell_hashing_barcodes,stageAs: "hto_files/*"), path(cell_hashing_matrix,stageAs: "hto_files/*"),path(cell_hashing_features,stageAs: "hto_files/*"),val(hto_names)
+    tuple val(meta), path(hto_matrix),val(hto_names)
     val type_report
     val summary_report
     val skip
@@ -18,7 +18,7 @@ process GMMDEMUX {
     tuple val(meta), path("${meta.id}/barcodes.tsv.gz"                          ), emit: barcodes
     tuple val(meta), path("${meta.id}/*.mtx.gz"                                 ), emit: matrix
     tuple val(meta), path("${meta.id}/features.tsv.gz"                          ), emit: features
-    tuple val(meta), path("${meta.id}/classification_report_${meta.id}"     ), emit: classification_report
+    tuple val(meta), path("${meta.id}/classification_report_${meta.id}"         ), emit: classification_report
     tuple val(meta), path("summary_report_${meta.id}.txt"                       ), emit: summary_report, optional: true
     path "versions.yml"           , emit: versions
 
@@ -37,11 +37,12 @@ process GMMDEMUX {
         cat /dev/null >  summary_report_${prefix}.txt
         echo "summary report file created"
     fi 
+
     GMM-demux $args \\
         $type_report \\
         $summary_rep \\
         $skip \\
-        hto_files \\
+        $hto_matrix \\
         $hto_names
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

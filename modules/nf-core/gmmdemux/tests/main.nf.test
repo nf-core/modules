@@ -9,20 +9,25 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "gmmdemux"
+    tag "untar"
 
+    
 
     test("Standard_Multiome - 10x mtx") {
+        setup {
+            run("UNTAR") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                """
+                input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true)   ]) 
+                """
+                }
+            }   
+        }
         when {
             process {
                 """
-                
-                input[0] = [
-                    [ id:'test'], 
-                    file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto/barcodes.tsv.gz",checkIfExists: true),
-                    file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto/matrix.mtx.gz",checkIfExists: true),
-                    file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto/features.tsv.gz",checkIfExists: true),
-                    "MS-11,MS-12"
-                    ]
+                input[0] = UNTAR.out.untar.map { meta, files -> [ [ id:'test', single_end:true ], files, "MS-11,MS-12" ] }
                 input[1] = true
                 input[2] = true
                 input[3] = ""
@@ -53,9 +58,7 @@ nextflow_process {
                 
                 input[0] = [
                     [ id:'test'], 
-                    file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto/barcodes.tsv.gz",checkIfExists: true),
-                    file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto/matrix.mtx.gz",checkIfExists: true),
-                    file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto/features.tsv.gz",checkIfExists: true),
+                    file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true),
                     "MS-11,MS-12"
                     ]
                 input[1] = true
