@@ -7,7 +7,7 @@ process PHANTOMPEAKQUALTOOLS {
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'oras://community.wave.seqera.io/library/phantompeakqualtools:1.2.2--50be7727b2a72700' :
         'community.wave.seqera.io/library/phantompeakqualtools:1.2.2--f8026fe2526a5e18' }"
-    
+
     input:
     tuple val(meta), path(bam)
 
