@@ -1,0 +1,57 @@
+nextflow_process {
+
+    name "Test Process BOWTIE_BUILD"
+    script "../main.nf"
+    process "BOWTIE_BUILD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bowtie"
+    tag "bowtie/build"
+
+    test("sarscov2 - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: 'sarscov2'],
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [[id: 'sarscov2'],
+                             file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                           ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
