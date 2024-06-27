@@ -4,10 +4,6 @@
     "description": "Validate the environment.yml file for an nf-core module",
     "type": "object",
     "properties": {
-        "name": {
-            "type": "string",
-            "description": "The name of the component, same as in the meta.yml"
-        },
         "channels": {
             "type": "array",
             "items": [
@@ -16,12 +12,9 @@
                 },
                 {
                     "enum": ["bioconda"]
-                },
-                {
-                    "enum": ["defaults"]
                 }
             ],
-            "minItems": 3
+            "minItems": 2
         },
         "dependencies": {
             "type": "array",
@@ -30,5 +23,6 @@
             }
         }
     },
-    "required": ["name", "channels", "dependencies"]
+    "required": ["channels", "dependencies"],
+    "not": { "required": ["name"] }
 }
