@@ -74,15 +74,15 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, nrows = -
 #' @param matrix_data Matrix object
 #'
 #' @return output Boolean vector
-                                                                                 
+
 most_variant_test <- function(matrix_data) {
 
     # Determine the indices of the top variant rows based on variance
     top_indices <- order(-apply(matrix_data, 1, var, na.rm = TRUE))[1:opt\$most_variant_features]
-    
+
     # Return a boolean vector indicating if each row is among the top variant ones
     1:nrow(matrix_data) %in% top_indices
-}                                                                                 
+}
 
 # Set up default options
 
