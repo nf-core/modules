@@ -18,7 +18,7 @@ nextflow_process {
                     file(params.test_data['sarscov2']['nanopore']['test_fastq_gz'], checkIfExists: true)
                 ]
 
-                input[1] = 'u'
+                input[1] = 'fastq'
                 """
             }
         }
@@ -40,7 +40,7 @@ nextflow_process {
                     [ id:'test', single_end:true ], // meta map
                     file(params.test_data['sarscov2']['nanopore']['test_fastq_gz'], checkIfExists: true)
                 ]
-                input[1] = 'g'
+                input[1] = 'fastq.gz'
                 """
             }
         }
@@ -52,7 +52,7 @@ nextflow_process {
             )
         }
     }
-    test("sarscov2 - nanopore_uncompressed_bz2") {
+    test("sarscov2 - nanopore_compressed_bz2") {
 
         when {
             process {
@@ -61,7 +61,7 @@ nextflow_process {
                     [ id:'test', single_end:true ], // meta map
                     file(params.test_data['sarscov2']['nanopore']['test_fastq_gz'], checkIfExists: true)
                 ]
-                input[1] = 'b'
+                input[1] = 'fastq.bz2'
                 """
             }
         }
@@ -73,7 +73,7 @@ nextflow_process {
             )
         }
     }
-    test("sarscov2 - nanopore_uncompressed_lzma") {
+    test("sarscov2 - nanopore_compressed_lzma") {
 
         when {
             process {
@@ -82,7 +82,7 @@ nextflow_process {
                     [ id:'test', single_end:true ], // meta map
                     file(params.test_data['sarscov2']['nanopore']['test_fastq_gz'], checkIfExists: true)
                 ]
-                input[1] = 'l'
+                input[1] = 'fastq.lzma'
                 """
             }
         }
@@ -95,7 +95,7 @@ nextflow_process {
         }
     }
 
-    test("sarscov2 - nanopore - stub") {
+    test("sarscov2 - nanopore_compressed_gz - stub") {
 
         options "-stub"
 
@@ -106,7 +106,7 @@ nextflow_process {
                     [ id:'test', single_end:true ], // meta map
                     file(params.test_data['sarscov2']['nanopore']['test_fastq_gz'], checkIfExists: true)
                     ]
-                    input[1] = 'g'
+                    input[1] = 'fastq.gz'
                 """
             }
         }

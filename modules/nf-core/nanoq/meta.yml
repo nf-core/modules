@@ -28,10 +28,9 @@ input:
       description: Compressed or uncompressed nanopore reads in fasta or fastq formats.
       pattern: "*.{fa,fna,faa,fasta,fq,fastq}{,.gz,.bz2,.xz}"
 
-  - output_type:
+  - output_format:
       type: string
-      description: "Specifies the output compression type: 'b' for Bzip2, 'g' for gzip, 'l' for Lzma, and 'u' for uncompressed."
-      pattern: "*.{fa,fna,faa,fasta,fq,fastq}{,.gz,.bz2,.lzma}"
+      description: "Specifies the output format. One of these formats: fasta, fastq; fasta.gz, fastq.gz; fasta.bz2, fastq.bz2; fasta.lzma, fastq.lzma."
 
 output:
   - meta:
@@ -48,7 +47,7 @@ output:
   - reads:
       type: file
       description: Filtered reads.
-      pattern: "*.{fa,fna,faa,fasta,fq,fastq}{,.gz,.bz2,.lzma}"
+      pattern: "*.{fasta,fastq}{,.gz,.bz2,.lzma}"
 
   - versions:
       type: file

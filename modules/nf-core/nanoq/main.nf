@@ -9,11 +9,11 @@ process NANOQ {
 
     input:
     tuple val(meta), path(ontreads)
-    val(output_type) // u: uncompressed; b: Bzip2; g: Gzip; l: Lzma
+    val(output_format) //One of the following: fastq, fastq.gz, fastq.bz2, fastq.lzma, fasta, fasta.gz, fasta.bz2, fasta.lzma.
 
     output:
     tuple val(meta), path("*.stats")                                                  , emit: stats
-    tuple val(meta), path("*")                                                        , emit: reads
+    tuple val(meta), path("*_nanoq.${output_format}")                                                 , emit: reads
     path "versions.yml"                                                               , emit: versions
 
     when:
@@ -22,23 +22,11 @@ process NANOQ {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def seq_type = ontreads.baseName.split("\\.")[1]
-
-    if (output_type == 'u') {
-        output_ext = ""
-    } else if (output_type == 'b') {
-        output_ext = ".bz2"
-    } else if (output_type == 'g') {
-        output_ext = ".gz"
-    } else if (output_type == 'l') {
-        output_ext = ".lzma"
-    }
 
     """
     nanoq -i $ontreads \\
         -r ${prefix}.stats \\
-        -O $output_type \\
-        -o ${prefix}_nanoq.${seq_type}${output_ext}
+        -o ${prefix}_nanoq.$output_format
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -49,19 +37,9 @@ process NANOQ {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def seq_type = ontreads.baseName.split("\\.")[1]
-    if (output_type == 'u') {
-        output_ext = ""
-    } else if (output_type == 'b') {
-        output_ext = ".bz2"
-    } else if (output_type == 'g') {
-        output_ext = ".gz"
-    } else if (output_type == 'l') {
-        output_ext = ".lzma"
-    }
 
     """
-    touch ${prefix}_nanoq.${seq_type}${output_ext}
+    touch ${prefix}_nanoq.$output_format
     touch ${prefix}.stats
 
     cat <<-END_VERSIONS > versions.yml
