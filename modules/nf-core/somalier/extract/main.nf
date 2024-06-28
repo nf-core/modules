@@ -10,9 +10,9 @@ process SOMALIER_EXTRACT {
 
     input:
     tuple val(meta), path(input), path(input_index)
-    path(fasta)
-    path(fai)
-    path(sites)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
+    tuple val(meta4), path(sites)
 
     output:
     tuple val(meta), path("*.somalier") , emit: extract
