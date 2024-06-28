@@ -48,6 +48,31 @@ nextflow_process {
 
     }
 
+    test("homo_sapiens genome affy_array [celfiles] - annotation") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                ch_samplesheet = Channel.of([ [ id:'test' ], file(params.test_data['homo_sapiens']['genome']['affy_array_samplesheet'], checkIfExists: true) ])
+                input[0] = ch_samplesheet.join(UNTAR.out.untar)
+                input[1] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions,
+                                  process.out.expression,
+                                  process.out.annotation,
+                                  file(process.out.rds.get(0).get(1)).name,
+                                  process.out.log).match() }
+            )
+        }
+
+    }
+
     test("homo_sapiens genome affy_array [celfiles] - stub") {
 
         options "-stub"
@@ -65,9 +90,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.rds.collect { file(it[1]).getName() } +
-                                process.out.expression.collect { file(it[1]).getName() } +
-                                process.out.versions.collect { file(it).name } ).match() }
+                { assert snapshot(process.out).match() }
             )
         }
     }
