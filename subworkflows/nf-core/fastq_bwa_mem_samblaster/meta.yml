@@ -1,0 +1,52 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fastq_bwa_mem_samblaster"
+description: Index fasta if needed, map reads with BWA MEM and filter with samblaster
+keywords:
+  - sort
+  - bam
+  - duplicate marking
+components:
+  - bwa/index
+  - bwa/mem
+  - samblaster
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - fasta:
+      type: file
+      description: Input genome fasta file
+  - index:
+      type: file
+      description: BWA genome index files
+      pattern: "Directory containing BWA index *.{amb,ann,bwt,pac,sa}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false, ref_id:'genome' ]
+  - bam:
+      type: file
+      description: Tagged or filtered BAM file
+      pattern: "*.bam"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@GallVp"
+maintainers:
+  - "@GallVp"
