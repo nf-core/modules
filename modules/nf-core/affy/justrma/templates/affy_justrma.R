@@ -271,7 +271,7 @@ if (opt\$build_annotation){
 
 # R object for other processes to use
 
-output_prefix <- '$task.ext.prefix'
+output_prefix <- '$prefix'
 saveRDS(eset, file = paste0(output_prefix, 'eset.rds'))
 
 # Write matrix
