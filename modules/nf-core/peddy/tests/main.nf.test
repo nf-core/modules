@@ -1,0 +1,35 @@
+nextflow_process {
+
+    name "Test Process PEDDY"
+    script "modules/nf-core/peddy/main.nf"
+    process "PEDDY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "peddy"
+
+    test("test - peddy - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.test_data['homo_sapiens']['genome']['justhusky_minimal_vcf_gz'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['genome']['justhusky_minimal_vcf_gz_tbi'], checkIfExists: true)
+                ]
+                input[1] = file(params.test_data['homo_sapiens']['genome']['justhusky_ped'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+
+    }
+
+}
