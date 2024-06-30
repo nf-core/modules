@@ -31,6 +31,14 @@ process EVIGENE_TR2AACDS {
 
     def simple_name = fasta.simpleName
     """
+    # Nextflow changes the container --entrypoint to /bin/bash (container default entrypoint: /usr/local/env-execute)
+    # Check for container variable initialisation script and source it.
+    if [ -f "/usr/local/env-activate.sh" ]; then
+        set +u  # Otherwise, errors out because of various unbound variables
+        . "/usr/local/env-activate.sh"
+        set -u
+    fi
+
     \$EVIGENEHOME/scripts/prot/tr2aacds.pl \\
         $args \\
         -NCPU=$task.cpus \\
@@ -61,6 +69,14 @@ process EVIGENE_TR2AACDS {
         log.info '[evigene] Available memory not known - defaulting to 7GB. Specify process memory requirements to change this.'
     }
     """
+    # Nextflow changes the container --entrypoint to /bin/bash (container default entrypoint: /usr/local/env-execute)
+    # Check for container variable initialisation script and source it.
+    if [ -f "/usr/local/env-activate.sh" ]; then
+        set +u  # Otherwise, errors out because of various unbound variables
+        . "/usr/local/env-activate.sh"
+        set -u
+    fi
+
     mkdir dropset
     touch dropset/${prefix}.drop.aa
     touch dropset/${prefix}.drop.cds

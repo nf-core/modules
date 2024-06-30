@@ -27,7 +27,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.dropset[0][1],
-                    file(process.out.okayset[0][1]).listFiles().collect { it.name },
+                    file(process.out.okayset[0][1]).listFiles().collect { it.name }.toSorted(),
                     process.out.versions,
                     ).match()
                 }
