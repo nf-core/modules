@@ -1,6 +1,6 @@
 process EVIGENE_TR2AACDS {
     tag "$meta.id"
-    label 'process_high'
+    label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -30,6 +30,7 @@ process EVIGENE_TR2AACDS {
     }
 
     def simple_name = fasta.simpleName
+    def rename_files= ( simple_name != prefix ) ? 'yes' : 'no'
     """
     # Nextflow changes the container --entrypoint to /bin/bash (container default entrypoint: /usr/local/env-execute)
     # Check for container variable initialisation script and source it.
@@ -45,15 +46,17 @@ process EVIGENE_TR2AACDS {
         -MAXMEM=$max_memory \\
         -cdnaseq $fasta
 
-    find \\
-        dropset \\
-        -type f \\
-        -exec sh -c 'mv "\$1" "\$(echo \$1 | sed s/$simple_name/$prefix/)"' sh {} \\;
+    if [ "$rename_files" = "yes" ]; then
+        find \\
+            dropset \\
+            -type f \\
+            -exec sh -c 'mv "\$1" "\$(echo \$1 | sed s/$simple_name/$prefix/)"' sh {} \\;
 
-    find \\
-        okayset \\
-        -type f \\
-        -exec sh -c 'mv "\$1" "\$(echo \$1 | sed s/$simple_name/$prefix/)"' sh {} \\;
+        find \\
+            okayset \\
+            -type f \\
+            -exec sh -c 'mv "\$1" "\$(echo \$1 | sed s/$simple_name/$prefix/)"' sh {} \\;
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
