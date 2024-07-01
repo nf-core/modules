@@ -45,7 +45,8 @@ nextflow_process {
                         path("${process.out.index[0]}/ref.inf"),
                         path("${process.out.index[0]}/taxonomy.idx"),
                         path("${process.out.index[0]}/taxonomy.map"),
-                        path("${process.out.index[0]}/taxonomy.tre")
+                        path("${process.out.index[0]}/taxonomy.tre"),
+                        process.out.versions
                         )
                     .match()
                 },

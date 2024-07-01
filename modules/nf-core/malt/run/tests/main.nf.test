@@ -56,6 +56,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                         process.out.alignments,
+                        process.out.versions,
                         file(process.out.rma6[0][1]).name
                     ).match()
                 },
