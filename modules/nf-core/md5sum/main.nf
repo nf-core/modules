@@ -23,7 +23,7 @@ process MD5SUM {
     def prefix = task.ext.prefix ?: "${meta.id}" // will only use when as_separate_files = false
     if ( as_separate_files ) {
         """
-        find -L * -type f \\
+        find -L * -maxdepth 0 -type f \\
             ! -name '*.md5' \\
             -exec sh -c 'md5sum $args "\$1" > "\$1.md5"' _ "{}" \\;
 
