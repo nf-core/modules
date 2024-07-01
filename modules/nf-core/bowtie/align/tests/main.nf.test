@@ -1,0 +1,129 @@
+nextflow_process {
+
+    name "Test Process BOWTIE_ALIGN"
+    script "../main.nf"
+    process "BOWTIE_ALIGN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bowtie"
+    tag "bowtie/align"
+    tag "bowtie/build"
+
+
+    setup {
+        run("BOWTIE_BUILD") {
+            script "../../../bowtie/build/main.nf"
+            process {
+                """
+                input[0] = [[ id:'sarscov2' ],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - single_end") {
+
+        when {
+            process {
+                """
+                input[0] = [ [id:"test", single_end:true],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
+                input[1] = BOWTIE_BUILD.out.index
+                input[2] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions,
+                                  process.out.bam.collect { bam(it[1]).getReadsMD5() },
+                                  process.out.fastq,
+                                  process.out.log
+                                  ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - single_end - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [id:"test", single_end:true],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
+                input[1] = BOWTIE_BUILD.out.index
+                input[2] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - paired_end") {
+
+        when {
+            process {
+                """
+                input[0] = [ [id:"test", single_end:false],
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]
+                    ]
+                input[1] = BOWTIE_BUILD.out.index
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions,
+                                  process.out.bam.collect { bam(it[1]).getReads(2) },
+                                  process.out.log
+                                  ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - paired_end - stub") {
+
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [ [id:"test", single_end:false],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
+                input[1] = BOWTIE_BUILD.out.index
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
