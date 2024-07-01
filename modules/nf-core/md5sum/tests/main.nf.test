@@ -17,6 +17,7 @@ nextflow_process {
                     [ id: 'hello' ],
                     [ file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true) ]
                 ]
+                input[1] = true
                 """
             }
         }
@@ -40,6 +41,7 @@ nextflow_process {
                     [ id: 'hello' ],
                     [ file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true) ]
                 ]
+                input[1] = true
                 """
             }
         }
@@ -61,6 +63,7 @@ nextflow_process {
                     [ id: 'hello' ],
                     [ file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true) ]
                 ]
+                input[1] = true
                 """
             }
         }
@@ -73,7 +76,7 @@ nextflow_process {
         }
     }
 
-    test("md5sum on paired fastq files") {
+    test("md5sum on paired fastq, combined") {
 
         when {
             process {
@@ -85,6 +88,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ]
+                input[1] = false
                 """
             }
         }
@@ -97,7 +101,7 @@ nextflow_process {
         }
     }
 
-    test("md5sum on paired fastq files - stub") {
+    test("md5sum on paired fastq, combined - stub") {
         options "-stub"
         when {
             process {
@@ -109,6 +113,58 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ]
+                input[1] = false
+                """
+            }
+        }
+
+        then {
+            assertAll {
+                { assert process.success }
+                { assert snapshot(process.out).match() }
+            }
+        }
+    }
+
+
+    test("md5sum on paired fastq, separate") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = true
+                """
+            }
+        }
+
+        then {
+            assertAll {
+                { assert process.success }
+                { assert snapshot(process.out).match() }
+            }
+        }
+    }
+
+    test("md5sum on paired fastq, separate - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = true
                 """
             }
         }
