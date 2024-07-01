@@ -29,7 +29,7 @@ process MD5SUM {
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-            md5sum: \$(echo \$(md5sum --version 2>&1 | head -n 1| sed 's/^.*) //;' ))
+            md5sum: \$( md5sum --version | sed '1!d; s/.* //' )
         END_VERSIONS
         """
     } else {
@@ -41,7 +41,7 @@ process MD5SUM {
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-            md5sum: \$(echo \$(md5sum --version 2>&1 | head -n 1| sed 's/^.*) //;' ))
+            md5sum: \$( md5sum --version | sed '1!d; s/.* //' )
         END_VERSIONS
         """
     }
@@ -57,7 +57,7 @@ process MD5SUM {
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-            md5sum: \$(echo \$(md5sum --version 2>&1 | head -n 1| sed 's/^.*) //;' ))
+            md5sum: \$( md5sum --version | sed '1!d; s/.* //' )
         END_VERSIONS
         """
     } else {
@@ -66,7 +66,7 @@ process MD5SUM {
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-            md5sum: \$(echo \$(md5sum --version 2>&1 | head -n 1| sed 's/^.*) //;' ))
+            md5sum: \$( md5sum --version | sed '1!d; s/.* //' )
         END_VERSIONS
         """
     }
