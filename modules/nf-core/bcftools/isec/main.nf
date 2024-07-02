@@ -38,9 +38,9 @@ process BCFTOOLS_ISEC {
     mkdir ${prefix}
     touch ${prefix}/README.txt
     touch ${prefix}/sites.txt
-    touch ${prefix}/0000.vcf.gz
+    echo "" | gzip > ${prefix}/0000.vcf.gz
     touch ${prefix}/0000.vcf.gz.tbi
-    touch ${prefix}/0001.vcf.gz
+    echo "" | gzip > ${prefix}/0001.vcf.gz
     touch ${prefix}/0001.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml

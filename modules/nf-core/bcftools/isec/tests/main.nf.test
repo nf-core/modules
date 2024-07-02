@@ -11,7 +11,7 @@ nextflow_process {
 
     config "./nextflow.config"
 
-    test("sarscov2 - [[vcf1, vcf2], [tbi1, tbi2]]") {
+    test("sarscov2 - [[vcf1.gz, vcf2.gz], [tbi1, tbi2]]") {
 
         when {
             process {
@@ -19,11 +19,13 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ], // meta map
                     [
-                        file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
-                        file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true)],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true)
+                        ],
                     [
-                        file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true),
-                        file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true)]
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
+                        ]
                     ]
                 """
             }
@@ -32,16 +34,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.results,
-                    process.out.versions
-                ).match() }
+                { assert snapshot(process.out).match() }
             )
         }
 
     }
 
-    test("sarscov2 - [[vcf1, vcf2], [tbi1, tbi2]]") {
+    test("sarscov2 - [[vcf1, vcf2], [tbi1, tbi2]] - test") {
         options "-stub"
         when {
             process {
@@ -49,11 +48,13 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ], // meta map
                     [
-                        file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
-                        file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true)],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true)
+                        ],
                     [
-                        file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true),
-                        file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true)]
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
+                        ]
                     ]
                 """
             }
