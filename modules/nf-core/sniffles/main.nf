@@ -37,4 +37,3 @@ process SNIFFLES {
     END_VERSIONS
     """
 }
-
