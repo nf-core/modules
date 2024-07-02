@@ -45,9 +45,9 @@ process SENTIEON_BWAMEM {
     def sentieon_auth_data_base64 = task.ext.sentieon_auth_data_base64 ?: ''
 
     """
-    if [ "\${#SENTIEON_LICSRVR_IP}" ]; then  # If the string SENTIEON_LICENSE_BASE64 is short, then it is an encrypted url.
+    if [ "\${SENTIEON_LICSRVR_IP}" ]; then  # If the string SENTIEON_LICENSE_BASE64 is short, then it is an encrypted url.
         # This is how nf-core/sarek users will use Sentieon in real world use
-        export SENTIEON_LICENSE=\${#SENTIEON_LICSRVR_IP}
+        export SENTIEON_LICENSE=\${SENTIEON_LICSRVR_IP}
     else  # Localhost license file
         # The license file is stored as a nextflow variable like, for instance, this:
         # nextflow secrets set SENTIEON_LICENSE_BASE64 \$(cat <sentieon_license_file.lic> | base64 -w 0)
