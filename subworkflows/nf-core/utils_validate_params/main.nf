@@ -18,7 +18,7 @@ include { validateParameters } from 'plugin/nf-validation'
 ========================================================================================
 */
 
-workflow UTILS_NFVALIDATION_PLUGIN {
+workflow UTILS_VALIDATE_PARAMS {
 
     take:
     print_help       // boolean: print help
