@@ -1,0 +1,46 @@
+name: "custom_splitfastqbylane"
+description: |
+  Splits fastq files with multiple or unknown number of merged flowcell+lane sources into separate fastq files, each with single flowcell+line sources.
+keywords:
+  - splitlanesbyfastq
+  - awk
+  - custom
+  - fastq
+  - split
+  - lanes
+tools:
+  - "gawk":
+      description: "The awk utility interprets a special-purpose programming language that makes it easy to handle simple data-reformatting jobs."
+      homepage: "https://www.gnu.org/software/gawk/manual/gawk.html"
+      documentation: "https://www.gnu.org/software/gawk/manual/gawk.html"
+      tool_dev_url: "http://savannah.gnu.org/projects/gawk/"
+      licence: "['GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: List of input FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
+      pattern: "*.{fastq,fastq.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - reads:
+      type: file
+      description: List of output FastQ files of size of multiples of 1 and 2, for single-end and paired-end data, respectively.
+      pattern: "*.split.fastq.gz"
+
+authors:
+  - "@anoronh4"
