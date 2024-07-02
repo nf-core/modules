@@ -49,17 +49,17 @@ output:
 
   - schema:
       type: directory
-      description: schema directory
+      description: Schema directory
       pattern: "*/"
 
   - cds_coordinates:
       type: file
-      description: file contains the coordinates of the CDS in the input sample
+      description: File containing the coordinates of the CDS in the input sample
       pattern: "*_cds_coordinates.tsv"
 
   - invalid_cds:
       type: file
-      description: file contains the list of alleles predicted by Prodigal that were excluded
+      description: File containing the list of alleles predicted by Prodigal that were excluded
       pattern: "*_invalid_cds.txt"
 
 authors:
