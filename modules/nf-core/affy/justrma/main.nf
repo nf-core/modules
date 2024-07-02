@@ -26,8 +26,8 @@ process AFFY_JUSTRMA {
 
     stub:
     """
-    touch test_eset.rds
-    touch test_matrix.tsv
+    touch ${prefix}_eset.rds
+    touch ${prefix}_matrix.tsv
     touch R_sessionInfo.log
     touch versions.yml
     """
