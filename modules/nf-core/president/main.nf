@@ -52,10 +52,11 @@ process PRESIDENT {
     def args = task.ext.args ?: ''
     def prefix  = task.ext.prefix ?: ''
     """
-    touch ${prefix}report.tsv
-    touch ${prefix}president_logger.log
-    touch ${prefix}valid.fasta
-    touch ${prefix}invalid.fasta
+    mkdir output
+    touch output/${prefix}report.tsv
+    touch output/${prefix}president_logger.log
+    touch output/${prefix}valid.fasta
+    touch output/${prefix}invalid.fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
