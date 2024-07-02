@@ -39,7 +39,7 @@ process NANOQ {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    touch ${prefix}_nanoq.$output_format
+    echo "" | gzip > ${prefix}_nanoq.$output_format
     touch ${prefix}.stats
 
     cat <<-END_VERSIONS > versions.yml
