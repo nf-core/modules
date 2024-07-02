@@ -8,7 +8,7 @@ process FGBIO_CALLMOLECULARCONSENSUSREADS {
         'biocontainers/fgbio:2.2.1--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(grouped_bam)
     val min_reads
     val min_baseq
 
@@ -28,7 +28,7 @@ process FGBIO_CALLMOLECULARCONSENSUSREADS {
     } else {
         mem_gb = task.memory.giga
     }
-    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("$grouped_bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     fgbio \\
         -Xmx${mem_gb}g \\
@@ -36,7 +36,7 @@ process FGBIO_CALLMOLECULARCONSENSUSREADS {
         --async-io=true \\
         --compression=1 \\
         CallMolecularConsensusReads \\
-        --input $bam \\
+        --input $grouped_bam \\
         --output ${prefix}.bam \\
         --min-reads ${min_reads} \\
         --min-input-base-quality ${min_baseq} \\
@@ -51,7 +51,7 @@ process FGBIO_CALLMOLECULARCONSENSUSREADS {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}_consensus_unmapped"
-    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("$grouped_bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     touch ${prefix}.bam
 
