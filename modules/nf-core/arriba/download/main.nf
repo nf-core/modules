@@ -8,8 +8,8 @@ process ARRIBA_DOWNLOAD {
         'biocontainers/arriba:2.4.0--h0033a41_2' }"
 
     output:
-    path "*"              , emit: reference
-    path "versions.yml"           , emit: versions
+    path "*"                , emit: reference
+    path "versions.yml"     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
