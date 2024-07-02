@@ -33,4 +33,3 @@ process FGBIO_SORTBAM {
     END_VERSIONS
     """
 }
-
