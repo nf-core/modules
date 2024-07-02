@@ -18,15 +18,10 @@ process PBTK_PBINDEX {
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     pbindex \\
         -j $task.cpus \\
         $bam
-
-    mv \\
-        ${bam}.pbi \\
-        ${prefix}.bam.pbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -35,9 +30,8 @@ process PBTK_PBINDEX {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.bam.pbi
+    touch ${bam}.pbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
