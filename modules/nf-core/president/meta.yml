@@ -39,9 +39,13 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - fasta:
+  - valid_fasta:
       type: file
-      description: Two fasta files, one with sequences which passed the qc ("valid.fasta"), one with sequences which didn't pass the qc ("invalid.fasta"). If true is set on the "compress" input value, these files are gz-compressed.
+      description: Fasta file containing sequences which passed the qc ("valid.fasta"). If true is set on the "compress" input value, the file is gz-compressed.
+      pattern: "*.{fasta.gz, fasta}"
+  - valid_fasta:
+      type: file
+      description: Fasta file containing sequences which didn't pass the qc ("invalid.fasta"). If true is set on the "compress" input value, the files are gz-compressed.
       pattern: "*.{fasta.gz, fasta}"
   - report:
       type: file

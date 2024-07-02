@@ -13,8 +13,8 @@ process PRESIDENT {
     val compress
 
     output:
-    tuple val(meta), path("${prefix}valid.fasta*")  , emit: valid_fasta
-    tuple val(meta), path("${prefix}invalid.fasta*"), emit: invalid_fasta
+    tuple val(meta), path("${prefix}_valid.fasta*")  , emit: valid_fasta
+    tuple val(meta), path("${prefix}_invalid.fasta*"), emit: invalid_fasta
     tuple val(meta), path("*.tsv")                   , emit: report
     tuple val(meta), path("*.log")                   , emit: log
     path "versions.yml"                              , emit: versions
@@ -24,19 +24,19 @@ process PRESIDENT {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}_"
+    prefix = task.ext.prefix ?: "${meta.id}"
     if ("${fasta}" == "${reference}") error "Input and reference names are the same!"
-    if ("${fasta}" == "${prefix}valid.fasta") error "Input and output file names are the same, use \"task.ext.prefix\" to disambiguate!"
-    if ("${fasta}" == "${prefix}invalid.fasta") error "Input and output file names are the same, use \"task.ext.prefix\" to disambiguate!"
-    if ("${fasta}" == "${prefix}valid.fasta.gz" && compress) error "Input and output file names are the same, use \"task.ext.prefix\" to disambiguate!"
-    if ("${fasta}" == "${prefix}invalid.fasta.gz" && compress) error "Input and output file names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${fasta}" == "${prefix}_valid.fasta") error "Input and output file names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${fasta}" == "${prefix}_invalid.fasta") error "Input and output file names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${fasta}" == "${prefix}_valid.fasta.gz" && compress) error "Input and output file names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${fasta}" == "${prefix}_invalid.fasta.gz" && compress) error "Input and output file names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     president \\
         --query $fasta \\
         --reference $reference \\
         --path . \\
         --threads $task.cpus \\
-        --prefix $prefix \\
+        --prefix "${prefix}_" \\
         $args
 
     if [ "$compress" = true ] ; then
@@ -51,14 +51,14 @@ process PRESIDENT {
 
     stub:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}_"
+    prefix = task.ext.prefix ?: "${meta.id}"
     compress_command = compress ? "gzip ${prefix}*.fasta" : ""
 
     """
-    touch ${prefix}report.tsv
-    touch ${prefix}president_logger.log
-    touch ${prefix}valid.fasta
-    touch ${prefix}invalid.fasta
+    touch ${prefix}_report.tsv
+    touch ${prefix}_president_logger.log
+    touch ${prefix}_valid.fasta
+    touch ${prefix}_invalid.fasta
     $compress_command
 
     cat <<-END_VERSIONS > versions.yml
