@@ -42,8 +42,13 @@ output:
       type: file
       description: Trained parameter file
       pattern: "*.train"
+  - multiqc:
+      type: file
+      description: Alignment parameter summary for MultiQC
+      pattern: "*.tsv"
 authors:
   - "@aleksandrabliznina"
   - "@charles-plessy"
+  - "@U13bs1125"
 maintainers:
   - "@charles-plessy"
