@@ -28,20 +28,20 @@ process LAST_LASTAL {
     set -o pipefail
 
     function calculate_psl_metrics() {
-      awk 'BEGIN {
-        FS="\t";  # Set field separator as tab
-        totalMatches = 0;
-        totalAlignmentLength = 0;
-        print "Sample\tTotalAlignmentLength\tPercentSimilarity";  # Header for MultiQC
-      }
-      {
-        totalMatches += \$1 + \$3;  # Sum matches and repMatches
-        totalAlignmentLength += \$1 + \$2 + \$3 + \$6 + \$8;  # Sum matches, misMatches, repMatches, qBaseInsert, and tBaseInsert
-      }
-      END {
-        percentSimilarity = (totalAlignmentLength > 0) ? (totalMatches / totalAlignmentLength * 100) : 0;
-        print "$meta.id" "\t" totalAlignmentLength "\t" percentSimilarity;  # Data in TSV format
-      }'
+        awk 'BEGIN {
+            FS="\t";  # Set field separator as tab
+            totalMatches = 0;
+            totalAlignmentLength = 0;
+            print "Sample\tTotalAlignmentLength\tPercentSimilarity";  # Header for MultiQC
+        }
+        {
+            totalMatches += \$1 + \$3;  # Sum matches and repMatches
+            totalAlignmentLength += \$1 + \$2 + \$3 + \$6 + \$8;  # Sum matches, misMatches, repMatches, qBaseInsert, and tBaseInsert
+        }
+        END {
+            percentSimilarity = (totalAlignmentLength > 0) ? (totalMatches / totalAlignmentLength * 100) : 0;
+            print "$meta.id" "\t" totalAlignmentLength "\t" percentSimilarity;  # Data in TSV format
+        }'
     }
 
     lastal \\
@@ -50,9 +50,9 @@ process LAST_LASTAL {
         $args \\
         ${index}/\$INDEX_NAME \\
         $fastx |
-	tee >(gzip --no-name  > ${prefix}.maf.gz) |
-	maf-convert psl |
-	calculate_psl_metrics > ${prefix}.tsv
+        tee >(gzip --no-name  > ${prefix}.maf.gz) |
+        maf-convert psl |
+        calculate_psl_metrics > ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
