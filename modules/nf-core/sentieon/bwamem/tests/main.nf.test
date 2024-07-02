@@ -10,6 +10,7 @@ nextflow_process {
     process "SENTIEON_BWAMEM"
 
     test("Single-End") {
+        config "./nextflow.config"
 
         setup {
             run("SENTIEON_BWAINDEX") {
