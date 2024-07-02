@@ -1,0 +1,108 @@
+nextflow_process {
+    name "Test Process ARGNORM"
+    script "../main.nf"
+    process "ARGNORM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "argnorm"
+
+    test("argnorm - amrfinderplus_ncbi_raw - tsv") {
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'test.tsv', single_end:false ], // meta map                                                                                                                           
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/amrfinderplus/test_output.tsv", checkIfExists: true)                              
+                ]
+                input[1] = 'ncbi'
+                input[2] = 'amrfinderplus'
+                input[3] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    
+    test("argnorm - amrfinderplus_ncbi_hamronized - tsv") {
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'test.tsv', single_end:false ], // meta map                                                                                                                           
+                    file("https://raw.githubusercontent.com/BigDataBiology/argNorm/main/examples/hamronized/amrfinderplus.ncbi.orfs.tsv", checkIfExists: true)                              
+                ]
+                input[1] = 'ncbi'
+                input[2] = 'amrfinderplus'
+                input[3] = '--hamronized'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    
+    test("argnorm - amrfinderplus_ncbi_hamronized - tsv - stub") {
+        options "-stub"
+    
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'test.tsv', single_end:false ], // meta map                                                                                                                           
+                    file("https://raw.githubusercontent.com/BigDataBiology/argNorm/main/examples/hamronized/amrfinderplus.ncbi.orfs.tsv", checkIfExists: true)                              
+                ]
+                input[1] = 'ncbi'
+                input[2] = 'amrfinderplus'
+                input[3] = '--hamronized'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("argnorm - amrfinderplus_ncbi - tsv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'test.tsv', single_end:false ], // meta map                                                                                                                           
+                    file("https://raw.githubusercontent.com/BigDataBiology/argNorm/main/examples/raw/amrfinderplus.ncbi.orfs.tsv", checkIfExists: true)                              
+                ]
+                input[1] = 'ncbi'
+                input[2] = 'amrfinderplus'
+                input[3] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
