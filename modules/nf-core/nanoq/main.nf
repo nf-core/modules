@@ -13,7 +13,7 @@ process NANOQ {
 
     output:
     tuple val(meta), path("*.stats")                                                  , emit: stats
-    tuple val(meta), path("*_nanoq.${output_format}")                                                 , emit: reads
+    tuple val(meta), path("*_nanoq.${output_format}")                                 , emit: reads
     path "versions.yml"                                                               , emit: versions
 
     when:
@@ -36,10 +36,10 @@ process NANOQ {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_nanoq"
 
     """
-    echo "" | gzip > ${prefix}_nanoq.$output_format
+    echo "" | gzip > ${prefix}.$output_format
     touch ${prefix}.stats
 
     cat <<-END_VERSIONS > versions.yml
