@@ -708,10 +708,9 @@ jobs:
       - name: Set up nextflow secrets
         if: env.SENTIEON_LICENSE_BASE64 != null
         env:
-          SENTIEON_LICENSE: ${{ secrets.LICSRVR_IP }}
           SENTIEON_AUTH_MECH: "GitHub Actions - token"
-          ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
-          LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
+          SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
+          SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
         run: |
           nextflow secrets set SENTIEON_AUTH_DATA $(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "${{ secrets.SENTIEON_ENCRYPTION_KEY }}" --message "$SENTIEON_LICENSE_MESSAGE")
 
