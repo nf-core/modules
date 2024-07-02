@@ -3,7 +3,13 @@ process SENTIEON_BWAMEM {
     label 'process_high'
     label 'sentieon'
 
-    secret 'SENTIEON_LICENSE_BASE64'
+    // If they use a license file
+    // secret 'SENTIEON_LICENSE_BASE64' // Don't post publicly but not really a secret
+    // If they use a license server
+    // secret 'SENTIEON_LICSRVR_IP'
+    // If they use a public license server
+    secret 'SENTIEON_ENCRYPTION_KEY' // NOTE Only actual secret
+    // secret 'SENTIEON_LICENSE_MESSAGE'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -38,21 +44,22 @@ process SENTIEON_BWAMEM {
     def sentieon_auth_mech_base64 = task.ext.sentieon_auth_mech_base64 ?: ''
     def sentieon_auth_data_base64 = task.ext.sentieon_auth_data_base64 ?: ''
 
+    // TODO Rewrite to use LICSRVR and a seperate variable for SENTIEON_LICENSE file
     """
-    echo ''
-    if [ "\${#SENTIEON_LICENSE_BASE64}" -lt "1500" ]; then  # If the string SENTIEON_LICENSE_BASE64 is short, then it is an encrypted url.
-        export SENTIEON_LICENSE=\$(echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d)
+    if [ "\${#SENTIEON_LICSRVR_IP}" ]; then  # If the string SENTIEON_LICENSE_BASE64 is short, then it is an encrypted url.
+        # This is how nf-core/sarek users will use Sentieon in real world use
+        export SENTIEON_LICENSE=\${#SENTIEON_LICSRVR_IP}
     else  # Localhost license file
         # The license file is stored as a nextflow variable like, for instance, this:
         # nextflow secrets set SENTIEON_LICENSE_BASE64 \$(cat <sentieon_license_file.lic> | base64 -w 0)
+        # This is how nf-core/sarek users will test out Sentieon in Sarek
         export SENTIEON_LICENSE=\$(mktemp)
         echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d > \$SENTIEON_LICENSE
     fi
 
-    if  [ ${sentieon_auth_mech_base64} ] && [ ${sentieon_auth_data_base64} ]; then
+    # Only going to happen in GitHub actions or in AWSMegatests
+    if  [ \${SENTIEON_AUTH_MECH} ] && [ \${SENTIEON_AUTH_DATA} ]; then
         # If sentieon_auth_mech_base64 and sentieon_auth_data_base64 are non-empty strings, then Sentieon is mostly likely being run with some test-license.
-        export SENTIEON_AUTH_MECH=\$(echo -n "${sentieon_auth_mech_base64}" | base64 -d)
-        export SENTIEON_AUTH_DATA=\$(echo -n "${sentieon_auth_data_base64}" | base64 -d)
         echo "Decoded and exported Sentieon test-license system environment variables"
     fi
 
