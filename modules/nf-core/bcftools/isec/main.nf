@@ -30,4 +30,22 @@ process BCFTOOLS_ISEC {
         bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir ${prefix}
+    touch ${prefix}/README.txt
+    touch ${prefix}/sites.txt
+    touch ${prefix}/0000.vcf.gz
+    touch ${prefix}/0000.vcf.gz.tbi
+    touch ${prefix}/0001.vcf.gz
+    touch ${prefix}/0001.vcf.gz.tbi
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
+    END_VERSIONS
+    """
 }
