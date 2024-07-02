@@ -56,7 +56,7 @@ process RSEM_CALCULATEEXPRESSION {
     """
 
     stub:
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.genes.results
     touch ${prefix}.isoforms.results
