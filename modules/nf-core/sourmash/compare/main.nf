@@ -14,10 +14,10 @@ process SOURMASH_COMPARE {
     val save_csv
 
     output:
-    tuple val(meta), path("*comp.npy")           , optional:true, emit: matrix
-    tuple val(meta), path("*comp.npy.labels.txt"), optional:true, emit: labels
-    path "*comp.csv"                             , optional:true, emit: csv
-    path "versions.yml"                                         , emit: versions
+    tuple val(meta), path("*comp.npy")            , emit: matrix, optional:true
+    tuple val(meta), path("*comp.npy.labels.txt") , emit: labels, optional:true
+    tuple val(meta), path("*comp.csv")            , emit: csv   , optional:true
+    path "versions.yml"                           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
