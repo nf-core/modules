@@ -23,4 +23,3 @@ workflow FASTQ_EXTRACT_KRAKEN_KRAKENTOOLS {
     multiqc_files = KRAKEN2_KRAKEN2.out.report                                           // channel: [ val(meta), path ]
     versions = ch_versions                                                               // channel: [ versions.yml ]
 }
-
