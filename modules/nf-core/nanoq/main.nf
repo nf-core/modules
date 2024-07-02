@@ -21,7 +21,7 @@ process NANOQ {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_nanoq"
 
     """
     nanoq -i $ontreads \\
