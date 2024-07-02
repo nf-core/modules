@@ -10,7 +10,7 @@ process SENTIEON_BWAMEM {
     // If they use a public license server
     // secret 'SENTIEON_ENCRYPTION_KEY' // NOTE Only actual secret
     // secret 'SENTIEON_LICENSE_MESSAGE'
-    secret 'SENTIEON_AUTH_MECH'
+    // secret 'SENTIEON_AUTH_MECH'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
