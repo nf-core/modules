@@ -1,0 +1,56 @@
+nextflow_process {
+
+    name "Test Process FGBIO_SORTBAM"
+    script "../main.nf"
+    process "FGBIO_SORTBAM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fgbio"
+    tag "fgbio/sortbam"
+
+    test("sarscov2 - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                       file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                       ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                       file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                       ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
