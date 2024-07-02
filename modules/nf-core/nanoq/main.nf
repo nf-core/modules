@@ -26,7 +26,7 @@ process NANOQ {
     """
     nanoq -i $ontreads \\
         -r ${prefix}.stats \\
-        -o ${prefix}_nanoq.$output_format
+        -o ${prefix}.$output_format
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
