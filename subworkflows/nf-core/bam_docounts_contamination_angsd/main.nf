@@ -33,4 +33,3 @@ workflow BAM_DOCOUNTS_CONTAMINATION_ANGSD {
     txt      = ANGSD_CONTAMINATION.out.txt // channel: [ val(meta), [ txt ] ]
     versions = ch_versions                 // channel: [ path(versions.yml) ]
 }
-

@@ -1,0 +1,113 @@
+nextflow_process {
+
+    name "Test Process MAGUS_ALIGN"
+    script "../main.nf"
+    process "MAGUS_ALIGN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "magus"
+    tag "magus/align"
+    tag "magus/guidetree"
+
+    test("setoxin - fasta - uncompressed") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                             file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                           ]
+                input[1] = [[:],[]]
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                // tests seem to be reproducible on a single machine, but not across different machines
+                // test the correct samples are in there
+                { assert path(process.out.alignment[0][1]).getText().contains(">1apf") },
+                { assert path(process.out.alignment[0][1]).getText().contains(">1ahl") },
+                { assert path(process.out.alignment[0][1]).getText().contains(">1atx") },
+                { assert path(process.out.alignment[0][1]).getText().contains(">1sh1") },
+                { assert path(process.out.alignment[0][1]).getText().contains(">1bds") },
+                { assert snapshot(process.out.versions).match("versions0") }
+            )
+        }
+
+    }
+
+    test("setoxin - fasta - compressed") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                             file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                           ]
+                input[1] = [[:],[]]
+                input[2] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                // tests seem to be reproducible on a single machine, but not across different machines
+                // test the correct samples are in there
+                { assert path(process.out.alignment[0][1]).getTextGzip().contains(">1apf") },
+                { assert path(process.out.alignment[0][1]).getTextGzip().contains(">1ahl") },
+                { assert path(process.out.alignment[0][1]).getTextGzip().contains(">1atx") },
+                { assert path(process.out.alignment[0][1]).getTextGzip().contains(">1sh1") },
+                { assert path(process.out.alignment[0][1]).getTextGzip().contains(">1bds") },
+                { assert snapshot(process.out.versions).match("versions1") }
+            )
+        }
+
+    }
+    test("setoxin - fasta - guide_tree") {
+
+        setup {
+            run("MAGUS_GUIDETREE") {
+                script "../../guidetree/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id:'test' ], // meta map
+                                 file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                               ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                             file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                           ]
+                input[1] = MAGUS_GUIDETREE.out.tree.collect{ meta, tree -> tree }.map{ tree -> [[ id: 'test_summary'], tree]}
+                input[2] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                // tests seem to be reproducible on a single machine, but not across different machines
+                // test the correct samples are in there
+                { assert path(process.out.alignment[0][1]).getTextGzip().contains(">1apf") },
+                { assert path(process.out.alignment[0][1]).getTextGzip().contains(">1ahl") },
+                { assert path(process.out.alignment[0][1]).getTextGzip().contains(">1atx") },
+                { assert path(process.out.alignment[0][1]).getTextGzip().contains(">1sh1") },
+                { assert path(process.out.alignment[0][1]).getTextGzip().contains(">1bds") },
+                { assert snapshot(process.out.versions).match("with_guide_tree_versions") }
+            )
+        }
+    }
+}

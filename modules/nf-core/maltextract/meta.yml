@@ -23,6 +23,11 @@ tools:
       doi: "10.1186/s13059-019-1903-0"
       licence: ["GPL 3"]
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - rma6:
       type: file
       description: RMA6 files from MALT

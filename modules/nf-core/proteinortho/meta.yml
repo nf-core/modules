@@ -1,0 +1,54 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "proteinortho"
+description: Proteinortho is a tool to detect orthologous genes within different species.
+keywords:
+  - orthology
+  - co-orthology
+  - homology
+  - sequence similarity
+  - spectral clustering
+  - comparative genomics
+  - genomics
+tools:
+  - "proteinortho":
+      description: "Proteinortho is a tool to detect orthologous genes within different species."
+      homepage: "https://gitlab.com/paulklemm_PHD/proteinortho"
+      documentation: "https://gitlab.com/paulklemm_PHD/proteinortho#proteinortho"
+      tool_dev_url: "https://gitlab.com/paulklemm_PHD/proteinortho"
+      doi: "10.3389/fbinf.2023.1322477"
+      licence: ["GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test' ]`
+  - fasta_files:
+      type: file
+      description: Input fasta files (proteomes or transcriptomes), at least 2 are needed
+      pattern: "*.{fa,fasta,faa,fna,fn}"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - orthologgroups:
+      type: file
+      description: Orthology table
+      pattern: "*.proteinortho.tsv"
+  - orthologgraph:
+      type: file
+      description: Orthology graph
+      pattern: "*.proteinortho-graph"
+  - blastgraph:
+      type: file
+      description: BLAST graph
+      pattern: "*.blast-graph"
+
+authors:
+  - "@pmjklemm"
+maintainers:
+  - "@pmjklemm"

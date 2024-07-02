@@ -41,7 +41,7 @@ process TIDDIT_COV {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.wig
-    touch ${prefix}.tab
+    touch ${prefix}.bed
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
