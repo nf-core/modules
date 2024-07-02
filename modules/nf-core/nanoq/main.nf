@@ -37,7 +37,6 @@ process NANOQ {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_nanoq"
-
     """
     echo "" | gzip > ${prefix}.$output_format
     touch ${prefix}.stats
