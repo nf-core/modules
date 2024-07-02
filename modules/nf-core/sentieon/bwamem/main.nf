@@ -8,7 +8,7 @@ process SENTIEON_BWAMEM {
     // If they use a license server
     // secret 'SENTIEON_LICSRVR_IP'
     // If they use a public license server
-    secret 'SENTIEON_ENCRYPTION_KEY' // NOTE Only actual secret
+    // secret 'SENTIEON_ENCRYPTION_KEY' // NOTE Only actual secret
     // secret 'SENTIEON_LICENSE_MESSAGE'
 
     conda "${moduleDir}/environment.yml"
