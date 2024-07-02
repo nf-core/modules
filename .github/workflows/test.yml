@@ -648,7 +648,6 @@ jobs:
             path: subworkflows/nf-core/fastq_align_bwa
     env:
       NXF_ANSI_LOG: false
-      SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
       NFTEST_VER: "0.8.4"
 
     steps:
@@ -706,7 +705,7 @@ jobs:
 
       # Set up secrets
       - name: Set up nextflow secrets
-        if: env.SENTIEON_LICENSE_BASE64 != null
+        # FIXME if: secrets.SENTIEON_ENCRYPTION_KEY != null
         env:
           SENTIEON_AUTH_MECH: "GitHub Actions - token"
           SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
