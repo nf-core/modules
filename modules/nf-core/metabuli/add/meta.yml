@@ -1,0 +1,57 @@
+name: "metabuli_add"
+description: Add fasta sequences to a database needed to use the metabuli classification tool
+keywords:
+  - metabuli
+  - metagenomics
+  - profiling
+  - taxonomy
+  - database
+tools:
+  - "metabuli":
+      description: "Metabuli: specific and sensitive metagenomic classification via joint analysis of DNA and amino acid"
+      homepage: "https://github.com/steineggerlab/Metabuli"
+      documentation: "https://github.com/steineggerlab/Metabuli#readme"
+      tool_dev_url: "https://github.com/steineggerlab/Metabuli"
+      doi: "10.1101/2023.05.31.543018"
+      licence: "['GPL v3']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - fasta:
+      type: file
+      description: fasta file that will be added to the database
+      pattern: "*.{fa,fasta,fna,ffn}"
+  - taxonomy_names:
+      type: file
+      description: used for associating sequences with taxonomy IDs
+      pattern: "*.dmp"
+  - taxonomy_nodes:
+      type: file
+      description: tree nodes using NCBI taxonomy nomenclature
+      pattern: "*.dmp"
+  - taxonomy_merged:
+      type: file
+      description: merged.dmp maps secondary taxids onto primary taxids for taxa that have been synonymized in the database
+      pattern: "*.dmp"
+  - accession2taxid:
+      type: file
+      description: associates sequence accession IDs to taxonomy IDs
+      pattern: "*.accession2taxid"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - db:
+      type: directory
+      description: Metabuli database
+      pattern: "${prefix}/"
+
+authors:
+  - "@TheOafidian"
+  - "@Joon-Klaps"
