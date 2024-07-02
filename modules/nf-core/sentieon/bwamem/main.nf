@@ -44,7 +44,6 @@ process SENTIEON_BWAMEM {
     def sentieon_auth_mech_base64 = task.ext.sentieon_auth_mech_base64 ?: ''
     def sentieon_auth_data_base64 = task.ext.sentieon_auth_data_base64 ?: ''
 
-    // TODO Rewrite to use LICSRVR and a seperate variable for SENTIEON_LICENSE file
     """
     if [ "\${#SENTIEON_LICSRVR_IP}" ]; then  # If the string SENTIEON_LICENSE_BASE64 is short, then it is an encrypted url.
         # This is how nf-core/sarek users will use Sentieon in real world use
