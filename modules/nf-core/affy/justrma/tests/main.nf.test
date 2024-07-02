@@ -17,7 +17,7 @@ nextflow_process {
             """
             input[0] = [
                         [ id:'test' ], // meta map
-                        file(params.test_data['homo_sapiens']['genome']['affy_array_celfiles_tar'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/array_expression/GSE38751_RAW.tar', checkIfExists: true)
             ]
             """
             }
@@ -29,7 +29,11 @@ nextflow_process {
         when {
             process {
                 """
-                ch_samplesheet = Channel.of([ [ id:'test' ], file(params.test_data['homo_sapiens']['genome']['affy_array_samplesheet'], checkIfExists: true) ])
+                ch_samplesheet = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/array_expression/GSE38751.csv', checkIfExists: true)
+                    ]
+                )
                 input[0] = ch_samplesheet.join(UNTAR.out.untar)
                 input[1] = [[],[]]
                 """
@@ -53,7 +57,11 @@ nextflow_process {
         when {
             process {
                 """
-                ch_samplesheet = Channel.of([ [ id:'test' ], file(params.test_data['homo_sapiens']['genome']['affy_array_samplesheet'], checkIfExists: true) ])
+                ch_samplesheet = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/array_expression/GSE38751.csv', checkIfExists: true)
+                    ]
+                )
                 input[0] = ch_samplesheet.join(UNTAR.out.untar)
                 input[1] = [[],[]]
                 """
@@ -76,11 +84,14 @@ nextflow_process {
     test("homo_sapiens genome affy_array [celfiles] - stub") {
 
         options "-stub"
-
         when {
             process {
                 """
-                ch_samplesheet = Channel.of([ [ id:'test' ], file(params.test_data['homo_sapiens']['genome']['affy_array_samplesheet'], checkIfExists: true) ])
+                ch_samplesheet = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/array_expression/GSE38751.csv', checkIfExists: true)
+                    ]
+                )
                 input[0] = ch_samplesheet.join(UNTAR.out.untar)
                 input[1] = [[],[]]
                 """

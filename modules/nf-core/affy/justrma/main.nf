@@ -25,6 +25,7 @@ process AFFY_JUSTRMA {
     template 'affy_justrma.R'
 
     stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_eset.rds
     touch ${prefix}_matrix.tsv
