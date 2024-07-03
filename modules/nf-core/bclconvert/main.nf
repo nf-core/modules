@@ -8,14 +8,14 @@ process BCLCONVERT {
     tuple val(meta), path(samplesheet), path(run_dir)
 
     output:
-    tuple val(meta), path("**_S[1-9]*_R?_00?.fastq.gz")          , emit: fastq
-    tuple val(meta), path("**_S[1-9]*_I?_00?.fastq.gz")          , optional:true, emit: fastq_idx
-    tuple val(meta), path("**Undetermined_S0*_R?_00?.fastq.gz")  , optional:true, emit: undetermined
-    tuple val(meta), path("**Undetermined_S0*_I?_00?.fastq.gz")  , optional:true, emit: undetermined_idx
-    tuple val(meta), path("Reports")                             , emit: reports
-    tuple val(meta), path("Logs")                                , emit: logs
-    tuple val(meta), path("InterOp/*.bin")                       , emit: interop
-    path("versions.yml")                                         , emit: versions
+    tuple val(meta), path("**_S[1-9]*_R?_00?.fastq.gz")           , emit: fastq
+    tuple val(meta), path("**_S[1-9]*_I?_00?.fastq.gz")           , optional:true, emit: fastq_idx
+    tuple val(meta), path("**Undetermined_S0*_R?_00?.fastq.gz")   , optional:true, emit: undetermined
+    tuple val(meta), path("**Undetermined_S0*_I?_00?.fastq.gz")   , optional:true, emit: undetermined_idx
+    tuple val(meta), path("Reports")                              , emit: reports
+    tuple val(meta), path("Logs")                                 , emit: logs
+    tuple val(meta), path("**/InterOp/*.bin", includeInputs: true), emit: interop
+    path("versions.yml")                                          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -61,8 +61,6 @@ process BCLCONVERT {
         --output-directory . \\
         --bcl-input-directory ${input_dir} \\
         --sample-sheet ${samplesheet}
-
-    cp -r ${input_dir}/InterOp .
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
