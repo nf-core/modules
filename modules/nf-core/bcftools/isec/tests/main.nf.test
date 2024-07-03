@@ -38,7 +38,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    results_list,
+                    process.out.versions,
+                    results_list.sort(),
                     path("${process.out.results[0][1]}").list().findAll {
                         it.getFileName().toString() != "0000.vcf.gz.tbi" && it.getFileName().toString() != "0001.vcf.gz.tbi"
                     }
