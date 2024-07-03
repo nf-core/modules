@@ -707,7 +707,6 @@ jobs:
       - name: Set up nextflow secrets
         # FIXME if: secrets.SENTIEON_ENCRYPTION_KEY != null
         env:
-          SENTIEON_AUTH_MECH: "GitHub Actions - token"
           SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
           SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
         run: |
