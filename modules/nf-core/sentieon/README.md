@@ -27,6 +27,7 @@ env {
 ```
 
 ### License File Users
+
 If a license file is supplied, then the nextflow secret should be set like this:
 
 ```bash
