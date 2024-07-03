@@ -7,16 +7,34 @@ nextflow_process {
     tag "untar"
     tag "metabuli"
     tag "metabuli/classify"
+    tag "metabuli/add"
+    tag "metabuli/build"
 
     setup {
-        run("UNTAR") {
-            script "modules/nf-core/untar/main.nf"
+        run("METABULI_ADD") {
+            script "modules/nf-core/metabuli/add/main.nf"
             process {
                 """
-                input[0] = Channel.of([
-                    [],
-                    file(params.modules_testdata_base_path  + "delete_me/metabuli/metabuli_db.tar.gz", checkIfExists: true)
-                ])
+                input[0] = [
+                    [ id:'test' ],
+                        [
+                        file(params.modules_testdata_base_path +'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                        file(params.modules_testdata_base_path +'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true),
+                        ]
+                    ]
+                input[1] = file(params.modules_testdata_base_path +'genomics/sarscov2/metagenome/prot_names.dmp', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path +'genomics/sarscov2/metagenome/prot_nodes.dmp', checkIfExists: true)
+                input[3] = [] // needs a merged.dmp
+                input[4] = file(params.modules_testdata_base_path + 'delete_me/metabuli/acc2taxid', checkIfExists: true)
+                """
+            }
+        }
+        run("METABULI_BUILD") {
+            script "modules/nf-core/metabuli/build/main.nf"
+            process {
+                """
+                input[0] = METABULI_ADD.out.db
+                input[1] = []
                 """
             }
         }
@@ -34,7 +52,7 @@ nextflow_process {
                         checkIfExists: true
                     )]
                 ]
-                input[1] = UNTAR.out.untar
+                input[1] = METABULI_BUILD.out.db
                 """
             }
         }
@@ -49,7 +67,6 @@ nextflow_process {
 
     test("sarscov2 illumina paired end [fastq]") {
         when {
-
             process {
                 """
                 input[0] = [
@@ -66,7 +83,7 @@ nextflow_process {
 
                     ]
                 ]
-                input[1] = UNTAR.out.untar
+                input[1] = METABULI_BUILD.out.db
                 """
             }
         }
