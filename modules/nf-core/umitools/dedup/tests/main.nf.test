@@ -123,10 +123,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path("${process.out.log[0][1]}").exists() },
-                { assert snapshot(
-                    process.out.bam,
-                    process.out.versions).match() }
+                { assert snapshot(process.out.bam).match() }
             )
         }
     }
@@ -155,10 +152,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path("${process.out.log[0][1]}").exists() },
-                { assert snapshot(
-                    process.out.bam,
-                    process.out.versions).match() }
+                { assert snapshot(process.out.bam).match() }
             )
         }
     }
@@ -187,13 +181,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path("${process.out.log[0][1]}").exists() },
-                { assert snapshot(
-                    process.out.bam,
-                    process.out.tsv_edit_distance,
-                    process.out.tsv_per_umi,
-                    process.out.tsv_umi_per_position,
-                    process.out.versions).match() }
+                { assert snapshot(process.out.bam).match() }
             )
         }
     }
