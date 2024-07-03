@@ -3,7 +3,6 @@
 
 """Provide functions to merge multiple versions.yml files."""
 
-
 import yaml
 import platform
 from textwrap import dedent
