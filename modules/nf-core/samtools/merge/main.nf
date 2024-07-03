@@ -7,17 +7,18 @@ process SAMTOOLS_MERGE {
         'https://depot.galaxyproject.org/singularity/samtools:1.20--h50ea8bc_0' :
         'biocontainers/samtools:1.20--h50ea8bc_0' }"
 
+    // arity cannot be used on optional input and output paths: https://github.com/nextflow-io/nextflow/issues/5111
     input:
-    tuple val(meta), path(input_files, stageAs: "?/*")
+    tuple val(meta), path(input_files, stageAs: "?/*", arity: '1..*') // One or more files are expected
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
 
     output:
-    tuple val(meta), path("${prefix}.bam") , optional:true, emit: bam
-    tuple val(meta), path("${prefix}.cram"), optional:true, emit: cram
-    tuple val(meta), path("*.csi")         , optional:true, emit: csi
-    tuple val(meta), path("*.crai")        , optional:true, emit: crai
-    path  "versions.yml"                                  , emit: versions
+    tuple val(meta), path("${prefix}.bam")    , optional:true, emit: bam
+    tuple val(meta), path("${prefix}.cram")   , optional:true, emit: cram
+    tuple val(meta), path("*.csi")            , optional:true, emit: csi
+    tuple val(meta), path("*.crai")           , optional:true, emit: crai
+    path  "versions.yml"                      , emit: versions
 
 
     when:
@@ -26,7 +27,7 @@ process SAMTOOLS_MERGE {
     script:
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
-    def file_type = input_files instanceof List ? input_files[0].getExtension() : input_files.getExtension()
+    def file_type = input_files[0].getExtension()
     def reference = fasta ? "--reference ${fasta}" : ""
     """
     samtools \\
@@ -46,7 +47,7 @@ process SAMTOOLS_MERGE {
     stub:
     def args = task.ext.args   ?: ''
     prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
-    def file_type = input_files instanceof List ? input_files[0].getExtension() : input_files.getExtension()
+    def file_type = input_files[0].getExtension()
     def index_type = file_type == "bam" ? "csi" : "crai"
     def index = args.contains("--write-index") ? "touch ${prefix}.${index_type}" : ""
     """
