@@ -24,13 +24,13 @@ input:
   - vcfs:
       type: list
       description: |
-        List containing 2 or more bgzipped vcf/bcf files
-        e.g. [ 'file1.vcf.gz', 'file2.vcf.gz' ]
+        List containing 2 or more vcf/bcf files. These must be compressed and have an associated index.
+        e.g. [ 'file1.vcf.gz', 'file2.vcf' ]
   - tbis:
       type: list
       description: |
-        List containing the tbi index files corresponding to the bcf/vcf input files
-        e.g. [ 'file1.vcf.gz.tbi', 'file2.vcf.gz.tbi' ]
+        List containing the tbi index files corresponding to the vcf/bcf input files
+        e.g. [ 'file1.vcf.tbi', 'file2.vcf.tbi' ]
 output:
   - meta:
       type: map
