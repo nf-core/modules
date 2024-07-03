@@ -61,6 +61,9 @@ process SENTIEON_BWAMEM {
     # Only going to happen in GitHub actions or in AWSMegatests
     if  [ "\${SENTIEON_AUTH_MECH}" ] && [ "\${SENTIEON_AUTH_DATA}" ]; then
         echo "If sentieon_auth_mech_base64 and sentieon_auth_data_base64 are non-empty strings, then Sentieon is mostly likely being run with some test-license."
+        echo "auth_mech: \${SENTIEON_AUTH_MECH}"
+        echo "auth_data: \${SENTIEON_AUTH_DATA}"
+        echo "license: \${SENTIEON_LICENSE}"
     fi
 
     $fix_ld_library_path
