@@ -9,13 +9,13 @@ process ARGNORM {
 
     input:
     tuple val(meta), path(input_tsv)
-    val(db)
-    val(hamronized)
-    val(tool)
+    val db
+    val hamronized
+    val tool
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml"           , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,6 +24,8 @@ process ARGNORM {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '0.5.0'
+    hamronized = hamronized ? "--hamronized" : ""
+
     """
     argnorm \\
         $tool \\
