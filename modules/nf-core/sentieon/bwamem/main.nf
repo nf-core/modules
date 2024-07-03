@@ -45,10 +45,12 @@ process SENTIEON_BWAMEM {
     def sentieon_auth_data_base64 = task.ext.sentieon_auth_data_base64 ?: ''
 
     """
-    if [ "\${SENTIEON_LICSRVR_IP}" ]; then  # If the string SENTIEON_LICENSE_BASE64 is short, then it is an encrypted url.
+    if [ "\${SENTIEON_LICSRVR_IP}" ]; then
+        echo "If using a Sentieon License Server"
         # This is how nf-core/sarek users will use Sentieon in real world use
         export SENTIEON_LICENSE=\${SENTIEON_LICSRVR_IP}
-    else  # Localhost license file
+    else
+        echo "Localhost license file"
         # The license file is stored as a nextflow variable like, for instance, this:
         # nextflow secrets set SENTIEON_LICENSE_BASE64 \$(cat <sentieon_license_file.lic> | base64 -w 0)
         # This is how nf-core/sarek users will test out Sentieon in Sarek
@@ -57,9 +59,8 @@ process SENTIEON_BWAMEM {
     fi
 
     # Only going to happen in GitHub actions or in AWSMegatests
-    if  [ \${SENTIEON_AUTH_MECH} ] && [ \${SENTIEON_AUTH_DATA} ]; then
-        # If sentieon_auth_mech_base64 and sentieon_auth_data_base64 are non-empty strings, then Sentieon is mostly likely being run with some test-license.
-        echo "Decoded and exported Sentieon test-license system environment variables"
+    if  [ "\${SENTIEON_AUTH_MECH}" ] && [ "\${SENTIEON_AUTH_DATA}" ]; then
+        echo "If sentieon_auth_mech_base64 and sentieon_auth_data_base64 are non-empty strings, then Sentieon is mostly likely being run with some test-license."
     fi
 
     $fix_ld_library_path
