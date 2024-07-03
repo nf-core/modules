@@ -11,8 +11,8 @@ process BCFTOOLS_ISEC {
     tuple val(meta), path(vcfs), path(tbis)
 
     output:
-    tuple val(meta), path("${prefix}"), emit: results
-    path  "versions.yml"              , emit: versions
+    tuple val(meta), path("${prefix}", type: "dir"), emit: results
+    path  "versions.yml"                           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
