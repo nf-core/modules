@@ -4,8 +4,8 @@ process DYSGU {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/dysgu%3A1.6.2--py310h770aed0_0' :
-        'biocontainers/dysgu:1.6.2--py310h770aed0_0' }"
+        'oras://community.wave.seqera.io/library/dysgu1.6.4:343cf279fa9c0707' :
+        'community.wave.seqera.io/library/dysgu1.6.4:df5d1d4b34e19fbb' }"
 
     input:
     tuple val(meta), path(input_bam), path(input_bam_index)
