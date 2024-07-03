@@ -49,5 +49,3 @@ process METAPHLAN_MAKEDB {
     END_VERSIONS
     """
 }
-
-
