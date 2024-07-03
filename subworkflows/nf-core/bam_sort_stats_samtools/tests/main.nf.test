@@ -39,9 +39,9 @@ nextflow_workflow {
                 { assert workflow.out.bam.get(0).get(1) ==~ ".*.bam"},
                 { assert workflow.out.bai.get(0).get(1) ==~ ".*.bai"},
                 { assert snapshot(
-                    workflow.out.stats,
                     workflow.out.flagstat,
                     workflow.out.idxstats,
+                    workflow.out.stats,
                     workflow.out.versions).match() }
             )
         }
@@ -70,9 +70,9 @@ nextflow_workflow {
                 { assert workflow.out.bam.get(0).get(1) ==~ ".*.bam"},
                 { assert workflow.out.bai.get(0).get(1) ==~ ".*.bai"},
                 { assert snapshot(
-                    workflow.out.stats,
                     workflow.out.flagstat,
                     workflow.out.idxstats,
+                    workflow.out.stats,
                     workflow.out.versions).match() }
             )
         }
