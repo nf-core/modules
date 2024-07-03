@@ -39,4 +39,3 @@ workflow FASTQ_NGSCHECKMATE {
     pdf          = NGSCHECKMATE_VAFNCM.out.pdf          // channel: [ meta, pdf ], optional
     versions     = ch_versions                          // channel: [ versions.yml ]
 }
-

@@ -45,4 +45,3 @@ process FQTK {
         fqtk: \$(echo \$(fqtk --version 2>&1) | cut -d " " -f2)
     """
 }
-
