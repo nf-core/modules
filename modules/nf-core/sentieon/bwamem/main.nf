@@ -48,7 +48,7 @@ process SENTIEON_BWAMEM {
     if [ "\${SENTIEON_LICSRVR_IP}" ]; then
         echo "If using a Sentieon License Server"
         # This is how nf-core/sarek users will use Sentieon in real world use
-        export SENTIEON_LICENSE=\${SENTIEON_LICSRVR_IP}
+        export SENTIEON_LICENSE="\${SENTIEON_LICSRVR_IP}"
     else
         echo "Localhost license file"
         # The license file is stored as a nextflow variable like, for instance, this:
