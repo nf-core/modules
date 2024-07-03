@@ -6,6 +6,7 @@ keywords:
   - union
   - complement
   - VCF
+  - BCF
 tools:
   - isec:
       description: |
@@ -23,13 +24,13 @@ input:
   - vcfs:
       type: list
       description: |
-        List containing 2 or more vcf files
-        e.g. [ 'file1.vcf', 'file2.vcf' ]
+        List containing 2 or more bgzipped vcf/bcf files
+        e.g. [ 'file1.vcf.gz', 'file2.vcf.gz' ]
   - tbis:
       type: list
       description: |
-        List containing the tbi index files corresponding to the vcfs input files
-        e.g. [ 'file1.vcf.tbi', 'file2.vcf.tbi' ]
+        List containing the tbi index files corresponding to the bcf/vcf input files
+        e.g. [ 'file1.vcf.gz.tbi', 'file2.vcf.gz.tbi' ]
 output:
   - meta:
       type: map
