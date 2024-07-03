@@ -3,13 +3,9 @@ process SENTIEON_BWAMEM {
     label 'process_high'
     label 'sentieon'
 
-    // If they use a license file
-    // secret 'SENTIEON_LICENSE_BASE64' // Don't post publicly but not really a secret
-    // If they use a license server
-    // secret 'SENTIEON_LICSRVR_IP'
-    // If they use a public license server
-    // secret 'SENTIEON_ENCRYPTION_KEY' // NOTE Only actual secret
-    // secret 'SENTIEON_LICENSE_MESSAGE'
+    // NOTE this is not required for the process to run, but it is required for the process to be run in GitHub actions or nf-core MegaTests
+    // The rest of the secrets aren't really "secrets" because they're not sensitive information for users
+    // secret SENTIEON_AUTH_DATA
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -46,24 +42,21 @@ process SENTIEON_BWAMEM {
 
     """
     if [ "\${SENTIEON_LICSRVR_IP}" ]; then
-        echo "If using a Sentieon License Server"
-        # This is how nf-core/sarek users will use Sentieon in real world use
+        # NOTE This is how nf-core/sarek users will use Sentieon in real world use
+        echo "Using a Sentieon License Server"
         export SENTIEON_LICENSE="\${SENTIEON_LICSRVR_IP}"
     else
+        # NOTE This is how nf-core/sarek users will test out Sentieon in Sarek
         echo "Localhost license file"
         # The license file is stored as a nextflow variable like, for instance, this:
         # nextflow secrets set SENTIEON_LICENSE_BASE64 \$(cat <sentieon_license_file.lic> | base64 -w 0)
-        # This is how nf-core/sarek users will test out Sentieon in Sarek
         export SENTIEON_LICENSE=\$(mktemp)
         echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d > \$SENTIEON_LICENSE
     fi
 
-    # Only going to happen in GitHub actions or in AWSMegatests
     if  [ "\${SENTIEON_AUTH_MECH}" ] && [ "\${SENTIEON_AUTH_DATA}" ]; then
+        # NOTE This should only happen in GitHub actions or nf-core MegaTests
         echo "If sentieon_auth_mech and sentieon_auth_data are non-empty strings, then Sentieon is mostly likely being run with some test-license."
-        echo "auth_mech: \${SENTIEON_AUTH_MECH}"
-        echo "auth_data: \${SENTIEON_AUTH_DATA}"
-        echo "license: \${SENTIEON_LICENSE}"
     fi
 
     $fix_ld_library_path
