@@ -32,7 +32,7 @@ process BARRNAP {
         --threads $task.cpus \\
         --kingdom $db \\
         $input \\
-        > rrna_${db}.gff
+        > ${prefix}_rrna_${db}.gff
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
