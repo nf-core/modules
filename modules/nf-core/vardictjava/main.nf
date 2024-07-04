@@ -39,8 +39,7 @@ process VARDICTJAVA {
     | ${filter} \\
     | ${convert_to_vcf} \\
         ${args2} \\
-    > ${prefix}.vcf
-    bgzip ${prefix}.vcf
+    | bgzip --threads ${task.cpus} > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
