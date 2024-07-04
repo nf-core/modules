@@ -52,6 +52,7 @@ process VARDICTJAVA {
     stub:
     def args = task.ext.args ?: '-c 1 -S 2 -E 3'
     def args2 = task.ext.args2 ?: ''
+    def args3 = task.ext.args3 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
