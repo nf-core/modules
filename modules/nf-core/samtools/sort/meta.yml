@@ -18,24 +18,20 @@ tools:
       identifier: biotools:samtools
 input:
   - - meta:
-        qualifier: val
         type: map
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
     - bam:
-        qualifier: path
         type: file
         description: BAM/CRAM/SAM file(s)
         pattern: "*.{bam,cram,sam}"
   - - meta2:
-        qualifier: val
         type: map
         description: |
           Groovy Map containing reference information
           e.g. [ id:'genome' ]
     - fasta:
-        qualifier: path
         type: file
         description: Reference genome FASTA file
         pattern: "*.{fa,fasta,fna}"
@@ -43,55 +39,46 @@ input:
 output:
   - bam:
       - meta:
-          qualifier: val
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.bam":
-          qualifier: path
           type: file
           description: Sorted BAM file
           pattern: "*.{bam}"
   - cram:
       - meta:
-          qualifier: val
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.cram":
-          qualifier: path
           type: file
           description: Sorted CRAM file
           pattern: "*.{cram}"
   - crai:
       - meta:
-          qualifier: val
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.crai":
-          qualifier: path
           type: file
           description: CRAM index file (optional)
           pattern: "*.crai"
   - csi:
       - meta:
-          qualifier: val
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.csi":
-          qualifier: path
           type: file
           description: BAM index file (optional)
           pattern: "*.csi"
   - versions:
       - versions.yml:
-          qualifier: path
           type: file
           description: File containing software versions
           pattern: "versions.yml"

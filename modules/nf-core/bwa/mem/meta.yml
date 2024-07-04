@@ -20,92 +20,76 @@ tools:
       identifier: "biotools:bwa"
 input:
   - - meta:
-        qualifier: val
         type: map
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
     - reads:
-        qualifier: path
         type: file
         description: |
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
   - - meta2:
-        qualifier: val
         type: map
         description: |
           Groovy Map containing reference information.
           e.g. [ id:'test', single_end:false ]
     - index:
-        qualifier: path
         type: file
         description: BWA genome index files
         pattern: "Directory containing BWA index *.{amb,ann,bwt,pac,sa}"
   - - meta3:
-        qualifier: val
         type: map
         description: |
           Groovy Map containing reference information.
           e.g. [ id:'test', single_end:false ]
     - fasta:
-        qualifier: path
         type: file
         description: Reference genome in FASTA format
         pattern: "*.{fasta,fa}"
   - - sort_bam:
-        qualifier: val
         type: boolean
         description: use samtools sort (true) or samtools view (false)
         pattern: "true or false"
 output:
   - bam:
       - meta:
-          qualifier: val
           type: file
           description: Output BAM file containing read alignments
           pattern: "*.{bam}"
       - "*.bam":
-          qualifier: path
           type: file
           description: Output BAM file containing read alignments
           pattern: "*.{bam}"
   - cram:
       - meta:
-          qualifier: val
           type: file
           description: Output CRAM file containing read alignments
           pattern: "*.{cram}"
       - "*.cram":
-          qualifier: path
           type: file
           description: Output CRAM file containing read alignments
           pattern: "*.{cram}"
   - csi:
       - meta:
-          qualifier: val
           type: file
           description: Optional index file for BAM file
           pattern: "*.{csi}"
       - "*.csi":
-          qualifier: path
           type: file
           description: Optional index file for BAM file
           pattern: "*.{csi}"
   - crai:
       - meta:
-          qualifier: val
           type: file
           description: Optional index file for CRAM file
           pattern: "*.{crai}"
       - "*.crai":
-          qualifier: path
           type: file
           description: Optional index file for CRAM file
           pattern: "*.{crai}"
   - versions:
       - versions.yml:
-          qualifier: path
           type: file
           description: File containing software versions
           pattern: "versions.yml"

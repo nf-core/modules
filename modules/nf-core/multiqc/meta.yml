@@ -16,48 +16,40 @@ tools:
       identifier: biotools:multiqc
 input:
   - - multiqc_files:
-        qualifier: path
         type: file
         description: |
           List of reports / files recognised by MultiQC, for example the html and zip output of FastQC
   - - multiqc_config:
-        qualifier: path
         type: file
         description: Optional config yml for MultiQC
         pattern: "*.{yml,yaml}"
   - - extra_multiqc_config:
-        qualifier: path
         type: file
         description: Second optional config yml for MultiQC. Will override common sections
           in multiqc_config.
         pattern: "*.{yml,yaml}"
   - - multiqc_logo:
-        qualifier: path
         type: file
         description: Optional logo file for MultiQC
         pattern: "*.{png}"
 output:
   - report:
       - "*multiqc_report.html":
-          qualifier: path
           type: file
           description: MultiQC report file
           pattern: "multiqc_report.html"
   - data:
       - "*_data":
-          qualifier: path
           type: directory
           description: MultiQC data dir
           pattern: "multiqc_data"
   - plots:
       - "*_plots":
-          qualifier: path
           type: file
           description: Plots created by MultiQC
           pattern: "*_data"
   - versions:
       - versions.yml:
-          qualifier: path
           type: file
           description: File containing software versions
           pattern: "versions.yml"

@@ -14,61 +14,51 @@ tools:
       identifier: biotools:pear
 input:
   - - meta:
-        qualifier: val
         type: map
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test' ]
     - reads:
-        qualifier: path
         type: file
         description: |
           List of input FastQ files with paired-end reads forward and reverse.
 output:
   - assembled:
       - meta:
-          qualifier: val
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
       - "*.assembled.fastq.gz":
-          qualifier: path
           type: file
           description: FastQ file containing Assembled reads.
           pattern: "*.{fastq.gz}"
   - unassembled:
       - meta:
-          qualifier: val
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
       - "*.unassembled.forward.fastq.gz":
-          qualifier: path
           type: file
           description: FastQ files containing Unassembled forward and reverse reads.
           pattern: "*.{fastq.gz}"
       - "*.unassembled.reverse.fastq.gz":
-          qualifier: path
           type: file
           description: FastQ files containing Unassembled forward and reverse reads.
           pattern: "*.{fastq.gz}"
   - discarded:
       - meta:
-          qualifier: val
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
       - "*.discarded.fastq.gz":
-          qualifier: path
           type: file
           description: FastQ file containing discarded reads.
           pattern: "*.{fastq.gz}"
   - versions:
       - versions.yml:
-          qualifier: path
           type: file
           description: File containing software versions
           pattern: "versions.yml"

@@ -18,7 +18,6 @@ tools:
       identifier: biotools:samtools
 input:
   - - meta:
-        qualifier: val
         type: map
         description: |
           Groovy Map containing sample information
@@ -27,47 +26,39 @@ input:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
-        qualifier: path
 output:
   - bai:
       - meta:
-          qualifier: val
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.bai":
-          qualifier: path
           type: file
           description: BAM/CRAM/SAM index file
           pattern: "*.{bai,crai,sai}"
   - csi:
       - meta:
-          qualifier: val
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.csi":
-          qualifier: path
           type: file
           description: CSI index file
           pattern: "*.{csi}"
   - crai:
       - meta:
-          qualifier: val
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.crai":
-          qualifier: path
           type: file
           description: BAM/CRAM/SAM index file
           pattern: "*.{bai,crai,sai}"
   - versions:
       - versions.yml:
-          qualifier: path
           type: file
           description: File containing software versions
           pattern: "versions.yml"

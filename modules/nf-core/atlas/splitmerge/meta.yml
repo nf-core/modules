@@ -17,18 +17,15 @@ tools:
       identifier: biotools:atlas_db
 input:
   - - meta:
-        qualifier: val
         type: map
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
     - bam:
-        qualifier: path
         type: file
         description: Single input BAM file.
         pattern: "*.bam"
     - bai:
-        qualifier: path
         type: file
         description: The BAI file for the input BAM file
         pattern: "*.bai"
@@ -40,9 +37,7 @@ input:
           single/double identifier and the maximum cycle number
           of the sequencer. e.g. "RG1 single 100"
         pattern: "*.txt"
-        qualifier: path
     - blacklist:
-        qualifier: path
         type: file
         description: |
           blacklist.txt (optional), A txt file with blacklisted read names
@@ -51,7 +46,6 @@ input:
 output:
   - data:
       - meta:
-          qualifier: val
           type: map
           description: |
             Groovy Map containing sample information
@@ -60,15 +54,13 @@ output:
           type: file
           description: A BAM file with suffix_mergedReads.bam
           pattern: "*_mergedReads.bam"
-          qualifier: path
       - "*.txt.gz":
           type: file
-          description: A file listing all reads that were filtered out in the merging process with suffix_ignoredReads.txt.gz
+          description: A file listing all reads that were filtered out in the merging
+            process with suffix_ignoredReads.txt.gz
           pattern: "*.txt.gz"
-          qualifier: path
   - versions:
       - versions.yml:
-          qualifier: path
           type: file
           description: File containing software versions
           pattern: "versions.yml"
