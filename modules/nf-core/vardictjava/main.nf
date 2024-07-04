@@ -54,7 +54,7 @@ process VARDICTJAVA {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    touch ${prefix}.vcf.gz
+    echo '' | gzip > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
