@@ -22,6 +22,7 @@ process VARDICTJAVA {
     script:
     def args = task.ext.args ?: '-c 1 -S 2 -E 3'
     def args2 = task.ext.args2 ?: ''
+    def args3 = task.ext.args3 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def somatic = bams instanceof List && bams.size() == 2 ? true : false
@@ -39,7 +40,7 @@ process VARDICTJAVA {
     | ${filter} \\
     | ${convert_to_vcf} \\
         ${args2} \\
-    | bgzip --threads ${task.cpus} > ${prefix}.vcf.gz
+    | bgzip ${args3} --threads ${task.cpus} > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
