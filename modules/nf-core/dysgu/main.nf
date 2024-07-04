@@ -4,7 +4,7 @@ process DYSGU {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/pip_dysgu:8b321eca2aa251f4' :
+        'oras://community.wave.seqera.io/library/pip_dysgu:cbbfdb3bfa82c6e5':
         'community.wave.seqera.io/library/pip_dysgu:8b321eca2aa251f4' }"
 
     input:
@@ -24,9 +24,7 @@ process DYSGU {
     def args2 = task.ext.args2 ?: ''
     def args3 = task.ext.args3 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
-
     dysgu run \\
         -p ${task.cpus} \\
         -x \\
@@ -45,7 +43,6 @@ process DYSGU {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
