@@ -29,6 +29,8 @@ input:
         description: |
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
+        ontologies:
+          - edam: http://edamontology.org/format_1930
   - - meta2:
         type: map
         description: |
@@ -36,8 +38,7 @@ input:
           e.g. [ id:'test', single_end:false ]
     - index:
         type: file
-        description: BWA genome index files
-        pattern: "Directory containing BWA index *.{amb,ann,bwt,pac,sa}"
+        description: BWA genome index files. Directory containing BWA index *.{amb,ann,bwt,pac,sa}
   - - meta3:
         type: map
         description: |
@@ -47,43 +48,47 @@ input:
         type: file
         description: Reference genome in FASTA format
         pattern: "*.{fasta,fa}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929
   - - sort_bam:
         type: boolean
         description: use samtools sort (true) or samtools view (false)
         pattern: "true or false"
+        ontologies:
+          - edam: http://edamontology.org/format_2572
 output:
   - bam:
       - meta:
-          type: file
-          description: Output BAM file containing read alignments
-          pattern: "*.{bam}"
+          type: map
+          description: Groovy map
       - "*.bam":
           type: file
           description: Output BAM file containing read alignments
           pattern: "*.{bam}"
+          ontologies:
+            - edam: http://edamontology.org/format_2572
   - cram:
       - meta:
-          type: file
-          description: Output CRAM file containing read alignments
-          pattern: "*.{cram}"
+          type: map
+          description: Groovy map
       - "*.cram":
           type: file
           description: Output CRAM file containing read alignments
           pattern: "*.{cram}"
+          ontologies:
+            - edam: http://edamontology.org/format_3462
   - csi:
       - meta:
-          type: file
-          description: Optional index file for BAM file
-          pattern: "*.{csi}"
+          type: map
+          description: Groovy map
       - "*.csi":
           type: file
           description: Optional index file for BAM file
           pattern: "*.{csi}"
   - crai:
       - meta:
-          type: file
-          description: Optional index file for CRAM file
-          pattern: "*.{crai}"
+          type: map
+          description: Groovy map
       - "*.crai":
           type: file
           description: Optional index file for CRAM file
