@@ -137,11 +137,6 @@
                             "description": "Type of the channel element",
                             "enum": ["map", "file", "directory", "string", "integer", "float", "boolean", "list"]
                         },
-                        "qualifier": {
-                            "type": "string",
-                            "description": "Type of the channel element qualifyer",
-                            "enum": ["path", "val", "env", "stdout"]
-                        },
                         "description": {
                             "type": "string",
                             "description": "Description of the channel"
@@ -173,7 +168,7 @@
                             }
                         }
                     },
-                    "required": ["qualifier", "description"]
+                    "required": ["type", "description"]
                 }
             }
         }
