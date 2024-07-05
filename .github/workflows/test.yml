@@ -746,7 +746,7 @@ jobs:
         if: always()
         run: |
           echo "::group::Log"
-          echo "$(ls -R -ltrh)"
+          echo "$(ls -Rltrh /home/ubuntu/tests/)"
           echo "::endgroup::"
           sudo rm -rf /home/ubuntu/tests/
 
