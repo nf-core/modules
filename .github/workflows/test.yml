@@ -745,8 +745,8 @@ jobs:
       - name: Clean up
         if: always()
         run: |
-          echo "::group::My title"
-          echo "$(cat /home/ubuntu/tests/**/.command.log)"
+          echo "::group::Log"
+          echo "$(cat tests/**/work/**/**/.command.run)"
           echo "::endgroup::"
           sudo rm -rf /home/ubuntu/tests/
 
