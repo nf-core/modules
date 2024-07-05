@@ -743,7 +743,7 @@ jobs:
             test.tap
             
      - name: Upload nextflow.log
-         if: always()
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: nextflow-log
