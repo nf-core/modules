@@ -746,7 +746,7 @@ jobs:
         if: always()
         run: |
           echo "::group::Log"
-          echo "$(cat /home/ubuntu/tests/**/meta/nextflow.log)"
+          echo "$(ls -R -ltrh)"
           echo "::endgroup::"
           sudo rm -rf /home/ubuntu/tests/
 
