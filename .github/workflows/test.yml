@@ -742,12 +742,19 @@ jobs:
           path: >-
             test.tap
             
-     - name: Upload nextflow.log
-        if: always()
+      - name: Upload nextflow.log
+        if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: nextflow-log
           path: /home/ubuntu/tests/**/meta/nextflow.log
+      
+      - name: Output log on failure
+        if: failure()
+        run: |
+          sudo apt-get update > /dev/null
+          sudo apt-get install bat > /dev/null
+          batcat --decorations=always --color=always /home/ubuntu/tests/**/meta/nextflow.log
           
       - name: Clean up
         if: always()
