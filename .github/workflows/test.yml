@@ -741,7 +741,14 @@ jobs:
         with:
           path: >-
             test.tap
-
+            
+     - name: Upload nextflow.log
+         if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nextflow-log
+          path: /home/ubuntu/tests/**/meta/nextflow.log
+          
       - name: Clean up
         if: always()
         run: |
