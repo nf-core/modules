@@ -8,7 +8,7 @@ process DYSGU {
         'community.wave.seqera.io/library/dysgu:faf71ac972284412' }"
 
     input:
-    tuple val(meta), path(input_bam), path(input_bam_index)
+    tuple val(meta), path(input), path(index)
     tuple val(meta2), path(fasta), path(fai)
 
     output:
