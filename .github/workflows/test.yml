@@ -740,25 +740,12 @@ jobs:
       - uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
         with:
           path: >-
-            test.tap
-            
-      - name: Upload nextflow.log
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: nextflow-log
-          path: /home/ubuntu/tests/**/meta/nextflow.log
-      
-      - name: Output log on failure
-        if: failure()
-        run: |
-          sudo apt-get update > /dev/null
-          sudo apt-get install bat > /dev/null
-          batcat --decorations=always --color=always /home/ubuntu/tests/**/meta/nextflow.log
+            test.tap     
           
       - name: Clean up
         if: always()
         run: |
+          echo "version=$(cat /home/ubuntu/tests/**/meta/nextflow.log)" >> $GITHUB_OUTPUT
           sudo rm -rf /home/ubuntu/tests/
 
   confirm-pass:
