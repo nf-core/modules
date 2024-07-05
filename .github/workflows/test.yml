@@ -746,7 +746,7 @@ jobs:
         if: always()
         run: |
           echo "::group::Log"
-          echo "$(cat tests/**/work/**/**/.command.run)"
+          echo "$(cat /home/ubuntu/tests/**/work/**/**/.command.run)"
           echo "::endgroup::"
           sudo rm -rf /home/ubuntu/tests/
 
