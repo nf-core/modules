@@ -747,15 +747,15 @@ jobs:
         run: | 
 
           echo "::group::StdErr"
-          echo "$(cat tests/**/meta/std.err)"
+          echo "$(cat /home/ubuntu/tests/**/meta/std.err)"
           echo "::endgroup::"
           
           echo "::group::StdOut"
-          echo "$(cat tests/**/meta/std.out)"
+          echo "$(cat /home/ubuntu/tests/**/meta/std.out)"
           echo "::endgroup::"
 
           echo "::group::NextflowLog"
-          echo "$(cat tests/**/meta/nextflow.log)"
+          echo "$(cat /home/ubuntu/tests/**/meta/nextflow.log)"
           echo "::endgroup::"
 
           echo "::group::CommandRun"
