@@ -744,7 +744,20 @@ jobs:
           
       - name: Clean up
         if: always()
-        run: |
+        run: | 
+
+          echo "::group::StdErr"
+          echo "$(cat tests/**/meta/std.err)"
+          echo "::endgroup::"
+          
+          echo "::group::StdOut"
+          echo "$(cat tests/**/meta/std.out)"
+          echo "::endgroup::"
+
+          echo "::group::NextflowLog"
+          echo "$(cat tests/**/meta/nextflow.log)"
+          echo "::endgroup::"
+
           echo "::group::CommandRun"
           echo "$(cat /home/ubuntu/tests/**/work/**/**/.command.run)"
           echo "::endgroup::"
