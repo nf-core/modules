@@ -745,6 +745,10 @@ jobs:
       - name: Clean up
         if: always()
         run: |
+          echo "::group::CommandRun"
+          echo "$(cat /home/ubuntu/tests/**/work/**/**/.command.run)"
+          echo "::endgroup::"
+
           echo "::group::Log"
           echo "$(ls -Rltrh /home/ubuntu/tests/)"
           echo "::endgroup::"
