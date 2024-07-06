@@ -730,6 +730,10 @@ jobs:
             PROFILE=${{ matrix.profile }}
           fi
 
+          echo "::group::nf-test"
+          echo "$(id)"
+          echo "::endgroup::"
+
           NFT_WORKDIR=~ \
           nf-test test \
             --profile=${{ matrix.profile }} \
