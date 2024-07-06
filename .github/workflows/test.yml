@@ -731,7 +731,7 @@ jobs:
           fi
 
           NFT_WORKDIR=~ \
-          su nf-test test \
+          nf-test test \
             --profile=${{ matrix.profile }} \
             --tap=test.tap \
             --verbose \
