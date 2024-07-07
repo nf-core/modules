@@ -24,6 +24,9 @@ process ARGNORM {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '0.5.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def db_args = db ? "--db ${db}" : ""
+    if (!tool) {
+        error 'Tool not provided.'
+    }
     if ((tool in ["abricate"]) && !db) {
         error "$tool requires a database but <db> not provided."
     }
