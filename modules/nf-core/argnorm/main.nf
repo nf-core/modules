@@ -14,7 +14,7 @@ process ARGNORM {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml", emit: versions
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,7 +23,7 @@ process ARGNORM {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '0.5.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-     if ((tool in ["abricate"]) && !db) {
+    if ((tool in ["abricate"]) && !db) {
         error "$tool requires a database but <db> not provided."
     }
     db = db ? ("--db " + db) : ""
