@@ -12,10 +12,10 @@ nextflow_process {
 
         when {
             process {
-                """                
+                """
                 input[0] = [
-                    [ id:'argnorm_raw.tsv' ], // meta map                                                                                                                           
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/amrfinderplus/test_output.tsv", checkIfExists: true)                              
+                    [ id:'argnorm_raw.tsv' ], // meta map
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/amrfinderplus/test_output.tsv", checkIfExists: true)
                 ]
                 input[1] = 'amrfinderplus'
                 input[2] = 'ncbi'
@@ -30,16 +30,16 @@ nextflow_process {
             )
         }
     }
-    
+
     test("argnorm - amrfinderplus_ncbi_hamronized - tsv") {
         config './argnorm_hamronized.config'
 
         when {
             process {
-                """                
+                """
                 input[0] = [
-                    [ id:'argnorm_hamronized.tsv' ], // meta map                                                                                                                           
-                    file("https://raw.githubusercontent.com/BigDataBiology/argNorm/main/examples/hamronized/amrfinderplus.ncbi.orfs.tsv", checkIfExists: true)                              
+                    [ id:'argnorm_hamronized.tsv' ], // meta map
+                    file("https://raw.githubusercontent.com/BigDataBiology/argNorm/main/examples/hamronized/amrfinderplus.ncbi.orfs.tsv", checkIfExists: true)
                 ]
                 input[1] = 'amrfinderplus'
                 input[2] = 'ncbi'
@@ -54,17 +54,17 @@ nextflow_process {
             )
         }
     }
-    
+
     test("argnorm - amrfinderplus_ncbi_hamronized - tsv - stub") {
         options "-stub"
         config './argnorm_hamronized.config'
 
         when {
             process {
-                """                
+                """
                 input[0] = [
-                    [ id:'argnorm_hamronized_stub.tsv'  ], // meta map                                                                                                                           
-                    file("https://raw.githubusercontent.com/BigDataBiology/argNorm/main/examples/hamronized/amrfinderplus.ncbi.orfs.tsv", checkIfExists: true)                              
+                    [ id:'argnorm_hamronized_stub.tsv'  ], // meta map
+                    file("https://raw.githubusercontent.com/BigDataBiology/argNorm/main/examples/hamronized/amrfinderplus.ncbi.orfs.tsv", checkIfExists: true)
                 ]
                 input[1] = 'amrfinderplus'
                 input[2] = 'ncbi'
@@ -83,14 +83,14 @@ nextflow_process {
     test("argnorm - amrfinderplus_ncbi - tsv - stub") {
 
         options "-stub"
-        config './argnorm_raw.config' 
+        config './argnorm_raw.config'
 
         when {
             process {
-                """                
+                """
                 input[0] = [
-                    [ id:'argnorm_raw_stub.tsv', single_end:false ], // meta map                                                                                                                           
-                    file("https://raw.githubusercontent.com/BigDataBiology/argNorm/main/examples/raw/amrfinderplus.ncbi.orfs.tsv", checkIfExists: true)                              
+                    [ id:'argnorm_raw_stub.tsv', single_end:false ], // meta map
+                    file("https://raw.githubusercontent.com/BigDataBiology/argNorm/main/examples/raw/amrfinderplus.ncbi.orfs.tsv", checkIfExists: true)
                 ]
                 input[1] = 'amrfinderplus'
                 input[2] = 'ncbi'

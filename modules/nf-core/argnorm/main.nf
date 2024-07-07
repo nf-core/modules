@@ -1,7 +1,7 @@
 process ARGNORM {
     tag "$meta.id"
     label 'process_low'
-    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions. 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/argnorm:0.5.0--pyhdfd78af_0':
@@ -22,11 +22,11 @@ process ARGNORM {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '0.5.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.  
-     if ((tool in ["abricate"]) && !db) {  
-        error "$tool requires a database but <db> not provided."  
-    }   
-    db = db ? ("--db " + db) : ""  
+    def VERSION = '0.5.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+     if ((tool in ["abricate"]) && !db) {
+        error "$tool requires a database but <db> not provided."
+    }
+    db = db ? ("--db " + db) : ""
 
     """
     argnorm \\
