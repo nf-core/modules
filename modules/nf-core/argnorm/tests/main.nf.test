@@ -78,6 +78,29 @@ nextflow_process {
         }
     }
 
+    test("argnorm - missing db") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'argnorm_raw.tsv' ], // meta map
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/amrfinderplus/test_output.tsv", checkIfExists: true)
+                ]
+                input[1] = "abricate"
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.stdout.toString().contains("abricate requires a database but <db> not provided.") }
+            )
+        }
+    }
+
     test("argnorm - amrfinderplus_ncbi_hamronized - tsv - stub") {
         options "-stub"
         config './argnorm_hamronized.config'
