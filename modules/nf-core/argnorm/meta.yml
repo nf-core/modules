@@ -29,15 +29,15 @@ input:
       description: ARG annotation output
       pattern: "*.tsv"
 
-  - db:
-      type: string
-      description: Database used for ARG annotation
-      pattern: "sarg|ncbi|resfinder|deeparg|megares|argannot|resfinderfg"
-
   - tool:
       type: string
       description: ARG annotation tool used
       pattern: "argsoap|abricate|deeparg|resfinder|amrfinderplus"
+
+  - db:
+      type: string
+      description: Database used for ARG annotation
+      pattern: "sarg|ncbi|resfinder|deeparg|megares|argannot|resfinderfg"
 
 output:
   - meta:
@@ -45,14 +45,14 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - tsv:
       type: file
       description: Normalized argNorm output
       pattern: "*.tsv"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 
 authors:
   - "@Vedanth-Ramji"
