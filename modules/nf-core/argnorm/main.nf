@@ -23,17 +23,17 @@ process ARGNORM {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '0.5.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def db_args = db ? "--db ${db}" : ""
     if ((tool in ["abricate"]) && !db) {
         error "$tool requires a database but <db> not provided."
     }
-    db = db ? ("--db " + db) : ""
 
     """
     argnorm \\
         $tool \\
         -i $input_tsv \\
         -o $prefix \\
-        $db \\
+        $db_args \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
