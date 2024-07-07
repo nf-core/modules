@@ -44,4 +44,25 @@ process ARGNORM {
         argnorm: $VERSION
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '0.5.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    if (!tool) {
+        error 'Tool not provided.'
+    }
+    if ((tool in ["abricate"]) && !db) {
+        error "$tool requires a database but <db> not provided."
+    }
+
+    """
+    touch ${prefix}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        argnorm: $VERSION
+    END_VERSIONS
+    """
+
 }
