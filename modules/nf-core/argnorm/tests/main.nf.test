@@ -89,7 +89,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'argnorm_raw_stub.tsv', single_end:false ], // meta map
+                    [ id:'argnorm_raw_stub.tsv' ], // meta map
                     file("https://raw.githubusercontent.com/BigDataBiology/argNorm/main/examples/raw/amrfinderplus.ncbi.orfs.tsv", checkIfExists: true)
                 ]
                 input[1] = 'amrfinderplus'
