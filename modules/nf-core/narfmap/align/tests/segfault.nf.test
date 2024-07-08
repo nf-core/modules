@@ -40,9 +40,7 @@ nextflow_process {
 
         then {
             assertAll (
-                // FIXME this should fail until this issue is fixed
-                // https://github.com/edmundmiller/NARFMAP/issues/10
-                { assert process.failed },
+                { assert process.success },
                 { assert snapshot(
                     file(process.out.bam[0][1]).name,
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
