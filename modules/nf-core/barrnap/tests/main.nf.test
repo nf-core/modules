@@ -49,13 +49,13 @@ nextflow_process {
             }
         }
 
-        then
+        then {
             assertAll(
             { assert process.success },
             { assert snapshot(process.out).match() }
             )
         }
-
     }
+}
 
 
