@@ -30,7 +30,7 @@ process DYSGU {
         -x \\
         $fasta \\
         . \\
-        $input_bam \\
+        $input \\
         | bgzip ${args2} --threads ${task.cpus} --stdout > ${prefix}.vcf.gz
     tabix ${args3} ${prefix}.vcf.gz
 
