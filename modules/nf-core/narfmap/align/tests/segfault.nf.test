@@ -10,7 +10,8 @@ nextflow_process {
     tag "narfmap/hashtable"
     tag "bug"
 
-    test("This should segfault") {
+    // https://github.com/bioinformaticsorphanage/NARFMAP/issues/10
+    test("This should NOT segfault") {
 
         setup {
             run("NARFMAP_HASHTABLE") {
