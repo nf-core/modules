@@ -42,11 +42,11 @@ process SENTIEON_BWAMEM {
 
     """
     if [ "\${SENTIEON_LICSRVR_IP}" ]; then
-        # NOTE This is how nf-core/sarek users will use Sentieon in real world use
+        # NOTE: This is how pipeline users will use Sentieon in real world
         echo "Using a Sentieon License Server"
         export SENTIEON_LICENSE="\${SENTIEON_LICSRVR_IP}"
     else
-        # NOTE This is how nf-core/sarek users will test out Sentieon in Sarek
+        # NOTE: This is how pipeline users will test out Sentieon
         echo "Localhost license file"
         # The license file is stored as a nextflow variable like, for instance, this:
         # nextflow secrets set SENTIEON_LICENSE_BASE64 \$(cat <sentieon_license_file.lic> | base64 -w 0)
@@ -55,7 +55,7 @@ process SENTIEON_BWAMEM {
     fi
 
     if  [ "\${SENTIEON_AUTH_MECH}" ] && [ "\${SENTIEON_AUTH_DATA}" ]; then
-        # NOTE This should only happen in GitHub actions or nf-core MegaTests
+        # NOTE: This should only happen in GitHub Actions or nf-core/megatests
         echo "If sentieon_auth_mech and sentieon_auth_data are non-empty strings, then Sentieon is mostly likely being run with some test-license."
     fi
 
