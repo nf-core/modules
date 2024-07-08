@@ -744,27 +744,7 @@ jobs:
           
       - name: Clean up
         if: always()
-        run: | 
-
-          echo "::group::StdErr"
-          echo "$(cat /home/ubuntu/tests/**/meta/std.err)"
-          echo "::endgroup::"
-          
-          echo "::group::StdOut"
-          echo "$(cat /home/ubuntu/tests/**/meta/std.out)"
-          echo "::endgroup::"
-
-          echo "::group::NextflowLog"
-          echo "$(cat /home/ubuntu/tests/**/meta/nextflow.log)"
-          echo "::endgroup::"
-
-          echo "::group::CommandRun"
-          echo "$(cat /home/ubuntu/tests/**/work/**/**/.command.run)"
-          echo "::endgroup::"
-
-          echo "::group::Log"
-          echo "$(ls -Rltrh /home/ubuntu/tests/)"
-          echo "::endgroup::"
+        run: |
           sudo rm -rf /home/ubuntu/tests/
 
   confirm-pass:
