@@ -7,6 +7,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "abricate"
     tag "abricate/summary"
+    tag "abricate/run"
 
     test("Should run without failures") {
 
@@ -21,6 +22,7 @@ nextflow_process {
                                 tuple([ id:'test2', single_end:false ],
                                     file(params.test_data['haemophilus_influenzae']['genome']['genome_fna_gz'], checkIfExists: true))
                             ])
+                input[1] = []
                 """
             }
             }
