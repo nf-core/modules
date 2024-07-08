@@ -5,8 +5,8 @@ process NARFMAP_ALIGN {
     // TODO Add a singularity image
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'nf-core/modules/narfmap_align:narfmap--8a04bcf8bd9b6242':
-        'nf-core/modules/narfmap_align:narfmap--8a04bcf8bd9b6242' }"
+        'oras://community.wave.seqera.io/library/narfmap_align:8bad41386eab9997':
+        'community.wave.seqera.io/library/narfmap_align:517a1fed8e4e84c1' }"
 
     input:
     tuple val(meta) , path(reads)
