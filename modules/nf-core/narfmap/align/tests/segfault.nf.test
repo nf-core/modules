@@ -10,7 +10,8 @@ nextflow_process {
     tag "narfmap/hashtable"
     tag "bug"
 
-    test("This should segfault") {
+    // https://github.com/bioinformaticsorphanage/NARFMAP/issues/10
+    test("This should NOT segfault") {
 
         setup {
             run("NARFMAP_HASHTABLE") {
@@ -44,9 +45,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.bam,
-                    process.out.versions,
-                    file(process.out.bam[0][1]).name,
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
+                    process.out.versions,
                 ).match()
                 }
             )

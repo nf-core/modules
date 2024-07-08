@@ -43,9 +43,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.bam,
-                    process.out.versions,
-                    file(process.out.bam[0][1]).name,
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
+                    process.out.versions,
                 ).match()
                 }
             )
@@ -87,9 +86,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.bam,
-                    process.out.versions,
-                    file(process.out.bam[0][1]).name,
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
+                    process.out.versions,
                 ).match()
                 }
             )
@@ -134,9 +132,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.bam,
-                    process.out.versions,
-                    file(process.out.bam[0][1]).name,
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
+                    process.out.versions,
                 ).match()
                 }
             )
@@ -181,9 +178,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.bam,
-                    process.out.versions,
-                    file(process.out.bam[0][1]).name,
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
+                    process.out.versions,
                 ).match()
                 }
             )
@@ -228,9 +224,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.bam,
-                    process.out.versions,
-                    file(process.out.bam[0][1]).name,
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
+                    process.out.versions,
                 ).match()
                 }
             )
@@ -276,14 +271,11 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.bam,
-                    process.out.versions,
-                    file(process.out.bam[0][1]).name,
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
+                    process.out.versions,
                 ).match()
                 }
             )
         }
-
     }
-
 }
