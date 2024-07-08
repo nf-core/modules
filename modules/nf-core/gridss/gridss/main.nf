@@ -55,7 +55,7 @@ process GRIDSS_GRIDSS {
     def steps = args.contains("-s ") ? args.split('-s ')[-1].split(" ")[0] :
                 args.contains("--steps ") ? args.split('--steps ')[-1].split(" ")[0] :
                 "all"
-    def vcf = steps.contains("call") || steps.contains("all") ? "touch ${prefix}.vcf.gz" : ""
+    def vcf = steps.contains("call") || steps.contains("all") ? "echo '' | gzip > ${prefix}.vcf.gz" : ""
     def assembly_bam = steps.contains("assembly") || steps.contains("all") ? "touch ${prefix}.assembly.bam" : ""
     """
     ${vcf}
