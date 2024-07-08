@@ -408,7 +408,6 @@ jobs:
             tags: vt/decompose
     env:
       NXF_ANSI_LOG: false
-      SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
 
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
@@ -638,6 +637,8 @@ jobs:
     env:
       NXF_ANSI_LOG: false
       NFTEST_VER: "0.8.4"
+      SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
+      SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
 
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
@@ -694,16 +695,10 @@ jobs:
 
       # Set up secrets
       - name: Set up nextflow secrets
-        # FIXME if: secrets.SENTIEON_ENCRYPTION_KEY != null
-        # https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions#using-secrets-in-a-workflow
-        # Secrets cannot be directly referenced in if: conditionals.
-        # Instead, consider setting secrets as job-level environment variables, then referencing the environment variables to conditionally run steps in the job.
-        # For more information, see "Contexts" and jobs.<job_id>.steps[*].if.
-        env:
-          SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
-          SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
+        # TODO Only run if the tag includes `sentieon`
+        if: env.SENTIEON_ENCRYPTION_KEY != null && env.SENTIEON_LICENSE_MESSAGE != null
         run: |
-          nextflow secrets set SENTIEON_AUTH_DATA $(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "${{ secrets.SENTIEON_ENCRYPTION_KEY }}" --message "$SENTIEON_LICENSE_MESSAGE")
+          nextflow secrets set SENTIEON_AUTH_DATA $(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "${{ secrets.SENTIEON_ENCRYPTION_KEY }}" --message "${{ secrets.SENTIEON_LICENSE_MESSAGE }}")
 
       # Test the module
       - name: Run nf-test
