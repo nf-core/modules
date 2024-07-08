@@ -695,6 +695,10 @@ jobs:
       # Set up secrets
       - name: Set up nextflow secrets
         # FIXME if: secrets.SENTIEON_ENCRYPTION_KEY != null
+        # https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions#using-secrets-in-a-workflow
+        # Secrets cannot be directly referenced in if: conditionals.
+        # Instead, consider setting secrets as job-level environment variables, then referencing the environment variables to conditionally run steps in the job.
+        # For more information, see "Contexts" and jobs.<job_id>.steps[*].if.
         env:
           SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
           SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
