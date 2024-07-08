@@ -1,0 +1,61 @@
+nextflow_process {
+
+    name "Test Process BARRNAP"
+    script "../main.nf"
+    process "BARRNAP"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "barrnap"
+
+    test("barrnap") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                                [ id:'test', single_end:false ], // meta map
+                                file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("barrnap - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                                [ id:'test', single_end:false ], // meta map
+                                file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        then
+            assertAll(
+            { assert process.success },
+            { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+
