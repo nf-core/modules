@@ -1,6 +1,18 @@
 {
     "This should segfault": {
         "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.bam:md5,c38463b4da3a56010093cf2ce7634b86"
+                ]
+            ],
+            [
+                "versions.yml:md5,f7f7afeeca9aecd25ef825978aac55d7"
+            ],
             "test.bam",
             [
                 "decompHashTableCtxInit...",
@@ -9,13 +21,12 @@
                 "decompHashTableExtIndex...",
                 "decompHashTableAutoHits...",
                 "decompHashTableSetFlags..."
-            ],
-            "versions.yml"
+            ]
         ],
         "meta": {
             "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nextflow": "24.04.2"
         },
-        "timestamp": "2024-02-11T23:08:34.922392857"
+        "timestamp": "2024-07-08T11:46:14.084669293"
     }
 }
