@@ -408,7 +408,6 @@ jobs:
             tags: vt/decompose
     env:
       NXF_ANSI_LOG: false
-      SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
 
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
@@ -462,18 +461,6 @@ jobs:
           conda config --set solver libmamba
           echo $(realpath $CONDA)/condabin >> $GITHUB_PATH
           echo $(realpath python) >> $GITHUB_PATH
-
-      # Set up secrets
-      - name: Set up nextflow secrets
-        if: env.SENTIEON_LICENSE_BASE64 != null
-        run: |
-          nextflow secrets set SENTIEON_LICENSE_BASE64 ${{ secrets.SENTIEON_LICENSE_BASE64 }}
-          nextflow secrets set SENTIEON_AUTH_MECH_BASE64 ${{ secrets.SENTIEON_AUTH_MECH_BASE64 }}
-          SENTIEON_ENCRYPTION_KEY=$(echo -n "${{ secrets.ENCRYPTION_KEY_BASE64 }}" | base64 -d)
-          SENTIEON_LICENSE_MESSAGE=$(echo -n "${{ secrets.LICENSE_MESSAGE_BASE64 }}" | base64 -d)
-          SENTIEON_AUTH_DATA=$(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "$SENTIEON_ENCRYPTION_KEY" --message "$SENTIEON_LICENSE_MESSAGE")
-          SENTIEON_AUTH_DATA_BASE64=$(echo -n "$SENTIEON_AUTH_DATA" | base64 -w 0)
-          nextflow secrets set SENTIEON_AUTH_DATA_BASE64 $SENTIEON_AUTH_DATA_BASE64
 
       # Test the module
       - name: Run pytest-workflow
@@ -649,8 +636,9 @@ jobs:
             path: subworkflows/nf-core/fastq_align_bwa
     env:
       NXF_ANSI_LOG: false
-      SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
       NFTEST_VER: "0.8.4"
+      SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
+      SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
 
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
@@ -679,6 +667,7 @@ jobs:
         uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # v5
         with:
           python-version: "3.11"
+
       - uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4
         id: cache-pip-pdiff
         with:
@@ -691,6 +680,7 @@ jobs:
         run: python -m pip install --upgrade pip pdiff cryptography
 
       - name: Set up miniconda
+        if: matrix.profile == 'conda'
         uses: conda-incubator/setup-miniconda@a4260408e20b96e80095f42ff7f1a15b27dd94ca # v3
         with:
           miniconda-version: "latest"
@@ -698,6 +688,7 @@ jobs:
           channels: conda-forge,bioconda,defaults
 
       - name: Conda setup
+        if: matrix.profile == 'conda'
         run: |
           conda clean -a
           conda install -n base conda-libmamba-solver
@@ -707,21 +698,18 @@ jobs:
 
       # Set up secrets
       - name: Set up nextflow secrets
-        if: env.SENTIEON_LICENSE_BASE64 != null
+        # TODO Only run if the tag includes `sentieon`
+        if: env.SENTIEON_ENCRYPTION_KEY != null && env.SENTIEON_LICENSE_MESSAGE != null
         run: |
-          nextflow secrets set SENTIEON_LICENSE_BASE64 ${{ secrets.SENTIEON_LICENSE_BASE64 }}
-          nextflow secrets set SENTIEON_AUTH_MECH_BASE64 ${{ secrets.SENTIEON_AUTH_MECH_BASE64 }}
-          SENTIEON_ENCRYPTION_KEY=$(echo -n "${{ secrets.ENCRYPTION_KEY_BASE64 }}" | base64 -d)
-          SENTIEON_LICENSE_MESSAGE=$(echo -n "${{ secrets.LICENSE_MESSAGE_BASE64 }}" | base64 -d)
-          SENTIEON_AUTH_DATA=$(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "$SENTIEON_ENCRYPTION_KEY" --message "$SENTIEON_LICENSE_MESSAGE")
-          SENTIEON_AUTH_DATA_BASE64=$(echo -n "$SENTIEON_AUTH_DATA" | base64 -w 0)
-          nextflow secrets set SENTIEON_AUTH_DATA_BASE64 $SENTIEON_AUTH_DATA_BASE64
+          nextflow secrets set SENTIEON_AUTH_DATA $(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "${{ secrets.SENTIEON_ENCRYPTION_KEY }}" --message "${{ secrets.SENTIEON_LICENSE_MESSAGE }}")
 
       # Test the module
       - name: Run nf-test
         env:
           NFT_DIFF: "pdiff"
           NFT_DIFF_ARGS: "--line-numbers --width 120 --expand-tabs=2"
+          SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
+          SENTIEON_AUTH_MECH: "GitHub Actions - token"
         run: |
           # use "docker_self_hosted" if it runs on self-hosted runner and matrix.profile=docker
           if [ "${{ matrix.profile }}" == "docker" ]; then
