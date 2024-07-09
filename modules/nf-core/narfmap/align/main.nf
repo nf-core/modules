@@ -2,7 +2,6 @@ process NARFMAP_ALIGN {
     tag "$meta.id"
     label 'process_high'
 
-    // TODO Add a singularity image
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'oras://community.wave.seqera.io/library/narfmap_align:8bad41386eab9997':
