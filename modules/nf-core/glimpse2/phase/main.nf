@@ -1,6 +1,6 @@
 process GLIMPSE2_PHASE {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_medium'
 
     beforeScript  """
     if cat /proc/cpuinfo | grep avx2 -q
