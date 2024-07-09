@@ -26,11 +26,7 @@ process SENTIEON_BWAMEM {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    if [ "\${SENTIEON_LICSRVR_IP}" ]; then
-        # NOTE: This is how pipeline users will use Sentieon in real world
-        echo "Using a Sentieon License Server"
-        export SENTIEON_LICENSE="\${SENTIEON_LICSRVR_IP}"
-    else
+    if [ "\${SENTIEON_LICENSE_BASE64}" ]; then
         # NOTE: This is how pipeline users will test out Sentieon
         echo "Localhost license file"
         # The license file is stored as a nextflow variable like, for instance, this:
