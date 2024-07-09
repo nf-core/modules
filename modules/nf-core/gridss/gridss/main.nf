@@ -8,14 +8,14 @@ process GRIDSS_GRIDSS {
         'biocontainers/gridss:2.13.2--h270b39a_0' }"
 
     input:
-    tuple val(meta), path(inputs), path(assembly)
+    tuple val(meta) , path(inputs), path(assembly_path)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fasta_fai)
     tuple val(meta4), path(bwa_index)
 
     output:
-    tuple val(meta), path("*.vcf.gz")       , emit: vcf, optional:true
-    tuple val(meta), path("*.assembly.bam") , emit: assembly, optional:true
+    tuple val(meta), path("*.vcf.gz")       , emit: vcf     , optional: true
+    tuple val(meta), path("*.assembly.bam") , emit: assembly, optional: true
     path "versions.yml"                     , emit: versions
 
     when:
@@ -26,7 +26,7 @@ process GRIDSS_GRIDSS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '2.13.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
-    def assembly_bam = assembly ? "--assembly ${assembly}" : ""
+    def assembly_bam = assembly_path ? "--assembly ${prefix}" : ""
     def bwa = bwa_index ? "cp -s ${bwa_index}/* ." : ""
 
     """
@@ -36,7 +36,7 @@ process GRIDSS_GRIDSS {
         --output ${prefix}.vcf.gz \\
         --reference ${fasta} \\
         --threads ${task.cpus} \\
-        ${assembly} \\
+        ${assembly_bam} \\
         --jvmheap ${task.memory.toGiga() - 1}g \\
         --otherjvmheap ${task.memory.toGiga() - 1}g \\
         ${inputs}
