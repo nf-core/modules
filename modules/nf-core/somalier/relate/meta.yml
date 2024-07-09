@@ -19,7 +19,7 @@ tools:
       documentation: "https://github.com/brentp/somalier/blob/master/README.md"
       tool_dev_url: "https://github.com/brentp/somalier"
       doi: "10.1186/s13073-020-00761-2"
-      licence: "MIT License"
+      licence: ["MIT"]
 input:
   - meta:
       type: map
@@ -27,7 +27,7 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - extract:
-      type: file(s)
+      type: file
       description: extract file(s) from Somalier extract
       pattern: "*.somalier"
   - ped:

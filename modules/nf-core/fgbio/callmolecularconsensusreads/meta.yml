@@ -4,7 +4,6 @@ keywords:
   - UMIs
   - consensus sequence
   - bam
-  - sam
 tools:
   - fgbio:
       description: Tools for working with genomic and high throughput sequencing data.
@@ -17,11 +16,17 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false, collapse:false ]
-  - bam:
+  - grouped_bam:
       type: file
       description: |
-        The input SAM or BAM file.
+        The input SAM or BAM file, grouped by UMIs
       pattern: "*.{bam,sam}"
+  - min_reads:
+      type: integer
+      description: Minimum number of original reads to build each consensus read.
+  - min_baseq:
+      type: integer
+      description: Ignore bases in raw reads that have Q below this value.
 output:
   - meta:
       type: map
