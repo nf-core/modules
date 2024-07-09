@@ -48,6 +48,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert new File("${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.dmnd.log").exists() },
+                { assert new File("${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.dmnd").exists() },
                 { assert snapshot(
                     "${process.out.checkv_db.get(0).get(1).get(0)}",
                     "${process.out.checkv_db.get(0).get(1).get(2)}",
@@ -57,11 +59,10 @@ nextflow_process {
                     "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.faa",
                     "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.fna",
                     "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.log",
-                    "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.tsv"
+                    "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.tsv",
+                    process.out.versions
                     ).match()
                 },
-                { assert new File("${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.dmnd.log").exists() },
-                { assert new File("${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.dmnd").exists() }
             )
         }
     }
@@ -84,6 +85,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert new File("${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.dmnd.log").exists() },
+                { assert new File("${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.dmnd").exists() },
                 { assert snapshot(
                     "${process.out.checkv_db.get(0).get(1).get(0)}",
                     "${process.out.checkv_db.get(0).get(1).get(2)}",
@@ -93,11 +96,10 @@ nextflow_process {
                     "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.faa",
                     "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.fna",
                     "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.log",
-                    "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.tsv"
+                    "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.tsv",
+                    process.out.versions
                     ).match()
-                },
-                { assert new File("${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.dmnd.log").exists() },
-                { assert new File("${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.dmnd").exists() }
+                }
             )
         }
     }
