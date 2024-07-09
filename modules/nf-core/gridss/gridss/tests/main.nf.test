@@ -18,7 +18,7 @@ nextflow_process {
                 """
                 input[0] = [ [id:'fasta'],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                    ]
+                        ]
                 """
             }
         }
@@ -38,8 +38,8 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                         ]
                 input[2] = [ [id:'fasta_fai'],
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
-                ]
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                        ]
                 input[3] = BWA_INDEX.out.index
                 """
             }
@@ -68,7 +68,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                         ]
                 input[2] = [ [id:'fasta_fai'],
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                         ]
                 input[3] = [ [], [] ]
                 """
@@ -95,10 +95,10 @@ nextflow_process {
                         file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true) //assembly
                         ]
                 input[1] = [ [id:'fasta'],
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                         ]
                 input[2] = [ [id:'fasta_fai'],
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                         ]
                 input[3] = [ [], [] ]
                 """
@@ -128,10 +128,10 @@ nextflow_process {
                         [] //assembly
                         ]
                 input[1] = [ [id:'fasta'],
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                         ]
                 input[2] = [ [id:'fasta_fai'],
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                         ]
                 input[3] = [ [], [] ]
                 """
@@ -160,10 +160,10 @@ nextflow_process {
                         [] //assembly
                         ]
                 input[1] = [ [id:'fasta'],
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                         ]
                 input[2] = [ [id:'fasta_fai'],
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                         ]
                 input[3] = [ [], [] ]
                 """
