@@ -184,7 +184,7 @@ nextflow_process {
                 // File has a timestamp in it and is in binary format, so we can only check the name
                 { assert file(process.out.phased_variants[0][1]).name == "input_chr21_16650000-16750000.bcf" },
                 { assert snapshot(process.out.stats_coverage).match("List_coverage")},
-                { assert snapshot(process.out.versions).match("List")}
+                { assert snapshot(process.out.versions).match("List_versions")}
             )
         }
     }
