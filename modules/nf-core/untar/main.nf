@@ -53,7 +53,19 @@ process UNTAR {
     prefix    = task.ext.prefix ?: ( meta.id ? "${meta.id}" : archive.toString().replaceFirst(/\.[^\.]+(.gz)?$/, ""))
     """
     mkdir $prefix
-    touch ${prefix}/file.txt
+    ## Ensures --strip-components only applied when top level of tar contents is a directory
+    ## If just files or multiple directories, place all in prefix
+    if [[ \$(tar -taf ${archive} | grep -o -P "^.*?\\/" | uniq | wc -l) -eq 1 ]]; then
+        for i in `tar -tf ${archive}`;
+        do
+            touch \${i}
+        done
+    else
+        for i in `tar -tf ${archive}`;
+        do
+            touch ${prefix}/\${i}
+        done
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
