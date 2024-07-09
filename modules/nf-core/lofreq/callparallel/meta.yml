@@ -18,14 +18,14 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test' ]
-  - tumor:
+  - bam:
       type: file
-      description: Sorted BAM file
+      description: Tumor sample sorted BAM file
       pattern: "*.{bam}"
-  - tumor_index:
+  - bai:
       type: file
       description: BAM index file
-      pattern: "*.{bai}"
+      pattern: "*.{bam.bai}"
   - intervals:
       type: file
       description: BED file containing target regions for variant calling

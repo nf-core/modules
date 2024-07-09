@@ -1,6 +1,6 @@
 process LOFREQ_SOMATIC {
     tag "$meta.id"
-    label 'process_high'
+    label "process_high"
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -32,8 +32,14 @@ process LOFREQ_SOMATIC {
     def samtools_cram_convert = ''
     samtools_cram_convert += normal_cram ? "    samtools view -T $fasta $normal -@ $task.cpus -o $normal_out\n" : ''
     samtools_cram_convert += normal_cram ? "    samtools index $normal_out\n" : ''
-    samtools_cram_convert += tumor_cram ? "    samtools view -T $fasta $tumor -@ $task.cpus -o $tumor_out\n" : ''
-    samtools_cram_convert += tumor_cram ? "    samtools index $tumor_out\n" : ''
+    samtools_cram_convert += tumor_cram ? "    samtools view -T ${fasta} $tumor -@ $task.cpus -o $tumor_out\n" : ''
+    samtools_cram_convert += tumor_cram ? "    samtools index ${tumor_out}\n" : ''
+
+    def samtools_cram_remove = ''
+    samtools_cram_remove += tumor_cram ? "     rm $tumor_out\n" : ''
+    samtools_cram_remove += tumor_cram ? "     rm ${tumor_out}.bai\n " : ''
+    samtools_cram_remove += normal_cram ? "     rm $normal_out\n" : ''
+    samtools_cram_remove += normal_cram ? "     rm ${normal_out}.bai\n " : ''
     """
     $samtools_cram_convert
 
@@ -46,6 +52,8 @@ process LOFREQ_SOMATIC {
         -n $normal_out \\
         ${options_target_bed} \\
         -o ${prefix}
+
+    $samtools_cram_remove
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

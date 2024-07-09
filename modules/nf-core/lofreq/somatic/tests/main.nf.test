@@ -1,0 +1,74 @@
+nextflow_process {
+
+    name "Test Process LOFREQ_SOMATIC"
+    script "../main.nf"
+    process "LOFREQ_SOMATIC"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "lofreq"
+    tag "lofreq/somatic"
+
+    test("tumor_normal_pair") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_', single_end:false ], 
+                    [file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam'], checkIfExists: true)],
+                    [file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true)],
+                    [file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true)],
+                    [file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true)],
+                    [file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)]
+                ]
+                input[1] = [
+                    [id:'test_genome'],
+                    [file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)]                
+                ]
+                input[2] = [
+                    [id:'test_genome_index'],
+                    [file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)]            
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                {assert process.success},
+                {assert snapshot(process.out).match()}
+            )
+            
+        }
+
+    }
+
+    test("tumor_normal_stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+                    ]
+                input[1] = [
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
