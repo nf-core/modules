@@ -10,9 +10,6 @@ nextflow_process {
     test("barrnap") {
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = [
