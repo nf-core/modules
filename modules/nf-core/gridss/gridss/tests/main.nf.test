@@ -32,7 +32,6 @@ nextflow_process {
                 """
                 input[0] = [ [ id:'test' ], // meta map
                         file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true), //inputs
-                        [] //assembly
                         ]
                 input[1] = [ [id:'fasta'],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
@@ -62,7 +61,6 @@ nextflow_process {
                 """
                 input[0] = [ [ id:'test' ], // meta map
                         file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true), //inputs
-                        [] //assembly
                         ]
                 input[1] = [ [id:'fasta'],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
@@ -85,40 +83,6 @@ nextflow_process {
 
     }
 
-    test("human - bam - assembly") {
-
-        when {
-            process {
-                """
-                input[0] = [ [ id:'test' ], // meta map
-                        file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true), //inputs
-                        file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true)
-                        ]
-                input[1] = [ [id:'fasta'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                        ]
-                input[2] = [ [id:'fasta_fai'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
-                        ]
-                input[3] = [ [], [] ]
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2") },
-                { assert snapshot(
-                    bam(process.out.assembly[0][1]).getHeaderMD5(),
-                    process.out.versions
-                    ).match()
-                }
-            )
-        }
-
-    }
-
     test("human - cram") {
 
         when {
@@ -126,7 +90,6 @@ nextflow_process {
                 """
                 input[0] = [ [ id:'test' ], // meta map
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true), //inputs
-                        [] //assembly
                         ]
                 input[1] = [ [id:'fasta'],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
@@ -158,7 +121,6 @@ nextflow_process {
                 """
                 input[0] = [ [ id:'test' ], // meta map
                         file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true), //inputs
-                        [] //assembly
                         ]
                 input[1] = [ [id:'fasta'],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)

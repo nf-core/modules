@@ -23,10 +23,6 @@ input:
       type: file
       description: One or more input BAM/CRAM file(s)
       pattern: "*.{bam,cram}"
-  - assembly:
-      type: file
-      description: OPTIONAL - An assembly BAM file created by the assembly step of Gridss
-      pattern: "*.bam"
   - fasta:
       type: file
       description: The reference fasta
@@ -52,10 +48,6 @@ output:
       type: file
       description: The called VCF file created by Gridss' call step
       pattern: "*.vcf.gz"
-  - assembly:
-      type: file
-      description: The assembly BAM file created by Gridss' assembly step
-      pattern: "*.assembly.bam"
 authors:
   - "@nvnieuwk"
 maintainers:
