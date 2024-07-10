@@ -1,0 +1,69 @@
+nextflow_process {
+
+    name "Test Process USEARCH_UNOISE3"
+    script "../main.nf"
+    process "USEARCH_UNOISE3"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "usearch"
+    tag "usearch/unoise3"
+
+    
+    test("denoise - fasta - synthetic") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of(">1;size=300",
+                    "GATCACATA",
+                    ">2;size=10",
+                    "GATCTCATA",
+                    "3;size=4",
+                    "GATGACATA")
+                .collectFile(name: "derep.fasta", newLine:true, sort:false)
+                .map { file -> [ [ id:'test', single_end:true ], file ] }
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.fasta },
+                { assert snapshot(process.out.fasta).match() },
+                { assert process.out.fasta.size() == 1 },
+                { assert path(process.out.fasta.get(0).get(1)).md5 == "383ad56441c5bf823c4c6d3fb1c25d41" },
+                { assert snapshot(process.out.versions).match("versions-single") } 
+            )
+        }
+
+    }
+    test("denoise - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of(">T1;size=300",
+                    "TTGATCACATA",
+                    ">T2;size=10",
+                    "TTGATCTCATA",
+                    "T3;size=4",
+                    "TTGATGACATA")
+                .collectFile(name: "stub.fasta", newLine:true, sort:false)
+                .map { file -> [ [ id:'test', single_end:true ], file ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.fasta).match() }
+            )
+        }
+
+    }
+
+}
