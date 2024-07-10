@@ -44,7 +44,7 @@ process BARRNAP {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
+    db = dbname ? "${dbname}" : 'bac'
     """
     touch ${prefix}_${db}.gff
 
