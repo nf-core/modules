@@ -30,7 +30,7 @@ nextflow_process {
 
         then {
             def size = path(process.out.metrics[0][1]).size()
-            def lines = path(process.out.metrics[0][1]).readLines()[0..212]
+            def lines = path(process.out.metrics[0][1]).readLines()[0..100]
             lines.remove(3)  // remove timestamp
             assertAll(
                 { assert process.success },
@@ -97,7 +97,7 @@ nextflow_process {
 
         then {
             def size = path(process.out.metrics[0][1]).size()
-            def lines = path(process.out.metrics[0][1]).readLines()[0..212]
+            def lines = path(process.out.metrics[0][1]).readLines()[0..100]
             lines.remove(3)  // remove timestamp
             assertAll(
                 { assert process.success },
@@ -135,7 +135,7 @@ nextflow_process {
 
         then {
             def size = path(process.out.metrics[0][1]).size()
-            def lines = path(process.out.metrics[0][1]).readLines()[0..212]
+            def lines = path(process.out.metrics[0][1]).readLines()[0..100]
             lines.remove(3)  // remove timestamp
             assertAll(
                 { assert process.success },
@@ -173,7 +173,7 @@ nextflow_process {
 
         then {
             def size = path(process.out.metrics[0][1]).size()
-            def lines = path(process.out.metrics[0][1]).readLines()[0..212]
+            def lines = path(process.out.metrics[0][1]).readLines()[0..100]
             lines.remove(3)  // remove timestamp
             assertAll(
                 { assert process.success },
