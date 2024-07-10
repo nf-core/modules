@@ -8,13 +8,13 @@ process GRIDSS_SOMATICFILTER {
         'biocontainers/gridss:2.13.2--h270b39a_0' }"
 
     input:
-    tuple val(meta), path(vcf)
+    tuple val(meta) , path(vcf)
     tuple val(meta2), path(pondir)
 
     output:
-    tuple val(meta), path("*.high_confidence_somatic.vcf.bgz")    , emit: high_conf_sv
-    tuple val(meta), path("*.all_somatic.vcf.bgz")                , emit: all_sv
-    path "versions.yml"                                           , emit: versions
+    tuple val(meta) , path("*.high_confidence_somatic.vcf.bgz")    , emit: high_conf_sv
+    tuple val(meta2), path("*.all_somatic.vcf.bgz")                , emit: all_sv
+    path "versions.yml"                                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
