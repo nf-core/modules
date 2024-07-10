@@ -67,7 +67,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bed,
+                    file(process.out.bed.get(0).get(1)).name,
                     file(process.out.bedpe.get(0).get(1)).name
                     ).match() }
             )

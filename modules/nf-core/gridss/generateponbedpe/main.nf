@@ -8,7 +8,7 @@ process GRIDSS_GENERATEPONBEDPE {
         'biocontainers/gridss:2.13.2--h270b39a_0' }"
 
     input:
-    tuple val(meta) ,  path(vcf), path(bedpe), path(bed)
+    tuple val(meta) , path(vcf), path(bedpe), path(bed)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(bwa_index)
