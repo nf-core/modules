@@ -8,9 +8,9 @@ process LOFREQ_CALLPARALLEL {
         'biocontainers/lofreq:2.1.5--py38h588ecb2_4' }"
 
     input:
-    tuple val(meta), path(bam), path(bai), path(intervals)
-    path fasta
-    path fai
+    tuple val(meta) , path(bam), path(bai), path(intervals)
+    tuple val(meta2), path fasta
+    tuple val(meta3), path fai
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
