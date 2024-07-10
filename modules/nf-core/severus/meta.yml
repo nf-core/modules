@@ -25,20 +25,20 @@ input:
         e.g. `[ id:'sample1', single_end:false ]`
   - target_bam:
       type: file
-      description: path to one or multiple target bam files (e.g. tumor, must be indexed)
-      pattern: "*.bam"
+      description: path to one or multiple target BAM/CRAM files (e.g. tumor, must be indexed)
+      pattern: "*.{bam,cram}"
   - target_index:
       type: file
-      description: path to one or multiple target bam index files
-      pattern: "*.bai"
+      description: path to one or multiple target BAM/CRAM index files
+      pattern: "*.{bai,crai,csi}"
   - control_bam:
       type: file
-      description: path to the control bam file (e.g. normal, must be indexed)
-      pattern: "*.bam"
+      description: path to the control BAM/CRAM file (e.g. normal, must be indexed)
+      pattern: "*.{bam,cram}"
   - control_index:
       type: file
-      description: path to the control bam file index
-      pattern: "*.bai"
+      description: path to the control BAM/CRAM file index
+      pattern: "*.{bai,crai,csi}"
   - vcf:
       type: file
       description: path to vcf file used for phasing (if using haplotype specific SV calling
