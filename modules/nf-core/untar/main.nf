@@ -57,7 +57,12 @@ process UNTAR {
     if [[ \$(tar -taf ${archive} | grep -o -P "^.*?\\/" | uniq | wc -l) -eq 1 ]]; then
         for i in `tar -tf ${archive}`;
         do
-            touch \${i}
+            if [[ \$(echo "\${i}" | grep -E "/\$") == "" ]];
+            then
+                touch \${i}
+            else
+                mkdir -p \${i}
+            fi
         done
     else
         for i in `tar -tf ${archive}`;
