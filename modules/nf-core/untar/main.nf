@@ -4,8 +4,8 @@ process UNTAR {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ubuntu:22.04' :
-        'nf-core/ubuntu:22.04' }"
+        'oras://community.wave.seqera.io/library/coreutils_grep_gzip_lbzip2_pruned:e1e4ff8dd129544f' :
+        'community.wave.seqera.io/library/coreutils_grep_gzip_lbzip2_pruned:10736d98b4d693d8' }"
 
     input:
     tuple val(meta), path(archive)
@@ -27,7 +27,7 @@ process UNTAR {
 
     ## Ensures --strip-components only applied when top level of tar contents is a directory
     ## If just files or multiple directories, place all in prefix
-    if [[ \$(tar -tavf ${archive} | grep -o -P "^.*?\\/" | uniq | wc -l) -eq 1 ]]; then
+    if [[ \$(tar -tavf ${archive} | grep -o -P "/\$" | uniq | wc -l) -eq 1 ]]; then
         tar \\
             -C $prefix --strip-components 1 \\
             -xavf \\
@@ -52,9 +52,9 @@ process UNTAR {
     stub:
     prefix    = task.ext.prefix ?: ( meta.id ? "${meta.id}" : archive.toString().replaceFirst(/\.[^\.]+(.gz)?$/, ""))
     """
-    mkdir $prefix
+    mkdir ${prefix}
     ## Dry-run untaring the archive to get the files and place all in prefix
-    if [[ \$(tar -tavf ${archive} | grep -o -P "^.*?\\/" | uniq | wc -l) -eq 1 ]]; then
+    if [[ \$(tar -tavf ${archive} | grep -o -P "/\$" | uniq | wc -l) -eq 1 ]]; then
         for i in `tar -tf ${archive}`;
         do
             if [[ \$(echo "\${i}" | grep -E "/\$") == "" ]];
@@ -67,7 +67,12 @@ process UNTAR {
     else
         for i in `tar -tf ${archive}`;
         do
-            touch ${prefix}/\${i}
+            if [[ \$(echo "\${i}" | grep -E "/\$") == "" ]];
+            then
+                touch ${prefix}/\${i}
+            else
+                mkdir -p ${prefix}/\${i}
+            fi
         done
     fi
 
