@@ -5,7 +5,7 @@ process UNTAR {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'oras://community.wave.seqera.io/library/coreutils_grep_gzip_lbzip2_pruned:e1e4ff8dd129544f' :
-        'community.wave.seqera.io/library/coreutils_grep_gzip_lbzip2_pruned:10736d98b4d693d8' }"
+        'nf-core/coreutils_grep_gzip_lbzip2_pruned:10736d98b4d693d8' }"
 
     input:
     tuple val(meta), path(archive)
