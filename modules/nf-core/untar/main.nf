@@ -27,7 +27,7 @@ process UNTAR {
 
     ## Ensures --strip-components only applied when top level of tar contents is a directory
     ## If just files or multiple directories, place all in prefix
-    if [[ \$(tar -tavf ${archive} | grep -o -P "/\$" | uniq | wc -l) -eq 1 ]]; then
+    if [[ \$(tar -taf ${archive} | grep -o -P "^.*?\\/" | uniq | wc -l) -eq 1 ]]; then
         tar \\
             -C $prefix --strip-components 1 \\
             -xavf \\
@@ -54,7 +54,7 @@ process UNTAR {
     """
     mkdir ${prefix}
     ## Dry-run untaring the archive to get the files and place all in prefix
-    if [[ \$(tar -tavf ${archive} | grep -o -P "/\$" | uniq | wc -l) -eq 1 ]]; then
+    if [[ \$(tar -taf ${archive} | grep -o -P "^.*?\\/" | uniq | wc -l) -eq 1 ]]; then
         for i in `tar -tf ${archive}`;
         do
             if [[ \$(echo "\${i}" | grep -E "/\$") == "" ]];
