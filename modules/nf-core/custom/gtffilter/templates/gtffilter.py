@@ -14,6 +14,7 @@ logging.basicConfig(format="%(name)s - %(asctime)s %(levelname)s: %(message)s")
 logger = logging.getLogger("fasta_gtf_filter")
 logger.setLevel(logging.INFO)
 
+
 def format_yaml_like(data: dict, indent: int = 0) -> str:
     """Formats a dictionary to a YAML-like string.
 
@@ -47,14 +48,18 @@ def tab_delimited(file: str) -> float:
         return statistics.median(line.count("\\t") for line in data.split("\\n"))
 
 
-def filter_gtf(fasta: str, gtf_in: str, filtered_gtf_out: str, skip_transcript_id_check: bool) -> None:
+def filter_gtf(
+    fasta: str, gtf_in: str, filtered_gtf_out: str, skip_transcript_id_check: bool
+) -> None:
     """Filter GTF file based on FASTA sequence names."""
     if tab_delimited(gtf_in) != 8:
         raise ValueError("Invalid GTF file: Expected 9 tab-separated columns.")
 
     seq_names_in_genome = extract_fasta_seq_names(fasta)
     logger.info(f"Extracted chromosome sequence names from {fasta}")
-    logger.debug("All sequence IDs from FASTA: " + ", ".join(sorted(seq_names_in_genome)))
+    logger.debug(
+        "All sequence IDs from FASTA: " + ", ".join(sorted(seq_names_in_genome))
+    )
 
     seq_names_in_gtf = set()
     try:
@@ -65,7 +70,9 @@ def filter_gtf(fasta: str, gtf_in: str, filtered_gtf_out: str, skip_transcript_i
                 seq_names_in_gtf.add(seq_name)  # Add sequence name to the set
 
                 if seq_name in seq_names_in_genome:
-                    if skip_transcript_id_check or re.search(r'transcript_id "([^"]+)"', line):
+                    if skip_transcript_id_check or re.search(
+                        r'transcript_id "([^"]+)"', line
+                    ):
                         out.write(line)
                         line_count += 1
 
@@ -77,18 +84,16 @@ def filter_gtf(fasta: str, gtf_in: str, filtered_gtf_out: str, skip_transcript_i
         return
 
     logger.debug("All sequence IDs from GTF: " + ", ".join(sorted(seq_names_in_gtf)))
-    logger.info(f"Extracted {line_count} matching sequences from {gtf_in} into {filtered_gtf_out}")
+    logger.info(
+        f"Extracted {line_count} matching sequences from {gtf_in} into {filtered_gtf_out}"
+    )
 
 
 filter_gtf("${fasta}", "${gtf}", "${prefix}.${suffix}", False)
 
 # Versions
 
-versions = {
-    "${task.process}": {
-        "python": platform.python_version()
-    }
-}
+versions = {"${task.process}": {"python": platform.python_version()}}
 
 with open("versions.yml", "w") as f:
     f.write(format_yaml_like(versions))
