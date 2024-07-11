@@ -8,8 +8,8 @@ process CUSTOM_GTFFILTER {
         'biocontainers/python:3.9--1' }"
 
     input:
+    tuple val(meta), path(gtf)
     path(fasta)
-    path(gtf)
 
     output:
     path("*.gtf")      , emit: gtf
