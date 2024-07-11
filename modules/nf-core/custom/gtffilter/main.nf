@@ -22,4 +22,16 @@ process CUSTOM_GTFFILTER {
     prefix = task.ext.prefix ?: "${meta.id}"
     suffix = task.ext.suffix ?: "gtf"
     template 'gtffilter.py'
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    suffix = task.ext.suffix ?: "gtf"
+    """
+    touch ${prefix}.${suffix}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        python: \$(python --version 2>&1 | cut -d ' ' -f 2)
+    END_VERSIONS
+    """
 }
