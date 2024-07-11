@@ -1,5 +1,4 @@
 process DUPRADAR {
-
     tag "$meta.id"
     label 'process_long'
 
