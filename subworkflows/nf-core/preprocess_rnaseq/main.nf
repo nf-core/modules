@@ -267,5 +267,3 @@ workflow PREPROCESS_RNASEQ {
     multiqc_files   = ch_multiqc_files.transpose().map{it[1]}
     versions        = ch_versions                     // channel: [ versions.yml ]
 }
-
-

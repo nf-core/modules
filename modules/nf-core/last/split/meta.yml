@@ -40,6 +40,10 @@ output:
       type: file
       description: Multiple Aligment Format (MAF) file, compressed with gzip
       pattern: "*.{maf.gz}"
+  - multiqc:
+      type: file
+      description: Alignment summary for MultiQC
+      pattern: "*.tsv"
 authors:
   - "@aleksandrabliznina"
   - "@charles-plessy"
