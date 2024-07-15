@@ -10,8 +10,8 @@ process SEQFU_DEREP {
     tuple val(meta), path(fastas)
 
     output:
-    tuple val(meta), path("*_.fasta.gz"), emit: fasta
-    path "versions.yml"                      , emit: versions
+    tuple val(meta), path("*_derep.fasta.gz"), emit: fasta
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,6 +21,11 @@ process SEQFU_DEREP {
     def prefix = task.ext.prefix ?: "${meta.id}_derep"
 
     """
+    if [[ -e "${prefix}.fasta.gz" ]];
+    then
+        echo "Output found: ${prefix}.fasta.gz"
+        exit 1
+    fi
     seqfu \\
         derep \\
         $args \\
