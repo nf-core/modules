@@ -34,7 +34,7 @@ process SEQFU_DEREP {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_derep"
     """
     echo "" | gzip -c > "${prefix}.fasta.gz"
 
