@@ -9,7 +9,7 @@ process CUSTOM_GTFFILTER {
 
     input:
     tuple val(meta), path(gtf)
-    path(fasta)
+    tuple val(meta2), path(fasta)
 
     output:
     tuple val(meta), path("*.gtf"), emit: gtf
