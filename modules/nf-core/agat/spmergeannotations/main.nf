@@ -22,8 +22,8 @@ process AGAT_SPMERGEANNOTATIONS {
     def args            = task.ext.args ?: ''
     def prefix          = task.ext.prefix ?: "${meta.id}"
     def config_param    = config ? "--config $config" : ''
-    def gff_param       = "$gffs".split(' ').collect { "--gff $it" }.join(' ')
-    def file_names      = gffs.collect { "$it" }
+    def file_names      = "$gffs".split(' ')
+    def gff_param       = file_names.collect { "--gff $it" }.join(' ')
     if ( file_names.contains ( "${prefix}.gff" ) ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     agat_sp_merge_annotations.pl \\
@@ -40,7 +40,7 @@ process AGAT_SPMERGEANNOTATIONS {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def file_names      = gffs.collect { "$it" }
+    def file_names      = "$gffs".split(' ')
     if ( file_names.contains ( "${prefix}.gff" ) ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     touch ${prefix}.gff
