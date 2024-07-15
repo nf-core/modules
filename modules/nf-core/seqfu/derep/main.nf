@@ -10,7 +10,7 @@ process SEQFU_DEREP {
     tuple val(meta), path(fastas)
 
     output:
-    tuple val(meta), path("*_derep.fasta.gz"), emit: fasta
+    tuple val(meta), path("*_.fasta.gz"), emit: fasta
     path "versions.yml"                      , emit: versions
 
     when:
