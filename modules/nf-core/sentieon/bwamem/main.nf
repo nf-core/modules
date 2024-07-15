@@ -24,17 +24,16 @@ process SENTIEON_BWAMEM {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
+    def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64 ? secrets.SENTIEON_LICENSE_BASE64 : ""
     """
-    if [ -n "\${SENTIEON_LICENSE_BASE64}" ]; then
+    if [ -n $sentieonLicense ]; then
         # NOTE: This is how pipeline users will test out Sentieon
         echo "Localhost license file"
         # The license file is stored as a nextflow variable like, for instance, this:
         # nextflow secrets set SENTIEON_LICENSE_BASE64 \$(cat <sentieon_license_file.lic> | base64 -w 0)
         export SENTIEON_LICENSE=\$(mktemp)
-        echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d > \$SENTIEON_LICENSE
+        echo -e "$sentieonLicense" | base64 -d > \$SENTIEON_LICENSE
     fi
-
 
     INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
 
