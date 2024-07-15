@@ -40,7 +40,7 @@ public static String multiqcTsvFromList(tsv_data, header) {
 
 def deprecation_message = """
 WARNING: This subworkflow has been deprecated. Please use
-nf-core/modules/subworkflows/fastq_qc_trim_filter_setstrandedness subworkflows
+nf-core/modules/subworkflows/fastq_qc_trim_filter_setstrandedness
  
 Reason:
 Subworkflow naming rules were introduced necessitating this move, see
