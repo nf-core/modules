@@ -5,6 +5,7 @@
 
 import logging
 import re
+import gzip
 import statistics
 import platform
 from typing import Set
@@ -37,8 +38,18 @@ def format_yaml_like(data: dict, indent: int = 0) -> str:
 
 def extract_fasta_seq_names(fasta_name: str) -> Set[str]:
     """Extracts the sequence names from a FASTA file."""
-    with open(fasta_name) as fasta:
-        return {line[1:].split(None, 1)[0] for line in fasta if line.startswith(">")}
+
+    is_gz = fasta_name.endswith(".gz")
+    open_fn = gzip.open if is_gz else open
+
+    with open_fn(fasta_name) as fasta:
+        sequences = set()
+        for line in fasta:
+            line = line.decode("utf-8") if is_gz else line
+            if line.startswith(">"):
+                sequences.add(line[1:].split(None, 1)[0])
+
+        return sequences
 
 
 def tab_delimited(file: str) -> float:
@@ -63,9 +74,12 @@ def filter_gtf(
 
     seq_names_in_gtf = set()
     try:
-        with open(gtf_in) as gtf, open(filtered_gtf_out, "w") as out:
+        is_gz = gtf_in.endswith(".gz")
+        open_fn = gzip.open if is_gz else open
+        with open_fn(gtf_in) as gtf, open_fn(filtered_gtf_out, "wb" if is_gz else "w") as out:
             line_count = 0
             for line in gtf:
+                line = line.decode("utf-8") if is_gz else line
                 seq_name = line.split("\\t")[0]
                 seq_names_in_gtf.add(seq_name)  # Add sequence name to the set
 
@@ -73,7 +87,7 @@ def filter_gtf(
                     if skip_transcript_id_check or re.search(
                         r'transcript_id "([^"]+)"', line
                     ):
-                        out.write(line)
+                        out.write(line.encode() if is_gz else line)
                         line_count += 1
 
             if line_count == 0:
