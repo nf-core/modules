@@ -1,0 +1,58 @@
+name: deepvariant_callvariants
+description: Call variants from the examples produced by make_examples
+keywords:
+  - variant calling
+  - machine learning
+  - neural network
+tools:
+  - deepvariant:
+      description: DeepVariant is an analysis pipeline that uses a deep neural network to call genetic variants from next-generation DNA sequencing data
+      homepage: https://github.com/google/deepvariant
+      documentation: https://github.com/google/deepvariant
+      tool_dev_url: https://github.com/google/deepvariant
+      doi: "10.1038/nbt.4235"
+      licence: ["BSD-3-clause"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - intervals_id:
+      type: string
+      description: |
+        A unique string representing the interval being processed. If zero or one interval
+        is used per sample, the value of this string is irrelevant.
+  - make_example_tfrecord_filename:
+      type: string
+      description: |
+        The logical filename of the set of tfrecord files, e.g. 
+        "examples@32.tfrecord.gz".
+  - make_examples_tfrecords:
+      type: file
+      description: 
+      pattern: "*.tfrecord.gz"
+  - model_type:
+      type: string
+      description: Model name, for example wgs, wes, pacbio, ont_r104, hybrid_pacbio_illumina.
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - call_variants_tfrecords:
+      type: tuple
+      description: |
+
+  - version:
+      type: file
+      description: File containing software version
+      pattern: "*.{version.txt}"
+authors:
+  - "@abhi18av"
+  - "@ramprasadn"
+  - "@fa2k"
+maintainers:
+  - "@abhi18av"
+  - "@ramprasadn"

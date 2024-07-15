@@ -1,5 +1,5 @@
-name: deepvariant
-description: DeepVariant is an analysis pipeline that uses a deep neural network to call genetic variants from next-generation DNA sequencing data
+name: deepvariant_makeexamples
+description: Transforms the input alignments to a format suitable for the deep neural network variant caller
 keywords:
   - variant calling
   - machine learning
@@ -58,26 +58,24 @@ input:
       description: GZI index of reference fasta file
       pattern: "*.gzi"
 output:
-  - meta:
-      type: map
+  - examples:
+      type: tuple
       description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: Compressed VCF file
-      pattern: "*.vcf.gz"
+        Tuple containing the sample metadata, the unique path to the intervals as a string,
+        the logical filename of the output examples, and the actual sharded output files.
   - gvcf:
-      type: file
-      description: Compressed GVCF file
-      pattern: "*.g.vcf.gz"
+      type: tuple
+      description: |
+        Tuple containing the sample metadata, the unique path to the intervals as a string,
+        the logical filename of the gvcf data, and the GVCF data in tfrecord format.
   - version:
       type: file
-      description: File containing software version
-      pattern: "*.{version.txt}"
+      description: File containing the DeepVariant software version
+      pattern: "versions.yml"
 authors:
   - "@abhi18av"
   - "@ramprasadn"
+  - "@fa2k"
 maintainers:
   - "@abhi18av"
   - "@ramprasadn"
