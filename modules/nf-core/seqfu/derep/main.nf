@@ -24,7 +24,7 @@ process SEQFU_DEREP {
     seqfu \\
         derep \\
         $args \\
-        $fastas | gzip -c > "${meta.id}_derep.fasta.gz"
+        $fastas | gzip -c > "${prefix}.fasta.gz"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
