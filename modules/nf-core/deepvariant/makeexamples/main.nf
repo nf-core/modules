@@ -12,8 +12,8 @@ process DEEPVARIANT_MAKEEXAMPLES {
     tuple val(meta4), path(gzi)
 
     output:
-    tuple val(meta), val(intervals.toString()), val("examples.tfrecord@${task.cpus}.gz"), path("examples.tfrecord-*-of-*.gz"), emit: examples
-    tuple val(meta), /*val(intervals.toString()),*/ val("gvcf.tfrecord@${task.cpus}.gz"), path("gvcf.tfrecord-*-of-*.gz"),      emit: gvcf
+    tuple val(meta), val("examples.tfrecord@${task.cpus}.gz"), path("examples.tfrecord-*-of-*.gz"), emit: examples
+    tuple val(meta), val("gvcf.tfrecord@${task.cpus}.gz"), path("gvcf.tfrecord-*-of-*.gz"),         emit: gvcf
     path "versions.yml",  emit: versions
 
     when:
@@ -26,7 +26,6 @@ process DEEPVARIANT_MAKEEXAMPLES {
     }
     def args = task.ext.args ?: ''
     def regions = intervals ? "--regions=${intervals}" : ""
-    def intervals_id = 
 
     """
     seq 0 ${task.cpus - 1} | parallel -q --halt 2 --line-buffer /opt/deepvariant/bin/make_examples \\

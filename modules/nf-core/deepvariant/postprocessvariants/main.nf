@@ -1,4 +1,4 @@
-process DEEPVARIANT_POSTPROCESS_VARIANTS {
+process DEEPVARIANT_POSTPROCESSVARIANTS {
     tag "$meta.id"
     label 'process_single'
 
@@ -6,7 +6,7 @@ process DEEPVARIANT_POSTPROCESS_VARIANTS {
     container "nf-core/deepvariant:1.5.0"
 
     input:
-    tuple val(meta), val(intervals), path(variant_calls_tfrecord), val(gvcf_tfrecords_filename), path(gvcf_tfrecords)
+    tuple val(meta), path(variant_calls_tfrecord), val(gvcf_tfrecords_filename), path(gvcf_tfrecords)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(gzi)

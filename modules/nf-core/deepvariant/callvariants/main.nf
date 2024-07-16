@@ -7,11 +7,11 @@ process DEEPVARIANT_CALLVARIANTS {
     container "nf-core/deepvariant:1.5.0"
 
     input:
-    tuple val(meta), val(intervals), val(make_example_tfrecord_filename), path(make_examples_tfrecords)
+    tuple val(meta), val(make_example_tfrecord_filename), path(make_examples_tfrecords)
     val model_type
 
     output:
-    tuple val(meta), val(intervals), path("call_variants_output.tfrecord.gz"),  emit: call_variants_tfrecords
+    tuple val(meta), path("call_variants_output.tfrecord.gz"),  emit: call_variants_tfrecords
     path "versions.yml"                                                       ,  emit: versions
 
     when:
@@ -24,7 +24,7 @@ process DEEPVARIANT_CALLVARIANTS {
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def model_type_clean = model_type.replaceAll("[^A-Za-z0-9_-]", "")
+    def model_type_clean = model_type.toString().replaceAll("[^A-Za-z0-9_-]", "")
 
     """
     /opt/deepvariant/bin/call_variants \\
