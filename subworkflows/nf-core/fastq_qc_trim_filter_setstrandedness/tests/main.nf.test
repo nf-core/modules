@@ -1,13 +1,13 @@
 nextflow_workflow {
 
-    name "Test Subworkflow PREPROCESS_RNASEQ"
+    name "Test Subworkflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS"
     script "../main.nf"
-    workflow "PREPROCESS_RNASEQ"
+    workflow "FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS"
     config "./nextflow.config"
 
     tag "subworkflows"
     tag "subworkflows_nfcore"
-    tag "subworkflows/preprocess_rnaseq"
+    tag "subworkflows/fastq_qc_trim_filter_setstrandedness"
 
     tag "bbmap/bbsplit"
     tag "cat"

@@ -44,7 +44,7 @@ process PAIRTOOLS_SPLIT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pairtools: \$(pairtools --version 2>&1 | sed 's/pairtools, version //')
+        pairtools: \$(pairtools --version | sed 's/pairtools, version //')
     END_VERSIONS
     """
 
