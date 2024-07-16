@@ -48,7 +48,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.gff3).match("gff3_no_ltr") },
+                { assert path(process.out.scn[0][1]).text.contains("predictions are reported in the following way") },
+                { assert snapshot(path(process.out.versions[0]).text).match("versions_no_ltr") }
             )
         }
 
