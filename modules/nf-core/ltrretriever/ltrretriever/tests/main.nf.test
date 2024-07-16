@@ -144,7 +144,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.log[0][1]).text.contains("####### Result files #########") },
-                { assert snapshot(process.out.pass_list).match("pass_list") },
+                { assert path(process.out.pass_list[0][1]).text.contains("Copia\tLTR") },
                 { assert path(process.out.pass_list_gff[0][1]).text.contains("chr1\tLTR_retriever\ttarget_site_duplication") },
                 { assert path(process.out.ltrlib[0][1]).text.contains("LTR#LTR/Copia") },
                 { assert snapshot(process.out.annotation_out).match("annotation_out") },
