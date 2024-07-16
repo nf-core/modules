@@ -8,7 +8,7 @@ process SENTIEON_TNHAPLOTYPER2 {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'oras://community.wave.seqera.io/library/sentieon:202308.02--ffce1b7074ce9924' :
-        'community.wave.seqera.io/library/sentieon:202308.02--c641bc397cbf79d5' }"
+        'nf-core/sentieon:202308.02--c641bc397cbf79d5' }"
 
     input:
     tuple val(meta), path(input), path(input_index), path(intervals)
