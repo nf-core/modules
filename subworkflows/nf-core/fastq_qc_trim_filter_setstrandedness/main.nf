@@ -11,19 +11,62 @@ include { FASTQ_FASTQC_UMITOOLS_FASTP      } from '../fastq_fastqc_umitools_fast
 
 def pass_trimmed_reads = [:]
 
-public static String getSalmonInferredStrandedness(json_file) {
-    def lib_type = new JsonSlurper().parseText(json_file.text).get('library_types')[0]
-    def strandedness = 'reverse'
-    if (lib_type) {
-        if (lib_type in ['U', 'IU']) {
-            strandedness = 'unstranded'
-        } else if (lib_type in ['SF', 'ISF']) {
+//
+// Function to determine library type by comparing type counts.
+//
+
+//
+def calculateStrandedness(forwardFragments, reverseFragments, unstrandedFragments, stranded_threshold=0.8, unstranded_threshold=0.1) {
+    def totalFragments = forwardFragments + reverseFragments + unstrandedFragments
+    def totalStrandedFragments = forwardFragments + reverseFragments
+
+    def library_strandedness = 'undetermined'
+    if (totalStrandedFragments > 0) {
+        def forwardProportion = forwardFragments / (totalStrandedFragments as double)
+        def reverseProportion = reverseFragments / (totalStrandedFragments as double)
+        def proportionDifference = Math.abs(forwardProportion - reverseProportion)
+
+        if (forwardProportion >= stranded_threshold) {
             strandedness = 'forward'
-        } else if (lib_type in ['SR', 'ISR']) {
+        } else if (reverseProportion >= stranded_threshold) {
             strandedness = 'reverse'
+        } else if (proportionDifference <= unstranded_threshold) {
+            strandedness = 'unstranded'
         }
     }
-    return strandedness
+
+    return [
+        inferred_strandedness: strandedness,
+        forwardFragments: (forwardFragments / (totalFragments as double)) * 100,
+        reverseFragments: (reverseFragments / (totalFragments as double)) * 100,
+        unstrandedFragments: (unstrandedFragments / (totalFragments as double)) * 100
+    ]
+}
+
+//
+// Function that parses Salmon quant 'lib_format_counts.json' output file to get inferred strandedness
+//
+def getSalmonInferredStrandedness(json_file, stranded_threshold = 0.8, unstranded_threshold = 0.1) {
+    // Parse the JSON content of the file
+    def libCounts = new JsonSlurper().parseText(json_file.text)
+
+    // Calculate the counts for forward and reverse strand fragments
+    def forwardKeys = ['SF', 'ISF', 'MSF', 'OSF']
+    def reverseKeys = ['SR', 'ISR', 'MSR', 'OSR']
+
+    // Calculate unstranded fragments (IU and U)
+    // NOTE: this is here for completeness, but actually all fragments have a
+    // strandedness (even if the overall library does not), so all these values
+    // will be '0'. See
+    // https://groups.google.com/g/sailfish-users/c/yxzBDv6NB6I
+    def unstrandedKeys = ['IU', 'U', 'MU']
+
+    def forwardFragments = forwardKeys.collect { libCounts[it] ?: 0 }.sum()
+    def reverseFragments = reverseKeys.collect { libCounts[it] ?: 0 }.sum()
+    def unstrandedFragments = unstrandedKeys.collect { libCounts[it] ?: 0 }.sum()
+
+    // Use shared calculation function to determine strandedness
+    return calculateStrandedness(forwardFragments, reverseFragments, unstrandedFragments, stranded_threshold, unstranded_threshold)
 }
 
 //
@@ -38,16 +81,7 @@ public static String multiqcTsvFromList(tsv_data, header) {
     return tsv_string
 }
 
-def deprecation_message = """
-WARNING: This subworkflow has been deprecated. Please use
-nf-core/modules/subworkflows/fastq_qc_trim_filter_setstrandedness
-
-Reason:
-Subworkflow naming rules were introduced necessitating this move, see
-https://nf-co.re/docs/guidelines/components/subworkflows#name-format-of-subworkflow-files
-"""
-
-workflow PREPROCESS_RNASEQ {
+workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
 
     take:
     ch_reads             // channel: [ val(meta), [ reads ] ]
@@ -70,10 +104,10 @@ workflow PREPROCESS_RNASEQ {
     remove_ribo_rna      // boolean: true/false: whether to run sortmerna to remove rrnas
     with_umi             // boolean: true/false: Enable UMI-based read deduplication.
     umi_discard_read     // integer: 0, 1 or 2
+    stranded_threshold   // float: The fraction of stranded reads that must be assigned to a strandedness for confident assignment. Must be at least 0.5
+    unstranded_threshold // float: The difference in fraction of stranded reads assigned to 'forward' and 'reverse' below which a sample is classified as 'unstranded'
 
     main:
-
-    assert false: deprecation_message
 
     ch_versions        = Channel.empty()
     ch_filtered_reads  = Channel.empty()
@@ -262,10 +296,16 @@ workflow PREPROCESS_RNASEQ {
 
     FASTQ_SUBSAMPLE_FQ_SALMON
         .out
-        .json_info
+        .lib_format_counts
         .join(ch_strand_fastq.auto_strand)
-        .map { meta, json, reads ->
-            return [ meta + [ strandedness: getSalmonInferredStrandedness(json) ], reads ]
+        .map {
+            meta, json, reads ->
+                def salmon_strand_analysis = getSalmonInferredStrandedness(json, stranded_threshold=stranded_threshold, unstranded_threshold=unstranded_threshold)
+                strandedness = salmon_strand_analysis.inferred_strandedness
+                if (strandedness == 'undetermined') {
+                    strandedness = 'unstranded'
+                }
+                return [ meta + [ strandedness: strandedness, salmon_strand_analysis: salmon_strand_analysis ], reads ]
         }
         .mix(ch_strand_fastq.known_strand)
         .set { ch_strand_inferred_fastq }

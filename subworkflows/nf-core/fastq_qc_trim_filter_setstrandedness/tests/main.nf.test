@@ -1,13 +1,13 @@
 nextflow_workflow {
 
-    name "Test Subworkflow PREPROCESS_RNASEQ"
+    name "Test Subworkflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS"
     script "../main.nf"
-    workflow "PREPROCESS_RNASEQ"
+    workflow "FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS"
     config "./nextflow.config"
 
     tag "subworkflows"
     tag "subworkflows_nfcore"
-    tag "subworkflows/preprocess_rnaseq"
+    tag "subworkflows/fastq_qc_trim_filter_setstrandedness"
 
     tag "bbmap/bbsplit"
     tag "cat"
@@ -56,6 +56,8 @@ nextflow_workflow {
                 input[17] = true           // remove_ribo_rna
                 input[18] = false          // with_umi
                 input[19] = 0              // umi_discard_read
+                input[20] = 0.8            // stranded_threshold
+                input[21] = 0.1            // unstranded_threshold
                 """
             }
         }
@@ -112,6 +114,8 @@ nextflow_workflow {
                 input[17] = true           // remove_ribo_rna
                 input[18] = false          // with_umi
                 input[19] = 0              // umi_discard_read
+                input[20] = 0.8            // stranded_threshold
+                input[21] = 0.1            // unstranded_threshold
                 """
             }
         }
