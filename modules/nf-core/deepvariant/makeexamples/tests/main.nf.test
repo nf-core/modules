@@ -38,7 +38,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                // Test string values and versions. The tfrecords are not stable.
+                { assert process.out.examples.get(0)[0..1] == [[ id:'test', single_end:false ], "test.examples.tfrecord@2.gz"] },
+                { assert process.out.gvcf.get(0)[0..1] == [[ id:'test', single_end:false ], "test.gvcf.tfrecord@2.gz"] },
+                { assert snapshot(process.out.versions).match("test1-versions") },
             )
         }
     }
@@ -72,7 +75,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert process.out.examples.get(0)[0..1] == [[ id:'test', single_end:false ], "test.examples.tfrecord@2.gz"] },
+                { assert process.out.gvcf.get(0)[0..1] == [[ id:'test', single_end:false ], "test.gvcf.tfrecord@2.gz"] },
+                { assert snapshot(process.out.versions).match("test2-versions") },
             )
         }
     }
@@ -107,7 +112,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert process.out.examples.get(0)[0..1] == [[ id:'test', single_end:false ], "test.examples.tfrecord@2.gz"] },
+                { assert process.out.gvcf.get(0)[0..1] == [[ id:'test', single_end:false ], "test.gvcf.tfrecord@2.gz"] },
+                { assert snapshot(process.out.versions).match("test3-versions") },
             )
         }
     }
