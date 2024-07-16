@@ -12,8 +12,8 @@ process DEEPVARIANT_MAKEEXAMPLES {
     tuple val(meta4), path(gzi)
 
     output:
-    tuple val(meta), val("examples.tfrecord@${task.cpus}.gz"), path("examples.tfrecord-*-of-*.gz"), emit: examples
-    tuple val(meta), val("gvcf.tfrecord@${task.cpus}.gz"), path("gvcf.tfrecord-*-of-*.gz"),         emit: gvcf
+    tuple val(meta), val("${prefix}.examples.tfrecord@${task.cpus}.gz"), path("${prefix}.examples.tfrecord-*-of-*.gz"), emit: examples
+    tuple val(meta), val("${prefix}.gvcf.tfrecord@${task.cpus}.gz"), path("${prefix}.gvcf.tfrecord-*-of-*.gz"),         emit: gvcf
     path "versions.yml",  emit: versions
 
     when:
@@ -25,6 +25,7 @@ process DEEPVARIANT_MAKEEXAMPLES {
         error "DEEPVARIANT module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
     def regions = intervals ? "--regions=${intervals}" : ""
 
     """
@@ -32,9 +33,9 @@ process DEEPVARIANT_MAKEEXAMPLES {
         --mode=calling \\
         --ref=${fasta} \\
         --reads=${input} \\
-        --examples "./examples.tfrecord@${task.cpus}.gz" \\
+        --examples "./${prefix}.examples.tfrecord@${task.cpus}.gz" \\
         --channels "insert_size" \\
-        --gvcf "./gvcf.tfrecord@${task.cpus}.gz" \\
+        --gvcf "./${prefix}.gvcf.tfrecord@${task.cpus}.gz" \\
         ${regions} \\
         ${args} \\
         --task {}

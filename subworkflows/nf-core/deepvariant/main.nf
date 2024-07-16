@@ -14,15 +14,14 @@ workflow DEEPVARIANT {
     main:
 
     ch_versions = Channel.empty()
-
     // Assign a unique ID to each input element, so the input can be processed
     // as a single unique item by all subworkflow stages. This is necessary to merge
     // the GVCF data and called variants in the postprocessing step.
-    //ch_input_with_uid = ch_input.map {
-    //    [ ['deepvariant_id': UUID.randomUUID()] + it[0] ] + it[1..end]
-    //}
+    ch_input_with_uid = ch_input.map {
+        meta, input, index, intervals -> [ ['deepvariant_id': UUID.randomUUID()] + meta, input, index, intervals]
+    }
 
-    DEEPVARIANT_MAKEEXAMPLES(ch_input, ch_fasta, ch_fai, ch_gzi)
+    DEEPVARIANT_MAKEEXAMPLES(ch_input_with_uid, ch_fasta, ch_fai, ch_gzi)
     ch_versions = ch_versions.mix(DEEPVARIANT_MAKEEXAMPLES.out.versions.first())
 
     DEEPVARIANT_CALLVARIANTS(DEEPVARIANT_MAKEEXAMPLES.out.examples, ch_model_type)
@@ -41,16 +40,19 @@ workflow DEEPVARIANT {
         ch_fai,
         ch_gzi
     )
-    // Create clean output channels without deepvariant_id
-    ch_clean_vcf_out = DEEPVARIANT_POSTPROCESSVARIANTS.out.vcf.map {
-        it -> [it[0].drop(1)] + it.drop(1)]
+
+    // Create output channels without deepvariant_id
+    def remove_deepvariant_id = {
+        newMeta = it[0];
+        newMeta.remove("deepvariant_id");
+        [newMeta] + it.drop(1)
     }
     ch_versions = ch_versions.mix(DEEPVARIANT_POSTPROCESSVARIANTS.out.versions.first())
 
     emit:
-    vcf         = ch_clean_vcf_out
-    vcf_tbi     = DEEPVARIANT_POSTPROCESSVARIANTS.out.vcf_tbi
-    gvcf        = DEEPVARIANT_POSTPROCESSVARIANTS.out.gvcf
-    gvcf_tbi    = DEEPVARIANT_POSTPROCESSVARIANTS.out.gvcf_tbi
+    vcf         = DEEPVARIANT_POSTPROCESSVARIANTS.out.vcf.map(remove_deepvariant_id)
+    vcf_tbi     = DEEPVARIANT_POSTPROCESSVARIANTS.out.vcf_tbi.map(remove_deepvariant_id)
+    gvcf        = DEEPVARIANT_POSTPROCESSVARIANTS.out.gvcf.map(remove_deepvariant_id)
+    gvcf_tbi    = DEEPVARIANT_POSTPROCESSVARIANTS.out.gvcf_tbi.map(remove_deepvariant_id)
     versions    = ch_versions
 }

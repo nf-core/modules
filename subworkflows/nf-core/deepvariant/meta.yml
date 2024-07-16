@@ -1,0 +1,75 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: deepvariant
+description: DeepVariant is an analysis pipeline that uses a deep neural network to call genetic variants from next-generation DNA sequencing data
+keywords:
+  - variant calling
+  - machine learning
+  - neural network
+components:
+  - deepvariant/makeexamples
+  - deepvariant/callvariants
+  - deepvariant/postprocessvariants
+input:
+  - ch_input:
+      type: list
+      description: |
+        Input assembly 
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.{fsa/fa/fasta}"
+  - ch_fasta:
+      type: file
+      description: |
+        Reference genome
+        Structure: [ val(meta2), path(fasta) ]
+  - ch_fai:
+      type: string
+      description: |
+        Reference genome index
+        Structure: [ val(meta3), path(fai) ]
+  - ch_gzi:
+      type: string
+      description: |
+        A priori sequence
+        Structure: [ val(meta4), val(sequence) ]
+  - ch_model_type:
+      type: string
+      description: |
+        DeepVariant model to use, as a string. 
+output:
+  - vcf:
+      type: file
+      description: |
+        Variant calls
+        Structure: [ val(meta), path(vcf) ]
+      pattern: "*.vcf.gz"
+  - vcf_tbi:
+      type: file
+      description: |
+        Index for variant call file
+        Structure: [ val(meta), path(vcf_tbi) ]
+      pattern: "*.tbi"
+  - gvcf:
+      type: file
+      description: |
+        Variant call file with genomic coverage information
+        Structure: [ val(meta), path(gvcf) ]
+      pattern: "*.g.vcf.gz"
+  - gvcf_tbi:
+      type: file
+      description: |
+        Index for the GVCF.
+        Structure: [ val(meta), path(gvcf_tbi) ]
+      pattern: "*.tbi"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: path(versions.yml)
+      pattern: "versions.yml"
+authors:
+  - "@abhi18av"
+  - "@ramprasadn"
+  - "@fa2k"
+maintainers:
+  - "@abhi18av"
+  - "@ramprasadn"
