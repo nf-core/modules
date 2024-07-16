@@ -8,7 +8,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "ltrharvest"
 
-    test("homo_sapiens-genome_21_fasta") {
+    test("homo_sapiens - genome_21_fasta") {
 
         when {
             process {
@@ -24,15 +24,18 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.gff3).match("gff3") },
+                { assert snapshot(
+                    process.out.gff3,
+                    process.out.versions
+                    ).match()
+                },
                 { assert path(process.out.scn[0][1]).text.contains("46510803 46520182 9380 46510803 46510940 138 46520042 46520182 141 86.52 0 chr21") },
-                { assert snapshot(path(process.out.versions[0]).text).match("versions") }
             )
         }
 
     }
 
-    test("sarscov2-genome_fasta-no_ltr") {
+    test("sarscov2 - genome_fasta - no_ltr") {
 
         when {
             process {
@@ -48,15 +51,18 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.gff3).match("gff3_no_ltr") },
+                { assert snapshot(
+                    process.out.gff3,
+                    process.out.versions
+                    ).match()
+                },
                 { assert path(process.out.scn[0][1]).text.contains("predictions are reported in the following way") },
-                { assert snapshot(path(process.out.versions[0]).text).match("versions_no_ltr") }
             )
         }
 
     }
 
-    test("homo_sapiens-genome_fasta-stub") {
+    test("homo_sapiens - genome_fasta - stub") {
 
         options '-stub'
 
