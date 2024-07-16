@@ -18,7 +18,7 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - intervals_id:
+  - intervals:
       type: string
       description: |
         A unique string representing the interval being processed. If zero or one interval
@@ -26,29 +26,29 @@ input:
   - make_example_tfrecord_filename:
       type: string
       description: |
-        The logical filename of the set of tfrecord files, e.g. 
-        "examples@32.tfrecord.gz".
+        The logical filename of the set of tfrecord files, e.g. "examples@32.tfrecord.gz".
   - make_examples_tfrecords:
       type: file
-      description: 
+      description: The actual sharded input files, from makeexamples subcommand.
       pattern: "*.tfrecord.gz"
   - model_type:
       type: string
       description: Model name, for example wgs, wes, pacbio, ont_r104, hybrid_pacbio_illumina.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - call_variants_tfrecords:
-      type: tuple
+      type: list
       description: |
-
-  - version:
+        Each output contains: intervals string from input channel, logical tfrecord filename,
+        tfrecord files.
+  - call_variants_tfrecords:
+      type: list
+      description: |
+        Each output contains: intervals string from input channel, logical tfrecord filename,
+        tfrecord files.
+  - versions:
       type: file
       description: File containing software version
-      pattern: "*.{version.txt}"
+      pattern: "versions.yml"
 authors:
   - "@abhi18av"
   - "@ramprasadn"

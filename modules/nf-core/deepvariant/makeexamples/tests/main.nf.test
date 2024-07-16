@@ -1,16 +1,16 @@
 nextflow_process {
 
-    name "Test Process DEEPVARIANT"
+    name "Test Process DEEPVARIANT_MAKEEXAMPLES"
     script "../main.nf"
-    process "DEEPVARIANT"
+    process "DEEPVARIANT_MAKEEXAMPLES"
 
+    tag "deepvariant/makeexamples"
     tag "deepvariant"
     tag "modules"
     tag "modules_nfcore"
 
     test("homo_sapiens - [bam, bai] - fasta - fai") {
         when {
-            config "./nextflow.config"
 
             process {
                 """
@@ -44,7 +44,6 @@ nextflow_process {
     }
 
     test("homo_sapiens - [cram, crai, genome_bed] - fasta - fai") {
-        config "./nextflow-intervals.config"
 
         when {
             process {
@@ -80,7 +79,6 @@ nextflow_process {
 
     test("homo_sapiens - [bam, bai] - fasta_gz - fasta_gz_fai") {
         when {
-            config "./nextflow.config"
 
             process {
                 """

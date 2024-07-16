@@ -1,5 +1,5 @@
 
-process DEEPVARIANT_CALL_VARIANTS {
+process DEEPVARIANT_CALLVARIANTS {
     tag "$meta.id"
     label 'process_high'
 
@@ -7,11 +7,11 @@ process DEEPVARIANT_CALL_VARIANTS {
     container "nf-core/deepvariant:1.5.0"
 
     input:
-    tuple val(meta), val(intervals_id), val(make_example_tfrecord_filename), path(make_examples_tfrecords)
+    tuple val(meta), val(intervals), val(make_example_tfrecord_filename), path(make_examples_tfrecords)
     val model_type
 
     output:
-    tuple val(meta), val(intervals_id), path("call_variants_output.tfrecord.gz"),  emit: call_variants_tfrecords
+    tuple val(meta), val(intervals), path("call_variants_output.tfrecord.gz"),  emit: call_variants_tfrecords
     path "versions.yml"                                                       ,  emit: versions
 
     when:
@@ -23,8 +23,8 @@ process DEEPVARIANT_CALL_VARIANTS {
         error "DEEPVARIANT module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
-    def model_type_clean = model_type.replaceAll("[^A-Za-z0-9]", "")
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def model_type_clean = model_type.replaceAll("[^A-Za-z0-9_-]", "")
 
     """
     /opt/deepvariant/bin/call_variants \\

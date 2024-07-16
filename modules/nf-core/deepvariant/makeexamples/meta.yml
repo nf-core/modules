@@ -26,7 +26,7 @@ input:
       type: file
       description: Index of BAM/CRAM file
       pattern: "*.bai/crai"
-  - interval:
+  - intervals:
       type: file
       description: Interval file for targeted regions
       pattern: "*.bed"
@@ -59,16 +59,16 @@ input:
       pattern: "*.gzi"
 output:
   - examples:
-      type: tuple
+      type: list
       description: |
-        Tuple containing the sample metadata, the unique path to the intervals as a string,
+        Tuple containing the sample metadata, the path to the intervals as a string,
         the logical filename of the output examples, and the actual sharded output files.
   - gvcf:
-      type: tuple
+      type: list
       description: |
-        Tuple containing the sample metadata, the unique path to the intervals as a string,
-        the logical filename of the gvcf data, and the GVCF data in tfrecord format.
-  - version:
+        Tuple containing the sample metadata, the path to the intervals as a string,
+        the logical filename of the GVCF data, and the GVCF data in tfrecord format.
+  - versions:
       type: file
       description: File containing the DeepVariant software version
       pattern: "versions.yml"
