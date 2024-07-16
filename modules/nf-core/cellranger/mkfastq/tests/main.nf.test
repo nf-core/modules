@@ -18,7 +18,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [],
+                    [ id: 'test', lane:1 ],
                     file("https://cf.10xgenomics.com/supp/cell-exp/cellranger-tiny-bcl-1.2.0.tar.gz", checkIfExists: true)
                 ]
                 """
@@ -31,8 +31,11 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.map{ it[1] }
-                input[1] = file("https://cf.10xgenomics.com/supp/cell-exp/cellranger-tiny-bcl-simple-1.2.0.csv", checkIfExists: true)
+                input[0] = UNTAR.out.untar
+                input[1] = [
+                    [ id: 'test', lane:1 ],
+                    file("https://cf.10xgenomics.com/supp/cell-exp/cellranger-tiny-bcl-simple-1.2.0.csv", checkIfExists: true)
+                ]
                 """
             }
         }
@@ -51,8 +54,11 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.map{ it[1] }
-                input[1] = file("https://cf.10xgenomics.com/supp/cell-exp/cellranger-tiny-bcl-samplesheet-1.2.0.csv", checkIfExists: true)
+                input[0] = UNTAR.out.untar
+                input[1] = [
+                    [ id: 'test', lane:1 ],
+                    file("https://cf.10xgenomics.com/supp/cell-exp/cellranger-tiny-bcl-samplesheet-1.2.0.csv", checkIfExists: true)
+                ]
                 """
             }
         }
@@ -73,8 +79,11 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.map{ it[1] }
-                input[1] = file("https://cf.10xgenomics.com/supp/cell-exp/cellranger-tiny-bcl-simple-1.2.0.csv", checkIfExists: true)
+                input[0] = UNTAR.out.untar
+                input[1] = [
+                    [ id: 'test', lane:1 ],
+                    file("https://cf.10xgenomics.com/supp/cell-exp/cellranger-tiny-bcl-simple-1.2.0.csv", checkIfExists: true)
+                ]
                 """
             }
         }
