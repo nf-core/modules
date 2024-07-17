@@ -1,15 +1,16 @@
 process CHECKQC {
+    tag "$meta.id"
     label 'process_single'
 
     container "community.wave.seqera.io/library/python_pip_interop_checkqc:d76c912c8fadc561"
 
     input:
-    path(run_dir)
+    tuple val(meta), path(run_dir)
     path(checkqc_config)
 
     output:
-    path "*checkqc_report.json", emit: report
-    path "versions.yml"        , emit: versions
+    tuple val(meta), path("*checkqc_report.json"), emit: report
+    path "versions.yml"                          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,7 +29,7 @@ process CHECKQC {
         $args \
         $config \
         --json \
-        $run_dir > checkqc_report.json || test -s "checkqc_report.json"
+        $run_dir > checkqc_report.json
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
