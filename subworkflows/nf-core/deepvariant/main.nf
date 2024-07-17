@@ -27,7 +27,7 @@ workflow DEEPVARIANT {
         DEEPVARIANT_MAKEEXAMPLES.out.gvcf,
         by: [0, 1], // Join on [0] is sufficient, but we want to collapse meta as well.
         failOnMismatch: true
-    )
+    ).map { it.drop(1) } // Drop the unique ID, which shouldn't be input into POSTPROCESSVARIANTS
     DEEPVARIANT_POSTPROCESSVARIANTS(
         ch_postproc_input,
         ch_fasta,

@@ -61,13 +61,11 @@ output:
   - examples:
       type: list
       description: |
-        Tuple containing the sample metadata, the path to the intervals as a string,
-        the logical filename of the output examples, and the actual sharded output files.
+        Tuple containing an unique ID (hash), sample metadata, and examples that can be used for calling
   - gvcf:
       type: list
       description: |
-        Tuple containing the sample metadata, the path to the intervals as a string,
-        the logical filename of the GVCF data, and the GVCF data in tfrecord format.
+        Tuple containing an unique ID (hash), sample metadata, and the GVCF data in tfrecord format
   - versions:
       type: file
       description: File containing the DeepVariant software version

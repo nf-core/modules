@@ -18,18 +18,16 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - input:
+  - variant_calls_tfrecord:
       type: file
-      description: BAM/CRAM file
-      pattern: "*.bam/cram"
-  - index:
+      description: |
+        Data file containing variant calls from DEEPVARIANT_CALLVARIANTS
+      pattern: "*.tfrecord.gz"
+  - gvcf_tfrecords:
       type: file
-      description: Index of BAM/CRAM file
-      pattern: "*.bai/crai"
-  - interval:
-      type: file
-      description: Interval file for targeted regions
-      pattern: "*.bed"
+      description: |
+        Sharded tfrecord file from DEEPVARIANT_MAKEEXAMPLES with the coverage information used for GVCF output
+      pattern: "*.gz"
   - meta2:
       type: map
       description: |
@@ -67,14 +65,22 @@ output:
       type: file
       description: Compressed VCF file
       pattern: "*.vcf.gz"
+  - vcf_tbi:
+      type: file
+      description: Index for VCF
+      pattern: "*.vcf.gz.tbi"
   - gvcf:
       type: file
       description: Compressed GVCF file
       pattern: "*.g.vcf.gz"
-  - version:
+  - gvcf_tbi:
+      type: file
+      description: Index for GVCF
+      pattern: "*.g.vcf.gz.tbi"
+  - versions:
       type: file
       description: File containing software version
-      pattern: "*.{version.txt}"
+      pattern: "versions.yml"
 authors:
   - "@abhi18av"
   - "@ramprasadn"

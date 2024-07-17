@@ -4,6 +4,8 @@ nextflow_process {
     script "../main.nf"
     process "DEEPVARIANT_POSTPROCESSVARIANTS"
 
+    tag "deepvariant/makeexamples"
+    tag "deepvariant/callvariants"
     tag "deepvariant/postprocessvariants"
     tag "deepvariant"
     tag "modules"
@@ -54,7 +56,7 @@ nextflow_process {
                     DEEPVARIANT_MAKEEXAMPLES.out.gvcf,
                     by: [0, 1],
                     failOnMismatch: true
-                )
+                ).map { it.drop(1) } // Drop the unique ID
                 input[1] = [
                     [ id:'genome'],
                     file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
@@ -85,7 +87,6 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    'make_examples_id',
                     [ id:'test', single_end:false ],
                     [],
                     [],

@@ -10,7 +10,6 @@ Hence, we are using the docker container provided by the authors of the tool:
 
 This image is mirrored on the [nf-core quay.io](https://quay.io/repository/nf-core/deepvariant) for convenience.
 
-
 # DeepVariant subworkflow
 
 You can use the subworkflow `nf-core/deepvariant`, which integrates the three
@@ -23,4 +22,3 @@ These module subcommands incorporate the individual steps of the DeepVariant pip
     tfrecord format, and needs postprocessing to convert it to vcf.
     * postprocessvariants: Convert variant calls from callvariants to VCF, and
     also create GVCF files based on genomic information from makeexamples.
-

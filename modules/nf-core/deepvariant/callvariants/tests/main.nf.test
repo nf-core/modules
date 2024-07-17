@@ -4,6 +4,7 @@ nextflow_process {
     script "../main.nf"
     process "DEEPVARIANT_CALLVARIANTS"
 
+    tag "deepvariant/makeexamples"
     tag "deepvariant/callvariants"
     tag "deepvariant"
     tag "modules"
