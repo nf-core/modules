@@ -58,4 +58,32 @@ nextflow_process {
             )
         }
     }
+
+    test("homo_sapiens - wgs - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    'dummy_unique_id', // make_examples_id
+                    [ id:'test', single_end:false ], // meta
+                    "dummy_filename.tfrecord@2.gz",
+                    [] // we don't really need to give any input files for the stub test
+                ]
+                input[1] = [
+                    "wgs" // model
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
 }

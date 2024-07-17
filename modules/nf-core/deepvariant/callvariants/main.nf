@@ -37,4 +37,16 @@ process DEEPVARIANT_CALLVARIANTS {
         deepvariant_callvariants: \$(echo \$(/opt/deepvariant/bin/run_deepvariant --version) | sed 's/^.*version //; s/ .*\$//' )
     END_VERSIONS
     """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.call.tfrecord.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        deepvariant_callvariants: \$(echo \$(/opt/deepvariant/bin/run_deepvariant --version) | sed 's/^.*version //; s/ .*\$//' )
+    END_VERSIONS
+    """
+
 }
