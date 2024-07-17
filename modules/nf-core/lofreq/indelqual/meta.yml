@@ -23,10 +23,10 @@ input:
       description: BAM file
       pattern: "*.{bam}"
   - meta2:
-        type: map
-        description: |
-          Groovy Map containing sample information about the reference fasta
-          e.g. [ id:'reference' ]
+      type: map
+      description: |
+        Groovy Map containing sample information about the reference fasta
+        e.g. [ id:'reference' ]
   - fasta:
       type: file
       description: Reference genome FASTA file
