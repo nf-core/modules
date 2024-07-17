@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process LOFREQ_INDELQUAL"
     script "../main.nf"
     process "LOFREQ_INDELQUAL"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -19,6 +20,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
                     ]
                 input[1] = [
+                    [ id:'ref' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ]
                 """
@@ -46,6 +48,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
                     ]
                 input[1] = [
+                    [ id:'ref' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ]
                 """
