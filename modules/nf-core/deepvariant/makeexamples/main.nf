@@ -46,4 +46,20 @@ process DEEPVARIANT_MAKEEXAMPLES {
         deepvariant_makeexamples: \$(echo \$(/opt/deepvariant/bin/run_deepvariant --version) | sed 's/^.*version //; s/ .*\$//' )
     END_VERSIONS
     """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    printf -v SHARD_COUNT "%04d" ${task.cpus}
+    for i in \$( seq -f "%04g" 0 ${task.cpus-1} )
+    do
+        touch ${prefix}.examples.tfrecord-\$i-of-\$SHARD_COUNT.tfrecord.gz
+        touch ${prefix}.gvcf.tfrecord-\$i-of-\$SHARD_COUNT.tfrecord.gz
+    done
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        deepvariant_makeexamples: \$(echo \$(/opt/deepvariant/bin/run_deepvariant --version) | sed 's/^.*version //; s/ .*\$//' )
+    END_VERSIONS
+    """
 }
