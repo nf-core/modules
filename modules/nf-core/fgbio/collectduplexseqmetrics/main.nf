@@ -54,6 +54,7 @@ process FGBIO_COLLECTDUPLEXSEQMETRICS {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         fgbio: \$( echo \$(fgbio --version 2>&1 | tr -d '[:cntrl:]' ) | sed -e 's/^.*Version: //;s/\\[.*\$//')
+        ggplot2: \$(Rscript -e "library(ggplot2); cat(as.character(packageVersion('ggplot2')))")
     END_VERSIONS
     """
 
@@ -73,6 +74,7 @@ process FGBIO_COLLECTDUPLEXSEQMETRICS {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         fgbio: \$( echo \$(fgbio --version 2>&1 | tr -d '[:cntrl:]' ) | sed -e 's/^.*Version: //;s/\\[.*\$//')
+        ggplot2: \$(Rscript -e "library(ggplot2); cat(as.character(packageVersion('ggplot2')))")
     END_VERSIONS
     """
 }
