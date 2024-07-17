@@ -19,13 +19,12 @@ process SEQFU_DEREP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_derep"
+    def fasta_files = fastas.collect { it.getName() }
+    if (fasta_files.any { it == "${prefix}.fasta.gz" }) {
+        error "Input file name coincides with the output file name: ${prefix}.fasta.gz. Please set a unique prefix."
+    }
 
     """
-    if [[ -e "${prefix}.fasta.gz" ]];
-    then
-        echo "Output found: ${prefix}.fasta.gz"
-        exit 1
-    fi
     seqfu \\
         derep \\
         $args \\
