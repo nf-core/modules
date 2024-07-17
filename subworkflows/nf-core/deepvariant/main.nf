@@ -14,24 +14,18 @@ workflow DEEPVARIANT {
     main:
 
     ch_versions = Channel.empty()
-    // Assign a unique ID to each input element, so the input can be processed
-    // as a single unique item by all subworkflow stages. This is necessary to merge
-    // the GVCF data and called variants in the postprocessing step.
-    ch_input_with_uid = ch_input.map {
-        meta, input, index, intervals -> [ ['deepvariant_id': UUID.randomUUID()] + meta, input, index, intervals]
-    }
 
-    DEEPVARIANT_MAKEEXAMPLES(ch_input_with_uid, ch_fasta, ch_fai, ch_gzi)
+    DEEPVARIANT_MAKEEXAMPLES(ch_input, ch_fasta, ch_fai, ch_gzi)
     ch_versions = ch_versions.mix(DEEPVARIANT_MAKEEXAMPLES.out.versions.first())
 
     DEEPVARIANT_CALLVARIANTS(DEEPVARIANT_MAKEEXAMPLES.out.examples, ch_model_type)
     ch_versions = ch_versions.mix(DEEPVARIANT_CALLVARIANTS.out.versions.first())
     
     // Input to postprocessing step needs both the gvcfs from MAKEEXAMPLES and the variant
-    // calls from CALLVARIANTS. Uniqueness of the joining key is guaranteed by the deepvariant_id
-    // element added to meta.
+    // calls from CALLVARIANTS. Joining on the tuple element make_examples_id.
     ch_postproc_input = DEEPVARIANT_CALLVARIANTS.out.call_variants_tfrecords.join(
         DEEPVARIANT_MAKEEXAMPLES.out.gvcf,
+        by: [0, 1], // Join on [0] is sufficient, but we want to collapse meta as well.
         failOnMismatch: true
     )
     DEEPVARIANT_POSTPROCESSVARIANTS(
@@ -41,18 +35,12 @@ workflow DEEPVARIANT {
         ch_gzi
     )
 
-    // Create output channels without deepvariant_id
-    def remove_deepvariant_id = {
-        newMeta = it[0];
-        newMeta.remove("deepvariant_id");
-        [newMeta] + it.drop(1)
-    }
     ch_versions = ch_versions.mix(DEEPVARIANT_POSTPROCESSVARIANTS.out.versions.first())
 
     emit:
-    vcf         = DEEPVARIANT_POSTPROCESSVARIANTS.out.vcf.map(remove_deepvariant_id)
-    vcf_tbi     = DEEPVARIANT_POSTPROCESSVARIANTS.out.vcf_tbi.map(remove_deepvariant_id)
-    gvcf        = DEEPVARIANT_POSTPROCESSVARIANTS.out.gvcf.map(remove_deepvariant_id)
-    gvcf_tbi    = DEEPVARIANT_POSTPROCESSVARIANTS.out.gvcf_tbi.map(remove_deepvariant_id)
+    vcf         = DEEPVARIANT_POSTPROCESSVARIANTS.out.vcf
+    vcf_tbi     = DEEPVARIANT_POSTPROCESSVARIANTS.out.vcf_tbi
+    gvcf        = DEEPVARIANT_POSTPROCESSVARIANTS.out.gvcf
+    gvcf_tbi    = DEEPVARIANT_POSTPROCESSVARIANTS.out.gvcf_tbi
     versions    = ch_versions
 }

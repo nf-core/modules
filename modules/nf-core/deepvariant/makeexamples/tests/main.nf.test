@@ -38,9 +38,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                // Test string values and versions. The tfrecords are not stable.
-                { assert process.out.examples.get(0)[0..1] == [[ id:'test', single_end:false ], "test.examples.tfrecord@2.gz"] },
-                { assert process.out.gvcf.get(0)[0..1] == [[ id:'test', single_end:false ], "test.gvcf.tfrecord@2.gz"] },
+                // Test string values and versions. The make_examples_id and tfrecords are not stable.
+                { assert process.out.examples.get(0)[1..2] == [[ id:'test', single_end:false ], "test.examples.tfrecord@2.gz"] },
+                { assert process.out.gvcf.get(0)[1..2] == [[ id:'test', single_end:false ], "test.gvcf.tfrecord@2.gz"] },
                 { assert snapshot(process.out.versions).match("test1-versions") },
             )
         }
@@ -75,8 +75,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.examples.get(0)[0..1] == [[ id:'test', single_end:false ], "test.examples.tfrecord@2.gz"] },
-                { assert process.out.gvcf.get(0)[0..1] == [[ id:'test', single_end:false ], "test.gvcf.tfrecord@2.gz"] },
+                { assert process.out.examples.get(0)[1..2] == [[ id:'test', single_end:false ], "test.examples.tfrecord@2.gz"] },
+                { assert process.out.gvcf.get(0)[1..2] == [[ id:'test', single_end:false ], "test.gvcf.tfrecord@2.gz"] },
                 { assert snapshot(process.out.versions).match("test2-versions") },
             )
         }
@@ -112,8 +112,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.examples.get(0)[0..1] == [[ id:'test', single_end:false ], "test.examples.tfrecord@2.gz"] },
-                { assert process.out.gvcf.get(0)[0..1] == [[ id:'test', single_end:false ], "test.gvcf.tfrecord@2.gz"] },
+                { assert process.out.examples.get(0)[1..2] == [[ id:'test', single_end:false ], "test.examples.tfrecord@2.gz"] },
+                { assert process.out.gvcf.get(0)[1..2] == [[ id:'test', single_end:false ], "test.gvcf.tfrecord@2.gz"] },
                 { assert snapshot(process.out.versions).match("test3-versions") },
             )
         }
