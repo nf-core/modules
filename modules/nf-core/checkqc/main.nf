@@ -1,10 +1,7 @@
 process CHECKQC {
     label 'process_single'
 
-    conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/checkqc:4.0.1--pyhdfd78af_0':
-        'biocontainers/checkqc:4.0.1--pyhdfd78af_0' }"
+    container "community.wave.seqera.io/library/python_pip_interop_checkqc:d76c912c8fadc561"
 
     input:
     path(run_dir)
@@ -18,6 +15,11 @@ process CHECKQC {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "CheckQC module does not support Conda yet. Please use Docker / Singularity / Podman instead."
+    }
+
     def args = task.ext.args ?: ''
     def config = checkqc_config ? "--config $checkqc_config" : ''
 
