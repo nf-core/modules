@@ -5,8 +5,7 @@ process CELLRANGER_MKFASTQ {
     container "nf-core/cellrangermkfastq:8.0.0"
 
     input:
-    tuple val(meta), path(bcl)
-    tuple val(meta), path(csv)
+    tuple val(meta), path(csv), path(bcl)
 
     output:
     tuple val(meta), path("*_outs/outs/fastq_path/*.fastq.gz"), emit: fastq
