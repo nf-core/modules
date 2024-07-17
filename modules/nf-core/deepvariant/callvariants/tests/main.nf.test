@@ -53,7 +53,7 @@ nextflow_process {
                 { assert process.out.call_variants_tfrecords.get(0).get(1) == [ id:'test', single_end:false ] },
                 // The make_examples_id and the tfrecord binary representation are not stable, though the variant calls are.
                 // We can't snapshot the calls tfrecord. See deepvariant subworkflow test and postprocessvariants test.
-                { assert process.out.call_variants_tfrecords.get(0).get(2) != null },
+                { assert path(process.out.call_variants_tfrecords.get(0).get(2)).exists() },
                 { assert snapshot(process.out.versions).match("versions") },
             )
         }
@@ -66,10 +66,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    'dummy_unique_id', // make_examples_id
+                    'dummy_unique_id',               // make_examples_id
                     [ id:'test', single_end:false ], // meta
-                    "dummy_filename.tfrecord@2.gz",
-                    [] // we don't really need to give any input files for the stub test
+                    []                               // No input paths are needed in stub mode
                 ]
                 input[1] = [
                     "wgs" // model

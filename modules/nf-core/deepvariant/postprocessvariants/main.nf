@@ -6,7 +6,7 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
     container "nf-core/deepvariant:1.5.0"
 
     input:
-    tuple val(make_examples_id), val(meta), path(variant_calls_tfrecord), val(gvcf_tfrecords_filename), path(gvcf_tfrecords)
+    tuple val(make_examples_id), val(meta), path(variant_calls_tfrecord), path(gvcf_tfrecords)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(gzi)
@@ -30,12 +30,21 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
+    def matcher = gvcf_tfrecords[0].baseName =~ /^(.+)-\d{5}-of-(\d{5})$/
+    if (!matcher.matches()) {
+        throw new IllegalArgumentException("tfrecord baseName '" + gvcf_tfrecords[0].baseName + "' doesn't match the expected pattern")
+    }
+    def gvcf_tfrecord_name = matcher[0][1]
+    def shardCount = matcher[0][2]
+    // Reconstruct the logical name - ${tfrecord_name}.examples.tfrecord@${task.cpus}.gz
+    def gvcf_tfrecords_logical_name = "${gvcf_tfrecord_name}@${shardCount}.gz"
+
     """
     /opt/deepvariant/bin/postprocess_variants \\
         --ref=${fasta} \\
         --infile=${variant_calls_tfrecord} \\
         --outfile=${prefix}.vcf.gz \\
-        --nonvariant_site_tfrecord_path ${gvcf_tfrecords_filename} \\
+        --nonvariant_site_tfrecord_path ${gvcf_tfrecords_logical_name} \\
         --gvcf_outfile=${prefix}.g.vcf.gz \\
         ${args}
 

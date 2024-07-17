@@ -13,8 +13,8 @@ process DEEPVARIANT_MAKEEXAMPLES {
 
     output:
     // Output a unique ID (hash) for this task, that can be used to join the gvcf and variant calls later.
-    tuple val("${task.hash}"), val(meta), val("${prefix}.examples.tfrecord@${task.cpus}.gz"), path("${prefix}.examples.tfrecord-*-of-*.gz"),    emit: examples
-    tuple val("${task.hash}"), val(meta), val("${prefix}.gvcf.tfrecord@${task.cpus}.gz"), path("${prefix}.gvcf.tfrecord-*-of-*.gz"),            emit: gvcf
+    tuple val("${task.hash}"), val(meta), path("${prefix}.examples.tfrecord-*-of-*.gz"),    emit: examples
+    tuple val("${task.hash}"), val(meta), path("${prefix}.gvcf.tfrecord-*-of-*.gz"),        emit: gvcf
     path "versions.yml",  emit: versions
 
     when:
