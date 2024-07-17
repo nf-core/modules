@@ -8,8 +8,8 @@ process LOFREQ_INDELQUAL {
         'biocontainers/lofreq:2.1.5--py38h588ecb2_4' }"
 
     input:
-    tuple val(meta), path(bam)
-    path fasta
+    tuple val(meta),  path(bam)
+    tuple val(meta2), path(fasta)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
