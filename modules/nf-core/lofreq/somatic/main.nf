@@ -23,7 +23,7 @@ process LOFREQ_SOMATIC {
 
     script:
     def args = task.ext.args ?: ""
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_"
     def options_target_bed = target_bed ? "-l ${target_bed}" : ""
 
     def tumor_cram =  tumor.Extension == "cram" ? true : false
@@ -54,7 +54,7 @@ process LOFREQ_SOMATIC {
         -t $tumor_out \\
         -n $normal_out \\
         ${options_target_bed} \\
-        -o ${prefix}_
+        -o ${prefix}
 
     $samtools_cram_remove
 
@@ -65,12 +65,12 @@ process LOFREQ_SOMATIC {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_"
     """
-    echo "" | gzip > ${prefix}_somatic_final.snvs.vcf.gz
-    echo "" | gzip > ${prefix}_somatic_final.snvs.vcf.gz.tbi
-    echo "" | gzip > ${prefix}_somatic_final.indels.vcf.gz
-    echo "" | gzip > ${prefix}_somatic_final.indels.vcf.gz.tbi
+    echo "" | gzip > ${prefix}somatic_final.snvs.vcf.gz
+    echo "" | gzip > ${prefix}somatic_final.snvs.vcf.gz.tbi
+    echo "" | gzip > ${prefix}somatic_final.indels.vcf.gz
+    echo "" | gzip > ${prefix}somatic_final.indels.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
