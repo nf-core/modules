@@ -8,11 +8,11 @@ process SAMTOOLS_DEPTH {
         'biocontainers/samtools:1.20--h50ea8bc_0' }"
 
     input:
-    tuple val(meta1), path(bam)
+    tuple val(meta), path(bam)
     tuple val(meta2), path(intervals)
 
     output:
-    tuple val(meta1), path("*.tsv"), emit: tsv
+    tuple val(meta), path("*.tsv"), emit: tsv
     path "versions.yml"           , emit: versions
 
     when:
