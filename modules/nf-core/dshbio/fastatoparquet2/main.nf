@@ -1,4 +1,4 @@
-process DSHBIO_FASTATOPARQUET {
+process DSHBIO_FASTATOPARQUET2 {
     tag '$fasta'
     label 'process_medium'
 
@@ -23,7 +23,7 @@ process DSHBIO_FASTATOPARQUET {
 
     """
     dsh-bio \\
-        fasta-to-parquet \\
+        fasta-to-parquet2 \\
         $args \\
         -i $fasta \\
         -o ${prefix}.sequences.parquet

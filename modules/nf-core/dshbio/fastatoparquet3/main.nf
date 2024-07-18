@@ -1,4 +1,4 @@
-process DSHBIO_FASTATOPARQUET {
+process DSHBIO_FASTATOPARQUET3 {
     tag '$fasta'
     label 'process_medium'
 
@@ -23,7 +23,7 @@ process DSHBIO_FASTATOPARQUET {
 
     """
     dsh-bio \\
-        fasta-to-parquet \\
+        fasta-to-parquet3 \\
         $args \\
         -i $fasta \\
         -o ${prefix}.sequences.parquet
@@ -38,7 +38,7 @@ process DSHBIO_FASTATOPARQUET {
     def prefix = task.ext.prefix ?: "${fasta.getBaseName(2)}"
 
     """
-    touch ${prefix}.sequences.parquet
+    mkdir -p ${prefix}.sequences.parquet
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
