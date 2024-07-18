@@ -20,7 +20,7 @@ process SAMTOOLS_DEPTH {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta1.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def positions = intervals ? "-b ${intervals}" : ""
     """
     samtools \\
