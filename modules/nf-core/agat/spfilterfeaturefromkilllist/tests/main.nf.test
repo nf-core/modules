@@ -1,0 +1,104 @@
+nextflow_process {
+
+    name "Test Process AGAT_SPFILTERFEATUREFROMKILLLIST"
+    script "../main.nf"
+    process "AGAT_SPFILTERFEATUREFROMKILLLIST"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "agat"
+    tag "agat/spfilterfeaturefromkilllist"
+
+    test("sarscov2 - gff3") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3', checkIfExists: true)
+                ]
+
+                def kill_list = "unknown_transcript_1"
+                def kill_list_file = new File('kill.list.txt')
+                kill_list_file.text = kill_list
+
+                input[1] = kill_list_file.toPath()
+
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - gff3 - config") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3', checkIfExists: true)
+                ]
+
+                def kill_list = "unknown_transcript_1"
+                def kill_list_file = new File('kill.list.txt')
+                kill_list_file.text = kill_list
+
+                input[1] = kill_list_file.toPath()
+
+                input[2] = file(params.modules_testdata_base_path + 'generic/config/agat_config.yaml', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - gff3 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3', checkIfExists: true)
+                ]
+
+                def kill_list = "unknown_transcript_1"
+                def kill_list_file = new File('kill.list.txt')
+                kill_list_file.text = kill_list
+
+                input[1] = kill_list_file.toPath()
+
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
