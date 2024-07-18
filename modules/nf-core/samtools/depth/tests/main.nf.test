@@ -83,4 +83,30 @@ nextflow_process {
 
     }
 
+    test("human - with_intervals - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                        [ id:'test', single_end:false ], // meta map
+                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam'], checkIfExists: true)
+                    ]
+                input[1] = [
+                    [ id:'bed' ],
+                    file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
 }
