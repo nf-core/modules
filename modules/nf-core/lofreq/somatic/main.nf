@@ -12,11 +12,11 @@ process LOFREQ_SOMATIC {
     tuple val(meta3), path(fai)
 
     output:
-    tuple val(meta), path("*somatic_final.snvs.vcf.gz"), emit: vcf_snvs
-    tuple val(meta), path("*somatic_final.snvs.vcf.gz.tbi"), emit: vcf_snvs_tbi
-    tuple val(meta), path("*somatic_final.indels.vcf.gz"), emit: vcf_indels
+    tuple val(meta), path("*somatic_final.snvs.vcf.gz")      , emit: vcf_snvs
+    tuple val(meta), path("*somatic_final.snvs.vcf.gz.tbi")  , emit: vcf_snvs_tbi
+    tuple val(meta), path("*somatic_final.indels.vcf.gz")    , emit: vcf_indels
     tuple val(meta), path("*somatic_final.indels.vcf.gz.tbi"), emit: vcf_indels_tbi
-    path "versions.yml"              , emit: versions
+    path "versions.yml"                                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
