@@ -2,9 +2,10 @@ name: checkqc
 channels:
   - conda-forge
   - bioconda
+  - defaults
 dependencies:
   - python=3.8
   - pip
   - pip:
-    - checkqc==3.8.0
-    - interop==1.2.4
+      - checkqc==3.8.0
+      - interop==1.2.4
