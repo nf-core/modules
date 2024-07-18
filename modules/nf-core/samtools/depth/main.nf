@@ -1,5 +1,5 @@
 process SAMTOOLS_DEPTH {
-    tag "$meta1.id"
+    tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
