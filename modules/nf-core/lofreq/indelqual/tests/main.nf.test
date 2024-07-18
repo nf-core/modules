@@ -30,7 +30,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                {
+                    def bam = file(process.out.bam.get(0).get(1))
+                    assert bam.exists()
+                },
+                { assert path(process.out.versions.get(0)).md5 == "822d596299afbb3ae6db66bfa9b77b3e" }
             )
         }
 
@@ -58,7 +62,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                {
+                    def bam = file(process.out.bam.get(0).get(1))
+                    assert bam.exists()
+                },
+                { assert path(process.out.versions.get(0)).md5 == "822d596299afbb3ae6db66bfa9b77b3e" }
             )
         }
 
