@@ -12,7 +12,10 @@ process LOFREQ_SOMATIC {
     tuple val(meta3), path(fai)
 
     output:
-    tuple val(meta), path("*.vcf.gz"), emit: vcf
+    tuple val(meta), path("*somatic_final.snvs.vcf.gz"), emit: vcf_snvs
+    tuple val(meta), path("*somatic_final.snvs.vcf.gz.tbi"), emit: vcf_snvs_tbi
+    tuple val(meta), path("*somatic_final.indels.vcf.gz"), emit: vcf_indels
+    tuple val(meta), path("*somatic_final.indels.vcf.gz.tbi"), emit: vcf_indels_tbi
     path "versions.yml"              , emit: versions
 
     when:
@@ -51,7 +54,7 @@ process LOFREQ_SOMATIC {
         -t $tumor_out \\
         -n $normal_out \\
         ${options_target_bed} \\
-        -o ${prefix}
+        -o ${prefix}_
 
     $samtools_cram_remove
 
@@ -64,7 +67,10 @@ process LOFREQ_SOMATIC {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo "" | gzip > ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}_somatic_final.snvs.vcf.gz
+    echo "" | gzip > ${prefix}_somatic_final.snvs.vcf.gz.tbi
+    echo "" | gzip > ${prefix}_somatic_final.indels.vcf.gz
+    echo "" | gzip > ${prefix}_somatic_final.indels.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
