@@ -34,7 +34,7 @@ process DSHBIO_FASTATOPARQUET {
     END_VERSIONS
     """
 
-    stub:    
+    stub:
     def prefix = task.ext.prefix ?: "${fasta.getBaseName(2)}"
 
     """
