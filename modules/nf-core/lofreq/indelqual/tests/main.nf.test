@@ -62,10 +62,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                {
-                    def bam = file(process.out.bam.get(0).get(1))
-                    assert bam.exists()
-                },
                 { assert snapshot(process.out).match() }
             )
         }
