@@ -12,8 +12,8 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
 
     input:
     tuple val(meta), path(reference)
-    tuple val(elong_meta), val(elong)
-    tuple val(target_meta), val(target)
+    tuple val(meta2), val(elong)
+    tuple val(meta3), val(target)
 
     output:
     tuple val(meta), path("*_${elong}.fasta"), emit: fasta
