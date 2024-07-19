@@ -27,7 +27,7 @@ input:
       type: file
       description: BAM/SAM file
       pattern: "*.{bam,sam}"
-  - ref_meta:
+  - meta2:
       type: map
       description: |
         Groovy Map containing reference information
@@ -35,7 +35,7 @@ input:
   - fasta:
       type: file
       description: Input elongated genome fasta
-  - elong_meta:
+  - meta3:
       type: map
       description: |
         Groovy Map containing reference information
