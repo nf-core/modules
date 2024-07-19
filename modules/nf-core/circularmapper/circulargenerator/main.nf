@@ -13,6 +13,7 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
     input:
     tuple val(meta), path(reference)
     val(elong)
+    val(target)
 
     output:
     tuple val(meta), path("*_${elong}.fasta"), emit: fasta
@@ -25,10 +26,16 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    circulargenerator -e ${elong} \
+    circulargenerator \
+        -e ${elong} \
         -i ${reference} \
-        -s ${prefix} \
+        -s ${target} \
         $args
+
+    ## circulargenerator has a hardcoded output name. Rename if necessary to use prefix.
+    if [[ "${reference.getBaseName()}_${elong}.fasta" != "${prefix}_${elong}.fasta" ]]; then
+        mv ${reference.getBaseName()}_${elong}.fasta ${prefix}_${elong}.fasta
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

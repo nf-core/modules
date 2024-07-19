@@ -31,6 +31,10 @@ input:
       type: integer
       description: The number of bases that the ends of the target chromosome in the reference genome should be elongated by
 
+  - target:
+      type: string
+      description: The name of the chromosome in the reference genome that should be elongated
+
 output:
   #Only when we have meta
   - meta:
@@ -51,5 +55,6 @@ output:
 
 authors:
   - "@apalleja"
+  - "@TCLamnidis"
 maintainers:
   - ""
