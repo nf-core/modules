@@ -27,7 +27,7 @@ input:
       type: file
       description: BAM/SAM file
       pattern: "*.{bam,sam}"
-  - meta2:
+  - ref_meta:
       type: map
       description: |
         Groovy Map containing reference information
@@ -35,6 +35,11 @@ input:
   - fasta:
       type: file
       description: Input elongated genome fasta
+  - elong_meta:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. `[ id:'test' ]`
   - elongation_factor:
       type: integer
       description: The elongation factor used when running circulargenerator, i.e. the number of bases that the ends of the target chromosome in the reference genome was elongated by
