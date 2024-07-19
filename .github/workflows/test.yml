@@ -408,8 +408,6 @@ jobs:
             tags: vt/decompose
     env:
       NXF_ANSI_LOG: false
-      SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
-      SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
 
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
@@ -464,20 +462,8 @@ jobs:
           echo $(realpath $CONDA)/condabin >> $GITHUB_PATH
           echo $(realpath python) >> $GITHUB_PATH
 
-      # FIXME Remove once https://github.com/nf-core/sarek/issues/1380 is closed
-      # Set up secrets
-      - name: Set up nextflow secrets
-        # TODO Only run if the tag includes `sentieon`
-        if: env.SENTIEON_ENCRYPTION_KEY != null && env.SENTIEON_LICENSE_MESSAGE != null
-        run: |
-          nextflow secrets set SENTIEON_AUTH_DATA $(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "${{ secrets.SENTIEON_ENCRYPTION_KEY }}" --message "${{ secrets.SENTIEON_LICENSE_MESSAGE }}")
-
       # Test the module
       - name: Run pytest-workflow
-        # FIXME Remove once https://github.com/nf-core/sarek/issues/1380 is closed
-        env:
-          SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
-          SENTIEON_AUTH_MECH: "GitHub Actions - token"
         # only use one thread for pytest-workflow to avoid race condition on conda cache.
         run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
 
