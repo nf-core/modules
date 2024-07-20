@@ -13,14 +13,19 @@ tools:
       documentation: https://bioinf.shenwei.me/seqkit/
       doi: 10.1371/journal.pone.0163962
       licence: ["MIT"]
-# todo: add duckdb
+  - duckdb:
+      description: |
+        DuckDB is a fast in-process analytical database.
+      homepage: https://duckdb.org/
+      documentation: https://duckdb.org/docs/
+      license: ["MIT"]
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fastx:
+        e.g. [ id:'test', alphabet:'dna' ]
+  - fasta:
       type: file
       description: DNA or protein sequences in compressed FASTA format
       pattern: "*.{fasta,fa,fas,fna,faa}[.gz,.zst]"
@@ -29,7 +34,7 @@ output:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        e.g. [ id:'test', alphabet:'protein' ]
   - parquet:
       type: file
       description: DNA or protein sequences in Parquet format with zstd compression

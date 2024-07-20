@@ -10,7 +10,7 @@ process SEQKIT_FASTATOPARQUET {
     //    'biocontainers/seqkit:2.8.1--h9ee0642_0' }"
 
     input:
-    tuple val(meta), path(fastx)
+    tuple val(meta), path(fasta)
 
     output:
     tuple val(meta), path("*.sequences.parquet"), emit: parquet
@@ -22,7 +22,7 @@ process SEQKIT_FASTATOPARQUET {
     script:
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def alphabet = 'dna'
+    def alphabet = "${meta.alphabet}" ?: 'dna'
     def row_group_size = 100000
     def sql = "CREATE TABLE s AS SELECT * FROM read_csv('/dev/stdin', delim = '\t', header = false, columns = { 'name': 'VARCHAR', 'seq': 'VARCHAR' }); CREATE VIEW sequences AS SELECT name, upper(seq) AS sequence, length(sequence) AS length, '${alphabet}' AS alphabet FROM s; COPY sequences TO '${prefix}.sequences.parquet' (FORMAT 'parquet', COMPRESSION 'zstd', OVERWRITE_OR_IGNORE 1, ROW_GROUP_SIZE ${row_group_size});"
 
@@ -31,7 +31,7 @@ process SEQKIT_FASTATOPARQUET {
         fx2tab \\
         $args \\
         --threads $task.cpus \\
-        $fastx \\
+        $fasta \\
         | duckdb -csv :memory: "$sql"
 
     cat <<-END_VERSIONS > versions.yml
