@@ -10,7 +10,7 @@ process CIRCULARMAPPER_REALIGNSAMFILE {
     input:
     tuple val(meta), path(bam)
     tuple val(meta2), path(fasta)
-    val(elongation_factor)
+    tuple val(meta3), val(elongation_factor)
 
     output:
     tuple val(meta), path("*_realigned.bam")    , emit: bam
