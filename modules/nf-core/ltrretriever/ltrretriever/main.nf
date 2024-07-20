@@ -16,9 +16,9 @@ process LTRRETRIEVER_LTRRETRIEVER {
 
     output:
     tuple val(meta), path("*.log")              , emit: log
-    tuple val(meta), path("${prefix}.pass.list"), emit: pass_list
-    tuple val(meta), path("*.pass.list.gff3")   , emit: pass_list_gff
-    tuple val(meta), path("*.LTRlib.fa")        , emit: ltrlib
+    tuple val(meta), path("${prefix}.pass.list"), emit: pass_list       , optional: true
+    tuple val(meta), path("*.pass.list.gff3")   , emit: pass_list_gff   , optional: true
+    tuple val(meta), path("*.LTRlib.fa")        , emit: ltrlib          , optional: true
     tuple val(meta), path("${prefix}.out")      , emit: annotation_out  , optional: true
     tuple val(meta), path("*.out.gff3")         , emit: annotation_gff  , optional: true
     path "versions.yml"                         , emit: versions
@@ -42,11 +42,12 @@ process LTRRETRIEVER_LTRRETRIEVER {
         $non_tgca_file \\
         -threads $task.cpus \\
         $args \\
-        &> >(tee "${prefix}.log" 2>&1)
+        &> >(tee "${prefix}.log" 2>&1) \\
+        || echo "Errors from LTR_retriever printed to ${prefix}.log"
 
-    mv "${genome}.pass.list"        "${prefix}.pass.list"
-    mv "${genome}.pass.list.gff3"   "${prefix}.pass.list.gff3"
-    mv "${genome}.LTRlib.fa"        "${prefix}.LTRlib.fa"
+    mv "${genome}.pass.list"        "${prefix}.pass.list"       || echo ".pass.list was not produced"
+    mv "${genome}.pass.list.gff3"   "${prefix}.pass.list.gff3"  || echo ".pass.list.gff3 was not produced"
+    mv "${genome}.LTRlib.fa"        "${prefix}.LTRlib.fa"       || echo ".LTRlib.fa was not produced"
     mv "${genome}.out"              "${prefix}.out"             || echo ".out was not produced"
     mv "${genome}.out.gff3"         "${prefix}.out.gff3"        || echo ".out.gff3 was not produced"
 
