@@ -4,6 +4,7 @@ process SEQKIT_FASTATOPARQUET {
 
     conda "${moduleDir}/environment.yml"
     container "docker.io/mheuermammoth/seqkit-duckdb:latest"
+    //container "community.wave.seqera.io/library/duckdb_seqkit:904c1e8baae5c19a"
     //container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
     //    'https://depot.galaxyproject.org/singularity/seqkit:2.8.1--h9ee0642_0' :
     //    'biocontainers/seqkit:2.8.1--h9ee0642_0' }"
@@ -23,7 +24,7 @@ process SEQKIT_FASTATOPARQUET {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def alphabet = 'dna'
     def row_group_size = 100000
-    def sql = "CREATE TABLE s AS SELECT * FROM read_csv('/dev/stdin', delim = '\t', header = true, columns = { 'name': 'VARCHAR', 'seq': 'VARCHAR' }); CREATE VIEW sequences AS SELECT name, upper(seq) AS sequence, length(sequence) AS length, '${alphabet}' AS alphabet FROM s; COPY sequences TO '${prefix}.sequences.parquet' (FORMAT 'parquet', COMPRESSION 'zstd', OVERWRITE_OR_IGNORE 1, ROW_GROUP_SIZE ${row_group_size});"
+    def sql = "CREATE TABLE s AS SELECT * FROM read_csv('/dev/stdin', delim = '\t', header = false, columns = { 'name': 'VARCHAR', 'seq': 'VARCHAR' }); CREATE VIEW sequences AS SELECT name, upper(seq) AS sequence, length(sequence) AS length, '${alphabet}' AS alphabet FROM s; COPY sequences TO '${prefix}.sequences.parquet' (FORMAT 'parquet', COMPRESSION 'zstd', OVERWRITE_OR_IGNORE 1, ROW_GROUP_SIZE ${row_group_size});"
 
     """
     seqkit \\
