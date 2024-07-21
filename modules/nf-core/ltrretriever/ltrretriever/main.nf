@@ -33,9 +33,18 @@ process LTRRETRIEVER_LTRRETRIEVER {
     def infinder        = finder            ? "-infinder $finder"   : ''
     def inmgescan       = mgescan           ? "-inmgescan $mgescan" : ''
     def non_tgca_file   = non_tgca          ? "-nonTGCA $non_tgca"  : ''
+    def writable_genome = "${genome.baseName}.writable.${genome.extension}"
     """
+    cp \\
+        $genome \\
+        $writable_genome
+
+    chmod \\
+        a+w \\
+        $writable_genome
+
     LTR_retriever \\
-        -genome $genome \\
+        -genome $writable_genome \\
         $inharvest \\
         $infinder \\
         $inmgescan \\
@@ -45,11 +54,11 @@ process LTRRETRIEVER_LTRRETRIEVER {
         &> >(tee "${prefix}.log" 2>&1) \\
         || echo "Errors from LTR_retriever printed to ${prefix}.log"
 
-    mv "${genome}.pass.list"        "${prefix}.pass.list"       || echo ".pass.list was not produced"
-    mv "${genome}.pass.list.gff3"   "${prefix}.pass.list.gff3"  || echo ".pass.list.gff3 was not produced"
-    mv "${genome}.LTRlib.fa"        "${prefix}.LTRlib.fa"       || echo ".LTRlib.fa was not produced"
-    mv "${genome}.out"              "${prefix}.out"             || echo ".out was not produced"
-    mv "${genome}.out.gff3"         "${prefix}.out.gff3"        || echo ".out.gff3 was not produced"
+    mv "${writable_genome}.pass.list"       "${prefix}.pass.list"       || echo ".pass.list was not produced"
+    mv "${writable_genome}.pass.list.gff3"  "${prefix}.pass.list.gff3"  || echo ".pass.list.gff3 was not produced"
+    mv "${writable_genome}.LTRlib.fa"       "${prefix}.LTRlib.fa"       || echo ".LTRlib.fa was not produced"
+    mv "${writable_genome}.out"             "${prefix}.out"             || echo ".out was not produced"
+    mv "${writable_genome}.out.gff3"        "${prefix}.out.gff3"        || echo ".out.gff3 was not produced"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
