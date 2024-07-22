@@ -36,4 +36,16 @@ process SNIFFLES {
         sniffles: \$(sniffles --help 2>&1 | grep Version |sed 's/^.*Version //')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.vcf
+    touch ${prefix}.snf
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        sniffles: \$(sniffles --help 2>&1 | grep Version |sed 's/^.*Version //')
+    END_VERSIONS
+    """
 }
