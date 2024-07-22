@@ -17,7 +17,9 @@ process SENTIEON_QUALCAL {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    tuple val(meta), path("*.report"), emit: report
+    tuple val(meta), path("*.report"), emit: report, optional: true
+    tuple val(meta), path ("recal_table"), emit: recal_table, optional: true
+
     path "versions.yml"           , emit: versions
 
     when:
@@ -29,6 +31,7 @@ process SENTIEON_QUALCAL {
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64 ?
         "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; " :
         ""
+    // -q outputs recal table
 
     """
     $sentieonLicense
