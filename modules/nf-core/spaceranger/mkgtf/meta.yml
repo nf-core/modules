@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "spaceranger_mkgtf"
-description: Module to build a filtered GTF needed by the 10x Genomics Space Ranger tool. Uses the spaceranger mkgtf command.
+description: Module to build a filtered GTF needed by the 10x Genomics Space Ranger
+  tool. Uses the spaceranger mkgtf command.
 keywords:
   - reference
   - mkref
@@ -21,20 +21,23 @@ tools:
       tool_dev_url: "https://support.10xgenomics.com/spatial-gene-expression/software/pipelines/latest/what-is-space-ranger"
       licence:
         - "10x Genomics EULA"
+      identifier: ""
 input:
-  - gtf:
-      type: file
-      description: The reference GTF transcriptome file
-      pattern: "*.gtf"
+  - - gtf:
+        type: file
+        description: The reference GTF transcriptome file
+        pattern: "*.gtf"
 output:
   - gtf:
-      type: directory
-      description: The filtered GTF transcriptome file
-      pattern: "*.filtered.gtf"
+      - "*.gtf":
+          type: directory
+          description: The filtered GTF transcriptome file
+          pattern: "*.filtered.gtf"
   - versions:
-      type: file
-      description: File containing software version
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software version
+          pattern: "versions.yml"
 authors:
   - "@grst"
 maintainers:

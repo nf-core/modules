@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "gt_stat"
-description: "GenomeTools gt-stat utility to show statistics about features contained in GFF3 files"
+description: "GenomeTools gt-stat utility to show statistics about features contained
+  in GFF3 files"
 keywords:
   - genome
   - gff3
@@ -16,30 +16,33 @@ tools:
       tool_dev_url: "https://github.com/genometools/genometools"
       doi: "10.1109/TCBB.2013.68"
       licence: ["ISC"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test' ]`
-  - gff3:
-      type: file
-      description: Input gff3 file
-      pattern: "*.{gff,gff3}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - gff3:
+        type: file
+        description: Input gff3 file
+        pattern: "*.{gff,gff3}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test' ]`
   - stats:
-      type: file
-      description: Stats file in yaml format
-      pattern: "*.yml"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}.yml:
+          type: file
+          description: Stats file in yaml format
+          pattern: "*.yml"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@GallVp"
 maintainers:

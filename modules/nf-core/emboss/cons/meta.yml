@@ -1,6 +1,7 @@
----
 name: "emboss_cons"
-description: cons calculates a consensus sequence from a multiple sequence alignment. To obtain the consensus, the sequence weights and a scoring matrix are used to calculate a score for each amino acid residue or nucleotide at each position in the alignment.
+description: cons calculates a consensus sequence from a multiple sequence alignment.
+  To obtain the consensus, the sequence weights and a scoring matrix are used to calculate
+  a score for each amino acid residue or nucleotide at each position in the alignment.
 keywords:
   - emboss
   - consensus
@@ -15,30 +16,33 @@ tools:
       tool_dev_url: "http://emboss.open-bio.org/"
       doi: "10.1016/s0168-9525(00)02024-2 "
       licence: ["GPL"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: Multiple sequence alignment (unzipped)
-      pattern: "*.{fasta,fa,fas,fsa,seq,mpfa,aln,clustal,clw,msf,phy,phylip,stockholm,sto,msf,afa,afa,a}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Multiple sequence alignment (unzipped)
+        pattern: "*.{fasta,fa,fas,fsa,seq,mpfa,aln,clustal,clw,msf,phy,phylip,stockholm,sto,msf,afa,afa,a}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - consensus:
-      type: file
-      description: Consensus sequence calculated from multiple sequence alignment
-      pattern: "*.fa"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fa":
+          type: file
+          description: Consensus sequence calculated from multiple sequence alignment
+          pattern: "*.fa"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@Joon-Klaps"
 maintainers:

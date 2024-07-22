@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "gt_gff3"
-description: "GenomeTools gt-gff3 utility to parse, possibly transform, and output GFF3 files"
+description: "GenomeTools gt-gff3 utility to parse, possibly transform, and output
+  GFF3 files"
 keywords:
   - genome
   - gff3
@@ -14,34 +14,43 @@ tools:
       tool_dev_url: "https://github.com/genometools/genometools"
       doi: "10.1109/TCBB.2013.68"
       licence: ["ISC"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test' ]`
-  - gff3:
-      type: file
-      description: Input gff3 file
-      pattern: "*.{gff,gff3}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - gff3:
+        type: file
+        description: Input gff3 file
+        pattern: "*.{gff,gff3}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test' ]`
   - gt_gff3:
-      type: file
-      description: Parsed gff3 file produced only if there is no parsing error
-      pattern: "*.gt.gff3"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.gt.gff3":
+          type: file
+          description: Parsed gff3 file produced only if there is no parsing error
+          pattern: "*.gt.gff3"
   - error_log:
-      type: file
-      description: Error log if gt-gff3 failed to parse the input gff3 file
-      pattern: "*.error.log"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.error.log":
+          type: file
+          description: Error log if gt-gff3 failed to parse the input gff3 file
+          pattern: "*.error.log"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@gallvp"
 maintainers:

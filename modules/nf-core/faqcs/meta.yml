@@ -14,55 +14,95 @@ tools:
       tool_dev_url: https://github.com/LANL-Bioinformatics/FaQCs
       doi: "10.1186/s12859-014-0366-2"
       licence: ["GPLv3 License"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: |
-        List of input FastQ files of size 1 and 2 for
-        single-end and paired-end data, respectively.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for
+          single-end and paired-end data, respectively.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - reads:
-      type: file
-      description: The trimmed/modified fastq reads
-      pattern: "*trimmed.fastq.gz"
-  - reads_fail:
-      type: file
-      description: Reads that failed the preprocessing (Optional with --discard args setting)
-      pattern: "*discard.fastq.gz"
-  - reads_unpaired:
-      type: file
-      description: Reads without matching mates in paired-end files (Optional)
-      pattern: "*trimmed.unpaired.fastq.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.trimmed.fastq.gz":
+          type: file
+          description: The trimmed/modified fastq reads
+          pattern: "*trimmed.fastq.gz"
   - stats:
-      type: file
-      description: trimming/qc text stats file
-      pattern: "*.stats.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.stats.txt":
+          type: file
+          description: trimming/qc text stats file
+          pattern: "*.stats.txt"
   - debug:
-      type: directory
-      description: trimming/qc files from --debug option
-      pattern: "./debug"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ./debug:
+          type: directory
+          description: trimming/qc files from --debug option
+          pattern: "./debug"
   - statspdf:
-      type: file
-      description: trimming/qc pdf report file
-      pattern: "*_qc_report.pdf"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_qc_report.pdf":
+          type: file
+          description: trimming/qc pdf report file
+          pattern: "*_qc_report.pdf"
+  - reads_fail:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.discard.fastq.gz":
+          type: file
+          description: Reads that failed the preprocessing (Optional with --discard args
+            setting)
+          pattern: "*discard.fastq.gz"
+  - reads_unpaired:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.trimmed.unpaired.fastq.gz":
+          type: file
+          description: Reads without matching mates in paired-end files (Optional)
+          pattern: "*trimmed.unpaired.fastq.gz"
   - log:
-      type: file
-      description: fastq log file
-      pattern: "*.log"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: fastq log file
+          pattern: "*.log"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@mjcipriano"
   - "@sateeshperi"

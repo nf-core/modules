@@ -14,34 +14,43 @@ tools:
       tool_dev_url: https://github.com/lbcb-sci/raven
       doi: 10.1038/s43588-021-00073-4
       licence: ["MIT"]
+      identifier: biotools:raven
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', suffix:'bacteria' ]
-  - reads:
-      type: file
-      description: Input file in FASTA/FASTQ format.
-      pattern: "*.{fasta,fastq,fasta.gz,fastq.gz,fa,fq,fa.gz,fq.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', suffix:'bacteria' ]
+    - reads:
+        type: file
+        description: Input file in FASTA/FASTQ format.
+        pattern: "*.{fasta,fastq,fasta.gz,fastq.gz,fa,fq,fa.gz,fq.gz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', suffix:'bacteria' ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - fasta:
-      type: file
-      description: Assembled FASTA file
-      pattern: "*.fasta.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', suffix:'bacteria' ]
+      - "*.fasta.gz":
+          type: file
+          description: Assembled FASTA file
+          pattern: "*.fasta.gz"
   - gfa:
-      type: file
-      description: Repeat graph
-      pattern: "*.gfa.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', suffix:'bacteria' ]
+      - "*.gfa.gz":
+          type: file
+          description: Repeat graph
+          pattern: "*.gfa.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@fmalmeida"
 maintainers:

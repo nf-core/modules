@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "pbtk_pbindex"
-description: Minimalistic tool which creates an index file that enables random access into PacBio BAM files
+description: Minimalistic tool which creates an index file that enables random access
+  into PacBio BAM files
 keywords:
   - genomics
   - bam
@@ -14,34 +14,34 @@ tools:
       documentation: "https://github.com/PacificBiosciences/pbtk"
       tool_dev_url: "https://github.com/PacificBiosciences/pbtk"
       licence: ["BSD-3-clause-Clear"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-
-  - bam:
-      type: file
-      description: Input BAM file
-      pattern: "*.bam"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: Input BAM file
+        pattern: "*.bam"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - pbi:
-      type: file
-      description: Index file
-      pattern: "*.bam.pbi"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.pbi":
+          type: file
+          description: Index file
+          pattern: "*.bam.pbi"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@GallVp"
 maintainers:

@@ -13,50 +13,65 @@ tools:
       documentation: http://www.cog-genomics.org/plink/2.0/general_usage
       doi: "10.1186/s13742-015-0047-8"
       licence: ["GPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - pgen:
-      type: file
-      description: PLINK 2 binary genotype table
-      pattern: "*.{pgen}"
-  - psam:
-      type: file
-      description: PLINK 2 sample information file
-      pattern: "*.{psam}"
-  - pvar:
-      type: file
-      description: PLINK 2 variant information file
-      pattern: "*.{pvar}"
-  - variants:
-      type: file
-      description: A text file containing variant identifiers to keep (one per line)
-      pattern: "*.{keep}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - pgen:
+        type: file
+        description: PLINK 2 binary genotype table
+        pattern: "*.{pgen}"
+    - psam:
+        type: file
+        description: PLINK 2 sample information file
+        pattern: "*.{psam}"
+    - pvar:
+        type: file
+        description: PLINK 2 variant information file
+        pattern: "*.{pvar}"
+    - variants:
+        type: file
+        description: A text file containing variant identifiers to keep (one per line)
+        pattern: "*.{keep}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - extract_pgen:
-      type: file
-      description: PLINK 2 binary genotype table, containing extracted variants
-      pattern: "*.{pgen}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.pgen":
+          type: file
+          description: PLINK 2 binary genotype table, containing extracted variants
+          pattern: "*.{pgen}"
   - extract_psam:
-      type: file
-      description: PLINK 2 sample information file associated with the extracted data
-      pattern: "*.{psam}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.psam":
+          type: file
+          description: PLINK 2 sample information file associated with the extracted data
+          pattern: "*.{psam}"
   - extract_pvar:
-      type: file
-      description: PLINK 2 variant information file, containing extracted variants
-      pattern: "*.{pvar.zst}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.pvar.zst":
+          type: file
+          description: PLINK 2 variant information file, containing extracted variants
+          pattern: "*.{pvar.zst}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nebfield"
 maintainers:

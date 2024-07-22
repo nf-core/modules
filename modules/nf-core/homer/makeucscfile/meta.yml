@@ -11,30 +11,33 @@ tools:
       documentation: http://homer.ucsd.edu/homer/
       doi: 10.1016/j.molcel.2010.05.004.
       licence: ["GPL-3.0-or-later"]
+      identifier: biotools:homer
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - tagDir:
-      type: directory
-      description: "The 'Tag Directory'"
-      pattern: "tagDir"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - tagDir:
+        type: directory
+        description: "The 'Tag Directory'"
+        pattern: "tagDir"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - bedGraph:
-      type: file
-      description: The UCSC bed graph
-      pattern: "*.bedGraph.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bedGraph.gz":
+          type: file
+          description: The UCSC bed graph
+          pattern: "*.bedGraph.gz"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@edmundmiller"
 maintainers:

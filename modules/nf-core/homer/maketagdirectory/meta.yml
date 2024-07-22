@@ -12,6 +12,7 @@ tools:
       documentation: http://homer.ucsd.edu/homer/
       doi: 10.1016/j.molcel.2010.05.004.
       licence: ["GPL-3.0-or-later"]
+      identifier: biotools:homer
   - samtools:
       description: |
         SAMtools is a set of utilities for interacting with and post-processing
@@ -21,6 +22,7 @@ tools:
       documentation: http://www.htslib.org/doc/samtools.html
       doi: 10.1093/bioinformatics/btp352
       licence: ["MIT"]
+      identifier: biotools:homer
   - DESeq2:
       description: |
         Differential gene expression analysis based on the negative binomial distribution
@@ -29,6 +31,7 @@ tools:
       tool_dev_url: "https://github.com/mikelove/DESeq2"
       doi: 10.18129/B9.bioc.DESeq2
       licence: ["LGPL-3.0-or-later"]
+      identifier: biotools:homer
   - edgeR:
       description: |
         Empirical Analysis of Digital Gene Expression Data in R
@@ -37,38 +40,47 @@ tools:
       tool_dev_url: "https://git.bioconductor.org/packages/edgeR"
       doi: 10.18129/B9.bioc.edgeR
       licence: ["GPL >=2"]
+      identifier: biotools:homer
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: BAM/BED/SAM file
-      pattern: "*.{bam,bed,sam}"
-  - fasta:
-      type: file
-      description: Fasta file of reference genome
-      pattern: "*.fasta"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM/BED/SAM file
+        pattern: "*.{bam,bed,sam}"
+  - - fasta:
+        type: file
+        description: Fasta file of reference genome
+        pattern: "*.fasta"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - tagdir:
-      type: directory
-      description: The "Tag Directory"
-      pattern: "*_tagdir"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_tagdir":
+          type: directory
+          description: The "Tag Directory"
+          pattern: "*_tagdir"
   - taginfo:
-      type: directory
-      description: The tagInfo.txt included to ensure there's proper output
-      pattern: "*_tagdir/tagInfo.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_tagdir/tagInfo.txt":
+          type: directory
+          description: The tagInfo.txt included to ensure there's proper output
+          pattern: "*_tagdir/tagInfo.txt"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@edmundmiller"
 maintainers:

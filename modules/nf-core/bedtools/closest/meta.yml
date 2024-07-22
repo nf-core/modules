@@ -1,5 +1,6 @@
 name: "bedtools_closest"
-description: For each feature in A, finds the closest feature (upstream or downstream) in B.
+description: For each feature in A, finds the closest feature (upstream or downstream)
+  in B.
 keywords:
   - bedtools
   - closest
@@ -12,38 +13,42 @@ tools:
         A set of tools for genomic analysis tasks, specifically enabling genome arithmetic (merge, count, complement) on various file types.
       documentation: https://bedtools.readthedocs.io/en/latest/content/tools/closest.html
       licence: ["MIT"]
+      identifier: biotools:bedtools
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - input_1:
-      type: file
-      description: The file to find the closest features of
-      pattern: "*.{bed,vcf,gff}(.gz)?"
-  - input_2:
-      type: list
-      description: The input file(s) to find the closest features from
-      pattern: "*.{bed,vcf,gff}(.gz)?"
-  - fasta_fai:
-      type: file
-      description: The index of the FASTA reference. Needed when the argument `--sorted` is used
-      pattern: "*.fai"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input_1:
+        type: file
+        description: The file to find the closest features of
+        pattern: "*.{bed,vcf,gff}(.gz)?"
+    - input_2:
+        type: list
+        description: The input file(s) to find the closest features from
+        pattern: "*.{bed,vcf,gff}(.gz)?"
+  - - fasta_fai:
+        type: file
+        description: The index of the FASTA reference. Needed when the argument `--sorted`
+          is used
+        pattern: "*.fai"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - output:
-      type: file
-      description: The resulting BED file containing the closest features
-      pattern: "*.{bed,vcf,gff}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.${extension}":
+          type: file
+          description: The resulting BED file containing the closest features
+          pattern: "*.{bed,vcf,gff}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

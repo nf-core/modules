@@ -1,5 +1,7 @@
 name: macrel_contigs
-description: A tool that mines antimicrobial peptides (AMPs) from (meta)genomes by predicting peptides from genomes (provided as contigs) and outputs all the predicted anti-microbial peptides found.
+description: A tool that mines antimicrobial peptides (AMPs) from (meta)genomes by
+  predicting peptides from genomes (provided as contigs) and outputs all the predicted
+  anti-microbial peptides found.
 keywords:
   - AMP
   - antimicrobial peptides
@@ -14,46 +16,76 @@ tools:
       tool_dev_url: https://github.com/BigDataBiology/macrel
       doi: "10.7717/peerj.10555"
       licence: ["MIT"]
+      identifier: biotools:macrel
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: A fasta file with nucleotide sequences.
-      pattern: "*.{fasta,fa,fna,fasta.gz,fa.gz,fna.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: A fasta file with nucleotide sequences.
+        pattern: "*.{fasta,fa,fna,fasta.gz,fa.gz,fna.gz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - amp_prediction:
-      type: file
-      description: A zipped file, with all predicted amps in a table format.
-      pattern: "*.prediction.gz"
   - smorfs:
-      type: file
-      description: A zipped fasta file containing aminoacid sequences showing the general gene prediction information in the contigs.
-      pattern: "*.smorfs.faa.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*/*.smorfs.faa.gz":
+          type: file
+          description: A zipped fasta file containing aminoacid sequences showing the
+            general gene prediction information in the contigs.
+          pattern: "*.smorfs.faa.gz"
   - all_orfs:
-      type: file
-      description: A zipped fasta file containing amino acid sequences showing the general gene prediction information in the contigs.
-      pattern: "*.all_orfs.faa.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*/*.all_orfs.faa.gz":
+          type: file
+          description: A zipped fasta file containing amino acid sequences showing the
+            general gene prediction information in the contigs.
+          pattern: "*.all_orfs.faa.gz"
+  - amp_prediction:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*/*.prediction.gz":
+          type: file
+          description: A zipped file, with all predicted amps in a table format.
+          pattern: "*.prediction.gz"
   - readme_file:
-      type: file
-      description: A readme file containing tool specific information (e.g. citations, details about the output, etc.).
-      pattern: "*.md"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*/*.md":
+          type: file
+          description: A readme file containing tool specific information (e.g. citations,
+            details about the output, etc.).
+          pattern: "*.md"
   - log_file:
-      type: file
-      description: A log file containing the information pertaining to the run.
-      pattern: "*_log.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*/*_log.txt":
+          type: file
+          description: A log file containing the information pertaining to the run.
+          pattern: "*_log.txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@darcy220606"
 maintainers:

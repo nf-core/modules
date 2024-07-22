@@ -6,44 +6,54 @@ keywords:
   - cellpose
 tools:
   - "cellpose":
-      description: "cellpose is an anatomical segmentation algorithm written in Python 3 by Carsen Stringer and Marius Pachitariu"
+      description: "cellpose is an anatomical segmentation algorithm written in Python
+        3 by Carsen Stringer and Marius Pachitariu"
       homepage: "https://github.com/MouseLand/cellpose"
       documentation: "https://cellpose.readthedocs.io/en/latest/command.html"
       tool_dev_url: "https://github.com/MouseLand/cellpose"
       doi: 10.1038/s41592-022-01663-4
       licence: ["BSD 3-Clause"]
+      identifier: biotools:cellpose
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        (sample id)
-  - image:
-      type: file
-      description: tif file for ready for segmentation
-      pattern: "*.{tif,tiff}"
-  - model:
-      type: file
-      description: Optional input file. Cellpose 2 model trained by user using human-in-the-loop approach.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          (sample id)
+    - image:
+        type: file
+        description: tif file for ready for segmentation
+        pattern: "*.{tif,tiff}"
+  - - model:
+        type: file
+        description: Optional input file. Cellpose 2 model trained by user using human-in-the-loop
+          approach.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        [sample id]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - mask:
-      type: file
-      description: labelled mask output from cellpose in tif format
-      pattern: "*.{tif, tiff}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            [sample id]
+      - "*masks.tif":
+          type: file
+          description: labelled mask output from cellpose in tif format
+          pattern: "*.{tif, tiff}"
   - flows:
-      type: file
-      description: cell flow output from cellpose
-      pattern: "*.{tif}"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            [sample id]
+      - "*flows.tif":
+          type: file
+          description: cell flow output from cellpose
+          pattern: "*.{tif}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@josenimo"
   - "@FloWuenne"

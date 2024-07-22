@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "panacus_histgrowth"
-description: Calculates a coverage histogram from a GFA file and constructs a growth table from this as either a TSV or HTML file
+description: Calculates a coverage histogram from a GFA file and constructs a growth
+  table from this as either a TSV or HTML file
 keywords:
   - statistics
   - pangenome
@@ -14,49 +14,50 @@ tools:
       homepage: "https://github.com/marschall-lab/panacus"
       documentation: "https://github.com/marschall-lab/panacus"
       licence: ["MIT"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - gfa:
-      type: file
-      description: GFA file containing a graph without overlapping nodes
-      pattern: "*.gfa"
-  - bed_subset:
-      type: file
-      description: Optional 1-column TXT-list of paths or 3-/12-column BED file of path coordinates for getting counts by subsetting the graph
-      pattern: "*.{txt, bed}"
-  - bed_exclude:
-      type: file
-      description: Optional 1-column TXT-list of paths or 3-/12-column BED file of path coordinates for excluding bp/nodes/edges that intersect these paths
-      pattern: "*.{txt, bed}"
-  - tsv_groupby:
-      type: file
-      description: Optional 2-column TSV file containing path to group mapping according to which counts from different paths get merged
-      pattern: "*.{txt, bed}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - gfa:
+        type: file
+        description: GFA file containing a graph without overlapping nodes
+        pattern: "*.gfa"
+  - - bed_subset:
+        type: file
+        description: Optional 1-column TXT-list of paths or 3-/12-column BED file of
+          path coordinates for getting counts by subsetting the graph
+        pattern: "*.{txt, bed}"
+  - - bed_exclude:
+        type: file
+        description: Optional 1-column TXT-list of paths or 3-/12-column BED file of
+          path coordinates for excluding bp/nodes/edges that intersect these paths
+        pattern: "*.{txt, bed}"
+  - - tsv_groupby:
+        type: file
+        description: Optional 2-column TSV file containing path to group mapping according
+          to which counts from different paths get merged
+        pattern: "*.{txt, bed}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - tsv:
-      type: file
-      description: TSV file containing the statistics. Alternatively, the HTML file can be the output
-      pattern: "*.tsv"
-  - html:
-      type: file
-      description: HTML file containing a report with the statistics. Alternatively, the TSV file can be the output
-      pattern: "*.html"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.{tsv, html}":
+          type: file
+          description: TSV file containing the statistics. Alternatively, the HTML file
+            can be the output
+          pattern: "*.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@heringerp"
 maintainers:

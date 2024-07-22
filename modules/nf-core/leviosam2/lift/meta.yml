@@ -1,6 +1,6 @@
----
 name: "leviosam2_lift"
-description: Converting aligned short and long reads records from one reference to another
+description: Converting aligned short and long reads records from one reference to
+  another
 keywords:
   - leviosam2
   - index
@@ -11,39 +11,42 @@ tools:
       homepage: "https://github.com/milkschen/leviosam2/blob/main/workflow/README.md"
       documentation: "https://github.com/milkschen/leviosam2/blob/main/workflow/README.md"
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test' ]`
-  - input:
-      type: file
-      description: SAM/BAM/CRAM file to be lifted
-      pattern: "*.{bam}"
-  - meta_ref:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. `[ id:'reference' ]`
-  - clft:
-      type: file
-      description: Clft file of indexed ChainMap.
-      pattern: "*.{clft}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - input:
+        type: file
+        description: SAM/BAM/CRAM file to be lifted
+        pattern: "*.{bam}"
+  - - meta_ref:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'reference' ]`
+    - clft:
+        type: file
+        description: Clft file of indexed ChainMap.
+        pattern: "*.{clft}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'reference' ]`
   - bam:
-      type: file
-      description: Lifted bam file
-      pattern: "*.{bam}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'reference' ]`
+      - "*.bam":
+          type: file
+          description: Lifted bam file
+          pattern: "*.{bam}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@lgrochowalski"
 maintainers:

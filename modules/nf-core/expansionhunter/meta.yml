@@ -14,69 +14,84 @@ tools:
       documentation: https://github.com/Illumina/ExpansionHunter/blob/master/docs/01_Introduction.md
       doi: "10.1093/bioinformatics/btz431"
       licence: ["Apache-2.0"]
+      identifier: biotools:ExpansionHunter
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: BAM/CRAM file
-      pattern: "*.{bam,cram}"
-  - bai:
-      type: file
-      description: Index of BAM/CRAM file
-      pattern: "*.{bai,crai}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test' ]
-  - fasta:
-      type: file
-      description: Reference genome
-      pattern: "*.{fna,fa,fasta}"
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test' ]
-  - fasta_fai:
-      type: file
-      description: Reference genome index
-      pattern: "*.fai"
-  - meta4:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test' ]
-  - variant_catalog:
-      type: file
-      description: JSON file with repeat expansion sites to genotype
-      pattern: "*.json"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM/CRAM file
+        pattern: "*.{bam,cram}"
+    - bai:
+        type: file
+        description: Index of BAM/CRAM file
+        pattern: "*.{bai,crai}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: Reference genome
+        pattern: "*.{fna,fa,fasta}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test' ]
+    - fasta_fai:
+        type: file
+        description: Reference genome index
+        pattern: "*.fai"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test' ]
+    - variant_catalog:
+        type: file
+        description: JSON file with repeat expansion sites to genotype
+        pattern: "*.json"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', gender:'female' ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - bam:
-      type: file
-      description: BAM/CRAM file
-      pattern: "*.{bam,cram}"
   - vcf:
-      type: file
-      description: VCF with repeat expansions
-      pattern: "*.vcf.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', gender:'female' ]
+      - "*.vcf.gz":
+          type: file
+          description: VCF with repeat expansions
+          pattern: "*.vcf.gz"
   - json:
-      type: file
-      description: JSON with repeat expansions
-      pattern: "*.json.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', gender:'female' ]
+      - "*.json.gz":
+          type: file
+          description: JSON with repeat expansions
+          pattern: "*.json.gz"
+  - bam:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', gender:'female' ]
+      - "*_realigned.bam":
+          type: file
+          description: BAM/CRAM file
+          pattern: "*.{bam,cram}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jemten"
 maintainers:

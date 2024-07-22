@@ -9,40 +9,44 @@ keywords:
   - kmers
 tools:
   - "kmcp":
-      description: "Accurate metagenomic profiling of both prokaryotic and viral populations by pseudo-mapping"
+      description: "Accurate metagenomic profiling of both prokaryotic and viral populations
+        by pseudo-mapping"
       homepage: "https://github.com/shenwei356/kmcp"
       documentation: "https://github.com/shenwei356/kmcp#documents"
       tool_dev_url: "https://github.com/shenwei356/kmcp"
       doi: "10.1093/bioinformatics/btac845"
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: gzipped fasta or fastq files
-      pattern: "*.{fq.gz,fastq.gz,fa.gz}"
-  - db:
-      type: directory
-      description: Database directory created by "kmcp index"
-      pattern: "*"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: gzipped fasta or fastq files
+        pattern: "*.{fq.gz,fastq.gz,fa.gz}"
+  - - db:
+        type: directory
+        description: Database directory created by "kmcp index"
+        pattern: "*"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - result:
-      type: file
-      description: Output file in tab-delimited format with 15 columns
-      pattern: "*.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.gz":
+          type: file
+          description: Output file in tab-delimited format with 15 columns
+          pattern: "*.gz"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@sofstam"
 maintainers:

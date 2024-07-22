@@ -1,5 +1,6 @@
 name: "hlala_typing"
-description: Performs HLA typing based on a population reference graph and employs a new linear projection method to align reads to the graph.
+description: Performs HLA typing based on a population reference graph and employs
+  a new linear projection method to align reads to the graph.
 keywords:
   - hla
   - hlala
@@ -13,32 +14,83 @@ tools:
       tool_dev_url: "https://github.com/DiltheyLab/HLA-LA"
       doi: "10.1093/bioinformatics/btz235"
       licence: "['GPL']"
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-  - graph:
-      type: directory
-      description: Path to prepared graph with hla-la --acton prepareGraph
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+    - bai: {}
+    - graph:
+        type: directory
+        description: Path to prepared graph with hla-la --acton prepareGraph
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+  - results:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${meta.id}: {}
+  - extraction:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${meta.id}/extraction.bam*: {}
+  - extraction_mapped:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${meta.id}/extraction_mapped.bam: {}
+  - extraction_unmpapped:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${meta.id}/extraction_unmapped.bam: {}
+  - hla:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${meta.id}/hla/*: {}
+  - fastq:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${meta.id}/*.fastq: {}
+  - reads_per_level:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${meta.id}/reads_per_level.txt: {}
+  - remapped:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${meta.id}/remapped_with_a.bam*: {}
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - folder:
-      type: directory
-      description: Folder containing the HLA typing output
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@mapo9"
 maintainers:

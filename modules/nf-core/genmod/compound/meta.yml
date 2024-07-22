@@ -11,30 +11,33 @@ tools:
       documentation: "https://github.com/Clinical-Genomics/genmod"
       tool_dev_url: "https://github.com/moonso"
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - input_vcf:
-      type: file
-      description: VCF file
-      pattern: "*.{vcf}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input_vcf:
+        type: file
+        description: VCF file
+        pattern: "*.{vcf}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]  #
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - vcf:
-      type: file
-      description: Output VCF file
-      pattern: "*.{vcf}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]  #
+      - "*_compound.vcf":
+          type: file
+          description: Output VCF file
+          pattern: "*.{vcf}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@ramprasadn"
 maintainers:

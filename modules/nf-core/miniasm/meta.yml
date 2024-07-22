@@ -6,44 +6,54 @@ keywords:
   - nanopore
 tools:
   - miniasm:
-      description: Ultrafast de novo assembly for long noisy reads (though having no consensus step)
+      description: Ultrafast de novo assembly for long noisy reads (though having no
+        consensus step)
       homepage: https://github.com/lh3/miniasm
       documentation: https://github.com/lh3/miniasm
       tool_dev_url: https://github.com/lh3/miniasm
       doi: "10.1093/bioinformatics/btw152"
       licence: ["MIT"]
+      identifier: biotools:miniasm
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: List of input PacBio/ONT FastQ files.
-      pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
-  - paf:
-      type: file
-      description: Alignment in PAF format
-      pattern: "*{.paf,.paf.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: List of input PacBio/ONT FastQ files.
+        pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
+    - paf:
+        type: file
+        description: Alignment in PAF format
+        pattern: "*{.paf,.paf.gz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - gfa:
-      type: file
-      description: Assembly graph
-      pattern: "*.gfa.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.gfa.gz":
+          type: file
+          description: Assembly graph
+          pattern: "*.gfa.gz"
   - assembly:
-      type: file
-      description: Genome assembly
-      pattern: "*.fasta.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fasta.gz":
+          type: file
+          description: Genome assembly
+          pattern: "*.fasta.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@avantonder"
 maintainers:

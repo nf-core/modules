@@ -13,30 +13,33 @@ tools:
       homepage: https://github.com/heuermh/dishevelled-bio
       documentation: https://github.com/heuermh/dishevelled-bio
       licence: ["LGPL-3.0-or-later"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bed:
-      type: file
-      description: Features in gzipped BED format
-      pattern: "*.{bed.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bed:
+        type: file
+        description: Features in gzipped BED format
+        pattern: "*.{bed.gz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - bed:
-      type: file
-      description: Features in gzipped BED format
-      pattern: "*.{bed.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bed.gz":
+          type: file
+          description: Features in gzipped BED format
+          pattern: "*.{bed.gz}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@heuermh"
 maintainers:

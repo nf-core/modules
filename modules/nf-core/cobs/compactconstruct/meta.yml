@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "cobs_compactconstruct"
 description: Builds a compact bloom filter COBS index
@@ -14,45 +13,43 @@ tools:
       documentation: "https://github.com/iqbal-lab-org/cobs"
       doi: "10.1007/978-3-030-32686-9_21"
       licence: ["MIT"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1' ]`
-
-  - input:
-      type: file
-      description: |
-        The file or directory to be indexed.
-        COBS can read:
-          1. FASTA files (`*.fa`, `*.fasta`, `*.fna`, `*.ffn`, `*.faa`, `*.frn`, `*.fa.gz`, `*.fasta.gz`, `*.fna.gz`, `*.ffn.gz`, `*.faa.gz`, `*.frn.gz`),
-          2. FASTQ files (`*.fq`, `*.fastq`, `*.fq.gz.`, `*.fastq.gz`),
-          3. "Multi-FASTA" and "Multi-FASTQ" files (`*.mfasta`, `*.mfastq`),
-          4. McCortex files (`*.ctx`),
-          5. or text files (`*.txt`).
-        You can either recursively scan a directory for all files matching any of these files,
-        or pass a `*.list` file which lists all paths COBS should index.
-      pattern: "*.*"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - input:
+        type: file
+        description: |
+          The file or directory to be indexed.
+          COBS can read:
+            1. FASTA files (`*.fa`, `*.fasta`, `*.fna`, `*.ffn`, `*.faa`, `*.frn`, `*.fa.gz`, `*.fasta.gz`, `*.fna.gz`, `*.ffn.gz`, `*.faa.gz`, `*.frn.gz`),
+            2. FASTQ files (`*.fq`, `*.fastq`, `*.fq.gz.`, `*.fastq.gz`),
+            3. "Multi-FASTA" and "Multi-FASTQ" files (`*.mfasta`, `*.mfastq`),
+            4. McCortex files (`*.ctx`),
+            5. or text files (`*.txt`).
+          You can either recursively scan a directory for all files matching any of these files,
+          or pass a `*.list` file which lists all paths COBS should index.
+        pattern: "*.*"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1' ]`
-
   - index:
-      type: file
-      description: The COBS compact index
-      pattern: "*.index.cobs_compact"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.index.cobs_compact":
+          type: file
+          description: The COBS compact index
+          pattern: "*.index.cobs_compact"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@leoisl"
 maintainers:

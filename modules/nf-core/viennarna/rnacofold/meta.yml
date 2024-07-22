@@ -31,37 +31,47 @@ tools:
       documentation: "https://viennarna.readthedocs.io/en/latest/"
       doi: 10.1186/1748-7188-6-26
       licence: ["custom"]
+      identifier: biotools:viennarna
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - rnacofold_fasta:
-      type: file
-      description: |
-        A fasta file containing RNA or transcript sequences
-      pattern: "*.{fasta,fa}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - rnacofold_fasta:
+        type: file
+        description: |
+          A fasta file containing RNA or transcript sequences
+        pattern: "*.{fasta,fa}"
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - rnacofold_csv:
-      type: file
-      description: The CSV Output of RNAcofold that has the predicted structure and energies
-      pattern: "*.{csv}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.csv":
+          type: file
+          description: The CSV Output of RNAcofold that has the predicted structure and
+            energies
+          pattern: "*.{csv}"
   - rnacofold_ps:
-      type: file
-      description: The text Output of RNAfold that contains the predicted secondary structure in postscript format
-      pattern: "*.{ps}"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.ps":
+          type: file
+          description: The text Output of RNAfold that contains the predicted secondary
+            structure in postscript format
+          pattern: "*.{ps}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@kokul-atx"
 maintainers:

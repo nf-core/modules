@@ -1,5 +1,6 @@
 name: "somalier_extract"
-description: Somalier can extract informative sites, evaluate relatedness, and perform quality-control on BAM/CRAM/BCF/VCF/GVCF or from jointly-called VCFs
+description: Somalier can extract informative sites, evaluate relatedness, and perform
+  quality-control on BAM/CRAM/BCF/VCF/GVCF or from jointly-called VCFs
 keywords:
   - relatedness
   - QC
@@ -14,65 +15,69 @@ keywords:
   - family
 tools:
   - "somalier":
-      description: "Somalier can extract informative sites, evaluate relatedness, and perform quality-control on BAM/CRAM/BCF/VCF/GVCF or from jointly-called VCFs"
+      description: "Somalier can extract informative sites, evaluate relatedness, and
+        perform quality-control on BAM/CRAM/BCF/VCF/GVCF or from jointly-called VCFs"
       homepage: "https://github.com/brentp/somalier"
       documentation: "https://github.com/brentp/somalier/blob/master/README.md"
       tool_dev_url: "https://github.com/brentp/somalier"
       doi: "10.1186/s13073-020-00761-2"
       licence: ["MIT"]
+      identifier: biotools:somalier
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - input:
-      type: file
-      description: BAM/CRAM/SAM/BCF/VCF/GVCF or jointly-called VCF file
-  - input_index:
-      type: file
-      description: index file of the input data, e.g., bam.bai, cram.crai
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'hg38' ]
-  - fasta:
-      type: file
-      description: The reference fasta file
-      pattern: "*.{fasta,fna,fas,fa}"
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'hg38' ]
-  - fai:
-      type: file
-      description: FASTA index file
-      pattern: "*.fai"
-  - meta4:
-      type: map
-      description: |
-        Groovy Map containing sites information
-        e.g. [ id:'hg38' ]
-  - sites:
-      type: file
-      description: sites file in VCF format which can be taken from https://github.com/brentp/somalier
-      pattern: "*.vcf.gz"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input:
+        type: file
+        description: BAM/CRAM/SAM/BCF/VCF/GVCF or jointly-called VCF file
+    - input_index:
+        type: file
+        description: index file of the input data, e.g., bam.bai, cram.crai
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'hg38' ]
+    - fasta:
+        type: file
+        description: The reference fasta file
+        pattern: "*.{fasta,fna,fas,fa}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'hg38' ]
+    - fai:
+        type: file
+        description: FASTA index file
+        pattern: "*.fai"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sites information
+          e.g. [ id:'hg38' ]
+    - sites:
+        type: file
+        description: sites file in VCF format which can be taken from https://github.com/brentp/somalier
+        pattern: "*.vcf.gz"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - extract:
-      type: file
-      description: binary output file based on extracted sites
-      pattern: "*.{somalier}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.somalier":
+          type: file
+          description: binary output file based on extracted sites
+          pattern: "*.{somalier}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@ashotmarg"
   - "@nvnieuwk"

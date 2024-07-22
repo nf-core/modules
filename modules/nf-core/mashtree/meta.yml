@@ -13,34 +13,43 @@ tools:
       tool_dev_url: https://github.com/lskatz/mashtree
       doi: "10.21105/joss.01762"
       licence: ["GPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - seqs:
-      type: file
-      description: FASTA, FASTQ, GenBank, or Mash sketch files
-      pattern: "*.{fna,fna.gz,fasta,fasta.gz,fa,fa.gz,gbk,gbk.gz,fastq.gz,msh}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - seqs:
+        type: file
+        description: FASTA, FASTQ, GenBank, or Mash sketch files
+        pattern: "*.{fna,fna.gz,fasta,fasta.gz,fa,fa.gz,gbk,gbk.gz,fastq.gz,msh}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - tree:
-      type: file
-      description: A Newick formatted tree file
-      pattern: "*.{dnd}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.dnd":
+          type: file
+          description: A Newick formatted tree file
+          pattern: "*.{dnd}"
   - matrix:
-      type: file
-      description: A TSV matrix of pair-wise Mash distances
-      pattern: "*.{tsv}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: A TSV matrix of pair-wise Mash distances
+          pattern: "*.{tsv}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@rpetit3"
 maintainers:

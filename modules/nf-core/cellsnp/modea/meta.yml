@@ -1,7 +1,9 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "cellsnp_modea"
-description: Cellsnp-lite is a C/C++ tool for efficient genotyping bi-allelic SNPs on single cells. You can use the mode A of cellsnp-lite after read alignment to obtain the snp x cell pileup UMI or read count matrices for each alleles of given or detected SNPs for droplet based single cell data.
+description: Cellsnp-lite is a C/C++ tool for efficient genotyping bi-allelic SNPs
+  on single cells. You can use the mode A of cellsnp-lite after read alignment to
+  obtain the snp x cell pileup UMI or read count matrices for each alleles of given
+  or detected SNPs for droplet based single cell data.
 keywords:
   - genotyping
   - single cell
@@ -15,65 +17,101 @@ tools:
       tool_dev_url: "https://github.com/single-cell-genetics/cellsnp-lite"
       doi: "10.1093/bioinformatics/btab358"
       licence: ["Apache-2.0"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - bam:
-      type: file
-      description: A single BAM/SAM/CRAM file, e.g., from CellRanger.
-      pattern: "*.{bam,cram,sam}"
-  - bai:
-      type: file
-      description: The index of the BAM/CRAM file.
-      pattern: "*.{bai,crai}"
-  - region_vcf:
-      type: file
-      description: A optional vcf file listing all candidate SNPs for genotyping.
-      pattern: "*.{vcf, vcf.gz}"
-  - barcode:
-      type: file
-      description: A plain file listing all effective cell barcodes.
-      pattern: "*.tsv"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: A single BAM/SAM/CRAM file, e.g., from CellRanger.
+        pattern: "*.{bam,cram,sam}"
+    - bai:
+        type: file
+        description: The index of the BAM/CRAM file.
+        pattern: "*.{bai,crai}"
+    - region_vcf:
+        type: file
+        description: A optional vcf file listing all candidate SNPs for genotyping.
+        pattern: "*.{vcf, vcf.gz}"
+    - barcode:
+        type: file
+        description: A plain file listing all effective cell barcodes.
+        pattern: "*.tsv"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - base:
-      type: file
-      description: A VCF file listing genotyped SNPs and aggregated AD & DP infomation (without GT).
-      pattern: "*.base.vcf.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.base.vcf.gz":
+          type: file
+          description: A VCF file listing genotyped SNPs and aggregated AD & DP infomation
+            (without GT).
+          pattern: "*.base.vcf.gz"
   - cell:
-      type: file
-      description: A VCF file listing genotyped SNPs and aggregated AD & DP infomation & genotype (GT) information for each cell or sample.
-      pattern: "*.cells.vcf.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.cells.vcf.gz":
+          type: file
+          description: A VCF file listing genotyped SNPs and aggregated AD & DP infomation
+            & genotype (GT) information for each cell or sample.
+          pattern: "*.cells.vcf.gz"
   - sample:
-      type: file
-      description: A TSV file listing cell barcodes or sample IDs.
-      pattern: "*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.samples.tsv":
+          type: file
+          description: A TSV file listing cell barcodes or sample IDs.
+          pattern: "*.tsv"
   - allele_depth:
-      type: file
-      description: A file in “Matrix Market exchange formats”, containing the allele depths of the alternative (ALT) alleles.
-      pattern: "*.tag.AD.mtx"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.tag.AD.mtx":
+          type: file
+          description: A file in “Matrix Market exchange formats”, containing the allele
+            depths of the alternative (ALT) alleles.
+          pattern: "*.tag.AD.mtx"
   - depth_coverage:
-      type: file
-      description: A file in “Matrix Market exchange formats”, containing the sum of allele depths of the reference and alternative alleles (REF + ALT).
-      pattern: "*.tag.DP.mtx"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.tag.DP.mtx":
+          type: file
+          description: A file in “Matrix Market exchange formats”, containing the sum
+            of allele depths of the reference and alternative alleles (REF + ALT).
+          pattern: "*.tag.DP.mtx"
   - depth_other:
-      type: file
-      description: A file in “Matrix Market exchange formats”, containing the sum of allele depths of all the alleles other than REF and ALT.
-      pattern: "*.tag.OTH.mtx"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.tag.OTH.mtx":
+          type: file
+          description: A file in “Matrix Market exchange formats”, containing the sum
+            of allele depths of all the alleles other than REF and ALT.
+          pattern: "*.tag.OTH.mtx"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@wxicu"
 maintainers:

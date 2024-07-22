@@ -12,30 +12,33 @@ tools:
       tool_dev_url: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
       doi: "10.1093/nar/gky1263"
       licence: ["Attribution-NonCommercial-ShareAlike CC BY-NC-SA"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - inputs:
-      type: file
-      description: Multiple NPZ files from healthy patients
-      pattern: "*.{npz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - inputs:
+        type: file
+        description: Multiple NPZ files from healthy patients
+        pattern: "*.{npz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - npz:
-      type: file
-      description: The reference NPZ file
-      pattern: "*.{npz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.npz":
+          type: file
+          description: The reference NPZ file
+          pattern: "*.{npz}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

@@ -11,34 +11,37 @@ tools:
       documentation: "https://meryl.readthedocs.io/en/latest/quick-start.html"
       tool_dev_url: "https://github.com/marbl/meryl"
       licence: ["GPL"]
+      identifier: biotools:meryl
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: |
-        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-        respectively.
-  - kvalue:
-      type: integer
-      description: An integer value of k to use as the k-mer value.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively.
+  - - kvalue:
+        type: integer
+        description: An integer value of k to use as the k-mer value.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - meryl_db:
-      type: directory
-      description: A Meryl k-mer database
-      pattern: "*.meryl"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.meryl":
+          type: directory
+          description: A Meryl k-mer database
+          pattern: "*.meryl"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@mahesh-panchal"
 maintainers:

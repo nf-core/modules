@@ -12,34 +12,43 @@ tools:
       homepage: https://github.com/rrwick/Bandage
       documentation: https://github.com/rrwick/Bandage
       licence: ["GPL-3.0-or-later"]
+      identifier: biotools:bandage
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - gfa:
-      type: file
-      description: Assembly graph in GFA 1.0 format
-      pattern: "*.gfa"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - gfa:
+        type: file
+        description: Assembly graph in GFA 1.0 format
+        pattern: "*.gfa"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - png:
-      type: file
-      description: Bandage image in PNG format
-      pattern: "*.png"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.png":
+          type: file
+          description: Bandage image in PNG format
+          pattern: "*.png"
   - svg:
-      type: file
-      description: Bandage image in SVG format
-      pattern: "*.svg"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.svg":
+          type: file
+          description: Bandage image in SVG format
+          pattern: "*.svg"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@heuermh"
 maintainers:

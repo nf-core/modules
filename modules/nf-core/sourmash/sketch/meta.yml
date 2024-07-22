@@ -1,5 +1,6 @@
 name: sourmash_sketch
-description: Create a signature (a group of FracMinHash sketches) of a sequence using sourmash
+description: Create a signature (a group of FracMinHash sketches) of a sequence using
+  sourmash
 keywords:
   - hash sketch
   - sourmash
@@ -10,36 +11,41 @@ keywords:
   - kmer
 tools:
   - sourmash:
-      description: Compute and compare FracMinHash signatures for DNA and protein data sets.
+      description: Compute and compare FracMinHash signatures for DNA and protein data
+        sets.
       homepage: https://sourmash.readthedocs.io/
       documentation: https://sourmash.readthedocs.io/
       tool_dev_url: https://github.com/sourmash-bio/sourmash
       doi: "10.21105/joss.00027"
       licence: ["BSD-3-clause"]
+      identifier: biotools:sourmash
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - sequence:
-      type: file
-      description: FASTA or FASTQ file containing (genomic, transcriptomic, or proteomic) sequence data
-      pattern: "*.{fna,fa,fasta,fastq,fq,faa}.gz"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - sequence:
+        type: file
+        description: FASTA or FASTQ file containing (genomic, transcriptomic, or proteomic)
+          sequence data
+        pattern: "*.{fna,fa,fasta,fastq,fq,faa}.gz"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - signatures:
-      type: file
-      description: FracMinHash signature of the given sequence
-      pattern: "*.{sig}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.sig":
+          type: file
+          description: FracMinHash signature of the given sequence
+          pattern: "*.{sig}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@Midnighter"
 maintainers:

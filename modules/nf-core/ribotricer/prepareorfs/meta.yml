@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "ribotricer_prepareorfs"
 description: "Accurate detection of short and long active ORFs using Ribo-seq data"
@@ -14,39 +13,40 @@ tools:
       tool_dev_url: "https://github.com/smithlabcode/ribotricer"
       doi: "10.1093/bioinformatics/btz878"
       licence: ["GNU General Public v3 (GPL v3)"]
+      identifier: biotools:ribotricer
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. `[ id:'Ensembl human v.111' ]`
-  - fasta:
-      type: file
-      description: |
-        Fasta-format sequence file for reference sequences used in the bam file
-      pattern: "*.gtf"
-  - gtf:
-      type: file
-      description: |
-        GTF-format annotation file for reference sequences used in the bam file
-      pattern: "*.gtf"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'Ensembl human v.111' ]`
+    - fasta:
+        type: file
+        description: |
+          Fasta-format sequence file for reference sequences used in the bam file
+        pattern: "*.gtf"
+    - gtf:
+        type: file
+        description: |
+          GTF-format annotation file for reference sequences used in the bam file
+        pattern: "*.gtf"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. `[ id:'Ensembl human v.111' ]`
   - candidate_orfs:
-      type: file
-      description: "TSV file with candidate ORFs"
-      pattern: "*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing reference information
+            e.g. `[ id:'Ensembl human v.111' ]`
+      - "*_candidate_orfs.tsv":
+          type: file
+          description: "TSV file with candidate ORFs"
+          pattern: "*.tsv"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@pinin4fjords"
 maintainers:

@@ -1,5 +1,6 @@
 name: "propr_logratio"
-description: Transform the data matrix using centered logratio transformation (CLR) or additive logratio transformation (ALR)
+description: Transform the data matrix using centered logratio transformation (CLR)
+  or additive logratio transformation (ALR)
 keywords:
   - alr
   - clr
@@ -15,39 +16,44 @@ tools:
       tool_dev_url: "https://github.com/tpq/propr"
       doi: "10.1038/s41598-017-16520-0"
       licence: ["GPL-2"]
+      identifier: biotools:propr
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing additional information.
-        meta.id can be used to name the output files.
-        [id: 'test', ...]
-  - count:
-      type: file
-      description: |
-        Count matrix, where rows = variables or genes, columns = samples or cells.
-        This matrix should not contain zeros. Otherwise, they will be first replaced by the minimun value.
-        You may want to handle the zeros with a different method beforehand.
-      pattern: "*.{csv,tsv}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing additional information.
+          meta.id can be used to name the output files.
+          [id: 'test', ...]
+    - count:
+        type: file
+        description: |
+          Count matrix, where rows = variables or genes, columns = samples or cells.
+          This matrix should not contain zeros. Otherwise, they will be first replaced by the minimun value.
+          You may want to handle the zeros with a different method beforehand.
+        pattern: "*.{csv,tsv}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing additional information.
-        meta.id can be used to name the output files.
-        [id: 'test', ...]
   - logratio:
-      type: file
-      description: ALR/CLR transformed data matrix. With rows = variables or genes, columns = samples or cells.
-      pattern: "*.logratio.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing additional information.
+            meta.id can be used to name the output files.
+            [id: 'test', ...]
+      - "*.logratio.tsv":
+          type: file
+          description: ALR/CLR transformed data matrix. With rows = variables or genes,
+            columns = samples or cells.
+          pattern: "*.logratio.tsv"
   - session_info:
-      type: file
-      description: dump of R SessionInfo
-      pattern: "*.R_sessionInfo.log"
+      - "*.R_sessionInfo.log":
+          type: file
+          description: dump of R SessionInfo
+          pattern: "*.R_sessionInfo.log"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@suzannejin"
   - "@oprana22"

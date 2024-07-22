@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "vireo"
 description: Use vireo to perform donor deconvolution for multiplexed scRNA-seq data
@@ -14,61 +13,75 @@ tools:
       tool_dev_url: "https://github.com/single-cell-genetics/vireo"
       doi: "10.1186/s13059-019-1865-2"
       licence: ["Apache-2.0"]
+      identifier: biotools:Vireo
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1']`
-
-  - cell_data:
-      type: file
-      description: The cell genotype file in VCF format or cellSNP folder with sparse matrices.
-      pattern: "*.vcf|*/"
-  - n_donor:
-      type: integer
-      description: Number of donors to demultiplex.
-  - donor_file:
-      type: file
-      description: The optional donor genotype file in VCF format.
-      pattern: "*.vcf"
-  - vartrix_data:
-      type: file
-      description: The optional cell genotype files in vartrix outputs.
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1']`
+    - cell_data:
+        type: file
+        description: The cell genotype file in VCF format or cellSNP folder with sparse
+          matrices.
+        pattern: "*.vcf|*/"
+    - n_donor:
+        type: integer
+        description: Number of donors to demultiplex.
+    - donor_file:
+        type: file
+        description: The optional donor genotype file in VCF format.
+        pattern: "*.vcf"
+    - vartrix_data:
+        type: file
+        description: The optional cell genotype files in vartrix outputs.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1' ]`
-
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
   - summary:
-      type: file
-      description: Summary tsv file of deconvolution result.
-      pattern: "*_summary.tsv"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_summary.tsv":
+          type: file
+          description: Summary tsv file of deconvolution result.
+          pattern: "*_summary.tsv"
   - donor_ids:
-      type: file
-      description: Donor assignment with detailed statistics.
-      pattern: "*_donor_ids.tsv"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_donor_ids.tsv":
+          type: file
+          description: Donor assignment with detailed statistics.
+          pattern: "*_donor_ids.tsv"
   - prob_singlets:
-      type: file
-      description: contains probability of classifing singlets
-      pattern: "*_prob_singlet.tsv.gz"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_prob_singlet.tsv.gz":
+          type: file
+          description: contains probability of classifing singlets
+          pattern: "*_prob_singlet.tsv.gz"
   - prob_doublets:
-      type: file
-      description: contains probability of classifing doublets
-      pattern: "*_prob_doublet.tsv.gz"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_prob_doublet.tsv.gz":
+          type: file
+          description: contains probability of classifing doublets
+          pattern: "*_prob_doublet.tsv.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@mari-ga"
   - "@maxozo"

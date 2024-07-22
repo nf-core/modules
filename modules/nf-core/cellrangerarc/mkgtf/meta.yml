@@ -1,31 +1,37 @@
 name: cellrangerarc_mkgtf
-description: Module to build a filtered gtf needed by the 10x Genomics Cell Ranger Arc tool. Uses the cellranger-arc mkgtf command.
+description: Module to build a filtered gtf needed by the 10x Genomics Cell Ranger
+  Arc tool. Uses the cellranger-arc mkgtf command.
 keywords:
   - reference
   - mkref
   - index
 tools:
   - cellrangerarc:
-      description: Cell Ranger Arc by 10x Genomics is a set of analysis pipelines that process Chromium single-cell data to align reads, generate feature-barcode matrices, perform clustering and other secondary analysis, and more.
+      description: Cell Ranger Arc by 10x Genomics is a set of analysis pipelines that
+        process Chromium single-cell data to align reads, generate feature-barcode matrices,
+        perform clustering and other secondary analysis, and more.
       homepage: https://support.10xgenomics.com/single-cell-multiome-atac-gex/software/pipelines/latest/what-is-cell-ranger-arc
       documentation: https://support.10xgenomics.com/single-cell-multiome-atac-gex/software/pipelines/latest/what-is-cell-ranger-arc
       tool_dev_url: https://support.10xgenomics.com/single-cell-multiome-atac-gex/software/pipelines/latest/what-is-cell-ranger-arc
       licence:
         - 10x Genomics EULA
+      identifier: ""
 input:
-  - gtf:
-      type: file
-      description: The reference GTF transcriptome file
-      pattern: "*.gtf"
+  - - gtf:
+        type: file
+        description: The reference GTF transcriptome file
+        pattern: "*.gtf"
 output:
   - gtf:
-      type: directory
-      description: The filtered GTF transcriptome file
-      pattern: "*.filtered.gtf"
+      - "*.filtered.gtf":
+          type: directory
+          description: The filtered GTF transcriptome file
+          pattern: "*.filtered.gtf"
   - versions:
-      type: file
-      description: File containing software version
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software version
+          pattern: "versions.yml"
 authors:
   - "@ggabernet"
   - "@edmundmiller"

@@ -11,34 +11,38 @@ tools:
       documentation: https://github.com/tseemann/abricate
       tool_dev_url: https://github.com/tseemann/abricate
       licence: ["GPL v2"]
+      identifier: biotools:ABRicate
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - assembly:
-      type: file
-      description: FASTA, GenBank or EMBL formatted file
-      pattern: "*.{fa,fasta,fna,fa.gz,fasta.gz,fna.gz,gbk,gbk.gz,embl,embl.gz}"
-  - databasedir:
-      type: directory
-      description: Optional location of local copy of database files, possibly with custom databases set up with `abricate --setupdb`
-      pattern: "*/"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - assembly:
+        type: file
+        description: FASTA, GenBank or EMBL formatted file
+        pattern: "*.{fa,fasta,fna,fa.gz,fasta.gz,fna.gz,gbk,gbk.gz,embl,embl.gz}"
+  - - databasedir:
+        type: directory
+        description: Optional location of local copy of database files, possibly with
+          custom databases set up with `abricate --setupdb`
+        pattern: "*/"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - report:
-      type: file
-      description: Tab-delimited report of results
-      pattern: "*.{txt}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt":
+          type: file
+          description: Tab-delimited report of results
+          pattern: "*.{txt}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@rpetit3"
 maintainers:

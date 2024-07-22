@@ -13,39 +13,42 @@ tools:
       documentation: https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=Blastdocs
       doi: 10.1016/S0022-2836(05)80360-2
       licence: ["US-Government-Work"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: Input fasta file containing queries sequences
-      pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing db information
-        e.g. [ id:'test2', single_end:false ]
-  - db:
-      type: directory
-      description: Directory containing the blast database
-      pattern: "*"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Input fasta file containing queries sequences
+        pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing db information
+          e.g. [ id:'test2', single_end:false ]
+    - db:
+        type: directory
+        description: Directory containing the blast database
+        pattern: "*"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - txt:
-      type: file
-      description: File containing blastn hits
-      pattern: "*.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt":
+          type: file
+          description: File containing blastn hits
+          pattern: "*.txt"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@joseespinosa"
   - "@drpatelh"

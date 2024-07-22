@@ -1,5 +1,7 @@
 name: "gatk4_composestrtablefile"
-description: This tool looks for low-complexity STR sequences along the reference that are later used to estimate the Dragstr model during single sample auto calibration CalibrateDragstrModel.
+description: This tool looks for low-complexity STR sequences along the reference
+  that are later used to estimate the Dragstr model during single sample auto calibration
+  CalibrateDragstrModel.
 keywords:
   - composestrtablefile
   - dragstr
@@ -14,28 +16,31 @@ tools:
       documentation: https://gatk.broadinstitute.org/hc/en-us/articles/4405451249819-ComposeSTRTableFile
       doi: 10.1158/1538-7445.AM2017-3590
       licence: ["Apache-2.0"]
+      identifier: ""
 input:
-  - fasta:
-      type: file
-      description: FASTA reference file
-      pattern: "*.{fasta,fa}"
-  - fasta_fai:
-      type: file
-      description: index of the FASTA reference file
-      pattern: "*.fai"
-  - dict:
-      type: file
-      description: Sequence dictionary of the FASTA reference file
-      pattern: "*.dict"
+  - - fasta:
+        type: file
+        description: FASTA reference file
+        pattern: "*.{fasta,fa}"
+  - - fasta_fai:
+        type: file
+        description: index of the FASTA reference file
+        pattern: "*.fai"
+  - - dict:
+        type: file
+        description: Sequence dictionary of the FASTA reference file
+        pattern: "*.dict"
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - str_table:
-      type: file
-      description: A zipped folder containing the STR table files
-      pattern: "*.zip"
+      - "*.zip":
+          type: file
+          description: A zipped folder containing the STR table files
+          pattern: "*.zip"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

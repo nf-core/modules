@@ -25,58 +25,62 @@ tools:
       tool_dev_url: "https://decoupler-py.readthedocs.io"
       doi: "10.1093/bioadv/vbac016"
       licence: ["GPL v3"]
+      identifier: biotools:decoupler
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:‘test’, single_end ]
-  - mat:
-      type: file
-      description: |
-        Path to the matrix file (e.g. gene/protein expression, etc.).
-        Should be in in tab-separated format (`*.tab`)
-      pattern: "*.tsv"
-  - net:
-      type: file
-      description: |
-        The prior knowledge network linking the features of the
-        expression matrix to a process/component (e.g. gene set,
-        transcription factor, kinase, etc.)
-      pattern: "*.tsv"
-  - args:
-      type: string
-      description: |
-        Keyword arguments passed to `decoupler.decouple()` (see
-        documentation for more information here:
-        https://decoupler-py.readthedocs.io/en/latest/generated/decoupler.decouple.html#decoupler.decouple).
-        Arguments specific for a method must be specified with
-        the method name as a prefix e.g. `'gsea_batch_size'`
-      pattern: "{arg: val, ..., method_arg: val}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:‘test’, single_end ]
+    - mat:
+        type: file
+        description: |
+          Path to the matrix file (e.g. gene/protein expression, etc.).
+          Should be in in tab-separated format (`*.tab`)
+        pattern: "*.tsv"
+  - - net:
+        type: file
+        description: |
+          The prior knowledge network linking the features of the
+          expression matrix to a process/component (e.g. gene set,
+          transcription factor, kinase, etc.)
+        pattern: "*.tsv"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:‘test’, single_end ]
   - dc_estimate:
-      type: file
-      description: |
-        The file containing the estimation results of the enrichment(s)
-      pattern: "*estimate__decoupler.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:‘test’, single_end ]
+      - "*estimate__decoupler.tsv":
+          type: file
+          description: |
+            The file containing the estimation results of the enrichment(s)
+          pattern: "*estimate__decoupler.tsv"
   - dc_pvals:
-      type: file
-      description: |
-        The file containing the p-value associated to the estimation
-        results of the enrichment(s)
-      pattern: "*pvals__decoupler.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:‘test’, single_end ]
+      - "*pvals__decoupler.tsv":
+          type: file
+          description: |
+            The file containing the p-value associated to the estimation
+            results of the enrichment(s)
+          pattern: "*pvals__decoupler.tsv"
+      - s:
+          type: file
+          description: |
+            The file containing the p-value associated to the estimation
+            results of the enrichment(s)
+          pattern: "*pvals__decoupler.tsv"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@gabora"
   - "@vicpaton"
