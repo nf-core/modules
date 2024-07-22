@@ -4,8 +4,8 @@ process LONGPHASE_PHASE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/longphase:1.7.3--hf5e1c6e_0':
-        'biocontainers/longphase:1.7.3--hf5e1c6e_0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-d626bb8ec5a659accfbd8490bc1ac4a940722258:682e8c0cc0ceebf9bd38371a58249aabce93b1b3-0':
+        'biocontainers/mulled-v2-d626bb8ec5a659accfbd8490bc1ac4a940722258:682e8c0cc0ceebf9bd38371a58249aabce93b1b3-0' }"
 
     input:
     tuple val(meta), path(bam), path(bai), path(snps), path(svs), path(mods)
@@ -14,14 +14,15 @@ process LONGPHASE_PHASE {
 
 
     output:
-    tuple val(meta), path("*.vcf"), emit: vcf
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def sv_file = params.svs ? "--sv-file ${svs}" : ""
     def mod_file = params.mods ? "--mod-file ${mods}" : ""
@@ -43,6 +44,10 @@ process LONGPHASE_PHASE {
         ${sv_file} \\
         ${mod_file} \\
 
+    bgzip \\
+        --threads $task.cpus \\
+        $args2 \\
+        ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -54,7 +59,7 @@ process LONGPHASE_PHASE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.vcf
+    echo "" | bgzip -c > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
