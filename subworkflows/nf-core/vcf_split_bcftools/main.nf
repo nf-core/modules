@@ -15,15 +15,15 @@ workflow VCF_SPLIT_BCFTOOLS {
         .transpose()
         .map{metaITC, vcf -> [metaITC + [id: vcf.getBaseName().tokenize(".")[0]], vcf]}
 
-    ch_tbi_samples = BCFTOOLS_PLUGINSPLIT.out.tbi
+    ch_index_samples = BCFTOOLS_PLUGINSPLIT.out.merged_variants_index
         .transpose()
-        .map{metaITC, tbi -> [metaITC + [id: tbi.getBaseName().tokenize(".")[0]], tbi]}
+        .map{metaITC, index -> [metaITC + [id: index.getBaseName().tokenize(".")[0]], index]}
 
-    ch_vcf_tbi_samples = ch_vcf_samples
-        .join(ch_tbi_samples)
+    ch_vcf_index_samples = ch_vcf_samples
+        .join(ch_index_samples)
 
     emit:
-    vcf_tbi        = ch_vcf_tbi_samples   // channel: [ [id, chr, tools], vcf, index ]
+    vcf_index      = ch_vcf_index_samples   // channel: [ [id, chr, tools], vcf, index ]
     versions       = ch_versions          // channel: [ versions.yml ]
 
 }

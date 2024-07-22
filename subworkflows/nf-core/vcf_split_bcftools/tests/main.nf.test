@@ -9,8 +9,8 @@ nextflow_workflow {
     tag "subworkflows/vcf_split_bcftools"
 
     tag "bcftools"
-    tag "bcftools/split"
-
+    tag "bcftools/pluginsplit"
+    tag "bcftools/merge"
 
     test("Split vcf file") {
         setup {
@@ -46,7 +46,7 @@ nextflow_workflow {
             }
             workflow {
                 """
-                input[0] = BCFTOOLS_MERGE.out.merged_variants.join(BCFTOOLS_MERGE.out.tbi)
+                input[0] = BCFTOOLS_MERGE.out.merged_variants.join(BCFTOOLS_MERGE.out.merged_variants_index)
                 """
             }
         }
@@ -54,14 +54,13 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() },
-                { assert snapshot(workflow.out.vcf_tbi.collect{
+                { workflow.out.merged_variants_index.collect{
+                    assert path(it[1]).vcf.sampleCount == 1
+                }},
+                { assert snapshot(workflow.out.vcf_index.collect{
                     path(it[1]).vcf.summary
                     }).match("Split content")
-                },
-                { workflow.out.vcf_tbi.collect{
-                    assert path(it[1]).vcf.sampleCount == 1
-                }}
+                }
             )
         }
     }
