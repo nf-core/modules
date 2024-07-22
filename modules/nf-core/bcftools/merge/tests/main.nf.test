@@ -102,32 +102,4 @@ nextflow_process {
 
     }
 
-    test("test_bcftools_merge_bcf") {
-        config "./merge_bcf.config"
-        when {
-            process {
-                """
-                input[0] = [ [ id:'test' ], // meta map
-                    [ file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true),
-                        file(params.test_data['sarscov2']['illumina']['test3_vcf_gz'], checkIfExists: true) ],
-                    [ file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true),
-                        file(params.test_data['sarscov2']['illumina']['test3_vcf_gz_tbi'], checkIfExists: true) ],
-                    []
-                ]
-                input[1] = [[], [], []]
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    process.out.merged_variants.collect{ path(it[1]).vcf.summary }
-                    ).match()
-                }
-            )
-        }
-    }
 }

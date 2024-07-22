@@ -15,7 +15,7 @@ workflow VCF_SPLIT_BCFTOOLS {
         .transpose()
         .map{metaITC, vcf -> [metaITC + [id: vcf.getBaseName().tokenize(".")[0]], vcf]}
 
-    ch_index_samples = BCFTOOLS_PLUGINSPLIT.out.merged_variants_index
+    ch_index_samples = BCFTOOLS_PLUGINSPLIT.out.index
         .transpose()
         .map{metaITC, index -> [metaITC + [id: index.getBaseName().tokenize(".")[0]], index]}
 

@@ -24,10 +24,10 @@ input:
       type: file
       description: The VCF file to split
       pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
-  - tbi:
+  - index:
       type: file
       description: OPTIONAL - The index of the input VCF/BCF
-      pattern: "*.tbi"
+      pattern: "*.{tbi,csi}"
   - samples:
       type: file
       description: |
@@ -68,6 +68,10 @@ output:
       type: file
       description: The resulting VCF files from the split
       pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+  - index:
+      type: file
+      description: The index of the resulting VCF files
+      pattern: "*.{tbi,csi}"
 authors:
   - "@nvnieuwk"
 maintainers:
