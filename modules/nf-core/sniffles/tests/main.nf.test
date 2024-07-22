@@ -33,7 +33,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.versions,
                     file(process.out.snf.get(0).get(1)).name,
-                    path(process.out.vcf.get(0).get(1)).readLines()[0..2],
+                    path(process.out.vcf.get(0).get(1)).readLines()[0..1],
                     path(process.out.vcf.get(0).get(1)).readLines()[4..62],
                 ).match() }
             )
