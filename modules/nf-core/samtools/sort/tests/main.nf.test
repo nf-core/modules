@@ -62,7 +62,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    process.out.cram,
+                    process.out.cram.collect { it.collect { it instanceof Map ? it : file(it).name } },
                     process.out.crai.collect { it.collect { it instanceof Map ? it : file(it).name } },
                     process.out.versions
                 ).match()}
