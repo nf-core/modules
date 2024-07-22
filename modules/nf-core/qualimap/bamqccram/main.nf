@@ -59,13 +59,14 @@ process QUALIMAP_BAMQCCRAM {
     """
 
     stub:
-    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    prefix   = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         qualimap: \$(echo \$(qualimap 2>&1) | sed 's/^.*QualiMap v.//; s/Built.*\$//')
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 }
