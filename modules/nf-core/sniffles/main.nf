@@ -15,7 +15,7 @@ process SNIFFLES {
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
     tuple val(meta), path("*.snf"), emit: snf
-    path "versions.yml"                    , emit: versions
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
