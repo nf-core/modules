@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "vcf_split_bcftools"
+description: Split a vcf files with multiple samples into multiple vcf files with one sample each using bcftools plugin split.
+keywords:
+  - bcftools
+  - split
+  - vcf
+  - multi-sample
+components:
+  - bcftools/pluginsplit
+input:
+  - ch_vcf:
+      type: file
+      description: |
+        The input channel containing the VCF/BCF files
+        Structure: [ val(meta), path(vcf), path(vcf.tbi) ]
+      pattern: "*.{vcf|bcf(.gz)?}"
+output:
+  - vcf_tbi:
+      type: file
+      description: |
+        Channel containing all the individuals VCF files
+        Structure: [ val(meta), path(vcf), path(vcf.tbi) ]
+      pattern: "*.{vcf|bcf(.gz)?}"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@louislenezet"
+maintainers:
+  - "@louislenezet"

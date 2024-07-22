@@ -1,0 +1,68 @@
+nextflow_workflow {
+
+    name "Test Subworkflow VCF_SPLIT_BCFTOOLS"
+    script "../main.nf"
+    workflow "VCF_SPLIT_BCFTOOLS"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/vcf_split_bcftools"
+
+    tag "bcftools"
+    tag "bcftools/split"
+
+
+    test("Split vcf file") {
+        setup {
+            run("BCFTOOLS_MERGE") {
+                script "../../../../modules/nf-core/bcftools/merge/main.nf"
+                process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [id: "allSamples"],
+                        [file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA12878/NA12878.s_imputed.bcf", checkIfExist:true),
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA19401/NA19401.s_imputed.bcf", checkIfExist:true),
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA20359/NA20359.s_imputed.bcf", checkIfExist:true)],
+                        [file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA12878/NA12878.s_imputed.bcf.csi", checkIfExist:true),
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA19401/NA19401.s_imputed.bcf.csi", checkIfExist:true),
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA20359/NA20359.s_imputed.bcf.csi", checkIfExist:true)],
+                        []
+                    ]
+                )
+                input[1] = Channel.of([
+                    [id: "GRCh38"],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/reference_genome/GRCh38.s.fa.gz", checkIfExist:true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/reference_genome/GRCh38.s.fa.gz.fai", checkIfExist:true),
+                ])
+                """
+                }
+            }
+        }
+        when {
+            params {
+                max_cpus   = 2
+                max_memory = '2.GB'
+            }
+            workflow {
+                """
+                input[0] = BCFTOOLS_MERGE.out.merged_variants.join(BCFTOOLS_MERGE.out.tbi)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() },
+                { assert snapshot(workflow.out.vcf_tbi.collect{
+                    path(it[1]).vcf.summary
+                    }).match("Split content")
+                },
+                { workflow.out.vcf_tbi.collect{
+                    assert path(it[1]).vcf.sampleCount == 1
+                }}
+            )
+        }
+    }
+}
