@@ -54,6 +54,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.log_final[0][1]).name,
+                    file(process.out.log_progress[0][1]).name,
                     file(process.out.log_out[0][1]).name,
                     process.out.bam,
                     process.out.bam_sorted,
@@ -62,7 +63,6 @@ nextflow_process {
                     process.out.bedgraph,
                     process.out.fastq,
                     process.out.junction,
-                    process.out.log_progress,
                     process.out.read_per_gene_tab,
                     process.out.sam,
                     process.out.spl_junc_tab,
