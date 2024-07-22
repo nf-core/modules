@@ -273,8 +273,6 @@ jobs:
           - profile: conda
             tags: checkm2/predict
           - profile: conda
-            tags: checkqc
-          - profile: conda
             tags: controlfreec/makegraph2
           - profile: conda
             tags: coreograph
@@ -546,6 +544,8 @@ jobs:
             path: modules/nf-core/cellranger/multi
           - profile: conda
             path: modules/nf-core/cellranger/vdj
+          - profile: conda
+            tags: checkqc
           - profile: conda
             path: modules/nf-core/custom/dumpsoftwareversions
           - profile: conda
