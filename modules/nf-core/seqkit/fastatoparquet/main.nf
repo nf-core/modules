@@ -3,8 +3,8 @@ process SEQKIT_FASTATOPARQUET {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "docker.io/mheuermammoth/seqkit-duckdb:latest"
-    //container "community.wave.seqera.io/library/duckdb_seqkit:904c1e8baae5c19a"
+    //container "docker.io/mheuermammoth/seqkit-duckdb:latest"
+    container "community.wave.seqera.io/library/duckdb-cli_seqkit:46b559b641e46efd"
     //container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
     //    'https://depot.galaxyproject.org/singularity/seqkit:2.8.1--h9ee0642_0' :
     //    'biocontainers/seqkit:2.8.1--h9ee0642_0' }"
