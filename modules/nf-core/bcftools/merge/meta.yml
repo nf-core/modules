@@ -28,6 +28,10 @@ input:
       description: |
         List containing the tbi index files corresponding to the vcfs input files
         e.g. [ 'file1.vcf.tbi', 'file2.vcf.tbi' ]
+  - bed:
+      type: file
+      description: "(Optional) The bed regions to merge on"
+      pattern: "*.bed"
   - meta2:
       type: map
       description: |
@@ -37,41 +41,24 @@ input:
       type: file
       description: "(Optional) The fasta reference file (only necessary for the `--gvcf FILE` parameter)"
       pattern: "*.{fasta,fa}"
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'genome' ]
   - fai:
       type: file
       description: "(Optional) The fasta reference file index (only necessary for the `--gvcf FILE` parameter)"
       pattern: "*.fai"
-  - bed:
-      type: file
-      description: "(Optional) The bed regions to merge on"
-      pattern: "*.bed"
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - vcf_gz:
+  - merged_variants:
       type: file
-      description: VCF merged output file (bgzipped) => when `--output-type z` is used
-      pattern: "*.vcf.gz"
-  - vcf:
+      description: Merged VCF output file it's format depends on the `--output-type` parameter
+      pattern: "*.{bcf,vcf}{,.gz}"
+  - merged_variants_index:
       type: file
-      description: VCF merged output file => when `--output-type v` is used
-      pattern: "*.vcf"
-  - bcf_gz:
-      type: file
-      description: BCF merged output file (bgzipped) => when `--output-type b` is used
-      pattern: "*.bcf.gz"
-  - bcf:
-      type: file
-      description: BCF merged output file => when `--output-type u` is used
-      pattern: "*.bcf"
+      description: Merged VCF output file index
+      pattern: "*.{tbi,csi}"
   - versions:
       type: file
       description: File containing software versions
