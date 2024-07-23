@@ -6,8 +6,8 @@ workflow BAM_DOWNSAMPLE_SAMTOOLS {
 
     take:
     ch_bam    // channel: [ [id], bam, bai ]
-    ch_depth  // channel: [ [depth], depth ]
     ch_fasta  // channel: [ [genome], fasta, fai ]
+    depth     // channel: [ depth ]
 
     main:
     ch_versions      = Channel.empty()
@@ -26,9 +26,9 @@ workflow BAM_DOWNSAMPLE_SAMTOOLS {
         .map{ metaI, row ->
             [ metaI, row[0] as Float ]
         }
-        .combine(ch_depth)
-        .map{ metaI, mean, metaD, depth ->
-            [ metaI, metaI + metaD, depth as Float / mean ]
+        .combine(depth)
+        .map{ metaI, mean, depth ->
+            [ metaI, metaI + ["depth": depth], depth as Float / mean ]
         }
 
     // Add all necessary channel for downsampling
