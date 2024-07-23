@@ -1,0 +1,95 @@
+nextflow_workflow {
+
+    name "Test Subworkflow BAM_DOWNSAMPLE_SAMTOOLS"
+    script "../main.nf"
+    config "./nextflow.config"
+
+    workflow "BAM_DOWNSAMPLE_SAMTOOLS"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/bam_downsample_samtools"
+
+    tag "samtools"
+    tag "samtools/depth"
+    tag "samtools/view"
+    tag "gawk"
+
+    test("Downsample to 2X") {
+        when {
+            params {
+                max_cpus   = 2
+                max_memory = '2.GB'
+            }
+            workflow {
+                """
+                input[0] = Channel.fromList([
+                    [
+                        [id: "NA12878"],
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA12878/NA12878.s.bam", checkIfExist:true),
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA12878/NA12878.s.bam.bai", checkIfExist:true),
+                    ],
+                    [
+                        [id: "NA19401"],
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA19401/NA19401.s.bam", checkIfExist:true),
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA19401/NA19401.s.bam.bai", checkIfExist:true),
+                    ],
+                ])
+                input[1] = Channel.of([[depth: 2], 2]).collect()
+                input[2] = Channel.of([
+                    [id: "GRCh38"],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/reference_genome/GRCh38.s.fa.gz", checkIfExist:true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/reference_genome/GRCh38.s.fa.gz.fai", checkIfExist:true),
+                ]).collect()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() },
+                { assert snapshot(workflow.out.bam_emul.collect{ bam(it[1]).getReads().size() }).match("Reads2X") }
+            )
+        }
+    }
+
+    test("Downsample to 4X") {
+        when {
+            params {
+                max_cpus   = 2
+                max_memory = '2.GB'
+            }
+            workflow {
+                """
+                input[0] = Channel.fromList([
+                    [
+                        [id: "NA12878"],
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA12878/NA12878.s.bam", checkIfExist:true),
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA12878/NA12878.s.bam.bai", checkIfExist:true),
+                    ],
+                    [
+                        [id: "NA19401"],
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA19401/NA19401.s.bam", checkIfExist:true),
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA19401/NA19401.s.bam.bai", checkIfExist:true),
+                    ],
+                ])
+                input[1] = Channel.of([[depth: 4], 4]).collect()
+                input[2] = Channel.of([
+                    [id: "GRCh38"],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/reference_genome/GRCh38.s.fa.gz", checkIfExist:true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/reference_genome/GRCh38.s.fa.gz.fai", checkIfExist:true),
+                ]).collect()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() },
+                { assert snapshot(workflow.out.bam_emul.collect{ bam(it[1]).getReads().size() }).match("Reads4X") }
+            )
+        }
+    }
+}
