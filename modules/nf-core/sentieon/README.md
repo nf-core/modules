@@ -75,6 +75,9 @@ For `SENTIEON_LICSRVR_IP` you can use your own server IP.
 
 Additionally, the following may be necessary. If you don't know either key, you probably don't need it:
 
+<details markdown="1">
+<summary>Optional configuration</summary>
+
 ```bash
 SENTIEON_ENCRYPTION_KEY=$(op read "op://Dev/Sentieon License Server/GitHub Secrets/SENTIEON_ENCRYPTION_KEY")
 SENTIEON_LICENSE_MESSAGE=$(op read "op://Dev/Sentieon License Server/GitHub Secrets/SENTIEON_LICENSE_MESSAGE")
@@ -83,3 +86,8 @@ nextflow secrets set SENTIEON_AUTH_DATA $(python3 tests/modules/nf-core/sentieon
 
 > [!NOTE]
 > If this fails run `op signin` to flip to nf-core account
+
+</details>
+
+
+
