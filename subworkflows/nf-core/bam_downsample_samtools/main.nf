@@ -7,7 +7,7 @@ workflow BAM_DOWNSAMPLE_SAMTOOLS {
     take:
     ch_bam    // channel: [ [id], bam, bai ]
     ch_depth  // channel: [ [depth], depth ]
-    ch_fasta  // channel: [ [genome], fasta, fai ]
+    ch_fasta  // channel: [ [genome], fasta ]
 
     main:
     ch_versions      = Channel.empty()
