@@ -88,6 +88,3 @@ nextflow secrets set SENTIEON_AUTH_DATA $(python3 tests/modules/nf-core/sentieon
 > If this fails run `op signin` to flip to nf-core account
 
 </details>
-
-
-
