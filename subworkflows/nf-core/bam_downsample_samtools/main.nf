@@ -41,7 +41,7 @@ workflow BAM_DOWNSAMPLE_SAMTOOLS {
     // Downsample
     SAMTOOLS_VIEW(
         ch_input_downsample,
-        ch_fasta.map{ metaG, fasta, fai -> [metaG, fasta] },
+        ch_fasta
         []
     )
     ch_versions = ch_versions.mix(SAMTOOLS_VIEW.out.versions.first())
