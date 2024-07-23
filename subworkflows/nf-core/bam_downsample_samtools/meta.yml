@@ -16,7 +16,7 @@ input:
       description: |
         The input channel containing the BAM/CRAM/SAM files and their indexes
         Structure: [ val(meta), path(bam), path(bai) ]
-      pattern: "*.{bam/cram/sam}"
+      pattern: "*.{bam,cram,sam}"
   - ch_depth:
       type: value
       description: |
