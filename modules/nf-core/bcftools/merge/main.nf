@@ -9,7 +9,8 @@ process BCFTOOLS_MERGE {
 
     input:
     tuple val(meta), path(vcfs), path(tbis), path(bed)
-    tuple val(meta2), path(fasta), path(fai)
+    tuple val(meta2), path(fasta)
+    tuple val(meta2), path(fai)
 
     output:
     tuple val(meta), path("*.{bcf,vcf}{,.gz}"), emit: merged_variants
