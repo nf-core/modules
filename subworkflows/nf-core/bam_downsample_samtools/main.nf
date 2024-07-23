@@ -31,7 +31,6 @@ workflow BAM_DOWNSAMPLE_SAMTOOLS {
     ch_input_downsample = ch_bam
         .join(ch_mean_depth)
         .combine(depth)
-        .view()
         .map{ meta, bam, index, mean, depth ->
             [ meta + ["depth": depth], bam, index, depth as Float / mean ]
         }
