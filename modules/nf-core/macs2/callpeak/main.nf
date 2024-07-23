@@ -50,7 +50,7 @@ process MACS2_CALLPEAK {
         macs2: \$(macs2 --version | sed -e "s/macs2 //g")
     END_VERSIONS
     """
-    
+
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
