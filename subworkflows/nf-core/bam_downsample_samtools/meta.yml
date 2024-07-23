@@ -14,14 +14,9 @@ input:
   - ch_bam:
       type: file
       description: |
-        The input channel containing the BAM/CRAM/SAM files and their indexes
-        Structure: [ val(meta), path(bam), path(bai) ]
+        The input channel containing the BAM/CRAM/SAM files and their indexes and the depth at which to downsample them.
+        Structure: [ val(meta), path(bam), path(bai), val(depth) ]
       pattern: "*.{bam,cram,sam}"
-  - ch_depth:
-      type: value
-      description: |
-        The target depth to downsample to
-      pattern: "[0-9]+"
   - ch_fasta:
       type: file
       description: |

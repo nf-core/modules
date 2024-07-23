@@ -12,7 +12,7 @@ workflow BAM_DOWNSAMPLE_SAMTOOLS {
     ch_versions      = Channel.empty()
 
     // Compute mean depth
-    SAMTOOLS_DEPTH(ch_bam.map{ it[0..2] }, [[], []])
+    SAMTOOLS_DEPTH(ch_bam_bai_depth.map{ it[0..2] }, [[], []])
     ch_versions = ch_versions.mix(SAMTOOLS_DEPTH.out.versions.first())
 
     // Use GAWK to get mean depth
@@ -27,7 +27,7 @@ workflow BAM_DOWNSAMPLE_SAMTOOLS {
         }
 
     // Add all necessary channel for downsampling
-    ch_input_downsample = ch_bam
+    ch_input_downsample = ch_bam_bai_depth
         .join(ch_mean_depth)
         .map{ meta, bam, index, depth, mean ->
             [ meta + ['subsample_fraction': depth as Float / mean ], bam, index ]
