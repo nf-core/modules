@@ -6,7 +6,7 @@ workflow BAM_DOWNSAMPLE_SAMTOOLS {
 
     take:
     ch_bam    // channel: [ [id], bam, bai ]
-    ch_fasta  // channel: [ [genome], fasta, fai ]
+    ch_fasta  // channel: [ [genome], fasta ]
     depth     // channel: [ depth ]
 
     main:
@@ -21,27 +21,25 @@ workflow BAM_DOWNSAMPLE_SAMTOOLS {
     ch_versions = ch_versions.mix(GAWK.out.versions.first())
 
     // Compute downsampling factor
-    ch_depth_factor = GAWK.out.output
+    ch_mean_depth = GAWK.out.output
         .splitCsv(header: false, sep:'\t')
         .map{ metaI, row ->
             [ metaI, row[0] as Float ]
         }
-        .combine(depth)
-        .map{ metaI, mean, depth ->
-            [ metaI, metaI + ["depth": depth], depth as Float / mean ]
-        }
 
     // Add all necessary channel for downsampling
     ch_input_downsample = ch_bam
-        .combine(ch_depth_factor, by : 0)
-        .map{ metaI, bam, index, metaID, depth ->
-            [ metaID, bam, index, [], depth ]
+        .join(ch_mean_depth)
+        .combine(depth)
+        .view()
+        .map{ meta, bam, index, mean, depth ->
+            [ meta + ["depth": depth], bam, index, depth as Float / mean ]
         }
 
     // Downsample
     SAMTOOLS_VIEW(
         ch_input_downsample,
-        ch_fasta
+        ch_fasta,
         []
     )
     ch_versions = ch_versions.mix(SAMTOOLS_VIEW.out.versions.first())
