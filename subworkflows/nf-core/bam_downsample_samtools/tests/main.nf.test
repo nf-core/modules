@@ -17,10 +17,6 @@ nextflow_workflow {
 
     test("Downsample to 2X") {
         when {
-            params {
-                max_cpus   = 2
-                max_memory = '2.GB'
-            }
             workflow {
                 """
                 input[0] = Channel.fromList([
