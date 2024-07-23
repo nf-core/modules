@@ -5,9 +5,8 @@ include { SAMTOOLS_VIEW  } from '../../../modules/nf-core/samtools/view'
 workflow BAM_DOWNSAMPLE_SAMTOOLS {
 
     take:
-    ch_bam    // channel: [ [id], bam, bai ]
+    ch_bam_bai_depth    // channel: [ [id], bam, bai, depth ]
     ch_fasta  // channel: [ [genome], fasta ]
-    depth     // channel: [ depth ]
 
     main:
     ch_versions      = Channel.empty()
