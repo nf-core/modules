@@ -30,7 +30,7 @@ workflow BAM_DOWNSAMPLE_SAMTOOLS {
     ch_input_downsample = ch_bam_bai_depth
         .join(ch_mean_depth)
         .map{ meta, bam, index, depth, mean ->
-            [ meta + ['subsample_fraction': depth as Float / mean ], bam, index ]
+            [ meta + ['subsample_fraction': depth as Float / mean, 'depth': depth ], bam, index ]
         }
 
     // Downsample

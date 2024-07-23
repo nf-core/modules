@@ -42,8 +42,10 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() },
-                { assert snapshot(workflow.out.bam_downsampled.collect{ [it[0], bam(it[1]).getReads().size()] }).match("Reads") }
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.bam_downsampled.collect{ [it[0], bam(it[1]).getReads().size()] }
+                ).match() }
             )
         }
     }
