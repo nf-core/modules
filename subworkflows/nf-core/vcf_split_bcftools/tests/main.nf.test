@@ -32,8 +32,11 @@ nextflow_workflow {
                 )
                 input[1] = Channel.of([
                     [id: "GRCh38"],
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/reference_genome/GRCh38.s.fa.gz", checkIfExist:true),
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/reference_genome/GRCh38.s.fa.gz.fai", checkIfExist:true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/reference_genome/GRCh38.s.fa.gz", checkIfExist:true)
+                ])
+                input[2] =  Channel.of([
+                    [id: "GRCh38"],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/reference_genome/GRCh38.s.fa.gz.fai", checkIfExist:true)
                 ])
                 """
                 }
