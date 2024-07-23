@@ -17,7 +17,7 @@ nextflow_process {
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true),
-                    [], []
+                    []
                 ])
                 input[1] = [[],[]]
                 input[2] = []
@@ -47,8 +47,7 @@ nextflow_process {
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true),
-                    []
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true)
                 ])
                 input[1] = Channel.of([
                     [ id:'genome' ], // meta map
@@ -83,7 +82,7 @@ nextflow_process {
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
-                    [], []
+                    []
                 ])
                 input[1] = Channel.of([
                     [ id:'genome' ], // meta map
@@ -118,7 +117,7 @@ nextflow_process {
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
-                    [], []
+                    []
                 ])
                 input[1] = Channel.of([
                     [ id:'genome' ], // meta map
@@ -153,7 +152,7 @@ nextflow_process {
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
-                    [], []
+                    []
                 ])
                 input[1] = Channel.of([
                     [ id:'genome' ], // meta map
@@ -191,7 +190,7 @@ nextflow_process {
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true),
-                    [], []
+                    []
                 ])
                 input[1] = [[],[]]
                 input[2] = []
