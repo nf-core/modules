@@ -1,0 +1,43 @@
+name: "yak_count"
+description: write your description here
+keywords:
+  - k-mers
+  - count
+tools:
+  - "yak":
+      description: "Yet another k-mer analyzer"
+      homepage: "https://github.com/lh3/yak"
+      documentation: "https://github.com/lh3/yak/blob/master/README.md"
+      tool_dev_url: "https://github.com/lh3/yak"
+      licence: ['MIT']
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - fastqs:
+      type: path
+      description: directory contains compressed reads fastq file 
+      pattern: "*.{fastq.gz,fq.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - yak:
+      type: file
+      description: k-mer hash table for assembly
+      pattern: "*.{yak}"
+
+authors:
+  - "@yumisims"
+maintainers:
+  - "@yumisims"
