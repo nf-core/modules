@@ -1,14 +1,14 @@
 nextflow_workflow {
 
-    name "Test Subworkflow BAM_DOWNSAMPLE_SAMTOOLS"
+    name "Test Subworkflow BAM_SUBSAMPLEDEPTH_SAMTOOLS"
     script "../main.nf"
     config "./nextflow.config"
 
-    workflow "BAM_DOWNSAMPLE_SAMTOOLS"
+    workflow "BAM_SUBSAMPLEDEPTH_SAMTOOLS"
 
     tag "subworkflows"
     tag "subworkflows_nfcore"
-    tag "subworkflows/bam_downsample_samtools"
+    tag "subworkflows/bam_subsampledepth_samtools"
 
     tag "samtools"
     tag "samtools/depth"
@@ -44,7 +44,7 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                     workflow.out,
-                    workflow.out.bam_downsampled.collect{ [it[0], bam(it[1]).getReads().size()] }
+                    workflow.out.bam_subsampled.collect{ [it[0], bam(it[1]).getReads().size()] }
                 ).match() }
             )
         }
