@@ -67,7 +67,6 @@ The Server IP doesn't matter either because they would also need the `SENTIEON_E
 ## Local Testing
 
 ```bash
-export SENTIEON_AUTH_MECH="GitHub Actions - token"
 export SENTIEON_LICSRVR_IP=$(op read "op://Dev/Sentieon License Server/SENTIEON_LICSRVR_IP")
 ```
 
@@ -79,6 +78,7 @@ Additionally, the following may be necessary. If you don't know either key, you 
 <summary>Optional configuration</summary>
 
 ```bash
+export SENTIEON_AUTH_MECH="GitHub Actions - token"
 SENTIEON_ENCRYPTION_KEY=$(op read "op://Dev/Sentieon License Server/GitHub Secrets/SENTIEON_ENCRYPTION_KEY")
 SENTIEON_LICENSE_MESSAGE=$(op read "op://Dev/Sentieon License Server/GitHub Secrets/SENTIEON_LICENSE_MESSAGE")
 nextflow secrets set SENTIEON_AUTH_DATA $(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "$SENTIEON_ENCRYPTION_KEY" --message "$SENTIEON_LICENSE_MESSAGE")
