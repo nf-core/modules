@@ -37,7 +37,7 @@ process MINIMAP2_ALIGN {
     def set_cigar_bam = cigar_bam && bam_format ? "-L" : ''
     def bam_input = "${reads.extension}".matches('sam|bam|cram')
     def samtools_reset_fastq = bam_input ? "samtools reset --threads ${task.cpus-1} $args3 $reads | samtools fastq --threads ${task.cpus-1} $args4 |" : ''
-    def query = bam_input ? "-y -" : reads
+    def query = bam_input ? "-" : reads
     def target = reference ?: (bam_input ? error("BAM input requires reference") : reads)
 
     """
