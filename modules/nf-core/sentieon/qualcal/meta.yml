@@ -1,56 +1,85 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "sentieon_qualcal"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Generate recalibration table and optionally perform base quality recalibration
 keywords:
-  - sort
-  - example
-  - genomics
+  - base quality score recalibration
+  - bqsr
+  - sentieon
 tools:
-  - "sentieon":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: "Accelerated performance bioinformatics tools for mapping and variant calling"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
-      licence: ['Commercial (requires license for use; redistribution allowed)']
-
-## TODO nf-core: Add a description of all of the variables used as input
+  - sentieon:
+      description: |
+        Sentieon® provides complete solutions for secondary DNA/RNA analysis for a variety of sequencing platforms, including short and long reads.
+        Our software improves upon BWA, STAR, Minimap2, GATK, HaplotypeCaller, Mutect, and Mutect2 based pipelines and is deployable on any generic-CPU-based computing system.
+      homepage: https://www.sentieon.com/
+      documentation: https://www.sentieon.com/
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+        e.g. [ id:'test', single_end:false ]
+  - input:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: BAM/CRAM file from alignment
+      pattern: "*.{bam,cram}"
+  - input_index:
+      type: file
+      description: BAI/CRAI file from alignment
+      pattern: "*.{bai,crai}"
+  - fasta:
+      type: file
+      description: The reference fasta file
+      pattern: "*.fasta"
+  - fai:
+      type: file
+      description: Index of reference fasta file
+      pattern: "*.fasta.fai"
+  - known_sites:
+      type: file
+      description: VCF files with known sites for indels / snps (optional)
+      pattern: "*.vcf.gz"
+  - known_sites_tbi:
+      type: file
+      description: Tabix index of the known_sites (optional)
+      pattern: "*.vcf.gz.tbi"
+  - recalibration_table:
+      type: file
+      description: File containing recalibration values (optional)
+      pattern: "*.table"
+  - generate_recalibrated_bams:
+      type: boolean
+      description: If truem, writes recalibrated bams to disc
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  
+        e.g. [ id:'test', single_end:false ]
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  -  table:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
+      description: Pre Recalibration table (optional)
+      pattern: "*.table"
+  - table_post:
+      type: file
+      description: Post recalibration table (optional)
+      pattern: "*.table.post"
+  - recal_alignment:
+      type: file
+      description: Recalibrated input files (optional)
+      pattern: "*.{bam,cram}"
+  - csv:
+      type: file
+      description: Recalibration results output file used for plotting. (optional)
+      pattern: "*.csv"
+  - pdf:
+      type: file
+      description: PDF file containing graphs (optional)
+      pattern: "*.pdf"
 authors:
   - "@FriederikeHanssen"
 maintainers:

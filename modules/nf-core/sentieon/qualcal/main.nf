@@ -8,21 +8,20 @@ process SENTIEON_QUALCAL {
         'nf-core/sentieon:202308.02--c641bc397cbf79d5' }"
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(input), path(input_index)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(known_sites)
     tuple val(meta5), path(known_sites_tbi)
     tuple val(meta6), path(recalibration_table)
-    val apply_recalibration
     val generate_recalibrated_bams
 
     output:
-    tuple val(meta), path ("*.table")       , emit: recal_table         , optional: true
-    tuple val(meta), path ("*.table.post")  , emit: recal_table_post    , optional: true
-    tuple val(meta), path("*.bam")          , emit: bam                 , optional: true
-    tuple val(meta), path ("*.csv")         , emit: recal_csv           , optional: true
-    tuple val(meta), path ("*.pdf")         , emit: pdf                 , optional: true
+    tuple val(meta), path ("*.table")       , emit: table           , optional: true
+    tuple val(meta), path ("*.table.post")  , emit: table_post      , optional: true
+    tuple val(meta), path ("*.{cram,bam}")  , emit: recal_alignment , optional: true
+    tuple val(meta), path ("*.csv")         , emit: csv             , optional: true
+    tuple val(meta), path ("*.pdf")         , emit: pdf             , optional: true
     path "versions.yml"                     , emit: versions
 
     when:
@@ -37,14 +36,14 @@ process SENTIEON_QUALCAL {
         ""
 
     // Create recalibration table. Actual base quality recalibration can be done during Variant calling with Sentieon
-    if(!apply_recalibration) {
+    if(!recalibration_table) {
         """
         $sentieonLicense
 
         sentieon driver \\
             -t $task.cpus \\
             -r $fasta \\
-            -i $bam \\
+            -i $input \\
             --algo QualCal \\
             $args \\
             $knownSites \\
@@ -57,7 +56,7 @@ process SENTIEON_QUALCAL {
         """
     } else {
     // Runs basequality recalibration with a previous generated table
-        def file_suffix = bam.name.endsWith(".bam") ? "bam" : "cram"
+        def file_suffix = input.name.endsWith(".bam") ? "bam" : "cram"
         def recalibrated_bam = generate_recalibrated_bams ? "--algo ReadWriter ${prefix}.recalibrated.${file_suffix}" : ""
         """
         $sentieonLicense
@@ -65,8 +64,8 @@ process SENTIEON_QUALCAL {
         sentieon driver \\
             -t $task.cpus \\
             -r $fasta \\
-            -i $bam \\
-            -q $recalibration_table\\
+            -i $input \\
+            -q $recalibration_table \\
             --algo QualCal \\
             $args \\
             $knownSites \\
@@ -94,7 +93,7 @@ process SENTIEON_QUALCAL {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def file_suffix = bam.name.endsWith(".bam") ? "bam" : "cram"
+    def file_suffix = input.name.endsWith(".bam") ? "bam" : "cram"
     def recalibrated_bam = generate_recalibrated_bams ? "${prefix}.recalibrated.${file_suffix}" : ""
     """
     touch ${prefix}.table

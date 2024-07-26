@@ -10,8 +10,6 @@ nextflow_process {
     tag "sentieon/qualcal"
     config "./nextflow.config"
 
-
-    // Needed test:  actually recalibrate, Stub
     test("Generate recalibration table - BAM") {
         when {
             process {
@@ -28,7 +26,6 @@ nextflow_process {
                 input[4] = [ [ id:'knownSites' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true) ]
                 input[5] = [[:],[]]
                 input[6] = false
-                input[7] = false
                 """
             }
         }
@@ -59,7 +56,6 @@ nextflow_process {
                 input[4] = [ [ id:'knownSites' ],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz.tbi', checkIfExists: true) ]
                 input[5] = [[:],[]]
                 input[6] = false
-                input[7] = false
                 """
             }
         }
@@ -91,7 +87,6 @@ nextflow_process {
                         input[4] = [ [ id:'knownSites' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true) ]
                         input[5] = [[:],[]]
                         input[6] = false
-                        input[7] = false
                     """
                 }
             }
@@ -110,9 +105,8 @@ nextflow_process {
 
                 input[3] = [ [ id:'knownSites' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true) ]
                 input[4] = [ [ id:'knownSites' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true) ]
-                input[5] = SENTIEON_QUALCAL_SETUP.out.recal_table
+                input[5] = SENTIEON_QUALCAL_SETUP.out.table
                 input[6] = true
-                input[7] = true
                 """
             }
         }
@@ -145,7 +139,6 @@ nextflow_process {
                     input[4] = [ [ id:'knownSites' ],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz.tbi', checkIfExists: true) ]
                     input[5] = [[:],[]]
                     input[6] = false
-                    input[7] = false
                     """
                 }
             }
@@ -164,9 +157,8 @@ nextflow_process {
 
                 input[3] = [ [ id:'knownSites' ],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz', checkIfExists: true) ]
                 input[4] = [ [ id:'knownSites' ],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz.tbi', checkIfExists: true) ]
-                input[5] = SENTIEON_QUALCAL_SETUP.out.recal_table
+                input[5] = SENTIEON_QUALCAL_SETUP.out.table
                 input[6] = true
-                input[7] = true
                 """
             }
         }
@@ -197,7 +189,6 @@ nextflow_process {
                 input[4] = [ [ id:'knownSites' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true) ]
                 input[5] = [[:],[]]
                 input[6] = true
-                input[7] = true
                 """
             }
         }
