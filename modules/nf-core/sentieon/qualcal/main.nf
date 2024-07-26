@@ -10,16 +10,21 @@ process SENTIEON_QUALCAL {
     input:
     tuple val(meta), path(bam), path(bai)
     tuple val(meta2), path(fasta)
-    tuple val(meta3), path(known_sites) //optional
-    tuple val(meta4), path(recal_table) // not optional?!
-    tuple val(meta5), path(recal_table_post) // not optional?!
-    val generate_recalibrated_bams // false?
+    tuple val(meta3), path(fai)
+    tuple val(meta4), path(known_sites)
+    tuple val(meta5), path(known_sites_tbi)
+    tuple val(meta6), path(recalibration_table)
+    val apply_recalibration
+    val generate_recalibrated_bams
 
     output:
+    tuple val(meta), path ("*.table"), emit: recal_table
+
+    tuple val(meta), path ("*.table.post"), emit: recal_table_post, optional: true
     tuple val(meta), path("*.bam"), emit: bam, optional: true  //recalibrated bam: output is optional
-    tuple val(meta), path("*.report"), emit: report, optional: true
-    tuple val(meta), path ("recal_table"), emit: recal_table, optional: true 
-    tuple val(meta), path ("*.pdf"), emit: pdf
+    tuple val(meta), path ("*.csv"), emit: recal_csv, optional: true
+    tuple val(meta), path ("*.pdf"), emit: pdf, optional: true
+
     path "versions.yml"           , emit: versions
 
     when:
@@ -28,26 +33,23 @@ process SENTIEON_QUALCAL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def known_sites = known_sites ? known_sites.collect{"-k $it"}.join(' ') : ""
+    def knownSites = known_sites ? known_sites.collect{"-k $it"}.join(' ') : ""
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64 ?
         "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; " :
         ""
 
-    // Temprorary output files:
-    // recal_table_post
-    // recal_csv
-
     // Actual base quality recalibration can be done during Variant calling with Sentieon
-    if() {
+    if(!apply_recalibration) {
         """
         $sentieonLicense
 
-        sentieon driver --algo QualCal \\
-            $args \\
+        sentieon driver \\
             -t $task.cpus \\
             -r $fasta \\
             -i $bam \\
-            $known_sites \\
+            --algo QualCal \\
+            $args \\
+            $knownSites \\
             ${prefix}.table
 
         cat <<-END_VERSIONS > versions.yml
@@ -57,27 +59,29 @@ process SENTIEON_QUALCAL {
         """
     } else {
     // Runs basequality recalibration in one step
-    //TODO bam and cram should both work, this is also still optional
-        def recalibrated_bam = generate_reclibrated_bams ? "--algo ReadWriter ${prefix}.recalibrated.cram" : ""
+        def file_suffix = bam.name.endsWith(".bam") ? "bam" : "cram"
+        def recalibrated_bam = generate_recalibrated_bams ? "--algo ReadWriter ${prefix}.recalibrated.${file_suffix}" : ""
         """
         $sentieonLicense
 
-        sentieon driver --algo QualCal \\
-            $args \\
+        sentieon driver \\
             -t $task.cpus \\
             -r $fasta \\
             -i $bam \\
-            $known_sites \\
-            -q ${prefix}.table \\
-            $recalibrated_bam \\
-            ${prefix}.table.post
-
-        sentieon driver --algo QualCal \\
+            -q $recalibration_table\\
+            --algo QualCal \\
             $args \\
+            $knownSites \\
+            ${prefix}.table.post \\
+            $recalibrated_bam \\
+
+        sentieon driver \\
             -t $task.cpus \\
+            --algo QualCal \\
             --plot \\
             --before ${prefix}.table \\
-            --after ${prefix}.table.post
+            --after ${prefix}.table.post \\
+            $args \\
             ${prefix}.csv
 
         sentieon plot QualCal -o ${prefix}.pdf ${prefix}.csv
@@ -92,10 +96,6 @@ process SENTIEON_QUALCAL {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // TODO nf-core: A stub section should mimic the execution of the original module as best as possible
-    //               Have a look at the following examples:
-    //               Simple example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bcftools/annotate/main.nf#L47-L63
-    //               Complex example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bedtools/split/main.nf#L38-L54
     """
     touch ${prefix}.bam
 
