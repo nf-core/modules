@@ -10,6 +10,7 @@ process CHECKQC {
 
     output:
     tuple val(meta), path("*checkqc_report.json"), emit: report
+    tuple val(meta), path("*checkqc_log.txt")    , emit: log
     path "versions.yml"                          , emit: versions
 
     when:
@@ -29,7 +30,9 @@ process CHECKQC {
         $args \
         $config \
         --json \
-        $run_dir > checkqc_report.json
+        $run_dir > checkqc_report.json || true
+
+    cp .command.log checkqc_log.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
