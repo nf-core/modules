@@ -18,14 +18,12 @@ process SENTIEON_QUALCAL {
     val generate_recalibrated_bams
 
     output:
-    tuple val(meta), path ("*.table"), emit: recal_table
-
-    tuple val(meta), path ("*.table.post"), emit: recal_table_post, optional: true
-    tuple val(meta), path("*.bam"), emit: bam, optional: true  //recalibrated bam: output is optional
-    tuple val(meta), path ("*.csv"), emit: recal_csv, optional: true
-    tuple val(meta), path ("*.pdf"), emit: pdf, optional: true
-
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path ("*.table")       , emit: recal_table         , optional: true
+    tuple val(meta), path ("*.table.post")  , emit: recal_table_post    , optional: true
+    tuple val(meta), path("*.bam")          , emit: bam                 , optional: true
+    tuple val(meta), path ("*.csv")         , emit: recal_csv           , optional: true
+    tuple val(meta), path ("*.pdf")         , emit: pdf                 , optional: true
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,7 +36,7 @@ process SENTIEON_QUALCAL {
         "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; " :
         ""
 
-    // Actual base quality recalibration can be done during Variant calling with Sentieon
+    // Create recalibration table. Actual base quality recalibration can be done during Variant calling with Sentieon
     if(!apply_recalibration) {
         """
         $sentieonLicense
@@ -58,7 +56,7 @@ process SENTIEON_QUALCAL {
         END_VERSIONS
         """
     } else {
-    // Runs basequality recalibration in one step
+    // Runs basequality recalibration with a previous generated table
         def file_suffix = bam.name.endsWith(".bam") ? "bam" : "cram"
         def recalibrated_bam = generate_recalibrated_bams ? "--algo ReadWriter ${prefix}.recalibrated.${file_suffix}" : ""
         """
@@ -96,12 +94,18 @@ process SENTIEON_QUALCAL {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def file_suffix = bam.name.endsWith(".bam") ? "bam" : "cram"
+    def recalibrated_bam = generate_recalibrated_bams ? "${prefix}.recalibrated.${file_suffix}" : ""
     """
-    touch ${prefix}.bam
+    touch ${prefix}.table
+    touch ${prefix}.table.post
+    touch ${recalibrated_bam}
+    touch ${prefix}.csv
+    touch ${prefix}.pdf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sentieon: \$(samtools --version |& sed '1!d ; s/samtools //')
+        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
     END_VERSIONS
     """
 }
