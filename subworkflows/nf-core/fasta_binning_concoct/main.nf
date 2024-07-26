@@ -53,4 +53,3 @@ workflow FASTA_BINNING_CONCOCT {
 
     versions = ch_versions                                         // channel: [ versions.yml ]
 }
-
