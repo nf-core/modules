@@ -38,10 +38,13 @@ input:
       description: |
         If true, summary report is generated.
   - skip:
-      type: string
+      type: file
       description: |
         Load a full classification report and skip the mtx folder as input. Require a path argument.
-
+  - examine:
+      type: file
+      description: |
+        Provide the cell list. Requires a file argument. Only executes if -u is set.
 output:
   - meta:
       type: map
