@@ -10,16 +10,16 @@ process SENTIEON_QUALCAL {
     input:
     tuple val(meta), path(bam), path(bai)
     tuple val(meta2), path(fasta)
-    tuple val(meta3), path(known_sites)
-    tuple val(meta4), path(recal_table)
-    tuple val(meta5), path(recal_table_post)
-
+    tuple val(meta3), path(known_sites) //optional
+    tuple val(meta4), path(recal_table) // not optional?!
+    tuple val(meta5), path(recal_table_post) // not optional?!
+    val generate_recalibrated_bams // false?
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.bam"), emit: bam, optional: true  //recalibrated bam: output is optional
     tuple val(meta), path("*.report"), emit: report, optional: true
-    tuple val(meta), path ("recal_table"), emit: recal_table, optional: true
-
+    tuple val(meta), path ("recal_table"), emit: recal_table, optional: true 
+    tuple val(meta), path ("*.pdf"), emit: pdf
     path "versions.yml"           , emit: versions
 
     when:
@@ -28,26 +28,66 @@ process SENTIEON_QUALCAL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def known_sites = known_sites ? known_sites.collect{"-k $it"}.join(' ') : ""
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64 ?
         "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; " :
         ""
-    // -q outputs recal table
 
-    """
-    $sentieonLicense
+    // Temprorary output files:
+    // recal_table_post
+    // recal_csv
 
-    sentieon driver --algo QualCal \\
-        $args \\
-        -t $task.cpus \\
-        -r $fasta \\
-        -i $bam \\
-        -o ${prefix}.bam
+    // Actual base quality recalibration can be done during Variant calling with Sentieon
+    if() {
+        """
+        $sentieonLicense
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
-    """
+        sentieon driver --algo QualCal \\
+            $args \\
+            -t $task.cpus \\
+            -r $fasta \\
+            -i $bam \\
+            $known_sites \\
+            ${prefix}.table
+
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
+        END_VERSIONS
+        """
+    } else {
+    // Runs basequality recalibration in one step
+    //TODO bam and cram should both work, this is also still optional
+        def recalibrated_bam = generate_reclibrated_bams ? "--algo ReadWriter ${prefix}.recalibrated.cram" : ""
+        """
+        $sentieonLicense
+
+        sentieon driver --algo QualCal \\
+            $args \\
+            -t $task.cpus \\
+            -r $fasta \\
+            -i $bam \\
+            $known_sites \\
+            -q ${prefix}.table \\
+            $recalibrated_bam \\
+            ${prefix}.table.post
+
+        sentieon driver --algo QualCal \\
+            $args \\
+            -t $task.cpus \\
+            --plot \\
+            --before ${prefix}.table \\
+            --after ${prefix}.table.post
+            ${prefix}.csv
+
+        sentieon plot QualCal -o ${prefix}.pdf ${prefix}.csv
+
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
+        END_VERSIONS
+        """
+    }
 
     stub:
     def args = task.ext.args ?: ''
