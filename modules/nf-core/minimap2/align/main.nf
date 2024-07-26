@@ -28,17 +28,25 @@ process MINIMAP2_ALIGN {
     script:
     def args  = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
+    def args3 = task.ext.args3 ?: ''
+    def args4 = task.ext.args4 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def bam_index = bam_index_extension ? "${prefix}.bam##idx##${prefix}.bam.${bam_index_extension} --write-index" : "${prefix}.bam"
     def bam_output = bam_format ? "-a | samtools sort -@ ${task.cpus-1} -o ${bam_index} ${args2}" : "-o ${prefix}.paf"
     def cigar_paf = cigar_paf_format && !bam_format ? "-c" : ''
     def set_cigar_bam = cigar_bam && bam_format ? "-L" : ''
+    def bam_input = "${reads.extension}".matches('sam|bam|cram')
+    def samtools_reset_fastq = bam_input ? "samtools reset --threads ${task.cpus-1} $args3 $reads | samtools fastq --threads ${task.cpus-1} $args4 |" : ''
+    def query = bam_input ? "-" : reads
+    def target = reference ?: (bam_input ? error("BAM input requires reference") : reads)
+
     """
+    $samtools_reset_fastq \\
     minimap2 \\
         $args \\
         -t $task.cpus \\
-        ${reference ?: reads} \\
-        $reads \\
+        $target \\
+        $query \\
         $cigar_paf \\
         $set_cigar_bam \\
         $bam_output
@@ -55,6 +63,9 @@ process MINIMAP2_ALIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def output_file = bam_format ? "${prefix}.bam" : "${prefix}.paf"
     def bam_index = bam_index_extension ? "touch ${prefix}.bam.${bam_index_extension}" : ""
+    def bam_input = "${reads.extension}".matches('sam|bam|cram')
+    def target = reference ?: (bam_input ? error("BAM input requires reference") : reads)
+
     """
     touch $output_file
     ${bam_index}

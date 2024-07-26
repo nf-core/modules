@@ -1,0 +1,75 @@
+nextflow_process {
+
+    name "Test Process DIAMOND_CLUSTER"
+    script "../main.nf"
+    process "DIAMOND_CLUSTER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "diamond"
+    tag "diamond/cluster"
+
+    test("human - fasta") {
+        when {
+            process {
+                """ 
+                input[0] = [
+                    [ id:'human' ], // meta map
+                    file(params.modules_testdata_base_path + 'proteomics/database/UP000005640_9606.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("human - dmnd") {
+        when {
+            process {
+                """ 
+                input[0] = [
+                    [ id:'human' ], // meta map
+                    file(params.modules_testdata_base_path + 'proteomics/database/UP000005640_9606.dmnd', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("human - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'proteomics/database/UP000005640_9606.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+}

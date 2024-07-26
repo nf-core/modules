@@ -12,7 +12,7 @@ tools:
       homepage: http://fulcrumgenomics.github.io/fgbio/
       documentation: http://fulcrumgenomics.github.io/fgbio/tools/latest/FilterConsensusReads.html
       tool_dev_url: https://github.com/fulcrumgenomics/fgbio
-      licence: "['MIT']"
+      licence: ["MIT"]
 input:
   - meta:
       type: map
@@ -23,20 +23,39 @@ input:
       type: file
       description: BAM file
       pattern: "*.bam"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing genome information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: Fasta file containing genomic sequence information
+      pattern: "*.bam"
+  - min_reads:
+      type: integer
+      description: Minimum number of reads required to keep a consensus read
+  - min_baseq:
+      type: file
+      description: Minimum base quality to consider
+  - max_base_error_rate:
+      type: file
+      description: Maximum base error rate for a position before it is replaced with an N.
+
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - bam:
       type: file
       description: Filtered consensus BAM file
       pattern: "*.bam"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 authors:
   - "@lescai"
 maintainers:

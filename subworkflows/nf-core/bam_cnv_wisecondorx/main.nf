@@ -38,4 +38,3 @@ workflow BAM_CNV_WISECONDORX {
 
     versions        = ch_versions                               // channel: path(versions.yml)
 }
-
