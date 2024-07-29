@@ -27,7 +27,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.reads,
                     file(process.out.log.get(0).get(1)).readLines()[20..40],
-                    process.out.versions).match() 
+                    process.out.versions).match()
                 }
             )
         }
