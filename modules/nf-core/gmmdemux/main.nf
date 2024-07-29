@@ -32,7 +32,7 @@ process GMMDEMUX {
     def type_report    = type_report ? "-f ${prefix}/classification_report_${prefix}" : "-s ${prefix}/classification_report_${prefix}"
     def skip           = skip ? "--skip $skip" : ""
     def examine_cells  = examine ? "--extract $examine" : ""
-    def summary_rep    = summary_report ? "-r summary_report_${prefix}.txt" : ""
+    def summary_rep    = summary_report ? "-r summary_report_${prefix}" : ""
     def VERSION        = '0.2.2.3' // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     """
     if [[ ${summary_report} == true ]]; then
@@ -46,7 +46,7 @@ process GMMDEMUX {
         $skip \\
         $examine_cells \\
         $hto_matrix \\
-        $hto_names 
+        $hto_names
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         GMM-Demux: $VERSION

@@ -45,7 +45,6 @@ nextflow_process {
 
             )
         }
-
     }
 
     test("Standard_Multiome - 10x mtx - Stub") {
@@ -74,7 +73,7 @@ nextflow_process {
                 { assert process.success },
                 { assert path(process.out.matrix.get(0).get(1)).exists() },
                 { assert path(process.out.barcodes.get(0).get(1)).exists() },
-                { assert path(process.out.features.get(0).get(1)).exists() }, 
+                { assert path(process.out.features.get(0).get(1)).exists() },
             )
         }
 
