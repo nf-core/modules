@@ -20,6 +20,7 @@ process YAK_COUNT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    input_command = meta.single_end ? "${fastq}" : "<(zcat ${fastq}) <(zcat ${fastq})"
     """
     yak \\
         count \\
