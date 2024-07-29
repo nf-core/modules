@@ -6,6 +6,7 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "diamond"
+    tag "diamond/makedb"
     tag "diamond/blastx"
 
     setup {
@@ -41,9 +42,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.txt).match("txt") },
                 { assert path(process.out.log.get(0).get(1)).readLines().contains("11 queries aligned.") },
-                { assert process.out.versions }
+                { assert snapshot(
+                    process.out.txt,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
 
@@ -70,7 +74,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.daa },
                 { assert path(process.out.log.get(0).get(1)).readLines().contains("11 queries aligned.") },
-                { assert process.out.versions }
+                { assert snapshot(process.out.versions).match() }
             )
         }
 
