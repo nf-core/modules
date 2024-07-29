@@ -26,7 +26,7 @@ process PORECHOP_ABI {
         --input $reads \\
         --threads $task.cpus \\
         $args \\
-        --output ${prefix}.porechop_abi.fastq.gz \\
+        --output ${prefix}.fastq.gz \\
         | tee ${prefix}.porechop_abi.log
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
