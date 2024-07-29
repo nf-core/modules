@@ -6,6 +6,7 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "diamond"
+    tag "diamond/makedb"
     tag "diamond/blastp"
 
     setup {
@@ -41,8 +42,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.txt).match("txt") },
-                { assert process.out.versions }
+                { assert snapshot(
+                    process.out.txt,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
 
@@ -67,8 +71,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.txt).match("gz_txt") },
-                { assert process.out.versions }
+                { assert snapshot(
+                    process.out.txt,
+                    process.out.versions
+                    ).match("gz_txt")
+                }
             )
         }
 
@@ -94,7 +101,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert process.out.daa },
-                { assert process.out.versions }
+                { assert snapshot(process.out.versions).match() }
             )
         }
 
