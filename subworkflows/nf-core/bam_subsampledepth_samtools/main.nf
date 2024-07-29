@@ -46,6 +46,6 @@ workflow BAM_SUBSAMPLEDEPTH_SAMTOOLS {
         .join(SAMTOOLS_VIEW.out.bai.mix(SAMTOOLS_VIEW.out.crai, SAMTOOLS_VIEW.out.csi))
 
     emit:
-    bam_subsampled    = ch_bam_subsampled             // channel: [ val(meta), path(bam), path(bai) ]
+    bam_subsampled    = ch_bam_subsampled             // channel: [ val(meta), path(bam), path(csi) ]
     versions          = ch_versions                   // channel: [ path(versions.yml) ]
 }
