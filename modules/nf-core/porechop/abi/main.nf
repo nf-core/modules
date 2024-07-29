@@ -36,7 +36,7 @@ process PORECHOP_ABI {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}.porechop_abi"
     """
     echo "" | gzip > ${prefix}.porechop_abi.fastq.gz
     touch {prefix}.porechop_abi.log
