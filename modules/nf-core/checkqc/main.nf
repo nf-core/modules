@@ -30,7 +30,7 @@ process CHECKQC {
         $args \
         $config \
         --json \
-        $run_dir > checkqc_report.json || true
+        $run_dir > checkqc_report.json || test -s "checkqc_report.json"
 
     cp .command.log checkqc_log.txt
 
