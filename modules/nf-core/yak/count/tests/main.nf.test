@@ -9,14 +9,14 @@ nextflow_process {
     tag "yak"
     tag "yak/count"
 
-    test("test_yak_count_methylated_1_fastq_gz") {
+    test("sarscov2 - Illumina - se") {
 
         when {
             process {
                 """                
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_methylated_1_fastq_gz'], checkIfExists: true)
+                   file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true),
                 ]
                 """
             }
