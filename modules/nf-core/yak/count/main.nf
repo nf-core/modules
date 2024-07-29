@@ -30,7 +30,7 @@ process YAK_COUNT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        yak: \$(samtools --version |& sed '1!d ; s/samtools //')
+        yak: \$(yak --version |& sed '1!d ; s/yak //')
     END_VERSIONS
     """
 
@@ -42,7 +42,7 @@ process YAK_COUNT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        yak: \$(samtools --version |& sed '1!d ; s/samtools //')
+        yak: \$(yak version |& sed '1!d ; s/yak //')
     END_VERSIONS
     """
 }
