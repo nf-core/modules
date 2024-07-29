@@ -30,9 +30,13 @@ process CHECKQC {
         $args \
         $config \
         --json \
-        $run_dir > checkqc_report.json || test -s "checkqc_report.json"
+        $run_dir > checkqc_report.json 2> checkqc_log.txt || true
 
-    cp .command.log checkqc_log.txt
+    # Check if the output JSON file is empty
+    if [[ ! -s checkqc_report.json ]] ; then
+        echo "Error: Empty JSON files. Most likely due to missing files in run directory. See checkQC log file for errors."
+        exit 1
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
