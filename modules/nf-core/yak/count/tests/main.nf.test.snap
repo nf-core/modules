@@ -1,13 +1,14 @@
 {
-    "test_yak_count_methylated_1_fastq_gz": {
+    "sarscov2 - Illumina - se": {
         "content": [
             {
                 "0": [
                     [
                         {
-                            "id": "test"
+                            "id": "test",
+                            "single_end": true
                         },
-                        "test.yak:md5,dd8ba32cdc94e843ea373fdbda8dd772"
+                        "test.yak:md5,0f7375059550949b7ba619a984ece2da"
                     ]
                 ],
                 "1": [
@@ -19,9 +20,10 @@
                 "yak": [
                     [
                         {
-                            "id": "test"
+                            "id": "test",
+                            "single_end": true
                         },
-                        "test.yak:md5,dd8ba32cdc94e843ea373fdbda8dd772"
+                        "test.yak:md5,0f7375059550949b7ba619a984ece2da"
                     ]
                 ]
             }
@@ -30,15 +32,16 @@
             "nf-test": "0.8.4",
             "nextflow": "24.04.2"
         },
-        "timestamp": "2024-07-29T14:28:36.31002995"
+        "timestamp": "2024-07-29T17:40:17.95342328"
     },
-    "test_yak_count_methylated_1_fastq_gz - stub": {
+    "sarscov2 - Illumina - se - stub": {
         "content": [
             {
                 "0": [
                     [
                         {
-                            "id": "test"
+                            "id": "test",
+                            "single_end": true
                         },
                         "test.yak:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
@@ -52,7 +55,8 @@
                 "yak": [
                     [
                         {
-                            "id": "test"
+                            "id": "test",
+                            "single_end": true
                         },
                         "test.yak:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
@@ -63,6 +67,41 @@
             "nf-test": "0.8.4",
             "nextflow": "24.04.2"
         },
-        "timestamp": "2024-07-29T14:29:09.302851354"
+        "timestamp": "2024-07-29T17:40:24.1751778"
+    },
+    "sarscov2 - Illumina - pe": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.yak:md5,0f7375059550949b7ba619a984ece2da"
+                    ]
+                ],
+                "1": [
+                    "versions.yml:md5,edc228e16cf00fbcac427d9455df4b48"
+                ],
+                "versions": [
+                    "versions.yml:md5,edc228e16cf00fbcac427d9455df4b48"
+                ],
+                "yak": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.yak:md5,0f7375059550949b7ba619a984ece2da"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "24.04.2"
+        },
+        "timestamp": "2024-07-29T17:40:30.828761909"
     }
 }
