@@ -1,6 +1,8 @@
 name: lofreq_indelqual
 description: Inserts indel qualities in a BAM file
 keywords:
+  - variant calling
+  - variants
   - bam
   - indel
   - qualities
@@ -20,10 +22,15 @@ input:
       type: file
       description: BAM file
       pattern: "*.{bam}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information about the reference fasta
+        e.g. [ id:'reference' ]
   - fasta:
       type: file
       description: Reference genome FASTA file
-      pattern: "*.{fasta}"
+      pattern: "*.{fasta,fa}"
 output:
   - meta:
       type: map
@@ -42,3 +49,4 @@ authors:
   - "@kaurravneet4123"
 maintainers:
   - "@kaurravneet4123"
+  - "@krannich479"
