@@ -30,9 +30,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.cov).match("cov") },
                 { assert process.out.cov[0][1] ==~ ".*/test.bed" },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    process.out.cov,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
 
@@ -55,9 +58,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.cov).match("cov") },
                 { assert process.out.cov[0][1] ==~ ".*/test.bed" },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    process.out.cov,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
 
@@ -86,9 +92,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.wig).match("wig") },
                 { assert process.out.wig[0][1] ==~ ".*/test.wig" },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    process.out.wig,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
 
@@ -114,9 +123,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.wig).match("wig") },
                 { assert process.out.wig[0][1] ==~ ".*/test.wig" },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    process.out.wig,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
 
@@ -147,11 +159,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.cov).match("cov - stub") },
                 { assert process.out.cov[0][1] ==~ ".*/test.bed" },
-                { assert snapshot(process.out.wig).match("wig - stub") },
                 { assert process.out.wig[0][1] ==~ ".*/test.wig" },
-                { assert snapshot(process.out.versions).match("versions - stub") }
+                { assert snapshot(
+                    process.out.cov,
+                    process.out.wig,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
 
