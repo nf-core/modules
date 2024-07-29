@@ -26,7 +26,7 @@ process YAK_COUNT {
         $args \\
         -t${task.cpus} \\
         -o ${prefix}.yak\\
-        $fastq
+        $input_command
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
