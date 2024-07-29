@@ -28,7 +28,7 @@ output:
       type: file
       description: |
         Channel containing subsampled BAM/CRAM/SAM files and their indexes
-        Structure: [ val(meta), path(bam), path(bai) ]
+        Structure: [ val(meta), path(bam), path(csi) ]
       pattern: "*.{bam,cram,sam}"
   - versions:
       type: file
