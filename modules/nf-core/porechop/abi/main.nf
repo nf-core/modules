@@ -11,7 +11,7 @@ process PORECHOP_ABI {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*.fastq.gz"), emit: reads
+    tuple val(meta), path("*.porechop_abi.fastq.gz"), emit: reads
     tuple val(meta), path("*.log")     , emit: log
     path "versions.yml"                , emit: versions
 
@@ -26,8 +26,21 @@ process PORECHOP_ABI {
         --input $reads \\
         --threads $task.cpus \\
         $args \\
-        --output ${prefix}.fastq.gz \\
-        > ${prefix}.log
+        --output ${prefix}.porechop_abi.fastq.gz \\
+        2> >(tee ${prefix}.porechop_abi.log >&2)
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        porechop_abi: \$( porechop_abi --version )
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.porechop_abi.fastq.gz
+    touch {prefix}.porechop_abi.log
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         porechop_abi: \$( porechop_abi --version )

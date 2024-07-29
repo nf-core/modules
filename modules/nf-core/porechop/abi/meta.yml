@@ -35,11 +35,11 @@ output:
   - reads:
       type: file
       description: Adapter-trimmed fastq.gz file
-      pattern: "*fastq.gz"
+      pattern: "*.porechop_abi.fastq.gz"
   - log:
       type: file
       description: Log file containing stdout information
-      pattern: "*.log"
+      pattern: "*.porechop_abi.log"
 authors:
   - "@sofstam"
 maintainers:
