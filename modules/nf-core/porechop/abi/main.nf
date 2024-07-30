@@ -11,23 +11,37 @@ process PORECHOP_ABI {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*.fastq.gz"), emit: reads
-    tuple val(meta), path("*.log")     , emit: log
-    path "versions.yml"                , emit: versions
+    tuple val(meta), path("*.fastq.gz") , emit: reads
+    tuple val(meta), path("*.log")      , emit: log
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}.porechop_abi"
+    if ("$reads" == "${prefix}.fastq.gz") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     porechop_abi \\
         --input $reads \\
         --threads $task.cpus \\
         $args \\
         --output ${prefix}.fastq.gz \\
-        > ${prefix}.log
+        | tee ${prefix}.log
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        porechop_abi: \$( porechop_abi --version )
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}.porechop_abi"
+    """
+    echo "" | gzip > ${prefix}.fastq.gz
+    touch ${prefix}.log
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         porechop_abi: \$( porechop_abi --version )
