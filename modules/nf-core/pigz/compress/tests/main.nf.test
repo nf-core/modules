@@ -42,7 +42,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.archive[0][1]).name).match() }
+                { assert snapshot(
+                    file(process.out.archive[0][1]).name,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
     }
