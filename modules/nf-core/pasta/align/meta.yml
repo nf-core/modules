@@ -1,0 +1,67 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "pasta_align"
+description: Practical Alignment using Saté and TrAnsitivity
+keywords:
+  - MSA
+  - alignment
+  - genomics
+  - graph
+tools:
+  - "pasta":
+      description: "Practical Alignment using Saté and TrAnsitivity"
+      homepage: "https://github.com/smirarab/pasta"
+      documentation: "https://github.com/smirarab/pasta/blob/master/pasta-doc/pasta-tutorial.md"
+      tool_dev_url: "https://github.com/smirarab/pasta"
+      doi: "10.1089/cmb.2014.0156"
+      licence: ["GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing the fasta meta information
+        e.g. `[ id:'test', single_end:false ]`
+
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information for the specified guide tree (if supplied)
+        e.g. `[ id:'test', single_end:false ]`
+
+  - fasta:
+      type: file
+      description: Input sequences in FASTA format. Note that PASTA assumes input to be DNA, unless specified otherwise by passing the type to `--datatype`.
+      pattern: "*.{fa,fna,fasta}"
+
+  - tree:
+      type: file
+      description: Optional path to a file containing a guide tree in newick format to use as a starting point.
+        If empty, and `--aligned` is not passed to indicate input that has already been aligned, PASTA will estimate a guide tree from a profile-based MSA derived from a MAFFT alignment of 100 sequences randomly sampled from the input.
+      pattern: "*.{dnd,tree}"
+
+  - compress:
+      type: boolean
+      description: Flag representing whether the output MSA should be compressed. Set to true to enable/false to disable compression. Compression is done using pigz, and is multithreaded.
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample meta information.
+        e.g. `[ id:'test', single_end:false ]`
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - alignment:
+      type: file
+      description: File containing the output alignment, in FASTA format containing gaps.
+        The sequences may be in a different order than in the input FASTA.
+        The output file may or may not be gzipped, depending on the value supplied to `compress`.
+      pattern: "*.aln{.gz,}"
+
+authors:
+  - "@lrauschning"
