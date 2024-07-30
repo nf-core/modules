@@ -80,11 +80,11 @@ process STARSOLO {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir ${prefix}.Solo.out/
-    touch ${prefix}.Solo.out/Log.final.out
-    touch ${prefix}.Solo.out/Log.out
-    touch ${prefix}.Solo.out/Log.progress.out
-    touch ${prefix}.Solo.out/Summary.csv
+    mkdir -p ${prefix}.Solo.out/Gene
+    touch ${prefix}.Log.final.out
+    touch ${prefix}.Log.out
+    touch ${prefix}.Log.progress.out
+    touch ${prefix}.Solo.out/Gene/Summary.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
