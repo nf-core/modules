@@ -31,7 +31,7 @@ process YAK_COUNT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        yak: \$(yak --version |& sed '1!d ; s/yak //')
+        yak: \$(yak version)
     END_VERSIONS
     """
 
