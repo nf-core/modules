@@ -9,6 +9,7 @@ process KRAKEN2_BUILD {
     input:
     tuple val(meta), path(db)
     val cleaning
+    val standard_db
 
     output:
     tuple val(meta), path("$prefix"), emit: db
@@ -21,12 +22,25 @@ process KRAKEN2_BUILD {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     runclean = cleaning ? "kraken2-build --clean --db ${db}" : ""
+    if (standard_db) {
+        """"
+        kraken2-build \\
+            --standard \\
+            $args \\
+            --threads ${task.cpus} \\
+            --db ${db}
+        """
+    } else {
+        """
+        kraken2-build \\
+            --build \\
+            $args \\
+            --threads ${task.cpus} \\
+            --db ${db}
+        """
+    }
+
     """
-    kraken2-build \\
-        --build \\
-        $args \\
-        --threads ${task.cpus} \\
-        --db ${db}
     $runclean
     if [[ \$(basename ${db}) != "${prefix}" ]]; then
         mv ${db}/* ${prefix}
