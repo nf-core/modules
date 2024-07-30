@@ -32,6 +32,7 @@ process SAMTOOLS_CONSENSUS {
     samtools \\
         consensus \\
         $args \\
+        -@ $task.cpus \\
         -o ${prefix}.${extension} \\
         $input
 
