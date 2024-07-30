@@ -21,13 +21,14 @@ process BEDTOOLS_GENOMECOV {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args  = task.ext.args  ?: ''
+    def args2 = task.ext.args2 ?: ''
     def args_list = args.tokenize()
     args += (scale > 0 && scale != 1) ? " -scale $scale" : ""
     if (!args_list.contains('-bg') && (scale > 0 && scale != 1)) {
         args += " -bg"
     }
-    def sort_cmd = sort ? '| sort -k1,1 -k2,2n' : ''
+    def sort_cmd = sort ? '| sort $args2 -k1,1 -k2,2n' : ''
 
     def prefix = task.ext.prefix ?: "${meta.id}"
     if (intervals.name =~ /\.bam/) {
