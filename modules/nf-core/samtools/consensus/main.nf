@@ -50,7 +50,7 @@ process SAMTOOLS_CONSENSUS {
                     "fasta"
 
     """
-    touch ${prefix}.fasta
+    touch ${prefix}.${extension}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
