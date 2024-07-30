@@ -25,8 +25,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
-                { assert path(process.out.dict[0][1]).readLines().first().contains("@HD\tVN:1.0\tSO:unsorted") }
+                { assert snapshot(
+                    path(process.out.dict[0][1]).readLines()[0],
+                    process.out.versions
+                    ).match()
+                }
             )
         }
 
