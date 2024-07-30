@@ -57,7 +57,6 @@ process GMMDEMUX {
     def VERSION = '0.2.2.3'
     def prefix   = task.ext.prefix ?: "${meta.id}"
     """
-    
     echo "" | gzip > barcodes.tsv.gz
     echo "" | gzip > features.tsv.gz
     echo "" | gzip > matrix.mtx.gz
