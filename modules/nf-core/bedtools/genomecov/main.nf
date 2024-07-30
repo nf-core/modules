@@ -21,17 +21,16 @@ process BEDTOOLS_GENOMECOV {
     task.ext.when == null || task.ext.when
 
     script:
-    def args  = task.ext.args  ?: ''
-    def args2 = task.ext.args2 ?: ''
+    def args      = task.ext.args  ?: ''
     def args_list = args.tokenize()
-    def buffer = task.memory.toGiga().intdiv(2)
     args += (scale > 0 && scale != 1) ? " -scale $scale" : ""
     if (!args_list.contains('-bg') && (scale > 0 && scale != 1)) {
         args += " -bg"
     }
     // Sorts output file by chromosome and position using additional options for performance and consistency
     // See https://www.biostars.org/p/66927/ for further details
-    def sort_cmd = sort ? "| LC_ALL=C sort --parallel=$task.cpus --buffer-size=${buffer}G -k1,1 -k2,2n" : ''
+    def buffer   = task.memory ? "--buffer-size=${task.memory.toGiga().intdiv(2)}G" : ''
+    def sort_cmd = sort ? "| LC_ALL=C sort --parallel=$task.cpus $buffer -k1,1 -k2,2n" : ''
 
     def prefix = task.ext.prefix ?: "${meta.id}"
     if (intervals.name =~ /\.bam/) {
