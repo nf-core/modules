@@ -21,6 +21,7 @@ process PORECHOP_ABI {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}.porechop_abi"
+    if ("$reads" == "${prefix}.fastq.gz") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     porechop_abi \\
         --input $reads \\
