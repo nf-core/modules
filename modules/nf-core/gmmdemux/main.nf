@@ -46,7 +46,8 @@ process GMMDEMUX {
         $skip \\
         $examine_cells \\
         $hto_matrix \\
-        $hto_names
+        $hto_names \\
+        -o .
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         GMM-Demux: $VERSION
