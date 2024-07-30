@@ -23,11 +23,14 @@ input:
         e.g. `[ id:'sample1', single_end:false ]`
   - db:
       type: directory
-      description: contains required files to build the database
+      description: contains required files to build the database or destination of database if standard_db is `true`
       pattern: "*/"
   - cleaning:
       type: boolean
       description: activate or deactivate (true or false) cleaning of intermediate files
+  - standard_db:
+      type: boolean
+      description: build the standard database (true) or use provided files in `db` (false)
 output:
   - meta:
       type: map
