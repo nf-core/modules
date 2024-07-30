@@ -59,22 +59,27 @@ output:
       type: file
       description: |
         barcodes tsv file with removed cell-hashing-identifiable multiplets
-      pattern: "test/*.tsv.gz"
+      pattern: "barcodes.tsv.gz"
   - matrix:
       type: file
       description: |
         matrix mtx.tsv file with removed cell-hashing-identifiable multiplets
-      pattern: "test/*.tsv.gz"
+      pattern: "matrix.mtx.gz"
   - features:
       type: file
       description: |
         features tsv file with removed cell-hashing-identifiable multiplets
-      pattern: "test/*.tsv.gz"
+      pattern: "features.tsv.gz"
   - classification_report:
       type: file
       description: |
         full or simplified classification report
-      pattern: "test/*_report_*.txt"
+      pattern: "GMM_*.csv"
+  - config_report:
+      type: file
+      description: |
+        Configuration report mapping the results obtained by the tool to the respective names of the HTOs in the classification report.
+      pattern: "GMM_*.csv"
   - summary_report:
       type: file
       description: |

@@ -16,12 +16,13 @@ process GMMDEMUX {
     path examine
 
     output:
-    tuple val(meta), path("${meta.id}/barcodes.tsv.gz"                          ), emit: barcodes
-    tuple val(meta), path("${meta.id}/*.mtx.gz"                                 ), emit: matrix
-    tuple val(meta), path("${meta.id}/features.tsv.gz"                          ), emit: features
-    tuple val(meta), path("${meta.id}/classification_report_${meta.id}"         ), emit: classification_report
-    tuple val(meta), path("summary_report_${meta.id}.txt"                       ), emit: summary_report, optional: true
-    path "versions.yml"                                                          , emit: versions
+    tuple val(meta), path("barcodes.tsv.gz"                          ), emit: barcodes
+    tuple val(meta), path("matrix.mtx.gz"                            ), emit: matrix
+    tuple val(meta), path("features.tsv.gz"                          ), emit: features
+    tuple val(meta), path("GMM_*.csv"                                ), emit: classification_report
+    tuple val(meta), path("GMM_*.config"                             ), emit: config_report
+    tuple val(meta), path("summary_report_*.txt"                     ), emit: summary_report, optional: true
+    path "versions.yml"                                               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,15 +30,14 @@ process GMMDEMUX {
     script:
     def args           = task.ext.args ?: ''
     def prefix         = task.ext.prefix ?: "${meta.id}"
-    def type_report    = type_report ? "-f ${prefix}/classification_report_${prefix}" : "-s ${prefix}/classification_report_${prefix}"
     def skip           = skip ? "--skip $skip" : ""
     def examine_cells  = examine ? "--extract $examine" : ""
-    def summary_rep    = summary_report ? "-r summary_report_${prefix}" : ""
     def VERSION        = '0.2.2.3' // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
+    def type_report    = type_report ? "-f ." : "-s ."
+    def summary_rep    = summary_report ? "-r summary_report_${prefix}" : ""
     """
     if [[ ${summary_report} == true ]]; then
         cat /dev/null > summary_report_${prefix}.txt
-        echo "summary report file created"
     fi
 
     GMM-demux $args \\
@@ -54,14 +54,15 @@ process GMMDEMUX {
     """
 
     stub:
-    def prefix  = task.ext.prefix ?: "${meta.id}"
     def VERSION = '0.2.2.3'
+    def prefix   = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir ${prefix}
-    touch ${prefix}/barcodes.tsv.gz
-    touch ${prefix}/features.tsv.gz
-    touch ${prefix}/matrix.mtx.gz
-    touch ${prefix}/classification_report_${prefix}
+    
+    echo "" | gzip > barcodes.tsv.gz
+    echo "" | gzip > features.tsv.gz
+    echo "" | gzip > matrix.mtx.gz
+    touch GMM_full.config
+    touch GMM_full.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
