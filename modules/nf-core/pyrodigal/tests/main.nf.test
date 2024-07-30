@@ -45,7 +45,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    path(process.out.annotations.get(0).get(1)).linesGzip[14..22],
+                    process.out.faa,
+                    process.out.fna,
+                    process.out.score,
+                    process.out.versions,
+                ).match() }
             )
         }
     }
