@@ -26,7 +26,7 @@ process YAK_COUNT {
         count \\
         $args \\
         -t${task.cpus} \\
-        -o ${prefix}.yak\\
+        -o ${prefix}.yak \\
         $input_command
 
     cat <<-END_VERSIONS > versions.yml
