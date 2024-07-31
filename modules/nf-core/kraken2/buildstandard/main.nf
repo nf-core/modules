@@ -1,5 +1,4 @@
 process KRAKEN2_BUILDSTANDARD {
-    tag "KRAKEN2)"
     label 'process_high'
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -23,7 +22,7 @@ process KRAKEN2_BUILDSTANDARD {
         --standard \\
         $args \\
         --threads ${task.cpus} \\
-        --db ${db}
+        --db ${prefix}
     kraken2-build --clean --db ${prefix}
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
