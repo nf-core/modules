@@ -26,4 +26,3 @@ workflow FASTA_CLEAN_FCS {
     fcsgx_taxonomy_report       = FCS_FCSGX.out.taxonomy_report             // channel: [ val(meta), [ taxonomy_report ] ]
     versions                    = ch_versions                               // channel: [ versions.yml ]
 }
-
