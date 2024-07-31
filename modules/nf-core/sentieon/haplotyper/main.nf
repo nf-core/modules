@@ -10,10 +10,10 @@ process SENTIEON_HAPLOTYPER {
 
     input:
     tuple val(meta), path(input), path(input_index), path(intervals)
-    path  fasta
-    path  fai
-    path  dbsnp
-    path  dbsnp_tbi
+    tuple val(meta1), path(fasta)
+    tuple val(meta2), path(fai)
+    tuple val(meta3), path(dbsnp)
+    tuple val(meta4), path(dbsnp_tbi)
     val(emit_vcf)
     val(emit_gvcf)
 
