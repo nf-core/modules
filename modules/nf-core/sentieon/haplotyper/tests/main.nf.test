@@ -24,8 +24,9 @@ nextflow_process {
                 input[2] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]
                 input[3] = [[:],[]]
                 input[4] = [[:],[]]
-                input[5] = 'variant'
-                input[6] = false
+                input[5] = [[:],[]]
+                input[6] = 'variant'
+                input[7] = false
                 """
             }
         }
@@ -58,8 +59,9 @@ nextflow_process {
                 input[2] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]
                 input[3] = [[:],[]]
                 input[4] = [[:],[]]
-                input[5] = ''
-                input[6] = true
+                input[5] = [[:],[]]
+                input[6] = ''
+                input[7] = true
                 """
             }
         }
@@ -92,8 +94,9 @@ nextflow_process {
                 input[2] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]
                 input[3] = [[:],[]]
                 input[4] = [[:],[]]
-                input[5] = 'variant'
-                input[6] = true
+                input[5] = [[:],[]]
+                input[6] = 'variant'
+                input[7] = true
                 """
             }
         }
@@ -128,8 +131,9 @@ nextflow_process {
                 input[2] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]
                 input[3] = [[:],[]]
                 input[4] = [[:],[]]
-                input[5] = 'variant'
-                input[6] = true
+                input[5] = [[:],[]]
+                input[6] = 'variant'
+                input[7] = true
                 """
             }
         }
@@ -164,8 +168,9 @@ nextflow_process {
                 input[2] = [[id: 'test'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]
                 input[3] = [[id: 'test'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz', checkIfExists: true)]
                 input[4] = [[id: 'test'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz.tbi', checkIfExists: true)]
-                input[5] = 'variant'
-                input[6] = true
+                input[5] = [[:],[]]
+                input[6] = 'variant'
+                input[7] = true
                 """
             }
         }
@@ -185,6 +190,62 @@ nextflow_process {
         }
     }
 
+    test("Sentieon Haplotyper Recalibration") {
+
+        setup {
+            run("SENTIEON_QUALCAL") {
+                script "../../qualcal/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true)
+                    ]
+                    input[1] = [ [ id:'fasta' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                    input[2] = [ [ id:'fasta' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true) ]
+
+                    input[3] = [ [ id:'knownSites' ],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz', checkIfExists: true) ]
+                    input[4] = [ [ id:'knownSites' ],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz.tbi', checkIfExists: true) ]
+                    input[5] = [[:],[]]
+                    input[6] = false
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true),
+                           []  // no intervals
+                        ]
+                input[1] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
+                input[2] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]
+                input[3] = [[:],[]]
+                input[4] = [[:],[]]
+                input[5] = SENTIEON_QUALCAL.out.table
+                input[6] = 'variant'
+                input[7] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out.versions,
+                        file(process.out.vcf_tbi.get(0).get(1)).name,
+                        path(process.out.vcf[0][1]).vcf.variantsMD5
+                    ).match()
+                }
+            )
+        }
+
+    }
 
     test("Sentieon Haplotyper - stub") {
 
@@ -201,8 +262,9 @@ nextflow_process {
                 input[2] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]
                 input[3] = [[:],[]]
                 input[4] = [[:],[]]
-                input[5] = ''
-                input[6] = false
+                input[5] = [[:],[]]
+                input[6] = 'variant'
+                input[7] = true
                 """
             }
         }
