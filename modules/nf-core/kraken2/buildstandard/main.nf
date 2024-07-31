@@ -18,14 +18,13 @@ process KRAKEN2_BUILDSTANDARD {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "kraken2_standard_db"
-    runclean = cleaning ? "kraken2-build --clean --db ${prefix}" : ""
     """
     kraken2-build \\
         --standard \\
         $args \\
         --threads ${task.cpus} \\
         --db ${db}
-    $runclean
+    kraken2-build --clean --db ${prefix}
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         kraken2: \$(echo \$(kraken2 --version 2>&1) | sed 's/^.*Kraken version //; s/ .*\$//')
