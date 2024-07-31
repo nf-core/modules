@@ -8,7 +8,6 @@ process SAMTOOLS_CONSENSUS {
         'biocontainers/samtools:1.20--h50ea8bc_1' }"
 
     input:
-
     tuple val(meta), path(input)
 
     output:
