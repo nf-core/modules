@@ -162,8 +162,8 @@ nextflow_process {
                         ]
                 input[1] = [[id: 'test'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
                 input[2] = [[id: 'test'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]
-                input[3] = [[id: 'test'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/dbsnp_146.hg38.vcf.gz', checkIfExists: true)]
-                input[4] = [[id: 'test'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/dbsnp_146.hg38.vcf.gz.tbi', checkIfExists: true)]
+                input[3] = [[id: 'test'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz', checkIfExists: true)]
+                input[4] = [[id: 'test'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz.tbi', checkIfExists: true)]
                 input[5] = 'variant'
                 input[6] = true
                 """
@@ -185,7 +185,9 @@ nextflow_process {
         }
     }
 
+
     test("Sentieon Haplotyper - stub") {
+
         options "-stub"
         when {
             process {
@@ -193,14 +195,14 @@ nextflow_process {
                 input[0] = [ [ id:'test' ], // meta map
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true),
-                            []
+                           []  // no intervals
                         ]
-                input[1] = [[id: 'test'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
-                input[2] = [[id: 'test'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]
-                input[3] = [[:], []]
-                input[4] = [[:], []]
-                input[5] = 'variant'
-                input[6] = true
+                input[1] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
+                input[2] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]
+                input[3] = [[:],[]]
+                input[4] = [[:],[]]
+                input[5] = ''
+                input[6] = false
                 """
             }
         }
