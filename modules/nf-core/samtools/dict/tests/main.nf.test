@@ -1,22 +1,22 @@
 nextflow_process {
 
-    name "Test Process SMOOTHXG"
+    name "Test Process SAMTOOLS_DICT"
     script "../main.nf"
-    process "SMOOTHXG"
-    config "./nextflow.config"
+    process "SAMTOOLS_DICT"
 
     tag "modules"
     tag "modules_nfcore"
-    tag "smoothxg"
+    tag "samtools"
+    tag "samtools/dict"
 
-    test("sarscov2 - illumina - assembly_gfa") {
+    test("sarscov2 - fasta") {
 
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gfa/assembly.gfa', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ]
                 """
             }
@@ -25,20 +25,26 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-//                 { assert snapshot(process.out).match() } // SMOOTHXG is never deterministic
+                { assert snapshot(
+                    path(process.out.dict[0][1]).readLines()[0],
+                    process.out.versions
+                    ).match()
+                }
             )
         }
 
     }
 
-    test("homo_sapiens - pangenome - pangenome_seqwish_gfa") {
+    test("sarscov2 - fasta - stub") {
+
+        options "-stub"
 
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.seqwish.gfa', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ]
                 """
             }
@@ -47,7 +53,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-//                 { assert snapshot(process.out).match() } // SMOOTHXG is never deterministic
+                { assert snapshot(process.out).match() }
             )
         }
 
