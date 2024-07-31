@@ -11,8 +11,8 @@ process SAMTOOLS_CONSENSUS {
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path("*.fasta") , emit: fasta, optional: true
-    tuple val(meta), path("*.fastq") , emit: fastq, optional: true
+    tuple val(meta), path("*.fasta") , emit: fasta , optional: true
+    tuple val(meta), path("*.fastq") , emit: fastq , optional: true
     tuple val(meta), path("*.pileup"), emit: pileup, optional: true
     path "versions.yml"              , emit: versions
 
