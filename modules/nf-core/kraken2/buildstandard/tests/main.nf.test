@@ -1,0 +1,35 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test kraken2/buildstandard
+nextflow_process {
+
+    name "Test Process KRAKEN2_BUILDSTANDARD"
+    script "../main.nf"
+    process "KRAKEN2_BUILDSTANDARD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "kraken2"
+    tag "kraken2/buildstandard"
+
+
+    test("no input - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
