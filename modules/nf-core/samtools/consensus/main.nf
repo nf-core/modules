@@ -21,7 +21,7 @@ process SAMTOOLS_CONSENSUS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}_consensus"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def extension = args.contains("-f fastq") ? "fastq" :
                     args.contains("-f pileup") ? "pileup" :
                     args.contains("-f fasta") ? "fasta" :
