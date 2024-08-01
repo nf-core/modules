@@ -4,8 +4,8 @@ process DEEPTOOLS_MULTIBAMSUMMARY {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/deeptools:3.5.1--py_0' :
-        'biocontainers/deeptools:3.5.1--py_0' }"
+        'https://depot.galaxyproject.org/singularity/deeptools:3.5.5--pyhdfd78af_0':
+        'biocontainers/deeptools:3.5.5--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(bams), path(bais), val(labels)
@@ -27,6 +27,16 @@ process DEEPTOOLS_MULTIBAMSUMMARY {
         --bamfiles ${bams.join(' ')} \\
         --numberOfProcessors $task.cpus \\
         --outFileName all_bam.bamSummary.npz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        deeptools: \$(multiBamSummary --version | sed -e "s/multiBamSummary //g")
+    END_VERSIONS
+    """
+
+    stub:
+    """
+    touch all_bam.bamSummary.npz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
