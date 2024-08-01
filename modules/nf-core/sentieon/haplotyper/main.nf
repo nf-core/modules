@@ -14,6 +14,7 @@ process SENTIEON_HAPLOTYPER {
     tuple val(meta2), path(fai)
     tuple val(meta3), path(dbsnp)
     tuple val(meta4), path(dbsnp_tbi)
+    tuple val(meta5), path(recal_table)
     val(emit_vcf)
     val(emit_gvcf)
 
@@ -34,6 +35,7 @@ process SENTIEON_HAPLOTYPER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def dbsnp_command = dbsnp ? "-d $dbsnp " : ""
     def interval_command = intervals ? "--interval $intervals" : ""
+    def recal_table_command = recal_table ? "-q $recal_table" : ""
     def vcf_cmd = ""
     def gvcf_cmd = ""
     def base_cmd = '--algo Haplotyper ' + dbsnp_command
@@ -52,7 +54,7 @@ process SENTIEON_HAPLOTYPER {
     """
     $sentieonLicense
 
-    sentieon driver $args -r $fasta -t $task.cpus -i $input $interval_command $vcf_cmd $gvcf_cmd
+    sentieon driver $args -r $fasta -t $task.cpus -i $input $recal_table_command $interval_command $vcf_cmd $gvcf_cmd
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
