@@ -95,10 +95,11 @@ process SENTIEON_QUALCAL {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def file_suffix = input.name.endsWith(".bam") ? "bam" : "cram"
     def recalibrated_bam = generate_recalibrated_bams ? "${prefix}.recalibrated.${file_suffix}" : ""
+    def recalibrated_bam_cmd = generate_recalibrated_bams ? "touch $recalibrated_bam" : ""
     """
     touch ${prefix}.table
     touch ${prefix}.table.post
-    touch ${recalibrated_bam}
+    ${recalibrated_bam_cmd}
     touch ${prefix}.csv
     touch ${prefix}.pdf
 
