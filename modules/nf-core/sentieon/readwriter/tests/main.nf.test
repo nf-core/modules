@@ -45,7 +45,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] =  [ [id: 'test', fasta: 'params.modules_testdata_base_path' + 'genomics/homo_sapiens/genome/genome.fasta' ],
+                input[0] =  [ [id: 'test', fasta: params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta' ],
                             file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
                             file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true)
                         ]
@@ -113,7 +113,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] =  [ [id: 'test' ],
+                input[0] =  [ [id: 'test', fasta: params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta' ],
                                 [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
                                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true)
@@ -131,13 +131,13 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success }//,
-                // { assert snapshot(
-                //         bam(process.out.output[0][1], Channel.fromPath(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)).getReadsMD5(),
-                //         bam(process.out.output[0][1], Channel.fromPath(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)).getHeaderMD5(),
-                //         file(process.out.index.get(0).get(1)).name,
-                //         process.out.versions
-                //         ).match() }
+                { assert process.success },
+                { assert snapshot(
+                        bam(process.out.output[0][1], process.out.output[0][0].fasta).getReadsMD5(),
+                        bam(process.out.output[0][1], process.out.output[0][0].fasta).getHeader(),
+                        file(process.out.index.get(0).get(1)).name,
+                        process.out.versions
+                        ).match() }
 
             )
         }
