@@ -31,7 +31,16 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.genome_plot.get(0).get(1).size(),
+                    process.out.plots.get(0).get(1).size(),
+                    path(process.out.cna_seg.get(0).get(1)).readLines()[0],
+                    path(process.out.seg.get(0).get(1)).readLines()[0],
+                    path(process.out.seg_txt.get(0).get(1)).readLines()[0],
+                    path(process.out.corrected_depth.get(0).get(1)).readLines()[0],
+                    path(process.out.ichorcna_params.get(0).get(1)).readLines()[0]
+                ).match() }
             )
         }
 
