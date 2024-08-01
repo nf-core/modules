@@ -1,0 +1,69 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "seurat_multiseq"
+description: Identify singlets, doublets and negative cells from multiplexing experiments. Annotate singlets by tags
+keywords:
+  - demultiplexing
+  - hashing-based deconvoltion
+  - single-cell
+tools:
+  - "multiseq":
+      description: "Identify singlets, doublets and negative cells from multiplexing experiments. Annotate singlets by tags."
+      homepage: "https://satijalab.org/seurat/"
+      documentation: "https://satijalab.org/seurat/reference/multiseqdemux"
+      tool_dev_url: "https://github.com/satijalab/seurat"
+      doi: "10.1038/s41592-019-0433-8"
+      licence: ['MIT']
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - hto_matrix:
+      type: file
+      description: path to matrix from cell hashing data, the tool receives TSV files
+  - rna_matrix:
+      type: file
+      description: path to matrix from RNA expression data, the tool receives TSV files
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - assignment:
+      type: file
+      description: File containing the assignment for each cell/nucleus to a specific sample group
+      pattern: "*.csv"
+  - ridgePlot: 
+      type: file
+      description: File containing the ridge plot of the assignment (optional)
+      pattern: "*.jpeg"
+  - featureScatter: 
+      type: file
+      description: File containing the feature scatter plot of the assignment (optional)
+      pattern: "*.jpeg"
+  - violingPlot: 
+      type: file
+      description: File containing the violing plot of the assignment (optional)
+      pattern: "*.jpeg"
+  - tSNEPlot:
+      type: file
+      description: File containing the tSNE plot of the assignment (optional)
+      pattern: "*.jpeg"
+authors:
+  - "@mari-ga"
+  - "@maxozo"
+  - "@wxicu"
+  - "@Zethson"
+maintainers:
+  - "@mari-ga"
+  - "@maxozo"
+  - "@wxicu"
+  - "@Zethson"
+
