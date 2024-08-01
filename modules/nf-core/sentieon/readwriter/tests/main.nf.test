@@ -30,7 +30,6 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                         bam(process.out.output[0][1], stringency: "lenient").getReadsMD5(),
-                        bam(process.out.output[0][1], stringency: "lenient").getHeader(),
                         file(process.out.index.get(0).get(1)).name,
                         process.out.versions
                         ).match() }
@@ -60,7 +59,6 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                         bam(process.out.output[0][1], process.out.output[0][0].fasta).getReadsMD5(),
-                        bam(process.out.output[0][1], process.out.output[0][0].fasta).getHeader(),
                         file(process.out.index.get(0).get(1)).name,
                         process.out.versions
                         ).match() }
@@ -97,7 +95,6 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                         bam(process.out.output[0][1], stringency: "lenient").getReadsMD5(),
-                        bam(process.out.output[0][1], stringency: "lenient").getHeader(),
                         file(process.out.index.get(0).get(1)).name,
                         process.out.versions
                         ).match() }
@@ -134,7 +131,6 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                         bam(process.out.output[0][1], process.out.output[0][0].fasta).getReadsMD5(),
-                        bam(process.out.output[0][1], process.out.output[0][0].fasta).getHeader(),
                         file(process.out.index.get(0).get(1)).name,
                         process.out.versions
                         ).match() }

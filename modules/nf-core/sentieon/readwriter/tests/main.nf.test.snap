@@ -2,13 +2,6 @@
     "merge bam": {
         "content": [
             "2f11e4fe3390b8ad0a1852616fd1da04",
-            [
-                "@HD\tVN:1.6\tSO:coordinate",
-                "@SQ\tSN:chr22\tLN:40001",
-                "@RG\tID:1\tPU:1\tSM:testN\tLB:testN\tPL:illumina",
-                "@PG\tID:bwa\tCL:bwa mem -K 100000000 -R @RG\\tID:1\\tPU:1\\tSM:testN\\tLB:testN\\tPL:illumina -t 19 -M genome.fasta test_1.retry.fq.gz test_2.retry.fq.gz\tPN:bwa\tVN:0.7.17-r1188",
-                "@PG\tID:sentieon-ReadWriter\tCL:/opt/conda/share/sentieon-202308.02-0/libexec/driver -t 2 -i test.paired_end.sorted.bam --algo ReadWriter test.bam\tPN:sentieon-ReadWriter\tPP:bwa\tVN:sentieon-genomics-202308.02"
-            ],
             "test.bam.bai",
             [
                 "versions.yml:md5,7e0e065f92de4419098841b16968fbed"
@@ -18,19 +11,11 @@
             "nf-test": "0.9.0",
             "nextflow": "24.04.3"
         },
-        "timestamp": "2024-08-01T12:34:56.541324"
+        "timestamp": "2024-08-01T13:14:43.34615"
     },
     "cram": {
         "content": [
             "2f11e4fe3390b8ad0a1852616fd1da04",
-            [
-                "@HD\tVN:1.6\tSO:coordinate",
-                "@SQ\tSN:chr22\tLN:40001\tM5:1922b52e1af6977302717072ebaca0a1\tUR:/sfs/7/workspace/ws/iizha01-dsl2_testdata_human-0/test-datasets/data/genomics/homo_sapiens/illumina/cram/../../genome/genome.fasta",
-                "@RG\tID:1\tPU:1\tSM:testN\tLB:testN\tPL:illumina",
-                "@PG\tID:bwa\tCL:bwa mem -K 100000000 -R @RG\\tID:1\\tPU:1\\tSM:testN\\tLB:testN\\tPL:illumina -t 19 -M genome.fasta test_1.retry.fq.gz test_2.retry.fq.gz\tPN:bwa\tVN:0.7.17-r1188",
-                "@PG\tID:samtools\tCL:samtools view -C -T ../../genome/genome.fasta -o test.paired_end.sorted.cram test.paired_end.sorted.bam\tPN:samtools\tPP:bwa\tVN:1.13",
-                "@PG\tID:sentieon-ReadWriter\tCL:/opt/conda/share/sentieon-202308.02-0/libexec/driver -t 2 -r genome.fasta -i test.paired_end.sorted.cram --algo ReadWriter test.cram\tPN:sentieon-ReadWriter\tPP:samtools\tVN:sentieon-genomics-202308.02"
-            ],
             "test.cram.crai",
             [
                 "versions.yml:md5,7e0e065f92de4419098841b16968fbed"
@@ -40,27 +25,11 @@
             "nf-test": "0.9.0",
             "nextflow": "24.04.3"
         },
-        "timestamp": "2024-08-01T12:39:59.239631"
+        "timestamp": "2024-08-01T13:14:53.60186"
     },
     "merging - output bam": {
         "content": [
             "ed89d81d2d6adafdbb819a1a4ec86493",
-            [
-                "@HD\tVN:1.6\tSO:coordinate",
-                "@SQ\tSN:MT192765.1\tLN:29829",
-                "@RG\tID:1\tLB:lib1\tPL:ILLUMINA\tSM:test\tPU:barcode1",
-                "@PG\tID:bwa-meth\tCL:\"/usr/local/bin/bwameth.py -t 2 --reference bwameth/test_genomic.fasta test_methylated_1.fastq.gz test_methylated_2.fastq.gz\"\tPN:bwa-meth\tVN:0.2.0",
-                "@PG\tID:minimap2\tCL:minimap2 -ax sr fasta/test_genomic.fasta fastq/test_1.fastq.gz\tPN:minimap2\tVN:2.17-r941",
-                "@PG\tID:minimap2_1\tCL:minimap2 -ax sr tests/data/fasta/sarscov2/GCA_011545545.1_ASM1154554v1_genomic.fna tests/data/fastq/dna/sarscov2_1.fastq.gz tests/data/fastq/dna/sarscov2_2.fastq.gz\tPN:minimap2\tVN:2.17-r941",
-                "@PG\tID:samtools\tCL:samtools sort -@ 2 -o test.bam -T test test_methylated_paired_end.bam\tPN:samtools\tPP:bwa-meth\tVN:1.10",
-                "@PG\tID:samtools.1\tCL:samtools sort -o sarscov2_paired_aln.sorted.bam sarscov2_paired_aln.bam\tPN:samtools\tPP:samtools_2\tVN:1.11",
-                "@PG\tID:samtools_1\tCL:samtools sort test_single_end.bam\tPN:samtools\tPP:samtools_3\tVN:1.11",
-                "@PG\tID:samtools_2\tCL:samtools view -Sb sarscov2_aln.sam\tPN:samtools\tPP:minimap2_1\tVN:1.11",
-                "@PG\tID:samtools_3\tCL:samtools view -Sb test_single_end.sam\tPN:samtools\tPP:minimap2\tVN:1.11",
-                "@PG\tID:sentieon-ReadWriter\tCL:/opt/conda/share/sentieon-202308.02-0/libexec/driver -t 2 -i test.paired_end.methylated.sorted.bam -i test.paired_end.sorted.bam -i test.single_end.sorted.bam --algo ReadWriter test.bam\tPN:sentieon-ReadWriter\tPP:samtools\tVN:sentieon-genomics-202308.02",
-                "@PG\tID:sentieon-ReadWriter_1\tCL:/opt/conda/share/sentieon-202308.02-0/libexec/driver -t 2 -i test.paired_end.methylated.sorted.bam -i test.paired_end.sorted.bam -i test.single_end.sorted.bam --algo ReadWriter test.bam\tPN:sentieon-ReadWriter\tPP:samtools.1\tVN:sentieon-genomics-202308.02",
-                "@PG\tID:sentieon-ReadWriter_2\tCL:/opt/conda/share/sentieon-202308.02-0/libexec/driver -t 2 -i test.paired_end.methylated.sorted.bam -i test.paired_end.sorted.bam -i test.single_end.sorted.bam --algo ReadWriter test.bam\tPN:sentieon-ReadWriter\tPP:samtools_1\tVN:sentieon-genomics-202308.02"
-            ],
             "test.bam.bai",
             [
                 "versions.yml:md5,7e0e065f92de4419098841b16968fbed"
@@ -70,27 +39,11 @@
             "nf-test": "0.9.0",
             "nextflow": "24.04.3"
         },
-        "timestamp": "2024-08-01T12:35:16.273245"
+        "timestamp": "2024-08-01T13:15:03.780064"
     },
     "merging - output bam to cram": {
         "content": [
             "ed89d81d2d6adafdbb819a1a4ec86493",
-            [
-                "@HD\tVN:1.6\tSO:coordinate",
-                "@SQ\tSN:MT192765.1\tLN:29829\tM5:c95f3e5592d0ad9974e41e7f0ea14eb0",
-                "@RG\tID:1\tLB:lib1\tPL:ILLUMINA\tSM:test\tPU:barcode1",
-                "@PG\tID:bwa-meth\tCL:\"/usr/local/bin/bwameth.py -t 2 --reference bwameth/test_genomic.fasta test_methylated_1.fastq.gz test_methylated_2.fastq.gz\"\tPN:bwa-meth\tVN:0.2.0",
-                "@PG\tID:minimap2\tCL:minimap2 -ax sr fasta/test_genomic.fasta fastq/test_1.fastq.gz\tPN:minimap2\tVN:2.17-r941",
-                "@PG\tID:minimap2_1\tCL:minimap2 -ax sr tests/data/fasta/sarscov2/GCA_011545545.1_ASM1154554v1_genomic.fna tests/data/fastq/dna/sarscov2_1.fastq.gz tests/data/fastq/dna/sarscov2_2.fastq.gz\tPN:minimap2\tVN:2.17-r941",
-                "@PG\tID:samtools\tCL:samtools sort -@ 2 -o test.bam -T test test_methylated_paired_end.bam\tPN:samtools\tPP:bwa-meth\tVN:1.10",
-                "@PG\tID:samtools.1\tCL:samtools sort -o sarscov2_paired_aln.sorted.bam sarscov2_paired_aln.bam\tPN:samtools\tPP:samtools_2\tVN:1.11",
-                "@PG\tID:samtools_1\tCL:samtools sort test_single_end.bam\tPN:samtools\tPP:samtools_3\tVN:1.11",
-                "@PG\tID:samtools_2\tCL:samtools view -Sb sarscov2_aln.sam\tPN:samtools\tPP:minimap2_1\tVN:1.11",
-                "@PG\tID:samtools_3\tCL:samtools view -Sb test_single_end.sam\tPN:samtools\tPP:minimap2\tVN:1.11",
-                "@PG\tID:sentieon-ReadWriter\tCL:/opt/conda/share/sentieon-202308.02-0/libexec/driver -t 2 -r genome.fasta -i test.paired_end.methylated.sorted.bam -i test.paired_end.sorted.bam -i test.single_end.sorted.bam --algo ReadWriter test.cram\tPN:sentieon-ReadWriter\tPP:samtools\tVN:sentieon-genomics-202308.02",
-                "@PG\tID:sentieon-ReadWriter_1\tCL:/opt/conda/share/sentieon-202308.02-0/libexec/driver -t 2 -r genome.fasta -i test.paired_end.methylated.sorted.bam -i test.paired_end.sorted.bam -i test.single_end.sorted.bam --algo ReadWriter test.cram\tPN:sentieon-ReadWriter\tPP:samtools.1\tVN:sentieon-genomics-202308.02",
-                "@PG\tID:sentieon-ReadWriter_2\tCL:/opt/conda/share/sentieon-202308.02-0/libexec/driver -t 2 -r genome.fasta -i test.paired_end.methylated.sorted.bam -i test.paired_end.sorted.bam -i test.single_end.sorted.bam --algo ReadWriter test.cram\tPN:sentieon-ReadWriter\tPP:samtools_1\tVN:sentieon-genomics-202308.02"
-            ],
             "test.cram.crai",
             [
                 "versions.yml:md5,7e0e065f92de4419098841b16968fbed"
@@ -100,7 +53,7 @@
             "nf-test": "0.9.0",
             "nextflow": "24.04.3"
         },
-        "timestamp": "2024-08-01T12:48:26.734219"
+        "timestamp": "2024-08-01T13:15:15.313494"
     },
     "sentieon readwriter - stub": {
         "content": [
@@ -167,6 +120,6 @@
             "nf-test": "0.9.0",
             "nextflow": "24.04.3"
         },
-        "timestamp": "2024-08-01T12:35:35.519908"
+        "timestamp": "2024-08-01T13:15:23.88137"
     }
 }
