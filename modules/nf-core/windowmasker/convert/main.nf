@@ -4,8 +4,8 @@ process WINDOWMASKER_CONVERT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/blast:2.13.0--hf3cf87c_0':
-        'biocontainers/blast:2.13.0--hf3cf87c_0' }"
+        'https://depot.galaxyproject.org/singularity/blast:2.15.0--pl5321h6f7f691_1':
+        'biocontainers/blast:2.15.0--pl5321h6f7f691_1' }"
 
     input:
     tuple val(meta), path(counts)
@@ -18,11 +18,11 @@ process WINDOWMASKER_CONVERT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def outfmt =    args.contains('-sformat binary')  ? 'binary'  :
-                    args.contains('-sformat oascii')  ? 'oascii'  :
-                    args.contains('-sformat obinary') ? 'obinary' :
+    def args   =    task.ext.args                       ?: ''
+    def prefix =    task.ext.prefix                     ?: "${meta.id}"
+    def outfmt =    args.contains('-sformat binary')    ? 'binary'  :
+                    args.contains('-sformat oascii')    ? 'oascii'  :
+                    args.contains('-sformat obinary')   ? 'obinary' :
                     'ascii'
     output  = "${prefix}.${outfmt}"
     """
@@ -38,11 +38,11 @@ process WINDOWMASKER_CONVERT {
     """
 
     stub:
-    def args   = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def outfmt =    args.contains('-sformat binary')  ? 'binary'  :
-                    args.contains('-sformat oascii')  ? 'oascii'  :
-                    args.contains('-sformat obinary') ? 'obinary' :
+    def args   =    task.ext.args                       ?: ''
+    def prefix =    task.ext.prefix                     ?: "${meta.id}"
+    def outfmt =    args.contains('-sformat binary')    ? 'binary'  :
+                    args.contains('-sformat oascii')    ? 'oascii'  :
+                    args.contains('-sformat obinary')   ? 'obinary' :
                     'ascii'
     output  = "${prefix}.${outfmt}"
     """

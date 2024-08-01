@@ -1,0 +1,61 @@
+nextflow_process {
+
+    name "Test Process FREYJA_BOOT"
+    script "../main.nf"
+    process "FREYJA_BOOT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "freyja"
+    tag "freyja/boot"
+    tag "freyja/variants"
+    tag "freyja/updatedb"
+
+    test("sarscov2 - illumina - test_paired_end_sorted - bam") {
+
+        setup {
+            run("FREYJA_VARIANTS") {
+                script "../../variants/main.nf"
+                process {
+                    """
+                    input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+                        ]
+                    input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    """
+                }
+            }
+            run("FREYJA_UPDATE") {
+                script "../../update/main.nf"
+                process {
+                    """
+                    input[0] = "freyja_db"
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = FREYJA_VARIANTS.out.variants
+                input[1] = 10
+                input[2] = FREYJA_UPDATE.out.barcodes
+                input[3] = FREYJA_UPDATE.out.lineages_meta
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.summarized.get(0).get(1)).getText().contains("0.025,") },
+                { assert path(process.out.lineages.get(0).get(1)).getText().contains("0.025,") },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+}

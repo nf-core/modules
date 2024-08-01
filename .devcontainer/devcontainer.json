@@ -1,0 +1,24 @@
+{
+    "name": "nfcore",
+    "image": "nfcore/gitpod:dev",
+    "remoteUser": "gitpod",
+    "runArgs": ["--privileged"],
+    // Configure tool-specific properties.
+    "customizations": {
+        // Configure properties specific to VS Code.
+        "vscode": {
+            // Set *default* container specific settings.json values on container create.
+            "settings": {
+                "python.defaultInterpreterPath": "/opt/conda/bin/python",
+                "python.linting.enabled": true
+            },
+
+            // Add the IDs of extensions you want installed when the container is created.
+            "extensions": ["nf-core.nf-core-extensionpack"]
+        }
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/github-cli:1": {},
+        "ghcr.io/devcontainers/features/docker-in-docker:2.9": {}
+    }
+}

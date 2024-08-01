@@ -21,14 +21,14 @@ workflow FASTQ_ALIGN_BAMCMP_BWA {
     // Map reads with BWA to the primary index, must be queryname sorted (controlled by config)
     //
 
-    BWA_MEM_PRIMARY ( ch_reads, ch_primary_index, true )
+    BWA_MEM_PRIMARY ( ch_reads, ch_primary_index, ch_fasta, true )
     ch_versions = ch_versions.mix(BWA_MEM_PRIMARY.out.versions)
 
     //
     // Map reads with BWA to the contaminant index, must be queryname sorted (controlled by config)
     //
 
-    BWA_MEM_CONTAMINANT ( ch_reads, ch_contaminant_index, true )
+    BWA_MEM_CONTAMINANT ( ch_reads, ch_contaminant_index, [[], [] ], true )
     ch_versions = ch_versions.mix(BWA_MEM_CONTAMINANT.out.versions)
 
     //

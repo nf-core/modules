@@ -36,7 +36,7 @@ process BOWTIE_ALIGN {
         $unaligned \\
         $args \\
         $endedness \\
-        2> ${prefix}.out \\
+        2> >(tee ${prefix}.out >&2) \\
         | samtools view $args2 -@ $task.cpus -bS -o ${prefix}.bam -
 
     if [ -f ${prefix}.unmapped.fastq ]; then

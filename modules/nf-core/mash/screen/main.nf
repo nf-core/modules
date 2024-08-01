@@ -8,8 +8,8 @@ process MASH_SCREEN {
         'biocontainers/mash:2.3--he348c14_1' }"
 
     input:
-    tuple val(meta), path(query)
-    path sequences_sketch
+    tuple val(meta) , path(query)
+    tuple val(meta2), path(sequences_sketch)
 
     output:
     tuple val(meta), path("*.screen"), emit: screen
@@ -29,6 +29,18 @@ process MASH_SCREEN {
         $sequences_sketch \\
         $query \\
         > ${prefix}.screen
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        mash: \$( mash --version )
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.screen
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
