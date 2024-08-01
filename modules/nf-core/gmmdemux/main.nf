@@ -31,13 +31,13 @@ process GMMDEMUX {
     def args           = task.ext.args ?: ''
     def prefix         = task.ext.prefix ?: "${meta.id}"
     def skip           = skip ? "--skip $skip" : ""
-    def examine_cells  = examine ? "--extract $examine" : ""
+    def examine_cells  = examine ? "--examine $examine" : ""
     def VERSION        = '0.2.2.3' // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     def type_report    = type_report ? "-f ." : "-s ."
-    def summary_rep    = summary_report ? "-r summary_report_${prefix}" : ""
+    def summary_rep    = summary_report ? "-r ${prefix}_summary_report.txt" : ""
     """
     if [[ ${summary_report} == true ]]; then
-        cat /dev/null > summary_report_${prefix}.txt
+        cat /dev/null > ${prefix}_summary_report.txt
     fi
 
     GMM-demux $args \\
