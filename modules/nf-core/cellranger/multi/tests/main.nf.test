@@ -19,7 +19,7 @@ nextflow_process {
             script "modules/nf-core/cellranger/mkgtf/main.nf"
             process {
                 """
-                input[0] = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
                 """
             }
         }
@@ -28,7 +28,7 @@ nextflow_process {
             script "modules/nf-core/cellranger/mkref/main.nf"
             process {
                 """
-                input[0] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 input[1] = CELLRANGER_MKGTF.out.gtf
                 input[2] = 'homo_sapiens_chr22_reference'
                 """
@@ -52,27 +52,27 @@ nextflow_process {
 
                 // stage B cell FASTQ test data
                 bcell_fastqs_10k_pbmc = [
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_b_fastq_1_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_b_fastq_2_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/bcell/subsampled_sc5p_v2_hs_PBMC_10k_b_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/bcell/subsampled_sc5p_v2_hs_PBMC_10k_b_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                 ]
                 def bcell_fastq_samplename_10k_pbmc = "subsampled_sc5p_v2_hs_PBMC_10k"
 
                 // stage 5' gene expression FASTQ test data
                 fivepgex_fastqs_10k_pbmc = [
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_5gex_fastq_1_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_5gex_fastq_2_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/5gex/5gex/subsampled_sc5p_v2_hs_PBMC_10k_5gex_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/5gex/5gex/subsampled_sc5p_v2_hs_PBMC_10k_5gex_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                 ]
                 def fivepgex_fastq_samplename_10k_pbmc = "subsampled_sc5p_v2_hs_PBMC_10k"
 
                 // stage 5' feature barcode (antibody capture) FASTQ test data
                 ab_fastqs_10k_pbmc = [
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_5fb_fastq_1_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_5fb_fastq_2_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/5gex/5fb/subsampled_sc5p_v2_hs_PBMC_10k_5fb_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/5gex/5fb/subsampled_sc5p_v2_hs_PBMC_10k_5fb_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                 ]
                 def fivepab_fastq_samplename_10k_pbmc = "subsampled_sc5p_v2_hs_PBMC_10k"
 
                 // stage feature barcode reference for antibody capture
-                fb_reference_10k_pbmc = file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_feature_ref_csv'], checkIfExists: true)
+                fb_reference_10k_pbmc = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/sc5p_v2_hs_PBMC_10k_multi_5gex_5fb_b_t_feature_ref.csv', checkIfExists: true)
 
                 /*******************************/
                 /*** end stage 10k PBMC data ***/
@@ -87,20 +87,20 @@ nextflow_process {
 
                 // stage 3' CMO FASTQ test data
                 cmo_fastqs_10k_pbmc_cmo = [
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_cmo_cmo_fastq_1_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_cmo_cmo_fastq_2_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/cmo/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_multiplexing_capture_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/cmo/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_multiplexing_capture_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                 ]
                 def cmo_fastq_samplename_10k_pbmc_cmo = "subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K"
 
                 // stage 3' gene expression FASTQ test data
                 threepgex_fastqs_10k_pbmc_cmo = [
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_cmo_gex1_fastq_1_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_cmo_gex1_fastq_2_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R2_001.fastq.gz', checkIfExists: true)
                 ]
                 def threepgex_fastq_samplename_10k_pbmc_cmo = "subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K"
 
                 // stage feature barcode reference for antibody capture
-                cmo_reference_10k_pbmc_cmo = file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_cmo_feature_ref_csv'], checkIfExists: true)
+                cmo_reference_10k_pbmc_cmo = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/10k_pbmc_cmo_count_feature_reference.csv', checkIfExists: true)
 
                 // CMO needs a barcode file
                 cmo_barcodes_csv = file("cmo_barcodes.csv")
@@ -119,27 +119,27 @@ nextflow_process {
 
                 // stage antibody capture data
                 ab_fastqs_5k_cmvpos_tcells = [
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_ab_fastq_1_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_ab_fastq_2_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/ab/subsampled_5k_human_antiCMV_T_TBNK_connect_AB_S2_L004_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/ab/subsampled_5k_human_antiCMV_T_TBNK_connect_AB_S2_L004_R2_001.fastq.gz', checkIfExists: true)
                 ]
                 def ab_fastq_samplename_5k_cmvpos_tcells = "subsampled_5k_human_antiCMV_T_TBNK_connect"
 
                 // stage GEX data
                 gex_fastqs_5k_cmvpos_tcells = [
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_gex1_fastq_1_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_gex1_fastq_2_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                 ]
                 def gex_fastq_samplename_5k_cmvpos_tcells = "subsampled_5k_human_antiCMV_T_TBNK_connect"
 
                 // stage VDJ data
                 vdj_fastqs_5k_cmvpos_tcells = [
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_vdj_fastq_1_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_vdj_fastq_2_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/vdj/subsampled_5k_human_antiCMV_T_TBNK_connect_VDJ_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/vdj/subsampled_5k_human_antiCMV_T_TBNK_connect_VDJ_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                 ]
                 def vdj_fastq_samplename_5k_cmvpos_tcells = "subsampled_5k_human_antiCMV_T_TBNK_connect"
 
                 // stage feature barcode reference for antibody capture
-                fb_reference_5k_cmvpos_tcells = file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_feature_ref_csv'], checkIfExists: true)
+                fb_reference_5k_cmvpos_tcells = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/5k_human_antiCMV_T_TBNK_connect_Multiplex_count_feature_reference.csv', checkIfExists: true)
 
                 /*************************************/
                 /*** end stage 5k CMV+ T-cell data ***/
@@ -150,9 +150,9 @@ nextflow_process {
                 /*** stage VDJ reference ***/
                 /***************************/
 
-                vdj_json      = file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_vdj_ref_json']     , checkIfExists: true)
-                vdj_fasta     = file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_vdj_ref_fasta']    , checkIfExists: true)
-                vdj_suppfasta = file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_vdj_ref_suppfasta'], checkIfExists: true)
+                vdj_json      = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/references/vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0/reference.json', checkIfExists: true)
+                vdj_fasta     = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/references/vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0/fasta/regions.fa', checkIfExists: true)
+                vdj_suppfasta = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/references/vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0/fasta/supp_regions.fa', checkIfExists: true)
 
                 // awkwardly restage VDJ ref to enforce directory structure expected by cellranger
                 vdj_reference = file( "${workDir}/vdj_reference" )
@@ -165,7 +165,7 @@ nextflow_process {
                 /*******************************/
 
 
-                // make an empty dummy file
+                // make an empty dummy file, for FASTQs
                 empty_file = file("$workDir/EMPTY")
                 empty_file.append("")
 
@@ -173,22 +173,22 @@ nextflow_process {
                 // create empty channels to fill unused cellranger multi arguments
                 // fastqs need a [ meta, ref ] structure
                 // references just need a path
-                ch_gex_fastqs            = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_vdj_fastqs            = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_ab_fastqs             = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_beam_fastqs           = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_cmo_fastqs            = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_crispr_fastqs         = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_gex_frna_probeset     = Channel.fromPath( empty_file )
-                ch_gex_targetpanel       = Channel.fromPath( empty_file )
-                ch_vdj_primer_index      = Channel.fromPath( empty_file )
-                ch_fb_reference          = Channel.fromPath( empty_file )
-                ch_beam_antigen_panel    = Channel.fromPath( empty_file )
-                ch_beam_control_panel    = Channel.fromPath( empty_file )
-                ch_cmo_reference         = Channel.fromPath( empty_file )
-                ch_cmo_barcodes          = Channel.fromPath( empty_file )
-                ch_cmo_sample_assignment = Channel.fromPath( empty_file )
-                ch_frna_sampleinfo       = Channel.fromPath( empty_file )
+                ch_gex_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_vdj_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_ab_fastqs             = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_beam_fastqs           = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_cmo_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_crispr_fastqs         = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_gex_frna_probeset     = []
+                ch_gex_targetpanel       = []
+                ch_vdj_primer_index      = []
+                ch_fb_reference          = []
+                ch_beam_antigen_panel    = []
+                ch_beam_control_panel    = []
+                ch_cmo_reference         = []
+                ch_cmo_barcodes          = []
+                ch_cmo_sample_assignment = []
+                ch_frna_sampleinfo       = []
 
                 // collect references and fastq files for staging
                 ch_gex_fastqs_10k_pbmc = Channel.of( fivepgex_fastqs_10k_pbmc )
@@ -262,27 +262,27 @@ nextflow_process {
 
                 // stage B cell FASTQ test data
                 bcell_fastqs_10k_pbmc = [
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_b_fastq_1_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_b_fastq_2_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/bcell/subsampled_sc5p_v2_hs_PBMC_10k_b_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/bcell/subsampled_sc5p_v2_hs_PBMC_10k_b_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                 ]
                 def bcell_fastq_samplename_10k_pbmc = "subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K"
 
                 // stage 5' gene expression FASTQ test data
                 fivepgex_fastqs_10k_pbmc = [
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_5gex_fastq_1_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_5gex_fastq_2_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/5gex/5gex/subsampled_sc5p_v2_hs_PBMC_10k_5gex_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/5gex/5gex/subsampled_sc5p_v2_hs_PBMC_10k_5gex_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                 ]
                 def fivepgex_fastq_samplename_10k_pbmc = "subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K"
 
                 // stage 5' feature barcode (antibody capture) FASTQ test data
                 ab_fastqs_10k_pbmc = [
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_5fb_fastq_1_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_5fb_fastq_2_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/5gex/5fb/subsampled_sc5p_v2_hs_PBMC_10k_5fb_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/5gex/5fb/subsampled_sc5p_v2_hs_PBMC_10k_5fb_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                 ]
                 def fivepab_fastq_samplename_10k_pbmc = "subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K"
 
                 // stage feature barcode reference for antibody capture
-                fb_reference_10k_pbmc = file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_feature_ref_csv'], checkIfExists: true)
+                fb_reference_10k_pbmc = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/sc5p_v2_hs_PBMC_10k_multi_5gex_5fb_b_t_feature_ref.csv', checkIfExists: true)
 
                 /*******************************/
                 /*** end stage 10k PBMC data ***/
@@ -297,20 +297,20 @@ nextflow_process {
 
                 // stage 3' CMO FASTQ test data
                 cmo_fastqs_10k_pbmc_cmo = [
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_cmo_cmo_fastq_1_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_cmo_cmo_fastq_2_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/cmo/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_multiplexing_capture_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/cmo/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_multiplexing_capture_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                 ]
                 def cmo_fastq_samplename_10k_pbmc_cmo = "subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K"
 
                 // stage 3' gene expression FASTQ test data
                 threepgex_fastqs_10k_pbmc_cmo = [
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_cmo_gex1_fastq_1_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_cmo_gex1_fastq_2_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R2_001.fastq.gz', checkIfExists: true)
                 ]
                 def threepgex_fastq_samplename_10k_pbmc_cmo = "subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K"
 
                 // stage feature barcode reference for antibody capture
-                cmo_reference_10k_pbmc_cmo = file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_cmo_feature_ref_csv'], checkIfExists: true)
+                cmo_reference_10k_pbmc_cmo = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/10k_pbmc_cmo_count_feature_reference.csv', checkIfExists: true)
 
                 // CMO needs a barcode file
                 cmo_barcodes_csv = file("cmo_barcodes.csv")
@@ -329,27 +329,27 @@ nextflow_process {
 
                 // stage antibody capture data
                 ab_fastqs_5k_cmvpos_tcells = [
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_ab_fastq_1_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_ab_fastq_2_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/ab/subsampled_5k_human_antiCMV_T_TBNK_connect_AB_S2_L004_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/ab/subsampled_5k_human_antiCMV_T_TBNK_connect_AB_S2_L004_R2_001.fastq.gz', checkIfExists: true)
                 ]
                 def ab_fastq_samplename_5k_cmvpos_tcells = "subsampled_5k_human_antiCMV_T_TBNK_connect"
 
                 // stage GEX data
                 gex_fastqs_5k_cmvpos_tcells = [
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_gex1_fastq_1_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_gex1_fastq_2_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                 ]
                 def gex_fastq_samplename_5k_cmvpos_tcells = "subsampled_5k_human_antiCMV_T_TBNK_connect"
 
                 // stage VDJ data
                 vdj_fastqs_5k_cmvpos_tcells = [
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_vdj_fastq_1_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_vdj_fastq_2_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/vdj/subsampled_5k_human_antiCMV_T_TBNK_connect_VDJ_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/vdj/subsampled_5k_human_antiCMV_T_TBNK_connect_VDJ_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                 ]
                 def vdj_fastq_samplename_5k_cmvpos_tcells = "subsampled_5k_human_antiCMV_T_TBNK_connect"
 
                 // stage feature barcode reference for antibody capture
-                fb_reference_5k_cmvpos_tcells = file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_feature_ref_csv'], checkIfExists: true)
+                fb_reference_5k_cmvpos_tcells = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/5k_human_antiCMV_T_TBNK_connect_Multiplex_count_feature_reference.csv', checkIfExists: true)
 
                 /*************************************/
                 /*** end stage 5k CMV+ T-cell data ***/
@@ -362,8 +362,8 @@ nextflow_process {
                 /***************************/
 
                 // will build this as done in cellranger count test
-                gex_ref_fasta    = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-                gex_ref_gtf      = file(params.test_data['homo_sapiens']['genome']['genome_gtf']  , checkIfExists: true)
+                gex_ref_fasta    = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                gex_ref_gtf      = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
                 def gex_ref_name = "homo_sapiens_chr22_reference"
 
                 /*******************************/
@@ -375,9 +375,9 @@ nextflow_process {
                 /*** stage VDJ reference ***/
                 /***************************/
 
-                vdj_json      = file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_vdj_ref_json']     , checkIfExists: true)
-                vdj_fasta     = file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_vdj_ref_fasta']    , checkIfExists: true)
-                vdj_suppfasta = file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_vdj_ref_suppfasta'], checkIfExists: true)
+                vdj_json      = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/references/vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0/reference.json', checkIfExists: true)
+                vdj_fasta     = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/references/vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0/fasta/regions.fa', checkIfExists: true)
+                vdj_suppfasta = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/references/vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0/fasta/supp_regions.fa', checkIfExists: true)
 
                 // awkwardly restage VDJ ref to enforce directory structure expected by cellranger
                 vdj_reference = file( "${workDir}/vdj_reference" )
@@ -390,7 +390,7 @@ nextflow_process {
                 /*******************************/
 
 
-                // make an empty dummy file
+                // make an empty dummy file, for FASTQs
                 empty_file = file("$workDir/EMPTY")
                 empty_file.append("")
 
@@ -398,22 +398,22 @@ nextflow_process {
                 // create empty channels to fill unused cellranger multi arguments
                 // fastqs need a [ meta, ref ] structure
                 // references just need a path
-                ch_gex_fastqs            = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_vdj_fastqs            = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_ab_fastqs             = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_beam_fastqs           = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_cmo_fastqs            = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_crispr_fastqs         = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_gex_frna_probeset     = Channel.fromPath( empty_file )
-                ch_gex_targetpanel       = Channel.fromPath( empty_file )
-                ch_vdj_primer_index      = Channel.fromPath( empty_file )
-                ch_fb_reference          = Channel.fromPath( empty_file )
-                ch_beam_antigen_panel    = Channel.fromPath( empty_file )
-                ch_beam_control_panel    = Channel.fromPath( empty_file )
-                ch_cmo_reference         = Channel.fromPath( empty_file )
-                ch_cmo_barcodes          = Channel.fromPath( empty_file )
-                ch_cmo_sample_assignment = Channel.fromPath( empty_file )
-                ch_frna_sampleinfo       = Channel.fromPath( empty_file )
+                ch_gex_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_vdj_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_ab_fastqs             = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_beam_fastqs           = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_cmo_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_crispr_fastqs         = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_gex_frna_probeset     = []
+                ch_gex_targetpanel       = []
+                ch_vdj_primer_index      = []
+                ch_fb_reference          = []
+                ch_beam_antigen_panel    = []
+                ch_beam_control_panel    = []
+                ch_cmo_reference         = []
+                ch_cmo_barcodes          = []
+                ch_cmo_sample_assignment = []
+                ch_frna_sampleinfo       = []
 
                 // collect references and fastq files for staging
                 ch_gex_fastqs_10k_pbmc = Channel.of( fivepgex_fastqs_10k_pbmc )
@@ -438,7 +438,7 @@ nextflow_process {
                 ch_cmo_reference_10k_pbmc_cmo = Channel.of( cmo_reference_10k_pbmc_cmo )
 
                 // empty vdj reference
-                ch_vdj_ref_empty = Channel.fromPath( empty_file )
+                ch_vdj_ref_empty = []
 
                 // CMO analysis needs barcodes
                 ch_cmo_barcodes_10k_pbmc_cmo = Channel.fromPath( cmo_barcodes_csv )
@@ -502,27 +502,27 @@ nextflow_process {
 
                 // stage B cell FASTQ test data
                 bcell_fastqs_10k_pbmc = [
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_b_fastq_1_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_b_fastq_2_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/bcell/subsampled_sc5p_v2_hs_PBMC_10k_b_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/bcell/subsampled_sc5p_v2_hs_PBMC_10k_b_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                 ]
                 def bcell_fastq_samplename_10k_pbmc = "subsampled_5k_human_antiCMV_T_TBNK_connect"
 
                 // stage 5' gene expression FASTQ test data
                 fivepgex_fastqs_10k_pbmc = [
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_5gex_fastq_1_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_5gex_fastq_2_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/5gex/5gex/subsampled_sc5p_v2_hs_PBMC_10k_5gex_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/5gex/5gex/subsampled_sc5p_v2_hs_PBMC_10k_5gex_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                 ]
                 def fivepgex_fastq_samplename_10k_pbmc = "subsampled_5k_human_antiCMV_T_TBNK_connect"
 
                 // stage 5' feature barcode (antibody capture) FASTQ test data
                 ab_fastqs_10k_pbmc = [
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_5fb_fastq_1_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_5fb_fastq_2_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/5gex/5fb/subsampled_sc5p_v2_hs_PBMC_10k_5fb_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/5gex/5fb/subsampled_sc5p_v2_hs_PBMC_10k_5fb_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                 ]
                 def fivepab_fastq_samplename_10k_pbmc = "subsampled_5k_human_antiCMV_T_TBNK_connect"
 
                 // stage feature barcode reference for antibody capture
-                fb_reference_10k_pbmc = file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_feature_ref_csv'], checkIfExists: true)
+                fb_reference_10k_pbmc = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/sc5p_v2_hs_PBMC_10k_multi_5gex_5fb_b_t_feature_ref.csv', checkIfExists: true)
 
                 /*******************************/
                 /*** end stage 10k PBMC data ***/
@@ -537,20 +537,20 @@ nextflow_process {
 
                 // stage 3' CMO FASTQ test data
                 cmo_fastqs_10k_pbmc_cmo = [
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_cmo_cmo_fastq_1_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_cmo_cmo_fastq_2_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/cmo/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_multiplexing_capture_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/cmo/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_multiplexing_capture_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                 ]
                 def cmo_fastq_samplename_10k_pbmc_cmo = "subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K"
 
                 // stage 3' gene expression FASTQ test data
                 threepgex_fastqs_10k_pbmc_cmo = [
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_cmo_gex1_fastq_1_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_cmo_gex1_fastq_2_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R2_001.fastq.gz', checkIfExists: true)
                 ]
                 def threepgex_fastq_samplename_10k_pbmc_cmo = "subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K"
 
                 // stage feature barcode reference for antibody capture
-                cmo_reference_10k_pbmc_cmo = file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_10k_pbmc_cmo_feature_ref_csv'], checkIfExists: true)
+                cmo_reference_10k_pbmc_cmo = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/10k_pbmc_cmo_count_feature_reference.csv', checkIfExists: true)
 
                 // CMO needs a barcode file
                 cmo_barcodes_csv = file("cmo_barcodes.csv")
@@ -569,27 +569,27 @@ nextflow_process {
 
                 // stage antibody capture data
                 ab_fastqs_5k_cmvpos_tcells = [
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_ab_fastq_1_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_ab_fastq_2_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/ab/subsampled_5k_human_antiCMV_T_TBNK_connect_AB_S2_L004_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/ab/subsampled_5k_human_antiCMV_T_TBNK_connect_AB_S2_L004_R2_001.fastq.gz', checkIfExists: true)
                 ]
                 def ab_fastq_samplename_5k_cmvpos_tcells = "subsampled_5k_human_antiCMV_T_TBNK_connect"
 
                 // stage GEX data
                 gex_fastqs_5k_cmvpos_tcells = [
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_gex1_fastq_1_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_gex1_fastq_2_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                 ]
                 def gex_fastq_samplename_5k_cmvpos_tcells = "subsampled_5k_human_antiCMV_T_TBNK_connect"
 
                 // stage VDJ data
                 vdj_fastqs_5k_cmvpos_tcells = [
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_vdj_fastq_1_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_vdj_fastq_2_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/vdj/subsampled_5k_human_antiCMV_T_TBNK_connect_VDJ_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/vdj/subsampled_5k_human_antiCMV_T_TBNK_connect_VDJ_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                 ]
                 def vdj_fastq_samplename_5k_cmvpos_tcells = "subsampled_5k_human_antiCMV_T_TBNK_connect"
 
                 // stage feature barcode reference for antibody capture
-                fb_reference_5k_cmvpos_tcells = file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_feature_ref_csv'], checkIfExists: true)
+                fb_reference_5k_cmvpos_tcells = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/5k_human_antiCMV_T_TBNK_connect_Multiplex_count_feature_reference.csv', checkIfExists: true)
 
                 /*************************************/
                 /*** end stage 5k CMV+ T-cell data ***/
@@ -602,8 +602,8 @@ nextflow_process {
                 /***************************/
 
                 // will build this as done in cellranger count test
-                gex_ref_fasta    = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-                gex_ref_gtf      = file(params.test_data['homo_sapiens']['genome']['genome_gtf']  , checkIfExists: true)
+                gex_ref_fasta    = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                gex_ref_gtf      = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
                 def gex_ref_name = "homo_sapiens_chr22_reference"
 
                 /*******************************/
@@ -615,9 +615,9 @@ nextflow_process {
                 /*** stage VDJ reference ***/
                 /***************************/
 
-                vdj_json      = file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_vdj_ref_json']     , checkIfExists: true)
-                vdj_fasta     = file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_vdj_ref_fasta']    , checkIfExists: true)
-                vdj_suppfasta = file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_vdj_ref_suppfasta'], checkIfExists: true)
+                vdj_json      = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/references/vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0/reference.json', checkIfExists: true)
+                vdj_fasta     = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/references/vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0/fasta/regions.fa', checkIfExists: true)
+                vdj_suppfasta = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/references/vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0/fasta/supp_regions.fa', checkIfExists: true)
 
                 // awkwardly restage VDJ ref to enforce directory structure expected by cellranger
                 vdj_reference = file( "${workDir}/vdj_reference" )
@@ -630,7 +630,7 @@ nextflow_process {
                 /*******************************/
 
 
-                // make an empty dummy file
+                // make an empty dummy file, for FASTQs
                 empty_file = file("$workDir/EMPTY")
                 empty_file.append("")
 
@@ -638,22 +638,22 @@ nextflow_process {
                 // create empty channels to fill unused cellranger multi arguments
                 // fastqs need a [ meta, ref ] structure
                 // references just need a path
-                ch_gex_fastqs            = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_vdj_fastqs            = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_ab_fastqs             = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_beam_fastqs           = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_cmo_fastqs            = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_crispr_fastqs         = Channel.fromPath( empty_file ).map { file -> [ [ id:"EMPTY", options:[] ], file ] }
-                ch_gex_frna_probeset     = Channel.fromPath( empty_file )
-                ch_gex_targetpanel       = Channel.fromPath( empty_file )
-                ch_vdj_primer_index      = Channel.fromPath( empty_file )
-                ch_fb_reference          = Channel.fromPath( empty_file )
-                ch_beam_antigen_panel    = Channel.fromPath( empty_file )
-                ch_beam_control_panel    = Channel.fromPath( empty_file )
-                ch_cmo_reference         = Channel.fromPath( empty_file )
-                ch_cmo_barcodes          = Channel.fromPath( empty_file )
-                ch_cmo_sample_assignment = Channel.fromPath( empty_file )
-                ch_frna_sampleinfo       = Channel.fromPath( empty_file )
+                ch_gex_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_vdj_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_ab_fastqs             = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_beam_fastqs           = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_cmo_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_crispr_fastqs         = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_gex_frna_probeset     = []
+                ch_gex_targetpanel       = []
+                ch_vdj_primer_index      = []
+                ch_fb_reference          = []
+                ch_beam_antigen_panel    = []
+                ch_beam_control_panel    = []
+                ch_cmo_reference         = []
+                ch_cmo_barcodes          = []
+                ch_cmo_sample_assignment = []
+                ch_frna_sampleinfo       = []
 
                 // collect references and fastq files for staging
                 ch_gex_fastqs_10k_pbmc = Channel.of( fivepgex_fastqs_10k_pbmc )

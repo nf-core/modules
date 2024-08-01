@@ -1,0 +1,127 @@
+{
+    "sascov2_wgs_stub - [bam,bai]": {
+        "content": [
+            "test.CollectWgsMetrics.coverage_metrics",
+            "test.CollectMultipleMetrics.alignment_summary_metrics"
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2023-11-29T17:33:46.472439804"
+    },
+    "sascov2_targetted - [bam,bai]": {
+        "content": [
+            {
+                "id": "test",
+                "single_end": false
+            },
+            "test.CollectHsMetrics.coverage_metrics",
+            [
+                "## htsjdk.samtools.metrics.StringHeader",
+                "# CollectHsMetrics --BAIT_INTERVALS baits/baits.interval_list --TARGET_INTERVALS targets/targets.interval_list --INPUT test.paired_end.sorted.bam --OUTPUT test.CollectHsMetrics.coverage_metrics --REFERENCE_SEQUENCE genome.fasta --METRIC_ACCUMULATION_LEVEL ALL_READS --NEAR_DISTANCE 250 --MINIMUM_MAPPING_QUALITY 20 --MINIMUM_BASE_QUALITY 20 --CLIP_OVERLAPPING_READS true --INCLUDE_INDELS false --COVERAGE_CAP 200 --SAMPLE_SIZE 10000 --ALLELE_FRACTION 0.001 --ALLELE_FRACTION 0.005 --ALLELE_FRACTION 0.01 --ALLELE_FRACTION 0.02 --ALLELE_FRACTION 0.05 --ALLELE_FRACTION 0.1 --ALLELE_FRACTION 0.2 --ALLELE_FRACTION 0.3 --ALLELE_FRACTION 0.5 --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
+                "## htsjdk.samtools.metrics.StringHeader"
+            ],
+            {
+                "id": "test",
+                "single_end": false
+            },
+            "test.CollectMultipleMetrics.alignment_summary_metrics",
+            [
+                "## htsjdk.samtools.metrics.StringHeader",
+                "# CollectMultipleMetrics --INPUT test.paired_end.sorted.bam --OUTPUT test.CollectMultipleMetrics --REFERENCE_SEQUENCE genome.fasta --ASSUME_SORTED true --STOP_AFTER 0 --METRIC_ACCUMULATION_LEVEL ALL_READS --PROGRAM CollectAlignmentSummaryMetrics --PROGRAM CollectBaseDistributionByCycle --PROGRAM CollectInsertSizeMetrics --PROGRAM MeanQualityByCycle --PROGRAM QualityScoreDistribution --INCLUDE_UNPAIRED false --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
+                "## htsjdk.samtools.metrics.StringHeader"
+            ],
+            "test.CollectMultipleMetrics.base_distribution_by_cycle_metrics",
+            [
+                "## htsjdk.samtools.metrics.StringHeader",
+                "# CollectMultipleMetrics --INPUT test.paired_end.sorted.bam --OUTPUT test.CollectMultipleMetrics --REFERENCE_SEQUENCE genome.fasta --ASSUME_SORTED true --STOP_AFTER 0 --METRIC_ACCUMULATION_LEVEL ALL_READS --PROGRAM CollectAlignmentSummaryMetrics --PROGRAM CollectBaseDistributionByCycle --PROGRAM CollectInsertSizeMetrics --PROGRAM MeanQualityByCycle --PROGRAM QualityScoreDistribution --INCLUDE_UNPAIRED false --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
+                "## htsjdk.samtools.metrics.StringHeader"
+            ],
+            "test.CollectMultipleMetrics.insert_size_metrics",
+            [
+                "## htsjdk.samtools.metrics.StringHeader",
+                "# CollectMultipleMetrics --INPUT test.paired_end.sorted.bam --OUTPUT test.CollectMultipleMetrics --REFERENCE_SEQUENCE genome.fasta --ASSUME_SORTED true --STOP_AFTER 0 --METRIC_ACCUMULATION_LEVEL ALL_READS --PROGRAM CollectAlignmentSummaryMetrics --PROGRAM CollectBaseDistributionByCycle --PROGRAM CollectInsertSizeMetrics --PROGRAM MeanQualityByCycle --PROGRAM QualityScoreDistribution --INCLUDE_UNPAIRED false --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
+                "## htsjdk.samtools.metrics.StringHeader"
+            ],
+            "test.CollectMultipleMetrics.quality_by_cycle_metrics",
+            [
+                "## htsjdk.samtools.metrics.StringHeader",
+                "# CollectMultipleMetrics --INPUT test.paired_end.sorted.bam --OUTPUT test.CollectMultipleMetrics --REFERENCE_SEQUENCE genome.fasta --ASSUME_SORTED true --STOP_AFTER 0 --METRIC_ACCUMULATION_LEVEL ALL_READS --PROGRAM CollectAlignmentSummaryMetrics --PROGRAM CollectBaseDistributionByCycle --PROGRAM CollectInsertSizeMetrics --PROGRAM MeanQualityByCycle --PROGRAM QualityScoreDistribution --INCLUDE_UNPAIRED false --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
+                "## htsjdk.samtools.metrics.StringHeader"
+            ],
+            "test.CollectMultipleMetrics.quality_distribution_metrics",
+            [
+                "## htsjdk.samtools.metrics.StringHeader",
+                "# CollectMultipleMetrics --INPUT test.paired_end.sorted.bam --OUTPUT test.CollectMultipleMetrics --REFERENCE_SEQUENCE genome.fasta --ASSUME_SORTED true --STOP_AFTER 0 --METRIC_ACCUMULATION_LEVEL ALL_READS --PROGRAM CollectAlignmentSummaryMetrics --PROGRAM CollectBaseDistributionByCycle --PROGRAM CollectInsertSizeMetrics --PROGRAM MeanQualityByCycle --PROGRAM QualityScoreDistribution --INCLUDE_UNPAIRED false --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
+                "## htsjdk.samtools.metrics.StringHeader"
+            ],
+            [
+                "versions.yml:md5,d61a29a9b3d8c60ed90b068df8032979",
+                "versions.yml:md5,e71b3af11ad159b26b503337cd90ee3d"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "24.04.2"
+        },
+        "timestamp": "2024-07-10T09:38:29.298437201"
+    },
+    "sascov2_wgs - [bam,bai]": {
+        "content": [
+            {
+                "id": "test",
+                "single_end": false
+            },
+            "test.CollectWgsMetrics.coverage_metrics",
+            [
+                "## htsjdk.samtools.metrics.StringHeader",
+                "# CollectWgsMetrics --INPUT test.paired_end.sorted.bam --OUTPUT test.CollectWgsMetrics.coverage_metrics --REFERENCE_SEQUENCE genome.fasta --MINIMUM_MAPPING_QUALITY 20 --MINIMUM_BASE_QUALITY 20 --COVERAGE_CAP 250 --LOCUS_ACCUMULATION_CAP 100000 --STOP_AFTER -1 --INCLUDE_BQ_HISTOGRAM false --COUNT_UNPAIRED false --SAMPLE_SIZE 10000 --ALLELE_FRACTION 0.001 --ALLELE_FRACTION 0.005 --ALLELE_FRACTION 0.01 --ALLELE_FRACTION 0.02 --ALLELE_FRACTION 0.05 --ALLELE_FRACTION 0.1 --ALLELE_FRACTION 0.2 --ALLELE_FRACTION 0.3 --ALLELE_FRACTION 0.5 --USE_FAST_ALGORITHM false --READ_LENGTH 150 --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
+                "## htsjdk.samtools.metrics.StringHeader"
+            ],
+            {
+                "id": "test",
+                "single_end": false
+            },
+            "test.CollectMultipleMetrics.alignment_summary_metrics",
+            [
+                "## htsjdk.samtools.metrics.StringHeader",
+                "# CollectMultipleMetrics --INPUT test.paired_end.sorted.bam --OUTPUT test.CollectMultipleMetrics --REFERENCE_SEQUENCE genome.fasta --ASSUME_SORTED true --STOP_AFTER 0 --METRIC_ACCUMULATION_LEVEL ALL_READS --PROGRAM CollectAlignmentSummaryMetrics --PROGRAM CollectBaseDistributionByCycle --PROGRAM CollectInsertSizeMetrics --PROGRAM MeanQualityByCycle --PROGRAM QualityScoreDistribution --INCLUDE_UNPAIRED false --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
+                "## htsjdk.samtools.metrics.StringHeader"
+            ],
+            "test.CollectMultipleMetrics.base_distribution_by_cycle_metrics",
+            [
+                "## htsjdk.samtools.metrics.StringHeader",
+                "# CollectMultipleMetrics --INPUT test.paired_end.sorted.bam --OUTPUT test.CollectMultipleMetrics --REFERENCE_SEQUENCE genome.fasta --ASSUME_SORTED true --STOP_AFTER 0 --METRIC_ACCUMULATION_LEVEL ALL_READS --PROGRAM CollectAlignmentSummaryMetrics --PROGRAM CollectBaseDistributionByCycle --PROGRAM CollectInsertSizeMetrics --PROGRAM MeanQualityByCycle --PROGRAM QualityScoreDistribution --INCLUDE_UNPAIRED false --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
+                "## htsjdk.samtools.metrics.StringHeader"
+            ],
+            "test.CollectMultipleMetrics.insert_size_metrics",
+            [
+                "## htsjdk.samtools.metrics.StringHeader",
+                "# CollectMultipleMetrics --INPUT test.paired_end.sorted.bam --OUTPUT test.CollectMultipleMetrics --REFERENCE_SEQUENCE genome.fasta --ASSUME_SORTED true --STOP_AFTER 0 --METRIC_ACCUMULATION_LEVEL ALL_READS --PROGRAM CollectAlignmentSummaryMetrics --PROGRAM CollectBaseDistributionByCycle --PROGRAM CollectInsertSizeMetrics --PROGRAM MeanQualityByCycle --PROGRAM QualityScoreDistribution --INCLUDE_UNPAIRED false --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
+                "## htsjdk.samtools.metrics.StringHeader"
+            ],
+            "test.CollectMultipleMetrics.quality_by_cycle_metrics",
+            [
+                "## htsjdk.samtools.metrics.StringHeader",
+                "# CollectMultipleMetrics --INPUT test.paired_end.sorted.bam --OUTPUT test.CollectMultipleMetrics --REFERENCE_SEQUENCE genome.fasta --ASSUME_SORTED true --STOP_AFTER 0 --METRIC_ACCUMULATION_LEVEL ALL_READS --PROGRAM CollectAlignmentSummaryMetrics --PROGRAM CollectBaseDistributionByCycle --PROGRAM CollectInsertSizeMetrics --PROGRAM MeanQualityByCycle --PROGRAM QualityScoreDistribution --INCLUDE_UNPAIRED false --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
+                "## htsjdk.samtools.metrics.StringHeader"
+            ],
+            "test.CollectMultipleMetrics.quality_distribution_metrics",
+            [
+                "## htsjdk.samtools.metrics.StringHeader",
+                "# CollectMultipleMetrics --INPUT test.paired_end.sorted.bam --OUTPUT test.CollectMultipleMetrics --REFERENCE_SEQUENCE genome.fasta --ASSUME_SORTED true --STOP_AFTER 0 --METRIC_ACCUMULATION_LEVEL ALL_READS --PROGRAM CollectAlignmentSummaryMetrics --PROGRAM CollectBaseDistributionByCycle --PROGRAM CollectInsertSizeMetrics --PROGRAM MeanQualityByCycle --PROGRAM QualityScoreDistribution --INCLUDE_UNPAIRED false --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
+                "## htsjdk.samtools.metrics.StringHeader"
+            ],
+            [
+                "versions.yml:md5,e71b3af11ad159b26b503337cd90ee3d",
+                "versions.yml:md5,ebe92bff64a6e7b1a0aa741674d24893"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "24.04.2"
+        },
+        "timestamp": "2024-07-10T09:38:09.338919835"
+    }
+}
