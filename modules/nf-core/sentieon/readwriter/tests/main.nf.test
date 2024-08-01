@@ -45,7 +45,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] =  [ [id: 'test' ],
+                input[0] =  [ [id: 'test', fasta: 'params.modules_testdata_base_path' + 'genomics/homo_sapiens/genome/genome.fasta' ],
                             file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
                             file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true)
                         ]
@@ -59,8 +59,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        bam(process.out.output[0][1], params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta').getReadsMD5(),
-                        bam(process.out.output[0][1], params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta').getHeader(),
+                        bam(process.out.output[0][1], process.out.output[0][0].fasta).getReadsMD5(),
+                        bam(process.out.output[0][1], process.out.output[0][0].fasta).getHeader(),
                         file(process.out.index.get(0).get(1)).name,
                         process.out.versions
                         ).match() }
