@@ -74,8 +74,8 @@ nextflow_process {
     test("setoxin - fasta - guide_tree") {
 
         setup {
-            run("MAGUS_GUIDETREE") {
-                script "../../../magus/guidetree/main.nf"
+            run("PASTA_GUIDETREE") {
+                script "../guidetree/main.nf"
                 process {
                     """
                     input[0] = [ [ id:'test' ], // meta map
@@ -92,7 +92,7 @@ nextflow_process {
                 input[0] = [ [ id:'test' ], // meta map
                              file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
                            ]
-                input[1] = MAGUS_GUIDETREE.out.tree.collect{ meta, tree -> tree }.map{ tree -> [[ id: 'test_summary'], tree]}
+                input[1] = PASTA_GUIDETREE.out.tree.collect{ meta, tree -> tree }.map{ tree -> [[ id: 'test_summary'], tree]}
                 input[2] = true
                 """
             }
