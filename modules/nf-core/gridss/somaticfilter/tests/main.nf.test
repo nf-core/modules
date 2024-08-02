@@ -60,6 +60,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    // testing with nft-vcf leads to Error:
+                    // Unable to parse header with error: Invalid VCFSimpleHeaderLine: key=contig name=null
+                    // path(process.out.high_conf_sv[0][1]).vcf.variantsMD5,
+                    // path(process.out.all_sv.get(0).get(1)).vcf.variantsMD5
+                        ).match() },
                 { assert path(process.out.high_conf_sv.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2") },
                 { assert path(process.out.all_sv.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2") }
             )
