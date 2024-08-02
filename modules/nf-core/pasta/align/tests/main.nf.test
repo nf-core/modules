@@ -12,6 +12,8 @@ nextflow_process {
 
     test("setoxin - fasta - uncompressed") {
 
+        config "./aln.config"
+
         when {
             process {
                 """
