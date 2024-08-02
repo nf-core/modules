@@ -19,14 +19,13 @@ process PASTA_GUIDETREE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ? "output": "${meta.id}"
     """
     run_pasta.py \\
         --num-cpus $task.cpus \\
         -i <(pigz -cdf $fasta) \\
         -o ./ \\
         -j $prefix \\
-        --alignment-suffix aln\\
         $args
 
     cat <<-END_VERSIONS > versions.yml
