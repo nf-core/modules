@@ -13,7 +13,7 @@ process PASTA_ALIGN {
     val(compress)
 
     output:
-    tuple val(meta), path("$prefix.aln{.gz,}"), emit: alignment
+    tuple val(meta), path("${prefix}.aln{.gz,}"), emit: alignment
     path "versions.yml"                       , emit: versions
 
     when:
