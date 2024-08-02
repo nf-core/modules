@@ -28,7 +28,7 @@ process PASTA_ALIGN {
     """
     run_pasta.py \\
         --num-cpus $task.cpus \\
-        -i <(pigz -cd $fasta) \\
+        -i <(pigz -cdf $fasta) \\
         -o ./ \\
         -j $prefix \\
         --alignment-suffix aln\\
