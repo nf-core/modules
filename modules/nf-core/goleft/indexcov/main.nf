@@ -12,7 +12,7 @@ process GOLEFT_INDEXCOV {
     tuple val(meta2), path(fai)
 
     output:
-    tuple val(meta), path("${prefix}/*")      , emit: output 
+    tuple val(meta), path("${prefix}/*")      , emit: output
     tuple val(meta), path("${prefix}/*ped")   , emit: ped , optional: true
     tuple val(meta), path("${prefix}/*bed.gz"), emit: bed , optional: true
     tuple val(meta), path("${prefix}/*roc")   , emit: roc , optional: true
