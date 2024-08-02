@@ -75,7 +75,7 @@ nextflow_process {
 
         setup {
             run("PASTA_GUIDETREE") {
-                script "../guidetree/main.nf"
+                script "../../guidetree/main.nf"
                 process {
                     """
                     input[0] = [ [ id:'test' ], // meta map
