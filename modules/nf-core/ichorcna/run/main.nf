@@ -5,8 +5,8 @@ process ICHORCNA_RUN {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-ichorcna:0.5.0--pl5321r42hdfd78af_0' :
-        'docker.io/scwatts/r-ichorcna:0.5.1--r43hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/r-ichorcna:0.5.1--r43hdfd78af_0' :
+        'biocontainers/r-ichorcna:0.5.1--r43hdfd78af_0' }"
 
     input:
     tuple val(meta), path(wig)
@@ -34,7 +34,7 @@ process ICHORCNA_RUN {
 
     script:
     def args = task.ext.args       ?: ''
-    prefix = task.ext.prefix   ?: "${meta.id}"
+    prefix = task.ext.prefix       ?: "${meta.id}"
     def norm   = normal_wig        ? "normal_wig='${normal_wig}',"          : 'normal_wig=NULL,'
     def pon    = normal_background ? "normal_panel='${normal_background}'," : 'normal_panel=NULL,'
     def map    = map_wig           ? "mapWig='${map_wig}',"                 : 'mapWig=NULL,'
@@ -76,18 +76,22 @@ process ICHORCNA_RUN {
     """
 
     stub:
-    def args = task.ext.args       ?: ''
-    def prefix = task.ext.prefix   ?: "${meta.id}"
-    def norm   = normal_wig        ? "normal_wig='${normal_wig}',"          : 'normal_wig=NULL,'
-    def pon    = normal_background ? "normal_panel='${normal_background}'," : 'normal_panel=NULL,'
-    def map    = map_wig           ? "mapWig='${map_wig}',"                 : 'mapWig=NULL,'
-    def centro = centromere        ? "centromere='${centromere}',"          : ''
-    def rep    = rep_time_wig      ? "repTimeWig='${rep_time_wig}',"        : 'repTimeWig=NULL,'
-    def exons  = exons             ? "exons.bed='${exons}',"                : ''
+    def args = task.ext.args   ?: ''
+    prefix = task.ext.prefix   ?: "${meta.id}"
+
     """
     #!/usr/bin/env Rscript
     library("ichorCNA")
     library("yaml")
+
+    file.create('${prefix}.RData')
+    file.create('${prefix}.seg')
+    file.create('${prefix}.cna.seg')
+    file.create('${prefix}.seg.txt')
+    file.create('${prefix}.correctedDepth.txt')
+    file.create('${prefix}.params.txt')
+    dir.create('${prefix}')
+    file.create('${prefix}/${prefix}_genomeWide.pdf')
 
     ### Make Versions YAML for NF-Core ###
     versions = list()

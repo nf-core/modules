@@ -46,4 +46,32 @@ nextflow_process {
 
     }
 
+    test("no_panel - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test'], // meta map
+                       file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/MBC_315.ctDNA.reads.wig", checkIfExists: true)
+                     ]
+                input[1] = file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/gc_hg19_1000kb.wig", checkIfExists: true)
+                input[2] = file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/map_hg19_1000kb.wig", checkIfExists: true)
+                input[3] = []
+                input[4] = []
+                input[5] = file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/GRCh37.p13_centromere_UCSC-gapTable.txt", checkIfExists: true)
+                input[6] = []
+                input[7] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
 }
