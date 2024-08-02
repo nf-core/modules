@@ -44,6 +44,8 @@ nextflow_process {
 
     test("setoxin - fasta - compressed") {
 
+        config "./aln.config"
+
         when {
             process {
                 """
@@ -72,6 +74,8 @@ nextflow_process {
 
     }
     test("setoxin - fasta - guide_tree") {
+
+        config "./aln.config"
 
         setup {
             run("PASTA_GUIDETREE") {
