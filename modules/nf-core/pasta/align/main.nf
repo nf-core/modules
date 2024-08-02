@@ -14,7 +14,7 @@ process PASTA_ALIGN {
 
     output:
     tuple val(meta), path("${prefix}.aln{.gz,}"), emit: alignment
-    path "versions.yml"                       , emit: versions
+    path "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
