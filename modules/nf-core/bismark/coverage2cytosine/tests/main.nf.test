@@ -35,9 +35,6 @@ nextflow_process {
         }
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = BISMARK_METHYLATIONEXTRACTOR.out.coverage
