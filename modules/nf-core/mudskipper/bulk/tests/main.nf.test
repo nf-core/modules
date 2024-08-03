@@ -23,7 +23,7 @@ nextflow_process {
                         [id:'test', single_end:false ], // meta map
                         file(params.modules_testdata_base_path +  'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.bam', checkIfExists: true)
                     ]
-                    input[1] = []
+                    input[1] = [ [], [] ]
                     """
                 }
             }
@@ -60,7 +60,7 @@ nextflow_process {
                         [id:'test', single_end:false ], // meta map
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.bam', checkIfExists: true)
                     ]
-                    input[1] = []
+                    input[1] = [ [], [] ]
                     """
                 }
             }
