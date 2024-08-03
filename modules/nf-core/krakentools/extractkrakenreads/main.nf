@@ -45,7 +45,6 @@ process KRAKENTOOLS_EXTRACTKRAKENREADS {
         extract_kraken_reads.py: ${VERSION}
     END_VERSIONS
     """
-    
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -56,7 +55,7 @@ process KRAKENTOOLS_EXTRACTKRAKENREADS {
     def VERSION = '1.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
-    if [ "$meta.single_end" == "true" ]; 
+    if [ "$meta.single_end" == "true" ];
     then
         touch ${prefix}.extracted_kraken2_read.${extension}
     else
