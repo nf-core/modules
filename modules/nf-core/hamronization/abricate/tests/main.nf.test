@@ -14,7 +14,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:"test" ], file(params.test_data['bacteroides_fragilis']['hamronization']['genome_abricate_tsv'], checkIfExists: true) ]
+                input[0] = [ [ id:"test" ], file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/hamronization/genome.abricate.tsv', checkIfExists: true) ]
                 input[1] = 'tsv'
                 input[2] = '1.0.1'
                 input[3] = '2021-Mar-27'
@@ -37,7 +37,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:"test" ], file(params.test_data['bacteroides_fragilis']['hamronization']['genome_abricate_tsv'], checkIfExists: true) ]
+                input[0] = [ [ id:"test" ], file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/hamronization/genome.abricate.tsv', checkIfExists: true) ]
                 input[1] = 'tsv'
                 input[2] = '1.0.1'
                 input[3] = '2021-Mar-27'
