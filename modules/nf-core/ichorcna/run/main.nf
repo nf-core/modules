@@ -2,7 +2,6 @@ process ICHORCNA_RUN {
     tag "$meta.id"
     label 'process_low'
 
-    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/r-ichorcna:0.5.1--r43hdfd78af_0' :

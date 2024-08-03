@@ -33,7 +33,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.versions,
-                    process.out.genome_plot.get(0).get(1).size(),
+                    file(process.out.genome_plot.get(0).get(1)).name,
+                    file(process.out.rdata.get(0).get(1)).name,
                     process.out.plots.get(0).get(1).size(),
                     path(process.out.cna_seg.get(0).get(1)).readLines()[0],
                     path(process.out.seg.get(0).get(1)).readLines()[0],
