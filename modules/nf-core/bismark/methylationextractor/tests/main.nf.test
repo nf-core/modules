@@ -3,10 +3,11 @@ nextflow_process {
     name "Test Process BISMARK_METHYLATIONEXTRACTOR"
     script "../main.nf"
     process "BISMARK_METHYLATIONEXTRACTOR"
-    tag "bismark"
-    tag "bismark/methylationextractor"
     tag "modules"
     tag "modules_nfcore"
+    tag "bismark"
+    tag "bismark/methylationextractor"
+    tag "bismark/genomepreparation"
 
     test("Should run bismark/methylationextractor without failures") {
 
@@ -22,9 +23,6 @@ nextflow_process {
         }
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = [
