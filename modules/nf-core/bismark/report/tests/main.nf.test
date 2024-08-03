@@ -3,10 +3,14 @@ nextflow_process {
     name "Test Process BISMARK_REPORT"
     script "../main.nf"
     process "BISMARK_REPORT"
-    tag "bismark"
-    tag "bismark/report"
     tag "modules"
     tag "modules_nfcore"
+    tag "bismark"
+    tag "bismark/report"
+    tag "bismark/deduplicate"
+    tag "bismark/genomepreparation"
+    tag "bismark/align"
+    tag "bismark/methylationextractor"
 
     test("Should run bismark/report without failures") {
 
@@ -26,7 +30,7 @@ nextflow_process {
                     """
                     input[0] = [
                                 [ id:'test', single_end:false ],
-                                [ 
+                                [
                                     file(params.test_data['sarscov2']['illumina']['test_methylated_1_fastq_gz'], checkIfExists: true),
                                     file(params.test_data['sarscov2']['illumina']['test_methylated_2_fastq_gz'], checkIfExists: true)
                                 ]
@@ -74,7 +78,7 @@ nextflow_process {
             assertAll(
             { assert process.success },
             { assert snapshot(process.out.versions).match("versions") },
-            { 
+            {
                 with(process.out.report) {
                     with(get(0)) {
                         assert get(1).endsWith('_PE_report.html')
