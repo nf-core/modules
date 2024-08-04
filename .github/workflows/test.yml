@@ -365,21 +365,11 @@ jobs:
           - profile: conda
             tags: sentieon/applyvarcal
           - profile: conda
-            tags: sentieon/bwaindex
-          - profile: conda
-            tags: sentieon/bwamem
-          - profile: conda
             tags: sentieon/datametrics
-          - profile: conda
-            tags: sentieon/dedup
           - profile: conda
             tags: sentieon/dnamodelapply
           - profile: conda
             tags: sentieon/dnascope
-          - profile: conda
-            tags: sentieon/gvcftyper
-          - profile: conda
-            tags: sentieon/haplotyper
           - profile: conda
             tags: sentieon/readwriter
           - profile: conda
@@ -484,7 +474,7 @@ jobs:
 
       - name: Upload logs on failure
         if: failure()
-        uses: actions/upload-artifact@0b2256b8c012f0828dc542b3febcab082c67f72b # v4
+        uses: actions/upload-artifact@89ef406dd8d7e03cfd12d9e0a4a378f454709029 # v4
         with:
           name: logs-${{ matrix.profile }}-${{ steps.parsed.outputs.result }}
           path: |
