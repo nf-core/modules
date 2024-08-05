@@ -26,7 +26,7 @@ def format_yaml_like(data: dict, indent: int = 0) -> str:
             yaml_str += f"{spaces}{key}: {value}\\n"
     return yaml_str
 
-adata = scanpy.read_h5ad("${h5ad}")
+adata = scanpy.read_h5ad("${filtered}")
 
 adata_pp = adata.copy()
 scanpy.pp.normalize_per_cell(adata_pp)
@@ -41,15 +41,15 @@ del adata_pp
 
 sce = anndata2ri.py2rpy(adata)
 
-adata_raw = scanpy.read_h5ad("${raw}")
-sce_raw = anndata2ri.py2rpy(adata_raw)
+adata_unfiltered = scanpy.read_h5ad("${unfiltered}")
+sce_unfiltered = anndata2ri.py2rpy(adata_unfiltered)
 
 get_counts = ro.r("function(sce) { assay(sce, 'X') }")
 
 data = get_counts(sce)
-data_raw = get_counts(sce_raw)
+data_unfiltered = get_counts(sce_unfiltered)
 
-sc = soupx.SoupChannel(data_raw, data, calcSoupProfile = False)
+sc = soupx.SoupChannel(data_unfiltered, data, calcSoupProfile = False)
 
 soupProf = ro.r("function(data) { data.frame(row.names = rownames(data), est = rowSums(data)/sum(data), counts = rowSums(data)) }")(data)
 sc = soupx.setSoupProfile(sc, soupProf)
@@ -57,7 +57,7 @@ sc = soupx.setClusters(sc, soupx_groups)
 sc = soupx.autoEstCont(sc, doPlot = False)
 out = soupx.adjustCounts(sc, roundToInt = False)
 
-adata.layers["ambient"] = anndata2ri.rpy2py(out).T
+adata.X = anndata2ri.rpy2py(out).T
 
 adata.write_h5ad("${prefix}.h5ad")
 

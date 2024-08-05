@@ -8,7 +8,7 @@ process SOUPX {
         'community.wave.seqera.io/library/anndata2ri_bioconductor-singlecellexperiment_leidenalg_python-igraph_pruned:1b1b2ad4205f41be' }"
 
     input:
-    tuple val(meta), path(h5ad), path(raw)
+    tuple val(meta), path(filtered), path(unfiltered)
 
     output:
     tuple val(meta), path("*.h5ad"), emit: h5ad

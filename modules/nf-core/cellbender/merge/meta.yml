@@ -1,16 +1,15 @@
-name: celda_decontx
-description: Module to use DecontX from the celda package to estimate and remove contamination in individual cells
+name: cellbender_merge
+description: Module to use CellBender to remove ambient RNA from single-cell RNA-seq data
 keywords:
   - single-cell
   - scRNA-seq
   - ambient RNA removal
 tools:
-  - celda:
-      description: Celda is a suite of Bayesian hierarchical models for clustering single-cell RNA-sequencing (scRNA-seq) data.
-      documentation: https://www.bioconductor.org/packages/release/bioc/html/celda.html
-      tool_dev_url: https://github.com/campbio/celda
-      licence:
-        - MIT
+  - cellbender:
+      description: CellBender is a software package for eliminating technical artifacts from high-throughput single-cell RNA sequencing (scRNA-seq) data.
+      documentation: https://cellbender.readthedocs.io/en/latest/
+      tool_dev_url: https://github.com/broadinstitute/CellBender
+      licence: ["BSD-3-Clause"]
 input:
   - meta:
       type: map
@@ -25,6 +24,10 @@ input:
       type: file
       description: AnnData file containing unfiltered data (with empty droplets)
       pattern: "*.h5ad"
+  - cellbender_h5:
+      type: file
+      description: CellBender h5 file containing ambient RNA estimates
+      pattern: "*.h5"
 output:
   - h5ad:
       type: file

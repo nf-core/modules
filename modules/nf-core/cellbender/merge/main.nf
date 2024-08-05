@@ -8,7 +8,7 @@ process CELLBENDER_MERGE {
         'community.wave.seqera.io/library/cellbender:0.3.0--41318a055fc3aacb' }"
 
     input:
-    tuple val(meta), path(filtered), path(raw), path(cellbender_h5)
+    tuple val(meta), path(filtered), path(unfiltered), path(cellbender_h5)
 
     output:
     tuple val(meta), path("${prefix}.h5ad"), emit: h5ad

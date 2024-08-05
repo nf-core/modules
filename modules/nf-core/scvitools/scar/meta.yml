@@ -1,16 +1,20 @@
-name: celda_decontx
-description: Module to use DecontX from the celda package to estimate and remove contamination in individual cells
+name: scvitools_scar
+description: Module to use scAR to remove ambient RNA from single-cell RNA-seq data
 keywords:
   - single-cell
   - scRNA-seq
   - ambient RNA removal
 tools:
-  - celda:
-      description: Celda is a suite of Bayesian hierarchical models for clustering single-cell RNA-sequencing (scRNA-seq) data.
-      documentation: https://www.bioconductor.org/packages/release/bioc/html/celda.html
-      tool_dev_url: https://github.com/campbio/celda
-      licence:
-        - MIT
+  - scvitools:
+      description: scvi-tools (single-cell variational inference tools) is a package for end-to-end analysis of single-cell omics data
+      documentation: https://docs.scvi-tools.org/en/stable/
+      tool_dev_url: https://github.com/scverse/scvi-tools
+      licence: ["BSD-3-clause"]
+  - scar:
+      description: scAR (single-cell Ambient Remover) is a deep learning model for removal of the ambient signals in droplet-based single cell omics.
+      documentation: https://docs.scvi-tools.org/en/stable/user_guide/models/scar.html
+      tool_dev_url: https://github.com/Novartis/scar
+      licence: ["Novartis Terms of License"]
 input:
   - meta:
       type: map
