@@ -3,6 +3,8 @@ nextflow_workflow {
     name "Test Workflow BAM_VARIANT_DEMIX_BOOT_FREYJA"
     script "../main.nf"
     workflow "BAM_VARIANT_DEMIX_BOOT_FREYJA"
+    config "./nextflow.config"
+
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "bam_variant_demix_boot_freyja"
