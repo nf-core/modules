@@ -26,6 +26,9 @@ input:
   - rna_matrix:
       type: file
       description: path to matrix from RNA expression data, the tool receives TSV files
+  - produce_plots:
+      type: boolean
+      description: "Produce plots for the assignment"
 output:
   - meta:
       type: map
@@ -40,23 +43,7 @@ output:
       type: file
       description: File containing the assignment for each cell/nucleus to a specific sample group
       pattern: "*.csv"
-  - ridgePlot: 
-      type: file
-      description: File containing the ridge plot of the assignment (optional)
-      pattern: "*.jpeg"
-  - featureScatter: 
-      type: file
-      description: File containing the feature scatter plot of the assignment (optional)
-      pattern: "*.jpeg"
-  - violingPlot: 
-      type: file
-      description: File containing the violing plot of the assignment (optional)
-      pattern: "*.jpeg"
-  - tSNEPlot:
-      type: file
-      description: File containing the tSNE plot of the assignment (optional)
-      pattern: "*.jpeg"
-authors:
+
   - "@mari-ga"
   - "@maxozo"
   - "@wxicu"

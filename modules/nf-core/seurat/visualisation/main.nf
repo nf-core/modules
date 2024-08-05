@@ -38,9 +38,10 @@ process SEURAT_VISUALISATION {
     tuple val(meta), path(bam)
 
     output:
-    // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*.bam"), emit: bam
-    // TODO nf-core: List additional required output channels/values here
+    tuple val(meta), path("RidgePlot.jpeg")         ,optional:true  ,emit: ridgePlot
+    tuple val(meta), path("FeatureScatter.jpeg")    ,optional:true  ,emit: featureScatter
+    tuple val(meta), path("ViolinPlot.jpeg")        ,optional:true  ,emit: violingPlot
+    tuple val(meta), path("tSNE.jpeg")              ,optional:true  ,emit: tSNEPlot
     path "versions.yml"           , emit: versions
 
     when:
