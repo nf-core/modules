@@ -90,11 +90,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.pdf.get(0).get(1)).name,
-                                  file(process.out.tab.get(0).get(1)).name,
-                                  process.out.versions)
-                                  .match()
-                }
+                { assert snapshot(process.out).match() }
             )
         }
     }

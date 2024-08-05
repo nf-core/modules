@@ -40,7 +40,7 @@ process DEEPTOOLS_COMPUTEMATRIX {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.computeMatrix.mat.gz
+    echo "" | gzip > ${prefix}.computeMatrix.mat.gz
     touch ${prefix}.computeMatrix.vals.mat.tab
 
     cat <<-END_VERSIONS > versions.yml

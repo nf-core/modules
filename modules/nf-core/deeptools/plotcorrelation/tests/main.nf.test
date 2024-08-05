@@ -186,13 +186,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.pdf.get(0).get(1)).name,
-                                  process.out.matrix,
-                                  process.out.versions)
-                                  .match()
-                }
+                { assert snapshot(process.out).match() }
             )
         }
     }
-
 }
