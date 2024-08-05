@@ -1,59 +1,55 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "deeptools_plotheatmap"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+name: deeptools_plotheatmap
+description: plots values produced by deeptools_computematrix as a heatmap
 keywords:
-  - sort
-  - example
-  - genomics
+  - plot
+  - heatmap
+  - scores
+  - matrix
 tools:
-  - "deeptools":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: "A set of user-friendly tools for normalization and visualzation of deep-sequencing data"
-      homepage: "https://deeptools.readthedocs.io/en/latest/"
-      documentation: "https://deeptools.readthedocs.io/en/latest/"
-      tool_dev_url: "https://github.com/deeptools/deepTools"
-      doi: ""
-      licence: ["MIT"]
-
-## TODO nf-core: Add a description of all of the variables used as input
+  - deeptools:
+      description: A set of user-friendly tools for normalization and visualization of deep-sequencing data
+      documentation: https://deeptools.readthedocs.io/en/develop/index.html
+      tool_dev_url: https://github.com/deeptools/deepTools
+      doi: "10.1093/nar/gku365"
+      licence: ["GPL v3"]
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+        e.g. [ id:'test' ]
+  - matrix:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
-## TODO nf-core: Add a description of all of the variables used as output
+      description: |
+        gzipped matrix file produced by deeptools_
+        computematrix deeptools utility
+      pattern: "*.{mat.gz}"
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-
+        e.g. [ id:'test', single_end:false ]
+  - pdf:
+      type: file
+      description: |
+        Output figure containing resulting plot
+      pattern: "*.{plotHeatmap.pdf}"
+  - matrix:
+      type: file
+      description: |
+        File containing the matrix of values
+        used to generate the heatmap
+      pattern: "*.{plotHeatmap.mat.tab}"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
 authors:
-  - "@j"
+  - "@edmundmiller"
+  - "@drpatelh"
   - "@joseespinosa"
 maintainers:
-  - "@j"
+  - "@edmundmiller"
+  - "@drpatelh"
   - "@joseespinosa"
