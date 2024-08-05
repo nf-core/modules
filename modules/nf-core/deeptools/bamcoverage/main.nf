@@ -21,8 +21,9 @@ process DEEPTOOLS_BAMCOVERAGE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}.bigWig"
+    def args      = task.ext.args ?: ''
+    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def extension = args.contains("--outFileFormat bedgraph") || args.contains("-of bedgraph") ? ".bedgraph" : ".bigWig"
 
     // cram_input is currently not working with deeptools
     // therefore it's required to convert cram to bam first
@@ -39,7 +40,7 @@ process DEEPTOOLS_BAMCOVERAGE {
             --bam $input_out \\
             $args \\
             --numberOfProcessors ${task.cpus} \\
-            --outFileName ${prefix}
+            --outFileName ${prefix}.${extension}
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -54,7 +55,7 @@ process DEEPTOOLS_BAMCOVERAGE {
             --bam $input_out \\
             $args \\
             --numberOfProcessors ${task.cpus} \\
-            --outFileName ${prefix}
+            --outFileName ${prefix}.${extension}
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -64,7 +65,8 @@ process DEEPTOOLS_BAMCOVERAGE {
     }
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}.bigWig"
+    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def extension = args.contains("--outFileFormat bedgraph") || args.contains("-of bedgraph") ? ".bedgraph" : ".bigWig"
     """
     touch ${prefix}
 

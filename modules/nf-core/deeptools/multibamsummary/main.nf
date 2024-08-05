@@ -18,15 +18,16 @@ process DEEPTOOLS_MULTIBAMSUMMARY {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def label = labels ? "--labels ${labels.join(' ')}" : ''
+    def args   = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "all_bam"
+    def label  = labels ? "--labels ${labels.join(' ')}" : ''
     """
     multiBamSummary bins \\
         $args \\
         $label \\
         --bamfiles ${bams.join(' ')} \\
         --numberOfProcessors $task.cpus \\
-        --outFileName all_bam.bamSummary.npz
+        --outFileName ${prefix}.bamSummary.npz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -35,8 +36,9 @@ process DEEPTOOLS_MULTIBAMSUMMARY {
     """
 
     stub:
+    def prefix = task.ext.prefix ?: "all_bam"
     """
-    touch all_bam.bamSummary.npz
+    touch ${prefix}.bamSummary.npz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
