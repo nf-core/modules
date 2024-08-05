@@ -1,0 +1,30 @@
+nextflow_process {
+    name 'Test Process CELDA_DECONTX'
+    script '../main.nf'
+    process 'CELDA_DECONTX'
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "celda/decontx"
+
+    test("test_decontx") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_custom_emptydrops_filter_matrix_5k.h5ad", checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_raw_matrix_5k.h5ad", checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                {assert process.success},
+                {assert snapshot(process.out.h5ad).match("res_decontx_h5ad")},
+                {assert snapshot(process.out.versions).match("res_decontx_versions")}
+            )
+        }
+    }
+}
