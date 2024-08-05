@@ -15,7 +15,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test'], // meta map
-                    file(params.test_data['proteomics']['msspectra']['hla2_file'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'proteomics/msspectra/PXD012083_e005640_II.raw', checkIfExists: true)
                     ]
                 """
             }
@@ -41,7 +41,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test'], // meta map
-                    file(params.test_data['proteomics']['msspectra']['hla2_file'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'proteomics/msspectra/PXD012083_e005640_II.raw', checkIfExists: true)
                     ]
                 """
             }
