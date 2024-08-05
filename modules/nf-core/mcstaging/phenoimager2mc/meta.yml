@@ -1,0 +1,56 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "mcstaging_phenoimager2mc"
+description: Staging module for MCMICRO transforming PhenoImager .tif files into stacked and normalized ome-tif files per cycle, compatible as ASHLAR input.
+keywords:
+  - imaging
+  - registration
+  - ome-tif
+  - Staging
+  - MCMICRO
+tools:
+  - "mcstaging":
+      ## TODO nf-core: Add a description and other details for the software below
+      description: "Staging modules for MCMICRO"
+      homepage: ""
+      documentation: ""
+      tool_dev_url: ""
+      doi: ""
+      licence:
+
+input:
+  # Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+
+  ## TODO nf-core: Delete / customise this example input
+  - folder:
+      type: folder
+      description: Folder containing .tif files of one cycle from PhenoImager
+      #pattern: "*.{bam,cram,sam}"
+
+output:
+  #Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - tif:
+      type: file
+      description: One output .tif file containing concatenated tiles of the cycle.
+      pattern: "*.{tif}" ## also other formats? ome-tif? tiff?
+
+authors:
+  - "@chiarasch"
+maintainers:
+  - "@chiarasch"
