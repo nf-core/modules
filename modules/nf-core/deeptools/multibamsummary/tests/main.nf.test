@@ -13,7 +13,7 @@ nextflow_process {
 
         when {
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     [
@@ -33,7 +33,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.matrix.get(0).get(1)).name,                                  
+                { assert snapshot(file(process.out.matrix.get(0).get(1)).name,
                                   process.out.versions)
                                   .match()
                 }
@@ -48,7 +48,7 @@ nextflow_process {
 
         when {
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     [
