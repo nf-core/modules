@@ -8,7 +8,7 @@ process CELDA_DECONTX {
         'community.wave.seqera.io/library/anndata2ri_bioconductor-celda_anndata:31bbf686a87fe0aa' }"
 
     input:
-    tuple val(meta), path(h5ad), path(raw)
+    tuple val(meta), path(filtered), path(unfiltered)
 
     output:
     tuple val(meta), path("*.h5ad"), emit: h5ad
