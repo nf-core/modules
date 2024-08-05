@@ -1,5 +1,5 @@
 process GOLEFT_INDEXCOV {
-    tag '${meta.id}'
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -12,8 +12,13 @@ process GOLEFT_INDEXCOV {
     tuple val(meta2), path(fai)
 
     output:
-    tuple val(meta), path("${prefix}/*")  , emit: output
-    path "versions.yml"                   , emit: versions
+    tuple val(meta), path("${prefix}/*")      , emit: output
+    tuple val(meta), path("${prefix}/*ped")   , emit: ped , optional: true
+    tuple val(meta), path("${prefix}/*bed.gz"), emit: bed , optional: true
+    tuple val(meta), path("${prefix}/*roc")   , emit: roc , optional: true
+    tuple val(meta), path("${prefix}/*html")  , emit: html, optional: true
+    tuple val(meta), path("${prefix}/*png")   , emit: png , optional: true
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,8 +31,8 @@ process GOLEFT_INDEXCOV {
     def extranormalize = input_files.any{it.name.endsWith(".crai")} ? " --extranormalize " : ""
     """
     goleft indexcov \\
-        --fai "${fai}"  \\
-        --directory "${prefix}" \\
+        --fai ${fai}  \\
+        --directory ${prefix} \\
         ${extranormalize} \\
         $args \\
         ${input_files.join(" ")}
