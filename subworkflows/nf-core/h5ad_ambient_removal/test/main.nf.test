@@ -18,8 +18,8 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [ id:'test' ], // meta map
-                    file("https://github.com/nf-core/test-datasets/raw/8fb259232a78a3568a51898d9159228e15d04e68/samples/Sample_X_filtered_matrix.h5ad", checkIfExists: true),
-                    file("https://github.com/nf-core/test-datasets/raw/8fb259232a78a3568a51898d9159228e15d04e68/samples/Sample_X_raw_matrix.h5ad", checkIfExists: true)
+                    file("/home/nico/Downloads/SAMN14430799_custom_emptydrops_filter_matrix_5k.h5ad", checkIfExists: true),
+                    file("/home/nico/Downloads/SAMN14430799_raw_matrix_5k.h5ad", checkIfExists: true)
                 ])
                 input[1] = 'none'
                 """
@@ -40,8 +40,8 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [ id:'test' ], // meta map
-                    file("https://github.com/nf-core/test-datasets/raw/8fb259232a78a3568a51898d9159228e15d04e68/samples/Sample_X_filtered_matrix.h5ad", checkIfExists: true),
-                    file("https://github.com/nf-core/test-datasets/raw/8fb259232a78a3568a51898d9159228e15d04e68/samples/Sample_X_raw_matrix.h5ad", checkIfExists: true)
+                    file("/home/nico/Downloads/SAMN14430799_custom_emptydrops_filter_matrix_5k.h5ad", checkIfExists: true),
+                    file("/home/nico/Downloads/SAMN14430799_raw_matrix_5k.h5ad", checkIfExists: true)
                 ])
                 input[1] = 'cellbender'
                 """
@@ -62,8 +62,8 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [ id:'test' ], // meta map
-                    file("https://github.com/nf-core/test-datasets/raw/8fb259232a78a3568a51898d9159228e15d04e68/samples/Sample_X_filtered_matrix.h5ad", checkIfExists: true),
-                    file("https://github.com/nf-core/test-datasets/raw/8fb259232a78a3568a51898d9159228e15d04e68/samples/Sample_X_raw_matrix.h5ad", checkIfExists: true)
+                    file("/home/nico/Downloads/SAMN14430799_custom_emptydrops_filter_matrix_5k.h5ad", checkIfExists: true),
+                    file("/home/nico/Downloads/SAMN14430799_raw_matrix_5k.h5ad", checkIfExists: true)
                 ])
                 input[1] = 'decontx'
                 """
@@ -84,8 +84,8 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [ id:'test' ], // meta map
-                    file("https://github.com/nf-core/test-datasets/raw/8fb259232a78a3568a51898d9159228e15d04e68/samples/Sample_X_filtered_matrix.h5ad", checkIfExists: true),
-                    file("https://github.com/nf-core/test-datasets/raw/8fb259232a78a3568a51898d9159228e15d04e68/samples/Sample_X_raw_matrix.h5ad", checkIfExists: true)
+                    file("/home/nico/Downloads/SAMN14430799_custom_emptydrops_filter_matrix_5k.h5ad", checkIfExists: true),
+                    file("/home/nico/Downloads/SAMN14430799_raw_matrix_5k.h5ad", checkIfExists: true)
                 ])
                 input[1] = 'scar'
                 """
@@ -106,8 +106,8 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [ id:'test' ], // meta map
-                    file("https://github.com/nf-core/test-datasets/raw/8fb259232a78a3568a51898d9159228e15d04e68/samples/Sample_X_filtered_matrix.h5ad", checkIfExists: true),
-                    file("https://github.com/nf-core/test-datasets/raw/8fb259232a78a3568a51898d9159228e15d04e68/samples/Sample_X_raw_matrix.h5ad", checkIfExists: true)
+                    file("/home/nico/Downloads/SAMN14430799_custom_emptydrops_filter_matrix_5k.h5ad", checkIfExists: true),
+                    file("/home/nico/Downloads/SAMN14430799_raw_matrix_5k.h5ad", checkIfExists: true)
                 ])
                 input[1] = 'soupx'
                 """

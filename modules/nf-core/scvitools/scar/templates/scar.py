@@ -32,7 +32,6 @@ def format_yaml_like(data: dict, indent: int = 0) -> str:
 adata = ad.read_h5ad("${filtered}")
 adata_unfiltered = ad.read_h5ad("${unfiltered}")
 
-# TODO: Find out why the batch_key='batch' argument causes an error.
 SCAR.setup_anndata(adata)
 SCAR.get_ambient_profile(adata, adata_unfiltered)
 
