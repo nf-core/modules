@@ -53,17 +53,17 @@ process POOLSNP {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
-    samtools \\
-        sort \\
-        $args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
+    PoolSNP.sh \\
+    mpileup=$mpileup \\
+    reference=$reference \\
+    names=$prefix \\
+    jobs=$task.cpus \\
+    output=$prefix \\
+    $args
 
     cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        poolsnp: \$(samtools --version |& sed '1!d ; s/samtools //')
+    POOLSNP:
+        version: "${VERSION}"
     END_VERSIONS
     """
 

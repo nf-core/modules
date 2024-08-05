@@ -54,6 +54,11 @@ output:
       description: File containing the maximum coverage thresholds for all chromosomal arms and libraries
       pattern: "*cov-*.txt"
 
+  - bad_sites:
+      type: file
+      description: File containing a list of sites (variable and invariable) that did not pass the SNP calling criteria
+      pattern: "*BS.txt.gz"
+
   - versions:
       type: file
       description: File containing software versions
