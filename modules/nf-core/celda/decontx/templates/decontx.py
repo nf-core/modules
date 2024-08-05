@@ -28,11 +28,13 @@ def format_yaml_like(data: dict, indent: int = 0) -> str:
     return yaml_str
 
 adata = ad.read_h5ad("${filtered}")
+if "counts" not in adata.layers:
+    adata.layers["counts"] = adata.X.copy()
 sce = anndata2ri.py2rpy(adata)
 
 kwargs = {}
 
-if len(adata.obs['${batch_col}'].unique()) > 1:
+if '${batch_col}' in adata.obs and len(adata.obs['${batch_col}'].unique()) > 1:
     kwargs['batch'] = adata.obs['${batch_col}'].tolist()
 
 unfiltered_path = "${unfiltered}"
