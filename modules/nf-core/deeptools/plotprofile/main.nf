@@ -33,7 +33,7 @@ process DEEPTOOLS_PLOTPROFILE {
         deeptools: \$(plotProfile --version | sed -e "s/plotProfile //g")
     END_VERSIONS
     """
-    
+
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
