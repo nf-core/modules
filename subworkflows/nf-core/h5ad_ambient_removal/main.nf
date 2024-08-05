@@ -1,8 +1,8 @@
-include { CELDA_DECONTX               } from '../../../../modules/nf-core/celda/decontx'
-include { CELLBENDER_REMOVEBACKGROUND } from '../../../../modules/nf-core/cellbender/removebackground'
-include { CELLBENDER_MERGE            } from '../../../../modules/nf-core/cellbender/merge'
-include { SOUPX                       } from '../../../../modules/nf-core/soupx'
-include { SCVITOOLS_SCAR              } from '../../../../modules/nf-core/scvitools/scar'
+include { CELDA_DECONTX               } from '../../../modules/nf-core/celda/decontx'
+include { CELLBENDER_REMOVEBACKGROUND } from '../../../modules/nf-core/cellbender/removebackground'
+include { CELLBENDER_MERGE            } from '../../../modules/nf-core/cellbender/merge'
+include { SOUPX                       } from '../../../modules/nf-core/soupx'
+include { SCVITOOLS_SCAR              } from '../../../modules/nf-core/scvitools/scar'
 
 workflow H5AD_AMBIENT_REMOVAL {
     take:

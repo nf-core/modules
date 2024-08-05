@@ -1,0 +1,124 @@
+nextflow_workflow {
+    name 'Test Subworkflow H5AD_AMBIENT_REMOVAL'
+    script '../main.nf'
+    workflow 'H5AD_AMBIENT_REMOVAL'
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/h5ad_ambient_removal"
+    tag "celda/decontx"
+    tag "scvitools/scar"
+    tag "cellbender/removebackground"
+    tag "cellbender/merge"
+    tag "soupx"
+
+    test("none") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_custom_emptydrops_filter_matrix.h5ad", checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_raw_matrix.h5ad", checkIfExists: true)
+                ])
+                input[1] = 'none'
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success},
+                {assert snapshot(workflow.out.h5ad).match("res_none_h5ad")},
+                {assert snapshot(workflow.out.versions).match("res_none_versions")}
+            )
+        }
+    }
+
+    test("cellbender") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_custom_emptydrops_filter_matrix.h5ad", checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_raw_matrix.h5ad", checkIfExists: true)
+                ])
+                input[1] = 'cellbender'
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success},
+                {assert snapshot(workflow.out.h5ad).match("res_cellbender_h5ad")},
+                {assert snapshot(workflow.out.versions).match("res_cellbender_versions")}
+            )
+        }
+    }
+
+    test("decontx") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_custom_emptydrops_filter_matrix.h5ad", checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_raw_matrix.h5ad", checkIfExists: true)
+                ])
+                input[1] = 'decontx'
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success},
+                {assert snapshot(workflow.out.h5ad).match("res_decontx_h5ad")},
+                {assert snapshot(workflow.out.versions).match("res_decontx_versions")}
+            )
+        }
+    }
+
+    test("scar") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_custom_emptydrops_filter_matrix.h5ad", checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_raw_matrix.h5ad", checkIfExists: true)
+                ])
+                input[1] = 'scar'
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success},
+                {assert snapshot(workflow.out.h5ad).match("res_scar_h5ad")},
+                {assert snapshot(workflow.out.versions).match("res_scar_versions")}
+            )
+        }
+    }
+
+    test("soupx") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_custom_emptydrops_filter_matrix.h5ad", checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_raw_matrix.h5ad", checkIfExists: true)
+                ])
+                input[1] = 'soupx'
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success},
+                {assert snapshot(workflow.out.h5ad).match("res_soupx_h5ad")},
+                {assert snapshot(workflow.out.versions).match("res_soupx_versions")}
+            )
+        }
+    }
+}
