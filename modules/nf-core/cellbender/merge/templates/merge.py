@@ -28,7 +28,7 @@ def format_yaml_like(data: dict, indent: int = 0) -> str:
 adata = ad.read_h5ad("${filtered}")
 
 adata_cellbender = load_anndata_from_input_and_output("${unfiltered}", "${cellbender_h5}",
-                                           analyzed_barcodes_only=False)
+                                            analyzed_barcodes_only=False)
 
 adata_cellbender = adata_cellbender[adata.obs_names]
 adata.X = adata_cellbender.layers["cellbender"]
