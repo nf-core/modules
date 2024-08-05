@@ -29,7 +29,7 @@ process WITTYER {
     // } else {
     def regions = bed ? "-b $bed" : ""
     def config_file = wittyer_config ? "-c $wittyer_config" : ""
-   // }
+    // }
     if ("$truth_vcf" == "${prefix}.vcf") {
         error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     }
