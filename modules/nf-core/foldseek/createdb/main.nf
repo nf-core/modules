@@ -20,12 +20,13 @@ process FOLDSEEK_CREATEDB {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def dbs = task.ext.dbs ?: "${prefix}"
     """
-    mkdir -p ${prefix}
+    mkdir -p ${dbs}
     foldseek \\
         createdb \\
         ${pdb} \\
-        ${prefix}/${prefix} \\
+        ${dbs}/${prefix} \\
         ${args}
 
     cat <<-END_VERSIONS > versions.yml
@@ -37,23 +38,24 @@ process FOLDSEEK_CREATEDB {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def dbs = task.ext.dbs ?: "${prefix}"
 
     """
-    mkdir -p ${prefix}
-    touch ${prefix}/${prefix}
-    touch ${prefix}/${prefix}_ca
-    touch ${prefix}/${prefix}_ca.dbtype
-    touch ${prefix}/${prefix}_ca.index
-    touch ${prefix}/${prefix}_h
-    touch ${prefix}/${prefix}_h.dbtype
-    touch ${prefix}/${prefix}_h.index
-    touch ${prefix}/${prefix}_ss
-    touch ${prefix}/${prefix}_ss.dbtype
-    touch ${prefix}/${prefix}_ss.index
-    touch ${prefix}/${prefix}.dbtype
-    touch ${prefix}/${prefix}.index
-    touch ${prefix}/${prefix}.lookup
-    touch ${prefix}/${prefix}.source
+    mkdir -p ${dbs}
+    touch ${dbs}/${prefix}
+    touch ${dbs}/${prefix}_ca
+    touch ${dbs}/${prefix}_ca.dbtype
+    touch ${dbs}/${prefix}_ca.index
+    touch ${dbs}/${prefix}_h
+    touch ${dbs}/${prefix}_h.dbtype
+    touch ${dbs}/${prefix}_h.index
+    touch ${dbs}/${prefix}_ss
+    touch ${dbs}/${prefix}_ss.dbtype
+    touch ${dbs}/${prefix}_ss.index
+    touch ${dbs}/${prefix}.dbtype
+    touch ${dbs}/${prefix}.index
+    touch ${dbs}/${prefix}.lookup
+    touch ${dbs}/${prefix}.source
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
