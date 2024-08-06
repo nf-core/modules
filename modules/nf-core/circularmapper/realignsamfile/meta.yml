@@ -48,10 +48,10 @@ input:
       description: |
         Groovy Map containing reference information
         e.g. `[ id:'test' ]`
-  - elongated:
-    type: file
-    description: File listing the chromosomes that were elongated
-    pattern: "*_elongated"
+  - elongated_chr_list:
+      type: file
+      description: File listing the chromosomes that were elongated
+      pattern: "*_elongated"
 output:
   - meta:
       type: map
