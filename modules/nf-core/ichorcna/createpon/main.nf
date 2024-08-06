@@ -15,20 +15,20 @@ process ICHORCNA_CREATEPON {
     path exons
 
     output:
-    path "*.rds"        , emit: rds
-    path "*.txt"        , emit: txt
-    path "versions.yml" , emit: versions
+    path "${prefix}*.rds", emit: rds
+    path "${prefix}*.txt", emit: txt
+    path "versions.yml"  , emit: versions
 
     when:
         task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "PoN"
-    def map    = map_wig           ? "mapWig='${map_wig}',"                 : 'mapWig=NULL,'
-    def centro = centromere        ? "centromere='${centromere}',"          : ''
-    def rep    = rep_time_wig      ? "repTimeWig='${rep_time_wig}',"        : 'repTimeWig=NULL,'
-    def exons  = exons             ? "exons.bed='${exons}',"                : ''
+    def args = task.ext.args     ?: ''
+    prefix = task.ext.prefix ?: "PoN"
+    def map    = map_wig         ? "mapWig='${map_wig}',"                 : 'mapWig=NULL,'
+    def centro = centromere      ? "centromere='${centromere}',"          : ''
+    def rep    = rep_time_wig    ? "repTimeWig='${rep_time_wig}',"        : 'repTimeWig=NULL,'
+    def exons  = exons           ? "exons.bed='${exons}',"                : ''
 
     """
     #!/usr/bin/env Rscript
@@ -47,6 +47,28 @@ process ICHORCNA_CREATEPON {
         ${centro}
         $args
     )
+
+    ### Make Versions YAML for NF-Core ###
+    versions = list()
+    versions["r"]        <- paste(R.Version()\$major, R.Version()\$minor, sep=".")
+    versions["ichorCNA"] <- paste(packageVersion("ichorCNA"), sep=".")
+
+    yaml_str <- as.yaml(
+        list(
+            "${task.process}" = versions
+        )
+    )
+    writeLines(yaml_str, file("versions.yml"))
+    """
+
+    stub:
+    prefix = task.ext.prefix ?: "PoN"
+    """
+    #!/usr/bin/env Rscript
+    library("yaml")
+
+    file.create("${prefix}.rds")
+    file.create("${prefix}.txt")
 
     ### Make Versions YAML for NF-Core ###
     versions = list()
