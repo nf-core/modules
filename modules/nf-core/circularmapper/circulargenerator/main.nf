@@ -37,6 +37,7 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
     ## circulargenerator has a hardcoded output name. Rename if necessary to use prefix.
     if [[ "${reference.getSimpleName()}_${elongation_factor}${full_extension}" != "${prefix}_${elongation_factor}.fasta" ]]; then
         mv ${reference.getSimpleName()}_${elongation_factor}${full_extension} ${prefix}_${elongation_factor}.fasta
+        mv ${reference}_${elongation_factor}_elongated ${prefix}.fasta_${elongation_factor}_elongated
     fi
 
     cat <<-END_VERSIONS > versions.yml
@@ -49,8 +50,8 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_${elongation_factor}${full_extension}
-    touch ${prefix}${full_extension}_${elongation_factor}_elongated
+    touch ${prefix}_${elongation_factor}.fasta
+    touch ${prefix}.fasta_${elongation_factor}_elongated
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
