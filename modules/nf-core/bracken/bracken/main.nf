@@ -13,7 +13,7 @@ process BRACKEN_BRACKEN {
 
     output:
     tuple val(meta), path(bracken_report)        , emit: reports
-    tuple val(meta), path("*bracken_species.txt"), emit: txt
+    tuple val(meta), path(bracken_kraken_style_report), emit: txt
     path "versions.yml"          , emit: versions
 
     when:
