@@ -49,7 +49,8 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_${elongation_factor}.fasta
+    touch ${prefix}_${elongation_factor}${full_extension}
+    touch ${prefix}${full_extension}_${elongation_factor}_elongated
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
