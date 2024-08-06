@@ -24,12 +24,9 @@ process WITTYER {
     script:
     def args  = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // if ((bed) && (wittyer_config)) {
-    //     error "Cannot provide both bed file and config file. Please choose one."
-    // } else {
+    // you can not define both bed and wittyer_config
     def regions = bed ? "-b $bed" : ""
     def config_file = wittyer_config ? "-c $wittyer_config" : ""
-    // }
     if ("$truth_vcf" == "${prefix}.vcf") {
         error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     }
