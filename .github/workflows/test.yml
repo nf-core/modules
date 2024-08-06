@@ -166,7 +166,7 @@ jobs:
       - name: Install pip
         run: python -m pip install --upgrade pip
 
-      - uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4
+      - uses: actions/setup-java@6a0805fcefea3d4657a47ac4c165951e33482018 # v4
         with:
           distribution: "temurin"
           java-version: "17"
@@ -204,7 +204,7 @@ jobs:
       - name: Install pip
         run: python -m pip install --upgrade pip
 
-      - uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4
+      - uses: actions/setup-java@6a0805fcefea3d4657a47ac4c165951e33482018 # v4
         with:
           distribution: "temurin"
           java-version: "17"
@@ -365,21 +365,11 @@ jobs:
           - profile: conda
             tags: sentieon/applyvarcal
           - profile: conda
-            tags: sentieon/bwaindex
-          - profile: conda
-            tags: sentieon/bwamem
-          - profile: conda
             tags: sentieon/datametrics
-          - profile: conda
-            tags: sentieon/dedup
           - profile: conda
             tags: sentieon/dnamodelapply
           - profile: conda
             tags: sentieon/dnascope
-          - profile: conda
-            tags: sentieon/gvcftyper
-          - profile: conda
-            tags: sentieon/haplotyper
           - profile: conda
             tags: sentieon/readwriter
           - profile: conda
@@ -428,7 +418,7 @@ jobs:
       - name: Install Python dependencies
         run: python -m pip install --upgrade pip pytest-workflow cryptography
 
-      - uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4
+      - uses: actions/setup-java@6a0805fcefea3d4657a47ac4c165951e33482018 # v4
         with:
           distribution: "temurin"
           java-version: "17"
@@ -484,7 +474,7 @@ jobs:
 
       - name: Upload logs on failure
         if: failure()
-        uses: actions/upload-artifact@0b2256b8c012f0828dc542b3febcab082c67f72b # v4
+        uses: actions/upload-artifact@89ef406dd8d7e03cfd12d9e0a4a378f454709029 # v4
         with:
           name: logs-${{ matrix.profile }}-${{ steps.parsed.outputs.result }}
           path: |
@@ -545,6 +535,8 @@ jobs:
           - profile: conda
             path: modules/nf-core/cellranger/vdj
           - profile: conda
+            path: modules/nf-core/checkqc
+          - profile: conda
             path: modules/nf-core/custom/dumpsoftwareversions
           - profile: conda
             path: modules/nf-core/deepcell/mesmer
@@ -603,6 +595,10 @@ jobs:
           - profile: conda
             path: modules/nf-core/sentieon/bwamem
           - profile: conda
+            path: modules/nf-core/sentieon/dedup
+          - profile: conda
+            path: modules/nf-core/sentieon/qualcal
+          - profile: conda
             path: modules/nf-core/spaceranger/mkgtf
           - profile: conda
             path: modules/nf-core/spaceranger/mkref
@@ -634,14 +630,14 @@ jobs:
             path: subworkflows/nf-core/fastq_align_bwa
     env:
       NXF_ANSI_LOG: false
-      NFTEST_VER: "0.8.4"
+      NFTEST_VER: "0.9.0"
       SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
       SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
 
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
-      - uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4
+      - uses: actions/setup-java@6a0805fcefea3d4657a47ac4c165951e33482018 # v4
         with:
           distribution: "temurin"
           java-version: "17"

@@ -67,6 +67,10 @@ output:
       type: file
       description: dump of R SessionInfo
       pattern: "*.R_sessionInfo.log"
+  - warnings:
+      type: file
+      description: Warnings
+      pattern: "*.warnings.log"
   - versions:
       type: file
       description: File containing software versions
