@@ -11,10 +11,10 @@ process TRANSDECODER_LONGORF {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("${meta.id}/*.pep") , emit: pep
-    tuple val(meta), path("${meta.id}/*.gff3"), emit: gff3
-    tuple val(meta), path("${meta.id}/*.cds") , emit: cds
-    tuple val(meta), path("${meta.id}/*.dat") , emit: dat
+    tuple val(meta), path("${meta.id}/*.pep") , emit: pep, optional: true
+    tuple val(meta), path("${meta.id}/*.gff3"), emit: gff3, optional: true
+    tuple val(meta), path("${meta.id}/*.cds") , emit: cds, optional: true
+    tuple val(meta), path("${meta.id}/*.dat") , emit: dat, optional: true
     path("${meta.id}/")                       , emit: folder
     path "versions.yml"                       , emit: versions
 

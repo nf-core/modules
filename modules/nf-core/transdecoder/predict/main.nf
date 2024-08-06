@@ -12,10 +12,10 @@ process TRANSDECODER_PREDICT {
     path(fold)
 
     output:
-    tuple val(meta), path("*.transdecoder.pep")  , emit: pep
-    tuple val(meta), path("*.transdecoder.gff3") , emit: gff3
-    tuple val(meta), path("*.transdecoder.cds")  , emit: cds
-    tuple val(meta), path("*.transdecoder.bed")  , emit: bed
+    tuple val(meta), path("*.transdecoder.pep")  , emit: pep, optional: true
+    tuple val(meta), path("*.transdecoder.gff3") , emit: gff3, optional: true
+    tuple val(meta), path("*.transdecoder.cds")  , emit: cds, optional: true
+    tuple val(meta), path("*.transdecoder.bed")  , emit: bed, optional: true
     path "versions.yml"                          , emit: versions
 
     when:
