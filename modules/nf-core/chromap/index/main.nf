@@ -19,7 +19,7 @@ process CHROMAP_INDEX {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${fasta.baseName}"
+    def prefix = fasta.baseName
     """
     chromap \\
         -i \\
@@ -35,7 +35,7 @@ process CHROMAP_INDEX {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${fasta.baseName}"
+    def prefix = fasta.baseName
     """
     touch ${prefix}.index
 
