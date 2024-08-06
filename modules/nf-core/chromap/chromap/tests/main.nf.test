@@ -122,8 +122,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.bam[0][1]).name,
-                                  process.out.versions).match()
+                { 
+                    assert snapshot(
+                        bam(process.out.bam[0][1]).getHeaderMD5(),
+                        bam(process.out.bam[0][1]).getReadsMD5(),
+                        process.out.versions
+                    )            
                 }
             )
         }
