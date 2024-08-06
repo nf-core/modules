@@ -23,7 +23,7 @@ process DEEPTOOLS_BAMCOVERAGE {
     script:
     def args      = task.ext.args ?: ''
     def prefix    = task.ext.prefix ?: "${meta.id}"
-    def extension = args.contains("--outFileFormat bedgraph") || args.contains("-of bedgraph") ? ".bedgraph" : ".bigWig"
+    def extension = args.contains("--outFileFormat bedgraph") || args.contains("-of bedgraph") ? "bedgraph" : "bigWig"
 
     // cram_input is currently not working with deeptools
     // therefore it's required to convert cram to bam first
