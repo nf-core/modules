@@ -35,8 +35,8 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
         $args
 
     ## circulargenerator has a hardcoded output name. Rename if necessary to use prefix.
-    if [[ "${reference.getSimpleName()}_${elongation_factor}.${full_extension}" != "${prefix}_${elongation_factor}.fasta" ]]; then
-        mv ${reference.getSimpleName()}_${elongation_factor}.${full_extension} ${prefix}_${elongation_factor}.fasta
+    if [[ "${reference.getSimpleName()}_${elongation_factor}${full_extension}" != "${prefix}_${elongation_factor}.fasta" ]]; then
+        mv ${reference.getSimpleName()}_${elongation_factor}${full_extension} ${prefix}_${elongation_factor}.fasta
     fi
 
     cat <<-END_VERSIONS > versions.yml
