@@ -17,11 +17,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)]
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true)]
 
-                input[1] = file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true)
-                input[2] = file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
                 input[3] = []
                 """
             }
@@ -47,11 +47,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
                     []]
 
-                input[1] = file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true)
-                input[2] = file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
                 input[3] = []
                 """
             }
@@ -76,11 +76,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)]
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true)]
 
-                input[1] = file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true)
-                input[2] = file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
                 input[3] = []
                 """
             }
@@ -109,11 +109,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)]
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true)]
 
-                input[1] = file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true)
-                input[2] = file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
                 input[3] = []
                 """
             }
@@ -142,11 +142,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)]
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true)]
 
-                input[1] = file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true)
-                input[2] = file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
                 input[3] = []
                 """
             }
@@ -174,11 +174,11 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of([ [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
                     []])
 
-                input[1] = file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true)
-                input[2] = file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
                 input[3] = Channel.of(
                     '##INFO=<ID=SGB,Number=1,Type=Float,Description="Segregation based metric.">',
                     '##INFO=<ID=MQ0F,Number=1,Type=Float,Description="Fraction of MQ0 reads (smaller is better)">'
@@ -208,11 +208,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)]
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true)]
 
-                input[1] = file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true)
-                input[2] = file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
                 input[3] = []
                 """
             }
@@ -236,11 +236,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)]
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true)]
 
-                input[1] = file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true)
-                input[2] = file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
                 input[3] = []
                 """
             }
@@ -265,11 +265,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)]
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true)]
 
-                input[1] = file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true)
-                input[2] = file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
                 input[3] = []
                 """
             }
@@ -294,11 +294,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true)]
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true)]
 
-                input[1] = file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true)
-                input[2] = file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
                 input[3] = []
                 """
             }

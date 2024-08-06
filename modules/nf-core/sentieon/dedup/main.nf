@@ -31,18 +31,19 @@ process SENTIEON_DEDUP {
     def args2 = task.ext.args2 ?: ''
     def args3 = task.ext.args3 ?: ''
     def args4 = task.ext.args4 ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: ".cram"   // The suffix should be either ".cram" or ".bam".
-    def metrics = task.ext.metrics ?: "${prefix}${suffix}.metrics"
+    def prefix = task.ext.prefix ?: "${meta.id}.cram"
+    def metrics = task.ext.metrics ?: "${prefix}.metrics"
     def input_list = bam.collect{"-i $it"}.join(' ')
+    def prefix_basename = prefix.substring(0, prefix.lastIndexOf("."))
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64 ?
         "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; " :
         ""
     """
     $sentieonLicense
 
-    sentieon driver $args $input_list -r ${fasta} --algo LocusCollector $args2 --fun score_info ${prefix}.score
-    sentieon driver $args3 -t $task.cpus $input_list -r ${fasta} --algo Dedup $args4 --score_info ${prefix}.score --metrics ${metrics} ${prefix}${suffix}
+    sentieon driver $args -t $task.cpus $input_list -r ${fasta} --algo LocusCollector $args2 --fun score_info ${prefix_basename}.score
+    sentieon driver $args3 -t $task.cpus $input_list -r ${fasta} --algo Dedup $args4 --score_info ${prefix_basename}.score --metrics ${metrics} ${prefix}
+
     # This following tsv-file is produced in order to get a proper tsv-file with Dedup-metrics for importing in MultiQC as "custom content".
     # It should be removed once MultiQC has a module for displaying Dedup-metrics.
     head -3 ${metrics} > ${metrics}.multiqc.tsv
@@ -54,15 +55,17 @@ process SENTIEON_DEDUP {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: ".cram"   // The suffix should be either ".cram" or ".bam".
-    def metrics = task.ext.metrics ?: "${prefix}${suffix}.metrics"
+    def prefix = task.ext.prefix ?: "${meta.id}.cram"
+    def metrics = task.ext.metrics ?: "${prefix}.metrics"
+    def prefix_basename = prefix.substring(0, prefix.lastIndexOf("."))
+
     """
-    touch "${prefix}${suffix}"
-    touch "${prefix}${suffix}\$(echo ${suffix} | sed 's/m\$/i/')"
+    touch "${prefix}"
+    touch "${prefix}.crai"
+    touch "${prefix}.bai"
     touch "${metrics}"
     touch "${metrics}.multiqc.tsv"
-    touch "${prefix}.score"
+    touch "${prefix_basename}.score"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

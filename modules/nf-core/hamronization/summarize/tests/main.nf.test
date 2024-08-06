@@ -17,7 +17,7 @@ nextflow_process {
                 """
                 input[0] = [                                                                                                                                                                      
                     [ id:'test1', single_end:false ], // meta map                                                                                                                               
-                    file(params.test_data['bacteroides_fragilis']['hamronization']['genome_mapping_potential_arg'], checkIfExists: true),                                                      
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/hamronization/genome.mapping.potential.ARG', checkIfExists: true),                                                      
                 ]
                 input[1] = 'tsv'
                 input[2] = '1.0.2'
@@ -32,7 +32,7 @@ nextflow_process {
                 """
                 input[0] = [                                                                                                                                                                      
                     [ id:'test2', single_end:false ], // meta map                                                                                                                               
-                    file(params.test_data['bacteroides_fragilis']['hamronization']['genome_mapping_potential_arg'], checkIfExists: true),                                                      
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/hamronization/genome.mapping.potential.ARG', checkIfExists: true),                                                      
                 ]
                 input[1] = 'tsv'
                 input[2] = '1.0.2'

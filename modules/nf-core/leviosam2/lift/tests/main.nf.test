@@ -19,7 +19,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test' ],
-                        file(params.test_data['homo_sapiens']['genome']['genome_chain_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.chain.gz', checkIfExists: true)
                     ]
                     """
                 }
@@ -31,7 +31,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test' ],
-                        file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                         ]
                     input[1] = GUNZIP.out.gunzip.map{ meta, gunzip -> gunzip }
                     """
@@ -45,7 +45,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ],
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
                     ]
                 input[1] = LEVIOSAM2_INDEX.out.clft
                 """
@@ -74,7 +74,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test' ],
-                        file(params.test_data['homo_sapiens']['genome']['genome_chain_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.chain.gz', checkIfExists: true)
                     ]
                     """
                 }
@@ -86,7 +86,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test' ],
-                        file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                         ]
                     input[1] = GUNZIP.out.gunzip.map{ meta, gunzip -> gunzip }
                     """
@@ -100,7 +100,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ],
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
                     ]
                 input[1] = LEVIOSAM2_INDEX.out.clft
                 """
@@ -130,11 +130,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ],
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
                     ]
                 input[1] = [
                     [ id:'test' ],
-                    file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                     ]
                 """
             }

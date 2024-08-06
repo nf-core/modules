@@ -14,8 +14,8 @@ process PLINK_HWE {
 
 
     output:
-    tuple val(meta), path("*.hwe"), emit: hwe
-    path "versions.yml"              , emit: versions
+    tuple val(meta), path("*.hwe")      , emit: hwe
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

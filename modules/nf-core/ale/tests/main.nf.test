@@ -16,8 +16,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
                     ]
                 """
             }
@@ -40,8 +40,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['genome']['genome_fasta_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
                     ]
                 """
             }
@@ -64,8 +64,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:true ], // meta map
-                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists: true)
                     ]
                 """
             }
@@ -88,8 +88,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:true ], // meta map
-                    file(params.test_data['sarscov2']['genome']['genome_fasta_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists: true)
                     ]
                 """
             }

@@ -55,7 +55,7 @@ process PLINK_EPISTASIS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        plink: \$(samtools --version |& sed '1!d ; s/samtools //')
+        plink: \$(echo \$(plink --version) | sed 's/^PLINK v//;s/64.*//')
     END_VERSIONS
     """
 

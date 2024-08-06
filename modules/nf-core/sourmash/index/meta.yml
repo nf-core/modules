@@ -25,6 +25,9 @@ input:
       type: file
       description: Files containing signature (hash sketches) of reference genomes
       pattern: "*.{sig}"
+  - ksize:
+      type: integer
+      description: ksize value
 output:
   - meta:
       type: map

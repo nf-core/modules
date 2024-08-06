@@ -3,10 +3,12 @@ nextflow_process {
     name "Test Process BISMARK_COVERAGE2CYTOSINE"
     script "../main.nf"
     process "BISMARK_COVERAGE2CYTOSINE"
-    tag "bismark"
-    tag "bismark/coverage2cytosine"
     tag "modules"
     tag "modules_nfcore"
+    tag "bismark"
+    tag "bismark/coverage2cytosine"
+    tag "bismark/methylationextractor"
+    tag "bismark/genomepreparation"
 
     test("Should run bismark/coverage2cytosine without failures") {
 
@@ -15,7 +17,7 @@ nextflow_process {
                 script "../../genomepreparation/main.nf"
                 process {
                     """
-                    input[0] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     """
                 }
             }
@@ -26,7 +28,7 @@ nextflow_process {
                     """
                     input[0] = [
                                 [ id:'test', single_end:false ],
-                                file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_bam'], checkIfExists: true)
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.bam', checkIfExists: true)
                                ]
                     input[1] = BISMARK_GENOMEPREPARATION.out.index
                     """
@@ -35,9 +37,6 @@ nextflow_process {
         }
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = BISMARK_METHYLATIONEXTRACTOR.out.coverage

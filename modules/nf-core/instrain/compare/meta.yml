@@ -20,11 +20,6 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
   - profiles:
       type: directory
       description: InStrain profile folders
@@ -51,6 +46,22 @@ output:
       type: directory
       description: inStrain compare folders
       pattern: "*.IS_compare/"
+  - comparisons_table:
+      type: file
+      description: Comparisons table
+      pattern: "*.tsv"
+  - pooled_snv:
+      type: file
+      description: Pooled SNV
+      pattern: "*.tsv"
+  - snv_info:
+      type: file
+      description: SNV information
+      pattern: "*.tsv"
+  - snv_keys:
+      type: file
+      description: SNV keys
+      pattern: "*.tsv"
 authors:
   - "@margotl9"
   - "@CarsonJM"

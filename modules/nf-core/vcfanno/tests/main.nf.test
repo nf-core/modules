@@ -15,11 +15,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test_compressed', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test2_vcf'], checkIfExists:true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf', checkIfExists: true)
                 ]
-                input[1] = file(params.test_data['homo_sapiens']['genome']['vcfanno_toml'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/vcfanno/vcfanno.toml', checkIfExists: true)
                 input[2] = []
                 input[3] = [
                     file("https://github.com/brentp/vcfanno/raw/master/example/exac.vcf.gz", checkIfExists: true),
@@ -45,11 +45,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test_uncompressed', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
                     [],
-                    file(params.test_data['sarscov2']['illumina']['test2_vcf'], checkIfExists:true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf', checkIfExists: true)
                 ]
-                input[1] = file(params.test_data['homo_sapiens']['genome']['vcfanno_toml'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/vcfanno/vcfanno.toml', checkIfExists: true)
                 input[2] = []
                 input[3] = [
                     file("https://github.com/brentp/vcfanno/raw/master/example/exac.vcf.gz", checkIfExists: true),
@@ -77,11 +77,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test_compressed', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test2_vcf'], checkIfExists:true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf', checkIfExists: true)
                 ]
-                input[1] = file(params.test_data['homo_sapiens']['genome']['vcfanno_toml'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/vcfanno/vcfanno.toml', checkIfExists: true)
                 input[2] = []
                 input[3] = [
                     file("https://github.com/brentp/vcfanno/raw/master/example/exac.vcf.gz", checkIfExists: true),

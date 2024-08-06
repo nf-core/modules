@@ -52,7 +52,7 @@ output:
         e.g. [ id:'test', single_end:false ]
   - output:
       type: file
-      description: BAM/CRAM file
+      description: BAM/CRAM file. Depends on how ext.prefix is set. BAM "ext.prefix = <filename>.bam", CRAM "ext.prefix = <filename>.cram". Defaults to cram
       pattern: "*.{bam,cram}"
   - index:
       type: file

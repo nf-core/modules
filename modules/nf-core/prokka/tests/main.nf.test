@@ -15,7 +15,7 @@ nextflow_process {
                 """
                 input[0] =  Channel.fromList([
                         tuple([ id:'test', single_end:false ], // meta map
-                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true))
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true))
                     ])
                 input[1] = []
                 input[2] = []
@@ -26,18 +26,22 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.gff).match("gff") },
-                { assert snapshot(process.out.fna).match("fna") },
-                { assert snapshot(process.out.faa).match("faa") },
-                { assert snapshot(process.out.ffn).match("ffn") },
-                { assert snapshot(process.out.fsa).match("fsa") },
-                { assert snapshot(process.out.tbl).match("tbl") },
-                { assert snapshot(process.out.err).match("err") },
-                { assert snapshot(process.out.txt).match("txt") },
-                { assert snapshot(process.out.tsv).match("tsv") },
                 { assert path(process.out.gbk.get(0).get(1)).exists() },
                 { assert path(process.out.log.get(0).get(1)).exists() },
-                { assert path(process.out.sqn.get(0).get(1)).exists() }
+                { assert path(process.out.sqn.get(0).get(1)).exists() },
+                { assert snapshot(
+                    process.out.gff,
+                    process.out.fna,
+                    process.out.faa,
+                    process.out.ffn,
+                    process.out.fsa,
+                    process.out.tbl,
+                    process.out.err,
+                    process.out.txt,
+                    process.out.tsv,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
 

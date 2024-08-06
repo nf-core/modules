@@ -9,11 +9,11 @@ process SENTIEON_HAPLOTYPER {
         'nf-core/sentieon:202308.02--c641bc397cbf79d5' }"
 
     input:
-    tuple val(meta), path(input), path(input_index), path(intervals)
-    path  fasta
-    path  fai
-    path  dbsnp
-    path  dbsnp_tbi
+    tuple val(meta), path(input), path(input_index), path(intervals), path(recal_table)
+    tuple val(meta1), path(fasta)
+    tuple val(meta2), path(fai)
+    tuple val(meta3), path(dbsnp)
+    tuple val(meta4), path(dbsnp_tbi)
     val(emit_vcf)
     val(emit_gvcf)
 
@@ -34,6 +34,7 @@ process SENTIEON_HAPLOTYPER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def dbsnp_command = dbsnp ? "-d $dbsnp " : ""
     def interval_command = intervals ? "--interval $intervals" : ""
+    def recal_table_command = recal_table ? "-q $recal_table" : ""
     def vcf_cmd = ""
     def gvcf_cmd = ""
     def base_cmd = '--algo Haplotyper ' + dbsnp_command
@@ -52,7 +53,7 @@ process SENTIEON_HAPLOTYPER {
     """
     $sentieonLicense
 
-    sentieon driver $args -r $fasta -t $task.cpus -i $input $interval_command $vcf_cmd $gvcf_cmd
+    sentieon driver $args -r $fasta -t $task.cpus -i $input $recal_table_command $interval_command $vcf_cmd $gvcf_cmd
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -63,9 +64,9 @@ process SENTIEON_HAPLOTYPER {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.unfiltered.vcf.gz
+    echo "" | gzip > ${prefix}.unfiltered.vcf.gz
     touch ${prefix}.unfiltered.vcf.gz.tbi
-    touch ${prefix}.g.vcf.gz
+    echo "" | gzip > ${prefix}.g.vcf.gz
     touch ${prefix}.g.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml

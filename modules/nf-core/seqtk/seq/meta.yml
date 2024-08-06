@@ -17,7 +17,7 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test' ]
-  - sequences:
+  - fastx:
       type: file
       description: A FASTQ or FASTA file
       pattern: "*.{fastq.gz, fastq, fq, fq.gz, fasta, fastq.gz, fa, fa.gz, fas, fas.gz, fna, fna.gz}"
@@ -31,7 +31,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - sequences:
+  - fastx:
       type: file
       description: FASTQ/FASTA file containing renamed sequences
       pattern: "*.{fastq.gz, fasta.gz}"

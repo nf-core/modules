@@ -21,7 +21,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test' ],
-                        file(params.test_data['homo_sapiens']['genome']['genome_1_fasta'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.fasta.gz', checkIfExists: true)
                     ]
                     """
                 }
@@ -33,11 +33,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = GUNZIP.out.gunzip.map { meta, file -> file }
                 input[2] = [
-                    file(params.test_data['homo_sapiens']['genome']['genome_1_gtf'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.gtf', checkIfExists: true)
                 ]
                 input[3] = []
                 """
@@ -67,7 +67,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test' ],
-                        file(params.test_data['homo_sapiens']['genome']['genome_1_fasta'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.fasta.gz', checkIfExists: true)
                     ]
                     """
                 }
@@ -79,11 +79,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = GUNZIP.out.gunzip.map { meta, file -> file }
                 input[2] = [
-                    file(params.test_data['homo_sapiens']['genome']['genome_1_gtf'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.gtf', checkIfExists: true)
                 ]
                 input[3] = []
                 """

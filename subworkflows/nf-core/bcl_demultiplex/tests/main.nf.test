@@ -19,7 +19,7 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = Channel.value([
-                    [id:'HMTFYDRXX'],
+                    [id:'HMTFYDRXX', lane:1],
                     "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/bcl/SampleSheet.csv",
                     "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/bcl/200624_A00834_0183_BHMTFYDRXX.tar.gz"
                 ])

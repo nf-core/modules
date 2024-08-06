@@ -14,7 +14,7 @@ nextflow_process {
             script "../../createdb/main.nf"
             process {
                 """
-                input[0] = [ [ id:'test_db' ], [ file(params.test_data['proteomics']['pdb']['tim1_pdb'], checkIfExists: true) ] ]
+                input[0] = [ [ id:'test_db' ], [ file(params.modules_testdata_base_path + 'proteomics/pdb/1tim.pdb', checkIfExists: true) ] ]
                 """
             }
         }
@@ -25,7 +25,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test_search' ], [ file(params.test_data['proteomics']['pdb']['tim8_pdb'], checkIfExists: true) ] ]
+                input[0] = [ [ id:'test_search' ], [ file(params.modules_testdata_base_path + 'proteomics/pdb/8tim.pdb', checkIfExists: true) ] ]
                 input[1] = FOLDSEEK_CREATEDB.out.db
                 """
             }
@@ -48,7 +48,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test_search' ], [ file(params.test_data['proteomics']['pdb']['tim8_pdb'], checkIfExists: true) ] ]
+                input[0] = [ [ id:'test_search' ], [ file(params.modules_testdata_base_path + 'proteomics/pdb/8tim.pdb', checkIfExists: true) ] ]
                 input[1] = FOLDSEEK_CREATEDB.out.db
                 """
             }

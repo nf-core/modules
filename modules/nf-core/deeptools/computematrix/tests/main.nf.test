@@ -1,0 +1,67 @@
+nextflow_process {
+
+    name "Test Process DEEPTOOLS_COMPUTEMATRIX"
+    script "../main.nf"
+    process "DEEPTOOLS_COMPUTEMATRIX"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "deeptools"
+    tag "deeptools/computematrix"
+
+    test("sarscov2 - bigwig - bed") {
+
+        when {
+            process {
+                """              
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina//bigwig/test.bigwig', checkIfExists: true)
+                ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(file(process.out.matrix.get(0).get(1)).name,
+                                  process.out.table,
+                                  process.out.versions)
+                                  .match()
+                }
+            )
+        }
+
+    }
+
+    test("sarscov2 - mat - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina//bigwig/test.bigwig', checkIfExists: true)
+                ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

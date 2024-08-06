@@ -30,6 +30,8 @@ process CELLRANGER_MKFASTQ {
         --id=${prefix}_outs \\
         --run=$bcl \\
         --csv=$csv \\
+        --localcores=${task.cpus} \\
+        --localmem=${task.memory.toGiga()} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

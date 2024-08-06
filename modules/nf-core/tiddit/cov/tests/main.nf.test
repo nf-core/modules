@@ -16,12 +16,12 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
                 ]
 
                 input[1] = [
                     [:],  // meta map
-                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ]
                 """
             }
@@ -30,9 +30,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.cov).match("cov") },
                 { assert process.out.cov[0][1] ==~ ".*/test.bed" },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    process.out.cov,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
 
@@ -45,7 +48,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
                 ]
                 input[1] = [ [:], [] ]
                 """
@@ -55,9 +58,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.cov).match("cov") },
                 { assert process.out.cov[0][1] ==~ ".*/test.bed" },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    process.out.cov,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
 
@@ -72,12 +78,12 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
                 ]
 
                 input[1] = [
                     [:],  // meta map
-                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ]
                 """
             }
@@ -86,9 +92,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.wig).match("wig") },
                 { assert process.out.wig[0][1] ==~ ".*/test.wig" },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    process.out.wig,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
 
@@ -103,7 +112,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
                 ]
 
                 input[1] = [ [:], [] ]
@@ -114,9 +123,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.wig).match("wig") },
                 { assert process.out.wig[0][1] ==~ ".*/test.wig" },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    process.out.wig,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
 
@@ -133,12 +145,12 @@ nextflow_process {
 
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
                 ]
 
                 input[1] = [
                     [:],  // meta map
-                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ]
                 """
             }
@@ -147,11 +159,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.cov).match("cov - stub") },
                 { assert process.out.cov[0][1] ==~ ".*/test.bed" },
-                { assert snapshot(process.out.wig).match("wig - stub") },
                 { assert process.out.wig[0][1] ==~ ".*/test.wig" },
-                { assert snapshot(process.out.versions).match("versions - stub") }
+                { assert snapshot(
+                    process.out.cov,
+                    process.out.wig,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
 
