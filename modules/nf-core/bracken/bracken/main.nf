@@ -23,12 +23,14 @@ process BRACKEN_BRACKEN {
     def args = task.ext.args ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
     bracken_report = "${prefix}.tsv"
+    bracken_kraken_style_report = "${prefix}.kraken2.report_bracken.txt"
     """
     bracken \\
         ${args} \\
         -d '${database}' \\
         -i '${kraken_report}' \\
-        -o '${bracken_report}'
+        -o '${bracken_report}' \\
+        -w '${bracken_kraken_style_report}'
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -40,9 +42,10 @@ process BRACKEN_BRACKEN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     bracken_report = "${prefix}.tsv"
+    bracken_kraken_style_report = "${prefix}.kraken2.report_bracken.txt"
     """
     touch ${prefix}.tsv
-    touch ${prefix}_bracken_species.txt
+    touch ${bracken_kraken_style_report}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
