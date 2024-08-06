@@ -39,17 +39,16 @@ process MCSTAGING_PHENOIMAGER2MC {
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if ("$image" == "${prefix}.ome.tif") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     """
-    python3 /scripts/phenoimager2mc.py \
-        -i folder \ ###########
+    python3 /phenoimager2mc/scripts/phenoimager2mc.py \
+        -i ${folder} \
         -o "${prefix}.tif" \
         $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        phenoimager2mc: \$(python3 /scripts/phenoimager2mc.py --version | sed 's/v//g')
+        phenoimager2mc: \$(python3 /phenoimager2mc/scripts/phenoimager2mc.py --version | sed 's/v//g')
     END_VERSIONS
     """
 
