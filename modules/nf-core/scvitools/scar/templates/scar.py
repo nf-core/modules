@@ -8,6 +8,7 @@ import platform
 from threadpoolctl import threadpool_limits
 threadpool_limits(int("${task.cpus}"))
 
+scvi.settings.seed = 0
 
 def format_yaml_like(data: dict, indent: int = 0) -> str:
     """Formats a dictionary to a YAML-like string.
@@ -56,6 +57,8 @@ while not worked:
             raise e
 
 adata.X = vae.get_denoised_counts()
+
+del adata.uns["_scvi_uuid"], adata.uns["_scvi_manager_uuid"]
 
 adata.write_h5ad("${prefix}.h5ad")
 
