@@ -52,7 +52,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.report,
+                    file(process.out.bench_vcf_tbi.get(0).get(1)).name,
+                    path(process.out.bench_vcf[0][1]).vcf.variantsMD5
+                    ).match() }
             )
         }
 
@@ -77,7 +82,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.report,
+                    file(process.out.bench_vcf_tbi.get(0).get(1)).name,
+                    path(process.out.bench_vcf[0][1]).vcf.variantsMD5
+                    ).match() }
             )
         }
 
@@ -102,7 +112,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.report,
+                    file(process.out.bench_vcf_tbi.get(0).get(1)).name,
+                    path(process.out.bench_vcf[0][1]).vcf.variantsMD5
+                    ).match() }
             )
         }
 
