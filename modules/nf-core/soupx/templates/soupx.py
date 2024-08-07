@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
 
+# This prevents numba caching from causing issues
+# Relevant for Singularity and Apptainer
+import os
+tmpdir = os.path.join(os.getcwd(), "tmp")
+os.environ["TMPDIR"] = tmpdir
+os.makedirs(tmpdir, exist_ok=True)
+
 import scanpy
 import anndata2ri
 import rpy2
