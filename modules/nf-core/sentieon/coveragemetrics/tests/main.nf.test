@@ -150,4 +150,32 @@ nextflow_process {
             )
         }
     }
+
+    test("Test - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [],
+                    []
+                ]
+                input[1] = [[id: 'test'], []]
+                input[2] = [[id: 'test'], []]
+                input[3] = [[id: 'test'], []]
+                input[4] = [[id: 'test'], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
 }
