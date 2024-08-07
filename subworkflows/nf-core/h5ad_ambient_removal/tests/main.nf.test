@@ -35,6 +35,7 @@ nextflow_workflow {
     }
 
     test("cellbender") {
+        config './cellbender_epochs.config'
         when {
             workflow {
                 """

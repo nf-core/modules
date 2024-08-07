@@ -9,6 +9,7 @@ nextflow_process {
     tag "cellbender"
 
     test("test_cellbender_removebackground") {
+        config './epochs.config'
         when {
             process {
                 """
