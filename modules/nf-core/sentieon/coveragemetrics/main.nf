@@ -16,24 +16,26 @@ process SENTIEON_COVERAGEMETRICS {
     tuple val(meta4), path(gene_list)
 
     output:
-    tuple val(meta), path("$prefix")                          , optional: true, emit: per_locus
-    tuple val(meta), path("*.sample_summary")                , optional: true, emit: sample_summary
-    tuple val(meta), path("*interval_statistics")            , optional: true, emit: statistics
-    tuple val(meta), path("*cumulative_coverage_counts")     , optional: true, emit: coverage_counts
-    tuple val(meta), path("*cumulative_coverage_proportions"), optional: true, emit: coverage_proportions
-    tuple val(meta), path("*interval_summary")               , optional: true, emit: interval_summary
-    path "versions.yml"                                      , emit: versions
+    tuple val(meta), path("$prefix")                                                       , optional: true, emit: per_locus
+    tuple val(meta), path("${prefix}.${partitions_output}_summary")                        , optional: true, emit: sample_summary
+    tuple val(meta), path("${prefix}.${partitions_output}_interval_statistics")            , optional: true, emit: statistics
+    tuple val(meta), path("${prefix}.${partitions_output}_cumulative_coverage_counts")     , optional: true, emit: coverage_counts
+    tuple val(meta), path("${prefix}.${partitions_output}_cumulative_coverage_proportions"), optional: true, emit: coverage_proportions
+    tuple val(meta), path("${prefix}.${partitions_output}_interval_summary")               , optional: true, emit: interval_summary
+    path "versions.yml"                                                                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     prefix  = task.ext.prefix ?: "${meta.id}"
-    def args          = task.ext.args  ?: ''
-    def args2         = task.ext.args2 ?: ''
-    def input         = bam.sort().collect{"-i $it"}.join(' ')
-    def interval_cmd  = interval       ? "--interval $interval"     : ""
-    def gene_list_cmd = gene_list      ? "--gene_list ${gene_list}" : ""
+    def args           = task.ext.args  ?: ''
+    def args2          = task.ext.args2 ?: ''
+    def input          = bam.sort().collect{"-i $it"}.join(' ')
+    def interval_cmd   = interval   ? "--interval $interval"                : ""
+    def gene_list_cmd  = gene_list  ? "--gene_list ${gene_list}"            : ""
+    // Glob that matches any version of 'sample_library_platform_center'.
+    partitions_output = "{sample,}{_library,}{_platform,}{_center,}{_readgroup,}"
     """
     sentieon \\
         driver \\
