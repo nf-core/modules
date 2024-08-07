@@ -67,7 +67,6 @@ adata.write_h5ad("${prefix}.h5ad")
 versions = {
     "${task.process}": {
         "python": platform.python_version(),
-        "anndata": ad.__version__,
         "scvi": scvi.__version__
     }
 }
