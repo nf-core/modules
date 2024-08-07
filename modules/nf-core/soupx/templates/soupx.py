@@ -4,7 +4,7 @@
 # Relevant for Singularity and Apptainer
 import os
 tmpdir = os.path.join(os.getcwd(), "tmp")
-os.environ["TMPDIR"] = tmpdir
+os.environ["NUMBA_CACHE_DIR"] = tmpdir
 os.makedirs(tmpdir, exist_ok=True)
 
 import scanpy
