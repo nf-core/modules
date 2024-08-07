@@ -2,13 +2,15 @@
 name: "h5ad_ambient_removal"
 description: Ambient RNA removal from AnnData (h5ad) files
 keywords:
-  - fastq
-  - subsample
-  - strandedness
+  - single-cell
+  - scRNA-seq
+  - ambient RNA removal
 components:
-  - fq/subsample
-  - salmon/quant
-  - salmon/index
+  - celda/decontx
+  - cellbender/removebackground
+  - cellbender/merge
+  - soupx
+  - scvitools/scar
 input:
   - meta:
       type: map
