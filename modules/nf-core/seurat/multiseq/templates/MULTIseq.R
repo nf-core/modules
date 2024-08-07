@@ -42,34 +42,7 @@ opt <- list(
     output_prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
     hto_matrix = '$hto_matrix',
     rna_matrix = '$rna_matrix',
-    assay = "HTO",
-    quantile = 0.7,
-    autoThresh = FALSE,
-    maxiter = 5,
-    qrange_from = 0.1,
-    qrange_to = 0.9,
-    qrange_by = 0.05,
-    verbose = TRUE,
-    selection_method = "mean.var.plot",
-    normalization_method = "CLR",
-    group_cells_feature_scatter = "HTO_maxID",
-    produce_feature_scatter = TRUE,
-    feature_scatter_feature_1 = "",
-    feature_scatter_feature_2 = "",
-    produce_ridge_plot = TRUE,
-    number_of_features_ridge_plot = 2,
-    produce_violin_plot = TRUE,
-    group_cells_violin_plot = "HTO_classification.global",
-    features_violin_plot = "nCount_RNA",
-    pt_size = 0.1,
-    log = TRUE,
-    produce_tsne_plot = TRUE,
-    subset_idents = "Negative",
-    subset_invert = TRUE,
-    tsne_scale_data_verbose = FALSE,
-    run_pca_approx = FALSE,
-    run_tsne_dim_max = 2,
-    run_tsne_perplexity = 100
+    produce_plots = '$produce_plots'
 )
 
 opt_types <- lapply(opt, class)
@@ -77,19 +50,33 @@ opt_types <- lapply(opt, class)
 # Apply parameter overrides
 
 args_opt <- parse_args('$task.ext.args')
-for ( ao in names(args_opt)){
-    if (! ao %in% names(opt)){
-        stop(paste("Invalid option:", ao))
-    }else{
 
-        # Preserve classes from defaults where possible
-        if (! is.null(opt[[ao]])){
-            args_opt[[ao]] <- as(args_opt[[ao]], opt_types[[ao]])
-        }
-        opt[[ao]] <- args_opt[[ao]]
+# All values from ext.args are stored as strings
+# Function to transform strings to the correct class
+convert_element <- function(x) {
+  if (is.character(x)) {
+    # Try to convert to numeric
+    num_value <- suppressWarnings(as.numeric(x))
+    if (!is.na(num_value)) {
+      return(num_value)
     }
+    
+    # Try to convert to boolean
+    bool_value <- tolower(x)
+    if (bool_value %in% c("true", "t", "yes", "y", "1")) {
+      return(TRUE)
+    } else if (bool_value %in% c("false", "f", "no", "n", "0")) {
+      return(FALSE)
+    }
+  }
+  
+  # If no conversion was possible, return the original value
+  return(x)
 }
-
+process_list <- function(input_list) {
+  return(lapply(input_list, convert_element))
+}
+opt_args_transformed <- process_list(args_opt)
 
 ################################################
 ################################################
@@ -97,11 +84,12 @@ for ( ao in names(args_opt)){
 ################################################
 ################################################
 #### Seurat object creation following tutorial from: https://satijalab.org/seurat/articles/hashing_vignette
+library(Seurat)
 
 # Read data
-rna_mtx <- Read10X("/Users/mylenemarianagonzalesandre/Development/data/rna/filtered_feature_bc_matrix")
+rna_mtx <- Read10X(opt\$rna_matrix)
 
-hto_mtx <- Read10X("/Users/mylenemarianagonzalesandre/Development/data/hto/filtered_feature_bc_matrix")
+hto_mtx <- Read10X(opt\$hto_matrix)
 
 # Select cell barcodes detected by both RNA and HTO In the example datasets we have already
 # filtered the cells for you, but perform this step for clarity.
@@ -119,28 +107,25 @@ seurat_object <- CreateSeuratObject(counts = Matrix::Matrix(as.matrix(rna_mtx), 
 # Normalize RNA data with log normalization
 seurat_object <- NormalizeData(seurat_object)
 # Find and scale variable features
-seurat_object <- FindVariableFeatures(seurat_object, selection.method = opt$selection_method, nfeatures = 2000)
+seurat_object <- FindVariableFeatures(seurat_object, selection.method = opt_args_transformed\$selection_method, nfeatures = opt_args_transformed\$nfeatures)
 seurat_object <- ScaleData(seurat_object, features = VariableFeatures(seurat_object))
-
-
 # Add HTO data as a new assay independent from RNA
-seurat_object[[opt$assay]] <- CreateAssayObject(counts = hto_mtx)
+seurat_object[[opt_args_transformed\$assay]] <- CreateAssayObject(counts = hto_mtx)
 # Normalize HTO data, here we use centered log-ratio (CLR) transformation
-seurat_object <- NormalizeData(seurat_object, assay = opt$assay, normalization.method = opt$normalization_method)
-
-
+seurat_object <- NormalizeData(seurat_object, assay = opt_args_transformed\$assay, normalization.method = opt_args_transformed\$normalization_method)
 ################################################
 ## MULTIseq                       ##
 ################################################
-demuliplex <- MULTIseqDemux(seurat_object ,
-  assay = opt$assay,
-  quantile = opt$quantile,
-  autoThresh = opt$autoThresh,
-  maxiter = opt$maxiter,
-  qrange = seq(from = opt$qrange_from, to = opt$qrange_to, by = opt$qrange_by),
+demultiplex <- MULTIseqDemux(seurat_object ,
+  assay = opt_args_transformed\$assay,
+  quantile = opt_args_transformed\$quantile,
+  autoThresh = opt_args_transformed\$autoThresh,
+  maxiter = opt_args_transformed\$maxiter,
+  qrange = seq(from = opt_args_transformed\$qrange_from, to = opt_args_transformed\$qrange_to, by = opt_args_transformed\$qrange_by),
   verbose = TRUE
 )
+
 ################################################
 ## Results                                    ##
 ################################################
-write.csv(seurat_object$MULTI_ID, paste0(opt$output_prefix, "_assignment.csv"))
+write.csv(demultiplex\$MULTI_ID, paste0(opt\$output_prefix, "_assignment.csv"))
