@@ -69,7 +69,7 @@ process SENTIEON_COVERAGEMETRICS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sentieon: \$(samtools --version |& sed '1!d ; s/samtools //')
+        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
     END_VERSIONS
     """
 }
