@@ -23,6 +23,7 @@ process KRAKEN2_BUILDSTANDARD {
         $args \\
         --threads ${task.cpus} \\
         --db ${prefix}
+        
     kraken2-build --clean --db ${prefix}
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
