@@ -43,6 +43,15 @@ input:
   - elongation_factor:
       type: integer
       description: The elongation factor used when running circulargenerator, i.e. the number of bases that the ends of the target chromosome in the reference genome was elongated by
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. `[ id:'test' ]`
+  - elongated_chr_list:
+      type: file
+      description: File listing the chromosomes that were elongated
+      pattern: "*_elongated"
 output:
   - meta:
       type: map
