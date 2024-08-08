@@ -17,6 +17,10 @@ tools:
       doi: 10.1186/s13059-019-1891-0
       licence: ["MIT"]
       args_id: "$args"
+input:
+  - cleaning:
+      type: boolean
+      description: activate or deactivate (true or false) cleaning of intermediate files
 output:
   - db:
       type: directory
