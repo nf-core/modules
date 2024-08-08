@@ -13,7 +13,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [id:'test'], file(params.test_data['proteomics']['pdb']['tim1_pdb'], checkIfExists: true) ]
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'proteomics/pdb/1tim.pdb', checkIfExists: true) ]
                 """
             }
         }
@@ -34,7 +34,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [id:'test'], file(params.test_data['proteomics']['pdb']['tim1_pdb'], checkIfExists: true) ]
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'proteomics/pdb/1tim.pdb', checkIfExists: true) ]
                 """
             }
         }
