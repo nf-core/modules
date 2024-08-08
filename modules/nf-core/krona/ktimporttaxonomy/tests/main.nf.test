@@ -28,12 +28,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot (
-                    file(process.out.html.get(0).get(1)).list(),
-                 ).match() }
+                { assert snapshot ( process.out.versions ).match() },
+                { assert file(process.out.html.get(0).get(1)).exists() }
             )
         }
-
     }
 
     test ("sarscov2 - metagenome - kraken report - stub") {
@@ -56,9 +54,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot (
-                    file(process.out.html.get(0).get(1)).list(),
-                 ).match() }
+                { assert snapshot(process.out).match() },
             )
         }
     }
