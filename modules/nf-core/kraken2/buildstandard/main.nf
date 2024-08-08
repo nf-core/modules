@@ -25,9 +25,7 @@ process KRAKEN2_BUILDSTANDARD {
         $args \\
         --threads ${task.cpus} \\
         --db ${prefix}
-        
     $runclean
-    
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         kraken2: \$(echo \$(kraken2 --version 2>&1) | sed 's/^.*Kraken version //; s/ .*\$//')
