@@ -11,6 +11,8 @@ nextflow_process {
     tag "arriba/arriba"
     tag "arriba/download"
     tag "arriba/visualisation"
+    tag "samtools/index"
+    tag "star/align"
     tag "star/genomegenerate"
 
 
@@ -72,6 +74,7 @@ nextflow_process {
         }
 
         run("ARRIBA_ARRIBA") {
+            script "../../../arriba/arriba/main.nf"
             process {
                 """
                 input[0] = STAR_ALIGN.out.bam_sorted
