@@ -9,6 +9,7 @@ process MCSTAGING_PHENOIMAGER2MC {
 
     output:
     tuple val(meta), path("*.tif"), emit: tif
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -19,18 +20,18 @@ process MCSTAGING_PHENOIMAGER2MC {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "Phenoimager2mc module in conda does not exist. Please use Docker / Singularity / Podman instead."
     }
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    python3 /phenoimager2mc/scripts/phenoimager2mc.py \
+    python /phenoimager2mc/scripts/phenoimager2mc.py \
         -i ${tiles} \
         -o "${prefix}.tif" \
         $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        phenoimager2mc: \$(python3 /phenoimager2mc/scripts/phenoimager2mc.py --version | sed 's/v//g')
+        phenoimager2mc: \$(python /phenoimager2mc/scripts/phenoimager2mc.py --version | sed 's/v//g')
     END_VERSIONS
     """
 
@@ -45,7 +46,7 @@ process MCSTAGING_PHENOIMAGER2MC {
     touch "${prefix}.tif"
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        phenoimager2mc: \$(python3 /scripts/phenoimager2mc.py --version | sed 's/v//g')
+        phenoimager2mc: \$(python /phenoimager2mc/scripts/phenoimager2mc.py --version | sed 's/v//g')
     END_VERSIONS
     """
 }
