@@ -100,7 +100,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [STAR_GENOMEGENERATE.out.bam.join(SAMTOOLS_INDEX.out.bai).join(ARRIBA_ARRIBA.out.fusions)]
-                input[0] = STAR_ALIGN.out.bam_sorted.join(SAMTOOLS_INDEX.out.bai).join(ARRIBA_ARRIBA.out.fusions)
+                input[0] = STAR_ALIGN.out.bam_sorted.bam.join(SAMTOOLS_INDEX.out.bai).join(ARRIBA_ARRIBA.out.fusions)
                 input[1]  = [
                     [ id:'test_fasta_fai' ], // meta map
                     [ id:'test_gtf' ], // meta map
