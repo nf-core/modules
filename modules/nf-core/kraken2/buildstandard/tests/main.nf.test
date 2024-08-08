@@ -10,13 +10,14 @@ nextflow_process {
     tag "kraken2/buildstandard"
 
 
-    test("no input - stub") {
+    test("stub") {
 
         options "-stub"
 
         when {
             process {
                 """
+                input[0] = true
                 """
             }
         }
