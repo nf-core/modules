@@ -1,23 +1,20 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "mcstaging_imc2mc"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Staging module for MCMICRO transforming Imaging Mass Cytometry .txt files to .tif files with OME-XML metadata. Includes optional hot pixel removal.
 keywords:
-  - sort
-  - example
-  - genomics
+  - imaging
+  - ome-tif
+  - staging
+  - MCMICRO
 tools:
   - "mcstaging":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: ""
-      homepage: ""
-      documentation: ""
-      tool_dev_url: ""
-      doi: ""
-      licence: 
+      description: "Staging modules for MCMICRO"
+      homepage: "https://github.com/SchapiroLabor/imc2mc"
+      documentation: "https://github.com/SchapiroLabor/imc2mc/README.md"
+      tool_dev_url: "https://github.com/SchapiroLabor/imc2mc"
+      licence: ["GPL-3.0 license"]
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   # Only when we have meta
   - meta:
@@ -25,14 +22,13 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
-## TODO nf-core: Add a description of all of the variables used as output
+  - txtfile:
+      type: file
+      description: Acquisition .txt file
+      pattern: "*.{txt}"
+
+
 output:
   #Only when we have meta
   - meta:
@@ -40,16 +36,16 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  
+
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+
+  - tif:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: One output .tif file containing acquisition and metadata
+      pattern: "*.{tif}"
 
 authors:
   - "@MargotCh"
