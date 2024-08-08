@@ -41,9 +41,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        path(process.out.json[0][1]).readLines().contains("modelR\": 0."),
-                        path(process.out.tsv[0][1]).readLines().contains("test    0."),
-                        path(process.out.csv[0][1]).readLines().contains("test\",0."),
+                        path(process.out.json[0][1]).text.contains("modelR\": 0."),
+                        path(process.out.tsv[0][1]).text.contains("test	0."),
+                        path(process.out.csv[0][1]).text.contains("test\",0."),
                         file(process.out.pdf[0][1]).name,
                         process.out.versions
                     ).match()
