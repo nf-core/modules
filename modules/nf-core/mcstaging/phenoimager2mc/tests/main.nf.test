@@ -19,7 +19,8 @@ nextflow_process {
                 // define inputs of the process here. Example:
                 input[0] = [
                     [ id:'test' ],
-                    file(params.test_data['imaging']['staging']['folder'], checkIfExists: true).toString()
+                    [ file(params.test_data['imaging']['staging']['phenoimager']['file1'], checkIfExists: true),
+                      file(params.test_data['imaging']['staging']['phenoimager']['file2'], checkIfExists: true) ]
                 ]
                 """
             }
