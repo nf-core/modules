@@ -9,26 +9,22 @@ keywords:
   - MCMICRO
 tools:
   - "mcstaging":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Staging modules for MCMICRO"
-      homepage: ""
-      documentation: ""
-      tool_dev_url: ""
-      doi: ""
-      licence:
+      homepage: "https://github.com/SchapiroLabor/phenoimager2mc"
+      documentation: "https://github.com/SchapiroLabor/phenoimager2mc/README.md"
+      tool_dev_url: "https://github.com/SchapiroLabor/phenoimager2mc"
+      licence: ["GPL-2.0 license"]
 
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
 
-  ## TODO nf-core: Delete / customise this example input
-  - folder:
-      type: folder
-      description: Folder containing .tif files of one cycle from PhenoImager
+  - tiles:
+      type: list
+      description: Folder or list with .tif files of one cycle from PhenoImager
       #pattern: "*.{bam,cram,sam}"
 
 output:
