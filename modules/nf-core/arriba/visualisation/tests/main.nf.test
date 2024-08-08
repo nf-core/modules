@@ -1,82 +1,93 @@
-// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
-// nf-core modules test arriba/visualisation
 nextflow_process {
 
     name "Test Process ARRIBA_VISUALISATION"
     script "../main.nf"
     process "ARRIBA_VISUALISATION"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "arriba"
+    tag "arriba/arriba"
+    tag "arriba/download"
     tag "arriba/visualisation"
+    tag "star/genomegenerate"
 
 
     setup{
         run("STAR_GENOMEGENERATE") {
-        script "../../../star/genomegenerate/main.nf"
-        process {
-        """
-        input[0]= [
-            [ id:'test_fasta' ], // meta map
-            [ file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ]]
-        input[1] = [
-            [ id:'test_fasta_fai' ], // meta map
-            [ file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true) ]]
-        """
+            script "../../../star/genomegenerate/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test_fasta' ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                ])
+                input[1] = Channel.of([
+                    [ id:'test_gtf' ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
+                ])
+                """
+            }
         }
-        }
+
         run("STAR_ALIGN") {
-        script "../../../star/align/main.nf"
-        process {
-        """
-        input[0] = [ [ id:'test', single_end:false ], // meta map
-            [   file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_1_fastq_gz'], checkIfExists: true),
-                file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_2_fastq_gz'], checkIfExists: true) ] ]
-        input[1] = STAR_GENOMEGENERATE.out.index
-        input[2] = [
-            [ id:'test_fasta_fai' ], // meta map
-            [ file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true) ]]
-        input[3] = false
-        input[4] =  'illumina'
-        input[5] =  false
-        """
+            script "../../../star/align/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = STAR_GENOMEGENERATE.out.index
+                input[2] = Channel.of([
+                    [ id:'test_gtf' ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
+                ])
+                input[3] = false
+                input[4] = 'illumina'
+                input[5] = false
+                """
+            }
         }
-        }
+
         run("SAMTOOLS_INDEX") {
-        script "../../../samtools/index/main.nf"
-        process {
-        """
-        input[0] = STAR_ALIGN.out.bam
-        STAR_GENOMEGENERATE.out.index
-        """
+            script "../../../samtools/index/main.nf"
+            process {
+                """
+                input[0] = STAR_ALIGN.out.bam_sorted
+                """
+            }
         }
-        }
+
         run("ARRIBA_DOWNLOAD") {
-        script "../../../arriba/download/main.nf"
-        process {
-        """
-        """
+            script "../../../arriba/download/main.nf"
+            process {
+                """
+                """
+            }
         }
-        }
+
         run("ARRIBA_ARRIBA") {
-        script "../../../arriba/arriba/main.nf"
-        process {
-        """
-        input[0] = STAR_ALIGN.out.bam
-        input[1] = [
-            [ id:'test_fasta' ], // meta map
-            [ file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ]]
-        input[2] = [
-            [ id:'test_fasta_fai' ], // meta map
-            [ file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true) ]]
-        input[3] = []
-        input[4] = []
-        input[5] = []
-        input[6] = []
-        input[7] = []
-        """
-        }
+            process {
+                """
+                input[0] = STAR_ALIGN.out.bam_sorted
+                input[1] = [
+                    [ id:'test_fasta' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
+                input[2] = [
+                    [ id:'test_fasta_fai' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
+                input[3] = [[], []]
+                input[4] = [[], []]
+                input[5] = [[], []]
+                input[6] = [[], []]
+                input[7] = [[], []]
+                """
+            }
         }
     }
 
@@ -86,23 +97,21 @@ nextflow_process {
             process {
                 """
                 input[0] = [STAR_GENOMEGENERATE.out.bam.join(SAMTOOLS_INDEX.out.bai).join(ARRIBA_ARRIBA.out.fusions)]
+                input[0] = STAR_ALIGN.out.bam_sorted.join(SAMTOOLS_INDEX.out.bai).join(ARRIBA_ARRIBA.out.fusions)
                 input[1]  = [
                     [ id:'test_fasta_fai' ], // meta map
+                    [ id:'test_gtf' ], // meta map
                     [ file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true) ]]
                 input[2] = []
                 input[3] = []
                 """
             }
         }
-
         then {
-
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
-
 }
