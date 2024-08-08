@@ -30,7 +30,7 @@ process HMMER_HMMFETCH {
     def keyarg  = key ?: ''
     def kfopt   = keyfile ? '-f' : ''
     def index   = ! key && ! keyfile ? '--index' : ''
-    def outfile = ! key && ! keyfile ? '' : "> ${prefix}.hmm"
+    def outfile = ! key && ! keyfile ? '' : ( "${prefix}.hmm" != hmm ? "> ${prefix}.hmm" : "> ${prefix}.out.hmm" )
 
     """
     hmmfetch \\
