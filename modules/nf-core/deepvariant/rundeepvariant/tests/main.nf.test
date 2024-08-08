@@ -1,9 +1,10 @@
 nextflow_process {
 
-    name "Test Process DEEPVARIANT"
+    name "Test Process DEEPVARIANT_RUNDEEPVARIANT"
     script "../main.nf"
-    process "DEEPVARIANT"
+    process "DEEPVARIANT_RUNDEEPVARIANT"
 
+    tag "deepvariant/rundeepvariant"
     tag "deepvariant"
     tag "modules"
     tag "modules_nfcore"

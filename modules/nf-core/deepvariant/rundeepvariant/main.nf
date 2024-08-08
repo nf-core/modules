@@ -1,4 +1,4 @@
-process DEEPVARIANT {
+process DEEPVARIANT_RUNDEEPVARIANT {
     tag "$meta.id"
     label 'process_high'
 
