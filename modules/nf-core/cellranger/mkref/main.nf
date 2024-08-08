@@ -23,7 +23,7 @@ process CELLRANGER_MKREF {
     }
     def args = task.ext.args ?: ''
     // --localcores is passed to the martian runtime and specifies the number of allocated jobs
-    // --nthreads is passed to the STAR index generation. 
+    // --nthreads is passed to the STAR index generation.
     // see also https://github.com/nf-core/scrnaseq/issues/329
     """
     cellranger \\
