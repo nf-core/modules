@@ -18,11 +18,6 @@ process STARDIST {
     script:
     def args               = task.ext.args   ?: ''
     def prefix             = task.ext.prefix ?: "${meta.id}"
-    def VERSION            = "0.9.1"
-    def VERSION_PYTHON     = "3.9"
-    def VERSION_TENSORFLOW = "2.10.0"
-    def VERSION_TIFFFILE   = "<2022.4.22"
-
 
     """
     stardist-predict2d \\
@@ -32,29 +27,25 @@ process STARDIST {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        stardist: $VERSION
-        python: $VERSION_PYTHON
-        tensorflow: $VERSION_TENSORFLOW
-        tifffile: $VERSION_TIFFFILE
+        stardist: \$( python -m pip show --version stardist | grep "Version" | sed -e "s/Version: //g" )
+        python: \$( python --version | sed -e "s/Python //g" )
+        tensorflow: \$( python -m pip show --version tensorflow | grep "Version" | sed -e "s/Version: //g" )
+        tifffile: \$( python -m pip show --version tifffile | grep "Version" | sed -e "s/Version: //g" )
     END_VERSIONS
     """
 
     stub:
     def args               = task.ext.args   ?: ''
     def prefix             = task.ext.prefix ?: "${meta.id}"
-    def VERSION            = "0.9.1"
-    def VERSION_PYTHON     = "3.9"
-    def VERSION_TENSORFLOW = "2.10.0"
-    def VERSION_TIFFFILE   = "<2022.4.22"
     """
     touch ${prefix}.stardist.tif
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        stardist: $VERSION
-        python: $VERSION_PYTHON
-        tensorflow: $VERSION_TENSORFLOW
-        tifffile: $VERSION_TIFFFILE
+        stardist: \$( python -m pip show --version stardist | grep "Version" | sed -e "s/Version: //g" )
+        python: \$( python --version | sed -e "s/Python //g" )
+        tensorflow: \$( python -m pip show --version tensorflow | grep "Version" | sed -e "s/Version: //g" )
+        tifffile: \$( python -m pip show --version tifffile | grep "Version" | sed -e "s/Version: //g" )
     END_VERSIONS
     """
 }
