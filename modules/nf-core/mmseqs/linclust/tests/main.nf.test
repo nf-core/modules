@@ -8,6 +8,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "mmseqs"
     tag "mmseqs/linclust"
+    tag "untar"
 
     test("Should cluster an mmseqs database") {
 
@@ -40,12 +41,14 @@ nextflow_process {
                         File[] listOfFiles = folder.listFiles()
                         listOfFiles = listOfFiles.sort { it.name }
                         assert listOfFiles.length == 4
-                        assert snapshot("${get(0).get(1)}/${listOfFiles[0].name}").match("test_output_cluster.0")
-                        assert snapshot("${get(0).get(1)}/${listOfFiles[2].name}").match("test_output_cluster.dbtype")
-                        assert snapshot("${get(0).get(1)}/${listOfFiles[3].name}").match("test_output_cluster.index")
+                        assert snapshot(
+                            "${get(0).get(1)}/${listOfFiles[0].name}",
+                            "${get(0).get(1)}/${listOfFiles[2].name}",
+                            "${get(0).get(1)}/${listOfFiles[3].name}",
+                            process.out.versions
+                        ).match()
                     }
                 },
-                { assert process.out.versions }
             )
         }
     }
