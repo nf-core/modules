@@ -1,0 +1,59 @@
+nextflow_process {
+
+    name "Test Process THERMORAWFILEPARSER"
+    script "../main.nf"
+    process "THERMORAWFILEPARSER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "thermorawfileparser"
+
+    test("proteomics - parse - raw") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'proteomics/msspectra/PXD012083_e005640_II.raw', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            // The source file path is written at the top of the file, and the checksum at the bottom by the tool, the rest should be identical
+            def lines = file(process.out.spectra[0][1]).readLines()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(lines[21..50]).match() }
+            )
+        }
+
+    }
+
+    test("proteomics - parse - raw - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'proteomics/msspectra/PXD012083_e005640_II.raw', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

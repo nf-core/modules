@@ -1,0 +1,57 @@
+nextflow_process {
+
+    name "Test Process SEQTK_CUTN"
+    script "../main.nf"
+    process "SEQTK_CUTN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "seqtk"
+    tag "seqtk/cutn"
+
+    test("homo_21_cut") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                                [ id:'test', single_end:true ],
+                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert snapshot(
+                            file(process.out.bed[0][1]).name
+                                ).match("genome_cut")
+                }
+            )
+        }
+    }
+
+    test("homo_21_cut_stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                                [ id:'test', single_end:true ],
+                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

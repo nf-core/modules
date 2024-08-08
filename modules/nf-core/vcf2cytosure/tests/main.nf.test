@@ -1,0 +1,73 @@
+nextflow_process {
+
+    name "Test Process VCF2CYTOSURE"
+    script "../main.nf"
+    process "VCF2CYTOSURE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "vcf2cytosure"
+
+    test("homo sapiens - vcf - bed") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA24385_sv.vcf.gz', checkIfExists: true) ]
+                ]
+                input[1] = [
+                    [ id:'test' ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bedgraph/NA24385_coverage.bed', checkIfExists: true) ]
+                ]
+                input[2] = [ [:], [] ]
+                input[3] = [ [:], [] ]
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.cgh).match("cgh") },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+    test("homo sapiens - vcf - bed - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA24385_sv.vcf.gz', checkIfExists: true) ]
+                ]
+                input[1] = [
+                    [ id:'test' ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bedgraph/NA24385_coverage.bed', checkIfExists: true) ]
+                ]
+                input[2] = [ [:], [] ]
+                input[3] = [ [:], [] ]
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.cgh).match("cgh - stub") },
+                { assert snapshot(process.out.versions).match("versions - stub") }
+            )
+        }
+
+    }
+
+}

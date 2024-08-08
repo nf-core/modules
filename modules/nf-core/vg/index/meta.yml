@@ -13,7 +13,6 @@ tools:
       homepage: https://github.com/vgteam/vg
       documentation: https://github.com/vgteam/vg/wiki
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -24,7 +23,6 @@ input:
       type: file(s)
       description: One or more input graph files created with `vg/construct`
       pattern: "*.vg"
-
 output:
   - meta:
       type: map
@@ -43,6 +41,7 @@ output:
       type: file
       description: An index of the graph(s) created when `--index-sorted-vg` is supplied.
       pattern: "*.vgi"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

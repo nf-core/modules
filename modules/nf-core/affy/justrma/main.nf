@@ -2,7 +2,7 @@ process AFFY_JUSTRMA {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::bioconductor-affy=1.78.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bioconductor-affy:1.78.0--r43ha9d7317_1':
         'biocontainers/bioconductor-affy:1.78.0--r43ha9d7317_1' }"
@@ -21,5 +21,15 @@ process AFFY_JUSTRMA {
     task.ext.when == null || task.ext.when
 
     script:
+    prefix = task.ext.prefix ?: "${meta.id}"
     template 'affy_justrma.R'
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}_eset.rds
+    touch ${prefix}_matrix.tsv
+    touch R_sessionInfo.log
+    touch versions.yml
+    """
 }

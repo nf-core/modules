@@ -16,8 +16,7 @@ tools:
       documentation: "https://github.com/Merck/deepbgc"
       tool_dev_url: "https://github.com/Merck/deepbgc"
       doi: "10.1093/nar/gkz654"
-      licence: "['MIT']"
-
+      licence: ["MIT"]
 input:
   - meta:
       type: map
@@ -28,7 +27,9 @@ input:
       type: file
       description: FASTA/GenBank/Pfam CSV file
       pattern: "*.{fasta,fa,fna,gbk,csv}"
-
+  - db:
+      type: directory
+      description: Database path
 output:
   - meta:
       type: map
@@ -83,7 +84,9 @@ output:
       type: file
       description: BGC detection scores of each Pfam domain in genomic order
       pattern: "*.{score.png}"
-
 authors:
+  - "@louperelo"
+  - "@jfy133"
+maintainers:
   - "@louperelo"
   - "@jfy133"

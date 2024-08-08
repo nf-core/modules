@@ -1,0 +1,172 @@
+nextflow_process {
+
+    name "Test Process GT_LTRHARVEST"
+    script "../main.nf"
+    process "GT_LTRHARVEST"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gt"
+    tag "gt/ltrharvest"
+    tag "gt/suffixerator"
+
+    test("homo_sapiens-genome_21_fasta-success") {
+
+        setup {
+            run("GT_SUFFIXERATOR") {
+                script "../../../gt/suffixerator"
+
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                    ]
+                    input[1] = 'dna'
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = GT_SUFFIXERATOR.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens-genome_21_fasta-success-extended_outputs") {
+
+        config './nextflow.extended.config'
+
+        setup {
+            run("GT_SUFFIXERATOR") {
+                script "../../../gt/suffixerator"
+
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                    ]
+                    input[1] = 'dna'
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = GT_SUFFIXERATOR.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens-genome_21_fasta-success-extended_custom_outputs") {
+
+        config './nextflow.extended.custom.config'
+
+        setup {
+            run("GT_SUFFIXERATOR") {
+                script "../../../gt/suffixerator"
+
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                    ]
+                    input[1] = 'dna'
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = GT_SUFFIXERATOR.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("stub-extended_outputs") {
+
+        config './nextflow.extended.config'
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

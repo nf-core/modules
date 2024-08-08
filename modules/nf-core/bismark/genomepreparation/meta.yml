@@ -27,7 +27,7 @@ input:
       description: Input genome fasta file
 output:
   - index:
-      type: dir
+      type: directory
       description: Bismark genome index directory
       pattern: "BismarkIndex"
   - versions:
@@ -35,4 +35,6 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@phue"
+maintainers:
   - "@phue"

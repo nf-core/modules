@@ -2,7 +2,7 @@ process CUTESV {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::cutesv=2.0.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cutesv:1.0.12--pyhdfd78af_0' :
         'biocontainers/cutesv:2.0.2--pyhdfd78af_0' }"

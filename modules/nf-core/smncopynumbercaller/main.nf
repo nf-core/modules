@@ -2,7 +2,7 @@ process SMNCOPYNUMBERCALLER {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::smncopynumbercaller=1.1.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/smncopynumbercaller:1.1.2--py310h7cba7a3_0' :
         'biocontainers/smncopynumbercaller:1.1.2--py310h7cba7a3_0' }"

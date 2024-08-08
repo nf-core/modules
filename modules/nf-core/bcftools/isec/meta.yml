@@ -6,6 +6,7 @@ keywords:
   - union
   - complement
   - VCF
+  - BCF
 tools:
   - isec:
       description: |
@@ -21,14 +22,14 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - vcfs:
-      type: files
+      type: list
       description: |
-        List containing 2 or more vcf files
-        e.g. [ 'file1.vcf', 'file2.vcf' ]
+        List containing 2 or more vcf/bcf files. These must be compressed and have an associated index.
+        e.g. [ 'file1.vcf.gz', 'file2.vcf' ]
   - tbis:
-      type: files
+      type: list
       description: |
-        List containing the tbi index files corresponding to the vcfs input files
+        List containing the tbi index files corresponding to the vcf/bcf input files
         e.g. [ 'file1.vcf.tbi', 'file2.vcf.tbi' ]
 output:
   - meta:
@@ -45,5 +46,8 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@joseespinosa"
+  - "@drpatelh"
+maintainers:
   - "@joseespinosa"
   - "@drpatelh"

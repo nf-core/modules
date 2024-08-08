@@ -2,10 +2,10 @@ process SIMPLEAF_INDEX {
     tag "$genome_fasta $transcript_fasta"
     label 'process_high'
 
-    conda "bioconda::simpleaf=0.14.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/simpleaf:0.14.1--h4ac6f70_0':
-        'biocontainers/simpleaf:0.14.1--h4ac6f70_0' }"
+        'https://depot.galaxyproject.org/singularity/simpleaf:0.15.1--h4ac6f70_0':
+        'biocontainers/simpleaf:0.15.1--h4ac6f70_0' }"
 
     input:
     tuple val(meta), path(genome_fasta)
@@ -55,7 +55,11 @@ process SIMPLEAF_INDEX {
     prefix = task.ext.prefix ?: (meta.id ? "${meta.id}" : "${meta3.id}")
     """
     mkdir -p ${prefix}/index
-    touch "${prefix}/ref/t2g_3col.tsv"
+    mkdir -p ${prefix}/ref
+    touch ${prefix}/index/ctg_offsets.bin
+    touch ${prefix}/index/duplicate_clusters.tsv
+    touch ${prefix}/index/mphf.bin
+    touch ${prefix}/ref/t2g_3col.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -12,7 +12,6 @@ tools:
       documentation: https://csb5.github.io/lofreq/
       doi: "10.1093/nar/gks918"
       licence: ["MIT"]
-
 input:
   - meta:
       type: map
@@ -21,25 +20,34 @@ input:
         e.g. [ id:'test' ]
   - bam:
       type: file
-      description: Sorted BAM file
+      description: Tumor sample sorted BAM file
       pattern: "*.{bam}"
   - bai:
       type: file
       description: BAM index file
-      pattern: "*.{bai}"
+      pattern: "*.{bam.bai}"
   - intervals:
       type: file
       description: BED file containing target regions for variant calling
       pattern: "*.{bed}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information about the reference fasta
+        e.g. [ id:'reference' ]
   - fasta:
       type: file
       description: Reference genome FASTA file
       pattern: "*.{fasta}"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing sample information about the reference fasta fai
+        e.g. [ id:'reference' ]
   - fai:
       type: file
       description: Reference genome FASTA index file
       pattern: "*.{fai}"
-
 output:
   - meta:
       type: map
@@ -54,7 +62,11 @@ output:
       type: file
       description: Predicted variants file
       pattern: "*.{vcf}"
-
 authors:
   - "@kaurravneet4123"
   - "@bjohnnyd"
+maintainers:
+  - "@kaurravneet4123"
+  - "@bjohnnyd"
+  - "@nevinwu"
+  - "@AitorPeseta"

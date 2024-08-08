@@ -1,0 +1,40 @@
+nextflow_process {
+
+    name "Test Process DEEPCELL_MESMER"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "DEEPCELL_MESMER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "deepcell"
+    tag "deepcell/mesmer"
+
+    test("mesmer - tif") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test_img' ],
+                    file(params.test_data['imaging']['segmentation']['image'], checkIfExists: true)
+                ]
+                input[1] = [
+                    [:],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.mask).match("mask") },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+}

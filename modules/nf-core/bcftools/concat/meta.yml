@@ -5,7 +5,6 @@ keywords:
   - concat
   - bcftools
   - VCF
-
 tools:
   - concat:
       description: |
@@ -21,12 +20,12 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - vcfs:
-      type: files
+      type: list
       description: |
         List containing 2 or more vcf files
         e.g. [ 'file1.vcf', 'file2.vcf' ]
   - tbi:
-      type: files
+      type: list
       description: |
         List containing 2 or more index files (optional)
         e.g. [ 'file1.tbi', 'file2.tbi' ]
@@ -40,10 +39,21 @@ output:
       type: file
       description: VCF concatenated output file
       pattern: "*.{vcf.gz}"
+  - csi:
+      type: file
+      description: Default VCF file index
+      pattern: "*.csi"
+  - tbi:
+      type: file
+      description: Alternative VCF file index
+      pattern: "*.tbi"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@abhi18av"
+  - "@nvnieuwk"
+maintainers:
   - "@abhi18av"
   - "@nvnieuwk"

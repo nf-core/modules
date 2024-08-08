@@ -2,7 +2,7 @@ process QUALIMAP_BAMQCCRAM {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::qualimap=2.2.2d bioconda::samtools=1.16.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-d3934ca6bb4e61334891ffa2e9a4c87a530e3188:00d3c18496ddf07ea580fd00d1dd203cf31ab630-0' :
         'biocontainers/mulled-v2-d3934ca6bb4e61334891ffa2e9a4c87a530e3188:00d3c18496ddf07ea580fd00d1dd203cf31ab630-0' }"
@@ -50,6 +50,18 @@ process QUALIMAP_BAMQCCRAM {
         $collect_pairs \\
         -outdir $prefix \\
         -nt $task.cpus
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        qualimap: \$(echo \$(qualimap 2>&1) | sed 's/^.*QualiMap v.//; s/Built.*\$//')
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    prefix   = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

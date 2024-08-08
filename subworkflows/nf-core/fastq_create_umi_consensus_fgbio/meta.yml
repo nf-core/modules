@@ -51,7 +51,7 @@ input:
         https://github.com/fulcrumgenomics/fgbio/wiki/Read-Structures
   - groupreadsbyumi_strategy:
       type: string
-      description: |
+      description: ""
       Reguired argument: defines the UMI assignment strategy.
       enum:
         - Identity
@@ -78,4 +78,6 @@ output:
         belonging to the same UMI group
       pattern: "*.bam"
 authors:
+  - "@lescai"
+maintainers:
   - "@lescai"

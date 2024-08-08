@@ -1,0 +1,106 @@
+nextflow_process {
+
+    name "Test Process HAMRONIZATION_SUMMARIZE"
+    script "../main.nf"
+    process "HAMRONIZATION_SUMMARIZE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hamronization"
+    tag "hamronization/summarize"
+    tag "hamronization/deeparg"
+
+    setup {
+        run("HAMRONIZATION_DEEPARG", alias: "HAMRONIZATION_DEEPARG1") {
+            script "../../deeparg/main.nf"
+            process {
+                """
+                input[0] = [                                                                                                                                                                      
+                    [ id:'test1', single_end:false ], // meta map                                                                                                                               
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/hamronization/genome.mapping.potential.ARG', checkIfExists: true),                                                      
+                ]
+                input[1] = 'tsv'
+                input[2] = '1.0.2'
+                input[3] = '2'
+                """
+            }
+        }
+
+        run("HAMRONIZATION_DEEPARG", alias: "HAMRONIZATION_DEEPARG2") {
+            script "../../deeparg/main.nf"
+            process {
+                """
+                input[0] = [                                                                                                                                                                      
+                    [ id:'test2', single_end:false ], // meta map                                                                                                                               
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/hamronization/genome.mapping.potential.ARG', checkIfExists: true),                                                      
+                ]
+                input[1] = 'tsv'
+                input[2] = '1.0.2'
+                input[3] = '2'
+                """
+            }
+        }
+    }
+
+    test("hamronization/summarize - bacteroides_fragilis - hamronization - arg") {
+
+        when {
+            process {
+                """
+                ch_deeparg_run_one = HAMRONIZATION_DEEPARG1.out.tsv
+                ch_deeparg_run_two = HAMRONIZATION_DEEPARG2.out.tsv
+
+                ch_deeparg_run_one
+                    .mix( ch_deeparg_run_two )
+                    .map{
+                        [ it[1] ]
+                    }
+                    .collect()
+                    .set { ch_input_for_summarize }
+                
+                input[0] = ch_input_for_summarize
+                input[1] = 'json'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("hamronization/summarize - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                ch_deeparg_run_one = HAMRONIZATION_DEEPARG1.out.tsv
+                ch_deeparg_run_two = HAMRONIZATION_DEEPARG2.out.tsv
+
+                ch_deeparg_run_one
+                    .mix( ch_deeparg_run_two )
+                    .map{
+                        [ it[1] ]
+                    }
+                    .collect()
+                    .set { ch_input_for_summarize }
+                
+                input[0] = ch_input_for_summarize
+                input[1] = 'json'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

@@ -2,7 +2,7 @@ process PYDAMAGE_FILTER {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::pydamage=0.70"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pydamage:0.70--pyhdfd78af_0' :
         'biocontainers/pydamage:0.70--pyhdfd78af_0' }"

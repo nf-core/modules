@@ -1,0 +1,139 @@
+import java.text.SimpleDateFormat
+
+nextflow_process {
+
+    name "Test Process PRESIDENT"
+    script "../main.nf"
+    process "PRESIDENT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "president"
+
+    test("president - nocompress") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: "test" ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
+                ]
+                input[1] = [[id: "genome" ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                input[2] = []
+                """
+
+            }
+        }
+
+        then {
+            def firstReportEntry = path(process.out.report.get(0).get(1)).readLines()[1].tokenize("\t")
+            def firstReportAssert = ['sample1', 'all_sites.fas', 'genome.fasta', 'False', 'False', 'False', 'False', 'False', 'True', 'True', 'False', '27627', '2276', '0', '2276', '29903', '29829', '473', '0']
+            def date = new Date()
+            def sdf = new SimpleDateFormat("yyyy-MM-dd")
+            firstReportAssert.add(sdf.format(date))
+
+            assertAll(
+                {assert process.success},
+                {assert snapshot(process.out.versions,
+                                 process.out.valid_fasta,
+                                 process.out.invalid_fasta).match()},
+                {assert process.out.log != null},
+                {assert process.out.log.size() == 1},
+                {assert process.out.log.get(0).get(1) ==~ ".*president_logger.log"},
+                {assert process.out.report != null},
+                {assert process.out.report.size() == 1},
+                {assert process.out.report.get(0).get(1) ==~ ".*report.tsv"},
+                {assert firstReportEntry == firstReportAssert},
+            )
+        }
+    }
+
+    test("president - compress") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: "test" ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
+                ]
+                input[1] = [[id: "genome" ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                input[2] = "true"
+                """
+            }
+        }
+
+        then {
+
+            def firstReportEntry = path(process.out.report.get(0).get(1)).readLines()[2].tokenize("\t")
+            def firstReportAssert = ['sample2', 'MT192765.1 Severe acute respiratory syndrome coronavirus 2 isolate SARS-CoV-2/human/USA/PC00101P/2020, complete genome', 'all_sites.fas', 'genome.fasta', '0.9767', '0.9984', '0.999', 'True', 'False', 'True', 'True', 'True', 'True', 'True', 'True', '29234', '669', '0', '650', '29903', '29829', '265', '29206.0', '28.0', '1']
+            def date = new Date()
+            def sdf = new SimpleDateFormat("yyyy-MM-dd")
+            firstReportAssert.add(sdf.format(date))
+            assertAll(
+                {assert process.success},
+                {assert snapshot(process.out.versions,
+                                 process.out.valid_fasta,
+                                 process.out.invalid_fasta).match()},
+                {assert process.out.log != null},
+                {assert process.out.log.size() == 1},
+                {assert process.out.log.get(0).get(1) ==~ ".*president_logger.log"},
+
+                {assert process.out.report != null},
+                {assert process.out.report.size() == 1},
+                {assert process.out.report.get(0).get(1) ==~ ".*report.tsv"},
+                {assert firstReportEntry == firstReportAssert},
+            )
+        }
+    }
+
+    test("president - nocompress - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: "test" ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
+                ]
+                input[1] = [[id: "genome" ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                input[2] = false
+                """
+
+            }
+        }
+
+        then {
+            assertAll(
+                {assert process.success},
+                {assert snapshot(process.out).match()}
+            )
+        }
+    }
+
+    test("president - compress - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: "test" ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
+                ]
+                input[1] = [[id: "genome" ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                input[2] = true
+                """
+
+            }
+        }
+
+        then {
+            assertAll(
+                {assert process.success},
+                {assert snapshot(process.out).match()}
+            )
+        }
+    }
+
+}

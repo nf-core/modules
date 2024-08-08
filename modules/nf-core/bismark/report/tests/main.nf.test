@@ -1,0 +1,94 @@
+nextflow_process {
+
+    name "Test Process BISMARK_REPORT"
+    script "../main.nf"
+    process "BISMARK_REPORT"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bismark"
+    tag "bismark/report"
+    tag "bismark/align"
+    tag "bismark/deduplicate"
+    tag "bismark/methylationextractor"
+    tag "bismark/genomepreparation"
+
+    test("Should run bismark/report without failures") {
+
+        setup {
+            run("BISMARK_GENOMEPREPARATION") {
+                script "../../genomepreparation/main.nf"
+                process {
+                    """
+                    input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    """
+                }
+            }
+
+            run("BISMARK_ALIGN") {
+                script "../../align/main.nf"
+                process {
+                    """
+                    input[0] = [
+                                [ id:'test', single_end:false ],
+                                [
+                                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
+                                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true)
+                                ]
+                               ]
+                    input[1] = BISMARK_GENOMEPREPARATION.out.index
+                    """
+                }
+            }
+
+            run("BISMARK_DEDUPLICATE") {
+                script "../../deduplicate/main.nf"
+                process {
+                    """
+                    input[0] = BISMARK_ALIGN.out.bam
+                    """
+                }
+            }
+
+            run("BISMARK_METHYLATIONEXTRACTOR") {
+                script "../../methylationextractor/main.nf"
+                process {
+                    """
+                    input[0] = BISMARK_ALIGN.out.bam
+                    input[1] = BISMARK_GENOMEPREPARATION.out.index
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = BISMARK_ALIGN.out.report
+                            .join(BISMARK_DEDUPLICATE.out.report)
+                            .join(BISMARK_METHYLATIONEXTRACTOR.out.report)
+                            .join(BISMARK_METHYLATIONEXTRACTOR.out.mbias)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert snapshot(process.out.versions).match("versions") },
+            {
+                with(process.out.report) {
+                    with(get(0)) {
+                        assert get(1).endsWith('_PE_report.html')
+                        assert path(get(1)).readLines().last().contains('</html>')
+                    }
+                }
+            }
+            )
+        }
+
+    }
+
+}

@@ -14,8 +14,7 @@ tools:
       documentation: "https://github.com/alexherbig/MultiVCFAnalyzer"
       tool_dev_url: "https://github.com/alexherbig/MultiVCFAnalyzer"
       doi: "10.1038/nature13591"
-      licence: "['GPL >=3']"
-
+      licence: ["GPL >=3"]
 input:
   - vcfs:
       type: file
@@ -49,10 +48,10 @@ input:
         Minimum number of a reads that a position must be covered by to be
         reported
   - homozygous_freq:
-      type: number
+      type: integer
       description: Fraction of reads a base must have to be called 'homozygous'
   - heterozygous_freq:
-      type: mumber
+      type: integer
       description: |
         Fraction of which whereby if a call falls above this value, and lower
         than the homozygous threshold, a base will be called 'heterozygous'.
@@ -62,7 +61,6 @@ input:
         file listing positions that will be 'filtered' (i.e. ignored)
         (Optional)
       pattern: "*.vcf"
-
 output:
   - versions:
       type: file
@@ -72,7 +70,6 @@ output:
       type: file
       description: Sorted BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
-
   - full_alignment:
       type: file
       description: Fasta a fasta file of all positions contained in the VCF files i.e. including ref calls
@@ -117,6 +114,7 @@ output:
       type: file
       description: Summary statistics in MultiQC JSON format
       pattern: ".json"
-
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

@@ -2,7 +2,7 @@ process PEDDY {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::peddy=0.4.8"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/peddy:0.4.8--pyh5e36f6f_0' :
         'biocontainers/peddy:0.4.8--pyh5e36f6f_0' }"
@@ -35,7 +35,7 @@ process PEDDY {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        peddy: \$( peddy --version 2>&1 | sed 's/peddy, version //' )
+        peddy: \$( peddy --version 2>&1 | tail -1 | sed 's/peddy, version //' )
     END_VERSIONS
     """
 
@@ -49,6 +49,9 @@ process PEDDY {
     touch ${prefix}.peddy.ped
     touch ${prefix}.html
 
-    touch versions.yml
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        peddy: \$( peddy --version 2>&1 | tail -1 | sed 's/peddy, version //' )
+    END_VERSIONS
     """
 }

@@ -1,7 +1,7 @@
 process SNPSITES {
     label 'process_medium'
 
-    conda "bioconda::snp-sites=2.5.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snp-sites:2.5.1--hed695b0_0' :
         'biocontainers/snp-sites:2.5.1--hed695b0_0' }"
@@ -35,4 +35,16 @@ process SNPSITES {
         snpsites: \$(snp-sites -V 2>&1 | sed 's/snp-sites //')
     END_VERSIONS
     """
+    stub:
+    """
+    touch filtered_alignment.fas
+    touch constant.sites.txt
+    CONSTANT_SITES=\$(cat constant.sites.txt)
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        snpsites: \$(snp-sites -V 2>&1 | sed 's/snp-sites //')
+    END_VERSIONS
+    """
+
 }

@@ -11,8 +11,7 @@ tools:
       documentation: "https://github.com/bonsai-team/Porechop_ABI"
       tool_dev_url: "https://github.com/bonsai-team/Porechop_ABI"
       doi: "10.1101/2022.07.07.499093"
-      licence: "['GPL v3']"
-
+      licence: ["MIT"]
 input:
   - meta:
       type: map
@@ -23,7 +22,6 @@ input:
       type: file
       description: fastq/fastq.gz file
       pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
-
 output:
   - meta:
       type: map
@@ -37,11 +35,14 @@ output:
   - reads:
       type: file
       description: Adapter-trimmed fastq.gz file
-      pattern: "*fastq.gz"
+      pattern: "*.fastq.gz"
   - log:
       type: file
       description: Log file containing stdout information
       pattern: "*.log"
-
 authors:
   - "@sofstam"
+  - "LilyAnderssonLee"
+maintainers:
+  - "@sofstam"
+  - "LilyAnderssonLee"

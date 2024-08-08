@@ -1,0 +1,36 @@
+nextflow_process {
+
+    name "Test Process SVDB_QUERY"
+    script "modules/nf-core/svdb/query/main.nf"
+    process "SVDB_QUERY"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "svdb"
+    tag "svdb/query"
+
+    test("svdb query") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([ [ id:'test' ], // meta map
+                        [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/sv_query.vcf.gz', checkIfExists: true) ]
+                        ])
+                input[1] = ['AC']
+                input[2] = ['AF']
+                input[3] = ['gnomad_svAC']
+                input[4] = ['gnomad_svAF']
+                input[5] = Channel.of([file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/gnomAD.r2.1.1-sv.vcf.gz', checkIfExists: true)])
+                input[6] = []
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(file(process.out.vcf[0][1]).name, file(process.out.versions[0]).name).match()}
+            )
+        }
+    }
+}

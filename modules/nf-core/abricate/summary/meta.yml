@@ -10,20 +10,17 @@ tools:
       homepage: https://github.com/tseemann/abricate
       documentation: https://github.com/tseemann/abricate
       tool_dev_url: https://github.com/tseemann/abricate
-
       licence: ["GPL v2"]
-
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - assembly:
+  - reports:
       type: file
       description: FASTA, GenBank or EMBL formatted file
       pattern: "*.{fa,fasta,fna,fa.gz,fasta.gz,fna.gz,gbk,gbk.gz,embl,embl.gz}"
-
 output:
   - meta:
       type: map
@@ -34,10 +31,11 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - summary:
+  - report:
       type: file
       description: Tab-delimited report of aggregated results
       pattern: "*.{txt}"
-
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

@@ -1,0 +1,105 @@
+nextflow_process {
+
+    name "Test Process WINDOWMASKER_CONVERT"
+    script "../main.nf"
+    process "WINDOWMASKER_CONVERT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "windowmasker"
+    tag "windowmasker/convert"
+    tag "windowmasker/mkcounts"
+
+    setup {
+        run("WINDOWMASKER_MKCOUNTS") {
+            script "../../mkcounts/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id: "test" ],
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                ]
+                """
+            }
+        }
+    }
+
+    test("sarscov2_fasta_binary") {
+        config "./convert_binary.config"
+        when {
+            process {
+                """
+                input[0] = WINDOWMASKER_MKCOUNTS.out.counts
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2_fasta_obinary") {
+        config "./convert_obinary.config"
+        when {
+            process {
+                """
+                input[0] = WINDOWMASKER_MKCOUNTS.out.counts
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2_fasta_oascii") {
+        config "./convert_oascii.config"
+        when {
+            process {
+                """
+                input[0] = WINDOWMASKER_MKCOUNTS.out.counts
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2_fasta_stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: "test" ],
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                ]
+                """
+            }
+        }
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

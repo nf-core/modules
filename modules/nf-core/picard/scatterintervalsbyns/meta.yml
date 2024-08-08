@@ -14,8 +14,7 @@ tools:
       homepage: https://broadinstitute.github.io/picard/
       documentation: https://broadinstitute.github.io/picard/
       tool_dev_url: "https://github.com/broadinstitute/picard"
-      licence: "['MIT']"
-
+      licence: ["MIT"]
 input:
   - meta:
       type: map
@@ -44,7 +43,6 @@ input:
       type: file
       description: Sequence dictionary of the fasta file
       pattern: "*.dict"
-
 output:
   - meta:
       type: map
@@ -59,6 +57,7 @@ output:
       type: file
       description: The scattered intervals
       pattern: "*.interval_list"
-
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

@@ -2,7 +2,7 @@ process UNZIPFILES {
     tag "$archive"
     label 'process_single'
 
-    conda "conda-forge::p7zip=16.02"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/p7zip:16.02' :
         'biocontainers/p7zip:16.02' }"
@@ -28,6 +28,18 @@ process UNZIPFILES {
         -o"${prefix}"/ \\
         $args \\
         $archive
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        7za: \$(echo \$(7za --help) | sed 's/.*p7zip Version //; s/(.*//')
+    END_VERSIONS
+    """
+
+    stub:
+    prefix = task.ext.prefix ?: ( meta.id ? "${meta.id}" : archive.baseName)
+    """
+    mkdir "${prefix}"
+    touch "${prefix}/hello.txt"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

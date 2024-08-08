@@ -1,0 +1,33 @@
+nextflow_process {
+
+    name "Test Process FASTANI"
+    tag "modules_nfcore"
+    tag "modules"
+    tag "fastani"
+    script "../main.nf"
+    process "FASTANI"
+
+    test("FastANI") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

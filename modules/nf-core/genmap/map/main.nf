@@ -2,7 +2,7 @@ process GENMAP_MAP {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::genmap=1.3.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/genmap:1.3.0--h1b792b2_1' :
         'biocontainers/genmap:1.3.0--h1b792b2_1' }"
@@ -38,7 +38,7 @@ process GENMAP_MAP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        genmap: \$(genmap --version 2>&1 | sed 's/GenMap version: //; s/SeqAn.*\$//')
+        genmap: \$(genmap --version | sed 's/GenMap version: //; s/SeqAn.*\$//')
     END_VERSIONS
     """
 
@@ -60,7 +60,7 @@ process GENMAP_MAP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        genmap: \$(genmap --version 2>&1 | sed 's/GenMap version: //; s/SeqAn.*\$//')
+        genmap: \$(genmap --version | sed 's/GenMap version: //; s/SeqAn.*\$//')
     END_VERSIONS
     """
 }
