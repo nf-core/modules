@@ -7,11 +7,11 @@ process DEEPVARIANT_CALLVARIANTS {
     container "nf-core/deepvariant:1.6.1"
 
     input:
-    tuple val(make_examples_id), val(meta), path(make_examples_tfrecords)
+    tuple val(meta), path(make_examples_tfrecords)
     val model_type
 
     output:
-    tuple val(make_examples_id), val(meta), val("${prefix}.call.tfrecord.gz"), path("${prefix}.call-00000-of-00001.tfrecord.gz"), emit: call_variants_tfrecords
+    tuple val(meta), val("${prefix}.call.tfrecord.gz"), path("${prefix}.call-00000-of-00001.tfrecord.gz"), emit: call_variants_tfrecords
     path "versions.yml",                                                            emit: versions
 
     when:

@@ -6,7 +6,7 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
     container "nf-core/deepvariant:1.6.1"
 
     input:
-    tuple val(meta), val(variant_calls_tfrecord_name), path(variant_calls_tfrecord_files), path(gvcf_tfrecords)
+    tuple val(meta), val(variant_calls_tfrecord_name), path(variant_calls_tfrecord_file), path(gvcf_tfrecords)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(gzi)

@@ -22,12 +22,11 @@ workflow DEEPVARIANT {
     ch_versions = ch_versions.mix(DEEPVARIANT_CALLVARIANTS.out.versions.first())
     
     // Input to postprocessing step needs both the gvcfs from MAKEEXAMPLES and the variant
-    // calls from CALLVARIANTS. Joining on the tuple element make_examples_id.
+    // calls from CALLVARIANTS. Joining on meta, which is assumed to be unique.
     ch_postproc_input = DEEPVARIANT_CALLVARIANTS.out.call_variants_tfrecords.join(
         DEEPVARIANT_MAKEEXAMPLES.out.gvcf,
-        by: [0, 1], // Join on [0] is sufficient, but we want to collapse meta as well.
         failOnMismatch: true
-    ).map { it.drop(1) } // Drop the unique ID, which shouldn't be input into POSTPROCESSVARIANTS
+    )
     DEEPVARIANT_POSTPROCESSVARIANTS(
         ch_postproc_input,
         ch_fasta,

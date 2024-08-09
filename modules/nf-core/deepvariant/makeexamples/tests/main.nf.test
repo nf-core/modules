@@ -39,14 +39,14 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 // Test string values and versions. The make_examples_id and tfrecords are not stable.
-                { assert process.out.examples.get(0).get(1) == [ id:'test', single_end:false ] },
-                { assert process.out.gvcf.get(0).get(1) == [ id:'test', single_end:false ] },
+                { assert process.out.examples.get(0).get(0) == [ id:'test', single_end:false ] },
+                { assert process.out.gvcf.get(0).get(0) == [ id:'test', single_end:false ] },
                 // For the examples and gvcf records, there are two tfrecords and two tfrecord...example_info.json
                 // files.
-                { assert process.out.examples.get(0).get(2).size() == 4 },
-                { assert process.out.examples.get(0).get(2).every { path(it).exists() } },
-                { assert process.out.gvcf.get(0).get(2).size() == 2 },
-                { assert process.out.gvcf.get(0).get(2).every { path(it).exists() } },
+                { assert process.out.examples.get(0).get(1).size() == 4 },
+                { assert process.out.examples.get(0).get(1).every { path(it).exists() } },
+                { assert process.out.gvcf.get(0).get(1).size() == 2 },
+                { assert process.out.gvcf.get(0).get(1).every { path(it).exists() } },
                 { assert snapshot(process.out.versions).match("test1-versions") },
             )
         }
@@ -81,12 +81,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.examples.get(0).get(1) == [ id:'test', single_end:false ] },
-                { assert process.out.gvcf.get(0).get(1) == [ id:'test', single_end:false ] },
-                { assert process.out.examples.get(0).get(2).size() == 4 },
-                { assert process.out.examples.get(0).get(2).every { path(it).exists() } },
-                { assert process.out.gvcf.get(0).get(2).size() == 2 },
-                { assert process.out.gvcf.get(0).get(2).every { path(it).exists() } },
+                { assert process.out.examples.get(0).get(0) == [ id:'test', single_end:false ] },
+                { assert process.out.gvcf.get(0).get(0) == [ id:'test', single_end:false ] },
+                { assert process.out.examples.get(0).get(1).size() == 4 },
+                { assert process.out.examples.get(0).get(1).every { path(it).exists() } },
+                { assert process.out.gvcf.get(0).get(1).size() == 2 },
+                { assert process.out.gvcf.get(0).get(1).every { path(it).exists() } },
                 { assert snapshot(process.out.versions).match("test2-versions") },
             )
         }
@@ -122,12 +122,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.examples.get(0).get(1) == [ id:'test', single_end:false ] },
-                { assert process.out.gvcf.get(0).get(1) == [ id:'test', single_end:false ] },
-                { assert process.out.examples.get(0).get(2).size() == 4 },
-                { assert process.out.examples.get(0).get(2).every { path(it).exists() } },
-                { assert process.out.gvcf.get(0).get(2).size() == 2 },
-                { assert process.out.gvcf.get(0).get(2).every { path(it).exists() } },
+                { assert process.out.examples.get(0).get(0) == [ id:'test', single_end:false ] },
+                { assert process.out.gvcf.get(0).get(0) == [ id:'test', single_end:false ] },
+                { assert process.out.examples.get(0).get(1).size() == 4 },
+                { assert process.out.examples.get(0).get(1).every { path(it).exists() } },
+                { assert process.out.gvcf.get(0).get(1).size() == 2 },
+                { assert process.out.gvcf.get(0).get(1).every { path(it).exists() } },
                 { assert snapshot(process.out.versions).match("test3-versions") },
             )
         }
@@ -165,10 +165,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.examples.get(0).get(2).size() == 4 },
-                { assert process.out.examples.get(0).get(2).every { path(it).exists() } },
-                { assert process.out.gvcf.get(0).get(2).size() == 2 },
-                { assert process.out.gvcf.get(0).get(2).every { path(it).exists() } },
+                { assert process.out.examples.get(0).get(1).size() == 4 },
+                { assert process.out.examples.get(0).get(1).every { path(it).exists() } },
+                { assert process.out.gvcf.get(0).get(1).size() == 2 },
+                { assert process.out.gvcf.get(0).get(1).every { path(it).exists() } },
             )
         }
     }
