@@ -1,13 +1,13 @@
 nextflow_process {
 
-    name "Test Process KRAKENTOOLS_COMBINEKREPORTS"
+    name "Test Process KRONA_KTIMPORTTAXONOMY"
     script "../main.nf"
-    process "KRAKENTOOLS_COMBINEKREPORTS"
+    process "KRONA_KTIMPORTTAXONOMY"
 
     tag "modules"
     tag "modules_nfcore"
-    tag "krakentools"
-    tag "krakentools/combinekreports"
+    tag "krona"
+    tag "krona/ktimporttaxonomy"
 
     test ("sarscov2 - metagenome - kraken report") {
 
@@ -18,6 +18,9 @@ nextflow_process {
                    [id: 'test'],
                    file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/test_1.kraken2.report.txt', checkIfExists: true)
                 ])
+                input[1] = Channel.of([
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/krona_taxonomy.tab', checkIfExists: true)
+                ])
                 """
             }
         }
@@ -25,10 +28,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot ( process.out ).match() }
+                { assert snapshot ( process.out.versions ).match() },
+                { assert file(process.out.html.get(0).get(1)).exists() }
             )
         }
-
     }
 
     test ("sarscov2 - metagenome - kraken report - stub") {
@@ -41,6 +44,9 @@ nextflow_process {
                    [id: 'test'],
                    file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/test_1.kraken2.report.txt', checkIfExists: true)
                 ])
+                input[1] = Channel.of([
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/krona_taxonomy.tab', checkIfExists: true)
+                ])
                 """
             }
         }
@@ -48,7 +54,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot ( process.out ).match() }
+                { assert snapshot(process.out).match() },
             )
         }
     }
