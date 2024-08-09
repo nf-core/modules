@@ -81,8 +81,8 @@ nextflow_process {
                 { assert snapshot(
                     process.out.versions,
                     process.out.log,
-                    bam(process.out.cram.get(0).get(1), 'https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/genome/genome.fasta', stringency: 'silent').getHeader()[2..5],
-                    bam(process.out.cram.get(0).get(1), 'https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/genome/genome.fasta', stringency: 'silent').getReadsMD5(),
+                    bam(process.out.bam.get(0).get(1), 'https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/genome/genome.fasta', stringency: 'silent').getHeader()[2..5],
+                    bam(process.out.bam.get(0).get(1), 'https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/genome/genome.fasta', stringency: 'silent').getReadsMD5(),
                 ).match() }
             )
         }

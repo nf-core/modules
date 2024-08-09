@@ -14,10 +14,9 @@ process LONGPHASE_HAPLOTAG {
 
 
     output:
-    tuple val(meta), path("*.bam") , emit: bam , optional: true
-    tuple val(meta), path("*.cram"), emit: cram, optional: true
-    tuple val(meta), path("*.log") , emit: log , optional: true
-    path "versions.yml"            , emit: versions
+    tuple val(meta), path("*.{bam,cram}"), emit: bam
+    tuple val(meta), path("*.log")       , emit: log , optional: true
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -53,9 +52,10 @@ process LONGPHASE_HAPLOTAG {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def suffix = args.contains('--cram') ? "cram" : "bam"
     def log = args.contains('--log') ? "touch ${prefix}.log" : ''
     """
-    touch ${prefix}.bam
+    touch ${prefix}.${suffix}
     ${log}
 
     cat <<-END_VERSIONS > versions.yml
