@@ -1,0 +1,176 @@
+nextflow_process {
+
+    name "Test Process DEEPVARIANT_MAKEEXAMPLES"
+    script "../main.nf"
+    process "DEEPVARIANT_MAKEEXAMPLES"
+
+    tag "deepvariant/makeexamples"
+    tag "deepvariant"
+    tag "modules"
+    tag "modules_nfcore"
+
+    test("homo_sapiens - [bam, bai] - fasta - fai") {
+        when {
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                      []
+                ]
+                input[1] = [
+                    [ id:'genome'],
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'genome'],
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[3] = [
+                    [],[]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                // Test string values and versions. The make_examples_id and tfrecords are not stable.
+                { assert process.out.examples.get(0).get(1) == [ id:'test', single_end:false ] },
+                { assert process.out.gvcf.get(0).get(1) == [ id:'test', single_end:false ] },
+                // For the examples and gvcf records, there are two tfrecords and two tfrecord...example_info.json
+                // files.
+                { assert process.out.examples.get(0).get(2).size() == 4 },
+                { assert process.out.examples.get(0).get(2).every { path(it).exists() } },
+                { assert process.out.gvcf.get(0).get(2).size() == 2 },
+                { assert process.out.gvcf.get(0).get(2).every { path(it).exists() } },
+                { assert snapshot(process.out.versions).match("test1-versions") },
+            )
+        }
+    }
+
+    test("homo_sapiens - [cram, crai, genome_bed] - fasta - fai") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true),
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'genome'],
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'genome'],
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[3] = [
+                    [],[]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.examples.get(0).get(1) == [ id:'test', single_end:false ] },
+                { assert process.out.gvcf.get(0).get(1) == [ id:'test', single_end:false ] },
+                { assert process.out.examples.get(0).get(2).size() == 4 },
+                { assert process.out.examples.get(0).get(2).every { path(it).exists() } },
+                { assert process.out.gvcf.get(0).get(2).size() == 2 },
+                { assert process.out.gvcf.get(0).get(2).every { path(it).exists() } },
+                { assert snapshot(process.out.versions).match("test2-versions") },
+            )
+        }
+    }
+
+    test("homo_sapiens - [bam, bai] - fasta_gz - fasta_gz_fai") {
+        when {
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                      []
+                ]
+                input[1] = [
+                    [ id:'genome'],
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta.gz', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'genome'],
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta.gz.fai', checkIfExists: true)
+                ]
+                input[3] = [
+                    [ id:'genome'],
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta.gz.gzi', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.examples.get(0).get(1) == [ id:'test', single_end:false ] },
+                { assert process.out.gvcf.get(0).get(1) == [ id:'test', single_end:false ] },
+                { assert process.out.examples.get(0).get(2).size() == 4 },
+                { assert process.out.examples.get(0).get(2).every { path(it).exists() } },
+                { assert process.out.gvcf.get(0).get(2).size() == 2 },
+                { assert process.out.gvcf.get(0).get(2).every { path(it).exists() } },
+                { assert snapshot(process.out.versions).match("test3-versions") },
+            )
+        }
+    }
+
+    test("stub") {
+        
+        options "-stub"
+
+        when {
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                      []
+                ]
+                input[1] = [
+                    [ id:'genome'],
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'genome'],
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[3] = [
+                    [],[]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.examples.get(0).get(2).size() == 4 },
+                { assert process.out.examples.get(0).get(2).every { path(it).exists() } },
+                { assert process.out.gvcf.get(0).get(2).size() == 2 },
+                { assert process.out.gvcf.get(0).get(2).every { path(it).exists() } },
+            )
+        }
+    }
+
+}
