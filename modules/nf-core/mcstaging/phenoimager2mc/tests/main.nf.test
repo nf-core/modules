@@ -10,7 +10,7 @@ nextflow_process {
     tag "mcstaging"
     tag "mcstaging/phenoimager2mc"
 
-    test("Should run without failures") {
+    test("phenoimager2mc - tif") {
         when {
             process {
                 """
