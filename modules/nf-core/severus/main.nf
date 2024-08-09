@@ -8,7 +8,7 @@ process SEVERUS {
         'biocontainers/severus:1.1--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(target_bam), path(target_index), path(control_bam), path(control_index), path(vcf)
+    tuple val(meta), path(target_input), path(target_index), path(control_input), path(control_index), path(vcf)
     tuple val(meta2), path(bed)
 
     output:
@@ -36,14 +36,14 @@ process SEVERUS {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
-    def control = control_bam ? "--control-bam ${control_bam}" : ""
+    def control = control_input ? "--control-bam ${control_input}" : ""
     def vntr_bed = bed ? "--vntr-bed ${bed}" : ""
     def phasing_vcf = vcf ? "--phasing-vcf ${vcf}" : ""
     """
     severus \\
         $args \\
         --threads $task.cpus \\
-        --target-bam $target_bam \\
+        --target-bam $target_input \\
         $vntr_bed \\
         $control \\
         $phasing_vcf \\

@@ -23,7 +23,7 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  - target_bam:
+  - target_input:
       type: file
       description: path to one or multiple target BAM/CRAM files (e.g. tumor, must be indexed)
       pattern: "*.{bam,cram}"
@@ -31,7 +31,7 @@ input:
       type: file
       description: path to one or multiple target BAM/CRAM index files
       pattern: "*.{bai,crai,csi}"
-  - control_bam:
+  - control_input:
       type: file
       description: path to the control BAM/CRAM file (e.g. normal, must be indexed)
       pattern: "*.{bam,cram}"
@@ -88,7 +88,7 @@ output:
       pattern: "${prefix}/severus_collaped_dup"
   - loh:
       type: file
-      description: a bed file with identified collapsed duplication regions
+      description: a bed file with predicted LOH regions
       pattern: "${prefix}/severus_LOH.bed"
   - all_vcf:
       type: file
