@@ -2,7 +2,7 @@ process CHECKQC {
     tag "$meta.id"
     label 'process_single'
 
-    container "community.wave.seqera.io/library/python_pip_interop_checkqc:d76c912c8fadc561"
+    container "community.wave.seqera.io/library/python_numpy_pip_checkqc_interop:b5301d9801b8e66b"
 
     input:
     tuple val(meta), path(run_dir)
@@ -29,7 +29,13 @@ process CHECKQC {
         $args \
         $config \
         --json \
-        $run_dir > checkqc_report.json
+        $run_dir > checkqc_report.json || true
+
+    # Check if the output JSON file is empty
+    if [[ ! -s checkqc_report.json ]] ; then
+        echo "Error: Empty JSON files. Most likely due to missing files in run directory. See .command.log file for errors."
+        exit 1
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

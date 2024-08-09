@@ -1,0 +1,74 @@
+nextflow_process {
+
+    name "Test Process LOFREQ_FILTER"
+    script "../main.nf"
+    process "LOFREQ_FILTER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "lofreq"
+    tag "lofreq/filter"
+
+    test("sarscov2 - vcf") {
+        when {
+            process {
+                """
+                input[0] =  [
+                            [ id:'testvcf' ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - vcf.gz") {
+        when {
+            process {
+                """
+                input[0] =  [
+                            [ id:'testvcf' ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - vcf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] =  [ [ id:'testvcf' ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

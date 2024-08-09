@@ -14,13 +14,13 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of([ [ id:'test' ], // meta map
-                        [ file(params.test_data['homo_sapiens']['illumina']['test_sv_vcf'], checkIfExists: true) ]
+                        [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/sv_query.vcf.gz', checkIfExists: true) ]
                         ])
                 input[1] = ['AC']
                 input[2] = ['AF']
                 input[3] = ['gnomad_svAC']
                 input[4] = ['gnomad_svAF']
-                input[5] = Channel.of([file(params.test_data['homo_sapiens']['genome']['gnomad_r2_1_1_sv_vcf_gz'], checkIfExists: true)])
+                input[5] = Channel.of([file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/gnomAD.r2.1.1-sv.vcf.gz', checkIfExists: true)])
                 input[6] = []
                 """
             }
