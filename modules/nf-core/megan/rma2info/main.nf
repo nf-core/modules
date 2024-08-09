@@ -42,7 +42,7 @@ process MEGAN_RMA2INFO {
     def summary = megan_summary ? "-es ${prefix}.megan" : ""
     """
     echo "" | gzip > ${prefix}.txt.gz
-
+    touch ${prefix}.megan
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         megan: \$(echo \$(rma2info 2>&1) | grep version | sed 's/.*version //g;s/, built.*//g')
