@@ -5,8 +5,8 @@ process KRONA_KTIMPORTTAXONOMY {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/krona:2.8--pl5262hdfd78af_2' :
-        'biocontainers/krona:2.8--pl5262hdfd78af_2' }"
+        'https://depot.galaxyproject.org/singularity/krona:2.8.1--pl5321hdfd78af_1':
+        'biocontainers/krona:2.8.1--pl5321hdfd78af_1' }"
 
     input:
     tuple val(meta), path(report)
@@ -22,7 +22,7 @@ process KRONA_KTIMPORTTAXONOMY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '2.8' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '2.8.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     TAXONOMY=\$(find -L . -name '*.tab' -exec dirname {} \\;)
     echo \$TAXONOMY
@@ -32,6 +32,19 @@ process KRONA_KTIMPORTTAXONOMY {
         -o ${prefix}.html \\
         -tax \$TAXONOMY/ \\
         $report
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        krona: $VERSION
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '2.8.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    touch ${prefix}.html
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
