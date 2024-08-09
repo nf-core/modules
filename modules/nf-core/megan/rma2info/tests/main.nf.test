@@ -11,6 +11,8 @@ nextflow_process {
 
     test("malt - rma") {
 
+        config "./nextflow.config"
+
         when {
             process {
                 """
@@ -36,6 +38,7 @@ nextflow_process {
     test("malt - rma - stub") {
 
         options "-stub"
+        config "./nextflow.config"
 
         when {
             process {
