@@ -14,7 +14,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    [ file(params.test_data['sarscov2']['nanopore']['test_sequencing_summary'], checkIfExists: true) ]
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/sequencing_summary/test.sequencing_summary.txt', checkIfExists: true) ]
                 ]
                 """
             }
@@ -24,15 +24,14 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                            process.out.txt,
-                            process.out.versions
-                         ).match()
+                    process.out.html[0][1].collect { p -> file(p).name },
+                    file(process.out.txt[0][1]).name,
+                    // file(process.out.png[0][1]).name, optional
+                    // file(process.out.log[0][1]).name, name contains date
+                    process.out.versions
+                    ).match()
                 },
-                {
-                    with(process.out.html.get(0)) {
-                        assert get(1).collect { p -> file(p).getName() }.contains("NanoPlot-report.html")
-                    }
-                }
+                { assert file(process.out.log[0][1]).text.contains('Finished!') }
             )
         }
 
@@ -45,7 +44,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    [ file(params.test_data['sarscov2']['nanopore']['test_fastq_gz'], checkIfExists: true) ]
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true) ]
                 ]
                 """
             }
@@ -55,15 +54,14 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                            process.out.txt,
-                            process.out.versions
-                         ).match()
+                    process.out.html[0][1].collect { p -> file(p).name },
+                    file(process.out.txt[0][1]).name,
+                    // file(process.out.png[0][1]).name, optional
+                    // file(process.out.log[0][1]).name, name contains date
+                    process.out.versions
+                    ).match()
                 },
-                {
-                    with(process.out.html.get(0)) {
-                        assert get(1).collect { p -> file(p).getName() }.contains("NanoPlot-report.html")
-                    }
-                }
+                { assert file(process.out.log[0][1]).text.contains('Finished!') }
             )
         }
 
@@ -77,7 +75,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    [ file(params.test_data['sarscov2']['nanopore']['test_sequencing_summary'], checkIfExists: true) ]
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/sequencing_summary/test.sequencing_summary.txt', checkIfExists: true) ]
                 ]
                 """
             }
