@@ -94,7 +94,7 @@ nextflow_process {
         }
     }
 
-    test("homo_sapiens - fastq") {
+    test("homo_sapiens - [ bam, bai, fusions ], [], [], []") {
 
         when {
             process {
@@ -102,7 +102,7 @@ nextflow_process {
                 input[0] = STAR_ALIGN.out.bam_sorted.join(SAMTOOLS_INDEX.out.bai).join(ARRIBA_ARRIBA.out.fusions)
                 input[1]  = [
                     [ id:'test_gtf' ], // meta map
-                    [ file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true) ]]
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]]
                 input[2] = []
                 input[3] = []
                 """

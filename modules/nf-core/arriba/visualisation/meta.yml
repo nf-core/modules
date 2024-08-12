@@ -15,6 +15,8 @@ tools:
       doi: "10.1101/gr.257246.119"
       licence: ["MIT"]
 
+meta2, meta3, protein_domains, meta4, cytobands
+
 input:
   - meta:
       type: map
@@ -27,8 +29,12 @@ input:
       pattern: "*.{bam,cram,sam}"
   - bai:
       type: file
-      description: BAM index file
-      pattern: "*.{bai}"
+      description: BAM/CRAM/SAM index file
+      pattern: "*.{bai,crai,csi}"
+  - cytobands:
+      type: file
+      description: cytobands file
+      pattern: "*.{txt}"
   - fusions:
       type: file
       description: Arriba fusions file
