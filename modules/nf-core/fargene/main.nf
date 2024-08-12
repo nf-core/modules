@@ -17,6 +17,7 @@ process FARGENE {
     tuple val(meta), path("*.log")                                                                               , emit: log
     tuple val(meta), path("${prefix}/results_summary.txt")                                                       , emit: txt
     tuple val(meta), path("${prefix}/hmmsearchresults/*.out")                                    , optional: true, emit: hmm
+    tuple val(meta), path("${prefix}/hmmsearchresults/retrieved-*.out")                          , optional: true, emit: hmm_genes
     tuple val(meta), path("${prefix}/predictedGenes/predicted-orfs.fasta")                       , optional: true, emit: orfs
     tuple val(meta), path("${prefix}/predictedGenes/predicted-orfs-amino.fasta")                 , optional: true, emit: orfs_amino
     tuple val(meta), path("${prefix}/predictedGenes/retrieved-contigs.fasta")                    , optional: true, emit: contigs
