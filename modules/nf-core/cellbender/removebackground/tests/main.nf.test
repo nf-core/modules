@@ -23,8 +23,12 @@ nextflow_process {
         then {
             assertAll(
                 {assert process.success},
-                {assert snapshot(process.out.h5ad).match("res_cellbender_removebackground_h5ad")},
-                {assert snapshot(process.out.versions).match("res_cellbender_removebackground_versions")}
+                {assert snapshot(process.out.h5ad).match("cellbender_removebackground_h5ad")},
+                {assert snapshot(process.out.filtered_h5).match("cellbender_removebackground_filtered_h5")},
+                {assert snapshot(process.out.posterior_h5).match("cellbender_removebackground_posterior_h5")},
+                {assert snapshot(process.out.barcodes).match("cellbender_removebackground_barcodes")},
+                {assert snapshot(process.out.metrics).match("cellbender_removebackground_metrics")},
+                {assert snapshot(process.out.versions).match("cellbender_removebackground_versions")}
             )
         }
     }

@@ -31,6 +31,7 @@ process CELLBENDER_REMOVEBACKGROUND {
     """
     TMPDIR=. cellbender remove-background \
         ${args} \
+        --cpu-threads ${task.cpus} \
         --input ${h5ad} \
         --output ${prefix}.h5
 
