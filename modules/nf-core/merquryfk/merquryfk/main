@@ -7,8 +7,10 @@ process MERQURYFK_MERQURYFK {
 
     input:
     tuple val(meta), path(fastk_hist),path(fastk_ktab),path(asm1),path(haplotigs)
-    path matktab                                                                        //optional
-    path patktab                                                                        //optional
+    path matktab
+    path patktab
+
+    //tuple val(meta), path(fastk_hist), path(fastk_ktab), path(asm1),path(haplotigs)
 
     output:
     tuple val(meta), path("${prefix}.completeness.stats") , emit: stats
@@ -39,8 +41,8 @@ process MERQURYFK_MERQURYFK {
     }
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def mat_ktab = matktab ? "${matktab.find{ it.toString().endsWith(".ktab") }}" : ''
-    def pat_ktab = patktab ? "${patktab.find{ it.toString().endsWith(".ktab") }}" : ''
+    def mat_ktabs = matktab ? "${matktab}" : ''
+    def pat_ktabs = patktab ? "${patktab}" : ''
     def FASTK_VERSION = 'f18a4e6d2207539f7b84461daebc54530a9559b0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def MERQURY_VERSION = '8ae344092df5dcaf83cfb7f90f662597a9b1fc61' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
@@ -48,8 +50,8 @@ process MERQURYFK_MERQURYFK {
         $args \\
         -T$task.cpus \\
         ${fastk_ktab.find{ it.toString().endsWith(".ktab") }} \\
-        ${mat_ktab} \\
-        ${pat_ktab} \\
+        ${matktab.find{ it.toString().endsWith(".ktab") }} \\
+        ${patktab.find{ it.toString().endsWith(".ktab") }} \\
         $asm1 \\
         $haplotigs \\
         $prefix
