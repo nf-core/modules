@@ -71,7 +71,7 @@ process MERQURYFK_MERQURYFK {
     touch ${prefix}._.qv
     touch ${prefix}._only.bed
     cat <<-END_VERSIONS > versions.yml
-     "${task.process}":
+    "${task.process}":
         fastk: $FASTK_VERSION
         merquryfk: $MERQURY_VERSION
         r: \$( R --version | sed '1!d; s/.*version //; s/ .*//' )
