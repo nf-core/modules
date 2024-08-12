@@ -65,12 +65,8 @@ nextflow_process {
             }
         }
 
-        run("UNTAR_ARRIBA_DOWNLOAD") {
-            script """
-                wget https://github.com/suhrig/arriba/releases/download/v2.4.0/arriba_v2.4.0.tar.gz -O arriba_v2.4.0.tar.gz
-                tar -xzvf arriba_v2.4.0.tar.gz
-                rm arriba_v2.4.0.tar.gz
-            """
+        run("ARRIBA_DOWNLOAD") {
+            script "../../../arriba/download/main.nf"
             process {
                 """
                 """
