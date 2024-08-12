@@ -18,7 +18,7 @@ process SENTIEON_COLLECTVCMETRICS {
     output:
     tuple val(meta), path("*.variant_calling_detail_metrics") , emit: metrics
     tuple val(meta), path("*.variant_calling_summary_metrics"), emit: summary
-    path "versions.yml"            , emit: versions
+    path "versions.yml"                                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
