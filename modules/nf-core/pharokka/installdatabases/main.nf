@@ -6,6 +6,8 @@ process PHAROKKA_INSTALLDATABASES {
         'https://depot.galaxyproject.org/singularity/pharokka:1.7.3--pyhdfd78af_0':
         'biocontainers/pharokka:1.7.3--pyhdfd78af_0' }"
 
+    input:
+
     output:
     path("${prefix}/")      , emit: pharokka_db
     path "versions.yml"     , emit: versions
