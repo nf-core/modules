@@ -1,0 +1,40 @@
+name: celda_decontx
+description: Module to use DecontX from the celda package to estimate and remove contamination in individual cells
+keywords:
+  - single-cell
+  - scRNA-seq
+  - ambient RNA removal
+tools:
+  - celda:
+      description: Celda is a suite of Bayesian hierarchical models for clustering single-cell RNA-sequencing (scRNA-seq) data.
+      documentation: https://www.bioconductor.org/packages/release/bioc/html/celda.html
+      tool_dev_url: https://github.com/campbio/celda
+      licence:
+        - MIT
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - filtered:
+      type: file
+      description: AnnData file containing filtered data (without empty droplets)
+      pattern: "*.h5ad"
+  - unfiltered:
+      type: file
+      description: AnnData file containing unfiltered data (with empty droplets)
+      pattern: "*.h5ad"
+output:
+  - h5ad:
+      type: file
+      description: AnnData file containing decontaminated counts as `adata.X`
+      pattern: "*.h5ad"
+  - versions:
+      type: file
+      description: File containing software version
+      pattern: "versions.yml"
+authors:
+  - "@nictru"
+maintainers:
+  - "@nictru"

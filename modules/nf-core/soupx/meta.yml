@@ -1,0 +1,39 @@
+name: soupx
+description: Module to use SoupX to estimate and remove cell free mRNA contamination in droplet based single cell RNA-seq data
+keywords:
+  - single-cell
+  - scRNA-seq
+  - ambient RNA removal
+tools:
+  - soupx:
+      description: An R package for the estimation and removal of cell free mRNA contamination in droplet based single cell RNA-seq data.
+      documentation: https://rawcdn.githack.com/constantAmateur/SoupX/204b602418df12e9fdb4b68775a8b486c6504fe4/inst/doc/pbmcTutorial.html
+      tool_dev_url: https://github.com/constantAmateur/SoupX
+      licence: ["GPL v3"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - filtered:
+      type: file
+      description: AnnData file containing filtered data (without empty droplets)
+      pattern: "*.h5ad"
+  - unfiltered:
+      type: file
+      description: AnnData file containing unfiltered data (with empty droplets)
+      pattern: "*.h5ad"
+output:
+  - h5ad:
+      type: file
+      description: AnnData file containing decontaminated counts as `adata.X`
+      pattern: "*.h5ad"
+  - versions:
+      type: file
+      description: File containing software version
+      pattern: "versions.yml"
+authors:
+  - "@nictru"
+maintainers:
+  - "@nictru"
