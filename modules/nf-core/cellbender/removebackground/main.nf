@@ -47,8 +47,14 @@ process CELLBENDER_REMOVEBACKGROUND {
     stub:
     """
     touch "${prefix}.h5"
+    touch "${prefix}_filtered.h5"
+    touch "${prefix}_posterior.h5"
     touch "${prefix}_cell_barcodes.csv"
     touch "${prefix}_metrics.csv"
+    touch "${prefix}_report.html"
+    touch "${prefix}.pdf"
+    touch "${prefix}.log"
+    touch "ckpt.tar.gz"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
