@@ -24,7 +24,7 @@ process SENTIEON_COLLECTVCMETRICS {
     task.ext.when == null || task.ext.when
 
     script:
-    prefix            = task.ext.prefix ?: "${meta.id}"
+    def prefix        = task.ext.prefix ?: "${meta.id}"
     def args         = task.ext.args  ?: ''
     def args2        = task.ext.args2 ?: ''
     def interval_cmd = interval ? "--interval $interval" : ""
