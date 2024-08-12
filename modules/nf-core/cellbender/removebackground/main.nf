@@ -45,6 +45,7 @@ process CELLBENDER_REMOVEBACKGROUND {
     """
 
     stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch "${prefix}.h5"
     touch "${prefix}_filtered.h5"
