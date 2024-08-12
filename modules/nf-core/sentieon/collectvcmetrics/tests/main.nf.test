@@ -86,6 +86,7 @@ nextflow_process {
 
     test("Test VCF - stub") {
         config "./nextflow.config"
+        options "-stub"
 
         when {
             process {
