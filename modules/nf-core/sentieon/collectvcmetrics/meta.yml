@@ -1,6 +1,6 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "sentieon_coveragemetrics"
+name: "sentieon_collectvcmetrics"
 description: Accelerated implementation of the Picard CollectVariantCallingMetrics tool.
 keywords:
   - vcf
@@ -32,6 +32,11 @@ input:
         Groovy Map containing sample information
         e.g. `[ id:'test', single_end:false ]`
   - meta4:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - meta5:
       type: map
       description: |
         Groovy Map containing sample information
@@ -71,6 +76,16 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
+  - metrics:
+      type: file
+      description: |
+        Metrics file from VCF
+      pattern: "*.variant_calling_detail_metrics"
+  - summary:
+      type: file
+      description: |
+        Summary of VCF metrics
+      pattern: "*.collectvcmetrics.txt"
   - versions:
       type: file
       description: File containing software versions
