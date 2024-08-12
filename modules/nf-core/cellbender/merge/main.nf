@@ -23,6 +23,7 @@ process CELLBENDER_MERGE {
     template 'merge.py'
 
     stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch "${prefix}.h5ad"
 
