@@ -42,7 +42,8 @@ nextflow_process {
                             process.out.txt,
                             path(process.out.log[0][1]).readLines().last().contains("Output can be found in"),
                             path(process.out.hmm[0][1]).readLines().last().contains("[ok]"),
-                            file(process.out.tmp[0][1].find { file(it).name == "tmp.out" }).readLines().last().contains("[ok]")
+                            file(process.out.tmp[0][1].find { file(it).name == "tmp.out" }).readLines().last().contains("[ok]"),
+                            process.out.versions
                     ).match()
                 }
             }
