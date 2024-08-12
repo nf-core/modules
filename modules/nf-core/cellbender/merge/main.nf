@@ -19,6 +19,7 @@ process CELLBENDER_MERGE {
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
+    output_layer = task.ext.output_layer ?: "cellbender"
     template 'merge.py'
 
     stub:
