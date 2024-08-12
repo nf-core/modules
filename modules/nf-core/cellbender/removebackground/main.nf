@@ -1,6 +1,7 @@
 process CELLBENDER_REMOVEBACKGROUND {
     tag "$meta.id"
     label 'process_medium'
+    label 'gpu'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -28,10 +29,12 @@ process CELLBENDER_REMOVEBACKGROUND {
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
     args = task.ext.args ?: ""
+    use_gpu = task.ext.use_gpu ? "--cuda" : ""
     """
     TMPDIR=. cellbender remove-background \
         ${args} \
         --cpu-threads ${task.cpus} \
+        ${use_gpu} \
         --input ${h5ad} \
         --output ${prefix}.h5
 
