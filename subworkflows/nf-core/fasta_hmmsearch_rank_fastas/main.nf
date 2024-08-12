@@ -34,6 +34,7 @@ workflow FASTA_HMMSEARCH_RANK_FASTAS {
         .filter { it.rank == '1' }
         .collectFile { [ "${it.profile}.txt", "${it.accno}\n" ] }
         .map { [ [ id: it.baseName ], it ] }
+        .groupTuple(sort: true)
         .set { ch_subseq_filter }
 
     ch_subseq_filter
