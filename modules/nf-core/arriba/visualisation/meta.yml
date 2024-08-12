@@ -15,7 +15,6 @@ tools:
       doi: "10.1101/gr.257246.119"
       licence: ["MIT"]
 
-meta2, meta3, protein_domains, meta4, cytobands
 
 input:
   - meta:
@@ -31,18 +30,37 @@ input:
       type: file
       description: BAM/CRAM/SAM index file
       pattern: "*.{bai,crai,csi}"
-  - cytobands:
-      type: file
-      description: cytobands file
-      pattern: "*.{txt}"
   - fusions:
       type: file
       description: Arriba fusions file
       pattern: "*.{tsv}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
   - gtf:
       type: file
       description: Annotation GTF file
       pattern: "*.{gtf}"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
+  - protein_domains:
+      type: file
+      description: protein domains file
+      pattern: "*.{gff3}"
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test' ]
+  - cytobands:
+      type: file
+      description: cytobands file
+      pattern: "*.{tsv}"
 
 output:
   - meta:
