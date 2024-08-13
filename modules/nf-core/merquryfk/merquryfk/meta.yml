@@ -24,6 +24,14 @@ input:
       type: file
       description: Histogram ktab files from the program FastK (option -t)
       pattern: "*.ktab*"
+  - matktab:
+      type: file
+      description: trio maternal histogram ktab files from the program FastK (option -t)
+      pattern: "*.ktab*"
+  - patktab:
+      type: file
+      description: trio paternal histogram ktab files from the program FastK (option -t)
+      pattern: "*.ktab*"
   - assembly:
       type: file
       description: Genome (primary) assembly files (fasta format)
@@ -106,6 +114,30 @@ output:
       type: file
       description: "error and qv of each assembly as a whole"
       pattern: "*.qv"
+  - phased_block_bed:
+      type: file
+      description: Assembly kmer positions seperated by block in bed format
+      pattern: "*.phased.block.bed"
+  - phased_block_stats:
+      type: file
+      description: phased assembly statistics file
+      pattern: "*.phased.block.stats"
+  - continuity_N_png:
+      type: file
+      description: "Stacked assembly N continuity plot in PNG format"
+      pattern: "*.continuity.N.png"
+  - block_N_png:
+      type: file
+      description: "Stacked assembly N continuity by block plot in PNG format"
+      pattern: "*.block.N.png"
+  - block_blob_png:
+      type: file
+      description: "Stacked assembly block plot in PNG format"
+      pattern: "*.block.blob.png"
+  - hapmers_blob_png:
+      type: file
+      description: "Stacked assembly hapmers block plot in PNG format"
+      pattern: "*.hapmers.blob.png"
 authors:
   - "@mahesh-panchal"
   - "trio option added by @yumisims"
