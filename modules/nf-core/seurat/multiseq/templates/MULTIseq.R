@@ -60,21 +60,19 @@ convert_element <- function(x) {
     if (!is.na(num_value)) {
       return(num_value)
     }
-    
+
     # Try to convert to boolean
     bool_value <- tolower(x)
     if (bool_value %in% c("true", "t", "yes", "y", "1")) {
-      return(TRUE)
+        return(TRUE)
     } else if (bool_value %in% c("false", "f", "no", "n", "0")) {
-      return(FALSE)
+        return(FALSE)
     }
-  }
-  
-  # If no conversion was possible, return the original value
-  return(x)
+        }
+        return(x)
 }
 process_list <- function(input_list) {
-  return(lapply(input_list, convert_element))
+        return(lapply(input_list, convert_element))
 }
 opt_args_transformed <- process_list(args_opt)
 opt <- process_list(opt)
@@ -119,12 +117,12 @@ seurat_object <- NormalizeData(seurat_object, assay = opt_args_transformed\$assa
 ## MULTIseq                       ##
 ################################################
 demultiplex <- MULTIseqDemux(seurat_object ,
-  assay = opt_args_transformed\$assay,
-  quantile = opt_args_transformed\$quantile,
-  autoThresh = opt_args_transformed\$autoThresh,
-  maxiter = opt_args_transformed\$maxiter,
-  qrange = seq(from = opt_args_transformed\$qrange_from, to = opt_args_transformed\$qrange_to, by = opt_args_transformed\$qrange_by),
-  verbose = opt_args_transformed\$verbose
+        assay = opt_args_transformed\$assay,
+        quantile = opt_args_transformed\$quantile,
+        autoThresh = opt_args_transformed\$autoThresh,
+        maxiter = opt_args_transformed\$maxiter,
+        qrange = seq(from = opt_args_transformed\$qrange_from, to = opt_args_transformed\$qrange_to, by = opt_args_transformed\$qrange_by),
+        verbose = opt_args_transformed\$verbose,
 )
 ################################################
 ################################################
@@ -174,7 +172,7 @@ if(opt\$produce_plots){
         pbmc.singlet <- RunTSNE(pbmc.singlet, reduction = "pca", dims = 1:opt_args_transformed\$run_tsne_dim_max,check_duplicates = opt_args_transformed\$check_duplicates_tsne)
         DimPlot(pbmc.singlet, group.by = opt_args_transformed\$singlet_identities_tsne)
         ggsave(paste0(opt\$output_prefix, '_tsne_classification.jpeg'), device = "jpeg", dpi = 500)
-  }
+        }
 
 
 ################################################
