@@ -13,7 +13,7 @@ process ODGI_STATS {
     output:
     tuple val(meta), path("*.og.stats.tsv") , optional: true, emit: tsv
     tuple val(meta), path("*.og.stats.yaml"), optional: true, emit: yaml
-    path "versions.yml"                 , emit: versions
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,7 +21,7 @@ process ODGI_STATS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = ".og.stats.tsv"
+    def suffix = "og.stats.tsv"
     if (args.contains("--yaml") || args.contains("--multiqc")) {
         suffix = "og.stats.yaml"
     }
