@@ -40,9 +40,9 @@ process SENTIEON_HAPLOTYPER {
 
     // The Sentieon --algo Haplotyper can create a VCF or gVCF but not both
     // Luckily, we can run it twice while reading the BAM once, therefore we construct the two separate commands
-    // and run them twice while using the sentieon driver once. This allows us to create both types of VCF in 
+    // and run them twice while using the sentieon driver once. This allows us to create both types of VCF indels
     // one process
-    
+
     // Create VCF command to export a VCF
     def vcf_cmd = emit_vcf ?
         base_cmd + args2 + ' --emit_mode ' + emit_vcf + ' ' + prefix + '.unfiltered.vcf.gz' :
