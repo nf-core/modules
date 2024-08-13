@@ -41,11 +41,10 @@ process SEURAT_MULTISEQ {
     touch ${prefix}_tsne_hto_plot.jpeg
     touch ${prefix}_tsne_classification.jpeg
     touch ${prefix}.R_sessionInfo.log
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         Seurat: \$(Rscript -e "library(Seurat); cat(as.character(packageVersion('Seurat')))")
     END_VERSIONS
-    
     """
 }
