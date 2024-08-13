@@ -16,11 +16,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['pangenome']['pangenome_fa_bgzip'], checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.fa.gz', checkIfExists: true),
                     [], // empty paf input
-                    file(params.test_data['homo_sapiens']['pangenome']['pangenome_fa_bgzip_gzi'], checkIfExists: true), // gzi
-                    file(params.test_data['homo_sapiens']['pangenome']['pangenome_fa_bgzip_fai'], checkIfExists: true) // fai
-                    ]
+                    file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.fa.gz.gzi', checkIfExists: true), // gzi
+                    file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.fa.gz.fai', checkIfExists: true) // fai
+                ]
                 input[1] = true // empty paf input
                 input[2] = []
                 """
