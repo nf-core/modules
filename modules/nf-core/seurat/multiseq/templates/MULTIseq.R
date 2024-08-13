@@ -7,7 +7,6 @@
 #'
 #' This function checks if the input is non-NULL and contains more than just whitespace.
 #' It returns TRUE if the input is a non-empty, non-whitespace string, and FALSE otherwise.
-#'
 #' @param input A variable to check.
 #' @return A logical value: TRUE if the input is a valid, non-empty, non-whitespace string; FALSE otherwise.
 #' @examples
@@ -54,11 +53,10 @@ args_opt <- parse_args('$task.ext.args')
 # All values from ext.args are stored as strings
 # Function to transform strings to the correct class
 convert_element <- function(x) {
-  if (is.character(x)) {
-    # Try to convert to numeric
+        if (is.character(x)) {
     num_value <- suppressWarnings(as.numeric(x))
     if (!is.na(num_value)) {
-      return(num_value)
+        return(num_value)
     }
 
     # Try to convert to boolean
