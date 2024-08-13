@@ -80,7 +80,7 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end:true ], // meta map
-                    file( params.modules_testdata_base_path, + 'genomics/sarscov2/illumina/fasta/configs.fasta',checkIfExists: true )
+                    file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/configs.fasta',checkIfExists: true )
                 ])
                 input[1] = UNTAR.out.untar.map{ it[1] }
                 """
