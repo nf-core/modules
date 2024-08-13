@@ -27,6 +27,12 @@ process MERQURYFK_MERQURYFK {
     tuple val(meta), path("${prefix}.spectra-asm.ln.pdf") , emit: spectra_asm_ln_pdf, optional: true
     tuple val(meta), path("${prefix}.spectra-asm.st.png") , emit: spectra_asm_st_png, optional: true
     tuple val(meta), path("${prefix}.spectra-asm.st.pdf") , emit: spectra_asm_st_pdf, optional: true
+    tuple val(meta), path("${prefix}.phased_block.bed")   , emit: phased_block_bed,   optional: true
+    tuple val(meta), path("${prefix}.phased_block.stats") , emit: phased_block_stats, optional: true
+    tuple val(meta), path("${prefix}.continuity.N.png")   , emit: continuity_N_png,   optional: true
+    tuple val(meta), path("${prefix}.block.N.png")        , emit: block_N_png,        optional: true
+    tuple val(meta), path("${prefix}.block.blob.png")     , emit: block_blob_png,     optional: true
+    tuple val(meta), path("${prefix}.hapmers.blob.png")   , emit: hapmers_blob_png,   optional: true
     path "versions.yml"                                   , emit: versions
 
     when:
