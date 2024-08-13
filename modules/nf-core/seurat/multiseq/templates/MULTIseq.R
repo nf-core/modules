@@ -114,14 +114,7 @@ seurat_object <- NormalizeData(seurat_object, assay = opt_args_transformed\$assa
 ################################################
 ## MULTIseq                       ##
 ################################################
-demultiplex <- MULTIseqDemux(seurat_object ,
-        assay = opt_args_transformed\$assay,
-        quantile = opt_args_transformed\$quantile,
-        autoThresh = opt_args_transformed\$autoThresh,
-        maxiter = opt_args_transformed\$maxiter,
-        qrange = seq(from = opt_args_transformed\$qrange_from, to = opt_args_transformed\$qrange_to, by = opt_args_transformed\$qrange_by),
-        verbose = opt_args_transformed\$verbose,
-)
+demultiplex <- MULTIseqDemux(seurat_object,assay = opt_args_transformed\$assay, quantile = opt_args_transformed\$quantile, autoThresh = opt_args_transformed\$autoThresh, maxiter = opt_args_transformed\$maxiter, qrange = seq(from = opt_args_transformed\$qrange_from, to = opt_args_transformed\$qrange_to, by = opt_args_transformed\$qrange_by), verbose = opt_args_transformed\$verbose)
 ################################################
 ################################################
 ## Generate plots                             ##
