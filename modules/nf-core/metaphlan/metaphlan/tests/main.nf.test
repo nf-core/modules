@@ -24,7 +24,6 @@ nextflow_process {
 
     test("sarscov2 - illumina single end [fastq]") {
 
-        config './general.nextflow.config'
 
         when {
             process {
@@ -47,8 +46,6 @@ nextflow_process {
     }
 
     test("sarscov2 - illumina pair end [fastq]") {
-
-        config './general.nextflow.config'
 
         when {
             process {
@@ -73,14 +70,12 @@ nextflow_process {
 
     test("sarscov2 - illumina single end [fasta]") {
 
-        config './general.nextflow.config'
-
         when {
             process {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end:true ], // meta map
-                    file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/configs.fasta',checkIfExists: true )
+                    file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta',checkIfExists: true )
                 ])
                 input[1] = UNTAR.out.untar.map{ it[1] }
                 """
