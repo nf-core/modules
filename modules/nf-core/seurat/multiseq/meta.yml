@@ -13,7 +13,7 @@ tools:
       documentation: "https://satijalab.org/seurat/reference/multiseqdemux"
       tool_dev_url: "https://github.com/satijalab/seurat"
       doi: "10.1038/s41592-019-0433-8"
-      licence: ['MIT']
+      licence: ["MIT"]
 input:
   - meta:
       type: map
@@ -42,8 +42,36 @@ output:
   - assignment:
       type: file
       description: File containing the assignment for each cell/nucleus to a specific sample group
-      pattern: "*.csv"
-
+      pattern: "*_assignment.csv"
+  - classification:
+      type: file
+      description: File containing the classification report for each cell/nucleus to a specific sample group
+      pattern: "*_classification.csv"
+  - ridgePlot:
+      type: file
+      description: File containing the ridge plot of the assignment (optional)
+      pattern: "*_ridge_plot.jpeg"
+  - featureScatter:
+      type: file
+      description: File containing the feature scatter plot of the assignment (optional)
+      pattern: "*_feature_scatter_plot.jpeg"
+  - violingPlot:
+      type: file
+      description: File containing the violing plot of the assignment (optional)
+      pattern: "*_violin_plot.jpeg"
+  - tSNE_hto_Plot:
+      type: file
+      description: File containing the tSNE plot of the HTOs present in the data (optional)
+      pattern: "*_tsne_hto_plot.jpeg"
+  - tsne_classification:
+      type: file
+      description: File containing the tSNE plot of the classification (optional)
+      pattern: "*_tsne_classification.jpeg"
+  - session_info:
+      type: file
+      description: dump of R SessionInfo
+      pattern: "*.log"
+authors:
   - "@mari-ga"
   - "@maxozo"
   - "@wxicu"
@@ -53,4 +81,3 @@ maintainers:
   - "@maxozo"
   - "@wxicu"
   - "@Zethson"
-

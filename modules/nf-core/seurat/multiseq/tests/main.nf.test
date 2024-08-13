@@ -49,6 +49,45 @@ nextflow_process {
         }
 
     }
+    test("Standard_Multiome - plots included - 10x mtx") {
+        // Test including creation of R object to use with visualisation module
+        config "./nextflow.config"
+        setup {
+            run("UNTAR", alias:"UNTAR_HTO") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                """
+                input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true)   ])
+                """
+                }
+            } 
+            run("UNTAR", alias:"UNTAR_RNA") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                """
+                input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/rna.tar.gz", checkIfExists: true)   ])
+                """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = UNTAR_HTO.out.untar.map { meta, files -> [ [ id:'test', single_end:true ], files ] }
+                input[1] = UNTAR_RNA.out.untar.map { meta, files -> [ [ id:'test', single_end:true ], files ] }
+                input[2] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
 
     test("Standard_Multiome - 10x mtx - stub") {
         config "./nextflow.config"

@@ -77,6 +77,7 @@ process_list <- function(input_list) {
   return(lapply(input_list, convert_element))
 }
 opt_args_transformed <- process_list(args_opt)
+opt <- process_list(opt)
 
 ################################################
 ################################################
@@ -85,6 +86,7 @@ opt_args_transformed <- process_list(args_opt)
 ################################################
 #### Seurat object creation following tutorial from: https://satijalab.org/seurat/articles/hashing_vignette
 library(Seurat)
+library(ggplot2)
 
 # Read data
 rna_mtx <- Read10X(opt\$rna_matrix)
@@ -122,10 +124,85 @@ demultiplex <- MULTIseqDemux(seurat_object ,
   autoThresh = opt_args_transformed\$autoThresh,
   maxiter = opt_args_transformed\$maxiter,
   qrange = seq(from = opt_args_transformed\$qrange_from, to = opt_args_transformed\$qrange_to, by = opt_args_transformed\$qrange_by),
-  verbose = TRUE
+  verbose = opt_args_transformed\$verbose
 )
+################################################
+################################################
+## Generate plots                             ##
+################################################
+################################################
+
+if(opt\$produce_plots){
+    ### Ridge plot
+    Idents(demultiplex) <- opt_args_transformed\$group_cells_feature_scatter
+    RidgePlot(demultiplex, assay = opt_args_transformed\$assay , features = rownames(demultiplex[[opt_args_transformed\$assay ]])[1:opt_args_transformed\$number_of_features_ridge_plot], ncol = opt_args_transformed\$number_of_cols_ridge_plot)
+    ggsave(paste0(opt\$output_prefix, '_ridge_plot.jpeg'), device = "jpeg", dpi = 500)
+
+    ### Feature scatter plot
+    FeatureScatter(demultiplex, feature1 = opt_args_transformed\$feature_scatter_feature_1, feature2 = opt_args_transformed\$feature_scatter_feature_2)
+    ggsave(paste0(opt\$output_prefix, '_feature_scatter_plot.jpeg'), device = "jpeg", dpi = 500)
+
+    ### Violin plot
+    Idents(demultiplex) <- opt_args_transformed\$group_cells_violin_plot
+    VlnPlot(demultiplex, features = opt_args_transformed\$features_violin_plot, pt.size = opt_args_transformed\$pt_size, log = opt_args_transformed\$log)
+    ggsave(paste0(opt\$output_prefix, '_violin_plot.jpeg'), device = "jpeg", dpi = 500)
+
+    ### TSNE plot for HTOs
+    subset_demultiplexing_results <- subset(demultiplex, idents = opt_args_transformed\$subset_idents, invert = opt_args_transformed\$subset_invert)
+    DefaultAssay(subset_demultiplexing_results) <- opt_args_transformed\$assay
+    subset_demultiplexing_results <-ScaleData(subset_demultiplexing_results, features = rownames(subset_demultiplexing_results),
+    verbose = opt_args_transformed\$tsne_scale_data_verbose)
+    subset_demultiplexing_results <- RunPCA(subset_demultiplexing_results, features =  rownames(subset_demultiplexing_results), approx = opt_args_transformed\$run_pca_approx)
+    subset_demultiplexing_results <- RunTSNE(subset_demultiplexing_results, dims = 1:opt_args_transformed\$run_tsne_dim_max, perplexity = opt_args_transformed\$run_tsne_perplexity, check_duplicates = opt_args_transformed\$check_duplicates_tsne)
+    DimPlot(subset_demultiplexing_results)
+    ggsave(paste0(opt\$output_prefix, '_tsne_plot.jpeg'), device = "jpeg", dpi = 500)
+
+    ### TSNE plot classification
+    hto_names <- rownames(demultiplex[[opt_args_transformed\$assay]])
+    # Extract the singlets
+    pbmc.singlet <- subset(demultiplex, idents = hto_names)
+    # Select the top 1000 most variable features
+    pbmc.singlet <- FindVariableFeatures(pbmc.singlet, selection.method = opt_args_transformed\$selection_method)
+    # Scaling RNA data, we only scale the variable features here for efficiency
+    pbmc.singlet <- ScaleData(pbmc.singlet, features = VariableFeatures(pbmc.singlet))
+    # Run PCA
+    pbmc.singlet <- RunPCA(pbmc.singlet, features = VariableFeatures(pbmc.singlet),check_duplicates = opt_args_transformed\$check_duplicates_tsne)
+
+    # We select the top 10 PCs for clustering and tSNE based on PCElbowPlot
+    pbmc.singlet <- FindNeighbors(pbmc.singlet, reduction = "pca", dims = 1:opt_args_transformed\$run_tsne_dim_max)
+    pbmc.singlet <- FindClusters(pbmc.singlet, resolution = opt_args_transformed\$resolution, verbose = opt_args_transformed\$tsne_scale_data_verbose)
+    pbmc.singlet <- RunTSNE(pbmc.singlet, reduction = "pca", dims = 1:opt_args_transformed\$run_tsne_dim_max,check_duplicates = opt_args_transformed\$check_duplicates_tsne )
+    DimPlot(pbmc.singlet, group.by = opt_args_transformed\$singlet_identities_tsne)
+    ggsave(paste0(opt\$output_prefix, '_tsne_classification.jpeg'), device = "jpeg", dpi = 500)
+  }
+
 
 ################################################
 ## Results                                    ##
 ################################################
+write.csv(demultiplex\$MULTI_classification, paste0(opt\$output_prefix, "_classification.csv"))
 write.csv(demultiplex\$MULTI_ID, paste0(opt\$output_prefix, "_assignment.csv"))
+
+################################################
+################################################
+## R SESSION INFO                             ##
+################################################
+################################################
+
+sink(paste(opt\$output_prefix, "R_sessionInfo.log", sep = '.'))
+print(sessionInfo())
+sink()
+
+################################################
+## Version                                    ##
+################################################
+r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
+seurat_object_version <- as.character(packageVersion(('Seurat')))
+
+writeLines(
+    c(
+        '"${task.process}":',
+        paste('    r-base:', r.version),
+        paste('    Seurat Object:', seurat_object_version)
+    ),
+'versions.yml')
