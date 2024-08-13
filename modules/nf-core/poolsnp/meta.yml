@@ -24,7 +24,7 @@ input:
   - mpileup:
       type: file
       description: |
-        MPILEUP file. This file contains the base calls and alignment information 
+        MPILEUP file. This file contains the base calls and alignment information
         for each position in the reference genome.
         It is used as input for variant calling and other downstream analyses.
       pattern: "*.mpileup"
@@ -38,17 +38,17 @@ input:
   - reference:
       type: file
       description: |
-        Reference genome in FASTA format. 
+        Reference genome in FASTA format.
         May NOT contain any special characters such as "/|,:"
       pattern: "*.{fasta,fa}"
 
   - max_cov:
       type: integer
       description: |
-        Maximum coverage is calculated for every library and chromosomal arm 
+        Maximum coverage is calculated for every library and chromosomal arm
         as the percentile of a coverage distribution,
         e.g. max-cov=0.98 will only consider positions within the 98% coverage percentile
-        for a given sample and chromosomal arm. 
+        for a given sample and chromosomal arm.
         Read more: https://github.com/capoony/PoolSNP
 
   - min_cov:
@@ -75,7 +75,7 @@ input:
       type: float
       description: |
         Missing fraction is the maximum percentage of libraries that are allowed
-        to NOT fulfill all the other criteria, 
+        to NOT fulfill all the other criteria,
         e.g. miss-frac=0.2 will report sites event if 20% of all samples
         do not fulfill the other criteria.
 
@@ -88,7 +88,7 @@ input:
   - badsites:
       type: integer
       description: |
-        If set to 1, a Bad-sites file (*BS.txt.gz) will be generated, containing a list of 
+        If set to 1, a Bad-sites file (*BS.txt.gz) will be generated, containing a list of
         (variable and invariable) sites that did not pass the SNP calling criteria.
       optional: true
 
