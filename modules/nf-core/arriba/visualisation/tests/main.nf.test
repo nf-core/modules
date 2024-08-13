@@ -9,7 +9,6 @@ nextflow_process {
     tag "modules_nfcore"
     tag "arriba"
     tag "arriba/arriba"
-    tag "arriba/download"
     tag "arriba/visualisation"
     tag "samtools/index"
     tag "star/align"
@@ -61,14 +60,6 @@ nextflow_process {
             process {
                 """
                 input[0] = STAR_ALIGN.out.bam_sorted
-                """
-            }
-        }
-
-        run("ARRIBA_DOWNLOAD") {
-            script "../../../arriba/download/main.nf"
-            process {
-                """
                 """
             }
         }
