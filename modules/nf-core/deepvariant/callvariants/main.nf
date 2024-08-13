@@ -11,8 +11,8 @@ process DEEPVARIANT_CALLVARIANTS {
     val model_type
 
     output:
-    tuple val(meta), val("${prefix}.call.tfrecord.gz"), path("${prefix}.call-00000-of-00001.tfrecord.gz"), emit: call_variants_tfrecords
-    path "versions.yml",                                                            emit: versions
+    tuple val(meta), path("${prefix}.call-*-of-*.tfrecord.gz"), emit: call_variants_tfrecords
+    path "versions.yml",                                        emit: versions
 
     when:
     task.ext.when == null || task.ext.when

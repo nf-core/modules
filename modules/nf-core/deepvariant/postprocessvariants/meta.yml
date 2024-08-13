@@ -18,14 +18,10 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - variant_calls_tfrecord_name:
-      type: string
-      description: |
-        The logical name of the variant calls file name as provided to the DeepVariant commands.
-  - variant_calls_tfrecord_file:
+  - variant_calls_tfrecord_files:
       type: file
       description: |
-        Data file containing variant calls from DEEPVARIANT_CALLVARIANTS
+        One or more data files containing variant calls from DEEPVARIANT_CALLVARIANTS
       pattern: "*.tfrecord.gz"
   - gvcf_tfrecords:
       type: file

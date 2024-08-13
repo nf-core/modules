@@ -1,12 +1,12 @@
 process DEEPVARIANT_POSTPROCESSVARIANTS {
     tag "$meta.id"
-    label 'process_high'
+    label 'process_medium'
 
     //Conda is not supported at the moment
     container "nf-core/deepvariant:1.6.1"
 
     input:
-    tuple val(meta), val(variant_calls_tfrecord_name), path(variant_calls_tfrecord_file), path(gvcf_tfrecords)
+    tuple val(meta), path(variant_calls_tfrecord_files), path(gvcf_tfrecords)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(gzi)
@@ -29,6 +29,8 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
     }
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+
+    def variant_calls_tfrecord_name = variant_calls_tfrecord_files[0].name.replaceFirst(/-\d{5}-of-\d{5}/, "")
 
     def gvcf_matcher = gvcf_tfrecords[0].baseName =~ /^(.+)-\d{5}-of-(\d{5})$/
     if (!gvcf_matcher.matches()) {
