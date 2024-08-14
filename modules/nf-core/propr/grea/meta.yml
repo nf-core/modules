@@ -47,6 +47,10 @@ output:
       type: file
       description: File containing GO terms and their enrichment values
       pattern: "*.{csv}"
+  - session_info:
+      type: file
+      description: R session log
+      pattern: "*.R_sessionInfo.log"
   - versions:
       type: file
       description: File containing software versions
