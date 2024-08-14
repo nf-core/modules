@@ -11,12 +11,6 @@ process POOLSNP {
     tuple val(meta)      , path(mpileup)
     tuple val(meta2)     , path(reference)
     val(max_cov)
-    val(min_cov)
-    val(min_count)
-    val(min_freq)
-    val(miss_frac)
-    val(allsites)
-    val(badsites)
 
     output:
     tuple val(meta)      , path("*.vcf.gz")   , emit: vcf
@@ -35,17 +29,11 @@ process POOLSNP {
     """
     PoolSNP.sh \\
         mpileup=\$PWD/${mpileup} \\
-        reference=\$PWD/${reference} \\
+        output=\$PWD/${prefix} \\
         names=${prefix} \\
+        reference=\$PWD/${reference} \\
         jobs=${task.cpus} \\
         max-cov=${max_cov} \\
-        min-cov=${min_cov} \\
-        min-count=${min_count} \\
-        min-freq=${min_freq} \\
-        miss-frac=${miss_frac} \\
-        badsites=${badsites} \\
-        allsites=${allsites} \\
-        output=\$PWD/${prefix} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

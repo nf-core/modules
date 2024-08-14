@@ -30,22 +30,16 @@ nextflow_process {
 
         when {
             process {
-                """            
+                """
                 input[0] = SAMTOOLS_MPILEUP.out.mpileup
-                input[1] = Channel.of([ 
+                input[1] = Channel.of([
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ])
                 input[2] = params.max_cov
-                input[3] = params.min_cov
-                input[4] = params.min_count
-                input[5] = params.min_freq
-                input[6] = params.miss_frac
-                input[7] = params.allsites
-                input[8] = params.badsites
                 """
             }
-        } 
+        }
 
         then {
             assertAll(
@@ -54,7 +48,7 @@ nextflow_process {
                     process.out.versions,
                     path(process.out.vcf[0][1]).vcf.variantsMD5,
                     process.out.max_cov
-                    ).match() 
+                    ).match()
                 }
             )
         }
