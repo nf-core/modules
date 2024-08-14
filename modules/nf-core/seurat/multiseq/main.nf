@@ -4,7 +4,7 @@ process SEURAT_MULTISEQ {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-seurat:3.0.2--r36h0357c0b_0':
+        'https://depot.galaxyproject.org/singularity/r-seurat:3.0.2--r36h0357c0b_1':
         'biocontainers/r-seurat:3.0.2--r36h0357c0b_0' }"
 
     input:
