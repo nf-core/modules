@@ -8,7 +8,7 @@ process CELLRANGER_MKFASTQ {
     tuple val(meta), path(csv), path(bcl)
 
     output:
-    tuple val(meta), path("*_outs/outs/fastq_path/*.fastq.gz"), emit: fastq
+    tuple val(meta), path("*_outs/outs/fastq_path/{*.fastq.gz,**/*.fastq.gz}"), emit: fastq
     tuple val(meta), path("*_outs/outs/fastq_path/Reports")   , emit: reports
     tuple val(meta), path("*_outs/outs/fastq_path/Stats")     , emit: stats
     tuple val(meta), path("*_outs/outs/interop_path/*.bin")   , emit: interop
