@@ -4,8 +4,8 @@ process POOLSNP {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/poolsnp:1.0.0--py312h7e72e81_0':
-        'biocontainers/poolsnp:1.0.0--py312h7e72e81_0' }"
+        'https://depot.galaxyproject.org/singularity/poolsnp:1.0.1--py312h7e72e81_0':
+        'biocontainers/poolsnp:1.0.1--py312h7e72e81_0' }"
 
     input:
     tuple val(meta)      , path(mpileup)
