@@ -23,9 +23,10 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test' ], // meta map
-                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                         ]
-                    input[1] = 500
+                input[1] = [ [ id:'test' ], 500 ]
+                input[2] = [ [ id:'test' ],  "MT192765.1" ]
                     """
                 }
             }
@@ -45,7 +46,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test', single_end:true ], // meta map
-                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                     ]
                     input [1] = BWA_INDEX.out.index
                     """
@@ -58,7 +59,7 @@ nextflow_process {
                     """
                     fastq = Channel.of([
                         [ id:'test', single_end:true ], // meta map
-                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                     ])
 
                     input[0] = fastq.join(BWA_ALN.out.sai)
@@ -74,9 +75,10 @@ nextflow_process {
                 input[0] = BWA_SAMSE.out.bam
                 input[1] = [
                         [ id:'test' ], // meta map
-                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ]
-                input[2] = 500
+                input[2] = [ [ id:'test' ], 500 ]
+                input[3] = CIRCULARMAPPER_CIRCULARGENERATOR.out.elongated
                 """
             }
         }
@@ -99,13 +101,17 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: "test" ], //meta map
-                    file(params.test_data['sarscov2']['illumina']['test_single_end_bam'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists: true)
                 ]
                 input[1] = [
                     [ id:'test' ], // meta map
-                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[2] = 500
+                input[2] = [ [ id:'test' ], 500 ]
+                input[3] = [
+                    [ id:'test' ], // meta map
+                    []
+                ]
                 """
             }
         }

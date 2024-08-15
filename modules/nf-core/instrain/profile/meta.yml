@@ -47,6 +47,30 @@ output:
       type: directory
       description: InStrain profile folder
       pattern: "*.IS/"
+  - gene_info:
+      type: file
+      description: Gene information
+      pattern: "*.tsv"
+  - genome_info:
+      type: file
+      description: Genome information
+      pattern: "*.tsv"
+  - linkage:
+      type: file
+      description: Linkage information
+      pattern: "*.tsv"
+  - mapping_info:
+      type: file
+      description: Mapping information
+      pattern: "*.tsv"
+  - scaffold_info:
+      type: file
+      description: Scaffold information
+      pattern: "*.tsv"
+  - snvs:
+      type: file
+      description: SNVs
+      pattern: "*.tsv"
 authors:
   - "@mrolm"
 maintainers:
