@@ -11,8 +11,8 @@ process BAMTOFASTQ10X {
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path("*.fastq.gz"), emit: fastq
-    path "versions.yml"                , emit: versions
+    tuple val(meta), path("${meta.id}/**/*.fastq.gz"), emit: fastq
+    path "versions.yml"                              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,7 +24,7 @@ process BAMTOFASTQ10X {
     bamtofastq \\
         $args \\
         $bam \\
-        ${prefix}.fastq.gz
+        $prefix
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
