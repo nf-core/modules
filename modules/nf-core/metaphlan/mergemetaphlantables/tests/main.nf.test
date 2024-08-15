@@ -11,38 +11,38 @@ nextflow_process {
     tag "metaphlan/metaphlan"
     tag "metaphlan/mergemetaphlantables"
 
-
-    test("sarscov2 - illumina single end [fastq]") {
-        setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of([
-                        [],
-                        file( params.modules_testdata_base_path + 'delete_me/metaphlan4_database.tar.gz', checkIfExists: true )
-                    ])
-                    """
-                }
-            }
-            run("METAPHLAN_METAPHLAN") {
-                script "../../../metaphlan/metaphlan/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of(
-                        [ [ id: 'test', single_end: true],
-                        file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz',checkIfExists: true ) ]
-                    )
-                    input[1] = UNTAR.out.untar.map{ it[1] }
-                    """
-                }
+    setup {
+        run("UNTAR") {
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [],
+                    file( params.modules_testdata_base_path + 'delete_me/metaphlan4_database.tar.gz', checkIfExists: true )
+                ])
+                """
             }
         }
+        run("METAPHLAN_METAPHLAN") {
+            script "../../../metaphlan/metaphlan/main.nf"
+            process {
+                """
+                input[0] = Channel.of(
+                    [ [ id: 'test', single_end: true], file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz',checkIfExists: true ) ],
+                    [ [ id: 'test2', single_end: true], file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz',checkIfExists: true ) ],
+                )
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - illumina single end [fastq]") {
 
         when {
             process {
                 """
-                input[0] = METAPHLAN_MERGEMETAPHLANTABLES.out.profile
+                input[0] = METAPHLAN_METAPHLAN.out.profile.map{meta, profile -> [[id: 'test'], profile]}.groupTuple()
                 """
             }
         }
@@ -60,36 +60,10 @@ nextflow_process {
 
         options "-stub"
 
-        setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of([
-                        [],
-                        file( params.modules_testdata_base_path + 'delete_me/metaphlan4_database.tar.gz', checkIfExists: true )
-                    ])
-                    """
-                }
-            }
-            run("METAPHLAN_METAPHLAN") {
-                script "../../../metaphlan/metaphlan/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of(
-                        [[ id: 'test', single_end: true],
-                        file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz',checkIfExists: true ) ]
-                    )
-                    input[1] = UNTAR.out.untar.map{ it[1] }
-                    """
-                }
-            }
-        }
-
         when {
             process {
                 """
-                input[0] = METAPHLAN_METAPHLAN.out.profile
+                input[0] = METAPHLAN_METAPHLAN.out.profile.map{meta, profile -> [[id: 'test'], profile]}.groupTuple()
                 """
             }
         }

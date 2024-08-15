@@ -30,4 +30,16 @@ process METAPHLAN_MERGEMETAPHLANTABLES {
         metaphlan: \$(metaphlan --version 2>&1 | awk '{print \$3}')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        metaphlan: \$(metaphlan --version 2>&1 | awk '{print \$3}')
+    END_VERSIONS
+    """
 }
