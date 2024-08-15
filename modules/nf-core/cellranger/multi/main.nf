@@ -65,7 +65,7 @@ process CELLRANGER_MULTI {
     include_cmo  = cmo_fastqs.first().getName() != 'fastqs' && cmo_barcodes            ? '[samples]'             : ''
     include_fb   = ab_fastqs.first().getName() != 'fastqs' && fb_reference             ? '[feature]'             : ''
     include_frna = gex_frna_probeset_name && frna_sampleinfo                           ? '[samples]'             : ''
-    combined_vdj   = include_vdj || include_vdjb || include_vdjt                         ? '[vdj]'                 : ''
+    combined_vdj = include_vdj || include_vdjb || include_vdjt                         ? '[vdj]'                 : ''
 
     gex_reference_path = include_gex ? "reference,./${gex_reference_name}" : ''
     fb_reference_path  = include_fb  ? "reference,./${fb_reference_name}"  : ''
