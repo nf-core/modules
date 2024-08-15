@@ -48,8 +48,8 @@ process CELLRANGER_MKFASTQ {
     }
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p "${prefix}_outs/outs/fastq_path/"
-    # data with something to avoid breaking nf-test java I/O stream
+    mkdir -p "${prefix}_outs/outs/fastq_path/sample/files/"
+    # data with something to avoid breaking nf-test java I/O stream, fastq
     cat <<-FAKE_FQ > ${prefix}_outs/outs/fastq_path/fake_file.fastq
     @SEQ_ID
     GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT
@@ -57,6 +57,15 @@ process CELLRANGER_MKFASTQ {
     !''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF>>>>>>CCCCCCC65
     FAKE_FQ
     gzip -n ${prefix}_outs/outs/fastq_path/fake_file.fastq
+
+    # data with something to avoid breaking nf-test java I/O stream, fastq_undetermined
+    cat <<-FAKE_FQ > ${prefix}_outs/outs/fastq_path/sample/files/fake_file.fastq
+    @SEQ_ID
+    GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT
+    +
+    !''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF>>>>>>CCCCCCC65
+    FAKE_FQ
+    gzip -n ${prefix}_outs/outs/fastq_path/sample/files/fake_file.fastq
 
     # data for reports output channel
     mkdir -p "${prefix}_outs/outs/fastq_path/Reports"

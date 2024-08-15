@@ -73,5 +73,34 @@ nextflow_process {
                 }
             )
         }
+
     }
+
+    test("cellranger - tiny - simple - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.map{ it -> [ [ id: 'test', lane:1 ], file("https://cf.10xgenomics.com/supp/cell-exp/cellranger-tiny-bcl-simple-1.2.0.csv", checkIfExists: true), it[1] ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fastq,
+                    process.out.undetermined_fastq,
+                    process.out.interop,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
 }
