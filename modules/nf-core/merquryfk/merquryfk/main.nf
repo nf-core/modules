@@ -14,25 +14,19 @@ process MERQURYFK_MERQURYFK {
     tuple val(meta), path("${prefix}.completeness.stats") , emit: stats
     tuple val(meta), path("${prefix}.*_only.bed")         , emit: bed
     tuple val(meta), path("${prefix}.*.qv")               , emit: assembly_qv
-    tuple val(meta), path("${prefix}.*.spectra-cn.fl.png"), emit: spectra_cn_fl_png,  optional: true
-    tuple val(meta), path("${prefix}.*.spectra-cn.fl.pdf"), emit: spectra_cn_fl_pdf,  optional: true
-    tuple val(meta), path("${prefix}.*.spectra-cn.ln.png"), emit: spectra_cn_ln_png,  optional: true
-    tuple val(meta), path("${prefix}.*.spectra-cn.ln.pdf"), emit: spectra_cn_ln_pdf,  optional: true
-    tuple val(meta), path("${prefix}.*.spectra-cn.st.png"), emit: spectra_cn_st_png,  optional: true
-    tuple val(meta), path("${prefix}.*.spectra-cn.st.pdf"), emit: spectra_cn_st_pdf,  optional: true
+    tuple val(meta), path("${prefix}.*.spectra-cn.fl.*")  , emit: spectra_cn_fl,  optional: true
+    tuple val(meta), path("${prefix}.*.spectra-cn.ln.*")  , emit: spectra_cn_ln,  optional: true
+    tuple val(meta), path("${prefix}.*.spectra-cn.st.*")  , emit: spectra_cn_st,  optional: true
     tuple val(meta), path("${prefix}.qv")                 , emit: qv
-    tuple val(meta), path("${prefix}.spectra-asm.fl.png") , emit: spectra_asm_fl_png, optional: true
-    tuple val(meta), path("${prefix}.spectra-asm.fl.pdf") , emit: spectra_asm_fl_pdf, optional: true
-    tuple val(meta), path("${prefix}.spectra-asm.ln.png") , emit: spectra_asm_ln_png, optional: true
-    tuple val(meta), path("${prefix}.spectra-asm.ln.pdf") , emit: spectra_asm_ln_pdf, optional: true
-    tuple val(meta), path("${prefix}.spectra-asm.st.png") , emit: spectra_asm_st_png, optional: true
-    tuple val(meta), path("${prefix}.spectra-asm.st.pdf") , emit: spectra_asm_st_pdf, optional: true
+    tuple val(meta), path("${prefix}.spectra-asm.fl.*")   , emit: spectra_asm_fl, optional: true
+    tuple val(meta), path("${prefix}.spectra-asm.ln.*")   , emit: spectra_asm_ln, optional: true
+    tuple val(meta), path("${prefix}.spectra-asm.st.*")   , emit: spectra_asm_st, optional: true
     tuple val(meta), path("${prefix}.phased_block.bed")   , emit: phased_block_bed,   optional: true
     tuple val(meta), path("${prefix}.phased_block.stats") , emit: phased_block_stats, optional: true
-    tuple val(meta), path("${prefix}.continuity.N.png")   , emit: continuity_N_png,   optional: true
-    tuple val(meta), path("${prefix}.block.N.png")        , emit: block_N_png,        optional: true
-    tuple val(meta), path("${prefix}.block.blob.png")     , emit: block_blob_png,     optional: true
-    tuple val(meta), path("${prefix}.hapmers.blob.png")   , emit: hapmers_blob_png,   optional: true
+    tuple val(meta), path("${prefix}.continuity.N.*")     , emit: continuity_N,       optional: true
+    tuple val(meta), path("${prefix}.block.N.*")          , emit: block_N,            optional: true
+    tuple val(meta), path("${prefix}.block.blob.*")       , emit: block_blob,         optional: true
+    tuple val(meta), path("${prefix}.hapmers.blob.*")     , emit: hapmers_blob,       optional: true
     path "versions.yml"                                   , emit: versions
 
     when:

@@ -58,54 +58,30 @@ output:
       type: file
       description: Assembly only kmer positions not supported by reads in bed format
       pattern: "*_only.bed"
-  - spectra_cn_fl_png:
+  - spectra_cn_fl:
       type: file
-      description: "Unstacked copy number spectra filled plot in PNG format"
-      pattern: "*.spectra-cn.fl.png"
-  - spectra_cn_ln_png:
+      description: "Unstacked copy number spectra filled plot in PNG or PDF format"
+      pattern: "*.spectra-cn.fl.*"
+  - spectra_cn_ln:
       type: file
-      description: "Unstacked copy number spectra line plot in PNG format"
-      pattern: "*.spectra-cn.ln.png"
-  - spectra_cn_st_png:
+      description: "Unstacked copy number spectra line plot in PNG or PDF format"
+      pattern: "*.spectra-cn.ln.*"
+  - spectra_cn_st:
       type: file
-      description: "Stacked copy number spectra line plot in PNG format"
-      pattern: "*.spectra-cn.st.png"
-  - spectra_asm_fl_png:
+      description: "Stacked copy number spectra line plot in PNG or PDF format"
+      pattern: "*.spectra-cn.st.*"
+  - spectra_asm_fl:
       type: file
-      description: "Unstacked assembly spectra filled plot in PNG format"
-      pattern: "*.spectra-asm.fl.png"
-  - spectra_asm_ln_png:
+      description: "Unstacked assembly spectra filled plot in PNG or PDF format"
+      pattern: "*.spectra-asm.fl.*"
+  - spectra_asm_ln:
       type: file
-      description: "Unstacked assembly spectra line plot in PNG format"
-      pattern: "*.spectra-asm.ln.png"
-  - spectra_asm_st_png:
+      description: "Unstacked assembly spectra line plot in PNG or PDF format"
+      pattern: "*.spectra-asm.ln.*"
+  - spectra_asm_st:
       type: file
-      description: "Stacked assembly spectra line plot in PNG format"
-      pattern: "*.spectra-asm.st.png"
-  - spectra_cn_fl_pdf:
-      type: file
-      description: "Unstacked copy number spectra filled plot in PDF format"
-      pattern: "*.spectra-cn.fl.pdf"
-  - spectra_cn_ln_pdf:
-      type: file
-      description: "Unstacked copy number spectra line plot in PDF format"
-      pattern: "*.spectra-cn.ln.pdf"
-  - spectra_cn_st_pdf:
-      type: file
-      description: "Stacked copy number spectra line plot in PDF format"
-      pattern: "*.spectra-cn.st.pdf"
-  - spectra_asm_fl_pdf:
-      type: file
-      description: "Unstacked assembly spectra filled plot in PDF format"
-      pattern: "*.spectra-asm.fl.pdf"
-  - spectra_asm_ln_pdf:
-      type: file
-      description: "Unstacked assembly spectra line plot in PDF format"
-      pattern: "*.spectra-asm.ln.pdf"
-  - spectra_asm_st_pdf:
-      type: file
-      description: "Stacked assembly spectra line plot in PDF format"
-      pattern: "*.spectra-asm.st.pdf"
+      description: "Stacked assembly spectra line plot in PNG or PDF format"
+      pattern: "*.spectra-asm.st.*"
   - assembly_qv:
       type: file
       description: "error and qv table for each scaffold of the assembly"
@@ -122,22 +98,22 @@ output:
       type: file
       description: phased assembly statistics file
       pattern: "*.phased.block.stats"
-  - continuity_N_png:
+  - continuity_N:
       type: file
-      description: "Stacked assembly N continuity plot in PNG format"
-      pattern: "*.continuity.N.png"
-  - block_N_png:
+      description: "Stacked assembly N continuity plot in PNG or PDF format"
+      pattern: "*.continuity.N.*"
+  - block_N:
       type: file
-      description: "Stacked assembly N continuity by block plot in PNG format"
-      pattern: "*.block.N.png"
-  - block_blob_png:
+      description: "Stacked assembly N continuity by block plot in PNG or PDF format"
+      pattern: "*.block.N.*"
+  - block_blob:
       type: file
-      description: "Stacked assembly block plot in PNG format"
-      pattern: "*.block.blob.png"
-  - hapmers_blob_png:
+      description: "Stacked assembly block plot in PNG or PDF format"
+      pattern: "*.block.blob.*"
+  - hapmers_blob:
       type: file
-      description: "Stacked assembly hapmers block plot in PNG format"
-      pattern: "*.hapmers.blob.png"
+      description: "Stacked assembly hapmers block plot in PNG or PDF format"
+      pattern: "*.hapmers.blob.*"
 authors:
   - "@mahesh-panchal"
   - "trio option added by @yumisims"
