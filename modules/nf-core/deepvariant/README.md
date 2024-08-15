@@ -29,3 +29,30 @@ These module subcommands incorporate the individual steps of the DeepVariant pip
     * postprocessvariants: Convert variant calls from callvariants to VCF, and
     also create GVCF files based on genomic information from makeexamples.
 
+
+# Recommended parameters
+
+## makeexamples
+
+This process imports the data used for calling, and thus decides what information is available to the
+deep neural network. It's important to import the correct channels for the model you want to use.
+
+The script `run_deepvariant` (not used in the subworkflow) does this automatically. You can refer to
+the implementation in the DeepVariant repo:
+
+https://github.com/google/deepvariant/blob/bf9ed7e6de97cf6c8381694cb996317a740625ad/scripts/run_deepvariant.py#L367
+
+For WGS and WES models you need to enable the `insert_size` channel. Specify the following in the config:
+
+```
+withName: "DEEPVARIANT_MAKEEXAMPLES" {
+    ext.args = '--channels "insert_size"'
+}
+```
+
+
+
+
+
+
+

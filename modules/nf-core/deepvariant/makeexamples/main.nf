@@ -34,7 +34,6 @@ process DEEPVARIANT_MAKEEXAMPLES {
         --ref "${fasta}" \\
         --reads "${input}" \\
         --examples "./${prefix}.examples.tfrecord@${task.cpus}.gz" \\
-        --channels "insert_size" \\
         --gvcf "./${prefix}.gvcf.tfrecord@${task.cpus}.gz" \\
         ${regions} \\
         ${args} \\
