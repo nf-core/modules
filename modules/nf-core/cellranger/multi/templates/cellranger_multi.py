@@ -122,7 +122,7 @@ ${include_fb}
 ${fb_options_r1_length}
 ${fb_options_r2_length}
 
-${include_vdj || include_vdjb || include_vdjt}
+${combined_vdj}
 {vdj_reference_path}
 {primer_index}
 ${vdj_options_r1_length}
