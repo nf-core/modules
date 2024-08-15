@@ -15,7 +15,7 @@ process SENTIEON_BWAMEM {
     tuple val(meta4), path(fasta_fai)
 
     output:
-    tuple val(meta), path("*.bam"), path("*.bai"), emit: bam_and_bai
+    tuple val(meta), path("${prefix}"), path("${prefix}.{bai,crai}"), emit: bam_and_bai
     path  "versions.yml"          , emit: versions
 
     when:
@@ -23,7 +23,7 @@ process SENTIEON_BWAMEM {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}.bam"
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64 ?
         "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; " :
         ""
@@ -39,7 +39,7 @@ process SENTIEON_BWAMEM {
         -t $task.cpus \\
         \$INDEX \\
         $reads \\
-        | sentieon util sort -r $fasta -t $task.cpus -o ${prefix}.bam --sam2bam -
+        | sentieon util sort -r $fasta -t $task.cpus -o ${prefix} --sam2bam -
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -49,10 +49,12 @@ process SENTIEON_BWAMEM {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}.bam"
+    index  = prefix.tokenize('.')[-1] == "bam" ? "bai" : "crai"
+
     """
-    touch ${prefix}.bam
-    touch ${prefix}.bam.bai
+    touch ${prefix}
+    touch ${prefix}.${index}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
