@@ -19,8 +19,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['genome']['crispr_functional_counts'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['genome']['crispr_functional_library'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/tsv/functional_genomics_counts.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/tsv/library_functional_genomics.tsv', checkIfExists: true)
                 ]
                 input[1] = 30
                 input[2] = 5
@@ -46,8 +46,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['genome']['crispr_functional_counts'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['genome']['crispr_functional_library'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/tsv/functional_genomics_counts.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/tsv/library_functional_genomics.tsv', checkIfExists: true)
                 ]
                 input[1] = 30
                 input[2] = 5
