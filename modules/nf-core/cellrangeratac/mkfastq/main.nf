@@ -15,7 +15,7 @@ process CELLRANGERATAC_MKFASTQ {
 
     output:
     path "versions.yml", emit: versions
-    path "${bcl.getSimpleName()}/outs/fastq_path/*.fastq.gz"  , emit: fastq
+    path "${bcl.getSimpleName()}/outs/fastq_path/{*.fastq.gz,**/*.fastq.gz}"  , emit: fastq
 
     when:
     task.ext.when == null || task.ext.when
