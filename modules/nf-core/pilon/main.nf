@@ -29,10 +29,12 @@ process PILON {
     def valid_mode = ["frags", "jumps", "unpaired", "bam"]
     if ( !valid_mode.contains(pilon_mode) )  { error "Unrecognised mode to run Pilon. Options: ${valid_mode.join(', ')}" }
     """
-    pilon \\
+    # `which` allows us to get the directory that contains `pilon`, independent of whether we
+    # are in a container or conda environment.
+    PILON_JAR=\$(dirname \$(which pilon))/../share/pilon*/pilon.jar
+    java -Xmx${task.memory.toGiga()}G -jar \$PILON_JAR \\
         --genome $fasta \\
         --output ${meta.id} \\
-        --threads $task.cpus \\
         $args \\
         --$pilon_mode $bam
 
