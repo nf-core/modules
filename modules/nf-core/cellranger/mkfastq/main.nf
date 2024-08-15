@@ -8,11 +8,12 @@ process CELLRANGER_MKFASTQ {
     tuple val(meta), path(csv), path(bcl)
 
     output:
-    tuple val(meta), path("*_outs/outs/fastq_path/*.fastq.gz"), emit: fastq
-    tuple val(meta), path("*_outs/outs/fastq_path/Reports")   , emit: reports
-    tuple val(meta), path("*_outs/outs/fastq_path/Stats")     , emit: stats
-    tuple val(meta), path("*_outs/outs/interop_path/*.bin")   , emit: interop
-    path "versions.yml"                                       , emit: versions
+    tuple val(meta), path("*_outs/outs/fastq_path/**/*.fastq.gz")  , emit: fastq
+    tuple val(meta), path("*_outs/outs/fastq_path/*.fastq.gz")     , optional:true, emit: undetermined_fastq
+    tuple val(meta), path("*_outs/outs/fastq_path/Reports")        , emit: reports
+    tuple val(meta), path("*_outs/outs/fastq_path/Stats")          , emit: stats
+    tuple val(meta), path("*_outs/outs/interop_path/*.bin")        , emit: interop
+    path "versions.yml"                                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
