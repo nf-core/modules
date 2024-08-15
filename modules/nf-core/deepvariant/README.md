@@ -50,9 +50,16 @@ withName: "DEEPVARIANT_MAKEEXAMPLES" {
 }
 ```
 
+## callvariants
 
+It is mandatory to specify a model type. The models are available on the container filesystem in
+`/opt/models` - specify the one you want with the `--checkpoint` argument.
 
+```
+withName: "DEEPVARIANT_CALLVARIANTS" {
+    ext.args = '--checkpoint "/opt/models/wgs'
+}
+```
 
-
-
+The channels specified in the `makeexamples` process must match the model used for calling.
 

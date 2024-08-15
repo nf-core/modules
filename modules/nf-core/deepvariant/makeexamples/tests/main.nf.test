@@ -2,6 +2,7 @@ nextflow_process {
 
     name "Test Process DEEPVARIANT_MAKEEXAMPLES"
     script "../main.nf"
+    config "./nextflow.config"
     process "DEEPVARIANT_MAKEEXAMPLES"
 
     tag "deepvariant/makeexamples"

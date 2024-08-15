@@ -22,9 +22,6 @@ input:
       type: file
       description: The actual sharded input files, from DEEPVARIANT_MAKEEXAMPLES process
       pattern: "*.gz"
-  - model_type:
-      type: string
-      description: Model name, for example wgs, wes, pacbio, ont_r104, hybrid_pacbio_illumina.
 output:
   - call_variants_tfrecords:
       type: list

@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process DEEPVARIANT_POSTPROCESSVARIANTS"
     script "../main.nf"
     process "DEEPVARIANT_POSTPROCESSVARIANTS"
+    config "./nextflow.config"
 
     tag "deepvariant/makeexamples"
     tag "deepvariant/callvariants"
@@ -42,9 +43,6 @@ nextflow_process {
                 process {
                     """
                     input[0] = DEEPVARIANT_MAKEEXAMPLES.out.examples
-                    input[1] = [
-                        "wgs"
-                    ]
                     """
                 }
             }

@@ -43,13 +43,13 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
 
     """
     /opt/deepvariant/bin/postprocess_variants \\
+        ${args} \\
         --ref "${fasta}" \\
         --infile "${variant_calls_tfrecord_name}" \\
         --outfile "${prefix}.vcf.gz" \\
         --nonvariant_site_tfrecord_path "${gvcf_tfrecords_logical_name}" \\
         --gvcf_outfile "${prefix}.g.vcf.gz" \\
-        --cpus $task.cpus \\
-        ${args}
+        --cpus $task.cpus
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

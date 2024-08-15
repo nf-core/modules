@@ -2,6 +2,7 @@ nextflow_workflow {
 
     name "Test Subworkflow DEEPVARIANT"
     script "../main.nf"
+    config "./nextflow.config"
     workflow "DEEPVARIANT"
 
     tag "subworkflows"
@@ -41,9 +42,6 @@ nextflow_workflow {
                 input[3] = Channel.of([
                     [],[]
                 ])
-                input[4] = Channel.of(
-                    "wgs"
-                )
                 """
             }
         }
@@ -86,9 +84,6 @@ nextflow_workflow {
                 input[3] = Channel.of([
                     [],[]
                 ])
-                input[4] = Channel.of(
-                    "wgs"
-                )
                 """
             }
         }

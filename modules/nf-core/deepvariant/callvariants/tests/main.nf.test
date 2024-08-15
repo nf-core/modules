@@ -2,6 +2,7 @@ nextflow_process {
 
     name "Test Process DEEPVARIANT_CALLVARIANTS"
     script "../main.nf"
+    config "./nextflow.config"
     process "DEEPVARIANT_CALLVARIANTS"
 
     tag "deepvariant/makeexamples"
@@ -41,9 +42,6 @@ nextflow_process {
             process {
                 """
                 input[0] = DEEPVARIANT_MAKEEXAMPLES.out.examples
-                input[1] = [
-                    "wgs" // select model
-                ]
                 """
             }
         }
@@ -68,9 +66,6 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ], // meta
                     []                               // No input paths are needed in stub mode
-                ]
-                input[1] = [
-                    "wgs" // model
                 ]
                 """
             }

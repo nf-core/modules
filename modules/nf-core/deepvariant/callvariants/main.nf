@@ -8,8 +8,7 @@ process DEEPVARIANT_CALLVARIANTS {
 
     input:
     tuple val(meta), path(make_examples_tfrecords)
-    val model_type
-
+    
     output:
     tuple val(meta), path("${prefix}.call-*-of-*.tfrecord.gz"), emit: call_variants_tfrecords
     path "versions.yml",                                        emit: versions
@@ -34,12 +33,11 @@ process DEEPVARIANT_CALLVARIANTS {
     // Reconstruct the logical name - ${tfrecord_name}.examples.tfrecord@${task.cpus}.gz
     def examples_tfrecords_logical_name = "${examples_tfrecord_name}@${shardCount}.gz"
     
-    def model_type_clean = model_type.toString().replaceAll("[^A-Za-z0-9_-]", "")
     """
     /opt/deepvariant/bin/call_variants \\
+        ${args} \\
         --outfile "${prefix}.call.tfrecord.gz" \\
-        --examples "${examples_tfrecords_logical_name}" \\
-        --checkpoint "/opt/models/${model_type_clean}"
+        --examples "${examples_tfrecords_logical_name}"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -57,5 +55,4 @@ process DEEPVARIANT_CALLVARIANTS {
         deepvariant_callvariants: \$(echo \$(/opt/deepvariant/bin/run_deepvariant --version) | sed 's/^.*version //; s/ .*\$//' )
     END_VERSIONS
     """
-
 }
