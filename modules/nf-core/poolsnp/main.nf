@@ -39,7 +39,7 @@ process POOLSNP {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process}:
-        version: "${VERSION}"
+        poolsnp: "${VERSION}"
     END_VERSIONS
     """
 
@@ -48,13 +48,13 @@ process POOLSNP {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    touch ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}_cov-${max_cov}.txt
-    touch ${prefix}_BS.txt.gz
+    echo "" | gzip > ${prefix}_BS.txt.gz
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process}:
-        version: "${VERSION}"
+        poolsnp: "${VERSION}"
     END_VERSIONS
     """
 }
