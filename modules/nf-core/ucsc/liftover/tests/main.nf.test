@@ -26,8 +26,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.lifted).match() },
-                { assert file(process.out.unlifted[0][1]).exists() }
+                { assert snapshot(
+                    process.out.lifted,
+                    file(process.out.unlifted[0][1]).name
+                ).match() },
 
             )
         }
