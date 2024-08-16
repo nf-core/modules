@@ -15,8 +15,8 @@ nextflow_process {
                 """
                 vcf = Channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['simulated_sv'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['illumina']['simulated_sv_tbi'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz.tbi', checkIfExists: true)
                     ])
 
                 config = Channel.of([
@@ -63,8 +63,8 @@ nextflow_process {
                 """
                 vcf = Channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['simulated_sv'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['illumina']['simulated_sv_tbi'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz.tbi', checkIfExists: true)
                     ])
 
                 config = Channel.of(["config.yaml", "info:", "  SVMETHOD:", "    value: svync", "    description: Type of approach used to detect SV", "    number: 1", "    type: string"])
