@@ -1,0 +1,59 @@
+nextflow_process {
+
+    name "Test Process MASHMAP"
+    script "../main.nf"
+    process "MASHMAP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mashmap"
+
+    test("Should align the contigs to the genome") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
+                ]
+                input[1] = file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("Should align the contigs to the genome - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+                input[1] = file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
