@@ -87,4 +87,70 @@ nextflow_process {
             )
         }
     }
+
+    test("sarscov2 - mpileup - max_cov - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = SAMTOOLS_MPILEUP.out.mpileup
+                input[1] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = [
+                    [ id:'test' ], // meta map
+                    0.7,
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    process.out.max_cov
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("sarscov2 - mpileup - max_cov_file - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = SAMTOOLS_MPILEUP.out.mpileup
+                input[1] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = Channel.of([
+                    [ id:'test' ], // meta map
+                    '',
+                ]).combine( Channel.of("MT192765.1\t98").collectFile( name:'max_cov.tsv', newLine: true ))
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    path(process.out.vcf[0][1]).vcf.variantsMD5
+                    ).match()
+                }
+            )
+        }
+    }
 }
