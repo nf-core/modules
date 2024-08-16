@@ -1,55 +1,39 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "cafe"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Analysis of gene Family Evolution
 keywords:
-  - sort
-  - example
+  - gene
+  - phylogeny
   - genomics
 tools:
   - "cafe":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Computational Analysis of gene Family Evolution (CAFE)"
-      homepage: "None"
-      documentation: "None"
+      homepage: "https://github.com/hahnlab/CAFE5"
+      documentation: "https://github.com/hahnlab/CAFE5"
       tool_dev_url: "None"
-      doi: ""
+      doi: "https://doi.org/10.1093/bioinformatics/btaa1022"
       licence: ['IU OPEN SOURCE LICENSE (see https://github.com/hahnlab/CAFE5/blob/master/LICENSE)']
 
 ## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - tree:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Newick formatted tree
+      pattern: "*.{txt}"
+  - infile:
+      type: file
+      description: Gene counts table (from OrthoMCL, SwiftOrtho, FastOrtho, OrthAgogue or OrthoFinder)
+      pattern: "*.{txt,tsv,tab}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+  - cafe:
+      type: directory
+      description: A folder with all the cafe output
 
 authors:
   - "@chriswyatt1"
