@@ -14,10 +14,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_illumina_mt_bam'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['illumina']['test_illumina_mt_bam_bai'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test_illumina_mt.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test_illumina_mt.bam.bai', checkIfExists: true)
                 ]
-                input[1] = [ file(params.test_data['homo_sapiens']['genome']['genome_mt_gb'], checkIfExists: true) ]
+                input[1] = [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.NC_012920_1.gb', checkIfExists: true) ]
                 """
             }
         }
