@@ -11,7 +11,7 @@ process USEARCH_UNOISE3 {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*_features.fasta"), emit: fasta
+    tuple val(meta), path("*.fasta"), emit: fasta
     path "versions.yml"                      , emit: versions
 
     when:
