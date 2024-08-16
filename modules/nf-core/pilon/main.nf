@@ -28,7 +28,7 @@ process PILON {
     def prefix     = task.ext.prefix ?: "${meta.id}"
     def valid_mode = ["frags", "jumps", "unpaired", "bam"]
     if ( !valid_mode.contains(pilon_mode) )  { error "Unrecognised mode to run Pilon. Options: ${valid_mode.join(', ')}" }
-    def mem_mb = 8192
+    def mem_mb = 1024
     if (!task.memory) {
         log.info '[Pilon] Available memory not known - defaulting to 8GB. Specify process memory requirements to change this.'
     } else {
