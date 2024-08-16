@@ -22,8 +22,8 @@ process CAFE {
     def VERSION = '5.1.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     cafe5
-        -i ${infile} \\
-        -t ${tree} \\
+        -i $infile \\
+        -t $tree \\
         $args \\
         --cores ${task.cpus} \\
         -o Out_folder
@@ -39,7 +39,7 @@ process CAFE {
     def args = task.ext.args ?: ''
     def VERSION = '5.1.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    touch ${prefix}
+    touch Out_folder
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
