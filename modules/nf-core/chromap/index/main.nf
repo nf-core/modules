@@ -4,7 +4,7 @@ process CHROMAP_INDEX {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/chromap:0.2.6--hdcf5f25_0':
+        'https://depot.galaxyproject.org/singularity/chromap:0.2.6--hdcf5f25_0' :
         'biocontainers/chromap:0.2.6--hdcf5f25_0' }"
 
     input:

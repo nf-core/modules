@@ -20,7 +20,7 @@ nextflow_process {
                 input[5] = [[:],[]]
                 input[6] = [
                         [ id:'test', single_end:false ], // meta map
-                        file(params.test_data['homo_sapiens']['genome']['updsites_bed'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/updsites.bed', checkIfExists: true)
                             ]
                 """
             }
