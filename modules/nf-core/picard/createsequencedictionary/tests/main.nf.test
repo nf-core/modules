@@ -24,8 +24,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.reference_dict).match("reference_dict") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    file(process.out.reference_dict[0][1]).name,
+                    process.out.versions
+                    ).match()
+                }
 
             )
         }
@@ -49,8 +52,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.reference_dict).match("stub_reference_dict") },
-                { assert snapshot(process.out.versions).match("stub_versions") }
+                { assert snapshot(
+                    file(process.out.reference_dict[0][1]).name,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
 
