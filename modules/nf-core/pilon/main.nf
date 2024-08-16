@@ -30,7 +30,7 @@ process PILON {
     if ( !valid_mode.contains(pilon_mode) )  { error "Unrecognised mode to run Pilon. Options: ${valid_mode.join(', ')}" }
     def mem_mb = 1024
     if (!task.memory) {
-        log.info '[Pilon] Available memory not known - defaulting to 8GB. Specify process memory requirements to change this.'
+        log.info '[Pilon] Available memory not known - defaulting to 1GB. Specify process memory requirements to change this.'
     } else {
         mem_mb = task.memory.giga < 2 ? (task.memory.mega*0.8).intValue() : task.memory.mega - 1024
     }
