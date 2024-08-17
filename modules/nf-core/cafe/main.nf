@@ -21,9 +21,11 @@ process CAFE {
     def args = task.ext.args ?: ''
     def VERSION = '5.1.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
+    tr '\\r' '\\n' < $infile > infile.txt
+    tr '\\r' '\\n' < $tree > treefile.txt
     cafe5 \\
-        -i $infile \\
-        -t $tree \\
+        -i infile.txt \\
+        -t treefile.txt \\
         $args \\
         --cores ${task.cpus} \\
         -o Out_folder

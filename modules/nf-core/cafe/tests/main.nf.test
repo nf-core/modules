@@ -12,8 +12,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = channel.of( file('s3://excon/cafe_input/N0.tsv') )
-                input[1] = channel.of( file('s3://excon/cafe_input/SpeciesTree_rooted_node_labels_myco.txt') )
+                input[0] = channel.of( file('s3://excon/cafe_input/hog_gene_counts.tsv') )
+                input[1] = channel.of( file('s3://excon/cafe_input/SpeciesTree_rooted_ultra.txt') )
                 """
             }
         }
@@ -35,8 +35,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = channel.of( file('s3://excon/cafe_input/N0.tsv') )
-                input[1] = channel.of( file('s3://excon/cafe_input/SpeciesTree_rooted_node_labels_myco.txt') )
+                input[0] = channel.of( file('s3://excon/cafe_input/hog_gene_counts.tsv') )
+                input[1] = channel.of( file('s3://excon/cafe_input/SpeciesTree_rooted_ultra.txt') )
                 """
             }
         }
