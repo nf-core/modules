@@ -13,11 +13,16 @@ nextflow_process {
         when {
             process {
                 """
+                // Query
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
                 ]
-                input[1] = file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true)
+                // Reference
+                input[1] = [
+                    [ id:'sarscov2_genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -38,11 +43,16 @@ nextflow_process {
         when {
             process {
                 """
+                // Query
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
                 ]
-                input[1] = file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true)
+                // Reference
+                input[1] = [
+                    [ id:'sarscov2_genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                ]
                 """
             }
         }

@@ -9,7 +9,7 @@ process MASHMAP {
 
     input:
     tuple val(meta), path(fasta)
-    path(reference)
+    tuple val(meta2), path(reference)
 
     output:
     tuple val(meta), path("*.paf"), emit: paf
@@ -30,7 +30,7 @@ process MASHMAP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mashmap: \$(mashmap --version)
+        mashmap: \$(mashmap --version 2>&1)
     END_VERSIONS
     """
 
@@ -42,7 +42,7 @@ process MASHMAP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mashmap: \$(mashmap --version)
+        mashmap: \$(mashmap --version 2>&1)
     END_VERSIONS
     """
 }
