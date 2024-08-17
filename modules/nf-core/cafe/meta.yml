@@ -1,5 +1,3 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "cafe"
 description: Analysis of gene Family Evolution
 keywords:
@@ -14,8 +12,6 @@ tools:
       tool_dev_url: "None"
       doi: "https://doi.org/10.1093/bioinformatics/btaa1022"
       licence: ['IU OPEN SOURCE LICENSE (see https://github.com/hahnlab/CAFE5/blob/master/LICENSE)']
-
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - tree:
       type: file
@@ -25,7 +21,6 @@ input:
       type: file
       description: Gene counts table (from OrthoMCL, SwiftOrtho, FastOrtho, OrthAgogue or OrthoFinder)
       pattern: "*.{txt,tsv,tab}"
-
 output:
   - versions:
       type: file
@@ -34,7 +29,6 @@ output:
   - cafe:
       type: directory
       description: A folder with all the cafe output
-
 authors:
   - "@chriswyatt1"
 maintainers:
