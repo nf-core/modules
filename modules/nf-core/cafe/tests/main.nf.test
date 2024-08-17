@@ -20,8 +20,8 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success }
-                //{ assert snapshot(process.out).match() }
+                { assert process.success },
+                { assert snapshot(process.out).match() }
                 //analyze trace file
                 //{ assert process.trace.tasks().size() == 1 }
             )
@@ -43,8 +43,8 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success }
-                //{ assert snapshot(process.out).match() }
+                { assert process.success },
+                { assert snapshot(process.out).match() }
                 //analyze trace file
                 //{ assert process.trace.tasks().size() == 1 }
             )
