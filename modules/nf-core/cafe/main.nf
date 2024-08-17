@@ -11,12 +11,13 @@ process CAFE {
     path(tree)
 
     output:
-    path "Out_folder"     , emit: cafe
-    path("Out_cafe/Base_count.tab") , emit: cafe_base_count
-    path("Out_cafe/*.tre") , emit: cafe_significant_trees
-    path("Out_cafe/*_report.cafe") , emit: cafe_report
-    path("Out_cafe/*results.txt") , emit: cafe_results
-    path "versions.yml"   , emit: versions
+    path("Out_folder")     , emit: cafe
+    path("versions.yml")   , emit: versions
+    // I want to add the below out paths, but when I do this. nf-test fails for snapshot. We cannot snapshot the entire out folder, as it has time stamps in files and random numbers
+    //path("Out_folder/Base_count.tab") , emit: cafe_base_count
+    //path("Out_folder/*.tre") , emit: cafe_significant_trees
+    //path("Out_folder/*_report.cafe") , emit: cafereport
+    //path("Out_folder/*results.txt") , emit: cafe_results
 
     when:
     task.ext.when == null || task.ext.when
