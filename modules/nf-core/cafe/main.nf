@@ -12,6 +12,10 @@ process CAFE {
 
     output:
     path "Out_folder"     , emit: cafe
+    path("Out_cafe/Base_count.tab") , emit: cafe_base_count
+    path("Out_cafe/*.tre") , emit: cafe_significant_trees
+    path("Out_cafe/*_report.cafe") , emit: cafe_report
+    path("Out_cafe/*results.txt") , emit: cafe_results
     path "versions.yml"   , emit: versions
 
     when:
