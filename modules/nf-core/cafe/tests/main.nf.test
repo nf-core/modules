@@ -8,22 +8,19 @@ nextflow_process {
     tag "modules_nfcore"
     tag "cafe"
 
-    // TODO nf-core: Change the test name preferably indicating the test-data and file-format used
-    test("mycoplasma - genecounts_tree") {
+    test("mycoplasma - genecounts - tree") {
         when {
             process {
                 """
-                input[0] = [
-                    [ s3://excon/cafe_input/N0.tsv ]
-                    [ s3://excon/cafe_input/SpeciesTree_rooted_node_labels_myco.txt ]
-                ]
+                input[0] = channel.of( file('s3://excon/cafe_input/N0.tsv') )
+                input[1] = channel.of( file('s3://excon/cafe_input/SpeciesTree_rooted_node_labels_myco.txt') )
                 """
             }
         }
 
         then {
             assertAll(
-                { assert process.success },
+                { assert process.success }
                 //{ assert snapshot(process.out).match() }
                 //analyze trace file
                 //{ assert process.trace.tasks().size() == 1 }
@@ -31,25 +28,22 @@ nextflow_process {
         }
     }
 
-    // TODO nf-core: Change the test name preferably indicating the test-data and file-format used but keep the " - stub" suffix.
-    test("mycoplasma - genecounts_tree - stub") {
+    test("mycoplasma - genecounts - tree - stub") {
 
         options "-stub"
 
         when {
             process {
                 """
-                input[0] = [
-                    [ s3://excon/cafe_input/N0.tsv ]
-                    [ s3://excon/cafe_input/SpeciesTree_rooted_node_labels_myco.txt ]
-                ]
+                input[0] = channel.of( file('s3://excon/cafe_input/N0.tsv') )
+                input[1] = channel.of( file('s3://excon/cafe_input/SpeciesTree_rooted_node_labels_myco.txt') )
                 """
             }
         }
 
         then {
             assertAll(
-                { assert process.success },
+                { assert process.success }
                 //{ assert snapshot(process.out).match() }
                 //analyze trace file
                 //{ assert process.trace.tasks().size() == 1 }

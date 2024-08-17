@@ -11,7 +11,7 @@ process CAFE {
     path(tree)
 
     output:
-    path("Out_folder")    , emit: cafe
+    path "Out_folder"     , emit: cafe
     path "versions.yml"   , emit: versions
 
     when:
@@ -21,7 +21,7 @@ process CAFE {
     def args = task.ext.args ?: ''
     def VERSION = '5.1.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    cafe5
+    cafe5 \\
         -i $infile \\
         -t $tree \\
         $args \\
