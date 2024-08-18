@@ -24,6 +24,7 @@ process SCVITOOLS_SCAR {
     template 'scar.py'
 
     stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch "${prefix}.h5ad"
 
