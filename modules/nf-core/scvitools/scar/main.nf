@@ -19,6 +19,8 @@ process SCVITOOLS_SCAR {
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
+    input_layer = task.ext.input_layer ?: "X"
+    output_layer = task.ext.output_layer ?: "scar"
     template 'scar.py'
 
     stub:

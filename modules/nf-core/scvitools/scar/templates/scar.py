@@ -33,7 +33,7 @@ def format_yaml_like(data: dict, indent: int = 0) -> str:
 adata = ad.read_h5ad("${filtered}")
 adata_unfiltered = ad.read_h5ad("${unfiltered}")
 
-SCAR.setup_anndata(adata)
+SCAR.setup_anndata(adata, layer=None if "${input_layer}" == "X" else "${input_layer}")
 SCAR.get_ambient_profile(adata, adata_unfiltered)
 
 vae = SCAR(adata)
@@ -56,7 +56,10 @@ while not worked:
         if batch_size < 125:
             raise e
 
-adata.X = vae.get_denoised_counts()
+if "${output_layer}" == "X":
+    adata.X = vae.get_denoised_counts()
+else:
+    adata.layers["${output_layer}"] = vae.get_denoised_counts()
 
 del adata.uns["_scvi_uuid"], adata.uns["_scvi_manager_uuid"]
 
