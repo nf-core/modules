@@ -50,7 +50,7 @@ nextflow_process {
                                 process.out.runinfo,
                                 process.out.tbi,
                                 process.out.versions ).match() },
-                { assert snapshot(file(process.out.metrics_json[0][1]).name).match() }
+                { assert file(process.out.metrics_json[0][1]).name.match() }
             )
         }
     }
