@@ -47,10 +47,11 @@ nextflow_process {
                 { assert path(process.out.roc_snp_locations_pass_csv.get(0).get(1)).linesGzip.toString().contains("Type") },
                 { assert snapshot(process.out.summary_csv,
                                 process.out.extended_csv,
-                                process.out.runinfo,
-                                process.out.tbi,
                                 process.out.versions ).match() },
-                { assert file(process.out.metrics_json[0][1]).name.match() }
+                { assert snapshot(file(process.out.metrics_json[0][1]).name).match("metrics_json_1")},
+                { assert snapshot(file(process.out.runinfo[0][1]).name).match("runinfo_1")},
+                { assert snapshot(file(process.out.tbi[0][1]).name).match("tbi_1")}
+
             )
         }
     }
