@@ -57,6 +57,13 @@ nextflow_process {
                 ]
                 def bcell_fastq_samplename_10k_pbmc = "subsampled_sc5p_v2_hs_PBMC_10k"
 
+                // stage T cell FASTQ test data
+                tcell_fastqs_10k_pbmc = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/tcell/subsampled_sc5p_v2_hs_PBMC_10k_t_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/tcell/subsampled_sc5p_v2_hs_PBMC_10k_t_S1_L001_R2_001.fastq.gz', checkIfExists: true)
+                ]
+                def tcell_fastq_samplename_10k_pbmc = "subsampled_sc5p_v2_hs_PBMC_10k"
+
                 // stage 5' gene expression FASTQ test data
                 fivepgex_fastqs_10k_pbmc = [
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/5gex/5gex/subsampled_sc5p_v2_hs_PBMC_10k_5gex_S1_L001_R1_001.fastq.gz', checkIfExists: true),
@@ -174,7 +181,8 @@ nextflow_process {
                 // fastqs need a [ meta, ref ] structure
                 // references just need a path
                 ch_gex_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
-                ch_vdj_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_vdjb_fastqs           = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_vdjt_fastqs           = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
                 ch_ab_fastqs             = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
                 ch_beam_fastqs           = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
                 ch_cmo_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
@@ -198,6 +206,9 @@ nextflow_process {
                 ch_bcell_fastqs_10k_pbmc  = Channel.of( bcell_fastqs_10k_pbmc )
                     .collect()
                     .map { reads -> [ [ id:bcell_fastq_samplename_10k_pbmc , options:[] ], reads ] }
+                ch_tcell_fastqs_10k_pbmc  = Channel.of( tcell_fastqs_10k_pbmc )
+                    .collect()
+                    .map { reads -> [ [ id:tcell_fastq_samplename_10k_pbmc , options:[] ], reads ] }
                 ch_ab_fastqs_10k_pbmc  = Channel.of( ab_fastqs_10k_pbmc )
                     .collect()
                     .map { reads -> [ [ id:fivepab_fastq_samplename_10k_pbmc  , options:[] ], reads ] }
@@ -209,23 +220,24 @@ nextflow_process {
                 input[0]  = [ id:'subsampled_sc5p_v2_hs_PBMC_10k', single_end:false ]
                 input[1]  = ch_gex_fastqs_10k_pbmc
                 input[2]  = ch_bcell_fastqs_10k_pbmc
-                input[3]  = ch_ab_fastqs_10k_pbmc
-                input[4]  = ch_beam_fastqs
-                input[5]  = ch_cmo_fastqs
-                input[6]  = ch_crispr_fastqs
-                input[7]  = CELLRANGER_MKREF.out.reference
-                input[8]  = ch_gex_frna_probeset
-                input[9]  = ch_gex_targetpanel
-                input[10] = ch_vdj_reference
-                input[11] = ch_vdj_primer_index
-                input[12] = ch_ab_reference_10k_pbmc
-                input[13] = ch_beam_antigen_panel
-                input[14] = ch_beam_control_panel
-                input[15] = ch_cmo_reference
-                input[16] = ch_cmo_barcodes
-                input[17] = ch_cmo_sample_assignment
-                input[18] = ch_frna_sampleinfo
-                input[19] = false // default to false to guarantee renaming during test
+                input[3]  = ch_tcell_fastqs_10k_pbmc
+                input[4]  = ch_ab_fastqs_10k_pbmc
+                input[5]  = ch_beam_fastqs
+                input[6]  = ch_cmo_fastqs
+                input[7]  = ch_crispr_fastqs
+                input[8]  = CELLRANGER_MKREF.out.reference
+                input[9]  = ch_gex_frna_probeset
+                input[10]  = ch_gex_targetpanel
+                input[11] = ch_vdj_reference
+                input[12] = ch_vdj_primer_index
+                input[13] = ch_ab_reference_10k_pbmc
+                input[14] = ch_beam_antigen_panel
+                input[15] = ch_beam_control_panel
+                input[16] = ch_cmo_reference
+                input[17] = ch_cmo_barcodes
+                input[18] = ch_cmo_sample_assignment
+                input[19] = ch_frna_sampleinfo
+                input[20] = false // default to false to guarantee renaming during test
                 """
             }
         }
@@ -266,6 +278,13 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/bcell/subsampled_sc5p_v2_hs_PBMC_10k_b_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                 ]
                 def bcell_fastq_samplename_10k_pbmc = "subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K"
+
+                // stage T cell FASTQ test data
+                tcell_fastqs_10k_pbmc = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/tcell/subsampled_sc5p_v2_hs_PBMC_10k_t_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/tcell/subsampled_sc5p_v2_hs_PBMC_10k_t_S1_L001_R2_001.fastq.gz', checkIfExists: true)
+                ]
+                def tcell_fastq_samplename_10k_pbmc = "subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K"
 
                 // stage 5' gene expression FASTQ test data
                 fivepgex_fastqs_10k_pbmc = [
@@ -399,7 +418,8 @@ nextflow_process {
                 // fastqs need a [ meta, ref ] structure
                 // references just need a path
                 ch_gex_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
-                ch_vdj_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_vdjb_fastqs           = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_vdjt_fastqs           = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
                 ch_ab_fastqs             = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
                 ch_beam_fastqs           = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
                 ch_cmo_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
@@ -423,6 +443,9 @@ nextflow_process {
                 ch_bcell_fastqs_10k_pbmc  = Channel.of( bcell_fastqs_10k_pbmc )
                     .collect()
                     .map { reads -> [ [ id:bcell_fastq_samplename_10k_pbmc , options:[] ], reads ] }
+                ch_tcell_fastqs_10k_pbmc  = Channel.of( tcell_fastqs_10k_pbmc )
+                    .collect()
+                    .map { reads -> [ [ id:tcell_fastq_samplename_10k_pbmc , options:[] ], reads ] }
                 ch_ab_fastqs_10k_pbmc  = Channel.of( ab_fastqs_10k_pbmc )
                     .collect()
                     .map { reads -> [ [ id:fivepab_fastq_samplename_10k_pbmc  , options:[] ], reads ] }
@@ -449,23 +472,24 @@ nextflow_process {
                 input[0]  = [ id:'subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K', single_end:false ]
                 input[1]  = ch_gex_fastqs_10k_pbmc
                 input[2]  = ch_bcell_fastqs_10k_pbmc
-                input[3]  = ch_ab_fastqs_10k_pbmc
-                input[4]  = ch_beam_fastqs
-                input[5]  = ch_cmo_fastqs
-                input[6]  = ch_crispr_fastqs
-                input[7]  = CELLRANGER_MKREF.out.reference
-                input[8]  = ch_gex_frna_probeset
-                input[9]  = ch_gex_targetpanel
-                input[10] = ch_vdj_reference
-                input[11] = ch_vdj_primer_index
-                input[12] = ch_ab_reference_10k_pbmc
-                input[13] = ch_beam_antigen_panel
-                input[14] = ch_beam_control_panel
-                input[15] = ch_cmo_reference
-                input[16] = ch_cmo_barcodes
-                input[17] = ch_cmo_sample_assignment
-                input[18] = ch_frna_sampleinfo
-                input[19] = false // default to false to guarantee renaming during test
+                input[3]  = ch_tcell_fastqs_10k_pbmc
+                input[4]  = ch_ab_fastqs_10k_pbmc
+                input[5]  = ch_beam_fastqs
+                input[6]  = ch_cmo_fastqs
+                input[7]  = ch_crispr_fastqs
+                input[8]  = CELLRANGER_MKREF.out.reference
+                input[9]  = ch_gex_frna_probeset
+                input[10]  = ch_gex_targetpanel
+                input[11] = ch_vdj_reference
+                input[12] = ch_vdj_primer_index
+                input[13] = ch_ab_reference_10k_pbmc
+                input[14] = ch_beam_antigen_panel
+                input[15] = ch_beam_control_panel
+                input[16] = ch_cmo_reference
+                input[17] = ch_cmo_barcodes
+                input[18] = ch_cmo_sample_assignment
+                input[19] = ch_frna_sampleinfo
+                input[20] = false // default to false to guarantee renaming during test
                 """
             }
         }
@@ -506,6 +530,13 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/bcell/subsampled_sc5p_v2_hs_PBMC_10k_b_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                 ]
                 def bcell_fastq_samplename_10k_pbmc = "subsampled_5k_human_antiCMV_T_TBNK_connect"
+
+                // stage T cell FASTQ test data
+                tcell_fastqs_10k_pbmc = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/tcell/subsampled_sc5p_v2_hs_PBMC_10k_t_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/tcell/subsampled_sc5p_v2_hs_PBMC_10k_t_S1_L001_R2_001.fastq.gz', checkIfExists: true)
+                ]
+                def tcell_fastq_samplename_10k_pbmc = "subsampled_5k_human_antiCMV_T_TBNK_connect"
 
                 // stage 5' gene expression FASTQ test data
                 fivepgex_fastqs_10k_pbmc = [
@@ -639,7 +670,8 @@ nextflow_process {
                 // fastqs need a [ meta, ref ] structure
                 // references just need a path
                 ch_gex_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
-                ch_vdj_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_vdjb_fastqs           = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_vdjt_fastqs           = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
                 ch_ab_fastqs             = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
                 ch_beam_fastqs           = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
                 ch_cmo_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
@@ -663,6 +695,9 @@ nextflow_process {
                 ch_bcell_fastqs_10k_pbmc  = Channel.of( bcell_fastqs_10k_pbmc )
                     .collect()
                     .map { reads -> [ [ id:gex_fastq_samplename_5k_cmvpos_tcells , options:[] ], reads ] }
+                ch_tcell_fastqs_10k_pbmc  = Channel.of( tcell_fastqs_10k_pbmc )
+                    .collect()
+                    .map { reads -> [ [ id:tcell_fastq_samplename_10k_pbmc , options:[] ], reads ] }
                 ch_ab_fastqs_10k_pbmc  = Channel.of( ab_fastqs_10k_pbmc )
                     .collect()
                     .map { reads -> [ [ id:fivepab_fastq_samplename_10k_pbmc  , options:[] ], reads ] }
@@ -686,23 +721,24 @@ nextflow_process {
                 input[0]  = [ id:'subsampled_5k_human_antiCMV_T_TBNK_connect', single_end:false ]
                 input[1]  = ch_gex_fastqs_10k_pbmc
                 input[2]  = ch_bcell_fastqs_10k_pbmc
-                input[3]  = ch_ab_fastqs_10k_pbmc
-                input[4]  = ch_beam_fastqs
-                input[5]  = ch_cmo_fastqs
-                input[6]  = ch_crispr_fastqs
-                input[7]  = CELLRANGER_MKREF.out.reference
-                input[8]  = ch_gex_frna_probeset
-                input[9]  = ch_gex_targetpanel
-                input[10] = ch_vdj_reference
-                input[11] = ch_vdj_primer_index
-                input[12] = ch_ab_reference_10k_pbmc
-                input[13] = ch_beam_antigen_panel
-                input[14] = ch_beam_control_panel
-                input[15] = ch_cmo_reference
-                input[16] = ch_cmo_barcodes
-                input[17] = ch_cmo_sample_assignment
-                input[18] = ch_frna_sampleinfo
-                input[19] = false // default to false to guarantee renaming during test
+                input[3]  = ch_tcell_fastqs_10k_pbmc
+                input[4]  = ch_ab_fastqs_10k_pbmc
+                input[5]  = ch_beam_fastqs
+                input[6]  = ch_cmo_fastqs
+                input[7]  = ch_crispr_fastqs
+                input[8]  = CELLRANGER_MKREF.out.reference
+                input[9]  = ch_gex_frna_probeset
+                input[10]  = ch_gex_targetpanel
+                input[11] = ch_vdj_reference
+                input[12] = ch_vdj_primer_index
+                input[13] = ch_ab_reference_10k_pbmc
+                input[14] = ch_beam_antigen_panel
+                input[15] = ch_beam_control_panel
+                input[16] = ch_cmo_reference
+                input[17] = ch_cmo_barcodes
+                input[18] = ch_cmo_sample_assignment
+                input[19] = ch_frna_sampleinfo
+                input[20] = false // default to false to guarantee renaming during test
                 """
             }
         }
