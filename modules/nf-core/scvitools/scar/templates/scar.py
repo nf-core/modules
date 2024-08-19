@@ -38,10 +38,8 @@ SCAR.get_ambient_profile(adata, adata_unfiltered)
 
 vae = SCAR(adata)
 
-# The training fails if the number of entries in a minibatch is 1.
-# This happens if the total number of cells modulo the batch size is 1.
-batch_size = [size for size in range(128, 120, -1) if adata.n_obs % size != 1][0]
-vae.train(batch_size=batch_size, early_stopping=True)
+# Prevent errors like https://discourse.scverse.org/t/scvi-21618-problem/2294
+vae.train(early_stopping=True, datasplitter_kwargs={"drop_last": True})
 
 if "${output_layer}" == "X":
     adata.X = vae.get_denoised_counts()
