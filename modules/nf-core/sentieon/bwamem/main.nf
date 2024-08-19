@@ -30,6 +30,7 @@ process SENTIEON_BWAMEM {
 
     """
     $sentieonLicense
+    export bwt_max_mem="${(task.memory * 0.9).toGiga()}G"
 
     INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
 
