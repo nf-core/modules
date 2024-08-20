@@ -27,6 +27,7 @@ process BCFTOOLS_CONSENSUS {
             consensus \\
             $vcf \\
             $args \\
+            $masking \\
             > ${prefix}.fa
 
     cat <<-END_VERSIONS > versions.yml
