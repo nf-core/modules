@@ -20,6 +20,7 @@ process BCFTOOLS_CONSENSUS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def masking = mask ? "-m $mask" : ""
     """
     cat $fasta \\
         | bcftools \\
