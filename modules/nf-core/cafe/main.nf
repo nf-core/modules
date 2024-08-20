@@ -15,7 +15,7 @@ process CAFE {
     path("versions.yml")   , emit: versions
     path("*_count.tab") , emit: cafe_base_count
     path("*.tre") , emit: cafe_significant_trees
-    path("*_report.cafe") , emit: cafereport
+    path("*_report.cafe") , emit: cafe_report
     path("*results.txt") , emit: cafe_results
 
     when:

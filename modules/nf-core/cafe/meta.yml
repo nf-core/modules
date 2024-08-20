@@ -29,6 +29,22 @@ output:
   - cafe:
       type: directory
       description: A folder with all the cafe output
+  - cafe_base_count:
+      type: file
+      description: File containing counts of genes per orthogroup
+      pattern: "*_count.tab"
+  - cafe_significant_trees:
+      type: file
+      description: File containing significant trees (newick format)
+      pattern: "*.tre"
+  - cafe_report:
+      type: file
+      description: File containing the final report from cafe
+      pattern: "*_report.cafe"
+  - cafe_results:
+      type: file
+      description: File containing the main result files from cafe
+      pattern: "*results.txt"
 authors:
   - "@chriswyatt1"
 maintainers:
