@@ -4,8 +4,8 @@ process DEEPTOOLS_BAMCOVERAGE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-eb9e7907c7a753917c1e4d7a64384c047429618a:62d1ebe2d3a2a9d1a7ad31e0b902983fa7c25fa7-0':
-        'biocontainers/mulled-v2-eb9e7907c7a753917c1e4d7a64384c047429618a:62d1ebe2d3a2a9d1a7ad31e0b902983fa7c25fa7-0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-eb9e7907c7a753917c1e4d7a64384c047429618a:41defd13a6f2ce014549fcc05d0b051f655777f9-0':
+        'biocontainers/mulled-v2-eb9e7907c7a753917c1e4d7a64384c047429618a:41defd13a6f2ce014549fcc05d0b051f655777f9-0' }"
 
     input:
     tuple val(meta), path(input), path(input_index)
@@ -21,8 +21,9 @@ process DEEPTOOLS_BAMCOVERAGE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}.bigWig"
+    def args      = task.ext.args ?: ''
+    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def extension = args.contains("--outFileFormat bedgraph") || args.contains("-of bedgraph") ? "bedgraph" : "bigWig"
 
     // cram_input is currently not working with deeptools
     // therefore it's required to convert cram to bam first
@@ -39,7 +40,7 @@ process DEEPTOOLS_BAMCOVERAGE {
             --bam $input_out \\
             $args \\
             --numberOfProcessors ${task.cpus} \\
-            --outFileName ${prefix}
+            --outFileName ${prefix}.${extension}
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -47,7 +48,6 @@ process DEEPTOOLS_BAMCOVERAGE {
             deeptools: \$(bamCoverage --version | sed -e "s/bamCoverage //g")
         END_VERSIONS
         """
-
     }
     else {
         """
@@ -55,7 +55,7 @@ process DEEPTOOLS_BAMCOVERAGE {
             --bam $input_out \\
             $args \\
             --numberOfProcessors ${task.cpus} \\
-            --outFileName ${prefix}
+            --outFileName ${prefix}.${extension}
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -64,4 +64,15 @@ process DEEPTOOLS_BAMCOVERAGE {
         """
     }
 
+    stub:
+    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def extension = args.contains("--outFileFormat bedgraph") || args.contains("-of bedgraph") ? ".bedgraph" : ".bigWig"
+    """
+    touch ${prefix}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        deeptools: \$(bamCoverage --version | sed -e "s/bamCoverage //g")
+    END_VERSIONS
+    """
 }
