@@ -1,0 +1,62 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core subworkflows test utils_nfschema_plugin
+nextflow_workflow {
+
+    name "Test Subworkflow UTILS_NFSCHEMA_PLUGIN"
+    script "../main.nf"
+    workflow "UTILS_NFSCHEMA_PLUGIN"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/utils_nfschema_plugin"
+
+    config "./nextflow.config"
+
+    test("Should run nothing") {
+
+        when {
+
+            params {
+                test_data   = ''
+            }
+
+            workflow {
+                """
+                validate_params = false
+                input[0] = validate_params
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success }
+            )
+        }
+    }
+
+    test("Should validate params") {
+
+        when {
+
+            params {
+                test_data   = ''
+                outdir      = 1
+            }
+
+            workflow {
+                """
+                validate_params = true
+                input[0] = validate_params
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.failed },
+                { assert workflow.stdout.any { it.contains('ERROR ~ Validation of pipeline parameters failed!') } }
+            )
+        }
+    }
+}

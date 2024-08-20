@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "utils_nfschema_plugin"
+description: Run nf-schema to validate parameters and create a summary of changed parameters
+keywords:
+  - validation
+  - JSON schema
+  - plugin
+  - parameters
+  - summary
+components: []
+input:
+  - validate_params:
+      type: boolean
+      description: Validate the parameters and error if invalid.
+output:
+  - dummy_emit:
+      type: boolean
+      description: Dummy emit to make nf-core subworkflows lint happy
+authors:
+  - "@nvnieuwk"
+maintainers:
+  - "@nvnieuwk"
