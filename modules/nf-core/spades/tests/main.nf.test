@@ -1,0 +1,228 @@
+nextflow_process {
+
+    name "Test Process SPADES"
+    script "../main.nf"
+    process "SPADES"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "spades"
+
+    test("sarscov2 - se ") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:true ],
+                                [ file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_2.fastq.gz", checkIfExists: true) ],
+                                [],
+                                []
+                            ]
+                input[1] = []
+                input[2] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.scaffolds,
+                    process.out.contigs,
+                    process.out.transcripts,
+                    process.out.gene_clusters,
+                    process.out.gfa,
+                    process.out.versions
+                    ).match() },
+                { assert path(process.out.log[0][1]).readLines().any { it.contains("SPAdes pipeline finished") } }
+            )
+        }
+    }
+
+    test("sarscov2 - pe ") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                            [ file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true),
+                                file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_2.fastq.gz", checkIfExists: true) ],
+                            [],
+                            []
+                        ]
+                input [1] = []
+                input [2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.scaffolds,
+                    process.out.contigs,
+                    process.out.transcripts,
+                    process.out.gene_clusters,
+                    process.out.gfa,
+                    process.out.versions
+                    ).match() },
+                { assert path(process.out.log[0][1]).readLines().any { it.contains("SPAdes pipeline finished") } },
+                { assert file(process.out.warnings[0][1]).find{ file(it).name == "warnings.log"} }
+            )
+        }
+
+    }
+     // isnt perfect, because CCS reads should rather be used with -s instead of --pacbio
+    test("sarscov2 - pe - pacbio ") {
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                            [ file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true),
+                                file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_2.fastq.gz", checkIfExists: true) ],
+                            [],
+                            [ file(params.modules_testdata_base_path + "genomics/sarscov2/nanopore/fastq/test.fastq.gz", checkIfExists: true) ]
+                        ]
+                input [1] = []
+                input [2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.scaffolds,
+                    process.out.contigs,
+                    process.out.transcripts,
+                    process.out.gene_clusters,
+                    process.out.gfa,
+                    process.out.versions
+                    ).match() },
+                { assert path(process.out.log[0][1]).readLines().any { it.contains("SPAdes pipeline finished") } },
+                { assert file(process.out.warnings[0][1]).find{ file(it).name == "warnings.log"} }
+            )
+        }
+    }
+
+    test("sarscov2 - pe - nanopore ") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                            [ file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true),
+                                file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_2.fastq.gz", checkIfExists: true) ],
+                            [],
+                            [ file(params.modules_testdata_base_path + "genomics/sarscov2/nanopore/fastq/test.fastq.gz", checkIfExists: true) ]
+                        ]
+                input [1] = []
+                input [2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.scaffolds,
+                    process.out.contigs,
+                    process.out.transcripts,
+                    process.out.gene_clusters,
+                    process.out.gfa,
+                    process.out.versions
+                    ).match() },
+                { assert path(process.out.log[0][1]).readLines().any { it.contains("SPAdes pipeline finished") } },
+                { assert file(process.out.warnings[0][1]).find{ file(it).name == "warnings.log"} }
+            )
+        }
+    }
+
+    test("sarscov2 - pe - nanopore - yml ") {
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                            [ file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true),
+                                file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_2.fastq.gz", checkIfExists: true) ],
+                            [],
+                            [ file(params.modules_testdata_base_path + "genomics/sarscov2/nanopore/fastq/test.fastq.gz", checkIfExists: true) ]
+                        ]
+                input [1] = file(params.modules_testdata_base_path + "delete_me/spades/spades_input_yml.yml", checkIfExists: true)
+                input [2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.scaffolds,
+                    process.out.contigs,
+                    process.out.transcripts,
+                    process.out.gene_clusters,
+                    process.out.gfa,
+                    process.out.versions
+                    ).match() },
+                { assert path(process.out.log[0][1]).readLines().any { it.contains("SPAdes pipeline finished") } },
+                { assert file(process.out.warnings[0][1]).find{ file(it).name == "warnings.log"} }
+            )
+        }
+    }
+
+    test("sarscov2 - pe - hmm ") {
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                            [ file("https://github.com/nf-core/test-datasets/raw/viralrecon/illumina/sispa/SRR11140744_R1.fastq.gz", checkIfExists: true),
+                                file("https://github.com/nf-core/test-datasets/raw/viralrecon/illumina/sispa/SRR11140744_R2.fastq.gz", checkIfExists: true) ],
+                            [],
+                            []
+                        ]
+                input [1] = []
+                input [2] = [file(params.modules_testdata_base_path + "/genomics/sarscov2/genome/proteome.hmm.gz", checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.scaffolds,
+                    process.out.contigs,
+                    process.out.transcripts,
+                    process.out.gene_clusters,
+                    process.out.gfa,
+                    process.out.versions
+                    ).match() },
+                { assert path(process.out.log[0][1]).readLines().any { it.contains("SPAdes pipeline finished") } }
+            )
+        }
+    }
+
+    test("sarscov2 - pe - stub ") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                            [ file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true),
+                                file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_2.fastq.gz", checkIfExists: true) ],
+                            [],
+                            []
+                        ]
+                input [1] = []
+                input [2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

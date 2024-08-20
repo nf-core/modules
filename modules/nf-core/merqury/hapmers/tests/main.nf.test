@@ -1,0 +1,113 @@
+nextflow_process {
+
+    name "Test Process MERQURY_HAPMERS"
+    script "../main.nf"
+    process "MERQURY_HAPMERS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "merqury"
+    tag "merqury/hapmers"
+    tag "meryl/count"
+
+    setup {
+        run('MERYL_COUNT') {
+            script "../../../meryl/count"
+            process {
+                """
+                input[0] = [
+                    [ id:'child' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_1.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = 21
+                """
+            }
+        }
+
+        run('MERYL_COUNT', alias: 'MERYL_COUNT_MATERNAL') {
+            script "../../../meryl/count"
+            process {
+                """
+                input[0] = [
+                    [ id:'maternal' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = 21
+                """
+            }
+        }
+
+        run('MERYL_COUNT', alias: 'MERYL_COUNT_PATERNAL') {
+            script "../../../meryl/count"
+            process {
+                """
+                input[0] = [
+                    [ id:'paternal' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = 21
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens") {
+
+        when {
+            process {
+                """
+                input[0] = MERYL_COUNT.out.meryl_db
+                input[1] = MERYL_COUNT_MATERNAL.out.meryl_db.map { meta, db -> db }
+                input[2] = MERYL_COUNT_PATERNAL.out.meryl_db.map { meta, db -> db }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.mat_hapmer_meryl).md5().match("mat_hapmer_meryl") },
+                { assert snapshot(process.out.pat_hapmer_meryl).md5().match("pat_hapmer_meryl") },
+                { assert snapshot(
+                    process.out.versions,
+                    file(process.out.inherited_hapmers_fl_png[0][1]).name,
+                    file(process.out.inherited_hapmers_ln_png[0][1]).name,
+                    file(process.out.inherited_hapmers_st_png[0][1]).name
+                    ).match()
+                },
+            )
+        }
+    }
+
+    test("homo_sapiens-stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = MERYL_COUNT.out.meryl_db
+                input[1] = MERYL_COUNT_MATERNAL.out.meryl_db.map { meta, db -> db }
+                input[2] = MERYL_COUNT_PATERNAL.out.meryl_db.map { meta, db -> db }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.mat_hapmer_meryl).md5().match("mat_hapmer_meryl_stub") },
+                { assert snapshot(process.out.pat_hapmer_meryl).md5().match("pat_hapmer_meryl_stub") },
+                { assert snapshot(
+                    process.out.versions,
+                    file(process.out.inherited_hapmers_fl_png[0][1]).name,
+                    file(process.out.inherited_hapmers_ln_png[0][1]).name,
+                    file(process.out.inherited_hapmers_st_png[0][1]).name
+                    ).match()
+                },
+            )
+        }
+
+    }
+
+}

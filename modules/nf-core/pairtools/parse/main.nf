@@ -35,7 +35,7 @@ process PAIRTOOLS_PARSE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pairtools: \$(pairtools --version 2>&1 | tr '\\n' ',' | sed 's/.*pairtools.*version //' | sed 's/,\$/\\n/')
+        pairtools: \$(pairtools --version | tr '\\n' ',' | sed 's/.*pairtools.*version //' | sed 's/,\$/\\n/')
     END_VERSIONS
     """
 }

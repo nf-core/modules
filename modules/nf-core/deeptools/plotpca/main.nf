@@ -4,8 +4,8 @@ process DEEPTOOLS_PLOTPCA {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/deeptools:3.5.1--py_0' :
-        'biocontainers/deeptools:3.5.1--py_0' }"
+        'https://depot.galaxyproject.org/singularity/deeptools:3.5.5--pyhdfd78af_0':
+        'biocontainers/deeptools:3.5.5--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(matrix)
@@ -27,6 +27,18 @@ process DEEPTOOLS_PLOTPCA {
         --corData $matrix \\
         --plotFile ${prefix}.plotPCA.pdf \\
         --outFileNameData ${prefix}.plotPCA.tab
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        deeptools: \$(plotPCA --version | sed -e "s/plotPCA //g")
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.plotPCA.pdf
+    touch ${prefix}.plotPCA.tab
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

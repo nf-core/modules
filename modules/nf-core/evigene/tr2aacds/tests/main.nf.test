@@ -1,0 +1,64 @@
+nextflow_process {
+
+    name "Test Process EVIGENE_TR2AACDS"
+    script "../main.nf"
+    process "EVIGENE_TR2AACDS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "evigene"
+    tag "evigene/tr2aacds"
+
+    test("homo_sapiens - transcriptome_fasta") {
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.dropset[0][1],
+                    file(process.out.okayset[0][1]).listFiles().collect { it.name }.toSorted(),
+                    process.out.versions,
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
