@@ -23,7 +23,11 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.cafe_base_count != null },
                 { assert snapshot(
-                    process.out.cafe_base_count
+                    process.out.cafe_base_count,
+                    process.out.cafe_significant_trees,
+                    file(process.out.cafe_report[0]).readLines()[3..4],
+                    process.out.cafe_results,
+                    process.out.versions
                     ).match()
                 }
             )
