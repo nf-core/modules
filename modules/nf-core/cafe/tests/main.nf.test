@@ -21,12 +21,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert process.out.cafe_base_count != null },
                 { assert snapshot(
-                    process.out.versions
-                    ).match()
-                }
-                { assert snapshot(
-                    process.out.cafe
+                    process.out.cafe_base_count
                     ).match()
                 }
             )
@@ -49,10 +46,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                //{ assert snapshot(
-                //    process.out.cafe_base_count
-                //    ).match()
-                //}
+                { assert snapshot(
+                    process.out.cafe_base_count
+                    ).match()
+                }
             )
         }
 
