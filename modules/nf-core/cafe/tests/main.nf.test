@@ -14,9 +14,9 @@ nextflow_process {
                 """
                 input[0] = [
                     [id: 'mycoplasma'],
-                    file('/workspace/modules/modules/nf-core/cafe/tests/hog_gene_counts.tsv')
+                    channel.of( file('s3://excon/cafe_input/hog_gene_counts.tsv') )
                 ]
-                input[1] = channel.of( file('/workspace/modules/modules/nf-core/cafe/tests/SpeciesTree_rooted_node_labels_myco.utf8.txt') )
+                input[1] = channel.of( file('s3://excon/cafe_input/SpeciesTree_rooted_ultra.txt') )
                 """
             }
         }
