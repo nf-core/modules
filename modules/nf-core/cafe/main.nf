@@ -7,22 +7,23 @@ process CAFE {
         'biocontainers/cafe:5.1.0--h43eeafb_0' }"
 
     input:
-    path(infile)
+    tuple val(meta), path(infile)
     path(tree)
 
     output:
-    path(".")     , emit: cafe
+    tuple val(meta), path("${prefix}")     , emit: cafe
     path("versions.yml")   , emit: versions
-    path("*_count.tab") , emit: cafe_base_count
-    path("*.tre") , emit: cafe_significant_trees
-    path("*_report.cafe") , emit: cafe_report
-    path("*results.txt") , emit: cafe_results
+    path("${prefix}/*_count.tab") , emit: cafe_base_count
+    path("${prefix}/*.tre") , emit: cafe_significant_trees
+    path("${prefix}/*_report.cafe") , emit: cafe_report
+    path("${prefix}/*results.txt") , emit: cafe_results
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '5.1.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     tr '\\r' '\\n' < $infile > infile.txt
@@ -32,7 +33,7 @@ process CAFE {
         -t treefile.txt \\
         $args \\
         --cores ${task.cpus} \\
-        -o .
+        -o ${prefix}
 
 
     cat <<-END_VERSIONS > versions.yml
@@ -43,14 +44,15 @@ process CAFE {
 
     stub:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '5.1.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    touch .
+    mkdir ${prefix}
     touch versions.yml
-    touch *_count.tab
-    touch *.tre
-    touch *_report.cafe
-    touch *results.txt
+    touch ${prefix}/*_count.tab
+    touch ${prefix}/*.tre
+    touch ${prefix}/*_report.cafe
+    touch ${prefix}/*results.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

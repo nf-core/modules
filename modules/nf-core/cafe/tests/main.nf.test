@@ -12,8 +12,11 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = channel.of( file('s3://excon/cafe_input/hog_gene_counts.tsv') )
-                input[1] = channel.of( file('s3://excon/cafe_input/SpeciesTree_rooted_ultra.txt') )
+                input[0] = [
+                    [id: 'mycoplasma'],
+                    file('/workspace/modules/modules/nf-core/cafe/tests/hog_gene_counts.tsv')
+                ]
+                input[1] = channel.of( file('/workspace/modules/modules/nf-core/cafe/tests/SpeciesTree_rooted_node_labels_myco.utf8.txt') )
                 """
             }
         }
@@ -21,7 +24,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.cafe_base_count != null },
                 { assert snapshot(
                     process.out.cafe_base_count,
                     process.out.cafe_significant_trees,
@@ -41,7 +43,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = channel.of( file('s3://excon/cafe_input/hog_gene_counts.tsv') )
+                input[0] = [ [id: 'mycoplasma'], channel.of( file('s3://excon/cafe_input/hog_gene_counts.tsv') ) ]
                 input[1] = channel.of( file('s3://excon/cafe_input/SpeciesTree_rooted_ultra.txt') )
                 """
             }

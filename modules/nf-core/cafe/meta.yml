@@ -1,5 +1,5 @@
 name: "cafe"
-description: Analysis of gene Family Evolution
+description: Analysis of gene family evolution
 keywords:
   - gene
   - phylogeny
@@ -13,15 +13,25 @@ tools:
       doi: "10.1093/bioinformatics/btaa1027"
       licence: ["IU OPEN SOURCE LICENSE (see https://github.com/hahnlab/CAFE5/blob/master/LICENSE)"]
 input:
-  - tree:
-      type: file
-      description: Newick formatted tree
-      pattern: "*.{txt}"
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
   - infile:
       type: file
       description: Gene counts table (from OrthoMCL, SwiftOrtho, FastOrtho, OrthAgogue or OrthoFinder)
       pattern: "*.{txt,tsv,tab}"
+  - tree:
+      type: file
+      description: Newick formatted tree
+      pattern: "*.{txt}"
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
   - versions:
       type: file
       description: File containing software versions
