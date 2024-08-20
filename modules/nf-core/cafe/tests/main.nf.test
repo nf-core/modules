@@ -12,11 +12,14 @@ nextflow_process {
         when {
             process {
                 """
+                def file_a = file('s3://excon/cafe_input/hog_gene_counts.tsv')
+                def file_b = file('s3://excon/cafe_input/SpeciesTree_rooted_ultra.txt')
+
                 input[0] = [
-                    [id: 'mycoplasma'],
-                    file('s3://excon/cafe_input/hog_gene_counts.tsv')
+                    [id:'mycoplasma'],
+                    [ file_a ]
                 ]
-                input[1] = file('s3://excon/cafe_input/SpeciesTree_rooted_ultra.txt')
+                input[1] = [ file_b ]
                 """
             }
         }
@@ -43,8 +46,14 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [id: 'mycoplasma'], channel.of( file('s3://excon/cafe_input/hog_gene_counts.tsv') ) ]
-                input[1] = channel.of( file('s3://excon/cafe_input/SpeciesTree_rooted_ultra.txt') )
+                def file_a = file('s3://excon/cafe_input/hog_gene_counts.tsv')
+                def file_b = file('s3://excon/cafe_input/SpeciesTree_rooted_ultra.txt')
+
+                input[0] = [
+                    [id:'mycoplasma'],
+                    [ file_a ]
+                ]
+                input[1] = [ file_b ]
                 """
             }
         }

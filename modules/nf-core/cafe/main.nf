@@ -11,12 +11,12 @@ process CAFE {
     path(tree)
 
     output:
-    tuple val(meta), path("${prefix}")     , emit: cafe
+    //tuple val(meta), path("${prefix}")     , emit: cafe
     path("versions.yml")   , emit: versions
-    path("${prefix}/*_count.tab") , emit: cafe_base_count
-    path("${prefix}/*.tre") , emit: cafe_significant_trees
-    path("${prefix}/*_report.cafe") , emit: cafe_report
-    path("${prefix}/*results.txt") , emit: cafe_results
+    path("$prefix/*_count.tab") , emit: cafe_base_count
+    path("$prefix/*.tre") , emit: cafe_significant_trees
+    path("$prefix/*_report.cafe") , emit: cafe_report
+    path("$prefix/*results.txt") , emit: cafe_results
 
     when:
     task.ext.when == null || task.ext.when
