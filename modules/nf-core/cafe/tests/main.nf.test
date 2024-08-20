@@ -27,8 +27,8 @@ nextflow_process {
                 { assert snapshot(
                     process.out.cafe_base_count,
                     process.out.cafe_significant_trees,
-                    file(process.out.cafe_report[0]).readLines()[3..4],
                     process.out.cafe_results,
+                    file(process.out.cafe_report[0]).readLines()[3..4],
                     process.out.versions
                     ).match()
                 }
