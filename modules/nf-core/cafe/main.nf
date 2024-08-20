@@ -11,8 +11,8 @@ process CAFE {
     path(tree)
 
     output:
-    //tuple val(meta), path("${prefix}")     , emit: cafe
-    path("versions.yml")   , emit: versions
+    tuple val(meta), path("${prefix}") , emit: cafe
+    path("versions.yml") , emit: versions
     path("$prefix/*_count.tab") , emit: cafe_base_count
     path("$prefix/*.tre") , emit: cafe_significant_trees
     path("$prefix/*_report.cafe") , emit: cafe_report
@@ -24,7 +24,7 @@ process CAFE {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '5.1.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    VERSION = '5.1.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     tr '\\r' '\\n' < $infile > infile.txt
     tr '\\r' '\\n' < $tree > treefile.txt
@@ -45,7 +45,7 @@ process CAFE {
     stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '5.1.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    VERSION = '5.1.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     mkdir ${prefix}
     touch versions.yml

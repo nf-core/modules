@@ -62,7 +62,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.cafe_base_count
+                    process.out.cafe_base_count,
+                    process.out.cafe_significant_trees,
+                    process.out.cafe_results,
+                    process.out.versions
                     ).match()
                 }
             )
