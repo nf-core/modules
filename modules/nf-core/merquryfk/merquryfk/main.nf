@@ -18,9 +18,9 @@ process MERQURYFK_MERQURYFK {
     tuple val(meta), path("${prefix}.*.spectra-cn.ln.{png,pdf}")  , emit: spectra_cn_ln,  optional: true
     tuple val(meta), path("${prefix}.*.spectra-cn.st.{png,pdf}")  , emit: spectra_cn_st,  optional: true
     tuple val(meta), path("${prefix}.qv")                 , emit: qv
-    tuple val(meta), path("${prefix}.spectra-asm.fl.*")   , emit: spectra_asm_fl, optional: true
-    tuple val(meta), path("${prefix}.spectra-asm.ln.*")   , emit: spectra_asm_ln, optional: true
-    tuple val(meta), path("${prefix}.spectra-asm.st.*")   , emit: spectra_asm_st, optional: true
+    tuple val(meta), path("${prefix}.spectra-asm.fl.{png,pdf}")   , emit: spectra_asm_fl, optional: true
+    tuple val(meta), path("${prefix}.spectra-asm.ln.{png,pdf}")   , emit: spectra_asm_ln, optional: true
+    tuple val(meta), path("${prefix}.spectra-asm.st.{png,pdf}")   , emit: spectra_asm_st, optional: true
     tuple val(meta), path("${prefix}.phased_block.bed")   , emit: phased_block_bed,   optional: true
     tuple val(meta), path("${prefix}.phased_block.stats") , emit: phased_block_stats, optional: true
     tuple val(meta), path("${prefix}.continuity.N.*")     , emit: continuity_N,       optional: true
