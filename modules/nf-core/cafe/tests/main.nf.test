@@ -12,14 +12,10 @@ nextflow_process {
         when {
             process {
                 """
-                def file_a = file('s3://excon/cafe_input/hog_gene_counts.tsv')
-                def file_b = file('s3://excon/cafe_input/SpeciesTree_rooted_ultra.txt')
-
-                input[0] = [
-                    [id:'mycoplasma'],
-                    [ file_a ]
+                input[0] = [    [ id:'test' ],
+                                [ file("https://raw.githubusercontent.com/nf-core/test-datasets/cafe/testdata/hog_gene_counts.small.tsv", checkIfExists: true) ]
                 ]
-                input[1] = [ file_b ]
+                input[1] = [ file("https://raw.githubusercontent.com/nf-core/test-datasets/cafe/testdata/SpeciesTree_rooted_ultra.txt", checkIfExists: true) ]
                 """
             }
         }
@@ -46,14 +42,10 @@ nextflow_process {
         when {
             process {
                 """
-                def file_a = file('s3://excon/cafe_input/hog_gene_counts.tsv')
-                def file_b = file('s3://excon/cafe_input/SpeciesTree_rooted_ultra.txt')
-
-                input[0] = [
-                    [id:'mycoplasma'],
-                    [ file_a ]
+                input[0] = [    [ id:'test' ],
+                                [ file("https://raw.githubusercontent.com/nf-core/test-datasets/cafe/testdata/hog_gene_counts.small.tsv", checkIfExists: true) ]
                 ]
-                input[1] = [ file_b ]
+                input[1] = [ file("https://raw.githubusercontent.com/nf-core/test-datasets/cafe/testdata/SpeciesTree_rooted_ultra.txt", checkIfExists: true) ]
                 """
             }
         }
