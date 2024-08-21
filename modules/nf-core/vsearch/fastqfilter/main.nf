@@ -71,8 +71,8 @@ process VSEARCH_FASTQFILTER {
     //               Complex example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bedtools/split/main.nf#L38-L54
     """
     touch ${prefix}.filtered.fasta
-    touch ${prefix}.filtered.log"
-    
+    touch ${prefix}.filtered.log
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         vsearch: \$(vsearch --version 2>&1 | head -n 1 | sed 's/vsearch //g' | sed 's/,.*//g' | sed 's/^v//' | sed 's/_.*//')
