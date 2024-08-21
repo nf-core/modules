@@ -1,0 +1,43 @@
+
+nextflow_process {
+
+    name "Test Process ANGSD_DOCOUNTS"
+    script "../main.nf"
+    process "ANGSD_DOCOUNTS"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "angsd"
+    tag "angsd/docounts"
+
+    test("test-angsd-docounts") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				[ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam.bai', checkIfExists: true),
+				    []
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.counts[0][1]).linesGzip[0..5],
+                    file(process.out.icounts[0][1]).name,
+                    path(process.out.pos[0][1]).linesGzip[0..5],
+                    process.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+}
