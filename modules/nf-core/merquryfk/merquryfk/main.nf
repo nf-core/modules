@@ -14,9 +14,9 @@ process MERQURYFK_MERQURYFK {
     tuple val(meta), path("${prefix}.completeness.stats") , emit: stats
     tuple val(meta), path("${prefix}.*_only.bed")         , emit: bed
     tuple val(meta), path("${prefix}.*.qv")               , emit: assembly_qv
-    tuple val(meta), path("${prefix}.*.spectra-cn.fl.*")  , emit: spectra_cn_fl,  optional: true
-    tuple val(meta), path("${prefix}.*.spectra-cn.ln.*")  , emit: spectra_cn_ln,  optional: true
-    tuple val(meta), path("${prefix}.*.spectra-cn.st.*")  , emit: spectra_cn_st,  optional: true
+    tuple val(meta), path("${prefix}.*.spectra-cn.fl.{png,pdf}")  , emit: spectra_cn_fl,  optional: true
+    tuple val(meta), path("${prefix}.*.spectra-cn.ln.{png,pdf}")  , emit: spectra_cn_ln,  optional: true
+    tuple val(meta), path("${prefix}.*.spectra-cn.st.{png,pdf}")  , emit: spectra_cn_st,  optional: true
     tuple val(meta), path("${prefix}.qv")                 , emit: qv
     tuple val(meta), path("${prefix}.spectra-asm.fl.*")   , emit: spectra_asm_fl, optional: true
     tuple val(meta), path("${prefix}.spectra-asm.ln.*")   , emit: spectra_asm_ln, optional: true
