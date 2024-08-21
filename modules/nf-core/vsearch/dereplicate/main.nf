@@ -22,8 +22,6 @@ process VSEARCH_DEREPLICATE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // TODO nf-core: Please replace the example samtools command below with your module's command
-    // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
     vsearch \\
         --derep_fulllength ${fasta} \\
