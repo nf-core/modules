@@ -1,56 +1,53 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "vsearch_dereplicate"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Merge strictly identical sequences contained in filename. Identical sequences are defined as having the same length and the same string of nucleotides (case insensitive, T and U are considered the same).
 keywords:
-  - sort
-  - example
+  - vsearch/dereplicate
+  - vsearch
+  - dereplicate
+  - amplicon sequences
+  - metagenomics
   - genomics
+  - population genetics
 tools:
   - "vsearch":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "A versatile open source tool for metagenomics (USEARCH alternative)"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
-      licence: ['GPL v3-or-later OR BSD-2-clause']
-
-## TODO nf-core: Add a description of all of the variables used as input
+      homepage: https://github.com/torognes/vsearch
+      documentation: https://github.com/torognes/vsearch/releases/download/v2.21.1/vsearch_manual.pdf
+      tool_dev_url: https://github.com/torognes/vsearch
+      doi: 10.7717/peerj.2584
+      licence: ["GPL v3-or-later OR BSD-2-clause"]
 input:
-  # Only when we have meta
   - meta:
       type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+      description: Groovy Map containing sample information e.g. [ id:'test' ]
+  - fasta:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
-## TODO nf-core: Add a description of all of the variables used as output
+      description: Sequences to be sorted in FASTA format
+      pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
 output:
-  #Only when we have meta
   - meta:
       type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  
+      description: Groovy Map containing sample information e.g. [ id:'test' ]`
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
   - bam:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
+      description: bam of dereplicated fasta
+      pattern: "*.bam"
+  - fasta:
+      type: file
+      description: dereplicated fasta
+      pattern: "*.fasta"
+  - clustering:
+      type: file
+      description: dereplicated derep.uc file
+      pattern: "*.uc"
+  - log:
+      type: file
+      description: a log file of the run
+      pattern: "*.derep.log"
 authors:
   - "@chriswyatt1"
 maintainers:
