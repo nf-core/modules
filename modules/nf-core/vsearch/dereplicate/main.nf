@@ -11,7 +11,6 @@ process VSEARCH_DEREPLICATE {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.bam")           , emit: bam
     tuple val(meta), path('*.derep.fasta')   , emit: fasta
     tuple val(meta), path('*.derep.uc')      , emit: clustering
     path "*.derep.log"                       , emit: log
@@ -43,7 +42,6 @@ process VSEARCH_DEREPLICATE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.bam
     touch ${prefix}.derep.fasta
     touch ${prefix}.derep.uc
     touch myfile.derep.log
