@@ -9,6 +9,7 @@ process PINTS_CALLER {
 
     input:
     tuple val(meta), path(bams), path(bais)
+    val assay_type
 
     output:
     tuple val(meta), path("*_divergent_peaks.bed")     , optional:true, emit: divergent_TREs
@@ -34,6 +35,7 @@ process PINTS_CALLER {
         --file-prefix $prefix \\
         --thread $task.cpus \\
         --dont-check-updates \\
+        --exp-type $assay_type \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

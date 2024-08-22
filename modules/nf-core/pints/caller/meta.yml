@@ -34,6 +34,9 @@ input:
       type: file
       description: Corresponding BAM file indexes
       pattern: "*.bam.bai"
+  - assay:
+      type: string
+      description: Assay name
 output:
   - meta:
       type: map
