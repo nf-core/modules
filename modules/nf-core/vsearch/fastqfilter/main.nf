@@ -12,7 +12,7 @@ process VSEARCH_FASTQFILTER {
     tuple val(meta), path(fastq)
 
     output:
-    tuple val(meta), path('*.filtered.fasta')   , emit: fasta
+    tuple val(meta), path('*.fasta')   , emit: fasta
     path "*.filtered.log"            , emit: log
     path "versions.yml"           , emit: versions
 
