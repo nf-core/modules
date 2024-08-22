@@ -1,5 +1,5 @@
 nextflow_process {
-    
+
     name "Test Process VSEARCH_DEREPLICATE"
     script "../main.nf"
     process "VSEARCH_DEREPLICATE"
@@ -14,7 +14,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of( [ [ "id": "ERR2537816", "single_end": false ], file("s3://pollen-metabarcoding-test-data/test_data/ERR2537816.filtered.fasta") ] )
+                input[0] = [
+                    [ "id": "ERR2537816", "single_end": false ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/cyn_syn.fna", checkIfExists: true)
+                ]
                 """
             }
         }
@@ -35,7 +38,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of( [ [ "id": "ERR2537816", "single_end": false ], file("s3://pollen-metabarcoding-test-data/test_data/ERR2537816.filtered.fasta") ] )
+                input[0] = [
+                    [ "id": "ERR2537816", "single_end": false ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/cyn_syn.fna", checkIfExists: true)
+                ]
                 """
             }
         }
