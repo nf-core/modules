@@ -10,7 +10,7 @@ nextflow_process {
     tag "rapidnj"
 
     test("test-rapidnj") {
-        
+
         when {
             process {
                 """
@@ -23,14 +23,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert process.out.phylogeny },
                 { assert snapshot(
 					process.out.stockholm_alignment,
-					file(process.out.phylogeny[0][1]).name,
 					process.out.versions
 					).match()
 				}
             )
         }
     }
-    
+
 }
