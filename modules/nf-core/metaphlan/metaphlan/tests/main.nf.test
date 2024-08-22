@@ -1,6 +1,8 @@
 nextflow_process {
     name "Test Process METAPHLAN_METAPHLAN"
     script "../main.nf"
+    config "./nextflow.config"
+
     process "METAPHLAN_METAPHLAN"
     tag "modules"
     tag "modules_nfcore"

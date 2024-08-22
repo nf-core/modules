@@ -2,6 +2,7 @@ nextflow_process {
 
     name "Test Process METAPHLAN_MERGEMETAPHLANTABLES"
     script "../main.nf"
+    config "./nextflow.config"
     process "METAPHLAN_MERGEMETAPHLANTABLES"
 
     tag "modules"
