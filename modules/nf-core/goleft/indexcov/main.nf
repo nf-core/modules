@@ -53,7 +53,7 @@ process GOLEFT_INDEXCOV {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir "${prefix}"
-    touch "${prefix}/${prefix}-indexcov.bed.gz"
+    echo "" | gzip > "${prefix}/${prefix}-indexcov.bed.gz"
     touch "${prefix}/${prefix}-indexcov.bed.gz.tbi"
 
     cat <<-END_VERSIONS > versions.yml
