@@ -8,6 +8,7 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "pints"
+    tag "pints/caller"
 
     test("groHMM data - [bam, bam], fasta") {
 
@@ -34,6 +35,7 @@ nextflow_process {
                     process.out.divergent_TREs,
                     process.out.bidirectional_TREs,
                     process.out.unidirectional_TREs,
+                    process.out.versions,
                 ).match("bams")
                 },
             )
@@ -63,6 +65,7 @@ nextflow_process {
                     process.out.divergent_TREs,
                     process.out.bidirectional_TREs,
                     process.out.unidirectional_TREs,
+                    process.out.versions,
                 ).match("single_bam")
                 },
             )
