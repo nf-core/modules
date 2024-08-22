@@ -13,8 +13,8 @@ process VSEARCH_FASTQFILTER {
 
     output:
     tuple val(meta), path('*.fasta')   , emit: fasta
-    path "*.filtered.log"            , emit: log
-    path "versions.yml"           , emit: versions
+    path "*.log"                       , emit: log
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -45,7 +45,7 @@ process VSEARCH_FASTQFILTER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vsearch: \$(vsearch --version 2>&1 | head -n 1 | sed 's/vsearch //g' | sed 's/,.*//g' | sed 's/^v//' | sed 's/_.*//')
+        vsearch: \$(vsearch --version 2>&1 | head -n1 | cut -d"_" -f1 | cut -d"v" -f3)
     END_VERSIONS
     """
 }
