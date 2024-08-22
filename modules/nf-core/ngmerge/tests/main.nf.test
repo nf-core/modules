@@ -1,0 +1,42 @@
+
+nextflow_process {
+
+    name "Test Process NGMERGE"
+    script "../main.nf"
+    process "NGMERGE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ngmerge"
+
+    test("test-ngmerge") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+				]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					path(process.out.merged_reads[0][1]).linesGzip[3..7],
+					path(process.out.unstitched_read1[0][1]).linesGzip[3..7],
+					path(process.out.unstitched_read2[0][1]).linesGzip[3..7],
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}
