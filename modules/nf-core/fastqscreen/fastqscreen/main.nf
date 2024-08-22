@@ -30,7 +30,6 @@ process FASTQSCREEN_FASTQSCREEN {
         --conf ${database}/fastq_screen.conf \\
         $reads \\
         $args \\
-        --outdir .
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
