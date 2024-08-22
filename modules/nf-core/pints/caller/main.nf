@@ -3,9 +3,10 @@ process PINTS_CALLER {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
+    // NOTE Stopped publishing at 1.1.9 https://quay.io/repository/biocontainers/pypints?tab=tags
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pypints:1.1.8--pyh7cba7a3_0' :
-        'biocontainers/pypints:1.1.8--pyh7cba7a3_0' }"
+        'oras://community.wave.seqera.io/library/pints_caller:650ef63c9768bb5a' :
+        'community.wave.seqera.io/library/pints_caller:b1e6404513917871' }"
 
     input:
     tuple val(meta), path(bams), path(bais)
