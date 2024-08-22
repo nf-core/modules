@@ -27,7 +27,7 @@ process VSEARCH_FASTQFILTER {
     vsearch \\
         --fastq_filter ${fastq} \\
         $args \\
-        --fastaout ${prefix}.filtered.fasta 2>&1 | tee ${prefix}.filtered.log
+        --fastaout ${prefix}.fasta 2>&1 | tee ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
