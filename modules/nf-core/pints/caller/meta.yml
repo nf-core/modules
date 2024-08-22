@@ -28,8 +28,12 @@ input:
         e.g. [ id:'test', single_end:false ]
   - bams:
       type: file
-      description: BAM/ file
+      description: One or more BAM files
       pattern: "*.{bam}"
+  - bais:
+      type: file
+      description: Corresponding BAM file indexes
+      pattern: "*.bam.bai"
 output:
   - meta:
       type: map
