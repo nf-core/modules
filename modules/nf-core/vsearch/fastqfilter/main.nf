@@ -40,8 +40,8 @@ process VSEARCH_FASTQFILTER {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    touch ${prefix}.filtered.fasta
-    touch ${prefix}.filtered.log
+    touch ${prefix}.fasta
+    touch ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
