@@ -1,0 +1,47 @@
+name: "tantan"
+description: "Identify simple regions / low complexity / tandem repeats in DNA or protein sequences."
+keywords:
+  - mask
+  - repeat
+  - tandem
+  - complexity
+tools:
+  - "tantan":
+      description: "tantan masks simple regions (low complexity & short-period tandem repeats) in biological sequences."
+      homepage: "https://gitlab.com/mcfrith/tantan/-/blob/main/README.rst"
+      documentation: "https://gitlab.com/mcfrith/tantan/-/blob/main/README.rst"
+      tool_dev_url: "https://gitlab.com/mcfrith/tantan"
+      doi: "10.1093/nar/gkq1212"
+      licence: ['GPL v3-or-later']
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - fasta:
+      type: file
+      description: FASTA file containing a nucleotide sequence.
+      pattern: "*.{fa,fa.gz,fasta,fasta.gz,fna,fna.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - masked_fasta:
+    type: file
+    description: |
+      FASTA file where all masked regions are replaced
+      with lowercase letters.
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@CarsonJM"
+maintainers:
+  - "@CarsonJM"
