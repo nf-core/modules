@@ -23,6 +23,9 @@ input:
       type: file
       description: One fasta file or a list of multiple fasta files to perform president on. Has to be uncompressed!
       pattern: "*.{fasta,fas,fa,fna,ffn,faa,mpfa,frn}"
+  - meta2:
+      type: map
+      description: Groovy Map containing information about the reference genome
   - reference:
       type: file
       description: Fasta of a reference genome. Has to be uncompressed!
@@ -36,10 +39,14 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - fasta:
+  - valid_fasta:
       type: file
-      description: Two fasta files, one with sequences which passed the qc ("valid.fasta"), one with sequences which didn't pass the qc ("invalid.fasta"). If true is set on the "compress" input value, these files are gz-compressed.
+      description: Fasta file containing sequences which passed the qc ("valid.fasta"). If true is set on the "compress" input value, the file is gz-compressed.
       pattern: "*.{fasta.gz, fasta}"
+  - invalid_fasta:
+      type: file
+      description: Fasta file containing sequences which didn't pass the qc ("invalid.fasta"). If true is set on the "compress" input value, the files are gz-compressed.
+      pattern: "*_invalid.{fasta.gz, fasta}"
   - report:
       type: file
       description: Report with some information for every sample, like statistic values. See docs for details
@@ -53,3 +60,4 @@ authors:
   - "@paulwolk"
 maintainers:
   - "@paulwolk"
+  - "@gallvp"

@@ -29,4 +29,3 @@ workflow BED_SCATTER_BEDTOOLS {
 
     versions        = ch_versions       // channel: [ path(versions.yml) ]
 }
-

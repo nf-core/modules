@@ -14,11 +14,17 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test' ], // meta map
-                    file(params.test_data['sarscov2']['genome']['contigs_genome_maf_gz'], checkIfExists: true)
-                ]
-                input[1] = channel.of("png")
+                input[0] = channel.of('NODE_1_length_20973_cov_191.628754\t2000\t2010')
+                         . collectFile(name: 'dummy_annot_b.bed', newLine: true)
+                         . map { [
+                                   [ id:'test' ], // meta map
+                                   file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true),
+                                   it
+                                 ] }
+                input[1] = channel.of('MT192765.1\t1000\t1010')
+                         . collectFile(name: 'dummy_annot_a.bed', newLine: true)
+                         . map { [ [ id:'test'], it ] }
+                input[2] = channel.of("png")
                 """
             }
         }
@@ -34,15 +40,17 @@ nextflow_process {
     }
 
     test("sarscov2 - contigs - genome - gif") {
-
+    // Test a different output format and absence of annotation files
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.test_data['sarscov2']['genome']['contigs_genome_maf_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true),
+                    []
                 ]
-                input[1] = channel.of("gif")
+                input[1] = [ [id: 'test'], [] ]
+                input[2] = "gif"
                 """
             }
         }
@@ -65,9 +73,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.test_data['sarscov2']['genome']['contigs_genome_maf_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true),
+                    []
                 ]
-                input[1] = channel.of("png")
+                input[1] = [ [id: 'test'], [] ]
+                input[2] = "png"
                 """
             }
         }

@@ -9,7 +9,7 @@ process PILON {
 
     input:
     tuple val(meta), path(fasta)
-    tuple val(meta_bam), path(bam), path(bai)
+    tuple val(meta2), path(bam), path(bai)
     val pilon_mode
 
     output:
@@ -24,20 +24,47 @@ process PILON {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args       = task.ext.args ?: ''
+    def prefix     = task.ext.prefix ?: "${meta.id}"
     def valid_mode = ["frags", "jumps", "unpaired", "bam"]
     if ( !valid_mode.contains(pilon_mode) )  { error "Unrecognised mode to run Pilon. Options: ${valid_mode.join(', ')}" }
+    def mem_mb = 1024
+    if (!task.memory) {
+        log.info '[Pilon] Available memory not known - defaulting to 1GB. Specify process memory requirements to change this.'
+    } else {
+        mem_mb = task.memory.giga < 2 ? (task.memory.mega*0.8).intValue() : task.memory.mega - 1024
+    }
     """
-    pilon \\
+    # `which` allows us to get the directory that contains `pilon`, independent of whether we
+    # are in a container or conda environment.
+    PILON_JAR=\$(dirname \$(which pilon))/../share/pilon*/pilon.jar
+    java -Xmx${mem_mb}M -jar \$PILON_JAR \\
         --genome $fasta \\
         --output ${meta.id} \\
-        --threads $task.cpus \\
         $args \\
         --$pilon_mode $bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         pilon: \$(echo \$(pilon --version) | sed 's/^.*version //; s/ .*\$//' )
+    END_VERSIONS
     """
+
+    stub:
+    def prefix     = task.ext.prefix ?: "${meta.id}"
+    def valid_mode = ["frags", "jumps", "unpaired", "bam"]
+    if ( !valid_mode.contains(pilon_mode) )  { error "Unrecognised mode to run Pilon. Options: ${valid_mode.join(', ')}" }
+    """
+    touch ${prefix}.fasta
+    touch ${prefix}.vcf
+    touch ${prefix}.change
+    touch ${prefix}.bed
+    touch ${prefix}.wig
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        pilon: \$(echo \$(pilon --version) | sed 's/^.*version //; s/ .*\$//' )
+    END_VERSIONS
+    """
+
 }
