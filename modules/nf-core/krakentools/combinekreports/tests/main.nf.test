@@ -6,12 +6,10 @@ nextflow_process {
 
     tag "modules"
     tag "modules_nfcore"
-    tag "kraken2/kraken2"
     tag "krakentools"
     tag "krakentools/combinekreports"
-    tag "untar"
 
-    test ("sarscov2 - illumina") {
+    test ("sarscov2 - metagenome - kraken report") {
 
         when {
             process {
@@ -33,7 +31,7 @@ nextflow_process {
 
     }
 
-    test ("sarscov2 - illumina - stub") {
+    test ("sarscov2 - metagenome - kraken report - stub") {
 
         options '-stub'
         when {
