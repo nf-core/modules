@@ -37,6 +37,7 @@ jobs:
         filter: [module, workflow]
     env:
       NXF_ANSI_LOG: false
+      NXF_VER: "24.04.4"
       NFTEST_VER: "0.9.0"
       TOTAL_SHARDS: 3
       SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
@@ -51,9 +52,13 @@ jobs:
           java-version: "17"
       - name: Setup Nextflow
         uses: nf-core/setup-nextflow@v2
+        with:
+          version: ${{ env.NXF_VER }}
 
       - name: Install nf-test
         uses: nf-core/setup-nf-test@v1
+        with:
+          version: ${{ env.NFTEST_VER }}
 
       - name: Setup apptainer
         if: matrix.profile == 'singularity'
