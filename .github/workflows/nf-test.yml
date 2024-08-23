@@ -260,7 +260,8 @@ jobs:
             --verbose \
             --only-changed \
             --shard ${{ matrix.shard }}/${{ env.TOTAL_SHARDS }} \
-            --filter ${{ matrix.filter }}
+            --filter ${{ matrix.filter }} \
+            --follow-dependencies
 
       - uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
         with:
