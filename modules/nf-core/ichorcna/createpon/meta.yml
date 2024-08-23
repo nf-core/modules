@@ -32,6 +32,15 @@ input:
       type: file
       description: Text file giving centromere locations of each genome, to exclude these windows
       pattern: "*.{txt}"
+  - rep_time_wig:
+      type: file
+      description: Replication/timing .wig file.
+      pattern: "*.{wig}"
+  - exons:
+      type: file
+      description: BED file for exon regions to annotate CNA regions.
+      pattern: "*.{bed}"
+
 output:
   - versions:
       type: file
