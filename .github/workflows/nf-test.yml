@@ -136,12 +136,11 @@ jobs:
             --filter ${{ matrix.filter }} \
             --follow-dependencies
 
-        # TODO If no test.tap, then make one to spoof?
-
-      - uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
-        with:
-          path: >-
-            test.tap
+      # TODO If no test.tap, then make one to spoof?
+      # - uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
+      #   with:
+      #     path: >-
+      #       test.tap
 
       - name: Clean up
         if: always()
