@@ -14,7 +14,7 @@ nextflow_workflow {
     tag "hmmer/hmmrank"
     tag "seqtk/subseq"
 
-    test("16s - hmm/fasta") {
+    test("SSU rRNA - hmm/fasta") {
 
         setup {
             run("HMMER_HMMFETCH") {
@@ -48,6 +48,42 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(workflow.out).match('16s_out') }
+            )
+        }
+    }
+
+    // The profile used here doesn't give any significant results, and no output fastas are expected
+    test("LSU rRNA - hmm/fasta") {
+
+        setup {
+            run("HMMER_HMMFETCH") {
+                script "../../../../modules/nf-core/hmmer/hmmfetch/main.nf"
+                process {
+                    """
+                    input[0] = Channel.fromList([
+                        tuple([ id: 'euk28s' ], file("https://raw.githubusercontent.com/tseemann/barrnap/master/db/euk.hmm"))
+                    ])
+                    input[1] = Channel.of('28S_rRNA')
+                    input[2] = []
+                    input[3] = []
+                    """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                input[0] = HMMER_HMMFETCH.out.hmm
+                input[1] = Channel.fromPath("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/domain_16s.fna")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match('28s_out') }
             )
         }
     }

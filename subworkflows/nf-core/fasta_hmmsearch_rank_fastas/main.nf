@@ -5,7 +5,7 @@ include { SEQTK_SUBSEQ    } from '../../../modules/nf-core/seqtk/subseq/main'
 workflow FASTA_HMMSEARCH_RANK_FASTAS {
 
     take:
-    ch_hmms  // channel: [ [ val(meta), file(hmm) ] ], i.e. a list of hmm profiles, each with its meta object
+    ch_hmms  // channel: [ val(meta), file(hmm) ], i.e. a list of hmm profiles, each with its meta object
     ch_fasta // channel: file(fasta), a single fasta file
 
     main:
