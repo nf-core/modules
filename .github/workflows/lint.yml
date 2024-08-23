@@ -70,20 +70,11 @@ jobs:
       - name: Run ECLint check
         run: editorconfig-checker -exclude README.md $(git ls-files | grep -v test)
 
-  # FIXME Lint everything?
   nf-core-lint-modules:
     runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
-    name: nf-core-lint-modules
-    needs: [pytest-changes, nf-test-changes]
-    if: ${{ (needs.pytest-changes.outputs.modules != '[]') || ( needs.nf-test-changes.outputs.modules != '[]') }}
+    name: nf-core lint modules
     strategy:
       fail-fast: false
-      matrix:
-        tags:
-          [
-            "${{ fromJson(needs.pytest-changes.outputs.modules) }}",
-            "${{ fromJson(needs.nf-test-changes.outputs.modules) }}",
-          ]
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
@@ -114,23 +105,12 @@ jobs:
       - name: Install nf-core tools development version
         run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
 
-      - name: Lint module ${{ matrix.tags }}
-        run: nf-core modules lint ${{ matrix.tags }}
+      - name: Lint modules
+        run: nf-core modules lint -a
 
-  # FIXME Lint everything?
   nf-core-lint-subworkflows:
     runs-on: ubuntu-latest
-    name: nf-core-lint-modules
-    needs: [pytest-changes, nf-test-changes]
-    if: ${{ (needs.pytest-changes.outputs.subworkflows != '[]') || ( needs.nf-test-changes.outputs.subworkflows != '[]') }}
-    strategy:
-      fail-fast: false
-      matrix:
-        tags:
-          [
-            "${{ fromJson(needs.pytest-changes.outputs.subworkflows) }}",
-            "${{ fromJson(needs.nf-test-changes.outputs.subworkflows) }}",
-          ]
+    name: nf-core lint subworkflows
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
@@ -153,5 +133,5 @@ jobs:
       - name: Install nf-core tools development version
         run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
 
-      - name: Lint module ${{ matrix.tags }}
-        run: nf-core subworkflows lint ${{ matrix.tags }}
+      - name: Lint subworkflows
+        run: nf-core subworkflows lint -a
