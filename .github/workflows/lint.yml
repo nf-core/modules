@@ -106,7 +106,7 @@ jobs:
         run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
 
       - name: Lint modules
-        run: nf-core modules lint -a
+        run: nf-core --hide-progress modules lint -a
 
   nf-core-lint-subworkflows:
     runs-on: ubuntu-latest
@@ -134,4 +134,4 @@ jobs:
         run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
 
       - name: Lint subworkflows
-        run: nf-core subworkflows lint -a
+        run: nf-core --hide-progress subworkflows lint -a
