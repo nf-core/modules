@@ -34,6 +34,7 @@ jobs:
       matrix:
         shard: [1, 2, 3]
         profile: [conda, docker_self_hosted, singularity]
+        filter: [module, workflow]
         exclude:
           - path: modules/nf-core/nf-test
           - profile: conda
@@ -258,7 +259,8 @@ jobs:
             --ci \
             --verbose \
             --changed-since HEAD^ \
-            --shard ${{ matrix.shard }}/${{ env.TOTAL_SHARDS }}
+            --shard ${{ matrix.shard }}/${{ env.TOTAL_SHARDS }} \
+            --filter ${{ matrix.filter }}
 
       - uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
         with:
