@@ -28,10 +28,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert path(process.out.merged_reads[0][1]).linesGzip[0].contains('ERR5069949') },
                 { assert snapshot(
-					path(process.out.merged_reads[0][1]).linesGzip[3..7],
-					path(process.out.unstitched_read1[0][1]).linesGzip[3..7],
-					path(process.out.unstitched_read2[0][1]).linesGzip[3..7],
+					file(process.out.merged_reads[0][1]).name,
+					file(process.out.unstitched_read1[0][1]).name,
+					file(process.out.unstitched_read2[0][1]).name,
 					process.out.versions
 					).match()
 				}
