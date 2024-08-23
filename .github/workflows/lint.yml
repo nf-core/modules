@@ -1,0 +1,157 @@
+name: Run Linting
+on:
+  pull_request:
+    branches: [master]
+  merge_group:
+    types: [checks_requested]
+    branches: [master]
+  workflow_dispatch:
+    inputs:
+      runners:
+        description: "Runners to test on"
+        type: choice
+        options:
+          - "ubuntu-latest"
+          - "self-hosted"
+        default: "self-hosted"
+
+# Cancel if a newer run is started
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
+  NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5
+      - uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
+        # FIXME Flip this off once we get to less than a couple hundred. Adding
+        # this so it will only run against changed files. It'll make it much
+        # easier to fix these as they come up rather than everything at once.
+        with:
+          extra_args: ""
+
+  prettier:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+
+      - name: Install NodeJS
+        uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4
+        with:
+          node-version: "20"
+
+      - name: Install Prettier
+        run: npm install -g prettier@3.1.0
+
+      - name: Run Prettier --check
+        run: prettier --check .
+
+  editorconfig:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+
+      - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4
+        with:
+          node-version: "20"
+
+      - name: Install editorconfig-checker
+        run: npm install -g editorconfig-checker
+
+      - name: Run ECLint check
+        run: editorconfig-checker -exclude README.md $(git ls-files | grep -v test)
+
+  # FIXME Lint everything?
+  nf-core-lint-modules:
+    runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
+    name: nf-core-lint-modules
+    needs: [pytest-changes, nf-test-changes]
+    if: ${{ (needs.pytest-changes.outputs.modules != '[]') || ( needs.nf-test-changes.outputs.modules != '[]') }}
+    strategy:
+      fail-fast: false
+      matrix:
+        tags:
+          [
+            "${{ fromJson(needs.pytest-changes.outputs.modules) }}",
+            "${{ fromJson(needs.nf-test-changes.outputs.modules) }}",
+          ]
+    steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+
+      - name: Set up Python
+        uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5
+        with:
+          python-version: "3.11"
+
+      - uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4
+        id: cache-pip
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip
+          restore-keys: |
+            ${{ runner.os }}-pip
+
+      - name: Install pip
+        run: python -m pip install --upgrade pip
+
+      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: Setup Nextflow
+        uses: nf-core/setup-nextflow@v2
+
+      - name: Install nf-core tools development version
+        run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
+
+      - name: Lint module ${{ matrix.tags }}
+        run: nf-core modules lint ${{ matrix.tags }}
+
+  # FIXME Lint everything?
+  nf-core-lint-subworkflows:
+    runs-on: ubuntu-latest
+    name: nf-core-lint-modules
+    needs: [pytest-changes, nf-test-changes]
+    if: ${{ (needs.pytest-changes.outputs.subworkflows != '[]') || ( needs.nf-test-changes.outputs.subworkflows != '[]') }}
+    strategy:
+      fail-fast: false
+      matrix:
+        tags:
+          [
+            "${{ fromJson(needs.pytest-changes.outputs.subworkflows) }}",
+            "${{ fromJson(needs.nf-test-changes.outputs.subworkflows) }}",
+          ]
+    steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+
+      - name: Set up Python
+        uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5
+        with:
+          python-version: "3.11"
+
+      - name: Install pip
+        run: python -m pip install --upgrade pip
+
+      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: Setup Nextflow
+        uses: nf-core/setup-nextflow@561fcfc7146dcb12e3871909b635ab092a781f34 # v2
+
+      - name: Install nf-core tools development version
+        run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
+
+      - name: Lint module ${{ matrix.tags }}
+        run: nf-core subworkflows lint ${{ matrix.tags }}

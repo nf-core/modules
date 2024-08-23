@@ -1,0 +1,270 @@
+name: Run tests
+on:
+  pull_request:
+    branches: [master]
+  merge_group:
+    types: [checks_requested]
+    branches: [master]
+  workflow_dispatch:
+    inputs:
+      runners:
+        description: "Runners to test on"
+        type: choice
+        options:
+          - "ubuntu-latest"
+          - "self-hosted"
+        default: "self-hosted"
+
+# Cancel if a newer run is started
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
+  NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  nf-test:
+    runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
+    name: nf-test
+    needs: [nf-test-changes]
+    if: ( needs.nf-test-changes.outputs.paths != '[]' )
+    strategy:
+      fail-fast: false
+      matrix:
+        path: ["${{ fromJson(needs.nf-test-changes.outputs.paths) }}"]
+        profile: [conda, docker_self_hosted, singularity]
+        exclude:
+          - path: modules/nf-core/nf-test
+          - profile: conda
+            path: modules/nf-core/angsd/gl
+          - profile: conda
+            path: modules/nf-core/annotsv/installannotations
+          - profile: conda
+            path: modules/nf-core/happy/sompy
+          - profile: conda
+            path: modules/nf-core/backsub
+          - profile: conda
+            path: modules/nf-core/bakta/bakta
+          - profile: conda
+            path: modules/nf-core/bakta/baktadbdownload
+          - profile: conda
+            path: modules/nf-core/bases2fastq
+          - profile: conda
+            path: modules/nf-core/bcl2fastq
+          - profile: conda
+            path: modules/nf-core/bclconvert
+          - profile: conda
+            path: modules/nf-core/celesta
+          - profile: conda
+            path: modules/nf-core/cellpose
+          - profile: conda
+            path: modules/nf-core/cellranger/count
+          - profile: conda
+            path: modules/nf-core/cellranger/mkfastq
+          - profile: conda
+            path: modules/nf-core/cellranger/mkgtf
+          - profile: conda
+            path: modules/nf-core/cellranger/mkref
+          - profile: conda
+            path: modules/nf-core/cellranger/mkvdjref
+          - profile: conda
+            path: modules/nf-core/cellranger/multi
+          - profile: conda
+            path: modules/nf-core/cellranger/vdj
+          - profile: conda
+            path: modules/nf-core/checkqc
+          - profile: conda
+            path: modules/nf-core/custom/dumpsoftwareversions
+          - profile: conda
+            path: modules/nf-core/deepcell/mesmer
+          - profile: conda
+            path: modules/nf-core/deepvariant
+          - profile: conda
+            path: modules/nf-core/ensemblvep/vep
+          - profile: conda
+            path: modules/nf-core/fastk/fastk
+          - profile: conda
+            path: modules/nf-core/fastk/histex
+          - profile: conda
+            path: modules/nf-core/fastk/merge
+          - profile: conda
+            path: modules/nf-core/fcs/fcsadaptor
+          - profile: conda
+            path: modules/nf-core/fcs/fcsgx
+          - profile: conda
+            path: modules/nf-core/ganon/buildcustom
+          - profile: conda
+            path: modules/nf-core/ganon/classify
+          - profile: conda
+            path: modules/nf-core/ganon/report
+          - profile: conda
+            path: modules/nf-core/ganon/table
+          - profile: conda
+            path: modules/nf-core/gatk4/cnnscorevariants
+          - profile: conda
+            path: modules/nf-core/gatk4/determinegermlinecontigploidy
+          - profile: conda
+            path: modules/nf-core/genescopefk
+          - profile: conda
+            path: modules/nf-core/ilastik/multicut
+          - profile: conda
+            path: modules/nf-core/ilastik/pixelclassification
+          - profile: conda
+            path: modules/nf-core/imputeme/vcftoprs
+          - profile: conda
+            path: modules/nf-core/mcquant
+          - profile: conda
+            path: modules/nf-core/merquryfk/katcomp
+          - profile: conda
+            path: modules/nf-core/merquryfk/katgc
+          - profile: conda
+            path: modules/nf-core/merquryfk/merquryfk
+          - profile: conda
+            path: modules/nf-core/merquryfk/ploidyplot
+          - profile: conda
+            path: modules/nf-core/molkartgarage/clahe
+          - profile: conda
+            path: modules/nf-core/quartonotebook
+          - profile: conda
+            path: modules/nf-core/scimap/spatiallda
+          - profile: conda
+            path: modules/nf-core/sentieon/bwaindex
+          - profile: conda
+            path: modules/nf-core/sentieon/bwamem
+          - profile: conda
+            path: modules/nf-core/sentieon/dedup
+          - profile: conda
+            path: modules/nf-core/sentieon/qualcal
+          - profile: conda
+            path: modules/nf-core/spaceranger/mkgtf
+          - profile: conda
+            path: modules/nf-core/spaceranger/mkref
+          - profile: conda
+            path: modules/nf-core/spaceranger/count
+          - profile: conda
+            path: modules/nf-core/spotiflow
+          - profile: conda
+            path: modules/nf-core/svanalyzer/svbenchmark
+          - profile: conda
+            path: modules/nf-core/universc
+          - profile: singularity
+            path: modules/nf-core/universc
+          - profile: conda
+            path: modules/nf-core/vt/decompose
+          - profile: singularity
+            path: modules/nf-core/bases2fastq
+          - profile: conda
+            path: modules/nf-core/wittyer
+          - profile: conda
+            path: modules/nf-core/islandpath
+          - profile: conda
+            path: subworkflows/nf-core/vcf_annotate_ensemblvep
+          - profile: conda
+            path: subworkflows/nf-core/bcl_demultiplex
+          - profile: conda
+            path: subworkflows/nf-core/fastq_align_bamcmp_bwa
+          - profile: conda
+            path: subworkflows/nf-core/fastq_align_bwa
+    env:
+      NXF_ANSI_LOG: false
+      NFTEST_VER: "0.9.0"
+      SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
+      SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
+
+    steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+
+      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+      - name: Setup Nextflow
+        uses: nf-core/setup-nextflow@v2
+
+      - name: Install nf-test
+        uses: nf-core/setup-nf-test@v1
+
+      - name: Setup apptainer
+        if: matrix.profile == 'singularity'
+        uses: eWaterCycle/setup-apptainer@main
+
+      - name: Set up Singularity
+        if: matrix.profile == 'singularity'
+        run: |
+          mkdir -p $NXF_SINGULARITY_CACHEDIR
+          mkdir -p $NXF_SINGULARITY_LIBRARYDIR
+
+      - name: Set up Python
+        uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5
+        with:
+          python-version: "3.11"
+
+      - uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4
+        id: cache-pip-pdiff
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-pdiff
+          restore-keys: |
+            ${{ runner.os }}-pip-pdiff
+
+      - name: Install Python dependencies
+        run: python -m pip install --upgrade pip pdiff cryptography
+
+      - name: Set up miniconda
+        if: matrix.profile == 'conda'
+        uses: conda-incubator/setup-miniconda@a4260408e20b96e80095f42ff7f1a15b27dd94ca # v3
+        with:
+          miniconda-version: "latest"
+          auto-update-conda: true
+          channels: conda-forge,bioconda,defaults
+
+      - name: Conda setup
+        if: matrix.profile == 'conda'
+        run: |
+          conda clean -a
+          conda install -n base conda-libmamba-solver
+          conda config --set solver libmamba
+          echo $(realpath $CONDA)/condabin >> $GITHUB_PATH
+          echo $(realpath python) >> $GITHUB_PATH
+
+      # Set up secrets
+      - name: Set up nextflow secrets
+        # TODO Only run if the tag includes `sentieon`
+        if: env.SENTIEON_ENCRYPTION_KEY != null && env.SENTIEON_LICENSE_MESSAGE != null
+        run: |
+          nextflow secrets set SENTIEON_AUTH_DATA $(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "${{ secrets.SENTIEON_ENCRYPTION_KEY }}" --message "${{ secrets.SENTIEON_LICENSE_MESSAGE }}")
+
+      # Test the module
+      - name: Run nf-test
+        env:
+          NFT_DIFF: "pdiff"
+          NFT_DIFF_ARGS: "--line-numbers --width 120 --expand-tabs=2"
+          SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
+          SENTIEON_AUTH_MECH: "GitHub Actions - token"
+        run: |
+          # use "docker_self_hosted" if it runs on self-hosted runner and matrix.profile=docker
+          if [ "${{ matrix.profile }}" == "docker" ]; then
+            PROFILE="docker_self_hosted"
+          else
+            PROFILE=${{ matrix.profile }}
+          fi
+
+          NFT_WORKDIR=~ \
+          nf-test test \
+            --profile=${{ matrix.profile }} \
+            --tap=test.tap \
+            --verbose \
+            ${{ matrix.path }}
+
+      - uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
+        with:
+          path: >-
+            test.tap
+
+      - name: Clean up
+        if: always()
+        run: |
+          sudo rm -rf /home/ubuntu/tests/
