@@ -25,12 +25,12 @@ input:
         mutlibamsummary or multibigwigsummary
       pattern: "*.{npz}"
   - method:
-      type: value
+      type: string
       description: |
         Correlation coefficient to use for heatmap or scatterplot generation
       pattern: "{spearman,pearson}"
   - plot_type:
-      type: value
+      type: string
       description: |
         Type of output plot to display sample correlation
       pattern: "{heatmap,scatterplot}"
@@ -57,6 +57,8 @@ output:
 authors:
   - "@tamara-hodgetts"
   - "@chris-cheshire"
+  - "@joseespinosa"
 maintainers:
   - "@tamara-hodgetts"
   - "@chris-cheshire"
+  - "@joseespinosa"

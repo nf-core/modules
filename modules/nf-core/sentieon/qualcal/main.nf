@@ -30,6 +30,7 @@ process SENTIEON_QUALCAL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def input_list = input.collect{"-i $it"}.join(' ')
     def knownSites = known_sites ? known_sites.collect{"-k $it"}.join(' ') : ""
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64 ?
         "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; " :
@@ -43,7 +44,7 @@ process SENTIEON_QUALCAL {
         sentieon driver \\
             -t $task.cpus \\
             -r $fasta \\
-            -i $input \\
+            $input_list \\
             --algo QualCal \\
             $args \\
             $knownSites \\
@@ -95,10 +96,11 @@ process SENTIEON_QUALCAL {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def file_suffix = input.name.endsWith(".bam") ? "bam" : "cram"
     def recalibrated_bam = generate_recalibrated_bams ? "${prefix}.recalibrated.${file_suffix}" : ""
+    def recalibrated_bam_cmd = generate_recalibrated_bams ? "touch $recalibrated_bam" : ""
     """
     touch ${prefix}.table
     touch ${prefix}.table.post
-    touch ${recalibrated_bam}
+    ${recalibrated_bam_cmd}
     touch ${prefix}.csv
     touch ${prefix}.pdf
 
