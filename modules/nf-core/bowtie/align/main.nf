@@ -29,6 +29,7 @@ process BOWTIE_ALIGN {
     def endedness = meta.single_end ? "$reads" : "-1 ${reads[0]} -2 ${reads[1]}"
     """
     INDEX=\$(find -L ./ -name "*.3.ebwt" | sed 's/\\.3.ebwt\$//')
+
     bowtie \\
         --threads $task.cpus \\
         --sam \\
