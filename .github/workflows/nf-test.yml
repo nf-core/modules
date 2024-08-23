@@ -28,7 +28,7 @@ env:
 jobs:
   nf-test:
     runs-on: ${{ github.event.inputs.runners || 'self-hosted' }}
-    name: ${{ matrix.profile }}\|${{ matrix.filter }}\|Shard ${{ matrix.shard }}
+    name: ${{ matrix.profile }}|${{ matrix.filter }}|${{ matrix.shard }}
     strategy:
       fail-fast: false
       matrix:
