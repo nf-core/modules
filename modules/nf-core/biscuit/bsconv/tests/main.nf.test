@@ -15,7 +15,7 @@ nextflow_process {
             script "../../index/main.nf"
             process {
             """
-            input[0] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+            input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
             """
             }
         }
@@ -27,8 +27,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [id:'test', single_end:false ], // meta map
-                            file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_sorted_bam'], checkIfExists: true),
-                            file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_sorted_bam_bai'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true)
                             ]
 
                 input[1] = BISCUIT_INDEX.out.index
@@ -54,8 +54,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [id:'test', single_end:false ], // meta map
-                            file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_sorted_bam'], checkIfExists: true),
-                            file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_sorted_bam_bai'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true)
                             ]
 
                 input[1] = BISCUIT_INDEX.out.index

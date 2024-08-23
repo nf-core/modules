@@ -1,0 +1,60 @@
+nextflow_process {
+
+    name "Test Process DEEPTOOLS_PLOTHEATMAP"
+    script "../main.nf"
+    process "DEEPTOOLS_PLOTHEATMAP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "deeptools"
+    tag "deeptools/plotheatmap"
+
+    test("sarscov2 - mat") {
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/deeptools/test.computeMatrix.mat.gz', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(file(process.out.pdf.get(0).get(1)).name,
+                                  file(process.out.table.get(0).get(1)).name,
+                                  process.out.versions)
+                                  .match()
+                }
+            )
+        }
+
+    }
+
+    test("sarscov2 - mat - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/deeptools/test.computeMatrix.mat.gz', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

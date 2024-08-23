@@ -1,0 +1,108 @@
+nextflow_process {
+
+    name "Test Process AFFY_JUSTRMA"
+    script "../main.nf"
+    process "AFFY_JUSTRMA"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "affy"
+    tag "affy/justrma"
+    tag "untar"
+
+    setup {
+        run("UNTAR") {
+            script "../../../untar/main.nf"
+            process {
+            """
+            input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/array_expression/GSE38751_RAW.tar', checkIfExists: true)
+            ]
+            """
+            }
+        }
+    }
+
+    test("homo_sapiens genome affy_array [celfiles]") {
+
+        when {
+            process {
+                """
+                ch_samplesheet = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/array_expression/GSE38751.csv', checkIfExists: true)
+                    ]
+                )
+                input[0] = ch_samplesheet.join(UNTAR.out.untar)
+                input[1] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions,
+                                  process.out.expression,
+                                  file(process.out.rds.get(0).get(1)).name,
+                                  process.out.log).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens genome affy_array [celfiles] - annotation") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                ch_samplesheet = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/array_expression/GSE38751.csv', checkIfExists: true)
+                    ]
+                )
+                input[0] = ch_samplesheet.join(UNTAR.out.untar)
+                input[1] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions,
+                                  process.out.expression,
+                                  process.out.annotation,
+                                  file(process.out.rds.get(0).get(1)).name,
+                                  process.out.log).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens genome affy_array [celfiles] - stub") {
+
+        options "-stub"
+        when {
+            process {
+                """
+                ch_samplesheet = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/array_expression/GSE38751.csv', checkIfExists: true)
+                    ]
+                )
+                input[0] = ch_samplesheet.join(UNTAR.out.untar)
+                input[1] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

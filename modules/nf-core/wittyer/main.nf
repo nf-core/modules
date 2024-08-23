@@ -2,7 +2,7 @@ process WITTYER {
     tag "$meta.id"
     label 'process_single'
 
-    container "nf-core/wittyer:0.3.3.0"
+    container "nf-core/wittyer:0.5.2.0"
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
@@ -10,7 +10,7 @@ process WITTYER {
     }
 
     input:
-    tuple val(meta), path(query_vcf), path(query_vcf_index), path(truth_vcf), path(truth_vcf_index), path(bed)
+    tuple val(meta), path(query_vcf), path(truth_vcf), path(bed), path(wittyer_config)
 
     output:
     tuple val(meta),    path("*.json")         , emit: report
@@ -24,21 +24,26 @@ process WITTYER {
     script:
     def args  = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def regions = bed ? "--includeBed=$bed" : ""
-    if ("$truth_vcf" == "${prefix}.vcf.gz")         error "Input and output names are the same, set prefix in module configuration to disambiguate!"
-    if ("$query_vcf" == "${prefix}.vcf.gz")         error "Input and output names are the same, set prefix in module configuration to disambiguate!"
-    if ("$query_vcf_index" == "${prefix}.vcf.gz.tbi") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
-    if ("$query_vcf_index" == "${prefix}.vcf.gz.tbi") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    // you can not define both bed and wittyer_config
+    def regions = bed ? "-b $bed" : ""
+    def config_file = wittyer_config ? "-c $wittyer_config" : ""
+    if ("$truth_vcf" == "${prefix}.vcf") {
+        error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    }
+    if ("$query_vcf" == "${prefix}.vcf") {
+        error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    }
 
     // dotnet /opt/Wittyer/Wittyer.dll might need to be replaced with new docker image
     """
     mkdir bench
 
     dotnet /opt/Wittyer/Wittyer.dll \\
-        --truthVcf=${truth_vcf} \\
-        --inputVcf=${query_vcf} \\
-        --outputDirectory=bench \\
+        -t ${truth_vcf} \\
+        -i ${query_vcf} \\
+        -o bench \\
         ${regions} \\
+        ${config_file} \\
         ${args}
 
     mv bench/Wittyer.Stats.json ${prefix}.json
@@ -56,6 +61,12 @@ process WITTYER {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("$truth_vcf" == "${prefix}.vcf") {
+        error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    }
+    if ("$query_vcf" == "${prefix}.vcf") {
+        error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    }
     """
     touch ${prefix}.json
     echo "" | gzip > ${prefix}.vcf.gz

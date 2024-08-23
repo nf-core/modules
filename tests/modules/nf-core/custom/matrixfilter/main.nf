@@ -71,3 +71,15 @@ workflow test_custom_matrixfilter_na_samples {
         ch_samplesheet
     )
 }
+
+workflow test_custom_matrixfilter_var {
+
+    expression_matrix_file = file(params.test_data['mus_musculus']['genome']['rnaseq_matrix'], checkIfExists: true)
+
+    ch_samples_matrix = [ [ "id":"SRP254919" ], expression_matrix_file ]
+    
+    CUSTOM_MATRIXFILTER(
+        ch_samples_matrix,
+        empty_samplesheet
+    )
+}
