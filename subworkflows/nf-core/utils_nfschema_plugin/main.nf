@@ -8,13 +8,13 @@ include { validateParameters } from 'plugin/nf-schema'
 workflow UTILS_NFSCHEMA_PLUGIN {
 
     take:
-    input_workflow    // workflow: the workflow object used by nf-schema to get metadata from the workflow
-    validate_params   // boolean:  validate the parameters
-    parameters_schema // string:   path to the parameters JSON schema. 
-                      //           this has to be the same as the schema given to `validation.parametersSchema`
-                      //           when this input is empty it will automatically use the configured schema or
-                      //           "${projectDir}/nextflow_schema.json" as default. This input should not be empty
-                      //           for meta pipelines
+    input_workflow      // workflow: the workflow object used by nf-schema to get metadata from the workflow
+    validate_params     // boolean:  validate the parameters
+    parameters_schema   // string:   path to the parameters JSON schema.
+                        //           this has to be the same as the schema given to `validation.parametersSchema`
+                        //           when this input is empty it will automatically use the configured schema or
+                        //           "${projectDir}/nextflow_schema.json" as default. This input should not be empty
+                        //           for meta pipelines
 
     main:
 
