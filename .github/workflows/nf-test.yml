@@ -1,4 +1,4 @@
-name: Run tests
+name: Run nf-test
 on:
   pull_request:
     branches: [master]
@@ -29,12 +29,10 @@ jobs:
   nf-test:
     runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
     name: nf-test
-    needs: [nf-test-changes]
-    if: ( needs.nf-test-changes.outputs.paths != '[]' )
     strategy:
       fail-fast: false
       matrix:
-        path: ["${{ fromJson(needs.nf-test-changes.outputs.paths) }}"]
+        shard: [1, 2, 3]
         profile: [conda, docker_self_hosted, singularity]
         exclude:
           - path: modules/nf-core/nf-test
@@ -171,6 +169,7 @@ jobs:
     env:
       NXF_ANSI_LOG: false
       NFTEST_VER: "0.9.0"
+      TOTAL_SHARDS: 3
       SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
       SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
 
@@ -238,7 +237,7 @@ jobs:
           nextflow secrets set SENTIEON_AUTH_DATA $(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "${{ secrets.SENTIEON_ENCRYPTION_KEY }}" --message "${{ secrets.SENTIEON_LICENSE_MESSAGE }}")
 
       # Test the module
-      - name: Run nf-test
+      - name: Run Tests (Shard ${{ matrix.shard }}/${{ strategy.job-total }})
         env:
           NFT_DIFF: "pdiff"
           NFT_DIFF_ARGS: "--line-numbers --width 120 --expand-tabs=2"
@@ -256,8 +255,10 @@ jobs:
           nf-test test \
             --profile=${{ matrix.profile }} \
             --tap=test.tap \
+            --ci \
             --verbose \
-            ${{ matrix.path }}
+            --changed-since HEAD^ \
+            --shard ${{ matrix.shard }}/${{ env.TOTAL_SHARDS }}
 
       - uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
         with:
