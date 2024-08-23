@@ -28,13 +28,20 @@ env:
 jobs:
   nf-test:
     runs-on: ${{ github.event.inputs.runners || 'self-hosted' }}
-    name: ${{ matrix.profile }}|${{ matrix.filter }}|${{ matrix.shard }}
+    # NOTE I think this is the cleanest way to get them organized
+    # process | conda | 1
+    # process | conda | 2
+    # process | conda | 3
+    # process | docker_self_hosted | 1
+    # ...
+    # workflow | singularity | 3
+    name: ${{ matrix.filter }} | ${{ matrix.profile }} | ${{ matrix.shard }}
     strategy:
       fail-fast: false
       matrix:
-        shard: [1, 2, 3]
-        profile: [conda, docker_self_hosted, singularity]
         filter: [process, workflow]
+        profile: [conda, docker_self_hosted, singularity]
+        shard: [1, 2, 3]
     env:
       NXF_ANSI_LOG: false
       NXF_VER: "24.04.4"
