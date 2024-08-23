@@ -34,7 +34,7 @@ jobs:
       matrix:
         shard: [1, 2, 3]
         profile: [conda, docker_self_hosted, singularity]
-        filter: [module, workflow]
+        filter: [process, workflow]
     env:
       NXF_ANSI_LOG: false
       NXF_VER: "24.04.4"
