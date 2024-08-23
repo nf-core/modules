@@ -1,0 +1,35 @@
+
+nextflow_process {
+
+    name "Test Process PURGEDUPS_PBCSTAT"
+    script "../main.nf"
+    process "PURGEDUPS_PBCSTAT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "purgedups"
+    tag "purgedups/pbcstat"
+
+    test("test-purgedups-pbcstat") {
+        
+        when {
+            process {
+                """
+                input[0] = [
+				[ id:'test', single_end:false ], // meta map
+				file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.paf', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    
+}
