@@ -27,8 +27,8 @@ env:
 
 jobs:
   nf-test:
-    runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
-    name: nf-test
+    runs-on: ${{ github.event.inputs.runners || 'self-hosted' }}
+    name: ${{ matrix.profile }}\|${{ matrix.filter }}\|Shard ${{ matrix.shard }}
     strategy:
       fail-fast: false
       matrix:
@@ -111,7 +111,7 @@ jobs:
           nextflow secrets set SENTIEON_AUTH_DATA $(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "${{ secrets.SENTIEON_ENCRYPTION_KEY }}" --message "${{ secrets.SENTIEON_LICENSE_MESSAGE }}")
 
       # Test the module
-      - name: Run Tests (Shard ${{ matrix.shard }}/${{ strategy.job-total }})
+      - name: Run Tests (Shard ${{ matrix.shard }}/${{ env.TOTAL_SHARDS }})
         env:
           NFT_DIFF: "pdiff"
           NFT_DIFF_ARGS: "--line-numbers --width 120 --expand-tabs=2"
@@ -136,6 +136,8 @@ jobs:
             --filter ${{ matrix.filter }} \
             --follow-dependencies
 
+        # TODO If no test.tap, then make one to spoof?
+
       - uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
         with:
           path: >-
@@ -147,6 +149,7 @@ jobs:
           sudo rm -rf /home/ubuntu/tests/
 
 # TODO What do we do with these?
+# I think we can require Docker,modules,Shard 1..Singularity,subworkflows,3 and skip the condas now
 # - path: modules/nf-core/nf-test
 # - profile: conda
 #   path: modules/nf-core/angsd/gl
