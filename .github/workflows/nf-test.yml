@@ -258,7 +258,7 @@ jobs:
             --tap=test.tap \
             --ci \
             --verbose \
-            --changed-since HEAD^ \
+            --only-changed \
             --shard ${{ matrix.shard }}/${{ env.TOTAL_SHARDS }} \
             --filter ${{ matrix.filter }}
 
