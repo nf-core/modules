@@ -51,6 +51,8 @@ jobs:
       SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
 
     steps:
+      # TODO If conda-fail.yml exists and matrix = conda skip
+
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
           fetch-depth: 0
@@ -144,6 +146,8 @@ jobs:
             --shard ${{ matrix.shard }}/${{ env.TOTAL_SHARDS }} \
             --filter ${{ matrix.filter }} \
             --follow-dependencies
+
+      # TODO If matrix == conda create a conda-fail.yml and commit it
 
       # TODO If no test.tap, then make one to spoof?
       # - uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
