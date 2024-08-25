@@ -60,6 +60,53 @@ nextflow_process {
 
     }
 
+
+    test("sarscov2 - candidatus_portiera_aleyrodidarum - proteome - resume") {
+
+        when {
+            process {
+                """
+                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
+                    .copyTo("${workDir}/sarscov2.fasta")
+
+                def file_a = file("${workDir}/sarscov2.fasta", checkIfExists:true)
+                def file_c = file("s3://temporary-nfcore-module-data/test/WorkingDirectory")
+                input[0] = [
+                    [ id:'test_2', single_end:false ],
+                    [ file_a ]
+                ]
+                input[1] = file_c
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            def all_files = []
+
+            file(process.out.orthofinder[0][1]).eachFileRecurse (FileType.FILES) { file ->
+                all_files << file
+            }
+
+            //def all_file_names = all_files.collect { it.name }.sort(false)
+
+            def stable_file_names = [
+                'Statistics_PerSpecies.tsv',
+                'SpeciesTree_Gene_Duplications_0.5_Support.txt',
+                'SpeciesTree_rooted.txt'
+            ]
+
+            def stable_files = all_files.findAll { it.name in stable_file_names }
+
+            assert snapshot(
+                stable_files,
+                process.out.versions[0]
+            ).match()
+        }
+
+    }
+
     test("sarscov2 - candidatus_portiera_aleyrodidarum - proteome - stub") {
 
         options '-stub'
