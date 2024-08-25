@@ -34,10 +34,13 @@ process ORTHOFINDER {
         -n $prefix \\
         $include_command $args
 
+    if [ -e input/OrthoFinder/Results_$prefix ]; then
+        mv input/OrthoFinder/Results_$prefix $prefix
+    fi
 
-    mv \\
-        input/OrthoFinder/Results_$prefix \\
-        $prefix
+    if [ -e WorkingDirectory/OrthoFinder/Results_$prefix ]; then
+        mv WorkingDirectory/OrthoFinder/Results_$prefix $prefix
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
