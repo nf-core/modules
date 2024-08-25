@@ -4,13 +4,14 @@ process SIMPLEAF_INDEX {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/simpleaf:0.15.1--h4ac6f70_0':
-        'biocontainers/simpleaf:0.15.1--h4ac6f70_0' }"
+        'https://depot.galaxyproject.org/singularity/simpleaf:0.17.2--h919a2d8_0' :
+        'biocontainers/simpleaf:0.17.2--h919a2d8_0' }"
 
     input:
     tuple val(meta), path(genome_fasta)
     tuple val(meta2), path(genome_gtf)
     tuple val(meta3), path(transcript_fasta)
+    val no_piscem
 
     output:
     tuple val(meta), path("${prefix}/index")              , emit: index
@@ -24,10 +25,13 @@ process SIMPLEAF_INDEX {
     script:
     def args = task.ext.args ?: ''
     def seq_inputs = (transcript_fasta) ? "--refseq $transcript_fasta" : "--gtf $genome_gtf --fasta $genome_fasta"
+    def no_piscem = (no_piscem) ? '--no-piscem' : ''
+
 
     // Output meta needs to correspond to the input used
     meta = (transcript_fasta) ? meta3 : meta
     prefix = task.ext.prefix ?: "${meta.id}"
+    mapper = no_piscem ? 'salmon' : 'piscem'
     """
     # export required var
     export ALEVIN_FRY_HOME=.
@@ -40,19 +44,22 @@ process SIMPLEAF_INDEX {
         index \\
         --threads $task.cpus \\
         $seq_inputs \\
+        $no_piscem \\
         $args \\
         -o ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         simpleaf: \$(simpleaf -V | tr -d '\\n' | cut -d ' ' -f 2)
-        salmon: \$(salmon --version | sed -e "s/salmon //g")
+        ${mapper}: \$(${mapper} --version | sed -e "s/${mapper} //g")
     END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: (meta.id ? "${meta.id}" : "${meta3.id}")
+    mapper = no_piscem ? 'salmon' : 'piscem'
+
     """
     mkdir -p ${prefix}/index
     mkdir -p ${prefix}/ref
@@ -61,10 +68,15 @@ process SIMPLEAF_INDEX {
     touch ${prefix}/index/mphf.bin
     touch ${prefix}/ref/t2g_3col.tsv
 
+    touch ${prefix}/index/piscem_idx.ctab
+    touch ${prefix}/index/piscem_idx.ectab
+    touch ${prefix}/index/piscem_idx.refinfo
+    touch ${prefix}/index/piscem_idx.sshash
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         simpleaf: \$(simpleaf -V | tr -d '\\n' | cut -d ' ' -f 2)
-        salmon: \$(salmon --version | sed -e "s/salmon //g")
+        ${mapper}: \$(${mapper} --version | sed -e "s/${mapper} //g")
     END_VERSIONS
     """
 }

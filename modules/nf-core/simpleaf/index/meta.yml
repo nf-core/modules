@@ -38,6 +38,10 @@ input:
       type: file
       description: |
         FASTA file containing the transcript sequences. Optional if transcript GTF file is provided.
+  - no_piscem:
+      type: boolean
+      description: |
+        boolean indicating if mapping with salmon, instead of piscem, the default mapper.
 output:
   - meta:
       type: map
@@ -52,7 +56,7 @@ output:
       type: file
       description: |
         Transcript-to-gene mapping file in 3-column TSV format
-      pattern: "salmon/ref/*_t2g_3col.tsv"
+      pattern: "salmon/ref/t2g_3col.tsv"
   - salmon:
       type: directory
       description: |
@@ -69,9 +73,11 @@ authors:
   - "@Khajidu"
   - "@apeltzer"
   - "@pinin4fjords"
+  - "@dongzehe"
 maintainers:
   - "@fmalmeida"
   - "@maxulysse"
   - "@Khajidu"
   - "@apeltzer"
   - "@pinin4fjords"
+  - "@dongzehe"
