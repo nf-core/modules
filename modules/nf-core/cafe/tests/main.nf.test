@@ -12,10 +12,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [[ id:'test' ],
-                           [ file("https://raw.githubusercontent.com/nf-core/test-datasets/cafe/testdata/hog_gene_counts.small.tsv", checkIfExists: true) ]
-                ]
-                input[1] = file("https://raw.githubusercontent.com/nf-core/test-datasets/cafe/testdata/SpeciesTree_rooted_ultra.txt", checkIfExists: true)
+                input[0] = [ [ id:'test' ], [ file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/cafe/hog_gene_counts.small.tsv", checkIfExists: true) ] ]
+                input[1] = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/cafe/SpeciesTree_rooted_ultra.txt", checkIfExists: true)
                 """
             }
         }
@@ -41,10 +39,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [    [ id:'test' ],
-                                [ file("https://raw.githubusercontent.com/nf-core/test-datasets/cafe/testdata/hog_gene_counts.small.tsv", checkIfExists: true) ]
-                ]
-                input[1] = [ file("https://raw.githubusercontent.com/nf-core/test-datasets/cafe/testdata/SpeciesTree_rooted_ultra.txt", checkIfExists: true) ]
+                input[0] = [ [ id:'test' ], [ file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/cafe/hog_gene_counts.small.tsv", checkIfExists: true) ] ]
+                input[1] = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/cafe/SpeciesTree_rooted_ultra.txt", checkIfExists: true)
                 """
             }
         }
