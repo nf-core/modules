@@ -203,4 +203,3 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
     mappedconsensusbam = SORTBAM.out.bam                // channel: [ val(meta), [ bam ] ]
     versions           = ch_versions                    // channel: [ versions.yml ]
 }
-

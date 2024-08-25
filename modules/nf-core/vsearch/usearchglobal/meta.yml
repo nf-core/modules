@@ -11,7 +11,7 @@ tools:
       homepage: "https://github.com/torognes/vsearch"
       tool_dev_url: "https://github.com/torognes/vsearch"
       doi: "10.7717/peerj.2584"
-      licence: "['GPL v3-or-later OR BSD-2-clause']"
+      licence: ["GPL v3-or-later OR BSD-2-clause"]
 input:
   - meta:
       type: map
@@ -25,7 +25,7 @@ input:
       description: Reference database file in FASTA or UDB format
       pattern: "*"
   - idcutoff:
-      type: real
+      type: float
       description: Reject the sequence match if the pairwise identity is lower than the given id cutoff value (value ranging from 0.0 to 1.0 included)
   - outoption:
       type: string

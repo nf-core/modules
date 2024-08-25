@@ -1,7 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "nonpareil_curve"
-description: Visualise metagenome redundancy curve from a single Nonpareil npo file
+description: Visualise metagenome redundancy curve in PNG format from a single Nonpareil npo file
 keywords:
   - metagenomics
   - statistics
@@ -38,7 +38,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - npa:
+  - png:
       type: file
       description: PNG file of the Nonpareil curve
       pattern: "*.png"
