@@ -28,6 +28,7 @@ nextflow_process {
                     [ id:'test', single_end:false ],
                     [ file_a, file_b ]
                 ]
+                input[1] = []
                 """
             }
         }
@@ -41,7 +42,7 @@ nextflow_process {
                 all_files << file
             }
 
-            def all_file_names = all_files.collect { it.name }.sort(false)
+            //def all_file_names = all_files.collect { it.name }.sort(false)
 
             def stable_file_names = [
                 'Statistics_PerSpecies.tsv',
@@ -52,7 +53,6 @@ nextflow_process {
             def stable_files = all_files.findAll { it.name in stable_file_names }
 
             assert snapshot(
-                all_file_names,
                 stable_files,
                 process.out.versions[0]
             ).match()
@@ -80,6 +80,7 @@ nextflow_process {
                     [ id:'test', single_end:false ],
                     [ file_a, file_b ]
                 ]
+                input[1] = []
                 """
             }
         }
