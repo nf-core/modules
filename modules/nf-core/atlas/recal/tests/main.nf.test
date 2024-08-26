@@ -1,0 +1,44 @@
+
+nextflow_process {
+
+    name "Test Process ATLAS_RECAL"
+    script "../main.nf"
+    process "ATLAS_RECAL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "atlas"
+    tag "atlas/recal"
+
+    test("test-atlas-recal") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+				    [],
+				    []
+				]
+				input[1] = []
+				input[2] = []
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					file(process.out.recal_patterns[0][1]).readLines()[0],
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}
