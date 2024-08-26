@@ -1,0 +1,48 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "foldmason_easymsa"
+description: Aligns protein structures using foldmason
+keywords:
+  - alignment
+  - MSA
+  - genomics
+  - structure
+tools:
+  - "foldmason":
+      description: "Multiple Protein Structure Alignment at Scale with FoldMason"
+      homepage: "https://github.com/steineggerlab/foldmason"
+      documentation: "https://github.com/steineggerlab/foldmason"
+      tool_dev_url: "https://github.com/steineggerlab/foldmason"
+      doi: "https://doi.org/10.1101/2024.08.01.606130"
+      licence: ['GPL v3']
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`  
+  - pdbs:
+      type: One or more PDB files
+      description: Input protein structures in PDB format.
+      pattern: "*.{bam,cram,sam}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]` 
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - msa:
+      type: file
+      description: Fasta file containing the multiple sequence alignment
+      pattern: "*.{fa}"
+
+authors:
+  - "@luisas"
+maintainers:
+  - "@luisas"
