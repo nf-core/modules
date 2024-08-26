@@ -3,18 +3,14 @@
         "content": [
             [
                 [
-                    "AAAAAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEEEEEEEEEEEEEEE/EEEEEEEEEAEEEEAAAAEEAAEEEEAAAEEEEEEEEEEEEEEEAAAEAA",
-                    "@ERR5069949.576388 NS500628:121:HK3MMAFX2:4:11501:11167:14939/1",
-                    "ACTGTTTTCTTTGTAGAAAACATCCGTAATAGGACCTTTGTATTCTGAGGACTTTGTAAGTAAAGCACCGTCTATGC",
-                    "+",
-                    "AAA6AEEEEEEEEEAEEE/6EEAEEEAEEEEEAEEEEEEEEEEEEEEEEEEEEE<AAEEEEEEEEEEE</EEEA/AE"
-                ],
-                [
-                    "AAAAAEEEEEEEEEEEEE/EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE<EEEEEEEEEEEEEAEE<<<6AEE</AAAEEEEEEEAA<EEAAEA",
-                    "@ERR5069949.576388 NS500628:121:HK3MMAFX2:4:11501:11167:14939/2",
-                    "GCATAGACGGTGCTTTACTTACAAAGTCCTCAGAATACAAAGGTCCTATTACGGATGTTTTCTACAAAGAAAACAGT",
-                    "+",
-                    "AAAAA6EEAEEEEEAEEAEEAEEEEEEA6EEEEAEEAEEEEE6EEEEEEAEEEEA///A<<EEEEEEEEEAEEEEEE"
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    [
+                        "test_1.clumped.fastq.gz:md5,27e51643262c1ef3905c4be184c3814c",
+                        "test_2.clumped.fastq.gz:md5,c70ab7bbd44d6b6fadd6a1a79ef1648f"
+                    ]
                 ]
             ],
             "test.clumpify.log",
@@ -23,19 +19,21 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.8.4",
+            "nf-test": "0.9.0",
             "nextflow": "24.04.4"
         },
-        "timestamp": "2024-08-26T14:48:02.3892"
+        "timestamp": "2024-08-26T06:43:39.816170993"
     },
     "test-bbmap-clumpify-single-end": {
         "content": [
             [
-                "AAAAAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEEEEEEEEEEEEEEE/EEEEEEEEEAEEEEAAAAEEAAEEEEAAAEEEEEEEEEEEEEEEAAAEAA",
-                "@ERR5069949.576388 NS500628:121:HK3MMAFX2:4:11501:11167:14939/1",
-                "ACTGTTTTCTTTGTAGAAAACATCCGTAATAGGACCTTTGTATTCTGAGGACTTTGTAAGTAAAGCACCGTCTATGC",
-                "+",
-                "AAA6AEEEEEEEEEAEEE/6EEAEEEAEEEEEAEEEEEEEEEEEEEEEEEEEEE<AAEEEEEEEEEEE</EEEA/AE"
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.clumped.fastq.gz:md5,27e51643262c1ef3905c4be184c3814c"
+                ]
             ],
             "test.clumpify.log",
             [
@@ -43,9 +41,9 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.8.4",
+            "nf-test": "0.9.0",
             "nextflow": "24.04.4"
         },
-        "timestamp": "2024-08-26T14:46:22.66674"
+        "timestamp": "2024-08-26T06:43:28.923674245"
     }
 }

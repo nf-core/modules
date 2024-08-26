@@ -30,7 +30,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-					path(process.out.reads[0][1]).linesGzip[3..7],
+					process.out.reads,
 					file(process.out.log[0][1]).name,
 					process.out.versions
 					).match()
@@ -60,7 +60,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-					process.out.reads[0][1].collect { path(it).linesGzip[3..7] },
+					process.out.reads,
 					file(process.out.log[0][1]).name,
 					process.out.versions
 					).match()
