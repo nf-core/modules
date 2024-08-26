@@ -83,7 +83,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
 					process.out.bam,
-					process.out.cram,
+					bam(process.out.cram[0][1]).getHeaderMD5(),
 					process.out.sam,
 					process.out.versions
 					).match()
