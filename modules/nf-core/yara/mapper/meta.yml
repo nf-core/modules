@@ -22,6 +22,11 @@ input:
       description: |
         List of input FastQ files of size 1 and 2 for single-end and paired-end data,
         respectively.
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing index information
+        e.g. [ id:'test' ]
   - index:
       type: file
       description: YARA genome index files
