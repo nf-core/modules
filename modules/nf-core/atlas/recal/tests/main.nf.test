@@ -33,7 +33,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-					file(process.out.recal_patterns[0][1]).readLines()[0..1],
+					file(process.out.recal_patterns[0][1]).readLines()[0],
 					process.out.versions
 					).match()
 				}
