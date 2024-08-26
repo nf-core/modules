@@ -8,7 +8,7 @@ process BCFTOOLS_PLUGINSPLIT {
         'biocontainers/bcftools:1.20--h8b25389_0' }"
 
     input:
-    tuple val(meta), path(vcf), path(tbi)
+    tuple val(meta), path(vcf), path(index)
     path(samples)
     path(groups)
     path(regions)
@@ -16,8 +16,7 @@ process BCFTOOLS_PLUGINSPLIT {
 
     output:
     tuple val(meta), path("*.{vcf,vcf.gz,bcf,bcf.gz}"), emit: vcf
-    tuple val(meta), path("*.tbi")                    , emit: tbi, optional: true
-    tuple val(meta), path("*.csi")                    , emit: csi, optional: true
+    tuple val(meta), path("*.{tbi,csi}")              , emit: index, optional: true
     path "versions.yml"                               , emit: versions
 
     when:

@@ -92,7 +92,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.vcf,
-                    process.out.tbi.get(0).get(1).find { file(it).name.matches("normal.vcf.gz.tbi|tumor.vcf.gz.tbi") },
+                    process.out.index.get(0).get(1).find { file(it).name.matches("normal.vcf.gz.tbi|tumor.vcf.gz.tbi") },
                 ) }
             )
         }
