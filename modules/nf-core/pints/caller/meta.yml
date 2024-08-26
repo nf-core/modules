@@ -19,7 +19,7 @@ tools:
       documentation: "https://github.com/hyulab/PINTS/blob/main/README.md"
       tool_dev_url: "https://github.com/hyulab/PINTS"
       doi: "10.1038/s41587-022-01211-7"
-      licence: "['GPL']"
+      licence: ["GPL v3"]
 input:
   - meta:
       type: map
@@ -28,8 +28,15 @@ input:
         e.g. [ id:'test', single_end:false ]
   - bams:
       type: file
-      description: BAM/ file
+      description: One or more BAM files
       pattern: "*.{bam}"
+  - bais:
+      type: file
+      description: Corresponding BAM file indexes
+      pattern: "*.bam.bai"
+  - assay:
+      type: string
+      description: Assay name
 output:
   - meta:
       type: map

@@ -12,7 +12,7 @@ tools:
       documentation: "https://bitbucket.org/wegmannlab/atlas/wiki/Home"
       tool_dev_url: "https://bitbucket.org/wegmannlab/atlas"
       doi: "10.1101/105346"
-      licence: "['GPL v3']"
+      licence: ["GPL v3"]
 input:
   - meta:
       type: map
@@ -27,7 +27,7 @@ input:
       type: file
       description: The BAI file for the input BAM file
       pattern: "*.bai"
-  - read_group_setting:
+  - read_group_settings:
       type: file
       description: |
         TXT file containing the split and merge settings for
@@ -55,7 +55,7 @@ output:
       type: file
       description: A BAM file with suffix_mergedReads.bam
       pattern: "*_mergedReads.bam"
-  - filelist:
+  - txt:
       type: file
       description: A file listing all reads that were filtered out in the merging process with suffix_ignoredReads.txt.gz
       pattern: "*.txt.gz"
