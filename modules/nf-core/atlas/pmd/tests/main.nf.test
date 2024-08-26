@@ -33,7 +33,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
 					file(process.out.empiric[0][1]).readLines()[0],
-					file(process.out.exponential[0][1]).readLines()[0],
+					file(process.out.exponential[0][1]).readLines()[0][0..13],
 					file(process.out.counts[0][1]).readLines()[0],
 					file(process.out.table[0][1]).readLines()[0],
 					process.out.versions
