@@ -1,9 +1,0 @@
-- name: bedtools groupby test_bedtools_groupby
-  command: nextflow run ./tests/modules/nf-core/bedtools/groupby -entry test_bedtools_groupby -c ./tests/config/nextflow.config
-  tags:
-    - bedtools
-    - bedtools/groupby
-  files:
-    - path: output/bedtools/test.grouped.bed
-      md5sum: ba080b3d282f206f6312122c71a66745
-    - path: output/bedtools/versions.yml
