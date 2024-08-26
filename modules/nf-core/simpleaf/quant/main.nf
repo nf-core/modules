@@ -4,8 +4,8 @@ process SIMPLEAF_QUANT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/simpleaf:0.15.1--h4ac6f70_0':
-        'biocontainers/simpleaf:0.15.1--h4ac6f70_0' }"
+        'https://depot.galaxyproject.org/singularity/simpleaf:0.17.2--h919a2d8_0' :
+        'biocontainers/simpleaf:0.17.2--h919a2d8_0' }"
 
     input:
     //
@@ -30,13 +30,12 @@ process SIMPLEAF_QUANT {
     def args_list = args.tokenize()
     prefix    = task.ext.prefix ?: "${meta.id}"
 
-    unfiltered_command = ""
-    if (whitelist) {
-        unfiltered_command = "-u <(gzip -dcf ${whitelist})"
-    }
+    // expected cells
+    def expect_cells = meta.expected_cells ? "--expect-cells $meta.expected_cells" : ''
 
     // separate forward from reverse pairs
     def (forward, reverse) = reads.collate(2).transpose()
+    def mapper = file("$index/piscem_idx.json").exists() ? 'salmon' : 'piscem'
     """
     # export required var
     export ALEVIN_FRY_HOME=.
@@ -54,7 +53,9 @@ process SIMPLEAF_QUANT {
         -o ${prefix} \\
         -t $task.cpus \\
         -m $txp2gene \\
+        $expect_cells \\
         $unfiltered_command \\
+        $use_selective_alignment \\
         $args
 
     [[ ! -f ${prefix}/af_quant/all_freq.bin ]] && cp ${prefix}/af_quant/permit_freq.bin ${prefix}/af_quant/all_freq.bin
@@ -62,12 +63,14 @@ process SIMPLEAF_QUANT {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         simpleaf: \$(simpleaf -V | tr -d '\\n' | cut -d ' ' -f 2)
-        salmon: \$(salmon --version | sed -e "s/salmon //g")
+        ${mapper}: \$(${mapper} --version | sed -e "s/${mapper} //g")
     END_VERSIONS
     """
 
     stub:
     prefix    = task.ext.prefix ?: "${meta.id}"
+    def mapper = file("$index/piscem_idx.json").exists() ? 'salmon' : 'piscem'
+
     """
     mkdir -p ${prefix}/af_map
     mkdir -p ${prefix}/af_quant/alevin
@@ -82,7 +85,7 @@ process SIMPLEAF_QUANT {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         simpleaf: \$(simpleaf -V | tr -d '\\n' | cut -d ' ' -f 2)
-        salmon: \$(salmon --version | sed -e "s/salmon //g")
+        ${mapper}: \$(${mapper} --version | sed -e "s/${mapper} //g")
     END_VERSIONS
     """
 }

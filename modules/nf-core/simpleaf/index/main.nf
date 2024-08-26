@@ -18,6 +18,7 @@ process SIMPLEAF_INDEX {
     tuple val(meta), path("${prefix}/ref/t2g_3col.tsv")   , emit: transcript_tsv, optional: true
     tuple val(meta), path("${prefix}")                    , emit: salmon
     path "versions.yml"                                   , emit: versions
+    val no_piscem                                         , emit: no_piscem
 
     when:
     task.ext.when == null || task.ext.when
