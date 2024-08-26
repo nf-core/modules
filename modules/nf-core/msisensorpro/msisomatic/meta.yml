@@ -45,7 +45,7 @@ input:
       pattern: "*.{fasta}"
   - msisensor_scan:
       type: file
-      description: Output from msisensor-pro/scan, conaining list of msi regions
+      description: Output from msisensor-pro/scan, containing list of msi regions
       pattern: "*.list"
 output:
   - meta:
@@ -69,10 +69,6 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - list:
-      type: file
-      description: File containing microsatellite list
-      pattern: "*.{list}"
 authors:
   - "@FriederikeHanssen"
 maintainers:
