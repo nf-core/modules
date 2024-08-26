@@ -3,16 +3,15 @@ process FOLDMASON_EASYMSA {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/foldmason:1.763a428--pl5321hb365157_0':
-        'biocontainers/foldmason:1.763a428--pl5321hb365157_0' }"
+    container "community.wave.seqera.io/library/foldmason_pigz:97b3311addb0f4a7"
 
     input:
     tuple val(meta), path(pdbs)
     val(compress)
 
     output:
-    tuple val(meta), path("${prefix}.fa"), emit: msa
+    tuple val(meta), path("${prefix}_3di.fa${compress ? '.gz' : ''}"), emit: msa3di
+    tuple val(meta), path("${prefix}_aa.fa${compress ? '.gz' : ''}"), emit: msaAA
     path "versions.yml"           , emit: versions
 
     when:
@@ -20,30 +19,36 @@ process FOLDMASON_EASYMSA {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     foldmason easy-msa \\
         $args \\
         --threads $task.cpus \\
         ${pdbs} \\
-        ${prefix}.fa \\
+        ${prefix} \\
         tmp
+    
+    if ${compress}; then
+        pigz -p ${task.cpus} ${prefix}.fa
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         foldmason: \$(foldmason | grep "foldmason Version:" | cut -d":" -f 2 | awk '{\$1=\$1;print}')
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
     END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.fa
+    touch ${prefix}.fa${compress ? '.gz' : ''}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         foldmason: \$(foldmason | grep "foldmason Version:" | cut -d":" -f 2 | awk '{\$1=\$1;print}')
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
     END_VERSIONS
     """
 }
