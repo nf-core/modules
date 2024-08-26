@@ -1,9 +1,0 @@
-- name: atlas call test_atlas_call
-  command: nextflow run ./tests/modules/nf-core/atlas/call -entry test_atlas_call -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/atlas/call/nextflow.config
-  tags:
-    - atlas
-    - atlas/call
-  files:
-    - path: output/atlas/test.paired_end.sorted_randomBase.vcf.gz
-      contains:
-        - "##source=atlas"
