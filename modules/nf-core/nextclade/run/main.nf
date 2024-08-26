@@ -4,8 +4,8 @@ process NEXTCLADE_RUN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/nextclade:2.12.0--h9ee0642_0' :
-        'biocontainers/nextclade:2.12.0--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/nextclade:3.8.2--h9ee0642_0' :
+        'quay.io/biocontainers/nextclade:3.8.2--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(fasta)
