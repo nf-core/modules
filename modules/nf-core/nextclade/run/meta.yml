@@ -25,6 +25,7 @@ input:
       type: file
       description: FASTA file containing one or more consensus sequences
       pattern: "*.{fasta,fa}"
+
 output:
   - meta:
       type: map
@@ -51,9 +52,16 @@ output:
       type: file
       description: TSV file containing nextclade results
       pattern: "*.{tsv}"
+  - nwk:
+      type: file
+      description: NWK file containing nextclade results
+      pattern: "*.{nwk}"
 authors:
   - "@antunderwood"
   - "@drpatelh"
 maintainers:
   - "@antunderwood"
   - "@drpatelh"
+  - "@drpatelh"
+updated on 2024.08.23:
+  - "@nmshahir"
