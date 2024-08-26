@@ -27,7 +27,7 @@ process FOLDMASON_EASYMSA {
         ${pdbs} \\
         ${prefix} \\
         tmp
-    
+
     if ${compress}; then
         pigz -p ${task.cpus} ${prefix}.fa
     fi

@@ -14,14 +14,14 @@ tools:
       documentation: "https://github.com/steineggerlab/foldmason"
       tool_dev_url: "https://github.com/steineggerlab/foldmason"
       doi: "10.1101/2024.08.01.606130"
-      licence: ['GPL v3']
+      licence: ["GPL v3"]
 
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`  
+        e.g. `[ id:'sample1', single_end:false ]`
   - pdbs:
       type: file
       description: Input protein structures in PDB format.
@@ -35,7 +35,7 @@ output:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]` 
+        e.g. `[ id:'sample1', single_end:false ]`
   - versions:
       type: file
       description: File containing software versions
