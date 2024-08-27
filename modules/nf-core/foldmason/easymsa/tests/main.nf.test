@@ -39,8 +39,8 @@ nextflow_process {
             assertAll(
                 { assert process.success  },
                 { assert snapshot(
-                  process.out.msa3di,
-                  process.out.msaAA,
+                  process.out.msa_3di,
+                  process.out.msa_aa,
                   process.out.versions).match() }
                 )
         }
@@ -74,8 +74,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success  },
-                { assert snapshot(process.out.msa3di).match("alignment_compressed_3di")},
-                { assert snapshot(process.out.msaAA).match("alignment_compressed_AA")},
+                { assert snapshot(process.out.msa_3di).match("alignment_compressed_3di")},
+                { assert snapshot(process.out.msa_aa).match("alignment_compressed_AA")},
                 { assert snapshot(process.out.versions).match("versions1") }
                 )
         }
