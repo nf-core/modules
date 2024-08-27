@@ -2,7 +2,7 @@ process MCSTAGING_PHENOIMAGER2MC {
     tag "$meta.id"
     label 'process_single'
 
-    container "ghcr.io/schapirolabor/phenoimager2mc:v0.2.2" // how to specify a version?
+    container "ghcr.io/schapirolabor/phenoimager2mc:v0.2.2"
 
     input:
     tuple val(meta) , path(tiles, stageAs: "tiles/*")
