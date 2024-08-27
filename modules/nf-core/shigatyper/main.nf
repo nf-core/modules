@@ -32,7 +32,7 @@ process SHIGATYPER {
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-            shigatyper: \$(echo \$(shigatyper --version 2>&1) | sed 's/^.*ShigaTyper //' )
+            shigatyper: \$(shigatyper --version | sed -n 's/ShigaTyper \\(.*\\)/\\1/p')
         END_VERSIONS
         """
     } else if (meta.single_end) {
@@ -44,7 +44,7 @@ process SHIGATYPER {
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-            shigatyper: \$(echo \$(shigatyper --version 2>&1) | sed 's/^.*ShigaTyper //' )
+            shigatyper: \$(shigatyper --version | sed -n 's/ShigaTyper \\(.*\\)/\\1/p')
         END_VERSIONS
         """
     } else {
@@ -57,8 +57,19 @@ process SHIGATYPER {
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-            shigatyper: \$(echo \$(shigatyper --version 2>&1) | sed 's/^.*ShigaTyper //' )
+            shigatyper: \$(shigatyper --version | sed -n 's/ShigaTyper \\(.*\\)/\\1/p')
         END_VERSIONS
         """
     }
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch "${prefix}.tsv"
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        shigatyper: \$(shigatyper --version | sed -n 's/ShigaTyper \\(.*\\)/\\1/p')
+    END_VERSIONS
+    """
 }
