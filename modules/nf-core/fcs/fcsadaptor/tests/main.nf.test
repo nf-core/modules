@@ -1,0 +1,115 @@
+nextflow_process {
+
+    name "Test Process FCS_FCSADAPTOR"
+    script "../main.nf"
+    process "FCS_FCSADAPTOR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fcs"
+    tag "fcs/fcsadaptor"
+
+    test("bacteroides_fragilis-genome_fna_gz") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.cleaned_assembly == [] },
+                { assert snapshot(
+                    file(process.out.skipped_trims[0][1]).name,
+                    process.out.adaptor_report,
+                    process.out.pipeline_args,
+                    process.out.versions,
+                    ).match()
+                },
+                { assert path(process.out.log[0][1]).text.contains('[step all_cleaned_fasta] completed success') }
+            )
+        }
+
+    }
+
+    test("sarscov2-genome_fasta-pacbio_adapters") {
+
+        when {
+            process {
+                """
+                def input_file_lines = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true).text.split('\\n')
+                def file_with_adapters = file('sarscov2_with_adapters.fasta')
+                file_with_adapters.text = (
+                    input_file_lines[0..<(input_file_lines.size()/2)]
+                    + ['ATCTCTCTCTTTTCCTCCTCCTCCGTTGTTGTTGTTGAGAGAGAT'] // Biosciences Blunt Adapter
+                    + input_file_lines[(input_file_lines.size()/2)..<(input_file_lines.size())]
+                    + ['AAAAAAAAAAAAAAAAAATTAACGGAGGAGGAGGA'] // Pacific Biosciences C2 Primer
+                    ).join('\\n')
+
+                input[0] = [
+                    [ id: 'test' ],
+                    file_with_adapters
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.cleaned_assembly,
+                    process.out.skipped_trims,
+                    process.out.adaptor_report,
+                    process.out.pipeline_args,
+                    process.out.versions,
+                    ).match()
+                },
+                { assert path(process.out.log[0][1]).text.contains('[step all_cleaned_fasta] completed success') },
+                { assert path(process.out.adaptor_report[0][1]).text.contains('Pacific Biosciences Blunt Adapter') },
+                { assert path(process.out.adaptor_report[0][1]).text.contains('Pacific Biosciences C2 Primer') }
+            )
+        }
+
+    }
+
+    test("bacteroides_fragilis-genome_fna_gz-stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.cleaned_assembly == [] },
+                { assert snapshot(
+                    [
+                        process.out.adaptor_report[0][1],
+                        process.out.log[0][1],
+                        process.out.pipeline_args[0][1],
+                        process.out.skipped_trims[0][1]
+                    ].collect { file(it).name }
+                    ).match()
+                },
+                { assert snapshot(process.out.versions).match("stub_versions") }
+            )
+        }
+    }
+}

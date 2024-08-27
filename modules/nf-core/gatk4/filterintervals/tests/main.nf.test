@@ -1,0 +1,38 @@
+
+nextflow_process {
+
+    name "Test Process GATK4_FILTERINTERVALS"
+    script "../main.nf"
+    process "GATK4_FILTERINTERVALS"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gatk4"
+    tag "gatk4/filterintervals"
+
+    test("test-gatk4-filterintervals") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				[ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.preprocessed_intervals.interval_list', checkIfExists: true)
+				]
+				input[1] = [ [:], [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.preprocessed_intervals.counts.tsv', checkIfExists: true) ] ]
+				input[2] = [ [:], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.annotated_intervals.tsv', checkIfExists: true) ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}
