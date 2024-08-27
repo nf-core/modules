@@ -55,13 +55,18 @@ process SAMTOOLS_COLLATEFASTQ {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def outputcommand =    (interleave && ! meta.single_end) ? "echo '' | gzip > ${prefix}_interleaved.fq.gz"                     :
-                    meta.single_end                   ? "echo '' | gzip > ${prefix}_1.fq.gz ; echo '' | gzip > ${prefix}_singleton.fq.gz" :
-                    "echo '' | gzip > ${prefix}_1.fq.gz ; echo '' | gzip > ${prefix}_2.fq.gz ; echo '' | gzip > ${prefix}_singleton.fq.gz"
+    def empty = "echo '' | gzip "
+    def singletoncommand = "${empty}> ${prefix}_singleton.fq.gz"
+    def interleavecommand = interleave && !meta.single_end ? "${empty}> ${prefix}_interleaved.fq.gz" : ""
+    def output1command = !interleave ? "${empty}> ${prefix}_1.fq.gz" : ""
+    def output2command = !interleave && !meta.single_end ? "${empty}> ${prefix}_2.fq.gz" : ""
 
     """
-    $outputcommand
-    echo "" | gzip > ${prefix}_other.fq.gz
+    ${output1command}
+    ${output2command}
+    ${interleavecommand}
+    ${singletoncommand}
+    ${empty}> ${prefix}_other.fq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
