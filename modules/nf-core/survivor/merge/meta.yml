@@ -12,7 +12,7 @@ tools:
       documentation: "https://github.com/fritzsedlazeck/SURVIVOR/wiki"
       tool_dev_url: "https://github.com/fritzsedlazeck/SURVIVOR"
       doi: "10.1038/NCOMMS14061"
-      licence: "['MIT']"
+      licence: ["MIT"]
 input:
   - meta:
       type: map
@@ -20,7 +20,7 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - vcfs:
-      type: files
+      type: list
       description: |
         The VCF files to be merged
         Gzipped VCF files are not supported: https://github.com/fritzsedlazeck/SURVIVOR/issues/158
