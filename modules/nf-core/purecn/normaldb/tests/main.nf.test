@@ -21,7 +21,8 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/purecn/purecn_ex1_normal.txt.gz', checkIfExists: true),
 				        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/purecn/purecn_ex2_normal.txt.gz', checkIfExists: true)
                     ],
-				    [], []
+				    [],
+                    []
 				]
 				input[1] = 'hg38'
 				input[2] = 'illumina'
