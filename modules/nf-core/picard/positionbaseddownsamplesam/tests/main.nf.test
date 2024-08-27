@@ -1,0 +1,63 @@
+nextflow_process {
+
+    name "Test Process PICARD_POSITIONBASEDDOWNSAMPLESAM"
+    script "../main.nf"
+    process "PICARD_POSITIONBASEDDOWNSAMPLESAM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "picard"
+    tag "picard/positionbaseddownsamplesam"
+
+    test("sarscov2 - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    0.9
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions,
+                                  process.out.bam.collect { bam(it[1]).getHeaderMD5() },
+                                  process.out.bam.collect { bam(it[1]).getReadsMD5() },
+                                  process.out.bai).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    0.5
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

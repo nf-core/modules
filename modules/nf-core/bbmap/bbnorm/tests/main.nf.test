@@ -1,0 +1,128 @@
+
+nextflow_process {
+
+    name "Test Process BBMAP_BBNORM"
+    script "../main.nf"
+    process "BBMAP_BBNORM"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bbmap"
+    tag "bbmap/bbnorm"
+
+    test("test-bbmap-bbnorm-se") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:true ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					path(process.out.fastq[0][1]).linesGzip,
+					file(process.out.log[0][1]).name,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-bbmap-bbnorm-pe") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    [
+				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+				    ]
+                ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					process.out.fastq[0][1].collect { path(it).linesGzip[0..1] },
+					file(process.out.log[0][1]).name,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-bbmap-bbnorm-interleaved") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:true ],
+				    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_interleaved.fastq.gz', checkIfExists: true) ]
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					path(process.out.fastq[0][1]).linesGzip[3..7],
+					file(process.out.log[0][1]).name,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-bbmap-bbnorm-multiple-input") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [id:'test', single_end:true ],
+				    [
+				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+				    ]
+                ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					path(process.out.fastq[0][1]).linesGzip[3..7],
+					file(process.out.log[0][1]).name,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

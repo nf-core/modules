@@ -41,6 +41,11 @@ process SENTIEON_BWAMEM {
         $reads \\
         | sentieon util sort -r $fasta -t $task.cpus -o ${prefix} --sam2bam -
 
+    # Delete *.bai file if prefix ends with .cram
+    if [[ "${prefix}" == *.cram ]]; then
+        rm -f "${prefix}.bai"
+    fi
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
