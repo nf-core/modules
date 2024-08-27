@@ -103,7 +103,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.tsv,
+                    file(process.out.versions[0]).readLines()[1].trim() // To verify version text with profile=conda
+                    ).match()
+                }
             )
         }
     }
