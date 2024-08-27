@@ -13,7 +13,6 @@ nextflow_process {
         when {
             process {
                 """
-                // define inputs of the process here. Example:
                 input[0] = [
                                 [ id:'test'], // meta map
                                 file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf'], checkIfExists: true)
@@ -53,7 +52,6 @@ nextflow_process {
         when {
             process {
                 """
-                // define inputs of the process here. Example:
                 input[0] = [
                                 [ id:'test'], // meta map
                                 file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf'], checkIfExists: true)
