@@ -10,8 +10,8 @@ process FOLDMASON_EASYMSA {
     val(compress)
 
     output:
-    tuple val(meta), path("${prefix}_3di.fa${compress ? '.gz' : ''}"), emit: msa3di
-    tuple val(meta), path("${prefix}_aa.fa${compress ? '.gz' : ''}"), emit: msaAA
+    tuple val(meta), path("${prefix}_3di.fa${compress ? '.gz' : ''}"), emit: msa_3di
+    tuple val(meta), path("${prefix}_aa.fa${compress ? '.gz' : ''}"), emit: msa_aa
     path "versions.yml"           , emit: versions
 
     when:
