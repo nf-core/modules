@@ -1,0 +1,66 @@
+nextflow_process {
+
+    name "Test Process CAFE"
+    script "../main.nf"
+    process "CAFE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cafe"
+
+    test("mycoplasma - genecounts - tree") {
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ],
+                    file(params.modules_testdata_base_path + "delete_me/cafe/hog_gene_counts.small.tsv", checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + "delete_me/cafe/SpeciesTree_rooted_ultra.txt", checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.cafe_base_count,
+                    process.out.cafe_significant_trees,
+                    file(process.out.cafe_report[0]).readLines()[3..4],
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("mycoplasma - genecounts - tree - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ],
+                    file(params.modules_testdata_base_path + "delete_me/cafe/hog_gene_counts.small.tsv", checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + "delete_me/cafe/SpeciesTree_rooted_ultra.txt", checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.cafe_base_count,
+                    process.out.cafe_significant_trees,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+}
