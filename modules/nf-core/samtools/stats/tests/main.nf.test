@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process SAMTOOLS_STATS"
     script "../main.nf"
     process "SAMTOOLS_STATS"
+
     tag "modules"
     tag "modules_nfcore"
     tag "samtools"
@@ -43,7 +44,7 @@ nextflow_process {
                 ])
                 input[1] = Channel.of([
                     [ id:'genome' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 ])
                 """
             }
@@ -96,7 +97,7 @@ nextflow_process {
                 ])
                 input[1] = Channel.of([
                     [ id:'genome' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 ])
                 """
             }
