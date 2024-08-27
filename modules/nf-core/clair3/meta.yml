@@ -1,0 +1,54 @@
+name: clair3
+description: short-variant calling with clair3
+keywords:
+  - clair3
+  - short-variant calling
+tools:
+  - clair3:
+      description: a germline small variant caller for long-reads
+      homepage: https://github.com/HKU-BAL/Clair3
+      documentation: https://github.com/HKU-BAL/Clair3#readme
+      tool_dev_url: https://github.com/HKU-BAL/Clair3
+      licence: ["BSD-3-Clause"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - bam:
+      type: file
+      description: BAM file
+      pattern: "*.bam"
+  - bai:
+      type: file
+      description: Index of BAM file
+      pattern: "*.bai"
+  - fai:
+      type: file
+      description: Index of reference fasta file
+      pattern: "*.fai"
+  - fasta:
+      type: file
+      description: |
+        Reference database in FASTA format
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - vcf:
+      type: file
+      description: Compressed VCF file
+      pattern: "*.vcf.gz"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@christopher-hakkaart"
+  - "@yuukiiwa"

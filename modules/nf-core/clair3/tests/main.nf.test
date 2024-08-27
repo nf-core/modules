@@ -1,0 +1,73 @@
+nextflow_process {
+
+    name "Test Process CLAIR3"
+    script "../main.nf"
+    process "CLAIR3"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "clair3"
+
+    test("sarscov2 - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                            file(params.modules_testdata_base_path + '/genomics/sarscov2/nanopore/bam/test.sorted.bam', checkIfExists: true),
+                            file(params.modules_testdata_base_path + '/genomics/sarscov2/nanopore/bam/test.sorted.bam.bai', checkIfExists: true),
+                        ]
+                input[1] = [ [ id:'test' ],
+                            file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                        ]
+                input[2] = [ [ id:'test' ],
+                            file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                        ]
+                input[3] = "ont"
+                input[4] = "/usr/local/bin/models/r941_prom_sup_g5014"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                            file(params.modules_testdata_base_path + '/genomics/sarscov2/nanopore/bam/test.sorted.bam', checkIfExists: true),
+                            file(params.modules_testdata_base_path + '/genomics/sarscov2/nanopore/bam/test.sorted.bam.bai', checkIfExists: true),
+                        ]
+                input[1] = [ [ id:'test' ],
+                            file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                        ]
+                input[2] = [ [ id:'test' ],
+                            file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                        ]
+                input[3] = "ont"
+                input[4] = "/usr/local/bin/models/r941_prom_sup_g5014"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
