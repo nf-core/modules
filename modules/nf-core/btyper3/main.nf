@@ -2,7 +2,7 @@ process BTYPER3 {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::btyper3=3.4.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/btyper3:3.4.0--pyhdfd78af_0':
         'biocontainers/btyper3:3.4.0--pyhdfd78af_0' }"
