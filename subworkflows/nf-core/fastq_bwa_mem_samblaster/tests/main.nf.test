@@ -36,8 +36,12 @@ nextflow_workflow {
 
         then {
             assertAll(
-                { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert workflow.success },
+                { assert snapshot(
+                    bam(workflow.out.bam[0][1]).getReadsMD5(),
+                    workflow.out.versions
+                    ).match()
+                }
             )
         }
     }
@@ -67,8 +71,8 @@ nextflow_workflow {
 
         then {
             assertAll(
-                { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
             )
         }
     }

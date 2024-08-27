@@ -7,6 +7,7 @@ workflow FASTQ_BWA_MEM_SAMBLASTER {
     take:
     ch_fastq                // channel: [ val(meta), [ fq ] ]; meta ~ [ id: 'sample' ]
     ch_reference            // channel: [ val(meta2), fasta, index ]; fasta | index; meta2 ~ [ id: 'genome' ]
+                            // Each item from ch_fastq is combined with each item from ch_reference
 
     main:
     ch_versions             = Channel.empty()
