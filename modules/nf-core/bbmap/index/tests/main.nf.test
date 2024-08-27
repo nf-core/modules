@@ -1,0 +1,53 @@
+import groovy.io.FileType
+
+nextflow_process {
+
+    name "Test Process BBMAP_INDEX"
+    script "../main.nf"
+    process "BBMAP_INDEX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bbmap"
+    tag "bbmap/index"
+
+    test("test-bbmap-index") {
+
+        when {
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    def all_files = []
+
+                    file(process.out.index[0]).eachFileRecurse (FileType.FILES) { file ->
+                        all_files << file
+                    }
+
+                    def all_file_names = all_files.collect { it.name }.toSorted()
+
+                    def stable_file_names = [
+                        'chr1_index_k13_c15_b1.block'
+                    ]
+
+                    def stable_files = all_files.findAll { it.name in stable_file_names }.toSorted()
+
+                    assert snapshot(
+                        all_file_names,
+                        stable_files,
+                        process.out.versions[0]
+                    ).match()
+                }
+            )
+        }
+    }
+
+}
