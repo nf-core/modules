@@ -4,14 +4,15 @@ process LAST_SPLIT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/last:1542--h43eeafb_1' :
-        'biocontainers/last:1542--h43eeafb_1' }"
+        'https://depot.galaxyproject.org/singularity/last:1571--h43eeafb_0' :
+        'biocontainers/last:1571--h43eeafb_0' }"
 
     input:
     tuple val(meta), path(maf)
 
     output:
     tuple val(meta), path("*.maf.gz"), emit: maf
+    tuple val(meta), path("*.tsv")   , emit: multiqc
     path "versions.yml"              , emit: versions
 
     when:
@@ -23,7 +24,29 @@ process LAST_SPLIT {
     if( "$maf" == "${prefix}.maf.gz" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     set -o pipefail
-    zcat < $maf | last-split $args | gzip --no-name > ${prefix}.maf.gz
+
+    function calculate_psl_metrics() {
+        awk 'BEGIN {
+            FS="\t";  # Set field separator as tab
+            totalMatches = 0;
+            totalAlignmentLength = 0;
+            print "Sample\tTotalAlignmentLength\tPercentSimilarity";  # Header for MultiQC
+        }
+        {
+            totalMatches += \$1 + \$3;  # Sum matches and repMatches
+            totalAlignmentLength += \$1 + \$2 + \$3 + \$6 + \$8;  # Sum matches, misMatches, repMatches, qBaseInsert, and tBaseInsert
+        }
+        END {
+            percentSimilarity = (totalAlignmentLength > 0) ? (totalMatches / totalAlignmentLength * 100) : 0;
+            print "$meta.id" "\t" totalAlignmentLength "\t" percentSimilarity;  # Data in TSV format
+        }'
+    }
+
+    zcat < $maf |
+        last-split $args |
+        tee >(gzip --no-name  > ${prefix}.maf.gz) |
+        maf-convert psl |
+        calculate_psl_metrics > ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -37,6 +60,7 @@ process LAST_SPLIT {
     if( "$maf" == "${prefix}.maf.gz" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     echo stub | gzip --no-name > ${prefix}.maf.gz
+    touch ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

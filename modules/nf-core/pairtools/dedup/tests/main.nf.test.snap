@@ -1,0 +1,30 @@
+{
+    "test-pairtools-dedup": {
+        "content": [
+            [
+                "#genome_assembly: unknown",
+                "#chromosomes: chr1 chr2",
+                "#columns: readID chrom1 pos1 chrom2 pos2 strand1 strand2 pair_type sam1 sam2",
+                "readid3\tchr1\t1\tchr1\t20\t+\t+\tUU\t.\t.",
+                "readid5\tchr1\t1\tchr1\t25\t+\t+\tUU\t.\t."
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.dedup.pairs.stat:md5,94682d1bc608ade150dd11993fbfd2a3"
+                ]
+            ],
+            [
+                "versions.yml:md5,485fbdd68f35d563c8559e1afedc4c53"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-08-23T11:23:16.451408"
+    }
+}

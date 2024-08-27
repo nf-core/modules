@@ -15,9 +15,9 @@ nextflow_process {
                 """
                 input[0] = [ 
                     [ id:'test', single_end:true ], // meta map
-                    file(params.test_data['bacteroides_fragilis']['nanopore']['test_fastq_gz'], checkIfExists: true),
-                    file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true),
-                    file(params.test_data['bacteroides_fragilis']['genome']['genome_paf'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/nanopore/fastq/test.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.paf', checkIfExists: true)
                 ]
                 """
             }

@@ -1,14 +1,14 @@
 {
-    "test_chromap_chromap_paired_end": {
+    "sarscov2 - single_end": {
         "content": [
             {
                 "0": [
                     [
                         {
                             "id": "test",
-                            "single_end": false
+                            "single_end": true
                         },
-                        "test.bed.gz:md5,54c1feb6f714b72f73befae8435e242b"
+                        "test.bed.gz:md5,b23aa9dae812fe84c308df6e18d850be"
                     ]
                 ],
                 "1": [
@@ -21,7 +21,7 @@
                     
                 ],
                 "4": [
-                    "versions.yml:md5,80647c2956e504334ad25ce31d33b539"
+                    "versions.yml:md5,e3ece11a3651bd28b0ea714f94f09da7"
                 ],
                 "bam": [
                     
@@ -30,9 +30,9 @@
                     [
                         {
                             "id": "test",
-                            "single_end": false
+                            "single_end": true
                         },
-                        "test.bed.gz:md5,54c1feb6f714b72f73befae8435e242b"
+                        "test.bed.gz:md5,b23aa9dae812fe84c308df6e18d850be"
                     ]
                 ],
                 "pairs": [
@@ -42,36 +42,26 @@
                     
                 ],
                 "versions": [
-                    "versions.yml:md5,80647c2956e504334ad25ce31d33b539"
+                    "versions.yml:md5,e3ece11a3651bd28b0ea714f94f09da7"
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.1"
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.3"
         },
-        "timestamp": "2024-05-22T19:08:55.497043"
+        "timestamp": "2024-08-05T17:49:22.798324749"
     },
-    "test_chromap_chromap_paired_bam": {
-        "content": [
-            "test.bam"
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.1"
-        },
-        "timestamp": "2024-05-22T19:09:02.957218"
-    },
-    "test_chromap_chromap_single_end": {
+    "sarscov2 - paired_end ": {
         "content": [
             {
                 "0": [
                     [
                         {
                             "id": "test",
-                            "single_end": true
+                            "single_end": false
                         },
-                        "test.bed.gz:md5,c45f5bb1c6eb56359760ce3827bfe3f4"
+                        "test.bed.gz:md5,f658c1e94adef751ad08e132aac92712"
                     ]
                 ],
                 "1": [
@@ -84,7 +74,7 @@
                     
                 ],
                 "4": [
-                    "versions.yml:md5,80647c2956e504334ad25ce31d33b539"
+                    "versions.yml:md5,e3ece11a3651bd28b0ea714f94f09da7"
                 ],
                 "bam": [
                     
@@ -93,9 +83,9 @@
                     [
                         {
                             "id": "test",
-                            "single_end": true
+                            "single_end": false
                         },
-                        "test.bed.gz:md5,c45f5bb1c6eb56359760ce3827bfe3f4"
+                        "test.bed.gz:md5,f658c1e94adef751ad08e132aac92712"
                     ]
                 ],
                 "pairs": [
@@ -105,26 +95,103 @@
                     
                 ],
                 "versions": [
-                    "versions.yml:md5,80647c2956e504334ad25ce31d33b539"
+                    "versions.yml:md5,e3ece11a3651bd28b0ea714f94f09da7"
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.1"
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.3"
         },
-        "timestamp": "2024-05-22T19:08:47.822066"
+        "timestamp": "2024-08-05T17:49:29.530097947"
     },
-    "versions": {
+    "sarscov2 - single_end - stub": {
         "content": [
-            [
-                "versions.yml:md5,80647c2956e504334ad25ce31d33b539"
-            ]
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.tagAlign.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "3": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.pairs.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "4": [
+                    "versions.yml:md5,e3ece11a3651bd28b0ea714f94f09da7"
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "bed": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "pairs": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.pairs.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "tagAlign": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.tagAlign.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,e3ece11a3651bd28b0ea714f94f09da7"
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.1"
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.3"
         },
-        "timestamp": "2024-05-22T19:09:02.94685"
+        "timestamp": "2024-08-05T17:49:42.086410229"
     }
 }

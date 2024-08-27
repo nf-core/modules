@@ -32,7 +32,7 @@ process BARRNAP {
         --threads $task.cpus \\
         --kingdom $db \\
         $input \\
-        > rrna_${db}.gff
+        > ${prefix}_${db}.gff
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -44,9 +44,9 @@ process BARRNAP {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
+    db = dbname ? "${dbname}" : 'bac'
     """
-    touch ${prefix}.gff
+    touch ${prefix}_${db}.gff
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

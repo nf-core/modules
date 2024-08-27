@@ -9,20 +9,21 @@ nextflow_process {
     tag "bcftools"
     tag "bcftools/annotate"
 
-    test("sarscov2 - [vcf, tbi, vcf2, tbi2, []] - vcf_output") {
+    test("sarscov2 - [vcf, tbi, annotation, annotation_tbi], [] - vcf_output") {
 
         config "./vcf.config"
 
         when {
             process {
                 """
-                input[0] = [ [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true),
-                    []
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
                 ]
+                input[1] = []
                 """
             }
         }
@@ -33,26 +34,57 @@ nextflow_process {
                 { assert snapshot(
                     process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
                     process.out.versions
-                ).match("vcf") }
+                ).match() }
             )
         }
 
     }
 
-    test("sarscov2 - [vcf, tbi, vcf2, tbi2, []] - vcf_gz_index") {
+    test("sarscov2 - [vcf, [], annotation, annotation_tbi], [] - vcf_output") {
+
+        config "./vcf.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    [],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+        test("sarscov2 - [vcf, tbi, annotation, annotation_tbi], [] - vcf_gz_index") {
 
         config "./vcf_gz_index.config"
 
         when {
             process {
                 """
-                input[0] = [ [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true),
-                    []
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
                 ]
+                input[1] = []
                 """
             }
         }
@@ -72,20 +104,21 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - [vcf, tbi, vcf2, tbi2, []] - vcf_gz_index_csi") {
+    test("sarscov2 - [vcf, tbi, annotation, annotation_tbi], [] - vcf_gz_index_csi") {
 
         config "./vcf_gz_index_csi.config"
 
         when {
             process {
                 """
-                input[0] = [ [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true),
-                    []
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
                 ]
+                input[1] = []
                 """
             }
         }
@@ -105,20 +138,21 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - [vcf, tbi, vcf2, tbi2, []] - vcf_gz_index_tbi") {
+    test("sarscov2 - [vcf, tbi, annotation, annotation_tbi], [] - vcf_gz_index_tbi") {
 
         config "./vcf_gz_index_tbi.config"
 
         when {
             process {
                 """
-                input[0] = [ [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true),
-                    []
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
                 ]
+                input[1] = []
                 """
             }
         }
@@ -137,27 +171,24 @@ nextflow_process {
         }
 
     }
-    test("sarscov2 - [vcf, [], [], [], header] - bcf_output") {
+    test("sarscov2 - [vcf, [], annotation, annotation_tbi], header - bcf_output") {
 
         config "./bcf.config"
 
         when {
             process {
                 """
-                vcf = Channel.of([ [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
                     [],
-                    [],
-                    []
-                ])
-
-                header = Channel.of(
-                        '##INFO=<ID=SGB,Number=1,Type=Float,Description="Segregation based metric.">',
-                        '##INFO=<ID=MQ0F,Number=1,Type=Float,Description="Fraction of MQ0 reads (smaller is better)">'
-                    )
-                    .collectFile(name:"headers.vcf", newLine:true)
-
-                input[0] = vcf.combine(header)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
+                ]
+                input[1] = Channel.of(
+                    '##INFO=<ID=SGB,Number=1,Type=Float,Description="Segregation based metric.">',
+                    '##INFO=<ID=MQ0F,Number=1,Type=Float,Description="Fraction of MQ0 reads (smaller is better)">'
+                ).collectFile(name:"headers.vcf", newLine:true)
                 """
             }
         }
@@ -174,7 +205,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - [vcf, tbi, vcf2, tbi2, []] - stub") {
+    test("sarscov2 - [vcf, tbi, annotation, annotation_tbi], [] - stub") {
 
         config "./vcf.config"
         options "-stub"
@@ -182,13 +213,14 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true),
-                    []
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
                 ]
+                input[1] = []
                 """
             }
         }
@@ -202,7 +234,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - [vcf, tbi, vcf2, tbi2, []] - vcf_gz_index - stub") {
+    test("sarscov2 - [vcf, tbi, annotation, annotation_tbi], [] - vcf_gz_index - stub") {
 
         config "./vcf_gz_index.config"
         options "-stub"
@@ -210,13 +242,14 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true),
-                    []
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
                 ]
+                input[1] = []
                 """
             }
         }
@@ -231,7 +264,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - [vcf, tbi, vcf2, tbi2, []] - vcf_gz_index_csi - stub") {
+    test("sarscov2 - [vcf, tbi, annotation, annotation_tbi], [] - vcf_gz_index_csi - stub") {
 
         config "./vcf_gz_index_csi.config"
         options "-stub"
@@ -239,13 +272,14 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true),
-                    []
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
                 ]
+                input[1] = []
                 """
             }
         }
@@ -260,7 +294,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - [vcf, tbi, vcf2, tbi2, []] - vcf_gz_index_tbi - stub") {
+    test("sarscov2 - [vcf, tbi, annotation, annotation_tbi], [] - vcf_gz_index_tbi - stub") {
 
         config "./vcf_gz_index_tbi.config"
         options "-stub"
@@ -268,13 +302,14 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true),
-                    []
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
                 ]
+                input[1] = []
                 """
             }
         }
