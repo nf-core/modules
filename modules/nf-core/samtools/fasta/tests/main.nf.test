@@ -1,0 +1,70 @@
+
+nextflow_process {
+
+    name "Test Process SAMTOOLS_FASTA"
+    script "../main.nf"
+    process "SAMTOOLS_FASTA"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "samtools"
+    tag "samtools/fasta"
+
+    test("test-samtools-fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+				]
+				input[1] = false
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					process.out.fasta[0][1].collect { file(it).name }.toSorted(),
+					file(process.out.singleton[0][1]).name,
+					file(process.out.other[0][1]).name,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-samtools-fasta-interleave") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+				]
+				input[1] = true
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					path(process.out.interleaved[0][1]).linesGzip[0],
+					file(process.out.other[0][1]).name,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}
