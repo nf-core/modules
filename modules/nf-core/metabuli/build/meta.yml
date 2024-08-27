@@ -1,0 +1,42 @@
+name: "metabuli_build"
+description: Build a database needed to use the metabuli classification tool
+keywords:
+  - metabuli
+  - metagenomics
+  - profiling
+  - taxonomy
+  - database
+tools:
+  - "metabuli":
+    description: "Metabuli: specific and sensitive metagenomic classification via joint analysis of DNA and amino acid"
+    homepage: "https://github.com/steineggerlab/Metabuli"
+    documentation: "https://github.com/steineggerlab/Metabuli#readme"
+    tool_dev_url: "https://github.com/steineggerlab/Metabuli"
+    doi: "10.1101/2023.05.31.543018"
+    licence: ['GPL v3']
+
+input:
+  - meta:
+    type: map
+    description: |
+      Groovy Map containing sample information
+      e.g. `[ id:'sample1', single_end:false ]`
+  - db:
+    type: directory
+    description: |
+      contains required files to build the database
+      [ taxonomy/names.dmp, taxonomy/nodes.dmp, taxonomy/merged.dmp, acc2taxid, library/*.fna ]
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - db:
+      type: file
+      description: Compressed metabuli database
+      pattern: "${prefix}/"
+
+authors:
+  - "@TheOafidian"
+  - "@Joon-Klaps"
