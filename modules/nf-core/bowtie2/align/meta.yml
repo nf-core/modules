@@ -36,6 +36,15 @@ input:
       type: file
       description: Bowtie2 genome index files
       pattern: "*.ebwt"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: Bowtie2 genome fasta file
+      pattern: "*.fasta"
   - save_unaligned:
       type: boolean
       description: |
@@ -46,22 +55,38 @@ input:
       description: use samtools sort (true) or samtools view (false)
       pattern: "true or false"
 output:
-  - aligned:
+  - sam:
       type: file
-      description: Output BAM/SAM file containing read alignments
-      pattern: "*.{bam,sam}"
-  - versions:
+      description: Output SAM file containing read alignments
+      pattern: "*.sam"
+  - bam:
       type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - fastq:
+      description: Output BAM file containing read alignments
+      pattern: "*.bam"
+  - cram:
       type: file
-      description: Unaligned FastQ files
-      pattern: "*.fastq.gz"
+      description: Output CRAM file containing read alignments
+      pattern: "*.cram"
+  - csi:
+      type: file
+      description: Output SAM/BAM index for large inputs
+      pattern: "*.csi"
+  - crai:
+      type: file
+      description: Output CRAM index
+      pattern: "*.crai"
   - log:
       type: file
       description: Aligment log
       pattern: "*.log"
+  - fastq:
+      type: file
+      description: Unaligned FastQ files
+      pattern: "*.fastq.gz"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 authors:
   - "@joseespinosa"
   - "@drpatelh"

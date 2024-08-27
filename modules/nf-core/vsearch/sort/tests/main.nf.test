@@ -1,0 +1,60 @@
+nextflow_process {
+
+    name "Test Process VSEARCH_SORT"
+    script "../main.nf"
+    process "VSEARCH_SORT"
+
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "vsearch"
+    tag "vsearch/sort"
+
+    test("vsearch-sort - sort - size") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = "--sortbysize"
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("vsearch-sort - sort - length") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = "--sortbylength"
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

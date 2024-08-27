@@ -1,0 +1,263 @@
+nextflow_process {
+
+    name "Test Process LIMA"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "LIMA"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "lima"
+
+    test("LIMA - Primer Removal - Input => bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.bam', checkIfExists: true),
+                ]
+                input[1] = [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/primers.fasta', checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.counts).match("counts") },
+                { assert snapshot(process.out.report).match("report") },
+                { assert snapshot(process.out.summary).match("summary") },
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert snapshot(process.out.bam).match("bam") },
+                { assert snapshot(process.out.pbi).match("pbi") },
+                { assert snapshot(process.out.fasta).match("fasta") },
+                { assert snapshot(process.out.fastagz).match("fastagz") },
+                { assert snapshot(process.out.fastq).match("fastq") },
+                { assert snapshot(process.out.fastqgz).match("fastqgz") },
+                { assert snapshot(process.out.clips).match("clips") },
+                { assert snapshot(process.out.guess).match("guess") }
+            )
+        }
+
+    }
+
+    test("LIMA - Primer Removal - Input => fa") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/alz.ccs.fasta', checkIfExists: true),
+                ]
+                input[1] = [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/primers.fasta', checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+        test("LIMA - Primer Removal - Input => fa.gz") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/alz.ccs.fasta.gz', checkIfExists: true),
+                ]
+                input[1] = [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/primers.fasta', checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("LIMA - Primer Removal - Input => fq") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/alz.ccs.fastq', checkIfExists: true),
+                ]
+                input[1] = [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/primers.fasta', checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("LIMA - Primer Removal - Input => fq.gz") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/alz.ccs.fastq.gz', checkIfExists: true),
+                ]
+                input[1] = [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/primers.fasta', checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+        test("LIMA - Primer Removal - Input => bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.bam', checkIfExists: true),
+                ]
+                input[1] = [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/primers.fasta', checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("LIMA - Primer Removal - Input => fa - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/alz.ccs.fasta', checkIfExists: true),
+                ]
+                input[1] = [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/primers.fasta', checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("LIMA - Primer Removal - Input => fa.gz - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/alz.ccs.fasta.gz', checkIfExists: true),
+                ]
+                input[1] = [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/primers.fasta', checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("LIMA - Primer Removal - Input => fq - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/alz.ccs.fastq', checkIfExists: true),
+                ]
+                input[1] = [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/primers.fasta', checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("LIMA - Primer Removal - Input => fq.gz - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/alz.ccs.fastq.gz', checkIfExists: true),
+                ]
+                input[1] = [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/primers.fasta', checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

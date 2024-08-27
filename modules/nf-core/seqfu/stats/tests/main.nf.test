@@ -1,0 +1,75 @@
+nextflow_process {
+
+    name "Test Process SEQFU_STATS"
+    script "../main.nf"
+    process "SEQFU_STATS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "seqfu"
+    tag "seqfu/stats"
+
+    
+    test("seqfu stats - faa") {
+        // test with 1 FAA file (with  multiple sequences of different length)
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], 
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.stats },
+                { assert process.out.multiqc },
+                { assert process.out.stats.size() == 1 },
+                { assert snapshot(process.out.versions).match("versions-single") },
+                { assert snapshot(process.out.stats).match("stats-single") },
+                { assert path(process.out.stats.get(0).get(1)).md5 == "26141ef87ad8a6f59a6f283cc0a06fda" }
+            )
+        }
+
+    }
+
+    test("seqfu stats - multiple files") {
+        // test feeding a mix of files including compressed
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test' ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                            ]
+                        ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.stats },
+                { assert process.out.multiqc },
+                { assert process.out.stats.size() == 1 },
+                { assert path(process.out.versions[0]).readLines()[1].contains('.') },
+                { assert snapshot(process.out.stats).match("stats-multi") },
+                { assert snapshot(process.out.stats).md5().match("multi-lines") },
+                { assert path(process.out.stats[0][1]).readLines()[0] ==  'File\t#Seq\tTotal bp\tAvg\tN50\tN75\tN90\tauN\tMin\tMax' },
+                { assert path(process.out.multiqc[0][1]).readLines().join('\n').contains('genome.fasta') },
+                { assert path(process.out.multiqc[0][1]).readLines().join('\n').contains('proteome.fasta') }              
+            )
+        }
+
+    }
+
+}

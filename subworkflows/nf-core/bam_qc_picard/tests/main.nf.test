@@ -1,0 +1,164 @@
+nextflow_workflow {
+
+    name "Test Workflow BAM_QC_PICARD"
+    script "../main.nf"
+    workflow "BAM_QC_PICARD"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "bam_qc_picard"
+    tag "subworkflows/bam_qc_picard"
+    tag "picard/collectmultiplemetrics"
+    tag "picard/collectwgsmetrics"
+    tag "picard/collecthsmetrics"
+
+    test("sascov2_wgs - [bam,bai]") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([ [ id:'test', single_end:false ],
+                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                [],
+                []
+                ])
+                input[1] = [
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[3] = [
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.coverage_metrics[0][0],
+                    file(workflow.out.coverage_metrics[0][1]).name,
+                    path(workflow.out.coverage_metrics[0][1]).readLines()[0..2],
+                    workflow.out.multiple_metrics[0][0],
+                    file(workflow.out.multiple_metrics[0][1][0]).name,
+                    path(workflow.out.multiple_metrics[0][1][0]).readLines()[0..2],
+                    file(workflow.out.multiple_metrics[0][1][1]).name,
+                    path(workflow.out.multiple_metrics[0][1][1]).readLines()[0..2],
+                    file(workflow.out.multiple_metrics[0][1][2]).name,
+                    path(workflow.out.multiple_metrics[0][1][2]).readLines()[0..2],
+                    file(workflow.out.multiple_metrics[0][1][3]).name,
+                    path(workflow.out.multiple_metrics[0][1][3]).readLines()[0..2],
+                    file(workflow.out.multiple_metrics[0][1][4]).name,
+                    path(workflow.out.multiple_metrics[0][1][4]).readLines()[0..2],
+                    workflow.out.versions
+                    ).match()
+                }
+
+
+                )
+        }
+    }
+
+    test("sascov2_targetted - [bam,bai]") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([ [ id:'test', single_end:false ],
+                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/baits.interval_list', checkIfExists: true),
+                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/targets.interval_list', checkIfExists: true)
+                ])
+                input[1] = [
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[3] = [
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+             assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.coverage_metrics[0][0],
+                    file(workflow.out.coverage_metrics[0][1]).name,
+                    path(workflow.out.coverage_metrics[0][1]).readLines()[0..2],
+                    workflow.out.multiple_metrics[0][0],
+                    file(workflow.out.multiple_metrics[0][1][0]).name,
+                    path(workflow.out.multiple_metrics[0][1][0]).readLines()[0..2],
+                    file(workflow.out.multiple_metrics[0][1][1]).name,
+                    path(workflow.out.multiple_metrics[0][1][1]).readLines()[0..2],
+                    file(workflow.out.multiple_metrics[0][1][2]).name,
+                    path(workflow.out.multiple_metrics[0][1][2]).readLines()[0..2],
+                    file(workflow.out.multiple_metrics[0][1][3]).name,
+                    path(workflow.out.multiple_metrics[0][1][3]).readLines()[0..2],
+                    file(workflow.out.multiple_metrics[0][1][4]).name,
+                    path(workflow.out.multiple_metrics[0][1][4]).readLines()[0..2],
+                    workflow.out.versions
+                    ).match()
+                }
+
+
+                )
+
+        }
+    }
+
+  test("sascov2_wgs_stub - [bam,bai]") {
+
+        options "-stub-run"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([ [ id:'test', single_end:false ],
+                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                [],
+                []
+                ])
+                input[1] = [
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[3] = [
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert workflow.success },
+                { assert snapshot(
+                    file(workflow.out.coverage_metrics[0][1]).name,
+                    file(workflow.out.multiple_metrics[0][1][0]).name
+                ).match() }
+            )
+        }
+    }
+
+}

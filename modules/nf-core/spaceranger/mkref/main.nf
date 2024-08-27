@@ -2,7 +2,7 @@ process SPACERANGER_MKREF {
     tag "$fasta"
     label 'process_high'
 
-    container "docker.io/nfcore/spaceranger:2.1.0"
+    container "nf-core/spaceranger:3.0.0"
 
     input:
     path fasta
@@ -22,6 +22,9 @@ process SPACERANGER_MKREF {
         error "SPACERANGER_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
+    // --localcores is passed to the martian runtime and specifies the number of allocated jobs
+    // --nthreads is passed to the STAR index generation.
+    // see also https://github.com/nf-core/scrnaseq/issues/329
     """
     spaceranger \\
         mkref \\
@@ -30,6 +33,7 @@ process SPACERANGER_MKREF {
         --genes=$gtf \\
         --localcores=${task.cpus} \\
         --localmem=${task.memory.toGiga()} \\
+        --nthreads=${task.cpus} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

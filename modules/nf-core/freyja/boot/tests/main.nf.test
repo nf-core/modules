@@ -3,13 +3,14 @@ nextflow_process {
     name "Test Process FREYJA_BOOT"
     script "../main.nf"
     process "FREYJA_BOOT"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "freyja"
     tag "freyja/boot"
     tag "freyja/variants"
-    tag "freyja/updatedb"
+    tag "freyja/update"
 
     test("sarscov2 - illumina - test_paired_end_sorted - bam") {
 
@@ -20,9 +21,9 @@ nextflow_process {
                     """
                     input[0] = [
                             [ id:'test', single_end:false ], // meta map
-                            file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
                         ]
-                    input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     """
                 }
             }
@@ -40,7 +41,7 @@ nextflow_process {
             process {
                 """
                 input[0] = FREYJA_VARIANTS.out.variants
-                input[1] = 10
+                input[1] = 3
                 input[2] = FREYJA_UPDATE.out.barcodes
                 input[3] = FREYJA_UPDATE.out.lineages_meta
                 """
