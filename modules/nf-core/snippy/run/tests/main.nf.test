@@ -47,7 +47,7 @@ nextflow_process {
 					path(process.out.raw_vcf[0][1]).vcf.summary,
 					path(process.out.filt_vcf[0][1]).vcf.summary,
 					path(process.out.vcf_gz[0][1]).vcf.summary,
-					process.out.vcf_csi,
+					file(process.out.vcf_csi[0][1]).name,
 					file(process.out.txt[0][1]).readLines()[3..5],
 					process.out.versions
 					).match()
