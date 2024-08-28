@@ -7,7 +7,8 @@ process CELLRANGER_MULTI {
     input:
     val meta
     tuple val(meta_gex)        , path (gex_fastqs   , stageAs: "fastqs/gex/fastq_???/*")
-    tuple val(meta_vdj)        , path (vdj_fastqs   , stageAs: "fastqs/vdj/fastq_???/*")
+    tuple val(meta_vdjb)       , path (vdjb_fastqs  , stageAs: "fastqs/vdjb/fastq_???/*")
+    tuple val(meta_vdjt)       , path (vdjt_fastqs  , stageAs: "fastqs/vdjt/fastq_???/*")
     tuple val(meta_ab)         , path (ab_fastqs    , stageAs: "fastqs/ab/fastq_???/*")
     tuple val(meta_beam)       , path (beam_fastqs  , stageAs: "fastqs/beam/fastq_???/*")
     tuple val(meta_cmo)        , path (cmo_fastqs   , stageAs: "fastqs/cmo/fastq_???/*")
@@ -56,15 +57,17 @@ process CELLRANGER_MULTI {
     beam_antigen_panel_name = beam_antigen_panel     ? beam_antigen_panel.getName()     : ''
 
     include_gex  = gex_fastqs.first().getName() != 'fastqs' && gex_reference           ? '[gene-expression]'     : ''
-    include_vdj  = vdj_fastqs.first().getName() != 'fastqs' && vdj_reference           ? '[vdj]'                 : ''
+    include_vdjb = vdjb_fastqs.first().getName() != 'fastqs' && vdj_reference          ? '[vdj]'                 : ''
+    include_vdjt = vdjt_fastqs.first().getName() != 'fastqs' && vdj_reference          ? '[vdj]'                 : ''
     include_beam = beam_fastqs.first().getName() != 'fastqs' && beam_control_panel     ? '[antigen-specificity]' : ''
     include_cmo  = cmo_fastqs.first().getName() != 'fastqs' && cmo_barcodes            ? '[samples]'             : ''
     include_fb   = ab_fastqs.first().getName() != 'fastqs' && fb_reference             ? '[feature]'             : ''
     include_frna = gex_frna_probeset_name && frna_sampleinfo                           ? '[samples]'             : ''
+    combined_vdj = include_vdjb || include_vdjt                                        ? '[vdj]'                 : ''
 
     gex_reference_path = include_gex ? "reference,./${gex_reference_name}" : ''
     fb_reference_path  = include_fb  ? "reference,./${fb_reference_name}"  : ''
-    vdj_reference_path = include_vdj ? "reference,./${vdj_reference_name}" : ''
+    vdj_reference_path = include_vdjb || include_vdjt ? "reference,./${vdj_reference_name}" : ''
 
     // targeted GEX panel goes under GEX section, not its own
     target_panel = gex_targetpanel_name != '' ? "target-panel,./$gex_targetpanel_name" : ''
@@ -90,7 +93,8 @@ process CELLRANGER_MULTI {
     // collect options for each section
     // these are pulled from the meta maps
     gex_options_use    = include_gex && meta_gex?.options   ? 'true' : null
-    vdj_options_use    = include_vdj && meta_vdj?.options   ? 'true' : null
+    vdjb_options_use   = include_vdjb && meta_vdjb?.options ? 'true' : null
+    vdjt_options_use   = include_vdjt && meta_vdjt?.options ? 'true' : null
     ab_options_use     = include_fb && meta_ab?.options     ? 'true' : null
     beam_options_use   = include_beam && meta_beam?.options ? 'true' : null
     cmo_options_use    = include_cmo && meta_cmo?.options   ? 'true' : null
@@ -113,8 +117,11 @@ process CELLRANGER_MULTI {
     cmo_barcode_path   = cmo_options_use && cmo_sample_assignment ? "barcode-sample-assignment,./${cmo_sample_assignment}" : ''
     cmo_options_min_assignment_confidence = cmo_options_use && meta_cmo.options.containsKey("min-assignment-confidence") ? "min-assignment-confidence,${meta_cmo.options["min-assignment-confidence"]}" : ''
 
-    vdj_options_r1_length = vdj_options_use && meta_vdj.options.containsKey("r1-length") ? "r1-length,${meta_vdj.options["r1-length"]}" : ''
-    vdj_options_r2_length = vdj_options_use && meta_vdj.options.containsKey("r2-length") ? "r2-length,${meta_vdj.options["r2-length"]}" : ''
+    vdjb_options_r1_length = vdjb_options_use && meta_vdjb.options.containsKey("r1-length") ? "r1-length,${meta_vdjb.options["r1-length"]}" : ''
+    vdjb_options_r2_length = vdjb_options_use && meta_vdjb.options.containsKey("r2-length") ? "r2-length,${meta_vdjb.options["r2-length"]}" : ''
+
+    vdjt_options_r1_length = vdjt_options_use && meta_vdjt.options.containsKey("r1-length") ? "r1-length,${meta_vdjt.options["r1-length"]}" : ''
+    vdjt_options_r2_length = vdjt_options_use && meta_vdjt.options.containsKey("r2-length") ? "r2-length,${meta_vdjt.options["r2-length"]}" : ''
 
     fb_options_r1_length = fb_options_use && meta_fb.options.containsKey("r1-length") ? "r1-length,${meta_fb.options["r1-length"]}" : ''
     fb_options_r2_length = fb_options_use && meta_fb.options.containsKey("r2-length") ? "r2-length,${meta_fb.options["r2-length"]}" : ''
@@ -122,7 +129,8 @@ process CELLRANGER_MULTI {
     // point config to FASTQs
     // After renaming it gets in 'fastq_all' folder
     fastq_gex      = include_gex                      ? "${meta_gex.id},./fastq_all/gex,,Gene Expression"            : ''
-    fastq_vdj      = include_vdj                      ? "${meta_vdj.id},./fastq_all/vdj,,VDJ"                        : ''
+    fastq_vdjb     = include_vdjb                     ? "${meta_vdjb.id},./fastq_all/vdjb,,VDJ-B"                    : ''
+    fastq_vdjt     = include_vdjt                     ? "${meta_vdjt.id},./fastq_all/vdjt,,VDJ-T"                    : ''
     fastq_antibody = include_fb && ab_options_use     ? "${meta_ab.id},./fastq_all/ab,,Antibody Capture"             : ''
     fastq_beam     = include_beam                     ? "${meta_beam.id},./fastq_all/beam,,Antigen Capture"         : ''
     fastq_crispr   = include_fb && crispr_options_use ? "${meta_crispr.id},./fastq_all/crispr,,CRISPR Guide Capture" : ''
