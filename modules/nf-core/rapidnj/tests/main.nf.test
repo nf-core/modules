@@ -1,0 +1,36 @@
+
+nextflow_process {
+
+    name "Test Process RAPIDNJ"
+    script "../main.nf"
+    process "RAPIDNJ"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "rapidnj"
+
+    test("sarscov2-fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true) ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.phylogeny },
+                { assert snapshot(
+					process.out.stockholm_alignment,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}
