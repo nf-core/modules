@@ -43,7 +43,8 @@ process FOLDMASON_EASYMSA {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo "" | gzip > ${prefix}.fa${compress ? '.gz' : ''}
+    echo ""  ${compress ? '| gzip' : ''} > ${prefix}_3di.fa${compress ? '.gz' : ''}
+    echo ""  ${compress ? '| gzip' : ''} > ${prefix}_aa.fa${compress ? '.gz' : ''}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
