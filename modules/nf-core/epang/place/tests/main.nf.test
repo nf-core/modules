@@ -35,7 +35,7 @@ nextflow_process {
                 { assert process.out.epang }, // The entire folder inclding .command.sh, etc
                 { assert snapshot(
 					process.out.jplace,
-					file(process.out.log[0][1]).name,
+					file(process.out.log[0]).name,
 					process.out.versions
 					).match()
 				}
