@@ -30,6 +30,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert file(process.out.norm_count_file[0][1]).text.contains("sgRNA") },
                 { assert snapshot(
                     file(process.out.norm_count_file[0][1]).name,
                     process.out.versions
