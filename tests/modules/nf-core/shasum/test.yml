@@ -1,8 +1,0 @@
-- name: shasum test_shasum
-  command: nextflow run ./tests/modules/nf-core/shasum -entry test_shasum -c ./tests/config/nextflow.config
-  tags:
-    - shasum
-  files:
-    - path: output/shasum/test.paired_end.bam.sha256
-      md5sum: 138a19e100f09fc975ea1b717da9b6dd
-    - path: output/shasum/versions.yml
