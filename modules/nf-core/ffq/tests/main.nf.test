@@ -1,0 +1,50 @@
+
+nextflow_process {
+
+    name "Test Process FFQ"
+    script "../main.nf"
+    process "FFQ"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ffq"
+
+    test("test-ffq-single-id") {
+        
+        when {
+            process {
+                """
+                input[0] = [ 'SRR9990627' ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    
+    test("test-ffq-multiple-ids") {
+        
+        when {
+            process {
+                """
+                input[0] = [ 'SRR9990627', 'SRX7347523' ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    
+}
