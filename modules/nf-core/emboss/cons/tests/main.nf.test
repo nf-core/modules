@@ -1,0 +1,57 @@
+
+nextflow_process {
+
+    name "Test Process EMBOSS_CONS"
+    script "../main.nf"
+    process "EMBOSS_CONS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "emboss"
+    tag "emboss/cons"
+
+    test("test-emboss-cons") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-emboss-cons-stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}
