@@ -19,15 +19,15 @@ process CNVPYTOR_CALLCNVS {
     task.ext.when == null || task.ext.when
 
     script:
-    def bins = bin_sizes ?: '1000'
+    def bins = bin_sizes ? "-call $bin_sizes" : '-call 1000'
     """
     cnvpytor \\
         -root $pytor \\
-        -call $bin_sizes
+        $bin_sizes
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/CNVpytor //' )
+        cnvpytor: \$(cnvpytor --version | sed -n 's/.*CNVpytor \\(.*\\)/\\1/p')
     END_VERSIONS
     """
 
@@ -37,7 +37,7 @@ process CNVPYTOR_CALLCNVS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/CNVpytor //' )
+        cnvpytor: \$(cnvpytor --version | sed -n 's/.*CNVpytor \\(.*\\)/\\1/p')
     END_VERSIONS
     """
 }
