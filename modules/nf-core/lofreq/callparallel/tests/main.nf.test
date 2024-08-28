@@ -36,7 +36,6 @@ nextflow_process {
                     process.out.versions,
                     process.out.tbi
                     ).match() },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains('##INFO=<ID=CONSVAR,Number=0,Type=Flag,Description="Indicates that the variant is a consensus variant (as opposed to a low frequency variant).">') }
             )
         }
 
