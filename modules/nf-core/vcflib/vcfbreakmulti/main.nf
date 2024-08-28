@@ -4,7 +4,7 @@ process VCFLIB_VCFBREAKMULTI {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vcflib:1.0.3--hecb563c_1':
+        'https://depot.galaxyproject.org/singularity/vcflib:1.0.3--ha025227_0':
         'biocontainers/vcflib:1.0.3--ha025227_0' }"
 
     input:
@@ -39,7 +39,7 @@ process VCFLIB_VCFBREAKMULTI {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.0.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    touch ${prefix}.breakmulti.vcf.gz
+    echo | gzip > ${prefix}.breakmulti.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

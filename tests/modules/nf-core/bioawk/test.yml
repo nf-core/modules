@@ -1,7 +1,0 @@
-- name: bioawk test_bioawk
-  command: nextflow run ./tests/modules/nf-core/bioawk -entry test_bioawk -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bioawk/nextflow.config
-  tags:
-    - bioawk
-  files:
-    - path: output/bioawk/sample_1.fa.gz
-      contains: ["29829"]
