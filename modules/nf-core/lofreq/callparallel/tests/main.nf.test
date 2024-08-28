@@ -67,9 +67,9 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.versions,
-                    process.out.tbi
+                    process.out.tbi,                    
+                    path(process.out.vcf[0][1]).vcf.variantsMD5
                     ).match() },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains('##INFO=<ID=CONSVAR,Number=0,Type=Flag,Description="Indicates that the variant is a consensus variant (as opposed to a low frequency variant).">') }
             )
         }
 
