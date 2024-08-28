@@ -8,10 +8,9 @@ include { NEXTCLADE_RUN        } from '../../../../../modules/nf-core/nextclade/
 workflow test_nextclade_run {
 
     dataset = 'sars-cov-2'
-    reference = 'MN908947'
-    tag = '2022-01-18T12:00:00Z'
+    tag = '2024-01-16--20-31-02Z'
 
-    NEXTCLADE_DATASETGET ( dataset, reference, tag )
+    NEXTCLADE_DATASETGET ( dataset, tag )
 
     input = [
         [ id:'test', single_end:false ], // meta map

@@ -11,15 +11,29 @@ nextflow_process {
     tag "nextclade/run"
 
     test("sarscov2 default") {
-        
+        setup {
+
+            run("NEXTCLADE_DATASETGET") {
+                script "../../datasetget/main.nf"
+                process {
+                    """
+                    input[0] = 'nextstrain/sars-cov-2/wuhan-hu-1/orfs'
+                    input[1] = '2024-01-16--20-31-02Z'
+
+                    """
+                }
+            }
+
+        }
+
         when {
             process {
                 """
                 input[0] = Channel.of([
                     [id: 'test'], 
-                    [file('/scicomp/home-pure/uoi4/nextclade_test/zip_vers/sars-cov-2-test/sequences.fasta', checkIfExists: true) ] 
+                    [file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta", checkIfExists: true) ] 
                     ])
-				input[1] = Channel.fromPath('/scicomp/home-pure/uoi4/nextclade_test/zip_vers/sars-cov-2-test')
+				input[1] = NEXTCLADE_DATASETGET.out.dataset
                 """
             }
         }
