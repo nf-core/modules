@@ -31,7 +31,7 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [id: 'test'], 
-                    [file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta", checkIfExists: true) ] 
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ] 
                     ])
 				input[1] = NEXTCLADE_DATASETGET.out.dataset
                 """
