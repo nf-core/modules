@@ -7,7 +7,7 @@ include { GATK4_GATHERBQSRREPORTS } from '../../../modules/nf-core/gatk4/gatherb
 
 workflow BAM_BASERECALIBRATOR {
     take:
-    ch_cram            // channel: [mandatory] [ meta, cram_markduplicates, crai ]
+    ch_input           // channel: [mandatory] [ meta, cram_markduplicates / bam_markduplicates, crai / bai ]
     ch_dict            // channel: [mandatory] [ dict ]
     ch_fasta           // channel: [mandatory] [ fasta ]
     ch_fasta_fai       // channel: [mandatory] [ fasta_fai ]
@@ -19,13 +19,13 @@ workflow BAM_BASERECALIBRATOR {
     ch_versions = Channel.empty()
 
     // Combine cram and intervals for spread and gather strategy
-    ch_cram_intervals = ch_cram.combine(ch_intervals)
+    ch_input_intervals = ch_input.combine(ch_intervals)
         // Move num_intervals to meta map
-        .map{ meta, cram, crai, intervals, num_intervals -> [ meta + [ num_intervals:num_intervals ], cram, crai, intervals ] }
+        .map{ meta, input, input_index, intervals, num_intervals -> [ meta + [ num_intervals:num_intervals ], input, input_index, intervals ] }
 
     // RUN BASERECALIBRATOR
     GATK4_BASERECALIBRATOR(
-        ch_cram_intervals,
+        ch_input_intervals,
         ch_fasta.map{ it -> [ it ] },
         ch_fasta_fai.map{ it -> [ it ] },
         ch_dict.map{ it -> [ it ] },
