@@ -38,8 +38,8 @@ process ORTHOFINDER {
         mv input/OrthoFinder/Results_$prefix $prefix
     fi
 
-    if [ -e WorkingDirectory/OrthoFinder/Results_$prefix ]; then
-        mv WorkingDirectory/OrthoFinder/Results_$prefix $prefix
+    if [ -e ${prior_run}/OrthoFinder/Results_$prefix ]; then
+        mv ${prior_run}/OrthoFinder/Results_$prefix $prefix
     fi
 
     cat <<-END_VERSIONS > versions.yml

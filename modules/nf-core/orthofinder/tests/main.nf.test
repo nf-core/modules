@@ -51,7 +51,7 @@ nextflow_process {
             def stable_files = all_files.findAll { it.name in stable_file_names }
 
             assert snapshot(
-                stable_files,
+                stable_files.toSorted(),
                 process.out.versions[0]
             ).match()
         }
@@ -96,7 +96,7 @@ nextflow_process {
             def stable_files = all_files.findAll { it.name in stable_file_names }
 
             assert snapshot(
-                stable_files,
+                stable_files.toSorted(),
                 process.out.versions[0]
             ).match()
         }
