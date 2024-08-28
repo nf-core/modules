@@ -1,0 +1,69 @@
+nextflow_process {
+
+    name "Test Process BISCUIT_QC"
+    script "../main.nf"
+    process "BISCUIT_QC"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "biscuit"
+    tag "biscuit/qc"
+
+    setup {
+        run("BISCUIT_INDEX") {
+            script "../../index/main.nf"
+            process {
+                """
+                input[0] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - test_paired_end_methylated_sorted_bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_sorted_bam'], checkIfExists: true)
+                ]
+                input[1] = BISCUIT_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - test_paired_end_methylated_sorted_bam - stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_sorted_bam'], checkIfExists: true)
+                ]
+                input[1] = BISCUIT_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+}
