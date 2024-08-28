@@ -1,0 +1,40 @@
+
+nextflow_process {
+
+    name "Test Process PICARD_CLEANSAM"
+    script "../main.nf"
+    process "PICARD_CLEANSAM"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "picard"
+    tag "picard/cleansam"
+
+    test("test-picard-cleansam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:true ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					bam(process.out.bam[0][1]).getReadsMD5(),
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

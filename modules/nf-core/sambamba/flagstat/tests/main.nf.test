@@ -1,0 +1,35 @@
+
+nextflow_process {
+
+    name "Test Process SAMBAMBA_FLAGSTAT"
+    script "../main.nf"
+    process "SAMBAMBA_FLAGSTAT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "sambamba"
+    tag "sambamba/flagstat"
+
+    test("test-sambamba-flagstat") {
+        
+        when {
+            process {
+                """
+                input[0] = [
+				[ id:'test', single_end:false ], // meta map
+				file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    
+}
