@@ -68,7 +68,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.versions,
                     process.out.tbi,
-                    path(process.out.vcf[0][1]).vcf.variantsMD5
+                    path(process.out.vcf[0][1]).vcf.summary
                     ).match() },
             )
         }
