@@ -31,7 +31,7 @@ process VSEARCH_FASTQFILTER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vsearch: \$(vsearch --version 2>&1 | head -n 1 | sed 's/vsearch //g' | sed 's/,.*//g' | sed 's/^v//' | sed 's/_.*//')
+        vsearch: \$(vsearch --version 2>&1 | head -n1 | cut -d"_" -f1 | cut -d"v" -f3)
     END_VERSIONS
     """
 
