@@ -16,7 +16,6 @@ nextflow_process {
             process {
                 """
                 input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-
                 """
             }
         }
