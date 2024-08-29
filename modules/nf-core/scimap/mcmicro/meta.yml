@@ -10,7 +10,7 @@ tools:
       homepage: "https://scimap.xyz/"
       documentation: "https://scimap.xyz/All%20Functions/A.%20Pre%20Processing/sm.pp.mcmicro_to_scimap/"
       tool_dev_url: "https://github.com/labsyspharm/scimap"
-      licence: "MIT License"
+      licence: ["MIT License"]
 input:
   # Only when we have meta
   - meta:
@@ -18,7 +18,7 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - cellByFeature:
+  - cellbyfeature:
       type: file
       description: CSV file with cell by feature table
       pattern: "*.{csv}"
