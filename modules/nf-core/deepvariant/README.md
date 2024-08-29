@@ -1,7 +1,6 @@
 # DeepVariant module / subworkflow options
 
-The DeepVariant tool can be run using the `deepvariant/rundeepvariant` subcommand, or the subworkflow `deepvariant`, which calls the subcommands `makeexamples`, `callvariants` and `postprocessvariants`.  The subcommand `rundeepvariant` is simpler, but the subworkflow may be useful if you want to run `callvariants` on GPU.
-
+The DeepVariant tool can be run using the `deepvariant/rundeepvariant` subcommand, or the subworkflow `deepvariant`, which calls the subcommands `makeexamples`, `callvariants` and `postprocessvariants`. The subcommand `rundeepvariant` is simpler, but the subworkflow may be useful if you want to run `callvariants` on GPU.
 
 # Conda is not supported at the moment
 
@@ -15,7 +14,6 @@ Hence, we are using the docker container provided by the authors of the tool:
 
 This image is mirrored on the [nf-core quay.io](https://quay.io/repository/nf-core/deepvariant) for convenience.
 
-
 # DeepVariant subworkflow
 
 You can use the subworkflow `nf-core/deepvariant`, which integrates the three
@@ -28,7 +26,6 @@ These module subcommands incorporate the individual steps of the DeepVariant pip
     tfrecord format, and needs postprocessing to convert it to vcf.
     * postprocessvariants: Convert variant calls from callvariants to VCF, and
     also create GVCF files based on genomic information from makeexamples.
-
 
 # Recommended parameters
 
@@ -62,4 +59,3 @@ withName: "DEEPVARIANT_CALLVARIANTS" {
 ```
 
 The channels specified in the `makeexamples` process must match the model used for calling.
-

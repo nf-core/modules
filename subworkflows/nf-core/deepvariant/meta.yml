@@ -13,9 +13,8 @@ input:
   - ch_input:
       type: list
       description: |
-        Input assembly 
-        Structure: [ val(meta), path(fasta) ]
-      pattern: "*.{fsa/fa/fasta}"
+        Input aligned reads in bam or cram format, with index, and optional intervals BED file
+        Structure: [ val(meta), path(bam_or_cram), path(bai_or_crai), path(intervals_bed) ]
   - ch_fasta:
       type: file
       description: |

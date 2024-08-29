@@ -20,7 +20,7 @@ workflow DEEPVARIANT {
 
     DEEPVARIANT_CALLVARIANTS(DEEPVARIANT_MAKEEXAMPLES.out.examples)
     ch_versions = ch_versions.mix(DEEPVARIANT_CALLVARIANTS.out.versions.first())
-    
+
     // Input to postprocessing step needs both the gvcfs from MAKEEXAMPLES and the variant
     // calls from CALLVARIANTS. Joining on meta, which is assumed to be unique.
     ch_postproc_input = DEEPVARIANT_CALLVARIANTS.out.call_variants_tfrecords.join(

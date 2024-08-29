@@ -8,7 +8,7 @@ process DEEPVARIANT_CALLVARIANTS {
 
     input:
     tuple val(meta), path(make_examples_tfrecords)
-    
+
     output:
     tuple val(meta), path("${prefix}.call-*-of-*.tfrecord.gz"), emit: call_variants_tfrecords
     path "versions.yml",                                        emit: versions
@@ -32,7 +32,7 @@ process DEEPVARIANT_CALLVARIANTS {
     def shardCount = matcher[0][2]
     // Reconstruct the logical name - ${tfrecord_name}.examples.tfrecord@${task.cpus}.gz
     def examples_tfrecords_logical_name = "${examples_tfrecord_name}@${shardCount}.gz"
-    
+
     """
     /opt/deepvariant/bin/call_variants \\
         ${args} \\
