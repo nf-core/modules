@@ -11,8 +11,8 @@ process FOLDMASON_EASYMSA {
 
     output:
     tuple val(meta), path("${prefix}_3di.fa${compress ? '.gz' : ''}"), emit: msa_3di
-    tuple val(meta), path("${prefix}_aa.fa${compress ? '.gz' : ''}"), emit: msa_aa
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("${prefix}_aa.fa${compress ? '.gz' : ''}") , emit: msa_aa
+    path "versions.yml"                                              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
