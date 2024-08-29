@@ -29,7 +29,8 @@ process FOLDMASON_EASYMSA {
         tmp
 
     if ${compress}; then
-        pigz -p ${task.cpus} ${prefix}.fa
+        pigz -p ${task.cpus} ${prefix}_3di.fa
+        pigz -p ${task.cpus} ${prefix}_aa.fa
     fi
 
     cat <<-END_VERSIONS > versions.yml
