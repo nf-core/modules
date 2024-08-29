@@ -28,8 +28,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.annotedDataCsv[0][1]).readLines()[0],  // unstable
-                    file(process.out.annotedDataH5ad[0][1]).name, // unstable
+                    file(process.out.csv[0][1]).readLines()[0],  // unstable
+                    file(process.out.h5ad[0][1]).name, // unstable
                     process.out.versions
                     ).match()
                 }

@@ -9,8 +9,8 @@ process SCIMAP_MCMICRO {
     tuple val(meta), path(cellbyfeature)
 
     output:
-    tuple val(meta), path("*.csv")      , emit: annotedDataCsv  , optional:true
-    tuple val(meta), path("*.h5ad")     , emit: annotedDataH5ad , optional:true
+    tuple val(meta), path("*.csv")      , emit: csv     , optional:true
+    tuple val(meta), path("*.h5ad")     , emit: h5ad    , optional:true
     path "versions.yml"                 , emit: versions
 
     when:
