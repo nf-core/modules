@@ -32,6 +32,9 @@ nextflow_process {
                 input[3] = [
                     [],[]
                 ]
+                input[4] = [
+                    [],[]
+                ]
                 """
             }
         }
@@ -75,6 +78,9 @@ nextflow_process {
                 input[3] = [
                     [],[]
                 ]
+                input[4] = [
+                    [],[]
+                ]
                 """
             }
         }
@@ -115,6 +121,9 @@ nextflow_process {
                 input[3] = [
                     [ id:'genome'],
                       file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta.gz.gzi', checkIfExists: true)
+                ]
+                input[4] = [
+                    [],[]
                 ]
                 """
             }
@@ -157,6 +166,9 @@ nextflow_process {
                       file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[3] = [
+                    [],[]
+                ]
+                input[4] = [
                     [],[]
                 ]
                 """

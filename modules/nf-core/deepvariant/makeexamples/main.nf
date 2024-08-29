@@ -10,6 +10,7 @@ process DEEPVARIANT_MAKEEXAMPLES {
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(gzi)
+    tuple val(meta5), path(par_bed)
 
     output:
     tuple val(meta), path("${prefix}.examples.tfrecord-*-of-*.gz{,.example_info.json}"),    emit: examples
@@ -27,6 +28,7 @@ process DEEPVARIANT_MAKEEXAMPLES {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def regions = intervals ? "--regions ${intervals}" : ""
+    def par_regions = par_bed ? "--par_regions_bed=${par_bed}" : ""
 
     """
     seq 0 ${task.cpus - 1} | parallel -q --halt 2 --line-buffer /opt/deepvariant/bin/make_examples \\
@@ -36,6 +38,7 @@ process DEEPVARIANT_MAKEEXAMPLES {
         --examples "./${prefix}.examples.tfrecord@${task.cpus}.gz" \\
         --gvcf "./${prefix}.gvcf.tfrecord@${task.cpus}.gz" \\
         ${regions} \\
+        ${par_regions} \\
         ${args} \\
         --task {}
 

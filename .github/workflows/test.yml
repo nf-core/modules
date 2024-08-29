@@ -117,7 +117,7 @@ jobs:
 
       - name: List nf-test files
         id: list
-        uses: adamrtalbot/detect-nf-test-changes@6e67b7a6bd3caf8571b99cab3ab764c0e758f55c # v0.0.3
+        uses: adamrtalbot/detect-nf-test-changes@7c8be3ffd0d6538312b363c8c949dbbf5f26c3dd # v0.0.4
         with:
           head: ${{ github.sha }}
           base: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
@@ -646,6 +646,8 @@ jobs:
 
       - name: Install nf-test
         uses: nf-core/setup-nf-test@v1
+        with:
+          version: ${{ env.NFTEST_VER }}
 
       - name: Setup apptainer
         if: matrix.profile == 'singularity'

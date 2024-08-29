@@ -56,7 +56,16 @@ input:
   - gzi:
       type: file
       description: GZI index of reference fasta file
+  - meta5:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
       pattern: "*.gzi"
+  - par_bed:
+      type: file
+      description: BED file containing PAR regions
+      pattern: "*.bed"
 output:
   - examples:
       type: list

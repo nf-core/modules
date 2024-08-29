@@ -24,13 +24,19 @@ input:
   - ch_fai:
       type: string
       description: |
-        Reference genome index
+        Reference genome index in fai format
         Structure: [ val(meta3), path(fai) ]
   - ch_gzi:
       type: string
       description: |
-        A priori sequence
-        Structure: [ val(meta4), val(sequence) ]
+        Reference genome index in gzi format (either gzi or fai should be used)
+        Structure: [ val(meta4), val(gzi) ]
+  - ch_par_bed:
+      type: string
+      description: |
+        bed file of pseudoautosomal regions (optional)
+        Structure: [ val(meta5), val(par_bed) ]
+      pattern: "*.bed"
 output:
   - vcf:
       type: file

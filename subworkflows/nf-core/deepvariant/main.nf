@@ -9,12 +9,13 @@ workflow DEEPVARIANT {
     ch_fasta            // channel: [ val(meta2), path(fasta) ]
     ch_fai              // channel: [ val(meta3), path(fail) ]
     ch_gzi              // channel: [ val(meta4), path(gzi) ]
+    ch_par_bed          // channel: [ val(meta5), path(par_bed) ]
 
     main:
 
     ch_versions = Channel.empty()
 
-    DEEPVARIANT_MAKEEXAMPLES(ch_input, ch_fasta, ch_fai, ch_gzi)
+    DEEPVARIANT_MAKEEXAMPLES(ch_input, ch_fasta, ch_fai, ch_gzi, ch_par_bed)
     ch_versions = ch_versions.mix(DEEPVARIANT_MAKEEXAMPLES.out.versions.first())
 
     DEEPVARIANT_CALLVARIANTS(DEEPVARIANT_MAKEEXAMPLES.out.examples)
