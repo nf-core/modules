@@ -32,4 +32,17 @@ process PBBAM_PBMERGE {
         pbbam: \$( pbmerge --version | head -n1 | sed 's/pbmerge //' | sed -E 's/ .+//' )
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bam
+    touch ${prefix}.bam.pbi
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        pbbam: \$( pbmerge --version | head -n1 | sed 's/pbmerge //' | sed -E 's/ .+//' )
+    END_VERSIONS
+    """
 }
