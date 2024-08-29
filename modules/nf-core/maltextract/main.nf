@@ -36,4 +36,15 @@ process MALTEXTRACT {
         maltextract: \$(MaltExtract --help | head -n 2 | tail -n 1 | sed 's/MaltExtract version//')
     END_VERSIONS
     """
+
+    stub:
+    """
+    mkdir results/
+    touch results/ScanSummary.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        maltextract: \$(MaltExtract --help | head -n 2 | tail -n 1 | sed 's/MaltExtract version//')
+    END_VERSIONS
+    """
 }
