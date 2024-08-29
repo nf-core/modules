@@ -4,8 +4,8 @@ process EIDO_CONVERT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://containers.biocontainers.pro/s3/SingImgsRepo/eido/0.1.9_cv1/eido_0.1.9_cv1.sif' :
-        'docker.io/biocontainers/eido:0.1.9_cv1' }"
+        'oras://community.wave.seqera.io/library/eido_peppy:7f50d6891ca1a6d9' :
+        'community.wave.seqera.io/library/eido_peppy:0de9533940828c4d' }"
 
     input:
     path samplesheet
