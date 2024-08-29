@@ -4,8 +4,8 @@ process UNTARFILES {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ubuntu:20.04' :
-        'nf-core/ubuntu:20.04' }"
+        'oras://community.wave.seqera.io/library/grep_sed_tar:40b34489f8e82876' :
+        'community.wave.seqera.io/library/grep_sed_tar:16f6591cd62505b3' }"
 
     input:
     tuple val(meta), path(archive)
