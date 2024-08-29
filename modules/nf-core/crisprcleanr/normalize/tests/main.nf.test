@@ -58,7 +58,8 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.norm_count_file).match("norm_count_file") },
+                { assert snapshot(process.out.versions).match("versions") }
             )
 
         }
