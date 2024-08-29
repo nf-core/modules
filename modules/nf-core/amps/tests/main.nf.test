@@ -88,7 +88,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.success },
                 { assert snapshot(process.out.json).match("json") },
                 { assert snapshot(process.out.tsv).match("tsv") },
                 { assert path(process.out.summary_pdf.get(0)).exists() },
