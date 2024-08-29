@@ -31,4 +31,27 @@ nextflow_process {
         }
     }
 
+    test("test-fastawindows-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
 }
