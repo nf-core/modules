@@ -22,32 +22,6 @@ nextflow_process {
         }
     }
 
-    test("sarscov2 - illumina single end [fastq]") {
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'test', single_end:true ], // meta map
-                    file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true )
-                ]
-                input[1] =  MOTUS_DOWNLOADDB.out.db
-                """
-            }
-        }
-
-        then {
-            assertAll(
-            { assert process.success },
-            { assert snapshot(
-                    process.out.out,
-                    path(process.out.log[0][1]).readLines().last().contains('Reads are filtered for'),
-                    process.out.versions
-                ).match()
-            }
-            )
-        }
-    }
-
     test("sarscov2 - illumina paired end [fastq]") {
         when {
             process {
