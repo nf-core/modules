@@ -29,4 +29,25 @@ nextflow_process {
 
     }
 
+    test("species-tag-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = 'nextstrain/sars-cov-2/wuhan-hu-1/orfs'
+				input[1] = '2024-01-16--20-31-02Z'
+
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    
 }
