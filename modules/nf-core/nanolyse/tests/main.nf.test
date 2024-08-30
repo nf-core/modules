@@ -30,7 +30,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
 					process.out.fastq,
-					file(process.out.log[0][1]).name,
+					file(process.out.log[0]).name,
 					process.out.versions
 					).match()
 				}
