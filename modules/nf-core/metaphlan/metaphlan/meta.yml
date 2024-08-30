@@ -23,7 +23,7 @@ input:
       type: file
       description: Metaphlan can classify the metagenome from a variety of input data types, including FASTQ files (single-end and paired-end), FASTA, bowtie2-produced SAM files (produced from alignments to the MetaPHlAn marker database) and intermediate bowtie2 alignment files (bowtie2out)
       pattern: "*.{fastq.gz, fasta, fasta.gz, sam, bowtie2out.txt}"
-  - metaphlan_db:
+  - metaphlan_db_latest:
       type: file
       description: |
         Directory containing pre-downloaded and uncompressed MetaPhlAn database downloaded from: http://cmprod1.cibio.unitn.it/biobakery4/metaphlan_databases/.
@@ -47,7 +47,7 @@ output:
       type: file
       description: General-use format for representing biological sample by observation contingency tables
       pattern: "*.{biom}"
-  - bowtie2out:
+  - bt2out:
       type: file
       description: Intermediate Bowtie2 output produced from mapping the metagenome against the MetaPHlAn marker database ( not compatible with `bowtie2out` files generated with MetaPhlAn versions below 3 )
       pattern: "*.{bowtie2out.txt}"

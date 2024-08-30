@@ -51,4 +51,22 @@ process EPANG_PLACE {
         epang: \$(echo \$(epa-ng --version 2>&1) | sed 's/^EPA-ng v//')
     END_VERSIONS
     """
+
+    stub:
+    def args       = task.ext.args   ?: ''
+    def prefix     = task.ext.prefix ?: "${meta.id}"
+    def queryarg   = queryaln        ? "--query $queryaln"       : ""
+    def refalnarg  = referencealn    ? "--ref-msa $referencealn" : ""
+    def reftreearg = referencetree   ? "--tree $referencetree"   : ""
+    def bfastarg   = bfastfile       ? "--bfast $bfastfile"      : ""
+    def binaryarg  = binaryfile      ? "--binary $binaryfile"    : ""
+    if ( binaryfile && ( referencealn || referencetree ) ) error "[EPANG] Cannot supply both binary and reference MSA or reference tree. Check input"
+    """
+    touch ${prefix}.epa_info.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        epang: \$(echo \$(epa-ng --version 2>&1) | sed 's/^EPA-ng v//')
+    END_VERSIONS
+    """
 }
