@@ -361,8 +361,6 @@ jobs:
           - profile: conda
             tags: picard/collectwgsmetrics
           - profile: conda
-            tags: scimap/mcmicro
-          - profile: conda
             tags: sentieon/applyvarcal
           - profile: conda
             tags: sentieon/datametrics
@@ -620,6 +618,8 @@ jobs:
             path: modules/nf-core/wittyer
           - profile: conda
             path: modules/nf-core/islandpath
+          - profile: conda
+            path: modules/nf-core/scimap/mcmicro
           - profile: conda
             path: subworkflows/nf-core/vcf_annotate_ensemblvep
           - profile: conda
