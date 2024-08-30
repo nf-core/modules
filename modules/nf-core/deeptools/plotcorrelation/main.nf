@@ -4,14 +4,13 @@ process DEEPTOOLS_PLOTCORRELATION {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/deeptools:3.5.1--py_0' :
-        'biocontainers/deeptools:3.5.1--py_0' }"
+        'https://depot.galaxyproject.org/singularity/deeptools:3.5.5--pyhdfd78af_0':
+        'biocontainers/deeptools:3.5.5--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(matrix)
     val(method)
     val(plot_type)
-
 
     output:
     tuple val(meta), path("*.pdf"), emit: pdf
@@ -34,6 +33,18 @@ process DEEPTOOLS_PLOTCORRELATION {
         --whatToPlot $resolved_plot_type \\
         --plotFile ${prefix}.plotCorrelation.pdf \\
         --outFileCorMatrix ${prefix}.plotCorrelation.mat.tab
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        deeptools: \$(plotCorrelation --version | sed -e "s/plotCorrelation //g")
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.plotCorrelation.pdf
+    touch ${prefix}.plotCorrelation.mat.tab
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

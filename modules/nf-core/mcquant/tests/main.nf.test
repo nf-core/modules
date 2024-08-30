@@ -15,16 +15,16 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'image' ], // meta map
-                    file(params.test_data['imaging']['quantification']['image'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'imaging/quantification/cycif_tonsil_registered.ome.tif', checkIfExists: true)
                 ]
                 input[1] =  [
                     [ id:'mask' ], // meta map
-                    file(params.test_data['imaging']['quantification']['mask'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'imaging/quantification/cell.ome.tif', checkIfExists: true)
                 ]
 
                 input[2] = [
                     [ id:'marker' ], // meta map
-                    file(params.test_data['imaging']['quantification']['markers'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'imaging/quantification/markers.csv', checkIfExists: true)
                 ]
                 """
             }
@@ -49,16 +49,16 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'image' ], // meta map
-                    file(params.test_data['imaging']['quantification']['image'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'imaging/quantification/cycif_tonsil_registered.ome.tif', checkIfExists: true)
                 ]
                 input[1] =  [
                     [ id:'mask' ], // meta map
-                    file(params.test_data['imaging']['quantification']['mask'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'imaging/quantification/cell.ome.tif', checkIfExists: true)
                 ]
 
                 input[2] = [
                     [ id:'marker' ], // meta map
-                    file(params.test_data['imaging']['quantification']['markers'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'imaging/quantification/markers.csv', checkIfExists: true)
                 ]
                 """
             }

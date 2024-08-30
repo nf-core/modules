@@ -78,6 +78,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ]
                 input[2] = [ [ id:'test' ], 500 ]
+                input[3] = CIRCULARMAPPER_CIRCULARGENERATOR.out.elongated
                 """
             }
         }
@@ -107,6 +108,10 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[2] = [ [ id:'test' ], 500 ]
+                input[3] = [
+                    [ id:'test' ], // meta map
+                    []
+                ]
                 """
             }
         }

@@ -37,8 +37,8 @@ nextflow_process {
                     [ id:'test', umi_len:'12' ],
                     'CB_UMI_Simple',
                     [
-                        file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_gex1_fastq_1_gz'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_gex1_fastq_2_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                     ]
                 ])
                 input[1] = file('./NO_FILE')
@@ -92,8 +92,8 @@ nextflow_process {
                     [ id:'test', umi_len:'12' ],
                     'CB_UMI_Simple',
                     [
-                        file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_gex1_fastq_1_gz'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['10xgenomics']['cellranger']['test_10x_5k_cmvpos_tcells_gex1_fastq_2_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                     ]
                 ])
                 input[1] = file('./NO_FILE')

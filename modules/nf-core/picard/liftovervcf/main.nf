@@ -50,8 +50,8 @@ process PICARD_LIFTOVERVCF {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.lifted.vcf.gz
-    touch ${prefix}.unlifted.vcf.gz
+    echo | gzip > ${prefix}.lifted.vcf.gz
+    echo | gzip > ${prefix}.unlifted.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -32,20 +32,26 @@ process SENTIEON_HAPLOTYPER {
     def args2 = task.ext.args2 ?: ''  // options for the vcf generation
     def args3 = task.ext.args3 ?: ''  // options for the gvcf generation
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def dbsnp_command = dbsnp ? "-d $dbsnp " : ""
-    def interval_command = intervals ? "--interval $intervals" : ""
-    def recal_table_command = recal_table ? "-q $recal_table" : ""
-    def vcf_cmd = ""
-    def gvcf_cmd = ""
+    def input_list          = input instanceof List ? input.collect{"-i $it"}.join(' ') : "-i $input"
+    def dbsnp_command       = dbsnp       ? "-d $dbsnp "            : ""
+    def interval_command    = intervals   ? "--interval $intervals" : ""
+    def recal_table_command = recal_table ? "-q $recal_table"       : ""
     def base_cmd = '--algo Haplotyper ' + dbsnp_command
 
-    if (emit_vcf) {  // emit_vcf can be the empty string, 'variant', 'confident' or 'all' but NOT 'gvcf'
-        vcf_cmd = base_cmd + args2 + ' --emit_mode ' + emit_vcf + ' ' + prefix + '.unfiltered.vcf.gz'
-    }
+    // The Sentieon --algo Haplotyper can create a VCF or gVCF but not both
+    // Luckily, we can run it twice while reading the BAM once, therefore we construct the two separate commands
+    // and run them twice while using the sentieon driver once. This allows us to create both types of VCF indels
+    // one process
 
-    if (emit_gvcf) { // emit_gvcf can be either true or false
-        gvcf_cmd = base_cmd + args3 + ' --emit_mode gvcf ' + prefix + '.g.vcf.gz'
-    }
+    // Create VCF command to export a VCF
+    def vcf_cmd = emit_vcf ?
+        base_cmd + args2 + ' --emit_mode ' + emit_vcf + ' ' + prefix + '.unfiltered.vcf.gz' :
+        ""
+
+    // Create a gVCF command to export a gVCF
+    def gvcf_cmd = emit_gvcf ?
+        gvcf_cmd = base_cmd + args3 + ' --emit_mode gvcf ' + prefix + '.g.vcf.gz' :
+        ""
 
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64 ?
         "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; " :
@@ -53,7 +59,15 @@ process SENTIEON_HAPLOTYPER {
     """
     $sentieonLicense
 
-    sentieon driver $args -r $fasta -t $task.cpus -i $input $recal_table_command $interval_command $vcf_cmd $gvcf_cmd
+    sentieon driver \\
+        $args \\
+        -r $fasta \\
+        -t $task.cpus \\
+        $interval_command \\
+        ${input_list} \\
+        $recal_table_command \\
+        $vcf_cmd \\
+        $gvcf_cmd
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
