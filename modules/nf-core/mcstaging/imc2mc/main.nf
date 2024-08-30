@@ -41,7 +41,6 @@ process MCSTAGING_IMC2MC {
     }
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch input
     touch ${prefix}.tif
 
     cat <<-END_VERSIONS > versions.yml
