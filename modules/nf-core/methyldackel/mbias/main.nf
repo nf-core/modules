@@ -36,4 +36,15 @@ process METHYLDACKEL_MBIAS {
         methyldackel: \$(MethylDackel --version 2>&1 | cut -f1 -d" ")
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.mbias.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        methyldackel: \$(MethylDackel --version 2>&1 | cut -f1 -d" ")
+    END_VERSIONS
+    """
 }

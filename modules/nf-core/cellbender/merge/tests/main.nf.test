@@ -1,0 +1,55 @@
+nextflow_process {
+    name 'Test Process CELLBENDER_MERGE'
+    script '../main.nf'
+    process 'CELLBENDER_MERGE'
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cellbender/merge"
+    tag "cellbender"
+
+    test("test_cellbender_merge") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_custom_emptydrops_filter_matrix_5k.h5ad", checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_raw_matrix_5k.h5ad", checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/intermediates/SAMN14430799_raw_matrix_5k_cellbender.h5", checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                {assert process.success},
+                {assert snapshot(process.out.h5ad).match("cellbender_merge_h5ad")},
+                {assert snapshot(process.out.versions).match("cellbender_merge_versions")}
+            )
+        }
+    }
+
+    test("test_cellbender_merge - stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_custom_emptydrops_filter_matrix_5k.h5ad", checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_raw_matrix_5k.h5ad", checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/intermediates/SAMN14430799_raw_matrix_5k_cellbender.h5", checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                {assert process.success},
+                {assert snapshot(process.out.h5ad).match("cellbender_merge_h5ad_stub")},
+                {assert snapshot(process.out.versions).match("cellbender_merge_versions_stub")}
+            )
+        }
+    }
+}

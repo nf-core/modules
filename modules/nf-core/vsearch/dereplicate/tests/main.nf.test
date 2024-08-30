@@ -1,0 +1,58 @@
+nextflow_process {
+
+    name "Test Process VSEARCH_DEREPLICATE"
+    script "../main.nf"
+    process "VSEARCH_DEREPLICATE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "vsearch"
+    tag "vsearch/dereplicate"
+
+    test("phyloplace - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ "id": "ERR2537816", "single_end": false ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/cyn_syn.fna", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("phyloplace -fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ "id": "ERR2537816", "single_end": false ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/cyn_syn.fna", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

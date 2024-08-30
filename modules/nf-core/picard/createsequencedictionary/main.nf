@@ -39,4 +39,16 @@ process PICARD_CREATESEQUENCEDICTIONARY {
         picard: \$(picard CreateSequenceDictionary --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.dict
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        picard: \$(echo \$(picard CreateSequenceDictionary --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
+    END_VERSIONS
+    """
+
 }

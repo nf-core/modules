@@ -74,7 +74,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = [ [ id:'test' ],
-                                 file(params.test_data['sarscov2']['genome']['informative_sites_fas'], checkIfExists: true)
+                                 file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true)
                                ]
 
                     """
@@ -86,7 +86,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test' ],
-                             file(params.test_data['sarscov2']['genome']['informative_sites_fas'], checkIfExists: true)
+                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true)
                            ]
                 input[1] = FAMSA_GUIDETREE.out.tree.collect{ meta, tree -> tree }.map{ tree -> [[ id: 'test'], tree]}
                 input[2] = [ [:], [], [] ]

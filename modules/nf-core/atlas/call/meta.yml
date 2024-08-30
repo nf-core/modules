@@ -12,7 +12,7 @@ tools:
       documentation: "https://bitbucket.org/wegmannlab/atlas/wiki/Home"
       tool_dev_url: "https://bitbucket.org/wegmannlab/atlas"
       doi: "10.1101/105346"
-      licence: "['GPL v3']"
+      licence: ["GPL v3"]
 input:
   - meta:
       type: map
@@ -48,7 +48,7 @@ input:
       description: Optional tab separated text file containing 1-based list of known alleles. See atlas call documentation.
       pattern: "*.{txt.tsv}"
   - method:
-      type: character
+      type: string
       description: Which variant calling algorithm to use. Some may require additional parameters supplied via ext.args. Check atlas documentation.
       pattern: "MLE|Bayesian|allelePresence|randomBase|majorityBase"
 output:
@@ -61,7 +61,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - bam:
+  - vcf:
       type: file
       description: VCF file with variant calls
       pattern: "*.vcf.gz"

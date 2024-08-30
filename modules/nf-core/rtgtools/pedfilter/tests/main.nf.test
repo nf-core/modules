@@ -1,0 +1,85 @@
+
+nextflow_process {
+
+    name "Test Process RTGTOOLS_PEDFILTER"
+    script "../main.nf"
+    process "RTGTOOLS_PEDFILTER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "rtgtools"
+    tag "rtgtools/pedfilter"
+
+    test("test-rtgtools-pedfilter-ped") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				[ id:'test', single_end:false ], // meta map
+				file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky.ped', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-rtgtools-pedfilter-vcf") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				[ id:'test', single_end:false ], // meta map
+				file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-rtgtools-pedfilter-vcf-output") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+				[ id:'test', single_end:false ], // meta map
+				file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky.ped', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.output[0][1]).linesGzip[3..7],
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+}

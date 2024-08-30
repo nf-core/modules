@@ -13,8 +13,7 @@ tools:
       homepage: "https://www.illumina.com/products/by-type/informatics-products/basespace-sequence-hub/apps/hap-py-benchmarking.html"
       documentation: "https://github.com/Illumina/hap.py/blob/master/doc/sompy.md"
       tool_dev_url: "https://github.com/Illumina/hap.py"
-
-      licence: "['BSD-2-clause']"
+      licence: ["BSD-2-clause"]
 
 input:
   - meta:
@@ -22,6 +21,31 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing fasta file information
+        e.g. [ id:'test2']
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing fai file information
+        e.g. [ id:'test3']
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing false_positives_bed file information
+        e.g. [ id:'test4']
+  - meta5:
+      type: map
+      description: |
+        Groovy Map containing ambiguous_beds file information
+        e.g. [ id:'test5']
+  - meta6:
+      type: map
+      description: |
+        Groovy Map containing bam file information
+        e.g. [ id:'test6']
   - query_vcf:
       type: file
       description: VCF/GVCF file to query

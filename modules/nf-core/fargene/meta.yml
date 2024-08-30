@@ -46,8 +46,12 @@ output:
       pattern: "*.{txt}"
   - hmm:
       type: file
-      description: output from hmmsearch
+      description: output from hmmsearch (both single gene annotations + contigs)
       pattern: "*.{out}"
+  - hmm_genes:
+      type: file
+      description: output from hmmsearch (single gene annotations only)
+      pattern: "retrieved-*.{out}"
   - orfs:
       type: file
       description: open reading frames (ORFs)

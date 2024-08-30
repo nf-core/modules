@@ -16,11 +16,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                 file(params.test_data['mus_musculus']['csv']['count_table'], checkIfExists: true)
+                 file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/count_table.csv', checkIfExists: true)
                 ]
                 input[1] =
-                    file(params.test_data['mus_musculus']['txt']['design_matrix'],
-                    checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/design_matrix.txt', checkIfExists: true)
                 """
             }
         }
@@ -46,11 +45,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                 file(params.test_data['mus_musculus']['csv']['count_table'], checkIfExists: true)
+                 file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/count_table.csv', checkIfExists: true)
                 ]
                 input[1] =
-                    file(params.test_data['mus_musculus']['txt']['design_matrix'],
-                    checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/design_matrix.txt', checkIfExists: true)
                 """
             }
         }

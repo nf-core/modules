@@ -1,0 +1,94 @@
+
+nextflow_process {
+
+    name "Test Process SNPSIFT_SPLIT"
+    script "../main.nf"
+    process "SNPSIFT_SPLIT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "snpsift"
+    tag "snpsift/split"
+
+    test("test-snpsift-split-base") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', split:true], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.rnaseq.vcf', checkIfExists: true)
+                ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					path(process.out.out_vcfs[0][1]).vcf.variantsMD5,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-snpsift-split-gz") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', split:true ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
+                ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					path(process.out.out_vcfs[0][1]).vcf.variantsMD5,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-snpsift-join") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', split:false ], // meta map
+				    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf', checkIfExists: true)
+                    ]
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					path(process.out.out_vcfs[0][1]).vcf.variantsMD5,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

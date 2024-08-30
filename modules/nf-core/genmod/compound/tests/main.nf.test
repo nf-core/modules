@@ -15,7 +15,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ],
-                    file(params.test_data['homo_sapiens']['genome']['genmod_compound_vcf_mt'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/genmod_compound.vcf', checkIfExists: true)
                 ]
                 """
             }

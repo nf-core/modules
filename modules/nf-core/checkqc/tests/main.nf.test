@@ -39,9 +39,7 @@ nextflow_process {
             { assert process.out.report.size() == 1 },
             { assert process.out.report.get(0).get(1) ==~ ".*/checkqc_report.json" },
             { assert path(process.out.report.get(0).get(1)).json.exit_status == 0 },
-            { assert process.out.log },
-            { assert path(process.out.log.get(0).get(1)).getText().contains("Instrument and reagent version: hiseq2500_rapidhighoutput_v4") }
-
+            { assert path(process.out.report.get(0).get(1)).json.run_summary.instrument_and_reagent_type == "hiseq2500_rapidhighoutput_v4" }
           )
         }
 
@@ -71,7 +69,8 @@ nextflow_process {
 
         then {
             assertAll(
-            { assert process.failed }
+            { assert process.failed },
+            { assert process.stdout.any { it.contains("ERROR    Could not find [R|r]unParameters.xml") } }
           )
         }
 
@@ -107,8 +106,7 @@ nextflow_process {
             { assert process.out.report.size() == 1 },
             { assert process.out.report.get(0).get(1) ==~ ".*/checkqc_report.json" },
             { assert path(process.out.report.get(0).get(1)).json.exit_status == 1 },
-            { assert process.out.log },
-            { assert path(process.out.log.get(0).get(1)).getText().contains("ERROR    Fatal QC error") }
+            { assert path(process.out.report.get(0).get(1)).json.run_summary.handlers.find { it.name == 'UndeterminedPercentageHandler' }.error == 9 }
           )
         }
 

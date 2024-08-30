@@ -1,0 +1,72 @@
+
+nextflow_process {
+
+    name "Test Process BBMAP_CLUMPIFY"
+    script "../main.nf"
+    process "BBMAP_CLUMPIFY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bbmap"
+    tag "bbmap/clumpify"
+
+    test("test-bbmap-clumpify-single-end") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+				    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					process.out.reads,
+					file(process.out.log[0][1]).name,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-bbmap-clumpify-paired-end") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+				    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					process.out.reads,
+					file(process.out.log[0][1]).name,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

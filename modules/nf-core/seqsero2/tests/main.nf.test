@@ -1,0 +1,41 @@
+
+nextflow_process {
+
+    name "Test Process SEQSERO2"
+    script "../main.nf"
+    process "SEQSERO2"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "seqsero2"
+
+    test("test-seqsero2") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					file(process.out.log[0][1]).name,
+					file(process.out.tsv[0][1]).readLines()[0],
+					file(process.out.txt[0][1]).readLines()[0],
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

@@ -48,7 +48,7 @@ process PARAGRAPH_VCF2PARAGRAPH {
     def VERSION = '2.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
-    touch ${prefix}.json.gz
+    echo | gzip > ${prefix}.json.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

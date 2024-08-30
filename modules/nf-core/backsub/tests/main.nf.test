@@ -16,11 +16,11 @@ nextflow_process {
                 // define inputs of the process here. Example:
                 input[0] = [
                     [ id:'test' ],
-                    file(params.test_data['imaging']['background_subtraction']['image'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'imaging/background_subtraction/cycif_tonsil_registered.ome.tif', checkIfExists: true)
                 ]
                 input[1] = [
                     [ id:'test' ],
-                    file(params.test_data['imaging']['background_subtraction']['markers'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'imaging/background_subtraction/markers.csv', checkIfExists: true)
                 ]
                 """
             }

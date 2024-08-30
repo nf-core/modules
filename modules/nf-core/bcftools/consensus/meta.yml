@@ -30,6 +30,10 @@ input:
       type: file
       description: FASTA reference file
       pattern: "*.{fasta,fa}"
+  - mask:
+      type: file
+      description: BED file used for masking
+      pattern: "*.{bed}"
 output:
   - meta:
       type: map

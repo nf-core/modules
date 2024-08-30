@@ -1,9 +1,0 @@
-- name: bamtools stats test_bamtools_stats
-  command: nextflow run ./tests/modules/nf-core/bamtools/stats -entry test_bamtools_stats -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bamtools/stats/nextflow.config
-  tags:
-    - bamtools
-    - bamtools/stats
-  files:
-    - path: output/bamtools/test.bam.stats
-      md5sum: b7c3f01682673a652d664a2889b15b66
-    - path: output/bamtools/versions.yml

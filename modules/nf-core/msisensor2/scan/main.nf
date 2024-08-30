@@ -33,4 +33,15 @@ process MSISENSOR2_SCAN {
         msisensor2: \$(echo \$(msisensor2 2> >(grep Version) | sed 's/Version: v//g'))
     END_VERSIONS
     """
+
+    stub:
+    output_path = output ?: "output.scan"
+    """
+    touch $output_path
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        msisensor2: \$(echo \$(msisensor2 2> >(grep Version) | sed 's/Version: v//g'))
+    END_VERSIONS
+    """
 }

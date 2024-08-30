@@ -1,0 +1,103 @@
+
+nextflow_process {
+
+    name "Test Process SLIMFASTQ"
+    script "../main.nf"
+    process "SLIMFASTQ"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "slimfastq"
+
+    test("test-slimfastq-single-end") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:true ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-slimfastq-paired-end") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-slimfastq-nanopore") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:true ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-slimfastq-pacbio") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:true ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/alz.ccs.fastq.gz', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

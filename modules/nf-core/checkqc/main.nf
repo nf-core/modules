@@ -10,7 +10,6 @@ process CHECKQC {
 
     output:
     tuple val(meta), path("*checkqc_report.json"), emit: report
-    tuple val(meta), path("*checkqc_log.txt")    , emit: log
     path "versions.yml"                          , emit: versions
 
     when:
@@ -30,11 +29,11 @@ process CHECKQC {
         $args \
         $config \
         --json \
-        $run_dir > checkqc_report.json 2> checkqc_log.txt || true
+        $run_dir > checkqc_report.json || true
 
     # Check if the output JSON file is empty
     if [[ ! -s checkqc_report.json ]] ; then
-        echo "Error: Empty JSON files. Most likely due to missing files in run directory. See checkQC log file for errors."
+        echo "Error: Empty JSON files. Most likely due to missing files in run directory. See .command.log file for errors."
         exit 1
     fi
 

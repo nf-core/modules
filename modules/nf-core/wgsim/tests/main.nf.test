@@ -1,0 +1,38 @@
+
+nextflow_process {
+
+    name "Test Process WGSIM"
+    script "../main.nf"
+    process "WGSIM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "wgsim"
+
+    test("test-wgsim") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fastq[0][1].collect { file(it).name },
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+}

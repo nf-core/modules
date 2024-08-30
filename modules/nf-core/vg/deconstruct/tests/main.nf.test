@@ -1,0 +1,42 @@
+
+nextflow_process {
+
+    name "Test Process VG_DECONSTRUCT"
+    script "../main.nf"
+    process "VG_DECONSTRUCT"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "vg"
+    tag "vg/deconstruct"
+
+    test("test-vg-deconstruct") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+				    [ file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.gfaffix.gfa', checkIfExists: true) ]
+				]
+				input[1] = []
+                input[2] = []
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					path(process.out.vcf[0][1]).vcf.summary,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

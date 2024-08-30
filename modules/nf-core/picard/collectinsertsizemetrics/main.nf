@@ -47,6 +47,10 @@ process PICARD_COLLECTINSERTSIZEMETRICS {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def avail_mem = 3072
+    if (!task.memory) {
+        log.info '[Picard CollectInsertSizeMetrics] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    }
     """
     touch ${prefix}.pdf
     touch ${prefix}.txt

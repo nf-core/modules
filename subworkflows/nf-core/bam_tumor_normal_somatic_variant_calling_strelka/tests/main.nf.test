@@ -1,0 +1,50 @@
+nextflow_workflow {
+
+    name "Test Subworkflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_STRELKA"
+    script "../main.nf"
+    workflow "BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_STRELKA"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/bam_tumor_normal_somatic_variant_calling_strelka"
+
+    tag "gatk4/mergevcfs"
+    tag "strelka/somatic"
+
+
+    test("human - cram - paired_end") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([ [ id:'test'], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.recalibrated.sorted.cram', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.recalibrated.sorted.cram.crai', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test2.paired_end.recalibrated.sorted.cram', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test2.paired_end.recalibrated.sorted.cram.crai', checkIfExists: true),
+                            [],[]
+                        ])
+                input[1] = Channel.of([ [ id:'dict' ], [] ])
+                input[2] = Channel.of(
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                        )
+                input[3] = Channel.of(
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                        )
+                input[4] = Channel.of([
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed.gz.tbi', checkIfExists: true),
+                        3
+                        ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+}
