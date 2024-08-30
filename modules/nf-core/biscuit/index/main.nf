@@ -30,4 +30,22 @@ process BISCUIT_INDEX {
         biscuit: \$( biscuit version |& sed '1!d; s/^.*BISCUIT Version: //' )
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    """
+
+    touch ${fasta}.bis.amb
+    touch ${fasta}.bis.ann
+    touch ${fasta}.bis.pac
+    touch ${fasta}.dau.bwt
+    touch ${fasta}.dau.sa
+    touch ${fasta}.par.bwt
+    touch ${fasta}.par.sa
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        biscuit: \$( biscuit version |& sed '1!d; s/^.*BISCUIT Version: //' )
+    END_VERSIONS
+    """
 }
