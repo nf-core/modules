@@ -24,7 +24,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.db[0].toString()).listFiles().collect { it.name }, // A mix of empty and non-empty files
+                    file(process.out.db[0].toString()).listFiles().collect { it.name }.toSorted(), // A mix of empty and non-empty files
                     process.out.versions
                     ).match()
                 }
