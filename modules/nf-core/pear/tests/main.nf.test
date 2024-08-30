@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "PEAR"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "pear"
-
     test("sarscov2 - [fastq_gz_1, fastq_gz_2]") {
 
         when {

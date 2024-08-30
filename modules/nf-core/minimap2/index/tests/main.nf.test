@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "MINIMAP2_INDEX"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "minimap2"
-    tag "minimap2/index"
-
     test("minimap2 index") {
 
         when {

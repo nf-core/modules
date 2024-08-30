@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "RACON"
     
-    tag "modules"
-    tag "modules_nfcore"
-    tag "racon"
-
     test("single-end - bacteroides_fragilis - [fastq_gz, fna_gz, paf]") {
 
         when {

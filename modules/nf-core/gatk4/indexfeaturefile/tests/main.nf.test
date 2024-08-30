@@ -5,11 +5,6 @@ nextflow_process {
     script "../main.nf"
     process "GATK4_INDEXFEATUREFILE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "gatk4"
-    tag "gatk4/indexfeaturefile"
-
     test("test_gatk4_indexfeaturefile_bed") {
 
         when {

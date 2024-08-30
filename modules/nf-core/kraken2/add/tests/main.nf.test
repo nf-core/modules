@@ -3,11 +3,6 @@ nextflow_process {
     name "Test Process KRAKEN2_ADD"
     script "../main.nf"
     process "KRAKEN2_ADD"
-    tag "kraken2"
-    tag "kraken2/add"
-    tag "gunzip"
-    tag "modules"
-    tag "modules_nfcore"
 
     setup {
         run("GUNZIP") {

@@ -5,12 +5,6 @@ nextflow_process {
     process "HOMER_FINDPEAKS"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "homer"
-    tag "homer/findpeaks"
-    tag "homer/maketagdirectory"
-
     setup {
         run("HOMER_MAKETAGDIRECTORY") {
             script "../../maketagdirectory/main.nf"

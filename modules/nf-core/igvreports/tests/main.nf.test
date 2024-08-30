@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "IGVREPORTS"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "igvreports"
-
     test("variants with fasta - vcf") {
 
         when {
@@ -40,7 +36,6 @@ nextflow_process {
         }
 
     }
-
 
     test("variants with fasta and tracks - vcf") {
 
@@ -75,7 +70,6 @@ nextflow_process {
         }
 
     }
-
 
     test("variants with genome - vcf") {
     config "./nextflow_genome.config"

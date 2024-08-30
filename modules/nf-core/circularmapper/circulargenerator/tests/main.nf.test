@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "CIRCULARMAPPER_CIRCULARGENERATOR"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "circularmapper"
-    tag "circularmapper/circulargenerator"
-
     test("sarscov2 - genome_fasta") {
         when {
             process {

@@ -6,12 +6,6 @@ nextflow_process {
     process "VIREO"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "vireo"
-    tag "samtools/index"
-    tag "cellsnp/modea"
-
     test("demultiplexing") {
         setup {
             run("SAMTOOLS_INDEX") {

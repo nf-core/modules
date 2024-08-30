@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "NGSBITS_SAMPLEGENDER"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "ngsbits"
-    tag "ngsbits/samplegender"
-
     // Only a stub test here because the modules needs the full chrX and chrY
     test("homo_sapiens - bam, bai, [], [], sry - stub") {
 

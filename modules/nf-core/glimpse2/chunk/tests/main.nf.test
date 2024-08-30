@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process GLIMPSE2_CHUNK"
     script "../main.nf"
     process "GLIMPSE2_CHUNK"
-    tag "glimpse2"
-    tag "glimpse2/chunk"
-    tag "modules_nfcore"
-    tag "modules"
 
     test("Should run without map") {
         config "modules/nf-core/glimpse2/chunk/tests/nextflow.config"

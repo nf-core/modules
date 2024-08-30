@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "BCFTOOLS_NORM"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bcftools"
-    tag "bcftools/norm"
-
     test("sarscov2 - [ vcf, [] ], fasta") {
 
         config "./nextflow.config"
@@ -558,6 +553,5 @@ nextflow_process {
         }
 
     }
-
 
 }

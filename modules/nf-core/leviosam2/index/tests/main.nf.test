@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "LEVIOSAM2_INDEX"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "leviosam2"
-    tag "leviosam2/index"
-    tag "gunzip"
-
     test("index") {
         setup {
             run("GUNZIP") {

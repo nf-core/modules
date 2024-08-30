@@ -5,12 +5,6 @@ nextflow_process {
     script "../main.nf"
     process "CELLSNP_MODEA"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "cellsnp"
-    tag "cellsnp/modea"
-    tag "samtools/index"
-
     test("genotyping") {
         setup { 
             run("SAMTOOLS_INDEX") {

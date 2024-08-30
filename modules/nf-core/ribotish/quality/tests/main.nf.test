@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "RIBOTISH_QUALITY"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "ribotish"
-    tag "ribotish/quality"
-
     test("sarscov2 [bam] - single_end") {
 
         when {

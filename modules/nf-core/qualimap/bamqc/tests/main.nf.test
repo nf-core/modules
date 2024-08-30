@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process QUALIMAP_BAMQC"
     script "../main.nf"
     process "QUALIMAP_BAMQC"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "qualimap"
-    tag "qualimap/bamqc"
 
     test("homo_sapiens [bam]") {
 

@@ -5,11 +5,6 @@ nextflow_process {
     script "../main.nf"
     process "FASTX_COLLAPSER"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "fastx"
-    tag "fastx/collapser"
-
     test("homo_sapiens - fasta") {
 
         when {

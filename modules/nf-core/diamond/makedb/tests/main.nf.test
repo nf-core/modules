@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process DIAMOND_MAKEDB"
     script "../main.nf"
     process "DIAMOND_MAKEDB"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "diamond"
-    tag "diamond/makedb"
 
     test("Should build a DIAMOND db file from a fasta file without taxonomic information") {
 

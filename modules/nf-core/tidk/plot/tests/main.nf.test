@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "TIDK_PLOT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "tidk"
-    tag "tidk/search"
-    tag "tidk/plot"
-
     test("homo_sapiens-genome_21_fasta-success") {
 
         setup {

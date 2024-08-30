@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "FOLDCOMP_DECOMPRESS"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "foldcomp"
-    tag "foldcomp/compress"
-    tag "foldcomp/decompress"
-
     setup {
         run("FOLDCOMP_COMPRESS") {
             script "../../compress/main.nf"

@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "ZIP"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "zip"
-
     test("sarscov2 - fasta") {
 
         when {

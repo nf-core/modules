@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "CELESTA"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "celesta"
-
     test("celesta - csv") {
 
         when {

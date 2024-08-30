@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "GATK4_VARIANTFILTRATION"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "gatk4"
-    tag "gatk4/variantfiltration"
-
     test("test_gatk4_variantfiltration_vcf_input") {
 
         when {

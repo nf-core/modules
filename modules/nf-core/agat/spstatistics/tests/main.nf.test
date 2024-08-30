@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "AGAT_SPSTATISTICS"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "agat"
-    tag "agat/spstatistics"
-
     test("sarscov2 genome [gff]") {
 
         when {

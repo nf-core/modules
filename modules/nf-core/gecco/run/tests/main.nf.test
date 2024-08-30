@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "GECCO_RUN"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "gecco"
-    tag "gecco/run"
-
     test("gecco/run - candidatus_portiera_aleyrodidarum - genome_fasta") {
 
         when {

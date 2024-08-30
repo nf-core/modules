@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process SVDB_QUERY"
     script "modules/nf-core/svdb/query/main.nf"
     process "SVDB_QUERY"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "svdb"
-    tag "svdb/query"
 
     test("svdb query") {
 

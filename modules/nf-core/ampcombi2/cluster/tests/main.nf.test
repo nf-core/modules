@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "AMPCOMBI2_CLUSTER"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "ampcombi2"
-    tag "ampcombi2/cluster"
-    tag "ampcombi2/complete"
-
     setup {
         run("AMPCOMBI2_COMPLETE") {
             script "../../../ampcombi2/complete/main.nf"

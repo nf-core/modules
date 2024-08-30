@@ -4,9 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "SPADES"
     config "./nextflow.config"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "spades"
 
     test("sarscov2 - se ") {
 

@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "LAST_MAFSWAP"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "last"
-    tag "last/mafswap"
-
     test("sarscov2 - contigs - genome") {
 
         when {

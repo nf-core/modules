@@ -4,13 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "GATK4_SVANNOTATE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "manta"
-    tag "manta/germline"
-    tag "gatk4"
-    tag "gatk4/svannotate"
-
     test("test_gatk4_svannotate") {
         setup {
             run("MANTA_GERMLINE") {

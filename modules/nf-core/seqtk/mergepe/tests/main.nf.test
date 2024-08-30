@@ -4,11 +4,6 @@ nextflow_process {
     script "modules/nf-core/seqtk/mergepe/main.nf"
     process "SEQTK_MERGEPE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "seqtk"
-    tag "seqtk/mergepe"
-
     test("mergepe_single_end") {
 
         when {

@@ -5,13 +5,8 @@ nextflow_process {
     script "../main.nf"
     process "NANOFILT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "nanofilt"
-
     test("sarscov2 - fastq") {
 
-        
         when {
             process {
                 """
@@ -33,7 +28,6 @@ nextflow_process {
         }
 
     }
-
 
     test("sarscov2 - fastq - stub") {
 

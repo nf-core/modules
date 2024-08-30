@@ -5,11 +5,6 @@ nextflow_process {
     process "SEQKIT_SORT"
     config './nextflow.config'
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "seqkit"
-    tag "seqkit/sort"
-
     test("sarscov2-genome_fasta") {
         when {
             process {

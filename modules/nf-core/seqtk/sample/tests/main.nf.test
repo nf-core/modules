@@ -5,11 +5,6 @@ nextflow_process {
     process "SEQTK_SAMPLE"
     config "./standard.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "seqtk"
-    tag "seqtk/sample"
-
     test("sarscov2_sample_singleend_fqgz") {
 
         when {

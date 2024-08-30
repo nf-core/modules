@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "MMSEQS_CREATEINDEX"
     config "./nextflow.config"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "mmseqs"
-    tag "mmseqs/createindex"
 
     test("sars-cov-2 - mmseqs.tar.gz") {
 

@@ -4,13 +4,6 @@ nextflow_workflow {
     script "../main.nf"
     workflow "FASTQ_ALIGN_BAMCMP_BWA"
     config "./nextflow.config"
-    tag "subworkflows"
-    tag "subworkflows_nfcore"
-    tag "subworkflows/fastq_align_bamcmp_bwa"
-    tag "subworkflows/bam_sort_stats_samtools"
-    tag "bwa/index"
-    tag "bwa/mem"
-    tag "bamcmp"
 
     test("human - cov2") {
 

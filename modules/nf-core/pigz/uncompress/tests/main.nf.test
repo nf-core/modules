@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process PIGZ_UNCOMPRESS"
     script "modules/nf-core/pigz/uncompress/main.nf"
     process "PIGZ_UNCOMPRESS"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "pigz"
-    tag "pigz/uncompress"
 
     test("Should run without failures") {
 

@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "VCF2DB"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "vcf2db"
-
     test("homo_sapiens - vcf, ped") {
 
         when {

@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "GEM3_GEM3INDEXER"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "gem3"
-    tag "gem3/gem3indexer"
-
     test("GEM3 INDEX") {
 
         when {

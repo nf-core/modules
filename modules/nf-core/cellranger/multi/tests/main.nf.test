@@ -6,13 +6,6 @@ nextflow_process {
     config "./nextflow.config"
     process "CELLRANGER_MULTI"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "cellranger"
-    tag "cellranger/multi"
-    tag "cellranger/mkgtf"
-    tag "cellranger/mkref"
-
     setup {
 
         run("CELLRANGER_MKGTF") {
@@ -106,12 +99,9 @@ nextflow_process {
                 cmo_barcodes_csv = file("cmo_barcodes.csv")
                 cmo_barcodes_csv.text = "sample_id,cmo_ids,description\\nPBMCs_human_1,CMO301,PBMCs_human_1\\nPBMCs_human_2,CMO302,PBMCs_human_2"
 
-
                 /**************************************/
                 /*** end stage 10k PBMC w/ CMO data ***/
                 /**************************************/
-
-
 
                 /*********************************/
                 /*** stage 5k CMV+ T-cell data ***/
@@ -145,7 +135,6 @@ nextflow_process {
                 /*** end stage 5k CMV+ T-cell data ***/
                 /*************************************/
 
-
                 /***************************/
                 /*** stage VDJ reference ***/
                 /***************************/
@@ -164,11 +153,9 @@ nextflow_process {
                 /*** end stage VDJ reference ***/
                 /*******************************/
 
-
                 // make an empty dummy file, for FASTQs
                 empty_file = file("$workDir/EMPTY")
                 empty_file.append("")
-
 
                 // create empty channels to fill unused cellranger multi arguments
                 // fastqs need a [ meta, ref ] structure
@@ -316,12 +303,9 @@ nextflow_process {
                 cmo_barcodes_csv = file("cmo_barcodes.csv")
                 cmo_barcodes_csv.text = "sample_id,cmo_ids,description\\nPBMCs_human_1,CMO301,PBMCs_human_1\\nPBMCs_human_2,CMO302,PBMCs_human_2"
 
-
                 /**************************************/
                 /*** end stage 10k PBMC w/ CMO data ***/
                 /**************************************/
-
-
 
                 /*********************************/
                 /*** stage 5k CMV+ T-cell data ***/
@@ -355,8 +339,6 @@ nextflow_process {
                 /*** end stage 5k CMV+ T-cell data ***/
                 /*************************************/
 
-
-
                 /***************************/
                 /*** stage GEX reference ***/
                 /***************************/
@@ -369,7 +351,6 @@ nextflow_process {
                 /*******************************/
                 /*** end stage GEX reference ***/
                 /*******************************/
-
 
                 /***************************/
                 /*** stage VDJ reference ***/
@@ -389,11 +370,9 @@ nextflow_process {
                 /*** end stage VDJ reference ***/
                 /*******************************/
 
-
                 // make an empty dummy file, for FASTQs
                 empty_file = file("$workDir/EMPTY")
                 empty_file.append("")
-
 
                 // create empty channels to fill unused cellranger multi arguments
                 // fastqs need a [ meta, ref ] structure
@@ -556,12 +535,9 @@ nextflow_process {
                 cmo_barcodes_csv = file("cmo_barcodes.csv")
                 cmo_barcodes_csv.text = "sample_id,cmo_ids,description\\nPBMCs_human_1,CMO301,PBMCs_human_1\\nPBMCs_human_2,CMO302,PBMCs_human_2"
 
-
                 /**************************************/
                 /*** end stage 10k PBMC w/ CMO data ***/
                 /**************************************/
-
-
 
                 /*********************************/
                 /*** stage 5k CMV+ T-cell data ***/
@@ -595,8 +571,6 @@ nextflow_process {
                 /*** end stage 5k CMV+ T-cell data ***/
                 /*************************************/
 
-
-
                 /***************************/
                 /*** stage GEX reference ***/
                 /***************************/
@@ -609,7 +583,6 @@ nextflow_process {
                 /*******************************/
                 /*** end stage GEX reference ***/
                 /*******************************/
-
 
                 /***************************/
                 /*** stage VDJ reference ***/
@@ -629,11 +602,9 @@ nextflow_process {
                 /*** end stage VDJ reference ***/
                 /*******************************/
 
-
                 // make an empty dummy file, for FASTQs
                 empty_file = file("$workDir/EMPTY")
                 empty_file.append("")
-
 
                 // create empty channels to fill unused cellranger multi arguments
                 // fastqs need a [ meta, ref ] structure

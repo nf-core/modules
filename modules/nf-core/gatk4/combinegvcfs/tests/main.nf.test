@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "GATK4_COMBINEGVCFS"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "gatk4"
-    tag "gatk4/combinegvcfs"
-
     test("test_gatk4_combinegvcfs") {
         when {
             process {

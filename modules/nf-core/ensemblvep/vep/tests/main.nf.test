@@ -5,12 +5,6 @@ nextflow_process {
     process "ENSEMBLVEP_VEP"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "ensemblvep"
-    tag "ensemblvep/vep"
-    tag "ensemblvep/download"
-
     test("test_ensemblvep_vep_fasta_vcf") {
         config "./vcf.config"
 

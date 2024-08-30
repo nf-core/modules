@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "BWAMEM2_MEM"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bwamem2"
-    tag "bwamem2/mem"
-    tag "bwamem2/index"
-
     test("sarscov2 - fastq, index, fasta, false") {
 
         setup {

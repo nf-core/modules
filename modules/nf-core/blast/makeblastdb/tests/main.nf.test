@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "BLAST_MAKEBLASTDB"
     config "./nextflow.config"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "blast"
-    tag "blast/makeblastdb"
 
     test("Should build a blast db folder from a fasta file") {
 

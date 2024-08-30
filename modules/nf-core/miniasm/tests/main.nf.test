@@ -5,10 +5,6 @@ nextflow_process {
     script "../main.nf"
     process "MINIASM"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "miniasm"
-
     test("bacteroides_fragilis - [fastq.gz, paf]- fasta") {
 
         when {

@@ -5,10 +5,6 @@ nextflow_process {
     script "../main.nf"
     process "PHISPY"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "phispy"
-
     test("bacteroides_fragilis - gbff") {
 
         when {

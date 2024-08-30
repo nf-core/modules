@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "AMPIR"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "ampir"
-
     test("candidatus_portiera_aleyrodidarum proteome [fasta]") {
 
         when {

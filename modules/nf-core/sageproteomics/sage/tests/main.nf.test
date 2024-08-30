@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "SAGEPROTEOMICS_SAGE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "sageproteomics"
-    tag "sageproteomics/sage"
-
     test("sageproteomics - mzML") {
         when {
             process {

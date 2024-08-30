@@ -5,10 +5,6 @@ nextflow_process {
     script "../main.nf"
     process "RIBOWALTZ"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "ribowaltz"
-
     test("human chr20 [transcriptome bam]") {
 
         when {

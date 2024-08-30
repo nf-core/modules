@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "TCOFFEE_SEQREFORMAT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "tcoffee"
-    tag "tcoffee/seqreformat"
-
     test("sarscov2 - bam") {
 
         when {
@@ -20,7 +15,6 @@ nextflow_process {
                 """
             }
         }
-
 
         then {
             assertAll(

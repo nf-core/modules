@@ -4,13 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "METAMAPS_CLASSIFY"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "metamaps"
-    tag "metamaps/mapdirectly"
-    tag "metamaps/classify"
-    tag "untar"
-
     test("sarscov2_nanopore_classify") {
         setup {
             run("UNTAR") {
@@ -50,8 +43,6 @@ nextflow_process {
                 """
             }
         }
-
-
 
         then {
         assertAll(
@@ -105,8 +96,6 @@ nextflow_process {
             }
         }
 
-
-
         then {
         assertAll(
                 { assert process.success },
@@ -116,7 +105,5 @@ nextflow_process {
 
     }
 
-
 }
-
 

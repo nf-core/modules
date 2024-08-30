@@ -6,11 +6,6 @@ nextflow_process {
     script "../main.nf"
     process "SAMTOOLS_FIXMATE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "samtools"
-    tag "samtools/fixmate"
-
     test("sarscov2 - bam") {
 
         when {

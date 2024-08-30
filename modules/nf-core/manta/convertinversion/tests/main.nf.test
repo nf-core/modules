@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "MANTA_CONVERTINVERSION"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "manta"
-    tag "manta/convertinversion"
-    tag "manta/tumoronly"
-
     setup {
         run("MANTA_TUMORONLY") {
             script "../../tumoronly/main.nf"

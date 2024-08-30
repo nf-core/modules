@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process GENMOD_MODELS"
     script "modules/nf-core/genmod/models/main.nf"
     process "GENMOD_MODELS"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "genmod"
-    tag "genmod/models"
 
     test("genmod_models") {
 

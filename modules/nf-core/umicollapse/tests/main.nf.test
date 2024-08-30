@@ -4,14 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "UMICOLLAPSE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "umicollapse"
-    tag "umitools/extract"
-    tag "samtools/index"
-    tag "bwa/index"
-    tag "bwa/mem"
-
     test("umicollapse single end test") {
         setup{
             run("UMITOOLS_EXTRACT"){

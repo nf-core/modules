@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "MERYL_HISTOGRAM"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "meryl"
-    tag "meryl/count"
-    tag "meryl/histogram"
-
     setup {
         run('MERYL_COUNT'){
             script "../../../../../modules/nf-core/meryl/count/main.nf"

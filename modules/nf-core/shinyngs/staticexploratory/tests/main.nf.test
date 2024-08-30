@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "SHINYNGS_STATICEXPLORATORY"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "shinyngs"
-    tag "shinyngs/staticexploratory"
-
     test("mouse - defaults") {
 
         when {

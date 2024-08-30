@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "BCFTOOLS_STATS"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bcftools"
-    tag "bcftools/stats"
-
     test("sarscov2 - vcf_gz") {
 
         when {
@@ -149,7 +144,6 @@ nextflow_process {
         }
 
     }
-
 
     test("sarscov2 - vcf_gz - stub") {
 

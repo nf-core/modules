@@ -3,11 +3,6 @@ nextflow_process {
     name "Test Process STRINGTIE_MERGE"
     script "../main.nf"
     process "STRINGTIE_MERGE"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "stringtie"
-    tag "stringtie/merge"
-    tag "stringtie/stringtie"
 
     setup {
         run("STRINGTIE_STRINGTIE") {

@@ -5,11 +5,6 @@ nextflow_process {
     process "ARIBA_RUN"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "ariba"
-    tag "ariba/run"
-
     test("sarscov2 illumina  paired-end [fastq]") {
 
         setup {

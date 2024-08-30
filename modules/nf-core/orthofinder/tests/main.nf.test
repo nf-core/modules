@@ -6,10 +6,6 @@ nextflow_process {
     script "../main.nf"
     process "ORTHOFINDER"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "orthofinder"
-
     test("sarscov2 - candidatus_portiera_aleyrodidarum - proteome") {
 
         when {

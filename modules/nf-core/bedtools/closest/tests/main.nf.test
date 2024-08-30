@@ -3,11 +3,6 @@ nextflow_process {
     script "../main.nf"
     process "BEDTOOLS_CLOSEST"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bedtools"
-    tag "bedtools/closest"
-
     test("homo_sapiens") {
         when {
             process {

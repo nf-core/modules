@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "BRACKEN_BUILD"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bracken"
-    tag "bracken/build"
-    tag "untar"
-
     setup {
         run ("UNTAR") {
             script "../../../untar/main.nf"

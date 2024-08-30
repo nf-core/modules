@@ -5,13 +5,6 @@ nextflow_process {
     script "../main.nf"
     process "FREYJA_DEMIX"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "freyja"
-    tag "freyja/demix"
-    tag "freyja/variants"
-    tag "freyja/update"
-
     test("sarscov2 - illumina - test_paired_end_sorted - bam") {
 
         setup {

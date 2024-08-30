@@ -5,15 +5,6 @@ nextflow_workflow {
     config "./nextflow.config"
     workflow "FASTQ_ALIGN_MAPAD"
 
-    tag "subworkflows"
-    tag "subworkflows_nfcore"
-    tag "subworkflows/fastq_align_mapad"
-    tag "subworkflows/bam_sort_stats_samtools"
-    tag "mapad"
-    tag "mapad/map"
-    tag "mapad/index"
-
-
     test("sarscov2 - bam - single_end") {
         setup {
             run("MAPAD_INDEX") {

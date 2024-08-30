@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "GATK4_APPLYBQSR"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "gatk4"
-    tag "gatk4/applybqsr"
-
     test("sarscov2 - bam") {
 
         when {

@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "ANNOTSV_ANNOTSV"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "annotsv"
-    tag "annotsv/annotsv"
-
     test("homo_sapiens - sv_vcf, sv_tbi, snv_vcf, annotations - stub") {
 
         options "-stub"

@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "TRYCYCLER_SUBSAMPLE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "trycycler"
-    tag "trycycler/subsample"
-
     test("candidatus_portiera_aleyrodidarum - default") {
 
         when {

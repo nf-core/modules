@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "SAMTOOLS_AMPLICONCLIP"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "samtools"
-    tag "samtools/ampliconclip"
-
     test("sarscov2 - bam, bed") {
 
         when {
@@ -38,7 +33,6 @@ nextflow_process {
             )
         }
     }
-
 
     test("sarscov2 - bam, bed, save_cliprejects") {
 

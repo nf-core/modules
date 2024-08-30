@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "SAMTOOLS_COLLATE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "samtools"
-    tag "samtools/collate"
-
     test("sarscov2 - bam") {
 
         when {

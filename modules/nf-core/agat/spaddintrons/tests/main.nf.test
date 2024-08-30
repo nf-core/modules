@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "AGAT_SPADDINTRONS"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "agat"
-    tag "agat/spaddintrons"
-
     test("homo_sapiens - gtf") {
 
         when {

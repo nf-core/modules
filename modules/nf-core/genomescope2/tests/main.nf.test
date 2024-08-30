@@ -5,12 +5,6 @@ nextflow_process {
     config "./nextflow.config"
     process "GENOMESCOPE2"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "genomescope2"
-    tag "meryl/count"
-    tag "meryl/histogram"
-
     setup {
         run('MERYL_COUNT'){
             script "../../../../modules/nf-core/meryl/count/main.nf"

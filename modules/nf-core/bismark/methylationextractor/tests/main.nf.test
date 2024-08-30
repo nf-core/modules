@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process BISMARK_METHYLATIONEXTRACTOR"
     script "../main.nf"
     process "BISMARK_METHYLATIONEXTRACTOR"
-    tag "bismark"
-    tag "bismark/methylationextractor"
-    tag "modules"
-    tag "modules_nfcore"
 
     test("Should run bismark/methylationextractor without failures") {
 

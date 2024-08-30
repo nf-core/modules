@@ -5,11 +5,6 @@ nextflow_process {
     script "../main.nf"
     process "ISLANDPATH"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "gunzip"
-    tag "islandpath"
-
     test("bacteroides_fragilis - gbff") {
 
         setup {

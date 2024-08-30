@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "MAGUS_GUIDETREE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "magus"
-    tag "magus/guidetree"
-
     test("setoxin - fasta") {
 
         when {

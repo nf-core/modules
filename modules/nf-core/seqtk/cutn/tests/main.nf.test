@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "SEQTK_CUTN"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "seqtk"
-    tag "seqtk/cutn"
-
     test("homo_21_cut") {
 
         when {

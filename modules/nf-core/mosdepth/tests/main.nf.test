@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "MOSDEPTH"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "mosdepth"
-
     test("homo_sapiens - bam, bai, []") {
 
         when {

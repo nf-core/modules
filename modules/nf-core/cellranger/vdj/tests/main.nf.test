@@ -5,11 +5,6 @@ nextflow_process {
     script "../main.nf"
     process "CELLRANGER_VDJ"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "cellranger"
-    tag "cellranger/vdj"
-
     test("cellranger - vdj - test_10x") {
 
         when {

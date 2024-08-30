@@ -5,12 +5,6 @@ nextflow_process {
     process "OPENMS_PEPTIDEINDEXER"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "openms"
-    tag "openms/decoydatabase"
-    tag "openms/peptideindexer"
-
     setup {
         run("OPENMS_DECOYDATABASE") {
             script "../../decoydatabase/main.nf"

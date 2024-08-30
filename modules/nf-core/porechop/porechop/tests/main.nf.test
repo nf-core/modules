@@ -5,11 +5,6 @@ nextflow_process {
     process "PORECHOP_PORECHOP"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "porechop"
-    tag "porechop/porechop"
-
     test("sarscov2 - nanopore - fastq") {
 
         when {
@@ -34,7 +29,6 @@ nextflow_process {
 
     }
 
-
     test("stub") {
         options "-stub"
 
@@ -56,6 +50,5 @@ nextflow_process {
         }
 
     }
-
 
 }

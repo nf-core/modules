@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process HTSEQ_COUNT"
     script "../main.nf"
     process "HTSEQ_COUNT"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "htseq"
-    tag "htseq/count"
 
     test("bam input") {
 
@@ -67,6 +63,5 @@ nextflow_process {
         }
 
     }
-
 
 }

@@ -4,14 +4,7 @@ nextflow_process {
     script "../main.nf"
     process "PROPR_PROPR"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "propr"
-    tag "propr/propr"
-
     test("Test propr/propr using default options") {
-
-        tag "default"
 
         when {
             process {
@@ -36,7 +29,6 @@ nextflow_process {
 
     test("Test propr/propr while running clr+pcor.bshrink explicitly") {
 
-        tag "clr_pcorbshrink"
         config "./clr_pcorbshrink.config"
 
         when {
@@ -61,7 +53,6 @@ nextflow_process {
 
     test("Test propr/propr while running alr+pcor.bshrink") {
         
-        tag "alr_pcorbshrink"
         config "./alr_pcorbshrink.config"
 
         when {
@@ -87,7 +78,6 @@ nextflow_process {
 
     test("Test propr/propr while running clr+rho") {
 
-        tag "clr_rho"
         config "./clr_rho.config"
 
         when {
@@ -112,7 +102,6 @@ nextflow_process {
 
     test("Test propr/propr while running clr+pcor") {
 
-        tag "clr_pcor"
         config "./clr_pcor.config"
 
         when {
@@ -137,7 +126,6 @@ nextflow_process {
 
     test("Test propr/propr while running clr+rho with boxcox transformation") {
 
-        tag "clr_rho_alpha"
         config "./clr_rho_alpha.config"
 
         when {
@@ -162,7 +150,6 @@ nextflow_process {
 
     test("Test propr/propr calculating adjacency_matrix for rho") {
 
-        tag "adjacency_rho"
         config "./adjacency_rho.config"
 
         when {
@@ -188,7 +175,6 @@ nextflow_process {
 
     test("Test propr/propr calculating adjacency_matrix for phs") {
 
-        tag "adjacency_phs"
         config "./adjacency_phs.config"
 
         when {
@@ -214,7 +200,6 @@ nextflow_process {
 
     test("Test propr/propr calculating adjacency_matrix for pcor") {
 
-        tag "adjacency_pcor"
         config "./adjacency_pcor.config"
 
         when {

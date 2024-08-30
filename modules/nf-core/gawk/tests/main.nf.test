@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "GAWK"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "gawk"
-
     test("convert fasta to bed") {
         config "./nextflow.config"
 

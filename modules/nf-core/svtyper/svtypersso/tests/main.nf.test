@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "SVTYPER_SVTYPERSSO"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "svtyper"
-    tag "svtyper/svtypersso"
-
     test("homo_sapiens - bam - vcf - fasta") {
 
         when {
@@ -86,7 +81,6 @@ nextflow_process {
             }
         }
 
-
         then {
             assertAll(
                 { assert process.success },
@@ -117,7 +111,6 @@ nextflow_process {
                 """
             }
         }
-
 
         then {
             assertAll(

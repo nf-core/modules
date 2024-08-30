@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process GATK4_SELECTVARIANTS"
     script "modules/nf-core/gatk4/selectvariants/main.nf"
     process "GATK4_SELECTVARIANTS"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "gatk4"
-    tag "gatk4/selectvariants"
 
     test("selectvariants - vcf input") {
 
@@ -33,7 +29,6 @@ nextflow_process {
             {assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2")}
             )
         }
-
 
     }
 

@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process CAT_CAT"
     script "../main.nf"
     process "CAT_CAT"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "cat"
-    tag "cat/cat"
 
     test("test_cat_name_conflict") {
         when {
@@ -59,7 +55,6 @@ nextflow_process {
             )
         }
     }
-
 
     test("test_cat_zipped_zipped") {
         when {

@@ -5,16 +5,6 @@ nextflow_process {
     config "./nextflow.config"
     process "NGSCHECKMATE_VAFNCM"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "ngscheckmate"
-    tag "ngscheckmate/vafncm"
-    tag "gawk"
-    tag "bedtools/makewindows"
-    tag "bowtie/build"
-    tag "ngscheckmate/patterngenerator"
-    tag "ngscheckmate/fastq"
-
     setup {
 
         run("GAWK" , alias: "GAWK_FAI") {

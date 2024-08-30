@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "RRNATRANSCRIPTS"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "rrnatranscripts"
-
     test("homo_sapiens - gtf") {
 
         when {

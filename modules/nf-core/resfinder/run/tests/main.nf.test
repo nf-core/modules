@@ -5,12 +5,6 @@ nextflow_process {
     process "RESFINDER_RUN"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "untar"
-    tag "resfinder"
-    tag "resfinder/run"
-
     setup {
         run("UNTAR") {
             script "modules/nf-core/untar/main.nf"

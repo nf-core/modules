@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "PANACUS_VISUALIZE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "panacus"
-    tag "panacus/visualize"
-
     test("pangenome - tsv") {
 
         config "./nextflow.config"

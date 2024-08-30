@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "CHROMAP_INDEX"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "chromap"
-    tag "chromap/index"
-
     test("test_chromap_idx") {
 
         when {

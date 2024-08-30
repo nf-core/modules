@@ -4,14 +4,8 @@ nextflow_process {
     script "../main.nf"
     process "PROPR_PROPD"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "propr"
-    tag "propr/propd"
-
     test("Test propr/propd using default permutation") {
 
-        tag "default"
         config "./default_permutation.config"
 
         when {
@@ -40,7 +34,6 @@ nextflow_process {
 
     test("Test propr/propd using default boxcox permutation") {
 
-        tag "default_boxcox"
         config "./default_boxcox.config"
 
         when {
@@ -69,7 +62,6 @@ nextflow_process {
 
     test("Test propr/propd using theta_e permutation") {
 
-        tag "theta_e"
         config "./theta_e.config"
 
         when {
@@ -97,7 +89,6 @@ nextflow_process {
 
     test("Test propr/propd using theta_e and boxcox permutation") {
 
-        tag "boxcox_theta_e"
         config "./boxcox_theta_e.config"
 
         when {
@@ -125,7 +116,6 @@ nextflow_process {
 
     test("Test propr/propd with adjacency matrix") {
 
-        tag "adjacency"
         config "./adjacency.config"
 
         when {

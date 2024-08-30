@@ -3,9 +3,6 @@ nextflow_process {
     name "Test Process BEDGOVCF"
     script "../main.nf"
     process "BEDGOVCF"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bedgovcf"
 
     test("homo_sapiens - [bed, config] - fai") {
 
@@ -40,7 +37,6 @@ nextflow_process {
             )
         }
     }
-
 
     test("homo_sapiens - [bed, config] - fai STUB") {
         options "-stub"

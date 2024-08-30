@@ -5,11 +5,6 @@ nextflow_process {
     process "PARAPHASE"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "paraphase"
-    tag "tabix/bgzip"
-
     setup {
         run("TABIX_BGZIP") {
             script "../../tabix/bgzip/main.nf"

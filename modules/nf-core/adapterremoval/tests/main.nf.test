@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "ADAPTERREMOVAL"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "adapterremoval"
-
     test("single-end - sarscov2 - [fastq]") {
 
         when {

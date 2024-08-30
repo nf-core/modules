@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "LTRFINDER"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "ltrfinder"
-    tag "gunzip/main"
-
     test("actinidia_chinensis-genome_21_fasta_gz-success") {
 
         setup {

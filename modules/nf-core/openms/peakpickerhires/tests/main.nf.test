@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "OPENMS_PEAKPICKERHIRES"
     config "./nextflow.config"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "openms"
-    tag "openms/peakpickerhires"
 
     test("proteomics - mzML") {
 

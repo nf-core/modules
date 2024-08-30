@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "FAMSA_ALIGN"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "famsa"
-    tag "famsa/align"
-    tag "famsa/guidetree"
-
     test("sarscov2 - fasta - uncompressed") {
 
         when {

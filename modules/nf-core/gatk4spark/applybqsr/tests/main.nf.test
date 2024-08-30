@@ -5,11 +5,6 @@ nextflow_process {
     config "./nextflow.config"
     process "GATK4SPARK_APPLYBQSR"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "gatk4spark"
-    tag "gatk4spark/applybqsr"
-
     test("sarscov2 - bam") {
 
         when {
@@ -122,6 +117,5 @@ nextflow_process {
         }
 
     }
-
 
 }

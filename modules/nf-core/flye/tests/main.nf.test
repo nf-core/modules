@@ -8,13 +8,8 @@ nextflow_process {
     script "../main.nf"
     process "FLYE"
     config "./nextflow.config"
-    tag "flye"
-    tag "modules"
-    tag "modules_nfcore"
-
 
     test("flye_pacbio_raw") {
-        tag "flye_pacbio_raw"
 
         when {
             params {
@@ -46,16 +41,12 @@ nextflow_process {
                 // Check if test.params.json matches
                 { assert snapshot(process.out.json).match() }
 
-
-
             )
         }
 
     }
 
-
     test("flye_pacbio_corr") {
-        tag "flye_pacbio_corr"
 
         when {
             params {
@@ -86,16 +77,12 @@ nextflow_process {
                 // Check if test.params.json matches
                 { assert snapshot(process.out.json).match() }
 
-
-
-
             )
         }
 
     }
 
     test("flye_pacbio_hifi") {
-        tag "flye_pacbio_hifi"
 
         when {
             params {
@@ -126,16 +113,12 @@ nextflow_process {
                 // Check if test.params.json matches
                 { assert snapshot(process.out.json).match() }
 
-
-
-
             )
         }
 
     }
 
     test("flye_nano_raw") {
-        tag "flye_nano_raw"
 
         when {
             params {
@@ -167,15 +150,12 @@ nextflow_process {
                 // Check if test.params.json matches
                 { assert snapshot(process.out.json).match() }
 
-
-
             )
         }
 
     }
 
     test("flye_nano_corr") {
-        tag "flye_nano_corr"
 
         when {
             params {
@@ -207,15 +187,12 @@ nextflow_process {
                 // Check if test.params.json matches
                 { assert snapshot(process.out.json).match() }
 
-
             )
         }
 
     }
 
-
     test("flye_nano_hq") {
-        tag "flye_nano_hq"
 
         when {
             params {
@@ -247,12 +224,9 @@ nextflow_process {
                 // Check if test.params.json matches
                 { assert snapshot(process.out.json).match() }
 
-
             )
         }
 
     }
-
-
 
 }

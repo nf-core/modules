@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "TRUVARI_CONSISTENCY"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "truvari"
-    tag "truvari/consistency"
-
     test("homo_sapiens - illumina - two vcf") {
         config "./nextflow.config"
         when {

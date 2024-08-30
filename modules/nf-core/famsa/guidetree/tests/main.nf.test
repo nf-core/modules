@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "FAMSA_GUIDETREE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "famsa"
-    tag "famsa/guidetree"
-
     test("sarscov2 - fasta") {
 
         when {

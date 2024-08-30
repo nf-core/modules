@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "HAPPY_FTXPY"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "happy"
-    tag "happy/ftxpy"
-
     test("homo_sapiens - illumina - mutect") {
 
         config "./feature.config"

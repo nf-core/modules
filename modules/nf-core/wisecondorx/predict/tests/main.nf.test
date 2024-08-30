@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "WISECONDORX_PREDICT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "wisecondorx"
-    tag "wisecondorx/predict"
-    tag "wisecondorx/convert"
-
     test("sarscov2 - npz, reference, []") {
 
         // Stub because the reference is too large

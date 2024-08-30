@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "DEEPBGC_DOWNLOAD"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "deepbgc"
-    tag "deepbgc/download"
-
     test("deepbgc download db") {
 
         when {

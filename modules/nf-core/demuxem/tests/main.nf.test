@@ -6,10 +6,6 @@ nextflow_process {
     process "DEMUXEM"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "demuxem"
-
     test("Standard_Multiome - h5 - csv") {
 
         when {

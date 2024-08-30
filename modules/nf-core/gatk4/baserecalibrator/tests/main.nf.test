@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "GATK4_BASERECALIBRATOR"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "gatk4"
-    tag "gatk4/baserecalibrator"
-
     test("sarscov2 - bam") {
         when {
             process {

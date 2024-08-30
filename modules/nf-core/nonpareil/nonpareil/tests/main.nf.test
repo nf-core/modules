@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "NONPAREIL_NONPAREIL"
     config "./nextflow.config"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "nonpareil"
-    tag "nonpareil/nonpareil"
-    tag "gunzip"
 
     test("candidatus_portiera_aleyrodidarum - gzipped") {
 
@@ -42,7 +37,6 @@ nextflow_process {
     }
 
     test("candidatus_portiera_aleyrodidarum - uncompressed") {
-
 
         setup {
             run("GUNZIP") {

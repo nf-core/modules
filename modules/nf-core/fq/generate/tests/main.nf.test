@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "FQ_GENERATE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "fq"
-    tag "fq/generate"
-
     test("test_fq_lint_fail") {
         config "./nextflow.config"
         when {

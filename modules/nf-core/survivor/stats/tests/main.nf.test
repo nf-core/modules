@@ -5,11 +5,6 @@ nextflow_process {
     script "../main.nf"
     process "SURVIVOR_STATS"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "survivor"
-    tag "survivor/stats"
-
     test("homo_sapiens - haplotc - vcfgz") {
 
         when {

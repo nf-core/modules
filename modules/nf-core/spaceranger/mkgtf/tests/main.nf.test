@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "SPACERANGER_MKGTF"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "spaceranger"
-    tag "spaceranger/mkgtf"
-
     test("homo_sapiens - gtf") {
 
         when {

@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "CENTRIFUGE_CENTRIFUGE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "centrifuge"
-    tag "centrifuge/centrifuge"
-    tag "untar"
-
     setup {
         run("UNTAR") {
             script "../../../untar/main.nf"

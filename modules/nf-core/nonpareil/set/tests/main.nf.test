@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "NONPAREIL_SET"
     config "./nextflow.config"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "nonpareil"
-    tag "nonpareil/set"
-    tag "nonpareil/nonpareil"
 
     test("candidatus_portiera_aleyrodidarum") {
 

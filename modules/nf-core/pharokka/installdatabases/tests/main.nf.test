@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "PHAROKKA_INSTALLDATABASES"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "pharokka"
-    tag "pharokka/installdatabases"
-
     test("No input required") {
         then {
             assertAll(

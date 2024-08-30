@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "XENGSORT_INDEX"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "xengsort"
-    tag "xengsort/index"
-
     test("homo_sapiens - sarscov2 - stub") {
 
         options "-stub"

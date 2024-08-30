@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "WISECONDORX_GENDER"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "wisecondorx"
-    tag "wisecondorx/gender"
-    tag "wisecondorx/convert"
-
     test("sarscov2 - bam, bai, reference") {
 
         options "-stub"

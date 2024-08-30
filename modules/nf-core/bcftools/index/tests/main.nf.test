@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "BCFTOOLS_INDEX"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bcftools"
-    tag "bcftools/index"
-
     test("sarscov2 - vcf - csi") {
 
         when {

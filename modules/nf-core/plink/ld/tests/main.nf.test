@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "PLINK_LD"
     config "./nextflow.config"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "plink"
-    tag "plink/ld"
 
     test("plink - VCF") {
 

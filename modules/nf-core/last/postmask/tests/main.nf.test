@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "LAST_POSTMASK"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "last"
-    tag "last/postmask"
-
     test("sarscov2 - contigs - genome") {
 
         when {

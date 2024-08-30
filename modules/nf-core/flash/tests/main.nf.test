@@ -4,9 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "FLASH"
     config "./nextflow.config"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "flash"
 
     test("sarscov2 - bam") {
 

@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "MANTA_SOMATIC"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "manta"
-    tag "manta/somatic"
-
     test("human - cram") {
 
         when {

@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "PANACUS_HISTGROWTH"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "panacus"
-    tag "panacus/histgrowth"
-
     test("pangenome - gfa") {
 
         when {

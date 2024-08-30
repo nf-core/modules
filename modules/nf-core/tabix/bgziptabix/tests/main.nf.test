@@ -4,11 +4,6 @@ nextflow_process {
     script "modules/nf-core/tabix/bgziptabix/main.nf"
     process "TABIX_BGZIPTABIX"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "tabix"
-    tag "tabix/bgziptabix"
-
     test("sarscov2_bed_tbi") {
         config "./tabix_tbi.config"
 

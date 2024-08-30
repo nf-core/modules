@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "BCFTOOLS_QUERY"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bcftools"
-    tag "bcftools/query"
-
     config "./nextflow.config"
 
     test("sarscov2 - [vcf, tbi], [], [], []") {

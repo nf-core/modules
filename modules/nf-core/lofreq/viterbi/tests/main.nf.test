@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "LOFREQ_VITERBI"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "lofreq"
-    tag "lofreq/viterbi"
-
     test("sarscov2 - bam, fasta") {
 
         when {

@@ -5,10 +5,6 @@ nextflow_process {
     process "TRINITY"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "trinity"
-
     test("homo_sapiens-test_rnaseq-paired") {
         when {
             process {

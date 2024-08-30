@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "BLAST_BLASTP"
     config "./nextflow.config"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "blast"
-    tag "blast/blastp"
-    tag "blast/makeblastdb"
 
     setup {
         run("BLAST_MAKEBLASTDB") {

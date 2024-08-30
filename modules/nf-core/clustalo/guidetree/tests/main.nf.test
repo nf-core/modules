@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "CLUSTALO_GUIDETREE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "clustalo"
-    tag "clustalo/guidetree"
-
     test("sarscov2 - contigs-fasta") {
 
         when {

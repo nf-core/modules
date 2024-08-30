@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "BACPHLIP"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bacphlip"
-
     test("candidatus_portiera_aleyrodidarum - genome - fasta") {
 
         when {

@@ -5,11 +5,6 @@ nextflow_process {
     process "SEQKIT_CONCAT"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "seqkit"
-    tag "seqkit/concat"
-
     test("sarscov2 and human primers - fasta") {
         when {
             process {

@@ -4,14 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "DEEPBGC_PIPELINE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "deepbgc"
-    tag "deepbgc/pipeline"
-    tag "deepbgc/download"
-    tag "gunzip"
-    tag "prodigal"
-
     setup {
         run("DEEPBGC_DOWNLOAD") {
             script "../..//download/main.nf"

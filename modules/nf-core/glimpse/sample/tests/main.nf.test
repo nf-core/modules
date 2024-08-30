@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "GLIMPSE_SAMPLE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "glimpse"
-    tag "glimpse/sample"
-    tag "glimpse/phase"
-
     test("test_glimpse_sample") {
         config "./nextflow.config"
         setup {

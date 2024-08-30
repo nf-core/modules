@@ -4,10 +4,6 @@ nextflow_process {
     script "modules/nf-core/genmod/annotate/main.nf"
     process "GENMOD_ANNOTATE"
     config "./nextflow.config"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "genmod"
-    tag "genmod/annotate"
 
     test("genmod_annotate") {
 

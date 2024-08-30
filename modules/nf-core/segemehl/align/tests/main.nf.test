@@ -3,11 +3,6 @@ nextflow_process {
     name "Test Process SEGEMEHL_ALIGN"
     script "../main.nf"
     process "SEGEMEHL_ALIGN"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "segemehl"
-    tag "segemehl/align"
-    tag "segemehl/index"
 
     setup {
         run("SEGEMEHL_INDEX") {

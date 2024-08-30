@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     config "./nextflow.config"
     process "BACKSUB"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "backsub"
-
 
     test("Should run without failures") {
         when {

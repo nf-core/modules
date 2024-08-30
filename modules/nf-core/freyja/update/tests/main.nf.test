@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "FREYJA_UPDATE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "freyja"
-    tag "freyja/update"
-
     test("sarscov2 - value db name ") {
 
         when {

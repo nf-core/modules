@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "BEDOPS_GTF2BED"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bedops"
-    tag "bedops/gtf2bed"
-
     test("homo sapiens") {
 
         when {

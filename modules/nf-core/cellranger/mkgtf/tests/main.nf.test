@@ -5,11 +5,6 @@ nextflow_process {
     script "../main.nf"
     process "CELLRANGER_MKGTF"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "cellranger"
-    tag "cellranger/mkgtf"
-
     test("homo_sapiens - reference") {
 
         when {

@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process DRAGONFLYE"
     script "../main.nf"
     process "DRAGONFLYE"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "dragonflye"
-
 
     test("Dragonflye with miniasm") {
         config "./nextflow.miniasm.config"
@@ -41,8 +37,6 @@ nextflow_process {
 
     }
 
-
-
     test("Dragonflye with raven") {
         config "./nextflow.raven.config"
 
@@ -75,7 +69,6 @@ nextflow_process {
         }
 
     }
-
 
     test("Dragonflye hybrid") {
         config "./nextflow.hybrid.config"

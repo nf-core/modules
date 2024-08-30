@@ -4,13 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "GATK4_SVCLUSTER"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "manta"
-    tag "manta/germline"
-    tag "gatk4"
-    tag "gatk4/svcluster"
-
     test("test_gatk4_svcluster") {
         setup {
             run("MANTA_GERMLINE") {

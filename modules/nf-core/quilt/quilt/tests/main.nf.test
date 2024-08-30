@@ -15,7 +15,6 @@ def regions_end   = "2100000"
 def ngen          = "100"
 def buffer        = "10000"
 
-
 // (optional) input truth data
 def posfile   = "file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/quilt/ALL.chr20_GRCh38.genotypes.20170504.chr20.2000001.2100000.posfile.txt', checkIfExists: true)"
 def phasefile = "file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/quilt/ALL.chr20_GRCh38.genotypes.20170504.chr20.2000001.2100000.phasefile.txt', checkIfExists: true)"
@@ -32,11 +31,6 @@ nextflow_process {
     name "Test Process QUILT"
     script "../main.nf"
     process "QUILT_QUILT"
-
-    tag "modules"
-    tag "modules_nfcore"
-    tag "quilt/quilt"
-    tag "quilt"
 
     test("QUILT") {
         config ("./quilt_default.config")

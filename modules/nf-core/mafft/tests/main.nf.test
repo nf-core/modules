@@ -3,9 +3,6 @@ nextflow_process {
     name "Test Process MAFFT"
     script "../main.nf"
     process "MAFFT"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "mafft"
 
     test("SARS-CoV-2 scaffolds fasta - uncompressed") {
         when {

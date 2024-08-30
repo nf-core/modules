@@ -5,12 +5,6 @@ nextflow_process {
     process "GATK4_INTERVALLISTTOOLS"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "gatk4"
-    tag "gatk4/bedtointervallist"
-    tag "gatk4/intervallisttools"
-
     setup {
         run("GATK4_BEDTOINTERVALLIST") {
             script "../../bedtointervallist/main.nf"

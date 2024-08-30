@@ -4,11 +4,6 @@ nextflow_process {
     script "modules/nf-core/seqtk/rename/main.nf"
     process "SEQTK_RENAME"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "seqtk"
-    tag "seqtk/rename"
-
     test("sarscov2_rename_fa") {
 
         when {

@@ -4,13 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "SIMPLEAF_QUANT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "simpleaf"
-    tag "simpleaf/quant"
-    tag "simpleaf/index"
-
-
     //Requires SIMPLEAF_INDEX to run prior to quant
     setup {
         run("SIMPLEAF_INDEX") {
@@ -97,5 +90,4 @@ nextflow_process {
     }
 
 }
-
 

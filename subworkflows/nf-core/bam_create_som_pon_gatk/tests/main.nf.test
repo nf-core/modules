@@ -6,14 +6,6 @@ nextflow_workflow {
 
     workflow "BAM_CREATE_SOM_PON_GATK"
 
-    tag "subworkflows"
-    tag "subworkflows_nfcore"
-    tag "subworkflows/bam_create_som_pon_gatk"
-    tag "gatk4"
-    tag "gatk4/mutect2"
-    tag "gatk4/genomicsdbimport"
-    tag "gatk4/createsomaticpanelofnormals"
-
     test("test_create_som_pon_gatk_bam") {
         when {
             workflow {

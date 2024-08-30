@@ -5,12 +5,6 @@ nextflow_process {
     process "CLUSTALO_ALIGN"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "clustalo"
-    tag "clustalo/align"
-    tag "clustalo/guidetree"
-
     test("sarscov2 - contigs-fasta - uncompressed") {
 
         when {

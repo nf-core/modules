@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "DEEPARG_PREDICT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "deeparg"
-    tag "deeparg/predict"
-    tag "deeparg/downloaddata"
-
     setup {
             run("DEEPARG_DOWNLOADDATA") {
                 script "../../../deeparg/downloaddata/main.nf"

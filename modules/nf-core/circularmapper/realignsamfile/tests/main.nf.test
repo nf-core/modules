@@ -4,15 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "CIRCULARMAPPER_REALIGNSAMFILE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "circularmapper"
-    tag "circularmapper/realignsamfile"
-    tag "bwa/aln"
-    tag "bwa/index"
-    tag "bwa/samse"
-    tag "circularmapper/circulargenerator"
-
     test("sarscov2 - bam - fasta") {
 
         setup {

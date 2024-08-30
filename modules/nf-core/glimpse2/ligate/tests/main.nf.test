@@ -5,13 +5,6 @@ nextflow_process {
 
     process "GLIMPSE2_LIGATE"
 
-    tag "modules_nfcore"
-    tag "modules"
-    tag "glimpse2"
-    tag "glimpse2/ligate"
-    tag "bcftools/index"
-    tag "glimpse2/phase"
-
     test("Should run glimpse ligate") {
         setup {
             run("GLIMPSE2_PHASE") {

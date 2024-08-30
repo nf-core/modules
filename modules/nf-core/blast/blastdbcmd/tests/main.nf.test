@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "BLAST_BLASTDBCMD"
     config "./nextflow.config"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "blast"
-    tag "blast/blastdbcmd"
-    tag "blast/makeblastdb"
 
     setup {
         run("BLAST_MAKEBLASTDB") {
@@ -20,7 +15,6 @@ nextflow_process {
             }
         }
     }
-
 
     test("Should query with a protein identifier against a FASTA DB") {
 

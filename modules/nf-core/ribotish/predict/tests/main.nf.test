@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "RIBOTISH_PREDICT"
 
-    tag "gunzip"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "ribotish"
-    tag "ribotish/predict"
-
     setup {
         run("GUNZIP") {
             script "modules/nf-core/gunzip/main.nf"

@@ -4,14 +4,6 @@ nextflow_workflow {
     script "../main.nf"
     workflow "BAM_QC_PICARD"
 
-    tag "subworkflows"
-    tag "subworkflows_nfcore"
-    tag "bam_qc_picard"
-    tag "subworkflows/bam_qc_picard"
-    tag "picard/collectmultiplemetrics"
-    tag "picard/collectwgsmetrics"
-    tag "picard/collecthsmetrics"
-
     test("sascov2_wgs - [bam,bai]") {
 
         when {
@@ -60,7 +52,6 @@ nextflow_workflow {
                     workflow.out.versions
                     ).match()
                 }
-
 
                 )
         }
@@ -114,7 +105,6 @@ nextflow_workflow {
                     workflow.out.versions
                     ).match()
                 }
-
 
                 )
 

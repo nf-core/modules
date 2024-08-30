@@ -5,10 +5,6 @@ nextflow_process {
     config "./nextflow.config"
     process "LIMA"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "lima"
-
     test("LIMA - Primer Removal - Input => bam") {
 
         when {

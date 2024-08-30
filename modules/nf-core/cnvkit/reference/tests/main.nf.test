@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "CNVKIT_REFERENCE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "cnvkit"
-    tag "cnvkit/reference"
-
     test("human - [fasta, bed]") {
 
         when {

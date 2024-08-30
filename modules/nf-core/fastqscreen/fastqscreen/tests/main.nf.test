@@ -4,13 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "FASTQSCREEN_FASTQSCREEN"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bowtie2/build"
-    tag "fastqscreen"
-    tag "fastqscreen/buildfromindex"
-    tag "fastqscreen/fastqscreen"
-
     setup {
 
         run("BOWTIE2_BUILD") {

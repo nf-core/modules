@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process TAXPASTA_MERGE"
     script "../main.nf"
     process "TAXPASTA_MERGE"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "taxpasta"
-    tag "taxpasta/merge"
 
     test("sarscov2 - metagenome - kraken report") {
 

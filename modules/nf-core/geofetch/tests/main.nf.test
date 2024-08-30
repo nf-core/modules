@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "GEOFETCH"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "geofetch"
-
     test("fetch data from GEO") {
 
         when {

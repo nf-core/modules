@@ -4,9 +4,6 @@ nextflow_process {
     script "../main.nf"
     config "./nextflow.config"
     process "PYCOQC"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "pycoqc"
 
     test("sarscov2 nanopore [sequencing_summary.txt]") {
 

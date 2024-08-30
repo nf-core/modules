@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "HAMRONIZATION_SUMMARIZE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "hamronization"
-    tag "hamronization/summarize"
-    tag "hamronization/deeparg"
-
     setup {
         run("HAMRONIZATION_DEEPARG", alias: "HAMRONIZATION_DEEPARG1") {
             script "../../deeparg/main.nf"

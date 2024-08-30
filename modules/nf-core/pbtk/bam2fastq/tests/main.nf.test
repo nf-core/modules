@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "PBTK_BAM2FASTQ"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "pbtk"
-    tag "pbtk/bam2fastq"
-
     test("homo_sapiens - bam") {
 
         when {

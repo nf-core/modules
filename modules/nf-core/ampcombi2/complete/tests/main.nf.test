@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "AMPCOMBI2_COMPLETE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "ampcombi2"
-    tag "ampcombi2/complete"
-
     test("ampcombi2_complete - contigs") {
         when {
             process {

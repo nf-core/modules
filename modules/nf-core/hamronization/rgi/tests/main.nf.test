@@ -4,14 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "HAMRONIZATION_RGI"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "hamronization"
-    tag "hamronization/rgi"
-    tag "rgi/main"
-    tag "rgi/cardannotation"
-    tag "untar"
-
     setup {
 
         run("UNTAR") {

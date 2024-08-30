@@ -4,13 +4,7 @@ nextflow_process {
     script "../main.nf"
     process "MYGENE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "mygene"
-
     test("mygene - default options") {
-
-        tag "default"
 
         when {
             process {
@@ -33,7 +27,6 @@ nextflow_process {
 
     test("mygene - default with tsv file") {
 
-        tag "default_with_tsv"
         config "./default_tsv.config"
 
         when {
@@ -58,7 +51,6 @@ nextflow_process {
 
     test("mygene - filter by go category") {
 
-        tag "filter_by_go_category"
         config "./go_category.config"
 
         when {
@@ -82,7 +74,6 @@ nextflow_process {
 
     test("mygene - filter by go evidence") {
 
-        tag "filter_by_go_evidence"
         config "./go_evidence.config"
 
         when {

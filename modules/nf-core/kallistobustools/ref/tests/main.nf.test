@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "KALLISTOBUSTOOLS_REF"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "kallistobustools"
-    tag "kallistobustools/ref"
-
     test("genome.fasta + genome.gtf + 'standard'") {
 
         when {

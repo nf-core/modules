@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "BUSCO_GENERATEPLOT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "busco"
-    tag "busco/busco"
-    tag "busco/generateplot"
-
     test("bacteroides_fragilis-genome_fna_gz") {
 
         setup {

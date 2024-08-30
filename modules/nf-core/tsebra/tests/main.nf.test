@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "TSEBRA"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "tsebra"
-    tag "gunzip"
-
     test("actinidia_chinensis-genome") {
 
         setup {

@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "SEQFU_STATS"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "seqfu"
-    tag "seqfu/stats"
-
-    
     test("seqfu stats - faa") {
         // test with 1 FAA file (with  multiple sequences of different length)
         when {

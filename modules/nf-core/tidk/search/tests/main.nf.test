@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "TIDK_SEARCH"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "tidk"
-    tag "tidk/search"
-
     test("homo_sapiens-genome_fasta-bedgraph") {
 
         config "./nextflow.config"

@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "GNU_SPLIT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "gnu"
-    tag "gnu/split"
-
     test("split_csv") {
         config "./split_csv.config"
         when {

@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "BCFTOOLS_ANNOTATE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bcftools"
-    tag "bcftools/annotate"
-
     test("sarscov2 - [vcf, tbi] annotation, annotation_tbi, [] - vcf_output") {
 
         config "./vcf.config"

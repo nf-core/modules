@@ -5,11 +5,6 @@ nextflow_process {
     script "../main.nf"
     process "CSVTK_CONCAT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "csvtk"
-    tag "csvtk/concat"
-
     test("tsv - concat - csv") {
 
         when {

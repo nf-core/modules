@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "MAGUS_ALIGN"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "magus"
-    tag "magus/align"
-    tag "magus/guidetree"
-
     test("setoxin - fasta - uncompressed") {
 
         when {

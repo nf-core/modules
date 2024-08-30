@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process DIAMOND_BLASTP"
     script "../main.nf"
     process "DIAMOND_BLASTP"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "diamond"
-    tag "diamond/blastp"
 
     setup {
         run("DIAMOND_MAKEDB") {

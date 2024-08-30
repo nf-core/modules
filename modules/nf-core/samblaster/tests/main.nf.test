@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "SAMBLASTER"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "samblaster"
-
     test("homo_sapiens-test_paired_end_umi_unsorted_bam") {
 
         when {

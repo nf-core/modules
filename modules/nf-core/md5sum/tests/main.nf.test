@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "MD5SUM"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "md5sum"
-
     test("md5sum on hello.txt") {
 
         when {

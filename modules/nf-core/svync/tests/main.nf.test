@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "SVYNC"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "svync"
-
     test("sarscov2 - vcf, config") {
 
         when {

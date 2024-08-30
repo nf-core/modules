@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "STARAMR_SEARCH"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "staramr"
-    tag "staramr/search"
-
     test("staramr_search - bacteroides_fragilis - genome_fna_gz") {
         when {
             process {

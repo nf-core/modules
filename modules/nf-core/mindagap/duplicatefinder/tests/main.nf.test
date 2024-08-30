@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     config "./nextflow.config"
     process "MINDAGAP_DUPLICATEFINDER"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "mindagap"
-    tag "mindagap/duplicatefinder"
 
     test("test_mindagap_duplicatefinder_spots") {
 

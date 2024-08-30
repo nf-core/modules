@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "HUMID"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "humid"
-    tag "fastp"
-
     test("sarscov2 - paired-end") {
 
         setup {
@@ -88,7 +83,6 @@ nextflow_process {
             )
         }
     }
-
 
     test("sarscov2 - single-end") {
 

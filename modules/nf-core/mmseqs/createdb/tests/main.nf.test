@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process MMSEQS_CREATEDB"
     script "../main.nf"
     process "MMSEQS_CREATEDB"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "mmseqs"
-    tag "mmseqs/createdb"
 
     test("Should build an mmseqs db from a contigs fasta file") {
 

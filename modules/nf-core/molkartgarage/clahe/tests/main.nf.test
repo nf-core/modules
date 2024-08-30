@@ -6,11 +6,6 @@ nextflow_process {
     config "./nextflow.config"
     process "MOLKARTGARAGE_CLAHE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "molkartgarage"
-    tag "molkartgarage/clahe"
-
     test("clahe - tiff") {
 
         when {

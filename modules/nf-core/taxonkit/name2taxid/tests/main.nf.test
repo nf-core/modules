@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "TAXONKIT_NAME2TAXID"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "untar"
-    tag "taxonkit"
-    tag "taxonkit/name2taxid"
-
     setup {
         run("UNTAR"){
             script "modules/nf-core/untar/main.nf"

@@ -3,12 +3,6 @@ nextflow_process {
     name "Test Process TCOFFEE_IRMSD"
     script "../main.nf"
     process "TCOFFEE_IRMSD"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "tcoffee"
-    tag "tcoffee/irmsd"
-    tag "untar"
-    tag "pigz/compress"
 
     test("seatoxin") {
 

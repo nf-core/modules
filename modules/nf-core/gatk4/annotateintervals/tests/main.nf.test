@@ -5,11 +5,6 @@ nextflow_process {
     process "GATK4_ANNOTATEINTERVALS"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "gatk4"
-    tag "gatk4/annotateintervals"
-
     test("homo_sapiens genome [bed]") {
 
         when {

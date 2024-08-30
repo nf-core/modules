@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "KAIJU_MKFMI"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "kaiju"
-    tag "kaiju/mkfmi"
-
     test("sarscov2 - proteome - fasta") {
 
         when {

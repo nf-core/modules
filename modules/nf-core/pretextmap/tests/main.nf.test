@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "PRETEXTMAP"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "pretext"
-    tag "pretextmap"
-
     test("homo_cram_map") {
 
         when {

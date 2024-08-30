@@ -3,11 +3,6 @@ nextflow_process {
     name "Test Process BOWTIE2_ALIGN"
     script "../main.nf"
     process "BOWTIE2_ALIGN"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bowtie2"
-    tag "bowtie2/build"
-    tag "bowtie2/align"
 
     test("sarscov2 - fastq, index, fasta, false, false - bam") {
 

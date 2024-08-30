@@ -5,12 +5,6 @@ nextflow_process {
     process "GT_LTRHARVEST"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "gt"
-    tag "gt/ltrharvest"
-    tag "gt/suffixerator"
-
     test("homo_sapiens-genome_21_fasta-success") {
 
         setup {

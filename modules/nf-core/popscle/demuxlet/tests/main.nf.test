@@ -5,11 +5,6 @@ nextflow_process {
     script "../main.nf"
     process "POPSCLE_DEMUXLET"
     config "./nextflow.config"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "popscle"
-    tag "popscle/dscpileup"
-    tag "popscle/demuxlet"
 
     test("demultiplexing - bam") {
         when {
@@ -99,6 +94,5 @@ nextflow_process {
         }
 
     }
-
 
 }

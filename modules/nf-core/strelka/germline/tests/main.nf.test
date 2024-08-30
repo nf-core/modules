@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "STRELKA_GERMLINE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "strelka"
-    tag "strelka/germline"
-
     test("human - cram") {
 
         when {

@@ -5,11 +5,6 @@ nextflow_process {
     config "./nextflow.config"
     process "MINDAGAP_MINDAGAP"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "mindagap"
-    tag "mindagap/mindagap"
-
     test("mindgap - tiff") {
 
         when {

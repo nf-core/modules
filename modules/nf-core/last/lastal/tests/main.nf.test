@@ -5,12 +5,6 @@ nextflow_process {
     process "LAST_LASTAL"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "last"
-    tag "last/lastal"
-    tag "untar"
-
     test("sarscov2 - contigs - genome") {
 
         setup {

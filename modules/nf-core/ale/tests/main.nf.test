@@ -5,10 +5,6 @@ nextflow_process {
     script "../main.nf"
     process "ALE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "ale"
-
     test("sarscov2 [fasta] - paired-end sorted bam") {
 
         when {

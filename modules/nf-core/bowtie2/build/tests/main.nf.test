@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process BOWTIE2_BUILD"
     script "modules/nf-core/bowtie2/build/main.nf"
     process "BOWTIE2_BUILD"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bowtie2"
-    tag "bowtie2/build"
 
     test("Should run without failures") {
 

@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "BAMCMP"
     config "./nextflow.config"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bamcmp"
-    tag "bwa/index"
-    tag "bwa/mem"
 
     test("bamcmp - human cov2") {
 

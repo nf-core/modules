@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "FCS_FCSADAPTOR"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "fcs"
-    tag "fcs/fcsadaptor"
-
     test("bacteroides_fragilis-genome_fna_gz") {
 
         when {

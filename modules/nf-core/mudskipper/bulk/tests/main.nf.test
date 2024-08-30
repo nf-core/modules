@@ -5,11 +5,6 @@ nextflow_process {
     process "MUDSKIPPER_BULK"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "mudskipper"
-    tag "mudskipper/bulk"
-
     test("homo_sapiens - gtf - bam") {
 
         setup {
@@ -90,6 +85,5 @@ nextflow_process {
         }
 
     }
-
 
 }

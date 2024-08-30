@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "WINDOWMASKER_MKCOUNTS"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "windowmasker"
-    tag "windowmasker/mkcounts"
-
     test("sarscov2_fasta") {
 
         when {

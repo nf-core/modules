@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "NGSCHECKMATE_PATTERNGENERATOR"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "ngscheckmate"
-    tag "ngscheckmate/patterngenerator"
-    tag "bowtie/build"
-
     setup {
 
         run("BOWTIE_BUILD") {

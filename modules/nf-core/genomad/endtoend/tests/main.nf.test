@@ -5,12 +5,6 @@ nextflow_process {
     process "GENOMAD_ENDTOEND"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "genomad"
-    tag "genomad/download"
-    tag "genomad/endtoend"
-
     test("sarscov2 - genome - fasta") {
         setup {
             run("GENOMAD_DOWNLOAD") {

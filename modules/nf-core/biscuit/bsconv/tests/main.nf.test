@@ -3,12 +3,6 @@ nextflow_process {
     name "Test Process BISCUIT_BSCONV"
     script "../main.nf"
     process "BISCUIT_BSCONV"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "biscuit"
-    tag "biscuit/bsconv"
-    tag "biscuit/index"
-
 
     setup {
         run("BISCUIT_INDEX") {

@@ -4,13 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "TCOFFEE_ALIGN"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "tcoffee"
-    tag "tcoffee/align"
-    tag "famsa/guidetree"
-    tag "untar"
-
     test("fasta - align_sequence") {
 
         config "./sequence.config"

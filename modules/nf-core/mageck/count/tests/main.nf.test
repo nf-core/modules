@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "MAGECK_COUNT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "mageck"
-    tag "mageck/count"
-
     test("mus_musculus - fastq") {
 
         when {

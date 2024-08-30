@@ -5,14 +5,6 @@ nextflow_workflow {
     config "./nextflow.config"
     workflow "FASTQ_ALIGN_BOWTIE2"
 
-    tag "subworkflows"
-    tag "subworkflows_nfcore"
-    tag "subworkflows/fastq_align_bowtie2"
-    tag "subworkflows/bam_sort_stats_samtools"
-    tag "bowtie2"
-    tag "bowtie2/build"
-    tag "bowtie2/align"
-
     test("test_align_bowtie2_single_end") {
         setup {
             run("BOWTIE2_BUILD") {

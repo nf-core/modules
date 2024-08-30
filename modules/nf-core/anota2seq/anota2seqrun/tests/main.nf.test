@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "ANOTA2SEQ_ANOTA2SEQRUN"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "anota2seq"
-    tag "anota2seq/anota2seqrun"
-
     test("human - tsv") {
 
         when {

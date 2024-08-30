@@ -5,11 +5,6 @@ nextflow_process {
     process "TIDK_EXPLORE"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "tidk"
-    tag "tidk/explore"
-
     test("homo_sapiens-genome_21_fasta-success") {
 
         when {

@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "SEQKIT_FX2TAB"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "seqkit"
-    tag "seqkit/fx2tab"
-
     test("sarscov2 - fasta") {
 
         when {

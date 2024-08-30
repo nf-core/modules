@@ -5,11 +5,6 @@ nextflow_process {
         process "MUSCLE5_SUPER5"
         config "./nextflow.config"
 
-        tag "modules"
-        tag "modules_nfcore"
-        tag "muscle5"
-        tag "muscle5/super5"
-
         test("fasta - align_sequence - uncompressed") {
             when {
                 process {

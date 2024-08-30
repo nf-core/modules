@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "WITTYER"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "wittyer"
-    tag "tabix/bgzip"
-
     test("human - simulatedSV - vcf_gz") {
         config "./test.config"
 

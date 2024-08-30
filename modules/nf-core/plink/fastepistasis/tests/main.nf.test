@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process PLINK_FASTEPISTASIS"
     script "../main.nf"
     process "PLINK_FASTEPISTASIS"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "plink"
-    tag "plink/fastepistasis"
 
     test("plink - VCF") {
 

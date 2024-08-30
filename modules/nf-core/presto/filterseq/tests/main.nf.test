@@ -5,12 +5,6 @@ nextflow_process {
     config "./nextflow.config"
     process "PRESTO_FILTERSEQ"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "gunzip"
-    tag "presto"
-    tag "presto/filterseq"
-
     test("homo_sapiens - fastq") {
 
         setup {

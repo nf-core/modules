@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process BISMARK_REPORT"
     script "../main.nf"
     process "BISMARK_REPORT"
-    tag "bismark"
-    tag "bismark/report"
-    tag "modules"
-    tag "modules_nfcore"
 
     test("Should run bismark/report without failures") {
 

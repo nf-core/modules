@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "FARGENE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "fargene"
-
     test("fargene - bacteroides fragilis - contigs.fa.gz") {
 
         setup {

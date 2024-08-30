@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "SVANALYZER_SVBENCHMARK"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "svanalyzer"
-    tag "svanalyzer/svbenchmark"
-
     test("homo_sapiens - illumina - vcf.gz - bed") {
 
         when {

@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "MASH_SCREEN"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "mash"
-    tag "mash/screen"
-    tag "mash/sketch"
-
     test("sarscov2 - illumina - fastq_gz") {
         setup {
             run("MASH_SKETCH") {

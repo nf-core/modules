@@ -3,9 +3,6 @@ nextflow_process {
     name "Test Process TRIMMOMATIC"
     script "../main.nf"
     process "TRIMMOMATIC"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "trimmomatic"
 
     test("Single-Read") {
         config "./nextflow_SE.config"

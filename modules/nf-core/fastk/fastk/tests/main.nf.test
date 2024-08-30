@@ -5,11 +5,6 @@ nextflow_process {
     config './nextflow.config'
     process "FASTK_FASTK"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "fastk"
-    tag "fastk/fastk"
-
     test("test_fastk_fastk_single_end") {
         when {
             process {

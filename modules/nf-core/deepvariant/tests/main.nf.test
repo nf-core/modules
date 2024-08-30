@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "DEEPVARIANT"
 
-    tag "deepvariant"
-    tag "modules"
-    tag "modules_nfcore"
-
     test("homo_sapiens - [bam, bai] - fasta - fai") {
         when {
             config "./nextflow.config"

@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process PLINK2_VCF"
     script "../main.nf"
     process "PLINK2_VCF"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "plink2"
-    tag "plink2/vcf"
 
     test("plink2_vcf") {
         config "./nextflow.config"

@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "HMMER_HMMSEARCH"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "hmmer"
-    tag "hmmer/hmmsearch"
-
     test("hmmer/hmmsearch") {
 
         when {

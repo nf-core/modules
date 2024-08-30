@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "GATK4_CALCULATECONTAMINATION"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "gatk4"
-    tag "gatk4/calculatecontamination"
-
     test("human - pileup-table") {
 
         when {

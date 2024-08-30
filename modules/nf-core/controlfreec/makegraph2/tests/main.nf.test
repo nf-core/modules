@@ -4,13 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "CONTROLFREEC_MAKEGRAPH2"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "controlfreec"
-    tag "controlfreec/makegraph2"
-    tag "controlfreec/freec"
-    tag "untar"
-
     setup {
 
         run("UNTAR") {

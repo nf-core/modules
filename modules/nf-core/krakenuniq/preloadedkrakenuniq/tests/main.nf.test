@@ -3,11 +3,6 @@ nextflow_process {
     name "Test Process KRAKENUNIQ_PRELOADEDKRAKENUNIQ"
     script "../main.nf"
     process "KRAKENUNIQ_PRELOADEDKRAKENUNIQ"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "krakenuniq"
-    tag "krakenuniq/preloadedkrakenuniq"
-    tag "untar"
 
     setup {
         run("UNTAR") {

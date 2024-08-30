@@ -5,13 +5,6 @@ nextflow_process {
     process "NGSCHECKMATE_NCM"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "ngscheckmate"
-    tag "ngscheckmate/ncm"
-    tag "bedtools/makewindows"
-    tag "bcftools/mpileup"
-
     setup {
 
         run("BEDTOOLS_MAKEWINDOWS") {
@@ -60,7 +53,6 @@ nextflow_process {
         }
 
     }
-
 
     test("sarscov2 - bam") {
         config "./bam.config"

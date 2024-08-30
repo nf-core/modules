@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "HAMRONIZATION_ABRICATE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "hamronization"
-    tag "hamronization/abricate"
-
     test("hamronization/abricate - bacteroides_fragilis - genome_abricate_tsv") {
 
         when {

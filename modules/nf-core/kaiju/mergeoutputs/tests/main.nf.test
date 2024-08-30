@@ -4,14 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "KAIJU_MERGEOUTPUTS"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "kaiju"
-    tag "untar"
-    tag "kaiju/kaiju"
-    tag "kraken2/kraken2"
-    tag "kaiju/mergeoutputs"
-
     setup {
         run("UNTAR",alias: "UNTAR_KRAKEN2" ) {
             config "./nodb.config"

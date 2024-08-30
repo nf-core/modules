@@ -4,13 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "HAMRONIZATION_FARGENE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "hamronization"
-    tag "hamronization/fargene"
-    tag "gunzip"
-    tag "fargene"
-
     test("hamronization/fargene - bacteroides_fragilis - illumina - fa.gz/gunzip") {
         setup {
 

@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "AMRFINDERPLUS_RUN"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "amrfinderplus"
-    tag "amrfinderplus/run"
-    tag "amrfinderplus/update"
-
     setup {
 
         run("AMRFINDERPLUS_UPDATE") {

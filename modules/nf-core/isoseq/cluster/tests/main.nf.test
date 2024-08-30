@@ -5,11 +5,6 @@ nextflow_process {
     config "./nextflow.config"
     process "ISOSEQ_CLUSTER"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "isoseq"
-    tag "isoseq/cluster"
-
     test("PacBio isoseq cluster - CCS clustering test") {
 
         when {

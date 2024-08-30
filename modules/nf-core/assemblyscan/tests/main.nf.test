@@ -3,9 +3,6 @@ nextflow_process {
     name "Test Process ASSEMBLYSCAN"
     script "../main.nf"
     process "ASSEMBLYSCAN"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "assemblyscan"
 
     test("Should run without failures") {
 

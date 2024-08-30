@@ -5,10 +5,6 @@ nextflow_process {
     config "./nextflow.config"
     process "AGRVATE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "agrvate"
-
     test("sarscov2 genome [fasta]") {
 
         when {

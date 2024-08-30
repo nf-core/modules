@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "GEM3_GEM3MAPPER"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "gem3"
-    tag "gem3/gem3mapper"
-    tag "gem3/gem3indexer"
-
     setup {
         run("GEM3_GEM3INDEXER") {
             script "../../gem3indexer/main.nf"

@@ -5,12 +5,6 @@ nextflow_process {
     process "KMCP_INDEX"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "kmcp"
-    tag "kmcp/index"
-    tag "kmcp/compute"
-
     setup {
         run("KMCP_COMPUTE") {
             script "../../../kmcp/compute/main.nf"

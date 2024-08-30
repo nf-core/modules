@@ -5,11 +5,6 @@ nextflow_process {
     process "MANTA_GERMLINE"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "manta"
-    tag "manta/germline"
-
     test("human - cram") {
 
         when {

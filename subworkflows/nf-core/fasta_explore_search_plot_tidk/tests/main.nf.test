@@ -5,16 +5,6 @@ nextflow_workflow {
     workflow "FASTA_EXPLORE_SEARCH_PLOT_TIDK"
     config './nextflow.config'
 
-    tag "subworkflows"
-    tag "subworkflows_nfcore"
-    tag "subworkflows/fasta_explore_search_plot_tidk"
-    tag "fasta_explore_search_plot_tidk"
-    tag "seqkit/seq"
-    tag "seqkit/sort"
-    tag "tidk/explore"
-    tag "tidk/search"
-    tag "tidk/plot"
-
     test("homo_sapiens-genome_fasta-genome_21_fasta") {
 
         when {

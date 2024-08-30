@@ -2,10 +2,6 @@ nextflow_process {
 
     name "Test Process MODKIT_PILEUP"
     script "../main.nf"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "modkit"
-    tag "modkit/pileup"
     process "MODKIT_PILEUP"
 
     test("[bam, bai], [], []") {

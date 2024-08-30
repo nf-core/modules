@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "GATK4_APPLYVQSR"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "gatk4"
-    tag "gatk4/applyvqsr"
-
     test("human - vcf") {
 
         config "./no-allelspecificity.config"

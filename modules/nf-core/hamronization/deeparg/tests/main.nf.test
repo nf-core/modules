@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "HAMRONIZATION_DEEPARG"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "hamronization"
-    tag "hamronization/deeparg"
-
     test("hamronization/deeparg - bacteroides_fragilis - genome_mapping_potential_arg") {
 
         when {

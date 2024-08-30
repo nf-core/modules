@@ -3,10 +3,6 @@ nextflow_process {
     name "test Plink HWE function"
     script "../main.nf"
     process "PLINK_HWE"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "plink"
-    tag "plink/hwe"
 
     test("plink - VCF") {
 

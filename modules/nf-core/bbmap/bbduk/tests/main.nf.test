@@ -5,11 +5,6 @@ nextflow_process {
     process "BBMAP_BBDUK"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bbmap"
-    tag "bbmap/bbduk"
-
     test("sarscov2 - single end fastq - fastq") {
 
         when {

@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "HOMER_MAKETAGDIRECTORY"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "homer"
-    tag "homer/maketagdirectory"
-
     test("sarscov2 - [bed, bed], fasta") {
 
         config "./bed.config"

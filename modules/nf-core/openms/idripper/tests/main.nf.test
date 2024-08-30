@@ -5,12 +5,6 @@ nextflow_process {
     process "OPENMS_IDRIPPER"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "openms"
-    tag "openms/idmerger"
-    tag "openms/idripper"
-
     setup {
         run("OPENMS_IDMERGER") {
             script "../../idmerger/main.nf"

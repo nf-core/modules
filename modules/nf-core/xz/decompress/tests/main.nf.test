@@ -4,11 +4,6 @@ nextflow_process {
     process "XZ_DECOMPRESS"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "xz"
-    tag "xz/decompress"
-
     test("sarscov2 - genome - fasta") {
         setup {
             run("XZ_COMPRESS") {

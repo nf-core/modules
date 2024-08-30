@@ -3,11 +3,6 @@ nextflow_process {
     name "Test Process DRAGMAP_ALIGN"
     script "../main.nf"
     process "DRAGMAP_ALIGN"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "dragmap"
-    tag "dragmap/align"
-    tag "dragmap/hashtable"
 
     test("sarscov2 - fastq, hashtable, fasta, false") {
 

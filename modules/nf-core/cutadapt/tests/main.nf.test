@@ -3,9 +3,6 @@ nextflow_process {
     name "Test Process CUTADAPT"
     script "../main.nf"
     process "CUTADAPT"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "cutadapt"
 
     test("sarscov2 Illumina single end [fastq]") {
 

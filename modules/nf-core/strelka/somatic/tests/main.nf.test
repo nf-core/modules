@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "STRELKA_SOMATIC"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "strelka"
-    tag "strelka/somatic"
-
     test("human - cram") {
 
         when {

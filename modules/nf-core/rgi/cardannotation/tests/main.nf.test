@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "RGI_CARDANNOTATION"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "rgi"
-    tag "rgi/cardannotation"
-    tag "untar"
-
     setup {
         run("UNTAR") {
             script "modules/nf-core/untar/main.nf"

@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "OPTITYPE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "optitype"
-
     test("hla - bam") {
         config "./nextflow.config"
         when {

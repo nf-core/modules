@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "JASMINESV"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "jasminesv"
-
     test("homo_sapiens - [vcf, vcf2], [], [], [], [], []") {
 
         when {

@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "BAMTOFASTQ10X"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bamtofastq10x"
-
     test("human - bam") {
         when {
             process {
@@ -28,7 +24,6 @@ nextflow_process {
             )
         }
     }
-
 
     test("human - bam - stub") {
 

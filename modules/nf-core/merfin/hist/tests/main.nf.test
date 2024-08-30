@@ -5,12 +5,6 @@ nextflow_process {
     script "../main.nf"
     process "MERFIN_HIST"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "merfin"
-    tag "merfin/hist"
-
-
     test("sarscov2 - paired-end illumina reads") {
 
         setup {
@@ -18,7 +12,6 @@ nextflow_process {
             run("SEQTK_MERGEPE") {
                 script "../../../seqtk/mergepe/main.nf"
                 config "./modules.config"
-                tag    "seqtk/mergepe"
                 process {
                     """
                     input[0] = [
@@ -35,7 +28,6 @@ nextflow_process {
             run("MERYL_COUNT") {
                 script "../../../meryl/count/main.nf"
                 config "./modules.config"
-                tag    "meryl/count"
                 process {
                     """
                     input[0] = SEQTK_MERGEPE.out.reads
@@ -43,7 +35,6 @@ nextflow_process {
                     """
                 }
             }
-            
             
         }
 
@@ -82,7 +73,6 @@ nextflow_process {
             run("SEQTK_MERGEPE") {
                 script "../../../seqtk/mergepe/main.nf"
                 config "./modules.config"
-                tag    "seqtk/mergepe"
                 process {
                     """
                     input[0] = [
@@ -99,7 +89,6 @@ nextflow_process {
             run("MERYL_COUNT") {
                 script "../../../meryl/count/main.nf"
                 config "./modules.config"
-                tag    "meryl/count"
                 process {
                     """
                     input[0] = SEQTK_MERGEPE.out.reads
@@ -107,7 +96,6 @@ nextflow_process {
                     """
                 }
             }
-            
             
         }
 
@@ -135,7 +123,6 @@ nextflow_process {
 
     }
 
-
     test("sarscov2 - paired-end illumina reads plus optional inputs lookup_table and seqmers") {
 
         setup {
@@ -143,7 +130,6 @@ nextflow_process {
             run("SEQTK_MERGEPE") {
                 script "../../../seqtk/mergepe/main.nf"
                 config "./modules.config"
-                tag    "seqtk/mergepe"
                 process {
                     """
                     input[0] = [
@@ -160,7 +146,6 @@ nextflow_process {
             run("MERYL_COUNT", alias: "MERYL_COUNT_READS") {
                 script "../../../meryl/count/main.nf"
                 config "./modules.config"
-                tag    "meryl/count"
                 process {
                     """
                     input[0] = SEQTK_MERGEPE.out.reads
@@ -172,7 +157,6 @@ nextflow_process {
             run("MERYL_COUNT", alias: "MERYL_COUNT_ASM") {
                 script "../../../meryl/count/main.nf"
                 config "./modules.config"
-                tag    "meryl/count"
                 process {
                     """
                     input[0] = [
@@ -187,7 +171,6 @@ nextflow_process {
             run("MERYL_HISTOGRAM") {
                 script "../../../meryl/histogram/main.nf"
                 config "./modules.config"
-                tag    "meryl/histogram"
                 process {
                     """
                     input[0] = MERYL_COUNT_READS.out.meryl_db
@@ -199,7 +182,6 @@ nextflow_process {
             run("GENOMESCOPE2") {
                 script "../../../genomescope2/main.nf"
                 config "./modules.config"
-                tag    "genomescope2"
                 process {
                     """
                     input[0] = MERYL_HISTOGRAM.out.hist
@@ -207,9 +189,6 @@ nextflow_process {
                 }
             }
 
-
-            
-            
         }
 
         when {
@@ -247,7 +226,6 @@ nextflow_process {
             run("SEQTK_MERGEPE") {
                 script "../../../seqtk/mergepe/main.nf"
                 config "./modules.config"
-                tag    "seqtk/mergepe"
                 process {
                     """
                     input[0] = [
@@ -264,7 +242,6 @@ nextflow_process {
             run("MERYL_COUNT", alias: "MERYL_COUNT_READS") {
                 script "../../../meryl/count/main.nf"
                 config "./modules.config"
-                tag    "meryl/count"
                 process {
                     """
                     input[0] = SEQTK_MERGEPE.out.reads
@@ -276,7 +253,6 @@ nextflow_process {
             run("MERYL_COUNT", alias: "MERYL_COUNT_ASM") {
                 script "../../../meryl/count/main.nf"
                 config "./modules.config"
-                tag    "meryl/count"
                 process {
                     """
                     input[0] = [
@@ -291,7 +267,6 @@ nextflow_process {
             run("MERYL_HISTOGRAM") {
                 script "../../../meryl/histogram/main.nf"
                 config "./modules.config"
-                tag    "meryl/histogram"
                 process {
                     """
                     input[0] = MERYL_COUNT_READS.out.meryl_db
@@ -303,7 +278,6 @@ nextflow_process {
             run("GENOMESCOPE2") {
                 script "../../../genomescope2/main.nf"
                 config "./modules.config"
-                tag    "genomescope2"
                 process {
                     """
                     input[0] = MERYL_HISTOGRAM.out.hist
@@ -311,9 +285,6 @@ nextflow_process {
                 }
             }
 
-
-            
-            
         }
 
         when {
@@ -347,7 +318,6 @@ nextflow_process {
             run("SEQTK_MERGEPE") {
                 script "../../../seqtk/mergepe/main.nf"
                 config "./modules.config"
-                tag    "seqtk/mergepe"
                 process {
                     """
                     input[0] = Channel.from([
@@ -370,7 +340,6 @@ nextflow_process {
             run("MERYL_COUNT", alias: "MERYL_COUNT_READS") {
                 script "../../../meryl/count/main.nf"
                 config "./modules.config"
-                tag    "meryl/count"
                 process {
                     """
                     input[0] = SEQTK_MERGEPE.out.reads
@@ -382,7 +351,6 @@ nextflow_process {
             run("MERYL_COUNT", alias: "MERYL_COUNT_ASM") {
                 script "../../../meryl/count/main.nf"
                 config "./modules.config"
-                tag    "meryl/count"
                 process {
                     """
                     input[0] = Channel.from([
@@ -400,7 +368,6 @@ nextflow_process {
             run("MERYL_HISTOGRAM") {
                 script "../../../meryl/histogram/main.nf"
                 config "./modules.config"
-                tag    "meryl/histogram"
                 process {
                     """
                     input[0] = MERYL_COUNT_READS.out.meryl_db
@@ -412,7 +379,6 @@ nextflow_process {
             run("GENOMESCOPE2") {
                 script "../../../genomescope2/main.nf"
                 config "./modules.config"
-                tag    "genomescope2"
                 process {
                     """
                     input[0] = MERYL_HISTOGRAM.out.hist
@@ -420,9 +386,6 @@ nextflow_process {
                 }
             }
 
-
-            
-            
         }
 
         when {
@@ -476,7 +439,6 @@ nextflow_process {
             run("SEQTK_MERGEPE") {
                 script "../../../seqtk/mergepe/main.nf"
                 config "./modules.config"
-                tag    "seqtk/mergepe"
                 process {
                     """
                     input[0] = Channel.from([
@@ -499,7 +461,6 @@ nextflow_process {
             run("MERYL_COUNT", alias: "MERYL_COUNT_READS") {
                 script "../../../meryl/count/main.nf"
                 config "./modules.config"
-                tag    "meryl/count"
                 process {
                     """
                     input[0] = SEQTK_MERGEPE.out.reads
@@ -511,7 +472,6 @@ nextflow_process {
             run("MERYL_COUNT", alias: "MERYL_COUNT_ASM") {
                 script "../../../meryl/count/main.nf"
                 config "./modules.config"
-                tag    "meryl/count"
                 process {
                     """
                     input[0] = Channel.from([
@@ -529,7 +489,6 @@ nextflow_process {
             run("MERYL_HISTOGRAM") {
                 script "../../../meryl/histogram/main.nf"
                 config "./modules.config"
-                tag    "meryl/histogram"
                 process {
                     """
                     input[0] = MERYL_COUNT_READS.out.meryl_db
@@ -541,7 +500,6 @@ nextflow_process {
             run("GENOMESCOPE2") {
                 script "../../../genomescope2/main.nf"
                 config "./modules.config"
-                tag    "genomescope2"
                 process {
                     """
                     input[0] = MERYL_HISTOGRAM.out.hist
@@ -549,9 +507,6 @@ nextflow_process {
                 }
             }
 
-
-            
-            
         }
 
         when {
@@ -565,7 +520,6 @@ nextflow_process {
                     file(params.modules_testdata_base_path + '/genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                 ])
                 .set{ input_zero_ch }
-
 
                 input_zero_ch.join( MERYL_COUNT_READS.out.meryl_db )
                              .join( MERYL_COUNT_ASM.out.meryl_db )

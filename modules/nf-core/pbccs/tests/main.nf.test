@@ -5,10 +5,6 @@ nextflow_process {
     config "./nextflow.config"
     process "PBCCS"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "pbccs"
-
     test("PacBio pbccs - Compute CSS test") {
 
         when {

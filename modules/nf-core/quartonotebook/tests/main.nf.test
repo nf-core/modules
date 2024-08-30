@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "QUARTONOTEBOOK"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "quartonotebook"
-
     test("test notebook - [qmd:r]") {
 
         config "./no-parametrization.config"

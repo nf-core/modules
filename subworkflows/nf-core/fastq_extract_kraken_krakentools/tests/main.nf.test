@@ -4,15 +4,6 @@ nextflow_workflow {
     script "../main.nf"
     workflow "FASTQ_EXTRACT_KRAKEN_KRAKENTOOLS"
 
-    tag "subworkflows"
-    tag "subworkflows_nfcore"
-    tag "subworkflows/fastq_extract_kraken_krakentools"
-    tag "untar"
-    tag "kraken2"
-    tag "kraken2/kraken2"
-    tag "krakentools"
-    tag "krakentools/extractkrakenreads"
-
     setup {
         run("UNTAR") {
             script "modules/nf-core/untar/main.nf"

@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "CHECKV_UPDATEDATABASE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "checkv"
-    tag "checkv/updatedatabase"
-    tag "untar"
-
     setup {
         run("UNTAR") {
             script "../../../untar/main.nf"

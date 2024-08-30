@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "MINIMAP2_ALIGN"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "minimap2"
-    tag "minimap2/align"
-
     test("sarscov2 - fastq, fasta, true, [], false, false") {
 
         when {

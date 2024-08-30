@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "VCFLIB_VCFFIXUP"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "vcflib"
-    tag "vcflib/vcffixup"
-
     test("sarscov2 - vcf") {
 
         when {
@@ -55,7 +50,5 @@ nextflow_process {
         }
 
     }
-
-
 
 }

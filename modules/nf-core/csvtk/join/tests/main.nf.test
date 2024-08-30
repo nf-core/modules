@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "CSVTK_JOIN"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "csvtk"
-    tag "csvtk/join"
-
     test("join - csv") {
 
         when {

@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "BAMSTATS_GENERALSTATS"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bamstats"
-    tag "bamstats/generalstats"
-
     test("sarscov2 - bam") {
 
         when {

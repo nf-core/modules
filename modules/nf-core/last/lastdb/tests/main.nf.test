@@ -5,11 +5,6 @@ nextflow_process {
     process "LAST_LASTDB"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "last"
-    tag "last/lastdb"
-
     test("sarscov2 - fasta") {
 
         when {

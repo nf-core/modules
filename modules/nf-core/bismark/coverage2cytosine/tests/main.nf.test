@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process BISMARK_COVERAGE2CYTOSINE"
     script "../main.nf"
     process "BISMARK_COVERAGE2CYTOSINE"
-    tag "bismark"
-    tag "bismark/coverage2cytosine"
-    tag "modules"
-    tag "modules_nfcore"
 
     test("Should run bismark/coverage2cytosine without failures") {
 

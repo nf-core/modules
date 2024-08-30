@@ -5,13 +5,6 @@ nextflow_process {
     script "../main.nf"
     process "CENTRIFUGE_KREPORT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "centrifuge"
-    tag "centrifuge/centrifuge"
-    tag "centrifuge/kreport"
-    tag "untar"
-
     setup {
         run("UNTAR") {
             script "../../../untar/main.nf"

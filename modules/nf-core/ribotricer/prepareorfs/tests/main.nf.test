@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "RIBOTRICER_PREPAREORFS"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "ribotricer"
-    tag "ribotricer/prepareorfs"
-    tag "gunzip"
-
     setup {
         run("GUNZIP") {
             script "modules/nf-core/gunzip/main.nf"
@@ -71,7 +65,4 @@ nextflow_process {
 
     }
 }
-
-
-
 

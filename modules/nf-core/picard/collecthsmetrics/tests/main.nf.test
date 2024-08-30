@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "PICARD_COLLECTHSMETRICS"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "picard"
-    tag "picard/collecthsmetrics"
-
     test("sarscov2 - bam") {
 
         when {

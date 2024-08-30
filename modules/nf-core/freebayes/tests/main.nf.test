@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "FREEBAYES"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "freebayes"
-
     test("sarscov2 - [ bam, bai ] - fasta - fai") {
 
         when {

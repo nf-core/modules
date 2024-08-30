@@ -5,13 +5,6 @@ nextflow_process {
     process "CONTROLFREEC_FREEC2CIRCOS"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "controlfreec"
-    tag "controlfreec/freec2circos"
-    tag "controlfreec/freec"
-    tag "untar"
-
     setup {
 
         run("UNTAR") {

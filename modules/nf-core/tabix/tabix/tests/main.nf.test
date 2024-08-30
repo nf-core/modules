@@ -4,11 +4,6 @@ nextflow_process {
     script "modules/nf-core/tabix/tabix/main.nf"
     process "TABIX_TABIX"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "tabix"
-    tag "tabix/tabix"
-
     test("sarscov2_bedgz_tbi") {
         config "./tabix_bed.config"
         when {

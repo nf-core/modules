@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "FASTAVALIDATOR"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "fastavalidator"
-
     test("sarscov2-fasta-valid") {
 
         when {

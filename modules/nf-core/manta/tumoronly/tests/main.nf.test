@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "MANTA_TUMORONLY"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "manta"
-    tag "manta/tumoronly"
-
     test("human - cram") {
 
         when {

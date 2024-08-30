@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "BBMAP_FILTERBYNAME"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bbmap"
-    tag "bbmap/filterbyname"
-
     test("paired end fastq.bz2") {
 
         when {

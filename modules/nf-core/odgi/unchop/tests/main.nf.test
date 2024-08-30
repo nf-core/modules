@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "ODGI_UNCHOP"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "odgi"
-    tag "odgi/unchop"
-
     test("homo_sapiens - pangenome - pangenome_smoothxg_gfa") {
 
         when {

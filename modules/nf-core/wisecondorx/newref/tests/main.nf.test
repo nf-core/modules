@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "WISECONDORX_NEWREF"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "wisecondorx"
-    tag "wisecondorx/newref"
-    tag "wisecondorx/convert"
-
     test("homo_sapiens - [npz]") {
 
         // Stub run because this process needs at least 30 samples to succesfully run

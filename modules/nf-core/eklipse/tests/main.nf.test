@@ -3,9 +3,6 @@ nextflow_process {
     name "Test Process EKLIPSE"
     script "../main.nf"
     process "EKLIPSE"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "eklipse"
 
     test("homo_sapiens [bam]") {
 

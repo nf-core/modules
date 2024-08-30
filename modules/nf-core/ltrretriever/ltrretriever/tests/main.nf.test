@@ -5,16 +5,6 @@ nextflow_process {
     process "LTRRETRIEVER_LTRRETRIEVER"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "ltrretriever"
-    tag "ltrretriever/ltrretriever"
-    tag "gunzip/main"
-    tag "gt/ltrharvest"
-    tag "gt/suffixerator"
-    tag "ltrfinder"
-    tag "cat/cat"
-
     test("actinidia_chinensis-genome_21_fasta_gz-success") {
 
         setup {

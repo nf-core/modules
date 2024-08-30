@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process PICARD_EXTRACTFINGERPRINT"
     script "../main.nf"
     process "PICARD_EXTRACTFINGERPRINT"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "picard"
-    tag "picard/extractfingerprint"
 
     test("extract_fingerprint") {
         when {

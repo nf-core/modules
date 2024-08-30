@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "BCFTOOLS_PLUGINSCATTER"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bcftools"
-    tag "bcftools/pluginscatter"
-
     test("homo_sapiens - sites per chunk") {
 
         config "./nextflow.config"

@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "LTRHARVEST"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "ltrharvest"
-
     test("homo_sapiens-genome_21_fasta") {
 
         when {

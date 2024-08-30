@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "CNVKIT_ANTITARGET"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "cnvkit"
-    tag "cnvkit/antitarget"
-
     test("human - bed") {
 
         when {

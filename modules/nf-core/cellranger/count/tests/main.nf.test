@@ -5,13 +5,6 @@ nextflow_process {
     config "./nextflow.config"
     process "CELLRANGER_COUNT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "cellranger"
-    tag "cellranger/count"
-    tag "cellranger/mkref"
-    tag "cellranger/mkgtf"
-
     setup {
         config "./nextflow.config"
 

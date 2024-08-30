@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process ABRICATE_RUN"
     script "../main.nf"
     process "ABRICATE_RUN"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "abricate"
-    tag "abricate/run"
 
     test("Should run without failures") {
 

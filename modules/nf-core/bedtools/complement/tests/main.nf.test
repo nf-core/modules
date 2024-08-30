@@ -3,11 +3,6 @@ nextflow_process {
     script "../main.nf"
     process "BEDTOOLS_COMPLEMENT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bedtools"
-    tag "bedtools/complement"
-
     test("sarscov2") {
         when {
             process {

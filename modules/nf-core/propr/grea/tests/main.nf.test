@@ -4,16 +4,8 @@ nextflow_process {
     script "../main.nf"
     process "PROPR_GREA"
     
-    tag "modules"
-    tag "modules_nfcore"
-    tag "propr"
-    tag "propr/grea"
-    tag "mygene"
-    tag "propr/propr"
- 
     test("grea chained to propr using default options") {  
 
-        tag "default"
         config "./grea_test.config"
 
         setup {

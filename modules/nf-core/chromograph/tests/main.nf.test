@@ -3,9 +3,6 @@ nextflow_process {
     name "Test Process CHROMOGRAPH"
     script "modules/nf-core/chromograph/main.nf"
     process "CHROMOGRAPH"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "chromograph"
 
     test("test_chromograph_sites") {
 

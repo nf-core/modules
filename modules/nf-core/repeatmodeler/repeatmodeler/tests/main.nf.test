@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "REPEATMODELER_REPEATMODELER"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "repeatmodeler"
-    tag "repeatmodeler/repeatmodeler"
-    tag "repeatmodeler/builddatabase"
-
     test("homo_sapiens-genome_fasta") {
 
         setup {

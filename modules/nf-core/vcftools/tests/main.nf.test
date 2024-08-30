@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "VCFTOOLS"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "vcftools"
-
     test("sarscov2 - vcf") {
 
         config "./base.config"

@@ -4,11 +4,6 @@ nextflow_process {
     script "modules/nf-core/tabix/bgzip/main.nf"
     process "TABIX_BGZIP"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "tabix"
-    tag "tabix/bgzip"
-
     test("sarscov2_vcf_bgzip_compress") {
         when {
             process {

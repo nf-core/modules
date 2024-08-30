@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "LAST_DOTPLOT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "last"
-    tag "last/dotplot"
-
     test("sarscov2 - contigs - genome - png") {
 
         when {

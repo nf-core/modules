@@ -4,11 +4,6 @@ nextflow_process {
     script "modules/nf-core/seqtk/trim/main.nf"
     process "SEQTK_TRIM"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "seqtk"
-    tag "seqtk/trim"
-
     test("Single-end") {
 
         when {

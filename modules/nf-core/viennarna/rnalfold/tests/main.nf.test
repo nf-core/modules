@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "VIENNARNA_RNALFOLD"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "viennarna"
-    tag "viennarna/rnalfold"
-
     test("rnalfold - fasta") {
         when {
             process {

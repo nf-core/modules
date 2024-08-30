@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "POPSCLE_DSCPILEUP"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "popscle"
-    tag "popscle/dscpileup"
-
     test("demultiplexing - bam") {
 
         when {

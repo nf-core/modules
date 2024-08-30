@@ -5,10 +5,6 @@ nextflow_process {
     process "WFMASH"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "wfmash"
-
     test("homo_sapiens - pangenome - pangenome_fa_bgzip") {
 
         when {

@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "REPEATMODELER_BUILDDATABASE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "repeatmodeler"
-    tag "repeatmodeler/builddatabase"
-
     test("sarscov2-genome_fasta") {
 
         when {

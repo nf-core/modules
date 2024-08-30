@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "GATK4_GENOMICSDBIMPORT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "untar"
-    tag "gatk4"
-    tag "gatk4/genomicsdbimport"
-
     test("test_gatk4_genomicsdbimport_create_genomicsdb") {
 
         when {

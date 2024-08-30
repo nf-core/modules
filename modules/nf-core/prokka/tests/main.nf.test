@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "PROKKA"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "prokka"
-
     test("Prokka - sarscov2 - genome.fasta") {
 
         when {

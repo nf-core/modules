@@ -5,11 +5,6 @@ nextflow_process {
     process "TRYCYCLER_CLUSTER"
     config './nextflow.config'
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "trycycler"
-    tag "trycycler/cluster"
-
     test("custom test data") {
 
         when {

@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "CLAME"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "clame"
-    tag "gunzip"
-
     setup {
             run("GUNZIP") {
                 script "../../gunzip/main.nf"

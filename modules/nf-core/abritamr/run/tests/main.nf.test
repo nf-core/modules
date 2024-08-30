@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "ABRITAMR_RUN"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "abritamr"
-    tag "abritamr/run"
-
     test("haemophilus_influenzae genome [fna_gz]") {
 
         when {

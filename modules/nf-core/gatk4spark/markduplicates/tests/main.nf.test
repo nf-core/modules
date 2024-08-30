@@ -5,11 +5,6 @@ nextflow_process {
     config "./nextflow.config"
     process "GATK4SPARK_MARKDUPLICATES"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "gatk4spark"
-    tag "gatk4spark/markduplicates"
-
     test("sarscov2 - bam") {
         config "./bam.config"
 
@@ -153,6 +148,5 @@ nextflow_process {
         }
 
     }
-
 
 }

@@ -5,15 +5,6 @@ nextflow_workflow {
     workflow "MMSEQS_CONTIG_TAXONOMY"
     config './nextflow.config'
 
-    tag "subworkflows"
-    tag "subworkflows_nfcore"
-    tag "subworkflows/mmseqs_contig_taxonomy"
-    tag "gunzip"
-    tag "mmseqs/createdb"
-    tag "mmseqs/databases"
-    tag "mmseqs/taxonomy"
-    tag "mmseqs/createtsv"
-
     test("mmseqs_contig_taxonomy - bacteroides_fragilis - contig") {
 
         setup {

@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "antismash"
-    tag "antismash/antismashlitedownloaddatabases"
-    tag "untar"
-
     setup {
 
         run("UNTAR", alias: "UNTAR_CSS") {

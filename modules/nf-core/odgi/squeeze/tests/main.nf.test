@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "ODGI_SQUEEZE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "odgi"
-    tag "odgi/squeeze"
-
     test("homo_sapiens - pangenome - odgi - pangenome_og") {
 
         when {

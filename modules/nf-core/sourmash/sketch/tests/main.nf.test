@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process SOURMASH_SKETCH"
     script "../main.nf"
     process "SOURMASH_SKETCH"
-    tag "sourmash"
-    tag "sourmash/sketch"
-    tag "modules"
-    tag "modules_nfcore"
 
     test("Should run without failures") {
 

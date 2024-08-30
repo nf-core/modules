@@ -5,11 +5,6 @@ nextflow_process {
 
     process "GLIMPSE2_PHASE"
 
-    tag "modules_nfcore"
-    tag "modules"
-    tag "glimpse2"
-    tag "glimpse2/phase"
-
     test("Should run with vcf") {
 
         when {

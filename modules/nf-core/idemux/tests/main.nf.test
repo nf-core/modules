@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "IDEMUX"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "idemux"
-
-
     test("idemux - fastq") {
         when {
             process {

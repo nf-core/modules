@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "GTFSORT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "gtfsort"
-
     test("hsapiens - gtf") {
 
         when {

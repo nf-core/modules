@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process BCFTOOLS_REHEADER"
     script "../main.nf"
     process "BCFTOOLS_REHEADER"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bcftools"
-    tag "bcftools/reheader"
 
     test("sarscov2 - [vcf, [], []], fai - vcf output") {
 

@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "OPENMS_IDFILTER"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "openms"
-    tag "openms/idfilter"
-
     test("proteomics - filter - idxml") {
 
         when {

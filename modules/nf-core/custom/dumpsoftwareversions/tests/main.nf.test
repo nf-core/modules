@@ -3,11 +3,6 @@ nextflow_process {
     name "Test Process CUSTOM_DUMPSOFTWAREVERSIONS"
     script "../main.nf"
     process "CUSTOM_DUMPSOFTWAREVERSIONS"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "custom"
-    tag "dumpsoftwareversions"
-    tag "custom/dumpsoftwareversions"
 
     test("Should run without failures") {
         when {

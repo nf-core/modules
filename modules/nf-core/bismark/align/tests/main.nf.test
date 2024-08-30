@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process BISMARK_ALIGN"
     script "../main.nf"
     process "BISMARK_ALIGN"
-    tag "bismark"
-    tag "bismark/align"
-    tag "modules"
-    tag "modules_nfcore"
 
     test("Should run bismark/align (bowtie2 single end) without failures") {
         config './nextflow_bowtie2.config'

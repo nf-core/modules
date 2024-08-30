@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "TRUVARI_SEGMENT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "truvari"
-    tag "truvari/segment"
-
     test("homo_sapiens - illumina") {
         when {
             process {

@@ -5,11 +5,6 @@ nextflow_process {
     script "../main.nf"
     process "KALIGN_ALIGN"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "kalign"
-    tag "kalign/align"
-
     test("sarscov2 - fasta - uncompressed") {
 
         when {

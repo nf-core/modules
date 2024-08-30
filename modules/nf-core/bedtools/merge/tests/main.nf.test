@@ -5,11 +5,6 @@ nextflow_process {
     config "./nextflow.config"
     process "BEDTOOLS_MERGE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bedtools"
-    tag "bedtools/merge"
-
     test("test_bedtools_merge") {
 
         when {

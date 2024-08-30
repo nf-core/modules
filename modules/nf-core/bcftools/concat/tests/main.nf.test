@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "BCFTOOLS_CONCAT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bcftools"
-    tag "bcftools/concat"
-
-
     test("sarscov2 - [[vcf1, vcf2], [tbi1, tbi2]]") {
 
         config "./nextflow.config"
@@ -151,7 +145,6 @@ nextflow_process {
         }
 
     }
-
 
     test("sarscov2 - [[vcf1, vcf2], []]") {
 
@@ -311,6 +304,5 @@ nextflow_process {
         }
 
     }
-
 
 }

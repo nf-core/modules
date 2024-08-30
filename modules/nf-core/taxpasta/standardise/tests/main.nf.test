@@ -3,13 +3,8 @@ nextflow_process {
     name "Test Process TAXPASTA_STANDARDISE"
     script "../main.nf"
     process "TAXPASTA_STANDARDISE"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "taxpasta"
-    tag "taxpasta/standardise"
 
     test("sarscov2 - metagenome - kraken report") {
-
 
         when {
             process {

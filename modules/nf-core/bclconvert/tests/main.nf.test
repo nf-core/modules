@@ -4,9 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "BCLCONVERT"
     config "./nextflow.config"
-    tag "bclconvert"
-    tag "modules"
-    tag "modules_nfcore"
 
     test("homo sapiens illumina [bcl]") {
         when {

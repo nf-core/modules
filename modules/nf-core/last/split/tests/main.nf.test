@@ -5,11 +5,6 @@ nextflow_process {
     script "../main.nf"
     process "LAST_SPLIT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "last"
-    tag "last/split"
-
     test("sarscov2 - contigs_genome") {
 
         when {

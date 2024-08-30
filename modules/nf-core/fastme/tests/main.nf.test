@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "FASTME"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "fastme"
-    tag "tcoffee/seqreformat"
-    tag "famsa/guidetree"
-
     test("setoxin - phylip - basic") {
 
         config "./main.config"

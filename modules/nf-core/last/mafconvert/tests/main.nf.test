@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "LAST_MAFCONVERT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "last"
-    tag "last/mafconvert"
-
     test("sarscov2 - bam") {
 
         when {

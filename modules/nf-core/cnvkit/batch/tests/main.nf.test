@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "CNVKIT_BATCH"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "cnvkit"
-    tag "cnvkit/batch"
-
     test("cnvkit batch hybrid mode - bam") {
 
         config "./batch_hybrid.config"
@@ -188,7 +183,6 @@ nextflow_process {
 
     }
 
-
     test("cnvkit batch germline hybrid mode - bam") {
 
         when {
@@ -216,7 +210,6 @@ nextflow_process {
         }
 
     }
-
 
     test("cnvkit batch pon mode - bam") {
 
@@ -249,7 +242,6 @@ nextflow_process {
         }
 
     }
-
 
     test("cnvkit batch - bam - stub") {
 

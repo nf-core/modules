@@ -3,9 +3,6 @@ nextflow_process {
     name "Test Process EXPANSIONHUNTER"
     script "modules/nf-core/expansionhunter/main.nf"
     process "EXPANSIONHUNTER"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "expansionhunter"
 
     test("homo_sapiens - [bam,bai], fasta, fai, cat") {
 

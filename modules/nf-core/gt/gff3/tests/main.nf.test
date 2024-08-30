@@ -5,11 +5,6 @@ nextflow_process {
     process "GT_GFF3"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "gt"
-    tag "gt/gff3"
-
     test("sarscov2-gff3-valid") {
         when {
             process {

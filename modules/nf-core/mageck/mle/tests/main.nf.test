@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "MAGECK_MLE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "mageck"
-    tag "mageck/mle"
-
     test("mageck_mle - csv") {
 
         when {

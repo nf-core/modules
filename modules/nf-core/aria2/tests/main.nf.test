@@ -2,9 +2,6 @@ nextflow_process {
     name "Test Process ARIA2"
     script "../main.nf"
     process "ARIA2"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "aria2"
 
     test("sarscov2 Illumina single end [bam]") {
         when {

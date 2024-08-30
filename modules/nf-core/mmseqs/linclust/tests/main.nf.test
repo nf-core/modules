@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "MMSEQS_LINCLUST"
     config "./nextflow.config"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "mmseqs"
-    tag "mmseqs/linclust"
 
     test("Should cluster an mmseqs database") {
 

@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "GT_GFF3VALIDATOR"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "gt"
-    tag "gt/gff3validator"
-    tag "gt/gff3"
-
     test("sarscov2-gff3-valid") {
 
         config './nextflow.config'

@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "MUDSKIPPER_INDEX"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "mudskipper"
-    tag "mudskipper/index"
-
     test("homo_sapiens gtf") {
 
         when {

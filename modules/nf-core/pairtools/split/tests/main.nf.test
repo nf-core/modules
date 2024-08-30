@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "PAIRTOOLS_SPLIT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "pairtools"
-    tag "pairtools/split"
-
     test("mock_pairsam") {
 
         when {
@@ -30,7 +25,6 @@ nextflow_process {
         }
 
     }
-
 
     test("mock_pairsam - stub") {
 

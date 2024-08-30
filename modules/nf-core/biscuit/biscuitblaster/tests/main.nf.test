@@ -3,11 +3,6 @@ nextflow_process {
     name "Test Process BISCUIT_BLASTER"
     script "../main.nf"
     process "BISCUIT_BLASTER"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "biscuit"
-    tag "biscuit/biscuitblaster"
-    tag "biscuit/index"
 
     setup {
         run("BISCUIT_INDEX") {

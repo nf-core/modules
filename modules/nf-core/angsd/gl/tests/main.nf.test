@@ -5,11 +5,6 @@ nextflow_process {
     script "../main.nf"
     process "ANGSD_GL"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "angsd"
-    tag "angsd/gl"
-
     test("angsd - gl_samtools - bam") {
 
         when {

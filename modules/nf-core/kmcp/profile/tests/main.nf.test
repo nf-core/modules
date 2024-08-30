@@ -5,15 +5,6 @@ nextflow_process {
     process "KMCP_PROFILE"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "kmcp"
-    tag "kmcp/profile"
-    tag "untar"
-    tag "kmcp/compute"
-    tag "kmcp/index"
-    tag "kmcp/search"
-
     setup {
         run("UNTAR") {
             script "../../../untar/main.nf"

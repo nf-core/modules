@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "OPENMS_DECOYDATABASE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "openms"
-    tag "openms/decoydatabase"
-
     test("test_openms_decoydatabase") {
 
         when {

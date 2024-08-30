@@ -5,11 +5,6 @@ nextflow_process {
     process "OPENMS_IDSCORESWITCHER"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "openms"
-    tag "openms/idscoreswitcher"
-
     test("proteomics - switch_score - idxml") {
 
         when {

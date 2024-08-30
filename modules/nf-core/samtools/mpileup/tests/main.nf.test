@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "SAMTOOLS_MPILEUP"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "samtools"
-    tag "samtools/mpileup"
-
     test("bam_bed") {
 
         when {

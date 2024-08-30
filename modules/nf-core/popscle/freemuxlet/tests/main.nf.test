@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "POPSCLE_FREEMUXLET"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "popscle"
-    tag "popscle/dscpileup"
-    tag "popscle/freemuxlet"
-
     test("demultiplexing") {
         setup { 
             run("POPSCLE_DSCPILEUP") {
@@ -36,7 +30,6 @@ nextflow_process {
                 """
             }
         }
-
 
         then {
             assertAll(
@@ -77,7 +70,6 @@ nextflow_process {
                 """
             }
         }
-
 
         then {
             assertAll(

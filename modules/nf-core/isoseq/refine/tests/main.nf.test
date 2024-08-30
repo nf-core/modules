@@ -5,11 +5,6 @@ nextflow_process {
     config "./nextflow.config"
     process "ISOSEQ_REFINE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "isoseq"
-    tag "isoseq/refine"
-
     test("PacBio isoseq refine - Chimeras Removing test") {
 
         when {

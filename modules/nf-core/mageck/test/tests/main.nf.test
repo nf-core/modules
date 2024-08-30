@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "MAGECK_TEST"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "mageck"
-    tag "mageck/test"
-
     test("mageck-test - csv") {
 
         config "./nextflow.config"

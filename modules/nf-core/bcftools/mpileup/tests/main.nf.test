@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "BCFTOOLS_MPILEUP"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bcftools"
-    tag "bcftools/mpileup"
-
     config "./nextflow.config"
 
     test("sarscov2 - [bam, []], fasta, false") {

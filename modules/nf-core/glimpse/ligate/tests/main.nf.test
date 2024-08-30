@@ -4,13 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "GLIMPSE_LIGATE"
 
-    tag "modules_nfcore"
-    tag "modules"
-    tag "glimpse"
-    tag "glimpse/ligate"
-    tag "glimpse/phase"
-    tag "bcftools/index"
-
     test("test_glimpse_ligate") {
         setup {
             run("GLIMPSE_PHASE") {

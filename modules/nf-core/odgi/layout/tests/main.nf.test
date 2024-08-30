@@ -5,11 +5,6 @@ nextflow_process {
     process "ODGI_LAYOUT"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "odgi"
-    tag "odgi/layout"
-
     test("homo_sapiens - pangenome - pangenome_smoothxg_gfa") {
 
         when {

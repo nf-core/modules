@@ -5,12 +5,6 @@ nextflow_process {
     process "LIFTOFF"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "nf-core/gunzip"
-    tag "liftoff"
-    tag "gunzip"
-
     test("homo_sapiens-genome_21_fasta-genome_1_fasta-genome_1_gtf") {
 
         setup {

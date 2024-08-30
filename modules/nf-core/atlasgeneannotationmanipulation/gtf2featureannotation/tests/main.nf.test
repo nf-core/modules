@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "atlasgeneannotationmanipulation"
-    tag "atlasgeneannotationmanipulation/gtf2featureannotation"
-
     test("human - gtf") {
         when {
             process {

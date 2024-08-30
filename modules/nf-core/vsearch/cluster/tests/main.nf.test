@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "VSEARCH_CLUSTER"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "vsearch"
-    tag "vsearch/cluster"
-
     test("sarscov2 - fastq - cluster fast") {
 
         config './nextflow_fast.config'

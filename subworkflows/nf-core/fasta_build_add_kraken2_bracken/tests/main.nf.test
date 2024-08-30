@@ -4,15 +4,6 @@ nextflow_workflow {
     script "../main.nf"
     workflow "FASTA_BUILD_ADD_KRAKEN2_BRACKEN"
 
-    tag "subworkflows"
-    tag "subworkflows_nfcore"
-    tag "subworkflows/fasta_build_add_kraken2_bracken"
-    tag "gunzip"
-    tag "kraken2"
-    tag "kraken2/add"
-    tag "kraken2/build"
-    tag "bracken/build"
-
     test("metagenome - nocleanup - nobracken - fasta") {
 
         setup {

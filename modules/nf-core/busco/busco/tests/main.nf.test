@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "BUSCO_BUSCO"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "busco"
-    tag "busco/busco"
-
     test("test_busco_genome_single_fasta") {
 
         config './nextflow.config'

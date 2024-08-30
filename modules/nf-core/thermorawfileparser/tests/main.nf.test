@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "THERMORAWFILEPARSER"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "thermorawfileparser"
-
     test("proteomics - parse - raw") {
 
         when {

@@ -4,9 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "FILTLONG"
     config "./nextflow.config"
-    tag "filtlong"
-    tag "modules"
-    tag "modules_nfcore"
 
     test("sarscov2 nanopore [fastq]") {
 
@@ -36,7 +33,6 @@ nextflow_process {
 
     }
 
-
     test("sarscov2 nanopore [fastq] + Illumina single-end [fastq]") {
 
         when {
@@ -64,7 +60,6 @@ nextflow_process {
         }
 
     }
-
 
     test("sarscov2 nanopore [fastq] + Illumina paired-end [fastq]") {
 
@@ -94,6 +89,5 @@ nextflow_process {
         }
 
     }
-
 
 }

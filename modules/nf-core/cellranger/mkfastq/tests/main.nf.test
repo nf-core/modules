@@ -6,12 +6,6 @@ nextflow_process {
     config "./nextflow.config"
     process "CELLRANGER_MKFASTQ"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "cellranger"
-    tag "cellranger/mkfastq"
-    tag "untar"
-
     setup {
         run("UNTAR") {
             script "modules/nf-core/untar/main.nf"

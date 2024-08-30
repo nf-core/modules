@@ -5,13 +5,6 @@ nextflow_process {
     config "./nextflow.config"
     process "MMSEQS_TAXONOMY"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "mmseqs"
-    tag "mmseqs/taxonomy"
-    tag "mmseqs/createdb"
-    tag "mmseqs/databases"
-
     setup {
         run("MMSEQS_CREATEDB") {
             script "modules/nf-core/mmseqs/createdb/main.nf"

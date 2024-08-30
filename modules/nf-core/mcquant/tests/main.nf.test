@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "MCQUANT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "mcquant"
-
     test("imaging - image,mask,marker") {
 
         when {

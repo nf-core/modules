@@ -4,13 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "KRAKENTOOLS_EXTRACTKRAKENREADS"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "kraken2/kraken2"
-    tag "krakentools"
-    tag "krakentools/extractkrakenreads"
-    tag "untar"
-
     test ("sarscov2 illumina single end [fastq]") {
         setup {
             run("UNTAR") {

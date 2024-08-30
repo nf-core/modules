@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "GT_STAT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "gt"
-    tag "gt/stat"
-
     test("sarscov2-gff3") {
 
         when {

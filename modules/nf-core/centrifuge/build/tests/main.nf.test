@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "CENTRIFUGE_BUILD"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "centrifuge"
-    tag "centrifuge/build"
-
     test("sarscov2 - fasta") {
 
         when {

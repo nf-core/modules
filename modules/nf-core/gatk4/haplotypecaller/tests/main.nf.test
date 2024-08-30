@@ -5,11 +5,6 @@ nextflow_process {
     script "../main.nf"
     process "GATK4_HAPLOTYPECALLER"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "gatk4"
-    tag "gatk4/haplotypecaller"
-
     test("homo_sapiens - [bam, bai] - fasta - fai - dict") {
 
         when {

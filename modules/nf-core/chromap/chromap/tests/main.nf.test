@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "CHROMAP_CHROMAP"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "chromap"
-    tag "chromap/chromap"
-    tag "chromap/index"
-
     test("test_chromap_chromap_single_end") {
 
         setup {
@@ -94,7 +88,6 @@ nextflow_process {
             )
         }
     }
-
 
     test("test_chromap_chromap_paired_bam") {
 

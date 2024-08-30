@@ -4,15 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "MMSEQS_CREATETSV"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "mmseqs"
-    tag "mmseqs/taxonomy"
-    tag "mmseqs/createdb"
-    tag "mmseqs/databases"
-    tag "untar"
-    tag "mmseqs/createtsv"
-
     test("mmseqs/createtsv - bacteroides_fragilis - taxonomy") {
 
         config  "./taxonomy.nextflow.config"

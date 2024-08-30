@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "GANON_BUILDCUSTOM"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "ganon"
-    tag "ganon/buildcustom"
-
     test("sarscov2 - genome fasta") {
 
         when {

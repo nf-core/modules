@@ -5,11 +5,6 @@ nextflow_process {
     script "../main.nf"
     process "PICARD_ADDORREPLACEREADGROUPS"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "picard"
-    tag "picard/addorreplacereadgroups"
-
     test("sarscov2 - bam") {
         config "./bam.config"
 

@@ -5,11 +5,6 @@ nextflow_process {
     script "../main.nf"
     process "LEARNMSA_ALIGN"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "learnmsa"
-    tag "learnmsa/align"
-
     test("sarscov2 - fasta - uncompressed") {
 
         when {

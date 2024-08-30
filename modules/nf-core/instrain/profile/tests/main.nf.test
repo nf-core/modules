@@ -5,11 +5,6 @@ nextflow_process {
     process "INSTRAIN_PROFILE"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "instrain"
-    tag "instrain/profile"
-
     test("sarscov2 - illumina - test_paired_end - bam") {
 
         when {

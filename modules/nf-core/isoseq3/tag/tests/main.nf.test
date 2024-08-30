@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "ISOSEQ3_TAG"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "isoseq3"
-    tag "isoseq3/tag"
-
     test("isoseq tag - bam") {
         when {
             process {

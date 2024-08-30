@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "HAPPY_PREPY"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "happy"
-    tag "happy/prepy"
-
     test("homo_sapiens - illumina - vcf - bed") {
 
         when {

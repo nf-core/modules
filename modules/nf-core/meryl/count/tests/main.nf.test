@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "MERYL_COUNT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "meryl"
-    tag "meryl/count"
-
     test("bacteroides_fragilis - fastq") {
 
         when {

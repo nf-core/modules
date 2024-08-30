@@ -3,9 +3,6 @@ nextflow_process {
     name "Test Process RASUSA"
     script "../main.nf"
     process "RASUSA"
-    tag "rasusa"
-    tag "modules"
-    tag "modules_nfcore"
 
     test("Should run without failures") {
 

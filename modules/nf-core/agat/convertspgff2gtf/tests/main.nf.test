@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "AGAT_CONVERTSPGFF2GTF"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "agat"
-    tag "agat/convertspgff2gtf"
-
     test("sarscov2 - genome [gff3]") {
 
         when {

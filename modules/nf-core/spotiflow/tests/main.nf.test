@@ -5,10 +5,6 @@ nextflow_process {
     config "./nextflow.config"
     process "SPOTIFLOW"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "spotiflow"
-
     test("immunofluorescence - tif") {
         when {
             process {

@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "TIDDIT_SV"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "tiddit"
-    tag "tiddit/sv"
-    tag "bwa/index"
-
     test("sarscov2 - bam - bwa") {
 
         setup {

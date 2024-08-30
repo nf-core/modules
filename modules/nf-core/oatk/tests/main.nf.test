@@ -5,12 +5,7 @@ nextflow_process {
     process "OATK"
     config "./nextflow.config"
 
-    tag "oatk"
-    tag "modules"
-    tag "modules_nfcore"
-
     test("test_oatk_mito") {
-        tag "test_oatk_mito"
 
         when {
 
@@ -48,7 +43,6 @@ nextflow_process {
     }
     
     test("test_oatk_pltd") {
-        tag "test_oatk_pltd"
 
         when {
 

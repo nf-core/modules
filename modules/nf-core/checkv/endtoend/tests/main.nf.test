@@ -4,13 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "CHECKV_ENDTOEND"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "checkv"
-    tag "checkv/endtoend"
-    tag "untar"
-    tag "gunzip"
-
     setup {
         run("UNTAR") {
             script "../../../untar/main.nf"

@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process SVDB_MERGE"
     script "modules/nf-core/svdb/merge/main.nf"
     process "SVDB_MERGE"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "svdb"
-    tag "svdb/merge"
 
     test("test_svdb_merge") {
 

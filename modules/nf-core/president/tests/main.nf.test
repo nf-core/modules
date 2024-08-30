@@ -6,10 +6,6 @@ nextflow_process {
     script "../main.nf"
     process "PRESIDENT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "president"
-
     test("president - nocompress") {
 
         when {

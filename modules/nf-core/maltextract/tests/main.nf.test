@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "MALTEXTRACT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "maltextract"
-    tag "unzip"
-
     test("test_maltextract") {
         setup{
             run("UNZIP") {

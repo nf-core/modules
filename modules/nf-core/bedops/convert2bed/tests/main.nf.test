@@ -5,11 +5,6 @@ nextflow_process {
     script "../main.nf"
     process "BEDOPS_CONVERT2BED"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bedops"
-    tag "bedops/convert2bed"
-
     test("sarscov2 - gtf") {
 
         when {

@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "BWAMEME_INDEX"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bwameme"
-    tag "bwameme/index"
-
     config "./nextflow.config"
 
     test("BWAMEME index") {

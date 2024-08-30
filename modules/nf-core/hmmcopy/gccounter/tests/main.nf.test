@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "HMMCOPY_GCCOUNTER"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "hmmcopy"
-    tag "hmmcopy/gccounter"
-
     test("sarscov2") {
 
         when {

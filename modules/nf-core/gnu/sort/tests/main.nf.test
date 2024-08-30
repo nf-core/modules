@@ -4,11 +4,6 @@ nextflow_process {
     script "modules/nf-core/gnu/sort/main.nf"
     process "GNU_SORT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "gnu"
-    tag "gnu/sort"
-
     test("unsorted_genome_sort") {
         config "./sort_simple_bed.config"
 

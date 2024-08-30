@@ -3,12 +3,6 @@ nextflow_process {
     name "Test Process TCOFFEE_TCS"
     script "../main.nf"
     process "TCOFFEE_TCS"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "tcoffee"
-    tag "tcoffee/tcs"
-    tag "pigz/compress"
-    tag "tcoffee/align"
 
     test("tcs - msa") {
 

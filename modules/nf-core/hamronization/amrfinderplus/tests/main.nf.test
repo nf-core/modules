@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "HAMRONIZATION_AMRFINDERPLUS"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "hamronization"
-    tag "hamronization/amrfinderplus"
-
     test("hamronization/amrfinderplus - delete_me/amrfinderplus - tsv") {
 
         when {

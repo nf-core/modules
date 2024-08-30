@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "SOURMASH_INDEX"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "sourmash"
-    tag "sourmash/index"
-    tag "sourmash/sketch"
-
     setup {
         run("SOURMASH_SKETCH") {
             script "../../sketch/main.nf"

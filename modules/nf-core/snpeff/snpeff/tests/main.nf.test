@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "SNPEFF_SNPEFF"
     config "./nextflow.config"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "snpeff"
-    tag "snpeff/download"
-    tag "snpeff/snpeff"
 
     test("test_SNPEFF_SNPEFF") {
 

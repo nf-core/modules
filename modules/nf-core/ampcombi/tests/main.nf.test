@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process AMPCOMBI"
     script "../main.nf"
     process "AMPCOMBI"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "antimicrobial peptides"
-    tag "ampcombi"
 
     test("ampcombi - metagenome") {
         when {

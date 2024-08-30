@@ -4,13 +4,7 @@ nextflow_process {
     script "../main.nf"
     process "BBMAP_BBMERGE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bbmap"
-    tag "bbmap/bbmerge"
-
     test("sarscov2_illumina_paired - fastq_gz") {
-
 
         when {
             process {
@@ -36,7 +30,6 @@ nextflow_process {
     }
 
     test("sarscov2_illumina_interleaved - fastq_gz") {
-
 
         when {
             process {

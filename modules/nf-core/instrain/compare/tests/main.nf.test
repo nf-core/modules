@@ -5,12 +5,6 @@ nextflow_process {
     process "INSTRAIN_COMPARE"
     config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "instrain"
-    tag "instrain/compare"
-    tag "instrain/profile"
-
     test("homo_sapiens - illumina - bam") {
         setup {
             run("INSTRAIN_PROFILE") {

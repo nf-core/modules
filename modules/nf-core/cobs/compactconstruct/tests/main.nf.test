@@ -3,11 +3,6 @@ nextflow_process {
     script "../main.nf"
     process "COBS_COMPACTCONSTRUCT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "cobs"
-    tag "cobs/compactconstruct"
-
     test("sarscov2 - genome - fasta") {
         when {
             process {

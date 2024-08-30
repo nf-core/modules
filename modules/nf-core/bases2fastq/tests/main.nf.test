@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "BASES2FASTQ"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bases2fastq"
-    tag "untar"
-
     setup {
         run("UNTAR") {
             script "modules/nf-core/untar/main.nf"

@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "MERQURY_HAPMERS"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "merqury"
-    tag "merqury/hapmers"
-    tag "meryl/count"
-
     setup {
         run('MERYL_COUNT') {
             script "../../../meryl/count"

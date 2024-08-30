@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process ART_ILLUMINA"
     script "../main.nf"
     process "ART_ILLUMINA"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "art"
-    tag "art/illumina"
 
     test("single-end") {
 

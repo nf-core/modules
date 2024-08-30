@@ -4,13 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "CONTROLFREEC_ASSESSSIGNIFICANCE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "controlfreec"
-    tag "controlfreec/assesssignificance"
-    tag "controlfreec/freec"
-    tag "untar"
-
     setup {
 
         run("UNTAR") {

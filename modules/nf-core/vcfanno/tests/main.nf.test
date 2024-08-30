@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "VCFANNO"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "vcfanno"
-
     test("sarscov2 - [vcf(gz), tbi, vcf], [], toml, [vcf, tbi]") {
 
         when {

@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "HTSNIMTOOLS_VCFCHECK"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "htsnimtools"
-    tag "htsnimtools/vcfcheck"
-
     test("sarscov2 - vcf, tbi - background_vcf,background_tbi") {
 
         when {

@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "KAIJU_KAIJU"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "kaiju"
-    tag "kaiju/kaiju"
-    tag "untar"
-
     test("sarscov2 - fastq - single-end") {
 
         setup {

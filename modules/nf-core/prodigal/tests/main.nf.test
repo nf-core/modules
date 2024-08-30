@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "PRODIGAL"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "prodigal"
-
     test("prodigal - sarscov2 - gff") {
         when {
             process {

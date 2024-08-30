@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "MERYL_UNIONSUM"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "meryl"
-    tag "meryl/unionsum"
-    tag "meryl/count"
-
     test("sarscov2 - fastq - single_end") {
 
         setup {

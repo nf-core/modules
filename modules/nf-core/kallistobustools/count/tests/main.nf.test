@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "KALLISTOBUSTOOLS_COUNT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "kallistobustools"
-    tag "kallistobustools/count"
-    tag "kallistobustools/ref"
-
     setup {
         run("KALLISTOBUSTOOLS_REF") {
             script "../../ref/main.nf"

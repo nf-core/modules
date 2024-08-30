@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "KRAKEN2_BUILD"
     config "./nextflow.config"
-    tag "kraken2"
-    tag "kraken2/build"
-    tag "kraken2/add"
-    tag "gunzip"
-    tag "modules"
-    tag "modules_nfcore"
 
     setup {
 

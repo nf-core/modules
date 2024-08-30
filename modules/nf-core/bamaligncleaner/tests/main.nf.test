@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "BAMALIGNCLEANER"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "bamaligncleaner"
-
     test("sarscov2 - bam") {
 
         when {

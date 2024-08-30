@@ -4,14 +4,6 @@ nextflow_workflow {
     script "../main.nf"
     workflow "FASTQ_ALIGN_STAR"
 
-    tag "subworkflows"
-    tag "subworkflows_nfcore"
-    tag "subworkflows/fastq_align_star"
-    tag "star/align"
-    tag "star/genomegenerate"
-    tag "rsem/preparereference"
-    tag "subworkflows/bam_sort_stats_samtools"
-
     setup {
         run("STAR_GENOMEGENERATE") {
             script "../../../../modules/nf-core/star/genomegenerate/main.nf"

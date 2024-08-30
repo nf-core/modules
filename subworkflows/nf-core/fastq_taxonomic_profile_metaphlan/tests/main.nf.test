@@ -5,14 +5,6 @@ nextflow_workflow {
     workflow "FASTQ_TAXONOMIC_PROFILE_METAPHLAN"
     config "./nextflow.config"
 
-    tag "subworkflows"
-    tag "subworkflows_nfcore"
-    tag "subworkflows/fastq_taxonomic_profile_metaphlan"
-    tag "metaphlan/makedb"
-    tag "metaphlan/metaphlan"
-    tag "metaphlan/mergemetaphlantables"
-
-
     test("sarscov2 - fastq - paired_end") {
 
         when {

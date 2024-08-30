@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "ALLELECOUNTER"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "allelecounter"
-
     test("homo_sapiens illumina paired-end sorted [cram]") {
 
         when {

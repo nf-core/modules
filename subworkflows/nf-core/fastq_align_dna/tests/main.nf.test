@@ -4,25 +4,6 @@ nextflow_workflow {
     script "../main.nf"
     workflow "FASTQ_ALIGN_DNA"
 
-    tag "subworkflows"
-    tag "subworkflows_nfcore"
-    tag "subworkflows/fastq_align_dna"
-    tag "bwa"
-    tag "bwa/index"
-    tag "bwa/mem"
-    tag "bowtie2"
-    tag "bowtie2/build"
-    tag "bowtie2/align"
-    tag "bwamem2"
-    tag "bwamem2/index"
-    tag "bwamem2/mem"
-    tag "dragmap"
-    tag "dragmap/hashtable"
-    tag "dragmap/align"
-    tag "snapaligner"
-    tag "snapaligner/index"
-    tag "snapaligner/align"
-
     test("test_fastq_align_bowtie2_SE") {
         setup {
             run("BOWTIE2_BUILD") {

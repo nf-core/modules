@@ -4,12 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "LAST_TRAIN"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "last"
-    tag "last/train"
-    tag "untar"
-
     test("sarscov2 - genome - contigs") {
 
         setup {

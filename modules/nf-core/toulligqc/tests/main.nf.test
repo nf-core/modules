@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "TOULLIGQC"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "toulligqc"
-
     test("sarscov2 - nanopore sequencing_summary") {
         when {
             process {

@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "ADMIXTURE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "admixture"
-    tag "plink/vcf"
-
     setup {
         run("PLINK_VCF") {
             script "../../plink/vcf/main.nf"

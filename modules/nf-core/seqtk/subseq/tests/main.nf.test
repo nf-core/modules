@@ -5,11 +5,6 @@ nextflow_process {
     process "SEQTK_SUBSEQ"
     config "./standard.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "seqtk"
-    tag "seqtk/subseq"
-
     test("sarscov2_subseq_fa") {
 
         when {

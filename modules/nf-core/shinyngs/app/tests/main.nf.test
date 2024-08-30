@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "SHINYNGS_APP"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "shinyngs"
-    tag "shinyngs/app"
-
     test("mouse - multi matrix") {
 
         config './nextflow.config'

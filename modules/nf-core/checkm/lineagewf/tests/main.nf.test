@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process CHECKM_LINEAGEWF"
     script "../main.nf"
     process "CHECKM_LINEAGEWF"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "checkm"
-    tag "checkm/lineagewf"
 
     test("Should run without failures") {
 

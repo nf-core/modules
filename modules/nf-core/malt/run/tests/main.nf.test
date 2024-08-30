@@ -7,13 +7,6 @@ nextflow_process {
     process "MALT_RUN"
     config './nextflow.config'
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "malt"
-    tag "malt/run"
-    tag "malt/build"
-    tag "unzip"
-
         setup {
         run("UNZIP") {
             script "../../../unzip/main.nf"

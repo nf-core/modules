@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "CDHIT_CDHIT"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "cdhit"
-    tag "cdhit/cdhit"
-
     test("proteomics db yeast_ups") {
         when {
             process {

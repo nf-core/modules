@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "UNICYCLER"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "unicycler"
-
     test("bacteroides_fragilis - nanopore") {
 
         when {

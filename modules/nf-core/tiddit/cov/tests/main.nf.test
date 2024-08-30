@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "TIDDIT_COV"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "tiddit"
-    tag "tiddit/cov"
-
     test("homo_sapiens - cram - bed") {
 
         when {
@@ -121,7 +116,6 @@ nextflow_process {
         }
 
     }
-
 
     test("homo_sapiens - stub") {
 

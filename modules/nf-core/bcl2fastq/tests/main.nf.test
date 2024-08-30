@@ -4,9 +4,6 @@ nextflow_process {
     script "modules/nf-core/bcl2fastq/main.nf"
     process "BCL2FASTQ"
     config "./nextflow.config"
-    tag "bcl2fastq"
-    tag "modules"
-    tag "modules_nfcore"
 
     test("homo sapiens illumina [bcl]") {
         when {

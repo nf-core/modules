@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "CELLPOSE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "cellpose"
-
     test("cellpose - with flows, no model") {
 
         when {
@@ -33,7 +29,6 @@ nextflow_process {
         }
 
     }
-
 
     test("cellpose - stub") {
 

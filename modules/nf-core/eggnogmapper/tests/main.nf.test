@@ -3,10 +3,6 @@ nextflow_process {
     name "Test Process EGGNOGMAPPER"
     script "../main.nf"
     process "EGGNOGMAPPER"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "eggnogmapper"
-    tag "diamond/makedb"
 
     setup {
         run("DIAMOND_MAKEDB") {

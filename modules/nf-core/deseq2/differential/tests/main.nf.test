@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "DESEQ2_DIFFERENTIAL"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "deseq2"
-    tag "deseq2/differential"
-
     test("mouse - contrasts - matrix") {
 
         config './contrasts_matrix.config'

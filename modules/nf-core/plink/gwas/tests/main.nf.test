@@ -3,10 +3,6 @@ nextflow_process {
     name "test Plink GWAS function"
     script "../main.nf"
     process "PLINK_GWAS"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "plink"
-    tag "plink/gwas"
 
     test("plink - VCF") {
 

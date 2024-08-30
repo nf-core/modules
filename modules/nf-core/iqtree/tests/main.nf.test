@@ -4,10 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "IQTREE"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "iqtree"
-
     test("setoxin - basic") {
 
         when {
@@ -117,7 +113,6 @@ test("setoxin - treels") {
             )
         }
     }
-
 
     test("setoxin - bootstrap") {
 

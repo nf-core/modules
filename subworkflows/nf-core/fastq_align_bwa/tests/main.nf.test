@@ -5,15 +5,6 @@ nextflow_workflow {
     config "./nextflow.config"
     workflow "FASTQ_ALIGN_BWA"
 
-    tag "subworkflows"
-    tag "subworkflows_nfcore"
-    tag "subworkflows/fastq_align_bwa"
-    tag "subworkflows/bam_sort_stats_samtools"
-    tag "bwa"
-    tag "bwa/mem"
-    tag "bwa/index"
-
-
     test("fastq_align_bwa_single_end") {
         setup {
             run("BWA_INDEX") {

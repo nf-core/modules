@@ -4,11 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "OPENMS_IDMERGER"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "openms"
-    tag "openms/idmerger"
-
     test("proteomics - openms - idxml") {
 
         when {
