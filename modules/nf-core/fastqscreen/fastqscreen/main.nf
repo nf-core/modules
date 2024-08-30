@@ -16,6 +16,8 @@ process FASTQSCREEN_FASTQSCREEN {
     tuple val(meta), path("*.png") , emit: png
     tuple val(meta), path("*.html"), emit: html
     path "versions.yml"            , emit: versions
+    tuple val(meta), path("*.fastq.gz"), emit: no_hits_fastq, optional: true
+
 
     when:
     task.ext.when == null || task.ext.when
