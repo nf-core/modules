@@ -34,4 +34,15 @@ process MASH_DIST {
         mash: \$(mash --version 2>&1)
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        mash: \$(mash --version 2>&1)
+    END_VERSIONS
+    """
 }
