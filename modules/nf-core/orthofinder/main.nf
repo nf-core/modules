@@ -9,11 +9,12 @@ process ORTHOFINDER {
 
     input:
     tuple val(meta), path(fastas, stageAs: 'input/')
-    path(prior_run)
+    tuple val(meta2), path(prior_run)
 
     output:
-    tuple val(meta), path("$prefix")    , emit: orthofinder
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("$prefix")                     , emit: orthofinder
+    tuple val(meta), path("$prefix/WorkingDirectory")    , emit: working
+    path "versions.yml"                                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

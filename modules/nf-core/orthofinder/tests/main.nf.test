@@ -28,7 +28,10 @@ nextflow_process {
                     [ id:'test', single_end:false ],
                     [ file_a, file_b ]
                 ]
-                input[1] = []
+                input[1] = [
+                    [],
+                    []
+                ]
                 """
             }
         }
@@ -61,6 +64,20 @@ nextflow_process {
 
     test("sarscov2 - candidatus_portiera_aleyrodidarum - proteome - resume") {
 
+
+        setup {
+            run("UNTAR") {
+                script "../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id:'test1' ], // meta map
+                        file("s3://temporary-nfcore-module-data/test/WorkingDirectory.tar.gz")
+                    ]
+                    """
+                }
+            }
+        }
+
         when {
             process {
                 """
@@ -68,12 +85,12 @@ nextflow_process {
                     .copyTo("${workDir}/sarscov2.fasta")
 
                 def file_a = file("https://raw.githubusercontent.com/nf-core/test-datasets/proteinfold/testdata/sequences/H1065.fasta")
-                def file_c = file("s3://temporary-nfcore-module-data/test/WorkingDirectory")
+                def file_c = UNTAR.out.untar
                 input[0] = [
                     [ id:'test_2', single_end:false ],
                     [ file_a ]
                 ]
-                input[1] = file_c
+                input[1] = UNTAR.out.untar
                 """
             }
         }
@@ -123,7 +140,10 @@ nextflow_process {
                     [ id:'test', single_end:false ],
                     [ file_a, file_b ]
                 ]
-                input[1] = []
+                input[1] = [
+                    [],
+                    []
+                ]
                 """
             }
         }
