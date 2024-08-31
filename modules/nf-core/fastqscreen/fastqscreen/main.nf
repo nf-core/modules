@@ -12,12 +12,11 @@ process FASTQSCREEN_FASTQSCREEN {
     path database
 
     output:
-    tuple val(meta), path("*.txt") , emit: txt
-    tuple val(meta), path("*.png") , emit: png
-    tuple val(meta), path("*.html"), emit: html
-    path "versions.yml"            , emit: versions
-    tuple val(meta), path("*.fastq.gz"), emit: no_hits_fastq, optional: true
-
+    tuple val(meta), path("*.txt")     , emit: txt
+    tuple val(meta), path("*.png")     , emit: png  , optional: true
+    tuple val(meta), path("*.html")    , emit: html
+    tuple val(meta), path("*.fastq.gz"), emit: fastq, optional: true
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
