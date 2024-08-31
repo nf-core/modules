@@ -30,8 +30,8 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of([
-                    [id: 'test'], 
-                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ] 
+                    [id: 'test'],
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
                     ])
 				input[1] = NEXTCLADE_DATASETGET.out.dataset
                 """
@@ -41,7 +41,18 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    path(process.out.json[0][1]).readLines()[3..10],
+                    process.out.csv_errors,
+                    process.out.csv_insertions,
+                    process.out.csv_errors,
+                    process.out.tsv,
+                    process.out.json_auspice,
+                    process.out.ndjson,
+                    process.out.fasta_aligned,
+                    process.out.fasta_translation,
+                    process.out.nwk,
+                    ).match() }
             )
         }
     }
@@ -66,8 +77,8 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of([
-                    [id: 'test'], 
-                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ] 
+                    [id: 'test'],
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
                     ])
 				input[1] = NEXTCLADE_DATASETGET.out.dataset
                 """
@@ -81,5 +92,5 @@ nextflow_process {
             )
         }
     }
-    
+
 }

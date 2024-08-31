@@ -20,7 +20,7 @@ process NEXTCLADE_RUN {
     tuple val(meta), path("${prefix}.auspice.json")  , optional:true, emit: json_auspice
     tuple val(meta), path("${prefix}.ndjson")        , optional:true, emit: ndjson
     tuple val(meta), path("${prefix}.aligned.fasta") , optional:true, emit: fasta_aligned
-    tuple val(meta), path("*.translation.fasta")     , optional:true, emit: fasta_translation
+    tuple val(meta), path("*_translation.*.fasta")   , optional:true, emit: fasta_translation
     tuple val(meta), path("${prefix}.nwk")           , optional:true, emit: nwk
     path "versions.yml"                              , emit: versions
 
