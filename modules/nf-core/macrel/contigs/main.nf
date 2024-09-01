@@ -4,8 +4,8 @@ process MACREL_CONTIGS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/macrel:1.2.0--pyh5e36f6f_0':
-        'biocontainers/macrel:1.2.0--pyh5e36f6f_0' }"
+        'https://depot.galaxyproject.org/singularity/macrel:1.4.0--pyh7e72e81_0':
+        'biocontainers/macrel:1.4.0--pyh7e72e81_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -34,6 +34,24 @@ process MACREL_CONTIGS {
         --threads $task.cpus
 
     gzip --no-name ${prefix}/*.faa
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        macrel: \$(echo \$(macrel --version | sed 's/macrel //g'))
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir ${prefix}
+
+    touch ${prefix}/${prefix}_log.txt
+    echo | gzip > ${prefix}/${prefix}.smorfs.faa.gz
+    echo | gzip > ${prefix}/${prefix}.all_orfs.faa.gz
+    echo | gzip > ${prefix}/${prefix}.prediction.gz
+    touch ${prefix}/${prefix}.md
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

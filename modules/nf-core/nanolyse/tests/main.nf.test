@@ -1,0 +1,65 @@
+
+nextflow_process {
+
+    name "Test Process NANOLYSE"
+    script "../main.nf"
+    process "NANOLYSE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "nanolyse"
+
+    test("test-nanolyse") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ], // meta map
+				    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true) ]
+				]
+				input[1] = file("https://github.com/wdecoster/nanolyse/raw/master/reference/lambda.fasta.gz", checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					process.out.fastq,
+					file(process.out.log[0]).name,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-nanolyse-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ], // meta map
+				    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true) ]
+				]
+				input[1] = file("https://github.com/wdecoster/nanolyse/raw/master/reference/lambda.fasta.gz", checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}
