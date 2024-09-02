@@ -1,9 +1,0 @@
-- name: bam2fastx bam2fastq test_bam2fastx_bam2fastq
-  command: nextflow run ./tests/modules/nf-core/bam2fastx/bam2fastq -entry test_bam2fastx_bam2fastq -c ./tests/config/nextflow.config
-  tags:
-    - bam2fastx/bam2fastq
-    - bam2fastx
-  files:
-    - path: output/bam2fastx/test.fastq.gz
-      md5sum: f0329f9ea12324c6631ac9f3712f2ca5
-    - path: output/bam2fastx/versions.yml

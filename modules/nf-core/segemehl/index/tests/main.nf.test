@@ -1,0 +1,51 @@
+
+nextflow_process {
+
+    name "Test Process SEGEMEHL_INDEX"
+    script "../main.nf"
+    process "SEGEMEHL_INDEX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "segemehl"
+    tag "segemehl/index"
+
+    test("test-segemehl-index") {
+        
+        when {
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    
+    test("test-segemehl-index-stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    
+}

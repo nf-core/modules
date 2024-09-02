@@ -1,5 +1,3 @@
-
-
 process VT_NORMALIZE {
     tag "$meta.id"
     label 'process_low'
@@ -62,7 +60,7 @@ process VT_NORMALIZE {
     def VERSION = "2015.11.10" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
-    touch ${prefix}.vcf.gz
+    echo | gzip > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

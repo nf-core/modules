@@ -1,0 +1,73 @@
+
+nextflow_process {
+
+    name "Test Process CIRCEXPLORER2_ANNOTATE"
+    script "../main.nf"
+    process "CIRCEXPLORER2_ANNOTATE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "circexplorer2"
+    tag "circexplorer2/annotate"
+
+    test("test-circexplorer2-annotate") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'fust1_3' ],
+				    file("https://raw.githubusercontent.com/nf-core/test-datasets/circrna/circexplorer2/fust1_3.junction.bed")
+				]
+				input[1] = [
+				    file("https://raw.githubusercontent.com/nf-core/test-datasets/circrna/reference/chrI.fa")
+				]
+				input[2] = [
+				    file("https://raw.githubusercontent.com/nf-core/test-datasets/circrna/reference/chrI.txt")
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					file(process.out.txt[0][1]).readLines()[3..7],
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-circexplorer2-annotate-stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'fust1_3' ],
+				    file("https://raw.githubusercontent.com/nf-core/test-datasets/circrna/circexplorer2/fust1_3.junction.bed")
+				]
+				input[1] = [
+				    file("https://raw.githubusercontent.com/nf-core/test-datasets/circrna/reference/chrI.fa")
+				]
+				input[2] = [
+				    file("https://raw.githubusercontent.com/nf-core/test-datasets/circrna/reference/chrI.txt")
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

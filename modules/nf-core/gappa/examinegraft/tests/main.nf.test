@@ -1,0 +1,58 @@
+
+nextflow_process {
+
+    name "Test Process GAPPA_EXAMINEGRAFT"
+    script "../main.nf"
+    process "GAPPA_EXAMINEGRAFT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gappa"
+    tag "gappa/examinegraft"
+
+    test("test-gappa-examinegraft") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ], // meta map
+				    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/gappa/epa_result.jplace.gz', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-gappa-examinegraft-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ], // meta map
+				    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/gappa/epa_result.jplace.gz', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}
