@@ -259,8 +259,6 @@ jobs:
           - profile: conda
             tags: cellrangerarc/mkfastq
           - profile: conda
-            tags: cellrangerarc/mkgtf
-          - profile: conda
             tags: cellrangerarc/mkref
           - profile: conda
             tags: cellrangeratac/count
@@ -544,6 +542,8 @@ jobs:
             path: modules/nf-core/ensemblvep/vep
           - profile: conda
             path: modules/nf-core/fastk/fastk
+          - profile: conda
+            path: modules/nf-core/cellrangerarc/mkgtf
           - profile: conda
             path: modules/nf-core/fastk/histex
           - profile: conda
