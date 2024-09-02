@@ -43,7 +43,7 @@ nextflow_process {
 					bam(process.out.bam[0][1]).getReadsMD5(),
 					file(process.out.metrics[0][1]).readLines()[5..7],
 					process.out.recall,
-					path(process.out.gvcf[0][1]).vcf.variantsMD5,
+					file(process.out.gvcf[0][1]).name, // unstable
 					process.out.table,
 					process.out.activity_profile,
 					process.out.assembly_regions,
