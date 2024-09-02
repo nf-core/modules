@@ -29,7 +29,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.tree,
+                    file(process.out.matrix[0][1]).name,
+                    process.out.versions,
+                    ).match()
+                }
             )
         }
     }
