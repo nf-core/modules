@@ -43,4 +43,19 @@ process MSISENSORPRO_MSITUMORONLY {
         msisensor-pro: \$(msisensor-pro 2>&1 | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p')
     END_VERSIONS
     """
+    
+    stub:
+    def args = task.ext.args   ?: ''
+    def prefix   = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir ${prefix}
+    mkdir ${prefix}_dis
+    mkdir ${prefix}_all
+    mkdir ${prefix}_unstable
+    
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        msisensor-pro: \$(msisensor-pro 2>&1 | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p')
+    END_VERSIONS
+    """
 }
