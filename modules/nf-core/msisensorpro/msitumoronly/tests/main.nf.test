@@ -8,21 +8,6 @@ nextflow_process {
     tag "modules_nfcore"
     tag "msisensorpro"
     tag "msisensorpro/msitumoronly"
-    tag "msisensorpro/scan"
-
-    setup {
-        run("MSISENSORPRO_SCAN") {
-            script "../../scan/main.nf"
-            process {
-                """
-                input[0] = [ [ id:'test', single_end:false ], // meta map
-                // file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
-                        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
-                    ]
-                """
-            }
-        }
-    }
 
     test("human - cram") {
 
@@ -31,16 +16,18 @@ nextflow_process {
                 """
                 input[0] = [// meta map
                         [ id:'test'],
-                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_cram'], checkIfExists: true),
-                        // file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
-                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_cram_crai'], checkIfExists: true),
-                        //  file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                        file('https://github.com/xjtu-omics/msisensor-pro/raw/c85d51030777585ad6ab669d2f4c8e46d23f4cd8/demo/data/data4test/test_tumor_sorted.cram'),
+                        //file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.recalibrated.sorted.cram', checkIfExists: true),
+                        file('https://github.com/xjtu-omics/msisensor-pro/raw/c85d51030777585ad6ab669d2f4c8e46d23f4cd8/demo/data/data4test/test_tumor_sorted.cram.crai'),
+                        //file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.recalibrated.sorted.cram.crai', checkIfExists: true),
                         []
                     ]
                 input[1] = [ [ id:'reference' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                    file('https://raw.githubusercontent.com/xjtu-omics/msisensor-pro/c85d51030777585ad6ab669d2f4c8e46d23f4cd8/demo/data/reference/reference.fa', checkIfExists: true)
                     ]
-                input[2] = MSISENSORPRO_SCAN.out.list
+                input[2] = [ [ id:'baseline' ], // meta map
+                    file('https://raw.githubusercontent.com/xjtu-omics/msisensor-pro/c85d51030777585ad6ab669d2f4c8e46d23f4cd8/data/GRCh38.baseline_TCGA.tsv', checkIfExists: true)
+                    ]
                 """
             }
         }
@@ -63,14 +50,16 @@ nextflow_process {
                 """
                 input[0] = [// meta map
                         [ id:'test'],
-                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_cram'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_cram_crai'], checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.recalibrated.sorted.cram', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.recalibrated.sorted.cram.crai', checkIfExists: true),
                         []
                     ]
                 input[1] = [ [ id:'reference' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                     ]
-                input[2] = MSISENSORPRO_SCAN.out.list
+                input[2] = [ [ id:'baseline' ], // meta map
+                    file('https://raw.githubusercontent.com/xjtu-omics/msisensor-pro/c85d51030777585ad6ab669d2f4c8e46d23f4cd8/data/GRCh38.baseline_TCGA.tsv', checkIfExists: true)
+                    ]
                 """
             }
         }
