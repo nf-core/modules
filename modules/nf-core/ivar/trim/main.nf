@@ -32,7 +32,7 @@ process IVAR_TRIM {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        ivar: \$(echo \$(ivar version 2>&1) | sed 's/^.*iVar version //; s/ .*\$//')
+        ivar: \$(ivar version | sed -n 's|iVar version \\(.*\\)|\\1|p')
     END_VERSIONS
     """
 
@@ -45,7 +45,7 @@ process IVAR_TRIM {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        ivar: \$(echo \$(ivar version 2>&1) | sed 's/^.*iVar version //; s/ .*\$//')
+        ivar: \$(ivar version | sed -n 's|iVar version \\(.*\\)|\\1|p')
     END_VERSIONS
     """
 }
