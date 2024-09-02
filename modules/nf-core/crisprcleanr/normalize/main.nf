@@ -49,4 +49,17 @@ process CRISPRCLEANR_NORMALIZE {
     close(f)
 
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${prefix}_norm_table.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        crisprcleanr: \$(Rscript -e 'packageVersion("CRISPRcleanR")' | sed -n 's|\\[1\\] ‘\\(.*\\)’|\\1|p')
+    END_VERSIONS
+    """
 }
