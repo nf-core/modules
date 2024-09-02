@@ -29,7 +29,19 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+
+                // Check HTML
+                { assert path(process.out.html.get(0).get(1)).text.contains("This file is part of miRTrace.")} ,
+
+                // Check JSON
+                { assert path(process.out.json.get(0).get(1)).json.results[0].stats.uniqueQCPassedSeqsCount == 912 },
+
+                // Check TSV
+                { assert snapshot(process.out.tsv).match("tsv") },
+
+                // Check FASTA files
+                { assert snapshot(process.out.rnatype_unknown_fa).match("rnatype_unknown_fa") },
+                { assert snapshot(process.out.all_fa).match("all_fa") }
             )
         }
 
