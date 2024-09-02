@@ -36,4 +36,17 @@ process ICOUNTMINI_SEGMENT {
         iCount-Mini: \$(iCount-Mini -v)
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${gtf.simpleName}_seg"
+    def regions_prefix = task.ext.regions_prefix ?: "${gtf.simpleName}"
+    """
+    touch ${prefix}.gtf
+    echo | gzip > ${regions_prefix}_regions.gtf.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        iCount-Mini: \$(iCount-Mini -v)
+    END_VERSIONS
+    """
 }
