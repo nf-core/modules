@@ -18,7 +18,7 @@ nextflow_process {
                 """
                 input[0] = [
 				    [ id:'test_single_species' ], // meta map
-				    taxon = 'Meles meles',
+				    'Meles meles',
 				    []
 				]
 
@@ -41,7 +41,7 @@ nextflow_process {
                 """
                 input[0] = [
 				    [ id:'test_genus_id' ], // meta map
-				    taxon = '7215',
+				    '7215',
 				    []
 				]
 
@@ -64,8 +64,8 @@ nextflow_process {
                 """
                 input[0] = [
 				    [ id:'test_species' ], // meta map
-				    taxon = '',
-				    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/goat_taxonsearch/taxonomy_ids.txt', checkIfExists: true)
+				    '',
+				    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/generic/txt/species_names.txt', checkIfExists: true)
 				]
 
                 """
@@ -88,8 +88,8 @@ nextflow_process {
                 """
                 input[0] = [
 				    [ id:'test_species' ], // meta map
-				    taxon = '',
-				    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/goat_taxonsearch/taxonomy_ids.txt', checkIfExists: true)
+				    '',
+				    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/generic/txt/species_names.txt', checkIfExists: true)
 				]
 
                 """
