@@ -48,4 +48,3 @@ process BAMSTATS_GENERALSTATS {
     END_VERSIONS
     """
 }
-

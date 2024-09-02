@@ -16,11 +16,11 @@ nextflow_process {
             script "modules/nf-core/untar/main.nf"
             process {
             """
-            file('https://card.mcmaster.ca/latest/data', checkIfExists: true).copyTo('data.tar.gz')
+            file('https://card.mcmaster.ca/latest/data', checkIfExists: true).copyTo('card-data.tar.bz2')
 
             input[0] = [
                 [ ],
-                file("data.tar.gz")
+                file("card-data.tar.bz2")
             ]
             """
             }
@@ -42,9 +42,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [                                                                                                                                                                   
-                    [ id:'test', single_end:false ], // meta map                                                                                                                            
-                    file(params.test_data['haemophilus_influenzae']['genome']['genome_fna_gz'], checkIfExists: true)                                                                        
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['haemophilus_influenzae']['genome']['genome_fna_gz'], checkIfExists: true)
                 ]
                 input[1] = RGI_CARDANNOTATION.out.db
                 input[2] = []
@@ -74,9 +74,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [                                                                                                                                                                   
-                    [ id:'test', single_end:false ], // meta map                                                                                                                            
-                    file(params.test_data['haemophilus_influenzae']['genome']['genome_fna_gz'], checkIfExists: true)                                                                        
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['haemophilus_influenzae']['genome']['genome_fna_gz'], checkIfExists: true)
                 ]
                 input[1] = RGI_CARDANNOTATION.out.db
                 input[2] = []

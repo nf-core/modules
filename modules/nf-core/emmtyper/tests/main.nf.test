@@ -1,0 +1,32 @@
+
+nextflow_process {
+
+    name "Test Process EMMTYPER"
+    script "../main.nf"
+    process "EMMTYPER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "emmtyper"
+
+    test("test-emmtyper") {
+        
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+				file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    
+}

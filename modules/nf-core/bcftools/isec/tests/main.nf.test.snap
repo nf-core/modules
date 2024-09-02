@@ -1,22 +1,75 @@
 {
-    "sarscov2 - [[vcf1, vcf2], [tbi1, tbi2]]": {
+    "sarscov2 - [[vcf1.gz, vcf2.gz], [tbi1, tbi2]]": {
         "content": [
             [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test"
-                ]
+                "versions.yml:md5,c5b5a1204cf56fec79d17e1913eaca27"
             ],
             [
-                "versions.yml:md5,c5b5a1204cf56fec79d17e1913eaca27"
+                "0000.vcf.gz",
+                "0000.vcf.gz.tbi",
+                "0001.vcf.gz",
+                "0001.vcf.gz.tbi",
+                "README.txt",
+                "sites.txt"
+            ],
+            [
+                "0000.vcf.gz:md5,8e722884ffb75155212a3fc053918766",
+                "0001.vcf.gz:md5,b39a72f91458b94b346dd73690207649",
+                "README.txt:md5,10fc33b66522645600d44afbd41fb792",
+                "sites.txt:md5,1cea3fbde7f6d3c97f3d39036f9690df"
             ]
         ],
         "meta": {
             "nf-test": "0.8.4",
             "nextflow": "24.04.2"
         },
-        "timestamp": "2024-06-03T11:43:55.820868944"
+        "timestamp": "2024-07-03T16:32:18.167072863"
+    },
+    "sarscov2 - [[vcf1, vcf2], [tbi1, tbi2]] - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "0000.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "0000.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "0001.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "0001.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "README.txt:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "sites.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "1": [
+                    "versions.yml:md5,c5b5a1204cf56fec79d17e1913eaca27"
+                ],
+                "results": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "0000.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "0000.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "0001.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "0001.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "README.txt:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "sites.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,c5b5a1204cf56fec79d17e1913eaca27"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "24.04.2"
+        },
+        "timestamp": "2024-07-03T09:45:52.881120953"
     }
 }

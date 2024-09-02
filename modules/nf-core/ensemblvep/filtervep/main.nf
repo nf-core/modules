@@ -47,4 +47,3 @@ process ENSEMBLVEP_FILTERVEP {
     END_VERSIONS
     """
 }
-

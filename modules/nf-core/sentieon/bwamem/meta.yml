@@ -57,14 +57,10 @@ output:
       description: |
         Groovy Map containing reference information.
         e.g. [ id:'test', single_end:false ]
-  - bam:
+  - bam_and_bai:
       type: file
-      description: BAM file.
-      pattern: "*.bam"
-  - bai:
-      type: file
-      description: BAI file
-      pattern: "*.bai"
+      description: BAM file with corresponding index.
+      pattern: "*.{bam,bai}"
   - versions:
       type: file
       description: File containing software versions
@@ -73,3 +69,4 @@ authors:
   - "@asp8200"
 maintainers:
   - "@asp8200"
+  - "@DonFreed"

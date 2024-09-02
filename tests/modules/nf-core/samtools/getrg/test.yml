@@ -1,9 +1,0 @@
-- name: samtools getrg test_samtools_getrg
-  command: nextflow run ./tests/modules/nf-core/samtools/getrg -entry test_samtools_getrg -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/getrg/nextflow.config
-  tags:
-    - samtools
-    - samtools/getrg
-  files:
-    - path: output/samtools/readgroups.txt
-      md5sum: 7b1d2d10a82a0c4fa6b22673559e41f6
-    - path: output/samtools/versions.yml
