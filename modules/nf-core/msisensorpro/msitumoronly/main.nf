@@ -8,9 +8,9 @@ process MSISENSORPRO_MSITUMORONLY {
         'biocontainers/msisensor-pro:1.2.0--hfc31af2_0' }"
 
     input:
-    tuple val(meta), path(tumor), path(tumor_index), path(intervals)
-    path (fasta)
-    path (msisensor_baseline)
+    tuple val(meta) , path(tumor), path(tumor_index), path(intervals)
+    tuple val(meta2), path (fasta)
+    tuple val(meta3), path (msisensor_baseline)
 
     output:
     tuple val(meta), path("${prefix}")         , emit: output_report
@@ -43,7 +43,7 @@ process MSISENSORPRO_MSITUMORONLY {
         msisensor-pro: \$(msisensor-pro 2>&1 | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p')
     END_VERSIONS
     """
-    
+
     stub:
     def args = task.ext.args   ?: ''
     def prefix   = task.ext.prefix ?: "${meta.id}"
@@ -52,7 +52,7 @@ process MSISENSORPRO_MSITUMORONLY {
     mkdir ${prefix}_dis
     mkdir ${prefix}_all
     mkdir ${prefix}_unstable
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         msisensor-pro: \$(msisensor-pro 2>&1 | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p')
