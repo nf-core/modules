@@ -71,7 +71,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = [ [ id:'test1' ], // meta map
-                        file("s3://temporary-nfcore-module-data/test/WorkingDirectory.tar.gz")
+                        file(params.modules_testdata_base_path + 'delete_me/orthofinder/WorkingDirectory.tar.gz', checkIfExists: true)
                     ]
                     """
                 }
