@@ -26,8 +26,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.version,
-                                  file(process.out.coverage_plot.get(0).get(1)).name).match() }
+                { assert snapshot(process.out.versions,
+                                file(process.out.coverage_plot.get(0).get(1)).name
+                                ).match()
+                    }
             )
         }
 
