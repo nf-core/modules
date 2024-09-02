@@ -25,8 +25,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.tif },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(file(process.out.tif[0][1]).name,
+                  process.out.versions).match() }
             )
         }
 
@@ -50,8 +50,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.tif },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(file(process.out.tif[0][1]).name,
+                  process.out.versions).match() }
             )
         }
 
