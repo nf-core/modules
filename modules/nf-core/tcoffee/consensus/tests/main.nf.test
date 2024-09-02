@@ -122,7 +122,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.alignment).match("alignment_gt")},
-                { assert snapshot(process.out.versions).match("versions_uncomp") }
+                { assert snapshot(process.out.versions).match("versions_comp") }
             )
         }
     }
