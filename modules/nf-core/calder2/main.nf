@@ -2,10 +2,11 @@ process CALDER2 {
     tag '$meta.id'
     label 'process_high'
 
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-calder2:0.3--r41hdfd78af_0' :
-        'biocontainers/r-calder2:0.3--r41hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/r-calder2:0.7--r43hdfd78af_1' :
+        'biocontainers/r-calder2:0.7--r43hdfd78af_1' }"
 
 
     input:
@@ -25,7 +26,7 @@ process CALDER2 {
     prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = resolution ? "::/resolutions/$resolution" : ""
     def cpus = task.cpus ?: 1
-    def VERSION = '0.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '0.7' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     # getting binsize as mandatory input for calder
     binsize="\$(cooler info --field bin-size $cool$suffix)"
@@ -45,7 +46,7 @@ process CALDER2 {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '0.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '0.7' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     mkdir -p ${prefix}/sub_compartments
     mkdir -p ${prefix}/sub_domains
