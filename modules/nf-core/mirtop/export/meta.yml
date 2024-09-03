@@ -1,55 +1,63 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "mirtop_export"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description:  mirtop export generates files such as fasta, vcf or compatible with isomiRs bioconductor package
 keywords:
-  - sort
-  - example
-  - genomics
+  - mirna
+  - isomir
+  - gff
 tools:
   - "mirtop":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Small RNA-seq annotation"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      homepage: "https://github.com/miRTop/mirtop"
+      documentation: "https://mirtop.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/miRTop/mirtop"
       licence: ['MIT License']
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
+  - mirtop_gff:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: GFF file
+      pattern: "*.{gff}"
+  - hairpin:
+      type: file
+      description: Hairpin file
+      pattern: "*.{fa,fasta}"
+  - gtf:
+      type: file
+      description: GTF file
+      pattern: "*.{gtf}"
+  - species:
+      type: string
+      description: Species name of the GTF file
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
+  - tsv:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: TSV file
+      pattern: "*.{tsv}"
+  - fasta:
+      type: file
+      description: FASTA file
+      pattern: "*.{fasta,fa}"
+  - vcf:
+      type: file
+      description: VCF file
+      pattern: "*.{vcf,vcf.gz}"
 
 authors:
   - "@atrigila"

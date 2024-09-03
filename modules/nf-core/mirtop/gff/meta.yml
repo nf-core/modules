@@ -24,6 +24,17 @@ input:
       type: file
       description: Sorted BAM/CRAM/SAM file
       pattern: "*.{bam,cram,sam}"
+  - hairpin:
+      type: file
+      description: Hairpin file
+      pattern: "*.{fa,fasta}"
+  - gtf:
+      type: file
+      description: GTF file
+      pattern: "*.{gtf}"
+  - species:
+      type: string
+      description: Species name of the GTF file
 
 output:
   - meta:
