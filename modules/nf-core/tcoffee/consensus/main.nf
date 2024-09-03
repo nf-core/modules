@@ -51,7 +51,7 @@ process TCOFFEE_CONSENSUS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.aln${compress ? '.gz':''}
-    sleep(10)
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         tcoffee: \$( t_coffee -version )
