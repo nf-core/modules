@@ -28,7 +28,7 @@ process CRUMBLE {
     def extension  = args.contains("-O sam") ? "sam" :
                     args.contains("-O bam") ? "bam" :
                     args.contains("-O cram") ? "cram" :
-                    "sam"
+                    "bam"
     def bedin      = keepbed ? "-R ${keepbed}" : ""
     def bedout     = bedout ? "-b ${prefix}.out.bed" : ""
     if ("$input" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
@@ -54,7 +54,7 @@ process CRUMBLE {
     def extension  = args.contains("-O sam") ? "sam" :
                     args.contains("-O bam") ? "bam" :
                     args.contains("-O cram") ? "cram" :
-                    "sam"
+                    "bam"
     def bedout     = bedout ? "touch ${prefix}.out.bed" : ''
     if ("$input" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
 
