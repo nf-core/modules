@@ -12,8 +12,9 @@ process MIRTOP_STATS {
     tuple val(meta), path(mirtop_gff)
 
     output:
-    tuple val(meta), path("stats/*.txt"), emit: txt
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path("stats/*.txt")        , emit: txt
+    tuple val(meta), path("stats/*_stats.log")  , emit: log
+    path "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,6 +41,7 @@ process MIRTOP_STATS {
     """
     mkdir stats
     touch stats/${prefix}.txt
+    touch stats/${prefix}_stats.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
