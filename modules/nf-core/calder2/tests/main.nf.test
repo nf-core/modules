@@ -1,0 +1,135 @@
+import groovy.io.FileType
+
+nextflow_process {
+
+    name "Test Process CALDER2"
+    script "../main.nf"
+    process "CALDER2"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "calder2"
+
+    test("test-calder2-cool") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], //meta map
+				    file('https://raw.githubusercontent.com/CSOgroup/CALDER2/main/tests/testthat/data/test.cool', checkIfExists: true)
+                ]
+
+				input[1] = [:]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    def all_files = []
+
+                    file(process.out.output_folder[0][1]).eachFileRecurse (FileType.FILES) { file ->
+                        all_files << file
+                    }
+
+                    def all_file_names = all_files.collect { it.name }.toSorted()
+
+                    def stable_file_names = [
+                        'all_sub_compartments.bed',
+                        'all_sub_compartments.tsv',
+                        'cor_with_ref.ALL.txt',
+                        'cor_with_ref.txt',
+                        'all_nested_boundaries.bed'
+                    ]
+
+                    def stable_files = all_files.findAll { it.name in stable_file_names }.toSorted()
+
+                    assert snapshot(
+                        all_file_names,
+                        stable_files,
+                        process.out.versions[0]
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-calder2-mcool") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], //meta map
+				    file('https://raw.githubusercontent.com/CSOgroup/CALDER2/main/tests/testthat/data/test.mcool', checkIfExists: true)
+                ]
+
+                input[1] = 100000
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    def all_files = []
+
+                    file(process.out.output_folder[0][1]).eachFileRecurse (FileType.FILES) { file ->
+                        all_files << file
+                    }
+
+                    def all_file_names = all_files.collect { it.name }.toSorted()
+
+                    def stable_file_names = [
+                        'all_sub_compartments.bed',
+                        'all_sub_compartments.tsv',
+                        'cor_with_ref.ALL.txt',
+                        'cor_with_ref.txt',
+                        'all_nested_boundaries.bed'
+                    ]
+
+                    def stable_files = all_files.findAll { it.name in stable_file_names }.toSorted()
+
+                    assert snapshot(
+                        all_file_names,
+                        stable_files,
+                        process.out.versions[0]
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-calder2-mcool-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], //meta map
+				    file('https://raw.githubusercontent.com/CSOgroup/CALDER2/main/tests/testthat/data/test.mcool', checkIfExists: true)
+                ]
+
+                input[1] = 100000
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}
