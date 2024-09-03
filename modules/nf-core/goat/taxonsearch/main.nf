@@ -33,4 +33,19 @@ process GOAT_TAXONSEARCH {
         goat: \$(goat-cli --version | cut -d' ' -f2)
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    input = taxa_file ? "-f ${taxa_file}" : "-t \"${taxon}\""
+    if (!taxon && !taxa_file) error "No input. Valid input: single taxon identifier or a .txt file with identifiers"
+    if (taxon && taxa_file ) error "Only one input is required: a single taxon identifier or a .txt file with identifiers"
+    """
+    touch ${prefix}.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        goat: \$(goat-cli --version | cut -d' ' -f2)
+    END_VERSIONS
+    """
 }
