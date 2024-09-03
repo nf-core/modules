@@ -9,16 +9,14 @@ nextflow_process {
     tag "modules_nfcore"
     tag "wgsim"
 
-    test("test-wgsim") {
+    test("sarscov2 - fasta") {
 
         when {
             process {
                 """
-                input[0] = [
-				    [ id:'test' ], // meta map
-				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-				]
-
+                input[0] = [ [ id:'test' ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                            ]
                 """
             }
         }
@@ -30,6 +28,29 @@ nextflow_process {
                     process.out.fastq[0][1].collect { file(it).name },
                     process.out.versions
                     ).match()
+                }
+            )
+        }
+    }
+
+    test("sarscov2 - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match()
                 }
             )
         }
