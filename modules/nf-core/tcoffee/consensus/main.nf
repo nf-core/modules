@@ -51,10 +51,10 @@ process TCOFFEE_CONSENSUS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.aln${compress ? '.gz':''}
-
+    sleep(10)
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
+        tcoffee: \$( t_coffee -version )
         pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
     END_VERSIONS
     """
