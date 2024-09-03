@@ -63,7 +63,7 @@ nextflow_process {
             process {
                 """
                     input[0] = UNTAR.out.untar.map { meta,dir -> [[ id:'test' ], file(dir).listFiles().collect()]}
-                    input[1] = false
+                    input[1] = true
                 """
             }
         }
