@@ -20,32 +20,28 @@ process WGSIM {
     script:
     def args    = task.ext.args ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def seed    = task.ext.seed ?: "${meta.seed}"
-    def VERSION = "1,0" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     wgsim \\
         $args \\
-        -S $seed \\
         $fasta \\
         ${prefix}_R1.fastq \\
         ${prefix}_R2.fastq
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        wgsim: wgsim 2>&1 | grep "Version" | sed 's/Version: //'
+        wgsim: \$(wgsim 2>&1 | grep "Version" | sed 's/Version: //')
     END_VERSIONS
     """
 
     stub:
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def VERSION = "1.0" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}_R1.fastq
     touch ${prefix}_R2.fastq
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        wgsim: wgsim 2>&1 | grep "Version" | sed 's/Version: //'
+        wgsim: \$(wgsim 2>&1 | grep "Version" | sed 's/Version: //')
     END_VERSIONS
     """
 }
