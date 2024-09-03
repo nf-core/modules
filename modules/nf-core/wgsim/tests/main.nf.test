@@ -26,7 +26,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.fastq[0][1].collect { file(it).name },
-                    file(process.out.versions[0]).readLines()
+                    file(process.out.versions[0]).readLines(),
+                    process.out.versions
                     ).match()
                 }
             )
@@ -52,7 +53,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.fastq[0][1].collect { file(it).name },
-                    file(process.out.versions[0]).readLines()
+                    file(process.out.versions[0]).readLines(),
+                    process.out.versions
                     ).match()
                 }
             )
