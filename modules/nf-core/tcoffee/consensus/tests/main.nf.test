@@ -18,7 +18,7 @@ nextflow_process {
         config "./sequence.config"
         setup {
             run("FAMSA_ALIGN") {
-                script "../../../famsa/align//main.nf"
+                script "../../../famsa/align/main.nf"
                 process {
                     """
                     input[0] = [ [ id:'test' ],
@@ -31,7 +31,7 @@ nextflow_process {
                 }
             }
             run("TCOFFEE_ALIGN") {
-                script "../../../tcoffee/align//main.nf"
+                script "../../../tcoffee/align/main.nf"
                 process {
                     """
                     input[0] = [ [ id:'test' ],
@@ -70,7 +70,7 @@ nextflow_process {
         config "./sequence.config"
         setup {
             run("FAMSA_GUIDETREE") {
-                script "../../../famsa/guidetree//main.nf"
+                script "../../../famsa/guidetree/main.nf"
                 process {
                     """
                     input[0] = [ [ id:'test' ],
@@ -80,7 +80,7 @@ nextflow_process {
                 }
             }
             run("FAMSA_ALIGN") {
-                script "../../../famsa/align//main.nf"
+                script "../../../famsa/align/main.nf"
                 process {
                     """
                     input[0] = [ [ id:'test' ],
@@ -93,7 +93,7 @@ nextflow_process {
                 }
             }
             run("TCOFFEE_ALIGN") {
-                script "../../../tcoffee/align//main.nf"
+                script "../../../tcoffee/align/main.nf"
                 process {
                     """
                     input[0] = [ [ id:'test' ],
