@@ -3,8 +3,10 @@ process UPP_ALIGN {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "community.wave.seqera.io/library/sepp_pigz:ea6dbc7704a2e251"
-
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'oras://community.wave.seqera.io/library/sepp_pigz:d72591720d0277b1':
+        'community.wave.seqera.io/library/sepp_pigz:ea6dbc7704a2e251' }"
+    
     input:
     tuple val(meta) , path(fasta)
     tuple val(meta2), path(tree)
