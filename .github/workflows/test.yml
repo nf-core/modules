@@ -259,8 +259,6 @@ jobs:
           - profile: conda
             tags: cellrangerarc/mkfastq
           - profile: conda
-            tags: cellrangerarc/mkgtf
-          - profile: conda
             tags: cellrangerarc/mkref
           - profile: conda
             tags: cellrangeratac/count
@@ -318,6 +316,8 @@ jobs:
             tags: islandpath
           - profile: conda
             tags: manta/convertinversion
+          - profile: conda
+            tags: mcstaging/imc2mc
           - profile: conda
             tags: mcquant
           - profile: conda
@@ -472,7 +472,7 @@ jobs:
 
       - name: Upload logs on failure
         if: failure()
-        uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4
+        uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4
         with:
           name: logs-${{ matrix.profile }}-${{ steps.parsed.outputs.result }}
           path: |
@@ -545,6 +545,8 @@ jobs:
           - profile: conda
             path: modules/nf-core/fastk/fastk
           - profile: conda
+            path: modules/nf-core/cellrangerarc/mkgtf
+          - profile: conda
             path: modules/nf-core/fastk/histex
           - profile: conda
             path: modules/nf-core/fastk/merge
@@ -573,7 +575,11 @@ jobs:
           - profile: conda
             path: modules/nf-core/imputeme/vcftoprs
           - profile: conda
+            path: modules/nf-core/mcstaging/imc2mc
+          - profile: conda
             path: modules/nf-core/mcquant
+          - profile: conda
+            path: modules/nf-core/mcstaging/phenoimager2mc
           - profile: conda
             path: modules/nf-core/merquryfk/katcomp
           - profile: conda

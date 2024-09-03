@@ -3,7 +3,7 @@ process ESTSFS {
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::est-sfs=2.04"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/est-sfs:2.04--h245ed52_0':
         'biocontainers/est-sfs:2.04--h245ed52_0' }"
@@ -34,7 +34,8 @@ process ESTSFS {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '2.04' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}_sfs.txt
     touch ${prefix}_pvalues.txt
