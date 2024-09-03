@@ -34,7 +34,7 @@ process UPP_ALIGN {
 
     # compress both output files
     if ${compress}; then
-        pigz -p ${task.cpus} ${prefix}.aln 
+        pigz -p ${task.cpus} ${prefix}.aln
     fi
 
     cat <<-END_VERSIONS > versions.yml
