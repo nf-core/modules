@@ -10,10 +10,10 @@ process SENTIEON_COVERAGEMETRICS {
 
     input:
     tuple val(meta) , path(bam), path(bai)
-    tuple val(meta) , path(interval)
-    tuple val(meta2), path(fasta)
-    tuple val(meta3), path(fai)
-    tuple val(meta4), path(gene_list)
+    tuple val(meta2), path(interval)
+    tuple val(meta3), path(fasta)
+    tuple val(meta4), path(fai)
+    tuple val(meta5), path(gene_list)
 
     output:
     tuple val(meta), path("$prefix")                                                       , optional: true, emit: per_locus

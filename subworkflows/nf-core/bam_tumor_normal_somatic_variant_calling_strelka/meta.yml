@@ -1,0 +1,50 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: bam_tumor_normal_somatic_variant_calling_strelka
+description: |
+  Perform variant calling on a paired tumor normal set of samples using strelka somatic mode.
+  f1r2 output of mutect2 is run through learnreadorientationmodel to get the artifact priors.
+  Run the input bam files through getpileupsummarries and then calculatecontamination to get the contamination and segmentation tables.
+  Filter the mutect2 output vcf using filtermutectcalls, artifact priors and the contamination & segmentation tables for additional filtering.
+keywords:
+  - strelka
+  - variant_calling
+  - filtered_vcf
+components:
+  - gatk4/mergevcfs
+  - strelka/somatic
+input:
+  - ch_cram:
+      description: |
+        The normal and tumor CRAM files, in that order.
+        Structure: [ meta, normal_cram, normal_crai, tumor_cram, tumor_crai, manta_vcf, manta_tbi ] manta* are optional
+  - ch_dict:
+      description: |
+        GATK sequence dictionary, optional
+        Structure: [ meta, dict ]
+  - ch_fasta:
+      type: file
+      description: reference fasta file
+      pattern: ".{fa,fa.gz,fasta,fasta.gz}"
+  - ch_fasta_fai:
+      type: file
+      description: reference fasta file index
+      pattern: "*.{fa,fasta}.fai"
+  - ch_intervals:
+      description: |
+        Intervals to be used for variant calling.
+        Structure: [ interval.bed.gz, interval.bed.gz.tbi, num_intervals ] or [ [], [], 0 ] if no intervals
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - vcf:
+      type: file
+      description: |
+        Compressed vcf files for indels and snvs, in that order.
+        Structure: [ val(meta), path(vcf), path(vcf) ]
+      pattern: "*.{vcf.gz}"
+authors:
+  - "@famosab"
+maintainers:
+  - "@famosab"

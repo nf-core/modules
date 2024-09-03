@@ -1,0 +1,72 @@
+
+nextflow_process {
+
+    name "Test Process ARCASHLA_EXTRACT"
+    script "../main.nf"
+    process "ARCASHLA_EXTRACT"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "arcashla"
+    tag "arcashla/extract"
+
+    test("test-arcashla-extract") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+				]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.log[0]).text.contains('Converting bam to fastq') },
+                { assert snapshot(
+                    process.out.extracted_reads_fastq[0][1].collect { file(it).name },
+                    process.out.intermediate_bam[0][1].collect { bam(it).getReadsMD5() },
+                    file(process.out.intermediate_sam[0][1]).name,
+                    bam(process.out.intermediate_sorted_bam[0][1]).getReadsMD5(),
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-arcashla-extract-single-end") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_single_end', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test3.single_end.markduplicates.sorted.bam', checkIfExists: true)
+				]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.log[0]).text.contains('Converting bam to fastq') },
+                { assert snapshot(
+                    file(process.out.extracted_reads_fastq[0][1]).name,
+                    process.out.intermediate_bam[0][1].collect { bam(it).getReadsMD5() },
+                    file(process.out.intermediate_sam[0][1]).name,
+                    bam(process.out.intermediate_sorted_bam[0][1]).getReadsMD5(),
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+}
