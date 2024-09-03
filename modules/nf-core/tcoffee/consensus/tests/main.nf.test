@@ -147,7 +147,7 @@ nextflow_process {
                 }
             }
             run("TCOFFEE_ALIGN") {
-                script "../../../tcoffee/align//main.nf"
+                script "../../../tcoffee/align/main.nf"
                 process {
                     """
                     input[0] = [ [ id:'test' ],
