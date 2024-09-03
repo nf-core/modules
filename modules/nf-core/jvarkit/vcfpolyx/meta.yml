@@ -1,0 +1,45 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "jvarkit_vcfpolyx"
+## TODO nf-core: Add a description of the module and list keywords
+description: write your description here
+keywords:
+  - sort
+  - example
+  - genomics
+tools:
+  - "jvarkit":
+      ## TODO nf-core: Add a description and other details for the software below
+      description: "Java utilities for Bioinformatics."
+      homepage: "None"
+      documentation: "None"
+      tool_dev_url: "None"
+      doi: ""
+      licence: ['MIT License']
+
+## TODO nf-core: Add a description of all of the variables used as input
+input:
+  #
+  ## TODO nf-core: Delete / customise this example input
+  - bam:
+      type: file
+      description: Sorted BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+
+## TODO nf-core: Add a description of all of the variables used as output
+output:
+  #
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  ## TODO nf-core: Delete / customise this example output
+  - bam:
+      type: file
+      description: Sorted BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+
+authors:
+  - "@lindenb"
+maintainers:
+  - "@lindenb"
