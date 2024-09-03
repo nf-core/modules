@@ -29,7 +29,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                  file(process.out.tif[0][1]).name,
+                      file(process.out.tif[0][1]).name,
                   process.out.versions).match() }
             )
         }
