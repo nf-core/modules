@@ -134,7 +134,7 @@ nextflow_process {
         config "./sequence.config"
         setup {
             run("FAMSA_ALIGN") {
-                script "../../../famsa/align//main.nf"
+                script "../../../famsa/align/main.nf"
                 process {
                     """
                     input[0] = [ [ id:'test' ],
