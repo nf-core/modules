@@ -1,0 +1,58 @@
+process UPP_ALIGN {
+    tag "$meta.id"
+    label 'process_medium'
+
+    conda "${moduleDir}/environment.yml"
+    container "community.wave.seqera.io/library/sepp_pigz:ea6dbc7704a2e251"
+
+    input:
+    tuple val(meta) , path(fasta)
+    tuple val(meta2), path(tree)
+    val(compress)
+
+    output:
+    tuple val(meta), path("*.aln{.gz,}"), emit: alignment
+    path "versions.yml"                 , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def tree_args = tree ? "-t $tree" : ""
+    """
+    run_upp.py \\
+        $args \\
+        -x $task.cpus \\
+        -s ${fasta} \\
+        -d . \\
+        -o ${prefix} \\
+        -p ./upp-temporary
+
+    mv ${prefix}_alignment.fasta ${prefix}.aln
+
+    # compress both output files
+    if ${compress}; then
+        pigz -p ${task.cpus} ${prefix}.aln 
+    fi
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        upp: \$(run_upp.py -v | grep "run_upp" | cut -f2 -d" ")
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.aln${compress ? '.gz':''}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        upp: \$(run_upp.py -v | grep "run_upp" | cut -f2 -d" ")
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
+    END_VERSIONS
+    """
+}
