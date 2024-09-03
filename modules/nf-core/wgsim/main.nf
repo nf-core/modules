@@ -27,12 +27,12 @@ process WGSIM {
         $args \\
         -S $seed \\
         $fasta \\
-        ${prefix}_R1.fastq\\
+        ${prefix}_R1.fastq \\
         ${prefix}_R2.fastq
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        wgsim: $VERSION
+        wgsim: wgsim 2>&1 | grep "Version" | sed 's/Version: //'
     END_VERSIONS
     """
 
@@ -45,7 +45,7 @@ process WGSIM {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        wgsim: $VERSION
+        wgsim: wgsim 2>&1 | grep "Version" | sed 's/Version: //'
     END_VERSIONS
     """
 }
