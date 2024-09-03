@@ -259,8 +259,6 @@ jobs:
           - profile: conda
             tags: cellrangerarc/mkfastq
           - profile: conda
-            tags: cellrangerarc/mkgtf
-          - profile: conda
             tags: cellrangerarc/mkref
           - profile: conda
             tags: cellrangeratac/count
@@ -318,6 +316,8 @@ jobs:
             tags: islandpath
           - profile: conda
             tags: manta/convertinversion
+          - profile: conda
+            tags: mcstaging/imc2mc
           - profile: conda
             tags: mcquant
           - profile: conda
@@ -545,6 +545,8 @@ jobs:
           - profile: conda
             path: modules/nf-core/fastk/fastk
           - profile: conda
+            path: modules/nf-core/cellrangerarc/mkgtf
+          - profile: conda
             path: modules/nf-core/fastk/histex
           - profile: conda
             path: modules/nf-core/fastk/merge
@@ -572,6 +574,8 @@ jobs:
             path: modules/nf-core/ilastik/pixelclassification
           - profile: conda
             path: modules/nf-core/imputeme/vcftoprs
+          - profile: conda
+            path: modules/nf-core/mcstaging/imc2mc
           - profile: conda
             path: modules/nf-core/mcquant
           - profile: conda
