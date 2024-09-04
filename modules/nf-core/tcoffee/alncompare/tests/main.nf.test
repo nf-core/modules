@@ -15,7 +15,7 @@ nextflow_process {
                 """
                 input[0] = [
                                 [ id:'test' ], // meta map
-                                file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                                file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true),
                                 file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
                             ]
                 """
@@ -37,7 +37,7 @@ nextflow_process {
                 """
                 input[0] = [
                                 [ id:'test' ], // meta map
-                                file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                                file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true),
                                 file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
                             ]
                 """

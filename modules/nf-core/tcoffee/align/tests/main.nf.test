@@ -125,7 +125,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = [ [ id:'test' ],
-                                 file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/structures/seatoxin-ref.tar.gz"", checkIfExists: true)
+                                 file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/structures/seatoxin-ref.tar.gz", checkIfExists: true)
                                ]
 
                     """
