@@ -15,8 +15,8 @@ process SIMPLEAF_QUANT {
     tuple val(meta), val(chemistry), path(reads)
     tuple val(meta2), path(index)
     tuple val(meta3), path(txp2gene)
+    tuple val(meta4)
     val resolution
-    tuple val(meta4), path(whitelist)
 
     output:
     tuple val(meta), path("${prefix}"), emit: results
@@ -29,6 +29,11 @@ process SIMPLEAF_QUANT {
     def args      = task.ext.args ?: ''
     def args_list = args.tokenize()
     prefix    = task.ext.prefix ?: "${meta.id}"
+
+    unfiltered_command = ""
+    if (whitelist) {
+        unfiltered_command = "-u <(gzip -dcf ${whitelist})"
+    }
 
     // expected cells
     def expect_cells = meta.expected_cells ? "--expect-cells $meta.expected_cells" : ''
@@ -88,4 +93,60 @@ process SIMPLEAF_QUANT {
         ${mapper}: \$(${mapper} --version | sed -e "s/${mapper} //g")
     END_VERSIONS
     """
+}
+
+// define function for checking permit list generation arguments:
+def check_pl_filtering_args(meta4, chemistry) {
+    // -u, --unfiltered-pl
+    def unfiltered_pl = ""
+    // -k, --knee
+    def knee = ""
+    // -f, --forced-cells
+    def forced_cells = ""
+    // -x, explicit-pl
+    def explicit_pl = ""
+    // -p, --expect-cells
+    def expect_cells = ""
+
+    // now check each argument and set the corresponding param if encountered
+    meta4.each { k, v ->
+        if (k == "k") {
+            // if knee, no need to check for value
+            knee = '-k'
+        } else if (k == "f") {
+            // if forced-cells, value must be an integer
+            if (v.isInteger()) {
+                forced_cells = '-f ' + v
+            } else {
+                error "Forced cells must be an integer"
+            }
+        } else if (k == "e") {
+            // if expect-cells, value must be an integer
+            if (v.isInteger()) {
+                expect_cells = '-p ' + v
+            } else {
+                error "Expected cells must be an integer"
+            }
+        } else if (k == "x") {
+            // if explicit-pl, value must be a file
+            v_file = file(v, checkIfExists: true)
+            explicit_pl = '-x ' + "${v_file}"
+        } else if (k == "u") {
+            // if unfiltered-pl, value must be a file or an empty string
+            if (v != "") {
+                v_file = file(v, checkIfExists: true)
+                unfiltered_pl = '-u ' + "${v_file}"
+            } else if (chemistry == "10xv3" || chemistry == "10xv2") {
+                unfiltered_pl = '-u <(gzip -dcf ${whitelist})'
+            } else {
+                error "Unfiltered permit list is required for chemistry ${chemistry}"
+            }
+        }
+    }
+    // only one option could be non-empty
+    if ((unfiltered_pl != "" + knee != "" + forced_cells != "" + explicit_pl != "" + expect_cells != "") == 1) {
+        return unfiltered_pl + knee + forced_cells + explicit_pl + expect_cells
+    } else {
+        error "Only one of the permit list filtering options can be used"
+    }
 }

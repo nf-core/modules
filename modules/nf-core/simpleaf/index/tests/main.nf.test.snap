@@ -5,10 +5,14 @@
             "duplicate_clusters.tsv:md5,c96ca031de4888558eec24fd13bd1c9b",
             "mphf.bin:md5,48234131012798a528048d48881c1ce2",
             [
-                "versions.yml:md5,47601b4a8da5a40635a86b0ed8629a74"
+                "versions.yml:md5,35a8dd98779c2b42a47a44e8daceabb1"
             ]
         ],
-        "timestamp": "2024-01-24T21:21:27.842730909"
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-09-02T23:12:42.001135322"
     },
     "Homo sapiens - salmon - transcriptome index - direct - transcriptome fasta - stub": {
         "content": [
@@ -21,7 +25,11 @@
                         [
                             "ctg_offsets.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
                             "duplicate_clusters.tsv:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "mphf.bin:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            "mphf.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "piscem_idx.ctab:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "piscem_idx.ectab:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "piscem_idx.refinfo:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "piscem_idx.sshash:md5,d41d8cd98f00b204e9800998ecf8427e"
                         ]
                     ]
                 ],
@@ -42,7 +50,11 @@
                             [
                                 "ctg_offsets.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
                                 "duplicate_clusters.tsv:md5,d41d8cd98f00b204e9800998ecf8427e",
-                                "mphf.bin:md5,d41d8cd98f00b204e9800998ecf8427e"
+                                "mphf.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "piscem_idx.ctab:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "piscem_idx.ectab:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "piscem_idx.refinfo:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "piscem_idx.sshash:md5,d41d8cd98f00b204e9800998ecf8427e"
                             ],
                             [
                                 "t2g_3col.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
@@ -51,7 +63,10 @@
                     ]
                 ],
                 "3": [
-                    "versions.yml:md5,26b5417a172514be292f0ea0e0e55830"
+                    "versions.yml:md5,ea59518a920c13b658220ff44ba89ad2"
+                ],
+                "4": [
+                    true
                 ],
                 "index": [
                     [
@@ -61,9 +76,16 @@
                         [
                             "ctg_offsets.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
                             "duplicate_clusters.tsv:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "mphf.bin:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            "mphf.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "piscem_idx.ctab:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "piscem_idx.ectab:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "piscem_idx.refinfo:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "piscem_idx.sshash:md5,d41d8cd98f00b204e9800998ecf8427e"
                         ]
                     ]
+                ],
+                "no_piscem": [
+                    true
                 ],
                 "salmon": [
                     [
@@ -74,7 +96,11 @@
                             [
                                 "ctg_offsets.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
                                 "duplicate_clusters.tsv:md5,d41d8cd98f00b204e9800998ecf8427e",
-                                "mphf.bin:md5,d41d8cd98f00b204e9800998ecf8427e"
+                                "mphf.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "piscem_idx.ctab:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "piscem_idx.ectab:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "piscem_idx.refinfo:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "piscem_idx.sshash:md5,d41d8cd98f00b204e9800998ecf8427e"
                             ],
                             [
                                 "t2g_3col.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
@@ -91,11 +117,15 @@
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,26b5417a172514be292f0ea0e0e55830"
+                    "versions.yml:md5,ea59518a920c13b658220ff44ba89ad2"
                 ]
             }
         ],
-        "timestamp": "2024-01-24T21:21:38.650086761"
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-09-02T23:12:48.196321678"
     },
     "Homo sapiens - salmon - genome index - expanded - fasta + gtf": {
         "content": [
@@ -103,9 +133,158 @@
             "duplicate_clusters.tsv:md5,c96ca031de4888558eec24fd13bd1c9b",
             "mphf.bin:md5,c7ae1b883f0987fedc8bb61e139136a7",
             [
-                "versions.yml:md5,47601b4a8da5a40635a86b0ed8629a74"
+                "versions.yml:md5,35a8dd98779c2b42a47a44e8daceabb1"
             ]
         ],
-        "timestamp": "2024-01-24T21:21:05.595452412"
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-09-02T23:11:27.142128805"
+    },
+    "Homo sapiens - piscem - transcriptome index - direct - transcriptome fasta - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        [
+                            
+                        ],
+                        [
+                            "ctg_offsets.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "duplicate_clusters.tsv:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "mphf.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "piscem_idx.ctab:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "piscem_idx.ectab:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "piscem_idx.refinfo:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "piscem_idx.sshash:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "1": [
+                    [
+                        [
+                            
+                        ],
+                        "t2g_3col.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    [
+                        [
+                            
+                        ],
+                        [
+                            [
+                                "ctg_offsets.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "duplicate_clusters.tsv:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "mphf.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "piscem_idx.ctab:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "piscem_idx.ectab:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "piscem_idx.refinfo:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "piscem_idx.sshash:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            ],
+                            [
+                                "t2g_3col.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            ]
+                        ]
+                    ]
+                ],
+                "3": [
+                    "versions.yml:md5,df7b49ff0fa825ce11f1982a8868a6f3"
+                ],
+                "4": [
+                    false
+                ],
+                "index": [
+                    [
+                        [
+                            
+                        ],
+                        [
+                            "ctg_offsets.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "duplicate_clusters.tsv:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "mphf.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "piscem_idx.ctab:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "piscem_idx.ectab:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "piscem_idx.refinfo:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "piscem_idx.sshash:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "no_piscem": [
+                    false
+                ],
+                "salmon": [
+                    [
+                        [
+                            
+                        ],
+                        [
+                            [
+                                "ctg_offsets.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "duplicate_clusters.tsv:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "mphf.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "piscem_idx.ctab:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "piscem_idx.ectab:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "piscem_idx.refinfo:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "piscem_idx.sshash:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            ],
+                            [
+                                "t2g_3col.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            ]
+                        ]
+                    ]
+                ],
+                "transcript_tsv": [
+                    [
+                        [
+                            
+                        ],
+                        "t2g_3col.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,df7b49ff0fa825ce11f1982a8868a6f3"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-09-02T23:11:20.098779212"
+    },
+    "Homo sapiens - piscem - genome index - expanded - fasta + gtf": {
+        "content": [
+            "piscem_idx.ctab:md5,b1f06b8f955abb081af621314eecec1b",
+            "piscem_idx.ectab:md5,a5ea0ccd884e5eaef81cc1154926e08f",
+            "piscem_idx.refinfo:md5,5b8f0f210a024a258de9c7d5a86f6ace",
+            "piscem_idx.sshash:md5,f849ef7856214dcfd7aa0ba18398efb7",
+            [
+                "versions.yml:md5,7d6bb298b9108cf132d532d32ba04920"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-09-02T23:09:21.555148303"
+    },
+    "Homo sapiens - piscem - transcriptome index - direct - transcriptome fasta": {
+        "content": [
+            "piscem_idx.ctab:md5,f429908da5868ac8e134044c697d7ed1",
+            "piscem_idx.ectab:md5,e8bf4860e5863c55b26b0f24d195a080",
+            "piscem_idx.refinfo:md5,65315e97e922717993f9e9491e0091d9",
+            "piscem_idx.sshash:md5,445a7cdda4c45a826ba144fd13efd98f",
+            [
+                "versions.yml:md5,7d6bb298b9108cf132d532d32ba04920"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-09-02T23:11:13.393915933"
     }
 }
