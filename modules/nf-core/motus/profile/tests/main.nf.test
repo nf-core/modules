@@ -9,20 +9,21 @@ nextflow_process {
     tag "motus/profile"
 
 
-    setup {
-        run("MOTUS_DOWNLOADDB") {
-            script "modules/nf-core/motus/downloaddb/main.nf"
-            process {
-                """
-                input[0] = Channel.of([
-                    file('https://raw.githubusercontent.com/motu-tool/mOTUs/master/motus/downloadDB.py')
-                ])
-                """
+    test("sarscov2 - illumina paired end [fastq]") {
+
+        setup {
+            run("MOTUS_DOWNLOADDB") {
+                script "modules/nf-core/motus/downloaddb/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        file('https://raw.githubusercontent.com/motu-tool/mOTUs/master/motus/downloadDB.py')
+                    ])
+                    """
+                }
             }
         }
-    }
 
-    test("sarscov2 - illumina paired end [fastq]") {
         when {
             process {
                 """
@@ -52,6 +53,20 @@ nextflow_process {
     }
 
     test("sarscov2 - illumina paired end [bam]") {
+
+        setup {
+            run("MOTUS_DOWNLOADDB") {
+                script "modules/nf-core/motus/downloaddb/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        file('https://raw.githubusercontent.com/motu-tool/mOTUs/master/motus/downloadDB.py')
+                    ])
+                    """
+                }
+            }
+        }
+
         when {
             process {
                 """
