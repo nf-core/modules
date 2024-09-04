@@ -14,24 +14,19 @@ tools:
       homepage: https://github.com/COMBINE-lab/simpleaf
       licence: ["BSD-3-Clause"]
 input:
-  - meta: 
-      type: map
-      description: |
-        Groovy Map containing miscellaneous parameters and information. Possible parameters key:value pairs are:
-        - 'kmer-length': 31:  the value of k to be used to construct the index. Replace 31 with the desired value.
-        - 'gff3-format': false: denotes that the input annotation is a GFF3 (instead of GTF) file
-        - 'keep-duplicates': false: keep duplicated identical sequences when constructing the index
-        - 'overwrite': false: overwrite existing files if the output directory is already populated.
-  - no_piscem:
+  - use_piscem:
       type: boolean
       description: |
-        don't use the default piscem for indexing, instead use salmon-alevin.
+        use the default piscem for indexing, instead of salmon-alevin.
 
   - Reference Files:
-    - transcript_fasta:
-        type: file or []
+    type: tuple
+    description: |
+      A tuple containing four elements. The first element is a genome FASTA file. The second element is a genome GTF/GFF3 file, and the third element is a transcript FASTA file. Only the first two elements or the third element should be provided. The latter conflicts with the first two elements. If not provided, leave the elment as `[]`.
+    - meta: 
+        type: map
         description: |
-          (Optional) target sequences used for constructing the index directly; avoid expanded reference construction). All 'Expanded Reference Options' are ignored if this is provided. This conflicts with `genome_fasta`/`genome_gtf`.
+          Groovy Map containing information on the reference files used for indexing
     - genome_fasta: 
         type: file or []
         description: |
@@ -40,50 +35,32 @@ input:
         type: file or []
         description: |
           reference GTF/GFF3 file to be used for the expanded reference construction. This must be coupled with a `genome_fasta` file.
+    - transcript_fasta:
+        type: file or []
+        description: |
+          (Optional) target sequences used for constructing the index directly; avoid expanded reference construction). All 'Expanded Reference Options' are ignored if this is provided. This conflicts with `genome_fasta`/`genome_gtf`.
 
-  - Expanded Reference Options:
-      - ref_type:
-          type: string
-          description: |
-            specify whether an expanded reference, spliced+intronic (or splici) or spliced+unspliced (or spliceu), should be built
-          default: "spliced+intronic"
-      - rlen:
-          type: int
-          default: 91
-          description: |
-            the target read length the splici index will be built for
-      - dedup:
-          type: boolean
-          description: |
-            deduplicate identical sequences in roers when building an expanded reference
-      - spliced:  
-          type: file
-          description: |
-            path to FASTA file with extra spliced sequence to add to the index 
-      - unspliced:  
-          type: file
-          description: |
-            path to FASTA file with extra unspliced sequence to add to the index  
-  - Piscem Index Options: 
-      - minimizer_length:
-          type: int
-          description: |
-            the value of m to be used to construct the piscem index (must be < k)
-          default: 19
-      - decoy_paths:
-          type: file
-          description: |
-            path to (optional) decoy sequence used to insert poison k-mer information into the index (only if using piscem >= 0.7)
-      - seed:
-          type: int
-          description: |
-            seed value to use in SSHash index construction (try changing this in the rare event index build fails)
-          default: 1
-  - Alternative salmon-alevin Index Options:
-      - sparse:
-          type: boolean
-          description: |
-            if this flag is passed, build the sparse rather than dense index for mapping
+  - Simmpleaf Index parameters:
+    type: Map
+    description: |
+      Groovy Map containing expanded reference options supported by simpleaf. possbible key:value pairs are:
+    - Miscellaneous Parameters:
+        - `'kmer-length': 31`:  the value of k to be used to construct the index. Replace 31 with the desired value.
+        - `'gff3-format': false`: denotes that the input annotation is a GFF3 (instead of GTF) file
+        - `'keep-duplicates': false`: keep duplicated identical sequences when constructing the index
+        - `'overwrite': false`: overwrite existing files if the output directory is already populated.
+    - Expanded Reference Options:
+        - `'ref_type' : 'spliced+intronic'`: A string specify whether an expanded reference, spliced+intronic (or splici) or spliced+unspliced (or spliceu), should be built. Possible values are 'spliced+intronic' or 'spliced+unspliced'.
+        - `'rlen' : 91`: the target read length the splici index will be built for. Replace 91 with the desired value.
+        - `'dedup' : false`: deduplicate identical sequences in roers when building an expanded reference.
+        - `'spliced' : 'spliced.fa'`: path to FASTA file with extra spliced sequence to add to the index. ONLY use if you have extra spliced sequences to add to the index. Replace 'spliced.fa' with the desired file path.
+        - `'unspliced' : 'unspliced.fa'`: path to FASTA file with extra unspliced sequence to add to the index. ONLY use if you have extra unspliced sequences to add to the index. Replace 'unspliced.fa' with the desired file path.
+    - Piscem Index Options: 
+      - `'ninimizer-length' : 19`: the value of m to be used to construct the piscem index (must be < k)
+      - `'decoy_paths' : 'decoy.fa'`: path to (optional) decoy sequence used to insert poison k-mer information into the index (only if using piscem >= 0.7)
+      - `'seed' : 1`: seed value to use in SSHash index construction (try changing this in the rare event index build fails)
+    - Alternative salmon-alevin Index Options:
+    - `'sparse' : false`: if this flag is passed, build the sparse rather than dense index for mapping
 
 output:
   - meta:
