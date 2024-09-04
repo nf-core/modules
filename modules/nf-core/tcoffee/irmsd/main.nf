@@ -44,6 +44,7 @@ process TCOFFEE_IRMSD {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${msa.baseName}"
     """
+    export TEMP='./'
     touch ${prefix}.irmsd
 
     cat <<-END_VERSIONS > versions.yml

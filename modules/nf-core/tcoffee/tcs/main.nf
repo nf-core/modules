@@ -63,6 +63,7 @@ process TCOFFEE_TCS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    export TEMP='./'
     touch ${prefix}.tcs
     touch ${prefix}.scores
 

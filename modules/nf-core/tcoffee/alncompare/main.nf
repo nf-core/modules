@@ -53,6 +53,7 @@ process TCOFFEE_ALNCOMPARE {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    export TEMP='./'
     touch "${prefix}.scores"
 
     cat <<-END_VERSIONS > versions.yml

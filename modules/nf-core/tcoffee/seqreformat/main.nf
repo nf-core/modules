@@ -38,6 +38,7 @@ process TCOFFEE_SEQREFORMAT {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    export TEMP='./'
     touch "${prefix}.txt"
 
     cat <<-END_VERSIONS > versions.yml
