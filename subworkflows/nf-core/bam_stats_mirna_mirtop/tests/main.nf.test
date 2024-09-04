@@ -17,7 +17,7 @@ nextflow_workflow {
                 """
                 input[0] = [
                     [ id:'sample_sim_isomir_bam'], // meta map
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/mirtop/sim_isomir_sort.bam", checkIfExists: true),
+                    file("https://github.com/nf-core/test-datasets/raw/smrnaseq/nf-test_data/mirtop/SRX8195117_SRR11631013_seqcluster.bam", checkIfExists: true),
                 ]
                 input[1] = [
                     [ id:'hairpin'], // meta map
@@ -34,7 +34,11 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert snapshot(
+                    workflow.out.rawdata_tsv,
+                    workflow.out.stats_txt,
+                    workflow.out.stats_log,
+                    workflow.out.versions).match() }
             )
         }
     }

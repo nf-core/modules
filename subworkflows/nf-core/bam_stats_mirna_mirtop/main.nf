@@ -24,15 +24,15 @@ workflow BAM_STATS_MIRNA_MIRTOP {
     MIRTOP_EXPORT ( MIRTOP_GFF.out.mirtop_gff, ch_hairpin, ch_gtf_species )
     ch_versions = ch_versions.mix(MIRTOP_EXPORT.out.versions.first())
 
-    // MIRTOP_STATS ( MIRTOP_GFF.out.mirtop_gff )
-    // ch_versions = ch_versions.mix(MIRTOP_STATS.out.versions.first())
+    MIRTOP_STATS ( MIRTOP_GFF.out.mirtop_gff )
+    ch_versions = ch_versions.mix(MIRTOP_STATS.out.versions.first())
 
     emit:
     mirtop_gff     = MIRTOP_GFF.out.mirtop_gff              // channel: [ val(meta), [ gff ] ]
     counts_tsv     = MIRTOP_COUNTS.out.tsv                  // channel: [ val(meta), [ tsv ] ]
     rawdata_tsv    = MIRTOP_EXPORT.out.tsv                  // channel: [ val(meta), [ tsv ] ]
-    // rawdata_tsv    = MIRTOP_STATS.out.txt                   // channel: [ val(meta), [ txt ] ]
-    // stats_log      = MIRTOP_STATS.out.log                   // channel: [ val(meta), [ log ] ]
+    stats_txt      = MIRTOP_STATS.out.txt                   // channel: [ val(meta), [ txt ] ]
+    stats_log      = MIRTOP_STATS.out.log                   // channel: [ val(meta), [ log ] ]
     versions       = ch_versions                            // channel: [ versions.yml ]
 }
 
