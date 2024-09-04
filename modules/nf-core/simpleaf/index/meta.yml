@@ -14,39 +14,82 @@ tools:
       homepage: https://github.com/COMBINE-lab/simpleaf
       licence: ["BSD-3-Clause"]
 input:
-  - meta:
+  - meta: 
       type: map
       description: |
-        Groovy Map containing information on genome_fasta
-  - genome_fasta:
-      type: file
-      description: |
-        FASTA file containing the genome sequence
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing information on genome_gtf
-  - genome_gtf:
-      type: file
-      description: |
-        GTF file containing transcript annotations. Optional if transcript FASTA file is provided.
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing information on transcript_fasta
-  - transcript_fasta:
-      type: file
-      description: |
-        FASTA file containing the transcript sequences. Optional if transcript GTF file is provided.
+        Groovy Map containing miscellaneous parameters and information. Possible parameters key:value pairs are:
+        - 'kmer-length': 31:  the value of k to be used to construct the index. Replace 31 with the desired value.
+        - 'gff3-format': false: denotes that the input annotation is a GFF3 (instead of GTF) file
+        - 'keep-duplicates': false: keep duplicated identical sequences when constructing the index
+        - 'overwrite': false: overwrite existing files if the output directory is already populated.
   - no_piscem:
       type: boolean
       description: |
-        boolean indicating if mapping with salmon, instead of piscem, the default mapper.
+        don't use the default piscem for indexing, instead use salmon-alevin.
+
+  - Reference Files:
+    - transcript_fasta:
+        type: file or []
+        description: |
+          (Optional) target sequences used for constructing the index directly; avoid expanded reference construction). All 'Expanded Reference Options' are ignored if this is provided. This conflicts with `genome_fasta`/`genome_gtf`.
+    - genome_fasta: 
+        type: file or []
+        description: |
+          reference genome to be used for the expanded reference construction. This must be coupled with a `genome_gtf` file.
+    - genome_gtf:
+        type: file or []
+        description: |
+          reference GTF/GFF3 file to be used for the expanded reference construction. This must be coupled with a `genome_fasta` file.
+
+  - Expanded Reference Options:
+      - ref_type:
+          type: string
+          description: |
+            specify whether an expanded reference, spliced+intronic (or splici) or spliced+unspliced (or spliceu), should be built
+          default: "spliced+intronic"
+      - rlen:
+          type: int
+          default: 91
+          description: |
+            the target read length the splici index will be built for
+      - dedup:
+          type: boolean
+          description: |
+            deduplicate identical sequences in roers when building an expanded reference
+      - spliced:  
+          type: file
+          description: |
+            path to FASTA file with extra spliced sequence to add to the index 
+      - unspliced:  
+          type: file
+          description: |
+            path to FASTA file with extra unspliced sequence to add to the index  
+  - Piscem Index Options: 
+      - minimizer_length:
+          type: int
+          description: |
+            the value of m to be used to construct the piscem index (must be < k)
+          default: 19
+      - decoy_paths:
+          type: file
+          description: |
+            path to (optional) decoy sequence used to insert poison k-mer information into the index (only if using piscem >= 0.7)
+      - seed:
+          type: int
+          description: |
+            seed value to use in SSHash index construction (try changing this in the rare event index build fails)
+          default: 1
+  - Alternative salmon-alevin Index Options:
+      - sparse:
+          type: boolean
+          description: |
+            if this flag is passed, build the sparse rather than dense index for mapping
+
 output:
   - meta:
       type: map
       description: |
-        Groovy Map containing information on genome_fasta or transcript_fasta (whichever was used)
+        Groovy Map containing information on genome_fasta or transcript_fasta (whichever was used), and all other parameters used for indexing
   - index:
       type: directory
       description: |
