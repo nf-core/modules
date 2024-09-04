@@ -33,4 +33,16 @@ process METHYLDACKEL_EXTRACT {
         methyldackel: \$(MethylDackel --version 2>&1 | cut -f1 -d" ")
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def out_extension = args.contains('--methylKit') ? 'methylKit' : 'bedGraph'
+    """
+    touch ${bam.baseName}_CpG.${out_extension}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        methyldackel: \$(MethylDackel --version 2>&1 | cut -f1 -d" ")
+    END_VERSIONS
+    """
 }
