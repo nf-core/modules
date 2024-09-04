@@ -1,0 +1,60 @@
+
+nextflow_process {
+
+    name "Test Process ESTSFS"
+    script "../main.nf"
+    process "ESTSFS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "estsfs"
+
+    test("test-estsfs") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'delete_me/estsfs/config-JC.txt', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/estsfs/TEST-DATA.TXT', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/estsfs/seedfile.txt', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-estsfs-stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'delete_me/estsfs/config-JC.txt', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/estsfs/TEST-DATA.TXT', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/estsfs/seedfile.txt', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

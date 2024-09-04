@@ -13,6 +13,7 @@ process BCFTOOLS_REHEADER {
 
     output:
     tuple val(meta), path("*.{vcf,vcf.gz,bcf,bcf.gz}"), emit: vcf
+    tuple val(meta), path("*.{csi,tbi}")              , emit: index, optional: true
     path "versions.yml"                               , emit: versions
 
     when:
@@ -59,8 +60,16 @@ process BCFTOOLS_REHEADER {
                     args2.contains("--output-type z") || args2.contains("-Oz") ? "vcf.gz" :
                     args2.contains("--output-type v") || args2.contains("-Ov") ? "vcf" :
                     "vcf"
+    def index = args2.contains("--write-index=tbi") || args2.contains("-W=tbi") ? "tbi" :
+                args2.contains("--write-index=csi") || args2.contains("-W=csi") ? "csi" :
+                args2.contains("--write-index") || args2.contains("-W") ? "csi" :
+                ""
+    def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
+    def create_index = extension.endsWith(".gz") && index.matches("csi|tbi") ? "touch ${prefix}.${extension}.${index}" : ""
+
     """
-    touch ${prefix}.${extension}
+    ${create_cmd} ${prefix}.${extension}
+    ${create_index}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
