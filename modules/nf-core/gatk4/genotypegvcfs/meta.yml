@@ -20,7 +20,7 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - gvcf:
+  - input:
       type: file
       description: |
         gVCF(.gz) file or to a GenomicsDB
@@ -36,22 +36,47 @@ input:
   - intervals_index:
       type: file
       description: Interval index file (optional)
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing fasta information
+        e.g. [ id:'test', single_end:false ]
   - fasta:
       type: file
       description: Reference fasta file
       pattern: "*.fasta"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing fai information
+        e.g. [ id:'test', single_end:false ]
   - fai:
       type: file
       description: Reference fasta index file
       pattern: "*.fai"
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing dict information
+        e.g. [ id:'test', single_end:false ]
   - dict:
       type: file
       description: Reference fasta sequence dict file
       pattern: "*.dict"
+  - meta5:
+      type: map
+      description: |
+        Groovy Map containing dbsnp information
+        e.g. [ id:'test', single_end:false ]
   - dbsnp:
       type: file
       description: dbSNP VCF file
       pattern: "*.vcf.gz"
+  - meta6:
+      type: map
+      description: |
+        Groovy Map containing dbsnp tbi information
+        e.g. [ id:'test', single_end:false ]
   - dbsnp_tbi:
       type: file
       description: dbSNP VCF index file
