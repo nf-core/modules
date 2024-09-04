@@ -9,13 +9,13 @@ process TCOFFEE_CONSENSUS {
 
 
     input:
-    tuple val(meta), path(aln)
+    tuple val(meta) , path(aln)
     tuple val(meta2), path(tree)
     val(compress)
 
     output:
     tuple val(meta), path("*.{aln,aln.gz}"), emit: alignment
-    path "versions.yml"           , emit: versions
+    path "versions.yml"                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
