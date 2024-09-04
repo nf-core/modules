@@ -40,7 +40,7 @@ process BWAMETH_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bwameth: \$(echo \$(bwameth.py --version 2>&1) | cut -f2 -d" ")
+        bwameth: \$(echo \$(bwameth.py --version 2>/dev/null) | cut -f2 -d" ")
     END_VERSIONS
     """
 
@@ -51,7 +51,7 @@ process BWAMETH_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bwameth: \$(echo \$(bwameth.py --version 2>&1) | cut -f2 -d" ")
+        bwameth: \$(echo \$(bwameth.py --version 2>/dev/null) | cut -f2 -d" ")
     END_VERSIONS
     """
 }
