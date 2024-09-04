@@ -13,38 +13,50 @@ nextflow_process {
     tag "famsa/guidetree"
     tag "famsa/align"
 
-     test("consensus - no tree - uncompressed") {
+    config "./sequence.config"
 
-        config "./sequence.config"
-        setup {
-            run("FAMSA_ALIGN") {
-                script "../../../famsa/align/main.nf"
-                process {
-                    """
-                    input[0] = [ [ id:'test' ],
-                                 file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)                                 
-                               ]
-                    input[1] = [[:],[]]
-                    input[2] = false
-
-                    """
-                }
+    setup {
+        run("FAMSA_GUIDETREE") {
+            script "../../../famsa/guidetree/main.nf"
+            process {
+                """
+                input[0] = [ [ id:'test' ],
+                                file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)                                 
+                            ]
+                """
             }
-            run("TCOFFEE_ALIGN") {
-                script "../../../tcoffee/align/main.nf"
-                process {
-                    """
-                    input[0] = [ [ id:'test' ],
-                                 file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)                                 
-                               ]
-                    input[1] = [[:],[]]
-                    input[2] = [[:],[],[]]
-                    input[3] = false
-
-                    """
-                }
-            }          
         }
+        run("FAMSA_ALIGN") {
+            script "../../../famsa/align/main.nf"
+            process {
+                """
+                input[0] = [ [ id:'test' ],
+                                file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)                                 
+                            ]
+                input[1] = [[:],[]]
+                input[2] = false
+
+                """
+            }
+        }
+        run("TCOFFEE_ALIGN") {
+            script "../../../tcoffee/align/main.nf"
+            process {
+                """
+                input[0] = [ [ id:'test' ],
+                                file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)                                 
+                            ]
+                input[1] = [[:],[]]
+                input[2] = [[:],[],[]]
+                input[3] = false
+
+                """
+            }
+        }          
+    }
+
+    test("consensus - no tree - uncompressed - seatoxin ") {
+       
         when {
             process {
                 """
@@ -68,48 +80,8 @@ nextflow_process {
         }
     }
 
-     test("consensus - tree - compressed") {
+     test("consensus - tree - compressed- seatoxin") {
 
-        config "./sequence.config"
-        setup {
-            run("FAMSA_GUIDETREE") {
-                script "../../../famsa/guidetree/main.nf"
-                process {
-                    """
-                    input[0] = [ [ id:'test' ],
-                                 file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)                                 
-                               ]
-                    """
-                }
-            }
-            run("FAMSA_ALIGN") {
-                script "../../../famsa/align/main.nf"
-                process {
-                    """
-                    input[0] = [ [ id:'test' ],
-                                 file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)                                 
-                               ]
-                    input[1] = [[:],[]]
-                    input[2] = false
-
-                    """
-                }
-            }
-            run("TCOFFEE_ALIGN") {
-                script "../../../tcoffee/align/main.nf"
-                process {
-                    """
-                    input[0] = [ [ id:'test' ],
-                                 file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)                                 
-                               ]
-                    input[1] = [[:],[]]
-                    input[2] = [[:],[],[]]
-                    input[3] = false
-
-                    """
-                }
-            }          
-        }
         when {
             process {
                 """
@@ -124,8 +96,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.alignment).match("alignment_gt")},
-                { assert snapshot(process.out.versions).match("versions_comp") }
+                { assert snapshot(
+                                              process.out.alignment,
+                                              process.out.versions
+                                              ).match()
+                },
             )
         }
     }
@@ -134,36 +109,7 @@ nextflow_process {
      test("consensus - stub") {
 
         options "-stub"
-        config "./sequence.config"
-        setup {
-            run("FAMSA_ALIGN") {
-                script "../../../famsa/align/main.nf"
-                process {
-                    """
-                    input[0] = [ [ id:'test' ],
-                                 file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)                                 
-                               ]
-                    input[1] = [[:],[]]
-                    input[2] = false
 
-                    """
-                }
-            }
-            run("TCOFFEE_ALIGN") {
-                script "../../../tcoffee/align/main.nf"
-                process {
-                    """
-                    input[0] = [ [ id:'test' ],
-                                 file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)                                 
-                               ]
-                    input[1] = [[:],[]]
-                    input[2] = [[:],[],[]]
-                    input[3] = false
-
-                    """
-                }
-            }          
-        }
         when {
             process {
                 """
