@@ -54,11 +54,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    // md5sum is not stable, order of elements in column "variant" change
-                    file(process.out.tsv[0][1]).readLines().findAll { it.contains("iso-22-I0S21NSLN") },
-                    process.out.versions,
+                    process.out.versions
                         ).match()
-                        }
+                        },
+                // md5sum is not stable, order of elements in column "variant" change
+                { assert file(process.out.tsv[0][1]).readLines().findAll { it.contains("iso-22-I0S21NSLN") }}
             )
         }
 
