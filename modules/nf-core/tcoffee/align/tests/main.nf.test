@@ -32,9 +32,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                                              process.out.alignment,
-                                              process.out.versions
-                                              ).match()
+                                    process.out.alignment,
+                                    process.out.versions
+                                 ).match()
                 }
             )
         }
@@ -61,9 +61,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                                              process.out.alignment,
-                                              process.out.versions
-                                              ).match()
+                                    process.out.alignment,
+                                    process.out.versions
+                                 ).match()
                 }
             )
         }
@@ -105,9 +105,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                                              process.out.alignment,
-                                              process.out.versions
-                                              ).match()
+                                    process.out.alignment,
+                                    process.out.versions
+                                 ).match()
                 }
             )
         }
@@ -179,9 +179,9 @@ nextflow_process {
                 { assert process.success },
                 { assert path(process.out.lib.get(0).get(1)).getText().contains("1ahl") },
                 { assert snapshot(
-                                              process.out.alignment,
-                                              process.out.versions
-                                              ).match()
+                                    process.out.alignment,
+                                    process.out.versions
+                                 ).match()
                 }
             )
         }
@@ -208,9 +208,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                                              process.out.alignment,
-                                              process.out.versions
-                                              ).match()
+                                    process.out.alignment,
+                                    process.out.versions
+                                 ).match()
                 }
             )
         }

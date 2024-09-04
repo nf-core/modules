@@ -8,7 +8,7 @@ process TCOFFEE_TCS {
         'biocontainers/mulled-v2-a76a981c07359a31ff55b9dc13bd3da5ce1909c1:84c8f17f1259b49e2f7783b95b7a89c6f2cb199e-0' }"
 
     input:
-    tuple val(meta), path(msa)
+    tuple val(meta) , path(msa)
     tuple val(meta2), path(lib)
 
     output:
