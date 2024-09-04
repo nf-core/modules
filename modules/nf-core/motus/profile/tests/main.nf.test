@@ -43,7 +43,7 @@ nextflow_process {
             assertAll(
             { assert process.success },
             { assert snapshot(
-                    process.out.out,
+                    path(process.out.out[0][1]).readLines()[3..10],
                     path(process.out.log[0][1]).readLines().last().contains('Reads are filtered for'),
                     process.out.versions,
                 ).match()
@@ -82,7 +82,7 @@ nextflow_process {
             assertAll(
             { assert process.success },
             { assert snapshot(
-                    process.out.out,
+                    path(process.out.out[0][1]).readLines()[3..10],
                     path(process.out.log[0][1]).readLines().last().contains('Reads are filtered for'),
                     process.out.versions
                 ).match()
