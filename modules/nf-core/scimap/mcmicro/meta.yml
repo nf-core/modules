@@ -10,7 +10,7 @@ tools:
       homepage: "https://scimap.xyz/"
       documentation: "https://scimap.xyz/All%20Functions/A.%20Pre%20Processing/sm.pp.mcmicro_to_scimap/"
       tool_dev_url: "https://github.com/labsyspharm/scimap"
-      licence: "MIT License"
+      licence: ["MIT License"]
 input:
   # Only when we have meta
   - meta:
@@ -18,7 +18,7 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - cellByFeature:
+  - cellbyfeature:
       type: file
       description: CSV file with cell by feature table
       pattern: "*.{csv}"
@@ -29,23 +29,18 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  #
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - annotedDataCsv:
+  - csv:
       type: file
       description: Sorted CSV file
       pattern: "*.{csv}"
-  - annotedDataH5ad:
+  - h5ad:
       type: file
       description: Sorted H5AD file
       pattern: "*.{h5ad}"
-      # - clusterPlot:
-      #     type: file
-      #     description: UPMA plot of the data in pdf file
-      #     pattern: "*.pdf"
 authors:
   - "@luiskuhn"
 maintainers:
