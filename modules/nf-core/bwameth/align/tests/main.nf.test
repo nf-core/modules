@@ -41,6 +41,7 @@ nextflow_process {
         }
 
         then {
+            println path(process.out.versions[0]).readLines()
             assertAll(
                 { assert process.success },
                 { assert snapshot(
