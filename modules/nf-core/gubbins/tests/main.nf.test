@@ -1,0 +1,43 @@
+
+nextflow_process {
+
+    name "Test Process GUBBINS"
+    script "../main.nf"
+    process "GUBBINS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gubbins"
+
+    test("test-gubbins") {
+
+        when {
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					process.out.fasta,
+					process.out.gff,
+					path(process.out.vcf[0]).vcf.variantsMD5,
+					process.out.stats,
+					process.out.phylip,
+					file(process.out.embl_predicted[0]).name, // empty
+					process.out.embl_branch,
+					process.out.tree,
+					process.out.tree_labelled,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}
