@@ -1,0 +1,88 @@
+
+nextflow_process {
+
+    name "Test Process VRHYME_VRHYME"
+    script "../main.nf"
+    process "VRHYME_VRHYME"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "modules_vrhyme"
+    tag "vrhyme"
+    tag "vrhyme/vrhyme"
+    tag "gunzip"
+
+    setup {
+        run("GUNZIP") {
+            script "../../../gunzip/main.nf"
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+    }
+
+    test("test-vrhyme-vrhyme") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    [
+				        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_2.fastq.gz', checkIfExists: true)
+				    ]
+				]
+				input[1] = GUNZIP.out.gunzip
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.bins[0][1]).listFiles().collect { it.name }.toSorted(), // Some files are unstable
+                    process.out.membership,
+                    file(process.out.summary[0][1]).name, // unstable
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-vrhyme-vrhyme-stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    [
+				        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_2.fastq.gz', checkIfExists: true)
+				    ]
+				]
+				input[1] = GUNZIP.out.gunzip
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

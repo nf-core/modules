@@ -72,7 +72,7 @@ def getSalmonInferredStrandedness(json_file, stranded_threshold = 0.8, unstrande
 //
 // Create MultiQC tsv custom content from a list of values
 //
-public static String multiqcTsvFromList(tsv_data, header) {
+def multiqcTsvFromList(tsv_data, header) {
     def tsv_string = ""
     if (tsv_data.size() > 0) {
         tsv_string += "${header.join('\t')}\n"
@@ -134,7 +134,7 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     .mix(ch_fastq.single)
     .set { ch_filtered_reads }
 
-    ch_versions = ch_versions.mix(CAT_FASTQ.out.versions.first().ifEmpty(null))
+    ch_versions = ch_versions.mix(CAT_FASTQ.out.versions.first())
 
     //
     // SUBWORKFLOW: Read QC, extract UMI and trim adapters with TrimGalore!

@@ -12,6 +12,7 @@ process DEEPVARIANT {
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(gzi)
+    tuple val(meta5), path(par_bed)
 
     output:
     tuple val(meta), path("${prefix}.vcf.gz")      ,  emit: vcf
@@ -31,6 +32,7 @@ process DEEPVARIANT {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def regions = intervals ? "--regions=${intervals}" : ""
+    def par_regions = par_bed ? "--par_regions_bed=${par_bed}" : ""
     // WARN https://github.com/nf-core/modules/pull/5801#issuecomment-2194293755
     // FIXME Revert this on next version bump
     def VERSION = '1.6.1'
@@ -43,6 +45,7 @@ process DEEPVARIANT {
         --output_gvcf=${prefix}.g.vcf.gz \\
         ${args} \\
         ${regions} \\
+        ${par_regions} \\
         --intermediate_results_dir=tmp \\
         --num_shards=${task.cpus}
 

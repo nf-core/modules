@@ -14,57 +14,50 @@ tools:
       tool_dev_url: "https://github.com/apeltzer/CircularMapper"
       doi: "no DOI available"
       licence: ["GPL v3"]
-
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing reference information
         e.g. `[ id:'sample1' ]`
-
   - reference:
       type: file
       description: Genome fasta file
       pattern: "*.fasta"
-
   - meta2:
       type: map
       description: |
         Groovy Map containing reference information
         e.g. `[ id:'sample1' ]`
-
   - elongation_factor:
       type: integer
       description: The number of bases that the ends of the target chromosome in the reference genome should be elongated by
-
   - meta3:
       type: map
       description: |
         Groovy Map containing reference information
         e.g. `[ id:'sample1' ]`
-
   - target:
       type: string
       description: The name of the chromosome in the reference genome that should be elongated
-
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
   - fasta:
       type: file
       description: Genome fasta file
       pattern: "*.fasta"
-
+  - elongated:
+      type: file
+      description: File listing the chromosomes that were elongated
+      pattern: "*_elongated"
 authors:
   - "@apalleja"
   - "@TCLamnidis"

@@ -22,16 +22,20 @@ input:
       type: file
       description: A VCF with called variants to benchmark against the standard
       pattern: "*.{vcf}"
-
   - truth_vcf:
       type: file
       description: A standard VCF to compare against
       pattern: "*.{vcf}"
-
   - bed:
       type: file
       description: A BED file specifying regions to be included in the analysis (optional)
       pattern: "*.bed"
+  - wittyer_config:
+      type: file
+      description: |
+        Config file in json format used to specify per variant type settings.
+        Used in place of include bed arguments. (optional)
+      pattern: "*.json"
 output:
   - meta:
       type: map
