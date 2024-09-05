@@ -11,14 +11,12 @@ process SIMPLEAF_INDEX {
     tuple val(meta), path(genome_fasta)
     tuple val(meta2), path(genome_gtf)
     tuple val(meta3), path(transcript_fasta)
-    val no_piscem
 
     output:
     tuple val(meta), path("${prefix}/index")              , emit: index
     tuple val(meta), path("${prefix}/ref/t2g_3col.tsv")   , emit: transcript_tsv, optional: true
     tuple val(meta), path("${prefix}")                    , emit: salmon
     path "versions.yml"                                   , emit: versions
-    val no_piscem                                         , emit: no_piscem
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,13 +24,10 @@ process SIMPLEAF_INDEX {
     script:
     def args = task.ext.args ?: ''
     def seq_inputs = (transcript_fasta) ? "--refseq $transcript_fasta" : "--gtf $genome_gtf --fasta $genome_fasta"
-    def no_piscem = (no_piscem) ? '--no-piscem' : ''
-
 
     // Output meta needs to correspond to the input used
     meta = (transcript_fasta) ? meta3 : meta
     prefix = task.ext.prefix ?: "${meta.id}"
-    mapper = no_piscem ? 'salmon' : 'piscem'
     """
     # export required var
     export ALEVIN_FRY_HOME=.
@@ -45,39 +40,34 @@ process SIMPLEAF_INDEX {
         index \\
         --threads $task.cpus \\
         $seq_inputs \\
-        $no_piscem \\
         $args \\
         -o ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         simpleaf: \$(simpleaf -V | tr -d '\\n' | cut -d ' ' -f 2)
-        ${mapper}: \$(${mapper} --version | sed -e "s/${mapper} //g")
+        salmon: \$(salmon --version | sed -e "s/salmon //g")
+        piscem: \$(piscem --version | sed -e "s/piscem //g")
     END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: (meta.id ? "${meta.id}" : "${meta3.id}")
-    mapper = no_piscem ? 'salmon' : 'piscem'
-
     """
     mkdir -p ${prefix}/index
     mkdir -p ${prefix}/ref
-    touch ${prefix}/index/ctg_offsets.bin
-    touch ${prefix}/index/duplicate_clusters.tsv
-    touch ${prefix}/index/mphf.bin
-    touch ${prefix}/ref/t2g_3col.tsv
-
-    touch ${prefix}/index/piscem_idx.ctab
+    touch ${prefix}/index/idx_cfish.json
     touch ${prefix}/index/piscem_idx.ectab
-    touch ${prefix}/index/piscem_idx.refinfo
     touch ${prefix}/index/piscem_idx.sshash
+    touch ${prefix}/ref/t2g_3col.tsv
+    touch ${prefix}/ref/roers_ref.fa
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         simpleaf: \$(simpleaf -V | tr -d '\\n' | cut -d ' ' -f 2)
-        ${mapper}: \$(${mapper} --version | sed -e "s/${mapper} //g")
+        salmon: \$(salmon --version | sed -e "s/salmon //g")
+        piscem: \$(piscem --version | sed -e "s/piscem //g")
     END_VERSIONS
     """
 }

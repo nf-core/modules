@@ -15,7 +15,7 @@ process SIMPLEAF_QUANT {
     tuple val(meta), val(chemistry), path(reads)
     tuple val(meta2), path(index)
     tuple val(meta3), path(txp2gene)
-    tuple val(meta4)
+    tuple val(meta4), path(whitelist)
     val resolution
 
     output:
@@ -30,17 +30,17 @@ process SIMPLEAF_QUANT {
     def args_list = args.tokenize()
     prefix    = task.ext.prefix ?: "${meta.id}"
 
+    pl_option = permitListOption(args_list, whitelist) {
+
+    }
+
     unfiltered_command = ""
     if (whitelist) {
         unfiltered_command = "-u <(gzip -dcf ${whitelist})"
     }
 
-    // expected cells
-    def expect_cells = meta.expected_cells ? "--expect-cells $meta.expected_cells" : ''
-
     // separate forward from reverse pairs
     def (forward, reverse) = reads.collate(2).transpose()
-    def mapper = file("$index/piscem_idx.json").exists() ? 'salmon' : 'piscem'
     """
     # export required var
     export ALEVIN_FRY_HOME=.
@@ -58,24 +58,19 @@ process SIMPLEAF_QUANT {
         -o ${prefix} \\
         -t $task.cpus \\
         -m $txp2gene \\
-        $expect_cells \\
         $unfiltered_command \\
-        $use_selective_alignment \\
         $args
-
-    [[ ! -f ${prefix}/af_quant/all_freq.bin ]] && cp ${prefix}/af_quant/permit_freq.bin ${prefix}/af_quant/all_freq.bin
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         simpleaf: \$(simpleaf -V | tr -d '\\n' | cut -d ' ' -f 2)
-        ${mapper}: \$(${mapper} --version | sed -e "s/${mapper} //g")
+        salmon: \$(salmon --version | sed -e "s/salmon //g")
+        piscem: \$(piscem --version | sed -e "s/piscem //g")
     END_VERSIONS
     """
 
     stub:
     prefix    = task.ext.prefix ?: "${meta.id}"
-    def mapper = file("$index/piscem_idx.json").exists() ? 'salmon' : 'piscem'
-
     """
     mkdir -p ${prefix}/af_map
     mkdir -p ${prefix}/af_quant/alevin
@@ -90,13 +85,26 @@ process SIMPLEAF_QUANT {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         simpleaf: \$(simpleaf -V | tr -d '\\n' | cut -d ' ' -f 2)
-        ${mapper}: \$(${mapper} --version | sed -e "s/${mapper} //g")
+        salmon: \$(salmon --version | sed -e "s/salmon //g")
+        piscem: \$(piscem --version | sed -e "s/piscem //g")
     END_VERSIONS
     """
 }
 
-// define function for checking permit list generation arguments:
-def check_pl_filtering_args(meta4, chemistry) {
+// We have mutual exclusive options for permit list generation. 
+// 1. 'k' (knee), which is a flag for the knee method and any value provided will be ignored; 
+// 2. 'f' (forced-cells), which takes an integer indicating the exact number of cells to recover; 
+// 3. 'e' (expect-cells), which takes an integer indicating the expected number of cells to recover; 
+// 4. 'x' (explicit-pl), which takes a string indicating the path to a valid permit list;
+// 5. 'u' (unfiltered-pl), which takes an empty string (if `chemistry` is defined as "10xv2" or "10xv3"), or a string indicating the path to a valid white list file. The difference between (4) and (5) is that (4) contains the exact permit list to filter the observed barcodes, while (5) will use the white list to generate a permit list via barcode correction.
+
+// We have two ways to take these options. `-u` is implied by the presence of the input `whitelist` channel. The other four options need to be passed as arguments to ext.args. Therefore, we must check two things:
+// 1. if there is only one of the four options in the args list, and
+// 2. if none of the four options are in the args list, there must be a non-empty whitelist channel.
+
+def permitListOption(args_list, whitelist, chemistry) {
+    // first, define five empty strings to hold the values of the five options
+    // Notice that only one of them could be non-empty
     // -u, --unfiltered-pl
     def unfiltered_pl = ""
     // -k, --knee
@@ -108,45 +116,85 @@ def check_pl_filtering_args(meta4, chemistry) {
     // -p, --expect-cells
     def expect_cells = ""
 
-    // now check each argument and set the corresponding param if encountered
-    meta4.each { k, v ->
-        if (k == "k") {
-            // if knee, no need to check for value
+    // we loop over the args list, if we see the desired flags, we record them. If we see desired flags with values, we add i by 1 and take the value.
+    def i = 0
+    while (i < args_list.size()) {
+        // we get the flag
+        def arg = args_list[i]
+
+        if (arg == "-k" || arg == "--knee") {
+            // knee doesn't take a value
             knee = '-k'
-        } else if (k == "f") {
-            // if forced-cells, value must be an integer
-            if (v.isInteger()) {
-                forced_cells = '-f ' + v
+        } else if (arg == "-u" || arg == "--unfiltered-pl") {
+            // we have two situations here
+            // 1. if -u is the last element or it is followed by another flag(start with -), it means the chemistry must be 10xv2, 10xv3 or 10xv4 to obtain a built-in whitelist
+            // 2. if -u is followed by a value, we assume that is a path to a whitelist file
+            if (i == args_list.size() - 1 || args_list[i + 1].startsWith("-")) {
+                // if whitelist is not provided, we check the chemistry
+                // else, we use the provided whitelist
+                if (whitelist) {
+                    unfiltered_pl = "-u <(gzip -dcf ${whitelist})"
+                } else {
+                    if (chemistry == "10xv3" || chemistry == "10xv2") {
+                        unfiltered_pl = '-u'
+                    } else {
+                        error "Unfiltered permit list is required for chemistry ${chemistry}; Cannot proceed"
+                    }
+                }
             } else {
-                error "Forced cells must be an integer"
+                i += 1
+                // now, we assume the next element is the path to the whitelist file
+                wl_file = file(args_list[i], checkIfExists: true)
+                unfiltered_pl = '-u ' + "${wl_file}"
             }
-        } else if (k == "e") {
-            // if expect-cells, value must be an integer
-            if (v.isInteger()) {
-                expect_cells = '-p ' + v
-            } else {
-                error "Expected cells must be an integer"
+        } else if (arg == "-f" || arg == "--forced-cells") {
+            i += 1
+            // forced-cells takes an integer
+            // we make sure -f is not the last element and the next element is not a flag
+            if (i == args_list.size() || args_list[i].startsWith("-")) {
+                error "Forced cells must be an integer; Cannot proceed"
             }
-        } else if (k == "x") {
-            // if explicit-pl, value must be a file
-            v_file = file(v, checkIfExists: true)
+            forced_cells = '-f ' + args_list[i]
+        } else if (arg == "-e" || arg == "--expect-cells") {
+            i += 1
+            // expect-cells takes an integer
+            // we make sure -e is not the last element and the next element is not a flag
+            if (i == args_list.size() || args_list[i].startsWith("-")) {
+                error "Expected cells must be an integer; Cannot proceed"
+            }
+            expect_cells = '-p ' + args_list[i + 1]
+            i += 1
+        } else if (arg == "-x" || arg == "--explicit-pl") {
+            i += 1
+            // explicit-pl takes a file
+            // we make sure -x is not the last element and the next element is not a flag
+            if (i == args_list.size() || args_list[i].startsWith("-")) {
+                error "Explicit permit list must be a file; Cannot proceed"
+            }
+            v_file = file(args_list[i], checkIfExists: true)
             explicit_pl = '-x ' + "${v_file}"
-        } else if (k == "u") {
-            // if unfiltered-pl, value must be a file or an empty string
-            if (v != "") {
-                v_file = file(v, checkIfExists: true)
-                unfiltered_pl = '-u ' + "${v_file}"
-            } else if (chemistry == "10xv3" || chemistry == "10xv2") {
-                unfiltered_pl = '-u <(gzip -dcf ${whitelist})'
-            } else {
-                error "Unfiltered permit list is required for chemistry ${chemistry}"
-            }
         }
+        i += 1
     }
+
     // only one option could be non-empty
-    if ((unfiltered_pl != "" + knee != "" + forced_cells != "" + explicit_pl != "" + expect_cells != "") == 1) {
+    def num_options =  (unfiltered_pl != "" ? 1 : 0) + 
+            (knee != "" ? 1 : 0) + 
+            (forced_cells != "" ? 1 : 0) + 
+            (explicit_pl != "" ? 1 : 0) + 
+            (expect_cells != "" ? 1 : 0)
+    if (num_options == 1) {
         return unfiltered_pl + knee + forced_cells + explicit_pl + expect_cells
     } else {
-        error "Only one of the permit list filtering options can be used"
+        if (num_options == 0) {
+            if (whitelist) {
+                return "-u <(gzip -dcf ${whitelist})"
+            } else {
+                error "Neither an explicit permit list nor a whitelist was provided; Cannot proceed"
+
+            }
+        }
+
+        error "One and only one of the permit list filtering options must be used; ${num_options} options were provided; Cannot proceed"
     }
 }
