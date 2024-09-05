@@ -57,7 +57,7 @@ process SIMPLEAF_INDEX {
     """
     mkdir -p ${prefix}/index
     mkdir -p ${prefix}/ref
-    touch ${prefix}/index/idx_cfish.json
+    touch ${prefix}/index/piscem_idx_cfish.json
     touch ${prefix}/index/piscem_idx.ectab
     touch ${prefix}/index/piscem_idx.sshash
     touch ${prefix}/ref/t2g_3col.tsv
