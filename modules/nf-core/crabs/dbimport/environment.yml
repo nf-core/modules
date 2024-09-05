@@ -3,4 +3,9 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - "bioconda::crabs=0.1.1"
+  - wget=1.21.3
+  - muscle=3.8.31
+  - cutadapt>=4.0
+  - vsearch>=2.13.3
+  - pip:
+      - crabs==0.2
