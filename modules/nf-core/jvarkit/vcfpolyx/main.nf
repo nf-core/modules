@@ -1,11 +1,16 @@
+/**
+ * JVARKIT_VCFPOLYX
+ * Author: Pierre Lindenbaum PhD
+ * vcfpolyx is a sub-command of the jvarkit package. It is used to annotate a vcf for the poly-x repeats
+ */
 process JVARKIT_VCFPOLYX {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/jvarkit:2024.08.25--hdfd78af_0':
-        'biocontainers/jvarkit:2024.08.25--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/jvarkit:2024.08.25--hdfd78af_1':
+        'biocontainers/jvarkit:2024.08.25--hdfd78af_1' }"
 
     input:
     tuple val(meta),  path(vcf)
@@ -24,7 +29,7 @@ process JVARKIT_VCFPOLYX {
 
     script:
     def args1  = task.ext.args1 ?: ''
-    def args2  = task.ext.args2 ?: ' --tag POLYX --max-repeats 10 '
+    def args2  = meta.vcfpolyx_args ?: (task.ext.args2 ?: ' --tag POLYX --max-repeats 10 ')
     def args3  = task.ext.args3 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
@@ -38,8 +43,6 @@ process JVARKIT_VCFPOLYX {
     """
     set -o pipefail
     mkdir -p TMP
-    
-    which bcftools || true && echo OK
     
     bcftools view -O v ${args1} "${vcf}" |\\
 	jvarkit -Xmx${task.memory.giga}g  -XX:-UsePerfData -Djava.io.tmpdir=TMP vcfpolyx --reference "${fasta}" ${args2} |\\

@@ -1,55 +1,73 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "jvarkit_vcfpolyx"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: annotate VCF files for poly repeats
 keywords:
-  - sort
-  - example
-  - genomics
+  - vcf
+  - bcf
+  - annotation
+  - repeats
 tools:
+
   - "jvarkit":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Java utilities for Bioinformatics."
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      homepage: "https://github.com/lindenb/jvarkit"
+      documentation: "https://jvarkit.readthedocs.io/"
+      tool_dev_url: "https://github.com/lindenb/jvarkit"
+      doi: "http://dx.doi.org/10.6084/m9.figshare.1425030"
       licence: ['MIT License']
 
-## TODO nf-core: Add a description of all of the variables used as input
-input:
-  # Only when we have meta
-  - meta:
-      type: map
+  - "bcftools":
       description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  
-  ## TODO nf-core: Delete / customise this example input
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+        View, subset and filter VCF or BCF files by position and filtering expression. Convert between VCF and BCF
+      homepage: http://samtools.github.io/bcftools/bcftools.html
+      documentation: http://www.htslib.org/doc/bcftools.html
+      doi: 10.1093/bioinformatics/btp352
+      licence: ["MIT"]
 
-## TODO nf-core: Add a description of all of the variables used as output
+input:
+  - vcf:
+      type: file
+      description:   Groovy Map containing reference genome information for vcf
+      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+
+  - fasta:
+      type: file
+      description:  Groovy Map containing reference genome information for fai reference fasta file
+      pattern: "*.fasta"
+
+  - fai:
+      type: file
+      description:  Groovy Map containing reference genome information for fai
+      pattern: "*.fasta.fai"
+
+  - dict:
+      type: file
+      description:  Groovy Map containing reference genome information for GATK sequence dictionary
+      pattern: "*.dict"
+
 output:
-  #Only when we have meta
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  
+        e.g. [ id:'test', single_end:false ]
+  - vcf:
+      type: file
+      description: VCF filtered output file
+      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+  - csi:
+      type: file
+      description: Default VCF file index
+      pattern: "*.csi"
+  - tbi:
+      type: file
+      description: Alternative VCF file index
+      pattern: "*.tbi"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 
 authors:
   - "@lindenb"
