@@ -77,7 +77,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.vcf.get(0).get(1).endsWith("vcf") },
                 { assert snapshot(
-                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                    path(process.out.vcf.get(0).get(1)).md5,
                     process.out.versions,
                 ).match() }
             )
@@ -352,7 +352,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.vcf.get(0).get(1).endsWith("vcf") },
                 { assert snapshot(
-                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                    path(process.out.vcf.get(0).get(1)).md5,
                     process.out.versions,
                 ).match() }
             )
@@ -360,35 +360,34 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - [vcf, tbi], fasta, fai, bed  - vcf.gz output") {
+    test("homo_sapiens - [vcf, tbi], fasta, fai, bed  - vcf.gz output") {
 
         config "./nextflow.gvcf.config"
-
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
                     [
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test3.vcf.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test2.genome.vcf.gz', checkIfExists: true)
                     ],
                     [
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test3.vcf.gz.tbi', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz.tbi', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test2.genome.vcf.gz.tbi', checkIfExists: true),
                     ]
                 ]
                 input[1] = [
                     [ id:'test' ], // meta map
-                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
                 ]
                 input[2] = [
                     [ id:'test' ], // meta map
-                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true) ]
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true) ]
                 ]
                 input[3] = [
                     [ id:'test' ], // meta map
-                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true) ]
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true) ]
                 ]
                 """
             }
@@ -737,36 +736,35 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - [vcf, tbi], fasta, fai, bed  - vcf.gz output - stub") {
+    test("homo_sapiens - [vcf, tbi], fasta, fai, bed  - vcf.gz output - stub") {
 
         options "-stub"
         config "./nextflow.gvcf.config"
-
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
                     [
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test3.vcf.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test2.genome.vcf.gz', checkIfExists: true)
                     ],
                     [
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test3.vcf.gz.tbi', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz.tbi', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test2.genome.vcf.gz.tbi', checkIfExists: true),
                     ]
                 ]
                 input[1] = [
                     [ id:'test' ], // meta map
-                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
                 ]
                 input[2] = [
                     [ id:'test' ], // meta map
-                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true) ]
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true) ]
                 ]
                 input[3] = [
                     [ id:'test' ], // meta map
-                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true) ]
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true) ]
                 ]
                 """
             }

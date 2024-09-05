@@ -24,7 +24,7 @@ process BCFTOOLS_MERGE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input = vcfs.sort()
+    def input = vcfs.sort{ it.name }
     def regions = bed ? "--regions-file $bed" : ""
     def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
                     args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
