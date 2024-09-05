@@ -1,0 +1,49 @@
+name: crabs_dbimport
+description: In-house generated or curated data can be imported into CRABS.
+keywords:
+  - insilico
+  - PCR
+tools:
+  - crabs:
+      description: |
+        Crabs (Creating Reference databases for Amplicon-Based Sequencing)
+        is a program to download and curate reference databases
+        for eDNA metabarcoding analyses
+      homepage: https://github.com/gjeunen/reference_database_creator
+      documentation: https://github.com/gjeunen/reference_database_creator?tab=readme-ov-file#running-crabs
+      tool_dev_url: https://github.com/gjeunen/reference_database_creator
+      doi: https://doi.org/10.1111/1755-0998.13741
+      licence: ["MIT License"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1' ]`
+  - fasta:
+      type: file
+      description: In-house sequencing data
+      pattern: "*.{fa,fasta}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1' ]`
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - fasta:
+      type: file
+      description: Reverse complemented Sequence
+      pattern: "*.{fa,fasta}"
+
+authors:
+  - "@famosab"
+  - "@a4000"
+maintainers:
+  - "@famosab"
+  - "@a4000"
