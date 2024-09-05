@@ -8,14 +8,13 @@ keywords:
   - annotation
   - repeats
 tools:
-
   - "jvarkit":
       description: "Java utilities for Bioinformatics."
       homepage: "https://github.com/lindenb/jvarkit"
       documentation: "https://jvarkit.readthedocs.io/"
       tool_dev_url: "https://github.com/lindenb/jvarkit"
       doi: "10.6084/m9.figshare.1425030"
-      licence: ['MIT License']
+      licence: ["MIT License"]
 
   - "bcftools":
       description: |
@@ -28,22 +27,22 @@ tools:
 input:
   - vcf:
       type: file
-      description:   Groovy Map containing reference genome information for vcf
+      description: Groovy Map containing reference genome information for vcf
       pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
 
   - fasta:
       type: file
-      description:  Groovy Map containing reference genome information for fai reference fasta file
+      description: Groovy Map containing reference genome information for fai reference fasta file
       pattern: "*.fasta"
 
   - fai:
       type: file
-      description:  Groovy Map containing reference genome information for fai
+      description: Groovy Map containing reference genome information for fai
       pattern: "*.fasta.fai"
 
   - dict:
       type: file
-      description:  Groovy Map containing reference genome information for GATK sequence dictionary
+      description: Groovy Map containing reference genome information for GATK sequence dictionary
       pattern: "*.dict"
 
 output:
