@@ -35,10 +35,14 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - bam:
+  - out:
       type: file
       description: FILE converted file (gzipped), ready to be used by motus profile
       pattern: "*.{gz}"
+  - db:
+      type: directory
+      description: |
+        mOTUs database downloaded by `motus downloadDB`
 
 authors:
   - "@sofstam"
