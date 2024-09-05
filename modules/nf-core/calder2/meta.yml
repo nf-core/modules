@@ -19,12 +19,12 @@ input:
   - meta:
       type: map
       description: Groovy Map containing sample information. E.g. [ id:'test', single_end:false ]
-  - input:
+  - cool:
       type: file
       description: Path to COOL file
       pattern: "*.{cool.mcool}"
   - resolution:
-      type: value
+      type: integer
       description: In case a .mcool file is provided, which resolution level to use for the analysis
 output:
   - meta:
@@ -34,10 +34,10 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - output:
+  - output_folder:
       type: directory
       description: Output folder containing sub-compartment (.tsv/.bed) and domain boundaries calls (.bed)
-  - intermediate_data:
+  - intermediate_data_folder:
       type: directory
       description: Output folder containing intermediate data produced during the computation
 authors:
