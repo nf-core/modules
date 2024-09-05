@@ -1,0 +1,70 @@
+
+nextflow_process {
+
+    name "Test Process GEOQUERY_GETGEO"
+    script "../main.nf"
+    process "GEOQUERY_GETGEO"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "geoquery"
+    tag "geoquery/getgeo"
+
+    test("test-geoquery-getgeo") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+				    'GSE50790'
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					file(process.out.rds[0][1]).name,
+					process.out.expression,
+					process.out.annotation,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-geoquery-getgeo-with-metacols") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+				    'GSE50790'
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					file(process.out.rds[0][1]).name,
+					process.out.expression,
+					process.out.annotation,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}
