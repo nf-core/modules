@@ -41,7 +41,6 @@ process JVARKIT_VCFPOLYX {
 
     if ("$vcf" == "${prefix}.${extension}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
-    set -o pipefail
     mkdir -p TMP
 
     bcftools view -O v ${args1} "${vcf}" |\\
