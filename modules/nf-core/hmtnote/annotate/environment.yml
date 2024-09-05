@@ -2,9 +2,9 @@ name: hmtnote_annotate
 channels:
   - conda-forge
   - bioconda
+  - defaults
 dependencies:
-  - bioconda::hmtnote=0.7.2
-  - conda-forge::python=3.10.11 # Locked with the container
+  - conda-forge::python=3.6 # Locked with the container
   - conda-forge::pip
   - pip:
-      - aiohttp=3.7.4.post0 # Locked with the container
+      - hmtnote==0.7.2
