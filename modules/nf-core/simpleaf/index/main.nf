@@ -13,10 +13,10 @@ process SIMPLEAF_INDEX {
     tuple val(meta3), path(transcript_fasta)
 
     output:
-    tuple val(meta), path("${prefix}/index")              , emit: index
-    tuple val(meta), path("${prefix}/ref/t2g_3col.tsv")   , emit: transcript_tsv
-    tuple val(meta), path("${prefix}")                    , emit: salmon
-    path "versions.yml"                                   , emit: versions
+    tuple val(meta), path("${prefix}")                          , emit: simpleaf
+    tuple val(meta), path("${prefix}/index")                    , emit: index
+    tuple val(meta), path("${prefix}/ref/{t2g,t2g_3col}.tsv")   , emit: transcript_tsv
+    path "versions.yml"                                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
