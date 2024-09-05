@@ -1,8 +1,3 @@
-/**
- * JVARKIT_VCFPOLYX
- * Author: Pierre Lindenbaum PhD
- * vcfpolyx is a sub-command of the jvarkit package. It is used to annotate a vcf for the poly-x repeats
- */
 process JVARKIT_VCFPOLYX {
     tag "$meta.id"
     label 'process_single'
