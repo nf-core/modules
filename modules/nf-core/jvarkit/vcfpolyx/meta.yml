@@ -25,6 +25,22 @@ tools:
       licence: ["MIT"]
 
 input:
+  -meta:
+      description: |
+        Groovy Map containing VCF information
+
+  -meta2:
+      description: |
+        Groovy Map containing fasta information
+
+  -meta2:
+      description: |
+        Groovy Map containing fasta.fai information
+
+  -meta3:
+      description: |
+        Groovy Map containing fasta.dict information
+
   - vcf:
       type: file
       description: Groovy Map containing reference genome information for vcf
@@ -49,7 +65,7 @@ output:
   - meta:
       type: map
       description: |
-        Groovy Map containing sample information
+        Groovy Map containing VCF information
         e.g. [ id:'test', single_end:false ]
   - vcf:
       type: file
