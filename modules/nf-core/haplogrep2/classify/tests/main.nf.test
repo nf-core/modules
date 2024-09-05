@@ -1,0 +1,59 @@
+
+nextflow_process {
+
+    name "Test Process HAPLOGREP2_CLASSIFY"
+    script "../main.nf"
+    process "HAPLOGREP2_CLASSIFY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "haplogrep2"
+    tag "haplogrep2/classify"
+
+    test("test-haplogrep2-classify") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_chrM.vcf.gz', checkIfExists: true)
+				]
+				input[1] = 'vcf'
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-haplogrep2-classify-stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_chrM.vcf.gz', checkIfExists: true)
+				]
+				input[1] = 'vcf'
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}
