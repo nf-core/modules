@@ -1,17 +1,16 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "bam_stats_mirna_mirtop"
-## TODO nf-core: Add a description of the subworkflow and list keywords
-description: Sort SAM/BAM/CRAM file
+description: mirtop is a command line tool to annotate miRNAs and isomiRs and compute general statistics using the mirGFF3 format.
 keywords:
-  - sort
+  - miRNA
+  - isomirs
   - bam
-  - sam
-  - cram
-## TODO nf-core: Add a list of the modules and/or subworkflows used in the subworkflow
+  - stats
 components:
-  - samtools/sort
-  - samtools/index
-## TODO nf-core: List all of the channels used as input with a description and their structure
+  - mirtop/gff
+  - mirtop/counts
+  - mirtop/export
+  - mirtop/stats
 input:
   - ch_bam:
       type: file
@@ -19,26 +18,37 @@ input:
         The input channel containing the BAM/CRAM/SAM files
         Structure: [ val(meta), path(bam) ]
       pattern: "*.{bam/cram/sam}"
-## TODO nf-core: List all of the channels used as output with a descriptions and their structure
+  - ch_hairpin:
+      type: file
+      description: |
+        Input channel containing the hairpin fasta file
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.{fasta,fa}"
+  - ch_gtf_species:
+      type: file
+      description: |
+        Input channel containing the species gtf and the name of species in miRbase format
+        Structure: [ val(meta), path(gtf), val(species)]
+      pattern: "*.{gtf}"
 output:
-  - bam:
+  - rawdata_tsv:
       type: file
       description: |
-        Channel containing BAM files
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.bam"
-  - bai:
+        Channel containing isomiRs compatible files
+        Structure: [ val(meta), path(tsv) ]
+      pattern: "*.tsv"
+  - stats_txt:
       type: file
       description: |
-        Channel containing indexed BAM (BAI) files
-        Structure: [ val(meta), path(bai) ]
-      pattern: "*.bai"
-  - csi:
+        Channel containing TXT file with a table with different statistics for each type of isomiRs: total counts, average counts, total sequences.
+        Structure: [ val(meta), path(txt) ]
+      pattern: "*.txt"
+  - stats_log:
       type: file
       description: |
-        Channel containing CSI files
-        Structure: [ val(meta), path(csi) ]
-      pattern: "*.csi"
+        Channel containing log files in JSON format with the same information as stats_txt
+        Structure: [ val(meta), path(log) ]
+      pattern: "*.log"
   - versions:
       type: file
       description: |
