@@ -2,11 +2,10 @@ process CRABS_DBIMPORT {
     tag "$meta.id"
     label 'process_medium'
 
-    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/crabs:0.1.1--pyhb7b1952_0':
-        'biocontainers/crabs:0.1.1--pyhb7b1952_0' }"
+        'oras://community.wave.seqera.io/library/cutadapt_muscle_vsearch_wget_pruned:0cd5cb1e549e5033':
+        'community.wave.seqera.io/library/cutadapt_muscle_vsearch_wget_pruned:04f6c0370c0226c5' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -21,7 +20,6 @@ process CRABS_DBIMPORT {
     script:
     def args          = task.ext.args ?: ''
     def prefix        = task.ext.prefix ?: "${meta.id}"
-    def VERSION       = '0.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def is_compressed = fasta.name.endsWith(".gz")
     def fasta_name    = fasta.name.replace(".gz", "")
     """
@@ -38,19 +36,18 @@ process CRABS_DBIMPORT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        crabs: $VERSION
+        crabs: \$(crabs --version | sed -e 's/crabs v//g')
     END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION       = '0.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.fa
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        crabs: $VERSION
+        crabs: \$(crabs --version | sed -e 's/crabs v//g')
     END_VERSIONS
     """
 }
