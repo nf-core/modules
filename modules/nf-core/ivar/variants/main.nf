@@ -47,4 +47,17 @@ process IVAR_VARIANTS {
         ivar: \$(echo \$(ivar version 2>&1) | sed 's/^.*iVar version //; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def touch_mpileup = save_mpileup ? "touch ${prefix}.mpileup" : ''
+    """
+    touch ${prefix}.tsv
+    $touch_mpileup
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ivar: \$(echo \$(ivar version 2>&1) | sed 's/^.*iVar version //; s/ .*\$//')
+    END_VERSIONS
+    """
 }
