@@ -45,9 +45,9 @@ process JVARKIT_VCFPOLYX {
     mkdir -p TMP
     
     bcftools view -O v ${args1} "${vcf}" |\\
-	jvarkit -Xmx${task.memory.giga}g  -XX:-UsePerfData -Djava.io.tmpdir=TMP vcfpolyx --reference "${fasta}" ${args2} |\\
+        jvarkit -Xmx${task.memory.giga}g  -XX:-UsePerfData -Djava.io.tmpdir=TMP vcfpolyx --reference "${fasta}" ${args2} |\\
         bcftools view --output "${prefix}.${extension}" ${args3}
-	
+    
     rm -rf TMP
 
     cat <<-END_VERSIONS > versions.yml
