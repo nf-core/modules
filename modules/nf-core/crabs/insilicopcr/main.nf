@@ -26,6 +26,7 @@ process CRABS_INSILICOPCR {
     crabs insilico_pcr \\
         --input $fasta \\
         --output ${prefix}.crabs.fa \\
+        -t ${task.cpus} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
