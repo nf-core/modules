@@ -1,4 +1,4 @@
-name: "gridss_gridsssomaticfilter"
+name: "gridss_somaticfilter"
 description: GRIDSS is a module software suite containing tools useful for the detection of genomic rearrangements.
 keywords:
   - gridss
@@ -6,12 +6,12 @@ keywords:
   - somatic variants
   - vcf
 tools:
-  - "gridss":
+  - gridss:
       description: "GRIDSS: the Genomic Rearrangement IDentification Software Suite"
       documentation: "https://github.com/PapenfussLab/gridss/wiki/GRIDSS-Documentation"
       tool_dev_url: "https://github.com/PapenfussLab/gridss"
       doi: "10.1186/s13059-021-02423-x"
-      licence: "['GPL v3']"
+      licence: ["GPL v3"]
 
 input:
   - meta:
@@ -30,24 +30,34 @@ input:
       pattern: "*.{vcf,vcf.gz}"
   - pondir:
       type: directory
-      description: Directory containing Panel Of Normal bed/bedpe used to filter FP somatic events. Use gridss.GeneratePonBedpe to generate the PON.
-output:
-  - meta:
-      type: map
       description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test']
+        Directory containing Panel Of Normal bed/bedpe used to filter FP somatic events.
+        Use gridss.GeneratePonBedpe to generate the PON.
+output:
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information on high confidence VCF
+        e.g. [ id:'test']
   - high_conf_sv:
       type: file
       description: VCF file including high confidence somatic SVs
       pattern: "*.vcf.bgz"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information all_sv
+        e.g. [ id:'test']
   - all_sv:
       type: file
       description: VCF file including all somatic SVs
       pattern: "*.vcf.bgz"
+
 authors:
   - "@kubranarci"
+maintainers:
+  - "@famosab"
