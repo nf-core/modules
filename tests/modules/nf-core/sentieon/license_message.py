@@ -21,9 +21,9 @@ import calendar
 import re
 import secrets
 import sys
+from datetime import datetime as dt
 
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
-from datetime import datetime as dt
 
 MESSAGE_TIMEOUT = 60 * 60 * 24  # Messages are valid for 1 day
 NONCE_BYTES = 12

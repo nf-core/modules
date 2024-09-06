@@ -12,9 +12,9 @@ import calendar
 import re
 import secrets
 import sys
+from datetime import datetime as dt
 
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
-from datetime import datetime as dt
 
 MESSAGE_TIMEOUT = 60 * 60 * 24  # Messages are valid for 1 day
 NONCE_BYTES = 12
@@ -82,9 +82,7 @@ def parse_args(argv=None):
 
     subparsers = parser.add_subparsers(help="Available sub-commands")
 
-    gen_parser = subparsers.add_parser(
-        "generate_key", help="Generate a random key string"
-    )
+    gen_parser = subparsers.add_parser("generate_key", help="Generate a random key string")
     gen_parser.set_defaults(func=handle_generate_key)
 
     encrypt_parser = subparsers.add_parser("encrypt", help="Encrypt a message")

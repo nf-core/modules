@@ -5,11 +5,11 @@ Automatically rename staged files for input into cellranger multi and run it.
 Copyright (c) Felipe Almeida 2024 - MIT License
 """
 
-from subprocess import run
-from pathlib import Path
-from textwrap import dedent
-import shlex
 import re
+import shlex
+from pathlib import Path
+from subprocess import run
+from textwrap import dedent
 
 
 def chunk_iter(seq, size):
@@ -140,16 +140,16 @@ fastq_id,fastqs,lanes,feature_types
 # check the extra data that is included
 #
 if len("${include_cmo}") > 0:
-    with open("${cmo_csv_text}", "r") as input_conf:
+    with open("${cmo_csv_text}") as input_conf:
         config_txt = config_txt + "\\n${include_cmo}\\n" + input_conf.read() + "\\n"
 
 if len("${include_beam}") > 0:
-    with open("${beam_csv_text}", "r") as input_conf, open("${beam_antigen_csv}", "r") as input_csv:
+    with open("${beam_csv_text}") as input_conf, open("${beam_antigen_csv}") as input_csv:
         config_txt = config_txt + "\\n${include_beam}\\n" + input_conf.read() + "\\n"
         config_txt = config_txt + "[feature]\\n" + input_csv.read() + "\\n"
 
 if len("${include_frna}") > 0:
-    with open("${frna_csv_text}", "r") as input_conf:
+    with open("${frna_csv_text}") as input_conf:
         config_txt = config_txt + "\\n${include_frna}\\n" + input_conf.read() + "\\n"
 
 # Remove blank lines from config text
