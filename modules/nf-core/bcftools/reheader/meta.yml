@@ -53,6 +53,10 @@ output:
       type: file
       description: VCF with updated header, bgzipped per default
       pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+  - index:
+      type: file
+      description: Index of VCF with updated header
+      pattern: "*.{csi,tbi}"
 authors:
   - "@bjohnnyd"
   - "@jemten"
