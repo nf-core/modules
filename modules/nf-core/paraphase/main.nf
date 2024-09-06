@@ -42,8 +42,14 @@ process PARAPHASE {
 
     for vcf in ${prefix}_paraphase_vcfs/*.vcf;
     do
-        bgzip $args2 \$vcf;
-        tabix $args3 \$vcf.gz;
+        bgzip \\
+            $args2 \\
+            --threads $task.cpus \\
+            \$vcf;
+        tabix \\
+            $args3 \\
+            --threads $task.cpus \\
+            \$vcf.gz;
     done
 
     cat <<-END_VERSIONS > versions.yml

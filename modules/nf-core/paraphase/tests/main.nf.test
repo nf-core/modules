@@ -47,13 +47,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert process.out.vcf_index.get(0).get(1).endsWith("tbi") },
                 { assert snapshot(
                     file(process.out.json.get(0).get(1)).readLines()[0..39],
-                    process.out.versions,
-                    path(process.out.vcf.get(0).get(1)).linesGzip[0..962],
-                    file(process.out.bam.get(0).get(1)).name,
+                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                    bam(process.out.bam.get(0).get(1)).getReadsMD5(),
                     file(process.out.bai.get(0).get(1)).name,
-                    file(process.out.vcf_index.get(0).get(1)).name
+                    file(process.out.vcf_index.get(0).get(1)).name,
+                    process.out.versions
                     ).match()
                 }
             )
@@ -85,13 +86,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert process.out.vcf_index.get(0).get(1).endsWith("tbi") },
                 { assert snapshot(
                     file(process.out.json.get(0).get(1)).readLines()[0..39],
-                    process.out.versions,
-                    path(process.out.vcf.get(0).get(1)).linesGzip[0..962],
-                    file(process.out.bam.get(0).get(1)).name,
+                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                    bam(process.out.bam.get(0).get(1)).getReadsMD5(),
                     file(process.out.bai.get(0).get(1)).name,
-                    file(process.out.vcf_index.get(0).get(1)).name
+                    file(process.out.vcf_index.get(0).get(1)).name,
+                    process.out.versions
                     ).match()
                 }
             )
@@ -122,13 +124,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert process.out.vcf_index.get(0).get(1).endsWith("csi") },
                 { assert snapshot(
                     file(process.out.json.get(0).get(1)).readLines()[0..39],
-                    process.out.versions,
-                    path(process.out.vcf.get(0).get(1)).linesGzip[0..962],
-                    file(process.out.bam.get(0).get(1)).name,
+                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                    bam(process.out.bam.get(0).get(1)).getReadsMD5(),
                     file(process.out.bai.get(0).get(1)).name,
-                    file(process.out.vcf_index.get(0).get(1)).name
+                    file(process.out.vcf_index.get(0).get(1)).name,
+                    process.out.versions
                     ).match()
                 }
             )
