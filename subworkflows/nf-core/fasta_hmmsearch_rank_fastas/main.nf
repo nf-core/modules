@@ -22,7 +22,7 @@ workflow FASTA_HMMSEARCH_RANK_FASTAS {
 
     HMMER_HMMSEARCH.out.target_summary
         .collect { it[1] }
-        .map { [ [ id: 'rank' ], it ] } 
+        .map { [ [ id: 'rank' ], it ] }
         .set { ch_hmmrank }
 
     HMMER_HMMRANK ( ch_hmmrank )
