@@ -31,7 +31,8 @@ nextflow_process {
 					file(process.out.rds[0][1]).name,
 					process.out.expression,
 					process.out.annotation,
-					process.out.versions
+					process.out.versions,
+                    file(process.out.versions[0]).readLines().collect { it.trim() } // Trap to catch conda version mismatches
 					).match()
 				}
             )
