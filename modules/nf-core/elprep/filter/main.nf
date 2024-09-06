@@ -24,6 +24,7 @@ process ELPREP_FILTER {
 
     output:
     tuple val(meta), path("output/**.{bam,sam}")    ,emit: bam
+    tuple val(meta), path("logs/elprep/elprep*")    ,emit: logs
     tuple val(meta), path("*.metrics.txt")          ,optional: true, emit: metrics
     tuple val(meta), path("*.recall")               ,optional: true, emit: recall
     tuple val(meta), path("*.vcf.gz")               ,optional: true, emit: gvcf
@@ -65,8 +66,6 @@ process ELPREP_FILTER {
     def assembly_regions_cmd = get_assembly_regions ? " --assembly-regions ${prefix}.assembly_regions.igv": ""
 
     """
-    mkdir logs
-
     elprep filter ${bam} output/${prefix}.${suffix} \\
         ${reference_sequences_cmd} \\
         ${filter_regions_cmd} \\
@@ -81,7 +80,7 @@ process ELPREP_FILTER {
         ${activity_profile_cmd} \\
         ${assembly_regions_cmd} \\
         --nr-of-threads ${task.cpus} \\
-        --log-path ./logs \\
+        --log-path ./ \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
@@ -94,10 +93,13 @@ process ELPREP_FILTER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = args.contains("--output-type sam") ? "sam" : "bam"
-
+    def timestamp = "${java.time.OffsetDateTime.now().format(java.time.format.DateTimeFormatter.ISO_DATE_TIME)}"
     """
     mkdir output
+    mkdir -p logs/elprep
+
     touch output/${prefix}.${suffix}
+    touch logs/elprep/elprep-${timestamp}.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

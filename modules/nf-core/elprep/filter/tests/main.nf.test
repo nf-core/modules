@@ -39,6 +39,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert process.out.logs }, // name is unstable
                 { assert snapshot(
 					bam(process.out.bam[0][1]).getReadsMD5(),
 					file(process.out.metrics[0][1]).readLines()[5..7],
@@ -83,7 +84,18 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert process.out.logs }, // name is unstable
+                { assert snapshot(
+					process.out.bam,
+					process.out.metrics,
+					process.out.recall,
+					process.out.gvcf,
+					process.out.table,
+					process.out.activity_profile,
+					process.out.assembly_regions,
+					process.out.versions
+					).match()
+				}
             )
         }
     }
