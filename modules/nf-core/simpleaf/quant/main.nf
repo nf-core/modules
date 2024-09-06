@@ -84,12 +84,12 @@ process SIMPLEAF_QUANT {
     """
 }
 
-// We have mutual exclusive options for permit list generation. 
-// 1. 'k' (knee), which is a flag for the knee method and any value provided will be ignored; 
-// 2. 'f' (forced-cells), which takes an integer indicating the exact number of cells to recover; 
-// 3. 'e' (expect-cells), which takes an integer indicating the expected number of cells to recover; 
+// We have mutual exclusive options for permit list generation.
+// 1. 'k' (knee), which is a flag for the knee method and any value provided will be ignored;
+// 2. 'f' (forced-cells), which takes an integer indicating the exact number of cells to recover;
+// 3. 'e' (expect-cells), which takes an integer indicating the expected number of cells to recover;
 // 4. 'x' (explicit-pl), which takes a string indicating the path to a valid permit list;
-// 5. 'u' (unfiltered-pl), which takes an empty string (if `chemistry` is defined as "10xv2" or "10xv3"), or a string indicating the path to a valid white list file. 
+// 5. 'u' (unfiltered-pl), which takes an empty string (if `chemistry` is defined as "10xv2" or "10xv3"), or a string indicating the path to a valid white list file.
 // The difference between (4) and (5) is that (4) contains the exact permit list to filter the observed barcodes, while (5) will use the white list to generate a permit list via barcode correction.
 
 // We have two ways to take these options. `-u` is implied by the presence of the input `whitelist` channel. The options can also be passed as arguments to ext.args. Therefore, we must check two things:
@@ -98,7 +98,7 @@ process SIMPLEAF_QUANT {
 
 def permitListOption(args_list, whitelist) {
     def pl_options = ["-k", "--knee", "-f", "--forced-cells", "-x", "--explicit-pl", "-e", "--expect-cells", "-u", "--unfiltered-pl"]
-    
+
     // check if the args_list contains any of the pl_options
     def found = args_list.any { it in pl_options }
 
