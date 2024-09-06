@@ -33,14 +33,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-
                 { assert snapshot(
                     process.out.bam,
                     file(process.out.sample_gff[0][1]).readLines().findAll { it.contains("hsa-let-7a-2	miRBasev21	isomiR	3	25	0	+	.	Read TTGAGGTAGTAGGTTGTATAGTT; UID iso-23-Z0S31NSL0E; Name hsa-let-7a-5p;Parent hsa-let-7a-2; Variant iso_5p:-1; Cigar 23M;Expression 0; Filter Pass; Hits 1;") },
-                    file(process.out.mirtop_gff[0][1]).readLines().findAll { it.contains("hsa-let-7a-1	miRBasev21	isomiR	3	26	0	+	.	Read GATGAGGTAGTAGGTTGTATAGTA; UID iso-24-5URPV39QFB; Name hsa-let-7a-5p; Parent hsa-let-7a-1; Variant iso_add3p:1,iso_5p:-2; Cigar 23MA; Expression 0; Filter Pass; Hits 1") },
                     process.out.versions,
                         ).match()
-                        }
+                        },
+                // md5sum is not stable, order of elements in section "variant" may change
+                { assert file(process.out.mirtop_gff[0][1]).readLines().findAll { it.contains("iso-24-5URPV39QFB") }}
                 )
         }
 
