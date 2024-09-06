@@ -35,4 +35,16 @@ process ANGSD_CONTAMINATION {
         angsd: \$(echo \$(angsd 2>&1) | grep version | head -n 1 | sed 's/.*version: //g;s/ .*//g')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.txt
+
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        angsd: \$(echo \$(angsd 2>&1) | grep version | head -n 1 | sed 's/.*version: //g;s/ .*//g')
+    END_VERSIONS
+    """
 }
