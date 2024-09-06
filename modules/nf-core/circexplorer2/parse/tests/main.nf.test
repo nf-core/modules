@@ -27,7 +27,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert file(process.out.junction[0][1]).text.contains('FUSIONJUNC') },
+                { assert snapshot(
+                    file(process.out.junction[0][1]).name, // unstable
+                    process.out.versions
+                    ).match()
+                }
             )
         }
     }
