@@ -50,7 +50,7 @@ jobs:
           node-version: "20"
 
       - name: Install Prettier
-        run: npm install -g prettier@3.1.0
+        run: npm install -g prettier@3.2.5
 
       - name: Run Prettier --check
         run: prettier --check .
@@ -439,7 +439,7 @@ jobs:
         uses: conda-incubator/setup-miniconda@a4260408e20b96e80095f42ff7f1a15b27dd94ca # v3
         with:
           miniconda-version: "latest"
-          channels: conda-forge,bioconda,defaults
+          channels: conda-forge,bioconda
           python-version: ${{ matrix.python-version }}
 
       - name: Conda setup
@@ -687,7 +687,7 @@ jobs:
         with:
           miniconda-version: "latest"
           auto-update-conda: true
-          channels: conda-forge,bioconda,defaults
+          channels: conda-forge,bioconda
 
       - name: Conda setup
         if: matrix.profile == 'conda'
