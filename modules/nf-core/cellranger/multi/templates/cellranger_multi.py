@@ -96,7 +96,8 @@ fastq_cmo = "${fastq_cmo}".replace("./", work_dir)
 #
 # generate config file for cellranger multi
 #
-config_txt = f"""${include_gex}
+config_txt = (  # noqa
+    f"""${include_gex}
 {gex_reference_path}
 {frna_probeset}
 ${gex_options_filter_probes}
@@ -134,7 +135,8 @@ fastq_id,fastqs,lanes,feature_types
 {fastq_beam}
 {fastq_crispr}
 {fastq_cmo}
-"""
+"""  # noqa
+)
 
 #
 # check the extra data that is included
