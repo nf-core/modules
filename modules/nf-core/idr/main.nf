@@ -46,4 +46,23 @@ process IDR {
         idr: \$(echo \$(idr --version 2>&1) | sed 's/^.*IDR //; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    if (peaks.toList().size < 2) {
+        log.error "[ERROR] idr needs at least two replicates only one provided."
+    }
+    def peak_types = ['narrowPeak', 'broadPeak', 'bed']
+    if (!peak_types.contains(peak_type)) {
+        log.error "[ERROR] Invalid option: '${peak_type}'. Valid options for 'peak_type': ${peak_types.join(', ')}."
+    }
+    """
+    touch "${prefix}.idrValues.txt"
+    touch "${prefix}.log.txt"
+    touch "${prefix}.png"
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        idr: \$(echo \$(idr --version 2>&1) | sed 's/^.*IDR //; s/ .*\$//')
+    END_VERSIONS
+    """
 }

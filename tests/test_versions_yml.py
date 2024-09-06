@@ -1,8 +1,9 @@
+import re
 from pathlib import Path
+from textwrap import dedent
+
 import pytest
 import yaml
-import re
-from textwrap import dedent
 
 
 def _get_workflow_names():

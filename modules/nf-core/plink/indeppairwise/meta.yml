@@ -32,17 +32,14 @@ input:
       description: PLINK sample information file
       pattern: "*.{fam}"
   - window_size:
-      type: number
+      type: string
       description: Window size in variant count or kilobase (if the 'kb' modifier is present) units, a variant count to shift the window at the end of each step, and a variance inflation factor (VIF) threshold.
-      pattern: "*.{}"
   - variant_count:
-      type: number
+      type: string
       description: Variant count to shift the window at the end of each step.
-      pattern: "*.{}"
   - r2_threshold:
-      type: number
+      type: string
       description: Pairwise r2 threshold. At each step, pairs of variants in the current window with squared correlation greater than the threshold are noted, and variants are greedily pruned from the window until no such pairs remain
-      pattern: "*.{}"
 output:
   - meta:
       type: map

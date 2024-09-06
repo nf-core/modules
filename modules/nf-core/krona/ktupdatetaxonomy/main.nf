@@ -8,6 +8,8 @@ process KRONA_KTUPDATETAXONOMY {
         'https://depot.galaxyproject.org/singularity/krona:2.7.1--pl526_5' :
         'biocontainers/krona:2.7.1--pl526_5' }"
 
+    input:
+
     output:
     path 'taxonomy/taxonomy.tab', emit: db
     path "versions.yml"         , emit: versions
@@ -21,6 +23,18 @@ process KRONA_KTUPDATETAXONOMY {
     ktUpdateTaxonomy.sh \\
         $args \\
         taxonomy/
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        krona: $VERSION
+    END_VERSIONS
+    """
+
+    stub:
+    """
+    mkdir taxonomy
+
+    touch taxonomy/taxonomy.tab
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

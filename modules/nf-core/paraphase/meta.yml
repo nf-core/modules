@@ -74,8 +74,12 @@ output:
       pattern: "*.paraphase.json"
   - vcf:
       type: file
-      description: VCF file(s) per gene
-      pattern: "*.vcf"
+      description: compressed VCF file(s) per gene
+      pattern: "*.vcf.gz"
+  - vcf_index:
+      type: file
+      description: compressed VCF file index
+      pattern: "*.vcf.gz.{tbi,csi}"
 
 authors:
   - "@fellen31"

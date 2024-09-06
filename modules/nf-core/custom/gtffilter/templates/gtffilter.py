@@ -22,11 +22,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import logging
-import re
 import gzip
-import statistics
+import logging
 import platform
+import re
+import statistics
 from typing import Set
 
 # Create a logger
@@ -73,23 +73,19 @@ def extract_fasta_seq_names(fasta_name: str) -> Set[str]:
 
 def tab_delimited(file: str) -> float:
     """Check if file is tab-delimited and return median number of tabs."""
-    with open(file, "r") as f:
+    with open(file) as f:
         data = f.read(102400)
         return statistics.median(line.count("\\t") for line in data.split("\\n"))
 
 
-def filter_gtf(
-    fasta: str, gtf_in: str, filtered_gtf_out: str, skip_transcript_id_check: bool
-) -> None:
+def filter_gtf(fasta: str, gtf_in: str, filtered_gtf_out: str, skip_transcript_id_check: bool) -> None:
     """Filter GTF file based on FASTA sequence names."""
     if tab_delimited(gtf_in) != 8:
         raise ValueError("Invalid GTF file: Expected 9 tab-separated columns.")
 
     seq_names_in_genome = extract_fasta_seq_names(fasta)
     logger.info(f"Extracted chromosome sequence names from {fasta}")
-    logger.debug(
-        "All sequence IDs from FASTA: " + ", ".join(sorted(seq_names_in_genome))
-    )
+    logger.debug("All sequence IDs from FASTA: " + ", ".join(sorted(seq_names_in_genome)))
 
     seq_names_in_gtf = set()
     try:
@@ -103,23 +99,19 @@ def filter_gtf(
                 seq_names_in_gtf.add(seq_name)  # Add sequence name to the set
 
                 if seq_name in seq_names_in_genome:
-                    if skip_transcript_id_check or re.search(
-                        r'transcript_id "([^"]+)"', line
-                    ):
+                    if skip_transcript_id_check or re.search(r'transcript_id "([^"]+)"', line):
                         out.write(line.encode() if is_gz else line)
                         line_count += 1
 
             if line_count == 0:
                 raise ValueError("All GTF lines removed by filters")
 
-    except IOError as e:
+    except OSError as e:
         logger.error(f"File operation failed: {e}")
         return
 
     logger.debug("All sequence IDs from GTF: " + ", ".join(sorted(seq_names_in_gtf)))
-    logger.info(
-        f"Extracted {line_count} matching sequences from {gtf_in} into {filtered_gtf_out}"
-    )
+    logger.info(f"Extracted {line_count} matching sequences from {gtf_in} into {filtered_gtf_out}")
 
 
 filter_gtf("${fasta}", "${gtf}", "${prefix}.${suffix}", False)

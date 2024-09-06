@@ -1,0 +1,100 @@
+
+nextflow_process {
+
+    name "Test Process IVAR_CONSENSUS"
+    script "../main.nf"
+    process "IVAR_CONSENSUS"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ivar"
+    tag "ivar/consensus"
+
+    test("test-ivar-consensus") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test'],
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+				]
+				input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+				input[2] = false
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					process.out.fasta,
+					file(process.out.qual[0][1]).name, // empty
+					process.out.mpileup,
+					process.out.versions,
+                    file(process.out.versions[0]).readLines().collect { it.trim() } // Trap to catch conda version mismatches
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-ivar-consensus-mpileup") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test'],
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+				]
+				input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+				input[2] = true
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					process.out.fasta,
+					file(process.out.qual[0][1]).name, // empty
+					file(process.out.mpileup[0][1]).name, // empty
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-ivar-consensus-mpileup-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test'],
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+				]
+				input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+				input[2] = true
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}
