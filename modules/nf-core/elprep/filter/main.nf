@@ -4,8 +4,8 @@ process ELPREP_FILTER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/elprep:5.1.2--he881be0_0':
-        'biocontainers/elprep:5.1.2--he881be0_0' }"
+        'https://depot.galaxyproject.org/singularity/elprep:5.1.3--he881be0_1':
+        'biocontainers/elprep:5.1.3--he881be0_1' }"
 
     input:
     tuple val(meta), path(bam)
@@ -24,6 +24,7 @@ process ELPREP_FILTER {
 
     output:
     tuple val(meta), path("output/**.{bam,sam}")    ,emit: bam
+    tuple val(meta), path("logs/elprep/elprep*")    ,emit: logs
     tuple val(meta), path("*.metrics.txt")          ,optional: true, emit: metrics
     tuple val(meta), path("*.recall")               ,optional: true, emit: recall
     tuple val(meta), path("*.vcf.gz")               ,optional: true, emit: gvcf
@@ -79,7 +80,26 @@ process ELPREP_FILTER {
         ${activity_profile_cmd} \\
         ${assembly_regions_cmd} \\
         --nr-of-threads ${task.cpus} \\
+        --log-path ./ \\
         $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        elprep: \$(elprep 2>&1 | head -n2 | tail -n1 |sed 's/^.*version //;s/ compiled.*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def suffix = args.contains("--output-type sam") ? "sam" : "bam"
+    def timestamp = "${java.time.OffsetDateTime.now().format(java.time.format.DateTimeFormatter.ISO_DATE_TIME)}"
+    """
+    mkdir output
+    mkdir -p logs/elprep
+
+    touch output/${prefix}.${suffix}
+    touch logs/elprep/elprep-${timestamp}.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
