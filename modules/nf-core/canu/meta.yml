@@ -24,11 +24,11 @@ input:
       description: fasta/fastq file
       pattern: "*.{fasta,fastq}"
   - mode:
-      type: value
+      type: string
       description: Canu mode depending on the input data (source and error rate)
       pattern: "-pacbio|-nanopore|-pacbio-hifi"
   - genomesize:
-      type: value
+      type: string
       description: An estimate of the size of the genome. Common suffices are allowed, for example, 3.7m or 2.8g
       pattern: "<number>[g|m|k]"
 output:
