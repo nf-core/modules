@@ -1,10 +1,3 @@
-String getVcfExtension(String args) {
-    return args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
-        args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
-        args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
-        args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
-        "vcf";
-}
 
 process BCFTOOLS_CSQ {
     tag "$meta.id"
@@ -77,4 +70,12 @@ process BCFTOOLS_CSQ {
         bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
     END_VERSIONS
     """
+}
+
+String getVcfExtension(String args) {
+    return args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
+        args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
+        args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
+        args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
+        "vcf";
 }
