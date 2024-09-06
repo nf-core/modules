@@ -71,7 +71,7 @@ process BCFTOOLS_CSQ {
     END_VERSIONS
     """
 }
-
+// Custom Functions
 String getVcfExtension(String args) {
     return args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
         args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
