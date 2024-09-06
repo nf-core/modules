@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 
 import platform
-import cellbender
+
 import anndata as ad
+import cellbender
 from cellbender.remove_background.downstream import load_anndata_from_input_and_output
+
 
 def format_yaml_like(data: dict, indent: int = 0) -> str:
     """Formats a dictionary to a YAML-like string.
@@ -27,8 +29,7 @@ def format_yaml_like(data: dict, indent: int = 0) -> str:
 
 adata = ad.read_h5ad("${filtered}")
 
-adata_cellbender = load_anndata_from_input_and_output("${unfiltered}", "${cellbender_h5}",
-                                            analyzed_barcodes_only=False)
+adata_cellbender = load_anndata_from_input_and_output("${unfiltered}", "${cellbender_h5}", analyzed_barcodes_only=False)
 
 adata_cellbender = adata_cellbender[adata.obs_names]
 
@@ -45,7 +46,7 @@ versions = {
     "${task.process}": {
         "python": platform.python_version(),
         "cellbender": cellbender.__version__,
-        "anndata": ad.__version__
+        "anndata": ad.__version__,
     }
 }
 

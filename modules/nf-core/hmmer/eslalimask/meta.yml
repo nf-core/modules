@@ -22,22 +22,22 @@ input:
       description: multiple sequence alignment, Stockholm or other formats
       pattern: "*"
   - fmask_rf:
-      type: val
+      type: boolean
       description: Flag to output optional file with final mask of non-gap RF len
   - fmask_all:
-      type: val
+      type: boolean
       description: Flag to output optional file with final mask of full aln len
   - gmask_rf:
-      type: val
+      type: boolean
       description: Flag to output optional file gap-based 0/1 mask of non-gap RF len
   - gmask_all:
-      type: val
+      type: boolean
       description: Flag to output optional file gap-based 0/1 mask of full aln len
   - pmask_rf:
-      type: val
+      type: boolean
       description: Flag to output optional file with PP-based 0/1 mask of non-gap RF len
   - pmask_all:
-      type: val
+      type: boolean
       description: Flag to output optional file with PP-based 0/1 mask of full aln len
   - maskfile:
       type: file
