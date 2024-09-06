@@ -44,7 +44,7 @@ process MOTUS_PREPLONG {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.gz
+    echo '' | gzip > ${prefix}.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
