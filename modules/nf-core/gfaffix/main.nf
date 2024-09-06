@@ -30,7 +30,7 @@ process GFAFFIX {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gfaffix: \$(gfaffix --version 2>&1 | grep -o 'gfaffix .*' | cut -f2 -d ' ')
+        gfaffix: \$(gfaffix --version | grep -o 'gfaffix .*' | cut -f2 -d ' ')
     END_VERSIONS
     """
 
@@ -42,7 +42,7 @@ process GFAFFIX {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gfaffix: \$(gfaffix --version 2>&1 | grep -o 'gfaffix .*' | cut -f2 -d ' ')
+         gfaffix: \$(gfaffix --version | grep -o 'gfaffix .*' | cut -f2 -d ' ')
     END_VERSIONS
     """
 }
