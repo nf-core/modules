@@ -25,7 +25,6 @@ process MIRTRACE_QC {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def file_list = reads.collect { it.toString() }
 
     """
     mirtrace qc  \\
@@ -33,7 +32,7 @@ process MIRTRACE_QC {
         --write-fasta \\
         --output-dir . \\
         --force \\
-        ${file_list.join(' ')}
+        ${reads}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
