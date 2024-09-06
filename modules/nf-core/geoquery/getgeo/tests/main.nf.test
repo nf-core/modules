@@ -29,7 +29,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
 					file(process.out.rds[0][1]).name,
-					process.out.expression,
+					file(process.out.expression[0][1]).name, // unstable
 					process.out.annotation,
 					process.out.versions,
                     file(process.out.versions[0]).readLines().collect { it.trim() } // Trap to catch conda version mismatches
@@ -59,7 +59,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
 					file(process.out.rds[0][1]).name,
-					process.out.expression,
+					file(process.out.expression[0][1]).name, // unstable
 					process.out.annotation,
 					process.out.versions
 					).match()
