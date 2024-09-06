@@ -34,7 +34,8 @@ nextflow_process {
 					process.out.fasta,
 					file(process.out.qual[0][1]).name, // empty
 					process.out.mpileup,
-					process.out.versions
+					process.out.versions,
+                    file(process.out.versions[0]).readLines().collect { it.trim() } // Trap to catch conda version mismatches
 					).match()
 				}
             )
