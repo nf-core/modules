@@ -1,0 +1,63 @@
+
+nextflow_process {
+
+    name "Test Process GUBBINS"
+    script "../main.nf"
+    process "GUBBINS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gubbins"
+
+    test("sarscov2-alignment") {
+
+        when {
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					process.out.fasta,
+					process.out.gff,
+					path(process.out.vcf[0]).vcf.variantsMD5,
+					process.out.stats,
+					process.out.phylip,
+					file(process.out.embl_predicted[0]).name, // empty
+					process.out.embl_branch,
+					process.out.tree[0].collect { file(it).name }, // unstable
+					file(process.out.tree_labelled[0]).name,  // unstable
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("sarscov2-alignment-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

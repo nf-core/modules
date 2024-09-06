@@ -41,4 +41,16 @@ process HMMER_HMMBUILD {
         hmmer: \$(echo \$(hmmbuild -h | grep HMMER | sed 's/# HMMER //' | sed 's/ .*//' 2>&1))
     END_VERSIONS
     """
+
+    stub:
+    def prefix    = task.ext.prefix ?: "${meta.id}"
+    """
+    echo | gzip > ${prefix}.hmm.gz
+    touch ${prefix}.hmmbuild.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        hmmer: \$(echo \$(hmmbuild -h | grep HMMER | sed 's/# HMMER //' | sed 's/ .*//' 2>&1))
+    END_VERSIONS
+    """
 }

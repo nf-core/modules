@@ -28,7 +28,7 @@ process CRUMBLE {
     def extension  = args.contains("-O sam") ? "sam" :
                     args.contains("-O bam") ? "bam" :
                     args.contains("-O cram") ? "cram" :
-                    "sam"
+                    "bam"
     def bedin      = keepbed ? "-R ${keepbed}" : ""
     def bedout     = bedout ? "-b ${prefix}.out.bed" : ""
     if ("$input" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
@@ -41,6 +41,27 @@ process CRUMBLE {
         $bedout \\
         $input \\
         ${prefix}.${extension}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        crumble: $CRUMBLE_VERSION
+    END_VERSIONS
+    """
+
+    stub:
+    def args       = task.ext.args ?: ''
+    def prefix     = task.ext.prefix ?: "${meta.id}"
+    def extension  = args.contains("-O sam") ? "sam" :
+                    args.contains("-O bam") ? "bam" :
+                    args.contains("-O cram") ? "cram" :
+                    "bam"
+    def bedout     = bedout ? "touch ${prefix}.out.bed" : ''
+    if ("$input" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+
+    def CRUMBLE_VERSION = '0.9.1' //WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    touch ${prefix}.${extension}
+    $bedout
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
