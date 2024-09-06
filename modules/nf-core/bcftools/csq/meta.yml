@@ -47,7 +47,7 @@ input:
       type: map
       description: |
         Groovy Map containing gff3 information
-  - dict:
+  - gff3:
       type: file
       description: GFF3 file
       pattern: "*.{gff,gff.gz,gff3,gff3.gz}"
@@ -57,14 +57,22 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - vcf:
       type: file
       description: VCF with annotation, bgzipped per default
       pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+  - tbi:
+      type: file
+      description: Alternative VCF file index
+      pattern: "*.tbi"
+  - csi:
+      type: file
+      description: Default VCF file index
+      pattern: "*.csi"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 
 authors:
   - "@lindenb"
