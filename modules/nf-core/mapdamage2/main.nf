@@ -49,4 +49,17 @@ process MAPDAMAGE2 {
         mapdamage2: \$(echo \$(mapDamage --version))
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir results_${bam.baseName}
+
+    touch results_${bam.baseName}/Runtime_log.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        mapdamage2: \$(echo \$(mapDamage --version))
+    END_VERSIONS
+    """
 }

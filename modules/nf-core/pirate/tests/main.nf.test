@@ -1,0 +1,70 @@
+nextflow_process {
+
+    name "Test Process PIRATE"
+    script "../main.nf"
+    process "PIRATE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pirate"
+
+    test("test-pirate") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    [
+				        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test2.gff', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test3.gff', checkIfExists: true)
+				    ]
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        process.out.results[0][1].collect { file(it).name },
+                        process.out.aln,
+                        process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-pirate-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    [
+				        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test2.gff', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test3.gff', checkIfExists: true)
+				    ]
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

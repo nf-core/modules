@@ -10,14 +10,9 @@
         },
         "channels": {
             "type": "array",
-            "items": [
-                {
-                    "enum": ["conda-forge"]
-                },
-                {
-                    "enum": ["bioconda"]
-                }
-            ],
+            "items": {
+                "enum": ["bioconda", "conda-forge"]
+            },
             "minItems": 2
         },
         "dependencies": {

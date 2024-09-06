@@ -1,0 +1,99 @@
+
+nextflow_process {
+
+    name "Test Process HAPIBD"
+    script "../main.nf"
+    process "HAPIBD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hapibd"
+
+    test("test-hapibd") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/hapibd/target.truth.vcf.gz", checkIfExists: true)
+				]
+				input[1] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/hapibd/target.map", checkIfExists: true)
+				input[2] = []
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.log[0][1]).text.contains('End Time') },
+                { assert snapshot(
+					file(process.out.hbd[0][1]).name, // empty
+					file(process.out.ibd[0][1]).name, // unstable
+					file(process.out.log[0][1]).name,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-hapibd-excludesamples") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/hapibd/target.truth.vcf.gz", checkIfExists: true)
+				]
+				input[1] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/hapibd/target.map", checkIfExists: true)
+				input[2] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/hapibd/excludeSamples.txt", checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.log[0][1]).text.contains('End Time') },
+                { assert snapshot(
+					file(process.out.hbd[0][1]).name, // empty
+					file(process.out.ibd[0][1]).name, // unstable
+					file(process.out.log[0][1]).name,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-hapibd-excludesamples-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/hapibd/target.truth.vcf.gz", checkIfExists: true)
+				]
+				input[1] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/hapibd/target.map", checkIfExists: true)
+				input[2] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/hapibd/excludeSamples.txt", checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

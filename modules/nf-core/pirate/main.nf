@@ -33,4 +33,16 @@ process PIRATE {
         pirate: \$( echo \$( PIRATE --version 2>&1) | sed 's/PIRATE //' )
     END_VERSIONS
     """
+
+    stub:
+    """
+    mkdir results
+
+    touch results/PIRATE.gene_families.ordered.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        pirate: \$( echo \$( PIRATE --version 2>&1) | sed 's/PIRATE //' )
+    END_VERSIONS
+    """
 }
