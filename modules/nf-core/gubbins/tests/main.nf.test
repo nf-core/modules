@@ -9,7 +9,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "gubbins"
 
-    test("test-gubbins") {
+    test("sarscov2-alignment") {
 
         when {
             process {
@@ -40,7 +40,7 @@ nextflow_process {
         }
     }
 
-    test("test-gubbins-stub") {
+    test("sarscov2-alignment-stub") {
         options '-stub'
 
         when {
