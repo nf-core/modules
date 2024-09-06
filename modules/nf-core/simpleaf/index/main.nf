@@ -65,7 +65,8 @@ process SIMPLEAF_INDEX {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        simpleaf: \$(simpleaf -V | tr -d '\\n' | cut -d ' ' -f 2)
+        simpleaf: \$(simpleaf --version | sed -e "s/simpleaf //g")
+        alevin-fry: \$(alevin-fry --version | sed -e "s/alevin-fry //g")
         salmon: \$(salmon --version | sed -e "s/salmon //g")
         piscem: \$(piscem --version | sed -e "s/piscem //g")
     END_VERSIONS

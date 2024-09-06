@@ -1,4 +1,31 @@
-1..3
-ok 1 Test Process SIMPLEAF_INDEX: Homo sapiens - genome index - expanded - fasta + gtf
-ok 2 Test Process SIMPLEAF_INDEX: Homo sapiens - transcriptome index - direct - transcriptome fasta
-ok 3 Test Process SIMPLEAF_INDEX: Homo sapiens - transcriptome index - direct - transcriptome fasta - stub
+1..2
+not ok 1 Test Process SIMPLEAF_QUANT: test_simpleaf_quant
+  ---
+  output: |+
+    Nextflow stdout:
+  
+    N E X T F L O W  ~  version 24.04.4
+    Launching `/home/dhe/workspaces/main/modules/.nf-test-8689d1803f58edb79c1ed73a4fe4b374.nf` [loving_shockley] DSL2 - revision: b35ec0e585
+    Creating env using conda: /home/dhe/workspaces/main/modules/modules/nf-core/simpleaf/quant/tests/../../index/environment.yml [cache /home/dhe/workspaces/main/modules/.nf-test/tests/8689d1803f58edb79c1ed73a4fe4b374/work/conda/environment-881091da1798e972fd1ab3ffacedfbb3]
+    [f8/a2c1cc] Submitted process > SIMPLEAF_INDEX (genome.fasta [])
+    [77/ec2107] Submitted process > SIMPLEAF_QUANT (test_10x)
+    Nextflow stderr:
+  
+  failure: "Assertion failed: \n\n1 of 2 assertions failed\n"
+  ...
+
+not ok 2 Test Process SIMPLEAF_QUANT: test_simpleaf_quant stub
+  ---
+  output: |+
+    Nextflow stdout:
+  
+    N E X T F L O W  ~  version 24.04.4
+    Launching `/home/dhe/workspaces/main/modules/.nf-test-151d0dce8bf4f30ab6ebee0e5e12a660.nf` [furious_dijkstra] DSL2 - revision: b35ec0e585
+    Creating env using conda: /home/dhe/workspaces/main/modules/modules/nf-core/simpleaf/quant/tests/../../index/environment.yml [cache /home/dhe/workspaces/main/modules/.nf-test/tests/151d0dce8bf4f30ab6ebee0e5e12a660/work/conda/environment-881091da1798e972fd1ab3ffacedfbb3]
+    [79/c317e5] Submitted process > SIMPLEAF_INDEX (genome.fasta [])
+    [59/846a31] Submitted process > SIMPLEAF_QUANT (test_10x)
+    Nextflow stderr:
+  
+  failure: "Assertion failed: \n\n1 of 2 assertions failed\n"
+  ...
+
