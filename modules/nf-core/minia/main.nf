@@ -36,4 +36,17 @@ process MINIA {
         minia: \$(echo \$(minia --version 2>&1 | grep Minia) | sed 's/^.*Minia version //;')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.contigs.fa
+    touch ${prefix}.unitigs.fa
+    touch ${prefix}.h5
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        minia: \$(echo \$(minia --version 2>&1 | grep Minia) | sed 's/^.*Minia version //;')
+    END_VERSIONS
+    """
 }
