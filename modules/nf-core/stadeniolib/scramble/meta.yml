@@ -11,7 +11,7 @@ tools:
       homepage: "https://github.com/jkbonfield/io_lib"
       documentation: "https://github.com/jkbonfield/io_lib/blob/master/README.md"
       tool_dev_url: "https://github.com/jkbonfield/io_lib"
-      licence: "['BSD']"
+      licence: ["BSD"]
 input:
   - meta:
       type: map
@@ -49,7 +49,7 @@ output:
       description: Converted reads
       pattern: "*.{sam, bam, cram}"
   - gzi:
-      type: Optional file
+      type: file
       description: gzip index file for BAM outputs
       pattern: ".{bam.gzi}"
 authors:

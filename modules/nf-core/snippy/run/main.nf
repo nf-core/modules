@@ -42,6 +42,7 @@ process SNIPPY_RUN {
     snippy \\
         $args \\
         --cpus $task.cpus \\
+        --ram $task.memory \\
         --outdir $prefix \\
         --reference $reference \\
         --prefix $prefix \\

@@ -4,8 +4,8 @@ process BWAMETH_ALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bwameth:0.2.2--py_1' :
-        'biocontainers/bwameth:0.2.2--py_1' }"
+        'https://depot.galaxyproject.org/singularity/bwameth:0.2.7--pyh7cba7a3_0' :
+        'biocontainers/bwameth:0.2.7--pyh7cba7a3_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -40,7 +40,18 @@ process BWAMETH_ALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bwameth: \$(echo \$(bwameth.py --version 2>&1) | cut -f2 -d" ")
+        bwameth: \$(bwameth.py --version | cut -f2 -d" ")
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bam
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bwameth: \$(bwameth.py --version | cut -f2 -d" ")
     END_VERSIONS
     """
 }
