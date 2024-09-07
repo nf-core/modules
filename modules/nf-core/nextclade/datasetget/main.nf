@@ -39,7 +39,6 @@ process NEXTCLADE_DATASETGET {
 
     stub:
     prefix = task.ext.prefix ?: "${dataset}"
-    def version = tag ? "--tag ${tag}" : ''
     """
     mkdir -p ${prefix}
     touch ${prefix}/CHANGELOG.md
