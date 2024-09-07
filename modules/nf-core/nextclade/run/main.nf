@@ -45,4 +45,21 @@ process NEXTCLADE_RUN {
         nextclade: \$(echo \$(nextclade --version 2>&1) | sed 's/^.*nextclade //; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.csv
+    touch ${prefix}.tsv
+    touch ${prefix}.json
+    touch ${prefix}.auspice.json
+    touch ${prefix}.aligned.fasta
+    touch ${prefix}.cds_translation.test.fasta
+    touch ${prefix}.nwk
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        nextclade: \$(echo \$(nextclade --version 2>&1) | sed 's/^.*nextclade //; s/ .*\$//')
+    END_VERSIONS
+    """
 }

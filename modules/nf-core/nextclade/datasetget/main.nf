@@ -36,4 +36,24 @@ process NEXTCLADE_DATASETGET {
         nextclade: \$(echo \$(nextclade --version 2>&1) | sed 's/^.*nextclade //; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    prefix = task.ext.prefix ?: "${dataset}"
+    def version = tag ? "--tag ${tag}" : ''
+    """
+    mkdir -p ${prefix}
+    touch ${prefix}/CHANGELOG.md
+    touch ${prefix}/README.md
+    touch ${prefix}/genome_annotation.gff3
+    touch ${prefix}/pathogen.json
+    touch ${prefix}/reference.fasta
+    touch ${prefix}/sequences.fasta
+    touch ${prefix}/tree.json
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        nextclade: \$(echo \$(nextclade --version 2>&1) | sed 's/^.*nextclade //; s/ .*\$//')
+    END_VERSIONS
+    """
+
 }
