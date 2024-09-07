@@ -21,15 +21,15 @@ import calendar
 import re
 import secrets
 import sys
+from datetime import datetime as dt
 
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
-from datetime import datetime as dt
 
 MESSAGE_TIMEOUT = 60 * 60 * 24  # Messages are valid for 1 day
 NONCE_BYTES = 12
 
 
-class DecryptionTimeout(Exception):
+class DecryptionTimeoutError(Exception):
     # Decrypting a message that is too old
     pass
 
@@ -69,7 +69,7 @@ def decrypt_message(key, ciphertext, timeout=MESSAGE_TIMEOUT):
     msg_timestamp = int.from_bytes(msg_timestamp, byteorder="big")
     timestamp = calendar.timegm(dt.now().utctimetuple())
     if (timestamp - msg_timestamp) > timeout:
-        raise DecryptionTimeout("The message has an expired timeout")
+        raise DecryptionTimeoutError("The message has an expired timeout")
     return message.decode("utf-8")
 
 
