@@ -4,8 +4,8 @@ process MOBSUITE_RECON {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mob_suite%3A3.0.3--pyhdfd78af_0':
-        'biocontainers/mob_suite:3.0.3--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/mob_suite:3.1.9--pyhdfd78af_0':
+        'biocontainers/mob_suite:3.1.9--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -36,6 +36,19 @@ process MOBSUITE_RECON {
         --num_threads $task.cpus \\
         --outdir results \\
         --sample_id $prefix
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        mobsuite: \$(echo \$(mob_recon --version 2>&1) | sed 's/^.*mob_recon //; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    """
+    mkdir -p results
+
+    touch results/chromosome.fasta
+    touch results/contig_report.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

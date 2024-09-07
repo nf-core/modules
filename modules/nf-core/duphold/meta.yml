@@ -2,6 +2,9 @@ name: "duphold"
 description: SV callers like lumpy look at split-reads and pair distances to find structural variants. This tool is a fast way to add depth information to those calls. This can be used as additional information for filtering variants; for example we will be skeptical of deletion calls that do not have lower than average coverage compared to regions with similar gc-content.
 keywords:
   - sort
+  - duphold
+  - structural variation
+  - depth information
 tools:
   - "duphold":
       description: "SV callers like lumpy look at split-reads and pair distances to find structural variants. This tool is a fast way to add depth information to those calls."
@@ -9,7 +12,7 @@ tools:
       documentation: "https://github.com/brentp/duphold"
       tool_dev_url: "https://github.com/brentp/duphold"
       doi: "10.1093/gigascience/giz040"
-      licence: "['MIT']"
+      licence: ["MIT"]
 input:
   - meta:
       type: map
