@@ -1,0 +1,61 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "mirtop_gff"
+description: mirtop gff generates the GFF3 adapter format to capture miRNA variations
+keywords:
+  - mirna
+  - isomir
+  - gff
+tools:
+  - "mirtop":
+      description: "Small RNA-seq annotation"
+      homepage: "https://github.com/miRTop/mirtop"
+      documentation: "https://mirtop.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/miRTop/mirtop"
+      licence: ["MIT License"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - bam:
+      type: file
+      description: Sorted BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - hairpin:
+      type: file
+      description: Hairpin file
+      pattern: "*.{fa,fasta}"
+  - gtf:
+      type: file
+      description: GTF file
+      pattern: "*.{gtf}"
+  - species:
+      type: string
+      description: Species name of the GTF file
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - mirtop_gff:
+      type: file
+      description: GFF file
+      pattern: "*.{gff}"
+  - sample_gff:
+      type: file
+      description: GFF file
+      pattern: "*.{gff}"
+
+authors:
+  - "@atrigila"
+maintainers:
+  - "@atrigila"

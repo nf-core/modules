@@ -1,0 +1,51 @@
+nextflow_process {
+
+    name "Test Process BCFTOOLS_CSQ"
+    script "../main.nf"
+    process "BCFTOOLS_CSQ"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bcftools"
+    tag "bcftools/csq"
+
+    test("homo_sapiens") {
+
+        config "./vcf.config"
+        when {
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/dbsnp_138.hg38.vcf.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ : ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ : ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[3] = [
+                    [ : ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gff3', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                                path(process.out.vcf[0][1]).vcf.variantsMD5,
+                                process.out.versions
+                                ).match()
+                }
+            )
+        }
+
+    }
+
+}
