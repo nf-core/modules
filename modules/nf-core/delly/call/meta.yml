@@ -12,19 +12,44 @@ tools:
       documentation: https://github.com/dellytools/delly/blob/master/README.md
       doi: "10.1093/bioinformatics/bts378"
       licence: ["BSD-3-Clause"]
+      args_id: "$args"
+  - bgzip:
+      description: Bgzip compresses or decompresses files in a similar manner to, and compatible with, gzip.
+      homepage: https://www.htslib.org/doc/tabix.html
+      documentation: http://www.htslib.org/doc/bgzip.html
+      doi: 10.1093/bioinformatics/btp352
+      licence: ["MIT"]
+      args_id: "$args2"
+  - tabix:
+      description: Generic indexer for TAB-delimited genome position files.
+      homepage: https://www.htslib.org/doc/tabix.html
+      documentation: https://www.htslib.org/doc/tabix.1.html
+      doi: 10.1093/bioinformatics/btq671
+      licence: ["MIT"]
+      args_id: "$args3"
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - input:
+  - input_1:
       type: file
       description: BAM/CRAM file from alignment must be sorted, indexed, and duplicate marked
       pattern: "*.{bam,cram}"
-  - input_index:
+  - input_1_idx:
       type: file
       description: Index of the BAM/CRAM file
+      pattern: "*.{bai,crai}"
+  - input_ctrl:
+      type: file
+      description: |
+        Optional BAM/CRAM file of matched control sample for somatic variant calling.
+        Must be sorted, indexed, and duplicate marked.
+      pattern: "*.{bam,cram}"
+  - input_ctrl_idx:
+      type: file
+      description: Optional index of the control BAM/CRAM file
       pattern: "*.{bai,crai}"
   - vcf:
       type: file
@@ -77,6 +102,8 @@ output:
 authors:
   - "@projectoriented"
   - "@nvnieuwk"
+  - "@alexnater"
 maintainers:
   - "@projectoriented"
   - "@nvnieuwk"
+  - "@alexnater"
