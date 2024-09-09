@@ -22,6 +22,11 @@ input:
       type: file
       description: Internal format for dumping binary single chrs. Useful for ANGSD contamination
       pattern: "*.icnts.gz"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing information related to the hapmap_file.
+        e.g. [ id:'test' ]
   - hapmap_file:
       type: file
       description: A list of variable sites to look for heterozygosity.
