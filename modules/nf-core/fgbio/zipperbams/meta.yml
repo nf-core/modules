@@ -2,6 +2,9 @@ name: "fgbio_zipperbams"
 description: FGBIO tool to zip together an unmapped and mapped BAM to transfer metadata into the output BAM
 keywords:
   - fgbio
+  - umi
+  - unmapped
+  - ubam
   - zipperbams
 tools:
   - fgbio:
@@ -16,28 +19,51 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - mbam:
+  - mapped_bam:
       type: file
       description: mapped BAM/SAM file
       pattern: "*.{bam,sam}"
-  - ubam:
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - unmapped_bam:
       type: file
       description: unmapped BAM file
       pattern: "*.bam"
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'GRCh38' ]
+  - fasta:
+      type: file
+      description: fasta file containing genomic sequence information
+      pattern: "*.{fasta,fa}"
+  - meta4:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'GRCh38' ]
+  - dict:
+      type: file
+      description: dict file containing a sequence dictionary for the fasta file
+      pattern: "*.{dict}"
 output:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: Zipped BAM file
+      pattern: "*.bam"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
 authors:
   - "@lescai"
 maintainers:

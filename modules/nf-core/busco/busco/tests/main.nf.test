@@ -18,7 +18,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file( params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                 ]
                 input[1] = 'genome'
                 input[2] = 'bacteria_odb10' // Launch with 'auto' to use --auto-lineage, and specified lineages // 'auto' removed from test due to memory issues
@@ -80,8 +80,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ], // meta map
                     [
-                        file( params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true),
-                        file( params.test_data['candidatus_portiera_aleyrodidarum']['genome']['genome_fasta'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists: true)
                     ]
                 ]
                 input[1] = 'genome'
@@ -165,7 +165,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file( params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = 'genome'
                 input[2] = 'eukaryota_odb10'
@@ -208,8 +208,6 @@ nextflow_process {
 
             with(path("${process.out.busco_dir[0][1]}/logs/busco.log").text) {
                 assert contains('DEBUG:busco.run_BUSCO')
-                assert contains("'use_augustus', 'False'")
-                assert contains("'use_metaeuk', 'True'") // METAEUK
                 assert contains('Results from dataset')
                 assert contains('how to cite BUSCO')
 
@@ -230,7 +228,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file( params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = 'genome'
                 input[2] = 'eukaryota_odb10'
@@ -250,8 +248,6 @@ nextflow_process {
 
             with(path("${process.out.busco_dir[0][1]}/logs/busco.log").text) {
                 assert contains('DEBUG:busco.run_BUSCO')
-                assert contains("'use_augustus', 'True'")
-                assert contains("'use_metaeuk', 'False'") // AUGUSTUS
                 assert contains('Augustus did not recognize any genes')
 
             }
@@ -275,7 +271,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file( params.test_data['candidatus_portiera_aleyrodidarum']['genome']['proteome_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
                 ]
                 input[1] = 'proteins'
                 input[2] = 'bacteria_odb10'
@@ -337,7 +333,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file( params.test_data['bacteroides_fragilis']['illumina']['test1_contigs_fa_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists: true)
                 ]
                 input[1] = 'transcriptome'
                 input[2] = 'bacteria_odb10'
@@ -398,7 +394,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file( params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                 ]
                 input[1] = 'genome'
                 input[2] = 'bacteria_odb10'

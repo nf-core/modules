@@ -17,14 +17,14 @@ tools:
       documentation: "https://concoct.readthedocs.io/en/latest/index.html"
       tool_dev_url: "https://github.com/BinPro/CONCOCT"
       doi: "10.1038/nmeth.3103"
-      licence: "['FreeBSD']"
+      licence: ["FreeBSD"]
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - coverage:
+  - coverage_file:
       type: file
       description: Subcontig coverage TSV table (typically generated with concoct_coverage_table.py)
       pattern: "*.tsv"

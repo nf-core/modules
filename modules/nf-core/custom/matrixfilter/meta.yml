@@ -72,6 +72,12 @@ input:
         Minimum observations that must have a numeric value (not be NA) to retain
         the row/ feature (e.g. gene). Supplied via task.ext.args as
         --minimum_samples_not_na. Overrides minimum_proportion_not_na
+  - most_variant_features:
+      type: integer
+      description: |
+        Variance filter for the number of  row/ feature (e.g. gene) observations returned.
+        Supplied via task.ext.args as --most_variant_features
+
 output:
   - versions:
       type: file

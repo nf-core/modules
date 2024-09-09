@@ -29,7 +29,7 @@ process MAPAD_INDEX {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mapad: \$(echo \$(mapad --version) | sed 's/^mapAD //' ))
+        mapad: \$(echo \$(mapad --version) | sed 's/^mapAD //' )
     END_VERSIONS
     """
 }

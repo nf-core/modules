@@ -1,0 +1,100 @@
+
+nextflow_process {
+
+    name "Test Process PICARD_FASTQTOSAM"
+    script "../main.nf"
+    process "PICARD_FASTQTOSAM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "picard"
+    tag "picard/fastqtosam"
+
+    test("test-picard-fastqtosam-single") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:true ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					bam(process.out.bam[0][1]).getReadsMD5(),
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-picard-fastqtosam-paired") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					bam(process.out.bam[0][1]).getReadsMD5(),
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-picard-fastqtosam-paired-custom-samplename") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    [
+				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+				    ]
+                ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					bam(process.out.bam[0][1]).getReadsMD5(),
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

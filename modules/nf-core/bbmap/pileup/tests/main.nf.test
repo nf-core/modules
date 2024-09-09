@@ -1,0 +1,35 @@
+
+nextflow_process {
+
+    name "Test Process BBMAP_PILEUP"
+    script "../main.nf"
+    process "BBMAP_PILEUP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bbmap"
+    tag "bbmap/pileup"
+
+    test("test-bbmap-pileup") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

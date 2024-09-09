@@ -15,13 +15,23 @@ tools:
       arxiv: arXiv:1303.3997
       licence: ["Artistic-2.0"]
 input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing information about the genome fasta
+        e.g. [ id:'test' ]
   - fasta:
       type: file
       description: Input genome fasta file
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing nformation about the genome fasta
+        e.g. [ id:'test' ]
   - index:
       type: file
-      description: Bowtie genome index files
+      description: Folder containing bowtie genome index files
       pattern: "*.ebwt"
   - versions:
       type: file

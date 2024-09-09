@@ -46,5 +46,3 @@ process TCOFFEE_SEQREFORMAT {
     END_VERSIONS
     """
 }
-
-
