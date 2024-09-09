@@ -38,7 +38,7 @@ nextflow_process {
                     file(process.out.gv.get(0).get(1)).name,
                     file(process.out.log.get(0).get(1)).name,
                     file(process.out.txt.get(0).get(1)).name,
-                    path(process.out.txt.get(0).get(1)).readLines(),
+                    path(process.out.txt.get(0).get(1)).readLines()[0],
                     process.out.json,
                     process.out.versions
                     ).match() }
@@ -72,7 +72,7 @@ nextflow_process {
                     file(process.out.gv.get(0).get(1)).name,
                     file(process.out.log.get(0).get(1)).name,
                     file(process.out.txt.get(0).get(1)).name,
-                    path(process.out.txt.get(0).get(1)).readLines(),
+                    path(process.out.txt.get(0).get(1)).readLines()[0],
                     process.out.json,
                     process.out.versions
                     ).match() }
@@ -106,7 +106,7 @@ nextflow_process {
                     file(process.out.gv.get(0).get(1)).name,
                     file(process.out.log.get(0).get(1)).name,
                     file(process.out.txt.get(0).get(1)).name,
-                    path(process.out.txt.get(0).get(1)).readLines(),
+                    path(process.out.txt.get(0).get(1)).readLines()[0],
                     process.out.json,
                     process.out.versions
                     ).match() }
@@ -140,7 +140,7 @@ nextflow_process {
                     file(process.out.gv.get(0).get(1)).name,
                     file(process.out.log.get(0).get(1)).name,
                     file(process.out.txt.get(0).get(1)).name,
-                    path(process.out.txt.get(0).get(1)).readLines(),
+                    path(process.out.txt.get(0).get(1)).readLines()[0],
                     process.out.json,
                     process.out.versions
                     ).match() }
@@ -174,7 +174,7 @@ nextflow_process {
                     file(process.out.gv.get(0).get(1)).name,
                     file(process.out.log.get(0).get(1)).name,
                     file(process.out.txt.get(0).get(1)).name,
-                    path(process.out.txt.get(0).get(1)).readLines(),
+                    path(process.out.txt.get(0).get(1)).readLines()[0],
                     process.out.json,
                     process.out.versions
                     ).match() }
@@ -209,7 +209,7 @@ nextflow_process {
                     file(process.out.gv.get(0).get(1)).name,
                     file(process.out.log.get(0).get(1)).name,
                     file(process.out.txt.get(0).get(1)).name,
-                    path(process.out.txt.get(0).get(1)).readLines(),
+                    path(process.out.txt.get(0).get(1)).readLines()[0],
                     process.out.json,
                     process.out.versions
                     ).match() }
