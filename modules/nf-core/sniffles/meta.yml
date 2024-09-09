@@ -17,14 +17,14 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test' ]
-  - bam:
+  - input:
       type: file
-      description: BAM file
-      pattern: "*.bam"
-  - bai:
+      description: A single .bam/.cram file - OR - one or more .snf files - OR - a single .tsv file containing a list of .snf files and optional sample ids as input
+      pattern: "*.{bam,cram,snf,tsv}"
+  - index:
       type: file
-      description: Index of BAM file
-      pattern: "*.bai"
+      description: Index of BAM/CAM file
+      pattern: "*.{bai,crai}"
   - meta2:
       type: map
       description: |
@@ -34,6 +34,15 @@ input:
       type: file
       description: |
         Reference database in FASTA format
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing tandem repeat information
+        e.g. [ id:'hg38' ]
+  - tandem_file:
+      type: file
+      description: Tandem repeat file
+      pattern: "*.bed"
 output:
   - meta:
       type: map
@@ -44,10 +53,14 @@ output:
       type: file
       description: Compressed VCF file
       pattern: "*.vcf.gz"
+  - tbi:
+      type: file
+      description: Compressed VCF file index
+      pattern: "*.tbi"
   - snf:
       type: file
-      description: Compressed SNF file
-      pattern: "*.snf.gz"
+      description: SNF file
+      pattern: "*.snf"
   - versions:
       type: file
       description: File containing software versions
@@ -58,3 +71,4 @@ authors:
 maintainers:
   - "@christopher-hakkaart"
   - "@yuukiiwa"
+  - "@fellen31"

@@ -10,6 +10,8 @@ nextflow_process {
     tag "fastqscreen"
     tag "fastqscreen/buildfromindex"
     tag "fastqscreen/fastqscreen"
+    tag "buildfromindex"
+    tag "modules_fastqscreen"
 
     setup {
 
@@ -52,10 +54,38 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.version).match("version") },
+                { assert snapshot(process.out.version).match() },
                 { assert file(process.out.txt.get(0).get(1)).exists() },
                 { assert file(process.out.png.get(0).get(1)).exists() },
                 { assert file(process.out.html.get(0).get(1)).exists() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - human - tags") {
+        config './nextflow.config'
+        when {
+            process {
+                """
+                input[0] =  [[ id:'test', single_end:false ],
+                             [file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)]
+                            ]
+                input[1] = FASTQSCREEN_BUILDFROMINDEX.out.database
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.version,
+                    process.out.txt,
+                    process.out.fastq,
+                    path(process.out.html.get(0).get(1)).readLines()[0..10],
+                    path(process.out.png.get(0).get(1)).exists()
+                    ).match() }
             )
         }
 

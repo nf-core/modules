@@ -30,13 +30,13 @@ input:
       type: file
       description: XML text file containing query results from database.
   - pattern:
-      type: value
+      type: string
       description: String in xml_input that encloses element to search.
   - element:
-      type: value
+      type: string
       description: Space-delimited strings that will be converted to columns.
   - sep:
-      type: value
+      type: string
       description: Separator/delimiter between columns (for instance "," or "\t").
 output:
   - meta:
