@@ -2,10 +2,10 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - wget=1.21.3
-  - muscle=3.8.31
-  - cutadapt>=4.0
-  - vsearch>=2.13.3
-  - pip>=23.2
+  - bioconda::cutadapt=4.9
+  - bioconda::muscle=3.8.31
+  - bioconda::vsearch=2.28.1
+  - conda-forge::wget=1.20.3
+  - pip
   - pip:
-      - crabs==0.2
+    - crabs==0.2.0
