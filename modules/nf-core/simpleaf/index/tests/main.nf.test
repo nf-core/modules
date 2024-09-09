@@ -30,8 +30,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    path("${process.out.index[0][1]}/piscem_idx_cfish.json"),
-                    path("${process.out.index[0][1]}/piscem_idx.ectab"),
+                    path("${process.out.index[0][1]}/piscem_idx.ctab"),
+                    // path("${process.out.index[0][1]}/piscem_idx.ectab"),
                     path("${process.out.index[0][1]}/piscem_idx.sshash"),
                     process.out.versions)
                     .match() }
@@ -59,8 +59,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    path("${process.out.index[0][1]}/piscem_idx_cfish.json"),
-                    path("${process.out.index[0][1]}/piscem_idx.ectab"),
+                    path("${process.out.index[0][1]}/piscem_idx.ctab"),
+                    // path("${process.out.index[0][1]}/piscem_idx.ectab"),
                     path("${process.out.index[0][1]}/piscem_idx.sshash"),
                     process.out.versions)
                     .match() }

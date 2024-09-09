@@ -56,31 +56,33 @@ process SIMPLEAF_QUANT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        simpleaf: \$(simpleaf -V | tr -d '\\n' | cut -d ' ' -f 2)
-        salmon: \$(salmon --version | sed -e "s/salmon //g")
+        alevin-fry: \$(alevin-fry --version | sed -e "s/alevin-fry //g")
         piscem: \$(piscem --version | sed -e "s/piscem //g")
+        salmon: \$(salmon --version | sed -e "s/salmon //g")
+        simpleaf: \$(simpleaf --version | sed -e "s/simpleaf //g")
     END_VERSIONS
     """
 
     stub:
     prefix    = task.ext.prefix ?: "${meta.id}"
     """
+    export ALEVIN_FRY_HOME=.
+
     mkdir -p ${prefix}/af_map
     mkdir -p ${prefix}/af_quant/alevin
 
     touch ${prefix}/af_map/map.rad
     touch ${prefix}/af_map/unmapped_bc_count.bin
     touch ${prefix}/af_quant/alevin/quants_mat_rows.txt
-    touch ${prefix}/af_quant/all_freq.bin
     touch ${prefix}/af_quant/map.collated.rad
     touch ${prefix}/af_quant/permit_freq.bin
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        simpleaf: \$(simpleaf --version | sed -e "s/simpleaf //g")
         alevin-fry: \$(alevin-fry --version | sed -e "s/alevin-fry //g")
-        salmon: \$(salmon --version | sed -e "s/salmon //g")
         piscem: \$(piscem --version | sed -e "s/piscem //g")
+        salmon: \$(salmon --version | sed -e "s/salmon //g")
+        simpleaf: \$(simpleaf --version | sed -e "s/simpleaf //g")
     END_VERSIONS
     """
 }
