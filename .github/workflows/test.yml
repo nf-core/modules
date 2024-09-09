@@ -36,7 +36,7 @@ jobs:
         # this so it will only run against changed files. It'll make it much
         # easier to fix these as they come up rather than everything at once.
         with:
-          extra_args: ""
+          extra_args: "--all-files"
 
   prettier:
     runs-on: ubuntu-latest
