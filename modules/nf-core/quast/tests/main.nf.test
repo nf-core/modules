@@ -1,0 +1,105 @@
+nextflow_process {
+
+    name "Test Process QUAST"
+    script "../main.nf"
+    process "QUAST"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "quast"
+
+    test("sarscov2 - ref") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id: 'test' ], 
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                            [ id: 'test' ], 
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                ]
+                input[2] = [
+                            [ id: 'test' ], 
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3.gz', checkIfExists: true)
+                ]                
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.results[0][1]).list().size() == 15 },
+                { assert snapshot(
+                    process.out.tsv,
+                    process.out.misassemblies,
+                    process.out.unaligned,
+                    process.out.versions,
+                    ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - noref") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id: 'test' ], 
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+                ]
+                input[1] = [[:],[]]
+                input[2] = [[:],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.results[0][1]).list().size() == 12 },
+                { assert snapshot(
+                    process.out.tsv,
+                    process.out.versions,
+                    ).match() }
+            )
+        }
+    }
+
+
+    test("sarscov2 - all - stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id: 'test1' ], 
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                            [ id: 'test1' ], 
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                ]
+                input[2] = [
+                            [ id: 'test1' ], 
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3.gz', checkIfExists: true)
+                ]                
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

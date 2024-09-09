@@ -14,7 +14,26 @@
         "dependencies": {
             "type": "array",
             "items": {
-                "type": "string"
+                "oneOf": [
+                    {
+                        "type": "string",
+                        "pattern": "^.*[^><]=[^><].*$",
+                        "$comment": "The above pattern ensures that all packages are pinned to a specific version. This ensures the reproducibility of the environment"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "pip": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string",
+                                    "pattern": "^.*==.*$",
+                                    "$comment": "The above pattern ensures that all packages are pinned to a specific version. This ensures the reproducibility of the environment"
+                                }
+                            }
+                        }
+                    }
+                ]
             }
         }
     },
