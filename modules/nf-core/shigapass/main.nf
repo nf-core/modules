@@ -4,12 +4,11 @@ process SHIGAPASS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/shigapassh%3A1.5.0--hdfd78af_0':
+        'https://depot.galaxyproject.org/singularity/shigapass%3A1.5.0--hdfd78af_0':
         'biocontainers/shigapass:1.5.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(assembly)
-    path databasedir
 
     output:
     tuple val(meta), path("*.csv"), emit: report
