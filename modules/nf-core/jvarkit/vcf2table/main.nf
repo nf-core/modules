@@ -11,7 +11,7 @@ process JVARKIT_VCF2TABLE {
     tuple val(meta), path(vcf), path(tbi), path(regions_file)
     tuple val(meta2), path(pedigree)
     output:
-    tuple val(meta), path("*.${extension}"), emit: vcf
+    tuple val(meta), path("*.${extension}"), emit: output
     path "versions.yml"                    , emit: versions
 
     when:
@@ -43,6 +43,7 @@ process JVARKIT_VCF2TABLE {
     """
 
     stub:
+    def args2        = task.ext.args2 ?: ''
     extension  = getFileExtension(args2); /* custom function, see below */
     def prefix = task.ext.prefix ?: "${meta.id}"
     """

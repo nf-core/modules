@@ -1,20 +1,20 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "jvarkit_vcffilterjdk"
-description: Filtering VCF with dynamically-compiled java expressions
+name: "jvarkit_vcf2table"
+description: Convert VCF to a user friendly table
 keywords:
   - vcf
   - bcf
-  - filtering
-  - java
-  - jdk
+  - text
+  - html
+  - visualization
 tools:
   - "jvarkit":
       description: "Java utilities for Bioinformatics."
       homepage: "https://github.com/lindenb/jvarkit"
       documentation: "https://jvarkit.readthedocs.io/"
       tool_dev_url: "https://github.com/lindenb/jvarkit"
-      doi: "10.1093/bioinformatics/btx734 "
+      doi: "10.6084/m9.figshare.1425030"
       licence: ["MIT License"]
 
   - "bcftools":
@@ -60,6 +60,10 @@ output:
       type: file
       description: Output file
       pattern: "*.{txt,html}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 authors:
   - "@lindenb"
 maintainers:
