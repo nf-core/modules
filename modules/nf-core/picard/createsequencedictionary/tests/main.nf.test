@@ -1,0 +1,61 @@
+nextflow_process {
+
+    name "Test Process PICARD_CREATESEQUENCEDICTIONARY"
+    script "../main.nf"
+    process "PICARD_CREATESEQUENCEDICTIONARY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "picard"
+    tag "picard/createsequencedictionary"
+
+    test("sarscov2 - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.reference_dict[0][1]).name,
+                    process.out.versions
+                    ).match()
+                }
+
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

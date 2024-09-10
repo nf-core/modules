@@ -17,15 +17,15 @@ tools:
       licence: ["GPL v2"]
 input:
   - peaks:
-      type: tuple of two files
+      type: list
       description: BED, narrowPeak or broadPeak files of replicates
       pattern: "*"
   - peak_type:
-      type: value
+      type: string
       description: Type of peak file
       pattern: "{narrowPeak,broadPeak,bed}"
   - prefix:
-      type: value
+      type: string
       description: Prefix for output files
 output:
   - versions:

@@ -1,11 +1,12 @@
 /*
 unfortunately need to output the version manually
-becouse platypus CallVariants does not include --version or -v commend
+because platypus CallVariants does not include --version or -v commend
 */
 process PLATYPUS {
     tag "$meta.id"
     label 'process_medium'
 
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/platypus-variant:0.8.1--py27_1':
@@ -46,6 +47,22 @@ process PLATYPUS {
 
     bgzip  --threads ${task.cpus} -c ${prefix}.vcf > ${prefix}.vcf.gz
     tabix  ${prefix}.vcf.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        platypus: ${VERSION}
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '0.8.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+
+    """
+    touch ${prefix}.log
+    echo | bgzip > ${prefix}.vcf.gz
+    touch ${prefix}.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
