@@ -3,6 +3,7 @@ description: Module that calls normalize-by-median.py from khmer. The module can
 keywords:
   - digital normalization
   - khmer
+  - k-mer counting
 tools:
   - khmer:
       description: khmer k-mer counting library
@@ -13,11 +14,11 @@ tools:
       licence: ["BSD License"]
 input:
   - pe_reads:
-      type: files
+      type: file
       description: Paired-end interleaved fastq files
       pattern: "*.{fq,fastq}.gz"
   - se_reads:
-      type: files
+      type: file
       description: Single-end fastq files
       pattern: "*.{fq,fastq}.gz"
   - name:

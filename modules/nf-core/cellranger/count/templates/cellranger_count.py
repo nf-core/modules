@@ -5,11 +5,11 @@ Automatically rename staged files for input into cellranger count.
 Copyright (c) Gregor Sturm 2023 - MIT License
 """
 
-from subprocess import run
-from pathlib import Path
-from textwrap import dedent
-import shlex
 import re
+import shlex
+from pathlib import Path
+from subprocess import run
+from textwrap import dedent
 
 
 def chunk_iter(seq, size):
