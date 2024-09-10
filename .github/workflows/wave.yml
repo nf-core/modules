@@ -78,4 +78,41 @@ jobs:
               --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }} \
               --singularity
 
+      - name: Bump Versions
+        env:
+          NFT_DIFF: "pdiff"
+          NFT_DIFF_ARGS: "--line-numbers --width 120 --expand-tabs=2"
+          SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
+          SENTIEON_AUTH_MECH: "GitHub Actions - token"
+        run: |
+          # use "docker_self_hosted" if it runs on self-hosted runner and matrix.profile=docker
+          if [ "${{ matrix.profile }}" == "docker" ]; then
+            PROFILE="docker_self_hosted"
+          else
+            PROFILE=${{ matrix.profile }}
+          fi
+
+          NFT_WORKDIR=~ \
+          nf-test test \
+            --profile=${{ matrix.profile }} \
+            --tap=test.tap \
+            # --ci \
+            --verbose \
+            --only-changed \
+            --shard ${{ matrix.shard }}/${{ env.TOTAL_SHARDS }} \
+            --filter ${{ matrix.filter }} \
+            --follow-dependencies \
+            --tag version \
+            --update-snapshot
+
+      - name: Commit & push version bumps
+        run: |
+          git config user.email "core@nf-co.re"
+          git config user.name "nf-core-bot"
+          git config push.default upstream
+          git add .
+          git status
+          git commit -m "[automated] Bump versions snapshot"
+          git push
+
     # TODO Build from Dockerfiles
