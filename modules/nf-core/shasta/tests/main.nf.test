@@ -1,0 +1,41 @@
+
+nextflow_process {
+
+    name "Test Process SHASTA"
+    script "../main.nf"
+    process "SHASTA"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "shasta"
+
+    test("test-shasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', model:'Nanopore-Dec2019' ], // meta map
+				    [ file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/nanopore/fastq/test.fastq.gz', checkIfExists: true) ],
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					path(process.out.assembly[0][1]).linesGzip[0][0..10],
+					path(process.out.gfa[0][1]).linesGzip[0],
+					file(process.out.results[0][1]).name,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

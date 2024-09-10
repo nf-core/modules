@@ -18,19 +18,30 @@ process WGSIM {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-
-    def WGSIM_VERSION = "0.3.1-r13" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def args    = task.ext.args ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}"
     """
     wgsim \\
         $args \\
         $fasta \\
-        ${prefix}_1.fastq ${prefix}_2.fastq
+        ${prefix}_R1.fastq \\
+        ${prefix}_R2.fastq
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        wgsim: $WGSIM_VERSION
+        wgsim: \$(wgsim 2>&1 | grep "Version" | sed 's/Version: //')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix  = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}_R1.fastq
+    touch ${prefix}_R2.fastq
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        wgsim: \$(wgsim 2>&1 | grep "Version" | sed 's/Version: //')
     END_VERSIONS
     """
 }

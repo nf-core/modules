@@ -1,7 +1,6 @@
-name: geoquery_getgeo
 channels:
   - conda-forge
   - bioconda
-  - defaults
 dependencies:
-  - bioconda::bioconductor-geoquery=2.66.0
+  - bioconda::bioconductor-geoquery=2.70.0
+  - conda-forge::r-base=4.3.2 # Locked with container
