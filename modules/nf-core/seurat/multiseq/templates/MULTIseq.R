@@ -29,6 +29,30 @@ parse_args <- function(x){
     parsed_args[! is.na(parsed_args)]
 }
 
+#' All values from ext.args are stored as strings
+#' Function to transform strings to the correct class
+convert_element <- function(x) {
+    if (is.character(x)) {
+        num_value <- suppressWarnings(as.numeric(x))
+    if (!is.na(num_value)) {
+        return(num_value)
+    }
+    
+    # Try to convert to boolean
+    bool_value <- tolower(x)
+    if (bool_value %in% c("true", "t", "yes", "y", "1")) {
+        return(TRUE)
+    } else if (bool_value %in% c("false", "f", "no", "n", "0")) {
+        return(FALSE)
+    }
+}
+    return(x)
+}
+#' apply the conversion to all elements of a list
+process_list <- function(input_list) {
+    return(lapply(input_list, convert_element))
+}
+
 ################################################
 ################################################
 ## PARSE PARAMETERS FROM NEXTFLOW             ##
@@ -46,32 +70,9 @@ opt <- list(
 
 opt_types <- lapply(opt, class)
 
-# Apply parameter overrides
+#' Apply parameter overrides
 
 args_opt <- parse_args('$task.ext.args')
-
-# All values from ext.args are stored as strings
-# Function to transform strings to the correct class
-convert_element <- function(x) {
-        if (is.character(x)) {
-    num_value <- suppressWarnings(as.numeric(x))
-    if (!is.na(num_value)) {
-        return(num_value)
-    }
-
-    # Try to convert to boolean
-    bool_value <- tolower(x)
-    if (bool_value %in% c("true", "t", "yes", "y", "1")) {
-        return(TRUE)
-    } else if (bool_value %in% c("false", "f", "no", "n", "0")) {
-        return(FALSE)
-    }
-        }
-        return(x)
-}
-process_list <- function(input_list) {
-        return(lapply(input_list, convert_element))
-}
 opt_args_transformed <- process_list(args_opt)
 opt <- process_list(opt)
 
@@ -122,48 +123,48 @@ demultiplex <- MULTIseqDemux(seurat_object,assay = opt_args_transformed\$assay, 
 ################################################
 
 if(opt\$produce_plots){
-        ### Ridge plot
-        Idents(demultiplex) <- opt_args_transformed\$group_cells_feature_scatter
-        RidgePlot(demultiplex, assay = opt_args_transformed\$assay , features = rownames(demultiplex[[opt_args_transformed\$assay ]])[1:opt_args_transformed\$number_of_features_ridge_plot], ncol = opt_args_transformed\$number_of_cols_ridge_plot)
-        ggsave(paste0(opt\$output_prefix, '_ridge_plot.jpeg'), device = "jpeg", dpi = 500)
+    ### Ridge plot
+    Idents(demultiplex) <- opt_args_transformed\$group_cells_feature_scatter
+    RidgePlot(demultiplex, assay = opt_args_transformed\$assay , features = rownames(demultiplex[[opt_args_transformed\$assay ]])[1:opt_args_transformed\$number_of_features_ridge_plot], ncol = opt_args_transformed\$number_of_cols_ridge_plot)
+    ggsave(paste0(opt\$output_prefix, '_ridge_plot.jpeg'), device = "jpeg", dpi = 500)
 
-        ### Feature scatter plot
-        FeatureScatter(demultiplex, feature1 = opt_args_transformed\$feature_scatter_feature_1, feature2 = opt_args_transformed\$feature_scatter_feature_2)
-        ggsave(paste0(opt\$output_prefix, '_feature_scatter_plot.jpeg'), device = "jpeg", dpi = 500)
+    ### Feature scatter plot
+    FeatureScatter(demultiplex, feature1 = opt_args_transformed\$feature_scatter_feature_1, feature2 = opt_args_transformed\$feature_scatter_feature_2)
+    ggsave(paste0(opt\$output_prefix, '_feature_scatter_plot.jpeg'), device = "jpeg", dpi = 500)
 
-        ### Violin plot
-        Idents(demultiplex) <- opt_args_transformed\$group_cells_violin_plot
-        VlnPlot(demultiplex, features = opt_args_transformed\$features_violin_plot, pt.size = opt_args_transformed\$pt_size, log = opt_args_transformed\$log)
-        ggsave(paste0(opt\$output_prefix, '_violin_plot.jpeg'), device = "jpeg", dpi = 500)
+    ### Violin plot
+    Idents(demultiplex) <- opt_args_transformed\$group_cells_violin_plot
+    VlnPlot(demultiplex, features = opt_args_transformed\$features_violin_plot, pt.size = opt_args_transformed\$pt_size, log = opt_args_transformed\$log)
+    ggsave(paste0(opt\$output_prefix, '_violin_plot.jpeg'), device = "jpeg", dpi = 500)
 
-        ### TSNE plot for HTOs
-        subset_demultiplexing_results <- subset(demultiplex, idents = opt_args_transformed\$subset_idents, invert = opt_args_transformed\$subset_invert)
-        DefaultAssay(subset_demultiplexing_results) <- opt_args_transformed\$assay
-        subset_demultiplexing_results <-ScaleData(subset_demultiplexing_results, features = rownames(subset_demultiplexing_results),
-        verbose = opt_args_transformed\$tsne_scale_data_verbose)
-        subset_demultiplexing_results <- RunPCA(subset_demultiplexing_results, features =  rownames(subset_demultiplexing_results), approx = opt_args_transformed\$run_pca_approx)
-        subset_demultiplexing_results <- RunTSNE(subset_demultiplexing_results, dims = 1:opt_args_transformed\$run_tsne_dim_max, perplexity = opt_args_transformed\$run_tsne_perplexity, check_duplicates = opt_args_transformed\$check_duplicates_tsne)
-        DimPlot(subset_demultiplexing_results)
-        ggsave(paste0(opt\$output_prefix, '_tsne_plot.jpeg'), device = "jpeg", dpi = 500)
+    ### TSNE plot for HTOs
+    subset_demultiplexing_results <- subset(demultiplex, idents = opt_args_transformed\$subset_idents, invert = opt_args_transformed\$subset_invert)
+    DefaultAssay(subset_demultiplexing_results) <- opt_args_transformed\$assay
+    subset_demultiplexing_results <- ScaleData(subset_demultiplexing_results, features = rownames(subset_demultiplexing_results),
+    verbose = opt_args_transformed\$tsne_scale_data_verbose)
+    subset_demultiplexing_results <- RunPCA(subset_demultiplexing_results, features =  rownames(subset_demultiplexing_results), approx = opt_args_transformed\$run_pca_approx)
+    subset_demultiplexing_results <- RunTSNE(subset_demultiplexing_results, dims = 1:opt_args_transformed\$run_tsne_dim_max, perplexity = opt_args_transformed\$run_tsne_perplexity, check_duplicates = opt_args_transformed\$check_duplicates_tsne)
+    DimPlot(subset_demultiplexing_results)
+    ggsave(paste0(opt\$output_prefix, '_tsne_plot.jpeg'), device = "jpeg", dpi = 500)
 
-        ### TSNE plot classification
-        hto_names <- rownames(demultiplex[[opt_args_transformed\$assay]])
-        # Extract the singlets
-        pbmc.singlet <- subset(demultiplex, idents = hto_names)
-        # Select the top 1000 most variable features
-        pbmc.singlet <- FindVariableFeatures(pbmc.singlet, selection.method = opt_args_transformed\$selection_method)
-        # Scaling RNA data, we only scale the variable features here for efficiency
-        pbmc.singlet <- ScaleData(pbmc.singlet, features = VariableFeatures(pbmc.singlet))
-        # Run PCA
-        pbmc.singlet <- RunPCA(pbmc.singlet, features = VariableFeatures(pbmc.singlet),check_duplicates = opt_args_transformed\$check_duplicates_tsne)
+    ### TSNE plot classification
+    hto_names <- rownames(demultiplex[[opt_args_transformed\$assay]])
+    # Extract the singlets
+    subset_demultiplexing_singlet <- subset(demultiplex, idents = hto_names)
+    # Select the top 1000 most variable features
+    subset_demultiplexing_singlet <- FindVariableFeatures(subset_demultiplexing_singlet, selection.method = opt_args_transformed\$selection_method)
+    # Scaling RNA data, we only scale the variable features here for efficiency
+    subset_demultiplexing_singlet <- ScaleData(subset_demultiplexing_singlet, features = VariableFeatures(subset_demultiplexing_singlet))
+    # Run PCA
+    subset_demultiplexing_singlet <- RunPCA(subset_demultiplexing_singlet, features = VariableFeatures(subset_demultiplexing_singlet),check_duplicates = opt_args_transformed\$check_duplicates_tsne)
 
-        # We select the top 10 PCs for clustering and tSNE based on PCElbowPlot
-        pbmc.singlet <- FindNeighbors(pbmc.singlet, reduction = "pca", dims = 1:opt_args_transformed\$run_tsne_dim_max)
-        pbmc.singlet <- FindClusters(pbmc.singlet, resolution = opt_args_transformed\$resolution, verbose = opt_args_transformed\$tsne_scale_data_verbose)
-        pbmc.singlet <- RunTSNE(pbmc.singlet, reduction = "pca", dims = 1:opt_args_transformed\$run_tsne_dim_max,check_duplicates = opt_args_transformed\$check_duplicates_tsne)
-        DimPlot(pbmc.singlet, group.by = opt_args_transformed\$singlet_identities_tsne)
-        ggsave(paste0(opt\$output_prefix, '_tsne_classification.jpeg'), device = "jpeg", dpi = 500)
-        }
+    # We select the top 10 PCs for clustering and tSNE based on PCElbowPlot
+    subset_demultiplexing_singlet <- FindNeighbors(subset_demultiplexing_singlet, reduction = "pca", dims = 1:opt_args_transformed\$run_tsne_dim_max)
+    subset_demultiplexing_singlet <- FindClusters(subset_demultiplexing_singlet, resolution = opt_args_transformed\$resolution, verbose = opt_args_transformed\$tsne_scale_data_verbose)
+    subset_demultiplexing_singlet <- RunTSNE(subset_demultiplexing_singlet, reduction = "pca", dims = 1:opt_args_transformed\$run_tsne_dim_max,check_duplicates = opt_args_transformed\$check_duplicates_tsne)
+    DimPlot(subset_demultiplexing_singlet, group.by = opt_args_transformed\$singlet_identities_tsne)
+    ggsave(paste0(opt\$output_prefix, '_tsne_classification.jpeg'), device = "jpeg", dpi = 500)
+}
 
 
 ################################################
