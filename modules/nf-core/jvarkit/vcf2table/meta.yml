@@ -1,0 +1,66 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "jvarkit_vcffilterjdk"
+description: Filtering VCF with dynamically-compiled java expressions
+keywords:
+  - vcf
+  - bcf
+  - filtering
+  - java
+  - jdk
+tools:
+  - "jvarkit":
+      description: "Java utilities for Bioinformatics."
+      homepage: "https://github.com/lindenb/jvarkit"
+      documentation: "https://jvarkit.readthedocs.io/"
+      tool_dev_url: "https://github.com/lindenb/jvarkit"
+      doi: "10.1093/bioinformatics/btx734 "
+      licence: ["MIT License"]
+
+  - "bcftools":
+      description: |
+        View, subset and filter VCF or BCF files by position and filtering expression. Convert between VCF and BCF
+      homepage: "http://samtools.github.io/bcftools/bcftools.html"
+      documentation: "http://www.htslib.org/doc/bcftools.html"
+      doi: "10.1093/bioinformatics/btp352"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing VCF information
+  - vcf:
+      type: file
+      description: Groovy Map containing reference genome information for vcf
+      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+  - tbi:
+      type: file
+      description: Optional index file for the VCF
+      pattern: "*.{tbi,csi}"
+  - regions_file:
+      type: file
+      description: Optional. Restrict to regions listed in a file
+      pattern: "*.{bed,bed.gz,txt,tsv}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing pedigree information
+  - pedigree:
+      type: file
+      description: Optional pedigree for jvarkit
+      pattern: "*.{ped,pedigree}"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing VCF information
+        e.g. [ id:'test', single_end:false ]
+  - output:
+      type: file
+      description: Output file
+      pattern: "*.{txt,html}"
+authors:
+  - "@lindenb"
+maintainers:
+  - "@lindenb"
