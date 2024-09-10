@@ -37,7 +37,6 @@ convert_element <- function(x) {
     if (!is.na(num_value)) {
         return(num_value)
     }
-    
     # Try to convert to boolean
     bool_value <- tolower(x)
     if (bool_value %in% c("true", "t", "yes", "y", "1")) {
