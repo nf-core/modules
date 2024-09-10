@@ -19,15 +19,15 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing VCF information
-        e.g. [ id:'test']
+        Groovy Map containing VCF information. Attribute `gatk_args` can be used to add arguments to gatk.
+        e.g. [ id:'test', gatk_args:'-F CHROM -F POS -F TYPE -GF AD']
   - vcf:
       type: list
-      description: List of VCF(.gz) files
+      description: VCF file
       pattern: "*.{vcf,vcf.gz}"
   - tbi:
       type: list
-      description: List of VCF file indexes
+      description: Index of VCF file.
       pattern: "*.{idx,tbi}"
   - meta2:
       type: map
