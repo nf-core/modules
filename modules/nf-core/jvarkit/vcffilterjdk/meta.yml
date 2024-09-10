@@ -33,6 +33,14 @@ input:
       type: file
       description: Groovy Map containing reference genome information for vcf
       pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+  - tbi:
+      type: file
+      description: Optional index file for the VCF
+      pattern: "*.{tbi,csi}"
+  - regions_file:
+      type: file
+      description: Optional. Restrict to regions listed in a file
+      pattern: "*.{bed,bed.gz,txt,tsv}"
   - meta2:
       type: map
       description: |

@@ -8,7 +8,7 @@ process JVARKIT_VCFFILTERJDK {
         'biocontainers/jvarkit:2024.08.25--hdfd78af_1' }"
 
     input:
-    tuple val(meta),  path(vcf)
+    tuple val(meta),  path(vcf), path(tbi), path(regions_file)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(dict)
@@ -23,11 +23,12 @@ process JVARKIT_VCFFILTERJDK {
     task.ext.when == null || task.ext.when
 
     script:
-    def args1       = task.ext.args1 ?: ''
-    def args2       = task.ext.args2 ?: ''
-    def args3       = task.ext.args3 ?: ''
-    def prefix      = task.ext.prefix ?: "${meta.id}"
-    def script_file = code?"--script \"${code}\"":""
+    def args1        = task.ext.args1 ?: ''
+    def args2        = task.ext.args2 ?: ''
+    def args3        = task.ext.args3 ?: ''
+    def prefix       = task.ext.prefix ?: "${meta.id}"
+    def script_file  = code?"--script \"${code}\"":""
+    def regions_file = regions_file?" --regions-file \"${regions_file}\" ":""
 
     extension =     getVcfExtension(args3); /* custom function, see below */
 
@@ -35,7 +36,7 @@ process JVARKIT_VCFFILTERJDK {
     """
     mkdir -p TMP
 
-    bcftools view -O v ${args1} "${vcf}" |\\
+    bcftools view ${regions_file} -O v ${args1} "${vcf}" |\\
         jvarkit -Xmx${task.memory.giga}g  -XX:-UsePerfData -Djava.io.tmpdir=TMP vcffilterjdk ${script_file}  ${args2} |\\
         bcftools view --output "${prefix}.${extension}" ${args3}
 
