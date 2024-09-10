@@ -1,0 +1,72 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "lighter"
+## TODO nf-core: Add a description of the module and list keywords
+description: write your description here
+keywords:
+  - fastq
+  - read
+  - Kmer
+tools:
+  - "lighter":
+      description: "Lighter is a kmer-based error correction method for whole genome sequencing data"
+      homepage: "https://github.com/mourisl/Lighter"
+      documentation: "https://github.com/mourisl/Lighter"
+      tool_dev_url: "https://github.com/mourisl/Lighter"
+      doi: "10.1186/s13059-014-0509-9"
+      licence: ["MIT"]
+
+## TODO nf-core: Add a description of all of the variables used as input
+input:
+  # Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+
+  ## TODO nf-core: Delete / customise this example input
+  - fastq_folder:
+      type: file
+      description: A folder with compressed fastq files holding adaptor free reads
+      pattern: "*.{fastq.gz,fq.gz}"
+
+  - genome_size:
+      type: integer
+      description: Genome size. E.g., A genome of 5M should have a 5000000 value
+
+  - kmer_size:
+      type: integer
+      description: Kmer size. E.g., 17
+
+  - alpha:
+      type: integer
+      description: alpha value. See documentation
+
+  - output_dir:
+      type: string
+      description: this passes the value to the -od argument which tells lighter the output folder name
+
+## TODO nf-core: Add a description of all of the variables used as output
+output:
+  #Only when we have meta
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  ## TODO nf-core: Delete / customise this example output
+  - outfastq:
+      type: file
+      description: Corrected reads stored in a fastq file
+      pattern: "*.{fq.gz}"
+
+authors:
+  - "@vtorda"
+maintainers:
+  - "@vtorda"
