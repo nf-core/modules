@@ -8,13 +8,10 @@ process GATK4_VARIANTSTOTABLE {
         'biocontainers/gatk4:4.5.0.0--py36hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(vcf), path(tbi)
+    tuple val(meta), path(vcf), path(tbi), path(arguments_file), path(include_intervals), path(exclude_intervals)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(dict)
-    tuple val(meta5), path(arguments_file)
-    tuple val(meta6), path(include_intervals)
-    tuple val(meta7), path(exclude_intervals)
 
     output:
     tuple val(meta), path("*.tsv"),        emit: table
@@ -24,9 +21,9 @@ process GATK4_VARIANTSTOTABLE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = meta.gatk_args ?: (task.ext.args ?: '')
+    def args = task.ext.args ?:''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def arguments_file_arg arguments_file ? "--arguments_file ${arguments_file}" : ""
+    def arguments_file_arg    = arguments_file ? "--arguments_file ${arguments_file}" : ""
     def include_intervals_arg = include_intervals ? "-L ${include_intervals}" : ""
     def exclude_intervals_arg = exclude_intervals ? "-XL ${exclude_intervals}" : ""
 

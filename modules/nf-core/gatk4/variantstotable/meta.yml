@@ -22,13 +22,25 @@ input:
         Groovy Map containing VCF information. Attribute `gatk_args` can be used to add arguments to gatk.
         e.g. [ id:'test', gatk_args:'-F CHROM -F POS -F TYPE -GF AD']
   - vcf:
-      type: list
+      type: file
       description: VCF file
       pattern: "*.{vcf,vcf.gz}"
   - tbi:
-      type: list
+      type: file
       description: Index of VCF file.
       pattern: "*.{idx,tbi}"
+  - arguments_file:
+      type: file
+      description: "optional GATK arguments file"
+      pattern: "*.{txt,list,args,arguments}"
+  - include_intervals:
+      type: file
+      description: "optional GATK region file"
+      pattern: "*.{bed,bed.gz,interval,interval_list}"
+  - exclude_intervals:
+      type: file
+      description: "optional GATK exclude region file"
+      pattern: "*.{bed,bed.gz,interval,interval_list}"
   - meta2:
       type: map
       description: |
