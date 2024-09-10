@@ -12,6 +12,9 @@ process GATK4_VARIANTSTOTABLE {
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(dict)
+    tuple val(meta5), path(arguments_file)
+    tuple val(meta6), path(include_intervals)
+    tuple val(meta7), path(exclude_intervals)
 
     output:
     tuple val(meta), path("*.tsv"),        emit: table
@@ -23,6 +26,9 @@ process GATK4_VARIANTSTOTABLE {
     script:
     def args = meta.gatk_args ?: (task.ext.args ?: '')
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def arguments_file_arg arguments_file ? "--arguments_file ${arguments_file}" : ""
+    def include_intervals_arg = include_intervals ? "-L ${include_intervals}" : ""
+    def exclude_intervals_arg = exclude_intervals ? "-XL ${exclude_intervals}" : ""
 
     def avail_mem = 3072
     if (!task.memory) {
@@ -38,6 +44,9 @@ process GATK4_VARIANTSTOTABLE {
         --output "${prefix}.tsv" \\
         --reference $fasta \\
         --tmp-dir . \\
+        $arguments_file_arg \\
+        $include_intervals \\
+        $exclude_intervals \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
