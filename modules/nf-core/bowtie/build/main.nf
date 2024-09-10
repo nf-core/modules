@@ -13,6 +13,7 @@ process BOWTIE_BUILD {
     output:
     path 'bowtie'       , emit: index
     path "versions.yml" , emit: versions
+    tuple val("$task.process"), val("bowtie"), eval("echo \$(bowtie --version 2>&1) | sed 's/^.*bowtie-align-s version //; s/ .*\$//'"), topic: version
 
     when:
     task.ext.when == null || task.ext.when
