@@ -65,7 +65,6 @@ process SIMPLEAF_INDEX {
     touch ${prefix}/index/piscem_idx.ectab
     touch ${prefix}/index/piscem_idx.sshash
     touch ${prefix}/ref/t2g_3col.tsv
-    touch ${prefix}/ref/t2g.tsv
     touch ${prefix}/ref/roers_ref.fa
 
     cat <<-END_VERSIONS > versions.yml
