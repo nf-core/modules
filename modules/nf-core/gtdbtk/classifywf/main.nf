@@ -5,20 +5,20 @@ process GTDBTK_CLASSIFYWF {
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ? 'https://depot.galaxyproject.org/singularity/gtdbtk:2.4.0--pyhdfd78af_1' : 'biocontainers/gtdbtk:2.4.0--pyhdfd78af_1'}"
 
     input:
-    tuple val(meta), path("bins/*")
+    tuple val(meta)   , path("bins/*")
     tuple val(db_name), path("database/*")
     path mash_db
 
     output:
-    tuple val(meta), path("gtdbtk.${prefix}.*.summary.tsv"), emit: summary
-    tuple val(meta), path("gtdbtk.${prefix}.*.classify.tree.gz"), emit: tree, optional: true
-    tuple val(meta), path("gtdbtk.${prefix}.*.markers_summary.tsv"), emit: markers, optional: true
-    tuple val(meta), path("gtdbtk.${prefix}.*.msa.fasta.gz"), emit: msa, optional: true
-    tuple val(meta), path("gtdbtk.${prefix}.*.user_msa.fasta.gz"), emit: user_msa, optional: true
-    tuple val(meta), path("gtdbtk.${prefix}.*.filtered.tsv"), emit: filtered, optional: true
-    tuple val(meta), path("gtdbtk.${prefix}.failed_genomes.tsv"), emit: failed, optional: true
-    tuple val(meta), path("gtdbtk.${prefix}.log"), emit: log
-    tuple val(meta), path("gtdbtk.${prefix}.warnings.log"), emit: warnings
+    tuple val(meta), path("gtdbtk.${prefix}.*.summary.tsv")        , emit: summary
+    tuple val(meta), path("gtdbtk.${prefix}.*.classify.tree.gz")   , emit: tree    , optional: true
+    tuple val(meta), path("gtdbtk.${prefix}.*.markers_summary.tsv"), emit: markers , optional: true
+    tuple val(meta), path("gtdbtk.${prefix}.*.msa.fasta.gz")       , emit: msa     , optional: true
+    tuple val(meta), path("gtdbtk.${prefix}.*.user_msa.fasta.gz")  , emit: user_msa, optional: true
+    tuple val(meta), path("gtdbtk.${prefix}.*.filtered.tsv")       , emit: filtered, optional: true
+    tuple val(meta), path("gtdbtk.${prefix}.failed_genomes.tsv")   , emit: failed  , optional: true
+    tuple val(meta), path("gtdbtk.${prefix}.log")                  , emit: log
+    tuple val(meta), path("gtdbtk.${prefix}.warnings.log")         , emit: warnings
     path ("versions.yml"), emit: versions
 
     when:
@@ -27,7 +27,7 @@ process GTDBTK_CLASSIFYWF {
     script:
     def args = task.ext.args ?: ''
     def pplacer_scratch = params.gtdbtk_pplacer_scratch ? "--scratch_dir pplacer_tmp" : ""
-    def mash_mode = mash_db ? "--mash_db ${mash_db}" : "--skip_ani_screen"
+    def mash_mode       = mash_db                       ? "--mash_db ${mash_db}"      : "--skip_ani_screen"
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
