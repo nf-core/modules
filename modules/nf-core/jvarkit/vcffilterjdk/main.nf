@@ -24,7 +24,7 @@ process JVARKIT_VCFFILTERJDK {
 
     script:
     def args1       = task.ext.args1 ?: ''
-    def args2       = meta.vcffilterjdk_args ?: (task.ext.args2 ?: '')
+    def args2       = task.ext.args2 ?: ''
     def args3       = task.ext.args3 ?: ''
     def prefix      = task.ext.prefix ?: "${meta.id}"
     def script_file = code?"--script \"${code}\"":""
@@ -49,6 +49,8 @@ process JVARKIT_VCFFILTERJDK {
     """
 
     stub:
+    def args3  = task.ext.args3 ?: ''
+    extension  = getVcfExtension(args3); /* custom function, see below */
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch "${prefix}.${extension}"

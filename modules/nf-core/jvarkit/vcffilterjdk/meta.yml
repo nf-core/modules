@@ -63,7 +63,7 @@ input:
         Groovy Map containing code information
   - code:
       type: file
-      description: custom user Code . May be null.
+      description: custom user Code . May be empty if script if provided via `task.ext.args2`.
       pattern: "*.{code,script,txt,tsv,java,js}"
 output:
   - meta:
@@ -87,9 +87,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-
 authors:
   - "@lindenb"
 maintainers:
   - "@lindenb"
-
