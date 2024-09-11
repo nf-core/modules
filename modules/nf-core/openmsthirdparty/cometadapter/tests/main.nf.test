@@ -17,25 +17,37 @@ nextflow_process {
             script "../../../thermorawfileparser/main.nf"
             process {
                 """
-                input[0] = Channel.of(
-                    [ id:'test'], // meta map
-                    file(params.modules_testdata_base_path +'proteomics/msspectra/PXD012083_e005640_II.raw, checkIfExists: true)
-                    )
+                input[0] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'proteomics/msspectra/PXD012083_e005640_II.raw', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        run("OPENMS_DECOYDATABASE") {
+            script "../../../openms/decoydatabase/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'proteomics/database/UP000005640_9606.fasta', checkIfExists: true)
+                ]
                 """
             }
         }
     }
 
-    test("proteomics - search engine comet - mzml") {
+    test("proteomics - comet") {
 
         when {
             process {
                 """
-                input[0] = Channel.of(
-                    [id:'test'],
-                    THERMORAWFILEPARSER.out.spectra,
-                    file(params.modules_testdata_base_path +'proteomics/database/UP000005640_9606.fasta', checkIfExists: true)
-                )
+                input[0] = [
+                    [ id:'test' ],
+                    THERMORAWFILEPARSER.out.spectra.collect{ meta, spectra -> spectra},
+                    OPENMS_DECOYDATABASE.out.decoy_fasta.collect { meta, decoy_fasta -> decoy_fasta}
+                ]
                 """
             }
         }
@@ -49,19 +61,18 @@ nextflow_process {
 
     }
 
-    // TODO nf-core: Change the test name preferably indicating the test-data and file-format used but keep the " - stub" suffix.
-    test("proteomics - search engine comet - mzml - stub") {
+    test("proteomics - comet - stub") {
 
         options "-stub"
 
         when {
             process {
                 """
-                input[0] = Channel.of(
-                    [id:'test'],
-                    THERMORAWFILEPARSER.out.spectra,
-                    file(params.modules_testdata_base_path +'proteomics/database/UP000005640_9606.fasta', checkIfExists: true)
-                )
+                input[0] = [
+                    [ id:'test' ],
+                    THERMORAWFILEPARSER.out.spectra.collect{ meta, spectra -> spectra},
+                    OPENMS_DECOYDATABASE.out.decoy_fasta.collect { meta, decoy_fasta -> decoy_fasta}
+                ]
                 """
             }
         }

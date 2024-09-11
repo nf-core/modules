@@ -12,8 +12,7 @@ process OPENMSTHIRDPARTY_COMETADAPTER {
 
     output:
     tuple val(meta), path("*.idXML"), emit: idxml
-    // TODO: Set optional
-    tuple val(meta), path("*.tsv")  , emit: pin
+    tuple val(meta), path("*.tsv")  , emit: pin, optional: true
     path "versions.yml"             , emit: versions
 
     when:
@@ -28,7 +27,6 @@ process OPENMSTHIRDPARTY_COMETADAPTER {
         -in $mzml \\
         -database $fasta \\
         -out ${prefix}.idXML \\
-        -pin_out ${prefix}_pin.tsv \\
         -threads $task.cpus \\
         $args
 
