@@ -26,7 +26,10 @@ process SEQCLUSTER_COLLAPSE {
         collapse \\
         $args \\
         -f $fastq  \\
-        -o - | gzip > ${prefix}.fastq.gz
+        -o collapsed
+
+    gzip collapsed/*_trimmed.fastq
+    mv collapsed/*_trimmed.fastq.gz ${prefix}.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
