@@ -1,7 +1,7 @@
 process BWAMEM2_INDEX {
     tag "$fasta"
     // NOTE Requires 28N GB memory where N is the size of the reference sequence
-    // https://github.com/bwa-mem2/bwa-mem2/issues/9
+    // source: https://github.com/bwa-mem2/bwa-mem2/issues/9
     memory { 28.B * fasta.size() }
 
     conda "${moduleDir}/environment.yml"
