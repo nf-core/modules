@@ -11,6 +11,7 @@ nextflow_process {
     tag "openmsthirdparty"
     tag "openmsthirdparty/cometadapter"
     tag "thermorawfileparser"
+    tag "openmsdecoydatabase"
 
     setup {
         run("THERMORAWFILEPARSER") {
@@ -43,11 +44,11 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
+                input[0] = Channel.of([
                     [ id:'test' ],
                     THERMORAWFILEPARSER.out.spectra.map{ meta, spectra -> spectra},
                     OPENMS_DECOYDATABASE.out.decoy_fasta.map { meta, decoy_fasta -> decoy_fasta}
-                ]
+                ])
                 """
             }
         }
@@ -68,11 +69,11 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
+                input[0] = Channel.of([
                     [ id:'test' ],
                     THERMORAWFILEPARSER.out.spectra.map{ meta, spectra -> spectra},
                     OPENMS_DECOYDATABASE.out.decoy_fasta.map { meta, decoy_fasta -> decoy_fasta}
-                ]
+                ])
                 """
             }
         }
