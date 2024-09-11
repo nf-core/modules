@@ -43,11 +43,11 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = [
                     [ id:'test' ],
-                    THERMORAWFILEPARSER.out.spectra.collect{ meta, spectra -> spectra},
-                    OPENMS_DECOYDATABASE.out.decoy_fasta.collect { meta, decoy_fasta -> decoy_fasta}
-                ])
+                    THERMORAWFILEPARSER.out.spectra.map{ meta, spectra -> spectra},
+                    OPENMS_DECOYDATABASE.out.decoy_fasta.map { meta, decoy_fasta -> decoy_fasta}
+                ]
                 """
             }
         }
@@ -68,11 +68,11 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = [
                     [ id:'test' ],
-                    THERMORAWFILEPARSER.out.spectra.collect{ meta, spectra -> spectra},
-                    OPENMS_DECOYDATABASE.out.decoy_fasta.collect { meta, decoy_fasta -> decoy_fasta}
-                ])
+                    THERMORAWFILEPARSER.out.spectra.map{ meta, spectra -> spectra},
+                    OPENMS_DECOYDATABASE.out.decoy_fasta.map { meta, decoy_fasta -> decoy_fasta}
+                ]
                 """
             }
         }
