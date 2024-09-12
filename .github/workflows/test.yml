@@ -30,13 +30,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      - uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5
+      - uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5
       - uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
         # FIXME Flip this off once we get to less than a couple hundred. Adding
         # this so it will only run against changed files. It'll make it much
         # easier to fix these as they come up rather than everything at once.
         with:
-          extra_args: ""
+          extra_args: "--all-files"
 
   prettier:
     runs-on: ubuntu-latest
@@ -50,7 +50,7 @@ jobs:
           node-version: "20"
 
       - name: Install Prettier
-        run: npm install -g prettier@3.1.0
+        run: npm install -g prettier@3.2.5
 
       - name: Run Prettier --check
         run: prettier --check .
@@ -151,7 +151,7 @@ jobs:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: Set up Python
-        uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5
+        uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5
         with:
           python-version: "3.11"
 
@@ -166,7 +166,7 @@ jobs:
       - name: Install pip
         run: python -m pip install --upgrade pip
 
-      - uses: actions/setup-java@6a0805fcefea3d4657a47ac4c165951e33482018 # v4
+      - uses: actions/setup-java@2dfa2011c5b2a0f1489bf9e433881c92c1631f88 # v4
         with:
           distribution: "temurin"
           java-version: "17"
@@ -197,14 +197,14 @@ jobs:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: Set up Python
-        uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5
+        uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5
         with:
           python-version: "3.11"
 
       - name: Install pip
         run: python -m pip install --upgrade pip
 
-      - uses: actions/setup-java@6a0805fcefea3d4657a47ac4c165951e33482018 # v4
+      - uses: actions/setup-java@2dfa2011c5b2a0f1489bf9e433881c92c1631f88 # v4
         with:
           distribution: "temurin"
           java-version: "17"
@@ -258,8 +258,6 @@ jobs:
             tags: cellrangerarc/count
           - profile: conda
             tags: cellrangerarc/mkfastq
-          - profile: conda
-            tags: cellrangerarc/mkgtf
           - profile: conda
             tags: cellrangerarc/mkref
           - profile: conda
@@ -319,6 +317,8 @@ jobs:
           - profile: conda
             tags: manta/convertinversion
           - profile: conda
+            tags: mcstaging/imc2mc
+          - profile: conda
             tags: mcquant
           - profile: conda
             tags: medaka
@@ -361,8 +361,6 @@ jobs:
           - profile: conda
             tags: picard/collectwgsmetrics
           - profile: conda
-            tags: scimap/mcmicro
-          - profile: conda
             tags: sentieon/applyvarcal
           - profile: conda
             tags: sentieon/datametrics
@@ -403,7 +401,7 @@ jobs:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: Set up Python
-        uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5
+        uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5
         with:
           python-version: "3.11"
 
@@ -418,7 +416,7 @@ jobs:
       - name: Install Python dependencies
         run: python -m pip install --upgrade pip pytest-workflow cryptography
 
-      - uses: actions/setup-java@6a0805fcefea3d4657a47ac4c165951e33482018 # v4
+      - uses: actions/setup-java@2dfa2011c5b2a0f1489bf9e433881c92c1631f88 # v4
         with:
           distribution: "temurin"
           java-version: "17"
@@ -441,7 +439,7 @@ jobs:
         uses: conda-incubator/setup-miniconda@a4260408e20b96e80095f42ff7f1a15b27dd94ca # v3
         with:
           miniconda-version: "latest"
-          channels: conda-forge,bioconda,defaults
+          channels: conda-forge,bioconda
           python-version: ${{ matrix.python-version }}
 
       - name: Conda setup
@@ -474,7 +472,7 @@ jobs:
 
       - name: Upload logs on failure
         if: failure()
-        uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4
+        uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4
         with:
           name: logs-${{ matrix.profile }}-${{ steps.parsed.outputs.result }}
           path: |
@@ -547,6 +545,8 @@ jobs:
           - profile: conda
             path: modules/nf-core/fastk/fastk
           - profile: conda
+            path: modules/nf-core/cellrangerarc/mkgtf
+          - profile: conda
             path: modules/nf-core/fastk/histex
           - profile: conda
             path: modules/nf-core/fastk/merge
@@ -575,7 +575,11 @@ jobs:
           - profile: conda
             path: modules/nf-core/imputeme/vcftoprs
           - profile: conda
+            path: modules/nf-core/mcstaging/imc2mc
+          - profile: conda
             path: modules/nf-core/mcquant
+          - profile: conda
+            path: modules/nf-core/mcstaging/phenoimager2mc
           - profile: conda
             path: modules/nf-core/merquryfk/katcomp
           - profile: conda
@@ -621,6 +625,8 @@ jobs:
           - profile: conda
             path: modules/nf-core/islandpath
           - profile: conda
+            path: modules/nf-core/scimap/mcmicro
+          - profile: conda
             path: subworkflows/nf-core/vcf_annotate_ensemblvep
           - profile: conda
             path: subworkflows/nf-core/bcl_demultiplex
@@ -637,7 +643,7 @@ jobs:
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
-      - uses: actions/setup-java@6a0805fcefea3d4657a47ac4c165951e33482018 # v4
+      - uses: actions/setup-java@2dfa2011c5b2a0f1489bf9e433881c92c1631f88 # v4
         with:
           distribution: "temurin"
           java-version: "17"
@@ -646,6 +652,8 @@ jobs:
 
       - name: Install nf-test
         uses: nf-core/setup-nf-test@v1
+        with:
+          version: ${{ env.NFTEST_VER }}
 
       - name: Setup apptainer
         if: matrix.profile == 'singularity'
@@ -658,7 +666,7 @@ jobs:
           mkdir -p $NXF_SINGULARITY_LIBRARYDIR
 
       - name: Set up Python
-        uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5
+        uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5
         with:
           python-version: "3.11"
 
@@ -679,7 +687,7 @@ jobs:
         with:
           miniconda-version: "latest"
           auto-update-conda: true
-          channels: conda-forge,bioconda,defaults
+          channels: conda-forge,bioconda
 
       - name: Conda setup
         if: matrix.profile == 'conda'
