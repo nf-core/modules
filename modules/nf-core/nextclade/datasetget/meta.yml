@@ -16,10 +16,6 @@ input:
       type: string
       description: Name of dataset to retrieve. A list of available datasets can be obtained using the nextclade dataset list command.
       pattern: ".+"
-  - reference:
-      type: string
-      description: Accession id to download dataset based on a particular reference sequence. A list of available datasets can be obtained using the nextclade dataset list command.
-      pattern: ".+"
   - tag:
       type: string
       description: Version tag of the dataset to download. A list of available datasets can be obtained using the nextclade dataset list command.
@@ -39,3 +35,5 @@ authors:
 maintainers:
   - "@antunderwood"
   - "@drpatelh"
+updated on 2024.08.27:
+  - "@nmshahir"
