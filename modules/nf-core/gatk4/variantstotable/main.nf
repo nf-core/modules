@@ -37,14 +37,13 @@ process GATK4_VARIANTSTOTABLE {
     gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         VariantsToTable \\
         ${args} \\
-        --variant "$vcf" \\
-        --output "${prefix}.tsv" \\
+        --variant $vcf \\
+        --output ${prefix}.tsv \\
         --reference $fasta \\
         --tmp-dir . \\
         $arguments_file_arg \\
         $include_intervals \\
-        $exclude_intervals \\
-        $args
+        $exclude_intervals
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
