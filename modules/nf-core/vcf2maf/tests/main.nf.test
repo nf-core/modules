@@ -26,7 +26,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    path(process.out.maf[0][1]).readLines()[5..131]
+                    path(process.out.maf[0][1]).readLines()[5..131],
+                    process.out.versions
                 ).match() },
                 { assert path(process.out.versions[0]).readLines() == ['"VCF2MAF":', '    vcf2maf: 1.6.21', '    ensemblvep: 106.1'] }
             )
