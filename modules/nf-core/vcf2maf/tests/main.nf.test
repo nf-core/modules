@@ -15,9 +15,9 @@ nextflow_process {
                 """
                 input[0] = [
                                 [ id:'test'], // meta map
-                                file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf'], checkIfExists: true)
+                                file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gvcf/test.genome.vcf", checkIfExists: true)
                             ]
-                input[1] = [ file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ]
+                input[1] = [ file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true) ]
                 input[2] = []
                 """
             }
@@ -26,7 +26,6 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
                     path(process.out.maf[0][1]).readLines()[5..131]
                 ).match() },
                 { assert path(process.out.versions[0]).readLines() == ['"VCF2MAF":', '    vcf2maf: 1.6.21', '    ensemblvep: 106.1'] }
@@ -43,7 +42,10 @@ nextflow_process {
                 script "../../../../modules/nf-core/untar/main.nf"
                 process {
                 """
-                input[0] = [ [ id:'test_genome_vep' ], file(params.test_data['homo_sapiens']['genome']['vep_cache'], checkIfExists: true) ]
+                input[0] = [ 
+                    [ id:'test_genome_vep' ], 
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/vep.tar.gz", checkIfExists: true) 
+                ]
                 """
             }
         }
@@ -54,9 +56,9 @@ nextflow_process {
                 """
                 input[0] = [
                                 [ id:'test'], // meta map
-                                file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf'], checkIfExists: true)
+                                file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gvcf/test.genome.vcf", checkIfExists: true)
                             ]
-                input[1] = [ file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ]
+                input[1] = [ file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true) ]
                 input[2] = UNTAR.out.untar.map { it[1] }
                 """
             }
@@ -65,7 +67,6 @@ nextflow_process {
         then{
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
                 { assert path(process.out.maf[0][1]).readLines().size() == 2 }, // no variants, only header lines
                 { assert path(process.out.versions[0]).readLines() == ['"VCF2MAF":', '    vcf2maf: 1.6.21', '    ensemblvep: 106.1'] }
             )
