@@ -18,13 +18,14 @@ input:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - dataset:
-      type: file
+      type: directory
       description: Path containing the dataset files obtained by running nextclade dataset get
       pattern: "*"
   - fasta:
       type: file
       description: FASTA file containing one or more consensus sequences
       pattern: "*.{fasta,fa}"
+
 output:
   - meta:
       type: map
@@ -39,11 +40,31 @@ output:
       type: file
       description: CSV file containing nextclade results
       pattern: "*.{csv}"
+  - csv_errors:
+      type: file
+      description: CSV file containing errors from nextclade results
+      pattern: "*.{errors.csv}"
+  - csv_insertions:
+      type: file
+      description: CSV file containing insertions from nextclade results
+      pattern: "*.{insertions.csv}"
+  - fasta_aligned:
+      type: file
+      description: FASTA file containing aligned sequences from nextclade results
+      pattern: "*.{aligned.fasta}"
+  - fasta_translation:
+      type: file
+      description: FASTA file containing aligned peptides from nextclade results
+      pattern: "*.{_translation.}*.{fasta}"
+  - ndjson:
+      type: file
+      description: newline-delimited JSON file containing nextclade results
+      pattern: "*.{ndjson}"
   - json:
       type: file
       description: JSON file containing nextclade results
       pattern: "*.{json}"
-  - json_tree:
+  - json_auspice:
       type: file
       description: Auspice JSON V2 containing nextclade results
       pattern: "*.{tree.json}"
@@ -51,9 +72,16 @@ output:
       type: file
       description: TSV file containing nextclade results
       pattern: "*.{tsv}"
+  - nwk:
+      type: file
+      description: NWK file containing nextclade results
+      pattern: "*.{nwk}"
 authors:
   - "@antunderwood"
   - "@drpatelh"
 maintainers:
   - "@antunderwood"
   - "@drpatelh"
+  - "@drpatelh"
+updated on 2024.08.23:
+  - "@nmshahir"
