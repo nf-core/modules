@@ -1,0 +1,100 @@
+
+nextflow_process {
+
+    name "Test Process CRUMBLE"
+    script "../main.nf"
+    process "CRUMBLE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "crumble"
+
+    test("test-crumble") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+				]
+				input[1] = []
+                input[2] = []
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					process.out.bam,
+					bam(process.out.cram[0][1]).getHeaderMD5(),
+					process.out.sam,
+					process.out.bed,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-crumble-bedout") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+				]
+				input[1] = []
+				input[2] = true
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					process.out.bam,
+					bam(process.out.cram[0][1]).getHeaderMD5(),
+					process.out.sam,
+					file(process.out.bed[0][1]).name, // empty
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-crumble-bedout-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+				]
+				input[1] = []
+				input[2] = true
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

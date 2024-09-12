@@ -25,6 +25,9 @@ input:
       type: file
       description: microRNA sequencing data
       pattern: "*.{fastq,fastq.gz}"
+  - mirtrace_config:
+      type: file
+      description: (Optional) CSV with list of FASTQ files to process with one entry per row. No headers. Each row consists of the following columns "FASTQ file path, id, adapter, PHRED-ASCII-offset".
   - mirtrace_species:
       type: string
       description: Target species in microRNA sequencing data (miRbase encoding, e.g. “hsa” for Homo sapiens)

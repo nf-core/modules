@@ -30,4 +30,16 @@ process FQ_GENERATE {
         fq: \$(echo \$(fq generate --version | sed 's/fq-generate //g'))
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo | gzip > ${prefix}_R1.fastq.gz
+    echo | gzip > ${prefix}_R2.fastq.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        fq: \$(echo \$(fq generate --version | sed 's/fq-generate //g'))
+    END_VERSIONS
+    """
 }
