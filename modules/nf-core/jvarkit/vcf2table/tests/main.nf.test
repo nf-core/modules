@@ -65,7 +65,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-					path(process.out.vcf[0][1]),
+					path(process.out.output[0][1]),
 					process.out.versions
 					).match()
 			    }
