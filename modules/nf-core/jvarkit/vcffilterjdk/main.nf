@@ -28,7 +28,7 @@ process JVARKIT_VCFFILTERJDK {
     def args3        = task.ext.args3 ?: ''
     def prefix       = task.ext.prefix ?: "${meta.id}"
     def script_file  = code?"--script \"${code}\"":""
-    def regions_file = regions_file?" --regions-file \"${regions_file}\" ":""
+    def regions_file = regions_file? (tbi ? " --regions-file" : " --targets-file")+" \"${regions_file}\" ":""
 
     extension =     getVcfExtension(args3); /* custom function, see below */
 
