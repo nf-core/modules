@@ -13,7 +13,7 @@ process MIRTOP_GFF {
     tuple val(meta3), path(gtf), val(species)
 
     output:
-    tuple val(meta), path("mirtop/mirtop.gff")           , emit: gff
+    tuple val(meta), path("mirtop/*mirtop.gff")           , emit: gff
     path "versions.yml"                                  , emit: versions
 
     when:
@@ -31,6 +31,8 @@ process MIRTOP_GFF {
         --gtf $gtf \\
         -o mirtop \\
         $bam
+
+    mv mirtop/mirtop.gff mirtop/${prefix}_mirtop.gff
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
