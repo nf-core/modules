@@ -8,7 +8,7 @@ process MIRTRACE_QC {
         'biocontainers/mirtrace:1.0.1--0' }"
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), path(reads), path(mirtrace_config)
     val(mirtrace_species)
 
     output:
@@ -25,6 +25,7 @@ process MIRTRACE_QC {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def mirtrace_mode = mirtrace_config ? "--config ${mirtrace_config}": "${reads}"
 
     """
     mirtrace qc  \\
@@ -32,7 +33,7 @@ process MIRTRACE_QC {
         --write-fasta \\
         --output-dir . \\
         --force \\
-        ${reads}
+        ${mirtrace_mode}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
