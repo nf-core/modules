@@ -7,26 +7,22 @@ keywords:
   - cram
   - vcf
 tools:
-  - "gridss":
+  - gridss:
       description: "GRIDSS: the Genomic Rearrangement IDentification Software Suite"
       documentation: "https://github.com/PapenfussLab/gridss/wiki/GRIDSS-Documentation"
       tool_dev_url: "https://github.com/PapenfussLab/gridss"
       doi: "10.1186/s13059-021-02423-x"
-      licence: "['GPL v3']"
+      licence: ["GPL v3"]
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        e.g. [ id:'test']
   - inputs:
-      type: file(s)
+      type: file
       description: One or more input BAM/CRAM file(s)
       pattern: "*.{bam,cram}"
-  - assembly:
-      type: file
-      description: OPTIONAL - An assembly BAM file created by the assembly step of Gridss
-      pattern: "*.bam"
   - fasta:
       type: file
       description: The reference fasta
@@ -43,7 +39,7 @@ output:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        e.g. [ id:'test' ]
   - versions:
       type: file
       description: File containing software versions
@@ -52,10 +48,6 @@ output:
       type: file
       description: The called VCF file created by Gridss' call step
       pattern: "*.vcf.gz"
-  - assembly:
-      type: file
-      description: The assembly BAM file created by Gridss' assembly step
-      pattern: "*.assembly.bam"
 authors:
   - "@nvnieuwk"
 maintainers:

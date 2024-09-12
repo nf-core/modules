@@ -46,6 +46,10 @@ input:
       type: file
       description: Reference genome fasta file
       pattern: "*.{fasta,fa,fna}"
+  - ch_transcripts_fasta:
+      type: file
+      description: Optional reference genome fasta file
+      pattern: "*.{fasta,fa,fna}"
 output:
   - orig_bam:
       description: |
@@ -67,7 +71,7 @@ output:
       description: |
         Sorted BAM file of read alignments (optional)
         Structure: [ val(meta), path(bam) ]
-  - bam_transcript:
+  - orig_bam_transcript:
       description: |
         Output BAM file of transcriptome alignment (optional)
         Structure: [ val(meta), path(bam) ]
@@ -79,10 +83,6 @@ output:
       description: |
         STAR output tab file(s) (optional)
         Structure: [ val(meta), path(tab) ]
-  - stats:
-      description: |
-        File containing samtools stats output
-        Structure: [ val(meta), path(stats) ]
   - bam:
       description: |
         BAM file ordered by samtools
@@ -91,6 +91,10 @@ output:
       description: |
         BAI index of the ordered BAM file
         Structure: [ val(meta), path(bai) ]
+  - stats:
+      description: |
+        File containing samtools stats output
+        Structure: [ val(meta), path(stats) ]
   - flagstat:
       description: |
         File containing samtools flagstat output
@@ -98,6 +102,26 @@ output:
   - idxstats:
       description: |
         File containing samtools idxstats output
+        Structure: [ val(meta), path(idxstats) ]
+  - bam_transcript:
+      description: |
+        Transcriptome-level BAM file ordered by samtools  (optional)
+        Structure: [ val(meta), path(bam) ]
+  - bai_transcript:
+      description: |
+        Transcriptome-level BAI index of the ordered BAM file (optional)
+        Structure: [ val(meta), path(bai) ]
+  - stats_transcript:
+      description: |
+        Transcriptome-level file containing samtools stats output (optional)
+        Structure: [ val(meta), path(stats) ]
+  - flagstat_transcript:
+      description: |
+        Transcriptome-level file containing samtools flagstat output (optional)
+        Structure: [ val(meta), path(flagstat) ]
+  - idxstats_transcript:
+      description: |
+        Transcriptome-level file containing samtools idxstats output (optional)
         Structure: [ val(meta), path(idxstats) ]
   - versions:
       type: file

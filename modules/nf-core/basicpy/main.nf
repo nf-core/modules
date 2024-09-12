@@ -2,7 +2,7 @@ process BASICPY {
     tag "$meta.id"
     label 'process_single'
 
-    container "docker.io/yfukai/basicpy-docker-mcmicro:0.2.1"
+    container "docker.io/labsyspharm/basicpy-docker-mcmicro:1.2.0-patch1"
 
     input:
     tuple val(meta), path(image)
@@ -21,7 +21,7 @@ process BASICPY {
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = "1.0.1" // WARN: Version information not provided by tool on CLI. Please update this string when bumping
+    def VERSION = "1.2.0-patch1" // WARN: Version information not provided by tool on CLI. Please update this string when bumping
     """
     /opt/main.py -i $image -o . $args
 

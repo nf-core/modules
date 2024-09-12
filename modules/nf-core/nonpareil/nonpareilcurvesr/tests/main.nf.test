@@ -1,0 +1,76 @@
+nextflow_process {
+
+    name "Test Process NONPAREIL_NONPAREILCURVESR"
+    script "../main.nf"
+    process "NONPAREIL_NONPAREILCURVESR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "nonpareil"
+    tag "nonpareil/nonpareilcurvesr"
+    tag "nonpareil/nonpareil"
+
+    setup {
+        run("NONPAREIL_NONPAREIL") {
+            script "../../../nonpareil/nonpareil/main.nf"
+            process {
+                """
+                input[0] = Channel.fromList([
+                    [[ id:'test', single_end:false ], file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/illumina/fastq/test_1.fastq.gz', checkIfExists: true)],
+                    [[ id:'test2', single_end:false ], file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/illumina/fastq/test_1.fastq.gz', checkIfExists: true)],
+                ])
+                input[1] = 'fastq'
+                input[2] = 'kmer'
+                """
+            }
+        }
+    }
+
+    test("candidatus_portiera_aleyrodidarum") {
+
+        when {
+            process {
+                """
+                input[0] = NONPAREIL_NONPAREIL.out.npo.map{meta, npo -> [[id:'test'], npo]}.groupTuple()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        path(process.out.json[0][1]).text.contains("modelR\": 0."),
+                        path(process.out.tsv[0][1]).text.contains("test	0."),
+                        path(process.out.csv[0][1]).text.contains("test\",0."),
+                        file(process.out.pdf[0][1]).name,
+                        process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("candidatus_portiera_aleyrodidarum - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = NONPAREIL_NONPAREIL.out.npo.map{meta, npo -> [[id:'test'], npo]}.groupTuple()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

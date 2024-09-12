@@ -35,15 +35,16 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - output:
+  - hla_type:
       type: file
-      description: OptiType Results Folder
-      pattern: "${prefix}"
-  - pdf:
+      description: HLA type
+      pattern: "${prefix}/*.tsv"
+  - coverage_plot:
       type: file
-      description: OptiType PDF Plots
-      pattern: "*.pdf"
+      description: OptiType coverage plot
+      pattern: "${prefix}/*.pdf"
 authors:
   - "@apeltzer"
 maintainers:
   - "@apeltzer"
+  - "@christopher-mohr"

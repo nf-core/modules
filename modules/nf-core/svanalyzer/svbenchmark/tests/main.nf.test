@@ -9,7 +9,7 @@ nextflow_process {
     tag "svanalyzer"
     tag "svanalyzer/svbenchmark"
 
-    test("homo_sapiens - illumina - vcf.gz") {
+    test("homo_sapiens - illumina - vcf.gz - bed") {
 
         when {
             params {
@@ -19,21 +19,20 @@ nextflow_process {
                 """
                     input[0] = [
                         [ id:'test' ], // meta map
-                        file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_vcf_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz.tbi', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz.tbi', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true)
                         ]
                     input[1] = [
                         [ id:'test2' ], // meta map
-                        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                         ]
                     input[2] = [
-                        [ id:'test3' ], // meta map
-                        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
-                        ]
-                    input[3] = [
                         [ id:'test4' ], // meta map
-                        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
                         ]
-                    input[4] = [[],[]]
                 """
             }
         }
@@ -51,7 +50,7 @@ nextflow_process {
         }
 
     }
-    test("homo_sapiens - illumina - vcf.gz - bed") {
+    test("homo_sapiens - illumina - vcf.gz") {
 
         when {
             params {
@@ -61,23 +60,19 @@ nextflow_process {
                 """
                     input[0] = [
                         [ id:'test' ], // meta map
-                        file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_vcf_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz.tbi', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz.tbi', checkIfExists: true),
+                        []
                         ]
                     input[1] = [
                         [ id:'test2' ], // meta map
-                        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                         ]
                     input[2] = [
                         [ id:'test3' ], // meta map
-                        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
-                        ]
-                    input[3] = [
-                        [ id:'test4' ], // meta map
-                        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)
-                        ]
-                    input[4] = [
-                        [ id:'test5' ], // meta map
-                        file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
                         ]
                 """
             }

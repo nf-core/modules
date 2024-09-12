@@ -1,5 +1,5 @@
 name: "tcoffee_irmsd"
-description: Computes irmsd score for a given alignment and the structures.
+description: Computes the irmsd score for a given alignment and the structures.
 keywords:
   - alignment
   - MSA
@@ -12,6 +12,10 @@ tools:
       tool_dev_url: "https://github.com/cbcrg/tcoffee"
       doi: "10.1006/jmbi.2000.4042"
       licence: ["GPL v3"]
+  - "pigz":
+      description: "Parallel implementation of the gzip algorithm."
+      homepage: "https://zlib.net/pigz/"
+      documentation: "https://zlib.net/pigz/pigz.pdf"
 
 input:
   - meta:
@@ -21,11 +25,11 @@ input:
         e.g. [ id:'test', ... ]
   - msa:
       type: file
-      description: fasta file containing the alignment to be evaluated
-      pattern: "*.{aln,fa,fasta,fas}"
+      description: fasta file containing the alignment to be evaluated. May be gzipped or uncompressed.
+      pattern: "*.{aln,fa,fasta,fas}{.gz,}"
   - template:
       type: file
-      description: Template file matching the structures to the sequences in the alignment
+      description: Template file matching the structures to the sequences in the alignment.
       pattern: "*"
   - structures:
       type: directory

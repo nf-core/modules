@@ -3,10 +3,13 @@ nextflow_process {
     name "Test Process GLIMPSE_CONCORDANCE"
     script "../main.nf"
     process "GLIMPSE_CONCORDANCE"
-    tag "glimpse"
-    tag "glimpse/concordance"
+
     tag "modules"
     tag "modules_nfcore"
+    tag "glimpse"
+    tag "glimpse/concordance"
+    tag "glimpse/phase"
+    tag "bcftools/index"
 
     test("test_glimpse_concordance") {
         setup {
@@ -20,15 +23,15 @@ nextflow_process {
                 ])
                 input_vcf     = Channel.of([
                     [ id:'input'], // meta map
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz", checkIfExists: true),
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz.csi", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz.csi", checkIfExists: true)
                 ])
                 ref_panel     = Channel.of([
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true)
                 ])
                 ch_map        = Channel.of([
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/chr21.b38.gmap.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/chr21.b38.gmap.gz", checkIfExists: true),
                 ])
 
                 input[0]      = input_vcf
@@ -43,7 +46,7 @@ nextflow_process {
                 script "../../../bcftools/index/main.nf"
                 process {
                 """
-                input[0] = GLIMPSE_PHASE.out.phased_variant
+                input[0] = GLIMPSE_PHASE.out.phased_variants
                 """
                 }
             }
@@ -52,14 +55,14 @@ nextflow_process {
             process {
                 """
                 allele_freq = Channel.fromList([
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.sites.vcf.gz",checkIfExists:true),
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.sites.vcf.gz.csi",checkIfExists:true)
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.sites.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.sites.vcf.gz.csi",checkIfExists:true)
                 ]).collect()
                 truth = Channel.fromList([
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.bcf",checkIfExists:true),
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.bcf.csi",checkIfExists:true)
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.bcf",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.bcf.csi",checkIfExists:true)
                 ]).collect()
-                estimate = GLIMPSE_PHASE.out.phased_variant
+                estimate = GLIMPSE_PHASE.out.phased_variants
                     | join (BCFTOOLS_INDEX.out.csi)
                 input[0] = estimate
                     | combine (allele_freq)

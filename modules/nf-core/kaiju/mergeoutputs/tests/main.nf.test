@@ -1,0 +1,133 @@
+nextflow_process {
+
+    name "Test Process KAIJU_MERGEOUTPUTS"
+    script "../main.nf"
+    process "KAIJU_MERGEOUTPUTS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "kaiju"
+    tag "untar"
+    tag "kaiju/kaiju"
+    tag "kraken2/kraken2"
+    tag "kaiju/mergeoutputs"
+
+    setup {
+        run("UNTAR",alias: "UNTAR_KRAKEN2" ) {
+            config "./nodb.config"
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz', checkIfExists: true)
+                ])
+                """
+            }
+        }
+        run("KRAKEN2_KRAKEN2") {
+            config "./nodb.config"
+            script "../../../kraken2/kraken2/main.nf"
+            process {
+                """
+                input[0] = [
+                        [ id:'test', single_end:true ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                        ]
+                input[1] = UNTAR_KRAKEN2.out.untar.map{ it[1] }
+                input[2] = false
+                input[3] = true
+                """
+            }
+        }
+        run("UNTAR",alias: "UNTAR_KAIJU" ) {
+            config "./nodb.config"
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kaiju.tar.gz', checkIfExists: true)
+                ])
+                """
+            }
+        }
+        run("KAIJU_KAIJU") {
+            config "./nodb.config"
+            script "../../../kaiju/kaiju/main.nf"
+            process {
+                """
+                input[0] = [
+                        [ id:'test', single_end:true ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                        ]
+                input[1] = UNTAR_KAIJU.out.untar.map{ it[1] }
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - kraken2.kaiju.classified - noDB ") {
+        config "./nodb.config"
+
+        when {
+            process {
+                """
+                input[0] = KAIJU_KAIJU.out.results.join(KRAKEN2_KRAKEN2.out.classified_reads_assignment)
+                input[1] = [ ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - kraken2.kaiju.classified - kaiju.DB ") {
+        config "./db.config"
+        when {
+            process {
+                """
+                input[0] = KAIJU_KAIJU.out.results.join(KRAKEN2_KRAKEN2.out.classified_reads_assignment)
+                input[1] = UNTAR_KAIJU.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - kraken2.kaiju.classified - noDB - stub ") {
+        config "./nodb.config"
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = KAIJU_KAIJU.out.results.join(KRAKEN2_KRAKEN2.out.classified_reads_assignment)
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

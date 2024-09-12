@@ -1,0 +1,111 @@
+nextflow_process {
+
+    name "Test Process TABIX_BGZIP"
+    script "modules/nf-core/tabix/bgzip/main.nf"
+    process "TABIX_BGZIP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "tabix"
+    tag "tabix/bgzip"
+
+    test("sarscov2_vcf_bgzip_compress") {
+        when {
+            process {
+                """
+                input[0] = [
+                                [ id:'bgzip_test' ],
+                                [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true) ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert snapshot(
+                            file(process.out.output[0][1]).name
+                                ).match("bgzip_test")
+                }
+            )
+        }
+    }
+
+    test("homo_genome_bedgz_compress") {
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'bedgz_test' ],
+                            [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed.gz', checkIfExists: true) ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert snapshot(
+                            file(process.out.output[0][1]).name
+                                ).match("bedgz_test")
+                }
+            )
+        }
+    }
+
+    test("sarscov2_vcf_bgzip_compress_stub") {
+        options '-stub'
+        config "./bgzip_compress.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                                [ id:"test_stub" ],
+                                [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true) ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert snapshot(
+                            file(process.out.output[0][1]).name
+                                ).match("test_stub")
+                }
+            )
+        }
+    }
+
+    test("sarscov2_vcf_bgzip_compress_gzi") {
+        config "./bgzip_compress.config"
+        when {
+            process {
+                """
+                input[0] = [
+                                [ id:"gzi_compress_test" ],
+                                [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true) ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert snapshot(
+                            file(process.out.gzi[0][1]).name
+                                ).match("gzi_compress_test")
+                }
+            )
+        }
+    }
+}

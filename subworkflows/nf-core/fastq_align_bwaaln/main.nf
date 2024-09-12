@@ -109,4 +109,3 @@ workflow FASTQ_ALIGN_BWAALN {
 
     versions = ch_versions         // channel: [ path(versions.yml) ]
 }
-

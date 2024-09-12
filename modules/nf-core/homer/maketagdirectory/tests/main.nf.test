@@ -1,0 +1,97 @@
+nextflow_process {
+
+    name "Test Process HOMER_MAKETAGDIRECTORY"
+    script "../main.nf"
+    process "HOMER_MAKETAGDIRECTORY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "homer"
+    tag "homer/maketagdirectory"
+
+    test("sarscov2 - [bed, bed], fasta") {
+
+        config "./bed.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test2.bed', checkIfExists: true)
+                    ]
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match("bed") }
+            )
+        }
+
+    }
+
+    test("sarscov2 - [bam, bam], fasta") {
+
+        config "./sam.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                    ]
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match("bam") }
+            )
+        }
+
+    }
+
+    test("sarscov2 - [bed, bed], fasta - stub") {
+
+        config "./bed.config"
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test2.bed', checkIfExists: true)
+                    ]
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match("stub") }
+            )
+        }
+
+    }
+
+}

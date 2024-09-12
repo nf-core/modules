@@ -38,4 +38,17 @@ process MINIASM {
         miniasm: \$( miniasm -V 2>&1 )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.gfa.gz
+    echo "" | gzip > ${prefix}.fasta.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        miniasm: \$( miniasm -V 2>&1 )
+    END_VERSIONS
+    """
+
 }

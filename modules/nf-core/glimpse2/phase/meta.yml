@@ -12,17 +12,17 @@ tools:
       documentation: "https://odelaneau.github.io/GLIMPSE/commands.html"
       tool_dev_url: "https://github.com/odelaneau/GLIMPSE"
       doi: "10.1038/s41588-020-00756-0"
-      licence: "['MIT']"
+      licence: ["MIT"]
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        e.g. `[ id:'test', single_end:false ]`
   - input:
       type: file
       description: |
-        Either multiple BAM/CRAM files containing low-coverage sequencing reads or one VCF/BCF file containing the genotype likelihoods.
+        Either one or multiple BAM/CRAM files in an array containing low-coverage sequencing reads or one VCF/BCF file containing the genotype likelihoods.
         When using BAM/CRAM the name of the file is used as samples name.
       pattern: "*.{bam,cram,vcf,vcf.gz,bcf,bcf.gz}"
   - input_index:
@@ -49,6 +49,11 @@ input:
         Target imputed region, excluding left and right buffers (e.g. chr20:1000000-2000000).
         Optional if reference panel is in bin format.
       pattern: "chrXX:leftBufferPosition-rightBufferPosition"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing genomic map information
+        e.g. `[ map:'GRCh38' ]`
   - reference:
       type: file
       description: Reference panel of haplotypes in VCF/BCF format.
@@ -80,7 +85,7 @@ output:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        e.g. `[ id:'test', single_end:false ]`
   - versions:
       type: file
       description: File containing software versions

@@ -3,22 +3,26 @@ description: A genomic k-mer counter (and sequence utility) with nice features.
 keywords:
   - k-mer
   - histogram
+  - reference-free
 tools:
   - "meryl":
       description: "A genomic k-mer counter (and sequence utility) with nice features. "
       homepage: "https://github.com/marbl/meryl"
       documentation: "https://meryl.readthedocs.io/en/latest/quick-start.html"
       tool_dev_url: "https://github.com/marbl/meryl"
-      licence: "['GPL']"
+      licence: ["GPL"]
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - meryl_dbs:
+  - meryl_db:
       type: directory
       description: Meryl k-mer database
+  - kvalue:
+      type: integer
+      description: An integer value of k to use as the k-mer value.
 output:
   - meta:
       type: map
@@ -37,3 +41,4 @@ authors:
   - "@mahesh-panchal"
 maintainers:
   - "@mahesh-panchal"
+  - "@gallvp"

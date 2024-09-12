@@ -1,0 +1,189 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTQ_ALIGN_BOWTIE2"
+    script "../main.nf"
+    config "./nextflow.config"
+    workflow "FASTQ_ALIGN_BOWTIE2"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fastq_align_bowtie2"
+    tag "subworkflows/bam_sort_stats_samtools"
+    tag "bowtie2"
+    tag "bowtie2/build"
+    tag "bowtie2/align"
+
+    test("test_align_bowtie2_single_end") {
+        setup {
+            run("BOWTIE2_BUILD") {
+                script "../../../../modules/nf-core/bowtie2/build/main.nf"
+                process {
+                    """
+                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                    """
+                }
+            }
+        }
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([[ id:'test', single_end:true ], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]])
+                input[1] = BOWTIE2_BUILD.out.index
+                input[2] = false
+                input[3] = false
+                input[4] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    file(workflow.out.bam_orig[0][1]).name,
+                    workflow.out.fastq,
+                    workflow.out.log_out,
+                    file(workflow.out.bam[0][1]).name,
+                    file(workflow.out.bai[0][1]).name,
+                    workflow.out.csi,
+                    workflow.out.stats,
+                    workflow.out.flagstat,
+                    workflow.out.idxstats,
+                    workflow.out.versions
+                ).match()}
+            )
+        }
+    }
+
+    test("test_align_bowtie2_paired_end") {
+        setup {
+            run("BOWTIE2_BUILD") {
+                script "../../../../modules/nf-core/bowtie2/build/main.nf"
+                process {
+                    """
+                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                    """
+                }
+            }
+        }
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([[ id:'test', single_end:false ], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]])
+                input[1] = BOWTIE2_BUILD.out.index
+                input[2] = false
+                input[3] = false
+                input[4] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    file(workflow.out.bam_orig[0][1]).name,
+                    workflow.out.fastq,
+                    workflow.out.log_out,
+                    file(workflow.out.bam[0][1]).name,
+                    file(workflow.out.bai[0][1]).name,
+                    workflow.out.csi,
+                    workflow.out.stats,
+                    workflow.out.flagstat,
+                    workflow.out.idxstats,
+                    workflow.out.versions
+                ).match()}
+            )
+        }
+    }
+
+    test("test_align_bowtie2_single_end - stub") {
+
+        options "-stub"
+
+        setup {
+            run("BOWTIE2_BUILD") {
+                script "../../../../modules/nf-core/bowtie2/build/main.nf"
+                process {
+                    """
+                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                    """
+                }
+            }
+        }
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([[ id:'test', single_end:true ], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]])
+                input[1] = BOWTIE2_BUILD.out.index
+                input[2] = false
+                input[3] = false
+                input[4] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    file(workflow.out.bam_orig[0][1]).name,
+                    workflow.out.fastq,
+                    workflow.out.log_out,
+                    file(workflow.out.bam[0][1]).name,
+                    file(workflow.out.bai[0][1]).name,
+                    workflow.out.csi,
+                    workflow.out.stats,
+                    workflow.out.flagstat,
+                    workflow.out.idxstats,
+                    workflow.out.versions
+                ).match()}
+            )
+        }
+    }
+
+    test("test_align_bowtie2_paired_end - stub") {
+
+        options "-stub"
+
+        setup {
+            run("BOWTIE2_BUILD") {
+                script "../../../../modules/nf-core/bowtie2/build/main.nf"
+                process {
+                    """
+                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                    """
+                }
+            }
+        }
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([[ id:'test', single_end:false ], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]])
+                input[1] = BOWTIE2_BUILD.out.index
+                input[2] = false
+                input[3] = false
+                input[4] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    file(workflow.out.bam_orig[0][1]).name,
+                    workflow.out.fastq,
+                    workflow.out.log_out,
+                    file(workflow.out.bam[0][1]).name,
+                    file(workflow.out.bai[0][1]).name,
+                    workflow.out.csi,
+                    workflow.out.stats,
+                    workflow.out.flagstat,
+                    workflow.out.idxstats,
+                    workflow.out.versions
+                ).match()}
+            )
+        }
+    }
+}

@@ -1,0 +1,46 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "viennarna_rnafold"
+description: Predict RNA secondary structure using the ViennaRNA RNAfold tools. Calculate minimum free energy secondary structures and partition function of RNAs.
+keywords:
+  - RNA
+  - fasta
+  - rna_structure
+tools:
+  - "viennarna":
+      description: |
+        Calculate minimum free energy secondary structures and partition function of RNAs
+
+        The program reads RNA sequences, calculates their minimum free energy (mfe) structure and
+        prints the mfe structure in bracket notation and its free energy. If not specified differently
+        using commandline arguments, input is accepted from stdin or read from an input file, and
+        output printed to stdout. If the -p option was given it also computes the partition function
+        (pf) and base pairing probability matrix, and prints the free energy of the thermodynamic
+        ensemble, the frequency of the mfe structure in the ensemble, and the ensemble diversity to stdout.
+      homepage: "https://www.tbi.univie.ac.at/RNA/"
+      documentation: "https://viennarna.readthedocs.io/en/latest/"
+      doi: 10.1186/1748-7188-6-26
+      licence: ["custom"]
+input:
+  - fasta:
+      type: file
+      description: |
+        A fasta file containing RNA or transcript sequences
+      pattern: "*.{fasta,fa}"
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - rnafold_txt:
+      type: file
+      description: The text Output of RNAfold that
+      pattern: "*.{fold}"
+  - rnafold_ps:
+      type: file
+      description: The text Output of RNAfold that
+      pattern: "*.ss"
+authors:
+  - "@kokul-atx"
+maintainers:
+  - "@kokul-atx"

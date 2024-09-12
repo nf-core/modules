@@ -1,0 +1,80 @@
+nextflow_process {
+
+    name "Test Process SEQTK_SAMPLE"
+    script "modules/nf-core/seqtk/sample/main.nf"
+    process "SEQTK_SAMPLE"
+    config "./standard.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "seqtk"
+    tag "seqtk/sample"
+
+    test("sarscov2_sample_singleend_fqgz") {
+
+        when {
+            process {
+                """
+                input[0] =  [
+                                [ id:'test', single_end:true ],
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                50
+                            ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2_sample_pairedend_fqgz") {
+
+        when {
+            process {
+                """
+                input[0] =  [
+                                [ id:'test', single_end:true ],
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                50
+                            ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2_sample_singlend_fqgz_stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] =  [
+                                [ id:'test', single_end:true ],
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                50
+                            ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

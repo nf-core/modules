@@ -8,11 +8,11 @@ process PIGZ_UNCOMPRESS {
         'biocontainers/pigz:2.8' }"
 
     input:
-    path zip
+    tuple val(meta), path(zip)
 
     output:
-    path "${uncompressed_filename}" , emit: file
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path("${uncompressed_filename}") , emit: file
+    path "versions.yml"                               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

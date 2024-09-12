@@ -1,0 +1,104 @@
+nextflow_process {
+
+    name "Test Process CENTRIFUGE_CENTRIFUGE"
+    script "../main.nf"
+    process "CENTRIFUGE_CENTRIFUGE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "centrifuge"
+    tag "centrifuge/centrifuge"
+    tag "untar"
+
+    setup {
+        run("UNTAR") {
+            script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] =  db    =  [ [], file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/minigut_cf.tar.gz', checkIfExists: true) ]
+                    """
+                }
+            }
+    }
+
+    test("sarscov2_fastq_se") {
+
+        when {
+            process {
+                """
+                input[0] = [ [id: 'test', single_end: true], file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                input[2] = true
+                input[3] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.report[0][1]).name,
+                    file(process.out.results[0][1]).name,
+                    file(process.out.fastq_mapped[0][1][0]).name,
+                    file(process.out.fastq_unmapped[0][1][0]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2_fastq_pe") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                                [ id:'test', single_end:false ], // meta map
+                                [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+                        ]
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                input[2] = true
+                input[3] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.report[0][1]).name,
+                    file(process.out.results[0][1]).name,
+                    file(process.out.fastq_mapped[0][1][0]).name,
+                    file(process.out.fastq_unmapped[0][1][0]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2_fastq_se_stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [id: 'test'], file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                input[2] = true
+                input[3] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

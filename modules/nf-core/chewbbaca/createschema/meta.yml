@@ -1,0 +1,66 @@
+name: chewbbaca_createschema
+description: Create a schema to determine the allelic profiles of a genome
+keywords:
+  - cgMLST
+  - WGS
+  - genomics
+tools:
+  - chewbbaca:
+      description: "A complete suite for gene-by-gene schema creation and strain identification."
+      homepage: "https://chewbbaca.readthedocs.io/en/latest/index.html"
+      documentation: "https://chewbbaca.readthedocs.io/en/latest/index.html"
+      tool_dev_url: "https://github.com/B-UMMI/chewBBACA"
+      doi: "10.1099/mgen.0.000166"
+      licence: ["GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+
+  - fasta:
+      type: directory
+      description: One or multiple FASTA files to create schema from
+      pattern: "*.{fasta,fa,fas,fna,fasta.gz,fa.gz,fas.gz,fna.gz}"
+
+  - prodigal_tf:
+      type: file
+      description: File containing the prodigal training file
+      pattern: "*.ptf"
+
+  - cds:
+      type: file
+      description: File containing the prodigal cds file
+      pattern: "*.cds"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+
+  - schema:
+      type: directory
+      description: Schema directory
+      pattern: "*/"
+
+  - cds_coordinates:
+      type: file
+      description: File containing the coordinates of the CDS in the input sample
+      pattern: "*_cds_coordinates.tsv"
+
+  - invalid_cds:
+      type: file
+      description: File containing the list of alleles predicted by Prodigal that were excluded
+      pattern: "*_invalid_cds.txt"
+
+authors:
+  - "@anwarMZ"

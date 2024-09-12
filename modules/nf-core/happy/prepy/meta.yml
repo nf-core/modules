@@ -6,17 +6,27 @@ keywords:
   - haplotype
 tools:
   - "happy":
-      description: "Haplotype VCF comparison tools"
-      homepage: "https://www.illumina.com/products/by-type/informatics-products/basespace-sequence-hub/apps/hap-py-benchmarking.html"
-      documentation: "https://github.com/Illumina/hap.py"
-      tool_dev_url: "https://github.com/Illumina/hap.py"
-      licence: "['BSD-2-clause']"
+      description: Haplotype VCF comparison tools
+      homepage: https://www.illumina.com/products/by-type/informatics-products/basespace-sequence-hub/apps/hap-py-benchmarking.html
+      documentation: https://github.com/Illumina/hap.py
+      tool_dev_url: https://github.com/Illumina/hap.py
+      licence: ["BSD-2-clause"]
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information for reference fasta
+        e.g. [ id:'test2']
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing sample information for reference fai
+        e.g. [ id:'test3' ]
   - vcf:
       type: file
       description: VCF file to preprocess

@@ -1,0 +1,101 @@
+nextflow_process {
+
+    name "Test Process PRODIGAL"
+    script "../main.nf"
+    process "PRODIGAL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "prodigal"
+
+    test("prodigal - sarscov2 - gff") {
+        when {
+            process {
+                """
+                input[0] = [
+                            [id:'test', single_end:false ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                           ]
+                input[1] =  'gff'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("prodigal - sarscov2 - gbk") {
+        when {
+            process {
+                """
+                input[0] = [
+                            [id:'test', single_end:false ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                           ]
+                input[1] =  'gbk'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("prodigal - sarscov2 - gff - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [id:'test', single_end:false ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                           ]
+                input[1] =  'gff'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.out).match() }
+            )
+        }
+    }
+
+    test("prodigal - sarscov2 - gbk - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [id:'test', single_end:false ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                           ]
+                input[1] =  'gbk'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.out).match() }
+            )
+        }
+    }
+
+}

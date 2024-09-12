@@ -5,8 +5,8 @@ process SEQKIT_GREP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/seqkit:2.4.0--h9ee0642_0':
-        'biocontainers/seqkit:2.4.0--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/seqkit:2.8.1--h9ee0642_0':
+        'biocontainers/seqkit:2.8.1--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(sequence)
@@ -48,7 +48,7 @@ process SEQKIT_GREP {
     def suffix = task.ext.suffix ?: "${sequence}" ==~ /(.*f[astn]*a(.gz)?$)/ ? "fa" : "fq"
 
     """
-    touch ${prefix}.${suffix}.gz
+    echo "" | gzip > ${prefix}.${suffix}.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

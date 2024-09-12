@@ -33,8 +33,8 @@ process EKLIPSE {
         -in infile.txt \\
         $args \\
         -ref $ref_gb
-    mv eKLIPse_*/eKLIPse_deletions.csv eKLIPse_deletions.csv
-    mv eKLIPse_*/eKLIPse_genes.csv eKLIPse_genes.csv
+    mv eKLIPse_*/eKLIPse_deletions.csv eKLIPse_${prefix}_deletions.csv
+    mv eKLIPse_*/eKLIPse_genes.csv eKLIPse_${prefix}_genes.csv
     mv eKLIPse_*/eKLIPse_${prefix}.png eKLIPse_${prefix}.png
 
     cat <<-END_VERSIONS > versions.yml
@@ -47,8 +47,8 @@ process EKLIPSE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = "1.8"
     """
-    touch eKLIPse_deletions.csv
-    touch eKLIPse_genes.csv
+    touch eKLIPse_${prefix}_deletions.csv
+    touch eKLIPse_${prefix}_genes.csv
     touch eKLIPse_${prefix}.png
 
     cat <<-END_VERSIONS > versions.yml

@@ -9,7 +9,7 @@ process ARIBA_RUN {
 
     input:
     tuple val(meta), path(reads)
-    each path(db)
+    tuple val(meta), path(db)
 
     output:
     tuple val(meta), path("${prefix}/*"), emit: results

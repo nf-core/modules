@@ -21,5 +21,15 @@ process AFFY_JUSTRMA {
     task.ext.when == null || task.ext.when
 
     script:
+    prefix = task.ext.prefix ?: "${meta.id}"
     template 'affy_justrma.R'
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}_eset.rds
+    touch ${prefix}_matrix.tsv
+    touch R_sessionInfo.log
+    touch versions.yml
+    """
 }

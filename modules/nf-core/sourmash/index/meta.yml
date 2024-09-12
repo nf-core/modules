@@ -1,4 +1,4 @@
-name: "sourmash_index"
+name: sourmash_index
 description: Create a database of sourmash signatures (a group of FracMinHash sketches) to be used as references.
 keywords:
   - signatures
@@ -8,13 +8,13 @@ keywords:
   - mapping
   - kmer
 tools:
-  - "sourmash":
+  - sourmash:
       description: "Compute and compare FracMinHash signatures for DNA data sets."
       homepage: "https://sourmash.readthedocs.io/"
       documentation: "https://sourmash.readthedocs.io/"
       tool_dev_url: "https://github.com/sourmash-bio/sourmash"
       doi: "10.21105/joss.00027"
-      licence: "['BSD-3-clause']"
+      licence: ["BSD-3-clause"]
 input:
   - meta:
       type: map
@@ -25,6 +25,9 @@ input:
       type: file
       description: Files containing signature (hash sketches) of reference genomes
       pattern: "*.{sig}"
+  - ksize:
+      type: integer
+      description: ksize value
 output:
   - meta:
       type: map

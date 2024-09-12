@@ -1,0 +1,102 @@
+nextflow_process {
+
+    name "Test Process GNU_SPLIT"
+    script "../main.nf"
+    process "GNU_SPLIT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gnu"
+    tag "gnu/split"
+
+    test("split_csv") {
+        config "./split_csv.config"
+        when {
+            process {
+                """                
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'generic/csv/test.csv', checkIfExists: true)
+                ])
+                """
+            }
+        }
+        then {
+            assertAll(
+                // check the process ran successfully
+                { assert process.success },
+                // check meta 
+                { assert snapshot(process.out.split[0][0]).match('split_csv_meta') },
+                // check each of the resulting split files
+                { 
+                    process.out.split[0][1].eachWithIndex { split, i -> 
+                        assert snapshot(path(split)).match("split_csv_${i}")
+                    }
+                },
+                // check the version file matches
+                { assert snapshot(path(process.out.versions[0])).match('split_csv_version') }
+            )
+        }
+    }
+
+    test("split_fastq_gz"){
+        config "./split_fastq_gz.config"
+        when {
+            process {
+                """                
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ])
+                """
+            }
+        }
+        then {
+            assertAll(
+                // check the process ran successfully
+                { assert process.success },
+                // check meta 
+                { assert snapshot(process.out.split[0][0]).match('split_fastq_gz_meta') },
+                // check each of the resulting split files
+                { 
+                    process.out.split[0][1].eachWithIndex { split, i -> 
+                        assert snapshot(path(split)).match("split_fastq_gz_${i}")
+                    }
+                },
+                // check the version file matches
+                { assert snapshot(path(process.out.versions[0])).match('split_fastq_gz_version') }
+            )
+        }
+    }
+
+    test("split_fastq_gz_stub") {
+        options "-stub"
+        config "./split_fastq_gz.config"
+        when {
+            process {
+                """                
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ])
+                """
+            }
+        }
+        then {
+            assertAll(
+                // check the process ran successfully
+                { assert process.success },
+                // check meta 
+                { assert snapshot(process.out.split[0][0]).match('split_stub_meta') },
+                // check each of the resulting split files
+                { 
+                    process.out.split[0][1].eachWithIndex { split, i -> 
+                        assert snapshot(path(split)).match("split_stub_${i}")
+                    }
+                },
+                // check the version file matches
+                { assert snapshot(path(process.out.versions[0])).match('split_stub_version') }
+            )
+        }
+    }
+}

@@ -30,19 +30,17 @@ output:
       description: |
         Tab delimited output txt file containing buffer and imputation regions.
         Structure: [meta, txt]
-  - phased_variants:
-      type: file
-      description: |
-        Output VCF/BCF file containing genotype probabilities (GP field),
-        imputed dosages (DS field), best guess genotypes (GT field),
-        sampled haplotypes in the last (max 16) main iterations (HS field) and info-score.
-        Structure: [ val(meta), bcf ]
   - merged_variants:
       type: file
       description: |
-        Output VCF/BCF file for the merged regions.
+        Output phased VCF/BCF file for the merged regions.
         Phased information (HS field) is updated accordingly for the full region.
         Structure: [ val(meta), bcf ]
+  - merged_variants_index:
+      type: file
+      description: |
+        Index output of phased VCF/BCF file for the merged regions.
+        Structure: [ val(meta), csi ]
   - versions:
       type: file
       description: File containing software versions

@@ -13,7 +13,7 @@ tools:
       documentation: "https://github.com/eggnogdb/eggnog-mapper/wiki"
       tool_dev_url: "https://github.com/eggnogdb/eggnog-mapper"
       doi: "10.1093/molbev/msab293"
-      licence: "['AGPL v3']"
+      licence: ["AGPL v3"]
 input:
   - meta:
       type: map
@@ -32,6 +32,11 @@ input:
       type: directory
       description: Directory containing eggnog database files (e.g. eggnog-mapper/data)
       pattern: "*"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing database information
+        e.g. `[ id:'test' ]`
   - eggnog_diamond_db:
       type: file
       description: The eggnog Diamond protein database file (e.g. eggnog-mapper/data/eggnog_proteins.dmnd)
@@ -46,7 +51,7 @@ output:
       type: file
       description: TSV with the results from the annotation phase
       pattern: "*.emapper.annotations"
-  - seed_orthologs:
+  - orthologs:
       type: file
       description: TSV with the results from parsing the hits, linking queries with seed orthologs (with commented metadata)
       pattern: "*.emapper.seed_orthologs"
@@ -60,3 +65,6 @@ output:
       pattern: "versions.yml"
 authors:
   - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"
+  - "@gallvp"

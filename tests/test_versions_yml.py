@@ -1,8 +1,9 @@
+import re
 from pathlib import Path
+from textwrap import dedent
+
 import pytest
 import yaml
-import re
-from textwrap import dedent
 
 
 def _get_workflow_names():
@@ -18,7 +19,7 @@ def _get_workflow_names():
         for workflow in test_config:
             # https://github.com/nf-core/modules/pull/1242 - added to cover tests
             # that expect an error and therefore will not generate a versions.yml
-            if 'exit_code' not in workflow:
+            if "exit_code" not in workflow:
                 yield workflow["name"]
 
 

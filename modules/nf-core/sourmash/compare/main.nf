@@ -14,21 +14,22 @@ process SOURMASH_COMPARE {
     val save_csv
 
     output:
-    tuple val(meta), path("*comp.npy.labels.txt"), path("*comp.npy"), optional:true, emit: matrix
-    path "*comp.csv"       , optional:true, emit: csv
-    path "versions.yml"    , emit: versions
+    tuple val(meta), path("*comp.npy")            , emit: matrix, optional:true
+    tuple val(meta), path("*comp.npy.labels.txt") , emit: labels, optional:true
+    tuple val(meta), path("*comp.csv")            , emit: csv   , optional:true
+    path "versions.yml"                           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args     ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix   ?: "${meta.id}"
     def comp   = save_numpy_matrix ? "--output comp.npy"  : ''
     def csv    = save_csv          ? "--csv comp.csv" : ''
     if ( !save_numpy_matrix && !save_csv ) error "Supply either save_numpy_matrix, save_csv, or both or no output will be created"
     def ffile = file_list ? "--from-file ${file_list}" : ''
-    def sigs = signatures ? "${signatures.join(' ')}" : ''
+    def sigs = signatures ? "${signatures.sort{it.toString()}.join(' ')}" : ''
     if ( !file_list && !signatures ) error "Supply either signatures, file_list, or both"
     """
     sourmash compare \\
@@ -38,6 +39,18 @@ process SOURMASH_COMPARE {
         ${csv} \\
         ${ffile} \\
         ${sigs}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        sourmash: \$(echo \$(sourmash --version 2>&1) | sed 's/^sourmash //' )
+    END_VERSIONS
+    """
+
+    stub:
+    """
+    touch comp.npy.labels.txt
+    touch comp.npy
+    touch comp.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -1,36 +1,72 @@
 nextflow_process {
 
     name "Test Process MUSCLE5_SUPER5"
-    script "../main.nf"
-    process "MUSCLE5_SUPER5"
-    config "./nextflow.config"
+        script "../main.nf"
+        process "MUSCLE5_SUPER5"
+        config "./nextflow.config"
 
-    tag "modules"
-    tag "modules_nfcore"
-    tag "muscle5"
-    tag "muscle5/super5"
+        tag "modules"
+        tag "modules_nfcore"
+        tag "muscle5"
+        tag "muscle5/super5"
 
-    test("sarscov2 - fasta") {
+        test("fasta - align_sequence - uncompressed") {
+            when {
+                process {
+                    """
+                        input[0] = [ [ id:'test' ],
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                        ]
+                        input[1] = false
+                        """
+                }
+            }
 
-        when {
-            process {
-                """
-                input[0] = [[ id:'test' ],
-                            fasta = [ file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
-                           ]
-                """
+            then {
+                assertAll(
+                        { assert process.success },
+                        { assert snapshot(process.out.alignment).match("alignment - uncompressed")},
+                        )
             }
         }
 
-         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.alignment[0][1][0]).match("aln0")},
-                { assert snapshot(process.out.alignment[0][1][1]).match("aln1")},
-                { assert snapshot(process.out.alignment[0][1][2]).match("aln2")},
-                { assert snapshot(process.out.alignment[0][1][3]).match("aln3")},
-                { assert snapshot(process.out.versions).match("versions") }
-            )
+        test("fasta - align_sequence - compressed") {
+            when {
+                process {
+                    """
+                        input[0] = [ [ id:'test' ],
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                        ]
+                        input[1] = true
+                        """
+                }
+            }
+
+            then {
+                assertAll(
+                        { assert process.success },
+                        { assert snapshot(process.out.alignment).match("alignment - compressed")},
+                        )
+            }
         }
-    }
+        test("fasta - align_sequence - compressed - perm_all") {
+            config "./perm_all.config"
+            when {
+                process {
+                    """
+                        input[0] = [ [ id:'test' ],
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                        ]
+                        input[1] = true
+                        """
+                }
+            }
+
+            then {
+                assertAll(
+                        { assert process.success },
+                        { assert snapshot(process.out.alignment).match("perm-all")},
+                        )
+            }
+        }
 }

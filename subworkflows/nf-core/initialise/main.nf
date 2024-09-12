@@ -65,6 +65,13 @@ workflow INITIALISE {
                     "   (3) Using your own local custom config e.g. `-c /path/to/your/custom.config`\n\n" +
                     "Please refer to the quick start section and usage docs for the pipeline.\n "
         }
+        // Check that the profile doesn't contain spaces and doesn't end with a trailing comma
+        if (workflow.profile.endsWith(',')) {
+            Nextflow.error "Profile cannot end with a trailing comma. Please remove the comma from the end of the profile string.\nHint: A common mistake is to provide multiple values to `-profile` separated by spaces. Please use commas to separate profiles instead,e.g., `-profile docker,test`."
+        }
+        if (args[0]) {
+            log.warn "nf-core pipelines do not accept positional arguments. The positional argument `${args[0]}` has been detected.\n      Hint: A common mistake is to provide multiple values to `-profile` separated by spaces. Please use commas to separate profiles instead,e.g., `-profile docker,test`."
+        }
 
         log.info paramsSummaryLog(workflow)
 

@@ -1,0 +1,68 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "svtyper_svtypersso"
+description: SVTyper-sso computes structural variant (SV) genotypes based on breakpoint depth on a SINGLE sample
+keywords:
+  - sv
+  - structural variants
+  - genotyping
+  - Bayesian
+tools:
+  - "svtyper":
+      description: "Bayesian genotyper for structural variants"
+      homepage: "https://github.com/hall-lab/svtyper"
+      documentation: "https://github.com/hall-lab/svtyper"
+      tool_dev_url: "https://github.com/hall-lab/svtyper"
+      doi: "10.1038/nmeth.3505"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test']
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information for reference FASTA file
+        e.g. [ id:'fasta']
+  - bam:
+      type: file
+      description: BAM or CRAM file with alignments
+      pattern: "*.{bam,cram}"
+  - bam_index:
+      type: file
+      description: BAI file matching the BAM file
+      pattern: "*.{bai}"
+  - vcf:
+      type: file
+      description: Matching VCF of alignments
+      pattern: "*.vcf"
+  - fasta:
+      type: file
+      description: indexed reference FASTA file (recommended for reading CRAM files)
+      pattern: "*.{fa,fasta}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - json:
+      type: file
+      description: JSON file including library information
+      pattern: "*.json"
+  - gt_vcf:
+      type: file
+      description: Genotyped SVs
+      pattern: "*.vcf"
+authors:
+  - "@tstoeriko"
+maintainers:
+  - "@tstoeriko"

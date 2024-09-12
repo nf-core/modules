@@ -3,10 +3,12 @@ nextflow_process {
     name "Test Process GLIMPSE_SAMPLE"
     script "../main.nf"
     process "GLIMPSE_SAMPLE"
-    tag "glimpse"
-    tag "glimpse/sample"
+
     tag "modules"
     tag "modules_nfcore"
+    tag "glimpse"
+    tag "glimpse/sample"
+    tag "glimpse/phase"
 
     test("test_glimpse_sample") {
         config "./nextflow.config"
@@ -21,15 +23,15 @@ nextflow_process {
                 ])
                 input_vcf     = Channel.of([
                     [ id:'input'], // meta map
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz", checkIfExists: true),
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz.csi", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz.csi", checkIfExists: true)
                 ])
                 ref_panel     = Channel.of([
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true)
                 ])
                 ch_map        = Channel.of([
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/chr21.b38.gmap.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/chr21.b38.gmap.gz", checkIfExists: true),
                 ])
 
                 input[0]      = input_vcf
@@ -44,7 +46,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = GLIMPSE_PHASE.out.phased_variant
+                input[0] = GLIMPSE_PHASE.out.phased_variants
                 """
             }
         }

@@ -4,8 +4,8 @@ process PROPR_PROPD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-propr:4.2.6':
-        'biocontainers/r-propr:4.2.6' }"
+        'https://depot.galaxyproject.org/singularity/r-propr:5.0.3':
+        'biocontainers/r-propr:5.0.3' }"
 
     input:
     tuple val(meta), path(count)
@@ -15,6 +15,8 @@ process PROPR_PROPD {
     tuple val(meta), path("*.propd.rds"), emit: propd
     tuple val(meta), path("*.propd.tsv"), emit: results
     tuple val(meta), path("*.fdr.tsv")  , emit: fdr         , optional:true
+    tuple val(meta), path("*.adj.csv"),   emit: adj         , optional:true
+    path "*.warnings.log",                emit: warnings
     path "*.R_sessionInfo.log"          , emit: session_info
     path "versions.yml"                 , emit: versions
 

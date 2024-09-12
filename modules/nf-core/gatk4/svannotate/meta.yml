@@ -28,6 +28,10 @@ input:
       type: file
       description: The index file of the VCF
       pattern: "*.vcf.gz.tbi"
+  - bed:
+      type: file
+      description: Regions to limit the analysis to
+      pattern: "*.bed"
   - fasta:
       type: file
       description: Optional - reference FASTA file needed when the input is a CRAM file

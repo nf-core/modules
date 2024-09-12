@@ -10,7 +10,7 @@ tools:
       homepage: "http://www.usadellab.org/cms/?page=trimmomatic"
       documentation: "https://github.com/usadellab/Trimmomatic"
       doi: "10.1093/bioinformatics/btu170"
-      licence: "['GPL v3']"
+      licence: ["GPL v3"]
 input:
   - meta:
       type: map
@@ -36,9 +36,13 @@ output:
       type: file
       description: The trimmed/modified unpaired end fastq reads
       pattern: "*.unpaired.trim_*.fastq.gz"
-  - log:
+  - trim_log:
       type: file
-      description: trimmomatic log file
+      description: trimmomatic log file, from the trim_log parameter
+      pattern: "*.log"
+  - out_log:
+      type: file
+      description: log of output from the standard out
       pattern: "*.log"
   - summary:
       type: file

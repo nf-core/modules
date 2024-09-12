@@ -1,0 +1,46 @@
+nextflow_process {
+
+    name "Test Process MALTEXTRACT"
+    script "../main.nf"
+    process "MALTEXTRACT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "maltextract"
+    tag "unzip"
+
+    test("test_maltextract") {
+        setup{
+            run("UNZIP") {
+                script "../../unzip/main.nf"
+                process {
+                    """
+                    input[0] = [[], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/maltextract/ncbi_taxmap.zip')]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [ [], // meta map
+                    file(params.modules_testdata_base_path + 'delete_me/malt/test.rma6')
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/maltextract/taxon_list.txt')
+                input[2] = UNZIP.out.unzipped_archive.map { it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    path("${process.out.results.get(0).get(1)}/ScanSummary.txt")
+                ).match() },
+            )
+        }
+    }
+}

@@ -5,6 +5,8 @@ nextflow_process {
     tag "modules"
     tag "bwa"
     tag "bwa/samse"
+    tag "bwa/aln"
+    tag "bwa/index"
     script "../main.nf"
     process "BWA_SAMSE"
 
@@ -17,7 +19,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [id: 'test'],
-                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ]
                     """
                 }
@@ -28,7 +30,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test', single_end:true ], // meta map
-                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                     ]
                     input[1] = BWA_INDEX.out.index
                     """
@@ -43,7 +45,7 @@ nextflow_process {
                     .fromList(
                         [
                             [ id:'test', single_end:false ],
-                            file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                         ]
                     )
                     .collect()

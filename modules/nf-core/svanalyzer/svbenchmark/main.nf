@@ -10,11 +10,9 @@ process SVANALYZER_SVBENCHMARK {
         'biocontainers/svanalyzer:0.36--pl526_0' }"
 
     input:
-    tuple val(meta), path(test)
-    tuple val(meta2),path(truth)
-    tuple val(meta3),path(fasta)
-    tuple val(meta4),path(fai)
-    tuple val(meta5),path(bed)
+    tuple val(meta), path(test), path(test_tbi), path(truth), path(truth_tbi), path(bed)
+    tuple val(meta2),path(fasta)
+    tuple val(meta3),path(fai)
 
     output:
     tuple val(meta), path("*.falsenegatives.vcf.gz"), emit: fns

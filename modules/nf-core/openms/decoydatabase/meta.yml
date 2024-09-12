@@ -12,7 +12,7 @@ tools:
       homepage: "https://openms.de"
       documentation: "https://openms.readthedocs.io/en/latest/index.html"
       tool_dev_url: "https://github.com/OpenMS/OpenMS"
-      doi: "10.1038/nmeth.3959"
+      doi: "10.1038/s41592-024-02197-7"
       licence: ["BSD"]
 input:
   - meta:
@@ -34,7 +34,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - fasta:
+  - decoy_fasta:
       type: file
       description: Fasta file containing proteins and decoy proteins
       pattern: "*.{fasta}"
@@ -42,3 +42,4 @@ authors:
   - "@jonasscheid"
 maintainers:
   - "@jonasscheid"
+  - "@gallvp"

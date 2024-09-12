@@ -1,0 +1,52 @@
+name: "rhocall_viz"
+description: Call regions of homozygosity and make tentative UPD calls
+keywords:
+  - roh
+  - bcftools
+  - runs_of_homozygosity
+tools:
+  - "rhocall":
+      description: "Call regions of homozygosity and make tentative UPD calls."
+      homepage: "https://github.com/dnil/rhocall"
+      documentation: "https://github.com/dnil/rhocall"
+      tool_dev_url: "https://github.com/dnil"
+      licence: ["GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - vcf:
+      type: file
+      description: VCF file
+      pattern: "*.{vcf}"
+  - roh:
+      type: file
+      description: Input RHO file produced from rhocall
+      pattern: "*.{roh}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bed:
+      type: file
+      description: Bed file containing roh calls
+      pattern: "*.{bed}"
+  - wig:
+      type: file
+      description: Wig file containing roh calls
+      pattern: "*.{wig}"
+
+authors:
+  - "@ramprasadn"
+maintainers:
+  - "@ramprasadn"

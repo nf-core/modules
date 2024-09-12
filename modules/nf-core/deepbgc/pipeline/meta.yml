@@ -27,6 +27,9 @@ input:
       type: file
       description: FASTA/GenBank/Pfam CSV file
       pattern: "*.{fasta,fa,fna,gbk,csv}"
+  - db:
+      type: directory
+      description: Database path
 output:
   - meta:
       type: map

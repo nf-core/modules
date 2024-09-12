@@ -1,0 +1,54 @@
+nextflow_process {
+
+    name "Test Process SCIMAP_SPATIALLDA"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "SCIMAP_SPATIALLDA"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "scimap"
+    tag "scimap/spatiallda"
+
+    test("spatiallda - csv") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'imaging/downstream/phenotyped.csv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.spatial_lda_output },
+                { assert process.out.composition_plot },
+                { assert process.out.motif_location_plot },
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+    }
+    test("spatiallda - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'imaging/downstream/phenotyped.csv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

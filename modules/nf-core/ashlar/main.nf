@@ -1,16 +1,16 @@
 process ASHLAR {
-    tag '$meta.id'
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ashlar:1.17.0--pyh5e36f6f_0' :
-        'biocontainers/ashlar:1.17.0--pyh5e36f6f_0' }"
+        'https://depot.galaxyproject.org/singularity/ashlar:1.18.0--pyhdfd78af_0' :
+        'biocontainers/ashlar:1.18.0--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(images)
-    path(opt_dfp)
-    path(opt_ffp)
+    tuple val(meta), path(images, stageAs: 'image*/*')
+    path(opt_dfp, stageAs: 'dfp*/*')
+    path(opt_ffp, stageAs: 'ffp*/*')
 
     output:
     tuple val(meta), path("*.ome.tif"), emit: tif
@@ -46,7 +46,7 @@ process ASHLAR {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        ashlar: \$(ashlar --version 2>&1 | sed 's/^.*ashlar //; s/Using.*\$//' )
+        ashlar: \$(ashlar --version | sed 's/^.*ashlar //' )
     END_VERSIONS
     """
 }

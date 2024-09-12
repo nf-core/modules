@@ -1,0 +1,65 @@
+nextflow_process {
+
+    name "Test Process RIBOTISH_QUALITY"
+    script "../main.nf"
+    process "RIBOTISH_QUALITY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ribotish"
+    tag "ribotish/quality"
+
+    test("sarscov2 [bam] - single_end") {
+
+        when {
+            process {
+                """
+                input[0] = [ 
+                    [ id:'test', single_end:true, strandedness:'forward' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
+                ]
+                input[1] = [[id:'homo_sapiens_chr20'], file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.distribution).match("distribution_single_end") },
+                { assert snapshot(file(process.out.pdf[0][1]).name).match("pdf_single_end") },
+                { assert snapshot(process.out.offset).match("offset_single_end") },
+                { assert snapshot(process.out.versions).match("versions_single_end") }
+            )
+        }
+    }
+
+    test("sarscov2 [bam] - single_end - stub") {
+
+        options '-stub'
+        
+        when {
+            process {
+                """
+                input[0] = [ 
+                    [ id:'test', single_end:true, strandedness:'forward' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
+                ]
+                input[1] = [[id:'homo_sapiens_chr20'], file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.distribution).match("distribution_single_end_stub") },
+                { assert snapshot(file(process.out.pdf[0][1]).name).match("pdf_single_end_stub") },
+                { assert snapshot(process.out.offset).match("offset_single_end_stub") },
+                { assert snapshot(process.out.versions).match("versions_single_end_stub") }
+            )
+        }
+    }
+}

@@ -1,0 +1,135 @@
+nextflow_process {
+
+    name "Test Process GATK4_SVANNOTATE"
+    script "../main.nf"
+    process "GATK4_SVANNOTATE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "manta"
+    tag "manta/germline"
+    tag "gatk4"
+    tag "gatk4/svannotate"
+
+    test("test_gatk4_svannotate") {
+        setup {
+            run("MANTA_GERMLINE") {
+                script "../../../manta/germline/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true), [], []])
+                    input[1] = Channel.value([ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)])
+                    input[2] = Channel.value([ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)])
+                    input[3] = []
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = MANTA_GERMLINE.out.diploid_sv_vcf.combine(MANTA_GERMLINE.out.diploid_sv_vcf_tbi, by:0).map({ meta, vcf, tbi -> [ meta, vcf, tbi, [] ]})
+                input[1] = []
+                input[2] = []
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.annotated_vcf[0][1]).name,
+                    process.out.index[0][1],
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test_gatk4_svannotate_fasta") {
+        setup {
+            run("MANTA_GERMLINE") {
+                script "../../../manta/germline/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true), [], []])
+                    input[1] = Channel.value([ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)])
+                    input[2] = Channel.value([ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)])
+                    input[3] = []
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = MANTA_GERMLINE.out.diploid_sv_vcf.combine(MANTA_GERMLINE.out.diploid_sv_vcf_tbi, by:0).map({ meta, vcf, tbi -> [ meta, vcf, tbi, [] ]})
+                input[1] = Channel.value(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true))
+                input[2] = Channel.value(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true))
+                input[3] = Channel.value(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true))
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.annotated_vcf[0][1]).name,
+                    process.out.index[0][1],
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("test_gatk4_svannotate_bed") {
+        setup {
+            run("MANTA_GERMLINE") {
+                script "../../../manta/germline/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true), [], []])
+                    input[1] = Channel.value([ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)])
+                    input[2] = Channel.value([ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)])
+                    input[3] = []
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                ch_bed = Channel.of([[ id:'test' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)])
+
+                input[0] = MANTA_GERMLINE.out.diploid_sv_vcf.combine(MANTA_GERMLINE.out.diploid_sv_vcf_tbi, by:0).combine(ch_bed, by:0)
+                input[1] = []
+                input[2] = []
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.annotated_vcf[0][1]).name,
+                    process.out.index[0][1],
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+}

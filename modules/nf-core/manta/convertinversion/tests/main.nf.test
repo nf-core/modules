@@ -1,0 +1,92 @@
+nextflow_process {
+
+    name "Test Process MANTA_CONVERTINVERSION"
+    script "../main.nf"
+    process "MANTA_CONVERTINVERSION"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "manta"
+    tag "manta/convertinversion"
+    tag "manta/tumoronly"
+
+    setup {
+        run("MANTA_TUMORONLY") {
+            script "../../tumoronly/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/cram/test2.paired_end.recalibrated.sorted.cram"),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/cram/test2.paired_end.recalibrated.sorted.cram.crai"),
+                    [],
+                    []
+                ]
+                input[1] = [
+                    [ id:'fasta' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/chr21/sequence/genome.fasta")
+                ]
+                input[2] = [
+                    [ id:'fai' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai")
+                ]
+                input[3] = []
+                """
+            }
+        }
+
+    }
+
+    test("homo_sapiens - vcf, fasta") {
+
+        when {
+            process {
+                """
+                input[0] = MANTA_TUMORONLY.out.tumor_sv_vcf
+                input[1] = [
+                    [ id:'fasta' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/chr21/sequence/genome.fasta")
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : path(it).linesGzip[-7..-3] } },
+                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name } },
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - vcf, fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = MANTA_TUMORONLY.out.tumor_sv_vcf
+                input[1] = [
+                    [ id:'fasta' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/chr21/sequence/genome.fasta")
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match("stub") }
+            )
+        }
+
+    }
+
+}

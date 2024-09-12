@@ -4,6 +4,7 @@ keywords:
   - split
   - reference
   - phasing
+  - imputation
 tools:
   - "glimpse2":
       description: "GLIMPSE2 is a phasing and imputation method for large-scale low-coverage sequencing studies."
@@ -11,7 +12,7 @@ tools:
       documentation: "https://odelaneau.github.io/GLIMPSE/commands.html"
       tool_dev_url: "https://github.com/odelaneau/GLIMPSE"
       doi: "10.1038/s41588-020-00756-0"
-      licence: "['MIT']"
+      licence: ["MIT"]
 requirements:
   - AVX2
 input:
@@ -36,6 +37,11 @@ input:
       type: string
       description: Target imputed region, excluding left and right buffers (e.g. chr20:1000000-2000000).
       pattern: "chrXX:leftBufferPosition-rightBufferPosition"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing genomic map information
+        e.g. `[ map:'GRCh38' ]`
   - map:
       type: file
       description: File containing the genetic map.

@@ -52,8 +52,16 @@ output:
       pattern: "*.propd.tsv"
   - fdr:
       type: file
-      description: (optional) propr fdr table
+      description: (optional) propd fdr table
       pattern: "*.fdr.tsv"
+  - adj:
+      type: file
+      description: (optional) propd adj table
+      pattern: "*.adj.csv"
+  - warnings:
+      type: file
+      description: propd warnings
+      pattern: "*.warnings.txt"
   - session_info:
       type: file
       description: dump of R SessionInfo

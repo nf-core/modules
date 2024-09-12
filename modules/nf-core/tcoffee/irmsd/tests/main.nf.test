@@ -6,7 +6,9 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "tcoffee"
-    tag "tcoffee/irmsd" 
+    tag "tcoffee/irmsd"
+    tag "untar"
+    tag "pigz/compress"
 
     test("seatoxin") {
 
@@ -24,7 +26,7 @@ nextflow_process {
                 }
             }
         }
-        
+
         when {
             process {
                 """
@@ -35,7 +37,7 @@ nextflow_process {
                 input[1] = UNTAR.out.untar.map { meta,dir -> [[ id:'test' ], file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/templates/seatoxin-ref_template.txt", checkIfExists: true) ,file(dir).listFiles().collect()]}
                 """
             }
-            
+
         }
 
         then {
@@ -47,4 +49,51 @@ nextflow_process {
 
     }
 
+    test("seatoxin - compressed") {
+
+        setup {
+
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id:'test' ],
+                                 file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/structures/seatoxin-ref.tar.gz", checkIfExists: true)
+                               ]
+
+                    """
+                }
+            }
+
+            run("PIGZ_COMPRESS") {
+                script "../../../pigz/compress/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id:'test' ],
+                                file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
+                               ]
+
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = PIGZ_COMPRESS.out.archive
+                input[1] = UNTAR.out.untar.map { meta,dir -> [[ id:'test' ], file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/templates/seatoxin-ref_template.txt", checkIfExists: true) ,file(dir).listFiles().collect()]}
+                """
+            }
+
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.irmsd.get(0).get(1)).getText().contains("1ahl") }
+            )
+        }
+
+    }
 }

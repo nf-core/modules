@@ -1,0 +1,64 @@
+nextflow_process {
+
+    name "Test Process GATK4_SELECTVARIANTS"
+    script "modules/nf-core/gatk4/selectvariants/main.nf"
+    process "GATK4_SELECTVARIANTS"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gatk4"
+    tag "gatk4/selectvariants"
+
+    test("selectvariants - vcf input") {
+
+        when {
+            params {
+                // define parameters here. Example:
+                // outdir = "tests/results"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.idx', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.interval_list', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            {assert process.success},
+            {assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2")}
+            )
+        }
+
+
+    }
+
+    test("selectvariants - gz input") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz.tbi', checkIfExists: true),
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            {assert process.success},
+            {assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2")}
+            )
+        }
+
+    }
+
+}

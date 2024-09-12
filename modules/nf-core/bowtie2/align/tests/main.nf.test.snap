@@ -1,5 +1,30 @@
 {
-    "sarscov2 - fastq, index, false, false - sam2": {
+    "sarscov2 - [fastq1, fastq2], large_index, fasta, false, false - bam": {
+        "content": [
+            "test.bam",
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.bowtie2.log:md5,bd89ce1b28c93bf822bae391ffcedd19"
+                ]
+            ],
+            [
+                
+            ],
+            [
+                "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-03-18T13:19:25.337323"
+    },
+    "sarscov2 - fastq, index, fasta, false, false - sam2": {
         "content": [
             [
                 "ERR5069949.2151832\t16\tMT192765.1\t17453\t42\t150M\t*\t0\t0\tACGCACATTGCTAACTAAGGGCACACTAGAACCAGAATATTTCAATTCAGTGTGTAGACTTATGAAAACTATAGGTCCAGACATGTTCCTCGGAACTTGTCGGCGTTGTCCTGCTGAAATTGTTGACACTGTGAGTGCTTTGGTTTATGA\tAAAA<EEEEEEAEEEAEAAAAEEEEEEEEEAAAEE<EEEEEAAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEAAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAAAAAA\tAS:i:0\tXN:i:0\tXM:i:0\tXO:i:0\tXG:i:0\tNM:i:0\tMD:Z:150\tYT:Z:UU",
@@ -18,15 +43,30 @@
                 ]
             ],
             [
-
+                
             ],
             [
                 "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
             ]
         ],
-        "timestamp": "2023-11-23T11:31:43.71534618"
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-03-18T12:31:40.337129939"
     },
-    "sarscov2 - fastq, index, false, false - bam": {
+    "sarscov2 - [fastq1, fastq2], index, fasta, true, true - cram": {
+        "content": [
+            "test.cram",
+            "test.cram.crai"
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-03-19T08:46:08.033126014"
+    },
+    "sarscov2 - fastq, index, fasta, false, false - bam": {
         "content": [
             "test.bam",
             [
@@ -39,15 +79,112 @@
                 ]
             ],
             [
-
+                
             ],
             [
                 "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
             ]
         ],
-        "timestamp": "2023-11-23T10:51:15.152469637"
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-03-18T12:58:55.482166476"
     },
-    "sarscov2 - [fastq1, fastq2], index, true, false - bam": {
+    "sarscov2 - fastq, index, fasta, true, false - bam": {
+        "content": [
+            "test.bam",
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.bowtie2.log:md5,7b8a9e61b7646da1089b041333c41a87"
+                ]
+            ],
+            [
+                
+            ],
+            [
+                "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-03-18T13:19:55.741244"
+    },
+    "sarscov2 - fastq, large_index, fasta, false, false - bam": {
+        "content": [
+            "test.bam",
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.bowtie2.log:md5,7b8a9e61b7646da1089b041333c41a87"
+                ]
+            ],
+            [
+                
+            ],
+            [
+                "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-03-18T13:19:09.604979"
+    },
+    "sarscov2 - fastq, index, fasta, false, true - bam": {
+        "content": [
+            "test.bam",
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.bowtie2.log:md5,7b8a9e61b7646da1089b041333c41a87"
+                ]
+            ],
+            [
+                
+            ],
+            [
+                "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-03-18T13:18:22.547322"
+    },
+    "sarscov2 - fastq, index, fasta, true, false - stub": {
+        "content": [
+            "test.bam",
+            "test.csi",
+            "test.bowtie2.log",
+            [
+                
+            ],
+            [
+                "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-03-18T13:02:09.557518106"
+    },
+    "sarscov2 - [fastq1, fastq2], index, fasta, false, false - bam": {
         "content": [
             "test.bam",
             [
@@ -60,37 +197,37 @@
                 ]
             ],
             [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    [
-                        "test.unmapped_1.fastq.gz:md5,84b4ab15e6ffc9f29d0a3f1b79003744",
-                        "test.unmapped_2.fastq.gz:md5,40bbe14edd48a98cca6f53574b2198fd"
-                    ]
-                ]
+                
             ],
             [
                 "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
             ]
         ],
-        "timestamp": "2023-11-23T11:32:26.773226801"
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-03-18T13:18:38.78064"
     },
-    "sarscov2 - [fastq1, fastq2], index, false, false - stub": {
+    "sarscov2 - [fastq1, fastq2], index, fasta, false, false - stub": {
         "content": [
             "test.bam",
+            "test.csi",
             "test.bowtie2.log",
             [
-
+                
             ],
             [
                 "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
             ]
         ],
-        "timestamp": "2023-11-23T11:38:10.240204508"
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-03-18T13:20:26.047111"
     },
-    "sarscov2 - fastq, index, false, false - sam": {
+    "sarscov2 - fastq, index, fasta, false, false - sam": {
         "content": [
             [
                 "ERR5069949.2151832\t16\tMT192765.1\t17453\t42\t150M\t*\t0\t0\tACGCACATTGCTAACTAAGGGCACACTAGAACCAGAATATTTCAATTCAGTGTGTAGACTTATGAAAACTATAGGTCCAGACATGTTCCTCGGAACTTGTCGGCGTTGTCCTGCTGAAATTGTTGACACTGTGAGTGCTTTGGTTTATGA\tAAAA<EEEEEEAEEEAEAAAAEEEEEEEEEAAAEE<EEEEEAAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEAAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAAAAAA\tAS:i:0\tXN:i:0\tXM:i:0\tXO:i:0\tXG:i:0\tNM:i:0\tMD:Z:150\tYT:Z:UU",
@@ -109,95 +246,19 @@
                 ]
             ],
             [
-
+                
             ],
             [
                 "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
             ]
         ],
-        "timestamp": "2023-11-23T10:54:41.68497071"
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-03-18T12:31:26.668053751"
     },
-    "sarscov2 - fastq, index, false, true - bam": {
-        "content": [
-            "test.bam",
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true
-                    },
-                    "test.bowtie2.log:md5,7b8a9e61b7646da1089b041333c41a87"
-                ]
-            ],
-            [
-
-            ],
-            [
-                "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
-            ]
-        ],
-        "timestamp": "2023-11-23T11:31:51.235960009"
-    },
-    "sarscov2 - fastq, index, true, false - bam": {
-        "content": [
-            "test.bam",
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true
-                    },
-                    "test.bowtie2.log:md5,7b8a9e61b7646da1089b041333c41a87"
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true
-                    },
-                    "test.unmapped.fastq.gz:md5,d17d9a4ff728b6a6afa6203a746b7a01"
-                ]
-            ],
-            [
-                "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
-            ]
-        ],
-        "timestamp": "2023-11-23T11:32:34.218783018"
-    },
-    "sarscov2 - fastq, index, true, false - stub": {
-        "content": [
-            "test.bam",
-            "test.bowtie2.log",
-            "test.unmapped.fastq.gz",
-            [
-                "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
-            ]
-        ],
-        "timestamp": "2023-11-23T11:47:34.072444428"
-    },
-    "sarscov2 - fastq, large_index, false, false - bam": {
-        "content": [
-            "test.bam",
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true
-                    },
-                    "test.bowtie2.log:md5,7b8a9e61b7646da1089b041333c41a87"
-                ]
-            ],
-            [
-
-            ],
-            [
-                "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
-            ]
-        ],
-        "timestamp": "2023-11-23T11:32:11.560260131"
-    },
-    "sarscov2 - [fastq1, fastq2], large_index, false, false - bam": {
+    "sarscov2 - [fastq1, fastq2], index, fasta, true, false - bam": {
         "content": [
             "test.bam",
             [
@@ -210,15 +271,19 @@
                 ]
             ],
             [
-
+                
             ],
             [
                 "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
             ]
         ],
-        "timestamp": "2023-11-23T11:32:19.342811204"
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-03-18T13:19:40.606135"
     },
-    "sarscov2 - [fastq1, fastq2], index, false, false - bam": {
+    "sarscov2 - [fastq1, fastq2], index, fasta, false, true - bam": {
         "content": [
             "test.bam",
             [
@@ -231,33 +296,16 @@
                 ]
             ],
             [
-
+                
             ],
             [
                 "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
             ]
         ],
-        "timestamp": "2023-11-23T11:40:46.647809118"
-    },
-    "sarscov2 - [fastq1, fastq2], index, false, true - bam": {
-        "content": [
-            "test.bam",
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test.bowtie2.log:md5,bd89ce1b28c93bf822bae391ffcedd19"
-                ]
-            ],
-            [
-
-            ],
-            [
-                "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
-            ]
-        ],
-        "timestamp": "2023-11-23T11:40:54.988626035"
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-03-18T13:18:54.194648"
     }
 }

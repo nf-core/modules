@@ -21,7 +21,7 @@ input:
   - vcf:
       type: file
       description: VCF input file
-      pattern: "*.{vcf}"
+      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
 output:
   - meta:
       type: map
@@ -31,7 +31,15 @@ output:
   - vcf:
       type: file
       description: VCF filtered output file
-      pattern: "*.{vcf}"
+      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+  - csi:
+      type: file
+      description: Default VCF file index
+      pattern: "*.csi"
+  - tbi:
+      type: file
+      description: Alternative VCF file index
+      pattern: "*.tbi"
   - versions:
       type: file
       description: File containing software versions
