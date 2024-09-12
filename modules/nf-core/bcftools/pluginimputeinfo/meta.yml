@@ -4,15 +4,28 @@ description: Adds imputation information metrics to the INFO field based on sele
 keywords:
   - impute-info
   - bcftools
+  - imputation
+  - metrics
+  - tags
   - VCF
 tools:
   - "bcftools":
+      description: "BCFtools is a set of utilities that manipulate variant calls in the Variant Call Format (VCF) and its binary counterpart BCF. All commands work transparently with both VCFs and BCFs, both uncompressed and BGZF-compressed.  Most commands accept VCF, bgzipped VCF and BCF with filetype detected automatically even when streaming from a pipe. Indexed VCF and BCF will work in all situations. Un-indexed VCF and BCF and streams will work in most, but not all situations."
+      homepage: "http://samtools.github.io/bcftools/bcftools.html"
+      documentation: "https://samtools.github.io/bcftools/bcftools.html#plugin"
+      tool_dev_url: "https://github.com/samtools/bcftools"
+      doi: "10.1093/bioinformatics/btp352"
+      licence: ["MIT"]
+      args_id: "$args"
+  - "bcftools plugin impute-info":
       description: "BCFtools is a set of utilities that manipulate variant calls in the Variant Call Format (VCF) and its binary counterpart BCF. All commands work transparently with both VCFs and BCFs, both uncompressed and BGZF-compressed.  Most commands accept VCF, bgzipped VCF and BCF with filetype detected automatically even when streaming from a pipe. Indexed VCF and BCF will work in all situations. Un-indexed VCF and BCF and streams will work in most, but not all situations."
       homepage: "http://samtools.github.io/bcftools/bcftools.html"
       documentation: "https://samtools.github.io/bcftools/howtos/plugins.html"
       tool_dev_url: "https://github.com/samtools/bcftools"
       doi: "10.1093/bioinformatics/btp352"
       licence: ["MIT"]
+      args_id: "$args2"
+
 input:
   - meta:
       type: map
@@ -47,7 +60,7 @@ output:
         e.g. [ id:'test', single_end:false ]
   - vcf:
       type: file
-      description: VCF normalized output file
+      description: VCF output file containing added INFO/INFO field
       pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
   - csi:
       type: file
