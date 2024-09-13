@@ -20,7 +20,6 @@ process SHIGAPASS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def datadir = databasedir ? "--datadir ${databasedir}" : ''
     """
     # Convert our genome path to a file with a path in it
     readlink -f $assembly > ${assembly}_tmp.txt
@@ -50,7 +49,6 @@ process SHIGAPASS {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def datadir = databasedir ? '--datadir ${databasedir}' : ''
     """
     touch ${prefix}.csv
 
