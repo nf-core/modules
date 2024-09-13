@@ -39,10 +39,11 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(
-                    workflow.out.rawdata_tsv,
+                    workflow.out.isomirs,
                     workflow.out.stats_txt,
                     workflow.out.stats_log,
-                    workflow.out.versions).match() }
+                    workflow.out.versions).match() },
+                { assert path("${workflow.out.counts[0][1]}").exists() }
             )
         }
     }

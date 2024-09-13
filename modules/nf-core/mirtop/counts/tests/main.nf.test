@@ -38,7 +38,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = MIRTOP_GFF.out.mirtop_gff
+                input[0] = MIRTOP_GFF.out.gff
                 input[1] = [
                     [ id:'hairpin'], // meta map
                     file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/mirtop/hairpin_mirtop.fa", checkIfExists: true),
@@ -72,7 +72,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = MIRTOP_GFF.out.mirtop_gff
+                input[0] = MIRTOP_GFF.out.gff
                 input[1] = [
                     [ id:'hairpin'], // meta map
                     file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/mirtop/hairpin_mirtop.fa", checkIfExists: true),
