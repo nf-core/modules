@@ -5,6 +5,7 @@ process MEGAHIT {
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'oras://community.wave.seqera.io/library/megahit_pigz:657d77006ae5f222' :
         'community.wave.seqera.io/library/megahit_pigz:87a590163e594224' }"
+
     input:
     tuple val(meta), path(reads1), path(reads2)
 
