@@ -27,7 +27,7 @@ process JVARKIT_VCFPOLYX {
     def args2         = task.ext.args2 ?: ' --tag POLYX --max-repeats 10 '
     def args3         = task.ext.args3 ?: ''
     def prefix        = task.ext.prefix ?: "${meta.id}"
-    def regions_file  = regions_file ? (tbi ? " --regions-file" : " --targets-file") + " \"${regions_file}\" " : ""
+    def regions_cmd   = regions_file ? (tbi ? " --regions-file" : " --targets-file") + " '${regions_file}' " : ""
 
     extension  = getVcfExtension(args3); /* custom function, see below */
 
@@ -36,7 +36,7 @@ process JVARKIT_VCFPOLYX {
     mkdir -p TMP
 
     bcftools view -O v \\
-        ${regions_file} \\
+        ${regions_cmd} \\
         ${args1} \\
         "${vcf}" |\\
         jvarkit -Xmx${task.memory.giga}g  -XX:-UsePerfData -Djava.io.tmpdir=TMP vcfpolyx \\
