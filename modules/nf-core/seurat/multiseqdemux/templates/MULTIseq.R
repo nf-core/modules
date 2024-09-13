@@ -186,12 +186,12 @@ sink()
 ## Version                                    ##
 ################################################
 r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
-seurat_object_version <- as.character(packageVersion(('Seurat')))
+seurat_version <- as.character(packageVersion(('Seurat')))
 
 writeLines(
     c(
         '"${task.process}":',
         paste('    r-base:', r.version),
-        paste('    Seurat Object:', seurat_object_version)
+        paste('    Seurat :', seurat_version)
     ),
 'versions.yml')

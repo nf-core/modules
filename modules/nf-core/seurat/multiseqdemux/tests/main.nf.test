@@ -1,19 +1,17 @@
-// nf-core modules test seurat/multiseq
+// nf-core modules test seurat/multiseqdemux
 nextflow_process {
 
-    name "Test Process SEURAT_MULTISEQ"
+    name "Test Process SEURAT_MULTISEQDEMUX"
     script "../main.nf"
-    process "SEURAT_MULTISEQ"
+    process "SEURAT_MULTISEQDEMUX"
 
     tag "modules"
     tag "modules_nfcore"
     tag "seurat"
-    tag "seurat/multiseq"
+    tag "seurat/multiseqdemux"
     tag "untar"
 
-    test("Standard_Multiome - 10x mtx") {
-        config "./nextflow.config"
-        setup {
+    setup {
             run("UNTAR", alias:"UNTAR_HTO") {
                 script "modules/nf-core/untar/main.nf"
                 process {
@@ -30,7 +28,9 @@ nextflow_process {
                 """
                 }
             }
-        }
+    }
+    test("Standard_Multiome - 10x mtx") {
+        config "./nextflow.config"
         when {
             process {
                 """
@@ -40,7 +40,6 @@ nextflow_process {
                 """
             }
         }
-
         then {
             assertAll(
                 { assert process.success },
@@ -52,26 +51,8 @@ nextflow_process {
 
     }
     test("Standard_Multiome - plots included - 10x mtx") {
-        // Test including creation of R object to use with visualisation module
+        // Test including plot creation 
         config "./nextflow.config"
-        setup {
-            run("UNTAR", alias:"UNTAR_HTO") {
-                script "modules/nf-core/untar/main.nf"
-                process {
-                """
-                input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true)   ])
-                """
-                }
-            } 
-            run("UNTAR", alias:"UNTAR_RNA") {
-                script "modules/nf-core/untar/main.nf"
-                process {
-                """
-                input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/rna.tar.gz", checkIfExists: true)   ])
-                """
-                }
-            }
-        }
         when {
             process {
                 """
@@ -81,7 +62,6 @@ nextflow_process {
                 """
             }
         }
-
         then {
             assertAll(
                 { assert process.success },
@@ -90,13 +70,11 @@ nextflow_process {
                 { assert path(process.out.session_info.get(0).get(1)).exists() },
             )
         }
-
     }
 
     test("Standard_Multiome - 10x mtx - stub") {
         config "./nextflow.config"
         options "-stub"
-
         when {
             process {
                 """
@@ -113,13 +91,10 @@ nextflow_process {
                 """
             }
         }
-
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.assignment.get(0).get(1)).exists() },
-                { assert path(process.out.classification.get(0).get(1)).exists() },
-                { assert path(process.out.session_info.get(0).get(1)).exists() },
+                { assert snapshot(process.out).match() }
             )
         }
 

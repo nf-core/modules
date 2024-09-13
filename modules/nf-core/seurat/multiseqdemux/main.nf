@@ -1,4 +1,4 @@
-process SEURAT_MULTISEQ {
+process SEURAT_MULTISEQDEMUX {
     tag "$meta.id"
     label 'process_low'
 
