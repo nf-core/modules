@@ -5,8 +5,8 @@ process HAPPY_HAPPY {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hap.py:0.3.14--py27h5c5a3ab_0':
-        'biocontainers/hap.py:0.3.14--py27h5c5a3ab_0' }"
+        'oras://community.wave.seqera.io/library/hap.py_rtg-tools:020cb72d1cbfac7a':
+        'community.wave.seqera.io/library/hap.py_rtg-tools:2ebb433f3ce976d3' }"
 
     input:
     tuple val(meta), path(query_vcf), path(truth_vcf), path(regions_bed), path(targets_bed)
