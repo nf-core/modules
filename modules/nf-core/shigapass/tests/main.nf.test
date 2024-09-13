@@ -19,7 +19,6 @@ nextflow_process {
                                 [ id:'test', single_end:false ], // meta map
                                 file(params.modules_testdata_base_path + '/genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists: true)
                             ]
-                input[1] = []
                 """
             }
         }
@@ -46,7 +45,6 @@ nextflow_process {
                                 [ id:'test', single_end:false ], // meta map
                                 file(params.modules_testdata_base_path + '/genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists: true)
                             ]
-                input[1] = []
                 """
             }
         }
