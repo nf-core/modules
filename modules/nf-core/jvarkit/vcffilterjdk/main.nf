@@ -13,6 +13,8 @@ process JVARKIT_VCFFILTERJDK {
     tuple val(meta3), path(fai)
     tuple val(meta4), path(dict)
     tuple val(meta5), path(code)
+    tuple val(meta6), path(pedigree)
+
     output:
     tuple val(meta), path("*.${extension}"), emit: vcf
     tuple val(meta), path("*.tbi")         , emit: tbi, optional: true
@@ -23,22 +25,32 @@ process JVARKIT_VCFFILTERJDK {
     task.ext.when == null || task.ext.when
 
     script:
-    def args1        = task.ext.args1 ?: ''
-    def args2        = task.ext.args2 ?: ''
-    def args3        = task.ext.args3 ?: ''
-    def prefix       = task.ext.prefix ?: "${meta.id}"
-    def script_file  = code?"--script \"${code}\"":""
-    def regions_file = regions_file? (tbi ? " --regions-file" : " --targets-file")+" \"${regions_file}\" ":""
+    def args1         = task.ext.args1 ?: ''
+    def args2         = task.ext.args2 ?: ''
+    def args3         = task.ext.args3 ?: ''
+    def prefix        = task.ext.prefix ?: "${meta.id}"
+    def script_file   = code ? "--script \"${code}\"" : ""
+    def pedigree_file = pedigree ? " --pedigree \"${pedigree}\" " : ""
+    def regions_file  = regions_file ? (tbi ? " --regions-file" : " --targets-file") + " \"${regions_file}\" " : ""
 
-    extension =     getVcfExtension(args3); /* custom function, see below */
+    extension  = getVcfExtension(args3); /* custom function, see below */
 
     if ("$vcf" == "${prefix}.${extension}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     mkdir -p TMP
 
-    bcftools view ${regions_file} -O v ${args1} "${vcf}" |\\
-        jvarkit -Xmx${task.memory.giga}g  -XX:-UsePerfData -Djava.io.tmpdir=TMP vcffilterjdk ${script_file}  ${args2} |\\
-        bcftools view --output "${prefix}.${extension}" ${args3}
+    bcftools view \\
+        -O v \\
+        ${regions_file} \\
+        ${args1} \\
+        "${vcf}" |\\
+        jvarkit -Xmx${task.memory.giga}g -XX:-UsePerfData -Djava.io.tmpdir=TMP vcffilterjdk \\
+            ${pedigree_file} \\
+            ${script_file}  \\
+            ${args2} |\\
+        bcftools view \\
+            --output "${prefix}.${extension}" \\
+            ${args3}
 
     rm -rf TMP
 
@@ -63,6 +75,7 @@ process JVARKIT_VCFFILTERJDK {
     END_VERSIONS
     """
 }
+
 
 
 // Custom Function to get VCF extension
