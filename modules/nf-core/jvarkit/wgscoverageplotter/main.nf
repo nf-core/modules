@@ -20,14 +20,14 @@ process JVARKIT_WGSCOVERAGEPLOTTER {
     task.ext.when == null || task.ext.when
 
     script:
-    def args1        = task.ext.args1 ?: ''
+    def args        = task.ext.args ?: ''
     def prefix       = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p TMP
 
     jvarkit -Xmx${task.memory.giga}g  -XX:-UsePerfData -Djava.io.tmpdir=TMP wgscoverageplotter \\
         -R ${fasta} \\
-        ${args1} \\
+        ${args} \\
         ${bam} > "${prefix}.svg"
 
     rm -rf TMP
@@ -39,7 +39,6 @@ process JVARKIT_WGSCOVERAGEPLOTTER {
     """
 
     stub:
-    def args2        = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch "${prefix}.svg"
