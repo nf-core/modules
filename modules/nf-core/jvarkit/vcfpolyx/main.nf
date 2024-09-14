@@ -24,7 +24,7 @@ process JVARKIT_VCFPOLYX {
 
     script:
     def args1         = task.ext.args1 ?: ''
-    def args2         = task.ext.args2 ?: ' --tag POLYX --max-repeats 10 '
+    def args2         = task.ext.args2 ?: ''
     def args3         = task.ext.args3 ?: ''
     def prefix        = task.ext.prefix ?: "${meta.id}"
     def regions_cmd   = regions_file ? (tbi ? " --regions-file" : " --targets-file") + " '${regions_file}' " : ""
