@@ -24,6 +24,8 @@ process UPP_ALIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def tree_args = tree ? "-t $tree" : ""
     """
+    export CONDA_PREFIX="/opt/conda"
+    export PASTA_TOOLS_DEVDIR="/opt/conda/bin/"
     run_upp.py \\
         $args \\
         -x $task.cpus \\
@@ -34,7 +36,6 @@ process UPP_ALIGN {
 
     mv ${prefix}_alignment.fasta ${prefix}.aln
 
-    # compress both output files
     if ${compress}; then
         pigz -p ${task.cpus} ${prefix}.aln
     fi
@@ -49,7 +50,13 @@ process UPP_ALIGN {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.aln${compress ? '.gz':''}
+    export CONDA_PREFIX="/opt/conda"
+    export PASTA_TOOLS_DEVDIR="/opt/conda/bin/"
+    if [ "$compress" = true ]; then
+        echo | gzip > "${prefix}.aln.gz"
+    else
+        touch "${prefix}.aln"
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
