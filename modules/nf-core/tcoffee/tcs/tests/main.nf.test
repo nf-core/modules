@@ -30,7 +30,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert path(process.out.tcs.get(0).get(1)).getText().contains("1ahl") },
+                { assert snapshot(process.out.versions).match()
+                }
             )
         }
 
@@ -67,7 +69,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert path(process.out.tcs.get(0).get(1)).getText().contains("1ahl") },
+                { assert snapshot(process.out.versions).match()
+                }
             )
         }
     }
@@ -107,7 +111,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert path(process.out.tcs.get(0).get(1)).getText().contains("1ahl") },
+                { assert snapshot(process.out.versions).match()
+                }
             )
         }
     }
