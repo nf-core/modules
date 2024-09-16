@@ -208,9 +208,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                                    process.out.alignment,
-                                    process.out.versions
-                                 ).match()
+                         process.out.alignment,
+                         process.out.versions
+                         ).match()
                 }
             )
         }
