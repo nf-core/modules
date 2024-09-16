@@ -1,0 +1,82 @@
+
+nextflow_process {
+
+    name "Test Process NEXTCLADE_RUN"
+    script "../main.nf"
+    process "NEXTCLADE_RUN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "nextclade"
+    tag "nextclade/datasetget"
+    tag "nextclade/run"
+
+    setup {
+        run("NEXTCLADE_DATASETGET") {
+            script "../../datasetget/main.nf"
+            process {
+                """
+                input[0] = 'nextstrain/sars-cov-2/wuhan-hu-1/orfs'
+                input[1] = '2024-01-16--20-31-02Z'
+
+                """
+            }
+        }
+    }
+
+    test("sarscov2 default") {
+
+        when {
+            process {
+                """
+                input[0] = [[id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+				input[1] = NEXTCLADE_DATASETGET.out.dataset
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(
+                    process.out.csv,
+                    process.out.csv_errors,
+                    process.out.csv_insertions,
+                    process.out.fasta_aligned,
+                    process.out.fasta_translation,
+                    file(process.out.json[0][1]).readLines()[4..10],
+                    process.out.json_auspice,
+                    process.out.ndjson,
+                    process.out.nwk,
+                    process.out.tsv,
+                    process.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 default-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [[id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+				input[1] = NEXTCLADE_DATASETGET.out.dataset
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

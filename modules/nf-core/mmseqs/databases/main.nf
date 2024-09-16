@@ -11,8 +11,8 @@ process MMSEQS_DATABASES {
     val database
 
     output:
-    path "${prefix}/" , emit: database
-    path "versions.yml"     , emit: versions
+    path "${prefix}/"   , emit: database
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
