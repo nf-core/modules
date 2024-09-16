@@ -28,7 +28,6 @@ nextflow_process {
         then {
             assertAll(
                     { assert process.success },
-                    { assert snapshot(process.out.alignment).match("alignment - uncompressed")},
                     { assert snapshot(process.out).match() }
                     )
         }
