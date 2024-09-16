@@ -74,8 +74,6 @@ process GTDBTK_CLASSIFYWF {
     """
 
     stub:
-    def VERSION = '2.3.2'
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch gtdbtk.${prefix}.stub.summary.tsv
@@ -90,7 +88,7 @@ process GTDBTK_CLASSIFYWF {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gtdbtk: \$(echo "${VERSION}")
+        gtdbtk: \$(echo \$(gtdbtk --version -v 2>&1) | sed "s/gtdbtk: version //; s/ Copyright.*//")
     END_VERSIONS
     """
 }
