@@ -13,7 +13,7 @@ nextflow_process {
 
         setup {
             run('GUNZIP') {
-                script "../../gunzip/main"
+                script "../../gunzip/main.nf"
 
                 process {
                     """
