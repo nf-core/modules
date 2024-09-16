@@ -1,0 +1,58 @@
+nextflow_process {
+
+    name "Test Process SEQCLUSTER_COLLAPSE"
+    script "../main.nf"
+    process "SEQCLUSTER_COLLAPSE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "seqcluster"
+    tag "seqcluster/collapse"
+
+    test("human - fastq") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_1', single_end:false ], // meta map
+                        file("https://github.com/nf-core/test-datasets/raw/smrnaseq/testdata/trimmed/small_Clone1_N1.fastp.fastq.gz", checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("human - fastq - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_1', single_end:false ], // meta map
+                        file("https://github.com/nf-core/test-datasets/raw/smrnaseq/testdata/trimmed/small_Clone1_N1.fastp.fastq.gz", checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
