@@ -31,16 +31,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                                    process.out.alignment,
-                                    process.out.versions
-                                 ).match()
-                }
+                { assert snapshot(process.out.versions).match()},
+                { assert path(process.out.alignment.get(0).get(1)).getTextGzip().contains("1ahl") },
             )
         }
     }
 
-    test("align_sequence - uncompressed -seatoxin") {
+    test("align_sequence - uncompressed - seatoxin") {
 
         config "./sequence.config"
 
@@ -60,16 +57,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                                    process.out.alignment,
-                                    process.out.versions
-                                 ).match()
-                }
+                { assert snapshot(process.out.versions).match()},
+                { assert path(process.out.alignment.get(0).get(1)).getText().contains("1ahl") },
             )
         }
     }
 
-    test("align_with_guide_tree - seatoxin") {
+    test("align_with_guide_tree - uncompressed - seatoxin") {
 
         config "./tree.config"
 
@@ -104,17 +98,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                                    process.out.alignment,
-                                    process.out.versions
-                                 ).match()
-                }
+                { assert snapshot(process.out.versions).match()},
+                { assert path(process.out.alignment.get(0).get(1)).getTextGzip().contains("1ahl") },
             )
         }
 
     }
 
-    test("align_with_structure - seatoxin") {
+    test("align_with_structure - uncompressed - seatoxin") {
 
         config "./structure.config"
 
@@ -177,18 +168,15 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.lib.get(0).get(1)).getText().contains("1ahl") },
-                { assert snapshot(
-                                    process.out.alignment,
-                                    process.out.versions
-                                 ).match()
+                { assert path(process.out.alignment.get(0).get(1)).getTextGzip().contains("1ahl") },
+                { assert snapshot(process.out.versions).match()
                 }
             )
         }
     }
 
     test("align_sequence - compressed - seatoxin - stub") {
-
+        options "-stub"
         config "./sequence.config"
 
         when {
@@ -208,9 +196,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                         process.out.alignment,
-                         process.out.versions
-                         ).match()
+                    process.out.alignment,
+                    process.out.versions
+                    ).match()
                 }
             )
         }

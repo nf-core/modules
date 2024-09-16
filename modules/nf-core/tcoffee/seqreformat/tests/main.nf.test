@@ -26,9 +26,34 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                                    process.out.alignment,
-                                    process.out.versions
-                                 ).match()
+                    process.out.formatted_file,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("seatoxin - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ],
+                             file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                           ]
+                """
+            }
+        }
+
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.formatted_file,
+                    process.out.versions
+                    ).match()
                 }
             )
         }

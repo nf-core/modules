@@ -6,7 +6,7 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "tcoffee"
-    tag "tcoffee/alncompare" 
+    tag "tcoffee/alncompare"
 
     test("seatoxin") {
 
@@ -20,7 +20,7 @@ nextflow_process {
                             ]
                 """
             }
-            
+
         }
 
         then {
@@ -31,7 +31,7 @@ nextflow_process {
         }
 
     }
-    test("stub") {
+    test("seatoxin - stub") {
         options "-stub"
 
         when {
@@ -44,7 +44,7 @@ nextflow_process {
                             ]
                 """
             }
-            
+
         }
 
         then {

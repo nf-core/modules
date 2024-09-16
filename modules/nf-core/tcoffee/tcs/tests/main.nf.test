@@ -16,7 +16,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test'], 
+                    [ id:'test'],
                       file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
                     ]
                 input[1] = [
@@ -49,7 +49,7 @@ nextflow_process {
 
                     """
                 }
-            }        
+            }
         }
 
         when {
@@ -89,14 +89,14 @@ nextflow_process {
                     input[3] = true
                     """
                 }
-            }        
+            }
         }
 
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test'], 
+                    [ id:'test'],
                       file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
                     ]
                 input[1] = TCOFFEE_ALIGN.out.lib.map { it -> [[  id:'test' ], it[1]] }
@@ -112,7 +112,7 @@ nextflow_process {
         }
     }
 
-    test("stub") {
+    test("tcs - seatoxin - stub") {
 
         options "-stub"
 
@@ -120,7 +120,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test'], 
+                    [ id:'test'],
                       file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
                     ]
                 input[1] = [
