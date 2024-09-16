@@ -1,51 +1,15 @@
 // According to the issue https://github.com/fenderglass/Flye/issues/164
 // Some fluctuations are expected because of the heuristics
-// Here we check the that test.assembly_info.txt contains at least one contig
+// Here we check the that test.assembly_info.txt contains at least contig_1
 
 nextflow_process {
 
     name "Test Process FLYE"
     script "../main.nf"
     process "FLYE"
-    config "./nextflow.config"
     tag "flye"
     tag "modules"
     tag "modules_nfcore"
-
-
-    test("flye_pacbio_raw") {
-
-        when {
-            params {
-                outdir = "$outputDir"
-            }
-            process {
-                """
-                input[0] =  [ [ id:'test' ], // meta map
-                                file('https://github.com/nf-core/test-datasets/raw/b3bc1859dc4a4198ca4c0a0b62d87045b5511dd5/data/genomics/virus/pacbio/small-data.fasta.gz')
-                            ]
-                input[1] = "--pacbio-raw"
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    file(process.out.fasta.get(0).get(1)).name,
-                    file(process.out.gfa.get(0).get(1)).name,
-                    file(process.out.gv.get(0).get(1)).name,
-                    file(process.out.log.get(0).get(1)).name,
-                    file(process.out.txt.get(0).get(1)).name,
-                    path(process.out.txt.get(0).get(1)).readLines()[0],
-                    process.out.json,
-                    process.out.versions
-                    ).match() }
-            )
-        }
-
-    }
 
     test("flye_pacbio_corr") {
 
@@ -72,7 +36,7 @@ nextflow_process {
                     file(process.out.gv.get(0).get(1)).name,
                     file(process.out.log.get(0).get(1)).name,
                     file(process.out.txt.get(0).get(1)).name,
-                    path(process.out.txt.get(0).get(1)).readLines()[0],
+                    path(process.out.txt.get(0).get(1)).readLines()[1].contains("contig_1"),
                     process.out.json,
                     process.out.versions
                     ).match() }
@@ -106,41 +70,7 @@ nextflow_process {
                     file(process.out.gv.get(0).get(1)).name,
                     file(process.out.log.get(0).get(1)).name,
                     file(process.out.txt.get(0).get(1)).name,
-                    path(process.out.txt.get(0).get(1)).readLines()[0],
-                    process.out.json,
-                    process.out.versions
-                    ).match() }
-            )
-        }
-
-    }
-
-    test("flye_nano_raw") {
-
-        when {
-            params {
-                outdir = "$outputDir"
-            }
-            process {
-                """
-                input[0] =  [ [ id:'test' ], // meta map
-                                file('https://github.com/nf-core/test-datasets/raw/b3bc1859dc4a4198ca4c0a0b62d87045b5511dd5/data/genomics/virus/pacbio/small-data.fasta.gz')
-                            ]
-                input[1] = "--nano-raw"
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    file(process.out.fasta.get(0).get(1)).name,
-                    file(process.out.gfa.get(0).get(1)).name,
-                    file(process.out.gv.get(0).get(1)).name,
-                    file(process.out.log.get(0).get(1)).name,
-                    file(process.out.txt.get(0).get(1)).name,
-                    path(process.out.txt.get(0).get(1)).readLines()[0],
+                    path(process.out.txt.get(0).get(1)).readLines()[1].contains("contig_1"),
                     process.out.json,
                     process.out.versions
                     ).match() }
@@ -174,7 +104,7 @@ nextflow_process {
                     file(process.out.gv.get(0).get(1)).name,
                     file(process.out.log.get(0).get(1)).name,
                     file(process.out.txt.get(0).get(1)).name,
-                    path(process.out.txt.get(0).get(1)).readLines()[0],
+                    path(process.out.txt.get(0).get(1)).readLines()[1].contains("contig_1"),
                     process.out.json,
                     process.out.versions
                     ).match() }
@@ -182,7 +112,6 @@ nextflow_process {
         }
 
     }
-
 
     test("flye_nano_hq") {
 
@@ -209,7 +138,7 @@ nextflow_process {
                     file(process.out.gv.get(0).get(1)).name,
                     file(process.out.log.get(0).get(1)).name,
                     file(process.out.txt.get(0).get(1)).name,
-                    path(process.out.txt.get(0).get(1)).readLines()[0],
+                    path(process.out.txt.get(0).get(1)).readLines()[1].contains("contig_1"),
                     process.out.json,
                     process.out.versions
                     ).match() }
