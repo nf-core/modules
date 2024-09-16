@@ -175,7 +175,7 @@ nextflow_process {
         }
     }
 
-    test("align_sequence - compressed - seatoxin - stub") {
+    test("align_sequence - uncompressed - seatoxin - stub") {
         options "-stub"
         config "./sequence.config"
 
@@ -187,7 +187,7 @@ nextflow_process {
                            ]
                 input[1] = [[:],[]]
                 input[2] = [[:],[],[]]
-                input[3] = true
+                input[3] = false
                 """
             }
         }
