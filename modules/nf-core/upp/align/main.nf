@@ -24,7 +24,6 @@ process UPP_ALIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def tree_args = tree ? "-t $tree" : ""
     """
-    export CONDA_PREFIX="/opt/conda"
     export PASTA_TOOLS_DEVDIR="/opt/conda/bin/"
     run_upp.py \\
         $args \\
@@ -50,7 +49,6 @@ process UPP_ALIGN {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    export CONDA_PREFIX="/opt/conda"
     export PASTA_TOOLS_DEVDIR="/opt/conda/bin/"
     if [ "$compress" = true ]; then
         echo | gzip > "${prefix}.aln.gz"
