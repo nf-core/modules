@@ -7,20 +7,20 @@ keywords:
   - imputation
   - metrics
   - tags
-  - VCF
+  - vcf
 tools:
   - "bcftools":
       description: "BCFtools is a set of utilities that manipulate variant calls in the Variant Call Format (VCF) and its binary counterpart BCF. All commands work transparently with both VCFs and BCFs, both uncompressed and BGZF-compressed.  Most commands accept VCF, bgzipped VCF and BCF with filetype detected automatically even when streaming from a pipe. Indexed VCF and BCF will work in all situations. Un-indexed VCF and BCF and streams will work in most, but not all situations."
-      homepage: "http://samtools.github.io/bcftools/bcftools.html"
-      documentation: "https://samtools.github.io/bcftools/bcftools.html#plugin"
+      homepage: "https://samtools.github.io/bcftools/howtos/index.html"
+      documentation: "https://samtools.github.io/bcftools/bcftools.html"
       tool_dev_url: "https://github.com/samtools/bcftools"
       doi: "10.1093/bioinformatics/btp352"
       licence: ["MIT"]
       args_id: "$args"
   - "bcftools plugin impute-info":
-      description: "BCFtools is a set of utilities that manipulate variant calls in the Variant Call Format (VCF) and its binary counterpart BCF. All commands work transparently with both VCFs and BCFs, both uncompressed and BGZF-compressed.  Most commands accept VCF, bgzipped VCF and BCF with filetype detected automatically even when streaming from a pipe. Indexed VCF and BCF will work in all situations. Un-indexed VCF and BCF and streams will work in most, but not all situations."
-      homepage: "http://samtools.github.io/bcftools/bcftools.html"
-      documentation: "https://samtools.github.io/bcftools/howtos/plugins.html"
+      description: "Bcftools plugins are tools that can be used with bcftools to manipulate variant calls in Variant Call Format (VCF) and BCF. The impute-info plugin adds imputation information metrics to the INFO field based on selected FORMAT tags. Only the IMPUTE2 INFO metric from FORMAT/GP tags is currently available"
+      homepage: "https://samtools.github.io/bcftools/howtos/plugins.html"
+      documentation: "https://samtools.github.io/bcftools/bcftools.html#plugin"
       tool_dev_url: "https://github.com/samtools/bcftools"
       doi: "10.1093/bioinformatics/btp352"
       licence: ["MIT"]
