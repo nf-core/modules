@@ -37,7 +37,6 @@ process SAMTOOLS_SORMADUP {
 
     """
     samtools cat \\
-        --threads $task.cpus \\
         $args \\
         ${input}  \\
     | \\

@@ -26,7 +26,6 @@ process SAMTOOLS_CAT {
     """
     samtools \\
         cat \\
-        --threads ${task.cpus-1} \\
         $args \\
         -o ${prefix}.${file_type} \\
         $input_files
