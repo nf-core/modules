@@ -55,10 +55,6 @@ process UPP_ALIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
 
-    if [ "$workflow.containerEngine" = 'singularity' ]; then
-        export CONDA_PREFIX="/opt/conda/"
-        export PASTA_TOOLS_DEVDIR="/opt/conda/bin/"
-    fi
 
     if [ "$compress" = true ]; then
         echo | gzip > "${prefix}.aln.gz"
