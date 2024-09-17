@@ -24,7 +24,11 @@ process UPP_ALIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def tree_args = tree ? "-t $tree" : ""
     """
-    export PASTA_TOOLS_DEVDIR="/opt/conda/bin/"
+    if [ "$workflow.containerEngine"='singularity' ]; then
+        export CONDA_PREFIX="/opt/conda/"
+        export PASTA_TOOLS_DEVDIR="/opt/conda/bin/"
+    fi
+
     run_upp.py \\
         $args \\
         -x $task.cpus \\
@@ -49,7 +53,11 @@ process UPP_ALIGN {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    export PASTA_TOOLS_DEVDIR="/opt/conda/bin/"
+    if [ "$workflow.containerEngine"='singularity' ]; then
+        export CONDA_PREFIX="/opt/conda/"
+        export PASTA_TOOLS_DEVDIR="/opt/conda/bin/"
+    fi
+
     if [ "$compress" = true ]; then
         echo | gzip > "${prefix}.aln.gz"
     else
