@@ -7,7 +7,11 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "umitools"
+    tag "umitools/extract"
     tag "umitools/group"
+    tag "bwa/index"
+    tag "bwa/mem"
+    tag "samtools/index"
 
     setup {
         run("UMITOOLS_EXTRACT") {
@@ -80,7 +84,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bam,
+                    bam(process.out.bam[0][1]).getReadsMD5(),
                     process.out.tsv,
                     file(process.out.log[0][1]).readLines()[0..1],
                     process.out.versions
@@ -106,7 +110,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bam,
+                    bam(process.out.bam[0][1]).getReadsMD5(),
                     file(process.out.log[0][1]).readLines()[0..1],
                     process.out.versions
                     ).match() }
