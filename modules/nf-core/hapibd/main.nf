@@ -47,4 +47,25 @@ process HAPIBD {
         hapibd: \$(hap-ibd 2>&1 |head -n1 | sed 's/^hap-ibd.jar  \\[ version //; s/, /rev/; s/ \\]//')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    def avail_mem = 3072
+    if (!task.memory) {
+        log.info '[hapibd] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = (task.memory.mega*0.8).intValue()
+    }
+
+    """
+    touch ${prefix}.log
+    echo | gzip > ${prefix}.hbd.gz
+    echo | gzip > ${prefix}.ibd.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        hapibd: \$(hap-ibd 2>&1 |head -n1 | sed 's/^hap-ibd.jar  \\[ version //; s/, /rev/; s/ \\]//')
+    END_VERSIONS
+    """
 }

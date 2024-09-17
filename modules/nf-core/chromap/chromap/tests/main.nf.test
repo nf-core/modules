@@ -13,30 +13,18 @@ nextflow_process {
     setup {
 
         run("CHROMAP_INDEX") {
+
             script "../../index/main.nf"
+
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = [
                     [:], // meta map
-                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
-                ])
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
                 """
             }
         }
-
-        run("CHROMAP_INDEX", alias: "CHROMAP_INDEX_STUB")  {
-            options "-stub"
-            script "../../index/main.nf"
-            process {
-                """
-                input[0] = Channel.of([
-                    [:], // meta map
-                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
-                ])
-                """
-            }
-        }
-
     }
 
     test("sarscov2 - single_end") {
@@ -44,11 +32,14 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = [
                     [ id:'test', single_end:true ], // meta map
-                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
-                ])
-                input[1] = Channel.of([[:], [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]])
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [:], 
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
                 input[2] = CHROMAP_INDEX.out.index
                 input[3] = []
                 input[4] = []
@@ -71,14 +62,17 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     [
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
-                ])
-                input[1] = Channel.of([[:], [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]])
+                ]
+                input[1] = [
+                    [:], 
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
                 input[2] = CHROMAP_INDEX.out.index
                 input[3] = []
                 input[4] = []
@@ -100,17 +94,22 @@ nextflow_process {
     test("sarscov2 - paired_end - bam") {
 
         when {
+
             config "./nextflow.config"
+            
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    [
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    [ 
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
-                ])
-                input[1] = Channel.of([[:], [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]])
+                ]
+                input[1] = [
+                    [:], 
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
                 input[2] = CHROMAP_INDEX.out.index
                 input[3] = []
                 input[4] = []
@@ -123,8 +122,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("versions") },
-                { assert snapshot(file(process.out.bam[0][1]).name).match() }
+                { 
+                    assert snapshot(
+                        bam(process.out.bam[0][1]).getHeaderMD5(),
+                        bam(process.out.bam[0][1]).getReadsMD5(),
+                        process.out.versions
+                    )            
+                }
             )
         }
 
@@ -137,12 +141,15 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = [
                     [ id:'test', single_end:true ], // meta map
-                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
-                ])
-                input[1] = Channel.of([[:], [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]])
-                input[2] = CHROMAP_INDEX_STUB.out.index
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [:], 
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = CHROMAP_INDEX.out.index
                 input[3] = []
                 input[4] = []
                 input[5] = []

@@ -16,7 +16,7 @@ nextflow_process {
 
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['genome']['transcriptome_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true)
                 ]
                 """
             }
@@ -46,7 +46,7 @@ nextflow_process {
 
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['genome']['transcriptome_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true)
                 ]
                 """
             }

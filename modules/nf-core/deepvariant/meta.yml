@@ -1,5 +1,5 @@
 name: deepvariant
-description: DeepVariant is an analysis pipeline that uses a deep neural network to call genetic variants from next-generation DNA sequencing data
+description: (DEPRECATED - see main.nf) DeepVariant is an analysis pipeline that uses a deep neural network to call genetic variants from next-generation DNA sequencing data
 keywords:
   - variant calling
   - machine learning
@@ -57,6 +57,15 @@ input:
       type: file
       description: GZI index of reference fasta file
       pattern: "*.gzi"
+  - meta5:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - par_bed:
+      type: file
+      description: BED file containing PAR regions
+      pattern: "*.bed"
 output:
   - meta:
       type: map

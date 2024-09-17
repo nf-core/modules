@@ -16,8 +16,8 @@ nextflow_process {
                 """
                 input[0] = [
                         [ id:'test' ], // meta map
-                        [file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_vcf_gz'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz'], checkIfExists: true)]
+                        [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz', checkIfExists: true)]
                         ]
                 """
             }
@@ -39,10 +39,10 @@ nextflow_process {
                 """
                 input[0] = [
                         [ id:'test' ], // meta map
-                        [file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_vcf_gz'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test_genome21_indels_vcf_gz'],checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test2_genome_vcf_gz'],checkIfExists: true)]
+                        [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.genome_21.somatic_sv.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test2.genome.vcf.gz', checkIfExists: true)]
                         ]
                 """
             }
@@ -65,9 +65,9 @@ nextflow_process {
                 """
                 input[0] = [
                         [ id:'test' ], // meta map
-                        [file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_vcf_gz'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test_genome21_indels_vcf_gz'],checkIfExists: true)]
+                        [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.genome_21.somatic_sv.vcf.gz', checkIfExists: true)]
                         ]
                 """
             }
