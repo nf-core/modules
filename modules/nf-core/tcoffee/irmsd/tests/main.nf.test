@@ -23,6 +23,18 @@ nextflow_process {
                 """
             }
         }
+
+        run("PIGZ_COMPRESS") {
+            script "../../../pigz/compress/main.nf"
+            process {
+                """
+                input[0] = [ [ id:'test' ],
+                            file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
+                            ]
+
+                """
+            }
+        }
     }
 
     test("seatoxin") {
@@ -50,20 +62,6 @@ nextflow_process {
     }
 
     test("seatoxin - compressed") {
-
-        setup {
-            run("PIGZ_COMPRESS") {
-                script "../../../pigz/compress/main.nf"
-                process {
-                    """
-                    input[0] = [ [ id:'test' ],
-                                file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
-                               ]
-
-                    """
-                }
-            }
-        }
 
         when {
             process {
