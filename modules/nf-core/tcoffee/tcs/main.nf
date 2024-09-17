@@ -63,6 +63,7 @@ process TCOFFEE_TCS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    # Otherwise, tcoffee will crash when calling its version
     export TEMP='./'
     touch ${prefix}.tcs
     touch ${prefix}.scores
