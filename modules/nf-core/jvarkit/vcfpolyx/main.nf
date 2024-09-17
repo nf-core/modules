@@ -8,7 +8,7 @@ process JVARKIT_VCFPOLYX {
         'biocontainers/jvarkit:2024.08.25--hdfd78af_1' }"
 
     input:
-    tuple val(meta),  path(vcf), path(tbi), path(regions_file)
+    tuple val(meta),  path(vcf)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(dict)
