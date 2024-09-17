@@ -1,0 +1,32 @@
+
+nextflow_process {
+
+    name "Test Process PAIRIX"
+    script "../main.nf"
+    process "PAIRIX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pairix"
+
+    test("test-pairix") {
+        
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+				file("https://raw.githubusercontent.com/4dn-dcic/pairix/master/samples/4dn.bsorted.chr21_22_only.nontriangle.pairs.gz", checkIfExists: true) ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    
+}

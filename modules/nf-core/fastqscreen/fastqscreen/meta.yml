@@ -33,8 +33,24 @@ input:
 output:
   - fastq_screen:
       type: directory
-      description: Output fastq_screen file containing alignment statistics
+      description: Output fastq_screen file containing png, html, txt and no_hits_fastq files
       pattern: "*.{_fq_screen}"
+  - png:
+      type: file
+      description: PNG file with graphical representation of alignments
+      pattern: "*.png"
+  - html:
+      type: file
+      description: HTML file containing mapping results as a table and graphical representation
+      pattern: "*.html"
+  - txt:
+      type: file
+      description: TXT file containing alignment statistics
+      pattern: "*.txt"
+  - no_hits_fastq:
+      type: file
+      description: FastQ file containing reads that did not align to any database (optional)
+      pattern: "*_nohits.fastq"
   - versions:
       type: file
       description: File containing software versions

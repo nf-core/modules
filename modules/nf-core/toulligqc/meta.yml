@@ -20,18 +20,10 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - seq_summary:
+  - ontfile:
       type: file
-      description: Basecaller sequencing summary source
-      pattern: "*.txt"
-  - fastq:
-      type: file
-      description: FASTQ file (necessary if no sequencing summary file)
-      pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
-  - bam:
-      type: file
-      description: BAM file (necessary if no sequencing summary file)
-      pattern: "*.bam"
+      description: Input ONT file
+      pattern: "*.{fastq,fastq.gz,fq,fq.gz,txt,txt.gz,bam}"
 
 output:
   - meta:

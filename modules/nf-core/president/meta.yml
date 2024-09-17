@@ -43,10 +43,10 @@ output:
       type: file
       description: Fasta file containing sequences which passed the qc ("valid.fasta"). If true is set on the "compress" input value, the file is gz-compressed.
       pattern: "*.{fasta.gz, fasta}"
-  - valid_fasta:
+  - invalid_fasta:
       type: file
       description: Fasta file containing sequences which didn't pass the qc ("invalid.fasta"). If true is set on the "compress" input value, the files are gz-compressed.
-      pattern: "*.{fasta.gz, fasta}"
+      pattern: "*_invalid.{fasta.gz, fasta}"
   - report:
       type: file
       description: Report with some information for every sample, like statistic values. See docs for details
@@ -60,3 +60,4 @@ authors:
   - "@paulwolk"
 maintainers:
   - "@paulwolk"
+  - "@gallvp"
