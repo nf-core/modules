@@ -1,0 +1,107 @@
+
+nextflow_process {
+
+    name "Test Process GOAT_TAXONSEARCH"
+    script "../main.nf"
+    process "GOAT_TAXONSEARCH"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "goat"
+    tag "goat/taxonsearch"
+
+    test("test-goat-taxonsearch-single-species") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test_single_species' ], // meta map
+				    'Meles meles',
+				    []
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-goat-taxonsearch-genus-id") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test_genus_id' ], // meta map
+				    '7215',
+				    []
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-goat-taxonsearch-species") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test_species' ], // meta map
+				    '',
+				    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/generic/txt/species_names.txt', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-goat-taxonsearch-species-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test_species' ], // meta map
+				    '',
+				    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/generic/txt/species_names.txt', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

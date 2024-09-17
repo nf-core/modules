@@ -2,13 +2,17 @@ name: "msisensor2_msi"
 description: msisensor2 detection of MSI regions.
 keywords:
   - msi
+  - microsatellite
+  - microsatellite instability
+  - tumor
+  - cfDNA
 tools:
   - "msisensor2":
       description: "MSIsensor2 is a novel algorithm based machine learning, featuring a large upgrade in the microsatellite instability (MSI) detection for tumor only sequencing data, including Cell-Free DNA (cfDNA), Formalin-Fixed Paraffin-Embedded(FFPE) and other sample types. The original MSIsensor is specially designed for tumor/normal paired sequencing data."
       homepage: "https://github.com/niu-lab/msisensor2"
       documentation: "https://github.com/niu-lab/msisensor2/blob/master/README.md"
       tool_dev_url: "https://github.com/niu-lab/msisensor2"
-      licence: "GPL-3.0"
+      license: ["GPL-3.0"]
 input:
   - meta:
       type: map

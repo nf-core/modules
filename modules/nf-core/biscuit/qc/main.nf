@@ -37,4 +37,22 @@ process BISCUIT_QC {
         biscuit: \$( biscuit version |& sed '1!d; s/^.*BISCUIT Version: //' )
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}_CpGRetentionByReadPos.txt
+    touch ${prefix}_CpHRetentionByReadPos.txt
+    touch ${prefix}_dup_report.txt
+    touch ${prefix}_isize_table.txt
+    touch ${prefix}_mapq_table.txt
+    touch ${prefix}_strand_table.txt
+    touch ${prefix}_totalReadConversionRate.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        biscuit: \$( biscuit version |& sed '1!d; s/^.*BISCUIT Version: //' )
+    END_VERSIONS
+    """
 }

@@ -1,0 +1,122 @@
+
+nextflow_process {
+
+    name "Test Process ENTREZDIRECT_ESUMMARY"
+    script "../main.nf"
+    process "ENTREZDIRECT_ESUMMARY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "entrezdirect"
+    tag "entrezdirect/esummary"
+
+    test("test-entrezdirect-esummary-sra") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test_sra' ], // meta map
+				    uid = '5135484',
+				    []
+				]
+				input[1] = 'sra'
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.xml[0][1]).readLines()[0..2],
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-entrezdirect-esummary-genome") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test_genome' ], // meta map
+				    uid = '768',
+				    []
+				]
+				input[1] = 'genome'
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.xml[0][1]).readLines()[0..2],
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-entrezdirect-esummary-assembly") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test_assembly' ], // meta map
+				    uid = '191021',
+				    []
+				]
+				input[1] = 'assembly'
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.xml[0][1]).readLines()[0..2],
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-entrezdirect-esummary-assembly-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test_assembly' ], // meta map
+				    uid = '191021',
+				    []
+				]
+				input[1] = 'assembly'
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

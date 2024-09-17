@@ -1,0 +1,96 @@
+
+nextflow_process {
+
+    name "Test Process TRANSDECODER_LONGORF"
+    script "../main.nf"
+    process "TRANSDECODER_LONGORF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "transdecoder"
+    tag "transdecoder/longorf"
+
+    test("test-transdecoder-longorf") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.folder },  // Contains unstable files
+                { assert snapshot(
+                    process.out.pep,
+                    process.out.gff3,
+                    process.out.cds,
+                    process.out.dat,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-transdecoder-longorf-gz-input") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.folder },  // Contains unstable files
+                { assert snapshot(
+                    process.out.pep,
+                    process.out.gff3,
+                    process.out.cds,
+                    process.out.dat,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-transdecoder-longorf-gz-input-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

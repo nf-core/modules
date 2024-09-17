@@ -22,7 +22,7 @@ input:
   - input:
       type: file
       description: |
-        Either multiple BAM/CRAM files containing low-coverage sequencing reads or one VCF/BCF file containing the genotype likelihoods.
+        Either one or multiple BAM/CRAM files in an array containing low-coverage sequencing reads or one VCF/BCF file containing the genotype likelihoods.
         When using BAM/CRAM the name of the file is used as samples name.
       pattern: "*.{bam,cram,vcf,vcf.gz,bcf,bcf.gz}"
   - input_index:

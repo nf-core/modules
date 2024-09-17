@@ -1,5 +1,5 @@
 // This module does the following:
-//creating a modified reference genome, with an elongation of the an specified amount of bases
+//creating a modified reference genome, with an elongation_factoration of the an specified amount of bases
 process CIRCULARMAPPER_CIRCULARGENERATOR {
 
     tag "$meta.id"
@@ -12,11 +12,13 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
 
     input:
     tuple val(meta), path(reference)
-    val(elong)
+    tuple val(meta2), val(elongation_factor)
+    tuple val(meta3), val(target)
 
     output:
-    tuple val(meta), path("*_${elong}.fasta"), emit: fasta
-    path "versions.yml"                      , emit: versions
+    tuple val(meta), path("*_${elongation_factor}.fasta")    , emit: fasta
+    tuple val(meta), path("*${elongation_factor}_elongated") , emit: elongated
+    path "versions.yml"                                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,11 +26,19 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def full_extension = reference.getName().replaceFirst(reference.getSimpleName(), "")
     """
-    circulargenerator -e ${elong} \
+    circulargenerator \
+        -e ${elongation_factor} \
         -i ${reference} \
-        -s ${prefix} \
+        -s ${target} \
         $args
+
+    ## circulargenerator has a hardcoded output name. Rename if necessary to use prefix.
+    if [[ "${reference.getSimpleName()}_${elongation_factor}${full_extension}" != "${prefix}_${elongation_factor}.fasta" ]]; then
+        mv ${reference.getSimpleName()}_${elongation_factor}${full_extension} ${prefix}_${elongation_factor}.fasta
+        mv ${reference}_${elongation_factor}_elongated ${prefix}.fasta_${elongation_factor}_elongated
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -40,7 +50,8 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_${elong}.fasta
+    touch ${prefix}_${elongation_factor}.fasta
+    touch ${prefix}.fasta_${elongation_factor}_elongated
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

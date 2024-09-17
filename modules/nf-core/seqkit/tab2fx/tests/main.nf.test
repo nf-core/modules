@@ -15,7 +15,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test' ],   // meta map
-                       [ file(params.test_data['sarscov2']['genome']['genome_fasta_txt_zst'], checkIfExists: true) ]
+                       [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.txt.zst', checkIfExists: true) ]
                      ]
                 """
             }
@@ -36,7 +36,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test' ],   // meta map
-                       [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_txt_zst'], checkIfExists: true) ]
+                       [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.txt.zst', checkIfExists: true) ]
                      ]
                 """
             }
@@ -57,7 +57,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test' ],   // meta map
-                       [ file(params.test_data['sarscov2']['genome']['genome_fasta_txt_zst'], checkIfExists: true) ]
+                       [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.txt.zst', checkIfExists: true) ]
                      ]
                 """
             }
@@ -78,7 +78,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test' ],   // meta map
-                       [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_txt_zst'], checkIfExists: true) ]
+                       [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.txt.zst', checkIfExists: true) ]
                      ]
                 """
             }
@@ -101,7 +101,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test' ],   // meta map
-                       [ file(params.test_data['sarscov2']['genome']['genome_fasta_txt_zst'], checkIfExists: true) ]
+                       [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.txt.zst', checkIfExists: true) ]
                      ]
                 """
             }

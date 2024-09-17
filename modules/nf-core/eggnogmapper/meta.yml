@@ -32,6 +32,11 @@ input:
       type: directory
       description: Directory containing eggnog database files (e.g. eggnog-mapper/data)
       pattern: "*"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing database information
+        e.g. `[ id:'test' ]`
   - eggnog_diamond_db:
       type: file
       description: The eggnog Diamond protein database file (e.g. eggnog-mapper/data/eggnog_proteins.dmnd)

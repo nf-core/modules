@@ -1,0 +1,66 @@
+
+nextflow_process {
+
+    name "Test Process MYKROBE_PREDICT"
+    script "../main.nf"
+    process "MYKROBE_PREDICT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mykrobe"
+    tag "mykrobe/predict"
+
+    test("test-mykrobe-predict") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+				]
+				input[1] = "typhi"
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.csv[0][1]).text.contains('lineage') },
+                { assert file(process.out.json[0][1]).text.contains('version') },
+                { assert snapshot(
+                    file(process.out.csv[0][1]).name, // unstable
+                    file(process.out.json[0][1]).name, // unstable
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-mykrobe-predict-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+				]
+				input[1] = "typhi"
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

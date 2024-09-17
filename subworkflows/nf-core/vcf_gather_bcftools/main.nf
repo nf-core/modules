@@ -42,4 +42,3 @@ workflow VCF_GATHER_BCFTOOLS {
 
     versions = ch_versions           // channel: [ versions.yml ]
 }
-
