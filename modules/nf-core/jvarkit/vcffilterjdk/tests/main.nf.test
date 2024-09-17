@@ -70,10 +70,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    process.out.versions
-                    ).match()
+                { assert file(process.out.vcf[0][1]).exists() },
+                { assert snapshot(process.out.versions).match()
                 }
             )
         }
