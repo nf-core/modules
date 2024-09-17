@@ -3,10 +3,10 @@ import groovy.json.JsonSlurper
 process CHECKM2_DATABASEDOWNLOAD {
     label 'process_single'
 
-    conda "conda-forge::aria2==1.36.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/aria2:1.36.0':
-        'quay.io/biocontainers/aria2:1.36.0' }"
+        'biocontainers/aria2:1.36.0' }"
 
     output:
     tuple val(meta), path("checkm2_db_v${db_version}.dmnd"), emit: database
