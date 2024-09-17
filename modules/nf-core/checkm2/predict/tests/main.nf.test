@@ -14,6 +14,11 @@ nextflow_process {
         setup {
             run("CHECKM2_DATABASEDOWNLOAD") {
                 script "../../databasedownload/main.nf"
+                process {
+                    """
+                    input[0] = []
+                    """
+                }
             }
         }
 
