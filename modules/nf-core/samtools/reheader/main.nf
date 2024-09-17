@@ -41,7 +41,7 @@ process SAMTOOLS_REHEADER {
     """
     touch ${prefix}.bam
 
-    ccat <<-END_VERSIONS > versions.yml
+    cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
