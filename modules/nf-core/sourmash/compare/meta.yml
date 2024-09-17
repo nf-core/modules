@@ -15,7 +15,7 @@ tools:
       documentation: "https://sourmash.readthedocs.io/"
       tool_dev_url: "https://github.com/sourmash-bio/sourmash"
       doi: "10.21105/joss.00027"
-      licence: "['BSD-3-clause']"
+      licence: ["BSD-3-clause"]
 input:
   - meta:
       type: map
@@ -50,7 +50,7 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - numpy_matrix:
+  - matrix:
       type: file
       description: An optional (dis)similarity matrix numpy binary format
       pattern: "*.comp"

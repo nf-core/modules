@@ -21,6 +21,10 @@ input:
       type: file
       description: FASTA, GenBank or EMBL formatted file
       pattern: "*.{fa,fasta,fna,fa.gz,fasta.gz,fna.gz,gbk,gbk.gz,embl,embl.gz}"
+  - databasedir:
+      type: directory
+      description: Optional location of local copy of database files, possibly with custom databases set up with `abricate --setupdb`
+      pattern: "*/"
 output:
   - meta:
       type: map

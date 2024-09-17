@@ -11,17 +11,22 @@ tools:
       documentation: "https://github.com/broadinstitute/pilon/wiki/Requirements-&-Usage"
       tool_dev_url: "https://github.com/broadinstitute/pilon"
       doi: "10.1371/journal.pone.0112963"
-      licence: "['GPL v2']"
+      licence: ["GPL-2.0-or-later"]
 input:
   - meta:
       type: map
       description: |
-        Groovy Map containing sample information
+        Groovy Map containing sample information for the fasta
         e.g. [ id:'test', single_end:false ]
   - fasta:
       type: file
       description: FASTA of the input genome
       pattern: "*.{fasta}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information for the bam file
+        e.g. [ id:'test', single_end:false ]
   - bam:
       type: file
       description: BAM file of reads aligned to the input genome

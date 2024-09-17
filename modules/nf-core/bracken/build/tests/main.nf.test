@@ -10,18 +10,18 @@ nextflow_process {
     tag "bracken/build"
     tag "untar"
 
-    setup {
-        run ("UNTAR") {
-            script "../../../untar/main.nf"
-            process {
-                """
-                input[0] = [[id: 'db'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2_intermediate.tar.gz', checkIfExists: true)]
-                """
+    test("kraken2 - db") {
+
+        setup {
+            run ("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [[id: 'db'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2_intermediate.tar.gz', checkIfExists: true)]
+                    """
+                }
             }
         }
-    }
-
-    test("kraken2 - db") {
 
         when {
             process {
@@ -41,6 +41,7 @@ nextflow_process {
                         file("${process.out.bracken_files[0][1]}/database100mers.kmer_distrib").name,
                         file("${process.out.bracken_files[0][1]}/database100mers.kraken").name,
                         file("${process.out.bracken_files[0][1]}/database.kraken").name,
+                        process.out.versions
                     ).match()
                 }
             )
@@ -51,6 +52,17 @@ nextflow_process {
     test("kraken2 - db - stub") {
 
         options "-stub"
+
+        setup {
+            run ("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [[id: 'db'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2_intermediate.tar.gz', checkIfExists: true)]
+                    """
+                }
+            }
+        }
 
         when {
             process {
@@ -66,7 +78,5 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
-
 }

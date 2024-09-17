@@ -45,11 +45,11 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - Q-ancestry-fractions:
+  - ancestry_fractions:
       type: file
       description: Space-delimited files containing ancestry fractions. The output filenames have the number of populations (K) that was assumed for the analysis.
       pattern: "*.{Q}"
-  - P-allele-frequencies:
+  - allele_frequencies:
       type: file
       description: Space-delimited files containing the allele frequencies of the inferred ancestral populations. The output filenames have the number of populations (K) that was assumed for the analysis.
       pattern: "*.{P}"
@@ -57,3 +57,4 @@ authors:
   - "@atrigila"
 maintainers:
   - "@atrigila"
+  - "@gallvp"

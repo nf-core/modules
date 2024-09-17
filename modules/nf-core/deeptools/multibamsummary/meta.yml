@@ -3,6 +3,8 @@ description: Computes read coverage for genomic regions (bins) across the entire
 keywords:
   - bam
   - coverage
+  - genome
+  - bin
 tools:
   - deeptools:
       description: A set of user-friendly tools for normalization and visualization of deep-sequencing data
@@ -16,7 +18,7 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - bam:
+  - bams:
       type: file
       description: One or more BAM files
       pattern: "*.{bam}"
@@ -46,6 +48,8 @@ output:
 authors:
   - "@tamara-hodgetts"
   - "@chris-cheshire"
+  - "@joseespinosa"
 maintainers:
   - "@tamara-hodgetts"
   - "@chris-cheshire"
+  - "@joseespinosa"
