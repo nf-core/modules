@@ -31,7 +31,7 @@ process JVARKIT_VCFFILTERJDK {
     def prefix        = task.ext.prefix ?: "${meta.id}"
     def script_file   = code ? "--script \"${code}\"" : ""
     def pedigree_file = pedigree ? " --pedigree \"${pedigree}\" " : ""
-    def regions_file  = regions_file ? (tbi ? " --regions-file" : " --targets-file") + " \"${regions_file}\" " : ""
+    def regions_cmd   = regions_file ? (tbi ? " --regions-file" : " --targets-file") + " \"${regions_file}\" " : ""
 
     extension  = getVcfExtension(args3); /* custom function, see below */
 
@@ -41,12 +41,12 @@ process JVARKIT_VCFFILTERJDK {
 
     bcftools view \\
         -O v \\
-        ${regions_file} \\
+        ${regions_cmd} \\
         ${args1} \\
         "${vcf}" |\\
         jvarkit -Xmx${task.memory.giga}g -XX:-UsePerfData -Djava.io.tmpdir=TMP vcffilterjdk \\
             ${pedigree_file} \\
-            ${script_file}  \\
+            ${script_file} \\
             ${args2} |\\
         bcftools view \\
             --output "${prefix}.${extension}" \\
