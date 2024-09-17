@@ -24,7 +24,8 @@ process UPP_ALIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def tree_args = tree ? "-t $tree" : ""
     """
-    if [ "$workflow.containerEngine"='singularity' ]; then
+
+    if [ "$workflow.containerEngine" = 'singularity' ]; then
         export CONDA_PREFIX="/opt/conda/"
         export PASTA_TOOLS_DEVDIR="/opt/conda/bin/"
     fi
@@ -53,7 +54,8 @@ process UPP_ALIGN {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    if [ "$workflow.containerEngine"='singularity' ]; then
+
+    if [ "$workflow.containerEngine" = 'singularity' ]; then
         export CONDA_PREFIX="/opt/conda/"
         export PASTA_TOOLS_DEVDIR="/opt/conda/bin/"
     fi
