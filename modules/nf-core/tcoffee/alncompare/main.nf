@@ -53,6 +53,7 @@ process TCOFFEE_ALNCOMPARE {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    # Otherwise, tcoffee will crash when calling its version
     export TEMP='./'
     touch "${prefix}.scores"
 
