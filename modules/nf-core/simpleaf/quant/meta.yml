@@ -50,7 +50,10 @@ input:
         type: file
         description: |
           File mapping transcripts to genes.
-  - - resolution: {}
+  - - resolution:
+        type: string
+        description: |
+          Resolution for the clustering.
   - - meta4:
         type: map
         description: |
@@ -66,7 +69,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}: {}
+      - ${prefix}:
+          type: directory
+          description: Folder containing the quantification results
   - versions:
       - versions.yml:
           type: file

@@ -28,7 +28,11 @@ input:
         type: list
         description: Path to a directory containing CEL files
         pattern: "*.{CEL,CEL.gz}"
-  - - meta2: {}
+  - - meta2:
+        ype: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
     - description:
         type: file
         description: |

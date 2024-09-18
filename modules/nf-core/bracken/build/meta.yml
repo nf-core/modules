@@ -44,7 +44,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - '${kraken2db}/database*", includeInputs: true': {}
+      - '${kraken2db}/database*", includeInputs: true':
+          type: directory
+          description: Bracken files required to extend the Kraken2 database
   - versions:
       - versions.yml:
           type: file

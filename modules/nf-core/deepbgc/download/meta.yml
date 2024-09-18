@@ -23,7 +23,10 @@ tools:
       identifier: biotools:DeepBGC
 output:
   - db:
-      - deepbgc_db/: {}
+      - deepbgc_db/:
+          type: directory
+          description: Directory containing the DeepBGC database
+          pattern: "deepbgc_db/"
   - versions:
       - versions.yml:
           type: file

@@ -23,7 +23,9 @@ input:
         type: file
         description: fasta file with protein sequences
         pattern: "*.{fasta}"
-    - paramfile: {}
+    - paramfile:
+        type: file
+        description: MaxQuant parameter file
   - - raw:
         type: file
         description: raw files with mass spectra

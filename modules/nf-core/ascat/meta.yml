@@ -85,21 +85,27 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*BAF.txt": {}
+      - "*BAF.txt":
+          type: file
+          description: BAF file
   - cnvs:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*cnvs.txt": {}
+      - "*cnvs.txt":
+          type: file
+          description: CNV file
   - logrs:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*LogR.txt": {}
+      - "*LogR.txt":
+          type: file
+          description: LogR file
   - metrics:
       - meta:
           type: map

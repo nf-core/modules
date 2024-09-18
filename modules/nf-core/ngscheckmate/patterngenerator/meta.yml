@@ -38,7 +38,11 @@ input:
         type: file
         description: Genome fasta file
         pattern: "*.fasta"
-  - - meta3: {}
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
     - bowtie_index:
         type: directory
         description: Folder of Bowtie genome index files

@@ -82,7 +82,11 @@ input:
         description: |
           Groovy Map containing information on TI-seq P-site offfset parameter
           files
-    - para_ti: {}
+    - para_ti:
+        type: file
+        description: |
+          Input P-site offset parameter files for TI-seq bam files
+        pattern: "*.py"
 output:
   - predictions:
       - meta:

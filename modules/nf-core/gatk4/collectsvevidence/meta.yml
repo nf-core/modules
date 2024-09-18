@@ -35,7 +35,11 @@ input:
         description: Optional - input VCF of SNPs marking loci for site depths, needed
           for the site depths output
         pattern: "*.vcf.gz"
-    - site_depth_vcf_tbi: {}
+    - site_depth_vcf_tbi:
+        type: file
+        description: tbi index of the input VCF of SNPs marking loci for site
+          depths
+        pattern: "*.vcf.gz.tbi"
   - - fasta:
         type: file
         description: Optional - reference FASTA file needed when the input is a CRAM

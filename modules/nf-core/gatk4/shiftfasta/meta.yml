@@ -63,7 +63,10 @@ output:
           description: |
             Groovy Map containing fasta information
             e.g. [ id:'test' ]
-      - "*_shift.fasta.fai": {}
+      - "*_shift.fasta.fai":
+          type: file
+          description: Index file for the shifted fasta file
+          pattern: "*.{fai}"
   - shift_back_chain:
       - meta:
           type: map

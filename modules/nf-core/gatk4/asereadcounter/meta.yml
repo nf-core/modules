@@ -23,8 +23,14 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - bam: {}
-    - bai: {}
+    - bam:
+        type: file
+        description: BAM file
+        pattern: "*.{bam}"
+    - bai:
+        type: file
+        description: index file for BAM file
+        pattern: "*.{bai}"
     - vcf:
         type: file
         description: VCF file

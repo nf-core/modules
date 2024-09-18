@@ -37,9 +37,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*.{tsv}"
       - bracken_report:
-          type: file
-          description: TSV output report of the re-estimated abundances
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*.{tsv}"
   - txt:
       - meta:
@@ -47,9 +50,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*bracken_species.txt":
-          type: file
-          description: TXT file of bracken corrected results of Kraken2 report output
+          pattern: "*.txt"
+      - bracken_kraken_style_report:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*.txt"
   - versions:
       - versions.yml:

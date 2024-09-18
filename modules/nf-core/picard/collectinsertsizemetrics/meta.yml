@@ -41,7 +41,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.pdf": {}
+      - "*.pdf":
+          type: file
+          description: Insert size histogram in PDF format
+          pattern: "*.pdf"
   - versions:
       - versions.yml:
           type: file

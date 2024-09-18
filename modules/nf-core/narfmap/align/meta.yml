@@ -34,9 +34,18 @@ input:
         type: file
         description: NARFMAP hash table
         pattern: "Directory containing NARFMAP hash table *.{cmp,.bin,.txt}"
-  - - meta3: {}
-    - fasta: {}
-  - - sort_bam: {}
+  - - meta3:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+    - fasta:
+        type: file
+        description: Reference genome in FASTA format
+        pattern: "*.{fasta,fa,fna}"
+  - - sort_bam:
+      type: boolean
+      description: Sort the BAM file after alignment
 output:
   - bam:
       - meta:
@@ -48,8 +57,15 @@ output:
           description: Output BAM file containing read alignments
           pattern: "*.{bam}"
   - log:
-      - meta: {}
-      - "*.log": {}
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.log":
+          type: file
+          description: Log file of NARFMAP run
+          pattern: "*{.log}"
   - versions:
       - versions.yml:
           type: file

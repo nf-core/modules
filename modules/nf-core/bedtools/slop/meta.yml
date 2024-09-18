@@ -22,7 +22,9 @@ input:
         type: file
         description: Input BED file
         pattern: "*.{bed}"
-  - - sizes: {}
+  - - sizes:
+        type: file
+        description: Chromosome sizes file
 output:
   - bed:
       - meta:

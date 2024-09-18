@@ -28,7 +28,9 @@ input:
         type: file
         description: MSA or distance matrix in Phylip format
         pattern: "*"
-    - initial_tree: {}
+    - initial_tree:
+        type: file
+        description: Initial tree
 output:
   - nwk:
       - meta:

@@ -28,8 +28,12 @@ input:
   - - in_frqs:
         type: list
         description: A list of allele frequency tags
-  - - out_occs: {}
-  - - out_frqs: {}
+  - - out_occs:
+        type: list
+        description: A list of allele count tags
+  - - out_frqs:
+        type: list
+        description: A list of allele frequency tags
   - - vcf_dbs:
         type: file
         description: path to a database vcf, or a comma separated list of vcfs

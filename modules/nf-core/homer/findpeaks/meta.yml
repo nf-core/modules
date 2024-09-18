@@ -31,7 +31,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.peaks.txt": {}
+      - "*.peaks.txt":
+          type: file
+          description: "Peaks in txt file"
+          pattern: "*.peaks.txt"
   - versions:
       - versions.yml:
           type: file

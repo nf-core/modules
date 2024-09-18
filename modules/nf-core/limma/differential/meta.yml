@@ -42,7 +42,9 @@ input:
         description: |
           Groovy map containing study-wide metadata related to the sample sheet
           and matrix
-    - samplesheet: {}
+    - samplesheet:
+        type: file
+        description: Sample sheet file
     - intensities:
         type: file
         description: |

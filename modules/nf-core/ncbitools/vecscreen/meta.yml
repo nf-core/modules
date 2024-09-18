@@ -28,8 +28,14 @@ input:
     - fasta_file:
         type: file
         description: FASTA file that will be screened for contaminants
-  - - adapters_database_meta: {}
-    - adapters_database_directory: {}
+  - - adapters_database_meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - adapters_database_directory:
+        type: directory
+        description: Directory containing the adapters database
 output:
   - vecscreen_output:
       - meta:

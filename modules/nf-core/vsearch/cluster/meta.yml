@@ -116,28 +116,40 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*.centroids.fasta.gz": {}
+      - "*.centroids.fasta.gz":
+          type: file
+          description: Centroid sequences in FASTA format
+          pattern: "*.centroids.fasta.gz"
   - clusters:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*.clusters.fasta*.gz": {}
+      - "*.clusters.fasta*.gz":
+          type: file
+          description: Clustered sequences in FASTA format
+          pattern: "*.clusters.fasta*.gz"
   - profile:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*.profile.txt.gz": {}
+      - "*.profile.txt.gz":
+          type: file
+          description: Profile of the clustering results
+          pattern: "*.profile.txt.gz"
   - msa:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*.msa.fasta.gz": {}
+      - "*.msa.fasta.gz":
+          type: file
+          description: Multiple sequence alignment of the centroids
+          pattern: "*.msa.fasta.gz"
   - versions:
       - versions.yml:
           type: file

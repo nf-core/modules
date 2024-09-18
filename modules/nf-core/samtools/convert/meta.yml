@@ -30,13 +30,24 @@ input:
         type: file
         description: BAM/CRAM index file
         pattern: "*.{bai,crai}"
-  - - meta2: {}
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
     - fasta:
         type: file
         description: Reference file to create the CRAM file
         pattern: "*.{fasta,fa}"
-  - - meta3: {}
-    - fai: {}
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fai:
+        type: file
+        description: Reference index file to create the CRAM file
+        pattern: "*.{fai}"
 output:
   - bam:
       - meta:
@@ -79,7 +90,10 @@ output:
           description: filtered/converted CRAM index
           pattern: "*{.crai}"
   - versions:
-      - versions.yml: {}
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@FriederikeHanssen"
   - "@maxulysse"

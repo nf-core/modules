@@ -26,7 +26,10 @@ input:
         type: list
         description: List of VCF(.gz) files
         pattern: "*.{vcf,vcf.gz}"
-    - tbi: {}
+    - tbi:
+        type: list
+        description: List of VCF file indexes
+        pattern: "*.{tbi}"
   - - meta2:
         type: map
         description: |

@@ -25,7 +25,9 @@ input:
         type: file
         description: Channel containing single or paired-end reads
         pattern: "*.{fastq.gz,fq.gz}"
-  - - silva_db: {}
+  - - silva_db:
+        type: directory
+        description: Folder containing SILVA database
   - - univec_db:
         type: directory
         description: Folder containing UniVec database

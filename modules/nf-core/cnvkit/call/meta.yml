@@ -35,7 +35,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.cns": {}
+      - "*.cns":
+          type: file
+          description: CNS file.
+          pattern: "*.cns"
   - versions:
       - versions.yml:
           type: file

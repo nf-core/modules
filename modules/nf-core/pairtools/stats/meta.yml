@@ -28,7 +28,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.pairs.stat": {}
+      - "*.pairs.stat":
+          type: file
+          description: Pairs statistics
+          pattern: "*{.pairs.stat}"
   - versions:
       - versions.yml:
           type: file

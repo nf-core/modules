@@ -22,7 +22,9 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - input: {}
+    - input:
+        type: file
+        description: input file
 output:
   - bai:
       - meta:

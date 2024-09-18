@@ -31,7 +31,9 @@ input:
         description: Optional directory containing custom taxonomy files for database
           build
         pattern: "*"
-    - custom_seqid2taxid: {}
+    - custom_seqid2taxid:
+        type: file
+        description: custom seqid2taxid
 output:
   - db:
       - meta:

@@ -18,7 +18,11 @@ tools:
       identifier: biotools:rtn
 
 input:
-  - - meta: {}
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
     - expression_matrix:
         type: file
         description: expression matrix in TSV format

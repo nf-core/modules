@@ -44,7 +44,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.abundance.txt": {}
+      - "*.abundance.txt":
+          type: file
+          description: abundance
+          pattern: "*.{abundance.txt}"
   - coverage_gtf:
       - meta:
           type: map

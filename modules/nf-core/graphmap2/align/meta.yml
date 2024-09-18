@@ -20,7 +20,9 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - reads: {}
+    - reads:
+        type: file
+        description: file containing reads to be aligned.
   - - fasta:
         type: file
         description: |

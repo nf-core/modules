@@ -33,19 +33,39 @@ input:
         type: file
         description: Interval file with the genomic regions included in the library
           (optional)
-  - - fasta:
+  - - meta1:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
         type: file
         description: Reference fasta file
         pattern: "*.fasta"
-  - - fai:
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fai:
         type: file
         description: Reference fasta index file
         pattern: "*.fai"
-  - - dbsnp:
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - dbsnp:
         type: file
         description: dbSNP VCF file
         pattern: "*.vcf.gz"
-  - - dbsnp_tbi:
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - dbsnp_tbi:
         type: file
         description: dbSNP VCF index file
         pattern: "*.tbi"
@@ -56,14 +76,20 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.vcf.gz": {}
+      - "*.vcf.gz":
+          type: file
+          description: VCF file
+          pattern: "*.vcf.gz"
   - vcf_gz_tbi:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.vcf.gz.tbi": {}
+      - "*.vcf.gz.tbi":
+          type: file
+          description: VCF index file
+          pattern: "*.vcf.gz.tbi"
   - versions:
       - versions.yml:
           type: file

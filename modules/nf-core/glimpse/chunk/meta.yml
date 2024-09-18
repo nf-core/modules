@@ -26,7 +26,9 @@ input:
           Target dataset in VCF/BCF format defined at all variable positions.
           The file could possibly be without GT field (for efficiency reasons a file containing only the positions is recommended).
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-    - input_index: {}
+    - input_index:
+        type: file
+        description: Index file for the input VCF/BCF file.
     - region:
         type: string
         description: |
@@ -39,7 +41,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.txt": {}
+      - "*.txt":
+          type: file
+          description: Tab delimited output txt file containing buffer and imputation regions.
+          pattern: "*.txt"
   - versions:
       - versions.yml:
           type: file

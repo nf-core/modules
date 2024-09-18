@@ -32,7 +32,10 @@ input:
         type: file
         description: The reference fasta file
         pattern: "*.fasta"
-  - - fasta_fai: {}
+  - - fasta_fai:
+        type: file
+        description: Index of reference fasta file
+        pattern: "*.fai"
   - - dict:
         type: file
         description: GATK sequence dictionary
@@ -64,7 +67,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.metrics": {}
+      - "*.metrics":
+          type: file
+          description: Metrics file
+          pattern: "*.metrics"
   - versions:
       - versions.yml:
           type: file

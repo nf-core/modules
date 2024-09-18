@@ -35,12 +35,20 @@ input:
         type: file
         description: A BED file containing the regions to exclude from the SV calling
         pattern: "*.bed"
-  - - meta2: {}
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
     - fasta:
         type: file
         description: The reference fasta file
         pattern: "*.{fasta,fna,fa}"
-  - - meta3: {}
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
     - fai:
         type: file
         description: Index of reference fasta file

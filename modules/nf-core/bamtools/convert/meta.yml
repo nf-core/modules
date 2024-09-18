@@ -38,7 +38,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.{bed,fasta,fastq,json,pileup,sam,yaml}": {}
+      - "*.{bed,fasta,fastq,json,pileup,sam,yaml}":
+          type: file
+          description: Output file
+          pattern: "*.{bed,fasta,fastq,json,pileup,sam,yaml}"
   - versions:
       - versions.yml:
           type: file

@@ -32,7 +32,9 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-    - umi_file: {}
+    - umi_file:
+        type: file
+        description: UMI file
 output:
   - log:
       - meta:

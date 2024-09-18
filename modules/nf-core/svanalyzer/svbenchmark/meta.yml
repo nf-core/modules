@@ -59,7 +59,10 @@ input:
         description: |
           Groovy Map containing reference genome information for fai
           e.g. `[ id:'test3' ]`
-    - fai: {}
+    - fai:
+        type: file
+        description: The reference FASTA index file
+        pattern: "*.{fai}"
 output:
   - fns:
       - meta:

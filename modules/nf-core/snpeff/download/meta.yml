@@ -21,8 +21,13 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - genome: {}
-    - cache_version: {}
+    - genome:
+        type: file
+        description: Reference genome in FASTA format
+        pattern: "*.{fasta,fna,fa}"
+    - cache_version:
+        type: string
+        description: Version of the snpEff cache to download
 output:
   - cache:
       - meta:

@@ -30,7 +30,9 @@ input:
         type: file
         description: File containing signatures (hash sketches) of a sample
         pattern: "*.{sig}"
-  - - database: {}
+  - - database:
+        type: file
+        description: database
   - - save_unassigned:
         type: boolean
         description: |

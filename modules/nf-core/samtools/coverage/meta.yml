@@ -38,7 +38,11 @@ input:
         type: file
         description: Reference genome file
         pattern: "*.{fa,fasta}"
-  - - meta3: {}
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
     - fai:
         type: file
         description: Reference genome index file

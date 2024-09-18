@@ -25,7 +25,9 @@ input:
         type: file
         description: Input BED file
         pattern: "*.{bed}"
-  - - summary_col: {}
+  - - summary_col:
+        type: string
+        description: Column to summarize
 output:
   - bed:
       - meta:

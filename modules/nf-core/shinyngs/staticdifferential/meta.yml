@@ -22,7 +22,9 @@ input:
           and target levels, like '--reference_level $meta.reference
           --treatment_level $meta.target'
           e.g. [ variable:'treatment', reference:'treated', control:'saline', blocking:'' ]
-    - differential_result: {}
+    - differential_result:
+        type: file
+        description: statistic differential results
   - - meta2:
         type: map
         description: |

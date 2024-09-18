@@ -21,8 +21,14 @@ input:
         description: |
           Map containing riboseq sample information
           e.g. `[ id:'sample1', single_end:false, strandedness: 'single' ]
-    - bam: {}
-    - bai: {}
+    - bam:
+        type: file
+        description: "BAM/CRAM/SAM file"
+        pattern: "*.{bam,cram,sam}"
+    - bai:
+        type: file
+        description: "Index for sorted BAM/CRAM/SAM file"
+        pattern: "*.{bai}"
   - - meta2:
         type: map
         description: |

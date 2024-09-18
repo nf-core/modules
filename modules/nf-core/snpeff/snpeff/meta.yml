@@ -29,7 +29,11 @@ input:
         type: string
         description: |
           which db to annotate with
-  - - meta2: {}
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
     - cache:
         type: file
         description: |

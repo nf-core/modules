@@ -84,7 +84,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.log": {}
+      - "*.log":
+          type: file
+          description: Log file
+          pattern: "*.log"
   - versions:
       - versions.yml:
           type: file

@@ -49,7 +49,10 @@ input:
         description: |
           Groovy Map containing reference fai information
           e.g. [ id:'test']
-    - fai: {}
+    - fai:
+        type: file
+        description: The index of the reference fasta
+        pattern: "*.fai"
   - - meta4:
         type: map
         description: |

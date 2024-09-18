@@ -14,8 +14,14 @@ tools:
       licence: ["BSD-3-Clause"]
       identifier: ""
 input:
-  - - meta: {}
-    - chromsizes: {}
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - chromsizes:
+        type: file
+        description: Path to a chromsizes file.
     - cool_bin:
         type: integer
         description: Resolution (bin size) in base pairs

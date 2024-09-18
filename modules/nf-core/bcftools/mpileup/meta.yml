@@ -27,7 +27,11 @@ input:
         type: file
         description: Input intervals file. A file (commonly '.bed') containing regions
           to subset
-  - - meta2: {}
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
     - fasta:
         type: file
         description: FASTA reference file

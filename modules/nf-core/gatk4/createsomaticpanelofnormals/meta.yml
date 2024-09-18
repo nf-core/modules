@@ -21,7 +21,9 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test']
-    - genomicsdb: {}
+    - genomicsdb:
+        type: file
+        description: GenomicsDB database
   - - meta2:
         type: map
         description: |

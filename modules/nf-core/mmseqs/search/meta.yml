@@ -25,9 +25,17 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'test', single_end:false ]`
-    - db_query: {}
-  - - meta2: {}
-    - db_target: {}
+    - db_query:
+        type: file
+        description: Query database
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - db_target:
+        type: file
+        description: Target database
 output:
   - db_search:
       - meta:

@@ -58,7 +58,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'sample', bin:'1' ]
-      - ${prefix}/lineage.ms: {}
+      - ${prefix}/lineage.ms:
+          type: file
+          description: Lineage file
+          pattern: "*.ms"
   - checkm_tsv:
       - meta:
           type: map

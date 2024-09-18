@@ -46,7 +46,9 @@ input:
         type: file
         description: |
           List of TSV-format differential analysis outputs, one per row of the contrasts file
-  - - contrast_stats_assay: {}
+  - - contrast_stats_assay:
+        type: file
+        description: contrast statistics
 output:
   - app:
       - meta:

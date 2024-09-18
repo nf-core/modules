@@ -31,7 +31,9 @@ input:
         description: |
           Groovy Map containing information related to the experiment as a whole
           e.g. `[ id:'SRP123456' ]`
-    - '"quants/*"': {}
+    - '"quants/*"':
+        type: file
+        description: quants file
   - - quant_type:
         type: string
         description: Quantification type, 'kallisto' or 'salmon'

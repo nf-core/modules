@@ -15,56 +15,80 @@ tools:
       tool_dev_url: "https://github.com/katholt/srst2"
       doi: "10.1186/s13073-014-0090-6"
       licence: ["BSD"]
+      identifier: biotools:srst2
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        id: should be the identification number or sample name
-        single_end: should be true for single end data and false for paired in data
-        db: should be either 'gene' to use the --gene_db option or "mlst" to use the --mlst_db option
-        e.g. [ id:'sample', single_end:false , db:'gene']
-  - fasta:
-      type: file
-      description: |
-        gzipped fasta file. If files are NOT in
-        MiSeq format sample_S1_L001_R1_001.fastq.gz uses --forward and --reverse parameters; otherwise
-        default is _1, i.e. expect forward reads as sample_1.fastq.gz).
-      pattern: "*.fastq.gz"
-  - db:
-      type: file
-      description: Database in FASTA format
-      pattern: "*.fasta"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          id: should be the identification number or sample name
+          single_end: should be true for single end data and false for paired in data
+          db: should be either 'gene' to use the --gene_db option or "mlst" to use the --mlst_db option
+          e.g. [ id:'sample', single_end:false , db:'gene']
+    - fastq_s:
+        type: file
+        description: input FastQ files
+        pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
+    - db:
+        type: file
+        description: Database in FASTA format
+        pattern: "*.fasta"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'sample', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - txt:
-      type: file
-      description: A detailed report, with one row per gene per sample described here github.com/katholt/srst2#gene-typing
-      pattern: "*_fullgenes_*_results.txt"
-  - txt:
-      type: file
-      description: A tabulated summary report of samples x genes.
-      pattern: "*_genes_*_results.txt"
-  - txt:
-      type: file
-      description: A tabulated summary report of mlst subtyping.
-      pattern: "*_mlst_*_results.txt"
-  - bam:
-      type: file
-      description: Sorted BAM file
-      pattern: "*.sorted.bam"
+  - gene_results:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample', single_end:false ]
+      - "*_genes_*_results.txt":
+          type: file
+          description: SRST2 gene results
+          pattern: "*_genes_*_results.txt"
+  - fullgene_results:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample', single_end:false ]
+      - "*_fullgenes_*_results.txt":
+          type: file
+          description: SRST2 full gene results
+          pattern: "*_fullgenes_*_results.txt"
+  - mlst_results:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample', single_end:false ]
+      - "*_mlst_*_results.txt":
+          type: file
+          description: SRST2 MLST results
+          pattern: "*_mlst_*_results.txt"
   - pileup:
-      type: file
-      description: SAMtools pileup file
-      pattern: "*.pileup"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample', single_end:false ]
+      - "*.pileup":
+          type: file
+          description: SAMtools pileup file
+          pattern: "*.pileup"
+  - sorted_bam:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample', single_end:false ]
+      - "*.sorted.bam":
+          type: file
+          description: Sorted BAM file
+          pattern: "*.sorted.bam"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jvhagey"
 maintainers:

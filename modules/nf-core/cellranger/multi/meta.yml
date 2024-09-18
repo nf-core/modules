@@ -28,18 +28,54 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-  - - meta_gex: {}
-    - "gex_fastqs   ": {}
-  - - meta_vdj: {}
-    - "vdj_fastqs   ": {}
-  - - meta_ab: {}
-    - "ab_fastqs    ": {}
-  - - meta_beam: {}
-    - "beam_fastqs  ": {}
-  - - meta_cmo: {}
-    - "cmo_fastqs   ": {}
-  - - meta_crispr: {}
-    - crispr_fastqs: {}
+  - - meta_gex:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - "gex_fastqs   ":
+        type: file
+        description: FASTQ files
+        pattern: "*.fastq.gz"
+  - - meta_vdj:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - "vdj_fastqs   ":
+        type: file
+        description: FASTQ files
+        pattern: "*.fastq.gz"
+  - - meta_ab:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - "ab_fastqs    ":
+        type: file
+        description: FASTQ files
+        pattern: "*.fastq.gz"
+  - - meta_beam:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - "beam_fastqs  ":
+        type: file
+        description: FASTQ files
+        pattern: "*.fastq.gz"
+  - - meta_cmo:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - "cmo_fastqs   ":
+        type: file
+        description: FASTQ files
+        pattern: "*.fastq.gz"
+  - - meta_crispr:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - crispr_fastqs:
+        type: file
+        description: FASTQ files
+        pattern: "*.fastq.gz"
   - - gex_reference:
         type: directory
         description: Folder containing Cellranger gene expression reference. Can also
@@ -95,7 +131,9 @@ input:
         type: file
         description: Sample information for fixed RNA analysis
         pattern: "*.csv"
-  - - skip_renaming: {}
+  - - skip_renaming:
+        type: boolean
+        description: Skip renaming
 output:
   - config:
       - meta:

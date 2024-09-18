@@ -41,7 +41,10 @@ input:
         description: |
           Groovy Map containing reference fasta information
           e.g. [ id:'test' ]
-    - fai: {}
+    - fai:
+        type: file
+        description: The index file from the reference FASTA
+        pattern: "*.fai"
   - - method:
         type: string
         description: The method to use to define the gender (posibilities are 'xy',

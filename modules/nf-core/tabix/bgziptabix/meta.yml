@@ -20,7 +20,9 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - input: {}
+    - input:
+        type: file
+        description: Sorted tab-delimited genome file
 output:
   - gz_tbi:
       - meta:
@@ -28,16 +30,28 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.gz": {}
-      - "*.tbi": {}
+      - "*.gz":
+          type: file
+          description: bgzipped tab-delimited genome file
+          pattern: "*.gz"
+      - "*.tbi":
+          type: file
+          description: tabix index file
+          pattern: "*.tbi"
   - gz_csi:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.gz": {}
-      - "*.csi": {}
+      - "*.gz":
+          type: file
+          description: bgzipped tab-delimited genome file
+          pattern: "*.gz"
+      - "*.csi":
+          type: file
+          description: csi index file
+          pattern: "*.csi"
   - versions:
       - versions.yml:
           type: file

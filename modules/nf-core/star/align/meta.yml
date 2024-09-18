@@ -141,11 +141,25 @@ output:
           description: STAR output tab file(s) (optional)
           pattern: "*.tab"
   - spl_junc_tab:
-      - meta: {}
-      - "*.SJ.out.tab": {}
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.SJ.out.tab":
+          type: file
+          description: STAR output splice junction tab file
+          pattern: "*.SJ.out.tab"
   - read_per_gene_tab:
-      - meta: {}
-      - "*.ReadsPerGene.out.tab": {}
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.ReadsPerGene.out.tab":
+          type: file
+          description: STAR output read per gene tab file
+          pattern: "*.ReadsPerGene.out.tab"
   - junction:
       - meta:
           type: file
@@ -156,8 +170,15 @@ output:
           description: STAR chimeric junction output file (optional)
           pattern: "*.out.junction"
   - sam:
-      - meta: {}
-      - "*.out.sam": {}
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.out.sam":
+          type: file
+          description: STAR output SAM file
+          pattern: "*.out.sam"
   - wig:
       - meta:
           type: file

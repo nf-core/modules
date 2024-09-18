@@ -14,7 +14,11 @@ tools:
       licence: ["MIT"]
       identifier: biotools:mitohifi
 input:
-  - - meta: {}
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
     - input:
         type: file
         description: Path to PacBio HiFi reads or contigs. Type (-r/-c) is specified
@@ -32,7 +36,9 @@ input:
         type: string
         description: Specifies type of input - reads or contigs
         pattern: "{r,c}"
-  - - mito_code: {}
+  - - mito_code:
+        type: string
+        description: Mitochondrial genetic code
 output:
   - fasta:
       - meta:
@@ -44,8 +50,15 @@ output:
           description: Mitochondrial sequence
           pattern: "*.{fasta,fa}"
   - stats:
-      - meta: {}
-      - "*contigs_stats.tsv": {}
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*contigs_stats.tsv":
+          type: file
+          description: Contigs statistics
+          pattern: "*contigs_stats.tsv"
   - gb:
       - meta:
           type: file

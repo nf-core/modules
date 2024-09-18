@@ -27,7 +27,10 @@ input:
         type: file
         description: BAM/CRAM file to be summarised.
         pattern: "*.{bam,cram}"
-    - index: {}
+    - index:
+        type: file
+        description: Index file for the input BAM/CRAM file.
+        pattern: "*.{bam.bai,cram.crai}"
     - intervals:
         type: file
         description: File containing specified sites to be used for the summary. If
@@ -71,8 +74,15 @@ input:
         pattern: "*.vcf.gz.tbi"
 output:
   - table:
-      - meta: {}
-      - "*.pileups.table": {}
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.pileups.table":
+          type: file
+          description: Table containing read counts for each site.
+          pattern: "*.pileups.table"
   - versions:
       - versions.yml:
           type: file

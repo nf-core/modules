@@ -95,7 +95,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}_r2.fail.fq.gz: {}
+      - ${prefix}_r2.fail.fq.gz:
+          type: file
+          description: Failed unmerged R2 FASTQs
+          pattern: "*.r2.fail.fq.gz"
   - log:
       - meta:
           type: map

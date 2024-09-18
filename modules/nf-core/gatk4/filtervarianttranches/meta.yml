@@ -29,7 +29,9 @@ input:
         type: file
         description: tbi file matching with -vcf
         pattern: "*.vcf.gz.tbi"
-    - intervals: {}
+    - intervals:
+        type: file
+        description: Intervals
   - - resources:
         type: list
         description: resource A VCF containing known SNP and or INDEL sites. Can be

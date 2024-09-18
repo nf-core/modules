@@ -120,7 +120,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.faa": {}
+      - "*.faa":
+          type: file
+          description: FAA file
+          pattern: "*.faa"
   - fasta_archaea_scg:
       - meta:
           type: map
@@ -162,7 +165,10 @@ output:
           description: Summary of contig lengths
           pattern: "*.seqlength"
   - versions:
-      - versions.yml: {}
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@maxibor"
   - "@jfy133"

@@ -21,9 +21,16 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - sample_type: {}
-    - sub_sample: {}
-    - reads: {}
+    - sample_type:
+        type: string
+        description: The type of sample
+    - sub_sample:
+        type: string
+        description: The name of sub sample
+    - reads:
+        type: file
+        description: FASTQ files produced using Cell Ranger ARC
+        pattern: "*.fastq.gz"
   - - reference:
         type: directory
         description: Directory containing all the reference indices needed by Cell Ranger
@@ -39,7 +46,10 @@ output:
           description: Files containing the outputs of Cell Ranger ARC
           pattern: "${meta.id}/outs/*"
   - lib:
-      - ${meta.id}_lib.csv: {}
+      - ${meta.id}_lib.csv:
+          type: file
+          description: Library
+          pattern: "*_lib.csv"
   - versions:
       - versions.yml:
           type: file

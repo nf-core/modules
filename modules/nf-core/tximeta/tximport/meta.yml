@@ -25,7 +25,9 @@ input:
         description: |
           Groovy Map containing information related to the experiment as a whole
           e.g. `[ id:'SRP123456' ]`
-    - '"quants/*"': {}
+    - '"quants/*"':
+        type: directory
+        description: Directory containing quantification files
   - - meta2:
         type: map
         description: |

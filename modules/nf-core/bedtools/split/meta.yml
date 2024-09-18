@@ -20,7 +20,9 @@ input:
         type: file
         description: BED file
         pattern: "*.bed"
-    - count: {}
+    - count:
+        type: integer
+        description: Number of lines per split file
 output:
   - beds:
       - meta:

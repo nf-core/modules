@@ -51,7 +51,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.vcf.gz": {}
+      - "*.vcf.gz":
+          type: file
+          description: Preprocessed VCF file
+          pattern: "*.vcf.gz"
   - versions:
       - versions.yml:
           type: file

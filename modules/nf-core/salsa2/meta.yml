@@ -34,9 +34,16 @@ input:
         type: file
         description: BED file of alignments sorted by read names, e.g., from HiC-Pro
         pattern: "*.{bed}"
-  - - gfa: {}
-  - - dup: {}
-  - - filter_bed: {}
+  - - gfa:
+        type: file
+        description: GFA file of the assembly graph
+  - - dup:
+        type: file
+        description: File containing the duplicated contigs
+  - - filter_bed:
+        type: file
+        description: BED file of the filtered alignments
+        pattern: "*.{bed}"
 output:
   - fasta:
       - meta:

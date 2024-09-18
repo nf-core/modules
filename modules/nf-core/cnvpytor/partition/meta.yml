@@ -33,7 +33,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - ${pytor.baseName}.pytor: {}
+      - ${pytor.baseName}.pytor:
+          type: file
+          description: pytor file
+          pattern: "*.{pytor}"
   - versions:
       - versions.yml:
           type: file

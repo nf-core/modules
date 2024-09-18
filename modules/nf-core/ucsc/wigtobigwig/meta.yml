@@ -22,7 +22,9 @@ input:
         type: file
         description: wig file
         pattern: "*.{wig}"
-  - - sizes: {}
+  - - sizes:
+        type: file
+        description: Chromosome sizes file
 output:
   - bw:
       - meta:

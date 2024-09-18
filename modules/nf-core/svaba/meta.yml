@@ -1,5 +1,6 @@
 name: "svaba"
-description: SvABA is an efficient and accurate method for detecting SVs from short-read sequencing data using genome-wide local assembly with low memory and computing requirements
+description: SvABA is an efficient and accurate method for detecting SVs from short-read
+  sequencing data using genome-wide local assembly with low memory and computing requirements
 keywords:
   - sv
   - structural variants
@@ -13,147 +14,248 @@ tools:
       tool_dev_url: "https://github.com/walaj/svaba"
       doi: "10.1101/gr.221028.117"
       licence: ["GPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        id: should be the identification number or sample name. If there is normal file meta should be common
-        e.g. [ id:'test' ]
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing FASTA information
-        id: should be the identification number for alignment file and should be the same used to create BWA index files
-        e.g. [ id:'fasta' ]
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing BWA information
-        id: should be the identification number same as fasta file
-        e.g. [ id:'bwa' ]
-  - meta4:
-      type: map
-      description: |
-        Groovy Map containing dbSNP information
-        id: should be the identification number for dbSNP files
-        e.g. [ id:'test' ]
-  - meta5:
-      type: map
-      description: |
-        Groovy Map containing regions information
-        id: should be the identification number for regions
-        e.g. [ id:'test' ]
-  - tumorbam:
-      type: file
-      description: Tumor or metastatic sample, BAM, SAM or CRAM file
-      pattern: "*.{bam,cram,sam}"
-  - tummorbai:
-      type: file
-      description: Index
-      pattern: "*.{bai,crai,sai}"
-  - normalbam:
-      type: file
-      description: Control (or normal) of matching tumor/metastatic sample, BAM, SAM or CRAM file
-      pattern: "*.{bam,cram,sam}"
-  - normalbai:
-      type: file
-      description: Index
-      pattern: "*.{bai,crai,sai}"
-  - bwa_index:
-      type: file
-      description: BWA genome index files
-      pattern: "Directory containing BWA index *.{amb,ann,bwt,pac,sa}"
-  - fasta:
-      type: file
-      description: FASTA file
-      pattern: "*.{fasta|fa}"
-  - fasta_fai:
-      type: file
-      description: Index of FASTA file
-      pattern: "*.{fai}"
-  - dbsnp:
-      type: file
-      description: VCF file including dbSNP variants
-      pattern: "*.vcf.gz"
-  - dbsnp_tbi:
-      type: file
-      description: Index of VCF file including dbSNP variants
-      pattern: "*.vcf.gz.tbi"
-  - regions:
-      type: file
-      description: Targeted intervals. Accepts BED file or Samtools-style string
-      pattern: "*.bed|*.txt|*.tab"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          id: should be the identification number or sample name. If there is normal file meta should be common
+          e.g. [ id:'test' ]
+    - tumorbam:
+        type: file
+        description: Tumor or metastatic sample, BAM, SAM or CRAM file
+        pattern: "*.{bam,cram,sam}"
+    - tumorbai:
+        type: file
+        description: Index of the tumor or metastatic sample
+        pattern: "*.{bai,crai,sai}"
+    - normalbam:
+        type: file
+        description: Control (or normal) of matching tumor/metastatic sample, BAM, SAM
+          or CRAM file
+        pattern: "*.{bam,cram,sam}"
+    - normalbai:
+        type: file
+        description: Index
+        pattern: "*.{bai,crai,sai}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing FASTA information
+          id: should be the identification number for alignment file and should be the same used to create BWA index files
+          e.g. [ id:'fasta' ]
+    - fasta:
+        type: file
+        description: FASTA file
+        pattern: "*.{fasta|fa}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing FASTA information
+          id: should be the identification number for alignment file and should be the same used to create BWA index files
+          e.g. [ id:'fasta' ]
+    - fasta_fai:
+        type: file
+        description: Index of FASTA file
+        pattern: "*.{fai}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing BWA information
+          id: should be the identification number same as fasta file
+          e.g. [ id:'bwa' ]
+    - bwa_index:
+        type: file
+        description: BWA genome index files
+        pattern: "Directory containing BWA index *.{amb,ann,bwt,pac,sa}"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing dbSNP information
+          id: should be the identification number for dbSNP files
+          e.g. [ id:'test' ]
+    - dbsnp:
+        type: file
+        description: VCF file including dbSNP variants
+        pattern: "*.vcf.gz"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing dbSNP information
+          id: should be the identification number for dbSNP files
+          e.g. [ id:'test' ]
+    - dbsnp_tbi:
+        type: file
+        description: Index of VCF file including dbSNP variants
+        pattern: "*.vcf.gz.tbi"
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing regions information
+          id: should be the identification number for regions
+          e.g. [ id:'test' ]
+    - regions:
+        type: file
+        description: Targeted intervals. Accepts BED file or Samtools-style string
+        pattern: "*.bed|*.txt|*.tab"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - sv:
-      type: file
-      description: Filtered SVs for tumor only cases
-      pattern: "*.vcf.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.svaba.sv.vcf.gz":
+          type: file
+          description: Filtered SVs for tumor only cases
+          pattern: "*.vcf.gz"
   - indel:
-      type: file
-      description: Filtered Indels for tumor only cases
-      pattern: "*.vcf.gz"
-  - som_sv:
-      type: file
-      description: Somatic filtered SVs for tumor/normal paired samples
-      pattern: "*.vcf.gz"
-  - som_indel:
-      type: file
-      description: Somatic filtered Indels for tumor/normal paired samples
-      pattern: "*.vcf.gz"
-  - germ_sv:
-      type: file
-      description: Germline filtered SVs for tumor/normal paired samples
-      pattern: "*.vcf.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.svaba.indel.vcf.gz":
+          type: file
+          description: Filtered Indels for tumor only cases
+          pattern: "*.vcf.gz"
   - germ_indel:
-      type: file
-      description: Germline filtered Indels for tumor/normal paired samples
-      pattern: "*.vcf.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.svaba.germline.indel.vcf.gz":
+          type: file
+          description: Germline filtered Indels for tumor/normal paired samples
+          pattern: "*.vcf.gz"
+  - germ_sv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.svaba.germline.sv.vcf.gz":
+          type: file
+          description: Germline filtered SVs for tumor/normal paired samples
+          pattern: "*.vcf.gz"
+  - som_indel:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.svaba.somatic.indel.vcf.gz":
+          type: file
+          description: Somatic filtered Indels for tumor/normal paired samples
+          pattern: "*.vcf.gz"
+  - som_sv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.svaba.somatic.sv.vcf.gz":
+          type: file
+          description: Somatic filtered SVs for tumor/normal paired samples
+          pattern: "*.vcf.gz"
   - unfiltered_sv:
-      type: file
-      description: Unfiltered SVs for tumor only cases
-      pattern: "*.vcf.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.svaba.unfiltered.sv.vcf.gz":
+          type: file
+          description: Unfiltered SVs for tumor only cases
+          pattern: "*.vcf.gz"
   - unfiltered_indel:
-      type: file
-      description: Unfiltered Indels for tumor only cases
-      pattern: "*.vcf.gz"
-  - unfiltered_som_sv:
-      type: file
-      description: Unfiltered somatic SVs for tumor/normal paired samples
-      pattern: "*.vcf.gz"
-  - unfiltered_som_indel:
-      type: file
-      description: Unfiltered somatic Indels for tumor/normal paired samples
-      pattern: "*.vcf.gz"
-  - unfiltered_germ_sv:
-      type: file
-      description: Unfiltered germline SVs for tumor/normal paired samples
-      pattern: "*.vcf.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.svaba.unfiltered.indel.vcf.gz":
+          type: file
+          description: Unfiltered Indels for tumor only cases
+          pattern: "*.vcf.gz"
   - unfiltered_germ_indel:
-      type: file
-      description: Unfiltered germline Indels for tumor/normal paired samples
-      pattern: "*.vcf.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.svaba.unfiltered.germline.indel.vcf.gz":
+          type: file
+          description: Unfiltered germline Indels for tumor/normal paired samples
+          pattern: "*.vcf.gz"
+  - unfiltered_germ_sv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.svaba.unfiltered.germline.sv.vcf.gz":
+          type: file
+          description: Unfiltered germline SVs for tumor/normal paired samples
+          pattern: "*.vcf.gz"
+  - unfiltered_som_indel:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.svaba.unfiltered.somatic.indel.vcf.gz":
+          type: file
+          description: Unfiltered somatic Indels for tumor/normal paired samples
+          pattern: "*.vcf.gz"
+  - unfiltered_som_sv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.svaba.unfiltered.somatic.sv.vcf.gz":
+          type: file
+          description: Unfiltered somatic SVs for tumor/normal paired samples
+          pattern: "*.vcf.gz"
   - raw_calls:
-      type: file
-      description: Raw, unfiltered variants
-      pattern: "*.txt.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.bps.txt.gz":
+          type: file
+          description: Raw, unfiltered variants
+          pattern: "*.txt.gz"
   - discordants:
-      type: file
-      description: Information on all clusters of discordant reads identified with 2+ reads
-      pattern: "*.txt.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.discordants.txt.gz":
+          type: file
+          description: Information on all clusters of discordant reads identified with
+            2+ reads
+          pattern: "*.txt.gz"
   - log:
-      type: file
-      description: Log file
-      pattern: "*.txt.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.log":
+          type: file
+          description: Log file
+          pattern: "*.txt.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@kubranarci"
 maintainers:

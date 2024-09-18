@@ -43,14 +43,20 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*deletions.csv": {}
+      - "*deletions.csv":
+          type: file
+          description: csv file with deletion information
+          pattern: "*deletions.csv"
   - genes:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*genes.csv": {}
+      - "*genes.csv":
+          type: file
+          description: csv file with gene information
+          pattern: "*genes.csv"
   - circos:
       - meta:
           type: map

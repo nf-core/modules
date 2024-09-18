@@ -24,8 +24,14 @@ input:
         type: file
         description: Query sequences
         pattern: "*.fastq.gz"
-  - - meta2: {}
-    - sequences_sketch: {}
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - sequences_sketch:
+        type: file
+        description: sketch file of sequences
 output:
   - screen:
       - meta:

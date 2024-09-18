@@ -14,7 +14,11 @@ tools:
       licence: ["MIT"]
       identifier: biotools:mitohifi
 input:
-  - - meta: {}
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
     - species:
         type: string
         description: Latin name of the species for which a mitochondrial genome should

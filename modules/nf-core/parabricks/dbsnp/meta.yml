@@ -39,7 +39,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-      - "*.vcf": {}
+      - "*.vcf":
+          type: file
+          description: VCF file.
+          pattern: "*{.vcf}"
   - versions:
       - versions.yml:
           type: file

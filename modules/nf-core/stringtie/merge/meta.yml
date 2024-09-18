@@ -25,7 +25,10 @@ input:
         pattern: "*.gtf"
 output:
   - gtf:
-      - stringtie.merged.gtf: {}
+      - stringtie.merged.gtf:
+          type: file
+          description: Merged gtf file
+          pattern: "stringtie.merged.gtf"
   - versions:
       - versions.yml:
           type: file

@@ -20,9 +20,15 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - reads: {}
-  - - barcode_file: {}
-  - - adapter_seq: {}
+    - reads:
+        type: file
+        description: FASTQ file(s) to demultiplex
+  - - barcode_file:
+        type: file
+        description: FASTQ file containing barcode sequences
+  - - adapter_seq:
+        type: string
+        description: adapter sequence
 output:
   - fastq:
       - meta:

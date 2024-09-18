@@ -47,7 +47,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.txt": {}
+      - "*.txt":
+          type: file
+          description: file containing distribution
+          pattern: "*.{txt}"
   - pdf:
       - meta:
           type: map

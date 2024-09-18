@@ -22,7 +22,10 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - bams: {}
+    - bams:
+        type: file
+        description: BAM files containing mapped reads
+        pattern: "*.bam"
     - annotation:
         type: file
         description: Genomic features annotation in GTF or SAF

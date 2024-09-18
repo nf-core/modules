@@ -27,7 +27,9 @@ input:
     - bam:
         type: file
         description: BAM file produced using Biscuit
-  - - index: {}
+  - - index:
+        type: file
+        description: index file
 output:
   - biscuit_qc_reports:
       - meta:

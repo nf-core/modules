@@ -45,7 +45,9 @@ output:
           description: Folder called like the reference_name containing all the reference
             indices needed by Cell Ranger Arc
   - config:
-      - config: {}
+      - config:
+          type: file
+          description: Configuration file
   - versions:
       - versions.yml:
           type: file

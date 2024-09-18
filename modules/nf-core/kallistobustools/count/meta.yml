@@ -68,7 +68,10 @@ output:
           description: File containing software versions
           pattern: "versions.yml"
   - matrix:
-      - "*.count/*/*.mtx": {}
+      - "*.count/*/*.mtx":
+          type: file
+          description: file containing the count matrix
+          pattern: "*.mtx"
 authors:
   - "@flowuenne"
 maintainers:

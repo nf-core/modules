@@ -58,8 +58,14 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.rb.g.vcf.gz": {}
-      - "*.tbi": {}
+      - "*.rb.g.vcf.gz":
+          type: file
+          description: The reblocked GVCF file
+          pattern: "*.rb.g.vcf.gz"
+      - "*.tbi":
+          type: file
+          description: Index of the reblocked GVCF file
+          pattern: "*.tbi"
   - versions:
       - versions.yml:
           type: file

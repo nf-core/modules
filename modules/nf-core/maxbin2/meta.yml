@@ -76,7 +76,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.marker.gz": {}
+      - "*.marker.gz":
+          type: file
+          description: Marker counts
+          pattern: "*.marker.gz"
   - unbinned_fasta:
       - meta:
           type: map
@@ -104,7 +107,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_bin.tar.gz": {}
+      - "*_bin.tar.gz":
   - marker_genes:
       - meta:
           type: map
@@ -113,8 +116,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*_gene.tar.gz":
           type: file
-          description: All sequences that do not meet the minimum length threshold.
-          pattern: "*.marker_of_each_gene.tar.gz"
+          description: Marker genes
+          pattern: "*_gene.tar.gz"
   - versions:
       - versions.yml:
           type: file

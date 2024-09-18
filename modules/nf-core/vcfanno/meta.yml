@@ -26,7 +26,10 @@ input:
         type: file
         description: query VCF file
         pattern: "*.{vcf, vcf.gz}"
-    - tbi: {}
+    - tbi:
+        type: file
+        description: tabix index file for the query VCF
+        pattern: "*.tbi"
     - specific_resources:
         type: map
         description: A list of sample specific reference files defined in toml config,

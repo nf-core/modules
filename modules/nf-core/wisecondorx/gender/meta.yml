@@ -24,7 +24,11 @@ input:
         type: file
         description: Single sample NPZ file (from which to determine the gender)
         pattern: "*.npz"
-  - - meta2: {}
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
     - reference:
         type: file
         description: Reference NPZ file

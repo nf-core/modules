@@ -26,18 +26,24 @@ input:
         type: file
         description: Imputed data.
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-    - estimate_index: {}
+    - estimate_index:
+        type: file
+        description: Index file for the imputed data.
     - freq:
         type: file
         description: File containing allele frequencies at each site.
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-    - freq_index: {}
+    - freq_index:
+        type: file
+        description: Index file for the allele frequencies file.
     - truth:
         type: file
         description: Validation dataset called at the same positions as the imputed
           file.
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-    - truth_index: {}
+    - truth_index:
+        type: file
+        description: Index file for the truth file.
     - region:
         type: string
         description: Target region used for imputation, including left and right buffers
@@ -97,14 +103,20 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.rsquare.grp.txt.gz": {}
+      - "*.rsquare.grp.txt.gz":
+          type: file
+          description: Groups r-squared correlation between imputed dosages (in MAF bins) and highly-confident genotype.
+          pattern: "*.rsquare.grp.txt.gz"
   - rsquare_spl:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.rsquare.spl.txt.gz": {}
+      - "*.rsquare.spl.txt.gz":
+          type: file
+          description: Samples r-squared correlation between imputed dosages (in MAF bins) and highly-confident genotype.
+          pattern: "*.rsquare.spl.txt.gz"
   - versions:
       - versions.yml:
           type: file

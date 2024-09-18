@@ -18,7 +18,11 @@ tools:
       licence: [10X Genomics EULA]
       identifier: ""
 input:
-  - - meta: {}
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
     - csv:
         type: file
         description: Sample sheet
@@ -33,19 +37,50 @@ output:
           type: file
           description: Unaligned FastQ files
           pattern: "*.fastq.gz"
-      - "*_outs/outs/fastq_path/*.fastq.gz":
+      - "*_outs/outs/fastq_path/**/*.fastq.gz":
           type: file
           description: Unaligned FastQ files
           pattern: "*.fastq.gz"
+  - undetermined_fastq:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_outs/outs/fastq_path/Undetermined*.fastq.gz":
+          type: file
+          description: Undetermined FastQ files
+          pattern: "Undetermined*.fastq.gz"
   - reports:
-      - meta: {}
-      - "*_outs/outs/fastq_path/Reports": {}
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_outs/outs/fastq_path/Reports":
+          type: directory
+          description: Reports
+          pattern: "Reports"
   - stats:
-      - meta: {}
-      - "*_outs/outs/fastq_path/Stats": {}
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_outs/outs/fastq_path/Stats":
+          type: directory
+          description: Stats
+          pattern: "Stats"
   - interop:
-      - meta: {}
-      - "*_outs/outs/interop_path/*.bin": {}
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_outs/outs/interop_path/*.bin":
+          type: file
+          description: InterOp files
+          pattern: "*.bin"
   - versions:
       - versions.yml:
           type: file

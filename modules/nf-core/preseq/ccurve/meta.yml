@@ -31,7 +31,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.c_curve.txt": {}
+      - "*.c_curve.txt":
+          type: file
+          description: Preseq c_curve output file
+          pattern: "*.{c_curve.txt}"
   - log:
       - meta:
           type: map

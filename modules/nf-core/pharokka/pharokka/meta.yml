@@ -37,7 +37,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}_pharokka/${prefix}_cds_final_merged_output.tsv: {}
+      - ${prefix}_pharokka/${prefix}_cds_final_merged_output.tsv:
+          type: file
+          description: A file containing the final merged output of CDSs
+          pattern: "*_cds_final_merged_output.tsv"
   - cds_functions:
       - meta:
           type: map
@@ -55,7 +58,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}_pharokka/${prefix}_length_gc_cds_density.tsv: {}
+      - ${prefix}_pharokka/${prefix}_length_gc_cds_density.tsv:
+          type: file
+          description: A file containing the length, GC content, and CDS density of
+            the phage genome
+          pattern: "*_length_gc_cds_density.tsv"
   - card:
       - meta:
           type: map

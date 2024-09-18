@@ -28,7 +28,9 @@ input:
         type: file
         description: FASTQ or FASTQ.GZ file, list of 2 files for paired-end data
         pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
-  - - reference: {}
+  - - reference:
+        type: file
+        description: Reference genome file
 output:
   - outs:
       - meta:

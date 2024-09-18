@@ -18,7 +18,9 @@ input:
   - - genome_fasta:
         type: file
         description: Fasta file of the reference genome
-  - - transcript_fasta: {}
+  - - transcript_fasta:
+        type: file
+        description: Fasta file of the reference transcriptome
 output:
   - index:
       - salmon:

@@ -63,7 +63,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.bowtie2out.txt": {}
+      - "*.bowtie2out.txt":
+          type: file
+          description: Bowtie2 output file
+          pattern: "*.{bowtie2out.txt}"
   - versions:
       - versions.yml:
           type: file

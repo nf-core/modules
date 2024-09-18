@@ -138,8 +138,15 @@ output:
             covering specified input matrix (by default the last one in the input
             list.
   - mad_html:
-      - meta: {}
-      - "*/html/mad_correlation.html": {}
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*/html/mad_correlation.html":
+          type: file
+          description: HTML output for MAD correlation plots
+          pattern: "*{.html}"
   - dendro:
       - meta:
           type: file

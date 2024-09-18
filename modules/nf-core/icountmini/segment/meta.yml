@@ -30,16 +30,20 @@ input:
 output:
   - gtf:
       - meta:
-          type: file
-          description: Segmented GTF file for use with iCount sigxls
-          pattern: "*.{gtf}"
+          type: map
+          description: Groovy Map containing sample information
       - "*_seg.gtf":
           type: file
           description: Segmented GTF file for use with iCount sigxls
           pattern: "*.{gtf}"
   - regions:
-      - meta: {}
-      - "*_regions.gtf.gz": {}
+      - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*_regions.gtf.gz":
+          type: file
+          description: Regions file for use with iCount sigxls
+          pattern: "*.{gtf.gz}"
   - versions:
       - versions.yml:
           type: file

@@ -19,7 +19,10 @@ input:
           Reference database in FASTA format.
 output:
   - index:
-      - "*.gmidx": {}
+      - "*.gmidx":
+          type: file
+          description: Index file in gmidx format
+          pattern: "*.gmidx"
   - versions:
       - versions.yml:
           type: file

@@ -15,7 +15,11 @@ tools:
       licence: ["MIT"]
       identifier: biotools:fgbio
 input:
-  - - meta: {}
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
     - reads:
         type: file
         description: pair of reads to be converted into BAM file
@@ -42,7 +46,10 @@ output:
           description: Unaligned, unsorted CRAM file
           pattern: "*.{cram}"
   - versions:
-      - versions.yml: {}
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@lescai"
   - "@matthdsm"

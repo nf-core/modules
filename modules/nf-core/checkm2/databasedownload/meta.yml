@@ -24,7 +24,10 @@ output:
           description: |
             Groovy Map containing database information
             e.g. `[ id:'test', version:1 ]`
-      - checkm2_db_v${db_version}.dmnd: {}
+      - checkm2_db_v${db_version}.dmnd:
+          type: file
+          description: CheckM2 database file
+          pattern: "checkm2_db_v*.dmnd"
   - versions:
       - versions.yml:
           type: file

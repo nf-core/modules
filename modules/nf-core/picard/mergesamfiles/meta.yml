@@ -20,7 +20,10 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - bams: {}
+    - bams:
+        type: list
+        description: List of input BAM files to be merged
+        pattern: "*.{bam}"
 output:
   - bam:
       - meta:

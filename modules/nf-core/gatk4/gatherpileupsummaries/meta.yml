@@ -23,7 +23,9 @@ input:
         type: file
         description: Pileup files from gatk4/getpileupsummaries
         pattern: "*.pileups.table"
-  - - dict: {}
+  - - dict:
+        type: file
+        description: dictionary
 output:
   - table:
       - meta:

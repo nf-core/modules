@@ -22,8 +22,12 @@ input:
         type: file
         description: Overlapping tile image data in formats from most commercial microscopes
         pattern: "*.{ome.tiff,ome.tif,rcpnl,btf,nd2,tiff,tif,czi}"
-  - - opt_dfp: {}
-  - - opt_ffp: {}
+  - - opt_dfp:
+        type: file
+        description: Optional dark field image data
+  - - opt_ffp:
+        type: file
+        description: Optional flat field image data
 output:
   - tif:
       - meta:

@@ -40,10 +40,12 @@ output:
           description: >
             Groovy Map containing sample information e.g. [ id:'test', single_end:false
             ]
-      - id:
-          type: directory
+          pattern: "*/*.sra"
+      - "id, type: 'dir":
+          type: map
           description: >
-            Directory containing the ETL data for the given SRA id.
+            Groovy Map containing sample information e.g. [ id:'test', single_end:false
+            ]
           pattern: "*/*.sra"
   - versions:
       - versions.yml:

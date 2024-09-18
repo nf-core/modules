@@ -25,8 +25,15 @@ input:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
-  - - meta2: {}
-    - fasta: {}
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: FASTA ref file
+        pattern: "*.fasta"
 output:
   #Only when we have meta
   - bam:
@@ -35,21 +42,30 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.bam": {}
+      - "*.bam":
+          type: file
+          description: Sorted BAM
+          pattern: "*.{bam}"
   - cram:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.cram": {}
+      - "*.cram":
+          type: file
+          description: Sorted CRAM
+          pattern: "*.{cram}"
   - sam:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.sam": {}
+      - "*.sam":
+          type: file
+          description: Sorted SAM
+          pattern: "*.{sam}"
   - versions:
       - versions.yml:
           type: file

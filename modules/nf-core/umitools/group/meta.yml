@@ -72,7 +72,10 @@ output:
             of all columns
           pattern: "*.{tsv}"
   - versions:
-      - versions.yml: {}
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@Joon-Klaps"
 maintainers:

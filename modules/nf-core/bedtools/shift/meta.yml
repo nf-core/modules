@@ -25,7 +25,11 @@ input:
         type: file
         description: Input BED file
         pattern: "*.{bed}"
-  - - meta2: {}
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
     - chrom_sizes:
         type: file
         description: Chromosome sizes file

@@ -22,7 +22,9 @@ input:
         type: file
         description: |
           Non-demultiplexed fastq files
-  - - barcode_kit: {}
+  - - barcode_kit:
+        type: string
+        description: Barcode kit used for demultiplexing
 output:
   - reads:
       - meta:

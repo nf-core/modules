@@ -44,10 +44,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*_{1,2}.fq.gz"
       - "*_{1,2}.fq.gz":
-          type: file
+          type: map
           description: |
-            R1 and R2 FASTQ files
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*_{1,2}.fq.gz"
   - fastq_interleaved:
       - meta:
@@ -55,10 +57,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_interleaved.fq.gz":
-          type: file
+          pattern: "*_interleaved.fq.gz"
+      - "*_interleaved.fq":
+          type: map
           description: |
-            Interleaved paired end FASTQ files
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*_interleaved.fq.gz"
   - fastq_other:
       - meta:
@@ -66,10 +70,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*_other.fq.gz"
       - "*_other.fq.gz":
-          type: file
+          type: map
           description: |
-            FASTQ files with reads where the READ1 and READ2 FLAG bits set are either both set or both unset.
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*_other.fq.gz"
   - fastq_singleton:
       - meta:
@@ -77,10 +83,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*_singleton.fq.gz"
       - "*_singleton.fq.gz":
-          type: file
+          type: map
           description: |
-            FASTQ files with singleton reads.
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*_singleton.fq.gz"
   - versions:
       - versions.yml:

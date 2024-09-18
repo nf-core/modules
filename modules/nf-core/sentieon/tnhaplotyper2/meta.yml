@@ -139,7 +139,10 @@ output:
           description: |
             Groovy Map containing reference information.
             e.g. [ id:'test', single_end:false ]
-      - "*.stats": {}
+      - "*.stats":
+          type: file
+          description: Stats file from Sentieon's algorithm
+          pattern: "*.stats"
   - vcf:
       - meta:
           type: map

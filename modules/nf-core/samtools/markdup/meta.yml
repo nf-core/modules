@@ -40,21 +40,30 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.bam": {}
+      - "*.bam":
+          type: file
+          description: BAM file
+          pattern: "*{.bam}"
   - cram:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.cram": {}
+      - "*.cram":
+          type: file
+          description: CRAM file
+          pattern: "*{.cram}"
   - sam:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.sam": {}
+      - "*.sam":
+          type: file
+          description: SAM file
+          pattern: "*{.sam}"
   - versions:
       - versions.yml:
           type: file

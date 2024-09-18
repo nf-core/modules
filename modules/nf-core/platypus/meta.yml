@@ -26,7 +26,10 @@ input:
         type: file
         description: Tumor or metastatic sample, BAM or CRAM file
         pattern: "*.{bam,cram}"
-    - tumor_file_bai: {}
+    - tumor_file_bai:
+        type: file
+        description: Index of BAM file
+        pattern: "*.{bai,crai}"
     - control_file:
         type: file
         description: Control (or blood) of matching tumor/metastatic sample, BAM or

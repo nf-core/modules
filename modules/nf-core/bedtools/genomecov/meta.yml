@@ -38,7 +38,9 @@ input:
         description: Extension of the output file (e. g., ".bg", ".bedgraph", ".txt",
           ".tab", etc.) It is set arbitrarily by the user and corresponds to the file
           format which depends on arguments.
-  - - sort: {}
+  - - sort:
+        type: boolean
+        description: Sort the output
 output:
   - genomecov:
       - meta:

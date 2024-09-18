@@ -37,7 +37,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*maxCSS_level.tsv": {}
+      - "*maxCSS_level.tsv":
+          type: file
+          description: Output file with results for the maximum CSS level
+          pattern: "*.tsv"
   - all_levels_tsv:
       - meta:
           type: map

@@ -28,16 +28,38 @@ input:
         type: file
         description: List of input FastQ files of size 1 and 2 for single-end and paired-end
           data, respectively
-  - - meta2: {}
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
     - fasta:
         type: file
         description: Path to the fasta file coordinate and sequence of V/D/J/C genes
-  - - meta3: {}
-    - vdj_reference: {}
-  - - meta4: {}
-    - barcode_read: {}
-  - - meta5: {}
-    - umi_read: {}
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vdj_reference:
+        type: file
+        description: reference file of V/D/J genes
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - barcode_read:
+        type: file
+        description: barcode read file
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - umi_read:
+        type: file
+        description: umi read file
 output:
   - tsv:
       - meta:
@@ -55,7 +77,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*_airr.tsv": {}
+      - "*_airr.tsv":
+          type: file
+          description: TRUST4 results in AIRR format
+          pattern: "*_airr.tsv"
   - airr_tsv:
       - meta:
           type: map
@@ -112,7 +137,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "**": {}
+      - "**":
+          type: file
+          description: outputt files
   - versions:
       - versions.yml:
           type: file

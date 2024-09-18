@@ -30,7 +30,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}.${suffix}: {}
+      - ${prefix}.${suffix}:
+          type: file
+          description: Output file
   - versions:
       - versions.yml:
           type: file

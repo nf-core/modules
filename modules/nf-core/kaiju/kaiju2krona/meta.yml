@@ -25,7 +25,9 @@ input:
         type: file
         description: Kaiju tab-separated output file
         pattern: "*.{tsv,txt}"
-  - - db: {}
+  - - db:
+        type: file
+        description: Kaiju database file
 output:
   - txt:
       - meta:

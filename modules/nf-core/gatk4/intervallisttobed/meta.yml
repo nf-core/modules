@@ -20,7 +20,9 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - intervals: {}
+    - intervals:
+        type: file
+        description: IntervalList file
 output:
   - bed:
       - meta:

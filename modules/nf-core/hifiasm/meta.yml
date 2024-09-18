@@ -87,7 +87,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.bp.p_ctg.gfa": {}
+      - "*.bp.p_ctg.gfa":
+          type: file
+          description: Processed contigs
+          pattern: "*.bp.p_ctg.gfa"
   - processed_unitigs:
       - meta:
           type: map

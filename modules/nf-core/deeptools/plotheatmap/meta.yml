@@ -44,7 +44,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.tab": {}
+      - "*.tab":
+          type: file
+          description: Output table
   - versions:
       - versions.yml:
           type: file

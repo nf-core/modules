@@ -36,7 +36,9 @@ input:
         type: file
         description: Index for coordinate sorted BAM/CRAM/SAM file from tumor tissue
         pattern: "*.{bam,cram,sam}"
-    - metascan: {}
+    - metascan:
+        type: file
+        description: metascan file
     - homopolymers:
         type: file
         description: Output file from MSIsensor scan module
@@ -48,28 +50,36 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}: {}
+      - ${prefix}:
+          type: file
+          description: Output file from MSIsensor msi module
   - output_dis:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}_dis: {}
+      - ${prefix}_dis:
+          type: file
+          description: Output file from MSIsensor module
   - output_germline:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}_germline: {}
+      - ${prefix}_germline:
+          type: file
+          description: Output file from MSIsensor module
   - output_somatic:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}_somatic: {}
+      - ${prefix}_somatic:
+          type: file
+          description: Output file from MSIsensor module
   - versions:
       - versions.yml:
           type: file

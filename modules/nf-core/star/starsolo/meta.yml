@@ -33,6 +33,9 @@ input:
         description: |
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
+  - - opt_whitelist:
+        type: file
+        description: Optional whitelist file
   - - meta2:
         type: map
         description: Groovy Map containing the STAR index information.
@@ -49,7 +52,10 @@ output:
             Here, you should add all the specific barcode/umi
             information for each sample.
             e.g. `[ id:'test_starsolo', umi_len:'12', cb_start:1 ]`
-      - "*.Solo.out": {}
+      - "*.Solo.out":
+          type: file
+          description: STARSolo counts matrix
+          pattern: "*.Solo.out"
   - log_final:
       - meta:
           type: map

@@ -53,10 +53,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*.fa.gz"
       - "*.scaffolds.fa.gz":
-          type: file
+          type: map
           description: |
-            Fasta file containing scaffolds
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*.fa.gz"
   - contigs:
       - meta:
@@ -64,10 +66,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*.fa.gz"
       - "*.contigs.fa.gz":
-          type: file
+          type: map
           description: |
-            Fasta file containing contigs
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*.fa.gz"
   - transcripts:
       - meta:
@@ -75,10 +79,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*.fa.gz"
       - "*.transcripts.fa.gz":
-          type: file
+          type: map
           description: |
-            Fasta file containing transcripts
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*.fa.gz"
   - gene_clusters:
       - meta:
@@ -86,10 +92,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*.fa.gz"
       - "*.gene_clusters.fa.gz":
-          type: file
+          type: map
           description: |
-            Fasta file containing gene_clusters
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*.fa.gz"
   - gfa:
       - meta:
@@ -97,10 +105,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*.gfa.gz"
       - "*.assembly.gfa.gz":
-          type: file
+          type: map
           description: |
-            gfa file containing assembly
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*.gfa.gz"
   - warnings:
       - meta:
@@ -108,17 +118,23 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - warnings.log: {}
+      - "*.warnings.log":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
   - log:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*.spades.log"
       - "*.spades.log":
-          type: file
+          type: map
           description: |
-            Spades log file
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*.spades.log"
   - versions:
       - versions.yml:

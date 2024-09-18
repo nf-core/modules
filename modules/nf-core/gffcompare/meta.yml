@@ -26,7 +26,11 @@ input:
           GTF/GFF files
           e.g. [ 'file_1.gtf', 'file_2.gtf' ]
         pattern: "*.{gtf,gff}"
-  - - meta2: {}
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing meta data
+          e.g. [ id:'test', single_end:false ]
     - fasta:
         type: file
         description: Genome reference fasta file (optional)
@@ -35,7 +39,11 @@ input:
         type: file
         description: Index for fasta file
         pattern: "*.fai"
-  - - meta3: {}
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing meta data
+          e.g. [ id:'test', single_end:false ]
     - reference_gtf:
         type: file
         description: Reference annotation in gtf/gff format (optional)

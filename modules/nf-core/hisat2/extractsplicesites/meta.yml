@@ -32,7 +32,10 @@ output:
           description: |
             Groovy Map containing reference information
             e.g. [ id:'genome' ]
-      - "*.splice_sites.txt": {}
+      - "*.splice_sites.txt":
+          type: file
+          description: Splice sites in txt file
+          pattern: "*.txt"
   - versions:
       - versions.yml:
           type: file

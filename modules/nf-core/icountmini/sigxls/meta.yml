@@ -35,7 +35,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.sigxls.bed.gz": {}
+      - "*.sigxls.bed.gz":
+          type: file
+          description: sigxls bed file
+          pattern: "*.{bed.gz}"
   - scores:
       - meta:
           type: map

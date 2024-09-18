@@ -20,7 +20,9 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test' ]
-    - intervals: {}
+    - intervals:
+        type: file
+        description: Interval file
   - - meta2:
         type: map
         description: |
@@ -55,8 +57,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "**.interval_list": {}
-      - s: {}
+      - "**.interval_list":
+          type: file
+          description: interval files
+          pattern: "*.interval_list"
   - versions:
       - versions.yml:
           type: file

@@ -20,7 +20,9 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-    - in_file: {}
+    - in_file:
+        type: file
+        description: Input file
 output:
   - bed:
       - meta:

@@ -18,7 +18,9 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - peak: {}
+    - peak:
+        type: file
+        description: Peak file to annotate
   - - fasta:
         type: file
         description: Fasta file of reference genome
@@ -34,14 +36,20 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*annotatePeaks.txt": {}
+      - "*annotatePeaks.txt":
+          type: file
+          description: Annotated peaks in txt file
+          pattern: "*annotatePeaks.txt"
   - stats:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*annStats.txt": {}
+      - "*annStats.txt":
+          type: file
+          description: Annotation statistics in txt file
+          pattern: "*annStats.txt"
   - versions:
       - versions.yml:
           type: file

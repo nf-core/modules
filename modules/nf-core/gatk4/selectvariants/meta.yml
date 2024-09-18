@@ -51,7 +51,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.vcf.gz.tbi": {}
+      - "*.vcf.gz.tbi":
+          type: file
+          description: Tabix index file
+          pattern: "*.vcf.gz.tbi"
   - versions:
       - versions.yml:
           type: file

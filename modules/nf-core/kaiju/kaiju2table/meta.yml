@@ -19,8 +19,12 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - input: {}
-  - - db: {}
+    - input:
+        type: file
+        description: Kaiju input file
+  - - db:
+        type: file
+        description: Kaiju database
   - - taxon_rank:
         type: string
         description: |
@@ -33,7 +37,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.txt": {}
+      - "*.txt":
+          type: file
+          description: Kaiju output file
+          pattern: "*.txt"
   - versions:
       - versions.yml:
           type: file

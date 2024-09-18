@@ -23,8 +23,12 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - mpileup_normal: {}
-    - mpileup_tumor: {}
+    - mpileup_normal:
+        type: file
+        description: miniPileup file
+    - mpileup_tumor:
+        type: file
+        description: miniPileup file
     - cpn_normal:
         type: file
         description: Raw copy number profiles (optional)
@@ -75,7 +79,9 @@ input:
         type: file
         description: Sorted bed file containing capture regions (optional)
         pattern: "*.bed"
-  - - gccontent_profile: {}
+  - - gccontent_profile:
+        type: file
+        description: File with GC-content profile
 output:
   - bedgraph:
       - meta:

@@ -20,7 +20,9 @@ input:
         type: file
         description: bedGraph file
         pattern: "*.{bedgraph}"
-  - - sizes: {}
+  - - sizes:
+        type: file
+        description: Chromosome sizes file
 output:
   - bedgraph:
       - meta:

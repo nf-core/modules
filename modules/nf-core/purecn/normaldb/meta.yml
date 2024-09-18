@@ -38,7 +38,10 @@ input:
           Normal panel in VCF format, used to precompute mapping bias
           for faster runtimes. Optional.
         pattern: "*.vcf.gz"
-    - normal_vcf_tbi: {}
+    - normal_vcf_tbi:
+        type: file
+        description: Normal panel in VCF format
+        pattern: "*.vcf.gz.tbi"
   - - genome:
         type: string
         description: Genome build

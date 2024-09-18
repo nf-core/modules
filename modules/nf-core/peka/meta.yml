@@ -71,8 +71,15 @@ output:
             for all possible k-mers
           pattern: "*.tsv"
   - rtxn:
-      - meta: {}
-      - "*rtxn*": {}
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*rtxn*":
+          type: file
+          description: rtxn file
+          pattern: "*rtxn*"
   - pdf:
       - meta:
           type: file
@@ -85,14 +92,35 @@ output:
             thresholded crosslink sites
           pattern: "*.pdf"
   - tsites:
-      - meta: {}
-      - "*thresholded_sites*.bed.gz": {}
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*thresholded_sites*.bed.gz":
+          type: file
+          description: BED file of thresholded sites
+          pattern: "*thresholded_sites*.bed.gz"
   - oxn:
-      - meta: {}
-      - "*oxn*.bed.gz": {}
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*oxn*.bed.gz":
+          type: file
+          description: BED file of oxn sites
+          pattern: "*oxn*.bed.gz"
   - clust:
-      - meta: {}
-      - "*_clusters.csv": {}
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_clusters.csv":
+          type: file
+          description: CSV file of clusters
+          pattern: "*_clusters.csv"
   - versions:
       - versions.yml:
           type: file

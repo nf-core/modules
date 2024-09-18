@@ -43,11 +43,20 @@ input:
         type: file
         description: Genome fasta reference files
         pattern: "*.{fa,fasta,fna}"
-  - - sort_bam: {}
+  - - sort_bam:
+        type: boolean
+        description: Sort the BAM file
 output:
   - sam:
-      - meta: {}
-      - "*.sam": {}
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.sam":
+          type: file
+          description: Output SAM file containing read alignments
+          pattern: "*.{sam}"
   - bam:
       - meta:
           type: file
@@ -58,17 +67,45 @@ output:
           description: Output BAM file containing read alignments
           pattern: "*.{bam}"
   - cram:
-      - meta: {}
-      - "*.cram": {}
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.cram":
+          type: file
+          description: Output CRAM file containing read alignments
+          pattern: "*.{cram}"
   - crai:
-      - meta: {}
-      - "*.crai": {}
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.crai":
+          type: file
+          description: Index file for CRAM file
+          pattern: "*.{crai}"
   - csi:
-      - meta: {}
-      - "*.csi": {}
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.csi":
+          type: file
+          description: Index file for CRAM file
+          pattern: "*.{csi}"
   - log:
-      - meta: {}
-      - "*.log": {}
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: Log file
+          pattern: "*.{log}"
   - versions:
       - versions.yml:
           type: file

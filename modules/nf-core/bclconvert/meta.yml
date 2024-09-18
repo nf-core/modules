@@ -32,7 +32,7 @@ output:
           type: file
           description: Demultiplexed sample FASTQ files
           pattern: "**_S*_L00?_R?_00?.fastq.gz"
-      - "**_S[1-9]*_R?_00?.fastq.gz":
+      - output/**_S[1-9]*_R?_00?.fastq.gz:
           type: file
           description: Demultiplexed sample FASTQ files
           pattern: "**_S*_L00?_R?_00?.fastq.gz"
@@ -41,7 +41,7 @@ output:
           type: file
           description: Optional demultiplexed index FASTQ files
           pattern: "**_S*_L00?_I?_00?.fastq.gz"
-      - "**_S[1-9]*_I?_00?.fastq.gz":
+      - output/**_S[1-9]*_I?_00?.fastq.gz:
           type: file
           description: Optional demultiplexed index FASTQ files
           pattern: "**_S*_L00?_I?_00?.fastq.gz"
@@ -50,7 +50,7 @@ output:
           type: file
           description: Optional undetermined sample FASTQ files
           pattern: "Undetermined_S0_L00?_R?_00?.fastq.gz"
-      - "**Undetermined_S0*_R?_00?.fastq.gz":
+      - output/**Undetermined_S0*_R?_00?.fastq.gz:
           type: file
           description: Optional undetermined sample FASTQ files
           pattern: "Undetermined_S0_L00?_R?_00?.fastq.gz"
@@ -59,7 +59,7 @@ output:
           type: file
           description: Optional undetermined index FASTQ files
           pattern: "Undetermined_S0_L00?_I?_00?.fastq.gz"
-      - "**Undetermined_S0*_I?_00?.fastq.gz":
+      - output/**Undetermined_S0*_I?_00?.fastq.gz:
           type: file
           description: Optional undetermined index FASTQ files
           pattern: "Undetermined_S0_L00?_I?_00?.fastq.gz"
@@ -68,7 +68,7 @@ output:
           type: file
           description: Demultiplexing Reports
           pattern: "Reports/*.{csv,xml}"
-      - Reports:
+      - output/Reports:
           type: file
           description: Demultiplexing Reports
           pattern: "Reports/*.{csv,xml}"
@@ -77,7 +77,7 @@ output:
           type: file
           description: Log files
           pattern: "Logs/*.{log,txt}"
-      - Logs:
+      - output/Logs:
           type: file
           description: Log files
           pattern: "Logs/*.{log,txt}"

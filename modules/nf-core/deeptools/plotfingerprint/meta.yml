@@ -20,7 +20,10 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test' ]
-    - bams: {}
+    - bams:
+        type: file
+        description: BAM files
+        pattern: "*.bam"
     - bais:
         type: file
         description: Corresponding BAM file indexes

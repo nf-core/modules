@@ -15,28 +15,54 @@ tools:
       licence: ["GPL-2.0-only"]
       identifier: biotools:quast
 input:
-  - - meta: {}
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
     - consensus:
         type: file
         description: |
           Fasta file containing the assembly of interest
-  - - meta2: {}
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
     - fasta:
         type: file
         description: |
           The genome assembly to be evaluated. Has to contain at least a non-empty string dummy value.
-  - - meta3: {}
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
     - gff:
         type: file
         description: The genome GFF file. Has to contain at least a non-empty string
           dummy value.
 output:
   - results:
-      - meta: {}
-      - ${prefix}: {}
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}:
+          type: directory
+          description: |
+            Directory containing the results of the QUAST analysis
   - tsv:
-      - meta: {}
-      - ${prefix}.tsv: {}
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.tsv:
+          type: file
+          description: TSV file
+          pattern: "${prefix}.tsv"
   - transcriptome:
       - meta:
           type: file

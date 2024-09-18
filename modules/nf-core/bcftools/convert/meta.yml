@@ -121,7 +121,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.samples": {}
+      - "*.samples":
+          type: file
+          description: samples format used by IMPUTE2 and SHAPEIT
+          pattern: "*.samples"
   - versions:
       - versions.yml:
           type: file

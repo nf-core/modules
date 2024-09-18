@@ -22,9 +22,19 @@ input:
         type: file
         description: BAM/CRAM/SAM file or pairs formatted reads file
         pattern: "*.{bam,cram,sam,pairs.gz}"
-  - - meta2: {}
-    - fasta: {}
-    - fai: {}
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Reference sequence file
+        pattern: "*.{fasta,fna,fa}"
+    - fai:
+        type: file
+        description: Reference sequence index file
+        pattern: "*.{fai}"
 output:
   - pretext:
       - meta:

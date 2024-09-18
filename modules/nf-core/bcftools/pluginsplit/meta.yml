@@ -71,14 +71,20 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.tbi": {}
+      - "*.tbi":
+          type: file
+          description: TBI file
+          pattern: "*.tbi"
   - csi:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.csi": {}
+      - "*.csi":
+          type: file
+          description: CSI file
+          pattern: "*.csi"
   - versions:
       - versions.yml:
           type: file

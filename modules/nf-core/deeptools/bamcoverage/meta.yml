@@ -45,7 +45,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.bigWig": {}
+      - "*.bigWig":
+          type: file
+          description: BigWig file
+          pattern: "*.bigWig"
   - bedgraph:
       - meta:
           type: map

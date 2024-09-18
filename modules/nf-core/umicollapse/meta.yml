@@ -21,7 +21,10 @@ input:
         description: |
           Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-    - input: {}
+    - input:
+        type: file
+        description: Input bam file
+        pattern: "*.bam"
     - bai:
         type: file
         description: |
@@ -49,7 +52,10 @@ output:
           description: |
             Groovy Map containing sample information
               e.g. [ id:'test', single_end:false ]
-      - "*dedup*fastq.gz": {}
+      - "*dedup*fastq.gz":
+          type: file
+          description: FASTQ file with deduplicated UMIs.
+          pattern: "*dedup*fastq.gz"
   - log:
       - meta:
           type: map

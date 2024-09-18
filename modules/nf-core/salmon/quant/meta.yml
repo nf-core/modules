@@ -62,8 +62,15 @@ output:
           description: File containing meta information from Salmon quant
           pattern: "*info.json"
   - lib_format_counts:
-      - meta: {}
-      - "*lib_format_counts.json": {}
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*lib_format_counts.json":
+          type: file
+          description: File containing the library format counts
+          pattern: "*lib_format_counts.json"
   - versions:
       - versions.yml:
           type: file

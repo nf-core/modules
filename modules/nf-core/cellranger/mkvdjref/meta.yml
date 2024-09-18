@@ -26,7 +26,10 @@ input:
         type: file
         description: Reference genome FASTA file (optional)
         pattern: "*.{fasta,fa}"
-  - - gtf: {}
+  - - gtf:
+        type: file
+        description: Reference genome GTF file (optional)
+        pattern: "*.gtf"
   - - seqs:
         type: file
         description: Reference genome FASTA file from the 10X Genomics fetch-imgt workflow

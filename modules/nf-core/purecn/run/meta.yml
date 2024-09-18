@@ -31,7 +31,9 @@ input:
         type: file
         description: Coverage file generated from Coverage.R
         pattern: "*.txt"
-  - - normal_db: {}
+  - - normal_db:
+        type: file
+        description: normal pannel database
   - - genome:
         type: string
         description: Genome build
@@ -152,8 +154,15 @@ output:
             PDF file containing segmentation plots. Optional
           pattern: "*_segmentation.pdf"
   - multisample_seg:
-      - meta: {}
-      - "*_multisample.seg": {}
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*_multisample.seg":
+          type: file
+          description: multisample segmentation results
+          pattern: "*_multisample.seg"
   - versions:
       - versions.yml:
           type: file

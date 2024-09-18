@@ -22,8 +22,14 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - cram: {}
-    - crai: {}
+    - cram:
+        type: file
+        description: Input cram file
+        pattern: "*.{cram}"
+    - crai:
+        type: file
+        description: Index file for cram file
+        pattern: "*.{crai}"
   - - gff:
         type: file
         description: Feature file with regions of interest
@@ -32,7 +38,10 @@ input:
         type: file
         description: Reference file of cram file
         pattern: "*.{fasta,fa,fna}"
-  - - fasta_fai: {}
+  - - fasta_fai:
+        type: file
+        description: Index file for reference file
+        pattern: "*.{fai}"
 output:
   - results:
       - meta:
