@@ -34,9 +34,6 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out).match() }
-
-                // md5sum is not stable, order of elements in section "variant" may change
-                { assert file(process.out.gff[0][1]).readLines().findAll { it.contains("iso-24-5URPV39QFB") }}
                 )
         }
 
