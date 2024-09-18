@@ -70,16 +70,53 @@ jobs:
       - name: Run ECLint check
         run: editorconfig-checker -exclude README.md $(git ls-files | grep -v test)
 
+  ###################
+  # nf-core linting #
+  ###################
+  nf-core-changes:
+    name: nf-core-changes
+    runs-on: ubuntu-latest
+    outputs:
+      tags: ${{ steps.filter.outputs.changes }}
+      modules: ${{ steps.tags.outputs.modules }}
+      subworkflows: ${{ steps.tags.outputs.subworkflows }}
+    steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+        with:
+          fetch-depth: 2 # To retrieve the preceding commit.
+
+      # TODO: change back to using dorny/paths-filter when https://github.com/dorny/paths-filter/pull/133 is implemented
+      - uses: mirpedrol/paths-filter@main
+        id: filter
+        with:
+          filters: "tests/config/pytest_modules.yml"
+          token: ""
+
+      - name: Fetch module tags
+        id: tags
+        run: |
+          echo modules=$(echo '${{ steps.filter.outputs.changes }}' | jq -c '. | map(select(contains("modules"))) | map(gsub("modules/"; ""))') >> $GITHUB_OUTPUT
+          echo subworkflows=$(echo '${{ steps.filter.outputs.changes }}' | jq '. | map(select(contains("subworkflow"))) | map(gsub("subworkflows/"; ""))') >> $GITHUB_OUTPUT
+
+      - name: debug
+        run: |
+          echo ${{ steps.tags.outputs.modules }}
+          echo ${{ steps.tags.outputs.subworkflows }}
+
   nf-core-lint-modules:
     runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
     name: nf-core lint modules
+    needs: nf-core-changes
+    if: ${{ (needs.nf-core-changes.outputs.modules != '[]') }}
     strategy:
       fail-fast: false
+      matrix:
+        tags: "${{ fromJson(needs.nf-core-changes.outputs.modules) }}"
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: Set up Python
-        uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5
+        uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5
         with:
           python-version: "3.11"
 
@@ -105,17 +142,23 @@ jobs:
       - name: Install nf-core tools development version
         run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
 
-      - name: Lint modules
-        run: nf-core --hide-progress modules lint -a
+      - name: Lint module ${{ matrix.tags }}
+        run: nf-core modules lint ${{ matrix.tags }}
 
   nf-core-lint-subworkflows:
     runs-on: ubuntu-latest
     name: nf-core lint subworkflows
+    needs: nf-core-changes
+    if: ${{ (needs.nf-core-changes.outputs.subworkflows != '[]') }}
+    strategy:
+      fail-fast: false
+      matrix:
+        tags: "${{ fromJson(needs.nf-core-changes.outputs.subworkflows) }}"
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: Set up Python
-        uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5
+        uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5
         with:
           python-version: "3.11"
 
@@ -133,5 +176,5 @@ jobs:
       - name: Install nf-core tools development version
         run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
 
-      - name: Lint subworkflows
-        run: nf-core --hide-progress subworkflows lint -a
+      - name: Lint module ${{ matrix.tags }}
+        run: nf-core subworkflows lint ${{ matrix.tags }}
