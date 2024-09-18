@@ -22,7 +22,7 @@ process SHIGAPASS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     # Convert our genome path to a file with a path in it
-    readlink -f $assembly > ${assembly}_tmp.txt
+    ls $assembly > ${assembly}_tmp.txt
 
     # Run ShigaPass
     sh ShigaPass.sh \\
