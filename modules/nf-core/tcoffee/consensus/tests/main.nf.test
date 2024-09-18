@@ -76,6 +76,25 @@ nextflow_process {
         }
     }
 
+    test("consensus - tree - compressed- seatoxin") {
+        when {
+            process {
+                """
+                msas = FAMSA_ALIGN.out.alignment.mix(MAGUS_ALIGN.out.alignment).groupTuple()
+                input[0] = msas
+                input[1] = CLUSTALO_GUIDETREE.out.tree.collect{ meta, tree -> tree }.map{ tree -> [[ id: 'test'], tree]}
+                input[2] = true
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match()},
+                { assert path(process.out.alignment.get(0).get(1)).getTextGzip().contains("1ahl") }
+            )
+        }
+    }
 
      test("consensus - stub") {
 
