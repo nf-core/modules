@@ -21,7 +21,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test' ],
-                                file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                                file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)                                 
                             ]
                 """
             }
@@ -31,7 +31,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test' ],
-                                file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                                file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)                                 
                             ]
                 input[1] = [[:],[]]
                 input[2] = false
@@ -44,7 +44,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test' ],
-                                file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                                file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)                                 
                             ]
                 input[1] = [[:],[]]
                 input[2] = [[:],[],[]]
@@ -52,11 +52,11 @@ nextflow_process {
 
                 """
             }
-        }
+        }          
     }
 
     test("consensus - no tree - uncompressed - seatoxin ") {
-
+       
         when {
             process {
                 """
@@ -72,9 +72,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.alignment,
-                    process.out.versions
-                    ).match()
+                                    process.out.alignment,
+                                    process.out.versions
+                                 ).match()
                 }
             )
         }
@@ -97,9 +97,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.alignment,
-                    process.out.versions
-                    ).match()
+                                    process.out.alignment,
+                                    process.out.versions
+                                 ).match()
                 }
             )
         }
@@ -128,5 +128,5 @@ nextflow_process {
             )
         }
     }
-
+  
 }
