@@ -29,6 +29,15 @@ input:
       type: list
       description: Input fasta files
       pattern: "*.{fa,faa,fasta,fas,pep}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing a name
+        e.g. `[ id:'folder1' ]`
+  - prior_run:
+      type: directory
+      description: |
+        A folder container containing a previous WorkingDirectory from Orthofinder.
 
 output:
   - meta:
@@ -43,6 +52,9 @@ output:
   - orthofinder:
       type: directory
       description: Orthofinder output directory
+  - working:
+      type: directory
+      description: Orthofinder output WorkingDirectory (used for the orthofinder resume function)
 
 authors:
   - "@GallVp"
