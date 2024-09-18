@@ -1,3 +1,4 @@
+---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "barrnap"
 description: barrnap uses a hmmer profile to find rrnas in reads or contig fasta files
@@ -7,39 +8,38 @@ keywords:
   - removal
 tools:
   - "barrnap":
-      description: "Barrnap predicts the location of ribosomal RNA genes in genomes
-        (bacteria, archaea, metazoan mitochondria and eukaryotes)."
+      description: "Barrnap predicts the location of ribosomal RNA genes in genomes (bacteria, archaea, metazoan mitochondria and eukaryotes)."
       homepage: "https://github.com/tseemann/barrnap"
       documentation: "https://github.com/tseemann/barrnap"
       tool_dev_url: "https://github.com/tseemann/barrnap"
       licence: ["GPL v3"]
-      identifier: biotools:barrnap
 input:
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'test', single_end:false ]`
-    - fasta: {}
-    - dbname:
-        type: string
-        description: database to use(bacteria, archaea, eukaryota, metazoan mitochondria)
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
+  - reads:
+      type: file
+      description: fastq or fasta file nucleotides (it can be amino acids as well)
+      pattern: "*.{fna,fasta,faa,fastq}"
+  - dbname:
+      type: string
+      description: database to use(bacteria, archaea, eukaryota, metazoan mitochondria)
 output:
-  - gff:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
-      - "*.gff":
-          type: file
-          description: gff file containing coordinates of genes
-          pattern: "*.gff"
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
   - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - gff:
+      type: file
+      description: gff file containing coordinates of genes
+      pattern: "*.gff"
 authors:
   - "@danilodileo"
 maintainers:

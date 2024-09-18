@@ -17,58 +17,43 @@ tools:
       documentation: https://github.com/igvteam/igv.js/wiki
       tool_dev_url: https://github.com/igvteam/igv.js
       doi: 10.1093/bioinformatics/btac830
-      licence: "['MIT']"
-      identifier: biotools:igv
+      licence: ["MIT"]
 input:
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - alignment:
-        type: file
-        description: Sorted BAM/CRAM file
-        pattern: "*.{bam,cram}"
-    - index:
-        type: file
-        description: Index of sorted BAM/CRAM file
-        pattern: "*.{bai,crai}"
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - alignment:
+      type: file
+      description: Sorted BAM/CRAM file
+      pattern: "*.{bam,cram}"
+  - index:
+      type: file
+      description: Index of sorted BAM/CRAM file
+      pattern: "*.{bai,crai}"
 output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - browser:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*_genome-browser.html":
-          type: file
-          description: Genome browser HTML file
-          pattern: "*.{html}"
+      type: file
+      description: Genome browser HTML file
+      pattern: "*.{html}"
   - align_files:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - alignment:
-          type: file
-          description: Copy of the input sorted BAM/CRAM file
-          pattern: "*.{bam,cram}"
+      type: file
+      description: Copy of the input sorted BAM/CRAM file
+      pattern: "*.{bam,cram}"
   - index_files:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - index:
-          type: file
-          description: Copy of the input index of sorted BAM/CRAM file
-          pattern: "*.{bai,crai}"
+      type: file
+      description: Copy of the input index of sorted BAM/CRAM file
+      pattern: "*.{bai,crai}"
   - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 authors:
   - "@mirpedrol"
 maintainers:

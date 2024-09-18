@@ -3,8 +3,6 @@ process SENTIEON_GVCFTYPER {
     label 'process_high'
     label 'sentieon'
 
-    secret 'SENTIEON_LICENSE_BASE64'
-
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'oras://community.wave.seqera.io/library/sentieon:202308.02--ffce1b7074ce9924' :
@@ -12,10 +10,10 @@ process SENTIEON_GVCFTYPER {
 
     input:
     tuple val(meta), path(gvcfs), path(tbis), path(intervals)
-    path  fasta
-    path  fai
-    path  dbsnp
-    path  dbsnp_tbi
+    tuple val(meta1), path(fasta)
+    tuple val(meta2), path(fai)
+    tuple val(meta3), path(dbsnp)
+    tuple val(meta4), path(dbsnp_tbi)
 
     output:
     tuple val(meta), path("*.vcf.gz")    , emit: vcf_gz
@@ -46,7 +44,7 @@ process SENTIEON_GVCFTYPER {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.vcf.gz
+    echo "" | gzip >${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml

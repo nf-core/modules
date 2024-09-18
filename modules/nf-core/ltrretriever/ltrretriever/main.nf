@@ -33,9 +33,25 @@ process LTRRETRIEVER_LTRRETRIEVER {
     def infinder        = finder            ? "-infinder $finder"   : ''
     def inmgescan       = mgescan           ? "-inmgescan $mgescan" : ''
     def non_tgca_file   = non_tgca          ? "-nonTGCA $non_tgca"  : ''
+    def writable_genome = "${genome.baseName}.writable.${genome.extension}"
+    // writable_genome:
+    // This is needed to avoid LTR_retriever:2.9.9 failure when the input `genome` is
+    // readonly. LTR_retriever triggers a 'die' if the genome is readonly.
+    // See: https://github.com/oushujun/LTR_retriever/blob/4039eb7778fd9cbc60021e99a8693285e0fa2daf/LTR_retriever#L312
+    //
+    // This copy with permissions logic can be removed once https://github.com/oushujun/LTR_retriever/issues/176
+    // has been resolved.
     """
+    cp \\
+        $genome \\
+        $writable_genome
+
+    chmod \\
+        a+w \\
+        $writable_genome
+
     LTR_retriever \\
-        -genome $genome \\
+        -genome $writable_genome \\
         $inharvest \\
         $infinder \\
         $inmgescan \\
@@ -45,11 +61,11 @@ process LTRRETRIEVER_LTRRETRIEVER {
         &> >(tee "${prefix}.log" 2>&1) \\
         || echo "Errors from LTR_retriever printed to ${prefix}.log"
 
-    mv "${genome}.pass.list"        "${prefix}.pass.list"       || echo ".pass.list was not produced"
-    mv "${genome}.pass.list.gff3"   "${prefix}.pass.list.gff3"  || echo ".pass.list.gff3 was not produced"
-    mv "${genome}.LTRlib.fa"        "${prefix}.LTRlib.fa"       || echo ".LTRlib.fa was not produced"
-    mv "${genome}.out"              "${prefix}.out"             || echo ".out was not produced"
-    mv "${genome}.out.gff3"         "${prefix}.out.gff3"        || echo ".out.gff3 was not produced"
+    mv "${writable_genome}.pass.list"       "${prefix}.pass.list"       || echo ".pass.list was not produced"
+    mv "${writable_genome}.pass.list.gff3"  "${prefix}.pass.list.gff3"  || echo ".pass.list.gff3 was not produced"
+    mv "${writable_genome}.LTRlib.fa"       "${prefix}.LTRlib.fa"       || echo ".LTRlib.fa was not produced"
+    mv "${writable_genome}.out"             "${prefix}.out"             || echo ".out was not produced"
+    mv "${writable_genome}.out.gff3"        "${prefix}.out.gff3"        || echo ".out.gff3 was not produced"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

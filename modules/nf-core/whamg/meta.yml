@@ -1,7 +1,5 @@
 name: "whamg"
-description: The wham suite consists of two programs, wham and whamg. wham, the original
-  tool, is a very sensitive method with a high false discovery rate. The second program,
-  whamg, is more accurate and better suited for general structural variant (SV) discovery.
+description: The wham suite consists of two programs, wham and whamg. wham, the original tool, is a very sensitive method with a high false discovery rate. The second program, whamg, is more accurate and better suited for general structural variant (SV) discovery.
 keywords:
   - whamg
   - wham
@@ -15,63 +13,47 @@ tools:
       documentation: "https://github.com/zeeev/wham"
       tool_dev_url: "https://github.com/zeeev/wham"
       doi: "10.1371/journal.pcbi.1004572"
-      licence: "['MIT']"
-      identifier: ""
+      licence: ["MIT"]
 input:
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - bam:
-        type: file
-        description: BAM/SAM file
-        pattern: "*.{bam,sam}"
-    - bai:
-        type: file
-        description: BAM index file
-        pattern: "*.bai"
-  - - fasta:
-        type: file
-        description: Reference Fasta file
-        pattern: "*.{fasta,fa}"
-  - - fasta_fai:
-        type: file
-        description: Index of the reference Fasta
-        pattern: "*.fai"
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM/SAM file
+      pattern: "*.{bam,sam}"
+  - bai:
+      type: file
+      description: BAM index file
+      pattern: "*.bai"
+  - fasta:
+      type: file
+      description: Reference Fasta file
+      pattern: "*.{fasta,fa}"
+  - fasta_fai:
+      type: file
+      description: Index of the reference Fasta
+      pattern: "*.fai"
 output:
-  - vcf:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.vcf.gz":
-          type: file
-          description: Compressed VCF file
-          pattern: "*.vcf.gz"
-  - tbi:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.vcf.gz.tbi":
-          type: file
-          description: Index of the VCF file
-          pattern: "*.vcf.gz.tbi"
-  - graph:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.txt": {}
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - vcf:
+      type: file
+      description: Compressed VCF file
+      pattern: "*.vcf.gz"
+  - tbi:
+      type: file
+      description: Index of the VCF file
+      pattern: "*.vcf.gz.tbi"
 authors:
   - "@nvnieuwk"
 maintainers:

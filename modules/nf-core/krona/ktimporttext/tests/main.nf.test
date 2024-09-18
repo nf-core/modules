@@ -1,0 +1,54 @@
+nextflow_process {
+
+    name "Test Process KRONA_KTIMPORTTEXT"
+    script "../main.nf"
+    process "KRONA_KTIMPORTTEXT"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "krona"
+    tag "krona/ktimporttext"
+
+    test ("sarscov2 - metagenome - kraken report") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                   [id: 'test'],
+                   file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/test_1.kraken2.report.txt', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot ( process.out.versions ).match() },
+                { assert file(process.out.html.get(0).get(1)).exists() }
+            )
+        }
+    }
+
+    test ("sarscov2 - metagenome - kraken report - stub") {
+
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                   [id: 'test'],
+                   file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/test_1.kraken2.report.txt', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+    }
+}

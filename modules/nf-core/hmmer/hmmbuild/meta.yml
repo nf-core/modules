@@ -13,41 +13,30 @@ tools:
       documentation: "http://hmmer.org/documentation.html"
       tool_dev_url: "https://github.com/EddyRivasLab/hmmer"
       doi: "10.1371/journal.pcbi.1002195"
-      licence: "['BSD']"
-      identifier: ""
+      licence: ["BSD"]
 input:
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - alignment:
-        type: file
-        description: multiple sequence alignment in fasta, clustal, stockholm or phylip
-          format
-        pattern: "*"
-  - - mxfile:
-        type: file
-        description: read substitution score matrix, for use when building profiles
-          from single sequences (--singlemx option)
-        pattern: "*"
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - alignment:
+      type: file
+      description: multiple sequence alignment in fasta, clustal, stockholm or phylip format
+      pattern: "*"
+  - mxfile:
+      type: file
+      description: read substitution score matrix, for use when building profiles from single sequences (--singlemx option)
+      pattern: "*"
 output:
-  - hmm:
-      - meta:
-          type: file
-          description: Gzipped HMM file
-          pattern: "*.{hmm.gz}"
-      - "*.hmm.gz":
-          type: file
-          description: Gzipped HMM file
-          pattern: "*.{hmm.gz}"
-  - hmmbuildout:
-      - "*.hmmbuild.txt": {}
   - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - hmm:
+      type: file
+      description: Gzipped HMM file
+      pattern: "*.{hmm.gz}"
 authors:
   - "@erikrikarddaniel"
 maintainers:

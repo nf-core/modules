@@ -29,7 +29,7 @@ process PYDAMAGE_ANALYZE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pydamage: \$(echo \$(pydamage --version 2>&1) | sed -e 's/pydamage, version //g')
+        pydamage: \$(pydamage --version | sed -n 's/pydamage, version \\(.*\\)/\\1/p')
     END_VERSIONS
     """
 }

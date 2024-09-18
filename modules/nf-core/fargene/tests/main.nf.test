@@ -9,22 +9,22 @@ nextflow_process {
     tag "fargene"
     tag "gunzip"
 
-    test("fargene - bacteroides fragilis - contigs.fa.gz") {
+    setup {
 
-        setup {
-
-            run("GUNZIP") {
-                script "../../gunzip/main.nf"
-                process {
-                    """
-                    input[0] =  Channel.fromList([
-                        tuple([ id:'test', single_end:false ], // meta map
-                        file(params.test_data['bacteroides_fragilis']['illumina']['test1_contigs_fa_gz'], checkIfExists: true))
-                    ])
-                    """
-                }
+        run("GUNZIP") {
+            script "../../gunzip/main.nf"
+            process {
+                """
+                input[0] =  Channel.fromList([
+                    tuple([ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists: true))
+                ])
+                """
             }
         }
+    }
+
+    test("fargene - bacteroides fragilis - contigs.fa.gz") {
 
         when {
             process {
@@ -36,12 +36,39 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match("versions") },
-                { assert snapshot(process.out.txt).match("txt") },
-                { assert path(process.out.log.get(0).get(1)).exists() },
-            )
+            assertAll {
+                { assert process.success }
+                { assert snapshot(
+                            process.out.txt,
+                            path(process.out.log[0][1]).readLines().last().contains("Output can be found in"),
+                            path(process.out.hmm[0][1]).readLines().last().contains("[ok]"),
+                            file(process.out.tmp[0][1].find { file(it).name == "tmp.out" }).readLines().last().contains("[ok]"),
+                            process.out.versions
+                    ).match()
+                }
+            }
+        }
+
+    }
+
+    test("fargene - bacteroides fragilis - contigs.fa.gz - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = 'class_a'
+                """
+            }
+        }
+
+        then {
+            assertAll {
+                { assert process.success }
+                { assert snapshot(process.out).match() }
+            }
         }
 
     }

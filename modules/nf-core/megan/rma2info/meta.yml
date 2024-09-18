@@ -12,47 +12,38 @@ tools:
       documentation: "https://software-ab.cs.uni-tuebingen.de/download/megan6/welcome.html"
       tool_dev_url: "https://github.com/husonlab/megan-ce"
       doi: "10.1371/journal.pcbi.1004957"
-      licence: "['GPL >=3']"
-      identifier: biotools:megan
+      licence: ["GPL >=3"]
 input:
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - rma6:
-        type: file
-        description: RMA6 file from MEGAN or MALT
-        pattern: "*.rma6"
-  - - megan_summary:
-        type: boolean
-        description: Specify whether to generate an MEGAN summary file
-output:
-  - txt:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.txt.gz":
-          type: file
-          description: Compressed text file
-          pattern: "*.txt.gz"
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - rma6:
+      type: file
+      description: RMA6 file from MEGAN or MALT
+      pattern: "*.rma6"
   - megan_summary:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.megan":
-          type: file
-          description: Optionally generated MEGAN summary file
-          pattern: "*.megan"
+      type: boolean
+      description: Specify whether to generate an MEGAN summary file
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
   - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - txt:
+      type: file
+      description: Compressed text file
+      pattern: "*.txt.gz"
+  - megan_summary:
+      type: file
+      description: Optionally generated MEGAN summary file
+      pattern: "*.megan"
 authors:
   - "@jfy133"
 maintainers:

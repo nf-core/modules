@@ -9,6 +9,8 @@ nextflow_process {
     tag "modules_nfcore"
     tag "mudskipper"
     tag "mudskipper/bulk"
+    tag "samtools/sort"
+    tag "mudskipper/index"
 
     test("homo_sapiens - gtf - bam") {
 
@@ -19,8 +21,9 @@ nextflow_process {
                     """
                     input[0] = [
                         [id:'test', single_end:false ], // meta map
-                         file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.bam", checkIfExists: true)
+                        file(params.modules_testdata_base_path +  'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.bam', checkIfExists: true)
                     ]
+                    input[1] = [ [], [] ]
                     """
                 }
             }
@@ -31,7 +34,7 @@ nextflow_process {
                 """
                 input[0] = SAMTOOLS_SORT.out.bam
                 input[1] = []
-                input[2] = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
                 input[3] = false
                 """
             }
@@ -55,8 +58,9 @@ nextflow_process {
                     """
                     input[0] = [
                         [id:'test', single_end:false ], // meta map
-                         file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.bam", checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.bam', checkIfExists: true)
                     ]
+                    input[1] = [ [], [] ]
                     """
                 }
             }
@@ -65,7 +69,7 @@ nextflow_process {
                 script "../../index/main.nf"
                 process {
                     """
-                    input[0] = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+                    input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
                     """
                 }
             }

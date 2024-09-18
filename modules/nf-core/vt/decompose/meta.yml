@@ -1,3 +1,4 @@
+---
 name: "vt_decompose"
 description: decomposes multiallelic variants into biallelic in a VCF file.
 keywords:
@@ -12,38 +13,35 @@ tools:
       homepage: "https://genome.sph.umich.edu/wiki/Vt"
       documentation: "https://genome.sph.umich.edu/wiki/Vt"
       tool_dev_url: "https://github.com/atks/vt"
-      licence: "['MIT']"
-      identifier: ""
+      licence: ["MIT"]
 input:
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'test', single_end:false ]`
-    - vcf:
-        type: file
-        description: The VCF file to decompose
-        pattern: "*.vcf(.gz)?"
-    - intervals:
-        type: file
-        description: The intervals of the variants of decompose
-        pattern: "*.bed"
-output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
   - vcf:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
-      - "*.vcf.gz":
-          type: file
-          description: The decomposed VCF file
-          pattern: "*.vcf.gz"
+      type: file
+      description: The VCF file to decompose
+      pattern: "*.vcf(.gz)?"
+  - intervals:
+      type: file
+      description: The intervals of the variants of decompose
+      pattern: "*.bed"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'test', single_end:false ]`
   - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - vcf:
+      type: file
+      description: The decomposed VCF file
+      pattern: "*.vcf.gz"
 authors:
   - "@nvnieuwk"
 maintainers:

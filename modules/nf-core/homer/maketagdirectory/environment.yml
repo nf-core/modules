@@ -1,14 +1,10 @@
-name: homer_maketagdirectory
-
 channels:
   - conda-forge
   - bioconda
-  - defaults
-
 dependencies:
-  - bioconda::bioconductor-deseq2=1.30.0
-  - bioconda::bioconductor-edger=3.32.0
   - bioconda::homer=4.11
   - bioconda::samtools=1.11
-  - conda-forge::perl=5.26.2
   - conda-forge::r-base=4.0.2
+  - bioconda::bioconductor-deseq2=1.30.0
+  - bioconda::bioconductor-edger=3.32.0
+  - conda-forge::perl=5.26.2
