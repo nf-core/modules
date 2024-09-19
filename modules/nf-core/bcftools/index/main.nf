@@ -38,10 +38,12 @@ process BCFTOOLS_INDEX {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def extension = args.contains("--tbi") || args.contains("-t") ? "tbi" :
-                    "csi"
+    def index = (args.contains("--tbi") || args.contains("-t")) && vcf.endsWith("vcf.gz") ? "tbi" :
+                (args.contains("--csi") || args.contains("-c")) && !vcf.endsWith("vcf") ? "csi" :
+                ""
+    def create_index = index ? "touch ${vcf}.${index}" : ""
     """
-    touch ${vcf}.${extension}
+    ${create_index}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

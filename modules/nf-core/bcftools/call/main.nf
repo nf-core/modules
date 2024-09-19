@@ -47,12 +47,9 @@ process BCFTOOLS_CALL {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def index = args.contains("--write-index=tbi") || args.contains("-W=tbi") ? "tbi" :
-                args.contains("--write-index=csi") || args.contains("-W=csi") ? "csi" :
-                args.contains("--write-index") || args.contains("-W") ? "csi" :
-                ""
-
-    def create_index = index.matches("csi|tbi") ? "touch ${prefix}.vcf.gz.${index}" : ""
+    def extension = "vcf.gz"
+    def index = getVcfIndex(args, extension);
+    def create_index = index ? "touch ${prefix}.${extension}.${index}" : ""
 
     """
     echo "" | gzip > ${prefix}.vcf.gz
@@ -63,4 +60,16 @@ process BCFTOOLS_CALL {
         bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
     END_VERSIONS
     """
+}
+// Custom Functions
+String getVcfIndex(String args, String extension) {
+    index = ''
+    if (extension in ['vcf.gz', 'bcf', 'bcf.gz']) {
+        if (['--write-index=tbi', '-W=tbi'].any { args.contains(it) }  && extension == 'vcf.gz') {
+            index = 'tbi'
+        } else if (['--write-index=tbi', '-W=tbi', '--write-index=csi', '-W=csi', '--write-index', '-W'].any { args.contains(it) }) {
+            index = 'csi'
+        }
+    }
+    return index
 }
