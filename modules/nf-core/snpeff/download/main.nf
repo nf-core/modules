@@ -42,6 +42,7 @@ process SNPEFF_DOWNLOAD {
     stub:
     """
     mkdir -p snpeff_cache/${genome}.${cache_version}
+
     touch snpeff_cache/${genome}.${cache_version}/sequence.I.bin
     touch snpeff_cache/${genome}.${cache_version}/sequence.bin
 
