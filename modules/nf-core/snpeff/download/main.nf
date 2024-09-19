@@ -41,7 +41,9 @@ process SNPEFF_DOWNLOAD {
 
     stub:
     """
-    mkdir ${snpeff_db}
+    mkdir -p snpeff_cache/${genome}.${cache_version}
+    touch snpeff_cache/${genome}.${cache_version}/sequence.I.bin
+    touch snpeff_cache/${genome}.${cache_version}/sequence.bin
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
