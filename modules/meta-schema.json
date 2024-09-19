@@ -38,14 +38,16 @@
             "type": "array",
             "description": "Input channels for the module",
             "items": {
-                "type": "array", "items": { "$ref": "#/definitions/elementProperties" }
+                "type": "array",
+                "items": { "$ref": "#/definitions/elementProperties" }
             }
         },
         "output": {
             "type": "array",
             "description": "Output channels for the module",
             "items": {
-                "type": "object", "items": { "$ref": "#/definitions/elementProperties" }
+                "type": "object",
+                "items": { "$ref": "#/definitions/elementProperties" }
             }
         },
         "tools": {
