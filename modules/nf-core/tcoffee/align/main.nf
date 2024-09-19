@@ -57,6 +57,8 @@ process TCOFFEE_ALIGN {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    # Otherwise, tcoffee will crash when calling its version
+    export TEMP='./'
     touch ${prefix}.aln${compress ? '.gz':''}
 
     cat <<-END_VERSIONS > versions.yml

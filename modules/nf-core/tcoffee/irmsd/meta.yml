@@ -27,10 +27,18 @@ input:
       type: file
       description: fasta file containing the alignment to be evaluated. May be gzipped or uncompressed.
       pattern: "*.{aln,fa,fasta,fas}{.gz,}"
+
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing information about the structures
+        e.g. [ id:'test', ... ]
+
   - template:
       type: file
       description: Template file matching the structures to the sequences in the alignment.
       pattern: "*"
+
   - structures:
       type: directory
       description: Directory containing the structures file matching the sequences in the alignment in PDB format
