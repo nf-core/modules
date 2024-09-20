@@ -77,6 +77,22 @@ output:
       type: file
       description: File containing the information about statistical distribution of insert sizes
       pattern: "*.txt"
+  -  mq_plot:
+      type: file
+      description: "PDF containting plot of mean base quality scores"
+      pattern: "*.pdf"
+  - qd_plot:
+      type: file
+      description: "PDF containting plot of specific base quality score"
+      pattern: "*.pdf"
+  - is_plot:
+      type: file
+      description: "PDF containting plot of insert sizes"
+      pattern: "*.pdf"
+  - gc_plot:
+      type: file
+      description: "PDF containting plot of GC bias"
+      pattern: "*.pdf"
 authors:
   - "@ramprasadn"
 maintainers:
