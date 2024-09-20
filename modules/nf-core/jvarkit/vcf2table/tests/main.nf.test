@@ -1,11 +1,9 @@
-// nf-core modules test jvarkit/vcffilterjdk
 nextflow_process {
 
     name "Test Process JVARKIT_VCF2TABLE"
     script "../main.nf"
     process "JVARKIT_VCF2TABLE"
     config "./nextflow.config"
-
 
     tag "modules"
     tag "modules_nfcore"
