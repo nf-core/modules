@@ -1,5 +1,8 @@
 name: plink_indeppairwise
-description: Produce a pruned subset of markers that are in approximate linkage equilibrium with each other. Pairs of variants in the current window with squared correlation greater than the threshold are noted and variants are greedily pruned from the window until no such pairs remain.
+description: Produce a pruned subset of markers that are in approximate linkage equilibrium
+  with each other. Pairs of variants in the current window with squared correlation
+  greater than the threshold are noted and variants are greedily pruned from the window
+  until no such pairs remain.
 keywords:
   - plink
   - indep pairwise
@@ -8,56 +11,71 @@ keywords:
   - fam
 tools:
   - "plink":
-      description: "Whole genome association analysis toolset, designed to perform a range of basic, large-scale analyses in a computationally efficient manner."
+      description: "Whole genome association analysis toolset, designed to perform a
+        range of basic, large-scale analyses in a computationally efficient manner."
       homepage: "https://www.cog-genomics.org/plink"
       documentation: "https://www.cog-genomics.org/plink/1.9/data"
       tool_dev_url: "https://www.cog-genomics.org/plink/1.9/dev"
       licence: ["GPL"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bed:
-      type: file
-      description: PLINK binary biallelic genotype table file
-      pattern: "*.{bed}"
-  - bim:
-      type: file
-      description: PLINK extended MAP file
-      pattern: "*.{bim}"
-  - fam:
-      type: file
-      description: PLINK sample information file
-      pattern: "*.{fam}"
-  - window_size:
-      type: string
-      description: Window size in variant count or kilobase (if the 'kb' modifier is present) units, a variant count to shift the window at the end of each step, and a variance inflation factor (VIF) threshold.
-  - variant_count:
-      type: string
-      description: Variant count to shift the window at the end of each step.
-  - r2_threshold:
-      type: string
-      description: Pairwise r2 threshold. At each step, pairs of variants in the current window with squared correlation greater than the threshold are noted, and variants are greedily pruned from the window until no such pairs remain
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bed:
+        type: file
+        description: PLINK binary biallelic genotype table file
+        pattern: "*.{bed}"
+    - bim:
+        type: file
+        description: PLINK extended MAP file
+        pattern: "*.{bim}"
+    - fam:
+        type: file
+        description: PLINK sample information file
+        pattern: "*.{fam}"
+  - - window_size:
+        type: string
+        description: Window size in variant count or kilobase (if the 'kb' modifier
+          is present) units, a variant count to shift the window at the end of each
+          step, and a variance inflation factor (VIF) threshold.
+  - - variant_count:
+        type: string
+        description: Variant count to shift the window at the end of each step.
+  - - r2_threshold:
+        type: string
+        description: Pairwise r2 threshold. At each step, pairs of variants in the current
+          window with squared correlation greater than the threshold are noted, and
+          variants are greedily pruned from the window until no such pairs remain
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - prunein:
-      type: file
-      description: File with IDs of pruned subset of markers that are in approximate linkage equilibrium with each other
-      pattern: "*.{prune.in}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.prune.in":
+          type: file
+          description: File with IDs of pruned subset of markers that are in approximate
+            linkage equilibrium with each other
+          pattern: "*.{prune.in}"
   - pruneout:
-      type: file
-      description: File with IDs of excluded variants
-      pattern: "*.{prune.out}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.prune.out":
+          type: file
+          description: File with IDs of excluded variants
+          pattern: "*.{prune.out}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@atrigila"
 maintainers:
