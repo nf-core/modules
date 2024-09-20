@@ -29,6 +29,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert path(process.out.output[0][1]).text.startsWith(">>MT192765.1:197/G (n. 1)")},
                 { assert snapshot(
 					path(process.out.output[0][1]),
 					process.out.versions

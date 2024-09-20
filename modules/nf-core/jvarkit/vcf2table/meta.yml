@@ -16,6 +16,7 @@ tools:
       tool_dev_url: "https://github.com/lindenb/jvarkit"
       doi: "10.6084/m9.figshare.1425030"
       licence: ["MIT"]
+      args_id: "$args2"
 
   - "bcftools":
       description: |
@@ -24,15 +25,15 @@ tools:
       documentation: "http://www.htslib.org/doc/bcftools.html"
       doi: "10.1093/bioinformatics/btp352"
       licence: ["MIT"]
-
+      args_id: "$args1"
 input:
   - meta:
-      type: map
+      type: Groovy Map containing reference genome information for vcf
       description: |
         Groovy Map containing VCF information
   - vcf:
       type: file
-      description: Groovy Map containing reference genome information for vcf
+      description: Input vcf/bcf file
       pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
   - tbi:
       type: file
