@@ -47,7 +47,7 @@ nextflow_process {
             when {
             process {
                 """
-                input[0] = MIRDEEP2_MAPPER.out.mirdeep2_inputs
+                input[0] = MIRDEEP2_MAPPER.out.outputs
                 input[1] = [
                         [ id:'genome_cel_cluster' ], // meta map
                     file('https://github.com/rajewsky-lab/mirdeep2/raw/master/tutorial_dir/cel_cluster.fa', checkIfExists: true)
@@ -79,7 +79,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = MIRDEEP2_MAPPER.out.mirdeep2_inputs
+                input[0] = MIRDEEP2_MAPPER.out.outputs
                 input[1] = [
                         [ id:'genome_cel_cluster' ], // meta map
                     file('https://github.com/rajewsky-lab/mirdeep2/raw/master/tutorial_dir/cel_cluster.fa', checkIfExists: true)

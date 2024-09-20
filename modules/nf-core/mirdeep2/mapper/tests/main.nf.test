@@ -74,13 +74,13 @@ nextflow_process {
                 // md5sum not stable - IDs change while sequences are the same
 
                 // Assert TCACCGGGGGTACATCAGCTAA occurs once
-                { assert file(process.out.mirdeep2_inputs[0][1]).readLines().findAll { it.contains("TCACCGGGGGTACATCAGCTAA") }.size() == 1 },
+                { assert file(process.out.outputs[0][1]).readLines().findAll { it.contains("TCACCGGGGGTACATCAGCTAA") }.size() == 1 },
 
                 // Assert seq_347479_x287 occurs once
-                { assert file(process.out.mirdeep2_inputs[0][1]).readLines().findAll { it.contains("seq_347479_x287") }.size() == 1 },
+                { assert file(process.out.outputs[0][1]).readLines().findAll { it.contains("seq_347479_x287") }.size() == 1 },
 
                 // Assert that specific content occurs 4 times
-                { assert file(process.out.mirdeep2_inputs[0][2]).readLines().findAll { it.contains("21\t1\t21\ttcaccgggtgtaaatcagctt\tchrII:11534525-11540624\t21\t3535\t3555\ttcaccgggtgtaaatcagctt\t+\t0\tmmmmmmmmmmmmmmmmmmmmm") }.size() == 4 }
+                { assert file(process.out.outputs[0][2]).readLines().findAll { it.contains("21\t1\t21\ttcaccgggtgtaaatcagctt\tchrII:11534525-11540624\t21\t3535\t3555\ttcaccgggtgtaaatcagctt\t+\t0\tmmmmmmmmmmmmmmmmmmmmm") }.size() == 4 }
             )
         }
 
@@ -103,10 +103,10 @@ nextflow_process {
                 { assert process.success },
 
                 // Assert reads occurs once
-                { assert file(process.out.mirdeep2_inputs[0][1]).readLines().findAll { it.contains("TACCTGAGGTAGCAGGTTGTATAGTTGGGG") }.size() == 1 },
+                { assert file(process.out.outputs[0][1]).readLines().findAll { it.contains("TACCTGAGGTAGCAGGTTGTATAGTTGGGG") }.size() == 1 },
 
                 // Assert ID occurs once
-                { assert file(process.out.mirdeep2_inputs[0][1]).readLines().findAll { it.contains("seq_996152_x1") }.size() == 1 }
+                { assert file(process.out.outputs[0][1]).readLines().findAll { it.contains("seq_996152_x1") }.size() == 1 }
 
                 )
         }

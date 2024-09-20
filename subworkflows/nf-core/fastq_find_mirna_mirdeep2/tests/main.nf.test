@@ -17,6 +17,31 @@ nextflow_workflow {
     test("smrnaseq - fasta - single_end") {
         config "./nextflow.config"
 
+    setup {
+        run("SEQKIT_REPLACE") {
+            script "modules/nf-core/seqkit/replace/main.nf"
+            config "./nextflow.config"
+
+            process {
+                """
+                input[0] = [
+                    [ id:'genome' ], // meta map
+                    file('https://github.com/nf-core/test-datasets/raw/smrnaseq/reference/genome.fa', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        run("BOWTIE_BUILD") {
+            script "modules/nf-core/bowtie/build/main.nf"
+            process {
+                """
+                input[0] = SEQKIT_REPLACE.out.fastx
+                """
+            }
+        }
+    }
+
         when {
             workflow {
                 """
@@ -25,12 +50,11 @@ nextflow_workflow {
                     file('https://github.com/nf-core/test-datasets/raw/smrnaseq/testdata/trimmed/small_Clone1_N1.fastp.fastq.gz', checkIfExists: true)
                 ]
 
-                input[1] = [
-                    [ id:'genome' ], // meta map
-                    file('https://github.com/nf-core/test-datasets/raw/smrnaseq/reference/genome.fa', checkIfExists: true)
-                ]
+                input[1] = SEQKIT_REPLACE.out.fastx
 
-                input[2] = [
+                input[2] = BOWTIE_BUILD.out.index
+
+                input[3] = [
                     [ id:'mirna_mature_hairpin'], // meta map
                     file('https://github.com/nf-core/test-datasets/raw/smrnaseq/MirGeneDB/mirgenedb_hsa_mature.fa', checkIfExists: true),
                     file('https://github.com/nf-core/test-datasets/raw/smrnaseq/MirGeneDB/mirgenedb_hsa_hairpin.fa', checkIfExists: true)
