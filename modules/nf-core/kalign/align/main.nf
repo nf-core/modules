@@ -32,7 +32,7 @@ process KALIGN_ALIGN {
             return \$exit_code
         fi
     }
-    
+
     trap 'error_handler' ERR
 
     unpigz -cdf $fasta | \\
