@@ -13,35 +13,44 @@ tools:
       tool_dev_url: "https://github.com/trinityrnaseq/trinityrnaseq/"
       doi: "10.1038/nbt.1883"
       licence: ["BSD-3-clause"]
+      identifier: biotools:trinity
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: |
-        List of input fasta/fastq reads to be assembled into a transcriptome.
-      pattern: "*.{fa|fasta|fq|fastq}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input fasta/fastq reads to be assembled into a transcriptome.
+        pattern: "*.{fa|fasta|fq|fastq}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - transcript_fasta:
-      type: file
-      description: de novo assembled transcripts fasta file compressed
-      pattern: "*.fa.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fa.gz":
+          type: file
+          description: de novo assembled transcripts fasta file compressed
+          pattern: "*.fa.gz"
   - log:
-      type: file
-      description: Log from trinity
-      pattern: "*.log"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: Log from trinity
+          pattern: "*.log"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@timslittle"
   - "@gallvp"

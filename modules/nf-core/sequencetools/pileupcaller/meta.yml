@@ -1,5 +1,6 @@
 name: "sequencetools_pileupcaller"
-description: PileupCaller is a tool to create genotype calls from bam files using read-sampling methods
+description: PileupCaller is a tool to create genotype calls from bam files using
+  read-sampling methods
 keywords:
   - genotyping
   - mpileup
@@ -17,50 +18,84 @@ tools:
       documentation: "https://github.com/stschiff/sequenceTools#readme"
       tool_dev_url: "https://github.com/stschiff/sequenceTools"
       licence: ["MIT"]
+      identifier: ""
 input:
   # Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - mpileup:
-      type: file
-      description: samtools mpileup output.
-  - snpfile:
-      type: file
-      description: |
-        Eigenstrat format .snp file of the sites in the mpileup file to call genotypes on.
-        Only alleles matching the Ref and Alt alleles of the provided snp file will be called.
-  - calling_method:
-      type: string
-      description: The desired calling method for pileupcaller. One of 'randomHaploid', 'randomDiploid', or 'majorityCall'.
-  - output_format:
-      type: string
-      description: The desired output format. One of 'PLINK', 'EIGENSTRAT', or 'FREQSUM'.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - mpileup:
+        type: file
+        description: samtools mpileup output.
+  - - snpfile:
+        type: file
+        description: |
+          Eigenstrat format .snp file of the sites in the mpileup file to call genotypes on.
+          Only alleles matching the Ref and Alt alleles of the provided snp file will be called.
+  - - sample_names_fn:
+        type: file
+        description: File containing the sample names
 output:
   #Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - eigenstrat:
-      type: file
-      description: A tuple containing the output Eigenstrat-formatted geno, snp and ind files.
-      pattern: "*.{geno,snp,ind}.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.geno":
+          type: file
+          description: A tuple containing the output Eigenstrat-formatted geno, snp and
+            ind files.
+          pattern: "*.{geno,snp,ind}.txt"
+      - "*.snp":
+          type: file
+          description: A tuple containing the output Eigenstrat-formatted geno, snp and
+            ind files.
+          pattern: "*.{geno,snp,ind}.txt"
+      - "*.ind":
+          type: file
+          description: A tuple containing the output Eigenstrat-formatted geno, snp and
+            ind files.
+          pattern: "*.{geno,snp,ind}.txt"
   - plink:
-      type: file
-      description: A tuple containing the output Plink-formatted bed, bim and fam files.
-      pattern: "*.{bed,bim,fam}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bed":
+          type: file
+          description: A tuple containing the output Plink-formatted bed, bim and fam
+            files.
+          pattern: "*.{bed,bim,fam}"
+      - "*.bim":
+          type: file
+          description: A tuple containing the output Plink-formatted bed, bim and fam
+            files.
+          pattern: "*.{bed,bim,fam}"
+      - "*.fam":
+          type: file
+          description: A tuple containing the output Plink-formatted bed, bim and fam
+            files.
+          pattern: "*.{bed,bim,fam}"
   - freqsum:
-      type: file
-      description: The output freqsum-formatted file.
-      pattern: "*.freqsum.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.freqsum.gz":
+          type: file
+          description: The output freqsum-formatted file.
+          pattern: "*.freqsum.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@TCLamnidis"
 maintainers:
