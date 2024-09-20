@@ -73,12 +73,12 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - '*.telseq.tsv':
-        type: file
-        description: Telseq output
-        pattern: "*.tsv"
-    - versions:
+            e.g. [ id:'test', single_end:false ]
+      - "*.telseq.tsv":
+          type: file
+          description: Telseq output
+          pattern: "*.tsv"
+  - versions:
       - versions.yml:
           type: file
           description: File containing software versions
