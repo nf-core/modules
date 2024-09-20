@@ -28,9 +28,8 @@ tools:
       args_id: "$args1"
 input:
   - meta:
-      type: Groovy Map containing reference genome information for vcf
-      description: |
-        Groovy Map containing VCF information
+      type: map
+      description: Groovy Map containing VCF information
   - vcf:
       type: file
       description: Input vcf/bcf file
