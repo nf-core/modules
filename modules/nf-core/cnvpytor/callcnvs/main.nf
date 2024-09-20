@@ -23,7 +23,7 @@ process CNVPYTOR_CALLCNVS {
     """
     cnvpytor \\
         -root $pytor \\
-        $bin_sizes
+        $bins
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
