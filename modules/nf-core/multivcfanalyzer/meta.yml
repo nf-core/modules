@@ -20,10 +20,10 @@ tools:
       identifier: ""
 input:
   - - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
     - vcfs:
         type: file
         description: One or a list of uncompressed VCF file
@@ -79,10 +79,10 @@ input:
           Fraction of which whereby if a call falls above this value, and lower
           than the homozygous threshold, a base will be called 'heterozygous'.
   - - meta5:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
     - gff_exclude:
         type: file
         description: |
