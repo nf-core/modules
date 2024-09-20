@@ -100,9 +100,17 @@
                                 "message": "Licence must be an array of one or more entries, e.g. [\"MIT\"]"
                             },
                             "identifier": {
-                                "type": "string",
                                 "description": "bio.tools identifier of the tool",
-                                "pattern": "^biotools:.*$"
+                                "anyOf": [
+                                    {
+                                        "type": "string",
+                                        "pattern": "^biotools:.*$"
+                                    },
+                                    {
+                                        "type": "string",
+                                        "maxLength": 0
+                                    }
+                                ]
                             }
                         },
                         "required": ["description"],
