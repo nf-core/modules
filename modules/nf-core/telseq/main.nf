@@ -23,7 +23,7 @@ process TELSEQ {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def exome  = bed ? " --exomebed=${bed}" : "" 
+    def exome  = bed ? " --exomebed=${bed}" : ""
     """
     # telseq doesn't support CRAM. See https://github.com/zd1/telseq/issues/26
     if ${bam.name.endsWith(".cram")}
