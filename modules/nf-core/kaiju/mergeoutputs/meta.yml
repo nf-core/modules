@@ -1,5 +1,6 @@
 name: kaiju_mergeoutputs
-description: Merge two tab-separated output files of Kaiju and Kraken in the column format
+description: Merge two tab-separated output files of Kaiju and Kraken in the column
+  format
 keywords:
   - classify
   - metagenomics
@@ -13,40 +14,44 @@ tools:
       tool_dev_url: https://github.com/bioinformatics-centre/kaiju
       doi: "10.1038/ncomms11257"
       licence: ["GNU GPL v3"]
+      identifier: biotools:kaiju
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - kaiju:
-      type: file
-      description: |
-        Results with taxonomic classification of each read from Kaiju
-  - kraken:
-      type: file
-      description: |
-        Results with taxonomic classification of each read from Kraken
-      pattern: "*.{tsv}"
-  - db:
-      type: directory
-      description: |
-        List containing the database and nodes files for Kaiju
-        e.g. [ 'database.fmi', 'nodes.dmp' ]
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - kaiju:
+        type: file
+        description: |
+          Results with taxonomic classification of each read from Kaiju
+    - kraken:
+        type: file
+        description: |
+          Results with taxonomic classification of each read from Kraken
+        pattern: "*.{tsv}"
+  - - db:
+        type: directory
+        description: |
+          List containing the database and nodes files for Kaiju
+          e.g. [ 'database.fmi', 'nodes.dmp' ]
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - merged:
-      type: file
-      description: Results with merged taxonomic classification of each read based on the given strategy '1', '2', 'lca' [default] or 'lowest'
-      pattern: "*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: Results with merged taxonomic classification of each read based
+            on the given strategy '1', '2', 'lca' [default] or 'lowest'
+          pattern: "*.tsv"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@Joon-Klaps"
 maintainers:

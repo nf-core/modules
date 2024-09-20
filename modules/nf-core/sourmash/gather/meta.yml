@@ -1,5 +1,6 @@
 name: "sourmash_gather"
-description: Search a metagenome sourmash signature against one or many reference databases and return the minimum set of genomes that contain the k-mers in the metagenome.
+description: Search a metagenome sourmash signature against one or many reference
+  databases and return the minimum set of genomes that contain the k-mers in the metagenome.
 keywords:
   - FracMinHash sketch
   - signature
@@ -18,73 +19,100 @@ tools:
       tool_dev_url: https://github.com/sourmash-bio/sourmash
       doi: "10.21105/joss.00027"
       licence: ["BSD-3-clause"]
+      identifier: biotools:sourmash
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - signature:
-      type: file
-      description: File containing signatures (hash sketches) of a sample
-      pattern: "*.{sig}"
-  - db:
-      type: file
-      description: Sourmash database (a list of signatures, SBTs, or signature zip files)
-  - save_unassigned:
-      type: boolean
-      description: |
-        If true, output will contain a file that is a sourmash signature containing the unassigned hashes from the query
-  - save_matches_sig:
-      type: boolean
-      description: |
-        If true, output will contain a file that is a sourmash signature composed of the FracMinHash sketches that were matched in the database and that matched the query
-  - save_prefetch:
-      type: boolean
-      description: |
-        If true, output will contain a file with all prefetch-matched signatures from the database
-  - save_prefetch_csv:
-      type: boolean
-      description: |
-        If true, output will contain a csv file with the names of all prefetch-matched signatures
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - signature:
+        type: file
+        description: File containing signatures (hash sketches) of a sample
+        pattern: "*.{sig}"
+  - - database:
+        type: file
+        description: database
+  - - save_unassigned:
+        type: boolean
+        description: |
+          If true, output will contain a file that is a sourmash signature containing the unassigned hashes from the query
+  - - save_matches_sig:
+        type: boolean
+        description: |
+          If true, output will contain a file that is a sourmash signature composed of the FracMinHash sketches that were matched in the database and that matched the query
+  - - save_prefetch:
+        type: boolean
+        description: |
+          If true, output will contain a file with all prefetch-matched signatures from the database
+  - - save_prefetch_csv:
+        type: boolean
+        description: |
+          If true, output will contain a csv file with the names of all prefetch-matched signatures
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - result:
-      type: file
-      description: |
-        Table with signatures classified as belonging to any of the genomes
-        in the sourmash database(s).
-      pattern: "*{csv.gz}"
-  - matches:
-      type: file
-      description: |
-        A signature containing FracMinHash sketches of genomes
-        in the sourmash database.
-      pattern: "*{sig.zip}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.csv.gz":
+          type: file
+          description: |
+            Table with signatures classified as belonging to any of the genomes
+            in the sourmash database(s).
+          pattern: "*{csv.gz}"
   - unassigned:
-      type: file
-      description: |
-        A FracMinHash sketch containing hashes (k-mers) that did not match to any of the genomes
-        in the sourmash database(s).
-      pattern: "*{sig.zip}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_unassigned.sig.zip":
+          type: file
+          description: |
+            A FracMinHash sketch containing hashes (k-mers) that did not match to any of the genomes
+            in the sourmash database(s).
+          pattern: "*{sig.zip}"
+  - matches:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_matches.sig.zip":
+          type: file
+          description: |
+            A signature containing FracMinHash sketches of genomes
+            in the sourmash database.
+          pattern: "*{sig.zip}"
   - prefetch:
-      type: file
-      description: |
-        All prefetch-matched signatures from the database.
-      pattern: "*{sig.zip}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_prefetch.sig.zip":
+          type: file
+          description: |
+            All prefetch-matched signatures from the database.
+          pattern: "*{sig.zip}"
   - prefetchcsv:
-      type: file
-      description: |
-        The names of all prefetch-matched signatures from the database in CSV format.
-      pattern: "*{csv.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_prefetch.csv.gz":
+          type: file
+          description: |
+            The names of all prefetch-matched signatures from the database in CSV format.
+          pattern: "*{csv.gz}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@vmikk"
   - "@taylorreiter"

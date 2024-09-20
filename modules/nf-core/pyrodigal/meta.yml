@@ -1,5 +1,6 @@
 name: "pyrodigal"
-description: Pyrodigal is a Python module that provides bindings to Prodigal, a fast, reliable protein-coding gene prediction for prokaryotic genomes.
+description: Pyrodigal is a Python module that provides bindings to Prodigal, a fast,
+  reliable protein-coding gene prediction for prokaryotic genomes.
 keywords:
   - sort
   - annotation
@@ -7,52 +8,75 @@ keywords:
   - prokaryote
 tools:
   - "pyrodigal":
-      description: "Pyrodigal is a Python module that provides bindings to Prodigal (ORF finder for microbial sequences) using Cython."
+      description: "Pyrodigal is a Python module that provides bindings to Prodigal
+        (ORF finder for microbial sequences) using Cython."
       homepage: "https://pyrodigal.readthedocs.org/"
       documentation: "https://pyrodigal.readthedocs.org/"
       tool_dev_url: "https://github.com/althonos/pyrodigal/"
       doi: "10.21105/joss.04296"
       licence: ["GPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: FASTA file
-      pattern: "*.{fasta.gz,fa.gz,fna.gz}"
-  - output_format:
-      type: string
-      description: Output format
-      pattern: "{gbk,gff}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: FASTA file
+        pattern: "*.{fasta.gz,fa.gz,fna.gz}"
+  - - output_format:
+        type: string
+        description: Output format
+        pattern: "{gbk,gff}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - annotations:
-      type: file
-      description: Gene annotations. The file format is specified via input channel "output_format".
-      pattern: "*.{gbk,gff}.gz"
-  - faa:
-      type: file
-      description: protein translations file
-      pattern: "*.{faa.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.${output_format}.gz":
+          type: file
+          description: Gene annotations. The file format is specified via input channel
+            "output_format".
+          pattern: "*.{gbk,gff}.gz"
   - fna:
-      type: file
-      description: nucleotide sequences file
-      pattern: "*.{fna.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fna.gz":
+          type: file
+          description: nucleotide sequences file
+          pattern: "*.{fna.gz}"
+  - faa:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.faa.gz":
+          type: file
+          description: protein translations file
+          pattern: "*.{faa.gz}"
   - score:
-      type: file
-      description: all potential genes (with scores)
-      pattern: "*.{score.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.score.gz":
+          type: file
+          description: all potential genes (with scores)
+          pattern: "*.{score.gz}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@louperelo"
 maintainers:
