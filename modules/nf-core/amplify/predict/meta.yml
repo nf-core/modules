@@ -1,5 +1,6 @@
 name: "amplify_predict"
-description: AMPlify is an attentive deep learning model for antimicrobial peptide prediction.
+description: AMPlify is an attentive deep learning model for antimicrobial peptide
+  prediction.
 keywords:
   - antimicrobial peptides
   - AMPs
@@ -13,33 +14,37 @@ tools:
       tool_dev_url: "https://github.com/bcgsc/AMPlify"
       doi: "10.1186/s12864-022-08310-4"
       licence: ["GPL v3"]
+      identifier: biotools:amplify
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - faa:
-      type: file
-      description: amino acid sequences fasta
-      pattern: "*.{fa,fa.gz,faa,faa.gz,fasta,fasta.gz}"
-  - model_dir:
-      type: directory
-      description: Directory of where models are stored (optional)
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - faa:
+        type: file
+        description: amino acid sequences fasta
+        pattern: "*.{fa,fa.gz,faa,faa.gz,fasta,fasta.gz}"
+  - - model_dir:
+        type: directory
+        description: Directory of where models are stored (optional)
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - tsv:
-      type: file
-      description: amino acid sequences with prediction (AMP, non-AMP) and probability scores
-      pattern: "*.{tsv}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: amino acid sequences with prediction (AMP, non-AMP) and probability
+            scores
+          pattern: "*.{tsv}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@louperelo"
 maintainers:

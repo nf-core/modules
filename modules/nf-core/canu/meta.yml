@@ -1,5 +1,6 @@
 name: "canu"
-description: Accurate assembly of segmental duplications, satellites, and allelic variants from high-fidelity long reads.
+description: Accurate assembly of segmental duplications, satellites, and allelic
+  variants from high-fidelity long reads.
 keywords:
   - Assembly
   - pacbio
@@ -7,72 +8,122 @@ keywords:
   - nanopore
 tools:
   - "canu":
-      description: "Canu is a fork of the Celera Assembler designed for high-noise single-molecule sequencing."
+      description: "Canu is a fork of the Celera Assembler designed for high-noise single-molecule
+        sequencing."
       homepage: "https://canu.readthedocs.io/en/latest/index.html#"
       documentation: "https://canu.readthedocs.io/en/latest/tutorial.html"
       tool_dev_url: "https://github.com/marbl/canu"
       doi: "10.1101/gr.215087.116"
       licence: ["GPL v2 and others"]
+      identifier: biotools:canu
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:true ]
-  - reads:
-      type: file
-      description: fasta/fastq file
-      pattern: "*.{fasta,fastq}"
-  - mode:
-      type: string
-      description: Canu mode depending on the input data (source and error rate)
-      pattern: "-pacbio|-nanopore|-pacbio-hifi"
-  - genomesize:
-      type: string
-      description: An estimate of the size of the genome. Common suffices are allowed, for example, 3.7m or 2.8g
-      pattern: "<number>[g|m|k]"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:true ]
+    - reads:
+        type: file
+        description: fasta/fastq file
+        pattern: "*.{fasta,fastq}"
+  - - mode:
+        type: string
+        description: Canu mode depending on the input data (source and error rate)
+        pattern: "-pacbio|-nanopore|-pacbio-hifi"
+  - - genomesize:
+        type: string
+        description: An estimate of the size of the genome. Common suffices are allowed,
+          for example, 3.7m or 2.8g
+        pattern: "<number>[g|m|k]"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - report:
-      type: file
-      description: Most of the analysis reported during assembly
-      pattern: "*.report"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.report":
+          type: file
+          description: Most of the analysis reported during assembly
+          pattern: "*.report"
   - assembly:
-      type: file
-      description: Everything which could be assembled and is the full assembly, including both unique, repetitive, and bubble elements.
-      pattern: "*.contigs.fasta"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.contigs.fasta.gz":
+          type: file
+          description: Everything which could be assembled and is the full assembly, including
+            both unique, repetitive, and bubble elements.
+          pattern: "*.contigs.fasta"
   - contigs:
-      type: file
-      description: Reads and low-coverage contigs which could not be incorporated into the primary assembly.
-      pattern: "*.unassembled.fasta"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.unassembled.fasta.gz":
+          type: file
+          description: Reads and low-coverage contigs which could not be incorporated
+            into the primary assembly.
+          pattern: "*.unassembled.fasta"
   - corrected_reads:
-      type: file
-      description: The reads after correction.
-      pattern: "*.correctedReads.fasta.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.correctedReads.fasta.gz":
+          type: file
+          description: The reads after correction.
+          pattern: "*.correctedReads.fasta.gz"
   - corrected_trimmed_reads:
-      type: file
-      description: The corrected reads after overlap based trimming
-      pattern: "*.trimmedReads.fasta.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.trimmedReads.fasta.gz":
+          type: file
+          description: The corrected reads after overlap based trimming
+          pattern: "*.trimmedReads.fasta.gz"
   - metadata:
-      type: file
-      description: (undocumented)
-      pattern: "*.contigs.layout"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.contigs.layout":
+          type: file
+          description: (undocumented)
+          pattern: "*.contigs.layout"
   - contig_position:
-      type: file
-      description: The position of each read in a contig
-      pattern: "*.contigs.layout.readToTig"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.contigs.layout.readToTig":
+          type: file
+          description: The position of each read in a contig
+          pattern: "*.contigs.layout.readToTig"
   - contig_info:
-      type: file
-      description: A list of the contigs, lengths, coverage, number of reads and other metadata. Essentially the same information provided in the FASTA header line.
-      pattern: "*.contigs.layout.tigInfo"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.contigs.layout.tigInfo":
+          type: file
+          description: A list of the contigs, lengths, coverage, number of reads and other
+            metadata. Essentially the same information provided in the FASTA header line.
+          pattern: "*.contigs.layout.tigInfo"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@scorreard"
 maintainers:
