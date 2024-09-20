@@ -12,36 +12,33 @@ tools:
       tool_dev_url: "https://github.com/bedops"
       doi: "10.1093/bioinformatics/bts277"
       licence: ["GNU v2"]
+      identifier: biotools:bedops
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-
-  - input:
-      type: file
-      description: Sorted BAM/GFF/GTF/GVF/PSL file
-      pattern: "*.{bam,gff,gtf,gvf,psl}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - in_file:
+        type: file
+        description: Input file
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
   - bed:
-      type: file
-      description: Sorted BED file
-      pattern: "*.{bed}"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.bed":
+          type: file
+          description: Sorted BED file
+          pattern: "*.{bed}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@rannick"
 maintainers:

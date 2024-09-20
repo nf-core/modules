@@ -10,45 +10,73 @@ tools:
       homepage: https://github.com/tseemann/shovill
       documentation: https://github.com/tseemann/shovill/blob/master/README.md
       licence: ["GPL v2"]
+      identifier: biotools:shovill
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: List of input paired-end FastQ files
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: List of input paired-end FastQ files
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - contigs:
-      type: file
-      description: The final assembly produced by Shovill
-      pattern: "contigs.fa"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - contigs.fa:
+          type: file
+          description: The final assembly produced by Shovill
+          pattern: "contigs.fa"
   - corrections:
-      type: file
-      description: List of post-assembly corrections made by Shovill
-      pattern: "shovill.corrections"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - shovill.corrections:
+          type: file
+          description: List of post-assembly corrections made by Shovill
+          pattern: "shovill.corrections"
   - log:
-      type: file
-      description: Full log file for bug reporting
-      pattern: "shovill.log"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - shovill.log:
+          type: file
+          description: Full log file for bug reporting
+          pattern: "shovill.log"
   - raw_contigs:
-      type: file
-      description: Raw assembly produced by the assembler (SKESA, SPAdes, MEGAHIT, or Velvet)
-      pattern: "{skesa,spades,megahit,velvet}.fasta"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "{skesa,spades,megahit,velvet}.fasta":
+          type: file
+          description: Raw assembly produced by the assembler (SKESA, SPAdes, MEGAHIT,
+            or Velvet)
+          pattern: "{skesa,spades,megahit,velvet}.fasta"
   - gfa:
-      type: file
-      description: Assembly graph produced by MEGAHIT, SPAdes, or Velvet
-      pattern: "contigs.{fastg,gfa,LastGraph}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - contigs.{fastg,gfa,LastGraph}:
+          type: file
+          description: Assembly graph produced by MEGAHIT, SPAdes, or Velvet
+          pattern: "contigs.{fastg,gfa,LastGraph}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@rpetit3"
 maintainers:

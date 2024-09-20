@@ -20,38 +20,41 @@ tools:
       tool_dev_url: https://www.ncbi.nlm.nih.gov/books/NBK25498/
       doi: 10.1016/S0076-6879(96)66012-1
       licence: ["PUBLIC DOMAIN"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - xml_input:
-      type: file
-      description: XML text file containing query results from database.
-  - pattern:
-      type: string
-      description: String in xml_input that encloses element to search.
-  - element:
-      type: string
-      description: Space-delimited strings that will be converted to columns.
-  - sep:
-      type: string
-      description: Separator/delimiter between columns (for instance "," or "\t").
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - xml_input:
+        type: file
+        description: XML text file containing query results from database.
+  - - pattern:
+        type: string
+        description: String in xml_input that encloses element to search.
+  - - element:
+        type: string
+        description: Space-delimited strings that will be converted to columns.
+  - - sep:
+        type: string
+        description: Separator/delimiter between columns (for instance "," or "\t").
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+  - txt:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt":
+          type: file
+          description: Text file
+          pattern: "*.txt"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - xtract_table:
-      type: file
-      description: TXT file containing columns searched from element.
-      pattern: "*.txt"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@alxndrdiaz"
 maintainers:
