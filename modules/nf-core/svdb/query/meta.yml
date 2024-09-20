@@ -10,52 +10,54 @@ tools:
       homepage: https://github.com/J35P312/SVDB
       documentation: https://github.com/J35P312/SVDB/blob/master/README.md
       licence: ["MIT"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - in_occs:
-      type: list
-      description: A list of allele count tags
-  - in_frqs:
-      type: list
-      description: A list of allele frequency tags
-  - vcf:
-      type: file
-      description: query vcf file
-      pattern: "*.{vcf,vcf.gz}"
-  - vcf_dbs:
-      type: file
-      description: path to a database vcf, or a comma separated list of vcfs
-      pattern: "*.{vcf,vcf.gz}"
-  - bedpe_dbs:
-      type: file
-      description: path to a SV database of the following format chrA-posA-chrB-posB-type-count-frequency, or a comma separated list of files
-      pattern: "*.{bedpe}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: query vcf file
+        pattern: "*.{vcf,vcf.gz}"
+  - - in_occs:
+        type: list
+        description: A list of allele count tags
+  - - in_frqs:
+        type: list
+        description: A list of allele frequency tags
+  - - out_occs:
+        type: list
+        description: A list of allele count tags
+  - - out_frqs:
+        type: list
+        description: A list of allele frequency tags
+  - - vcf_dbs:
+        type: file
+        description: path to a database vcf, or a comma separated list of vcfs
+        pattern: "*.{vcf,vcf.gz}"
+  - - bedpe_dbs:
+        type: file
+        description: path to a SV database of the following format chrA-posA-chrB-posB-type-count-frequency,
+          or a comma separated list of files
+        pattern: "*.{bedpe}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - out_occs:
-      type: list
-      description: A list of allele count tags
-  - out_frqs:
-      type: list
-      description: A list of allele frequency tags
   - vcf:
-      type: file
-      description: Annotated output VCF file
-      pattern: "*_query.vcf"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*_query.vcf":
+          type: file
+          description: Annotated output VCF file
+          pattern: "*_query.vcf"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@ramprasadn"
