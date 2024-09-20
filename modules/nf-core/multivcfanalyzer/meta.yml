@@ -29,28 +29,28 @@ input:
         description: One or a list of uncompressed VCF file
         pattern: "*.vcf"
   - - meta2:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
     - fasta:
         type: file
         description: Reference genome VCF was generated against
         pattern: "*.{fasta,fna,fa}"
   - - meta3:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
     - snpeff_results:
         type: file
         description: Results from snpEff in txt format (Optional)
         pattern: "*.txt"
   - - meta4:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
     - gff:
         type: file
         description: GFF file corresponding to reference genome fasta (Optional)

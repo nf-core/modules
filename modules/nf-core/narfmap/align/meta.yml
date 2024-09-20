@@ -35,17 +35,17 @@ input:
         description: NARFMAP hash table
         pattern: "Directory containing NARFMAP hash table *.{cmp,.bin,.txt}"
   - - meta3:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
     - fasta:
         type: file
         description: Reference genome in FASTA format
         pattern: "*.{fasta,fa,fna}"
   - - sort_bam:
-      type: boolean
-      description: Sort the BAM file after alignment
+        type: boolean
+        description: Sort the BAM file after alignment
 output:
   - bam:
       - meta:
