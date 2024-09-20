@@ -29,6 +29,11 @@ input:
       type: file
       description: fasta file containing the alignment to be evaluated. May be gzipped or uncompressed.
       pattern: "*.{aln,fa,fasta,fas}{.gz,}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing library information
+        e.g. [ id:'test', ... ]
   - lib:
       type: file
       description: lib file containing the alignment library of the given msa.
