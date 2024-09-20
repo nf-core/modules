@@ -1,34 +1,40 @@
 name: nextclade_datasetget
-description: Get dataset for SARS-CoV-2 genome clade assignment, mutation calling, and sequence quality checks (C++ implementation)
+description: Get dataset for SARS-CoV-2 genome clade assignment, mutation calling,
+  and sequence quality checks (C++ implementation)
 keywords:
   - nextclade
   - variant
   - consensus
 tools:
   - nextclade:
-      description: SARS-CoV-2 genome clade assignment, mutation calling, and sequence quality checks
+      description: SARS-CoV-2 genome clade assignment, mutation calling, and sequence
+        quality checks
       homepage: https://github.com/nextstrain/nextclade
       documentation: https://github.com/nextstrain/nextclade
       tool_dev_url: https://github.com/nextstrain/nextclade
       licence: ["MIT"]
+      identifier: biotools:nextclade
 input:
-  - dataset:
-      type: string
-      description: Name of dataset to retrieve. A list of available datasets can be obtained using the nextclade dataset list command.
-      pattern: ".+"
-  - tag:
-      type: string
-      description: Version tag of the dataset to download. A list of available datasets can be obtained using the nextclade dataset list command.
-      pattern: ".+"
+  - - dataset:
+        type: string
+        description: Name of dataset to retrieve. A list of available datasets can be
+          obtained using the nextclade dataset list command.
+        pattern: ".+"
+  - - tag:
+        type: string
+        description: Version tag of the dataset to download. A list of available datasets
+          can be obtained using the nextclade dataset list command.
+        pattern: ".+"
 output:
+  - dataset:
+      - $prefix:
+          type: directory
+          description: Directory containing the dataset
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - prefix:
-      type: directory
-      description: A directory containing the dataset files needed for nextclade run
-      pattern: "prefix"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@antunderwood"
   - "@drpatelh"
