@@ -44,7 +44,6 @@ nextflow_process {
 				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
 				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
 				]
-
                 """
             }
         }
@@ -56,6 +55,29 @@ nextflow_process {
 					bam(process.out.bam[0][1]).getReadsMD5(),
 					process.out.versions
 					).match()
+				}
+            )
+        }
+    }
+
+    test("test-gatk4-fastqtosam-single-end - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:true ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+				]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match()
 				}
             )
         }
