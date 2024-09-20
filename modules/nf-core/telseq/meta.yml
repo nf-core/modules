@@ -69,20 +69,20 @@ input:
         pattern: "*.bed"
 output:
   - output:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - '*.telseq.tsv':
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - '*.telseq.tsv':
         type: file
         description: Telseq output
         pattern: "*.tsv"
-  - versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+    - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@lindenb"
 maintainers:
