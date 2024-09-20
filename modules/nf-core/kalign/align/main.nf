@@ -26,6 +26,7 @@ process KALIGN_ALIGN {
     unpigz -cdf $fasta | \\
     kalign \\
         $args \\
+        -n ${task.cpus} \\
         -o ${write_output}
 
     cat <<-END_VERSIONS > versions.yml
