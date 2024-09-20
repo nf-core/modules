@@ -12,132 +12,245 @@ tools:
       documentation: "https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Main_Page"
       doi: "10.1073/pnas.0506580102"
       licence: ["BSD-3-clause"]
+      identifier: biotools:gsea
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing metadata, at a minimum an id  e.g. [ id:'test' ].
-  - gct:
-      type: file
-      description: GCT file with expression values
-      pattern: "*.{gct}"
-  - cls:
-      type: file
-      description: CL file with the classes of the samples in the GCT file
-      pattern: "*.{gct}"
-  - gene_sets:
-      type: file
-      description: GMX or GMT file with gene sets
-      pattern: "*.{gmx,gmt}"
-  - reference:
-      type: string
-      description: |
-        String indicating which of the classes in the cls file should be used
-        as the reference level of the comparison.
-  - target:
-      type: string
-      description: |
-        String indicating which of the classes in the cls file should be used
-        as the target level of the comparison.
-  - chip:
-      type: file
-      description: |
-        optional Broad-style chip file mapping identifiers in gct to
-        those in gene_sets
-      pattern: "*.{chip}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing metadata, at a minimum an id  e.g. [ id:'test' ].
+    - gct:
+        type: file
+        description: GCT file with expression values
+        pattern: "*.{gct}"
+    - cls:
+        type: file
+        description: CL file with the classes of the samples in the GCT file
+        pattern: "*.{gct}"
+    - gene_sets:
+        type: file
+        description: GMX or GMT file with gene sets
+        pattern: "*.{gmx,gmt}"
+  - - reference:
+        type: string
+        description: |
+          String indicating which of the classes in the cls file should be used
+          as the reference level of the comparison.
+    - target:
+        type: string
+        description: |
+          String indicating which of the classes in the cls file should be used
+          as the target level of the comparison.
+  - - chip:
+        type: file
+        description: |
+          optional Broad-style chip file mapping identifiers in gct to
+          those in gene_sets
+        pattern: "*.{chip}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
   - rpt:
-      type: file
-      description: File containing parameter settings used
-      pattern: "*.rpt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
+      - "*.rpt":
+          type: file
+          description: File containing parameter settings used
+          pattern: "*.rpt"
   - index_html:
-      type: file
-      description: Top level report HTML file
-      pattern: "index.html"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
+      - "*index.html":
+          type: file
+          description: Top level report HTML file
+          pattern: "index.html"
   - heat_map_corr_plot:
-      type: file
-      description: HTML file combining heatmap and rank correlation plot
-      pattern: "heat_map_corr_plot.html"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
+      - "*heat_map_corr_plot.html":
+          type: file
+          description: HTML file combining heatmap and rank correlation plot
+          pattern: "heat_map_corr_plot.html"
   - report_tsvs_ref:
-      type: file
-      description: Main TSV results report file for the reference group.
-      pattern: "gsea_report_for_reference*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
+      - "*gsea_report_for_${reference}.tsv":
+          type: file
+          description: Main TSV results report file for the reference group.
+          pattern: "gsea_report_for_reference*.tsv"
   - report_htmls_ref:
-      type: file
-      description: Main HTML results report file for the reference group. sample groups
-      pattern: "gsea_report_for_reference*.html"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
+      - "*gsea_report_for_${reference}.html":
+          type: file
+          description: Main HTML results report file for the reference group. sample groups
+          pattern: "gsea_report_for_reference*.html"
   - report_tsvs_target:
-      type: file
-      description: Main TSV results report file for the target group.
-      pattern: "gsea_report_for_target*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
+      - "*gsea_report_for_${target}.tsv":
+          type: file
+          description: Main TSV results report file for the target group.
+          pattern: "gsea_report_for_target*.tsv"
   - report_htmls_target:
-      type: file
-      description: Main HTML results report file for the target group.
-      pattern: "gsea_report_for_target*.html"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
+      - "*gsea_report_for_${target}.html":
+          type: file
+          description: Main HTML results report file for the target group.
+          pattern: "gsea_report_for_target*.html"
   - ranked_gene_list:
-      type: file
-      description: TSV file with ranked gene list and scores
-      pattern: "ranked_gene_list*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
+      - "*ranked_gene_list*.tsv":
+          type: file
+          description: TSV file with ranked gene list and scores
+          pattern: "ranked_gene_list*.tsv"
   - gene_set_sizes:
-      type: file
-      description: TSV file with gene set sizes
-      pattern: "gene_set_sizes.tsv"
-  - butterfly_plot:
-      type: file
-      description: Butterfly plot with gene rank plotted against score
-      pattern: "butterfly_plot.png"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
+      - "*gene_set_sizes.tsv":
+          type: file
+          description: TSV file with gene set sizes
+          pattern: "gene_set_sizes.tsv"
   - histogram:
-      type: file
-      description: Plot showing number of gene sets by enrichment score
-      pattern: "global_es_histogram.png"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
+      - "*global_es_histogram.png":
+          type: file
+          description: Plot showing number of gene sets by enrichment score
+          pattern: "global_es_histogram.png"
   - heatmap:
-      type: file
-      description: Heat Map of the top 50 features for each phenotype in test
-      pattern: "heat_map_1.png"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
+      - "*heat_map_1.png":
+          type: file
+          description: Heat Map of the top 50 features for each phenotype in test
+          pattern: "heat_map_1.png"
   - pvalues_vs_nes_plot:
-      type: file
-      description: Plot showing FDR q-value by normalised enrichment score
-      pattern: "pvalues_vs_nes_plot"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
+      - "*pvalues_vs_nes_plot.png":
+          type: file
+          description: Plot showing FDR q-value by normalised enrichment score
+          pattern: "pvalues_vs_nes_plot"
+      - ues_vs_nes_plot:
+          type: file
+          description: Plot showing FDR q-value by normalised enrichment score
+          pattern: "pvalues_vs_nes_plot"
   - ranked_list_corr:
-      type: file
-      description: Ranked Gene List Correlation Profile
-      pattern: "ranked_list_corr_2.png"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
+      - "*ranked_list_corr_2.png":
+          type: file
+          description: Ranked Gene List Correlation Profile
+          pattern: "ranked_list_corr_2.png"
+  - butterfly_plot:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
+      - "*butterfly_plot.png":
+          type: file
+          description: Butterfly plot with gene rank plotted against score
+          pattern: "butterfly_plot.png"
   - gene_set_tsv:
-      type: list
-      description: Where -make_sets is not set to false, TSV files, one file for each gene set, with detail on enrichment for each gene
-      pattern: "[!gene_set_size|gsea_report|ranked_gene_list]*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
+      - "*[!gene_set_size|gsea_report|ranked_gene_list]*.tsv":
+          type: list
+          description: Where -make_sets is not set to false, TSV files, one file for each
+            gene set, with detail on enrichment for each gene
+          pattern: "[!gene_set_size|gsea_report|ranked_gene_list]*.tsv"
   - gene_set_html:
-      type: list
-      description: Where -make_sets is not set to false, HTML files, one file for each gene set, with detail on enrichment for each gene
-      pattern: "[!gsea_report|heat_map_corr_plot|index|pos_snapshot|neg_snapshot]*.html"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
+      - "*[!gsea_report|heat_map_corr_plot|index|pos_snapshot|neg_snapshot]*.html":
+          type: list
+          description: Where -make_sets is not set to false, HTML files, one file for
+            each gene set, with detail on enrichment for each gene
+          pattern: "[!gsea_report|heat_map_corr_plot|index|pos_snapshot|neg_snapshot]*.html"
   - gene_set_heatmap:
-      type: list
-      description: Where -make_sets is not set to false, PNG-format heatmaps, one file for each gene set, showing expression for each gene
-      pattern: "[!butterfly|enplot|global_es_histogram|gset_rnd_es_dist|heat_map|pvalues_vs_nes_plot|ranked_list_corr]*.png"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
+      - "*[!butterfly|enplot|global_es_histogram|gset_rnd_es_dist|heat_map|pvalues_vs_nes_plot|ranked_list_corr]*.png":
+          type: list
+          description: Where -make_sets is not set to false, PNG-format heatmaps, one
+            file for each gene set, showing expression for each gene
+          pattern: "[!butterfly|enplot|global_es_histogram|gset_rnd_es_dist|heat_map|pvalues_vs_nes_plot|ranked_list_corr]*.png"
   - snapshot:
-      type: list
-      description: HTML files, one each for positive and negative enrichment, collecting elements of gene_set_enplot
-      pattern: "*_snapshot*.html"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
+      - "*_snapshot*.html":
+          type: list
+          description: HTML files, one each for positive and negative enrichment, collecting
+            elements of gene_set_enplot
+          pattern: "*_snapshot*.html"
   - gene_set_enplot:
-      type: list
-      description: Where -make_sets is not set to false, PNG-format enrichment (barcode) plots, one file for each gene set, showing how genes contribute to enrichment.
-      pattern: "enplot*.png"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
+      - "*enplot*.png":
+          type: list
+          description: Where -make_sets is not set to false, PNG-format enrichment (barcode)
+            plots, one file for each gene set, showing how genes contribute to enrichment.
+          pattern: "enplot*.png"
   - gene_set_dist:
-      type: list
-      description: Where -make_sets is not set to false, PNG-format enrichment score distributions plots, one file for each gene set.
-      pattern: "gset_rnd_es_dist*.png"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
+      - "*gset_rnd_es_dist*.png":
+          type: list
+          description: Where -make_sets is not set to false, PNG-format enrichment score
+            distributions plots, one file for each gene set.
+          pattern: "gset_rnd_es_dist*.png"
   - archive:
-      type: file
-      description: Where -zip_report is set, a zip archive containing all outputs
-      pattern: "*.zip"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
+      - "*.zip":
+          type: file
+          description: Where -zip_report is set, a zip archive containing all outputs
+          pattern: "*.zip"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@pinin4fjords"
 maintainers:

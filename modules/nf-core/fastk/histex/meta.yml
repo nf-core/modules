@@ -10,30 +10,33 @@ tools:
       homepage: "https://github.com/thegenemyers/FASTK"
       tool_dev_url: "https://github.com/thegenemyers/FASTK"
       license: ["https://github.com/thegenemyers/FASTK/blob/master/LICENSE"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - histogram:
-      type: file
-      description: A FastK histogram file
-      pattern: "*.hist"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - histogram:
+        type: file
+        description: A FastK histogram file
+        pattern: "*.hist"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - hist:
-      type: file
-      description: A formatted histogram file
-      pattern: "*.hist"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.hist":
+          type: file
+          description: A formatted histogram file
+          pattern: "*.hist"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@mahesh-panchal"
 maintainers:

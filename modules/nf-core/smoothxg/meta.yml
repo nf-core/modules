@@ -1,5 +1,6 @@
 name: smoothxg
-description: Linearize and simplify variation graph in GFA format using blocked partial order alignment
+description: Linearize and simplify variation graph in GFA format using blocked partial
+  order alignment
 keywords:
   - gfa
   - graph
@@ -14,34 +15,39 @@ tools:
       homepage: https://github.com/pangenome/smoothxg
       documentation: https://github.com/pangenome/smoothxg
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - gfa:
-      type: file
-      description: Variation graph in GFA 1.0 format
-      pattern: "*.{gfa}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - gfa:
+        type: file
+        description: Variation graph in GFA 1.0 format
+        pattern: "*.{gfa}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - gfa:
-      type: file
-      description: Linearized and simplified graph in GFA 1.0 format
-      pattern: "*.smoothxg.{gfa}"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*smoothxg.gfa":
+          type: file
+          description: Linearized and simplified graph in GFA 1.0 format
+          pattern: "*.smoothxg.{gfa}"
   - maf:
-      type: file
-      description: write the multiple sequence alignments (MSAs) in MAF format in this file (optional)
-      pattern: "*.{maf}"
+      - "*.maf":
+          type: file
+          description: write the multiple sequence alignments (MSAs) in MAF format in
+            this file (optional)
+          pattern: "*.{maf}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@heuermh, @subwaystation"
 maintainers:

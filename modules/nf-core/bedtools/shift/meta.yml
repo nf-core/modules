@@ -14,34 +14,42 @@ tools:
         A set of tools for genomic analysis tasks, specifically enabling genome arithmetic (merge, count, complement) on various file types.
       documentation: https://bedtools.readthedocs.io/en/latest/content/tools/slop.html
       licence: ["MIT"]
+      identifier: biotools:bedtools
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bed:
-      type: file
-      description: Input BED file
-      pattern: "*.{bed}"
-  - chrom_sizes:
-      type: file
-      description: Chromosome sizes file
-      pattern: "*{.sizes,.txt,.fai}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bed:
+        type: file
+        description: Input BED file
+        pattern: "*.{bed}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - chrom_sizes:
+        type: file
+        description: Chromosome sizes file
+        pattern: "*{.sizes,.txt,.fai}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - bed:
-      type: file
-      description: Shift BED file
-      pattern: "*.{bed}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bed":
+          type: file
+          description: Shift BED file
+          pattern: "*.{bed}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@ekushele"
 maintainers:
