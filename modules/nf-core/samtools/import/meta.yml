@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "samtools_import"
 description: converts FASTQ files to unmapped SAM/BAM/CRAM
@@ -18,38 +17,53 @@ tools:
       documentation: http://www.htslib.org/doc/samtools.html
       doi: 10.1093/bioinformatics/btp352
       licence: ["MIT"]
+      identifier: biotools:samtools
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - reads:
-      type: file
-      description: fastq data to be converted to SAM/BAM/CRAM
-      pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - reads:
+        type: file
+        description: fastq data to be converted to SAM/BAM/CRAM
+        pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - sam:
-      type: file
-      description: SAM file
-      pattern: "*.sam"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.sam":
+          type: file
+          description: SAM file
+          pattern: "*.sam"
   - bam:
-      type: file
-      description: Unaligned BAM file
-      pattern: "*.bam"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.bam":
+          type: file
+          description: Unaligned BAM file
+          pattern: "*.bam"
   - cram:
-      type: file
-      description: Unaligned CRAM file
-      pattern: "*.cram"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.cram":
+          type: file
+          description: Unaligned CRAM file
+          pattern: "*.cram"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@matthdsm"
 maintainers:

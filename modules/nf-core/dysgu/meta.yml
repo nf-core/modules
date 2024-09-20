@@ -1,6 +1,7 @@
 name: dysgu
 
-description: Dysgu calls structural variants (SVs) from mapped sequencing reads. It is designed for accurate and efficient detection of structural variations.
+description: Dysgu calls structural variants (SVs) from mapped sequencing reads. It
+  is designed for accurate and efficient detection of structural variations.
 keywords:
   - structural variants
   - sv
@@ -13,54 +14,61 @@ tools:
       tool_dev_url: https://github.com/kcleal/dysgu
       doi: "10.1093/nar/gkac039"
       licence: ["GPL-3.0-or-later"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1' ]`
-  - input:
-      type: file
-      description: Input BAM file
-      pattern: "*.bam"
-  - index:
-      type: file
-      description: BAM index file
-      pattern: "*.bai"
-  - fasta:
-      type: file
-      description: Genome reference FASTA file
-      pattern: "*.{fa,fasta}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'genome' ]
-  - fai:
-      type: file
-      description: Genome reference FASTA index file
-      pattern: "*.{fa.fai,fasta.fai}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - input:
+        type: file
+        description: Input BAM file
+        pattern: "*.bam"
+    - index:
+        type: file
+        description: BAM index file
+        pattern: "*.bai"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: Genome reference FASTA file
+        pattern: "*.{fa,fasta}"
+    - fai:
+        type: file
+        description: Genome reference FASTA index file
+        pattern: "*.{fa.fai,fasta.fai}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'sample1' ]
   - vcf:
-      type: file
-      description: VCF file with identified structural variants
-      pattern: "*.{vcf.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - "*.vcf.gz":
+          type: file
+          description: VCF file with identified structural variants
+          pattern: "*.{vcf.gz}"
   - tbi:
-      type: file
-      description: The index of the BCF/VCF file
-      pattern: "*.{vcf.gz.tbi}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - "*.vcf.gz.tbi":
+          type: file
+          description: The index of the BCF/VCF file
+          pattern: "*.{vcf.gz.tbi}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@famosab"
   - "@poddarharsh15"
