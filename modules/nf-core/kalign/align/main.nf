@@ -26,7 +26,7 @@ process KALIGN_ALIGN {
     error_handler() {
     exit_code=\$?
         if [ \$exit_code -eq 132 ]; then
-            echo "\n\nKALIGN failed because is incompatible with some CPU types, see https://github.com/TimoLassmann/kalign/issues/46.\n\n"
+            echo "KALIGN failed because is incompatible with some CPU types, see https://github.com/TimoLassmann/kalign/issues/46."
         else
             trap - ERR
             return \$exit_code
