@@ -6,50 +6,75 @@ keywords:
   - trimming
 tools:
   - "sickle":
-      description: "a tool that determines clipping of reads on 3' end and 5'end based on base quality "
+      description: "a tool that determines clipping of reads on 3' end and 5'end based
+        on base quality "
       homepage: "https://github.com/najoshi/sickle"
       tool_dev_url: "https://github.com/najoshi/sickle"
       licence: ["MIT License"]
+      identifier: biotools:sickle
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false]
-  - reads:
-      type: file
-      description: List of input FastQ files of size 1 and 2 for single-end and paired-end data, respectively. File of forward reads must be supplied first and reverse reads as the second e.g. ["read.1.fastq.gz","read.2.fastq.gz"]
-      pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
-  - qual_type:
-      type: string
-      description: sickle needs a base quality values, which could be either illumina, solexa or sanger
-      pattern: "illumina or solexa or sanger"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false]
+    - reads:
+        type: file
+        description: List of input FastQ files of size 1 and 2 for single-end and paired-end
+          data, respectively. File of forward reads must be supplied first and reverse
+          reads as the second e.g. ["read.1.fastq.gz","read.2.fastq.gz"]
+        pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
+    - qual_type:
+        type: string
+        description: sickle needs a base quality values, which could be either illumina,
+          solexa or sanger
+        pattern: "illumina or solexa or sanger"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false, qual:'Illumina'  ]
   - single_trimmed:
-      type: file
-      description: 5' or 3' trimmed (based on base quality) single-end fastq file
-      pattern: "*.se.trimmed.fastq.gz"
-  - paired1_trimmed:
-      type: file
-      description: 5' or 3' trimmed  (based on base quality) R1 fastq file
-      pattern: "*.pe1.trimmed.fastq.gz"
-  - paired2_trimmed:
-      type: file
-      description: 5' or 3' trimmed  (based on base quality) R2 fastq file
-      pattern: "*.pe2.trimmed.fastq.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false, qual:'Illumina'  ]
+      - ${prefix}.se.trimmed.fastq.gz:
+          type: file
+          description: 5' or 3' trimmed (based on base quality) single-end fastq file
+          pattern: "*.se.trimmed.fastq.gz"
+  - paired_trimmed:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false, qual:'Illumina'  ]
+      - ${prefix}.pe{1,2}.trimmed.fastq.gz:
+          type: file
+          description: 5' or 3' trimmed (based on base quality) paired-end fastq files
+          pattern: "*.pe{1,2}.trimmed.fastq.gz"
+  - singleton_trimmed:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false, qual:'Illumina'  ]
+      - ${prefix}.singleton.trimmed.fastq.gz:
+          type: file
+          description: 5' or 3' trimmed (based on base quality) singleton fastq file
+          pattern: "*.singleton.trimmed.fastq.gz"
   - log:
-      type: file
-      description: log file
-      pattern: "*.log"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false, qual:'Illumina'  ]
+      - "*.log":
+          type: file
+          description: log file
+          pattern: "*.log"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@BioInf2305"
 maintainers:

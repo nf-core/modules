@@ -12,24 +12,42 @@ tools:
       tool_dev_url: https://github.com/marcelauliano/MitoHiFi
       doi: "10.1101/2022.12.23.521667"
       licence: ["MIT"]
+      identifier: biotools:mitohifi
 input:
-  - species:
-      type: string
-      description: Latin name of the species for which a mitochondrial genome should be fetched
-      pattern: "[A-Z]?[a-z]* [a-z]*"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - species:
+        type: string
+        description: Latin name of the species for which a mitochondrial genome should
+          be fetched
+        pattern: "[A-Z]?[a-z]* [a-z]*"
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - fasta:
-      type: file
-      description: Downloaded mitochondrial genome in Fasta format
-      pattern: "*.{fasta,fa}"
+      - meta:
+          type: file
+          description: Downloaded mitochondrial genome in Fasta format
+          pattern: "*.{fasta,fa}"
+      - "*.fasta":
+          type: file
+          description: Downloaded mitochondrial genome in Fasta format
+          pattern: "*.{fasta,fa}"
   - gb:
-      type: file
-      description: Downloaded mitochondrial genome in Genbank format
-      pattern: "*.gb"
+      - meta:
+          type: file
+          description: Downloaded mitochondrial genome in Genbank format
+          pattern: "*.gb"
+      - "*.gb":
+          type: file
+          description: Downloaded mitochondrial genome in Genbank format
+          pattern: "*.gb"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@verku"
 maintainers:

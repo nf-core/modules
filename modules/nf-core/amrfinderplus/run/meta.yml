@@ -6,50 +6,64 @@ keywords:
   - antibiotic resistance
 tools:
   - amrfinderplus:
-      description: AMRFinderPlus finds antimicrobial resistance and other genes in protein or nucleotide sequences.
+      description: AMRFinderPlus finds antimicrobial resistance and other genes in protein
+        or nucleotide sequences.
       homepage: https://github.com/ncbi/amr/wiki
       documentation: https://github.com/ncbi/amr/wiki
       tool_dev_url: https://github.com/ncbi/amr
       doi: "10.1038/s41598-021-91456-0"
       licence: ["Public Domain"]
+      identifier: biotools:amrfinderplus
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: Nucleotide or protein sequences in FASTA format
-      pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
-  - db:
-      type: file
-      description: A compressed tarball of the AMRFinderPlus database to query
-      pattern: "*.tar.gz"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Nucleotide or protein sequences in FASTA format
+        pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
+  - - db:
+        type: file
+        description: A compressed tarball of the AMRFinderPlus database to query
+        pattern: "*.tar.gz"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - report:
-      type: file
-      description: AMRFinder+ final report
-      pattern: "*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.tsv:
+          type: file
+          description: AMRFinder+ final report
+          pattern: "*.tsv"
   - mutation_report:
-      type: file
-      description: Report of organism-specific point-mutations
-      pattern: "*-mutations.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}-mutations.tsv:
+          type: file
+          description: Report of organism-specific point-mutations
+          pattern: "*-mutations.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
   - tool_version:
-      type: string
-      description: The version of the tool in string format (useful for downstream tools such as hAMRronization)
+      - VER:
+          type: string
+          description: The version of the tool in string format (useful for downstream
+            tools such as hAMRronization)
   - db_version:
-      type: string
-      description: The version of the used database in string format (useful for downstream tools such as hAMRronization)
+      - DBVER:
+          type: string
+          description: The version of the used database in string format (useful for downstream
+            tools such as hAMRronization)
 authors:
   - "@rpetit3"
   - "@louperelo"

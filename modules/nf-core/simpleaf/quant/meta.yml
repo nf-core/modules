@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: simpleaf_quant
-description: simpleaf is a program to simplify and customize the running and configuration of single-cell processing with alevin-fry.
+description: simpleaf is a program to simplify and customize the running and configuration
+  of single-cell processing with alevin-fry.
 keywords:
   - quantification
   - gene expression
@@ -12,66 +12,71 @@ tools:
         SimpleAF is a tool for quantification of gene expression from RNA-seq data
       homepage: https://github.com/COMBINE-lab/simpleaf
       licence: ["BSD-3-Clause"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: |
-        List of input FastQ files for paired-end data.
-        Reads should be grouped by pairs.
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing index information
-  - index:
-      type: directory
-      description: Folder containing the index files
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing txp2gene information
-  - txp2gene:
-      type: file
-      description: |
-        File mapping transcripts to genes.
-  - chemistry:
-      type: string
-      description: |
-        Chemistry used for library preparation.  It can be a string describing
-        the specific chemistry or the geometry of the barcode, UMI, and
-        mappable read.  For example, "10xv2" and "10xv3" will apply the
-        appropriate settings for 10x Chromium v2 and v3 protocols,
-        respectively.  Alternatively, you can provide a general geometry string
-        if your chemistry is not pre-registered.  For example, instead of
-        "10xv2", you could use "1{b[16]u[10]x:}2{r:}", or instead of "10xv3",
-        you could use "1{b[16]u[12]x:}2{r:}".
-  - meta4:
-      type: map
-      description: |
-        Groovy Map containing whitelist information
-  - whitelist:
-      type: file
-      description: |
-        Whitelist file containing valid cell barcodes. Optional.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - chemistry:
+        type: string
+        description: |
+          Chemistry used for library preparation.  It can be a string describing
+          the specific chemistry or the geometry of the barcode, UMI, and
+          mappable read.  For example, "10xv2" and "10xv3" will apply the
+          appropriate settings for 10x Chromium v2 and v3 protocols,
+          respectively.  Alternatively, you can provide a general geometry string
+          if your chemistry is not pre-registered.  For example, instead of
+          "10xv2", you could use "1{b[16]u[10]x:}2{r:}", or instead of "10xv3",
+          you could use "1{b[16]u[12]x:}2{r:}".
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files for paired-end data.
+          Reads should be grouped by pairs.
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing index information
+    - index:
+        type: directory
+        description: Folder containing the index files
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing txp2gene information
+    - txp2gene:
+        type: file
+        description: |
+          File mapping transcripts to genes.
+  - - resolution:
+        type: string
+        description: |
+          Resolution for the clustering.
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing whitelist information
+    - whitelist:
+        type: file
+        description: |
+          Whitelist file containing valid cell barcodes. Optional.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - alevin_results:
-      type: directory
-      description: |
-        Folder containing the Alevin results for a specific sample
-      pattern: "*"
+  - results:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}:
+          type: directory
+          description: Folder containing the quantification results
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@fmalmeida"
   - "@maxulysse"

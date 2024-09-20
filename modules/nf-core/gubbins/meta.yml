@@ -1,5 +1,8 @@
 name: gubbins
-description: Gubbins (Genealogies Unbiased By recomBinations In Nucleotide Sequences) is an algorithm that iteratively identifies loci containing elevated densities of base substitutions while concurrently constructing a phylogeny based on the putative point mutations outside of these regions.
+description: Gubbins (Genealogies Unbiased By recomBinations In Nucleotide Sequences)
+  is an algorithm that iteratively identifies loci containing elevated densities of
+  base substitutions while concurrently constructing a phylogeny based on the putative
+  point mutations outside of these regions.
 licence: ["GPL-2.0-only"]
 keywords:
   - recombination
@@ -7,55 +10,67 @@ keywords:
   - phylogeny
 tools:
   - gubbins:
-      description: Rapid phylogenetic analysis of large samples of recombinant bacterial whole genome sequences using Gubbins.
+      description: Rapid phylogenetic analysis of large samples of recombinant bacterial
+        whole genome sequences using Gubbins.
       homepage: https://sanger-pathogens.github.io/gubbins/
       documentation: https://sanger-pathogens.github.io/gubbins/
+      identifier: biotools:gubbins
 input:
-  - alignment:
-      type: file
-      description: fasta alignment file
-      pattern: "*.{fasta,fas,fa,aln}"
+  - - alignment:
+        type: file
+        description: fasta alignment file
+        pattern: "*.{fasta,fas,fa,aln}"
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - fasta:
-      type: file
-      description: Filtered variant alignment in fasta format
-      pattern: "*.{fasta}"
-  - embl_predicted:
-      type: file
-      description: Recombination predictions in embl format
-      pattern: "*.{recombination_predictions.embl}"
+      - "*.fasta":
+          type: file
+          description: Filtered variant alignment in fasta format
+          pattern: "*.{fasta}"
   - gff:
-      type: file
-      description: Recombination predictions in gff format
-      pattern: "*.{gff}"
-  - embl_branch:
-      type: file
-      description: Branch base reconstruction
-      pattern: "*.{branch_base_reconstruction.embl}"
+      - "*.gff":
+          type: file
+          description: Recombination predictions in gff format
+          pattern: "*.{gff}"
   - vcf:
-      type: file
-      description: SNP distribution
-      pattern: "*.{vcf}"
+      - "*.vcf":
+          type: file
+          description: SNP distribution
+          pattern: "*.{vcf}"
   - stats:
-      type: file
-      description: Per branch statistics
-      pattern: "*.{csv}"
+      - "*.csv":
+          type: file
+          description: Per branch statistics
+          pattern: "*.{csv}"
   - phylip:
-      type: file
-      description: Filtered variant alignment in phylip format
-      pattern: "*.{phylip}"
+      - "*.phylip":
+          type: file
+          description: Filtered variant alignment in phylip format
+          pattern: "*.{phylip}"
+  - embl_predicted:
+      - "*.recombination_predictions.embl":
+          type: file
+          description: Recombination predictions in embl format
+          pattern: "*.{recombination_predictions.embl}"
+  - embl_branch:
+      - "*.branch_base_reconstruction.embl":
+          type: file
+          description: Branch base reconstruction
+          pattern: "*.{branch_base_reconstruction.embl}"
   - tree:
-      type: file
-      description: Recombination removed RAxML phylogenetic tree
-      pattern: "*.{final_tree.tre}"
+      - "*.final_tree.tre":
+          type: file
+          description: Recombination removed RAxML phylogenetic tree
+          pattern: "*.{final_tree.tre}"
   - tree_labelled:
-      type: file
-      description: Recombination removed RAxML phylogenetic tree (nodes labelled)
-      pattern: "*.{node_labelled.final_tree.tre}"
+      - "*.node_labelled.final_tree.tre":
+          type: file
+          description: Recombination removed RAxML phylogenetic tree (nodes labelled)
+          pattern: "*.{node_labelled.final_tree.tre}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@avantonder"
 maintainers:

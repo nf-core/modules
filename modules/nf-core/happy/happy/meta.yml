@@ -1,5 +1,8 @@
 name: "happy_happy"
-description: Hap.py is a tool to compare diploid genotypes at haplotype level. Rather than comparing VCF records row by row, hap.py will generate and match alternate sequences in a superlocus. A superlocus is a small region of the genome (sized between 1 and around 1000 bp) that contains one or more variants.
+description: Hap.py is a tool to compare diploid genotypes at haplotype level. Rather
+  than comparing VCF records row by row, hap.py will generate and match alternate
+  sequences in a superlocus. A superlocus is a small region of the genome (sized between
+  1 and around 1000 bp) that contains one or more variants.
 keywords:
   - happy
   - benchmark
@@ -12,127 +15,193 @@ tools:
       documentation: "https://github.com/Illumina/hap.py"
       tool_dev_url: "https://github.com/Illumina/hap.py"
       licence: ["BSD-2-clause"]
+      identifier: biotools:happy
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing fasta file information
-        e.g. [ id:'test2']
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing fai file information
-        e.g. [ id:'test3']
-  - meta4:
-      type: map
-      description: |
-        Groovy Map containing false_positives_bed file information
-        e.g. [ id:'test4']
-  - meta5:
-      type: map
-      description: |
-        Groovy Map containing stratification_tsv file information
-        e.g. [ id:'test5']
-  - meta6:
-      type: map
-      description: |
-        Groovy Map containing stratification_beds file information
-        e.g. [ id:'test6']
-  - query_vcf:
-      type: file
-      description: VCF/GVCF file to query
-      pattern: "*.{gvcf,vcf}.gz"
-  - truth_vcf:
-      type: file
-      description: gold standard VCF file
-      pattern: "*.{gvcf,vcf}.gz"
-  - regions_bed:
-      type: file
-      description: Sparse regions to restrict the analysis to
-      pattern: "*.bed"
-  - targets_bed:
-      type: file
-      description: Dense regions to restrict the analysis to
-      pattern: "*.bed"
-  - fasta:
-      type: file
-      description: FASTA file of the reference genome
-      pattern: "*.{fa,fasta}"
-  - fasta_fai:
-      type: file
-      description: The index of the reference FASTA
-      pattern: "*.fai"
-  - false_positives_bed:
-      type: file
-      description: False positive / confident call regions. Calls outside these regions will be labelled as UNK.
-      pattern: "*.{bed,bed.gz}"
-  - stratification_tsv:
-      type: file
-      description: Stratification file list in TSV format
-      pattern: "*.tsv"
-  - stratification_beds:
-      type: file
-      description: One or more BED files used for stratification (these should be referenced in the stratification TSV)
-      pattern: "*.bed"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - query_vcf:
+        type: file
+        description: VCF/GVCF file to query
+        pattern: "*.{gvcf,vcf}.gz"
+    - truth_vcf:
+        type: file
+        description: gold standard VCF file
+        pattern: "*.{gvcf,vcf}.gz"
+    - regions_bed:
+        type: file
+        description: Sparse regions to restrict the analysis to
+        pattern: "*.bed"
+    - targets_bed:
+        type: file
+        description: Dense regions to restrict the analysis to
+        pattern: "*.bed"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing fasta file information
+          e.g. [ id:'test2']
+    - fasta:
+        type: file
+        description: FASTA file of the reference genome
+        pattern: "*.{fa,fasta}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing fai file information
+          e.g. [ id:'test3']
+    - fasta_fai:
+        type: file
+        description: The index of the reference FASTA
+        pattern: "*.fai"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing false_positives_bed file information
+          e.g. [ id:'test4']
+    - false_positives_bed:
+        type: file
+        description: False positive / confident call regions. Calls outside these regions
+          will be labelled as UNK.
+        pattern: "*.{bed,bed.gz}"
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing stratification_tsv file information
+          e.g. [ id:'test5']
+    - stratification_tsv:
+        type: file
+        description: Stratification file list in TSV format
+        pattern: "*.tsv"
+  - - meta6:
+        type: map
+        description: |
+          Groovy Map containing stratification_beds file information
+          e.g. [ id:'test6']
+    - stratification_beds:
+        type: file
+        description: One or more BED files used for stratification (these should be
+          referenced in the stratification TSV)
+        pattern: "*.bed"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - summary_csv:
-      type: file
-      description: A CSV file containing the summary of the benchmarking
-      pattern: "*.summary.csv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.summary.csv":
+          type: file
+          description: A CSV file containing the summary of the benchmarking
+          pattern: "*.summary.csv"
   - roc_all_csv:
-      type: file
-      description: A CSV file containing ROC values for all variants
-      pattern: "*.roc.all.csv.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.roc.all.csv.gz":
+          type: file
+          description: A CSV file containing ROC values for all variants
+          pattern: "*.roc.all.csv.gz"
   - roc_indel_locations_csv:
-      type: file
-      description: A CSV file containing ROC values for all indels
-      pattern: "*.roc.Locations.INDEL.csv.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.roc.Locations.INDEL.csv.gz":
+          type: file
+          description: A CSV file containing ROC values for all indels
+          pattern: "*.roc.Locations.INDEL.csv.gz"
   - roc_indel_locations_pass_csv:
-      type: file
-      description: A CSV file containing ROC values for all indels that passed all filters
-      pattern: "*.roc.Locations.INDEL.PASS.csv.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.roc.Locations.INDEL.PASS.csv.gz":
+          type: file
+          description: A CSV file containing ROC values for all indels that passed all
+            filters
+          pattern: "*.roc.Locations.INDEL.PASS.csv.gz"
   - roc_snp_locations_csv:
-      type: file
-      description: A CSV file containing ROC values for all SNPs
-      pattern: "*.roc.Locations.SNP.csv.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.roc.Locations.SNP.csv.gz":
+          type: file
+          description: A CSV file containing ROC values for all SNPs
+          pattern: "*.roc.Locations.SNP.csv.gz"
   - roc_snp_locations_pass_csv:
-      type: file
-      description: A CSV file containing ROC values for all SNPs that passed all filters
-      pattern: "*.roc.Locations.SNP.PASS.csv.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.roc.Locations.SNP.PASS.csv.gz":
+          type: file
+          description: A CSV file containing ROC values for all SNPs that passed all filters
+          pattern: "*.roc.Locations.SNP.PASS.csv.gz"
   - extended_csv:
-      type: file
-      description: A CSV file containing extended info of the benchmarking
-      pattern: "*.extended.csv"
-  - metrics_json:
-      type: file
-      description: A JSON file containing the run info
-      pattern: "*.runinfo.json"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.extended.csv":
+          type: file
+          description: A CSV file containing extended info of the benchmarking
+          pattern: "*.extended.csv"
   - runinfo:
-      type: file
-      description: A JSON file containing the benchmarking metrics
-      pattern: "*.metrics.json.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.runinfo.json":
+          type: file
+          description: A JSON file containing the benchmarking metrics
+          pattern: "*.metrics.json.gz"
+  - metrics_json:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.metrics.json.gz":
+          type: file
+          description: A JSON file containing the run info
+          pattern: "*.runinfo.json"
   - vcf:
-      type: file
-      description: An annotated VCF
-      pattern: "*.vcf.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf.gz":
+          type: file
+          description: An annotated VCF
+          pattern: "*.vcf.gz"
   - tbi:
-      type: file
-      description: The index of the annotated VCF
-      pattern: "*.tbi"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tbi":
+          type: file
+          description: The index of the annotated VCF
+          pattern: "*.tbi"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

@@ -20,81 +20,155 @@ tools:
       tool_dev_url: https://github.com/cmks/DAS_Tool
       doi: "10.1038/s41564-018-0171-1"
       licence: ["BSD"]
+      identifier: biotools:dastool
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - contigs:
-      type: file
-      description: fasta file
-      pattern: "*.{fa.gz,fas.gz,fasta.gz}"
-  - bins:
-      type: file
-      description: "FastaToContig2Bin tabular file generated with dastool/fastatocontig2bin"
-      pattern: "*.tsv"
-  - proteins:
-      type: file
-      description: Predicted proteins in prodigal fasta format (>scaffoldID_geneNo)
-      pattern: "*.{fa.gz,fas.gz,fasta.gz}"
-  - db_directory:
-      type: file
-      description: (optional) Directory of single copy gene database.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - contigs:
+        type: file
+        description: fasta file
+        pattern: "*.{fa.gz,fas.gz,fasta.gz}"
+    - bins:
+        type: file
+        description: "FastaToContig2Bin tabular file generated with dastool/fastatocontig2bin"
+        pattern: "*.tsv"
+  - - proteins:
+        type: file
+        description: Predicted proteins in prodigal fasta format (>scaffoldID_geneNo)
+        pattern: "*.{fa.gz,fas.gz,fasta.gz}"
+  - - db_directory:
+        type: file
+        description: (optional) Directory of single copy gene database.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - version:
-      type: file
-      description: File containing software version
-      pattern: "versions.yml"
   - log:
-      type: file
-      description: Log file of the run
-      pattern: "*.log"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: Log file of the run
+          pattern: "*.log"
   - summary:
-      type: file
-      description: Summary of output bins including quality and completeness estimates
-      pattern: "*summary.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_summary.tsv":
+          type: file
+          description: Summary of output bins including quality and completeness estimates
+          pattern: "*summary.txt"
   - contig2bin:
-      type: file
-      description: Scaffolds to bin file of output bins
-      pattern: "*.contig2bin.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_DASTool_contig2bin.tsv":
+          type: file
+          description: Scaffolds to bin file of output bins
+          pattern: "*.contig2bin.txt"
   - eval:
-      type: file
-      description: Quality and completeness estimates of input bin sets
-      pattern: "*.eval"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.eval":
+          type: file
+          description: Quality and completeness estimates of input bin sets
+          pattern: "*.eval"
   - bins:
-      type: file
-      description: Final refined bins in fasta format
-      pattern: "*.fa"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_DASTool_bins/*.fa":
+          type: file
+          description: Final refined bins in fasta format
+          pattern: "*.fa"
   - pdfs:
-      type: file
-      description: Plots showing the amount of high quality bins and score distribution of bins per method
-      pattern: "*.pdf"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.pdf":
+          type: file
+          description: Plots showing the amount of high quality bins and score distribution
+            of bins per method
+          pattern: "*.pdf"
   - fasta_proteins:
-      type: file
-      description: Output from prodigal if not already supplied
-      pattern: "*.proteins.faa"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.candidates.faa":
+          type: file
+          description: Output from prodigal if not already supplied
+          pattern: "*.proteins.faa"
+  - candidates_faa:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.faa":
+          type: file
+          description: FAA file
+          pattern: "*.faa"
   - fasta_archaea_scg:
-      type: file
-      description: Results of archaeal single-copy-gene prediction
-      pattern: "*.archaea.scg"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.archaea.scg":
+          type: file
+          description: Results of archaeal single-copy-gene prediction
+          pattern: "*.archaea.scg"
   - fasta_bacteria_scg:
-      type: file
-      description: Results of bacterial single-copy-gene prediction
-      pattern: "*.bacteria.scg"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bacteria.scg":
+          type: file
+          description: Results of bacterial single-copy-gene prediction
+          pattern: "*.bacteria.scg"
   - b6:
-      type: file
-      description: Results in b6 format
-      pattern: "*.b6"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.b6":
+          type: file
+          description: Results in b6 format
+          pattern: "*.b6"
   - seqlength:
-      type: file
-      description: Summary of contig lengths
-      pattern: "*.seqlength"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.seqlength":
+          type: file
+          description: Summary of contig lengths
+          pattern: "*.seqlength"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@maxibor"
   - "@jfy133"
