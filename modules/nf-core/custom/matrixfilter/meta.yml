@@ -1,5 +1,6 @@
 name: "custom_matrixfilter"
-description: filter a matrix based on a minimum value and numbers of samples that must pass.
+description: filter a matrix based on a minimum value and numbers of samples that
+  must pass.
 keywords:
   - matrix
   - filter
@@ -9,93 +10,67 @@ tools:
   - "matrixfilter":
       description: "filter a matrix based on a minimum value and numbers of samples"
       tool_dev_url: "https://github.com/nf-core/modules/blob/master/modules/nf-core/custom/matrixfilter/main.nf"
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing information on matrix to be filtered, at a
-        minimum an id. e.g. [ id:'test' ]
-  - abundance:
-      type: file
-      description: |
-        Raw TSV or CSV format abundance matrix with features (e.g.
-        genes) by row and observations (e.g. samples) by column. All rownames
-        from the sample sheet should be present in the columns.
-  - samplesheet_meta:
-      type: map
-      description: |
-        Where samplesheet is provided, aroovy Map containing information on
-        sample sheet, at a minimum an id.  e.g. [ id:'test' ]
-  - samplesheet:
-      type: file
-      description: |
-        Optional CSV or TSV format sample sheet with sample metadata. If
-        provided this is used to infer minimum passing samples from group sizes
-        present (see grouping_variable), but also to validate matrix columns.
-        If not provided, all numeric columns are selected.
-  - minimum_abundance:
-      type: float
-      description: |
-        Minimum abundance value, supplied via task.ext.args as --minimum_abundance
-      default: 1
-  - minimum_samples:
-      type: integer
-      description: |
-        Minimum observations that must pass the threshold to retain
-        the row/ feature (e.g. gene). Supplied via task.ext.args as
-        --minimum_samples
-      default: 1
-  - minimum_proportion:
-      type: float
-      description: |
-        A minimum proportion of observations that must pass the threshold.
-        Supplied via task.ext.args as --minimum_proportion. Overrides
-        minimum_samples
-      default: 0
-  - grouping_variable:
-      type: string
-      description: |
-        Optionally supply a variable from the sample sheet that can be used to
-        define groups and derive a minimum group size upon which to base
-        minimum observation numbers. The rationale being to allow retention of
-        features that might be present in only one group. Supplied via
-        task.ext.args as --grouping_variable
-  - minimum_proportion_not_na:
-      type: float
-      description: |
-        A minimum proportion of observations that must have a numeric value (not be NA).
-        Supplied via task.ext.args as --minimum_proportion_not_na
-      default: 0.5
-  - minimum_samples_not_na:
-      type: integer
-      description: |
-        Minimum observations that must have a numeric value (not be NA) to retain
-        the row/ feature (e.g. gene). Supplied via task.ext.args as
-        --minimum_samples_not_na. Overrides minimum_proportion_not_na
-  - most_variant_features:
-      type: integer
-      description: |
-        Variance filter for the number of  row/ feature (e.g. gene) observations returned.
-        Supplied via task.ext.args as --most_variant_features
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing information on matrix to be filtered, at a
+          minimum an id. e.g. [ id:'test' ]
+    - abundance:
+        type: file
+        description: |
+          Raw TSV or CSV format abundance matrix with features (e.g.
+          genes) by row and observations (e.g. samples) by column. All rownames
+          from the sample sheet should be present in the columns.
+  - - samplesheet_meta:
+        type: map
+        description: |
+          Where samplesheet is provided, aroovy Map containing information on
+          sample sheet, at a minimum an id.  e.g. [ id:'test' ]
+    - samplesheet:
+        type: file
+        description: |
+          Optional CSV or TSV format sample sheet with sample metadata. If
+          provided this is used to infer minimum passing samples from group sizes
+          present (see grouping_variable), but also to validate matrix columns.
+          If not provided, all numeric columns are selected.
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing information on experiment.
-        e.g. [ id:'test' ]
   - filtered:
-      type: file
-      description: Filtered version of input matrix
-      pattern: "*.filtered.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing information on experiment.
+            e.g. [ id:'test' ]
+      - "*.filtered.tsv":
+          type: file
+          description: Filtered version of input matrix
+          pattern: "*.filtered.tsv"
   - tests:
-      type: file
-      description: Boolean matrix with pass/ fail status for each test on each feature
-      pattern: "*.tests.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing information on experiment.
+            e.g. [ id:'test' ]
+      - "*.tests.tsv":
+          type: file
+          description: Boolean matrix with pass/ fail status for each test on each feature
+          pattern: "*.tests.tsv"
+  - session_info:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing information on experiment.
+            e.g. [ id:'test' ]
+      - R_sessionInfo.log:
+          type: file
+          description: Log file containing R session information
+          pattern: "*.log"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@pinin4fjords"
 maintainers:

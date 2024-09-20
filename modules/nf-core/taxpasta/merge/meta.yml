@@ -15,46 +15,55 @@ tools:
       documentation: "https://taxpasta.readthedocs.io/"
       tool_dev_url: "https://github.com/taxprofiler/taxpasta"
       licence: ["Apache-2.0"]
+      identifier: biotools:taxpasta
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - profiles:
-      type: file
-      description: A list of taxonomic profiler output files (typically in text format, mandatory)
-      pattern: "*.{tsv,csv,arrow,parquet,biom}"
-  - profiler:
-      type: string
-      description: Name of the profiler used to generate the profile (mandatory)
-      pattern: "bracken|centrifuge|diamond|ganon|kaiju|kmcp|kraken2|krakenuniq|megan6|metaphlan|motus"
-  - format:
-      type: string
-      description: Type of output file to be generated
-      pattern: "tsv|csv|ods|xlsx|arrow|parquet|biom"
-  - taxonomy:
-      type: directory
-      description: Directory containing at a minimum nodes.dmp and names.dmp files (optional)
-      pattern: "*/"
-  - samplesheet:
-      type: file
-      description: A samplesheet describing the sample name and a filepath to a taxonomic abundance profile that needs to be relative from the Nextflow work directory of the executed process. The profiles must be provided even if you give a samplesheet as argument (optional)
-      pattern: "*.{tsv,csv,ods,xlsx,arrow,parquet}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - profiles:
+        type: file
+        description: A list of taxonomic profiler output files (typically in text format,
+          mandatory)
+        pattern: "*.{tsv,csv,arrow,parquet,biom}"
+  - - profiler:
+        type: string
+        description: Name of the profiler used to generate the profile (mandatory)
+        pattern: "bracken|centrifuge|diamond|ganon|kaiju|kmcp|kraken2|krakenuniq|megan6|metaphlan|motus"
+  - - format:
+        type: string
+        description: Type of output file to be generated
+        pattern: "tsv|csv|ods|xlsx|arrow|parquet|biom"
+  - - taxonomy:
+        type: directory
+        description: Directory containing at a minimum nodes.dmp and names.dmp files
+          (optional)
+        pattern: "*/"
+  - - samplesheet:
+        type: file
+        description: A samplesheet describing the sample name and a filepath to a taxonomic
+          abundance profile that needs to be relative from the Nextflow work directory
+          of the executed process. The profiles must be provided even if you give a
+          samplesheet as argument (optional)
+        pattern: "*.{tsv,csv,ods,xlsx,arrow,parquet}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - merged_profiles:
-      type: file
-      description: Output file with standardised multiple profiles in one go and have all profiles combined into a single table.
-      pattern: "*.{tsv,csv,ods,xlsx,arrow,parquet,biom}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.{tsv,csv,arrow,parquet,biom}":
+          type: file
+          description: Output file with standardised multiple profiles in one go and have
+            all profiles combined into a single table.
+          pattern: "*.{tsv,csv,ods,xlsx,arrow,parquet,biom}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@sofstam"
   - "@jfy133"

@@ -7,53 +7,56 @@ keywords:
   - cancer genomics
 tools:
   - snpsift:
-      description: SnpSift is a toolbox that allows you to filter and manipulate annotated files
+      description: SnpSift is a toolbox that allows you to filter and manipulate annotated
+        files
       homepage: https://pcingola.github.io/SnpEff/ss_introduction/
       documentation: https://pcingola.github.io/SnpEff/ss_introduction/
       tool_dev_url: https://github.com/pcingola/SnpEff
       doi: "10.3389/fgene.2012.00035"
       licence: ["MIT"]
+      identifier: biotools:snpsift
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information regarding vcf file provided
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: VCF file
-      pattern: "*.{vcf, vcf.gz}"
-  - vcf_tbi:
-      type: file
-      description: Tabix file for compressed vcf provided
-      pattern: "*.{tbi}"
-  - meta2:
-      type: map
-      description: |
-        Groovy map containing sample information regarding database provided
-  - database:
-      type: file
-      description: Database for use to annotate
-      pattern: "*.{vcf/vcf.gz}"
-  - dbs_tbi:
-      type: file
-      description: Tabix file for compressed database provided
-      pattern: "*.{tbi}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information regarding vcf file provided
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: VCF file
+        pattern: "*.{vcf, vcf.gz}"
+    - vcf_tbi:
+        type: file
+        description: Tabix file for compressed vcf provided
+        pattern: "*.{tbi}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy map containing sample information regarding database provided
+    - database:
+        type: file
+        description: Database for use to annotate
+        pattern: "*.{vcf/vcf.gz}"
+    - dbs_tbi:
+        type: file
+        description: Tabix file for compressed database provided
+        pattern: "*.{tbi}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  #
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - vcf:
-      type: file
-      description: Variant Calling File annotated
-      pattern: "*.{vcf}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf":
+          type: file
+          description: Variant Calling File annotated
+          pattern: "*.{vcf}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@LlaneroHiboreo"
 maintainers:

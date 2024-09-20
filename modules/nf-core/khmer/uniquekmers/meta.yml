@@ -1,5 +1,6 @@
 name: "khmer_uniquekmers"
-description: In-memory nucleotide sequence k-mer counting, filtering, graph traversal and more
+description: In-memory nucleotide sequence k-mer counting, filtering, graph traversal
+  and more
 keywords:
   - khmer
   - k-mer
@@ -12,27 +13,31 @@ tools:
       tool_dev_url: https://github.com/dib-lab/khmer
       doi: "10.12688/f1000research.6924.1"
       licence: ["BSD License"]
+      identifier: biotools:khmer
 input:
-  - fasta:
-      type: file
-      description: fasta file
-      pattern: "*.{fa,fasta}"
-  - kmer_size:
-      type: integer
-      description: k-mer size to use
+  - - fasta:
+        type: file
+        description: fasta file
+        pattern: "*.{fa,fasta}"
+  - - kmer_size:
+        type: integer
+        description: k-mer size to use
 output:
   - report:
-      type: file
-      description: Text file containing unique-kmers.py execution report
-      pattern: "report.txt"
+      - report.txt:
+          type: file
+          description: Text file containing unique-kmers.py execution report
+          pattern: "report.txt"
   - kmers:
-      type: file
-      description: Text file containing number of kmers
-      pattern: "kmers.txt"
+      - kmers.txt:
+          type: file
+          description: Text file containing number of kmers
+          pattern: "kmers.txt"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@JoseEspinosa"
 maintainers:

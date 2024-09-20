@@ -18,42 +18,46 @@ tools:
       documentation: https://github.com/SegataLab/cmseq
       tool_dev_url: https://github.com/SegataLab/cmseq
       licence: ["MIT License"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: BAM file
-      pattern: "*.bam"
-  - bai:
-      type: file
-      description: BAM index file
-      pattern: "*.bai"
-  - gff:
-      type: file
-      description: GFF file used to extract protein-coding genes
-      pattern: "*.gff"
-  - fasta:
-      type: file
-      description: Optional fasta file to run on a subset of references in the BAM file.
-      pattern: .{fa,fasta,fas,fna}
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM file
+        pattern: "*.bam"
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.bai"
+    - gff:
+        type: file
+        description: GFF file used to extract protein-coding genes
+        pattern: "*.gff"
+    - fasta:
+        type: file
+        description: Optional fasta file to run on a subset of references in the BAM
+          file.
+        pattern: .{fa,fasta,fas,fna}
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - polymut:
-      type: file
-      description: Polymut report in `.txt` format.
-      pattern: "*.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt":
+          type: file
+          description: Polymut report in `.txt` format.
+          pattern: "*.txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@maxibor"
 maintainers:
