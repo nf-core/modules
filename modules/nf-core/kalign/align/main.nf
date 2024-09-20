@@ -26,13 +26,13 @@ process KALIGN_ALIGN {
     error_handler() {
     exit_code=\$?
         if [ \$exit_code -eq 132 ]; then
-            echo "\n\nKALIGN failed because is incompatible with some CPU types.\n\n"
+            echo "\n\nKALIGN failed because is incompatible with some CPU types, see https://github.com/TimoLassmann/kalign/issues/46.\n\n"
         else
             trap - ERR
             return \$exit_code
         fi
     }
-    
+
     unpigz -cdf $fasta | \\
     kalign \\
         $args \\
