@@ -12,38 +12,51 @@ tools:
       documentation: https://github.com/Lexogen-Tools/idemux
       tool_dev_url: https://github.com/Lexogen-Tools/idemux
       licence: ["LEXOGEN"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'NVQ', lane:1 ]
-  - reads:
-      type: file
-      description: |
-        List of input FastQ files
-      pattern: "Undetermined_S*.fastq.gz"
-  - samplesheet:
-      type: file
-      description: Input samplesheet
-      pattern: "*.{csv}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'NVQ', lane:1 ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files
+        pattern: "Undetermined_S*.fastq.gz"
+    - samplesheet:
+        type: file
+        description: Input samplesheet
+        pattern: "*.{csv}"
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - fastq:
-      type: file
-      description: Demultiplexed sample FASTQ files
-      pattern: "*.fastq.gz"
+      - meta:
+          type: file
+          description: Demultiplexed sample FASTQ files
+          pattern: "*.fastq.gz"
+      - "[!undetermined]*.fastq.gz":
+          type: file
+          description: Demultiplexed sample FASTQ files
+          pattern: "*.fastq.gz"
   - undetermined:
-      type: file
-      description: Optional undetermined sample FASTQ files
-      pattern: "Undetermined_R?.fastq.gz"
+      - meta:
+          type: file
+          description: Optional undetermined sample FASTQ files
+          pattern: "Undetermined_R?.fastq.gz"
+      - undetermined_R?.fastq.gz:
+          type: file
+          description: Optional undetermined sample FASTQ files
+          pattern: "Undetermined_R?.fastq.gz"
   - stats:
-      type: file
-      description: Demultiplexing Stats
-      pattern: "demultipexing_stats.tsv"
+      - demultipexing_stats.tsv:
+          type: file
+          description: Demultiplexing Stats
+          pattern: "demultipexing_stats.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jaanckae"
 maintainers:

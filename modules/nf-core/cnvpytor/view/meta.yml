@@ -12,44 +12,61 @@ tools:
       tool_dev_url: https://github.com/abyzovlab/CNVpytor
       doi: "10.1101/2021.01.27.428472v1"
       licence: ["MIT"]
+      identifier: biotools:cnvpytor
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - pytor_files:
-      type: file
-      description: pytor file containing cnv calls. To merge calls from multiple samples use a list of files.
-      pattern: "*.{pytor}"
-  - bin_sizes:
-      type: string
-      description: list of binsizes separated by space e.g. "1000 10000" and "1000"
-  - output_format:
-      type: string
-      description: output format of the cnv calls. Valid entries are "tsv", "vcf", and "xls"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - pytor_files:
+        type: file
+        description: pytor file containing cnv calls. To merge calls from multiple samples
+          use a list of files.
+        pattern: "*.{pytor}"
+  - - bin_sizes:
+        type: string
+        description: list of binsizes separated by space e.g. "1000 10000" and "1000"
+  - - output_format:
+        type: string
+        description: output format of the cnv calls. Valid entries are "tsv", "vcf",
+          and "xls"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - tsv:
-      type: file
-      description: tsv file containing cnv calls
-      pattern: "*.{tsv}"
   - vcf:
-      type: file
-      description: vcf file containing cnv calls
-      pattern: "*.{vcf}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.vcf":
+          type: file
+          description: vcf file containing cnv calls
+          pattern: "*.{vcf}"
+  - tsv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.tsv":
+          type: file
+          description: tsv file containing cnv calls
+          pattern: "*.{tsv}"
   - xls:
-      type: file
-      description: xls file containing cnv calls
-      pattern: "*.{xls}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.xls":
+          type: file
+          description: xls file containing cnv calls
+          pattern: "*.{xls}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@sima-r"
   - "@ramprasadn"
