@@ -35,21 +35,10 @@ input:
           genome.
         pattern: "*"
 output:
-  - mirdeep2_inputs:
-      - meta:
-          type: map
-          description: Groovy Map containing sample information e.g. `[ id:'sample1',
-            single_end:false ]`
-      - "*.fa":
-          type: file
-          description: Outputs for miRDeep2 including the collapsed reads file (FASTA)
-            and the mapped reads in ARF format.
-          pattern: "*"
-      - "*.arf":
-          type: file
-          description: Outputs for miRDeep2 including the collapsed reads file (FASTA)
-            and the mapped reads in ARF format.
-          pattern: "*"
+  - outputs:
+      - meta: {}
+      - "*.fa": {}
+      - "*.arf": {}
   - versions:
       - versions.yml:
           type: file
