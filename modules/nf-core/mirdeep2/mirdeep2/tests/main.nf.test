@@ -55,7 +55,8 @@ nextflow_process {
                 input[2] = [
                         [ id:'hairpin_mature'], // meta map
                     file('https://github.com/rajewsky-lab/mirdeep2/raw/master/tutorial_dir/mature_ref_this_species.fa', checkIfExists: true),
-                    file('https://github.com/rajewsky-lab/mirdeep2/raw/master/tutorial_dir/precursors_ref_this_species.fa', checkIfExists: true)
+                    file('https://github.com/rajewsky-lab/mirdeep2/raw/master/tutorial_dir/precursors_ref_this_species.fa', checkIfExists: true),
+                    []
             ]
                 """
             }
@@ -87,7 +88,8 @@ nextflow_process {
                 input[2] = [
                         [ id:'hairpin_mature'], // meta map
                     file('https://github.com/rajewsky-lab/mirdeep2/raw/master/tutorial_dir/mature_ref_this_species.fa', checkIfExists: true),
-                    file('https://github.com/rajewsky-lab/mirdeep2/raw/master/tutorial_dir/mature_ref_other_species.fa', checkIfExists: true)
+                    file('https://github.com/rajewsky-lab/mirdeep2/raw/master/tutorial_dir/mature_ref_other_species.fa', checkIfExists: true),
+                    []
             ]
                 """
             }
