@@ -11,8 +11,8 @@ process JVARKIT_DICT2BED {
     tuple val(meta),  path(dict_files)
 
     output:
-    tuple val(meta), path(dict_files), path("*.bed"), emit: bed
-    path "versions.yml"                             , emit: versions
+    tuple val(meta), path("*.bed"), emit: bed
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

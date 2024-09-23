@@ -34,7 +34,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    path(process.out.bed[0][2]),
+                    path(process.out.bed[0][1]),
                     process.out.versions
                     ).match()
                 }
@@ -67,7 +67,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    path(process.out.bed[0][2]),
+                    path(process.out.bed[0][1]),
                     process.out.versions
                     ).match()
                 }
@@ -75,6 +75,4 @@ nextflow_process {
         }
 
     }
-
-
 }

@@ -15,7 +15,7 @@ tools:
       homepage: "https://github.com/lindenb/jvarkit"
       documentation: "https://jvarkit.readthedocs.io/"
       tool_dev_url: "https://github.com/lindenb/jvarkit"
-      doi: "10.1093/bioinformatics/btx734 "
+      doi: "10.6084/m9.figshare.1425030"
       licence: ["MIT License"]
       args_id: "$args"
       identifier: ""
@@ -36,10 +36,6 @@ output:
           description: |
             Groovy Map containing VCF information
             e.g. [ id:'test', single_end:false ]
-      - dict_files:
-        type: file
-        description: Input dict file(s)
-        pattern: "*.{vcf,bcf,vcf.gz,bcf.gz,dict,fai,bam,cram,interval_list}"
       - "*.bed":
           type: file
           description: BED output file
