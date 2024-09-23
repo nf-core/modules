@@ -12,6 +12,7 @@ process SENTIEON_DATAMETRICS {
     tuple val(meta), path(bam), path(bai)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
+    val plot_results
 
     output:
     tuple val(meta), path('*mq_metrics.txt') , emit: mq_metrics
@@ -20,6 +21,10 @@ process SENTIEON_DATAMETRICS {
     tuple val(meta), path('*gc_metrics.txt') , emit: gc_metrics
     tuple val(meta), path('*aln_metrics.txt'), emit: aln_metrics
     tuple val(meta), path('*is_metrics.txt') , emit: is_metrics
+    tuple val(meta), path('*mq_metrics.pdf') , emit: mq_plot, optional: true
+    tuple val(meta), path('*qd_metrics.pdf') , emit: qd_plot, optional: true
+    tuple val(meta), path('*is_metrics.pdf') , emit: is_plot, optional: true
+    tuple val(meta), path('*gc_metrics.pdf') , emit: gc_plot, optional: true
     path  "versions.yml"                     , emit: versions
 
     when:
@@ -47,6 +52,14 @@ process SENTIEON_DATAMETRICS {
         --algo InsertSizeMetricAlgo ${prefix}_is_metrics.txt  \\
         --algo AlignmentStat ${prefix}_aln_metrics.txt
 
+    if $plot_results
+    then
+        sentieon plot GCBias -o ${prefix}_gc_metrics.pdf ${prefix}_gc_metrics.txt
+        sentieon plot MeanQualityByCycle -o ${prefix}_mq_metrics.pdf ${prefix}_mq_metrics.txt
+        sentieon plot QualDistribution -o ${prefix}_qd_metrics.pdf  ${prefix}_qd_metrics.txt
+        sentieon plot InsertSizeMetricAlgo -o ${prefix}_is_metrics.pdf ${prefix}_is_metrics.txt
+    fi
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
@@ -62,6 +75,14 @@ process SENTIEON_DATAMETRICS {
     touch ${prefix}_gc_metrics.txt
     touch ${prefix}_aln_metrics.txt
     touch ${prefix}_is_metrics.txt
+
+    if $plot_results
+    then
+        touch ${prefix}_gc_metrics.pdf
+        touch ${prefix}_mq_metrics.pdf
+        touch ${prefix}_qd_metrics.pdf
+        touch ${prefix}_is_metrics.pdf
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
