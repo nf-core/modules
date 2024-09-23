@@ -14,7 +14,7 @@ process MTMALIGN_ALIGN {
     val(compress)
 
     output:
-    tuple val(meta), path("${prefix}.aln${compress ? '.gz' : ''}")           , emit: alignment
+    tuple val(meta), path("${prefix}.aln${compress ? '.gz' : ''}"), emit: alignment
     tuple val(meta), path("${prefix}.pdb${compress ? '.gz' : ''}"), emit: structure
     path "versions.yml"                                                      , emit: versions
 
