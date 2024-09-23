@@ -50,7 +50,10 @@ input:
         type: file
         description: FASTA file containing hairpin sequences (miRNA precursors).
         pattern: "*.fa"
-    - mature_other_species: {}
+    - mature_other_species:
+        type: file
+        description: FASTA file containing known mature miRNAs of other species.
+        pattern: "*.fa"
 output:
   - outputs:
       - meta:
