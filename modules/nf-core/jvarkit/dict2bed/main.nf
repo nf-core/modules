@@ -18,13 +18,13 @@ process JVARKIT_DICT2BED {
     task.ext.when == null || task.ext.when
 
     script:
-    def args1          = task.ext.args1 ?: ''
+    def args           = task.ext.args ?: ''
     def downstream_cmd = task.ext.downstream_cmd ?: '' /* give a chance to run a command like '| cut -f1,2,3 |sort | uniq' */
     def prefix         = task.ext.prefix ?: "${meta.id}"
     """
     mkdir TMP
 
-    jvarkit -Xmx${task.memory.giga}g -XX:-UsePerfData -Djava.io.tmpdir=TMP dict2bed ${args1} ${dict_files} ${downstream_cmd} > ${prefix}.bed
+    jvarkit -Xmx${task.memory.giga}g -XX:-UsePerfData -Djava.io.tmpdir=TMP dict2bed ${args} ${dict_files} ${downstream_cmd} > ${prefix}.bed
 
     rm -rf TMP
 
