@@ -54,19 +54,13 @@ process BCFTOOLS_PLUGINSPLIT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
-                args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
-                args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
-                args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
-                "vcf"
-    def index = args.contains("--write-index=tbi") || args.contains("-W=tbi") ? "tbi" :
-                args.contains("--write-index=csi") || args.contains("-W=csi") ? "csi" :
-                args.contains("--write-index") || args.contains("-W") ? "csi" :
-                ""
+    def extension = getVcfExtension(args);
+    def index = getVcfIndex(args, extension);
+
     def determination_file = samples ?: targets
     def create_cmd = extension.matches("vcf|bcf") ? "touch " : "echo '' | gzip > "
     def create_files = "cut -f 3 ${determination_file} | sed -e 's/\$/.${extension}/' > files.txt; while IFS= read -r filename; do ${create_cmd} \"\$filename\"; done < files.txt"
-    def create_index = index.matches("csi|tbi") ? "cut -f 3 ${determination_file} | sed -e 's/\$/.${extension}.${index}/' > indices.txt; touch \$(<indices.txt)" : ""
+    def create_index = index ? "cut -f 3 ${determination_file} | sed -e 's/\$/.${extension}.${index}/' > indices.txt; touch \$(<indices.txt)" : ""
     """
     ${create_files}
     ${create_index}
@@ -76,4 +70,23 @@ process BCFTOOLS_PLUGINSPLIT {
         bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
     END_VERSIONS
     """
+}
+// Custom Functions
+String getVcfExtension(String args) {
+    return args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
+        args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
+        args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
+        args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
+        "vcf";
+}
+String getVcfIndex(String args, String extension) {
+    index = ''
+    if (extension in ['vcf.gz', 'bcf', 'bcf.gz']) {
+        if (['--write-index=tbi', '-W=tbi'].any { args.contains(it) }  && extension == 'vcf.gz') {
+            index = 'tbi'
+        } else if (['--write-index=tbi', '-W=tbi', '--write-index=csi', '-W=csi', '--write-index', '-W'].any { args.contains(it) }) {
+            index = 'csi'
+        }
+    }
+    return index
 }

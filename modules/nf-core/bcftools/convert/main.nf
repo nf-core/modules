@@ -31,18 +31,13 @@ process BCFTOOLS_CONVERT {
 
     def regions = bed ? "--regions-file $bed" : ""
     def reference = fasta ?  "--fasta-ref $fasta" : ""
-    def extension = args.contains("--output-type b")    || args.contains("-Ob")    ? "--output ${prefix}.bcf.gz" :
-                    args.contains("--output-type u")    || args.contains("-Ou")    ? "--output ${prefix}.bcf" :
-                    args.contains("--output-type z")    || args.contains("-Oz")    ? "--output ${prefix}.vcf.gz" :
-                    args.contains("--output-type v")    || args.contains("-Ov")    ? "--output ${prefix}.vcf" :
-                    args.contains("--haplegendsample")  || args.contains("-h")     ? "" :
-                    "--output ${prefix}.vcf.gz"
+    def extension = getVcfExtension(args);
 
     """
     bcftools convert \\
         $args \\
         $regions \\
-        $extension \\
+        --output ${prefix}.${extension} \\
         --threads $task.cpus \\
         $reference \\
         $input
@@ -56,18 +51,37 @@ process BCFTOOLS_CONVERT {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def extension = getVcfExtension(args);
+    def index = getVcfIndex(args, extension);
+    def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
+    def create_index = index ? "touch ${prefix}.${extension}.${index}" : ""
 
-    def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
-                    args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
-                    args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
-                    args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
-                    "vcf.gz"
     """
-    touch ${prefix}.${extension}
+    ${create_cmd} ${prefix}.${extension}
+    ${create_index}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
     END_VERSIONS
     """
+}
+// Custom Functions
+String getVcfExtension(String args) {
+    return args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
+        args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
+        args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
+        args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
+        "vcf.gz";
+}
+String getVcfIndex(String args, String extension) {
+    index = ''
+    if (extension in ['vcf.gz', 'bcf', 'bcf.gz']) {
+        if (['--write-index=tbi', '-W=tbi'].any { args.contains(it) }  && extension == 'vcf.gz') {
+            index = 'tbi'
+        } else if (['--write-index=tbi', '-W=tbi', '--write-index=csi', '-W=csi', '--write-index', '-W'].any { args.contains(it) }) {
+            index = 'csi'
+        }
+    }
+    return index
 }

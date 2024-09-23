@@ -51,19 +51,17 @@ process BCFTOOLS_CSQ {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     extension = getVcfExtension(args);
+    index = getVcfIndex(args, extension);
 
-    def index = args.contains("--write-index=tbi") || args.contains("-W=tbi") ? "tbi" :
-                args.contains("--write-index=csi") || args.contains("-W=csi") ? "csi" :
-                args.contains("--write-index") || args.contains("-W") ? "csi" :
-                ""
     def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
-    def create_index = extension.endsWith(".gz") && index.matches("csi|tbi") ? "touch ${prefix}.${extension}.${index}" : ""
+    def create_index = index ? "touch ${prefix}.${extension}.${index}" : ""
 
     if ("$vcf" == "${prefix}.${extension}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     """
     ${create_cmd} ${prefix}.${extension}
     ${create_index}
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -78,4 +76,15 @@ String getVcfExtension(String args) {
         args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
         args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
         "vcf";
+}
+String getVcfIndex(String args, String extension) {
+    index = ''
+    if (extension in ['vcf.gz', 'bcf', 'bcf.gz']) {
+        if (['--write-index=tbi', '-W=tbi'].any { args.contains(it) }  && extension == 'vcf.gz') {
+            index = 'tbi'
+        } else if (['--write-index=tbi', '-W=tbi', '--write-index=csi', '-W=csi', '--write-index', '-W'].any { args.contains(it) }) {
+            index = 'csi'
+        }
+    }
+    return index
 }
