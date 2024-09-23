@@ -65,7 +65,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
+                { assert snapshot(process.out.versions,
+                    path(process.out.outputs.get(0).get(1)[2]).readLines().last().contains('</html>'),
+                    process.out.outputs.get(0).get(1)[0],
+                    path(process.out.outputs.get(0).get(1)[1]).readLines().first().contains('miRDeep2 score')
+                    ).match() },
                 // Assert .html
                 { assert path(process.out.outputs.get(0).get(1)[2]).readLines().last().contains('</html>') }
             )

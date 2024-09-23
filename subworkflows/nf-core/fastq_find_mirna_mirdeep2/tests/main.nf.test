@@ -67,7 +67,11 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out.versions).match()},
+                { assert snapshot(workflow.out.versions,
+                    path(workflow.out.outputs.get(0).get(1)[2]).readLines().last().contains('</html>'),
+                    workflow.out.outputs.get(0).get(1)[0],
+                    path(workflow.out.outputs.get(0).get(1)[1]).readLines().first().contains('miRDeep2 score')
+                ).match()},
                 // Assert .html
                 { assert path(workflow.out.outputs.get(0).get(1)[2]).readLines().last().contains('</html>') }
             )
