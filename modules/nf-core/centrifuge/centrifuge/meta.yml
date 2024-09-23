@@ -12,59 +12,86 @@ tools:
       documentation: https://ccb.jhu.edu/software/centrifuge/manual.shtml
       doi: 10.1101/gr.210641.116
       licence: ["GPL v3"]
+      identifier: biotools:centrifuge
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: |
-        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-        respectively.
-  - db:
-      type: directory
-      description: Path to directory containing centrifuge database files
-  - save_unaligned:
-      type: boolean
-      description: If true unmapped fastq files are saved
-  - save_aligned:
-      type: boolean
-      description: If true mapped fastq files are saved
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively.
+  - - db:
+        type: directory
+        description: Path to directory containing centrifuge database files
+  - - save_unaligned:
+        type: boolean
+        description: If true unmapped fastq files are saved
+  - - save_aligned:
+        type: boolean
+        description: If true mapped fastq files are saved
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - report:
-      type: file
-      description: |
-        File containing a classification summary
-      pattern: "*.{report.txt}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*report.txt":
+          type: file
+          description: |
+            File containing a classification summary
+          pattern: "*.{report.txt}"
   - results:
-      type: file
-      description: |
-        File containing classification results
-      pattern: "*.{results.txt}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*results.txt":
+          type: file
+          description: |
+            File containing classification results
+          pattern: "*.{results.txt}"
   - sam:
-      type: file
-      description: |
-        Optional output file containing read alignments (SAM format )or a table of per-read hit information (TAB)s
-      pattern: "*.{sam,tab}"
-  - fastq_unmapped:
-      type: file
-      description: Unmapped fastq files
-      pattern: "*.unmapped.fastq.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.{sam,tab}":
+          type: file
+          description: |
+            Optional output file containing read alignments (SAM format )or a table of per-read hit information (TAB)s
+          pattern: "*.{sam,tab}"
   - fastq_mapped:
-      type: file
-      description: Mapped fastq files
-      pattern: "*.mapped.fastq.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.mapped.fastq{,.1,.2}.gz":
+          type: file
+          description: Mapped fastq files
+          pattern: "*.mapped.fastq.gz"
+  - fastq_unmapped:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.unmapped.fastq{,.1,.2}.gz":
+          type: file
+          description: Unmapped fastq files
+          pattern: "*.unmapped.fastq.gz"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@sofstam"
   - "@jfy133"
