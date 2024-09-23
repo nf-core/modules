@@ -1,0 +1,111 @@
+nextflow_process {
+
+    name "Test Process MIRDEEP2_MIRDEEP2"
+    script "../main.nf"
+    process "MIRDEEP2_MIRDEEP2"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mirdeep2"
+    tag "mirdeep2/mirdeep2"
+    tag "bowtie/build"
+    tag "mirdeep2/mapper"
+
+
+    setup {
+        run("BOWTIE_BUILD") {
+            script "../../../bowtie/build/main.nf"
+            process {
+            """
+            input[0] = [
+                        [ id:'genome_cel_cluster' ], // meta map
+                    file('https://github.com/rajewsky-lab/mirdeep2/raw/master/tutorial_dir/cel_cluster.fa', checkIfExists: true)
+            ]
+            """
+            }
+        }
+
+        run("MIRDEEP2_MAPPER") {
+            script "../../../mirdeep2/mapper/main.nf"
+            config "./nextflow.config"
+
+            process {
+            """
+            input[0] = [
+                        [ id:'test_reads', single_end:false ], // meta map
+                    file('https://github.com/rajewsky-lab/mirdeep2/raw/master/tutorial_dir/reads.fa', checkIfExists: true)
+            ]
+            input[1] = BOWTIE_BUILD.out.index
+            """
+            }
+        }
+
+    }
+
+    test("mirdeep2 - mirdeep2 - fa") {
+
+            when {
+            process {
+                """
+                input[0] = MIRDEEP2_MAPPER.out.outputs
+                input[1] = [
+                        [ id:'genome_cel_cluster' ], // meta map
+                    file('https://github.com/rajewsky-lab/mirdeep2/raw/master/tutorial_dir/cel_cluster.fa', checkIfExists: true)
+            ]
+                input[2] = [
+                        [ id:'hairpin_mature'], // meta map
+                    file('https://github.com/rajewsky-lab/mirdeep2/raw/master/tutorial_dir/mature_ref_this_species.fa', checkIfExists: true),
+                    file('https://github.com/rajewsky-lab/mirdeep2/raw/master/tutorial_dir/precursors_ref_this_species.fa', checkIfExists: true),
+                    []
+            ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions,
+                    path(process.out.outputs.get(0).get(1)[2]).readLines().last().contains('</html>'),
+                    process.out.outputs.get(0).get(1)[0],
+                    path(process.out.outputs.get(0).get(1)[1]).readLines().first().contains('miRDeep2 score')
+                    ).match() },
+                // Assert .html
+                { assert path(process.out.outputs.get(0).get(1)[2]).readLines().last().contains('</html>') }
+            )
+        }
+
+    }
+
+    test("mirdeep - mirdeep2 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = MIRDEEP2_MAPPER.out.outputs
+                input[1] = [
+                        [ id:'genome_cel_cluster' ], // meta map
+                    file('https://github.com/rajewsky-lab/mirdeep2/raw/master/tutorial_dir/cel_cluster.fa', checkIfExists: true)
+            ]
+                input[2] = [
+                        [ id:'hairpin_mature'], // meta map
+                    file('https://github.com/rajewsky-lab/mirdeep2/raw/master/tutorial_dir/mature_ref_this_species.fa', checkIfExists: true),
+                    file('https://github.com/rajewsky-lab/mirdeep2/raw/master/tutorial_dir/mature_ref_other_species.fa', checkIfExists: true),
+                    []
+            ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
