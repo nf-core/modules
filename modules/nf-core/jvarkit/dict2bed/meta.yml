@@ -25,7 +25,7 @@ input:
         description: |
           Groovy Map containing dict file information
           e.g. [ id:'test_reference' ]
-    - dict_file:
+    - dict_files:
         type: file
         description: File(s) containing a dictionary VCF/BCF/BAM/DICT etc...
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz,dict,fai,bam,cram,interval_list}"
@@ -36,7 +36,7 @@ output:
           description: |
             Groovy Map containing VCF information
             e.g. [ id:'test', single_end:false ]
-      - dict_file:
+      - dict_files:
         type: file
         description: Input dict file(s)
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz,dict,fai,bam,cram,interval_list}"
