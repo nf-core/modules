@@ -8,7 +8,7 @@ process JVARKIT_DICT2BED {
         'biocontainers/jvarkit:2024.08.25--hdfd78af_1' }"
 
     input:
-    tuple val(meta),  path(dict_files)
+    tuple val(meta), path(dict_files)
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
@@ -18,13 +18,13 @@ process JVARKIT_DICT2BED {
     task.ext.when == null || task.ext.when
 
     script:
-    def args           = task.ext.args ?: ''
-    def downstream_cmd = task.ext.downstream_cmd ?: '' /* give a chance to run a command like '| cut -f1,2,3 |sort | uniq' */
-    def prefix         = task.ext.prefix ?: "${meta.id}"
+    def args   = task.ext.args ?: ''
+    def args2  = task.ext.args2 ?: '' /* give a chance to run a command like '| cut -f1,2,3 |sort | uniq' */
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir TMP
 
-    jvarkit -Xmx${task.memory.giga}g -XX:-UsePerfData -Djava.io.tmpdir=TMP dict2bed ${args} ${dict_files} ${downstream_cmd} > ${prefix}.bed
+    jvarkit -Xmx${task.memory.giga}g -XX:-UsePerfData -Djava.io.tmpdir=TMP dict2bed ${args} ${dict_files} ${args2} > ${prefix}.bed
 
     rm -rf TMP
 
