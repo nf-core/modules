@@ -11,7 +11,7 @@ process SHIGAPASS {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("${prefix}.csv"), emit: report
+    tuple val(meta), path("*.csv"), emit: report
     path "versions.yml"           , emit: versions
 
     when:
