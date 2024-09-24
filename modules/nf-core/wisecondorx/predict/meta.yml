@@ -50,10 +50,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*_aberrations.bed"
       - "*_aberrations.bed":
-          type: file
-          description: OPTIONAL - Output abberations in BED format. This gets created
-            with the `--bed` option
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*_aberrations.bed"
   - bins_bed:
       - meta:
@@ -61,10 +63,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*_bins.bed"
       - "*_bins.bed":
-          type: file
-          description: OPTIONAL - Output bins in BED format. This gets created with the
-            `--bed` option
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*_bins.bed"
   - segments_bed:
       - meta:
@@ -72,10 +76,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*_segments.bed"
       - "*_segments.bed":
-          type: file
-          description: OPTIONAL - Output segments in BED format. This gets created with
-            the `--bed` option
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*_segments.bed"
   - chr_statistics:
       - meta:
@@ -83,10 +89,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_chr_statistics.txt":
-          type: file
-          description: OPTIONAL - Statistics per chromosome in TXT format. This gets created
-            with the `--bed` option
+          pattern: "*_chr_statistics.txt"
+      - "*_statistics.txt":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*_chr_statistics.txt"
   - chr_plots:
       - meta:
@@ -94,10 +102,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "[!genome_wide]*.png"
       - "[!genome_wide]*.png":
-          type: list
-          description: OPTIONAL - A list containing the CNV plots of each chromosome.
-            This gets created with the `--plot` option
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "[!genome_wide]*.png"
   - genome_plot:
       - meta:
@@ -105,9 +115,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "genome_wide.png"
       - genome_wide.png:
-          type: file
-          description: OPTIONAL - A plot containing the CNV information of the whole genome
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "genome_wide.png"
   - versions:
       - versions.yml:
