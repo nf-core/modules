@@ -37,17 +37,15 @@ process MTMALIGN_ALIGN {
 
     mtm-align -i input_list.txt -o ${prefix}.pdb
     # -o does not affect the fasta naming, so move it to the new name
-    mv ./mTM_result/result.fasta ./mTM_result/${prefix}.aln
+    mv ./mTM_result/result.fasta ${prefix}.aln
+    mv ./mTM_result/${prefix}.pdb ${prefix}.pdb
     # Remove ".pdb" from the ids in the alignment file
-    sed -i 's/\\.pdb//g' ./mTM_result/${prefix}.aln
+    sed -i 's/\\.pdb//g' ${prefix}.aln
 
     # compress both output files
     if ${compress}; then
-        pigz -p ${task.cpus} ./mTM_result/${prefix}.aln ./mTM_result/${prefix}.pdb
+        pigz -p ${task.cpus} ${prefix}.aln ${prefix}.pdb
     fi
-
-    # move everything in mTM_result to the working directory
-    mv ./mTM_result/* .
 
     # mtm-align -v prints the wrong version 20180725, so extract it from the cosmetic output in the help message
     cat <<-END_VERSIONS > versions.yml
