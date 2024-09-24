@@ -45,6 +45,14 @@
 #   path: modules/nf-core/deepcell/mesmer
 # - profile: conda
 #   path: modules/nf-core/deepvariant
+- profile: conda
+  path: modules/nf-core/deepvariant/callvariants
+- profile: conda
+  path: modules/nf-core/deepvariant/makeexamples
+- profile: conda
+  path: modules/nf-core/deepvariant/postprocessvariants
+- profile: conda
+  path: modules/nf-core/deepvariant/rundeepvariant
 # - profile: conda
 #   path: modules/nf-core/ensemblvep/vep
 # - profile: conda
@@ -97,6 +105,8 @@
 #   path: modules/nf-core/sentieon/bwaindex
 # - profile: conda
 #   path: modules/nf-core/sentieon/bwamem
+- profile: conda
+  path: modules/nf-core/sentieon/datametrics
 # - profile: conda
 #   path: modules/nf-core/sentieon/dedup
 # - profile: conda
@@ -127,6 +137,8 @@
 #   path: subworkflows/nf-core/vcf_annotate_ensemblvep
 # - profile: conda
 #   path: subworkflows/nf-core/bcl_demultiplex
+- profile: conda
+  path: subworkflows/nf-core/deepvariant
 # - profile: conda
 #   path: subworkflows/nf-core/fastq_align_bamcmp_bwa
 # - profile: conda
