@@ -1,0 +1,76 @@
+name: "mirdeep2_mirdeep2"
+description: |
+  miRDeep2 is a tool for identifying known and novel miRNAs in deep sequencing data by analyzing sequenced RNAs. It integrates the mapping of sequencing reads to the genome and predicts miRNA precursors and mature miRNAs.
+keywords:
+  - mirdeep2
+  - miRNA
+  - RNA sequencing
+tools:
+  - "mirdeep2":
+      description: |
+        miRDeep2 is a tool that discovers microRNA genes by analyzing sequenced RNAs.
+        It includes three main scripts: `miRDeep2.pl`, `mapper.pl`, and `quantifier.pl` for comprehensive miRNA detection and quantification.
+      homepage: "https://www.mdc-berlin.de/content/mirdeep2-documentation"
+      documentation: "https://www.mdc-berlin.de/content/mirdeep2-documentation"
+      tool_dev_url: "https://github.com/rajewsky-lab/mirdeep2"
+      doi: "10.1093/nar/gkn491"
+      licence: ["GPL V3"]
+      identifier: biotools:mirdeep2
+
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information, e.g. `[ id:'sample1',
+          single_end:false ]`
+    - processed_reads:
+        type: file
+        description: FASTA file containing the processed sequencing reads.
+        pattern: "*.fa"
+    - genome_mappings:
+        type: file
+        description: ARF format file with mapped reads to the genome.
+        pattern: "*.arf"
+  - - meta2:
+        type: map
+        description: Groovy Map for genome FASTA file metadata, e.g. `[ id:'genome']`
+    - fasta:
+        type: file
+        description: FASTA file of the corresponding genome.
+        pattern: "*.fa"
+  - - meta3:
+        type: map
+        description: Groovy Map for miRNA metadata, e.g. `[ id:'mirbase', single_end:false
+          ]`
+    - mature:
+        type: file
+        description: FASTA file containing known mature miRNAs of the species being
+          analyzed.
+        pattern: "*.fa"
+    - hairpin:
+        type: file
+        description: FASTA file containing hairpin sequences (miRNA precursors).
+        pattern: "*.fa"
+    - mature_other_species:
+        type: file
+        description: FASTA file containing known mature miRNAs of other species.
+        pattern: "*.fa"
+output:
+  - outputs:
+      - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. `[ id:'sample1',
+            single_end:false ]`
+      - result*.{bed,csv,html}:
+          type: file
+          description: Output files, including BED, CSV, and HTML results files with an
+            overview of detected miRNAs.
+          pattern: "result*.{bed,csv,html}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@atrigila"
+maintainers:
+  - "@atrigila"

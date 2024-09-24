@@ -1,4 +1,3 @@
----
 name: "survivor_simsv"
 description: Simulate an SV VCF file based on a reference genome
 keywords:
@@ -14,70 +13,98 @@ tools:
       tool_dev_url: "https://github.com/fritzsedlazeck/SURVIVOR"
       doi: "10.1038/NCOMMS14061"
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing fasta information
-        e.g. `[ id:'test', single_end:false ]`
-  - fasta:
-      type: file
-      description: The reference genome
-      pattern: "*.{fasta,fna,fa}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing fasta index information
-        e.g. `[ id:'test', single_end:false ]`
-  - fai:
-      type: file
-      description: The index of the reference genome
-      pattern: "*.fai"
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing parameters information
-        e.g. `[ id:'test', single_end:false ]`
-  - parameters:
-      type: file
-      description: A text file containing the parameters to be used for the simulation. Gets automatically generated using defaults when this is not supplied
-      pattern: "*.txt"
-  - snp_mutation_frequency:
-      type: float
-      description: The SNP mutation frequency in the output VCF (0-1)
-  - sim_reads:
-      type: integer
-      description: Whether or not to simulate reads (1==yes, else no)
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing fasta information
+          e.g. `[ id:'test', single_end:false ]`
+    - fasta:
+        type: file
+        description: The reference genome
+        pattern: "*.{fasta,fna,fa}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing fasta index information
+          e.g. `[ id:'test', single_end:false ]`
+    - fai:
+        type: file
+        description: The index of the reference genome
+        pattern: "*.fai"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing parameters information
+          e.g. `[ id:'test', single_end:false ]`
+    - parameters:
+        type: file
+        description: A text file containing the parameters to be used for the simulation.
+          Gets automatically generated using defaults when this is not supplied
+        pattern: "*.txt"
+  - - snp_mutation_frequency:
+        type: float
+        description: The SNP mutation frequency in the output VCF (0-1)
+  - - sim_reads:
+        type: integer
+        description: Whether or not to simulate reads (1==yes, else no)
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - parameters:
-      type: file
-      description: The created parameters file
-      pattern: "*.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.txt":
+          type: file
+          description: The created parameters file
+          pattern: "*.txt"
   - vcf:
-      type: file
-      description: A VCF containing the simulated variants
-      pattern: "*.vcf"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.vcf":
+          type: file
+          description: A VCF containing the simulated variants
+          pattern: "*.vcf"
   - bed:
-      type: file
-      description: A BED file of the simulated structural variants
-      pattern: "*.bed"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.bed":
+          type: file
+          description: A BED file of the simulated structural variants
+          pattern: "*.bed"
   - fasta:
-      type: file
-      description: A Fasta file file containing the variants from the output VCF
-      pattern: "*.fasta"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.fasta":
+          type: file
+          description: A Fasta file file containing the variants from the output VCF
+          pattern: "*.fasta"
   - insertions:
-      type: file
-      description: A Fasta file file containing insertion sequences
-      pattern: "*.insertions.fa"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.insertions.fa":
+          type: file
+          description: A Fasta file file containing insertion sequences
+          pattern: "*.insertions.fa"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

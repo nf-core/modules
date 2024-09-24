@@ -1,5 +1,6 @@
 name: "picard_extractfingerprint"
-description: Computes/Extracts the fingerprint genotype likelihoods from the supplied file. It is given as a list of PLs at the fingerprinting sites.
+description: Computes/Extracts the fingerprint genotype likelihoods from the supplied
+  file. It is given as a list of PLs at the fingerprinting sites.
 keywords:
   - picard
   - extract
@@ -14,30 +15,63 @@ tools:
       documentation: https://broadinstitute.github.io/picard/
       tool_dev_url: https://github.com/broadinstitute/picard/
       licence: ["MIT"]
+      identifier: biotools:picard_tools
 input:
-  - meta:
-      type: file
-      description: |
-        Input SAM/BAM/CRAM file
-  - reference:
-      type: file
-      description: |
-        Reference sequence file
-  - haplotype_map:
-      type: file
-      description: |
-        A file of haplotype information. The file lists a set of SNPs, optionally arranged in high-LD blocks, to be used for fingerprinting.
-        See https://software.broadinstitute.org/gatk/documentation/article?id=9526 for details.
-      pattern: "*.{txt,vcf,vcf.gz}"
+  - - meta:
+        type: file
+        description: |
+          Input SAM/BAM/CRAM file
+    - bam:
+        type: file
+        description: BAM file
+        pattern: "*.{bam}"
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.{bai}"
+  - - haplotype_map:
+        type: file
+        description: |
+          A file of haplotype information. The file lists a set of SNPs, optionally arranged in high-LD blocks, to be used for fingerprinting.
+          See https://software.broadinstitute.org/gatk/documentation/article?id=9526 for details.
+        pattern: "*.{txt,vcf,vcf.gz}"
+  - - fasta:
+        type: file
+        description: Reference sequence file
+        pattern: "*.{fasta,fna,fa}"
+  - - fasta_fai:
+        type: file
+        description: Reference sequence index file
+        pattern: "*.{fai}"
+  - - sequence_dictionary:
+        type: file
+        description: Reference sequence dictionary file
 output:
-  - fingerprint:
-      type: file
-      description: |
-        Output fingerprint file (VCF)
+  - vcf:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.vcf.gz":
+          type: file
+          description: VCF file
+          pattern: "*.vcf.gz"
+  - tbi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.vcf.gz.tbi":
+          type: file
+          description: Tabix index file
+          pattern: "*.vcf.gz.tbi"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@adamrtalbot"
   - "@mauro-saporita"
