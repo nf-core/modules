@@ -34,7 +34,7 @@ process SHIGAPASS {
     # Run ShigaPass
     ShigaPass.sh \\
         -l ${fasta_name}_tmp.txt \\
-        $options.args \\
+        $args \\
         -p /usr/local/share/shigapass-1.5.0/db \\
         -t $task.cpus \\
         -o ${prefix}
