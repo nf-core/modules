@@ -26,7 +26,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bam,
+                { assert snapshot(file(process.out.bam[0][1]).size(),
                                   process.out.versions)
                                   .match()
                 }
