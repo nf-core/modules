@@ -28,12 +28,12 @@ input:
         pattern: "*.bam"
         ontologies:
           - edam: "http://edamontology.org/format_2572"
-  - genome:
+  - - genome:
         type: string
         description: |
           Genome assembly symbol. Not used when bed file is provided.
           In this case, it can be any value or an empty string.
-  - bed:
+  - - bed:
         type: file
         description: Bed file of repeats genomic coordinates (optional).
         pattern: "*.bed"
