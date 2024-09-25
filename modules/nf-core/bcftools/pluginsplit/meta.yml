@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "bcftools_pluginsplit"
 description: Split VCF by sample, creating single- or multi-sample VCFs.
@@ -14,60 +13,83 @@ tools:
       documentation: http://www.htslib.org/doc/bcftools.html
       doi: 10.1093/bioinformatics/btp352
       licence: ["MIT"]
+      identifier: biotools:bcftools
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: The VCF file to split
-      pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
-  - tbi:
-      type: file
-      description: OPTIONAL - The index of the input VCF/BCF
-      pattern: "*.tbi"
-  - samples:
-      type: file
-      description: |
-        A tab-separated file determining which samples should be in which output file
-        column 1: The sample name(s) in the input file
-        column 2: The sample name(s) to use in the output file (use `-` to keep the original name)
-        column 3: The name of the output file
-        Either this or a groups file should be given
-      pattern: "*"
-  - groups:
-      type: file
-      description: |
-        A tab-separated file determining which samples should be in which output file(s)
-        column 1: The sample name(s) in the input file
-        column 2: The sample name(s) to use in the output file (use `-` to keep the original name)
-        column 3: The name of the output file(s)
-        Either this or a samples file should be given
-      pattern: "*"
-  - regions:
-      type: file
-      description: A BED file containing regions to use
-      pattern: "*.bed"
-  - targets:
-      type: file
-      description: A BED file containing regions to use (but streams rather than index-jumps)
-      pattern: "*.bed"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: The VCF file to split
+        pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+    - tbi:
+        type: file
+        description: OPTIONAL - The index of the input VCF/BCF
+        pattern: "*.tbi"
+  - - samples:
+        type: file
+        description: |
+          A tab-separated file determining which samples should be in which output file
+          column 1: The sample name(s) in the input file
+          column 2: The sample name(s) to use in the output file (use `-` to keep the original name)
+          column 3: The name of the output file
+          Either this or a groups file should be given
+        pattern: "*"
+  - - groups:
+        type: file
+        description: |
+          A tab-separated file determining which samples should be in which output file(s)
+          column 1: The sample name(s) in the input file
+          column 2: The sample name(s) to use in the output file (use `-` to keep the original name)
+          column 3: The name of the output file(s)
+          Either this or a samples file should be given
+        pattern: "*"
+  - - regions:
+        type: file
+        description: A BED file containing regions to use
+        pattern: "*.bed"
+  - - targets:
+        type: file
+        description: A BED file containing regions to use (but streams rather than index-jumps)
+        pattern: "*.bed"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - vcf:
-      type: file
-      description: The resulting VCF files from the split
-      pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.{vcf,vcf.gz,bcf,bcf.gz}":
+          type: file
+          description: The resulting VCF files from the split
+          pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+  - tbi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tbi":
+          type: file
+          description: TBI file
+          pattern: "*.tbi"
+  - csi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.csi":
+          type: file
+          description: CSI file
+          pattern: "*.csi"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

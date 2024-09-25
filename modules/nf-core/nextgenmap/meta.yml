@@ -18,39 +18,42 @@ tools:
       documentation: https://github.com/Cibiv/NextGenMap/wiki
       doi: 10.1093/bioinformatics/btt468
       licence: ["MIT"]
+      identifier: biotools:nextgenmap
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: |
-        List of input FastQ files of size 1, if meta.single_end is true, and 2
-        if meta.single_end is false.
-  - fasta:
-      type: file
-      description: |
-        Genomic reference fasta file
-      pattern: "*.{fa,fa.gz,fas,fas.gz,fna,fna.gz,fasta,fasta.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1, if meta.single_end is true, and 2
+          if meta.single_end is false.
+  - - fasta:
+        type: file
+        description: |
+          Genomic reference fasta file
+        pattern: "*.{fa,fa.gz,fas,fas.gz,fna,fna.gz,fasta,fasta.gz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information. First item of tuple with
-        bam, below.
-        e.g. [ id:'test', single_end:false ]
   - bam:
-      type: file
-      description: |
-        Output BAM file containing read alignments. Second item of tuple with
-        meta, above
-      pattern: "*.{bam}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information. First item of tuple with
+            bam, below.
+            e.g. [ id:'test', single_end:false ]
+      - "*.bam":
+          type: file
+          description: |
+            Output BAM file containing read alignments. Second item of tuple with
+            meta, above
+          pattern: "*.{bam}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@cmatkhan"
 maintainers:

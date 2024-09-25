@@ -8,44 +8,54 @@ keywords:
   - chimeras
 tools:
   - gunc:
-      description: Python package for detection of chimerism and contamination in prokaryotic genomes.
+      description: Python package for detection of chimerism and contamination in prokaryotic
+        genomes.
       homepage: https://grp-bork.embl-community.io/gunc/
       documentation: https://grp-bork.embl-community.io/gunc/
       tool_dev_url: https://github.com/grp-bork/gunc
       doi: "10.1186/s13059-021-02393-0"
       licence: ["GNU General Public v3 or later (GPL v3+)"]
+      identifier: biotools:gunc
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: FASTA file containing contig (bins)
-      pattern: "*.fa"
-  - db:
-      type: file
-      description: GUNC database file
-      pattern: "*.dmnd"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: FASTA file containing contig (bins)
+        pattern: "*.fa"
+  - - db:
+        type: file
+        description: GUNC database file
+        pattern: "*.dmnd"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - maxcss_levels_tsv:
-      type: file
-      description: Output file with scores for a taxonomic level with the highest CSS score
-      pattern: "*.tsv"
+  - maxcss_level_tsv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*maxCSS_level.tsv":
+          type: file
+          description: Output file with results for the maximum CSS level
+          pattern: "*.tsv"
   - all_levels_tsv:
-      type: file
-      description: Optional output file with results for each taxonomic level
-      pattern: "*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*all_levels.tsv":
+          type: file
+          description: Optional output file with results for each taxonomic level
+          pattern: "*.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jfy133"
 maintainers:

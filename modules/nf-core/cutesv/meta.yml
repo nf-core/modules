@@ -6,48 +6,52 @@ keywords:
   - sv
 tools:
   - cutesv:
-      description: a clustering-and-refinement method to analyze the signatures to implement sensitive SV detection.
+      description: a clustering-and-refinement method to analyze the signatures to implement
+        sensitive SV detection.
       homepage: https://github.com/tjiangHIT/cuteSV
       documentation: https://github.com/tjiangHIT/cuteSV#readme
       tool_dev_url: https://github.com/tjiangHIT/cuteSV
       licence: ["MIT"]
+      identifier: biotools:cuteSV
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - bam:
-      type: file
-      description: BAM file
-      pattern: "*.bam"
-  - bai:
-      type: file
-      description: Index of BAM file
-      pattern: "*.bai"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'fasta' ]
-  - fasta:
-      type: file
-      description: |
-        Reference database in FASTA format
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - bam:
+        type: file
+        description: BAM file
+        pattern: "*.bam"
+    - bai:
+        type: file
+        description: Index of BAM file
+        pattern: "*.bai"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'fasta' ]
+    - fasta:
+        type: file
+        description: |
+          Reference database in FASTA format
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - vcf:
-      type: file
-      description: VCF file containing called variants from CuteSV
-      pattern: "*.vcf"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.vcf":
+          type: file
+          description: VCF file containing called variants from CuteSV
+          pattern: "*.vcf"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@christopher-hakkaart"
   - "@yuukiiwa"
