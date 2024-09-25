@@ -13,6 +13,7 @@ process DEEPTOOLS_ALIGNMENTSIEVE {
     output:
     tuple val(meta), path("*_as.bam") , emit: bam
     path  "versions.yml"              , emit: versions
+    path  "*_log.txt"                 , emit: logs
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,6 +26,7 @@ process DEEPTOOLS_ALIGNMENTSIEVE {
         $args \\
         -b $input \\
         -o ${prefix}_as.bam \\
+        --filterMetrics ${prefix}_log.txt \\
         --numberOfProcessors $task.cpus
 
     cat <<-END_VERSIONS > versions.yml
@@ -37,6 +39,7 @@ process DEEPTOOLS_ALIGNMENTSIEVE {
     def prefix    = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_as.bam
+    touch ${prefix}_log.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
