@@ -39,6 +39,11 @@ output:
           type: file
           description: BAM file
           pattern: "*.bam"
+  - logs:
+      - "*_log.txt":
+          type: file
+          description: TXT file
+          pattern: "*.txt"
   - versions:
       - versions.yml:
           type: file
