@@ -7,48 +7,53 @@ keywords:
   - wastewater
 tools:
   - "freyja":
-      description: "Freyja recovers relative lineage abundances from mixed SARS-CoV-2 samples and provides functionality to analyze lineage dynamics."
+      description: "Freyja recovers relative lineage abundances from mixed SARS-CoV-2
+        samples and provides functionality to analyze lineage dynamics."
       homepage: "https://github.com/andersen-lab/Freyja"
       documentation: "https://github.com/andersen-lab/Freyja/wiki"
       tool_dev_url: "https://github.com/andersen-lab/Freyja"
       doi: "10.1038/s41586-022-05049-6"
       licence: ["BSD-2-Clause"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - variants:
-      type: file
-      description: File containing identified variants in a gff-like format
-      pattern: "*.variants.tsv"
-  - depths:
-      type: file
-      description: File containing depth of the variants
-      pattern: "*.depth.tsv"
-  - barcodes:
-      type: file
-      description: File containing lineage defining barcodes
-      pattern: "*barcodes.csv"
-  - lineages_meta:
-      type: file
-      description: File containing lineage metadata that correspond to barcodes
-      pattern: "*lineages.json"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - variants:
+        type: file
+        description: File containing identified variants in a gff-like format
+        pattern: "*.variants.tsv"
+    - depths:
+        type: file
+        description: File containing depth of the variants
+        pattern: "*.depth.tsv"
+  - - barcodes:
+        type: file
+        description: File containing lineage defining barcodes
+        pattern: "*barcodes.csv"
+  - - lineages_meta:
+        type: file
+        description: File containing lineage metadata that correspond to barcodes
+        pattern: "*lineages.json"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - demix:
-      type: file
-      description: a tsv file that includes the lineages present, their corresponding abundances, and summarization by constellation
-      pattern: "*.demix.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: a tsv file that includes the lineages present, their corresponding
+            abundances, and summarization by constellation
+          pattern: "*.demix.tsv"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@Joon-Klaps"
 maintainers:

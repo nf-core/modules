@@ -7,28 +7,33 @@ keywords:
   - reference
 tools:
   - "fastqscreen":
-      description: "FastQ Screen allows you to screen a library of sequences in FastQ format against a set of sequence databases so you can see if the composition of the library matches with what you expect."
+      description: "FastQ Screen allows you to screen a library of sequences in FastQ
+        format against a set of sequence databases so you can see if the composition
+        of the library matches with what you expect."
       homepage: "https://www.bioinformatics.babraham.ac.uk/projects/fastq_screen/"
       documentation: "https://stevenwingett.github.io/FastQ-Screen/"
       tool_dev_url: "https://github.com/StevenWingett/FastQ-Screen/archive/refs/tags/v0.15.3.zip"
       doi: "10.5281/zenodo.5838377"
       licence: ["GPL-3.0-or-later"]
+      identifier: ""
 input:
-  - genome_names:
-      type: string
-      description: List of names for each index
-  - indexes:
-      type: directory
-      description: Bowtie2 genome directories containing index files
+  - - genome_names:
+        type: string
+        description: List of names for each index
+  - - indexes:
+        type: directory
+        description: Bowtie2 genome directories containing index files
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - database:
-      type: directory
-      description: fastq screen database folder containing config file and index folders
-      pattern: "FastQ_Screen_Genomes"
+      - FastQ_Screen_Genomes:
+          type: directory
+          description: fastq screen database folder containing config file and index folders
+          pattern: "FastQ_Screen_Genomes"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@snesic"
   - "@JPejovicApis"
