@@ -166,7 +166,7 @@ jobs:
       - name: Install pip
         run: python -m pip install --upgrade pip
 
-      - uses: actions/setup-java@2dfa2011c5b2a0f1489bf9e433881c92c1631f88 # v4
+      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
         with:
           distribution: "temurin"
           java-version: "17"
@@ -204,7 +204,7 @@ jobs:
       - name: Install pip
         run: python -m pip install --upgrade pip
 
-      - uses: actions/setup-java@2dfa2011c5b2a0f1489bf9e433881c92c1631f88 # v4
+      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
         with:
           distribution: "temurin"
           java-version: "17"
@@ -416,7 +416,7 @@ jobs:
       - name: Install Python dependencies
         run: python -m pip install --upgrade pip pytest-workflow cryptography
 
-      - uses: actions/setup-java@2dfa2011c5b2a0f1489bf9e433881c92c1631f88 # v4
+      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
         with:
           distribution: "temurin"
           java-version: "17"
@@ -607,6 +607,8 @@ jobs:
           - profile: conda
             path: modules/nf-core/sentieon/bwamem
           - profile: conda
+            path: modules/nf-core/sentieon/datametrics
+          - profile: conda
             path: modules/nf-core/sentieon/dedup
           - profile: conda
             path: modules/nf-core/sentieon/qualcal
@@ -653,7 +655,7 @@ jobs:
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
-      - uses: actions/setup-java@2dfa2011c5b2a0f1489bf9e433881c92c1631f88 # v4
+      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
         with:
           distribution: "temurin"
           java-version: "17"

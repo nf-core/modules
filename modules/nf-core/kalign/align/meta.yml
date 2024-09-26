@@ -12,13 +12,13 @@ tools:
       tool_dev_url: "https://github.com/TimoLassmann/kalign"
       doi: "10.1093/bioinformatics/btz795"
       licence: ["GPL v3"]
-      identifier: ""
+      identifier: "biotools:kalign"
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'test']`
+          e.g. [ id:'test']
     - fasta:
         type: file
         description: Input sequences in FASTA format. May be gzipped or uncompressed.

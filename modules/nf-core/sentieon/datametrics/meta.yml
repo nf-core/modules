@@ -44,6 +44,10 @@ input:
         type: file
         description: Index of the genome fasta file
         pattern: "*.fai"
+  - - plot_results:
+        type: boolean
+        description: Boolean to determine whether plots should be generated
+        pattern: "true or false"
 output:
   - mq_metrics:
       - meta:
@@ -110,6 +114,46 @@ output:
           description: File containing the information about statistical distribution
             of insert sizes
           pattern: "*.txt"
+  - mq_plot:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*mq_metrics.pdf":
+          type: file
+          description: "PDF containting plot of mean base quality scores"
+          pattern: "*.pdf"
+  - qd_plot:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*qd_metrics.pdf":
+          type: file
+          description: "PDF containting plot of specific base quality score"
+          pattern: "*.pdf"
+  - is_plot:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*is_metrics.pdf":
+          type: file
+          description: "PDF containting plot of insert sizes"
+          pattern: "*.pdf"
+  - gc_plot:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*gc_metrics.pdf":
+          type: file
+          description: "PDF containting plot of GC bias"
+          pattern: "*.pdf"
   - versions:
       - versions.yml:
           type: file
