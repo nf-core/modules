@@ -9,18 +9,36 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "yahs"
+    tag "samtools/view"
 
-    test("sarscov2-bed-fasta-fai") {
+    setup {
+            run("SAMTOOLS_VIEW") {
+            script "../../samtools/view"
+            process {
+                 """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
+                    []
+                ])
+                input[1] = Channel.of([
+                    [ id:'genome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = []
+                """
+            }
+            }
+        }
+
+    test("homo_sapiens-bam-fasta-fai") {
         
         when {
             process {
                 """
-                input[0] = [ [ id:'test' ],
-				file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
-				]
-				input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-				input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
-
+                input[0] = SAMTOOLS_VIEW.out.bam
+				input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+				input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 """
             }
         }
