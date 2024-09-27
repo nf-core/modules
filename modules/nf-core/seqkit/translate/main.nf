@@ -20,7 +20,7 @@ process SEQKIT_TRANSLATE {
     script:
     def args        = task.ext.args ?: ''
     def args2       = task.ext.args2 ?: ''
-    def prefix          = task.ext.prefix ?: "${meta.id}"
+    prefix          = task.ext.prefix ?: "${meta.id}"
     def extension   = "fastq"
     if ("$fastx" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz|.+\.fsa|.+\.fsa.gz/ ) {
         extension   = "fasta"
