@@ -9,36 +9,40 @@ keywords:
   - kmers
 tools:
   - "kmcp":
-      description: "Accurate metagenomic profiling of both prokaryotic and viral populations by pseudo-mapping"
+      description: "Accurate metagenomic profiling of both prokaryotic and viral populations
+        by pseudo-mapping"
       homepage: "https://github.com/shenwei356/kmcp"
       documentation: "https://github.com/shenwei356/kmcp#documents"
       tool_dev_url: "https://github.com/shenwei356/kmcp"
       doi: "10.1093/bioinformatics/btac845"
       license: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - search_out:
-      type: file
-      description: The output file created by kmcp search
-      pattern: "*.gz"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - search_out:
+        type: file
+        description: The output file created by kmcp search
+        pattern: "*.gz"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - result:
-      type: file
-      description: Output file in gzipped format
-      pattern: "*.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.gz":
+          type: file
+          description: Output file in gzipped format
+          pattern: "*.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@sofstam"
 maintainers:

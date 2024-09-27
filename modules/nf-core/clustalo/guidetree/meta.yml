@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "clustalo_guidetree"
 description: Renders a guidetree in clustalo
@@ -8,36 +7,40 @@ keywords:
   - newick
 tools:
   - "clustalo":
-      description: "Latest version of Clustal: a multiple sequence alignment program for DNA or proteins"
+      description: "Latest version of Clustal: a multiple sequence alignment program
+        for DNA or proteins"
       homepage: "http://www.clustal.org/omega/"
       documentation: "http://www.clustal.org/omega/"
       tool_dev_url: "http://www.clustal.org/omega/"
       doi: "10.1038/msb.2011.75"
       licence: ["GPL v2"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test']`
-  - fasta:
-      type: file
-      description: Input sequences in FASTA format
-      pattern: "*.{fa,fasta}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test']`
+    - fasta:
+        type: file
+        description: Input sequences in FASTA format
+        pattern: "*.{fa,fasta}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test']`
   - tree:
-      type: file
-      description: Guide tree file in Newick format
-      pattern: "*.{dnd}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test']`
+      - "*.dnd":
+          type: file
+          description: Guide tree file in Newick format
+          pattern: "*.{dnd}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@luisas"
   - "@JoseEspinosa"

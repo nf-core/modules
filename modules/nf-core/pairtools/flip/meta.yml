@@ -11,32 +11,35 @@ tools:
       documentation: http://pairtools.readthedocs.io/
       tool_dev_url: https://github.com/mirnylab/pairtools
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - sam:
-      type: file
-      description: pair file
-  - chromsizes:
-      type: file
-      description: chromosome size file
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - sam:
+        type: file
+        description: pair file
+  - - chromsizes:
+        type: file
+        description: chromosome size file
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - flip:
-      type: file
-      description: output file of flip
-      pattern: "*.{flip.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.flip.gz":
+          type: file
+          description: output file of flip
+          pattern: "*.{flip.gz}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jianhong"
 maintainers:

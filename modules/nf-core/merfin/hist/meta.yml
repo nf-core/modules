@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "merfin_hist"
-description: Compare k-mer frequency in reads and assembly to devise the metrics K* and QV*
+description: Compare k-mer frequency in reads and assembly to devise the metrics K*
+  and QV*
 keywords:
   - assembly
   - evaluation
@@ -9,71 +9,76 @@ keywords:
   - completeness
 tools:
   - "merfin":
-      description: "Merfin (k-mer based finishing tool) is a suite of subtools to variant filtering, assembly evaluation and polishing via k-mer validation. The subtool -hist estimates the QV (quality value of [Merqury](https://github.com/marbl/merqury)) for each scaffold/contig and genome-wide averages. In addition, Merfin produces a QV* estimate, which accounts also for kmers that are seen in excess with respect to their expected multiplicity predicted from the reads."
+      description: "Merfin (k-mer based finishing tool) is a suite of subtools to variant
+        filtering, assembly evaluation and polishing via k-mer validation. The subtool
+        -hist estimates the QV (quality value of [Merqury](https://github.com/marbl/merqury))
+        for each scaffold/contig and genome-wide averages. In addition, Merfin produces
+        a QV* estimate, which accounts also for kmers that are seen in excess with respect
+        to their expected multiplicity predicted from the reads."
       homepage: "https://github.com/arangrhie/merfin"
       documentation: "https://github.com/arangrhie/merfin/wiki/Best-practices-for-Merfin"
       doi: "10.1038/s41592-022-01445-y"
       licence: ["Apache-2.0"]
+      identifier: biotools:merfin
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-
-  - fasta_assembly:
-      type: file
-      description: Genome assembly in FASTA; uncompressed, gz compressed [REQUIRED]
-      pattern: "*.{fasta, fasta.gz}"
-
-  - meta1:
-      type: map
-      description: |
-        Groovy Map containing sample read information
-        e.g. `[ id:'sample1', single_end:false ]`
-
-  - meryl_db_reads:
-      type: file
-      description: K-mer database produced from raw reads using Meryl [REQUIRED]
-      pattern: "*.{meryl_db}"
-
-  - lookup_table:
-      type: file
-      description: Input vector of k-mer probabilities (obtained by genomescope2 with parameter --fitted_hist) [OPTIONAL]
-      pattern: "lookup_table.txt"
-
-  - seqmers:
-      type: file
-      description: Input for pre-built sequence meryl db. By default, the sequence meryl db will be generated from the input genome assembly [OPTIONAL]
-      pattern: "*.{meryl_db}"
-
-  - peak:
-      type: float
-      description: Input to hard set copy 1 and infer multiplicity to copy number. Can be calculated using genomescope2 [REQUIRED]
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fasta_assembly:
+        type: file
+        description: Genome assembly in FASTA; uncompressed, gz compressed [REQUIRED]
+        pattern: "*.{fasta, fasta.gz}"
+  - - meta1:
+        type: map
+        description: |
+          Groovy Map containing sample read information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - meryl_db_reads:
+        type: file
+        description: K-mer database produced from raw reads using Meryl [REQUIRED]
+        pattern: "*.{meryl_db}"
+  - - lookup_table:
+        type: file
+        description: Input vector of k-mer probabilities (obtained by genomescope2 with
+          parameter --fitted_hist) [OPTIONAL]
+        pattern: "lookup_table.txt"
+  - - seqmers:
+        type: file
+        description: Input for pre-built sequence meryl db. By default, the sequence
+          meryl db will be generated from the input genome assembly [OPTIONAL]
+        pattern: "*.{meryl_db}"
+  - - peak:
+        type: float
+        description: Input to hard set copy 1 and infer multiplicity to copy number.
+          Can be calculated using genomescope2 [REQUIRED]
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
   - hist:
-      type: file
-      description: The generated 0-centered k* histogram for sequences in <fasta_assembly.fasta>. Positive k* values are expected collapsed copies. Negative k* values are expected expanded  copies. Closer to 0 means the expected and found k-mers are well balenced, 1:1.
-      pattern: "*.{hist}"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.hist":
+          type: file
+          description: The generated 0-centered k* histogram for sequences in <fasta_assembly.fasta>.
+            Positive k* values are expected collapsed copies. Negative k* values are expected
+            expanded  copies. Closer to 0 means the expected and found k-mers are well
+            balenced, 1:1.
+          pattern: "*.{hist}"
   - log_stderr:
-      type: file
-      description: Log (stderr) of hist tool execution. The QV and QV* metrics are reported at the end.
-      pattern: "*.{hist.stderr.log}"
-
+      - "*.hist.stderr.log":
+          type: file
+          description: Log (stderr) of hist tool execution. The QV and QV* metrics are
+            reported at the end.
+          pattern: "*.{hist.stderr.log}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@rodtheo"
 maintainers:

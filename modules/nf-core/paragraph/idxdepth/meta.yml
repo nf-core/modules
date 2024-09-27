@@ -13,56 +13,67 @@ tools:
       tool_dev_url: "https://github.com/Illumina/paragraph"
       doi: "10.1101/635011"
       licence: ["Apache License 2.0"]
+      identifier: biotools:Paragraph
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing information for the fasta
-        e.g. [ id:'test', single_end:false ]
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing information for the fasta_fai
-        e.g. [ id:'test', single_end:false ]
-  - input:
-      type: file
-      description: BAM/CRAM file
-      pattern: "*.{bam,cram}"
-  - input_index:
-      type: file
-      description: Index of the BAM/CRAM file
-      pattern: "*.{bai,crai}"
-  - fasta:
-      type: file
-      description: Reference genome FASTA
-      pattern: "*.{fasta,fna,fa}"
-  - fasta_fai:
-      type: file
-      description: Index of the reference genome FASTA
-      pattern: "*.fai"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input:
+        type: file
+        description: BAM/CRAM file
+        pattern: "*.{bam,cram}"
+    - input_index:
+        type: file
+        description: Index of the BAM/CRAM file
+        pattern: "*.{bai,crai}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing information for the fasta
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Reference genome FASTA
+        pattern: "*.{fasta,fna,fa}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing information for the fasta_fai
+          e.g. [ id:'test', single_end:false ]
+    - fasta_fai:
+        type: file
+        description: Index of the reference genome FASTA
+        pattern: "*.fai"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - depth:
-      type: file
-      description: A JSON file containing depth, depth variance, read length and other parameters
-      pattern: "*.json"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.json":
+          type: file
+          description: A JSON file containing depth, depth variance, read length and other
+            parameters
+          pattern: "*.json"
   - binned_depth:
-      type: file
-      description: A TSV file containing the binned normalized depth. Can only be calculated for CRAM files
-      pattern: "*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: A TSV file containing the binned normalized depth. Can only be
+            calculated for CRAM files
+          pattern: "*.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:
