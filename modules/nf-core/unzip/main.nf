@@ -21,7 +21,6 @@ process UNZIP {
     def args = task.ext.args ?: ''
     if ( archive instanceof List && archive.name.size > 1 ) { error "[UNZIP] error: 7za only accepts a single archive as input. Please check module input." }
     prefix = task.ext.prefix ?: ( meta.id ? "${meta.id}" : archive.baseName)
-    // Stress test
     """
     7za \\
         x \\
