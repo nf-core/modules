@@ -51,6 +51,11 @@
                     ".*": {
                         "type": "object",
                         "properties": {
+                            "type": {
+                                "type": "string",
+                                "description": "Type of the input",
+                                "enum": ["string", "number", "boolean", "array", "object"]
+                            },
                             "description": {
                                 "type": "string",
                                 "description": "Description of the input channel"
@@ -89,13 +94,20 @@
                                                     "uniqueItems": true
                                                 }
                                             },
-                                            "required": ["description"]
+                                            "required": ["type", "description"]
                                         }
                                     }
                                 }
                             }
                         },
-                        "required": ["description", "structure"]
+                        "anyOf": [
+                            {
+                                "required": ["description", "structure"]
+                            },
+                            {
+                                "required": ["type", "description"]
+                            }
+                        ]
                     }
                 }
             }
@@ -109,6 +121,11 @@
                     ".*": {
                         "type": "object",
                         "properties": {
+                            "type": {
+                                "type": "string",
+                                "description": "Type of the output",
+                                "enum": ["string", "number", "boolean", "array", "object"]
+                            },
                             "description": {
                                 "type": "string",
                                 "description": "Description of the output channel"
@@ -149,7 +166,14 @@
                                 }
                             }
                         },
-                        "required": ["description", "structure"]
+                        "anyOf": [
+                            {
+                                "required": ["description", "structure"]
+                            },
+                            {
+                                "required": ["type", "description"]
+                            }
+                        ]
                     }
                 }
             }

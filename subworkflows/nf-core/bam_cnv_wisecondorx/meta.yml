@@ -13,54 +13,115 @@ components:
   - wisecondorx/predict
 input:
   - ch_bam:
-      description: |
-        An input channel containing BAM/CRAM files and their indices
-        Structure: [ val(meta), path(bam), path(bai) ]
+      description: An input channel containing BAM/CRAM files and their indices
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - bam:
+            type: file
+            description: "BAM/CRAM file"
+        - bai:
+            type: file
+            description: "Index of BAM/CRAM file"
   - ch_fasta:
-      description: |
-        A channel containing the reference FASTA file
-        Structure: [ val(meta2), path(fasta) ]
+      description: A channel containing the reference FASTA file
+      structure:
+        - meta2:
+            type: map
+            description: groovy map
+        - fasta:
+            type: file
+            description: "The reference fasta file"
   - ch_fai:
-      description: |
-        A channel containing the index of the reference FASTA file
-        Structure: [ val(meta3), path(fai) ]
+      description: A channel containing the index of the reference FASTA file
+      structure:
+        - meta3:
+            type: map
+            description: groovy map
+        - fai:
+            type: file
+            description: "Index of reference fasta file"
   - ch_ref:
-      description: |
-        A channel containing WisecondorX reference created with `WisecondorX newref`
-        Structure: [ val(meta4), path(reference) ]
+      description: A channel containing WisecondorX reference created with `WisecondorX newref`
+      structure:
+        - meta4:
+            type: map
+            description: groovy map
+        - reference:
+            type: file
+            description: "WisecondorX reference"
   - ch_blacklist:
-      description: |
-        An optional channel containing a BED file with regions to mask from the analyis
-        Structure: [ val(meta5), path(blacklist) ]
+      description: An optional channel containing a BED file with regions to mask from the analyis
+      structure:
+        - meta5:
+            type: map
+            description: groovy map
+        - blacklist:
+            type: file
+            description: "BED file with regions to mask"
 output:
   - aberrations_bed:
-      description: |
-        A channel containing the BED files with CNV aberrations
-        Structure: [ val(meta), path(bed) ]
+      description: A channel containing the BED files with CNV aberrations
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - bed:
+            type: file
+            description: "BED file with CNV aberrations"
   - bins_bed:
-      description: |
-        A channel containing the BED files with the used bins
-        Structure: [ val(meta), path(bed) ]
+      description: A channel containing the BED files with the used bins
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - bed:
+            type: file
+            description: "BED file with bins"
   - segments_bed:
-      description: |
-        A channel containing the segment BED files
-        Structure: [ val(meta), path(bed) ]
+      description: A channel containing the segment BED files
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - bed:
+            type: file
+            description: "BED file with segments"
   - chr_statistics:
-      description: |
-        A channel containing TXT files with chromosome statistics
-        Structure: [ val(meta), path(txt) ]
+      description: A channel containing TXT files with chromosome statistics
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - txt:
+            type: file
+            description: "TXT file with chromosome statistics"
   - chr_plots:
-      description: |
-        A channel containing lists of chromosome plots
-        Structure: [ val(meta), [ path(png), path(png), ... ] ]
+      description: A channel containing lists of chromosome plots
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - png:
+            type: list
+            description: "List of chromosome plots"
   - genome_plot:
-      description: |
-        A channel containing the plots of the whole genomes
-        Structure: [ val(meta), path(png) ]
+      description: A channel containing the plots of the whole genomes
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - png:
+            type: file
+            description: "Plot of the whole genome"
   - versions:
-      type: file
       description: File containing software versions
-      pattern: "versions.yml"
+      structure:
+        - versions:
+            type: file
+            description: File containing software versions
+            pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

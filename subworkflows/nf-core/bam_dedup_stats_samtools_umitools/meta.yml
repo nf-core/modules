@@ -1,6 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "bam_dedup_stats_samtools_umitools"
-description: UMI-tools dedup, index BAM file and run samtools stats, flagstat and idxstats
+description: UMI-tools dedup, index BAM file and run samtools stats, flagstat and
+  idxstats
 keywords:
   - umi
   - dedup
@@ -17,46 +18,92 @@ components:
   - bam_stats_samtools
 input:
   - ch_bam_bai:
-      description: |
-        input BAM file
-        Structure: [ val(meta), path(bam), path(bai) ]
+      description: input BAM file
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - bam:
+            type: file
+            description: "BAM file"
+        - bai:
+            type: file
+            description: "Index of BAM file"
   - val_get_dedup_stats:
       type: boolean
       description: |
         Generate output stats when running "umi_tools dedup"
 output:
   - bam:
-      description: |
-        Umi deduplicated BAM/SAM file
-        Structure: [ val(meta), path(bam) ]
+      description: Umi deduplicated BAM/SAM file
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - bam:
+            type: file
+            description: "Umi deduplicated BAM/SAM file"
   - bai:
-      description: |
-        Umi deduplicated BAM/SAM samtools index
-        Structure: [ val(meta), path(bai) ]
+      description: Umi deduplicated BAM/SAM samtools index
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - bai:
+            type: file
+            description: "Umi deduplicated BAM/SAM samtools index"
   - csi:
-      description: |
-        CSI samtools index
-        Structure: [ val(meta), path(csi) ]
+      description: CSI samtools index
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - csi:
+            type: file
+            description: "CSI samtools index"
   - deduplog:
-      description: |
-        UMI-tools deduplication log
-        Structure: [ val(meta), path(log) ]
+      description: UMI-tools deduplication log
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - log:
+            type: file
+            description: "UMI-tools deduplication log"
   - stats:
-      description: |
-        File containing samtools stats output
-        Structure: [ val(meta), path(stats) ]
+      description: File containing samtools stats output
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - stats:
+            type: file
+            description: "File containing samtools stats output"
   - flagstat:
-      description: |
-        File containing samtools flagstat output
-        Structure: [ val(meta), path(flagstat) ]
+      description: File containing samtools flagstat output
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - flagstat:
+            type: file
+            description: "File containing samtools flagstat output"
   - idxstats:
-      description: |
-        File containing samtools idxstats output
-        Structure: [ val(meta), path(idxstats) ]
+      description: File containing samtools idxstats output
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - idxstats:
+            type: file
+            description: "File containing samtools idxstats output"
   - versions:
-      description: |
-        Files containing software versions
-        Structure: [ path(versions.yml) ]
+      description: Files containing software versions
+      structure:
+        - versions:
+            type: file
+            description: "File containing software versions"
+            pattern: "versions.yml"
 authors:
   - "@drpatelh"
   - "@KamilMaliszArdigen"

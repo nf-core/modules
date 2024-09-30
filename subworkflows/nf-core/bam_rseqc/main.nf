@@ -147,39 +147,39 @@ workflow BAM_RSEQC {
     }
 
     emit:
-    bamstat_txt                     // channel: [ val(meta), txt ]
+    bamstat_txt                     = bamstat_txt                     // channel: [ val(meta), txt ]
 
-    innerdistance_all               // channel: [ val(meta), {txt, pdf, r} ]
-    innerdistance_distance          // channel: [ val(meta), txt ]
-    innerdistance_freq              // channel: [ val(meta), txt ]
-    innerdistance_mean              // channel: [ val(meta), txt ]
-    innerdistance_pdf               // channel: [ val(meta), pdf ]
-    innerdistance_rscript           // channel: [ val(meta), r   ]
+    innerdistance_all               = innerdistance_all               // channel: [ val(meta), txt, pdf, r ]
+    innerdistance_distance          = innerdistance_distance          // channel: [ val(meta), txt ]
+    innerdistance_freq              = innerdistance_freq              // channel: [ val(meta), txt ]
+    innerdistance_mean              = innerdistance_mean              // channel: [ val(meta), txt ]
+    innerdistance_pdf               = innerdistance_pdf               // channel: [ val(meta), pdf ]
+    innerdistance_rscript           = innerdistance_rscript           // channel: [ val(meta), r   ]
 
-    inferexperiment_txt             // channel: [ val(meta), txt ]
+    inferexperiment_txt             = inferexperiment_txt             // channel: [ val(meta), txt ]
 
-    junctionannotation_all          // channel: [ val(meta), {bed, xls, pdf, r, log} ]
-    junctionannotation_bed          // channel: [ val(meta), bed ]
-    junctionannotation_interact_bed // channel: [ val(meta), bed ]
-    junctionannotation_xls          // channel: [ val(meta), xls ]
-    junctionannotation_pdf          // channel: [ val(meta), pdf ]
-    junctionannotation_events_pdf   // channel: [ val(meta), pdf ]
-    junctionannotation_rscript      // channel: [ val(meta), r   ]
-    junctionannotation_log          // channel: [ val(meta), log ]
+    junctionannotation_all          = junctionannotation_all          // channel: [ val(meta), bed, xls, pdf, r, log ]
+    junctionannotation_bed          = junctionannotation_bed          // channel: [ val(meta), bed ]
+    junctionannotation_interact_bed = junctionannotation_interact_bed // channel: [ val(meta), bed ]
+    junctionannotation_xls          = junctionannotation_xls          // channel: [ val(meta), xls ]
+    junctionannotation_pdf          = junctionannotation_pdf          // channel: [ val(meta), pdf ]
+    junctionannotation_events_pdf   = junctionannotation_events_pdf   // channel: [ val(meta), pdf ]
+    junctionannotation_rscript      = junctionannotation_rscript      // channel: [ val(meta), r   ]
+    junctionannotation_log          = junctionannotation_log          // channel: [ val(meta), log ]
 
-    junctionsaturation_all          // channel: [ val(meta), {pdf, r} ]
-    junctionsaturation_pdf          // channel: [ val(meta), pdf ]
-    junctionsaturation_rscript      // channel: [ val(meta), r   ]
+    junctionsaturation_all          = junctionsaturation_all          // channel: [ val(meta), pdf, r ]
+    junctionsaturation_pdf          = junctionsaturation_pdf          // channel: [ val(meta), pdf ]
+    junctionsaturation_rscript      = junctionsaturation_rscript      // channel: [ val(meta), r   ]
 
-    readdistribution_txt            // channel: [ val(meta), txt ]
+    readdistribution_txt            = readdistribution_txt            // channel: [ val(meta), txt ]
 
-    readduplication_all             // channel: [ val(meta), {xls, pdf, r} ]
-    readduplication_seq_xls         // channel: [ val(meta), xls ]
-    readduplication_pos_xls         // channel: [ val(meta), xls ]
-    readduplication_pdf             // channel: [ val(meta), pdf ]
-    readduplication_rscript         // channel: [ val(meta), r   ]
+    readduplication_all             = readduplication_all             // channel: [ val(meta), xls, pdf, r ]
+    readduplication_seq_xls         = readduplication_seq_xls         // channel: [ val(meta), xls ]
+    readduplication_pos_xls         = readduplication_pos_xls         // channel: [ val(meta), xls ]
+    readduplication_pdf             = readduplication_pdf             // channel: [ val(meta), pdf ]
+    readduplication_rscript         = readduplication_rscript         // channel: [ val(meta), r   ]
 
-    tin_txt                         // channel: [ val(meta), txt ]
+    tin_txt                         = tin_txt                         // channel: [ val(meta), txt ]
 
-    versions                        // channel: [ versions.yml ]
+    versions                        = versions                        // channel: [ versions.yml ]
 }
