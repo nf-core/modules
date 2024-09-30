@@ -2,6 +2,9 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
+  - pybedtools
+  - bedtools
+  - htslib
   - pip
   - pip: # FIXME https://github.com/nf-core/modules/issues/5814
       # NOTE PINTS isn't adding conda builds and is a few versions behind.
