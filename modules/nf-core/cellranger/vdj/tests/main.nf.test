@@ -15,6 +15,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 reference_json      = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/references/vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0/reference.json', checkIfExists: true)
                 reference_fasta     = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/references/vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0/fasta/regions.fa', checkIfExists: true)
                 reference_suppfasta = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/references/vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0/fasta/supp_regions.fa', checkIfExists: true)
@@ -57,6 +58,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 reference_json      = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/references/vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0/reference.json', checkIfExists: true)
                 reference_fasta     = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/references/vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0/fasta/regions.fa', checkIfExists: true)
                 reference_suppfasta = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/references/vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0/fasta/supp_regions.fa', checkIfExists: true)

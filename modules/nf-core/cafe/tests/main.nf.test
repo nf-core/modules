@@ -12,6 +12,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [ [ id:'test' ],
                     file(params.modules_testdata_base_path + "delete_me/cafe/hog_gene_counts.small.tsv", checkIfExists: true)
                 ]
@@ -41,6 +42,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [ [ id:'test' ],
                     file(params.modules_testdata_base_path + "delete_me/cafe/hog_gene_counts.small.tsv", checkIfExists: true)
                 ]

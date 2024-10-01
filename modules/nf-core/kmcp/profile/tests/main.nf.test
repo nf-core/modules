@@ -66,6 +66,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = KMCP_SEARCH.out.result
                 input[1] = UNTAR.out.untar.map{it[1]}
                 """
@@ -91,6 +92,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = KMCP_SEARCH.out.result
                 input[1] = UNTAR.out.untar.map{it[1]}
                 """

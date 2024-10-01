@@ -80,6 +80,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = GUNZIP.out.gunzip
                 input[1] = LTRRETRIEVER_LTRRETRIEVER.out.pass_list.map { meta, pass_list -> pass_list }
                 input[2] = LTRRETRIEVER_LTRRETRIEVER.out.annotation_out.map { meta, annotation_out -> annotation_out }
@@ -108,6 +109,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 def pass_list       = new File('test.pass.list')
                 def out_file        = new File('test.out')
                 def monoploid_seqs  = new File('some_seqs.list.txt')
@@ -139,6 +141,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 def pass_list       = new File('test.pass.list')
                 def out_file        = new File('test.out')
                 def monoploid_seqs  = new File('some_seqs.list.txt')

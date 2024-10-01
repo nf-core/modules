@@ -14,6 +14,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [ [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz.stats', checkIfExists: true)
                     ]
@@ -38,6 +39,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [ [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz.stats', checkIfExists: true)
                     ]

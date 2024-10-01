@@ -39,6 +39,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = CENTRIFUGE_CENTRIFUGE.out.results
                 input[1] = UNTAR.out.untar.map{it[1]}
                 """
@@ -64,6 +65,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = CENTRIFUGE_CENTRIFUGE.out.results
                 input[1] = UNTAR.out.untar.map{it[1]}
                 """

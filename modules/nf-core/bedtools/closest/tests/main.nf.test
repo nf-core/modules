@@ -11,7 +11,8 @@ nextflow_process {
     test("homo_sapiens") {
         when {
             process {
-                """                
+                """
+                // testy mctestface                
                 input[0] = [
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true),
@@ -37,7 +38,8 @@ nextflow_process {
     test("homo_sapiens - fai") {
         when {
             process {
-                """                
+                """
+                // testy mctestface                
                 input[0] = [
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true),
@@ -60,7 +62,8 @@ nextflow_process {
     test("homo_sapiens - vcf") {
         when {
             process {
-                """                
+                """
+                // testy mctestface                
                 input[0] = [
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true),

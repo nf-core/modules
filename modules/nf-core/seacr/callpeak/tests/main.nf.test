@@ -16,6 +16,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test_1'],
 				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bedgraph/cutandtag_h3k27me3_test_1.bedGraph', checkIfExists: true),
@@ -40,6 +41,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test_1'],
 				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bedgraph/cutandtag_h3k27me3_test_1.bedGraph', checkIfExists: true),

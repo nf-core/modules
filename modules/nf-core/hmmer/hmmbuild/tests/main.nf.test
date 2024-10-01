@@ -15,6 +15,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
 				    [ id: 'PF14720' ], // meta map
 				    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/hmmer/PF14720_seed.alnfaa.gz', checkIfExists: true)
@@ -45,6 +46,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
 				    [ id: 'PF14720' ], // meta map
 				    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/hmmer/PF14720_seed.alnfaa.gz', checkIfExists: true)

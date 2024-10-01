@@ -44,6 +44,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = TABIX_BGZIP_1.out.output.join(TABIX_BGZIP_2.out.output).map{meta, vcf1, vcf2 -> tuple(meta, vcf1, vcf2, [], [])}
                 """
             }
@@ -68,6 +69,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = TABIX_BGZIP_1.out.output
                     .join(TABIX_BGZIP_2.out.output)
                     .map{meta, vcf1, vcf2 ->
@@ -98,6 +100,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = TABIX_BGZIP_1.out.output
                     .join(TABIX_BGZIP_2.out.output)
                     .map{meta, vcf1, vcf2 ->
@@ -130,6 +133,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test_stub', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz', checkIfExists: true),

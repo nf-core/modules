@@ -40,6 +40,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = FARGENE.out.hmm
                 input[1] = 'tsv'
                 input[2] = '0.1'
@@ -64,6 +65,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [ [id: 'test'], file("dummy.fa") ]
                 input[1] = 'tsv'
                 input[2] = '0.1'

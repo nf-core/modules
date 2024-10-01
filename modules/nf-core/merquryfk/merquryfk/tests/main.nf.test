@@ -53,6 +53,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 assembly = [
                     [ id:'test', single_end:true ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
@@ -82,6 +83,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 assembly = [
                     [ id:'test', single_end:true ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
@@ -110,7 +112,8 @@ nextflow_process {
         config "./nextflow.trio.config"
         when {
             process {
-                """                
+                """
+                // testy mctestface                
                 assembly = [
                     [ id:'test', single_end:true ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
@@ -141,6 +144,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 assembly = [
                     [ id:'test', single_end:true ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)

@@ -24,6 +24,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = UNTAR.out.untar.map{ meta, files -> [ [ id:'test_single_end', single_end:true ], files]}
                 input[1] = file(params.modules_testdata_base_path + 'generic/config/ncbi_user_settings.mkfg', checkIfExists: true)
                 input[2] = []
@@ -55,6 +56,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = UNTAR.out.untar.map{ meta, files -> [ [ id:'test_paired_end', single_end:false ], files]}
                 input[1] = file(params.modules_testdata_base_path + 'generic/config/ncbi_user_settings.mkfg', checkIfExists: true)
                 input[2] = []
@@ -77,6 +79,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test_single_end', single_end:true ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/sra/SRR13255544.tar.gz', checkIfExists: true)
@@ -102,6 +105,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test_paired_end', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/sra/SRR11140744.tar.gz', checkIfExists: true)

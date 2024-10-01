@@ -16,6 +16,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 split = false
 
                 input[0] = Channel.of([
@@ -42,6 +43,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 split = true
 
                 input[0] = Channel.of([

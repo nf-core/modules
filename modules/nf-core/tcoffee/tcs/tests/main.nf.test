@@ -15,6 +15,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test'],
                       file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
@@ -57,6 +58,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = PIGZ_COMPRESS.out.archive.map { it -> [[ id:'test'], it[1]] }
                 input[1] = [
                     [ id:'test'],
@@ -99,6 +101,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test'],
                       file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
@@ -125,6 +128,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test'],
                       file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)

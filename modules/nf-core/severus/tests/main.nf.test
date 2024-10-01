@@ -16,6 +16,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test'], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam', checkIfExists: true),
@@ -184,6 +185,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test'], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),

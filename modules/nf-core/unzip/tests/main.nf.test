@@ -37,6 +37,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                             [ id: 'hello' ],
                             file(params.modules_testdata_base_path + 'generic/tar/hello.tar.gz', checkIfExists: true)

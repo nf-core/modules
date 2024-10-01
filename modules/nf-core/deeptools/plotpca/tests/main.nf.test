@@ -37,6 +37,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = DEEPTOOLS_MULTIBAMSUMMARY.out.matrix.collect{ meta, matrix -> matrix }.map{ matrix -> [[ id: 'test' ], matrix] }
                 """
             }
@@ -83,6 +84,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = DEEPTOOLS_MULTIBAMSUMMARY.out.matrix.collect{ meta, matrix -> matrix }.map{ matrix -> [[ id: 'test' ], matrix] }
                 """
             }

@@ -16,6 +16,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
 				    [ id:'test', single_end:false ], // meta map
 				    file("https://raw.githubusercontent.com/maxibor/sam2lca/1.1.2/tests/data/microtest.sorted.bam", checkIfExists: true),
@@ -47,6 +48,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
 				    [ id:'test', single_end:false ], // meta map
 				    file("https://raw.githubusercontent.com/maxibor/sam2lca/1.1.2/tests/data/microtest.sorted.bam", checkIfExists: true),

@@ -15,6 +15,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [id:'test'],
                     file(params.modules_testdata_base_path + 'proteomics/openms/HepG2_rep1_small.idXML', checkIfExists: true)
@@ -39,6 +40,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [id:'test'],
                     file(params.modules_testdata_base_path + 'proteomics/openms/HepG2_rep1_small.idXML', checkIfExists: true)

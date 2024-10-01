@@ -15,6 +15,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'mirtop_gff_sample1'], // meta map
                     file("https://github.com/miRTop/mirtop/raw/master/data/examples/gff/correct_file.gff", checkIfExists: true),
@@ -39,6 +40,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'mirtop_gff_sample1'], // meta map
                     file("https://github.com/miRTop/mirtop/raw/master/data/examples/gff/correct_file.gff", checkIfExists: true),

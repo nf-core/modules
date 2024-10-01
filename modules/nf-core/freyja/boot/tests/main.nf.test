@@ -40,6 +40,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = FREYJA_VARIANTS.out.variants
                 input[1] = 3
                 input[2] = FREYJA_UPDATE.out.barcodes

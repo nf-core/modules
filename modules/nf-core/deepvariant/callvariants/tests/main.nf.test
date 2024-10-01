@@ -44,6 +44,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = DEEPVARIANT_MAKEEXAMPLES.out.examples
                 """
             }
@@ -66,6 +67,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test', single_end:false ], // meta
                     []                               // No input paths are needed in stub mode

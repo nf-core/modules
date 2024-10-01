@@ -14,6 +14,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
 				    [id: 'test'],
 				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz', checkIfExists: true)
@@ -36,6 +37,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
 				    [id: 'test'],
 				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell.tar.gz', checkIfExists: true)
@@ -62,6 +64,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
 				    [id: 'test'],
 				    file(params.modules_testdata_base_path + 'generic/tar/hello.tar.gz', checkIfExists: true)
@@ -84,6 +87,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
 				    [id: 'test'],
 				    file(params.modules_testdata_base_path + 'generic/tar/hello.tar.gz', checkIfExists: true)

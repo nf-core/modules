@@ -14,6 +14,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test_1', single_end:false ], // meta map
                         file("https://github.com/nf-core/test-datasets/raw/smrnaseq/testdata/trimmed/small_Clone1_N1.fastp.fastq.gz", checkIfExists: true),
@@ -38,6 +39,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test_1', single_end:false ], // meta map
                         file("https://github.com/nf-core/test-datasets/raw/smrnaseq/testdata/trimmed/small_Clone1_N1.fastp.fastq.gz", checkIfExists: true),

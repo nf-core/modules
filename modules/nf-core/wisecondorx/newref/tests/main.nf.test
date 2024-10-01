@@ -40,6 +40,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = WISECONDORX_CONVERT.out.npz
                     .map { meta, npz ->
                         new_meta = meta + [id:"combined"]

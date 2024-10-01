@@ -25,6 +25,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = UNTAR.out.untar.map { meta, files -> [ [ id:'test', single_end:true ], files, "MS-11,MS-12" ] }
                 input[1] = false
                 input[2] = false
@@ -61,6 +62,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = UNTAR.out.untar.map { meta, files -> [ [ id:'test', single_end:true ], files, "MS-11,MS-12" ] }
                 input[1] = true
                 input[2] = true
@@ -89,6 +91,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 
                 input[0] = [
                     [ id:'test'], 

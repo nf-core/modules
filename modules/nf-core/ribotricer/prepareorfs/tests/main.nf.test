@@ -29,6 +29,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = GUNZIP.out.gunzip.map{[
                     [id:'homo_sapiens_chr20'], 
                     it[1],
@@ -53,6 +54,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = GUNZIP.out.gunzip.map{[
                     [id:'homo_sapiens_chr20'], 
                     it[1],

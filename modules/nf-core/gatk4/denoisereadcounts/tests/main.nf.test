@@ -55,6 +55,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = GATK4_COLLECTREADCOUNTS.out.tsv.first()
                 input[1] = GATK4_CREATEREADCOUNTPANELOFNORMALS.out.pon
                 """

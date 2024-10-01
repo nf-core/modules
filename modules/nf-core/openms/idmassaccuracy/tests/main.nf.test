@@ -50,6 +50,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = THERMORAWFILEPARSER.out.spectra.join(OPENMSTHIRDPARTY_COMETADAPTER.out.idxml)
                 """
             }
@@ -67,6 +68,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = THERMORAWFILEPARSER.out.spectra.join(OPENMSTHIRDPARTY_COMETADAPTER.out.idxml)
                 """
             }

@@ -13,6 +13,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'mini'], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/mini.5p--3p.bam', checkIfExists: true)
@@ -42,6 +43,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'mini'], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/mini.5p--3p.bam', checkIfExists: true)

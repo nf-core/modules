@@ -13,6 +13,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 ch_test1_kraken = Channel.fromPath(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/test_1.kraken2.report.txt', checkIfExists: true).collectFile(name: 'test_1.kraken2.report.txt')
                 ch_test2_kraken = Channel.fromPath(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/test_1.kraken2.report.txt', checkIfExists: true).collectFile(name: 'test_2.kraken2.report.txt')
 
@@ -50,6 +51,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 ch_test1_kraken = Channel.fromPath(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/test_1.kraken2.report.txt', checkIfExists: true).collectFile(name: 'test_1.kraken2.report.txt')
                 ch_test2_kraken = Channel.fromPath(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/test_1.kraken2.report.txt', checkIfExists: true).collectFile(name: 'test_2.kraken2.report.txt')
 
@@ -90,6 +92,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [[id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/test_1.kraken2.report.txt', checkIfExists: true)]
                 input[1] = 'kraken2'
                 input[2] = 'tsv'

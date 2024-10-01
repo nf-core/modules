@@ -54,6 +54,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = UNTAR_CSS.out.untar.map{ it[1] }
                 input[1] = UNTAR_DETECTION.out.untar.map{ it[1] }
                 input[2] = UNTAR_MODULES.out.untar.map{ it[1] }
@@ -118,6 +119,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = UNTAR_CSS.out.untar.map{ it[1] }
                 input[1] = UNTAR_DETECTION.out.untar.map{ it[1] }
                 input[2] = UNTAR_MODULES.out.untar.map{ it[1] }

@@ -42,6 +42,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = GUNZIP_GTF.out.gunzip.map { meta, gtf -> [ meta, [ gtf ] ] }
                 input[1] = GUNZIP_HINTS.out.gunzip.map { meta, gff -> [ gff ] }
                 input[2] = []
@@ -66,6 +67,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test' ], // meta map
                     [ file(params.modules_testdata_base_path + 'genomics/eukaryotes/actinidia_chinensis/genome/chr1/genome.gtf.gz', checkIfExists: true) ]

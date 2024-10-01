@@ -14,6 +14,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 genome_fasta = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 gtf = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
                 meta = [ 'id': 'human_genome']
@@ -45,6 +46,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 transcriptome_fasta = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true)
                 meta = [ 'id': 'human_transcriptome']
 
@@ -73,6 +75,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 transcriptome_fasta = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true)
                 meta = [ 'id': 'human_transcriptome']
 

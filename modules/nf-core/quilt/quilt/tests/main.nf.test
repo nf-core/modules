@@ -43,6 +43,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = $ch_input_gmap
                 input[1] = $posfile_phasefile
                 input[2] = $fasta
@@ -64,6 +65,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = $ch_input_nogmap
                 input[1] = [[id: null], [], []]
                 input[2] = $fasta
@@ -85,6 +87,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = $ch_input_gmap
                 input[1] = $posfile_phasefile
                 input[2] = $fasta
@@ -113,6 +116,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = $ch_input_gmap
                 input[1] = $posfile_phasefile
                 input[2] = $fasta

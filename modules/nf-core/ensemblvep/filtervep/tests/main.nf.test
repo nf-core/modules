@@ -58,6 +58,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = ENSEMBLVEP_VEP.out.vcf
                 input[1] = []
                 """
@@ -119,6 +120,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = ENSEMBLVEP_VEP.out.tab
                 input[1] = []
                 """

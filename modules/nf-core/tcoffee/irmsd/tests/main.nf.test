@@ -42,6 +42,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                                 [ id:'test' ], // meta map
                                 file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
@@ -66,6 +67,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = PIGZ_COMPRESS.out.archive
                 input[1] = UNTAR.out.untar.map { meta,dir -> [[ id:'test' ], file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/templates/seatoxin-ref_template.txt", checkIfExists: true) ,file(dir).listFiles().collect()]}
                 """
@@ -89,6 +91,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                                 [ id:'test' ], // meta map
                                 file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)

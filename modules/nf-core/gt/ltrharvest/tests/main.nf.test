@@ -32,6 +32,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = GT_SUFFIXERATOR.out.index
                 """
             }
@@ -69,6 +70,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = GT_SUFFIXERATOR.out.index
                 """
             }
@@ -106,6 +108,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = GT_SUFFIXERATOR.out.index
                 """
             }
@@ -127,6 +130,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
@@ -152,6 +156,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)

@@ -32,6 +32,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = GT_GFF3.out.gt_gff3
                 """
             }
@@ -55,6 +56,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3', checkIfExists: true)
@@ -77,6 +79,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gff3', checkIfExists: true)

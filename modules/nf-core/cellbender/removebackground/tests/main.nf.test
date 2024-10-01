@@ -13,6 +13,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test' ], // meta map
                     file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_raw_matrix_5k.h5ad", checkIfExists: true)
@@ -41,6 +42,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test' ], // meta map
                     file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_raw_matrix_5k.h5ad", checkIfExists: true)

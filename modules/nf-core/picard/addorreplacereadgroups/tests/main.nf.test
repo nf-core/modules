@@ -16,6 +16,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [ [:], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true) ]
                 input[1] = [ [:], [] ]
                 input[2] = [ [:], [] ]
@@ -43,6 +44,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test' ], // meta map
                     [
@@ -74,6 +76,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [ [:], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true) ]
                 input[1] = [ [:], [] ]
                 input[2] = [ [:], [] ]

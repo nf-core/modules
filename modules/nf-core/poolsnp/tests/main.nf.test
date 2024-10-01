@@ -31,6 +31,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = SAMTOOLS_MPILEUP.out.mpileup
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
@@ -63,6 +64,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = SAMTOOLS_MPILEUP.out.mpileup
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
@@ -95,6 +97,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = SAMTOOLS_MPILEUP.out.mpileup
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
@@ -129,6 +132,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = SAMTOOLS_MPILEUP.out.mpileup
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map

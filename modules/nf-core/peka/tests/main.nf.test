@@ -15,6 +15,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [ [ id:'test' ], file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/peka/chr21_HepG2-PCBP1-merged.xl10_200_density2_peaks.bed", checkIfExists: true) ]
 				input[1] = [ [ id:'test' ], file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/peka/chr21_HepG2-PCBP1-merged.xl.bed", checkIfExists: true) ]
 				input[2] = file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/peka/chr21.GRCh38.p12.genome.masked.fa", checkIfExists: true)
@@ -44,6 +45,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [ [ id:'test' ], file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/peka/chr21_HepG2-PCBP1-merged.xl10_200_density2_peaks.bed", checkIfExists: true) ]
 				input[1] = [ [ id:'test' ], file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/peka/chr21_HepG2-PCBP1-merged.xl.bed", checkIfExists: true) ]
 				input[2] = file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/peka/chr21.GRCh38.p12.genome.masked.fa", checkIfExists: true)

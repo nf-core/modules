@@ -53,6 +53,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = DEEPVARIANT_CALLVARIANTS.out.call_variants_tfrecords.join(
                     DEEPVARIANT_MAKEEXAMPLES.out.gvcf,
                     failOnMismatch: true
@@ -86,6 +87,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test', single_end:false ],
                     [],

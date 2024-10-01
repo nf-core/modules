@@ -35,6 +35,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = WISECONDORX_CONVERT.out.npz
                 input[1] = [
                     [ id: "reference" ],

@@ -15,6 +15,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.bam', checkIfExists: true),
@@ -48,6 +49,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.bam', checkIfExists: true),

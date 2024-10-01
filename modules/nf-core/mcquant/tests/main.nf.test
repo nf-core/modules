@@ -13,6 +13,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'image' ], // meta map
                     file(params.modules_testdata_base_path + 'imaging/quantification/cycif_tonsil_registered.ome.tif', checkIfExists: true)
@@ -47,6 +48,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'image' ], // meta map
                     file(params.modules_testdata_base_path + 'imaging/quantification/cycif_tonsil_registered.ome.tif', checkIfExists: true)

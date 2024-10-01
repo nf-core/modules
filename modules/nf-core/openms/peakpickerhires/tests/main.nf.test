@@ -14,6 +14,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test'], // meta map
                     file(params.modules_testdata_base_path + 'proteomics/msspectra/peakpicker_tutorial_1.mzML', checkIfExists: true)
@@ -39,6 +40,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test_stub'], // meta map
                     file(params.modules_testdata_base_path + 'proteomics/msspectra/peakpicker_tutorial_1.mzML', checkIfExists: true)

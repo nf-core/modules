@@ -16,6 +16,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
                     .copyTo("${workDir}/sarscov2.fasta")
 
@@ -82,6 +83,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
                     .copyTo("${workDir}/sarscov2.fasta")
 
@@ -128,6 +130,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
                     .copyTo("${workDir}/sarscov2.fasta")
 

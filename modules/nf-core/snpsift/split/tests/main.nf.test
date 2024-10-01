@@ -15,6 +15,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test', split:true], // meta map
 				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.rnaseq.vcf', checkIfExists: true)
@@ -41,6 +42,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test', split:true ], // meta map
 				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
@@ -67,6 +69,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test', split:false ], // meta map
 				    [

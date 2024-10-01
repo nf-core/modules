@@ -12,7 +12,8 @@ nextflow_process {
     test("idemux - fastq") {
         when {
             process {
-                """                
+                """
+                // testy mctestface                
                 input[0] = [
                     [ id:'NVQ', lane:1 ],
                     [
@@ -44,7 +45,8 @@ nextflow_process {
 
         when {
             process {
-                """                
+                """
+                // testy mctestface                
                 input[0] = [
                     [ id:'NVQ', lane:1 ],
                     [

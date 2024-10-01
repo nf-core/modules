@@ -72,6 +72,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = BWA_SAMSE.out.bam
                 input[1] = [
                         [ id:'test' ], // meta map
@@ -99,6 +100,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id: "test" ], //meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists: true)

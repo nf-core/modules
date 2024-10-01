@@ -12,6 +12,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = Channel.of([
                     [ id: 'test'], // meta map
                     [file(params.test_data_base + "/data/genomics/sarscov2/genome/genome.fasta.gz", checkIfExists: true) ]

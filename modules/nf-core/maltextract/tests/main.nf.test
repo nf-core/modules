@@ -24,6 +24,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [ [], // meta map
                     file(params.modules_testdata_base_path + 'delete_me/malt/test.rma6')
                 ]

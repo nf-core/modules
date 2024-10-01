@@ -26,6 +26,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = Channel.of([
                     [ id:'test', single_end:true ], // meta map
                     [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true) ]
@@ -51,6 +52,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     [
@@ -81,6 +83,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = Channel.of([
                     [ id:'test', single_end:true ], // meta map
                     [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true) ]
@@ -111,6 +114,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     [

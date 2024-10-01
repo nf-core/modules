@@ -39,6 +39,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = BISMARK_METHYLATIONEXTRACTOR.out.coverage
                 input[1] = BISMARK_GENOMEPREPARATION.out.index
                 """

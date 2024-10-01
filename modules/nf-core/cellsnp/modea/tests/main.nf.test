@@ -27,7 +27,8 @@ nextflow_process {
 
         when {
             process {
-                """ 
+                """
+                // testy mctestface 
                 
                 input[0] = SAMTOOLS_INDEX.out.bai.collect{ meta, bai -> bai }.map{ 
                             bai -> [[ id: 'sample1'], 
@@ -62,6 +63,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 
                 input[0] = [
                     [ id:'sample1'],

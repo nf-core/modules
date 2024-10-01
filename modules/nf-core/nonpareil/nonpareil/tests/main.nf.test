@@ -15,6 +15,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
@@ -61,6 +62,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = GUNZIP.out.gunzip
                 input[1] = 'fastq'
                 input[2] = 'kmer'
@@ -91,6 +93,7 @@ test("candidatus_portiera_aleyrodidarum - stub") {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/illumina/fastq/test_1.fastq.gz', checkIfExists: true)

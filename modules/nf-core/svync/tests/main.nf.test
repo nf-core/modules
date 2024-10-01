@@ -13,6 +13,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 vcf = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz', checkIfExists: true),
@@ -61,6 +62,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 vcf = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz', checkIfExists: true),

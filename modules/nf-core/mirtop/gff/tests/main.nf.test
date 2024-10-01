@@ -14,6 +14,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'sample_sim_isomir_bam'], // meta map
                     file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/mirtop/sim_isomir_sort.bam", checkIfExists: true),
@@ -46,6 +47,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'sample_sim_isomir_bam'], // meta map
                     file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/mirtop/sim_isomir_sort.bam", checkIfExists: true),

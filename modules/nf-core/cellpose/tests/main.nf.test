@@ -42,6 +42,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'imaging/segmentation/cycif_tonsil_registered.ome.tif', checkIfExists: true)

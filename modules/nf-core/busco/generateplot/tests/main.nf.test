@@ -33,6 +33,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = BUSCO_BUSCO.out.short_summaries_txt.map { meta, summary -> summary }
                 """
             }
@@ -55,6 +56,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                 """
             }

@@ -41,6 +41,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = SAMTOOLS_SORT.out.bam
                 input[1] = [
                     [ id:'fasta' ],
@@ -66,6 +67,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test', single_end:false ],
                     file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),

@@ -56,6 +56,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = MERYL_COUNT.out.meryl_db
                 input[1] = MERYL_COUNT_MATERNAL.out.meryl_db.map { meta, db -> db }
                 input[2] = MERYL_COUNT_PATERNAL.out.meryl_db.map { meta, db -> db }
@@ -86,6 +87,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = MERYL_COUNT.out.meryl_db
                 input[1] = MERYL_COUNT_MATERNAL.out.meryl_db.map { meta, db -> db }
                 input[2] = MERYL_COUNT_PATERNAL.out.meryl_db.map { meta, db -> db }

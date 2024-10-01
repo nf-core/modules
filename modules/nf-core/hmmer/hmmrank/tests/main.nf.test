@@ -44,6 +44,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = HMMER_HMMSEARCH.out.target_summary
                     .collect { it[1] }
                     .map { [ [ id: '16S-test' ], it ] }

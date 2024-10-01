@@ -30,6 +30,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = WINDOWMASKER_MKCOUNTS.out.counts
                 input[1] = [
                     [id: "test" ],
@@ -48,6 +49,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = WINDOWMASKER_MKCOUNTS.out.counts
                 input[1] = [
                     [id: "test" ],
