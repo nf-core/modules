@@ -1,0 +1,75 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "jvarkit_vcf2table"
+description: Convert VCF to a user friendly table
+keywords:
+  - vcf
+  - bcf
+  - text
+  - html
+  - visualization
+tools:
+  - "jvarkit":
+      description: "Java utilities for Bioinformatics."
+      homepage: "https://github.com/lindenb/jvarkit"
+      documentation: "https://jvarkit.readthedocs.io/"
+      tool_dev_url: "https://github.com/lindenb/jvarkit"
+      doi: "10.6084/m9.figshare.1425030"
+      licence: ["MIT"]
+      args_id: "$args2"
+      identifier: ""
+  - "bcftools":
+      description: |
+        View, subset and filter VCF or BCF files by position and filtering expression. Convert between VCF and BCF
+      homepage: "http://samtools.github.io/bcftools/bcftools.html"
+      documentation: "http://www.htslib.org/doc/bcftools.html"
+      doi: "10.1093/bioinformatics/btp352"
+      licence: ["MIT"]
+      args_id: "$args1"
+      identifier: "biotools:samtools"
+input:
+  - - "meta":
+        type: map
+        description: |
+          Groovy Map containing VCF information
+          e.g. [ id:'genome' ]
+    - vcf:
+        type: file
+        description: Input vcf/bcf file
+        pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+    - tbi:
+        type: file
+        description: Optional index file for the VCF
+        pattern: "*.{tbi,csi}"
+    - regions_file:
+        type: file
+        description: Optional. Restrict to regions listed in a file
+        pattern: "*.{bed,bed.gz,txt,tsv}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing pedigree information
+    - pedigree:
+        type: file
+        description: Optional pedigree for jvarkit
+        pattern: "*.{ped,pedigree}"
+output:
+  - output:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing VCF information
+            e.g. [ id:'test', single_end:false ]
+      - "*.${extension}":
+          type: file
+          description: Output file
+          pattern: "*.{txt,html}"
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@lindenb"
+maintainers:
+  - "@lindenb"
