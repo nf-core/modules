@@ -1,0 +1,71 @@
+// nf-core modules test pypgx/createinputvcf
+nextflow_process {
+
+    name "Test Process PYPGX_CREATEINPUTVCF"
+    script "../main.nf"
+    process "PYPGX_CREATEINPUTVCF"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pypgx"
+    tag "pypgx/createinputvcf"
+
+
+    test("human paired end bam - genome.fa") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[1] = [
+                    [id: 'GRCh38'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.vcf[0][1]).name,
+                    process.out.versions).match() }
+            )
+        }
+    }
+
+
+    test("stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: 'test'],
+                    [],
+                    []
+                ]
+                input[1] = [
+                    [id: 'test_genome'],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.vcf[0][1]).name,
+                    process.out.versions).match() }
+            )
+        }
+    }
+}
