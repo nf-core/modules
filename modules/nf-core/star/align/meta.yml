@@ -104,6 +104,15 @@ output:
           type: file
           description: Sorted BAM file of read alignments (optional)
           pattern: "*sortedByCoord.out.bam"
+  - bam_sorted_aligned:
+      - meta:
+          type: file
+          description: Sorted aligned BAM file of read alignments (optional)
+          pattern: "*Aligned.sortedByCoord.out.bam"
+      - "*Aligned.sortedByCoord.out.bam":
+          type: file
+          description: Sorted BAM file of read alignments (optional)
+          pattern: "*Aligned.sortedByCoord.out.bam"
   - bam_transcript:
       - meta:
           type: file
