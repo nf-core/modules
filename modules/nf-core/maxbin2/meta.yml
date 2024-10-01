@@ -108,6 +108,9 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*_bin.tar.gz":
+          type: file
+          description: Marker bins
+          pattern: "*_bin.tar.gz"
   - marker_genes:
       - meta:
           type: map

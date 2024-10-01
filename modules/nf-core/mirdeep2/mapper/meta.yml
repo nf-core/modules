@@ -36,9 +36,18 @@ input:
         pattern: "*"
 output:
   - outputs:
-      - meta: {}
-      - "*.fa": {}
-      - "*.arf": {}
+      - meta:
+          type: map
+          description: Groovy Map containing sample information, e.g. `[ id:'sample1', single_end:false ]`
+      - "*.fa":
+          type: file
+          description: Collapsed reads in FASTA format.
+          pattern: "*.fa"
+      - "*.arf":
+          type: file
+          description: Alignment Read Format (ARF) file containing the mapping of reads
+            to the genome.
+          pattern: "*.arf"
   - versions:
       - versions.yml:
           type: file
