@@ -7,25 +7,29 @@ keywords:
   - fusions
 tools:
   - "segemehl":
-      description: "A multi-split mapping algorithm for circular RNA, splicing, trans-splicing and fusion detection"
+      description: "A multi-split mapping algorithm for circular RNA, splicing, trans-splicing
+        and fusion detection"
       homepage: "https://www.bioinf.uni-leipzig.de/Software/segemehl/"
       documentation: "https://www.bioinf.uni-leipzig.de/Software/segemehl/"
       doi: "10.1186/gb-2014-15-2-r34"
       licence: ["GPL v3"]
+      identifier: biotools:segemehl
 input:
-  - fasta:
-      type: file
-      description: Reference genome FASTA file
-      pattern: "*.{fa,fasta}"
+  - - fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fa,fasta}"
 output:
   - index:
-      type: file
-      description: Segemehl index file
-      pattern: "*.{idx}"
+      - "*.idx":
+          type: file
+          description: Segemehl index file
+          pattern: "*.{idx}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@BarryDigby"
 maintainers:

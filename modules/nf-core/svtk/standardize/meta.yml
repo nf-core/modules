@@ -8,51 +8,44 @@ keywords:
   - standardization
 tools:
   - "svtk":
-      description: "Utilities for consolidating, filtering, resolving, and annotating structural variants."
+      description: "Utilities for consolidating, filtering, resolving, and annotating
+        structural variants."
       homepage: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
       documentation: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
       tool_dev_url: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
       licence: ["MIT"]
+      identifier: ""
 input:
-  - args:
-      type: map
-      description: |
-        Groovy Map containing tool parameters. MUST follow the structure/keywords below and be provided via modules.config. Parameters must be set between quotes.
-        ```
-        {
-          [
-            "args": "",
-            "caller": "delly" // Should be either delly, lumpy, manta, wham or melt
-          ]
-        }
-        ```
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: A gzipped VCF file to be standardized
-      pattern: "*.vcf.gz"
-  - fasta_fai:
-      type: file
-      description: Optional fasta index file that specifies the contigs to be used in the VCF header (defaults to all contigs of GRCh37)
-      pattern: "*.fai"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: A gzipped VCF file to be standardized
+        pattern: "*.vcf.gz"
+  - - fasta_fai:
+        type: file
+        description: Optional fasta index file that specifies the contigs to be used
+          in the VCF header (defaults to all contigs of GRCh37)
+        pattern: "*.fai"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - standardized_vcf:
-      type: file
-      description: A gzipped version of the standardized VCF file
-      pattern: "*.std.vcf.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.std.vcf.gz":
+          type: file
+          description: A gzipped version of the standardized VCF file
+          pattern: "*.std.vcf.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

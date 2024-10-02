@@ -1,0 +1,76 @@
+nextflow_process {
+
+    name "Test Process JVARKIT_VCF2TABLE"
+    script "../main.nf"
+    process "JVARKIT_VCF2TABLE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "jvarkit"
+    tag "jvarkit/vcf2table"
+
+    test("sarscov2 - vcf") {
+
+        when {
+            process {
+                """
+                input[0] =[
+                    [id:"vcf_test"],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
+                    [],
+                    []
+                ]
+                input[1] = [ [] , [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.output[0][1]).text.startsWith(">>MT192765.1:197/G (n. 1)")},
+                { assert snapshot(
+					path(process.out.output[0][1]),
+					process.out.versions
+					).match()
+			    }
+            )
+        }
+
+    }
+
+
+
+    test("sarscov2 - vcf - stub") {
+
+        options  "-stub"
+
+        when {
+            process {
+                """
+                input[0] =[
+                    [id:"vcf_test"],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
+                    [],
+                    []
+                ]
+                input[1] = [ [] , [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					path(process.out.output[0][1]),
+					process.out.versions
+					).match()
+			    }
+            )
+        }
+
+    }
+
+}

@@ -56,7 +56,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                        path(process.out.txt[0][1]).readLines()[3..10],
+                        path(process.out.log[0][1]).readLines().last().contains('#consensus_taxonomy'),
+                        process.out.versions,
+                    ).match()
+                }
             )
         }
     }

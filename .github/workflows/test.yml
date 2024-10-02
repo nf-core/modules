@@ -45,7 +45,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: Install NodeJS
-        uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4
+        uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4
         with:
           node-version: "20"
 
@@ -60,7 +60,7 @@ jobs:
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
-      - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4
+      - uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4
         with:
           node-version: "20"
 
@@ -166,7 +166,7 @@ jobs:
       - name: Install pip
         run: python -m pip install --upgrade pip
 
-      - uses: actions/setup-java@2dfa2011c5b2a0f1489bf9e433881c92c1631f88 # v4
+      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
         with:
           distribution: "temurin"
           java-version: "17"
@@ -204,7 +204,7 @@ jobs:
       - name: Install pip
         run: python -m pip install --upgrade pip
 
-      - uses: actions/setup-java@2dfa2011c5b2a0f1489bf9e433881c92c1631f88 # v4
+      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
         with:
           distribution: "temurin"
           java-version: "17"
@@ -416,7 +416,7 @@ jobs:
       - name: Install Python dependencies
         run: python -m pip install --upgrade pip pytest-workflow cryptography
 
-      - uses: actions/setup-java@2dfa2011c5b2a0f1489bf9e433881c92c1631f88 # v4
+      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
         with:
           distribution: "temurin"
           java-version: "17"
@@ -541,6 +541,14 @@ jobs:
           - profile: conda
             path: modules/nf-core/deepvariant
           - profile: conda
+            path: modules/nf-core/deepvariant/callvariants
+          - profile: conda
+            path: modules/nf-core/deepvariant/makeexamples
+          - profile: conda
+            path: modules/nf-core/deepvariant/postprocessvariants
+          - profile: conda
+            path: modules/nf-core/deepvariant/rundeepvariant
+          - profile: conda
             path: modules/nf-core/ensemblvep/vep
           - profile: conda
             path: modules/nf-core/fastk/fastk
@@ -599,6 +607,8 @@ jobs:
           - profile: conda
             path: modules/nf-core/sentieon/bwamem
           - profile: conda
+            path: modules/nf-core/sentieon/datametrics
+          - profile: conda
             path: modules/nf-core/sentieon/dedup
           - profile: conda
             path: modules/nf-core/sentieon/qualcal
@@ -631,6 +641,8 @@ jobs:
           - profile: conda
             path: subworkflows/nf-core/bcl_demultiplex
           - profile: conda
+            path: subworkflows/nf-core/deepvariant
+          - profile: conda
             path: subworkflows/nf-core/fastq_align_bamcmp_bwa
           - profile: conda
             path: subworkflows/nf-core/fastq_align_bwa
@@ -643,7 +655,7 @@ jobs:
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
-      - uses: actions/setup-java@2dfa2011c5b2a0f1489bf9e433881c92c1631f88 # v4
+      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
         with:
           distribution: "temurin"
           java-version: "17"

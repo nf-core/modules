@@ -13,45 +13,47 @@ tools:
       tool_dev_url: "https://github.com/fritzsedlazeck/SURVIVOR"
       doi: "10.1038/NCOMMS14061"
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: VCF file to filter
-      pattern: "*.{vcf}"
-  - bed:
-      type: file
-      description: BED file with regions to ignore (NA to disable)
-  - minsv:
-      type: integer
-      description: Min SV size (-1 to disable)
-  - maxsv:
-      type: integer
-      description: Max SV size (-1 to disable)
-  - minallelefreq:
-      type: float
-      description: Min allele frequency (0-1)
-  - minnumreads:
-      type: integer
-      description: Min number of reads support [RE flag (-1 to disable)]
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf_file:
+        type: file
+        description: VCF file to filter
+    - bed:
+        type: file
+        description: BED file with regions to ignore (NA to disable)
+  - - minsv:
+        type: integer
+        description: Min SV size (-1 to disable)
+  - - maxsv:
+        type: integer
+        description: Max SV size (-1 to disable)
+  - - minallelefreq:
+        type: float
+        description: Min allele frequency (0-1)
+  - - minnumreads:
+        type: integer
+        description: Min number of reads support [RE flag (-1 to disable)]
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - vcf:
-      type: file
-      description: Filtered VCF file
-      pattern: "*.{vcf}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf":
+          type: file
+          description: Filtered VCF file
+          pattern: "*.{vcf}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@LlaneroHiboreo"
 maintainers:

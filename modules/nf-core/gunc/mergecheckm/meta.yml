@@ -11,40 +11,44 @@ keywords:
   - chimeras
 tools:
   - gunc:
-      description: Python package for detection of chimerism and contamination in prokaryotic genomes.
+      description: Python package for detection of chimerism and contamination in prokaryotic
+        genomes.
       homepage: https://grp-bork.embl-community.io/gunc/
       documentation: https://grp-bork.embl-community.io/gunc/
       tool_dev_url: https://github.com/grp-bork/gunc
       doi: "10.1186/s13059-021-02393-0"
       licence: ["GNU General Public v3 or later (GPL v3+)"]
+      identifier: biotools:gunc
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - gunc_file:
-      type: file
-      description: Path of a gunc_scores.tsv file (mandatory)
-      pattern: "*.{bam,cram,sam}"
-  - checkm_file:
-      type: file
-      description: Output TSV from CheckM qa (ideally with -o 2 extended format)  (mandatory)
-      pattern: "*.{bam,cram,sam}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - gunc_file:
+        type: file
+        description: Path of a gunc_scores.tsv file (mandatory)
+        pattern: "*.{bam,cram,sam}"
+    - checkm_file:
+        type: file
+        description: Output TSV from CheckM qa (ideally with -o 2 extended format)  (mandatory)
+        pattern: "*.{bam,cram,sam}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - tsv:
-      type: file
-      description: Merged checkm/gunc results in TSV format
-      pattern: "*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: Merged checkm/gunc results in TSV format
+          pattern: "*.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jfy133"
 maintainers:
