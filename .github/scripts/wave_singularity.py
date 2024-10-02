@@ -10,8 +10,6 @@ import logging
 import httpx
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG)
-
 
 image_url = "oras://community.wave.seqera.io/library/pybedtools_bedtools_htslib_pip_pypints:aa20de1f1b5ddb30"
 
@@ -38,7 +36,7 @@ try:
     data = response.json()
     logger.debug(data)
     layers = data.get("container", {}).get("manifest", {}).get("layers", [])
-    is_singularity = len(layers) == 1 and layers[0].get("mediatype", "").endswith(".sif")
+    is_singularity = len(layers) == 1 and layers[0].get("mediaType", "").endswith(".sif")
     if not is_singularity:
         print(layers)
         raise ValueError("not a singularity image")
