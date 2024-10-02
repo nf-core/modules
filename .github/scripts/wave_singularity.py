@@ -1,9 +1,10 @@
-#!/usr/bin/env -s uv run
+#!/usr/bin/env -S uv run
 # /// script
 # requires-python = ">=3.10"
 # dependencies = [
 #     "httpx",
 # ]
+# ///
 
 url = f"{wave_api_url}/v1alpha1/inspect"
 logger.info(f"calling image inspect at {url} for image url {image_url}")
