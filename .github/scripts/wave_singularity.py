@@ -6,14 +6,23 @@
 # ]
 # ///
 
+import logging
+
+logger = logging.getLogger(__name__)
+
+image_url = "oras://community.wave.seqera.io/library/pybedtools_bedtools_htslib_pip_pypints:aa20de1f1b5ddb30"
+
+wave_api_url = "https://wave.seqera.io"
 url = f"{wave_api_url}/v1alpha1/inspect"
 logger.info(f"calling image inspect at {url} for image url {image_url}")
 data = {"containerimage": image_url}
 
-if platform_pat:
-    data["toweraccesstoken"] = platform_pat
-else:
-    logger.warning("'platform_pat' not set, no auth to wave back end")
+# if platform_pat:
+#     data["toweraccesstoken"] = platform_pat
+# else:
+# TODO
+logger.warning("'platform_pat' not set, no auth to wave back end")
+
 with httpx.client() as client:
     response = client.post(
         url=url,
