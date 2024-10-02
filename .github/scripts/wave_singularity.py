@@ -13,8 +13,8 @@ if platform_pat:
     data["toweraccesstoken"] = platform_pat
 else:
     logger.warning("'platform_pat' not set, no auth to wave back end")
-async with httpx.asyncclient() as client:
-    response = await client.post(
+with httpx.client() as client:
+    response = client.post(
         url=url,
         json=data,
         headers={"content-type": "application/json"},
@@ -29,8 +29,8 @@ async with httpx.asyncclient() as client:
         if "digest" not in layers[0]:
             raise httpexception(status_code=400, detail="no 'digest' in first layer found")
         digest = layers[0]["digest"].replace("sha256:", "")
-        url = f"https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/{digest[:2]}/{digest}/data"
-        return url
+        container_url = f"https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/{digest[:2]}/{digest}/data"
+        print(container_url)
 
     else:
         raise httpexception(status_code=response.status_code, detail=response.text)
