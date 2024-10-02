@@ -50,6 +50,8 @@ process MOTUS_MERGE {
     def suffix = task.ext.args?.contains("-B") ? "biom" : "txt"
 
     """
+    touch ${prefix}.txt
+
     VERSION=\$(cat ${profile_version_yml} | grep '/*motus:.*' | sed 's/.*otus: //g')
 
     cat <<-END_VERSIONS > versions.yml
