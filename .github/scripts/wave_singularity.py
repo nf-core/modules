@@ -10,6 +10,8 @@ import logging
 import httpx
 
 logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG)
+
 
 image_url = "oras://community.wave.seqera.io/library/pybedtools_bedtools_htslib_pip_pypints:aa20de1f1b5ddb30"
 
@@ -18,8 +20,6 @@ if image_url.startswith("oras://"):
 
 wave_api_url = "https://wave.seqera.io"
 url = f"{wave_api_url}/v1alpha1/inspect"
-logger.info(f"calling image inspect at {url} for image url {image_url}")
-data = {"containerimage": image_url}
 
 # if platform_pat:
 #     data["toweraccesstoken"] = platform_pat
@@ -28,13 +28,15 @@ data = {"containerimage": image_url}
 logger.warning("'platform_pat' not set, no auth to wave back end")
 
 try:
+    logger.info(f"calling image inspect at {url} for image url {image_url}")
     response = httpx.post(
         url=url,
-        json=data,
+        json={"containerImage": image_url},
         headers={"content-type": "application/json"},
     )
 
     data = response.json()
+    logger.debug(data)
     layers = data.get("container", {}).get("manifest", {}).get("layers", [])
     is_singularity = len(layers) == 1 and layers[0].get("mediatype", "").endswith(".sif")
     if not is_singularity:
