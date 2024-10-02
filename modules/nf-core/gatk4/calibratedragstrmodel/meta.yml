@@ -8,62 +8,65 @@ keywords:
   - calibratedragstrmodel
 tools:
   - gatk4:
-      description: Genome Analysis Toolkit (GATK4). Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools with a primary focus on variant discovery and genotyping. Its powerful processing engine and high-performance computing features make it capable of taking on projects of any size.
+      description: Genome Analysis Toolkit (GATK4). Developed in the Data Sciences Platform
+        at the Broad Institute, the toolkit offers a wide variety of tools with a primary
+        focus on variant discovery and genotyping. Its powerful processing engine and
+        high-performance computing features make it capable of taking on projects of
+        any size.
       homepage: https://gatk.broadinstitute.org/hc/en-us
       documentation: https://gatk.broadinstitute.org/hc/en-us/articles/360057441571-CalibrateDragstrModel-BETA-
       tool_dev_url: https://github.com/broadinstitute/gatk
       doi: 10.1158/1538-7445.AM2017-3590
       licence: ["Apache-2.0"]
+      identifier: ""
 input:
   # Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-  - bam_index:
-      type: file
-      description: index of the BAM/CRAM/SAM file
-      pattern: "*.{bai,crai,sai}"
-  - intervals:
-      type: file
-      description: BED file or interval list containing regions (optional)
-      pattern: "*.{bed,interval_list}"
-  - fasta:
-      type: file
-      description: The reference FASTA file
-      pattern: "*.{fasta,fa}"
-  - fasta_fai:
-      type: file
-      description: The index of the reference FASTA file
-      pattern: "*.fai"
-  - dict:
-      type: file
-      description: The sequence dictionary of the reference FASTA file
-      pattern: "*.dict"
-  - strtablefile:
-      type: file
-      description: The StrTableFile zip folder of the reference FASTA file
-      pattern: "*.zip"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+    - bam_index:
+        type: file
+        description: index of the BAM/CRAM/SAM file
+        pattern: "*.{bai,crai,sai}"
+  - - fasta:
+        type: file
+        description: The reference FASTA file
+        pattern: "*.{fasta,fa}"
+  - - fasta_fai:
+        type: file
+        description: The index of the reference FASTA file
+        pattern: "*.fai"
+  - - dict:
+        type: file
+        description: The sequence dictionary of the reference FASTA file
+        pattern: "*.dict"
+  - - strtablefile:
+        type: file
+        description: The StrTableFile zip folder of the reference FASTA file
+        pattern: "*.zip"
 output:
   #Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - dragstr_model:
-      type: file
-      description: The DragSTR model
-      pattern: "*.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt":
+          type: file
+          description: The DragSTR model
+          pattern: "*.txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

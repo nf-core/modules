@@ -8,39 +8,43 @@ keywords:
   - structural variants
 tools:
   - "svtk":
-      description: "Utilities for consolidating, filtering, resolving, and annotating structural variants."
+      description: "Utilities for consolidating, filtering, resolving, and annotating
+        structural variants."
       homepage: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
       documentation: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
       tool_dev_url: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: A VCF file created with a structural variant caller
-      pattern: "*.vcf.gz"
-  - tbi:
-      type: file
-      description: The index for the VCF file
-      pattern: "*.vcf.gz.tbi"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: A VCF file created with a structural variant caller
+        pattern: "*.vcf.gz"
+    - tbi:
+        type: file
+        description: The index for the VCF file
+        pattern: "*.vcf.gz.tbi"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - bed:
-      type: file
-      description: The created BED file
-      pattern: "*.bed"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bed":
+          type: file
+          description: The created BED file
+          pattern: "*.bed"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:
