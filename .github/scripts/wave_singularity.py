@@ -24,28 +24,25 @@ data = {"containerimage": image_url}
 # TODO
 logger.warning("'platform_pat' not set, no auth to wave back end")
 
-with httpx.Client() as client:
-    response = client.post(
+try:
+    response = httpx.post(
         url=url,
         json=data,
         headers={"content-type": "application/json"},
     )
 
-    if response.is_success:
-        data = response.json()
-        layers = data.get("container", {}).get("manifest", {}).get("layers", [])
-        is_singularity = len(layers) == 1 and layers[0].get("mediatype", "").endswith(".sif")
-        if not is_singularity:
-            raise httpexception(status_code=400, detail="not a singularity image")
-        if "digest" not in layers[0]:
-            raise httpexception(status_code=400, detail="no 'digest' in first layer found")
-        digest = layers[0]["digest"].replace("sha256:", "")
-        container_url = (
-            f"https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/{digest[:2]}/{digest}/data"
-        )
-        print(container_url)
+    data = response.json()
+    layers = data.get("container", {}).get("manifest", {}).get("layers", [])
+    is_singularity = len(layers) == 1 and layers[0].get("mediatype", "").endswith(".sif")
+    if not is_singularity:
+        raise ValueError("not a singularity image")
+    if "digest" not in layers[0]:
+        raise ValueError("no 'digest' in first layer found")
 
-    else:
-        print("No singularity image for you")
-    # TODO
-    #     raise httpexception(status_code=response.status_code, detail=response.text)
+    digest = layers[0]["digest"].replace("sha256:", "")
+    container_url = f"https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/{digest[:2]}/{digest}/data"
+    print(container_url)
+
+except httpx.RequestError as exc:
+    print(f"An error occurred while requesting {exc.request.url!r}.")
+    print("No singularity image for you")
