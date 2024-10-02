@@ -9,6 +9,8 @@ process BCFTOOLS_PLUGINSETGT {
 
     input:
     tuple val(meta), path(vcf), path(index)
+    val(target_gt)
+    val(new_gt)
     path(regions)
     path(targets)
 
@@ -41,6 +43,8 @@ process BCFTOOLS_PLUGINSETGT {
         --threads $task.cpus \\
         ${vcf} \\
         -- \\
+        --target-gt ${target_gt} \\
+        --new-gt ${new_gt} \\
         $args2
 
     cat <<-END_VERSIONS > versions.yml
