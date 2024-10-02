@@ -9,6 +9,7 @@
 url = f"{wave_api_url}/v1alpha1/inspect"
 logger.info(f"calling image inspect at {url} for image url {image_url}")
 data = {"containerimage": image_url}
+
 if platform_pat:
     data["toweraccesstoken"] = platform_pat
 else:
@@ -29,7 +30,9 @@ with httpx.client() as client:
         if "digest" not in layers[0]:
             raise httpexception(status_code=400, detail="no 'digest' in first layer found")
         digest = layers[0]["digest"].replace("sha256:", "")
-        container_url = f"https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/{digest[:2]}/{digest}/data"
+        container_url = (
+            f"https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/{digest[:2]}/{digest}/data"
+        )
         print(container_url)
 
     else:
