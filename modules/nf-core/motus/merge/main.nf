@@ -42,4 +42,20 @@ process MOTUS_MERGE {
         motus: \$VERSION
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def cmd_input = input.size() > 1 ? "-i ${input.join(',')}" : input.isDirectory() ? "-d ${input}" : "-i ${input}"
+    def suffix = task.ext.args?.contains("-B") ? "biom" : "txt"
+
+    """
+    VERSION=\$(cat ${profile_version_yml} | grep '/*motus:.*' | sed 's/.*otus: //g')
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        motus: \$VERSION
+    END_VERSIONS
+    """
+
 }
