@@ -13,6 +13,9 @@ logger = logging.getLogger(__name__)
 
 image_url = "oras://community.wave.seqera.io/library/pybedtools_bedtools_htslib_pip_pypints:aa20de1f1b5ddb30"
 
+if image_url.startswith("oras://"):
+    image_url = image_url.replace("oras://", "")
+
 wave_api_url = "https://wave.seqera.io"
 url = f"{wave_api_url}/v1alpha1/inspect"
 logger.info(f"calling image inspect at {url} for image url {image_url}")
@@ -35,8 +38,10 @@ try:
     layers = data.get("container", {}).get("manifest", {}).get("layers", [])
     is_singularity = len(layers) == 1 and layers[0].get("mediatype", "").endswith(".sif")
     if not is_singularity:
+        print(layers)
         raise ValueError("not a singularity image")
     if "digest" not in layers[0]:
+        print(layers)
         raise ValueError("no 'digest' in first layer found")
 
     digest = layers[0]["digest"].replace("sha256:", "")
