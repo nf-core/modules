@@ -35,7 +35,8 @@ process BAMTOFASTQ10X {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.fastq.gz
+    mkdir -p ${prefix}/bamtofastq10x
+    touch ${prefix}/bamtofastq10x/bamtofastq.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
