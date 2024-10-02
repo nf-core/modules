@@ -7,6 +7,7 @@
 # ///
 
 import logging
+import httpx
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +24,7 @@ data = {"containerimage": image_url}
 # TODO
 logger.warning("'platform_pat' not set, no auth to wave back end")
 
-with httpx.client() as client:
+with httpx.Client() as client:
     response = client.post(
         url=url,
         json=data,
@@ -45,4 +46,6 @@ with httpx.client() as client:
         print(container_url)
 
     else:
-        raise httpexception(status_code=response.status_code, detail=response.text)
+        print("No singularity image for you")
+    # TODO
+    #     raise httpexception(status_code=response.status_code, detail=response.text)
