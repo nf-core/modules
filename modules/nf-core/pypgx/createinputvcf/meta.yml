@@ -15,7 +15,7 @@ tools:
       licence: ["MIT"]
       identifier: ""
 input:
-  - - "meta":
+  - - meta:
         type: map
         description: |
           Groovy Map containing sample information
@@ -37,6 +37,13 @@ input:
         type: file
         description: Reference genome file
         pattern: "*.{fasta,fa,fna,fasta.gz,fa.gz,fna.gz}"
+  - - pgx_genes:
+        type: list
+        description: List of PGx genes supported by PyPGx to include in variant calling.
+  - - assembly_version:
+        type: string
+        description: Genome assembly version to use for variant calling.
+        pattern: "{GRCh37,GRCh38}"
 output:
   - vcf:
       - meta:
