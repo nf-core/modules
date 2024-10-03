@@ -21,9 +21,9 @@ process PYPGX_COMPUTECONTROLSTATISTICS {
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def control = "${control_gene}"  ?: "VDR"
     def assembly = "${assembly_version}" ?: "GRCh38"
-    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     pypgx compute-control-statistics \\
@@ -41,11 +41,11 @@ process PYPGX_COMPUTECONTROLSTATISTICS {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def control = "${control_gene}"  ?: "VDR"
     """
-    echo "" | zip > ${prefix}_${control}.zip
-
+    # zip program unavailable in container
+    python -c 'import zipfile; zipfile.ZipFile("${prefix}_${control}.zip", "w").close()'
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         pypgx: \$(echo \$(pypgx -v 2>&1) | sed 's/.* //')
