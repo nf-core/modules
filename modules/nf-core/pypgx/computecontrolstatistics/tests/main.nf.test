@@ -25,8 +25,8 @@ nextflow_process {
         then {
             def zipFile = path(process.out.control_stats[0][1]).zip
             def paths = zipFile.extractAll()
-            def metaFile = paths[0]
-            def dataFile = paths[1]
+            def metaFile = paths.find { it.getFileName().toString() == 'metadata.txt' }
+            def dataFile = paths.find { it.getFileName().toString() == 'data.tsv' }
 
             assertAll(
                 {assert process.success},
