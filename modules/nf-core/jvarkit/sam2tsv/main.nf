@@ -24,7 +24,6 @@ process JVARKIT_SAM2TSV {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    pwd
     mkdir -p TMP
 
     jvarkit -Xmx1g -XX:-UsePerfData -Djava.io.tmpdir=TMP sam2tsv \\

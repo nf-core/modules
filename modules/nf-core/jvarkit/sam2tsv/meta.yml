@@ -31,10 +31,11 @@ input:
   - - meta2:
       type: map
       description: |
-        Groovy Map containing VCF information
+        Groovy Map containing reference information
+        e.g. [id: 'reference']
     - fasta:
         type: file
-        description: Input fasta file
+        description: Reference genome
         pattern: "*.{fasta,fa}"
     - fasta_index:
         type: file
@@ -47,21 +48,20 @@ input:
   - - meta3:
         type: map
         description: |
-          Groovy Map containing reference fai information
-          e.g. [ id:'test_reference' ]
+          Groovy Map containing regions information
+          e.g. [ id:'regions' ]
     - regions_file:
         type: file
         description: Optional. Restrict to regions listed in a file
         pattern: "*.{vcf,bed,gtf,gff,vcf.gz,bed.gz,gtf.gz,gff.gz}"
-
 
 output:
   - output:
       - meta:
           type: map
           description: |
-            Groovy Map containing VCF information
-            e.g. [ id:'test', single_end:false ]
+            Groovy Map containing TSV information
+            e.g. [ id:'test' ]
       - "*.${extension}":
           type: file
           description: Output file
