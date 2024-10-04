@@ -29,7 +29,6 @@ input:
         description: |
           mOTUs database downloaded by `motus downloadDB`
           pattern: "db_mOTU/"
-
 output:
   - out:
       - meta:
@@ -42,9 +41,10 @@ output:
           description: converted file (gzipped), ready to be used by motus profile
           pattern: "*.gz"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
 authors:
   - "@sofstam"
