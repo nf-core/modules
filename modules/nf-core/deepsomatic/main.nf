@@ -2,7 +2,7 @@ process DEEPSOMATIC {
     tag "$meta.id"
     label 'process_high'
 
-    container "docker.io/google/deepsomatic:1.6.1"
+    container "docker.io/google/deepsomatic:1.7.0"
     
     input:
     tuple val(meta), path(input_normal), path(index_normal)
@@ -30,7 +30,7 @@ process DEEPSOMATIC {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def regions = intervals ? "--regions=${intervals}" : ""
-    def VERSION = '1.6.1'
+    def VERSION = '1.7.0'
 
     """
     run_deepsomatic \\
@@ -59,7 +59,7 @@ process DEEPSOMATIC {
     }
     prefix = task.ext.prefix ?: "${meta.id}"
     
-    def VERSION = '1.6.1'
+    def VERSION = '1.7.0'
     """
     touch ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
