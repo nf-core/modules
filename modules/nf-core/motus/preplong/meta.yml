@@ -31,19 +31,20 @@ input:
           pattern: "db_mOTU/"
 
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
+  - out:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - "*.{gz}":
+      type: file
+      description: converted file (gzipped), ready to be used by motus profile
+      pattern: "*.{gz}"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
-  - out:
-      type: file
-      description: converted file (gzipped), ready to be used by motus profile
-      pattern: "*.{gz}"
   - db:
       type: directory
       description: |
