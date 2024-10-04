@@ -37,10 +37,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.fastq.gz":
+      - "**/*.fastq.gz":
           type: file
           description: fastq compressed file
-          pattern: "*.fastq.gz"
+          pattern: "**/*.fastq.gz"
   - versions:
       - versions.yml:
           type: file
