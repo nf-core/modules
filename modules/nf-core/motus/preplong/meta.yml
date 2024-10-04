@@ -15,15 +15,15 @@ tools:
       licence: ["GPL v3"]
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - reads:
-      type: file
-      description: Long read file to convert, can be fasta(.gz) or fastq(.gz)
-      pattern: "*.{gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - reads:
+        type: file
+        description: Long read file to convert, can be fasta(.gz) or fastq(.gz)
+        pattern: "*.{gz}"
 
 output:
   - meta:
