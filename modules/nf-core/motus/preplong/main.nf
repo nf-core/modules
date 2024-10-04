@@ -13,7 +13,7 @@ process MOTUS_PREPLONG {
 
     output:
     tuple val(meta), path("*.gz"), emit: out
-    path "versions.yml"               , emit: versions
+    path "versions.yml"          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
