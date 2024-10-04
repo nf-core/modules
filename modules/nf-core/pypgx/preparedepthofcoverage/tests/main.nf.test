@@ -34,8 +34,8 @@ nextflow_process {
                 {assert process.success},
                 {assert zipFile.isValid()},
                 {assert snapshot(
-                    metaFile.text,
-                   dataFile.text).match()}
+                    metaFile,
+                   dataFile).match()}
             )
         }
     }
