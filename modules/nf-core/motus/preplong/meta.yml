@@ -24,6 +24,11 @@ input:
         type: file
         description: Long read file to convert, can be fasta(.gz) or fastq(.gz)
         pattern: "*.{gz}"
+  - - db:
+        type: directory
+        description: |
+          mOTUs database downloaded by `motus downloadDB`
+          pattern: "db_mOTU/"
 
 output:
   - meta:
