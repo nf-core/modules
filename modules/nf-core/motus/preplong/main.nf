@@ -33,7 +33,6 @@ process MOTUS_PREPLONG {
         -o ${prefix}.gz \\
         2> >(tee ${prefix}.log >&2)
 
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         motus: \$(motus --version 2>&1 | sed 's/.* \\([0-9]*\\.[0-9]*\\.[0-9]*\\) .*/\\1/')
