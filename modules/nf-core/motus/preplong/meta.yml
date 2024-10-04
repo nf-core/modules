@@ -32,15 +32,15 @@ input:
 
 output:
   - out:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - "*.{gz}":
-      type: file
-      description: converted file (gzipped), ready to be used by motus profile
-      pattern: "*.{gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.{gz}":
+          type: file
+          description: converted file (gzipped), ready to be used by motus profile
+          pattern: "*.{gz}"
   - versions:
       type: file
       description: File containing software versions
