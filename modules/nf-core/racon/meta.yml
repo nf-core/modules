@@ -7,44 +7,48 @@ keywords:
   - polish
 tools:
   - racon:
-      description: Ultrafast consensus module for raw de novo genome assembly of long uncorrected reads.
+      description: Ultrafast consensus module for raw de novo genome assembly of long
+        uncorrected reads.
       homepage: https://github.com/lbcb-sci/racon
       documentation: https://github.com/lbcb-sci/racon
       tool_dev_url: https://github.com/lbcb-sci/racon
       doi: 10.1101/gr.214270.116
       licence: ["MIT"]
+      identifier: biotools:Racon
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: List of input FastQ files. Racon expects single end reads
-      pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
-  - assembly:
-      type: file
-      description: Genome assembly to be improved
-      pattern: "*.{fasta,fa}"
-  - paf:
-      type: file
-      description: Alignment in PAF format
-      pattern: "*.paf"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: List of input FastQ files. Racon expects single end reads
+        pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
+    - assembly:
+        type: file
+        description: Genome assembly to be improved
+        pattern: "*.{fasta,fa}"
+    - paf:
+        type: file
+        description: Alignment in PAF format
+        pattern: "*.paf"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - improved_assembly:
-      type: file
-      description: Improved genome assembly
-      pattern: "*_assembly_consensus.fasta.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_assembly_consensus.fasta.gz":
+          type: file
+          description: Improved genome assembly
+          pattern: "*_assembly_consensus.fasta.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@avantonder"
 maintainers:

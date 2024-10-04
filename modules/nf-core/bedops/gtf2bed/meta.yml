@@ -6,33 +6,40 @@ keywords:
   - conversion
 tools:
   - gtf2bed:
-      description: The gtf2bed script converts 1-based, closed [start, end] Gene Transfer Format v2.2 (GTF2.2) to sorted, 0-based, half-open [start-1, end) extended BED-formatted data.
+      description: The gtf2bed script converts 1-based, closed [start, end] Gene Transfer
+        Format v2.2 (GTF2.2) to sorted, 0-based, half-open [start-1, end) extended BED-formatted
+        data.
       homepage: https://bedops.readthedocs.io/en/latest/content/reference/file-management/conversion/gtf2bed.html
       documentation: https://bedops.readthedocs.io/en/latest/content/reference/file-management/conversion/gtf2bed.html
       tool_dev_url: https://github.com/bedops/bedops
       doi: 10.1093/bioinformatics/bts277
       licence: ["GPL v2"]
+      identifier: biotools:bedops
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-
-  - gtf:
-      type: file
-      description: A reference file in GTF format
-      pattern: "*.{gtf,gtf.gz}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - gtf:
+        type: file
+        description: A reference file in GTF format
+        pattern: "*.{gtf,gtf.gz}"
 output:
   - bed:
-      type: file
-      description: A reference file in BED format
-      pattern: "*.{bed}"
+      - meta:
+          type: file
+          description: A reference file in BED format
+          pattern: "*.{bed}"
+      - "*.bed":
+          type: file
+          description: A reference file in BED format
+          pattern: "*.{bed}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@davidecarlson"

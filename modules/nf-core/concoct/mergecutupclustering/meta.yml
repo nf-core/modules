@@ -17,30 +17,33 @@ tools:
       tool_dev_url: "https://github.com/BinPro/CONCOCT"
       doi: "10.1038/nmeth.3103"
       licence: ["FreeBSD"]
+      identifier: biotools:concoct
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - clustering_csv:
-      type: file
-      description: Input cutup clustering result. Typically *_gt1000.csv from concoct
-      pattern: "*.csv"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - clustering_csv:
+        type: file
+        description: Input cutup clustering result. Typically *_gt1000.csv from concoct
+        pattern: "*.csv"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - csv:
-      type: file
-      description: Cluster assignments per contig part with concensus cluster
-      pattern: "*.csv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.csv":
+          type: file
+          description: Cluster assignments per contig part with concensus cluster
+          pattern: "*.csv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jfy133"
 maintainers:
