@@ -4,8 +4,8 @@ process PANGOLIN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pangolin:4.2--pyhdfd78af_1' :
-        'biocontainers/pangolin:4.2--pyhdfd78af_1' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/71/7133e48e32b7baa883b8805e600a143b65316e8a014458b8eb4429eb3596f165/data' :
+        'community.wave.seqera.io/library/pangolin:4.2--3bc97f62c0074e70' }"
 
     input:
     tuple val(meta), path(fasta)
