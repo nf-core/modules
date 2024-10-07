@@ -13,6 +13,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 ch_sample = Channel.of([sample:'present'])
                     | combine(Channel.of('NA12878 2').collectFile(name: 'sampleinfos.txt'))
                     | concat(Channel.of([[sample: 'absent'], []]))

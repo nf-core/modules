@@ -14,6 +14,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/MBC_315.ctDNA.reads.wig", checkIfExists: true)
                 input[1] = file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/gc_hg19_1000kb.wig", checkIfExists: true)
                 input[2] = file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/map_hg19_1000kb.wig", checkIfExists: true)
@@ -43,6 +44,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [ file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/MBC_315.ctDNA.reads.wig", checkIfExists: true),
                             file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/MBC_315_T2.ctDNA.reads.wig", checkIfExists: true)
                             ]
@@ -72,6 +74,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = []
                 input[1] = []
                 input[2] = []

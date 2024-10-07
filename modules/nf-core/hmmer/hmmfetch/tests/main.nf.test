@@ -15,6 +15,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
 				    [ id:'test', single_end:false ],
 				    file('https://raw.githubusercontent.com/tseemann/barrnap/master/db/arc.hmm')
@@ -40,6 +41,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 keyfile = Channel.of('16S_rRNA', '23S_rRNA').collectFile(name: 'keys.txt', newLine: true)
 
                 input[0] = [
@@ -67,6 +69,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
 				    [ id:'test', single_end:false ],
 				    file('https://raw.githubusercontent.com/tseemann/barrnap/master/db/arc.hmm')
@@ -92,6 +95,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
 				    [ id:'test', single_end:false ],
 				    file('https://raw.githubusercontent.com/tseemann/barrnap/master/db/arc.hmm')

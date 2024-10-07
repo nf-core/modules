@@ -13,6 +13,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = Channel.of([
                     [ id: 'test', single_end:true ],
                     [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
@@ -40,6 +41,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = Channel.of([
                     [id: 'test', single_end: false], // meta map
                     [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
@@ -68,6 +70,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = Channel.of([
                     [id: 'test', single_end: false], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_interleaved.fastq.gz', checkIfExists: true)
@@ -92,6 +95,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = Channel.of([
                     [id: 'test', single_end: false], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
@@ -116,6 +120,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = Channel.of([
                     [id: 'test', single_end: false], // meta map
                     [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
@@ -152,6 +157,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = Channel.of([
                     [ id:'mysample', single_end:true ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
@@ -177,6 +183,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = Channel.of([
                     [ id: 'test', single_end:true ],
                     [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
@@ -199,6 +206,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = Channel.of([
                     [id: 'test', single_end: false], // meta map
                     [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
@@ -222,6 +230,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = Channel.of([
                     [id: 'test', single_end: false], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_interleaved.fastq.gz', checkIfExists: true)
@@ -244,6 +253,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = Channel.of([
                     [id: 'test', single_end: false], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
@@ -266,6 +276,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = Channel.of([
                     [id: 'test', single_end: false], // meta map
                     [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
@@ -291,6 +302,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = Channel.of([
                     [ id:'mysample', single_end:true ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)

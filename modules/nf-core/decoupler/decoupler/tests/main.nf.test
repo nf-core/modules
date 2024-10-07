@@ -15,6 +15,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id: 'test' ],
                     file(params.test_data['generic']['tsv']['expression'], checkIfExists: true)

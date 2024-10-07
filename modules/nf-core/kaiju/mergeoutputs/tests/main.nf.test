@@ -73,6 +73,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = KAIJU_KAIJU.out.results.join(KRAKEN2_KRAKEN2.out.classified_reads_assignment)
                 input[1] = [ ]
                 """
@@ -93,6 +94,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = KAIJU_KAIJU.out.results.join(KRAKEN2_KRAKEN2.out.classified_reads_assignment)
                 input[1] = UNTAR_KAIJU.out.untar.map{ it[1] }
                 """
@@ -115,6 +117,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = KAIJU_KAIJU.out.results.join(KRAKEN2_KRAKEN2.out.classified_reads_assignment)
                 input[1] = []
                 """

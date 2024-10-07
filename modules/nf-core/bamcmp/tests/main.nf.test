@@ -67,6 +67,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = BWA_MEM_HUMAN.out.bam.join(BWA_MEM_COV2.out.bam)
                 """
             }
@@ -88,6 +89,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [ [id: 'test'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true) ]

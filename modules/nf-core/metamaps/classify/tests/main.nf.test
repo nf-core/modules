@@ -41,6 +41,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 classification_folder = METAMAPS_MAPDIRECTLY.out.classification_res
                                                             .join(METAMAPS_MAPDIRECTLY.out.meta_file)
                                                             .join(METAMAPS_MAPDIRECTLY.out.meta_unmappedreadsLengths)
@@ -95,6 +96,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 classification_folder = METAMAPS_MAPDIRECTLY.out.classification_res
                                                             .join(METAMAPS_MAPDIRECTLY.out.meta_file)
                                                             .join(METAMAPS_MAPDIRECTLY.out.meta_unmappedreadsLengths)

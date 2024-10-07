@@ -59,6 +59,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 msas = FAMSA_ALIGN.out.alignment.mix(MAGUS_ALIGN.out.alignment).groupTuple()
                 input[0] = msas
                 input[1] = [[:],[]]
@@ -80,6 +81,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 msas = FAMSA_ALIGN.out.alignment.mix(MAGUS_ALIGN.out.alignment).groupTuple()
                 input[0] = msas
                 input[1] = CLUSTALO_GUIDETREE.out.tree.collect{ meta, tree -> tree }.map{ tree -> [[ id: 'test'], tree]}
@@ -103,6 +105,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 msas = FAMSA_ALIGN.out.alignment.mix(MAGUS_ALIGN.out.alignment).groupTuple()
                 input[0] = msas
                 input[1] = [[:],[]]

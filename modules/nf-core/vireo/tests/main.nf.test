@@ -42,6 +42,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = CELLSNP_MODEA.out.cell.collect{ meta, cell -> cell }.map{ 
                             cell -> [[id:'test'],
                                       cell,
@@ -68,6 +69,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [[id:'sample1'],
                             [],
                             2,

@@ -25,6 +25,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [ [ id:'test_search' ], [ file(params.modules_testdata_base_path + 'proteomics/pdb/8tim.pdb', checkIfExists: true) ] ]
                 input[1] = FOLDSEEK_CREATEDB.out.db
                 """
@@ -48,6 +49,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [ [ id:'test_search' ], [ file(params.modules_testdata_base_path + 'proteomics/pdb/8tim.pdb', checkIfExists: true) ] ]
                 input[1] = FOLDSEEK_CREATEDB.out.db
                 """

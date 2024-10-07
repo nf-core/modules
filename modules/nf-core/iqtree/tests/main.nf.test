@@ -13,6 +13,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [ [ id: "test" ],
                     file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref", checkIfExists:true),
                     [] ]
@@ -69,6 +70,7 @@ test("setoxin - treels") {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [ [ id: "test" ],
                     file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref", checkIfExists:true),
                     [] ]
@@ -126,6 +128,7 @@ test("setoxin - treels") {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [ [ id: "test" ],
                     file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref", checkIfExists:true),
                     [] ]
@@ -180,6 +183,7 @@ test("setoxin - treels") {
         when {
             process {
                 """
+                // testy mctestface
                 input[0]  = [ [ id: "test" ],
                     [],
                     file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.ft.LGCAT.newick", checkIfExists:true)]
@@ -240,6 +244,7 @@ test("setoxin - treels") {
         when {
             process {
                 """
+                // testy mctestface
                 input[0]  = [ [ id: "test" ],
                     file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.alnfaa", checkIfExists:true),
                     [] ]
@@ -296,6 +301,7 @@ test("setoxin - treels") {
         when {
             process {
                 """
+                // testy mctestface
                 input[0]  = [ [ id: "test" ] , [], []]
                 input[1]  = []
                 input[2]  = []

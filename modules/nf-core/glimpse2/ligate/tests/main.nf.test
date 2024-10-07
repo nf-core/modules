@@ -57,6 +57,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = GLIMPSE2_PHASE.out.phased_variants
                     | groupTuple()
                     | join (BCFTOOLS_INDEX.out.csi.groupTuple())

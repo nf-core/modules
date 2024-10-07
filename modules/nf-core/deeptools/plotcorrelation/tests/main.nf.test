@@ -37,6 +37,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = DEEPTOOLS_MULTIBAMSUMMARY.out.matrix.collect{ meta, matrix -> matrix }.map{ matrix -> [[ id: 'test' ], matrix] }
                 input[1] = 'spearman'
                 input[2] = 'heatmap'
@@ -83,6 +84,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = DEEPTOOLS_MULTIBAMSUMMARY.out.matrix.collect{ meta, matrix -> matrix }.map{ matrix -> [[ id: 'test' ], matrix] }
                 input[1] = ''
                 input[2] = 'heatmap'
@@ -129,6 +131,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = DEEPTOOLS_MULTIBAMSUMMARY.out.matrix.collect{ meta, matrix -> matrix }.map{ matrix -> [[ id: 'test' ], matrix] }
                 input[1] = 'spearman'
                 input[2] = ''
@@ -177,6 +180,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = DEEPTOOLS_MULTIBAMSUMMARY.out.matrix.collect{ meta, matrix -> matrix }.map{ matrix -> [[ id: 'test' ], matrix] }
                 input[1] = 'spearman'
                 input[2] = 'heatmap'

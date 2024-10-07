@@ -33,6 +33,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = Channel.of([
                     [ id:'test', umi_len:'12' ],
                     'CB_UMI_Simple',
@@ -88,6 +89,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = Channel.of([
                     [ id:'test', umi_len:'12' ],
                     'CB_UMI_Simple',

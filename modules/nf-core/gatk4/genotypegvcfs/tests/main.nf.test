@@ -29,6 +29,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [id:"test"],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true),
@@ -72,6 +73,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [id:"test"],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true),
@@ -121,6 +123,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [id:"test"],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true),
@@ -164,6 +167,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = UNTAR.out.untar.map { meta, gendb -> [ meta, gendb, [], [], []] }
                 input[1] = [
                     [id:"fasta"],
@@ -201,6 +205,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = UNTAR.out.untar.map { meta, gendb -> 
                     [ 
                         meta,
@@ -248,6 +253,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [id:"test"],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true),

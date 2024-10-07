@@ -15,6 +15,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
 				    [ id:'test_subtract' ],
 				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/baits.bed', checkIfExists: true),

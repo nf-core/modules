@@ -14,6 +14,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [ [ id: "test_" ], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true) ] ]
 
                 """
@@ -58,6 +59,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [ [id: "test_"] , [ file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/sequencing_summary/test.sequencing_summary.txt', checkIfExists: true) ] ]
 
                 """
@@ -102,6 +104,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [ [ id: "test_" ], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/sequencing_summary/test.sequencing_summary.txt', checkIfExists: true) ] ]
 
                 """

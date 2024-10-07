@@ -16,6 +16,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
 
                 expression_sample_sheet = file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true)
@@ -58,6 +59,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
 
                 expression_sample_sheet = file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true)
@@ -98,6 +100,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
 
                 expression_sample_sheet = file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true)

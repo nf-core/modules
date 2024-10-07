@@ -47,6 +47,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = GANON_CLASSIFY.out.report
                 input[1] = GANON_BUILDCUSTOM.out.db.map{it[1]}
                 """
@@ -69,6 +70,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = GANON_CLASSIFY.out.report
                 input[1] = GANON_BUILDCUSTOM.out.db.map{it[1]}
                 """

@@ -29,6 +29,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = FOLDCOMP_COMPRESS.out.fcz.flatMap { meta, files ->
                     files.collect { file -> tuple(meta, file) }
                 }
@@ -52,6 +53,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = FOLDCOMP_COMPRESS.out.fcz
                 """
             }

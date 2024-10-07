@@ -47,6 +47,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input [0] = PRODIGAL.out.gene_annotations
                 input [1] = DEEPBGC_DOWNLOAD.out.db
                 """
@@ -71,6 +72,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input [0] = GUNZIP.out.gunzip
                 input [1] = DEEPBGC_DOWNLOAD.out.db
                 """
@@ -98,6 +100,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input [0] = GUNZIP.out.gunzip
                 input [1] = DEEPBGC_DOWNLOAD.out.db
                 """

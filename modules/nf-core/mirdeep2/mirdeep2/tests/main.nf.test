@@ -47,6 +47,7 @@ nextflow_process {
             when {
             process {
                 """
+                // testy mctestface
                 input[0] = MIRDEEP2_MAPPER.out.outputs
                 input[1] = [
                         [ id:'genome_cel_cluster' ], // meta map
@@ -84,6 +85,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = MIRDEEP2_MAPPER.out.outputs
                 input[1] = [
                         [ id:'genome_cel_cluster' ], // meta map

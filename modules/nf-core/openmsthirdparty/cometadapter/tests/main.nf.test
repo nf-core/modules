@@ -44,6 +44,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] =
                     THERMORAWFILEPARSER.out.spectra.join(
                     OPENMS_DECOYDATABASE.out.decoy_fasta
@@ -70,6 +71,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] =
                     THERMORAWFILEPARSER.out.spectra.join(
                     OPENMS_DECOYDATABASE.out.decoy_fasta

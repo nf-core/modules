@@ -24,6 +24,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0]= UNTAR.out.untar.map{meta, untar -> [meta, meta.samplesheet, untar]}
 
                 """
@@ -54,6 +55,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0]= UNTAR.out.untar.map{meta, untar -> [meta, meta.samplesheet, untar]}
 
                 """

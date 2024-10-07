@@ -44,6 +44,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = PROPR_PROPR.out.adj.collect{ meta, adj -> adj }.map{ adj -> [[ id: 'test_adj'], adj]}
                 input[1] = MYGENE.out.gmt.collect{ meta, gmt -> gmt }.map{ gmt -> [[ id: 'test_gmt'], gmt]}
                 """

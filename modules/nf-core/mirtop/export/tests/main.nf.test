@@ -37,6 +37,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = MIRTOP_GFF.out.gff
                 input[1] = [
                     [ id:'hairpin'], // meta map
@@ -66,6 +67,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = MIRTOP_GFF.out.gff
                 input[1] = [
                     [ id:'hairpin'], // meta map

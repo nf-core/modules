@@ -55,6 +55,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = GUNZIP.out.gunzip.collect{ meta, vcf -> vcf }.map{ vcf -> [[ id: 'testVCF'], vcf]}
                 input[1] =  [ [] ,
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
@@ -100,6 +101,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = GUNZIP.out.gunzip.collect{ meta, vcf -> vcf }.map{ vcf -> [[ id: 'testVCF'], vcf]}
                 input[1] =  [ [] ,
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)

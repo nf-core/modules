@@ -42,6 +42,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = MANTA_TUMORONLY.out.tumor_sv_vcf
                 input[1] = [
                     [ id:'fasta' ],
@@ -71,6 +72,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = MANTA_TUMORONLY.out.tumor_sv_vcf
                 input[1] = [
                     [ id:'fasta' ],

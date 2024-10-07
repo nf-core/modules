@@ -60,6 +60,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = BRACKEN_BRACKEN.out.reports
                                             .map{it[1]}
                                             .collect()
@@ -83,6 +84,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = BRACKEN_BRACKEN.out.reports
                                             .map{it[1]}
                                             .collect()

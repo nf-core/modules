@@ -16,6 +16,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/pep/test_nextflow_original_samplesheet.csv", checkIfExists: true)
 				input[1] = "csv"
 				input[2] = []
@@ -37,6 +38,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/pep/test_pep_format_files/config.yaml", checkIfExists: true)
 				input[1] = "csv"
 				input[2] = []
@@ -59,6 +61,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/pep/test_pep_format_files/config.yaml", checkIfExists: true)
 				input[1] = "csv"
 				input[2] = []

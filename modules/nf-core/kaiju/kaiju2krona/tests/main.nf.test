@@ -87,6 +87,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = KAIJU_KAIJU.out.results
                 input[1] = UNTAR.out.untar.map{ it[1] }
                 """

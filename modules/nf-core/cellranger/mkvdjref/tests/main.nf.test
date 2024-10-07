@@ -44,6 +44,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = GUNZIP_FASTA.out.gunzip.map{ it[1] }
                 input[1] = GUNZIP_GTF.out.gunzip.map{ it[1] }
                 input[2] = []
@@ -68,6 +69,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = []
                 input[1] = []
                 input[2] = []

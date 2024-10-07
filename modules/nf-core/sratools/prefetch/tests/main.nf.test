@@ -12,6 +12,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = Channel.of([ [ id:'test', single_end:false ], 'DRR000774' ])
                 input[1] = file(params.modules_testdata_base_path + 'generic/config/ncbi_user_settings.mkfg', checkIfExists: true)
                 input[2] = []
@@ -32,6 +33,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = Channel.of([ [ id:'test', single_end:false ], 'SRR1170046' ])
                 input[1] = file(params.modules_testdata_base_path + 'generic/config/ncbi_user_settings.mkfg', checkIfExists: true)
                 input[2] = []
@@ -54,6 +56,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = Channel.of([ [ id:'test', single_end:false ], 'DRR000774' ])
                 input[1] = file(params.modules_testdata_base_path + 'generic/config/ncbi_user_settings.mkfg', checkIfExists: true)
                 input[2] = []

@@ -14,7 +14,8 @@ nextflow_process {
     test("demultiplexing - bam") {
         when {
             process {
-                """                
+                """
+                // testy mctestface                
                 input[0] = [
                     [ id:'sample1'],
                     [],
@@ -54,6 +55,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = POPSCLE_DSCPILEUP.out.plp.collect{ meta, plp -> plp }.map{ 
                             plp -> [[ id: 'sample1'], 
                                     plp[0].toString() - '.plp.gz', 
@@ -79,7 +81,8 @@ nextflow_process {
 
         when {
             process {
-                """                
+                """
+                // testy mctestface                
                 input[0] = [
                     [ id:'sample1' ],
                     [],

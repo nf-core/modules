@@ -40,6 +40,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = GUNZIP.out.gunzip
                 input[1] = []
                 """
@@ -62,6 +63,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = Channel.fromList([
                     tuple([ id:'test', single_end:false ], // meta map
                     file("test"))

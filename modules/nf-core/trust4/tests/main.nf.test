@@ -13,6 +13,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = Channel.of([
                     [ id:'test', single_end:true ], // meta map
                     [], // bam
@@ -51,6 +52,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     [], // bam
@@ -92,6 +94,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = Channel.of([
                     [ id:'test', single_end:true ], // meta map
                     [],

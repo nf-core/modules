@@ -60,6 +60,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = TXIMETA_TXIMPORT.out.counts_gene.join(TXIMETA_TXIMPORT.out.tpm_gene).map{tuple(it[0], [it[1], it[2]])}
                 input[1] = CUSTOM_TX2GENE.out.tx2gene
 		input[2] = [
@@ -89,6 +90,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = TXIMETA_TXIMPORT.out.counts_gene.join(TXIMETA_TXIMPORT.out.tpm_gene).map{tuple(it[0], [it[1], it[2]])}
                 input[1] = CUSTOM_TX2GENE.out.tx2gene
                 input[2] = Channel.of([ [], [] ])
@@ -115,6 +117,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = TXIMETA_TXIMPORT.out.counts_gene.join(TXIMETA_TXIMPORT.out.tpm_gene).map{tuple(it[0], [it[1], it[2]])}
                 input[1] = Channel.of([ [], [] ])
                 input[2] = Channel.of([ [], [] ])
@@ -141,6 +144,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = TXIMETA_TXIMPORT.out.counts_gene
                 input[1] = Channel.of([ [], [] ])
                 input[2] = Channel.of([ [], [] ])
@@ -168,6 +172,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = TXIMETA_TXIMPORT.out.counts_gene.join(TXIMETA_TXIMPORT.out.tpm_gene).map{tuple(it[0], [it[1], it[2]])}
                 input[1] = CUSTOM_TX2GENE.out.tx2gene
 		input[2] = [
@@ -195,6 +200,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = TXIMETA_TXIMPORT.out.counts_gene.join(TXIMETA_TXIMPORT.out.tpm_gene).map{tuple(it[0], [it[1], it[2]])}
                 input[1] = CUSTOM_TX2GENE.out.tx2gene
                 input[2] = Channel.of([ [], [] ])
@@ -219,6 +225,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = TXIMETA_TXIMPORT.out.counts_gene.join(TXIMETA_TXIMPORT.out.tpm_gene).map{tuple(it[0], [it[1], it[2]])}
                 input[1] = Channel.of([ [], [] ])
                 input[2] = Channel.of([ [], [] ])
@@ -243,6 +250,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = TXIMETA_TXIMPORT.out.counts_gene
                 input[1] = Channel.of([ [], [] ])
                 input[2] = Channel.of([ [], [] ])

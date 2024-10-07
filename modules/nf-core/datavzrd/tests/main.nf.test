@@ -11,6 +11,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [ [id: "csv_config"],
                     file(params.modules_testdata_base_path + 'generic/config/config_test.datavzrd.yaml', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'generic/csv/test.csv', checkIfExists: true)
@@ -39,6 +40,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [ [id: "tsv_config"],
                     file(params.modules_testdata_base_path + 'generic/config/config_network.datavzrd.yaml', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'generic/tsv/network.tsv', checkIfExists: true)
@@ -69,6 +71,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [ [id: "csv_config"],
                     file(params.modules_testdata_base_path + 'generic/config/config_test.datavzrd.yaml', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'generic/csv/test.csv', checkIfExists: true)
@@ -89,6 +92,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = []
                 """
             }

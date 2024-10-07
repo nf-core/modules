@@ -15,6 +15,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input_vcf = Channel.of([
                     [ id:'input' ], // meta map
                     file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz", checkIfExists: true),
@@ -58,6 +59,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input_bam = Channel.of([
                     [id:'input'],
                     file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.1x.bam", checkIfExists: true),
@@ -101,6 +103,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input_cram = Channel.of([
                     [id:'input'],
                     file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.1x.cram", checkIfExists: true),
@@ -146,6 +149,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input_bam = Channel.of([
                     [id:'input'],
                     [file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/individuals/NA12878/NA12878.s.bam", checkIfExists: true),
@@ -194,6 +198,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input_bam = Channel.of([
                     [id:'input'],
                     [file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/individuals/NA12878/NA12878.s.bam", checkIfExists: true),
@@ -238,6 +243,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input_bam = Channel.of([
                     [id:'input'],
                     [file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/individuals/NA12878/NA12878.s.1x.bcf", checkIfExists: true),

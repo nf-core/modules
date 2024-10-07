@@ -30,6 +30,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = TCOFFEE_SEQREFORMAT.out.formatted_file
                     .map { meta, aln -> [meta, aln, []] }
                 """
@@ -75,6 +76,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = TCOFFEE_SEQREFORMAT.out.formatted_file
                     .join(FAMSA_GUIDETREE.out.tree, by: 0)
                     .map { meta, aln, tree -> [meta, aln, tree] }
@@ -111,6 +113,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = TCOFFEE_SEQREFORMAT.out.formatted_file
                     .map { meta, aln -> [meta, aln, []] }
                 """
@@ -137,6 +140,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [ [ id: "test" ],
                     file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin.ref", checkIfExists: true),
                     []

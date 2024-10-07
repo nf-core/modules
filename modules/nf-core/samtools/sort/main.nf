@@ -29,7 +29,7 @@ process SAMTOOLS_SORT {
                     "bam"
     def reference = fasta ? "--reference ${fasta}" : ""
     if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
-
+    // Team sarek
     """
     samtools cat \\
         ${bam} \\

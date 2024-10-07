@@ -57,6 +57,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = GANON_REPORT.out.tre.collect{it[1]}.map{[[id: "db1"], it]}
                 """
             }
@@ -78,6 +79,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = GANON_REPORT.out.tre.collect{it[1]}.map{[[id: "db1"], it]}
                 """
             }

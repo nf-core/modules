@@ -29,6 +29,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = MANTA_GERMLINE.out.diploid_sv_vcf.combine(MANTA_GERMLINE.out.diploid_sv_vcf_tbi, by: 0)
                 input[1] = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/svcluster/samples_ploidy.tsv", checkIfExists:true)
                 input[2] = Channel.value(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true))

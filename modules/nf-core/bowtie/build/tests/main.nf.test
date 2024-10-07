@@ -14,6 +14,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [id: 'sarscov2'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
@@ -34,10 +35,12 @@ nextflow_process {
     test("sarscov2 - fasta - stub") {
 
         options "-stub"
+        tag "version"
 
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [[id: 'sarscov2'],
                              file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                            ]
@@ -48,7 +51,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out).match() },
+                { assert snapshot(path(process.out.versions.get(0)).yaml).match("versions") },
             )
         }
 

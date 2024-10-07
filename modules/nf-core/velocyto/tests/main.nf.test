@@ -32,6 +32,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = Channel
                     .fromList(
                         [
@@ -74,6 +75,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'Sample_X' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rna_velocity/barcodes.tsv.gz', checkIfExists: true),
@@ -114,6 +116,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'Sample_X' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rna_velocity/barcodes.tsv.gz', checkIfExists: true),

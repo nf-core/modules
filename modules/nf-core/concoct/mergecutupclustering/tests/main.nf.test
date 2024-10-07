@@ -69,6 +69,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = CONCOCT_CONCOCT.out.clustering_csv
                 """
             }
@@ -90,6 +91,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [ [id: 'test'], []]
                 """
             }

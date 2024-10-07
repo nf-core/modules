@@ -1,0 +1,162 @@
+name: Run nf-test
+on:
+  pull_request:
+    branches: [master]
+  merge_group:
+    types: [checks_requested]
+    branches: [master]
+  workflow_dispatch:
+    inputs:
+      runners:
+        description: "Runners to test on"
+        type: choice
+        options:
+          - "ubuntu-latest"
+          - "self-hosted"
+        default: "self-hosted"
+
+# Cancel if a newer run is started
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
+  NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  nf-test:
+    runs-on: ${{ github.event.inputs.runners || 'self-hosted' }}
+    # NOTE I think this is the cleanest way to get them organized
+    # process | conda | 1
+    # process | conda | 2
+    # process | conda | 3
+    # process | docker_self_hosted | 1
+    # ...
+    # workflow | singularity | 3
+    name: ${{ matrix.filter }} | ${{ matrix.profile }} | ${{ matrix.shard }}
+    strategy:
+      fail-fast: false
+      matrix:
+        filter: [process, workflow]
+        profile: [conda, docker_self_hosted, singularity]
+        shard: [1, 2, 3]
+    env:
+      NXF_ANSI_LOG: false
+      NXF_VER: "24.04.4"
+      NFTEST_VER: "0.9.0"
+      TOTAL_SHARDS: 3
+      SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
+      SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
+
+    steps:
+      # TODO If conda-fail.yml exists and matrix = conda skip
+      # https://github.com/askimed/nf-test/issues/260
+
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+      - name: Setup Nextflow
+        uses: nf-core/setup-nextflow@v2
+        with:
+          version: ${{ env.NXF_VER }}
+
+      - name: Install nf-test
+        uses: nf-core/setup-nf-test@v1
+        with:
+          version: ${{ env.NFTEST_VER }}
+
+      - name: Setup apptainer
+        if: matrix.profile == 'singularity'
+        uses: eWaterCycle/setup-apptainer@main
+
+      - name: Set up Singularity
+        if: matrix.profile == 'singularity'
+        run: |
+          mkdir -p $NXF_SINGULARITY_CACHEDIR
+          mkdir -p $NXF_SINGULARITY_LIBRARYDIR
+
+      - name: Set up Python
+        uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5
+        with:
+          python-version: "3.11"
+
+      - uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4
+        id: cache-pip-pdiff
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-pdiff
+          restore-keys: |
+            ${{ runner.os }}-pip-pdiff
+
+      - name: Install Python dependencies
+        run: python -m pip install --upgrade pip pdiff cryptography
+
+      - name: Set up miniconda
+        if: matrix.profile == 'conda'
+        uses: conda-incubator/setup-miniconda@a4260408e20b96e80095f42ff7f1a15b27dd94ca # v3
+        with:
+          miniconda-version: "latest"
+          auto-update-conda: true
+          channels: conda-forge,bioconda,defaults
+
+      - name: Conda setup
+        if: matrix.profile == 'conda'
+        run: |
+          conda clean -a
+          conda install -n base conda-libmamba-solver
+          conda config --set solver libmamba
+          echo $(realpath $CONDA)/condabin >> $GITHUB_PATH
+          echo $(realpath python) >> $GITHUB_PATH
+
+      # Set up secrets
+      - name: Set up nextflow secrets
+        # TODO Only run if the tag includes `sentieon`
+        if: env.SENTIEON_ENCRYPTION_KEY != null && env.SENTIEON_LICENSE_MESSAGE != null
+        run: |
+          nextflow secrets set SENTIEON_AUTH_DATA $(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "${{ secrets.SENTIEON_ENCRYPTION_KEY }}" --message "${{ secrets.SENTIEON_LICENSE_MESSAGE }}")
+
+      # Test the module
+      - name: Run Tests (Shard ${{ matrix.shard }}/${{ env.TOTAL_SHARDS }})
+        env:
+          NFT_DIFF: "pdiff"
+          NFT_DIFF_ARGS: "--line-numbers --width 120 --expand-tabs=2"
+          SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
+          SENTIEON_AUTH_MECH: "GitHub Actions - token"
+        run: |
+          # use "docker_self_hosted" if it runs on self-hosted runner and matrix.profile=docker
+          if [ "${{ matrix.profile }}" == "docker" ]; then
+            PROFILE="docker_self_hosted"
+          else
+            PROFILE=${{ matrix.profile }}
+          fi
+
+          NFT_WORKDIR=~ \
+          nf-test test \
+            --profile=${{ matrix.profile }} \
+            --tap=test.tap \
+            --ci \
+            --verbose \
+            --changed-since HEAD^ \
+            --shard ${{ matrix.shard }}/${{ env.TOTAL_SHARDS }} \
+            --filter ${{ matrix.filter }} \
+            --follow-dependencies
+
+      # TODO If matrix == conda create a conda-fail.yml and commit it
+
+      # TODO If no test.tap, then make one to spoof?
+      # - uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
+      #   with:
+      #     path: >-
+      #       test.tap
+
+      - name: Clean up
+        if: always()
+        run: |
+          sudo rm -rf /home/ubuntu/tests/

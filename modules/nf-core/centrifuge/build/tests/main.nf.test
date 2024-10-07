@@ -14,6 +14,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [ [id: 'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
                 input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/seqid2taxid.map', checkIfExists: true)
                 input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/nodes.dmp', checkIfExists: true)
@@ -38,6 +39,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [ [id: 'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
                 input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/seqid2taxid.map', checkIfExists: true)
                 input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/nodes.dmp', checkIfExists: true)

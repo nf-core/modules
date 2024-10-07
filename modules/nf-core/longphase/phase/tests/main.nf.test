@@ -15,6 +15,7 @@ nextflow_process {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam', checkIfExists: true),
@@ -49,6 +50,7 @@ test("[ bam, bai, snps, svs, [] ], fasta, fai") {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam', checkIfExists: true),
@@ -83,6 +85,7 @@ test("[ bam x2, bai x2, snps, svs, [] ], fasta, fai") {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test' ],
                     [
@@ -125,6 +128,7 @@ test("[ bam x2, bai x2, snps, svs, [] ], fasta, fai") {
         when {
             process {
                 """
+                // testy mctestface
                 input[0] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam', checkIfExists: true),
