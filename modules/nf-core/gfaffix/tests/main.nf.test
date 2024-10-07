@@ -1,0 +1,63 @@
+
+nextflow_process {
+
+    name "Test Process GFAFFIX"
+    script "../main.nf"
+    process "GFAFFIX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gfaffix"
+
+    test("test-gfaffix") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+				    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gfa/assembly.gfa', checkIfExists: true) ]
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.gfa,
+                    process.out.affixes,
+                    process.out.versions,
+                    file(process.out.versions[0]).readLines().collect { it.trim() }, // Trap for conda version mismatches
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-gfaffix-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+				    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gfa/assembly.gfa', checkIfExists: true) ]
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

@@ -1,0 +1,134 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "jvarkit_vcffilterjdk"
+description: Filtering VCF with dynamically-compiled java expressions
+keywords:
+  - vcf
+  - bcf
+  - filter
+  - variant
+  - java
+  - script
+tools:
+  - "jvarkit":
+      description: "Java utilities for Bioinformatics."
+      homepage: "https://github.com/lindenb/jvarkit"
+      documentation: "https://jvarkit.readthedocs.io/"
+      tool_dev_url: "https://github.com/lindenb/jvarkit"
+      doi: "10.1093/bioinformatics/btx734 "
+      licence: ["MIT License"]
+      args_id: "$args2"
+
+      identifier: ""
+  - "bcftools":
+      description: |
+        View, subset and filter VCF or BCF files by position and filtering expression. Convert between VCF and BCF
+      homepage: "http://samtools.github.io/bcftools/bcftools.html"
+      documentation: "http://www.htslib.org/doc/bcftools.html"
+      doi: "10.1093/bioinformatics/btp352"
+      licence: ["MIT"]
+      args_id: ["$args1", "$args3"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing VCF information
+          e.g. [ id:'test_reference' ]
+    - vcf:
+        type: file
+        description: Input VCF/BCF file
+        pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+    - tbi:
+        type: file
+        description: Optional VCF/BCF index file
+        pattern: "*.{tbi,csi}"
+    - regions_file:
+        type: file
+        description: Optional. Restrict to regions listed in a file
+        pattern: "*.{bed,bed.gz,txt,tsv}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing fasta information
+          e.g. [ id:'test_reference' ]
+    - fasta:
+        type: file
+        description: Fasta reference file
+        pattern: "*.fasta"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing fasta.fai information
+          e.g. [ id:'test_reference' ]
+    - fai:
+        type: file
+        description: Fasta file index
+        pattern: "*.fasta.fai"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing fasta.dict information
+          e.g. [ id:'test_reference' ]
+    - dict:
+        type: file
+        description: GATK sequence dictionary
+        pattern: "*.dict"
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing code information
+          e.g. [ id:'test_reference' ]
+    - code:
+        type: file
+        description: File containing custom user code . May be empty if script if provided
+          via `task.ext.args2`.
+        pattern: "*.{code,script,txt,tsv,java,js}"
+  - - meta6:
+        type: map
+        description: |
+          Groovy Map containing pedigree information
+          e.g. [ id:'test_reference' ]
+    - pedigree:
+        type: file
+        description: Optional jvarkit pedigree.
+        pattern: "*.{tsv,ped,pedigree}"
+output:
+  - vcf:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing VCF information
+            e.g. [ id:'test', single_end:false ]
+      - "*.${extension}":
+          type: file
+          description: VCF filtered output file
+          pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+  - tbi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing VCF information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tbi":
+          type: file
+          description: Alternative VCF file index
+          pattern: "*.tbi"
+  - csi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing VCF information
+            e.g. [ id:'test', single_end:false ]
+      - "*.csi":
+          type: file
+          description: Default VCF file index
+          pattern: "*.csi"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@lindenb"
+maintainers:
+  - "@lindenb"

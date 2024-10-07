@@ -1,5 +1,6 @@
 name: damageprofiler
-description: A Java based tool to determine damage patterns on ancient DNA as a replacement for mapDamage
+description: A Java based tool to determine damage patterns on ancient DNA as a replacement
+  for mapDamage
 keywords:
   - damage
   - deamination
@@ -13,43 +14,51 @@ keywords:
   - archaeogenetics
 tools:
   - damageprofiler:
-      description: A Java based tool to determine damage patterns on ancient DNA as a replacement for mapDamage
+      description: A Java based tool to determine damage patterns on ancient DNA as
+        a replacement for mapDamage
       homepage: https://github.com/Integrative-Transcriptomics/DamageProfiler
       documentation: https://damageprofiler.readthedocs.io/
       tool_dev_url: https://github.com/Integrative-Transcriptomics/DamageProfiler
       doi: "10.1093/bioinformatics/btab190"
       licence: ["GPL v3"]
+      identifier: biotools:damageprofiler
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-  - fasta:
-      type: file
-      description: OPTIONAL FASTA reference file
-      pattern: "*.{fasta,fna,fa}"
-  - fai:
-      type: file
-      description: OPTIONAL FASTA index file from samtools faidx
-      pattern: "*.{fai}"
-  - specieslist:
-      type: file
-      description: OPTIONAL text file with list of target reference headers
-      pattern: "*.{txt}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+  - - fasta:
+        type: file
+        description: OPTIONAL FASTA reference file
+        pattern: "*.{fasta,fna,fa}"
+  - - fai:
+        type: file
+        description: OPTIONAL FASTA index file from samtools faidx
+        pattern: "*.{fai}"
+  - - specieslist:
+        type: file
+        description: OPTIONAL text file with list of target reference headers
+        pattern: "*.{txt}"
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - results:
-      type: dir
-      description: DamageProfiler results directory
-      pattern: "*/*"
+      - meta:
+          type: directory
+          description: DamageProfiler results directory
+          pattern: "*/*"
+      - ${prefix}:
+          type: directory
+          description: DamageProfiler results directory
+          pattern: "*/*"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jfy133"
 maintainers:

@@ -7,37 +7,41 @@ keywords:
   - ped
 tools:
   - "rtgtools":
-      description: "RealTimeGenomics Tools -- Utilities for accurate VCF comparison and manipulation"
+      description: "RealTimeGenomics Tools -- Utilities for accurate VCF comparison
+        and manipulation"
       homepage: "https://www.realtimegenomics.com/products/rtg-tools"
       documentation: "https://github.com/RealTimeGenomics/rtg-tools"
       tool_dev_url: "https://github.com/RealTimeGenomics/rtg-tools"
-      licence: "['BSD']"
+      licence: ["BSD"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - input:
-      type: file
-      description: The input file, can be either a PED or a VCF file
-      pattern: "*.{vcf,vcf.gz,ped}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input:
+        type: file
+        description: The input file, can be either a PED or a VCF file
+        pattern: "*.{vcf,vcf.gz,ped}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - output:
-      type: file
-      description: |
-        The output file, can be either a filtered PED file
-        or a VCF file containing the PED headers (needs --vcf as argument)
-      pattern: "*.{vcf.gz,ped}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.{vcf.gz,ped}":
+          type: file
+          description: |
+            The output file, can be either a filtered PED file
+            or a VCF file containing the PED headers (needs --vcf as argument)
+          pattern: "*.{vcf.gz,ped}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

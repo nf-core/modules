@@ -1,5 +1,6 @@
 name: "odgi_layout"
-description: Establish 2D layouts of the graph using path-guided stochastic gradient descent. The graph must be sorted and id-compacted.
+description: Establish 2D layouts of the graph using path-guided stochastic gradient
+  descent. The graph must be sorted and id-compacted.
 keywords:
   - variation graph
   - pangenome graph
@@ -13,34 +14,47 @@ tools:
       tool_dev_url: "https://github.com/pangenome/odgi"
       doi: "10.1093/bioinformatics/btac308"
       licence: ["MIT"]
+      identifier: biotools:odgi
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - graph:
-      type: file
-      description: Pangenome graph in GFA v1.0 format or in ODGI binary format
-      pattern: "*.{gfa,og}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - graph:
+        type: file
+        description: Pangenome graph in GFA v1.0 format or in ODGI binary format
+        pattern: "*.{gfa,og}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - lay:
-      type: file
-      description: File containing a 2D layout of a pangenome graph in a binary format. Usually ends with '.lay'. Optional output specified by the `--out FILE` argument. Either this or the TSV layout output must be specified.
-      pattern: "*.{lay}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.lay":
+          type: file
+          description: File containing a 2D layout of a pangenome graph in a binary format.
+            Usually ends with '.lay'. Optional output specified by the `--out FILE` argument.
+            Either this or the TSV layout output must be specified.
+          pattern: "*.{lay}"
   - tsv:
-      type: file
-      description: File containing a 2D layout of a pangenome graph in TSV format. Optional output specified by the `--tsv FILE` argument. Either this or the binary layout output must be specified.
-      pattern: "*.{tsv}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: File containing a 2D layout of a pangenome graph in TSV format.
+            Optional output specified by the `--tsv FILE` argument. Either this or the
+            binary layout output must be specified.
+          pattern: "*.{tsv}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@subwaystation"
 maintainers:

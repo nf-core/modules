@@ -21,35 +21,40 @@ tools:
       tool_dev_url: https://www.ncbi.nlm.nih.gov/books/NBK25498/
       doi: 10.1016/S0076-6879(96)66012-1
       licence: ["PUBLIC DOMAIN"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - database:
-      type: value
-      description: Value must be a valid Entrez database name ('assembly', etc).
-  - uid:
-      type: value
-      description: Unique Identifier (UID) of record in NCBI database. Cannot be used at the same time as uids_file
-  - uids_file:
-      type: file
-      description: Text file containing multiple UIDs. Cannot be used at the same time as uid.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - uid:
+        type: string
+        description: Unique Identifier (UID) of record in NCBI database. Cannot be used
+          at the same time as uids_file
+    - uids_file:
+        type: file
+        description: Text file containing multiple UIDs. Cannot be used at the same
+          time as uid.
+  - - database:
+        type: string
+        description: Value must be a valid Entrez database name ('assembly', etc).
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - xml:
-      type: file
-      description: Query result in XML format
-      pattern: "*.xml"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.xml":
+          type: file
+          description: Query result in XML format
+          pattern: "*.xml"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@alxndrdiaz"
 maintainers:

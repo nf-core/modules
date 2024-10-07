@@ -1,0 +1,109 @@
+
+nextflow_process {
+
+    name "Test Process DSHBIO_EXPORTSEGMENTS"
+    script "../main.nf"
+    process "DSHBIO_EXPORTSEGMENTS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "dshbio"
+    tag "dshbio/exportsegments"
+
+    test("test-dshbio-exportsegments") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+				    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gfa/assembly.gfa', checkIfExists: true)
+                    ]
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-dshbio-exportsegments-bgz") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_bgz' ], // meta map
+				    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gfa/assembly.gfa.bgz', checkIfExists: true)
+                    ]
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-dshbio-exportsegments-gz") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_gz' ], // meta map
+				    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gfa/assembly.gfa.gz', checkIfExists: true)
+                    ]
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-dshbio-exportsegments-zst") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_zst' ], // meta map
+				    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gfa/assembly.gfa.zst', checkIfExists: true)
+                    ]
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

@@ -2,6 +2,8 @@ name: qcat
 description: Demultiplexer for Nanopore samples
 keywords:
   - demultiplex
+  - nanopore
+  - sample
 tools:
   - qcat:
       description: |
@@ -9,30 +11,36 @@ tools:
       homepage: https://github.com/nanoporetech/qcat
       documentation: https://github.com/nanoporetech/qcat#qcat
       licence: ["MPL-2.0"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: |
-        Non-demultiplexed fastq files
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          Non-demultiplexed fastq files
+  - - barcode_kit:
+        type: string
+        description: Barcode kit used for demultiplexing
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - reads:
-      type: file
-      description: Demultiplexed fastq samples
-      pattern: "*.fastq.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - fastq/*.fastq.gz:
+          type: file
+          description: Demultiplexed fastq samples
+          pattern: "*.fastq.gz"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@yuukiiwa"
   - "@drpatelh"

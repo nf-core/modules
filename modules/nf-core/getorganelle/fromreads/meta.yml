@@ -13,48 +13,44 @@ tools:
       tool_dev_url: "https://github.com/Kinggerm/GetOrganelle"
       doi: "10.1186/s13059-020-02154-5"
       licence: ["GPL v3"]
+      identifier: biotools:getorganelle
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-
-  - fastq:
-      type: file
-      description: Input fastq files
-      pattern: "*.{fastq.gz}"
-
-  - organelle_type:
-      type: string
-      description: |
-        Type of database, esp. embplant_pt (embryophyta plant plastome), other_pt (non-embryophyta plant plastome), embplant_mt (plant mitochondrion), embplant_nr (plant nuclear ribosomal RNA), animal_mt (animal mitochondrion), and fungus_mt (fungus mitochondrion), fungus_nr (fungus nuclear ribosomal RNA)
-
-  - db:
-      type: directory
-      description: GetOrganelle database
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - fastq:
+        type: file
+        description: Input fastq files
+        pattern: "*.{fastq.gz}"
+  - - organelle_type:
+        type: string
+        description: |
+          Type of database, esp. embplant_pt (embryophyta plant plastome), other_pt (non-embryophyta plant plastome), embplant_mt (plant mitochondrion), embplant_nr (plant nuclear ribosomal RNA), animal_mt (animal mitochondrion), and fungus_mt (fungus mitochondrion), fungus_nr (fungus nuclear ribosomal RNA)
+    - db:
+        type: directory
+        description: GetOrganelle database
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
   - fasta:
-      type: file
-      description: Complete or partial organelle sequences
-      pattern: "*.fasta.gz"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - results/${prefix}.${organelle_type}.fasta.gz:
+          type: file
+          description: Complete or partial organelle sequences
+          pattern: "*.fasta.gz"
   - etc:
-      type: file
-      description: Other output files
-
+      - results/*:
+          type: file
+          description: Other output files
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@erinyoung"

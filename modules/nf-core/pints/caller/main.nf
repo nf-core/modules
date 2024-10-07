@@ -3,12 +3,14 @@ process PINTS_CALLER {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
+    // NOTE Stopped publishing at 1.1.9 https://quay.io/repository/biocontainers/pypints?tab=tags
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pypints:1.1.8--pyh7cba7a3_0' :
-        'biocontainers/pypints:1.1.8--pyh7cba7a3_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f1/f1a9e30012e1b41baf9acd1ff94e01161138d8aa17f4e97aa32f2dc4effafcd1/data' :
+        'community.wave.seqera.io/library/pybedtools_bedtools_htslib_pip_pypints:39699b96998ec5f6' }"
 
     input:
-    tuple val(meta), path(bams)
+    tuple val(meta), path(bams), path(bais)
+    val assay_type
 
     output:
     tuple val(meta), path("*_divergent_peaks.bed")     , optional:true, emit: divergent_TREs
@@ -34,6 +36,7 @@ process PINTS_CALLER {
         --file-prefix $prefix \\
         --thread $task.cpus \\
         --dont-check-updates \\
+        --exp-type $assay_type \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

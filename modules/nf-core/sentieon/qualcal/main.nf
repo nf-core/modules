@@ -4,8 +4,8 @@ process SENTIEON_QUALCAL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/sentieon:202308.02--ffce1b7074ce9924' :
-        'nf-core/sentieon:202308.02--c641bc397cbf79d5' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a6/a64461f38d76bebea8e21441079e76e663e1168b0c59dafee6ee58440ad8c8ac/data' :
+        'community.wave.seqera.io/library/sentieon:202308.03--59589f002351c221' }"
 
     input:
     tuple val(meta), path(input), path(input_index)
@@ -30,6 +30,7 @@ process SENTIEON_QUALCAL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def input_list = input.collect{"-i $it"}.join(' ')
     def knownSites = known_sites ? known_sites.collect{"-k $it"}.join(' ') : ""
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64 ?
         "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; " :
@@ -43,7 +44,7 @@ process SENTIEON_QUALCAL {
         sentieon driver \\
             -t $task.cpus \\
             -r $fasta \\
-            -i $input \\
+            $input_list \\
             --algo QualCal \\
             $args \\
             $knownSites \\
