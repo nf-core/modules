@@ -47,8 +47,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.tre,
-                                process.out.report).match()},
+                { assert snapshot(
+                    process.out.tre,
+                    process.out.report,
+                    process.out.versions
+                ).match()},
                 { assert file(process.out.log[0][1]).text.contains("Total elapsed time:") }
             )
         }
@@ -75,8 +78,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.tre,
-                                process.out.report).match()},
+                { assert snapshot(
+                        process.out.tre,
+                        process.out.report,
+                        process.out.versions
+                    ).match()
+                },
                 { assert file(process.out.log[0][1]).text.contains("Total elapsed time:") }
             )
         }
