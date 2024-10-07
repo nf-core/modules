@@ -1,46 +1,58 @@
 name: cellrangerarc_mkref
-description: Module to build the reference needed by the 10x Genomics Cell Ranger Arc tool. Uses the cellranger-arc mkref command.
+description: Module to build the reference needed by the 10x Genomics Cell Ranger
+  Arc tool. Uses the cellranger-arc mkref command.
 keywords:
   - reference
   - mkref
   - index
 tools:
   - cellrangerarc:
-      description: Cell Ranger Arc is a set of analysis pipelines that process Chromium Single Cell Arc data.
+      description: Cell Ranger Arc is a set of analysis pipelines that process Chromium
+        Single Cell Arc data.
       homepage: https://support.10xgenomics.com/single-cell-multiome-atac-gex/software/pipelines/latest/what-is-cell-ranger-arc
       documentation: https://support.10xgenomics.com/single-cell-multiome-atac-gex/software/pipelines/latest/what-is-cell-ranger-arc
       tool_dev_url: https://support.10xgenomics.com/single-cell-multiome-atac-gex/software/pipelines/latest/what-is-cell-ranger-arc
       licence:
         - 10x Genomics EULA
+      identifier: ""
 input:
-  - fasta:
-      type: file
-      description: Reference genome FASTA file
-      pattern: "*.{fasta,fa}"
-  - gtf:
-      type: file
-      description: Reference transcriptome GTF file
-      pattern: "*.gtf"
-  - motifs:
-      type: file
-      description: Sequence motif file (e.g., from transcription factors)
-      pattern: "*.txt"
-  - reference_config:
-      type: file
-      description: JSON-like file holding organism, genome, reference fasta path, reference annotation gtf path, contigs that should be excluded and sequence format motif file path
-      pattern: config
-  - reference_name:
-      type: string
-      description: The name to give the new reference folder
-      pattern: str
+  - - fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fasta,fa}"
+  - - gtf:
+        type: file
+        description: Reference transcriptome GTF file
+        pattern: "*.gtf"
+  - - motifs:
+        type: file
+        description: Sequence motif file (e.g., from transcription factors)
+        pattern: "*.txt"
+  - - reference_config:
+        type: file
+        description: JSON-like file holding organism, genome, reference fasta path,
+          reference annotation gtf path, contigs that should be excluded and sequence
+          format motif file path
+        pattern: config
+  - - reference_name:
+        type: string
+        description: The name to give the new reference folder
+        pattern: str
 output:
   - reference:
-      type: directory
-      description: Folder called like the reference_name containing all the reference indices needed by Cell Ranger Arc
+      - ${reference_name}:
+          type: directory
+          description: Folder called like the reference_name containing all the reference
+            indices needed by Cell Ranger Arc
+  - config:
+      - config:
+          type: file
+          description: Configuration file
   - versions:
-      type: file
-      description: File containing software version
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software version
+          pattern: "versions.yml"
 authors:
   - "@ggabernet"
   - "@heylf"

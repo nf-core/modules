@@ -15,34 +15,37 @@ tools:
       tool_dev_url: https://bitbucket.org/berkeleylab/metabat/src/master/
       doi: "10.7717/peerj.7359"
       licence: ["BSD-3-clause-LBNL"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: Sorted BAM file of reads aligned on the assembled contigs
-      pattern: "*.bam"
-  - bai:
-      type: file
-      description: BAM index file
-      pattern: "*.bam.bai"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: Sorted BAM file of reads aligned on the assembled contigs
+        pattern: "*.bam"
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.bam.bai"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - depth:
-      type: file
-      description: Text file listing the coverage per contig
-      pattern: ".txt.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt.gz":
+          type: file
+          description: Text file listing the coverage per contig
+          pattern: ".txt.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@maxibor"
 maintainers:

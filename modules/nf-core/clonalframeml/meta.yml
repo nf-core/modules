@@ -12,54 +12,87 @@ tools:
       tool_dev_url: https://github.com/xavierdidelot/ClonalFrameML
       doi: "10.1371/journal.pcbi.1004041"
       licence: ["GPL v3"]
+      identifier: biotools:clonalframeml
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - msa:
-      type: file
-      description: A multiple seqeunce alignmnet in FASTA format
-      pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
-  - newick:
-      type: file
-      description: A Newick formated tree based on multiple sequence alignment
-      pattern: "*.{newick,treefile,dnd}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - newick:
+        type: file
+        description: A Newick formated tree based on multiple sequence alignment
+        pattern: "*.{newick,treefile,dnd}"
+    - msa:
+        type: file
+        description: A multiple seqeunce alignmnet in FASTA format
+        pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - emsim:
-      type: file
-      description: Bootstrapped values for the three parameters R/theta, nu and delta
-      pattern: "*.emsim.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.emsim.txt":
+          type: file
+          description: Bootstrapped values for the three parameters R/theta, nu and delta
+          pattern: "*.emsim.txt"
   - em:
-      type: file
-      description: Point estimates for R/theta, nu, delta and the branch lengths
-      pattern: "*.em.txt"
-  - fasta:
-      type: file
-      description: Sequence reconstructed by maximum likelihood
-      pattern: "*.ML_sequence.fasta"
-  - newick:
-      type: file
-      description: Tree with all nodes labelled
-      pattern: "*.labelled_tree.newick"
-  - pos_ref:
-      type: file
-      description: CSV mapping input sequence files to the sequences in the *.ML_sequence.fasta
-      pattern: "*.position_cross_reference.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.em.txt":
+          type: file
+          description: Point estimates for R/theta, nu, delta and the branch lengths
+          pattern: "*.em.txt"
   - status:
-      type: file
-      description: List of reconstructed recombination events
-      pattern: "*.importation_status.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.importation_status.txt":
+          type: file
+          description: List of reconstructed recombination events
+          pattern: "*.importation_status.txt"
+  - newick:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.labelled_tree.newick":
+          type: file
+          description: Tree with all nodes labelled
+          pattern: "*.labelled_tree.newick"
+  - fasta:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.ML_sequence.fasta":
+          type: file
+          description: Sequence reconstructed by maximum likelihood
+          pattern: "*.ML_sequence.fasta"
+  - pos_ref:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.position_cross_reference.txt":
+          type: file
+          description: CSV mapping input sequence files to the sequences in the *.ML_sequence.fasta
+          pattern: "*.position_cross_reference.txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@rpetit3"
 maintainers:
