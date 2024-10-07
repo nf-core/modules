@@ -28,11 +28,15 @@ input:
         type: file
         description: BAI/CRAI file from alignment
         pattern: "*.{bai,crai}"
+    - regions_file:
+        type: file
+        description: Optional. Restrict to regions listed in a file
+        pattern: "*.{vcf,bed,gtf,gff,vcf.gz,bed.gz,gtf.gz,gff.gz}"
   - - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [id: 'reference']
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [id: 'reference']
     - fasta:
         type: file
         description: Reference genome
@@ -45,15 +49,6 @@ input:
         type: file
         description: Reference genome information for fasta dict
         pattern: "*.{.dict}"
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing regions information
-          e.g. [ id:'regions' ]
-    - regions_file:
-        type: file
-        description: Optional. Restrict to regions listed in a file
-        pattern: "*.{vcf,bed,gtf,gff,vcf.gz,bed.gz,gtf.gz,gff.gz}"
 
 output:
   - output:

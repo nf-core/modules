@@ -8,9 +8,8 @@ process JVARKIT_SAM2TSV {
         'biocontainers/jvarkit:2024.08.25--hdfd78af_1' }"
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(bam), path(bai), path(regions_file)
     tuple val(meta2), path(fasta), path(fasta_index), path(fasta_dict)
-    tuple val(meta3), path(regions_file)
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
@@ -20,8 +19,9 @@ process JVARKIT_SAM2TSV {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args         = task.ext.args ?: ''
+    def prefix       = task.ext.prefix ?: "${meta.id}"
+    def regions_file = regions_file ? " --regions" + " '${regions_file}' " : ""
 
     """
     mkdir -p TMP
@@ -30,6 +30,7 @@ process JVARKIT_SAM2TSV {
         --reference "${fasta}" \\
         --output "${prefix}.tsv" \\
         ${args} \\
+        ${regions_file} \\
         "${bam}"
     rm -rf TMP
 
