@@ -1,0 +1,49 @@
+// nf-core modules test cellranger/mkfastq
+nextflow_process {
+
+    name "Test Process samshee"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "SAMSHEE"
+
+    tag "modules"
+
+    test("test samplesheet") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id: 'test', lane:1 ], file("https://raw.githubusercontent.com/nf-core/test-datasets/demultiplex/testdata/NextSeq2000/SampleSheet.csv", checkIfExists: true) ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+
+    }
+
+    test("stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id: 'test', lane:1 ], file("https://raw.githubusercontent.com/nf-core/test-datasets/demultiplex/testdata/NextSeq2000/SampleSheet.csv", checkIfExists: true), [] ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+
+    }
+
+}
