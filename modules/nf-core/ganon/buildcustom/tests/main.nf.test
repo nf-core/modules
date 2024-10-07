@@ -30,7 +30,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        process.out.db.get(0).get(1).findAll { file(it).name != "test.tax" }
+                        process.out.db.get(0).get(1).findAll { file(it).name != "test.tax" },
+                        process.out.versions
                     ).match()
                 },
                 { assert file(process.out.db.get(0).get(1).find { file(it).name == "test.tax" }).text.contains("MT192765.1") },
