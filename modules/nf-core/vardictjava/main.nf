@@ -11,9 +11,6 @@ process VARDICTJAVA {
     tuple val(meta), path(bams), path(bais), path(bed)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fasta_fai)
-    val(run_test)   // Run either teststrandbias.R or testsomatic.R. 
-                    // If this options is false the --fisher option will be added automatically
-                    // https://github.com/AstraZeneca-NGS/VarDictJava/issues/300#issuecomment-638085125
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
@@ -23,10 +20,13 @@ process VARDICTJAVA {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = (task.ext.args ?: '-c 1 -S 2 -E 3') + run_test ? " --fisher" : ""
+    def args = task.ext.args ?: '-c 1 -S 2 -E 3'
     def args2 = task.ext.args2 ?: ''
     def args3 = task.ext.args3 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+
+    // Don't run test scripts when -fisher has been used by vardictjava
+    def run_test = !args.contains("-fisher")
 
     def somatic = bams instanceof List && bams.size() == 2 ? true : false
     def input = somatic ? "-b \"${bams[0]}|${bams[1]}\"" : "-b ${bams}"

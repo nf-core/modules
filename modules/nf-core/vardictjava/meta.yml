@@ -52,12 +52,6 @@ input:
         type: file
         description: The index of the FASTA of the reference genome
         pattern: "*.fai"
-  - - run_test:
-        type: boolean
-        description: |
-          Run tests using teststrandbias.R or testsomatic.R
-          When false, the --fisher option will be automatically added to the arguments
-          https://github.com/AstraZeneca-NGS/VarDictJava/issues/300#issuecomment-638085125
 output:
   - vcf:
       - meta:

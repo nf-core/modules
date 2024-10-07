@@ -7,7 +7,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "vardictjava"
 
-    test("homo_sapiens - [bam, bai, bed] - fasta - fai - true") {
+    test("homo_sapiens - [bam, bai, bed] - fasta - fai") {
 
         when {
             process {
@@ -26,7 +26,6 @@ nextflow_process {
                     [id:"ref"],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
-                input[3] = true
                 """
             }
         }
@@ -42,7 +41,7 @@ nextflow_process {
 
     }
 
-    test("homo_sapiens - [[bam, bam], [bai, bai], bed] - fasta - fai - true") {
+    test("homo_sapiens - [[bam, bam], [bai, bai], bed] - fasta - fai") {
 
         when {
             process {
@@ -67,7 +66,6 @@ nextflow_process {
                     [id:"ref"],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
-                input[3] = true
                 """
             }
         }
@@ -83,8 +81,9 @@ nextflow_process {
 
     }
 
-    test("homo_sapiens - [bam, bai, bed] - fasta - fai - false") {
+    test("homo_sapiens - [bam, bai, bed] - fasta - fai - fisher") {
 
+        config "./nextflow.config"
         when {
             process {
                 """
@@ -102,7 +101,6 @@ nextflow_process {
                     [id:"ref"],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
-                input[3] = false
                 """
             }
         }
@@ -118,7 +116,7 @@ nextflow_process {
 
     }
 
-    test("homo_sapiens - [bam, bai, bed] - fasta - fai - true - stub") {
+    test("homo_sapiens - [bam, bai, bed] - fasta - fai - stub") {
 
         options "-stub"
 
@@ -139,7 +137,6 @@ nextflow_process {
                     [id:"ref"],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
-                input[3] = true
                 """
             }
         }
