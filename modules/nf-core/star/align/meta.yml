@@ -100,10 +100,13 @@ output:
           type: file
           description: Sorted BAM file of read alignments (optional)
           pattern: "*sortedByCoord.out.bam"
-      - "*sortedByCoord.out.bam":
+      - ${prefix}.sortedByCoord.out.bam:
           type: file
           description: Sorted BAM file of read alignments (optional)
           pattern: "*sortedByCoord.out.bam"
+  - bam_sorted_aligned:
+      - meta: {}
+      - ${prefix}.Aligned.sortedByCoord.out.bam: {}
   - bam_transcript:
       - meta:
           type: file
@@ -146,9 +149,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*.SJ.out.tab"
       - "*.SJ.out.tab":
-          type: file
-          description: STAR output splice junction tab file
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*.SJ.out.tab"
   - read_per_gene_tab:
       - meta:
@@ -156,9 +162,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*.ReadsPerGene.out.tab"
       - "*.ReadsPerGene.out.tab":
-          type: file
-          description: STAR output read per gene tab file
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*.ReadsPerGene.out.tab"
   - junction:
       - meta:
@@ -175,9 +184,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*.out.sam"
       - "*.out.sam":
-          type: file
-          description: STAR output SAM file
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*.out.sam"
   - wig:
       - meta:
