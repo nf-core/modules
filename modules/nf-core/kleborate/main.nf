@@ -31,4 +31,15 @@ process KLEBORATE {
         kleborate: \$( echo \$(kleborate --version | sed 's/Kleborate v//;'))
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.results.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        kleborate: \$( echo \$(kleborate --version | sed 's/Kleborate v//;'))
+    END_VERSIONS
+    """
 }

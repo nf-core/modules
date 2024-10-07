@@ -14,35 +14,38 @@ tools:
       documentation: https://ccb.jhu.edu/software/centrifuge/manual.shtml
       doi: 10.1101/gr.210641.116
       licence: ["GPL v3"]
+      identifier: biotools:centrifuge
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - report:
-      type: file
-      description: File containing the centrifuge classification report
-      pattern: "*.{txt}"
-  - db:
-      type: directory
-      description: Path to directory containing centrifuge database files
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - report:
+        type: file
+        description: File containing the centrifuge classification report
+        pattern: "*.{txt}"
+  - - db:
+        type: directory
+        description: Path to directory containing centrifuge database files
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - kreport:
-      type: file
-      description: |
-        File containing kraken-style report from centrifuge
-        out files.
-      pattern: "*.{txt}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt":
+          type: file
+          description: |
+            File containing kraken-style report from centrifuge
+            out files.
+          pattern: "*.{txt}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@sofstam"
   - "@jfy133"

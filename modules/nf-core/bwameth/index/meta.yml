@@ -17,19 +17,22 @@ tools:
       documentation: https://github.com/brentp/bwa-meth
       arxiv: arXiv:1401.1129
       licence: ["MIT"]
+      identifier: ""
 input:
-  - fasta:
-      type: file
-      description: Input genome fasta file
+  - - fasta:
+        type: file
+        description: Input genome fasta file
 output:
   - index:
-      type: dir
-      description: Directory containing bwameth genome index
-      pattern: "index"
+      - bwameth:
+          type: directory
+          description: Directory containing bwameth genome index
+          pattern: "index"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@phue"
 maintainers:

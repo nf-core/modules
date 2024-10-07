@@ -13,30 +13,33 @@ tools:
       homepage: https://github.com/heuermh/dishevelled-bio
       documentation: https://github.com/heuermh/dishevelled-bio
       licence: ["LGPL-3.0-or-later"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - gff3:
-      type: file
-      description: Features in gzipped GFF3 format to split
-      pattern: "*.{gff3.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - gff3:
+        type: file
+        description: Features in gzipped GFF3 format to split
+        pattern: "*.{gff3.gz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - gff3:
-      type: file
-      description: Features in split gzipped GFF3 formatted files
-      pattern: "*.{gff3.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.gff3.gz":
+          type: file
+          description: Features in split gzipped GFF3 formatted files
+          pattern: "*.{gff3.gz}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@heuermh"
 maintainers:

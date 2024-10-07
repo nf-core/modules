@@ -1,3 +1,4 @@
+
 nextflow_process {
 
     name "Test Process ARRIBA_DOWNLOAD"
@@ -9,8 +10,7 @@ nextflow_process {
     tag "arriba"
     tag "arriba/download"
 
-    test("download") {
-
+    test("test-arriba-download") {
         when {
             process {
                 """
@@ -42,9 +42,13 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.reference[0].collect { file(it).name }.toSorted(),
+                    process.out.versions
+                    ).match()
+                }
             )
         }
-
     }
 
 }

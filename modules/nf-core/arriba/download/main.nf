@@ -7,6 +7,8 @@ process ARRIBA_DOWNLOAD {
         'https://depot.galaxyproject.org/singularity/arriba:2.4.0--h0033a41_2' :
         'biocontainers/arriba:2.4.0--h0033a41_2' }"
 
+    input:
+
     output:
     path "blacklist*.tsv.gz"       , emit: blacklist
     path "protein_domains*.gff3"   , emit: protein_domains

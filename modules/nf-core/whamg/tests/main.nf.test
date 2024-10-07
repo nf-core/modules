@@ -1,0 +1,44 @@
+
+nextflow_process {
+
+    name "Test Process WHAMG"
+    script "../main.nf"
+    process "WHAMG"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "whamg"
+
+    test("test-whamg-bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+				]
+				input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+				input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					path(process.out.vcf[0][1]).vcf.summary,
+					file(process.out.tbi[0][1]).name,
+					process.out.graph,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

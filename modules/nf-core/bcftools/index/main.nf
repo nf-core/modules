@@ -4,8 +4,8 @@ process BCFTOOLS_INDEX {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bcftools:1.18--h8b25389_0':
-        'biocontainers/bcftools:1.18--h8b25389_0' }"
+        'https://depot.galaxyproject.org/singularity/bcftools:1.20--h8b25389_0':
+        'biocontainers/bcftools:1.20--h8b25389_0' }"
 
     input:
     tuple val(meta), path(vcf)
@@ -38,7 +38,7 @@ process BCFTOOLS_INDEX {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def extension = args.contains("--tsi") || args.contains("-t") ? "tbi" :
+    def extension = args.contains("--tbi") || args.contains("-t") ? "tbi" :
                     "csi"
     """
     touch ${vcf}.${extension}

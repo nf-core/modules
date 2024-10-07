@@ -2,6 +2,8 @@ name: bamaligncleaner
 description: removes unused references from header of sorted BAM/CRAM files.
 keywords:
   - bam
+  - clean
+  - align
 tools:
   - bamaligncleaner:
       description: Removes unaligned references in aligned BAM alignment file
@@ -9,30 +11,33 @@ tools:
       documentation: https://github.com/maxibor/bamAlignCleaner
       tool_dev_url: https://github.com/maxibor/bamAlignCleaner
       licence: ["GPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: BAM/CRAM file
-      pattern: "*.{bam,cram}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM/CRAM file
+        pattern: "*.{bam,cram}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - bam:
-      type: file
-      description: Sorted BAM/CRAM file
-      pattern: "*.{bam,cram}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bam":
+          type: file
+          description: Sorted BAM/CRAM file
+          pattern: "*.{bam,cram}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jfy133"
 maintainers:

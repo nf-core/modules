@@ -47,4 +47,3 @@ process ICOUNTMINI_SIGXLS {
     END_VERSIONS
     """
 }
-

@@ -26,4 +26,3 @@ workflow FASTQ_TAXONOMIC_PROFILE_METAPHLAN {
 
     versions = ch_versions
 }
-

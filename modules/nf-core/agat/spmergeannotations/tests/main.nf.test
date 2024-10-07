@@ -1,0 +1,130 @@
+nextflow_process {
+
+    name "Test Process AGAT_SPMERGEANNOTATIONS"
+    script "../main.nf"
+    process "AGAT_SPMERGEANNOTATIONS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "agat"
+    tag "agat/spmergeannotations"
+
+    test("candidatus_portiera_aleyrodidarum - multi_gffs") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test2.gff', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test3.gff', checkIfExists: true)
+                    ]
+                ]
+
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.gff[0][1]).text.contains('AGAT	gene') },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+    test("candidatus_portiera_aleyrodidarum - multi_gffs - stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test2.gff', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test3.gff', checkIfExists: true)
+                    ]
+                ]
+
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("candidatus_portiera_aleyrodidarum - multi_gffs - config") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test2.gff', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test3.gff', checkIfExists: true)
+                    ]
+                ]
+
+                input[1] = file(params.modules_testdata_base_path + 'generic/config/agat_config.yaml', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.gff[0][1]).text.contains('AGAT	gene') },
+                { assert snapshot(process.out.versions).match("versions_config") }
+            )
+        }
+
+    }
+
+    test("candidatus_portiera_aleyrodidarum - multi_gffs - stub - config") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test2.gff', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test3.gff', checkIfExists: true)
+                    ]
+                ]
+
+                input[1] = file(params.modules_testdata_base_path + 'generic/config/agat_config.yaml', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

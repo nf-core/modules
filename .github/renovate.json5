@@ -20,7 +20,7 @@
         enabled: true,
     },
     customManagers: [
-        // TODO waiting on https://github.com/nf-core/modules/pull/4080
+    // TODO waiting on https://github.com/nf-core/modules/pull/4080
         // {
         //     customType: "regex",
         //     description: "Process Containers dependencies",
@@ -50,19 +50,19 @@
         //     ],
         //     datasourceTemplate: "pypi",
         // },
-    ],
+        ],
     packageRules: [
         {
             matchDatasources: ["docker"],
             registryUrls: ["quay.io"],
         },
         {
-            matchPackagePatterns: ["^nf-core/", "^seqera"],
             matchManagers: ["github-actions"],
             automerge: true,
             pinDigest: {
                 enabled: false,
             },
+            matchPackageNames: ["/^nf-core//", "/^seqera/"],
         },
         {
             matchManagers: ["github-actions"],
@@ -71,9 +71,9 @@
             schedule: ["before 9am"],
         },
         {
-            matchPackagePatterns: ["renovate-config-validator"],
             automerge: true,
             schedule: ["before 9am on Monday"],
+            matchPackageNames: ["/renovate-config-validator/"],
         },
     ],
 }
