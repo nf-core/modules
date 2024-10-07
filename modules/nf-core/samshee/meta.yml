@@ -7,11 +7,13 @@ keywords:
   - bcl2fastq
 tools:
   - samshee:
-      description: A schema-agnostic parser and writer for illumina® sample sheets v2 and similar documents.
+      description: A schema-agnostic parser and writer for illumina® sample sheets v2
+        and similar documents.
       homepage: https://github.com/lit-regensburg/samshee
       documentation: https://github.com/lit-regensburg/samshee/blob/main/README.md
       tool_dev_url: https://github.com/lit-regensburg/samshee
       licence: [MIT license]
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -22,11 +24,24 @@ input:
         type: file
         description: "illumina v2 samplesheet"
         pattern: "*.{csv}"
+  - - validator_schema:
+        type: string
+        description: "String in JSON format used additional samplesheet validation settings"
 output:
+  - samplesheet:
+      - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', lane:1 ]
+      - "*_formatted.csv":
+        type: file
+        description: "illumina v2 samplesheet"
   - versions:
-      type: file
-      description: File containing software version
-      pattern: "versions.yml"
+      - versions.yml:
+        type: file
+        description: File containing software version
+        pattern: "versions.yml"
 authors:
   - "@nschcolnicov"
 maintainers:
