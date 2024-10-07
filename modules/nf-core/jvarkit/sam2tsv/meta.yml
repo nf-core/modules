@@ -51,22 +51,18 @@ input:
         pattern: "*.{.dict}"
 
 output:
-  - output:
+  - tsv:
       - meta:
           type: map
-          description: |
-            Groovy Map containing TSV information
-            e.g. [ id:'test' ]
-      - "*.${extension}":
+          description: Groovy Map containing TSV information e.g. [ id:'test' ]
+      - "*.tsv":
           type: file
           description: Output file
-          pattern: "*.tsv"
   - versions:
-      - "versions.yml":
+      - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
-
 authors:
   - "@lmfaber"
 maintainers:
