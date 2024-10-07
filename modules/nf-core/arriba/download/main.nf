@@ -10,8 +10,11 @@ process ARRIBA_DOWNLOAD {
     input:
 
     output:
-    path "*"              , emit: reference
-    path "versions.yml"           , emit: versions
+    path "blacklist_hg38_GRCh38_v2.4.0.tsv.gz"            , emit: blacklist
+    path "cytobands_hg38_GRCh38_v2.4.0.tsv"               , emit: cytobands
+    path "known_fusions_hg38_GRCh38_v2.4.0.tsv.gz"        , emit: known_fusions
+    path "protein_domains_hg38_GRCh38_v2.4.0.gff3"        , emit: protein_domains
+    path "versions.yml"                                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
