@@ -42,10 +42,10 @@
                     ]
                 ],
                 "1": [
-
+                    
                 ],
                 "2": [
-
+                    
                 ],
                 "3": [
                     [
@@ -69,10 +69,10 @@
                     ]
                 ],
                 "crai": [
-
+                    
                 ],
                 "cram": [
-
+                    
                 ],
                 "csi": [
                     [
@@ -98,7 +98,7 @@
         "content": [
             {
                 "0": [
-
+                    
                 ],
                 "1": [
                     [
@@ -119,13 +119,13 @@
                     ]
                 ],
                 "3": [
-
+                    
                 ],
                 "4": [
                     "versions.yml:md5,2659b187d681241451539d4c53500b9f"
                 ],
                 "bam": [
-
+                    
                 ],
                 "crai": [
                     [
@@ -146,7 +146,7 @@
                     ]
                 ],
                 "csi": [
-
+                    
                 ],
                 "versions": [
                     "versions.yml:md5,2659b187d681241451539d4c53500b9f"
@@ -161,16 +161,6 @@
     },
     "multiple bam": {
         "content": [
-            [
-                "@HD\tVN:1.6\tSO:coordinate",
-                "@SQ\tSN:chr22\tLN:40001",
-                "@RG\tID:1\tPU:1\tSM:testN\tLB:testN\tPL:illumina",
-                "@RG\tID:2\tPU:2\tSM:testT\tLB:testT\tPL:illumina",
-                "@PG\tID:bwa\tPN:bwa\tVN:0.7.17-r1188\tCL:bwa mem -K 100000000 -R @RG\\tID:1\\tPU:1\\tSM:testN\\tLB:testN\\tPL:illumina -t 19 -M genome.fasta test_1.retry.fq.gz test_2.retry.fq.gz",
-                "@PG\tID:samtools\tPN:samtools\tPP:bwa\tVN:1.21\tCL:samtools cat test.paired_end.sorted.bam test2.paired_end.sorted.bam",
-                "@PG\tID:samtools.1\tPN:samtools\tPP:samtools\tVN:1.21\tCL:samtools sort --write-index -T test.sorted --threads 2 --reference genome.fasta -o test.sorted.bam -"
-            ],
-            "c4525b95f05075208347295e6a1fb232",
             [
                 [
                     {
@@ -197,7 +187,7 @@
             "nf-test": "0.9.0",
             "nextflow": "24.09.0"
         },
-        "timestamp": "2024-10-08T11:43:06.625773"
+        "timestamp": "2024-10-08T11:59:55.479443"
     },
     "multiple bam - stub": {
         "content": [
@@ -212,10 +202,10 @@
                     ]
                 ],
                 "1": [
-
+                    
                 ],
                 "2": [
-
+                    
                 ],
                 "3": [
                     [
@@ -239,10 +229,10 @@
                     ]
                 ],
                 "crai": [
-
+                    
                 ],
                 "cram": [
-
+                    
                 ],
                 "csi": [
                     [
@@ -266,16 +256,6 @@
     },
     "bam": {
         "content": [
-            [
-                "@HD\tVN:1.6\tSO:coordinate",
-                "@SQ\tSN:MT192765.1\tLN:29829",
-                "@RG\tID:1\tLB:lib1\tPL:ILLUMINA\tSM:test\tPU:barcode1",
-                "@PG\tID:minimap2\tPN:minimap2\tVN:2.17-r941\tCL:minimap2 -ax sr tests/data/fasta/sarscov2/GCA_011545545.1_ASM1154554v1_genomic.fna tests/data/fastq/dna/sarscov2_1.fastq.gz tests/data/fastq/dna/sarscov2_2.fastq.gz",
-                "@PG\tID:samtools\tPN:samtools\tPP:minimap2\tVN:1.11\tCL:samtools view -Sb sarscov2_aln.sam",
-                "@PG\tID:samtools.1\tPN:samtools\tPP:samtools\tVN:1.21\tCL:samtools cat test.paired_end.bam",
-                "@PG\tID:samtools.2\tPN:samtools\tPP:samtools.1\tVN:1.21\tCL:samtools sort --write-index -T test.sorted --threads 2 --reference genome.fasta -o test.sorted.bam -"
-            ],
-            "894549ee3ced6b5ca2eed2563a985217",
             [
                 [
                     {
@@ -302,6 +282,6 @@
             "nf-test": "0.9.0",
             "nextflow": "24.09.0"
         },
-        "timestamp": "2024-10-08T11:42:57.165608"
+        "timestamp": "2024-10-08T11:59:46.372244"
     }
 }
