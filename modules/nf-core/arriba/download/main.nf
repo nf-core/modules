@@ -7,11 +7,15 @@ process ARRIBA_DOWNLOAD {
         'https://depot.galaxyproject.org/singularity/arriba:2.4.0--h0033a41_2' :
         'biocontainers/arriba:2.4.0--h0033a41_2' }"
 
+    input:
+    val(genome)
+
     output:
-    path "blacklist*.tsv.gz"       , emit: blacklist
-    path "protein_domains*.gff3"   , emit: protein_domains
-    path "known_fusions*.tsv.gz"   , emit: known_fusions
-    path "versions.yml"            , emit: versions
+    path "blacklist*${genome}*.tsv.gz"       , emit: blacklist
+    path "cytobands*${genome}*.tsv"          , emit: cytobands
+    path "protein_domains*${genome}*.gff3"   , emit: protein_domains
+    path "known_fusions*${genome}*.tsv.gz"   , emit: known_fusions
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
