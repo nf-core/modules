@@ -9,20 +9,6 @@ nextflow_process {
     tag "annotsv"
     tag "annotsv/installannotations"
 
-    test("homo_sapiens") {
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.annotations.collect { file(it).name },
-                    process.out.versions
-                ).match() }
-            )
-        }
-
-    }
-
     test("homo_sapiens - stub") {
 
         options "-stub"

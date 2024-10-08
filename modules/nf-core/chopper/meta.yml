@@ -8,45 +8,52 @@ keywords:
   - qc
 tools:
   - "zcat":
-      description: "zcat uncompresses either a list of files on the command line or its standard input and writes the uncompressed data on standard output."
+      description: "zcat uncompresses either a list of files on the command line or
+        its standard input and writes the uncompressed data on standard output."
       documentation: "https://linux.die.net/man/1/zcat"
       args_id: "$args"
+      identifier: ""
   - "chopper":
       description: "A rust command line for filtering and trimming long reads."
       homepage: "https://github.com/wdecoster/chopper"
       documentation: "https://github.com/wdecoster/chopper"
       tool_dev_url: "https://github.com/wdecoster/chopper"
       doi: "10.1093/bioinformatics/bty149"
-      licence: "['MIT']"
+      licence: ["MIT"]
       args_id: "$args2"
+      identifier: ""
   - "gzip":
-      description: "Gzip reduces the size of the named files using Lempel-Ziv coding (LZ77)."
+      description: "Gzip reduces the size of the named files using Lempel-Ziv coding
+        (LZ77)."
       documentation: "https://linux.die.net/man/1/gzip"
       args_id: "$args3"
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fastq:
-      type: file
-      description: FastQ with reads from long read sequencing e.g. PacBio or ONT
-      pattern: "*.{fastq.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fastq:
+        type: file
+        description: FastQ with reads from long read sequencing e.g. PacBio or ONT
+        pattern: "*.{fastq.gz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - fastq:
-      type: file
-      description: Filtered and trimmed FastQ file
-      pattern: "*.{fastq.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fastq.gz":
+          type: file
+          description: Filtered and trimmed FastQ file
+          pattern: "*.{fastq.gz}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@FynnFreyer"
 maintainers:

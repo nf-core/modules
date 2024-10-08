@@ -7,40 +7,50 @@ keywords:
   - CRISPR
 tools:
   - "crisprcleanr":
-      description: "Analysis of CRISPR functional genomics, remove false positive due to CNVs."
+      description: "Analysis of CRISPR functional genomics, remove false positive due
+        to CNVs."
       homepage: "https://github.com/francescojm/CRISPRcleanR"
       documentation: "https://github.com/francescojm/CRISPRcleanR/blob/master/Quick_start.pdf"
       tool_dev_url: "https://github.com/francescojm/CRISPRcleanR/tree/v3.0.0"
       doi: "10.1186/s12864-018-4989-y"
-      licence: "['MIT']"
+      licence: ["MIT"]
+      identifier: biotools:crisprcleanr
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - count_file:
-      type: file
-      description: sgRNA raw counts
-      pattern: "*.tsv"
-  - library_file:
-      type: file
-      description: sgRNA library
-      pattern: "*.tsv"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - count_file:
+        type: file
+        description: sgRNA raw counts
+        pattern: "*.tsv"
+    - library_file:
+        type: file
+        description: sgRNA library
+        pattern: "*.tsv"
+  - - min_reads:
+        type: integer
+        description: Minimum number of reads
+  - - min_targeted_genes:
+        type: integer
+        description: Minimum number of targeted genes
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - norm_count_file:
-      type: file
-      description: normalized count file
-      pattern: "*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_norm_table.tsv":
+          type: file
+          description: normalized count file
+          pattern: "*.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@LaurenceKuhl"
 maintainers:

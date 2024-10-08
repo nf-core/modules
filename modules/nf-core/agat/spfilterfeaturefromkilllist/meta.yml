@@ -1,0 +1,61 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "agat_spfilterfeaturefromkilllist"
+description: |
+  The script aims to remove features based on a kill list. The default behaviour is to look at the features's ID.
+  If the feature has an ID (case insensitive) listed among the kill list it will be removed. /!\ Removing a level1
+  or level2 feature will automatically remove all linked subfeatures, and removing all children of a feature will
+  automatically remove this feature too.
+keywords:
+  - genomics
+  - gff
+  - remove
+  - feature
+tools:
+  - "agat":
+      description: "Another Gff Analysis Toolkit (AGAT). Suite of tools to handle gene
+        annotations in any GTF/GFF format."
+      homepage: "https://agat.readthedocs.io/en/latest/"
+      documentation: "https://agat.readthedocs.io/en/latest/tools/agat_sp_filter_feature_from_kill_list.html"
+      tool_dev_url: "https://github.com/NBISweden/AGAT"
+      doi: "10.5281/zenodo.3552717"
+      licence: ["GPL v3"]
+      identifier: biotools:AGAT
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - gff:
+        type: file
+        description: Input GFF3 file that will be read
+        pattern: "*.{gff,gff3}"
+  - - kill_list:
+        type: file
+        description: Kill list. One value per line.
+        pattern: "*.txt"
+  - - config:
+        type: file
+        description: |
+          Input agat config file. By default AGAT takes as input agat_config.yaml file from the working directory if any, otherwise it takes the orignal agat_config.yaml shipped with AGAT. To get the agat_config.yaml locally type: "agat config --expose". The --config option gives you the possibility to use your own AGAT config file (located elsewhere or named differently).
+        pattern: "*.yaml"
+output:
+  - gff:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]
+      - "*.gff":
+          type: file
+          description: Output GFF file.
+          pattern: "*.gff"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@GallVp"
+maintainers:
+  - "@GallVp"

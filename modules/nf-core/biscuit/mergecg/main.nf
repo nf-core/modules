@@ -41,4 +41,18 @@ process BISCUIT_MERGECG {
         samtools: \$( samtools --version |& sed '1!d; s/^.*samtools //' )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.bed.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        biscuit: \$( biscuit version |& sed '1!d; s/^.*BISCUIT Version: //' )
+        samtools: \$( samtools --version |& sed '1!d; s/^.*samtools //' )
+    END_VERSIONS
+    """
+
+
 }

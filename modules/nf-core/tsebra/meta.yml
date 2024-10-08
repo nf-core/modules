@@ -1,0 +1,77 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "tsebra"
+description: Transcript Selector for BRAKER TSEBRA combines gene predictions by selecing
+  transcripts based on their extrisic evidence support
+keywords:
+  - genomics
+  - transcript
+  - selector
+  - gene
+  - prediction
+  - evidence
+tools:
+  - "tsebra":
+      description: TSEBRA is a combiner tool that selects transcripts from gene predictions
+        based on the support by extrisic evidence in form of introns and start/stop
+        codons
+      homepage: "https://github.com/Gaius-Augustus/TSEBRA"
+      documentation: "https://github.com/Gaius-Augustus/TSEBRA"
+      tool_dev_url: "https://github.com/Gaius-Augustus/TSEBRA"
+      doi: "10.1186/s12859-021-04482-0"
+      licence: ["Artistic-2.0"]
+      identifier: biotools:tsebra
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - gtfs:
+        type: list
+        description: List of gene prediction files in gtf
+        pattern: "*.gtf"
+  - - hints_files:
+        type: list
+        description: List of files containing extrinsic evidence in gff
+        pattern: "*.gff"
+  - - keep_gtfs:
+        type: list
+        description: |
+          List of gene prediction files in gtf. These gene sets are used the same way as other inputs, but TSEBRA ensures that all
+          transcripts from these gene sets are included in the output
+        pattern: "*.gtf"
+  - - config:
+        type: file
+        description: Configuration file that sets the parameter for TSEBRA
+        pattern: "*.cfg"
+output:
+  - tsebra_gtf:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.gtf":
+          type: file
+          description: Output file for the combined gene predictions in gtf
+          pattern: "*.gtf"
+  - tsebra_scores:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.tsv":
+          type: file
+          description: Transcript scores as a table
+          pattern: "*.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@GallVp"
+maintainers:
+  - "@GallVp"

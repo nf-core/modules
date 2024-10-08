@@ -12,34 +12,37 @@ tools:
       documentation: "https://github.com/Ivarz/Conifer"
       tool_dev_url: "https://github.com/Ivarz/Conifer"
       licence: ["BSD / BSD-2-Clause"]
+      identifier: biotools:conifer
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - kraken_result:
-      type: file
-      description: |
-        Raw Kraken2 standard output file
-  - kraken_taxon_db:
-      type: file
-      description: Kraken2 taxo.k2d database file
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - kraken_result:
+        type: file
+        description: |
+          Raw Kraken2 standard output file
+  - - kraken_taxon_db:
+        type: file
+        description: Kraken2 taxo.k2d database file
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - score:
-      type: file
-      description: |
-        Conifer report file containing confidence scores of Kraken2 classified reads.
-      pattern: "*.score"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.score":
+          type: file
+          description: |
+            Conifer report file containing confidence scores of Kraken2 classified reads.
+          pattern: "*.score"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@icaromsc"
   - "@rpetit3"

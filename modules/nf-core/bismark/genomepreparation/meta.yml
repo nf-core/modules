@@ -21,19 +21,22 @@ tools:
       documentation: https://github.com/FelixKrueger/Bismark/tree/master/Docs
       doi: 10.1093/bioinformatics/btr167
       licence: ["GPL-3.0-or-later"]
+      identifier: biotools:bismark
 input:
-  - fasta:
-      type: file
-      description: Input genome fasta file
+  - - fasta:
+        type: file
+        description: Input genome fasta file
 output:
   - index:
-      type: dir
-      description: Bismark genome index directory
-      pattern: "BismarkIndex"
+      - BismarkIndex:
+          type: directory
+          description: Bismark genome index directory
+          pattern: "BismarkIndex"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@phue"
 maintainers:

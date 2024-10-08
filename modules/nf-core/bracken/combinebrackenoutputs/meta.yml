@@ -7,36 +7,41 @@ keywords:
   - reporting
 tools:
   - "bracken":
-      description: Bracken (Bayesian Reestimation of Abundance with KrakEN) is a highly accurate statistical method that computes the abundance of species in DNA sequences from a metagenomics sample.
+      description: Bracken (Bayesian Reestimation of Abundance with KrakEN) is a highly
+        accurate statistical method that computes the abundance of species in DNA sequences
+        from a metagenomics sample.
       homepage: https://ccb.jhu.edu/software/bracken/
       documentation: https://ccb.jhu.edu/software/bracken/index.shtml?t=manual
       tool_dev_url: https://github.com/jenniferlu717/Bracken
       doi: "10.7717/peerj-cs.104"
       licence: ["GPL v3"]
+      identifier: biotools:bracken
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - input:
-      type: file
-      description: List of output files from bracken
-      pattern: "*"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input:
+        type: file
+        description: List of output files from bracken
+        pattern: "*"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - txt:
-      type: file
-      description: Combined output in table format
-      pattern: "*.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt":
+          type: file
+          description: Combined output in table format
+          pattern: "*.txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jfy133"
 maintainers:

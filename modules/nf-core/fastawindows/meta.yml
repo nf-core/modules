@@ -7,49 +7,78 @@ keywords:
   - bed
 tools:
   - "fastawindows":
-      description: "fasta_windows is a tool written for Darwin Tree of Life chromosomal level genome assemblies. The executable takes a fasta formatted file and calculates some statistics of interest in windows"
+      description: "fasta_windows is a tool written for Darwin Tree of Life chromosomal
+        level genome assemblies. The executable takes a fasta formatted file and calculates
+        some statistics of interest in windows"
       homepage: "https://github.com/tolkit/fasta_windows"
-      licence: "['MIT']"
+      licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: FASTA file
-      pattern: "*.{fa,fasta,fna}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: FASTA file
+        pattern: "*.{fa,fasta,fna}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - freq:
-      type: file
-      description: TSV file with frequencies and statistics
-      pattern: "*.{tsv}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - fw_out/*_freq_windows.tsv:
+          type: file
+          description: TSV file with frequencies and statistics
+          pattern: "*.{tsv}"
   - mononuc:
-      type: file
-      description: TSV file with mononucleotide counts
-      pattern: "*.{tsv}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - fw_out/*_mononuc_windows.tsv:
+          type: file
+          description: TSV file with mononucleotide counts
+          pattern: "*.{tsv}"
   - dinuc:
-      type: file
-      description: TSV file with dinucleotide counts
-      pattern: "*.{tsv}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - fw_out/*_dinuc_windows.tsv:
+          type: file
+          description: TSV file with dinucleotide counts
+          pattern: "*.{tsv}"
   - trinuc:
-      type: file
-      description: TSV file with trinucleotide counts
-      pattern: "*.{tsv}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - fw_out/*_trinuc_windows.tsv:
+          type: file
+          description: TSV file with trinucleotide counts
+          pattern: "*.{tsv}"
   - tetranuc:
-      type: file
-      description: TSV file with tetranucleotide counts
-      pattern: "*.{tsv}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - fw_out/*_tetranuc_windows.tsv:
+          type: file
+          description: TSV file with tetranucleotide counts
+          pattern: "*.{tsv}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@muffato"
 maintainers:

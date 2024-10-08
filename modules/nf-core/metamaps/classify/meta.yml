@@ -1,0 +1,122 @@
+name: metamaps_classify
+description: Strain-level metagenomic assignment
+keywords:
+  - metamaps
+  - long reads
+  - metagenomics
+  - taxonomy
+tools:
+  - metamaps:
+      description: MetaMaps is a tool for long-read metagenomic analysis
+      homepage: https://github.com/DiltheyLab/MetaMaps
+      documentation: https://github.com/DiltheyLab/MetaMaps/blob/master/README.md
+      tool_dev_url: https://github.com/DiltheyLab/MetaMaps
+      doi: "10.1038/s41467-019-10934-2"
+      licence: ["Public Domain"]
+      identifier: biotools:metamaps
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - classification_res:
+        type: file
+        description: Coordinates where reads map
+        pattern: "*.{classification_res}"
+    - meta_file:
+        type: file
+        description: Statistics for mapping result
+        pattern: "*.{classification_res.meta}"
+    - meta_unmappedreadsLengths:
+        type: file
+        description: Statistics for length of unmapped reads
+        pattern: "*.{classification_res.meta.unmappedReadsLengths}"
+    - para_file:
+        type: file
+        description: Log with parameters
+        pattern: "*.{classification_res.parameters}"
+  - - database_folder:
+        type: directory
+        description: Path to MetaMaps database
+        pattern: "*"
+output:
+  - wimp:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*classification_res.EM.WIMP":
+          type: file
+          description: Sample composition at different taxonomic levels
+          pattern: "*.{classification_res.EM.WIMP}"
+  - evidence_unknown_species:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*classification_res.EM.evidenceUnknownSpecies":
+          type: file
+          description: Statistics on read identities and zero-coverage regions
+          pattern: "*.{classification_res.EM.evidenceUnknownSpecies}"
+  - reads2taxon:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*classification_res.EM.reads2Taxon":
+          type: file
+          description: Taxon ID assignement of reads
+          pattern: "*.{classification_res.EM.reads2Taxon}"
+  - em:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*classification_res.EM":
+          type: file
+          description: The final and complete set of approximate read mappings
+          pattern: "*.{classification_res.EM}"
+  - contig_coverage:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*classification_res.EM.contigCoverage":
+          type: file
+          description: Read coverage for contigs
+          pattern: "*.{classification_res.EM.contigCoverage}"
+  - length_and_id:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*classification_res.EM.lengthAndIdentitiesPerMappingUnit":
+          type: file
+          description: Read length and estimated identity for all reads
+          pattern: "*.{classification_res.EM.lengthAndIdentitiesPerMappingUnit}"
+  - krona:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*classification_res.EM.reads2Taxon.krona":
+          type: file
+          description: Taxon ID assignement of reads in Krona format
+          pattern: "*.{classification_res.EM.reads2Taxon.krona}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@henningonsbring"
+  - "@sofstam"

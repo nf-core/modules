@@ -1,3 +1,4 @@
+
 nextflow_process {
 
     name "Test Process ARRIBA_DOWNLOAD"
@@ -9,8 +10,7 @@ nextflow_process {
     tag "arriba"
     tag "arriba/download"
 
-    test("download") {
-
+    test("test-arriba-download") {
         when {
             process {
                 """
@@ -42,10 +42,9 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },
+                { assert process.success }
             )
         }
-
     }
 
 }

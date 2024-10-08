@@ -1,69 +1,111 @@
 name: "pilon"
-description: Automatically improve draft assemblies and find variation among strains, including large event detection
+description: Automatically improve draft assemblies and find variation among strains,
+  including large event detection
 keywords:
   - polishing
   - assembly
   - variant calling
 tools:
   - "pilon":
-      description: "Pilon is an automated genome assembly improvement and variant detection tool."
+      description: "Pilon is an automated genome assembly improvement and variant detection
+        tool."
       homepage: "https://github.com/broadinstitute/pilon/wiki"
       documentation: "https://github.com/broadinstitute/pilon/wiki/Requirements-&-Usage"
       tool_dev_url: "https://github.com/broadinstitute/pilon"
       doi: "10.1371/journal.pone.0112963"
-      licence: "['GPL v2']"
+      licence: ["GPL-2.0-or-later"]
+      identifier: biotools:pilon
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: FASTA of the input genome
-      pattern: "*.{fasta}"
-  - bam:
-      type: file
-      description: BAM file of reads aligned to the input genome
-      pattern: "*.{bam}"
-  - bai:
-      type: file
-      description: BAI file (BAM index) of BAM reads aligned to the input genome
-      pattern: "*.{bai}"
-  - pilon_mode:
-      type: string
-      description: Indicates the type of bam file used (frags for paired-end sequencing of DNA fragments, such as Illumina paired-end reads of fragment size <1000bp, jumps for paired sequencing data of larger insert size, such as Illumina mate pair libraries, typically of insert size >1000bp, unpaired for unpaired sequencing reads, bam will automatically classify the BAM as one of the three types above (version 1.17 and higher).
-      enum: ["frags", "jumps", "unpaired", "bam"]
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information for the fasta
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: FASTA of the input genome
+        pattern: "*.{fasta}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information for the bam file
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM file of reads aligned to the input genome
+        pattern: "*.{bam}"
+    - bai:
+        type: file
+        description: BAI file (BAM index) of BAM reads aligned to the input genome
+        pattern: "*.{bai}"
+  - - pilon_mode:
+        type: string
+        description: Indicates the type of bam file used (frags for paired-end sequencing
+          of DNA fragments, such as Illumina paired-end reads of fragment size <1000bp,
+          jumps for paired sequencing data of larger insert size, such as Illumina mate
+          pair libraries, typically of insert size >1000bp, unpaired for unpaired sequencing
+          reads, bam will automatically classify the BAM as one of the three types above
+          (version 1.17 and higher).
+        enum: ["frags", "jumps", "unpaired", "bam"]
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - improved_assembly:
-      type: file
-      description: fasta file, improved assembly
-      pattern: "*.{fasta}"
-  - change_record:
-      type: file
-      description: file containing a space-delimited record of every change made in the assembly as instructed by the --fix option
-      pattern: "*.{change}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fasta":
+          type: file
+          description: fasta file, improved assembly
+          pattern: "*.{fasta}"
   - vcf:
-      type: file
-      description: Pilon variant output
-      pattern: "*.{vcf}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf":
+          type: file
+          description: Pilon variant output
+          pattern: "*.{vcf}"
+  - change_record:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.change":
+          type: file
+          description: file containing a space-delimited record of every change made in
+            the assembly as instructed by the --fix option
+          pattern: "*.{change}"
   - tracks_bed:
-      type: file
-      description: files that may be viewed in genome browsers such as IGV, GenomeView, and other applications that support these formats
-      pattern: "*.{bed}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bed":
+          type: file
+          description: files that may be viewed in genome browsers such as IGV, GenomeView,
+            and other applications that support these formats
+          pattern: "*.{bed}"
   - tracks_wig:
-      type: file
-      description: files that may be viewed in genome browsers such as IGV, GenomeView, and other applications that support these formats
-      pattern: "*.{wig}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.wig":
+          type: file
+          description: files that may be viewed in genome browsers such as IGV, GenomeView,
+            and other applications that support these formats
+          pattern: "*.{wig}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@scorreard"
 maintainers:

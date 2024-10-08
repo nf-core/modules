@@ -1,0 +1,64 @@
+
+nextflow_process {
+
+    name "Test Process EIDO_VALIDATE"
+    script "../main.nf"
+    process "EIDO_VALIDATE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "eido"
+    tag "eido/validate"
+
+    test("test-eido-validate-on-nextflow-samplesheet") {
+
+        when {
+            process {
+                """
+                input[0] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/pep/test_nextflow_original_samplesheet.csv", checkIfExists: true)
+				input[1] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/pep/test_samplesheet_schema.yaml", checkIfExists: true)
+				input[2] = []
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					file(process.out.log[0]).name,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-eido-validate-on-pep-config") {
+
+        when {
+            process {
+                """
+                input[0] = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/pep/test_pep_format_files/config.yaml", checkIfExists: true)
+				input[1] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/pep/test_samplesheet_schema.yaml", checkIfExists: true)
+				input[2] = []
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					file(process.out.log[0]).name,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

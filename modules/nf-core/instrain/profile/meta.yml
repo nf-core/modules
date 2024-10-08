@@ -1,5 +1,8 @@
 name: "instrain_profile"
-description: inStrain is python program for analysis of co-occurring genome populations from metagenomes that allows highly accurate genome comparisons, analysis of coverage, microdiversity, and linkage, and sensitive SNP detection with gene localization and synonymous non-synonymous identification
+description: inStrain is python program for analysis of co-occurring genome populations
+  from metagenomes that allows highly accurate genome comparisons, analysis of coverage,
+  microdiversity, and linkage, and sensitive SNP detection with gene localization
+  and synonymous non-synonymous identification
 keywords:
   - instrain
   - metagenomics
@@ -13,40 +16,104 @@ tools:
       tool_dev_url: https://github.com/MrOlm/instrain
       doi: 10.1038/s41587-020-00797-0
       licence: ["MIT"]
+      identifier: biotools:instrain
 input:
-  - meta:
-      type: map
-      description: Groovy Map containing sample information e.g. [ id:'test']
-  - bam:
-      type: file
-      description: Path to .bam file to be profiled
-      pattern: "*.{bam,sam}"
-  - genome_fasta:
-      type: file
-      description: Path to .fasta file to be profiled; MUST be the .fasta file that was mapped to to create the .bam file
-      pattern: "*.{fasta,fna,fa}"
-  - genes_fasta:
-      type: file
-      description: Path to .fna file of genes to be profiled (OPTIONAL)
-      pattern: "*.{fasta,fna,fa}"
-  - stb_file:
-      type: file
-      description: Path to .stb (scaffold to bin) file to be profiled (OPTIONAL)
-      pattern: "*.stb"
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information e.g. [ id:'test']
+    - bam:
+        type: file
+        description: Path to .bam file to be profiled
+        pattern: "*.{bam,sam}"
+  - - genome_fasta:
+        type: file
+        description: Path to .fasta file to be profiled; MUST be the .fasta file that
+          was mapped to to create the .bam file
+        pattern: "*.{fasta,fna,fa}"
+  - - genes_fasta:
+        type: file
+        description: Path to .fna file of genes to be profiled (OPTIONAL)
+        pattern: "*.{fasta,fna,fa}"
+  - - stb_file:
+        type: file
+        description: Path to .stb (scaffold to bin) file to be profiled (OPTIONAL)
+        pattern: "*.stb"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - profile:
-      type: directory
-      description: InStrain profile folder
-      pattern: "*.IS/"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.IS":
+          type: directory
+          description: InStrain profile folder
+          pattern: "*.IS/"
+  - snvs:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.IS/output/*.IS_SNVs.tsv":
+          type: file
+          description: SNVs
+          pattern: "*.tsv"
+  - gene_info:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.IS/output/*.IS_gene_info.tsv":
+          type: file
+          description: Gene information
+          pattern: "*.tsv"
+  - genome_info:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.IS/output/*.IS_genome_info.tsv":
+          type: file
+          description: Genome information
+          pattern: "*.tsv"
+  - linkage:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.IS/output/*.IS_linkage.tsv":
+          type: file
+          description: Linkage information
+          pattern: "*.tsv"
+  - mapping_info:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.IS/output/*.IS_mapping_info.tsv":
+          type: file
+          description: Mapping information
+          pattern: "*.tsv"
+  - scaffold_info:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.IS/output/*.IS_scaffold_info.tsv":
+          type: file
+          description: Scaffold information
+          pattern: "*.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@mrolm"
 maintainers:
