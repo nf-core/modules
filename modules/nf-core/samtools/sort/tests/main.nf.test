@@ -31,6 +31,8 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
+                        bam(process.out.bam[0][1]).getHeader(),
+                        bam(process.out.bam[0][1]).getReadsMD5(),
                         process.out.bam,
                         process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name } },
                         process.out.versions
@@ -48,10 +50,10 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
-                ], [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true)
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true)
+                    ]
                 ])
                 input[1] = Channel.of([
                     [ id:'fasta' ], // meta map
@@ -65,6 +67,8 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
+                        bam(process.out.bam[0][1]).getHeader(),
+                        bam(process.out.bam[0][1]).getReadsMD5(),
                         process.out.bam,
                         process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name } },
                         process.out.versions
@@ -141,10 +145,10 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
-                ], [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true)
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true)
+                    ]
                 ])
                 input[1] = Channel.of([
                     [ id:'fasta' ], // meta map
