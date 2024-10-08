@@ -1,5 +1,10 @@
+name: limma_differential
 channels:
-  - conda-forge
-  - bioconda
+- conda-forge
+- bioconda
 dependencies:
-  - bioconda::bioconductor-limma=3.54.0
+- bioconda::bioconductor-edger=4.0.16
+- bioconda::bioconductor-ihw=1.28.0
+- bioconda::bioconductor-limma=3.58.1
+- conda-forge::r-dplyr=1.1.4
+- conda-forge::r-readr=2.1.5
