@@ -1,11 +1,11 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0@sha256:6df1177e48b55272316d08f19cb383483af82aca5cdc67a76c414bc200847624 as builder
+FROM mcr.microsoft.com/dotnet/sdk:6.0@sha256:ba7877fb3a171ad4326caf97d8b56304fe73e6e05da0992775804805f6f75451 as builder
 WORKDIR /src
 COPY . /src
 RUN cd Wittyer \
     && dotnet publish -f net6.0 -r linux-x64 -c Release -o /output \
     && chmod +x /output/Wittyer
 
-FROM mcr.microsoft.com/dotnet/runtime:6.0@sha256:437cda84bdce26ce074d88b63abeec567c7226d73e8b911605077468e1d5c8d5
+FROM mcr.microsoft.com/dotnet/runtime:6.0@sha256:f6cf89e960d5f478b36ec19146dcdcd754c2369dbd0f9118c8fe444fff3dcf9d
 LABEL git_repository=https://git.illumina.com/DASTE/Ilmn.Das.App.Wittyer.git
 WORKDIR /opt/Wittyer
 RUN apt-get -y update && apt-get -y install tabix libunwind8 openssl procps
