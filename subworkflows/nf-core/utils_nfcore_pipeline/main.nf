@@ -128,12 +128,12 @@ def paramsSummaryMultiqc(summary_params) {
             // This gets the parameters of that particular group
             if (group_params) {
                 summary_section += "    <p style=\"font-size:110%\"><b>${group}</b></p>\n"
-                summary_section += "    <dl class="dl-horizontal">\n"
+                summary_section += "    <dl class=\"dl-horizontal\">\n"
                 group_params
                     .keySet()
                     .sort()
                     .each { param ->
-                        summary_section += "        <dt>${param}</dt><dd><samp>${group_params.get(param) ?: '<span style="color:#999999;">N/A</a>'}</samp></dd>\n"
+                        summary_section += "        <dt>${param}</dt><dd><samp>${group_params.get(param) ?: '<span style=\"color:#999999;\">N/A</a>'}</samp></dd>\n"
                     }
                 summary_section += "    </dl>\n"
             }
