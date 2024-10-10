@@ -52,9 +52,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.cf":
-          type: directory
-          description: Directory containing index files for the centrifuge database (*.cf files)
+          pattern: "${prefix}/"
+      - "${prefix}/":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "${prefix}/"
   - versions:
       - versions.yml:
