@@ -44,7 +44,7 @@ process XENIUMRANGER_RENAME {
     stub:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "XENIUMRANGER_RELABEL module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error "XENIUMRANGER_RENAME module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     """
     mkdir -p outs/
