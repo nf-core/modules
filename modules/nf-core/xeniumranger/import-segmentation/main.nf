@@ -2,7 +2,7 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/xeniumranger:2.0.0"
+    container "nf-core/xeniumranger:3.0.1"
 
     input:
     path(xenium_bundle)
@@ -28,7 +28,7 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
     def coordinate_transform = coordinate_transform ? "--coordinate-transform=\"${coordinate_transform}\"": ""
     def nuclei = nuclei ? "--nuclei=\"${segmentation_file}\"": ""
     def cells = cells ? "--cells=\"${segmentation_file}\"": ""
-    
+
     // transcript based segmentation
     def transcript_assignment = transcript_assignment ? "--transcript-assignment=\"${transcript_assignment}\"": ""
     def cell_boundary_polygons = cell_boundary_polygons ? "--viz-polygons=\"${cell_boundary_polygons}\"":""

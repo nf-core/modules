@@ -5,13 +5,7 @@ Xenium Ranger is a commercial tool from 10X Genomics. The container provided for
 1. Navigate to the appropriate download page. - [Xenium Ranger](https://www.10xgenomics.com/support/software/xenium-ranger/downloads): download the tar ball of the desired Xenium Ranger version with `curl` or `wget`. Place this file in the same folder where the Dockerfile lies.
 
 2. Edit the Dockerfile. Update the Xenium Ranger versions in this line:
-   (current version for xenium ranger is fixated at 2.0.0 in the dockerfile)
-
-```bash
-ARG MAJOR=<#>
-ARG MINOR=<#>
-ARG PATCH=<#>
-```
+   (current version for xenium ranger is fixated at [3.0.1](https://www.10xgenomics.com/support/software/xenium-ranger/downloads) in the dockerfile)
 
 3. Create and test the container:
 

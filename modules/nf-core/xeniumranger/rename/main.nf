@@ -1,4 +1,4 @@
-process XENIUMRANGER_RELABEL {
+process XENIUMRANGER_RENAME {
     tag "$meta.id"
     label 'process_high'
 
@@ -6,7 +6,6 @@ process XENIUMRANGER_RELABEL {
 
     input:
     path(xenium_bundle)
-    path(gene_panel)
 
     output:
     path("outs/**"), emit: outs
@@ -18,16 +17,20 @@ process XENIUMRANGER_RELABEL {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "XENIUMRANGER_RELABEL module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error "XENIUMRANGER_RENAME module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
+    def region_name = region_name ? "--region_name=\"${region_name}\"": ""
+    def cassette_name = cassette_name ? "--cassette_name=\"${cassette_name}\"": ""
+
     """
-    xeniumranger relabel \\
+    xeniumranger rename \\
         --id="${prefix}" \\
         --xenium-bundle="${xenium_bundle}" \\
-        --panel="${gene_panel}" \\
+        ${region_name} \\
+        ${cassette_name} \\
         --localcores=${task.cpus} \\
         --localmem=${task.memory.toGiga()} \\
         ${args}

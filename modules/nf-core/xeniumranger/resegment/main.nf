@@ -2,7 +2,7 @@ process XENIUMRANGER_RESEGMENT {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/xeniumranger:2.0.0"
+    container "nf-core/xeniumranger:3.0.1"
 
     input:
     path(xenium_bundle)
@@ -25,7 +25,7 @@ process XENIUMRANGER_RESEGMENT {
     def expansion_distance = expansion_distance ? "--expansion-distance=\"${expansion_distance}\"": ""
     def resegment_nuclei = resegment_nuclei ? "--resegment-nuclei=\"${resegment_nuclei}\"": ""
     def dapi_filter = dapi_filter ? "--dapi-filter=\"${dapi_filter}\"": ""
-    
+
     // Do not use boundary stain in analysis, but keep default interior stain and DAPI
     def boundary_stain = boundary_stain ? "--boundary-stain=disable": ""
     // Do not use interior stain in analysis, but keep default boundary stain and DAPI
