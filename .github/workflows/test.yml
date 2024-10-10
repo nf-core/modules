@@ -44,12 +44,12 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
 
-      - name: Install NodeJS
+      - name: Set up NodeJS
         uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4
         with:
           node-version: "20"
 
-      - name: Install Prettier
+      - name: Set up Prettier
         run: npm install -g prettier@3.2.5
 
       - name: Run Prettier --check
@@ -64,7 +64,7 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install editorconfig-checker
+      - name: Set up editorconfig-checker
         run: npm install -g editorconfig-checker
 
       - name: Run ECLint check
@@ -163,7 +163,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip
 
-      - name: Install pip
+      - name: Set up pip
         run: python -m pip install --upgrade pip
 
       - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
@@ -171,10 +171,10 @@ jobs:
           distribution: "temurin"
           java-version: "17"
 
-      - name: Setup Nextflow
+      - name: Set up Nextflow
         uses: nf-core/setup-nextflow@v2
 
-      - name: Install nf-core tools development version
+      - name: Set up nf-core tools development version
         run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
 
       - name: Lint module ${{ matrix.tags }}
@@ -201,7 +201,7 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install pip
+      - name: Set up pip
         run: python -m pip install --upgrade pip
 
       - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
@@ -209,10 +209,10 @@ jobs:
           distribution: "temurin"
           java-version: "17"
 
-      - name: Setup Nextflow
+      - name: Set up Nextflow
         uses: nf-core/setup-nextflow@561fcfc7146dcb12e3871909b635ab092a781f34 # v2
 
-      - name: Install nf-core tools development version
+      - name: Set up nf-core tools development version
         run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
 
       - name: Lint module ${{ matrix.tags }}
@@ -413,19 +413,19 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-pytest
 
-      - name: Install Python dependencies
+      - name: Set up Python dependencies
         run: python -m pip install --upgrade pip pytest-workflow cryptography
 
       - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
         with:
           distribution: "temurin"
           java-version: "17"
-      - name: Setup Nextflow ${{ matrix.NXF_VER }}
+      - name: Set up Nextflow ${{ matrix.NXF_VER }}
         uses: nf-core/setup-nextflow@v2
         with:
           version: "${{ matrix.NXF_VER }}"
 
-      - name: Setup apptainer
+      - name: Set up apptainer
         if: matrix.profile == 'singularity'
         uses: eWaterCycle/setup-apptainer@main
 
@@ -442,7 +442,7 @@ jobs:
           channels: conda-forge,bioconda
           python-version: ${{ matrix.python-version }}
 
-      - name: Conda setup
+      - name: Set up Conda
         run: |
           conda clean -a
           conda install -n base conda-libmamba-solver
@@ -659,15 +659,15 @@ jobs:
         with:
           distribution: "temurin"
           java-version: "17"
-      - name: Setup Nextflow
+      - name: Set up Nextflow
         uses: nf-core/setup-nextflow@v2
 
-      - name: Install nf-test
+      - name: Set up nf-test
         uses: nf-core/setup-nf-test@v1
         with:
           version: ${{ env.NFTEST_VER }}
 
-      - name: Setup apptainer
+      - name: Set up apptainer
         if: matrix.profile == 'singularity'
         uses: eWaterCycle/setup-apptainer@main
 
@@ -690,7 +690,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-pdiff
 
-      - name: Install Python dependencies
+      - name: Set up Python dependencies
         run: python -m pip install --upgrade pip pdiff cryptography
 
       - name: Set up miniconda
@@ -701,7 +701,7 @@ jobs:
           auto-update-conda: true
           channels: conda-forge,bioconda
 
-      - name: Conda setup
+      - name: Set up Conda
         if: matrix.profile == 'conda'
         run: |
           conda clean -a
