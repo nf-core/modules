@@ -106,13 +106,7 @@ def checkCondaChannels() {
     def channels_missing = ((required_channels_in_order as Set) - (channels as Set)) as Boolean
 
     // Check that they are in the right order
-    def channel_priority_violation = false
-
-    required_channels_in_order.eachWithIndex { channel, index ->
-        if (index < required_channels_in_order.size() - 1) {
-            channel_priority_violation |= !(channels.indexOf(channel) < channels.indexOf(required_channels_in_order[index + 1]))
-        }
-    }
+    def channel_priority_violation = required_channels_in_order != channels.findAll { ch -> ch in required_channels_in_order }
 
     if (channels_missing | channel_priority_violation) {
         log.warn(
