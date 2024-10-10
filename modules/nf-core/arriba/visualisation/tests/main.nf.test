@@ -3,106 +3,105 @@ nextflow_process {
     name "Test Process ARRIBA_VISUALISATION"
     script "../main.nf"
     process "ARRIBA_VISUALISATION"
-    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "arriba"
     tag "arriba/arriba"
+    tag "arriba/download"
     tag "arriba/visualisation"
-    tag "samtools/index"
     tag "star/align"
     tag "star/genomegenerate"
 
-    test("homo_sapiens - generate fusion pdf") {
-
-        setup{
-            run("STAR_GENOMEGENERATE") {
-                script "../../../star/genomegenerate/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test_fasta' ],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                    ]
-                    input[1] = [
-                        [ id:'test_gtf' ],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
-                    ]
-                    """
-                }
-            }
-    
-            run("STAR_ALIGN") {
-                script "../../../star/align/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test', single_end:false ], // meta map
-                        [
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true)
-                        ]
-                    ]
-                    input[1] = STAR_GENOMEGENERATE.out.index
-                    input[2] = [
-                        [ id:'test_gtf' ],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
-                    ]
-                    input[3] = false
-                    input[4] = 'illumina'
-                    input[5] = false
-                    """
-                }
-            }
-    
-            run("SAMTOOLS_INDEX") {
-                script "../../../samtools/index/main.nf"
-                process {
-                    """
-                    input[0] = STAR_ALIGN.out.bam_sorted
-                    """
-                }
-            }
-    
-            run("ARRIBA_ARRIBA") {
-                script "../../../arriba/arriba/main.nf"
-                process {
-                    """
-                    input[0] = STAR_ALIGN.out.bam_sorted
-                    input[1] = [
-                        [ id:'test_fasta' ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
-                    input[2] = [
-                        [ id:'test_gtf' ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
-                    input[3] = []
-                    input[4] = []
-                    input[5] = []
-                    input[6] = []
-                    input[7] = []
-                    """
-                }
+    setup {
+        config "./nextflow.config"
+        run("ARRIBA_DOWNLOAD") {
+            script "../../../arriba/download/main.nf"
+            process {
+                """
+                """
             }
         }
+        run("STAR_GENOMEGENERATE") {
+            script "../../../star/genomegenerate/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test_fasta' ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                ])
+                input[1] = Channel.of([
+                    [ id:'test_gtf' ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
+                ])
+                """
+            }
+        }
+        run("STAR_ALIGN") {
+            script "../../../star/align/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = STAR_GENOMEGENERATE.out.index
+                input[2] = Channel.of([
+                    [ id:'test_gtf' ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
+                ])
+                input[3] = false
+                input[4] = 'illumina'
+                input[5] = false
+                """
+            }
+        }
+        run("ARRIBA_ARRIBA") {
+            script "../../../arriba/arriba/main.nf"
+            process {
+                """
+                input[0] = STAR_ALIGN.out.bam
+                input[1] = Channel.of([
+                    [ id:'test_fasta' ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                ])
+                input[2] = Channel.of([
+                    [ id:'test_gtf' ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
+                ])
+                input[3] = [[],[]]
+                input[4] = [[],[]]
+                input[5] = [[],[]]
+                input[6] = [[],[]]
+                input[7] = [[],[]]
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens - generate fusion pdf") {
 
         when {
             process {
                 """
-                input[0] = STAR_ALIGN.out.bam_sorted.join(SAMTOOLS_INDEX.out.bai).join(ARRIBA_ARRIBA.out.fusions)
-                input[1] = [
-                    [ id:'test_gtf' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
-                input[2] = []
-                input[3] = []
+                input[0] = STAR_ALIGN.out.bam_sorted.join(ARRIBA_ARRIBA.out.fusions)
+                input[1] = Channel.of([
+                    [ id:'test_gtf' ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
+                ])
+                input[2] = [[],[]]
+                input[3] = [[],[]]
                 """
             }
         }
+
         then {
             assertAll(
                 { assert process.success },
-                { assert pdf.exists() },
-                { assert versions.exists() }
+                { assert snapshot(process.out).match() }
             )
         }
     }
