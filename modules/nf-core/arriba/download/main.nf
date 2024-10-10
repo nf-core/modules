@@ -8,10 +8,14 @@ process ARRIBA_DOWNLOAD {
         'biocontainers/arriba:2.4.0--h0033a41_2' }"
 
     input:
+    val(genome)
 
     output:
-    path "*"              , emit: reference
-    path "versions.yml"           , emit: versions
+    path "blacklist*${genome}*.tsv.gz"       , emit: blacklist
+    path "cytobands*${genome}*.tsv"          , emit: cytobands
+    path "protein_domains*${genome}*.gff3"   , emit: protein_domains
+    path "known_fusions*${genome}*.tsv.gz"   , emit: known_fusions
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,7 +40,6 @@ process ARRIBA_DOWNLOAD {
     touch protein_domains_hg38_GRCh38_v2.4.0.gff3
     touch cytobands_hg38_GRCh38_v2.4.0.tsv
     touch known_fusions_hg38_GRCh38_v2.4.0.tsv.gz
-    touch protein_domains_hg38_GRCh38_v2.4.0.gff3
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
