@@ -4,8 +4,8 @@ process OPENMS_IDSCORESWITCHER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/openms:3.1.0--h8964181_3':
-        'biocontainers/openms:3.1.0--h8964181_3' }"
+        'https://depot.galaxyproject.org/singularity/openms:3.2.0--haddbca4_4':
+        'biocontainers/openms:3.2.0--haddbca4_4' }"
 
     input:
     tuple val(meta), path(idxml)
