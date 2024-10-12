@@ -28,19 +28,19 @@ process TAR {
 
     if (compress_type == '.bz2') {
         compress_flag = '--bzip2'
-    } if else (compress_type == '.xz') {
+    } else if (compress_type == '.xz') {
         compress_flag = '--xz'
-    } if else (compress_type == '.lz') {
+    } else if (compress_type == '.lz') {
         compress_flag = '--lzip'
-    } if else (compress_type == '.lzma') {
+    } else if (compress_type == '.lzma') {
         compress_flag = '--lzma'
-    } if else (compress_type == '.lzo') {
+    } else if (compress_type == '.lzo') {
         compress_flag = '--lzop'
-    } if else (compress_type == '.zst') {
+    } else if (compress_type == '.zst') {
         compress_flag = '--zstd'
-    } if else (compress_type == '.gz') {
+    } else if (compress_type == '.gz') {
         compress_flag = '--gzip'
-    } if else (compress_type == '') {
+    } else if (compress_type == '') {
         compress_flag = ''
     } else {
         error("ERROR: Invalid compress_type: ${compress_type} for TAR. Set as empty string for no compression. Compression options: ${valid_compress_types.join(", ")}")
