@@ -27,6 +27,8 @@ process BISMARK_GENOMEPREPARATION {
         $args \\
         BismarkIndex
 
+    rm BismarkIndex/$fasta
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         bismark: \$(echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
