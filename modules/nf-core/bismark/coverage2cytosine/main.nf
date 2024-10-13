@@ -26,7 +26,7 @@ process BISMARK_COVERAGE2CYTOSINE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mv $fasta $index/
-    
+
     coverage2cytosine \\
         $coverage_file \\
         --genome $index \\
