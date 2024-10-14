@@ -242,10 +242,10 @@ if (opt\$analysis_type == "pairwise") {
     normalized_counts_with_genes <- data.frame(Gene = rownames(normalized_counts), normalized_counts, row.names = NULL)
     colnames(normalized_counts_with_genes)[1] <- opt\$probe_id_col
     write.table(normalized_counts_with_genes,
-         file = paste(opt\$output_prefix, "normalised_counts.tsv", sep = '.'),
-         sep = "\t",
-         quote = FALSE,
-         row.names = FALSE)
+        file = paste(opt\$output_prefix, "normalised_counts.tsv", sep = '.'),
+        sep = "\t",
+        quote = FALSE,
+        row.names = FALSE)
 
     lmfit_args = list(object = voom_1, design = design)
     fit <- do.call(lmFit, lmfit_args)
@@ -266,7 +266,7 @@ if (opt\$analysis_type == "pairwise") {
     reference_level <- make.names(opt\$reference_level)
     target_level <- make.names(opt\$target_level)
     sample.sheet[[contrast_variable]] = paste(sample.sheet[[strsplit2(contrast_variable, split = "\\\\.")[1]]],
-         sample.sheet[[strsplit2(contrast_variable, split = "\\\\.")[2]]], sep = ".")
+        sample.sheet[[strsplit2(contrast_variable, split = "\\\\.")[2]]], sep = ".")
 
     validate_sample_sheet(sample.sheet, contrast_variable, reference_level, target_level, opt\$blocking_variables)
 
@@ -358,10 +358,10 @@ if (opt\$IHW_correction) {
         select(Gene, everything())    # Move 'Gene' column to the front
 
 } else {
-     toptable_args <- list(fit = fit, number = opt\$number, adjust.method = opt\$adjust.method,
+    toptable_args <- list(fit = fit, number = opt\$number, adjust.method = opt\$adjust.method,
         p.value = opt\$p.value, lfc = opt\$lfc, confint = opt\$confint)
 
-     comp.results <- do.call(topTable,toptable_args)
+    comp.results <- do.call(topTable,toptable_args)
 }
 
 names(comp.results)[names(comp.results) == 'Gene'] <- opt\$probe_id_col
