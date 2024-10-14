@@ -5,6 +5,7 @@
 include { ENSEMBLVEP_VEP         } from '../../../modules/nf-core/ensemblvep/vep/main'
 include { SNPEFF_SNPEFF          } from '../../../modules/nf-core/snpeff/snpeff/main'
 include { TABIX_TABIX            } from '../../../modules/nf-core/tabix/tabix/main'
+include { TABIX_BGZIP            } from '../../../modules/nf-core/tabix/bgzip/main'
 include { BCFTOOLS_PLUGINSCATTER } from '../../../modules/nf-core/bcftools/pluginscatter/main'
 include { BCFTOOLS_CONCAT        } from '../../../modules/nf-core/bcftools/concat/main'
 include { BCFTOOLS_SORT          } from '../../../modules/nf-core/bcftools/sort/main'
@@ -122,10 +123,15 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
         )
         ch_versions = ch_versions.mix(SNPEFF_SNPEFF.out.versions.first())
 
-        ch_snpeff_output  = SNPEFF_SNPEFF.out.vcf
         ch_snpeff_reports = SNPEFF_SNPEFF.out.report
         ch_snpeff_html    = SNPEFF_SNPEFF.out.summary_html
         ch_snpeff_genes   = SNPEFF_SNPEFF.out.genes_txt
+
+        TABIX_BGZIP(
+            SNPEFF_SNPEFF.out.vcf
+        )
+        ch_versions = ch_versions.mix(TABIX_BGZIP.out.versions.first())
+        ch_snpeff_output = TABIX_BGZIP.out.output
     } else {
         ch_snpeff_output  = ch_vep_output
     }
