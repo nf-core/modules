@@ -35,8 +35,8 @@ input:
           supply at the same time as abundance files.
         pattern: "*.fasta"
     - abund:
-        type: file or list of files
-        description: Contig abundance files, i.e. reads against each contig. See MaxBin2
+        type: list
+        description: One or more contig abundance files, i.e. average depth of reads against each contig. See MaxBin2
           README for details. Do not supply at the same time as read files.
 output:
   - binned_fastas:
