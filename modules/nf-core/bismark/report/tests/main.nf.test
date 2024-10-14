@@ -13,7 +13,7 @@ nextflow_process {
     tag "bismark/methylationextractor"
     tag "bismark/genomepreparation"
 
-    test("sarscov2 genome [fasta] | sarscov2 paired-end methylated [fastq]") {
+    test("sarscov2 genome [fasta] | sarscov2 single-end methylated [fastq]") {
 
         setup {
             run("BISMARK_GENOMEPREPARATION") {
