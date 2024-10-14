@@ -148,3 +148,21 @@ jobs:
 
       - name: Lint module ${{ matrix.tags }}
         run: nf-core subworkflows lint ${{ matrix.tags }}
+
+  confirm-pass:
+    runs-on: ubuntu-latest
+    needs: [nf-core-lint-modules, nf-core-lint-subworkflows]
+    if: always()
+    steps:
+      - name: All tests ok
+        if: ${{ success() || !contains(needs.*.result, 'failure') }}
+        run: exit 0
+      - name: One or more tests failed
+        if: ${{ contains(needs.*.result, 'failure') }}
+        run: exit 1
+
+      - name: debug-print
+        if: always()
+        run: |
+          echo "toJSON(needs) = ${{ toJSON(needs) }}"
+          echo "toJSON(needs.*.result) = ${{ toJSON(needs.*.result) }}"
