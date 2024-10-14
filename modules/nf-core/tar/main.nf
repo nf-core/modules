@@ -49,6 +49,7 @@ process TAR {
     """
     tar \\
         -c \\
+        -h \\
         ${compress_flag} \\
         ${args} \\
         -f ${prefix}.tar${compress_type} \\
