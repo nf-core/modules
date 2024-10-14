@@ -23,7 +23,7 @@ process BCFTOOLS_CONCAT {
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
     def tbi_names = tbi.findAll { file -> !(file instanceof List) }.collect { file -> file.name }
-    def create_input_index = vcfs.collect { vcf -> tbi_names.contains(vcf.name + ".tbi") ? "" : "tabix ${vcf}" }.join("\n    ")
+    def create_input_index = vcfs.collect { vcf -> tbi_names.contains(vcf.name + ".tbi") && vcf.extension == "g" ? "" : "tabix ${vcf}" }.join("\n    ")
     """
     ${create_input_index}
 

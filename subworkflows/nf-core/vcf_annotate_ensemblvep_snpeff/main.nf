@@ -24,7 +24,9 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
     val_sites_per_chunk         //   value: the amount of variants per scattered VCF
 
     main:
-    ch_versions = Channel.empty()
+    def ch_versions  = Channel.empty()
+    def ch_vep_input = Channel.empty()
+    def ch_scatter   = Channel.empty()
 
     // Check if val_sites_per_chunk is set and scatter if it is
     if(val_sites_per_chunk) {
@@ -32,7 +34,7 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
         // Prepare the input VCF channel for scattering (split VCFs from custom files)
         //
 
-        ch_input = ch_vcf
+        def ch_input = ch_vcf
             .multiMap { meta, vcf, tbi, custom_files ->
                 vcf:    [ meta, vcf, tbi ]
                 custom: [ meta, custom_files ]
@@ -63,7 +65,7 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
                 // If multiple files are created, a list will be made as output of the process
                 // So if the output isn't a list, there is always one file and if there is a list,
                 // the amount of files in the list gets counted by .size()
-                is_list = vcfs instanceof ArrayList
+                def is_list = vcfs instanceof ArrayList
                 count = is_list ? vcfs.size() : 1
                 [ meta, is_list ? vcfs : [vcfs], count ]
                 // Channel containing the list of VCFs and the size of this list
@@ -72,8 +74,8 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
             .combine(ch_input.custom, by: 0) // Re-add the sample specific custom files
             .multiMap { meta, vcf, count, custom_files ->
                 // Define the new ID. The `_annotated` is to disambiguate the VEP output with its input
-                new_id = "${meta.id}${vcf.name.replace(meta.id,"").tokenize(".")[0]}_annotated" as String
-                new_meta = meta + [id:new_id]
+                def new_id = "${meta.id}${vcf.name.replace(meta.id,"").tokenize(".")[0]}_annotated" as String
+                def new_meta = meta + [id:new_id]
 
                 // Create channels: one with the VEP input and one with the original ID and count of scattered VCFs
                 input:  [ new_meta, vcf, custom_files ]
@@ -83,10 +85,12 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
         ch_vep_input = ch_scatter.input
     } else {
         // Use the normal input when no scattering has to be performed
-        ch_vep_input = ch_vcf.map { meta, vcf, tbi, files -> [ meta, vcf, files ] }
+        ch_vep_input = ch_vcf.map { meta, vcf, _tbi, files -> [ meta, vcf, files ] }
     }
 
     // Annotate with ensemblvep if it's part of the requested tools
+    def ch_vep_output   = Channel.empty()
+    def ch_vep_reports  = Channel.empty()
     if("ensemblvep" in val_tools_to_use){
         ENSEMBLVEP_VEP(
             ch_vep_input,
@@ -102,11 +106,14 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
         ch_vep_output  = ENSEMBLVEP_VEP.out.vcf
         ch_vep_reports = ENSEMBLVEP_VEP.out.report
     } else {
-        ch_vep_output  = ch_vep_input.map { meta, vcf, files -> [ meta, vcf ] }
-        ch_vep_reports = Channel.empty()
+        ch_vep_output  = ch_vep_input.map { meta, vcf, _files -> [ meta, vcf ] }
     }
 
     // Annotate with snpeff if it's part of the requested tools
+    def ch_snpeff_output    = Channel.empty()
+    def ch_snpeff_reports   = Channel.empty()
+    def ch_snpeff_html      = Channel.empty()
+    def ch_snpeff_genes     = Channel.empty()
     if("snpeff" in val_tools_to_use){
         SNPEFF_SNPEFF(
             ch_vep_output,
@@ -121,25 +128,25 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
         ch_snpeff_genes   = SNPEFF_SNPEFF.out.genes_txt
     } else {
         ch_snpeff_output  = ch_vep_output
-        ch_snpeff_reports = Channel.empty()
-        ch_snpeff_html    = Channel.empty()
-        ch_snpeff_genes   = Channel.empty()
     }
 
     // Gather the files back together if they were scattered
+    def ch_ready_vcfs = Channel.empty()
     if(val_sites_per_chunk) {
         //
         // Concatenate the VCFs back together with bcftools concat
         //
 
-        ch_concat_input = ch_snpeff_output
+        def ch_concat_input = ch_snpeff_output
             .join(ch_scatter.count, failOnDuplicate:true, failOnMismatch:true)
             .map { meta, vcf, id, count ->
-                new_meta = meta + [id:id]
+                def new_meta = meta + [id:id]
                 [ groupKey(new_meta, count), vcf ]
             }
             .groupTuple() // Group the VCFs which need to be concatenated
-            .map { it + [[]] }
+            .map { meta, vcf ->
+                [ meta, vcf, [] ]
+            }
 
         BCFTOOLS_CONCAT(
             ch_concat_input
@@ -164,7 +171,7 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
     // Index the resulting bgzipped VCFs
     //
 
-    ch_tabix_input = ch_ready_vcfs
+    def ch_tabix_input = ch_ready_vcfs
         .branch { meta, vcf ->
             // Split the bgzipped VCFs from the unzipped VCFs (only bgzipped VCFs should be indexed)
             bgzip: vcf.extension == "gz"
@@ -177,7 +184,7 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
     )
     ch_versions = ch_versions.mix(TABIX_TABIX.out.versions)
 
-    ch_vcf_tbi = ch_tabix_input.bgzip
+    def ch_vcf_tbi = ch_tabix_input.bgzip
         .join(TABIX_TABIX.out.tbi, failOnDuplicate: true, failOnMismatch: true)
         .mix(ch_tabix_input.unzip)
 

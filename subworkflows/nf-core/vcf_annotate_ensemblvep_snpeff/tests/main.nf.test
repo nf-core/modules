@@ -1,0 +1,256 @@
+nextflow_workflow {
+
+    name "Test Subworkflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF"
+    script "../main.nf"
+    workflow "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/vcf_annotate_ensemblvep_snpeff"
+    tag "ensemblvep/vep"
+    tag "snpeff/snpeff"
+    tag "tabix/tabix"
+    tag "bcftools/pluginscatter"
+    tag "bcftools/concat"
+    tag "bcftools/sort"
+
+    config "./nextflow.config"
+
+    setup {
+        run("ENSEMBLVEP_DOWNLOAD") {
+            script "../../../../modules/nf-core/ensemblvep/download"
+            process {
+                """
+                input[0] = [
+                    [id:"reference"],
+                    "WBcel235",
+                    "caenorhabditis_elegans",
+                    "110"
+                ]
+                """
+            }
+        }
+
+        run("SNPEFF_DOWNLOAD") {
+            script "../../../../modules/nf-core/snpeff/download"
+            process {
+                """
+                input[0] = [
+                    [id:"reference"],
+                    "WBcel235.105"
+                ]
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - ensemblvep") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
+                    []
+                ],
+                [
+                    [ id:'custom_test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test3.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test3.vcf.gz.tbi', checkIfExists: true)
+                    ]
+                ])
+                input[1] = [[],[]]
+                input[2] = "WBcel235"
+                input[3] = "caenorhabditis_elegans"
+                input[4] = "110"
+                input[5] = ENSEMBLVEP_DOWNLOAD.out.cache.map { meta, cache -> cache }
+                input[6] = []
+                input[7] = []
+                input[8] = []
+                input[9] = ["ensemblvep"]
+                input[10] = 5
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
+
+    test("sarscov2 - snpeff") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
+                    []
+                ],
+                [
+                    [ id:'custom_test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test3.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test3.vcf.gz.tbi', checkIfExists: true)
+                    ]
+                ])
+                input[1] = [[],[]]
+                input[2] = "WBcel235"
+                input[3] = "caenorhabditis_elegans"
+                input[4] = "110"
+                input[5] = ENSEMBLVEP_DOWNLOAD.out.cache.map { meta, cache -> cache }
+                input[6] = []
+                input[7] = "WBcel235.105"
+                input[8] = SNPEFF_DOWNLOAD.out.cache
+                input[9] = ["snpeff"]
+                input[10] = 5
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
+
+    test("sarscov2 - snpeff + ensemblvep") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
+                    []
+                ],
+                [
+                    [ id:'custom_test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test3.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test3.vcf.gz.tbi', checkIfExists: true)
+                    ]
+                ])
+                input[1] = [[],[]]
+                input[2] = "WBcel235"
+                input[3] = "caenorhabditis_elegans"
+                input[4] = "110"
+                input[5] = ENSEMBLVEP_DOWNLOAD.out.cache.map { meta, cache -> cache }
+                input[6] = []
+                input[7] = "WBcel235.105"
+                input[8] = SNPEFF_DOWNLOAD.out.cache
+                input[9] = ["snpeff", "ensemblvep"]
+                input[10] = 5
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
+
+    test("sarscov2 - ensemblvep - large chunks") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
+                    []
+                ],
+                [
+                    [ id:'custom_test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test3.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test3.vcf.gz.tbi', checkIfExists: true)
+                    ]
+                ])
+                input[1] = [[],[]]
+                input[2] = "WBcel235"
+                input[3] = "caenorhabditis_elegans"
+                input[4] = "110"
+                input[5] = ENSEMBLVEP_DOWNLOAD.out.cache.map { meta, cache -> cache }
+                input[6] = []
+                input[7] = []
+                input[8] = []
+                input[9] = ["ensemblvep"]
+                input[10] = 100
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
+
+    test("sarscov2 - ensemblvep - no scatter") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
+                    []
+                ],
+                [
+                    [ id:'custom_test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test3.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test3.vcf.gz.tbi', checkIfExists: true)
+                    ]
+                ])
+                input[1] = [[],[]]
+                input[2] = "WBcel235"
+                input[3] = "caenorhabditis_elegans"
+                input[4] = "110"
+                input[5] = ENSEMBLVEP_DOWNLOAD.out.cache.map { meta, cache -> cache }
+                input[6] = []
+                input[7] = []
+                input[8] = []
+                input[9] = ["ensemblvep"]
+                input[10] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
+}
