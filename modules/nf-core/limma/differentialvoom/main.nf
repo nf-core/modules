@@ -24,6 +24,38 @@ process LIMMA_DIFFERENTIALVOOM {
     task.ext.when == null || task.ext.when
 
     script:
-    template 'limma_de_rnaseq.R'
+    template 'limma_de.R'
 
+    stub:
+    prefix              = task.ext.prefix   ?: "${meta.id}"
+    """
+    #!/usr/bin/env Rscript
+    library(limma)
+
+    a <- file("${prefix}.limma.results.tsv", "w")
+    close(a)
+    a <- file("${prefix}.limma.mean_difference.png", "w")
+    close(a)
+    a <- file("${prefix}.MArrayLM.limma.rds", "w")
+    close(a)
+    a <- file("${prefix}.normalised_counts.tsv", "w")
+    close(a)
+    a <- file("${prefix}.limma.model.txt", "w")
+    close(a)
+    a <- file("${prefix}.R_sessionInfo.log", "w")
+    close(a)
+
+    ## VERSIONS FILE
+    r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
+    limma.version <- as.character(packageVersion('limma'))
+
+    writeLines(
+        c(
+            '"task.process":',
+            paste('    r-base:', r.version),
+            paste('    bioconductor-limma:', limma.version)
+        ),
+        'versions.yml'
+    )
+    """
 }

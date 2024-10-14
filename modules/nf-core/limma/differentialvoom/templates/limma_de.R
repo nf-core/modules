@@ -98,7 +98,7 @@ opt <- list(
     contrast_variable = '$contrast_variable',
     reference_level = '$reference',
     target_level = '$target',
-    blocking_variables = '$meta.blocking',
+    blocking_variables = NULL,
     probe_id_col = "probe_id",
     sample_id_col = "sample",
     analysis_type = NULL,
