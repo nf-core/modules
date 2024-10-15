@@ -1,5 +1,6 @@
 name: "gatk_realignertargetcreator"
-description: Generates a list of locations that should be considered for local realignment prior genotyping.
+description: Generates a list of locations that should be considered for local realignment
+  prior genotyping.
 keywords:
   - bam
   - vcf
@@ -18,70 +19,79 @@ tools:
           "BSD",
           "https://www.broadinstitute.org/gatk/about/#licensing",
         ]
+      identifier: biotools:gatk
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: Sorted and indexed BAM/CRAM/SAM file
-      pattern: "*.bam"
-  - bai:
-      type: file
-      description: BAM index file
-      pattern: "*.bai"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information.
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: Reference file used to generate BAM file
-      pattern: ".{fasta,fa,fna}"
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing reference information.
-        e.g. [ id:'test', single_end:false ]
-  - fai:
-      type: file
-      description: Index of reference file used to generate BAM file
-      pattern: ".fai"
-  - meta4:
-      type: map
-      description: |
-        Groovy Map containing reference information.
-        e.g. [ id:'test', single_end:false ]
-  - dict:
-      type: file
-      description: GATK dict file for reference
-      pattern: ".dict"
-  - meta5:
-      type: map
-      description: |
-        Groovy Map containing file meta-information for known_vcf.
-        e.g. [ id:'test', single_end:false ]
-  - known_vcf:
-      type: file
-      description: Optional input VCF file(s) with known indels
-      pattern: ".vcf"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: Sorted and indexed BAM/CRAM/SAM file
+        pattern: "*.bam"
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.bai"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information.
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Reference file used to generate BAM file
+        pattern: ".{fasta,fa,fna}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information.
+          e.g. [ id:'test', single_end:false ]
+    - fai:
+        type: file
+        description: Index of reference file used to generate BAM file
+        pattern: ".fai"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing reference information.
+          e.g. [ id:'test', single_end:false ]
+    - dict:
+        type: file
+        description: GATK dict file for reference
+        pattern: ".dict"
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing file meta-information for known_vcf.
+          e.g. [ id:'test', single_end:false ]
+    - known_vcf:
+        type: file
+        description: Optional input VCF file(s) with known indels
+        pattern: ".vcf"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - intervals:
-      type: file
-      description: File containg intervals that represent sites of extant and potential indels.
-      pattern: "*.intervals"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.intervals":
+          type: file
+          description: File containg intervals that represent sites of extant and potential
+            indels.
+          pattern: "*.intervals"
+      - s:
+          type: file
+          description: File containg intervals that represent sites of extant and potential
+            indels.
+          pattern: "*.intervals"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jfy133"
 maintainers:

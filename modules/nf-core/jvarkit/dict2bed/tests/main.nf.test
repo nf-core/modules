@@ -1,0 +1,78 @@
+// nf-core modules test jvarkit/dict2bed
+nextflow_process {
+
+    name "Test Process JVARKIT_DICT2BED"
+    script "../main.nf"
+    process "JVARKIT_DICT2BED"
+    config "./nextflow.config"
+
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "jvarkit"
+    tag "jvarkit/dict2bed"
+
+    test("sarscov2 - dict") {
+
+        when {
+            process {
+                """
+                input[0] =[
+                    [id:"dict_test"],
+                    [
+                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
+                     file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true),
+                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.bed[0][1]),
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("sarscov2 - stub") {
+
+        options  "-stub"
+
+        when {
+            process {
+                """
+                input[0] =[
+                    [id:"dict_stub"],
+                    [
+                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
+                     file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true),
+                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.bed[0][1]),
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+}

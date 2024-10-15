@@ -1,60 +1,85 @@
 name: "gatk4_germlinecnvcaller"
-description: Calls copy-number variants in germline samples given their counts and the output of DetermineGermlineContigPloidy.
+description: Calls copy-number variants in germline samples given their counts and
+  the output of DetermineGermlineContigPloidy.
 keywords:
   - gatk
   - germline contig ploidy
   - germlinecnvcaller
 tools:
   - "gatk4":
-      description: Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools with a primary focus on variant discovery and genotyping. Its powerful processing engine and high-performance computing features make it capable of taking on projects of any size.
+      description: Developed in the Data Sciences Platform at the Broad Institute, the
+        toolkit offers a wide variety of tools with a primary focus on variant discovery
+        and genotyping. Its powerful processing engine and high-performance computing
+        features make it capable of taking on projects of any size.
       homepage: https://gatk.broadinstitute.org/hc/en-us
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
       doi: "10.1158/1538-7445.AM2017-3590"
       licence: ["Apache-2.0"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - tsv:
-      type: file
-      description: One or more count TSV files created with gatk/collectreadcounts
-      pattern: "*.tsv"
-  - intervals:
-      type: file
-      description: Optional - A bed file containing the intervals to include in the process
-      pattern: "*.bed"
-  - model:
-      type: directory
-      description: Optional - directory containing the model produced by germlinecnvcaller cohort mode
-      pattern: "*-cnv-model/*-model"
-  - ploidy:
-      type: directory
-      description: Directory containing ploidy calls produced by determinegermlinecontigploidy case or cohort mode
-      pattern: "*-calls"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - tsv:
+        type: file
+        description: One or more count TSV files created with gatk/collectreadcounts
+        pattern: "*.tsv"
+    - intervals:
+        type: file
+        description: Optional - A bed file containing the intervals to include in the
+          process
+        pattern: "*.bed"
+    - ploidy:
+        type: directory
+        description: Directory containing ploidy calls produced by determinegermlinecontigploidy
+          case or cohort mode
+        pattern: "*-calls"
+    - model:
+        type: directory
+        description: Optional - directory containing the model produced by germlinecnvcaller
+          cohort mode
+        pattern: "*-cnv-model/*-model"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - cohortcalls:
-      type: directory
-      description: Tar gzipped directory containing calls produced by germlinecnvcaller case mode
-      pattern: "*-cnv-model/*-calls"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*-cnv-model/*-calls":
+          type: directory
+          description: Tar gzipped directory containing calls produced by germlinecnvcaller
+            case mode
+          pattern: "*-cnv-model/*-calls"
   - cohortmodel:
-      type: directory
-      description: Optional - Tar gzipped directory containing the model produced by germlinecnvcaller cohort mode
-      pattern: "*-cnv-model/*-model"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*-cnv-model/*-model":
+          type: directory
+          description: Optional - Tar gzipped directory containing the model produced
+            by germlinecnvcaller cohort mode
+          pattern: "*-cnv-model/*-model"
   - casecalls:
-      type: directory
-      description: Tar gzipped directory containing calls produced by germlinecnvcaller case mode
-      pattern: "*-cnv-calls/*-calls"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*-cnv-calls/*-calls":
+          type: directory
+          description: Tar gzipped directory containing calls produced by germlinecnvcaller
+            case mode
+          pattern: "*-cnv-calls/*-calls"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@ryanjameskennedy"
   - "@ViktorHy"

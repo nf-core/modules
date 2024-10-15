@@ -4,12 +4,11 @@ process NEXTCLADE_DATASETGET {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/nextclade:2.12.0--h9ee0642_0' :
-        'biocontainers/nextclade:2.12.0--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/nextclade:3.8.2--h9ee0642_0' :
+        'biocontainers/nextclade:3.8.2--h9ee0642_0' }"
 
     input:
     val dataset
-    val reference
     val tag
 
     output:
@@ -22,7 +21,6 @@ process NEXTCLADE_DATASETGET {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${dataset}"
-    def fasta = reference ? "--reference ${reference}" : ''
     def version = tag ? "--tag ${tag}" : ''
     """
     nextclade \\
@@ -30,7 +28,6 @@ process NEXTCLADE_DATASETGET {
         get \\
         $args \\
         --name $dataset \\
-        $fasta \\
         $version \\
         --output-dir $prefix
 
@@ -39,4 +36,23 @@ process NEXTCLADE_DATASETGET {
         nextclade: \$(echo \$(nextclade --version 2>&1) | sed 's/^.*nextclade //; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    prefix = task.ext.prefix ?: "${dataset}"
+    """
+    mkdir -p ${prefix}
+    touch ${prefix}/CHANGELOG.md
+    touch ${prefix}/README.md
+    touch ${prefix}/genome_annotation.gff3
+    touch ${prefix}/pathogen.json
+    touch ${prefix}/reference.fasta
+    touch ${prefix}/sequences.fasta
+    touch ${prefix}/tree.json
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        nextclade: \$(echo \$(nextclade --version 2>&1) | sed 's/^.*nextclade //; s/ .*\$//')
+    END_VERSIONS
+    """
+
 }
