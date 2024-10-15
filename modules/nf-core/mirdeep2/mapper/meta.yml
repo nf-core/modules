@@ -1,0 +1,59 @@
+name: "mirdeep2_mapper"
+description: |
+  miRDeep2 Mapper is a tool that prepares deep sequencing reads for downstream miRNA detection by collapsing reads, mapping them to a genome, and outputting the required files for miRNA discovery.
+keywords:
+  - mirdeep2
+  - mapper
+  - RNA sequencing
+tools:
+  - "mirdeep2":
+      description: |
+        miRDeep2 Mapper (`mapper.pl`) is part of the miRDeep2 suite. It collapses identical reads, maps them to a reference genome, and outputs both collapsed FASTA and ARF files for downstream miRNA detection and analysis.
+      homepage: "https://www.mdc-berlin.de/content/mirdeep2-documentation"
+      documentation: "https://www.mdc-berlin.de/content/mirdeep2-documentation"
+      tool_dev_url: "https://github.com/rajewsky-lab/mirdeep2"
+      doi: "10.1093/nar/gkn491"
+      licence: ["GPL V3"]
+      identifier: biotools:mirdeep2
+
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information, e.g. `[ id:'sample1',
+          single_end:false ]`
+    - reads:
+        type: file
+        description: File containing the raw sequencing reads that need to be collapsed
+          and mapped to a reference genome.
+        pattern: "*.fa"
+  - - meta2:
+        type: map
+        description: Groovy Map containing information about the genome index.
+    - index:
+        type: file
+        description: Path to the genome index file used for mapping the reads to the
+          genome.
+        pattern: "*"
+output:
+  - outputs:
+      - meta:
+          type: map
+          description: Groovy Map containing sample information, e.g. `[ id:'sample1', single_end:false ]`
+      - "*.fa":
+          type: file
+          description: Collapsed reads in FASTA format.
+          pattern: "*.fa"
+      - "*.arf":
+          type: file
+          description: Alignment Read Format (ARF) file containing the mapping of reads
+            to the genome.
+          pattern: "*.arf"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions for tracking.
+          pattern: "versions.yml"
+authors:
+  - "@atrigila"
+maintainers:
+  - "@atrigila"
