@@ -23,15 +23,9 @@ input:
         type: file
         description: "illumina v2 samplesheet"
         pattern: "*.{csv}"
-  - - json_schema_validator:
-        type: string
-        description: "String in JSON format used additional samplesheet validation settings"
-  - - name_schema_validator:
-        type: string
-        description: "Schema name used additional samplesheet validation settings"
   - - file_schema_validator:
         type: string
-        description: "JSON file used additional samplesheet validation settings"
+        description: "Optional JSON file used additional samplesheet validation settings"
 output:
   - samplesheet:
       - meta:
