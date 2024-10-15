@@ -77,6 +77,9 @@ opt <- list(
     subset_to_contrast_samples = FALSE,
     exclude_samples_col = NULL,
     exclude_samples_values = NULL,
+    use_voom = TRUE,
+    IHW_correction = TRUE,
+    number = Inf,
     ndups = NULL,                # lmFit
     spacing = NULL,              # lmFit
     block = NULL,                # lmFit
@@ -142,6 +145,11 @@ opt[vector_opt] = lapply(strsplit(unlist(opt[vector_opt]), ','), as.numeric)
 ################################################
 
 library(limma)
+library(edgeR)
+library(readr)
+library(dplyr)
+library(tibble)
+library(IHW)
 
 ################################################
 ################################################
@@ -287,11 +295,38 @@ colnames(design) <- sub(
     paste0(contrast_variable, '.'), colnames(design)
 )
 
+# Perform voom normalisation for RNA-seq data
+if (!is.null(opt\$use_voom) && opt\$use_voom) {
+    # Create a DGEList object for RNA-seq data
+    dge <- DGEList(counts = intensities.table)
+
+    # Normalize counts using TMM
+    dge <- calcNormFactors(dge, method = "TMM")
+
+    # Run voom to transform the data
+    voom_result <- voom(dge, design)
+    data_for_fit <- voom_result
+
+    # Write the normalized counts matrix to a TSV file
+    normalized_counts <- voom_result\$E
+    normalized_counts_with_genes <- data.frame(Gene = rownames(normalized_counts), normalized_counts, row.names = NULL)
+    colnames(normalized_counts_with_genes)[1] <- opt\$probe_id_col
+    write.table(normalized_counts_with_genes,
+        file = paste(opt\$output_prefix, "normalised_counts.tsv", sep = '.'),
+        sep = "\t",
+        quote = FALSE,
+        row.names = FALSE)
+
+} else {
+    # Use as.matrix for regular microarray analysis
+    data_for_fit <- as.matrix(intensities.table)
+}
+
 # Prepare for and run lmFit()
 
 lmfit_args = c(
     list(
-        object = as.matrix(intensities.table),
+        object = data_for_fit,
         design = design
     ),
     opt[c('ndups', 'spacing', 'block', 'method')]
@@ -322,18 +357,54 @@ ebayes_args = c(
 
 fit2 <- do.call(eBayes, ebayes_args)
 
-# Run topTable() to generate a results data frame
+if ((!is.null(opt\$use_voom) && opt\$use_voom) && (!is.null(opt\$IHW_correction) && opt\$IHW_correction)) {
 
-toptable_args = c(
-    list(
-        fit = fit2,
-        sort.by = 'none',
-        number = nrow(intensities.table)
-    ),
-    opt[c('adjust.method', 'p.value', 'lfc', 'confint')]
-)
+    # Define the column name for the group comparison
+    name_con_ref <- glue::glue("{contrast_variable}.{opt\$target_level}-{contrast_variable}.{opt\$reference_level}")
 
-comp.results <- do.call(topTable, toptable_args)[rownames(intensities.table),]
+    # Calculate the median gene expression
+    median_expression <- apply(dge\$counts, 1, median)
+    # Apply IHW for multiple testing correction using median expression as covariate
+    ihw_result <- ihw(fit2\$p.value[, name_con_ref] ~ median_expression, alpha = 0.05)
+    ihw_result@df <- as_tibble(ihw_result@df, rownames = opt\$probe_id_col)
+
+    # Convert fit\$p.value to a tibble, including rownames as a new column 'Gene'
+    fit_df <- as_tibble(fit2\$p.value, rownames = opt\$probe_id_col)
+
+    fit_df <- fit_df %>%
+        left_join(ihw_result@df %>% select(!!sym(opt\$probe_id_col),adj_pvalue),by=opt\$probe_id_col) %>%
+        rename(ihw.adj.p.value = adj_pvalue)
+
+    # Convert back to a matrix if necessary (not needed for merging, but for consistency later)
+    fit\$p.value <- as.matrix(fit_df %>% select(-!!sym(opt\$probe_id_col))) # Keep the original structure without probe_id_col column
+
+    # Generate the topTable including the new adjusted p-values
+    toptable_args <- list(fit = fit2, coef = name_con_ref, number = opt\$number, adjust.method = opt\$adjust.method,
+        p.value = opt\$p.value, lfc = opt\$lfc, confint = opt\$confint)
+
+    comp.results <- do.call(topTable, toptable_args)
+    # Add the IHW-adjusted p-values to the topTable results by merging based on probe_id_col
+    comp.results <- comp.results %>%
+        rownames_to_column(opt\$probe_id_col) %>%    # Ensure probe_id_col column exists in comp.results
+        left_join(fit_df, by = opt\$probe_id_col) %>%    # Merge based on probe_id_col column
+        column_to_rownames(var=opt\$probe_id_col) %>%
+        select(-sym(name_con_ref))
+
+} else {
+
+    # Run topTable() to generate a results data frame
+
+    toptable_args = c(
+        list(
+            fit = fit2,
+            sort.by = 'none',
+            number = nrow(intensities.table)
+        ),
+        opt[c('adjust.method', 'p.value', 'lfc', 'confint')]
+    )
+
+    comp.results <- do.call(topTable, toptable_args)[rownames(intensities.table),]
+}
 
 ################################################
 ################################################
