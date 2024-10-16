@@ -1,5 +1,6 @@
 name: "goleft_indexsplit"
-description: Quickly generate evenly sized (by amount of data) regions across a number of bam/cram files
+description: Quickly generate evenly sized (by amount of data) regions across a number
+  of bam/cram files
 keywords:
   - bam
   - bed
@@ -8,45 +9,52 @@ keywords:
   - split
 tools:
   - "goleft":
-      description: "goleft is a collection of bioinformatics tools distributed under MIT license in a single static binary"
+      description: "goleft is a collection of bioinformatics tools distributed under
+        MIT license in a single static binary"
       homepage: "https://github.com/brentp/goleft"
       documentation: "https://github.com/brentp/goleft"
       tool_dev_url: "https://github.com/brentp/goleft"
       doi: "10.1093/gigascience/gix090"
-      licence: "['MIT']"
+      licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bai:
-      type: file
-      description: BAI/CRAI file
-      pattern: "*.{bai,crai}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'genome' ]
-  - fai:
-      type: file
-      description: Reference fasta index file
-      pattern: "*.fai"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bai:
+        type: file
+        description: BAI/CRAI file
+        pattern: "*.{bai,crai}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fai:
+        type: file
+        description: Reference fasta index file
+        pattern: "*.fai"
+  - - split:
+        type: boolean
+        description: Split the regions
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - bed:
-      type: file
-      description: Bed file containing split regions
-      pattern: "*.bed"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bed":
+          type: file
+          description: Bed file containing split regions
+          pattern: "*.bed"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@matthdsm"
 maintainers:

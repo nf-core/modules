@@ -8,7 +8,7 @@ process BCFTOOLS_FILTER {
         'biocontainers/bcftools:1.20--h8b25389_0' }"
 
     input:
-    tuple val(meta), path(vcf)
+    tuple val(meta), path(vcf), path(tbi)
 
     output:
     tuple val(meta), path("*.${extension}"), emit: vcf

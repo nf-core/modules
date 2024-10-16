@@ -6,40 +6,42 @@ keywords:
   - stats
 tools:
   - "seqkit":
-      description: Cross-platform and ultrafast toolkit for FASTA/Q file manipulation, written by Wei Shen.
+      description: Cross-platform and ultrafast toolkit for FASTA/Q file manipulation,
+        written by Wei Shen.
       homepage: https://bioinf.shenwei.me/seqkit/usage/
       documentation: https://bioinf.shenwei.me/seqkit/usage/
       tool_dev_url: https://github.com/shenwei356/seqkit/
       doi: "10.1371/journal.pone.0163962"
       licence: ["MIT"]
+      identifier: biotools:seqkit
 input:
-  - meta:
-      type: map
-      description: >
-        Groovy Map containing sample information e.g. [ id:'test', single_end:false ]
-
-  - reads:
-      type: file
-      description: >
-        Either FASTA or FASTQ files.
-
-      pattern: "*.{fa,fna,faa,fasta,fq,fastq}[.gz]"
+  - - meta:
+        type: map
+        description: >
+          Groovy Map containing sample information e.g. [ id:'test', single_end:false
+          ]
+    - reads:
+        type: file
+        description: >
+          Either FASTA or FASTQ files.
+        pattern: "*.{fa,fna,faa,fasta,fq,fastq}[.gz]"
 output:
-  - meta:
-      type: map
-      description: >
-        Groovy Map containing sample information e.g. [ id:'test', single_end:false ]
-
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - stats:
-      type: file
-      description: >
-        Tab-separated output file with basic sequence statistics.
-
-      pattern: "*.tsv"
+      - meta:
+          type: map
+          description: >
+            Groovy Map containing sample information e.g. [ id:'test', single_end:false
+            ]
+      - "*.tsv":
+          type: file
+          description: >
+            Tab-separated output file with basic sequence statistics.
+          pattern: "*.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@Midnighter"
 maintainers:

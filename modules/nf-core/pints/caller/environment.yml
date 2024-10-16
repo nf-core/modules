@@ -1,7 +1,12 @@
-name: pints_caller
 channels:
   - conda-forge
   - bioconda
-  - defaults
 dependencies:
-  - bioconda::pypints=1.1.10
+  - pybedtools
+  - bedtools
+  - htslib
+  - pip
+  - pip: # FIXME https://github.com/nf-core/modules/issues/5814
+      # NOTE PINTS isn't adding conda builds and is a few versions behind.
+      # renovate: datasource=pypi depName=pypints
+      - pypints==1.1.13
