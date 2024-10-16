@@ -30,7 +30,7 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(process.out).match()
+            assert snapshot(process.out.samplesheet).match()
         }
 
     }
@@ -52,7 +52,7 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(process.out).match()
+            assert snapshot(process.out.samplesheet).match()
         }
 
     }
@@ -69,7 +69,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [ id: 'test', lane:1 ], file("https://raw.githubusercontent.com/nf-core/test-datasets/demultiplex/testdata/NextSeq2000/SampleSheet.csv", checkIfExists: true), [] ]
+                input[0] = [ [ id: 'test', lane:1 ], file("https://raw.githubusercontent.com/nf-core/test-datasets/demultiplex/testdata/NextSeq2000/SampleSheet.csv", checkIfExists: true) ]
                 input[1] = []
                 """
             }
@@ -77,7 +77,7 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(process.out).match()
+            assert snapshot(process.out.samplesheet).match()
         }
 
     }
