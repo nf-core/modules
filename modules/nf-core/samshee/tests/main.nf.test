@@ -19,10 +19,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id: 'test', lane:1 ], file("https://raw.githubusercontent.com/nf-core/test-datasets/demultiplex/testdata/miseq_35147139/miseq_35147139_samplesheet.csv", checkIfExists: true) ]
+                input[1] = file("schema.json")
                 new File("schema.json").text = '''{
                     "\$schema": "https://json-schema.org/draft/2020-12/schema",
                     "required": ["Settings"]
-                }'''; input[1] = file("schema.json")
+                }'''
                 """
             }
         }
