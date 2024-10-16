@@ -25,6 +25,7 @@ process SAMSHEE {
     # Run validation command and capture output
     python -m samshee $samplesheet \
     $args \
+    $arg_file_schema_validator \
     > ${samplesheet.baseName}_formatted.csv
 
     cat <<-END_VERSIONS > versions.yml
