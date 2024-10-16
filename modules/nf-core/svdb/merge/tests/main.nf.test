@@ -26,7 +26,10 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") }
+                { assert snapshot(
+                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                    process.out.versions
+                ).match() }
             )
         }
 
@@ -50,7 +53,10 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") }
+                { assert snapshot(
+                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                    process.out.versions
+                ).match() }
             )
         }
 
