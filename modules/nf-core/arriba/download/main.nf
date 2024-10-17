@@ -22,7 +22,7 @@ process ARRIBA_DOWNLOAD {
 
     script:
     """
-    wget https://github.com/suhrig/arriba/releases/download/v2.4.0/arriba_v2.4.0.tar.gz -O arriba_v2.4.0.tar.gz
+    wget https://github.com/suhrig/arriba/releases/download/v2.4.0/arriba_v2.4.0.tar.gz -O arriba_v2.4.0.tar.gz --no-check-certificate
     tar -xzvf arriba_v2.4.0.tar.gz
     rm arriba_v2.4.0.tar.gz
     mv arriba_v2.4.0/database/* .
