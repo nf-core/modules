@@ -1,0 +1,67 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "tar"
+description: Compress directories into tarballs with various compression options
+keywords:
+  - untar
+  - tar
+  - tarball
+  - compression
+  - archive
+  - gzip
+  - targz
+tools:
+  - "tar":
+      description: "GNU Tar provides the ability to create tar archives, as well as
+        various other kinds of manipulation."
+      homepage: "https://www.gnu.org/software/tar/"
+      documentation: "https://www.gnu.org/software/tar/manual/"
+      licence: ["GPLv3"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - input:
+        type: directory
+        description: A file or directory to be archived
+        pattern: "*/"
+        ontologies:
+          - edam: "http://edamontology.org/data_1049"
+  - - compress_type:
+        type: string
+        description: |
+          A string defining which type of (optional) compression to apply to the archive.
+          Provide an empty string in quotes for no compression
+        pattern: ".bz2|.xz|.lz|.lzma|.lzo|.zst|.gz"
+output:
+  - archive:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+          pattern: "*.tar{.bz2,.xz,.lz,.lzma,.lzo,.zst,.gz,}"
+          ontologies: &id001
+            - edam: "http://edamontology.org/format_25722"
+            - edam: "http://edamontology.org/format_2573"
+            - edam: "http://edamontology.org/format_3462"
+
+      - "*.tar${compress_type}":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+          pattern: "*.tar{.bz2,.xz,.lz,.lzma,.lzo,.zst,.gz,}"
+          ontologies: *id001
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@jfy133"
+maintainers:
+  - "@jfy133"
