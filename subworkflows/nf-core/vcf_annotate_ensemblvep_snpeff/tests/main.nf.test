@@ -17,35 +17,23 @@ nextflow_workflow {
 
     config "./nextflow.config"
 
-    setup {
-        run("ENSEMBLVEP_DOWNLOAD") {
-            script "../../../../modules/nf-core/ensemblvep/download"
-            process {
-                """
-                input[0] = [
-                    [id:"reference"],
-                    "WBcel235",
-                    "caenorhabditis_elegans",
-                    "110"
-                ]
-                """
-            }
-        }
-
-        run("SNPEFF_DOWNLOAD") {
-            script "../../../../modules/nf-core/snpeff/download"
-            process {
-                """
-                input[0] = [
-                    [id:"reference"],
-                    "WBcel235.105"
-                ]
-                """
-            }
-        }
-    }
-
     test("sarscov2 - ensemblvep") {
+
+        setup {
+            run("ENSEMBLVEP_DOWNLOAD") {
+                script "../../../../modules/nf-core/ensemblvep/download"
+                process {
+                    """
+                    input[0] = [
+                        [id:"reference"],
+                        "WBcel235",
+                        "caenorhabditis_elegans",
+                        "110"
+                    ]
+                    """
+                }
+            }
+        }
 
         when {
             workflow {
@@ -82,12 +70,33 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert snapshot(
+                    workflow.out.vcf_tbi.collect { [it[0], "${file(it[1]).name},variantsMD5:${path(it[1]).vcf.variantsMD5}", file(it[2]).name] },
+                    workflow.out.vep_reports,
+                    workflow.out.snpeff_reports,
+                    workflow.out.snpeff_html,
+                    workflow.out.snpeff_genes,
+                    workflow.out.versions
+                ).match()}
             )
         }
     }
 
     test("sarscov2 - snpeff") {
+
+        setup {
+            run("SNPEFF_DOWNLOAD") {
+                script "../../../../modules/nf-core/snpeff/download"
+                process {
+                    """
+                    input[0] = [
+                        [id:"reference"],
+                        "WBcel235.105"
+                    ]
+                    """
+                }
+            }
+        }
 
         when {
             workflow {
@@ -111,7 +120,7 @@ nextflow_workflow {
                 input[2] = "WBcel235"
                 input[3] = "caenorhabditis_elegans"
                 input[4] = "110"
-                input[5] = ENSEMBLVEP_DOWNLOAD.out.cache.map { meta, cache -> cache }
+                input[5] = []
                 input[6] = []
                 input[7] = "WBcel235.105"
                 input[8] = SNPEFF_DOWNLOAD.out.cache
@@ -124,12 +133,47 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert snapshot(
+                    workflow.out.vcf_tbi.collect { [it[0], "${file(it[1]).name},variantsMD5:${path(it[1]).vcf.variantsMD5}", file(it[2]).name] },
+                    workflow.out.vep_reports,
+                    workflow.out.snpeff_reports,
+                    workflow.out.snpeff_html,
+                    workflow.out.snpeff_genes,
+                    workflow.out.versions
+                ).match()}
             )
         }
     }
 
     test("sarscov2 - snpeff + ensemblvep") {
+
+        setup {
+            run("ENSEMBLVEP_DOWNLOAD") {
+                script "../../../../modules/nf-core/ensemblvep/download"
+                process {
+                    """
+                    input[0] = [
+                        [id:"reference"],
+                        "WBcel235",
+                        "caenorhabditis_elegans",
+                        "110"
+                    ]
+                    """
+                }
+            }
+
+            run("SNPEFF_DOWNLOAD") {
+                script "../../../../modules/nf-core/snpeff/download"
+                process {
+                    """
+                    input[0] = [
+                        [id:"reference"],
+                        "WBcel235.105"
+                    ]
+                    """
+                }
+            }
+        }
 
         when {
             workflow {
@@ -166,12 +210,35 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert snapshot(
+                    workflow.out.vcf_tbi.collect { [it[0], "${file(it[1]).name},variantsMD5:${path(it[1]).vcf.variantsMD5}", file(it[2]).name] },
+                    workflow.out.vep_reports,
+                    workflow.out.snpeff_reports,
+                    workflow.out.snpeff_html,
+                    workflow.out.snpeff_genes,
+                    workflow.out.versions
+                ).match()}
             )
         }
     }
 
     test("sarscov2 - ensemblvep - large chunks") {
+
+        setup {
+            run("ENSEMBLVEP_DOWNLOAD") {
+                script "../../../../modules/nf-core/ensemblvep/download"
+                process {
+                    """
+                    input[0] = [
+                        [id:"reference"],
+                        "WBcel235",
+                        "caenorhabditis_elegans",
+                        "110"
+                    ]
+                    """
+                }
+            }
+        }
 
         when {
             workflow {
@@ -208,12 +275,35 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert snapshot(
+                    workflow.out.vcf_tbi.collect { [it[0], "${file(it[1]).name},variantsMD5:${path(it[1]).vcf.variantsMD5}", file(it[2]).name] },
+                    workflow.out.vep_reports,
+                    workflow.out.snpeff_reports,
+                    workflow.out.snpeff_html,
+                    workflow.out.snpeff_genes,
+                    workflow.out.versions
+                ).match()}
             )
         }
     }
 
     test("sarscov2 - ensemblvep - no scatter") {
+
+        setup {
+            run("ENSEMBLVEP_DOWNLOAD") {
+                script "../../../../modules/nf-core/ensemblvep/download"
+                process {
+                    """
+                    input[0] = [
+                        [id:"reference"],
+                        "WBcel235",
+                        "caenorhabditis_elegans",
+                        "110"
+                    ]
+                    """
+                }
+            }
+        }
 
         when {
             workflow {
@@ -250,7 +340,14 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert snapshot(
+                    workflow.out.vcf_tbi.collect { [it[0], "${file(it[1]).name},variantsMD5:${path(it[1]).vcf.variantsMD5}", file(it[2]).name] },
+                    workflow.out.vep_reports,
+                    workflow.out.snpeff_reports,
+                    workflow.out.snpeff_html,
+                    workflow.out.snpeff_genes,
+                    workflow.out.versions
+                ).match()}
             )
         }
     }
