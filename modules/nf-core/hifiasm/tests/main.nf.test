@@ -48,8 +48,8 @@ nextflow_process {
                     [ id : 'test'],
                     [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)]
                 ]
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/yak/test.yak')
-                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/yak/test2.yak')
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/yak/test.yak', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/yak/test2.yak', checkIfExists: true)
                 input[3] = []
                 input[4] = []
                 """
@@ -58,6 +58,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert file(process.out.maternal_contigs.get(0).get(1)).length() == 0},
                 { assert snapshot(
                     process.out.raw_unitigs,
                     process.out.processed_contigs,
@@ -65,7 +66,6 @@ nextflow_process {
                     process.out.primary_contigs,
                     process.out.alternate_contigs,
                     process.out.paternal_contigs,
-                    process.out.maternal_contigs,
                     process.out.versions
                 ).match() }
             )
@@ -82,14 +82,15 @@ nextflow_process {
                 ]
                 input[1] = []
                 input[2] = []
-                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz')
-                input[4] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz')
+                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                input[4] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                 """
             }
         }
         then {
             assertAll(
                 { assert process.success },
+                { assert file(process.out.maternal_contigs.get(0).get(1)).length() == 0},
                 { assert snapshot(
                     process.out.raw_unitigs,
                     process.out.processed_contigs,
@@ -97,7 +98,6 @@ nextflow_process {
                     process.out.primary_contigs,
                     process.out.alternate_contigs,
                     process.out.paternal_contigs,
-                    process.out.maternal_contigs,
                     process.out.versions
                 ).match() }
             )
@@ -111,10 +111,10 @@ nextflow_process {
                     [ id : 'test'],
                     [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)]
                 ]
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/yak/test.yak')
-                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/yak/test2.yak')
-                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz)
-                input[4] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/yak/test.yak', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/yak/test2.yak', checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz, checkIfExists: true)
+                input[4] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz, checkIfExists: true)
                 """
         }
         then {
@@ -131,7 +131,7 @@ nextflow_process {
                     [ id : 'test'],
                     [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)]
                 ]
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/yak/test.yak')
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/yak/test.yak', checkIfExists: true)
                 input[2] = []
                 input[3] = []
                 input[4] = []
@@ -154,7 +154,7 @@ nextflow_process {
                 input[1] = []
                 input[2] = []
                 input[3] = []
-                input[4] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz')
+                input[4] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                 """
         }
         then {
