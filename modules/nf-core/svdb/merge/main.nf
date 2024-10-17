@@ -29,17 +29,18 @@ process SVDB_MERGE {
 
     if (sort_inputs && vcfs.collect().size() > 1) {
         if (priority) {
-            // If there are more than one input, make vcf-prioprity pairs
-            // pair them and sort on VCF name, so priority is also sorted the same
+            // make vcf-prioprity pairs and sort on VCF name, so priority is also sorted the same
             def pairs = vcfs.indices.collect { [vcfs[it], priority[it]] }
             pairs = pairs.sort { a, b -> a[0].name <=> b[0].name }
             vcfs = pairs.collect { it[0] }
             priority = pairs.collect { it[1] }
         } else {
+            // if there's no priority input just sort the vcfs by name
             vcfs = vcfs.sort { it.name }
         }
     }
 
+    // If there's only one input VCF the code above is not executed, and that VCF becomes the input
     input = vcfs
 
     def prio = ""

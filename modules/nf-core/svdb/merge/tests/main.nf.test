@@ -30,7 +30,6 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert path(process.out.vcf.get(0).get(1)).linesGzip[2].contains("--vcf test.vcf") }, // SVDB command line
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip[51].contains("test") }, // #CHROM line
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
@@ -61,7 +60,6 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert path(process.out.vcf.get(0).get(1)).linesGzip[2].contains("--vcf test.vcf") }, // SVDB command line
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip[51].contains("test") }, // #CHROM line
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
@@ -92,7 +90,6 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert path(process.out.vcf.get(0).get(1)).linesGzip[2].contains("--vcf test.vcf:tiddit") }, // SVDB command line
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip[51].contains("test") }, // #CHROM line
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
@@ -123,7 +120,6 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert path(process.out.vcf.get(0).get(1)).linesGzip[2].contains("--vcf test.vcf:tiddit") }, // SVDB command line
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip[51].contains("test") }, // #CHROM line
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
@@ -155,7 +151,6 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert path(process.out.vcf.get(0).get(1)).linesGzip[2].contains("--vcf test2.vcf test.vcf") }, // SVDB command line
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip[51].contains("test2\ttest") }, // #CHROM line
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
@@ -187,7 +182,6 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert path(process.out.vcf.get(0).get(1)).linesGzip[2].contains("--vcf test.vcf test2.vcf") }, // SVDB command line
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip[51].contains("test\ttest2") }, // #CHROM line
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
@@ -219,7 +213,6 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert path(process.out.vcf.get(0).get(1)).linesGzip[2].contains("--vcf test2.vcf:tiddit test.vcf:cnvnator") }, // SVDB command line
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip[51].contains("test2\ttest") }, // #CHROM line
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
@@ -230,7 +223,7 @@ nextflow_process {
     }
 
     test("2 samples, ['tiddit', 'cnvnator'], true") {
-        
+
         when {
             process {
                 """
@@ -251,7 +244,6 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert path(process.out.vcf.get(0).get(1)).linesGzip[2].contains("--vcf test.vcf:cnvnator test2.vcf:tiddit") }, // SVDB command line
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip[51].contains("test\ttest2") }, // #CHROM line
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,

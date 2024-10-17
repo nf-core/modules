@@ -24,7 +24,10 @@ input:
         pattern: "*.{vcf,vcf.gz}"
   - - priority:
         type: list
-        description: prioritise the input vcf files according to this list, e.g ['tiddit','cnvnator']
+        description: prioritise the input VCF files according to this list, e.g ['tiddit','cnvnator']
+  - - sort_inputs:
+        type: boolean
+        description: Should the input VCF files be sorted by name or not
 output:
   - vcf:
       - meta:
