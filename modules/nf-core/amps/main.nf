@@ -37,4 +37,18 @@ process AMPS {
         amps: \$(echo \$(hops --version 2>&1) | sed 's/HOPS version//')
     END_VERSIONS
     """
+
+    stub:
+    """
+    mkdir -p results
+    touch results/heatmap_overview_Wevid.json
+    touch results/heatmap_overview_Wevid.pdf
+    touch results/heatmap_overview_Wevid.tsv
+    mkdir results/pdf_candidate_profiles/
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        amps: \$(echo \$(hops --version 2>&1) | sed 's/HOPS version//')
+    END_VERSIONS
+    """
 }
