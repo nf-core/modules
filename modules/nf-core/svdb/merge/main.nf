@@ -8,11 +8,12 @@ process SVDB_MERGE {
 
     input:
     tuple val(meta), path(vcfs)
-    val (priority)
+    val(priority)
+    val(sort_inputs)
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml"           , emit: versions
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,15 +21,37 @@ process SVDB_MERGE {
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input  = "${vcfs.join(" ")}"
-    def prio   = ""
+
+    // Ensure priority list matches the number of VCFs if priority is provided
+    if (priority && vcfs.collect().size() != priority.collect().size()) {
+        error "If priority is used, one tag per VCF is needed"
+    }
+
+    if (sort_inputs && vcfs.collect().size() > 1) {
+        if (priority) {
+            // make vcf-prioprity pairs and sort on VCF name, so priority is also sorted the same
+            def pairs = vcfs.indices.collect { [vcfs[it], priority[it]] }
+            pairs = pairs.sort { a, b -> a[0].name <=> b[0].name }
+            vcfs = pairs.collect { it[0] }
+            priority = pairs.collect { it[1] }
+        } else {
+            // if there's no priority input just sort the vcfs by name
+            vcfs = vcfs.sort { it.name }
+        }
+    }
+
+    // If there's only one input VCF the code above is not executed, and that VCF becomes the input
+    input = vcfs
+
+    def prio = ""
     if(priority) {
         prio = "--priority ${priority.join(',')}"
         input = ""
-        for (int index = 0; index < vcfs.size(); index++) {
-            input += " ${vcfs[index]}:${priority[index]}"
+        for (int index = 0; index < vcfs.collect().size(); index++) {
+            input += "${vcfs[index]}:${priority[index]} "
         }
     }
+
     """
     svdb \\
         --merge \\
