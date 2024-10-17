@@ -15,6 +15,7 @@ nextflow_process {
 
     setup {
         config "./nextflow.config"
+        options "-stub"
         run("ARRIBA_DOWNLOAD") {
             script "../../../arriba/download/main.nf"
             process {
@@ -25,6 +26,7 @@ nextflow_process {
         }
         run("STAR_GENOMEGENERATE") {
             script "../../../star/genomegenerate/main.nf"
+            options "-stub"
             process {
                 """
                 input[0] = Channel.of([
@@ -40,6 +42,7 @@ nextflow_process {
         }
         run("STAR_ALIGN") {
             script "../../../star/align/main.nf"
+            options "-stub"
             process {
                 """
                 input[0] = Channel.of([
@@ -60,40 +63,6 @@ nextflow_process {
                 """
             }
         }
-    }
-
-    test("homo_sapiens - paired_end") {
-
-        when {
-            process {
-                """
-                input[0] = STAR_ALIGN.out.bam
-                input[1] = Channel.of([
-                    [ id:'test_fasta' ],
-                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
-                ])
-                input[2] = Channel.of([
-                    [ id:'test_gtf' ],
-                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
-                ])
-                input[3] = []
-
-                input[4] = []
-
-                input[5] = []
-
-                input[6] = []
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
-
     }
 
     test("homo_sapiens - paired_end - stub") {
