@@ -36,7 +36,10 @@ process SVDB_MERGE {
         $prio \\
         --vcf $input \\
         > ${prefix}.vcf
-    bgzip ${prefix}.vcf
+
+    bgzip \\
+        --threads ${task.cpus} \\
+        ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -48,7 +51,7 @@ process SVDB_MERGE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.vcf.gz
+    echo | gzip > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
