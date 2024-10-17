@@ -208,7 +208,7 @@ if (!contrast_variable %in% colnames(sample.sheet)) {
         '\" not in sample sheet'
         )
     )
-} else if (any(!c(opt\$reflevel, opt\$treatlevel) %in% sample.sheet[[contrast_variable]])) {
+} else if (any(!c(opt\$reference_level, opt\$target_level) %in% sample.sheet[[contrast_variable]])) {
     stop(
         paste(
         'Please choose reference and target levels that are present in the',
@@ -255,83 +255,134 @@ if ((! is.null(opt\$exclude_samples_col)) && (! is.null(opt\$exclude_samples_val
     sample.sheet <- sample.sheet[selected_samples, ]
 }
 
-# Now specify the model. Use cell-means style so we can be explicit with the
-# contrasts
+################################################
+################################################
+## Build the Model Formula                    ##
+################################################
+################################################
 
-model <- paste('~ 0 +', contrast_variable)
+# Build the model formula with blocking variables first
+model_vars <- c()
 
 if (!is.null(opt\$blocking_variables)) {
-    model <- paste(model, paste(blocking.vars, collapse = '+'), sep = '+')
+    # Include blocking variables (including pairing variables if any)
+    model_vars <- c(model_vars, blocking.vars)
 }
 
-# Make sure all the appropriate variables are factors
+# Add the contrast variable at the end
+model_vars <- c(model_vars, contrast_variable)
 
-for (v in c(blocking.vars, contrast_variable)) {
+# Construct the model formula
+model <- paste('~ 0 +', paste(model_vars, collapse = '+'))
+
+# Make sure all the appropriate variables are factors
+vars_to_factor <- model_vars  # All variables in the model need to be factors
+for (v in vars_to_factor) {
     sample.sheet[[v]] <- as.factor(sample.sheet[[v]])
 }
 
 ################################################
 ################################################
-## Run Limma processes                       ##
+## Run Limma processes                        ##
 ################################################
 ################################################
 
-# Generate the design
-
+# Generate the design matrix
 design <- model.matrix(
     as.formula(model),
     data=sample.sheet
 )
+
+# Adjust column names for the contrast variable
 colnames(design) <- sub(
-    contrast_variable,
-    paste0(contrast_variable, '.'), colnames(design)
+    paste0('^', contrast_variable),
+    paste0(contrast_variable, '.'),
+    colnames(design)
 )
+
+# Adjust column names to be syntactically valid
+colnames(design) <- make.names(colnames(design))
 
 # Prepare for and run lmFit()
 
-lmfit_args = c(
-    list(
-        object = as.matrix(intensities.table),
-        design = design
-    ),
-    opt[c('ndups', 'spacing', 'block', 'method')]
+lmfit_args <- list(
+    object = as.matrix(intensities.table),
+    design = design
 )
 
+# Include optional parameters if provided
+if (! is.null(opt\$ndups)){
+    lmfit_args[['ndups']] <- as.numeric(opt\$ndups)
+}
+if (! is.null(opt\$spacing)){
+    lmfit_args[['spacing']] <- as.numeric(opt\$spacing)
+}
 if (! is.null(opt\$block)){
-    lmfit_args[['block']] = sample.sheet[[opt\$block]]
+    lmfit_args[['block']] <- sample.sheet[[opt\$block]]
 }
 if (! is.null(opt\$correlation)){
-    lmfit_args[['correlation']] = opt\$correlation
+    lmfit_args[['correlation']] <- as.numeric(opt\$correlation)
+}
+if (! is.null(opt\$method)){
+    lmfit_args[['method']] <- opt\$method
 }
 
 fit <- do.call(lmFit, lmfit_args)
 
 # Contrasts bit
-contrast <- paste(paste(contrast_variable, c(opt\$target_level, opt\$reference_level), sep='.'), collapse='-')
-contrast.matrix <- makeContrasts(contrasts=contrast, levels=design)
+
+# Create the contrast string for the specified comparison
+contrast_string <- paste0(contrast_variable, ".", opt\$target_level, " - ", contrast_variable, ".", opt\$reference_level)
+
+# Create the contrast matrix
+contrast.matrix <- makeContrasts(contrasts=contrast_string, levels=design)
+
 fit2 <- contrasts.fit(fit, contrast.matrix)
 
-# Prepare for and run ebayes
+# Prepare for and run eBayes
 
-ebayes_args = c(
-    list(
-        fit = fit2
-    ),
-    opt[c('proportion', 'stdev.coef.lim', 'trend', 'robust', 'winsor.tail.p')]
+ebayes_args <- list(
+    fit = fit2
 )
+
+if (! is.null(opt\$proportion)){
+    ebayes_args[['proportion']] <- as.numeric(opt\$proportion)
+}
+if (! is.null(opt\$stdev.coef.lim)){
+    ebayes_args[['stdev.coef.lim']] <- as.numeric(opt\$stdev.coef.lim)
+}
+if (! is.null(opt\$trend)){
+    ebayes_args[['trend']] <- as.logical(opt\$trend)
+}
+if (! is.null(opt\$robust)){
+    ebayes_args[['robust']] <- as.logical(opt\$robust)
+}
+if (! is.null(opt\$winsor.tail.p)){
+    ebayes_args[['winsor.tail.p']] <- as.numeric(opt\$winsor.tail.p)
+}
 
 fit2 <- do.call(eBayes, ebayes_args)
 
 # Run topTable() to generate a results data frame
 
-toptable_args = c(
-    list(
-        fit = fit2,
-        sort.by = 'none',
-        number = nrow(intensities.table)
-    ),
-    opt[c('adjust.method', 'p.value', 'lfc', 'confint')]
+toptable_args <- list(
+    fit = fit2,
+    sort.by = 'none',
+    number = nrow(intensities.table)
 )
+
+if (! is.null(opt\$adjust.method)){
+    toptable_args[['adjust.method']] <- opt\$adjust.method
+}
+if (! is.null(opt\$p.value)){
+    toptable_args[['p.value']] <- as.numeric(opt\$p.value)
+}
+if (! is.null(opt\$lfc)){
+    toptable_args[['lfc']] <- as.numeric(opt\$lfc)
+}
+if (! is.null(opt\$confint)){
+    toptable_args[['confint']] <- as.logical(opt\$confint)
+}
 
 comp.results <- do.call(topTable, toptable_args)[rownames(intensities.table),]
 
@@ -345,7 +396,7 @@ contrast.name <-
     paste(opt\$target_level, opt\$reference_level, sep = "_vs_")
 cat("Saving results for ", contrast.name, " ...\n", sep = "")
 
-# Differential expression table- note very limited rounding for consistency of
+# Differential expression table - note very limited rounding for consistency of
 # results
 
 out_df <- cbind(
@@ -368,7 +419,7 @@ png(
     width = 600,
     height = 600
 )
-plotMD(intensities.table)
+plotMD(fit2)
 dev.off()
 
 # R object for other processes to use
@@ -410,3 +461,4 @@ writeLines(
 ################################################
 ################################################
 ################################################
+
