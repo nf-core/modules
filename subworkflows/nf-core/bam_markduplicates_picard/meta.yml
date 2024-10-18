@@ -1,6 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "bam_markduplicates_picard"
-description: Picard MarkDuplicates, index BAM file and run samtools stats, flagstat and idxstats
+description: Picard MarkDuplicates, index BAM file and run samtools stats, flagstat
+  and idxstats
 keywords:
   - markduplicates
   - bam
@@ -15,54 +16,108 @@ components:
   - bam_stats_samtools
 input:
   - ch_reads:
-      description: |
-        Sequence reads in BAM/CRAM/SAM format
-        Structure: [ val(meta), path(reads) ]
+      description: Sequence reads in BAM/CRAM/SAM format
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - reads:
+            type: file
+            description: BAM/CRAM/SAM file
   - ch_fasta:
-      description: |
-        Reference genome fasta file required for CRAM input
-        Structure: [ path(fasta) ]
-  - ch_fasta:
-      description: |
-        Index of the reference genome fasta file
-        Structure: [ path(fai) ]
+      description: Reference genome fasta file required for CRAM input
+      structure:
+        - fasta:
+            type: file
+            description: Reference genome fasta file
+  - ch_fai:
+      description: Index of the reference genome fasta file
+      structure:
+        - fai:
+            type: file
+            description: Index of the reference genome fasta file
 output:
   - bam:
-      description: |
-        processed BAM/SAM file
-        Structure: [ val(meta), path(bam) ]
+      description: processed BAM/SAM file
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - bam:
+            type: file
+            description: BAM/SAM file
   - bai:
-      description: |
-        BAM/SAM samtools index
-        Structure: [ val(meta), path(bai) ]
+      description: BAM/SAM samtools index
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - bai:
+            type: file
+            description: BAM/SAM samtools index
   - cram:
-      description: |
-        processed CRAM file
-        Structure: [ val(meta), path(cram) ]
+      description: processed CRAM file
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - cram:
+            type: file
+            description: CRAM file
   - crai:
-      description: |
-        CRAM samtools index
-        Structure: [ val(meta), path(crai) ]
+      description: CRAM samtools index
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - crai:
+            type: file
+            description: CRAM samtools index
   - csi:
-      description: |
-        CSI samtools index
-        Structure: [ val(meta), path(csi) ]
+      description: CSI samtools index
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - csi:
+            type: file
+            description: CSI samtools index
   - stats:
-      description: |
-        File containing samtools stats output
-        Structure: [ val(meta), path(stats) ]
+      description: File containing samtools stats output
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - stats:
+            type: file
+            description: samtools stats output
   - flagstat:
-      description: |
-        File containing samtools flagstat output
-        Structure: [ val(meta), path(flagstat) ]
+      description: File containing samtools flagstat output
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - flagstat:
+            type: file
+            description: samtools flagstat output
   - idxstats:
-      description: |
-        File containing samtools idxstats output
-        Structure: [ val(meta), path(idxstats) ]
+      description: File containing samtools idxstats output
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - idxstats:
+            type: file
+            description: samtools idxstats output
   - versions:
-      description: |
-        Files containing software versions
-        Structure: [ path(versions.yml) ]
+      description: Files containing software versions
+      structure:
+        - versions:
+            type: file
+            description: File containing software versions
+            pattern: "versions.yml"
+  - metrics:
+      description: ""
 authors:
   - "@dmarron"
   - "@drpatelh"
