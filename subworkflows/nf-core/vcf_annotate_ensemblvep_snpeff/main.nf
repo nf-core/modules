@@ -197,8 +197,8 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
     emit:
     vcf_tbi         = ch_vcf_tbi        // channel: [ val(meta), path(vcf), path(tbi) ]
     vep_reports     = ch_vep_reports    // channel: [ path(html) ]
-    snpeff_reports  = ch_snpeff_reports // channel: [ path(csv) ]
-    snpeff_html     = ch_snpeff_html    // channel: [ path(html) ]
-    snpeff_genes    = ch_snpeff_genes   // channel: [ path(genes) ]
+    snpeff_reports  = ch_snpeff_reports // channel: [ val(meta), path(csv) ]
+    snpeff_html     = ch_snpeff_html    // channel: [ val(meta), path(html) ]
+    snpeff_genes    = ch_snpeff_genes   // channel: [ val(meta), path(genes) ]
     versions        = ch_versions       // channel: [ versions.yml ]
 }

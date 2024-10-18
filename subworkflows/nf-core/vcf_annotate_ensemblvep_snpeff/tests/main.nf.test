@@ -7,7 +7,9 @@ nextflow_workflow {
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "subworkflows/vcf_annotate_ensemblvep_snpeff"
+    tag "ensemblvep/download"
     tag "ensemblvep/vep"
+    tag "snpeff/download"
     tag "snpeff/snpeff"
     tag "tabix/tabix"
     tag "tabix/bgzip"
@@ -39,12 +41,6 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = Channel.of([
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
-                    []
-                ],
-                [
                     [ id:'custom_test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
@@ -72,11 +68,11 @@ nextflow_workflow {
                 { assert workflow.success},
                 { assert snapshot(
                     workflow.out.vcf_tbi.collect { [it[0], "${file(it[1]).name},variantsMD5:${path(it[1]).vcf.variantsMD5}", file(it[2]).name] },
-                    workflow.out.vep_reports,
-                    workflow.out.snpeff_reports,
-                    workflow.out.snpeff_html,
-                    workflow.out.snpeff_genes,
-                    workflow.out.versions
+                    workflow.out.vep_reports.collect { it instanceof String ? file(it).name : it },
+                    workflow.out.snpeff_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
+                    workflow.out.snpeff_html.collect { it.collect { it instanceof String ? file(it).name : it } },
+                    workflow.out.snpeff_genes.collect { it.collect { it instanceof String ? file(it).name : it } },
+                    workflow.out.versions.collect { it instanceof String ? file(it).name : it }
                 ).match()}
             )
         }
@@ -136,9 +132,9 @@ nextflow_workflow {
                 { assert snapshot(
                     workflow.out.vcf_tbi.collect { [it[0], "${file(it[1]).name},variantsMD5:${path(it[1]).vcf.variantsMD5}", file(it[2]).name] },
                     workflow.out.vep_reports.collect { it instanceof String ? file(it).name : it },
-                    workflow.out.snpeff_reports.collect { it instanceof String ? file(it).name : it },
-                    workflow.out.snpeff_html.collect { it instanceof String ? file(it).name : it },
-                    workflow.out.snpeff_genes.collect { it instanceof String ? file(it).name : it },
+                    workflow.out.snpeff_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
+                    workflow.out.snpeff_html.collect { it.collect { it instanceof String ? file(it).name : it } },
+                    workflow.out.snpeff_genes.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.versions.collect { it instanceof String ? file(it).name : it }
                 ).match()}
             )
@@ -178,13 +174,7 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
-                    []
-                ],
-                [
+                input[0] = Channel.of(                [
                     [ id:'custom_test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
@@ -213,9 +203,9 @@ nextflow_workflow {
                 { assert snapshot(
                     workflow.out.vcf_tbi.collect { [it[0], "${file(it[1]).name},variantsMD5:${path(it[1]).vcf.variantsMD5}", file(it[2]).name] },
                     workflow.out.vep_reports.collect { it instanceof String ? file(it).name : it },
-                    workflow.out.snpeff_reports.collect { it instanceof String ? file(it).name : it },
-                    workflow.out.snpeff_html.collect { it instanceof String ? file(it).name : it },
-                    workflow.out.snpeff_genes.collect { it instanceof String ? file(it).name : it },
+                    workflow.out.snpeff_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
+                    workflow.out.snpeff_html.collect { it.collect { it instanceof String ? file(it).name : it } },
+                    workflow.out.snpeff_genes.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.versions.collect { it instanceof String ? file(it).name : it }
                 ).match()}
             )
@@ -243,13 +233,7 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
-                    []
-                ],
-                [
+                input[0] = Channel.of(                [
                     [ id:'custom_test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
@@ -278,9 +262,9 @@ nextflow_workflow {
                 { assert snapshot(
                     workflow.out.vcf_tbi.collect { [it[0], "${file(it[1]).name},variantsMD5:${path(it[1]).vcf.variantsMD5}", file(it[2]).name] },
                     workflow.out.vep_reports.collect { it instanceof String ? file(it).name : it },
-                    workflow.out.snpeff_reports.collect { it instanceof String ? file(it).name : it },
-                    workflow.out.snpeff_html.collect { it instanceof String ? file(it).name : it },
-                    workflow.out.snpeff_genes.collect { it instanceof String ? file(it).name : it },
+                    workflow.out.snpeff_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
+                    workflow.out.snpeff_html.collect { it.collect { it instanceof String ? file(it).name : it } },
+                    workflow.out.snpeff_genes.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.versions.collect { it instanceof String ? file(it).name : it }
                 ).match()}
             )
@@ -309,12 +293,6 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = Channel.of([
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
-                    []
-                ],
-                [
                     [ id:'custom_test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
@@ -343,9 +321,9 @@ nextflow_workflow {
                 { assert snapshot(
                     workflow.out.vcf_tbi.collect { [it[0], "${file(it[1]).name},variantsMD5:${path(it[1]).vcf.variantsMD5}", file(it[2]).name] },
                     workflow.out.vep_reports.collect { it instanceof String ? file(it).name : it },
-                    workflow.out.snpeff_reports.collect { it instanceof String ? file(it).name : it },
-                    workflow.out.snpeff_html.collect { it instanceof String ? file(it).name : it },
-                    workflow.out.snpeff_genes.collect { it instanceof String ? file(it).name : it },
+                    workflow.out.snpeff_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
+                    workflow.out.snpeff_html.collect { it.collect { it instanceof String ? file(it).name : it } },
+                    workflow.out.snpeff_genes.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.versions.collect { it instanceof String ? file(it).name : it }
                 ).match()}
             )
