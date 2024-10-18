@@ -5,7 +5,7 @@ process PANGOLIN {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9b/9bde3b7cd87b98001f078099e036d442ca034e9bca0d2a1d900dfa628577eab9/data' :
-        'community.wave.seqera.io/library/pangolin_snakemake:5282f2aa7d83db6b }"
+        'community.wave.seqera.io/library/pangolin_snakemake:5282f2aa7d83db6b' }"
 
     input:
     tuple val(meta), path(fasta)
