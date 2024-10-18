@@ -3,9 +3,17 @@
         "content": [
             "463ac3b905fbf4ddf113a94dbfa8d69f",
             [
-                "## METRICS CLASS\tpicard.sam.DuplicationMetrics",
-                "LIBRARY\tUNPAIRED_READS_EXAMINED\tREAD_PAIRS_EXAMINED\tSECONDARY_OR_SUPPLEMENTARY_RDS\tUNMAPPED_READS\tUNPAIRED_READ_DUPLICATES\tREAD_PAIR_DUPLICATES\tREAD_PAIR_OPTICAL_DUPLICATES\tPERCENT_DUPLICATION\tESTIMATED_LIBRARY_SIZE",
-                "Unknown Library\t0\t0\t0\t0\t0\t0\t0\tNaN"
+                "## HISTOGRAM\tjava.lang.Double",
+                "BIN\tCoverageMult\tall_sets\toptical_sets\tnon_optical_sets",
+                "1.0\t0.999986\t1178\t0\t1178",
+                "2.0\t1.47674\t800\t0\t800",
+                "3.0\t1.704038\t14\t0\t14",
+                "4.0\t1.812404\t0\t0\t0",
+                "5.0\t1.864069\t0\t0\t0",
+                "6.0\t1.888701\t0\t0\t0",
+                "7.0\t1.900444\t0\t0\t0",
+                "8.0\t1.906043\t0\t0\t0",
+                "9.0\t1.908712\t0\t0\t0"
             ],
             [
                 [
@@ -16,7 +24,15 @@
                     "test.recall:md5,291d996c0bb26193df85a0c9d7390073"
                 ]
             ],
-            "test.g.vcf.gz",
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.g.vcf.gz,variantsMD5:93ffb0537ee088142003afe451ca7cfb"
+                ]
+            ],
             [
                 
             ],
@@ -46,7 +62,7 @@
             "nf-test": "0.9.0",
             "nextflow": "24.04.4"
         },
-        "timestamp": "2024-09-06T19:53:43.782054"
+        "timestamp": "2024-10-18T15:37:30.461864643"
     },
     "test-elprep-filter-stub": {
         "content": [
