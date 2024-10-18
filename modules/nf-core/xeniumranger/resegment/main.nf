@@ -6,9 +6,13 @@ process XENIUMRANGER_RESEGMENT {
 
     input:
     path(xenium_bundle)
+    val(expansion_distance)
+    val(dapi_filter)
+    val(boundary_stain)
+    val(interior_stain)
 
     output:
-    path("outs/**"), emit: outs
+    path("**/outs/**"), emit: outs
     path "versions.yml", emit: versions
 
     when:
@@ -23,7 +27,6 @@ process XENIUMRANGER_RESEGMENT {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def expansion_distance = expansion_distance ? "--expansion-distance=\"${expansion_distance}\"": ""
-    def resegment_nuclei = resegment_nuclei ? "--resegment-nuclei=\"${resegment_nuclei}\"": ""
     def dapi_filter = dapi_filter ? "--dapi-filter=\"${dapi_filter}\"": ""
 
     // Do not use boundary stain in analysis, but keep default interior stain and DAPI
@@ -35,13 +38,12 @@ process XENIUMRANGER_RESEGMENT {
     xeniumranger resegment \\
         --id="${prefix}" \\
         --xenium-bundle="${xenium_bundle}" \\
-        --localcores=${task.cpus} \\
-        --localmem=${task.memory.toGiga()} \\
         ${expansion_distance} \\
-        ${resegment_nuclei} \\
         ${dapi_filter} \\
         ${boundary_stain} \\
         ${interior_stain} \\
+        --localcores=${task.cpus} \\
+        --localmem=${task.memory.toGiga()} \\
         ${args}
 
     cat <<-END_VERSIONS > versions.yml
@@ -55,9 +57,10 @@ process XENIUMRANGER_RESEGMENT {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "XENIUMRANGER_RESEGMENT module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p outs/
-    touch outs/fake_file.txt
+    mkdir -p "${prefix}/outs/"
+    touch "${prefix}/outs/fake_file.txt"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
