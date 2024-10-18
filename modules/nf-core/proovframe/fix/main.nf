@@ -8,7 +8,7 @@ process PROOVFRAME_FIX {
         'biocontainers/proovframe:0.9.7--hdfd78af_1' }"
 
     input:
-    tuple val(meta), path(fa)
+    tuple val(meta) , path(fa)
     tuple val(meta2), path(tsv)
 
     output:
@@ -31,7 +31,7 @@ process PROOVFRAME_FIX {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        proovframe: 0.9.7
+        proovframe: \$(proovframe 2>&1 | grep -o 'proovframe-v[0-9]*\\.[0-9]*\\.[0-9]*' | grep -o '[0-9]*\\.[0-9]*\\.[0-9]*')
     END_VERSIONS
     """
 
@@ -43,7 +43,7 @@ process PROOVFRAME_FIX {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        proovframe: 0.9.7
+        proovframe: \$(proovframe 2>&1 | grep -o 'proovframe-v[0-9]*\\.[0-9]*\\.[0-9]*' | grep -o '[0-9]*\\.[0-9]*\\.[0-9]*')
     END_VERSIONS
     """
 }
