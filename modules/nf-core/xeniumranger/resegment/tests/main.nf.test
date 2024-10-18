@@ -13,10 +13,6 @@ nextflow_process {
 
         when {
 
-            params {
-                test_data_base = ""
-            }
-
             process {
                 """
                 input[0] = path(params.test_data['mus_musculus']['10xgenomics']['xeniumranger']['xenium_bundle'], checkIfExists: true)
@@ -33,8 +29,8 @@ nextflow_process {
                         'analysis_summary.html',
                         'cells.csv.gz',
                         'cells.parquet',
-                        'cells.zarr.zip'
-                        'transcripts.csv.gz'
+                        'cells.zarr.zip',
+                        'transcripts.csv.gz',
                         'transcripts.parquet',
                         'transcripts.zarr.zip',
                         'analysis.zarr.zip',
@@ -45,10 +41,10 @@ nextflow_process {
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.csv.gz' }).exists() },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.parquet' }).exists() },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.zarr.zip' }).exists() },
-                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.csv.gz' }).exists() }
-                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.parquet' }).exists() }
-                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.zarr.zip' }).exists() }
-                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'analysis.zarr.zip' }).exists() }
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.csv.gz' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.parquet' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.zarr.zip' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'analysis.zarr.zip' }).exists() },
             )
         }
     }
@@ -58,10 +54,6 @@ nextflow_process {
         options "-stub"
 
         when {
-
-            params {
-                test_data_base = ""
-            }
 
             process {
                 """
