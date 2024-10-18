@@ -21,11 +21,11 @@ process XENIUMRANGER_RELABEL {
         error "XENIUMRANGER_RELABEL module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
-    def run_id = task.ext.run_id ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     xeniumranger relabel \\
-        --id="${run_id}" \\
+        --id="${prefix}" \\
         --xenium-bundle="${xenium_bundle}" \\
         --panel="${gene_panel}" \\
         --localcores=${task.cpus} \\
@@ -43,10 +43,10 @@ process XENIUMRANGER_RELABEL {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "XENIUMRANGER_RELABEL module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def run_id = task.ext.run_id ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p "${run_id}/outs/"
-    touch "${run_id}/outs/fake_file.txt"
+    mkdir -p "${prefix}/outs/"
+    touch "${prefix}/outs/fake_file.txt"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -6,9 +6,11 @@ process XENIUMRANGER_RENAME {
 
     input:
     path(xenium_bundle)
+    val(region_name)
+    val(cassette_name)
 
     output:
-    path("outs/**"), emit: outs
+    path("**/outs/**"), emit: outs
     path "versions.yml", emit: versions
 
     when:
@@ -22,15 +24,12 @@ process XENIUMRANGER_RENAME {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def region_name = region_name ? "--region_name=\"${region_name}\"": ""
-    def cassette_name = cassette_name ? "--cassette_name=\"${cassette_name}\"": ""
-
     """
     xeniumranger rename \\
         --id="${prefix}" \\
         --xenium-bundle="${xenium_bundle}" \\
-        ${region_name} \\
-        ${cassette_name} \\
+        --region-name="${region_name}" \\
+        --cassette-name="${cassette_name}" \\
         --localcores=${task.cpus} \\
         --localmem=${task.memory.toGiga()} \\
         ${args}
@@ -46,9 +45,10 @@ process XENIUMRANGER_RENAME {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "XENIUMRANGER_RENAME module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p outs/
-    touch outs/fake_file.txt
+    mkdir -p "${prefix}/outs/"
+    touch "${prefix}/outs/fake_file.txt"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
