@@ -76,7 +76,6 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
             .multiMap { meta, vcf, count, custom_files ->
                 // Define the new ID. The `_annotated` is to disambiguate the VEP output with its input
                 def new_id = "${meta.id}${vcf.name.replace(meta.id,"").tokenize(".")[0]}_annotated" as String
-                def new_meta = meta + [id:new_id]
 
                 // Create channels: one with the VEP input and one with the original ID and count of scattered VCFs
                 input:  [ new_meta, vcf, custom_files ]
