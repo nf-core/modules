@@ -1,38 +1,19 @@
 {
-    "test_svdb_merge - stub": {
+    "1 sample, [], []": {
         "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,772f39343052d54d9bcb21d4892da203"
-                ],
-                "vcf": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,772f39343052d54d9bcb21d4892da203"
-                ]
-            }
+            "VcfFile [chromosomes=[MT192765.1], sampleCount=1, variantCount=9, phased=false, phasedAutodetect=false]",
+            "60fb4cab2aa891bebef8ffdbd0e41bc3",
+            [
+                "versions.yml:md5,772f39343052d54d9bcb21d4892da203"
+            ]
         ],
         "meta": {
             "nf-test": "0.9.0",
             "nextflow": "24.04.4"
         },
-        "timestamp": "2024-10-16T09:00:41.058996433"
+        "timestamp": "2024-10-17T08:30:08.029708713"
     },
-    "test_svdb_merge_noprio - stub": {
+    "2 samples, ['tiddit', 'cnvnator'], true - stub": {
         "content": [
             {
                 "0": [
@@ -40,7 +21,7 @@
                         {
                             "id": "test"
                         },
-                        "test.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "merged.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "1": [
@@ -51,7 +32,7 @@
                         {
                             "id": "test"
                         },
-                        "test.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "merged.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "versions": [
@@ -63,6 +44,203 @@
             "nf-test": "0.9.0",
             "nextflow": "24.04.4"
         },
-        "timestamp": "2024-10-16T09:00:49.58223306"
+        "timestamp": "2024-10-17T08:32:10.741546957"
+    },
+    "2 samples, ['tiddit', 'cnvnator'], []": {
+        "content": [
+            "VcfFile [chromosomes=[MT192765.1], sampleCount=2, variantCount=9, phased=false, phasedAutodetect=false]",
+            "254e56e4fc8356d68424828438da66e3",
+            [
+                "versions.yml:md5,772f39343052d54d9bcb21d4892da203"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-10-17T08:31:15.105041662"
+    },
+    "2 samples, [], []": {
+        "content": [
+            "VcfFile [chromosomes=[MT192765.1], sampleCount=2, variantCount=9, phased=false, phasedAutodetect=false]",
+            "7ad648266e57d405b5b01aaea4613d1c",
+            [
+                "versions.yml:md5,772f39343052d54d9bcb21d4892da203"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-10-17T08:41:54.793936976"
+    },
+    "2 samples, ['tiddit', 'cnvnator'], true": {
+        "content": [
+            "VcfFile [chromosomes=[MT192765.1], sampleCount=2, variantCount=9, phased=false, phasedAutodetect=false]",
+            "74ed58e115db54f30036bfd68a7dc432",
+            [
+                "versions.yml:md5,772f39343052d54d9bcb21d4892da203"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-10-17T08:31:29.320496992"
+    },
+    "1 sample, ['tiddit'], []": {
+        "content": [
+            "VcfFile [chromosomes=[MT192765.1], sampleCount=1, variantCount=9, phased=false, phasedAutodetect=false]",
+            "9dd588cd870672b78192f48ad440b5d",
+            [
+                "versions.yml:md5,772f39343052d54d9bcb21d4892da203"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-10-17T08:30:30.590239659"
+    },
+    "1 sample, [], true": {
+        "content": [
+            "VcfFile [chromosomes=[MT192765.1], sampleCount=1, variantCount=9, phased=false, phasedAutodetect=false]",
+            "60fb4cab2aa891bebef8ffdbd0e41bc3",
+            [
+                "versions.yml:md5,772f39343052d54d9bcb21d4892da203"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-10-17T08:30:22.670145479"
+    },
+    "1 sample, ['tiddit'], true": {
+        "content": [
+            "VcfFile [chromosomes=[MT192765.1], sampleCount=1, variantCount=9, phased=false, phasedAutodetect=false]",
+            "9dd588cd870672b78192f48ad440b5d",
+            [
+                "versions.yml:md5,772f39343052d54d9bcb21d4892da203"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-10-17T08:30:40.958649472"
+    },
+    "2 samples, [], true": {
+        "content": [
+            "VcfFile [chromosomes=[MT192765.1], sampleCount=2, variantCount=9, phased=false, phasedAutodetect=false]",
+            "de0a3b56cdee89e4c9cd4fbb4ad3391d",
+            [
+                "versions.yml:md5,772f39343052d54d9bcb21d4892da203"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-10-17T08:31:01.933044815"
+    },
+    "2 samples, ['tiddit', 'cnvnator'], [] - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "merged.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "1": [
+                    "versions.yml:md5,772f39343052d54d9bcb21d4892da203"
+                ],
+                "vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "merged.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,772f39343052d54d9bcb21d4892da203"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-10-17T08:31:59.830493054"
+    },
+    "2 samples, [], [] - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "merged.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "1": [
+                    "versions.yml:md5,772f39343052d54d9bcb21d4892da203"
+                ],
+                "vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "merged.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,772f39343052d54d9bcb21d4892da203"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-10-17T08:41:07.289491939"
+    },
+    "2 samples, [], true - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "merged.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "1": [
+                    "versions.yml:md5,772f39343052d54d9bcb21d4892da203"
+                ],
+                "vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "merged.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,772f39343052d54d9bcb21d4892da203"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-10-17T08:31:48.40721064"
     }
 }

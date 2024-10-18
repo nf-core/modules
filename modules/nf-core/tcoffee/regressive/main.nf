@@ -1,4 +1,4 @@
-process TCOFFEE_ALIGN {
+process TCOFFEE_REGRESSIVE {
     tag "$meta.id"
     label 'process_medium'
 
@@ -8,36 +8,38 @@ process TCOFFEE_ALIGN {
         'biocontainers/mulled-v2-a76a981c07359a31ff55b9dc13bd3da5ce1909c1:84c8f17f1259b49e2f7783b95b7a89c6f2cb199e-0' }"
 
     input:
-    tuple val(meta) ,  path(fasta)
-    tuple val(meta2),  path(tree)
-    tuple val(meta3),  path(template), path(accessory_informations)
+    tuple val(meta) , path(fasta)
+    tuple val(meta2), path(tree)
+    tuple val(meta3), path(template), path(accessory_informations)
     val(compress)
 
     output:
     tuple val(meta), path("*.aln{.gz,}"), emit: alignment
-    // in the args there might be the request to generate a lib file, so the following is an optional output
-    tuple val(meta), path("*.*lib")     , emit: lib, optional : true
     path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def tree_args = tree ? "-usetree $tree" : ""
+    def args          = task.ext.args ?: ''
+    def prefix        = task.ext.prefix ?: "${meta.id}"
+    def tree_args     = tree ? "-regtree $tree" : ""
     def template_args = template ? "-template_file $template" : ""
-    def outfile = compress ? "stdout" : "${prefix}.aln"
-    def write_output = compress ? " | pigz -cp ${task.cpus} > ${prefix}.aln.gz" : ""
+    def outfile       = compress ? "stdout" : "${prefix}.aln"
     """
     export TEMP='./'
-    t_coffee -seq ${fasta} \
+    t_coffee -reg \
+        -seq ${fasta} \
         $tree_args \
         $template_args \
         $args \
-        -thread ${task.cpus} \
-        -outfile $outfile \
-        $write_output
+        -reg_thread ${task.cpus} \
+        -outfile $outfile
+
+    if [ "$compress" = true ]; then
+        pigz -cp ${task.cpus} < stdout > ${prefix}.aln.gz
+        rm stdout
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
