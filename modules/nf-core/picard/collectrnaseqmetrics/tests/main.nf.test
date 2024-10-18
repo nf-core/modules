@@ -10,22 +10,22 @@ nextflow_process {
     tag "picard"
     tag "picard/collectrnaseqmetrics"
 
-    test("sarscov2 - fasta - gtf") {
-        
-        setup {
-            run("UCSC_GTFTOGENEPRED") {
-                script "../../../ucsc/gtftogenepred/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of([
-                        [ id:'test' ],
-                        [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true) ]
-                    ])
-                    """
-                }
+    setup {
+        run("UCSC_GTFTOGENEPRED") {
+            script "../../../ucsc/gtftogenepred/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ],
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true) ]
+                ])
+                """
             }
         }
+    }
 
+    test("sarscov2 - fasta - gtf") {
+        
         when {
             process {
                 """
@@ -56,20 +56,6 @@ nextflow_process {
         
         options "-stub"
         
-        setup {
-            run("UCSC_GTFTOGENEPRED") {
-                script "../../../ucsc/gtftogenepred/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of([
-                        [ id:'test' ],
-                        [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true) ]
-                    ])
-                    """
-                }
-            }
-        }
-
         when {
             process {
                 """
