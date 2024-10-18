@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process HifiAsm"
     script "../main.nf"
     process "HIFIASM"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
