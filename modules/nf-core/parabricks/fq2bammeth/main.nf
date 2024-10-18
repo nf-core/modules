@@ -9,7 +9,6 @@ process PARABRICKS_FQ2BAMMETH {
     tuple val(meta), path(reads)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(index)
-    path known_sites
 
     output:
     tuple val(meta), path("*.bam")               , emit: bam
@@ -29,23 +28,16 @@ process PARABRICKS_FQ2BAMMETH {
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def in_fq_command = meta.single_end       ? "--in-se-fq $reads"                                    : "--in-fq $reads"
-    def known_sites_command = known_sites     ? known_sites.collect{"--knownSites $it"}.join(' ')      : ""
-    def known_sites_output = known_sites      ? "--out-recal-file ${prefix}.table"                     : ""
+    def in_fq_command = meta.single_end ? "--in-se-fq $reads" : "--in-fq $reads"
     """
-    INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
-    mv $fasta \$INDEX
+    mv $fasta $index/
 
     pbrun \\
         fq2bam_meth \\
-        --ref \$INDEX \\
+        --ref $index/$fasta \\
         $in_fq_command \\
         --read-group-sm $meta.id \\
         --out-bam ${prefix}.bam \\
-        $known_sites_command \\
-        $known_sites_output \\
-        --out-recal-file ${OUTPUT_RECAL_FILE} \\
-        --num-gpus $task.accelerator.request \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
