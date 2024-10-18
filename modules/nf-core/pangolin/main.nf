@@ -21,6 +21,8 @@ process PANGOLIN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    export XDG_CACHE_HOME=/tmp/.cache
+
     pangolin \\
         $fasta\\
         --outfile ${prefix}.pangolin.csv \\
