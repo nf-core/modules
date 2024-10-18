@@ -79,7 +79,7 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
 
                 // Create channels: one with the VEP input and one with the original ID and count of scattered VCFs
                 input:  [ meta + [id:new_id], vcf, custom_files ]
-                count:  [ new_meta, meta.id, count ]
+                count:  [ meta + [id:new_id], meta.id, count ]
             }
 
         ch_vep_input = ch_scatter.input
