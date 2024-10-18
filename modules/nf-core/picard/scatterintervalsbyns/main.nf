@@ -5,7 +5,7 @@ process PICARD_SCATTERINTERVALSBYNS {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/picard:3.3.0--hdfd78af_0' :
-        'quay.io/biocontainers/picard:3.3.0--hdfd78af_0' }"
+        'biocontainers/picard:3.3.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)

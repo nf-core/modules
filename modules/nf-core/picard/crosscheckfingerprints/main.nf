@@ -5,7 +5,7 @@ process PICARD_CROSSCHECKFINGERPRINTS {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/picard:3.3.0--hdfd78af_0' :
-        'quay.io/biocontainers/picard:3.3.0--hdfd78af_0' }"
+        'biocontainers/picard:3.3.0--hdfd78af_0' }"
 
     input:
     tuple val(meta),  path(input1), path(input1_index), path(input2), path(input2_index), path(haplotype_map)
