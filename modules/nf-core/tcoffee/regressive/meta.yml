@@ -1,20 +1,20 @@
-name: tcoffee_consensus
-description: Computes a consensus alignment using T_COFFEE
+name: "tcoffee_regressive"
+description: Aligns sequences using the regressive algorithm as implemented in the T_COFFEE package
 keywords:
   - alignment
   - MSA
   - genomics
 tools:
-  - tcoffee:
+  - "tcoffee":
       description: "A collection of tools for Computing, Evaluating and Manipulating
         Multiple Alignments of DNA, RNA, Protein Sequences and Structures."
       homepage: "http://www.tcoffee.org/Projects/tcoffee/"
       documentation: "https://tcoffee.readthedocs.io/en/latest/tcoffee_main_documentation.html"
       tool_dev_url: "https://github.com/cbcrg/tcoffee"
-      doi: "10.1006/jmbi.2000.4042"
+      doi: "10.1038/s41587-019-0333-6"
       licence: ["GPL v3"]
       identifier: ""
-  - pigz:
+  - "pigz":
       description: "Parallel implementation of the gzip algorithm."
       homepage: "https://zlib.net/pigz/"
       documentation: "https://zlib.net/pigz/pigz.pdf"
@@ -24,11 +24,10 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
-    - aln:
+          e.g. `[ id:'test']`
+    - fasta:
         type: file
-        description: List of multiple sequence alignments in FASTA format to be used
-          to compute the consensus
+        description: Input sequences in FASTA format
         pattern: "*.{fa,fasta}"
   - - meta2:
         type: map
@@ -39,6 +38,21 @@ input:
         type: file
         description: Input guide tree in Newick format
         pattern: "*.{dnd}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing tree information
+          e.g. `[ id:'test_infos']`
+    - template:
+        type: file
+        description: T_coffee template file that maps sequences to the accessory information
+          files to be used.
+        pattern: "*"
+    - accessory_informations:
+        type: file
+        description: Accessory files to be used in the alignment. For example, it could
+          be protein structures or secondary structures.
+        pattern: "*"
   - - compress:
         type: boolean
         description: Flag representing whether the output MSA should be compressed.
@@ -50,23 +64,11 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-          pattern: "*.{fa,fasta,aln}"
-      - "*.{aln,aln.gz}":
+            e.g. `[ id:'test']`
+      - "*.aln{.gz,}":
           type: file
           description: Alignment file in FASTA format. May be gzipped.
           pattern: "*.aln{.gz,}"
-  - eval:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'test']`
-          pattern: "*.{html, score_ascii}"
-      - "*.{html,sp_ascii}":
-          type: file
-          description: Consensus evaluation file.
-          pattern: "*.{html, score_ascii}"
   - versions:
       - versions.yml:
           type: file
