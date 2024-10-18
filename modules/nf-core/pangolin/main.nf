@@ -4,8 +4,8 @@ process PANGOLIN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/71/7133e48e32b7baa883b8805e600a143b65316e8a014458b8eb4429eb3596f165/data' :
-        'community.wave.seqera.io/library/pangolin:4.2--3bc97f62c0074e70' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9b/9bde3b7cd87b98001f078099e036d442ca034e9bca0d2a1d900dfa628577eab9/data' :
+        'community.wave.seqera.io/library/pangolin_snakemake:5282f2aa7d83db6b }"
 
     input:
     tuple val(meta), path(fasta)
