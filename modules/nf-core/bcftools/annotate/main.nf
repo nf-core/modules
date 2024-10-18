@@ -60,9 +60,9 @@ process BCFTOOLS_ANNOTATE {
                     args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
                     "vcf"
     def index_extension = args.contains("--write-index=tbi") || args.contains("-W=tbi") ? "tbi" :
-                          args.contains("--write-index=csi") || args.contains("-W=csi") ? "csi" :
-                          args.contains("--write-index") || args.contains("-W") ? "csi" :
-                          ""
+                        args.contains("--write-index=csi") || args.contains("-W=csi") ? "csi" :
+                        args.contains("--write-index") || args.contains("-W") ? "csi" :
+                        ""
     def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
     def create_index = extension.endsWith(".gz") && index_extension.matches("csi|tbi") ? "touch ${prefix}.${extension}.${index_extension}" : ""
 
