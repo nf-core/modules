@@ -1,0 +1,81 @@
+nextflow_process {
+
+    name "Test Process SOURCEPREDICT"
+    script "../main.nf"
+    process "SOURCEPREDICT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "sourcepredict"
+
+    test("metagenome - csv") {
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file('/nesi/nobackup/uoo02328/meriam/sourcepredict/dog_exsample.csv', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'sources' ],
+                    file('/nesi/nobackup/uoo02328/meriam/sourcepredict/sp_sources.csv', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'labels' ],
+                    file('/nesi/nobackup/uoo02328/meriam/sourcepredict/sp_labels.csv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.report,
+                    process.out.versions,
+                ).match()
+                }
+            )
+        }
+
+    }
+
+    test("metagenome - csv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file('/nesi/nobackup/uoo02328/meriam/sourcepredict/dog_exsample.csv', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'sources' ],
+                    file('/nesi/nobackup/uoo02328/meriam/sourcepredict/sp_sources.csv', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'labels' ],
+                    file('/nesi/nobackup/uoo02328/meriam/sourcepredict/sp_labels.csv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.report,
+                    process.out.versions,
+                ).match()
+                }
+            )
+        }
+
+    }
+
+}
