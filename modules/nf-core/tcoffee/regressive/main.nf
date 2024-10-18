@@ -1,4 +1,4 @@
-process TCOFFEE_ALIGN {
+process TCOFFEE_REGRESSIVE {
     tag "$meta.id"
     label 'process_medium'
 
@@ -15,8 +15,6 @@ process TCOFFEE_ALIGN {
 
     output:
     tuple val(meta), path("*.aln{.gz,}"), emit: alignment
-    // in the args there might be the request to generate a lib file, so the following is an optional output
-    tuple val(meta), path("*.*lib")     , emit: lib, optional : true
     path "versions.yml"                 , emit: versions
 
     when:
@@ -25,19 +23,23 @@ process TCOFFEE_ALIGN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def tree_args = tree ? "-usetree $tree" : ""
+    def tree_args = tree ? "-regtree $tree" : ""
     def template_args = template ? "-template_file $template" : ""
     def outfile = compress ? "stdout" : "${prefix}.aln"
-    def write_output = compress ? " | pigz -cp ${task.cpus} > ${prefix}.aln.gz" : ""
     """
     export TEMP='./'
-    t_coffee -seq ${fasta} \
+    t_coffee -reg \
+        -seq ${fasta} \
         $tree_args \
         $template_args \
         $args \
-        -thread ${task.cpus} \
-        -outfile $outfile \
-        $write_output
+        -reg_thread ${task.cpus} \
+        -outfile $outfile
+
+    if [ "$compress" = true ]; then
+        pigz -cp ${task.cpus} < stdout > ${prefix}.aln.gz
+        rm stdout
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
