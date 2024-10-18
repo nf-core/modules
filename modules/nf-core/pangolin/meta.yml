@@ -22,15 +22,11 @@ input:
         description: |
           The genome assembly to be evaluated
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
   - report:
       - meta:
-          type: file
-          description: Pangolin lineage report
-          pattern: "*.{csv}"
+          type: map
+          description: |
+            Groovy Map containing sample information
       - "*.csv":
           type: file
           description: Pangolin lineage report
