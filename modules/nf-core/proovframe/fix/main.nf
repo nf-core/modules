@@ -1,4 +1,4 @@
-process PROOVFRAME_MAP {
+process PROOVFRAME_FIX {
     tag "$meta.id"
     label 'process_medium'
 
@@ -8,11 +8,12 @@ process PROOVFRAME_MAP {
         'biocontainers/proovframe:0.9.7--hdfd78af_1' }"
 
     input:
-    tuple val(meta), path(faa), path(fasta)
+    tuple val(meta) , path(fa)
+    tuple val(meta2), path(tsv)
 
     output:
-    tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.fa"), emit: out_fa
+    path "versions.yml"          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,12 +22,12 @@ process PROOVFRAME_MAP {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    proovframe \\
-        map \\
+    proovframe   \\
+        fix \\
         ${args} \\
-        -a ${faa} \\
-        -o ${prefix}.tsv  \\
-        ${fasta}
+        -o ${prefix}.fa  \\
+        ${fa} \\
+        ${tsv}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -38,7 +39,7 @@ process PROOVFRAME_MAP {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.tsv
+    touch ${prefix}.fa
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
