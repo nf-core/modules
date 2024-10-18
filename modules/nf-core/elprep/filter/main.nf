@@ -8,14 +8,13 @@ process ELPREP_FILTER {
         'biocontainers/elprep:5.1.3--he881be0_1' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(bam), path(bai), path(target_regions_bed)
     val(run_haplotypecaller)
     val(run_bqsr)
     path(reference_sequences)
     path(filter_regions_bed)
-    path(reference_elfasta)
+    tuple val(meta2), path(reference_elfasta)
     path(known_sites_elsites)
-    path(target_regions_bed)
     path(intermediate_bqsr_tables)
     val(bqsr_tables_only)
     val(get_activity_profile)
