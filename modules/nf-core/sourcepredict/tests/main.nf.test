@@ -15,15 +15,15 @@ nextflow_process {
                 """                
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file('/nesi/nobackup/uoo02328/meriam/sourcepredict/dog_exsample.csv', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/maxibor/sourcepredict/master/data/test/dog_test_sink_sample.csv', checkIfExists: true),
                 ]
                 input[1] = [
                     [ id:'sources' ],
-                    file('/nesi/nobackup/uoo02328/meriam/sourcepredict/sp_sources.csv', checkIfExists: true)
+                    file('https://raw.githubusercontent.com/maxibor/sourcepredict/master/data/modern_gut_microbiomes_sources.csv', checkIfExists: true)
                 ]
                 input[2] = [
                     [ id:'labels' ],
-                    file('/nesi/nobackup/uoo02328/meriam/sourcepredict/sp_labels.csv', checkIfExists: true)
+                    file('https://raw.githubusercontent.com/maxibor/sourcepredict/master/data/modern_gut_microbiomes_labels.csv', checkIfExists: true)
                 ]
                 """
             }
@@ -51,15 +51,15 @@ nextflow_process {
                 """                
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file('/nesi/nobackup/uoo02328/meriam/sourcepredict/dog_exsample.csv', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/maxibor/sourcepredict/master/data/test/dog_test_sink_sample.csv', checkIfExists: true),
                 ]
                 input[1] = [
                     [ id:'sources' ],
-                    file('/nesi/nobackup/uoo02328/meriam/sourcepredict/sp_sources.csv', checkIfExists: true)
+                    file('https://raw.githubusercontent.com/maxibor/sourcepredict/master/data/modern_gut_microbiomes_sources.csv', checkIfExists: true)
                 ]
                 input[2] = [
                     [ id:'labels' ],
-                    file('/nesi/nobackup/uoo02328/meriam/sourcepredict/sp_labels.csv', checkIfExists: true)
+                    file('https://raw.githubusercontent.com/maxibor/sourcepredict/master/data/modern_gut_microbiomes_labels.csv', checkIfExists: true)
                 ]
                 """
             }
