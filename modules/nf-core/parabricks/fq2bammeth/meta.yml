@@ -24,11 +24,6 @@ input:
         type: file
         description: fastq.gz files
         pattern: "*.fastq.gz"
-    - interval_file:
-        type: file
-        description: (optional) file(s) containing genomic intervals for use in base
-          quality score recalibration (BQSR)
-        pattern: "*.{bed,interval_list,picard,list,intervals}"
   - - meta2:
         type: map
         description: |
@@ -71,11 +66,6 @@ output:
           type: file
           description: index corresponding to sorted BAM file
           pattern: "*.bai"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
   - qc_metrics:
       - qc_metrics:
           type: directory
@@ -93,6 +83,11 @@ output:
           description: (optional) metrics calculated from marking duplcates in the bam
             file
           pattern: "*-duplicate-metrics.txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@sateeshperi"
 maintainers:
