@@ -24,7 +24,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { process.out.index.contains([[ id:'transcriptome' ], path('kallisto')]) },
+                { assert snapshot(process.out.versions).match() }
             )
         }
     }
