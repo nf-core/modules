@@ -13,8 +13,6 @@ nextflow_process {
     tag "clustalo/guidetree"
     tag "famsa/align"
 
-    config "./sequence.config"
-
     setup {
         run("CLUSTALO_GUIDETREE") {
             script "../../../clustalo/guidetree/main.nf"
@@ -55,6 +53,30 @@ nextflow_process {
     }
 
     test("consensus - no tree - uncompressed - seatoxin ") {
+        config "./sequence.config"
+
+        when {
+            process {
+                """
+                msas = FAMSA_ALIGN.out.alignment.mix(MAGUS_ALIGN.out.alignment).groupTuple()
+                input[0] = msas
+                input[1] = [[:],[]]
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match()},
+                { assert path(process.out.alignment.get(0).get(1)).getText().contains("1ahl") }
+            )
+        }
+    }
+
+    test("consensus_evaluation - no tree - uncompressed - seatoxin ") {
+        config "./eval.config"
 
         when {
             process {
@@ -77,6 +99,8 @@ nextflow_process {
     }
 
     test("consensus - tree - compressed- seatoxin") {
+        config "./sequence.config"
+
         when {
             process {
                 """
@@ -97,6 +121,7 @@ nextflow_process {
     }
 
      test("consensus - stub") {
+        config "./sequence.config"
 
         options "-stub"
 
