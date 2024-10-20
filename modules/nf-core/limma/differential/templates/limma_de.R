@@ -400,62 +400,27 @@ if (! is.null(opt\$winsor.tail.p)){
 
 fit2 <- do.call(eBayes, ebayes_args)
 
-if ((!is.null(opt\$use_voom) && opt\$use_voom) && (!is.null(opt\$IHW_correction) && opt\$IHW_correction)) {
+# Run topTable() to generate a results data frame
+toptable_args <- list(
+    fit = fit2,
+    sort.by = 'none',
+    number = nrow(intensities.table)
+)
 
-    # Define the column name for the group comparison
-    contrast_string <- paste0(contrast_variable, ".", opt\$target_level, " - ", contrast_variable, ".", opt\$reference_level)
-    # Calculate the median gene expression
-    median_expression <- apply(dge\$counts, 1, median)
-    # Apply IHW for multiple testing correction using median expression as covariate
-    ihw_result <- ihw(fit2\$p.value[, contrast_string] ~ median_expression, alpha = 0.05)
-    ihw_result@df <- as_tibble(ihw_result@df, rownames = opt\$probe_id_col)
-
-    # Convert fit\$p.value to a tibble, including rownames as a new column 'Gene'
-    fit_df <- as_tibble(fit2\$p.value, rownames = opt\$probe_id_col)
-
-    fit_df <- fit_df %>%
-        left_join(ihw_result@df %>% select(!!sym(opt\$probe_id_col),adj_pvalue),by=opt\$probe_id_col) %>%
-        rename(ihw.adj.p.value = adj_pvalue)
-
-    # Convert back to a matrix if necessary (not needed for merging, but for consistency later)
-    fit\$p.value <- as.matrix(fit_df %>% select(-!!sym(opt\$probe_id_col))) # Keep the original structure without probe_id_col column
-
-    # Generate the topTable including the new adjusted p-values
-    toptable_args <- list(fit = fit2, coef = name_con_ref, number = opt\$number, adjust.method = opt\$adjust.method,
-        p.value = opt\$p.value, lfc = opt\$lfc, confint = opt\$confint)
-
-    comp.results <- do.call(topTable, toptable_args)
-    # Add the IHW-adjusted p-values to the topTable results by merging based on probe_id_col
-    comp.results <- comp.results %>%
-        rownames_to_column(opt\$probe_id_col) %>%    # Ensure probe_id_col column exists in comp.results
-        left_join(fit_df, by = opt\$probe_id_col) %>%    # Merge based on probe_id_col column
-        column_to_rownames(var=opt\$probe_id_col) %>%
-        select(-sym(name_con_ref))
-
-} else {
-    # Run topTable() to generate a results data frame
-
-    toptable_args <- list(
-        fit = fit2,
-        sort.by = 'none',
-        number = nrow(intensities.table)
-    )
-
-    if (! is.null(opt\$adjust.method)){
-        toptable_args[['adjust.method']] <- opt\$adjust.method
-    }
-    if (! is.null(opt\$p.value)){
-        toptable_args[['p.value']] <- as.numeric(opt\$p.value)
-    }
-    if (! is.null(opt\$lfc)){
-        toptable_args[['lfc']] <- as.numeric(opt\$lfc)
-    }
-    if (! is.null(opt\$confint)){
-        toptable_args[['confint']] <- as.logical(opt\$confint)
-    }
-
-    comp.results <- do.call(topTable, toptable_args)[rownames(intensities.table),]
+if (! is.null(opt\$adjust.method)){
+    toptable_args[['adjust.method']] <- opt\$adjust.method
 }
+if (! is.null(opt\$p.value)){
+    toptable_args[['p.value']] <- as.numeric(opt\$p.value)
+}
+if (! is.null(opt\$lfc)){
+    toptable_args[['lfc']] <- as.numeric(opt\$lfc)
+}
+if (! is.null(opt\$confint)){
+    toptable_args[['confint']] <- as.logical(opt\$confint)
+}
+
+comp.results <- do.call(topTable, toptable_args)[rownames(intensities.table),]
 
 ################################################
 ################################################
