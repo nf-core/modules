@@ -28,6 +28,15 @@ input:
         type: file
         description: Input SAM/BAM file
         pattern: "*.{bam,sam}"
+    - bai:
+        type: file
+        description: Input BAM file index
+        pattern: "*.bai"
+    - target_regions_bed:
+        type: file
+        description: Optional BED file containing target regions for BQSR and variant
+          calling.
+        pattern: "*.bed"
   - - run_haplotypecaller:
         type: boolean
         description: Run variant calling on the input files. Needed to generate gvcf
@@ -43,7 +52,12 @@ input:
         type: file
         description: Optional BED file containing regions to filter.
         pattern: "*.bed"
-  - - reference_elfasta:
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reference_elfasta:
         type: file
         description: Elfasta file, required for BQSR and variant calling.
         pattern: "*.elfasta"
@@ -51,11 +65,6 @@ input:
         type: file
         description: Optional elsites file containing known SNPs for BQSR.
         pattern: "*.elsites"
-  - - target_regions_bed:
-        type: file
-        description: Optional BED file containing target regions for BQSR and variant
-          calling.
-        pattern: "*.bed"
   - - intermediate_bqsr_tables:
         type: file
         description: Optional list of BQSR tables, used when parsing files created by
