@@ -56,13 +56,15 @@ process BISMARK_ALIGN {
         }
     }
     """
-    mv $fasta $index/
+    ln -s \$(readlink $fasta) $index/$fasta
 
     bismark \\
         $fastq \\
         --genome $index \\
         --bam \\
         $args
+
+    rm $index/$fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
