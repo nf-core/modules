@@ -33,7 +33,7 @@ nextflow_process {
                 input[0] = Channel.of([
                             [ id:'test', single_end:true ],
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true)
-                           ])
+                        ])
                 input[1] = Channel.of([ [ id:'sarscov2'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ])
                 input[2] = BISMARK_GENOMEPREPARATION.out.index
                 """
@@ -63,10 +63,10 @@ nextflow_process {
                 input[0] = Channel.of([
                             [ id:'test', single_end:true ],
                             [
-                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
-                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true)
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true)
                             ]
-                           ])
+                        ])
                 input[1] = Channel.of([ [ id:'sarscov2'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ])
                 input[2] = BISMARK_GENOMEPREPARATION.out.index
                 """
@@ -96,7 +96,7 @@ nextflow_process {
                 input[0] = Channel.of([
                             [ id:'test', single_end:true ],
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true)
-                           ])
+                        ])
                 input[1] = Channel.of([ [ id:'sarscov2'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ])
                 input[2] = BISMARK_GENOMEPREPARATION.out.index
                 """
@@ -126,10 +126,10 @@ nextflow_process {
                 input[0] = Channel.of([
                             [ id:'test', single_end:true ],
                             [
-                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
-                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true)
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true)
                             ]
-                           ])
+                        ])
                 input[1] = Channel.of([ [ id:'sarscov2'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ])
                 input[2] = BISMARK_GENOMEPREPARATION.out.index
                 """
@@ -159,7 +159,7 @@ nextflow_process {
                 input[0] = Channel.of([
                             [ id:'test', single_end:true ],
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true)
-                           ])
+                        ])
                 input[1] = Channel.of([ [ id:'sarscov2'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ])
                 input[2] = BISMARK_GENOMEPREPARATION.out.index
                 """
@@ -179,5 +179,4 @@ nextflow_process {
             )
         }
     }
-
 }
