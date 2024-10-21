@@ -25,7 +25,7 @@ process BISMARK_COVERAGE2CYTOSINE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mv $fasta $index/
+    ln -s \$(readlink $fasta) $index/$fasta
 
     coverage2cytosine \\
         $coverage_file \\
@@ -33,6 +33,8 @@ process BISMARK_COVERAGE2CYTOSINE {
         --output ${prefix} \\
         --gzip \\
         $args
+
+    rm $index/$fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
