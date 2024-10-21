@@ -1,0 +1,54 @@
+nextflow_process {
+
+    name "Test Process SKANI_SKETCH"
+    script "../main.nf"
+    process "SKANI_SKETCH"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "skani"
+    tag "skani/sketch"
+
+    test("fasta.gz") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta.gz", checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("fasta.gz - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta.gz", checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
