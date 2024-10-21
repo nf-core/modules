@@ -1,0 +1,39 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/scilus/nf-core/main/modules/meta-schema.json
+name: testdata_scilpy
+description: |
+  Import test data using Scilpy's data fetcher. Archives names can be found at:
+    https://github.com/scilus/nf-scil/blob/main/docs/TEST_DATA.md
+keywords:
+  - test
+  - data
+  - scilpy
+tools:
+  - "Scilpy":
+      description: "The Sherbrooke Connectivity Imaging Lab (SCIL) Python dMRI processing toolbox."
+      homepage: "https://github.com/scilus/scilpy.git"
+
+input:
+  - archive:
+      type: string
+      description: Name of the test archive to download
+      pattern: "*.zip"
+
+  - test_data_path:
+      type: file
+      description: Directory where to store the test data
+      pattern: "*"
+
+output:
+  - test_data_path:
+      type: file
+      description: Directory where to store the test data
+      pattern: "*"
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@AlexVCaron"
