@@ -4,8 +4,8 @@ process SORTMERNA {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sortmerna:4.3.6--h9ee0642_0' :
-        'biocontainers/sortmerna:4.3.6--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/sortmerna:4.3.7--hdbdd923_1' :
+        'biocontainers/sortmerna:4.3.7--hdbdd923_1' }"
 
     input:
     tuple val(meta), path(reads)
