@@ -28,7 +28,7 @@ process BWAMETH_ALIGN {
     # Modify the timestamps so that bwameth doesn't complain about building the index
     # See https://github.com/nf-core/methylseq/pull/217
     touch -c $index/*
-    mv $fasta $index/
+    ln -s \$(readlink $fasta) $index/$fasta
 
     bwameth.py \\
         $args \\
