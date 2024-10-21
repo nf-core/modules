@@ -29,6 +29,13 @@ input:
           List of input FASTA files, or a directory containing input FASTA files.
           Note you must supply --input-extension via ext.args if FASTA extensions do not end in the default `fna.gz`.
         pattern: "*"
+  - - input_type:
+        type: string
+        description: |
+          Specify whether the file(s) given to the input channel are in FASTA format (and will be supplied as --input)
+          or in TSV format (and will be supplied as --input-file). For TSV format, the 'file' column should be just the
+          file name so that it's local to the working directory of this process.
+        pattern: "fasta|tsv"
   - - taxonomy_files:
         type: file
         description: Pre-downloaded taxonomy files of input sequences. See ganon docs
