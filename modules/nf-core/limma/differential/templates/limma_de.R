@@ -78,7 +78,6 @@ opt <- list(
     exclude_samples_col = NULL,
     exclude_samples_values = NULL,
     use_voom = FALSE,
-    IHW_correction = FALSE,
     number = Inf,
     ndups = NULL,                # lmFit
     spacing = NULL,              # lmFit
@@ -334,7 +333,6 @@ if (!is.null(opt\$use_voom) && opt\$use_voom) {
         quote = FALSE,
         row.names = FALSE)
 
-
 } else {
     # Use as.matrix for regular microarray analysis
     data_for_fit <- as.matrix(intensities.table)
@@ -343,7 +341,7 @@ if (!is.null(opt\$use_voom) && opt\$use_voom) {
 # Prepare for and run lmFit()
 
 lmfit_args <- list(
-    object = as.matrix(intensities.table),
+    object = data_for_fit,
     design = design
 )
 
@@ -369,11 +367,22 @@ fit <- do.call(lmFit, lmfit_args)
 # Contrasts bit
 
 # Create the contrast string for the specified comparison
-contrast_string <- paste0(contrast_variable, ".", opt\$target_level, " - ", contrast_variable, ".", opt\$reference_level)
+
+treatment_target = paste0(contrast_variable, ".", opt\$target_level)
+treatment_reference = paste0(contrast_variable, ".", opt\$reference_level)
+
+if ((treatment_target %in% colnames(design)) && (treatment_reference %in% colnames(design)))  {
+    contrast_string <- paste0(treatment_target, "-", treatment_reference)
+} else if (!(treatment_target %in% colnames(design)) && (treatment_reference %in% colnames(design))) {
+    contrast_string <- paste0(treatment_reference, "-0")
+} else if ((treatment_target %in% colnames(design)) && !(treatment_reference %in% colnames(design)))  {
+    contrast_string <- paste0(treatment_target, "-0")
+} else {
+    stop(paste0(treatment_target, " and ", treatment_reference, " Not found in design array"))
+}
 
 # Create the contrast matrix
 contrast.matrix <- makeContrasts(contrasts=contrast_string, levels=design)
-
 fit2 <- contrasts.fit(fit, contrast.matrix)
 
 # Prepare for and run eBayes
