@@ -5,6 +5,7 @@ process XENIUMRANGER_RESEGMENT {
     container "nf-core/xeniumranger:3.0.1"
 
     input:
+    val(meta)
     path(xenium_bundle)
     val(expansion_distance)
     val(dapi_filter)

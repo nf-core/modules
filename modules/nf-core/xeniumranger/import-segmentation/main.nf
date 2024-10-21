@@ -5,11 +5,18 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
     container "nf-core/xeniumranger:3.0.1"
 
     input:
+    val(meta)
     path(xenium_bundle)
+    val(expansion_distance)
+    path(coordinate_transform)
+    path(nuclei)
+    path(cells)
+    path(transcript_assignment)
+    path(cell_boundary_polygons)
     path(segmentation_file)
 
     output:
-    path("outs/**"), emit: outs
+    path("**/outs/**"), emit: outs
     path "versions.yml", emit: versions
 
     when:
@@ -23,17 +30,18 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    // image based segmentation
-    def expansion_distance = expansion_distance ? "--expansion-distance=\"${expansion_distance}\"": ""
+    // image based segmentation options
+    def expansion_distance = expansion_distance ? "--expansion-distance=\"${expansion_distance}\"": "" // expansion distance (default - 5, range - 0 - 100)
     def coordinate_transform = coordinate_transform ? "--coordinate-transform=\"${coordinate_transform}\"": ""
-    def nuclei = nuclei ? "--nuclei=\"${segmentation_file}\"": ""
+    def nuclei_detection = nuclei ? "--nuclei=\"${nuclei}\"": ""
     def cells = cells ? "--cells=\"${segmentation_file}\"": ""
 
     // transcript based segmentation
     def transcript_assignment = transcript_assignment ? "--transcript-assignment=\"${transcript_assignment}\"": ""
     def cell_boundary_polygons = cell_boundary_polygons ? "--viz-polygons=\"${cell_boundary_polygons}\"":""
 
-    def units = units ? "--units=\"${units}\"": ""
+    // shared argument
+    def units = coordinate_transform ? "--units=microns": "--units=pixels"
 
     """
     xeniumranger import-segmentation \\
@@ -41,11 +49,11 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
         --xenium-bundle="${xenium_bundle}" \\
         --localcores=${task.cpus} \\
         --localmem=${task.memory.toGiga()} \\
-        ${nuclei} \\
+        ${coordinate_transform} \\
+        ${nuclei_detection} \\
         ${cells} \\
         ${expansion_distance} \\
         ${transcript_assignment} \\
-        ${coordinate_transform} \\
         ${cell_boundary_polygons} \\
         ${units} \\
         ${args}
@@ -61,9 +69,10 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "XENIUMRANGER_IMPORT-SEGMENTATION module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p outs/
-    touch outs/fake_file.txt
+    mkdir -p "${prefix}/outs/"
+    touch "${prefix}/outs/fake_file.txt"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

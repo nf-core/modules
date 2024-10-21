@@ -3,71 +3,67 @@ nextflow_process {
     name "Test Process XENIUMRANGER_RELABEL"
     script "../main.nf"
     process "XENIUMRANGER_RELABEL"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "xeniumranger"
     tag "xeniumranger/relabel"
+    tag "unzip"
+
+    setup {
+            run("UNZIP") {
+                script "modules/nf-core/unzip/main.nf"
+                process {
+                    """
+                    input[0] = [[], file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialxe/Xenium_Prime_Mouse_Ileum_tiny_outs.zip', checkIfExists: true)]
+                    """
+                }
+            }
+    }
 
     test("xeniumranger relabel") {
-
         when {
-
-            params {
-                test_data_base = ""
-            }
-
             process {
                 """
-                input[0] = path(params.test_data['mus_musculus']['10xgenomics']['xeniumranger']['xeniumbundle'], checkIfExists: true)
-                input[1] = path(params.test_data['mus_musculus']['10xgenomics']['xeniumranger']['gene_panel'], checkIfExists: true)
+                input[0] = [id: "test_run"]
+                input[1] = UNZIP.out.unzipped_archive.map { it[1] }
+                input[2] = UNZIP.out.unzipped_archive.map { it[1] } + "/gene_panel.json"
                 """
             }
         }
-
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    process.out.outs.get(0).get(1).findAll { file(it).name !in [
-                        'analysis_summary.html',
-                        'cell_feature_matrix.h5',
-                        'cell_feature_matrix.zarr.zip',
-                        'barcodes.tsv.gz',
-                        'features.tsv.gz',
-                        'matrix.mtx.gz',
+                { assert process.out.outs != null },
+                {
+                    assert snapshot(
+                        process.out.versions,
+                        process.out.outs.get(0).findAll { file(it).name !in [
+                            "analysis_summary.html",
+                            "cell_feature_matrix.h5",
+                            "cell_feature_matrix.zarr.zip",
                         ]}
                     ).match()
                 },
-                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'analysis_summary.html' }).exists() },
-                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cell_feature_matrix.h5' }).exists() },
-                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cell_feature_matrix.zarr.zip' }).exists() },
-                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'barcodes.tsv.gz' }).exists() },
-                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'features.tsv.gz' }).exists() },
-                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'matrix.mtx.gz' }).exists() }
+                { assert path(process.out.outs.get(0).find { file(it).name == 'analysis_summary.html' }).exists() },
+                { assert path(process.out.outs.get(0).find { file(it).name == 'cell_feature_matrix.h5' }).exists() },
+                { assert path(process.out.outs.get(0).find { file(it).name == 'cell_feature_matrix.zarr.zip' }).exists() },
             )
         }
     }
 
-    test("xeniumranger relabel -stub") {
-
+    test("xeniumranger relabel stub") {
         options "-stub"
-
         when {
-
-            params {
-                test_data_base = ""
-            }
-
             process {
                 """
-                input[0] = path(params.test_data['mus_musculus']['10xgenomics']['xeniumranger']['xenium_bundle'], checkIfExists: true)
-                input[1] = path(params.test_data['mus_musculus']['10xgenomics']['xeniumranger']['gene_panel'], checkIfExists: true)
+                input[0] = [id: "test_run"]
+                input[1] = UNZIP.out.unzipped_archive.map { it[1] }
+                input[2] = UNZIP.out.unzipped_archive.map { it[1] } + "/gene_panel.json"
                 """
             }
         }
-
         then {
             assertAll(
                 { assert process.success },
