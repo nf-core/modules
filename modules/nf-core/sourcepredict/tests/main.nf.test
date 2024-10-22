@@ -3,7 +3,7 @@ nextflow_process {
     name "Test Process SOURCEPREDICT"
     script "../main.nf"
     process "SOURCEPREDICT"
-
+    config "./nextflow.config"
     tag "modules"
     tag "modules_nfcore"
     tag "sourcepredict"
@@ -15,16 +15,10 @@ nextflow_process {
                 """                
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file('https://raw.githubusercontent.com/maxibor/sourcepredict/master/data/test/dog_test_sink_sample.csv', checkIfExists: true),
+                    file('/nesi/nobackup/uoo02328/meriam/test-datasets/data/genomics/prokaryotes/metagenome/taxonomy/misc/sink_taxid.csv', checkIfExists: true),
                 ]
-                input[1] = [
-                    [ id:'sources' ],
-                    file('https://raw.githubusercontent.com/maxibor/sourcepredict/master/data/modern_gut_microbiomes_sources.csv', checkIfExists: true)
-                ]
-                input[2] = [
-                    [ id:'labels' ],
-                    file('https://raw.githubusercontent.com/maxibor/sourcepredict/master/data/modern_gut_microbiomes_labels.csv', checkIfExists: true)
-                ]
+                input[1] = file('/nesi/nobackup/uoo02328/meriam/test-datasets/data/genomics/prokaryotes/metagenome/taxonomy/misc/sources_taxid.csv', checkIfExists: true)
+                input[2] = file('/nesi/nobackup/uoo02328/meriam/test-datasets/data/genomics/prokaryotes/metagenome/taxonomy/misc/sources_labels.csv', checkIfExists: true)
                 """
             }
         }
@@ -51,16 +45,10 @@ nextflow_process {
                 """                
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file('https://raw.githubusercontent.com/maxibor/sourcepredict/master/data/test/dog_test_sink_sample.csv', checkIfExists: true),
+                    file('/nesi/nobackup/uoo02328/meriam/test-datasets/data/genomics/prokaryotes/metagenome/taxonomy/misc/sink_taxid.csv', checkIfExists: true),
                 ]
-                input[1] = [
-                    [ id:'sources' ],
-                    file('https://raw.githubusercontent.com/maxibor/sourcepredict/master/data/modern_gut_microbiomes_sources.csv', checkIfExists: true)
-                ]
-                input[2] = [
-                    [ id:'labels' ],
-                    file('https://raw.githubusercontent.com/maxibor/sourcepredict/master/data/modern_gut_microbiomes_labels.csv', checkIfExists: true)
-                ]
+                input[1] = file('/nesi/nobackup/uoo02328/meriam/test-datasets/data/genomics/prokaryotes/metagenome/taxonomy/misc/sources_taxid.csv', checkIfExists: true)
+                input[2] = file('/nesi/nobackup/uoo02328/meriam/test-datasets/data/genomics/prokaryotes/metagenome/taxonomy/misc/sources_labels.csv', checkIfExists: true)
                 """
             }
         }

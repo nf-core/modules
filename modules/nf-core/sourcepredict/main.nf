@@ -34,7 +34,7 @@ process SOURCEPREDICT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sourcepredict: \$(sourcepredict --help 2>&1 | head -n 1 | sed -n 's/.*SourcePredict v\([0-9.]*\).*/\1/p')
+        sourcepredict: \$(echo \$(sourcepredict --help 2>&1 | head -n 1 | sed -n "s/.*SourcePredict v\\([0-9.]*\\).*/\\1/p")
     END_VERSIONS
     """
 
@@ -47,8 +47,7 @@ process SOURCEPREDICT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sourcepredict: \$(sourcepredict --help 2>&1 | head -n 1 | sed -n 's/.*SourcePredict v\([0-9.]*\).*/\1/p'
-)
+        sourcepredict: \$(echo \$(sourcepredict --help 2>&1 | head -n 1 | sed -n "s/.*SourcePredict v\\([0-9.]*\\).*/\\1/p")
     END_VERSIONS
     """
 }
