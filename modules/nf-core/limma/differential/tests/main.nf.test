@@ -1,0 +1,138 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test limma/differential
+nextflow_process {
+
+    name "Test Process LIMMA_DIFFERENTIAL"
+    script "../main.nf"
+    process "LIMMA_DIFFERENTIAL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "limma"
+    tag "limma/differential"
+
+    test("test_limma_differential - exclude_samples") {
+
+        config "./nextflow.exclude_samples.config"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of(['id': 'test', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
+                        .map{tuple(it, it.variable, it.reference, it.target)}
+                input[1] = Channel.of([[id:'test'],
+                                      file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
+                                      file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("test_limma_differential - subset_to_contrast") {
+
+        config "./nextflow.subset_to_contrast.config"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of(['id': 'test', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
+                        .map{tuple(it, it.variable, it.reference, it.target)}
+                input[1] = Channel.of([[id:'test'],
+                                      file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
+                                      file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("test_limma_differential - voom_blocking") {
+
+        config "./nextflow.voom_blocking.config"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of(['id': 'test', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
+                        .map{tuple(it, it.variable, it.reference, it.target)}
+                input[1] = Channel.of([[id:'test'],
+                                      file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
+                                      file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("test_limma_differential - voom") {
+
+        config "./nextflow.voom.config"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of(['id': 'test', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
+                        .map{tuple(it, it.variable, it.reference, it.target)}
+                input[1] = Channel.of([[id:'test'],
+                                      file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
+                                      file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("test_limma_differential - stub") {
+
+        options "-stub"
+
+        when {
+            process {                """
+                input[0] = Channel.of(['id': 'test', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
+                        .map{tuple(it, it.variable, it.reference, it.target)}
+                input[1] = Channel.of([[id:'test'],
+                                      file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
+                                      file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
