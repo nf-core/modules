@@ -30,7 +30,6 @@ nextflow_process {
     tag "stitch"
 
     test("test_no_seed") {
-        tag "test"
         when {
             process {
                 """
@@ -50,9 +49,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.input.collect{ file(it[1]).listFiles().name },
-                    process.out.rdata.collect{ file(it[1]).listFiles().name },
-                    process.out.plots.collect{ file(it[1]).listFiles().name },
+                    process.out.input.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.rdata.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.plots.collect{ file(it[1]).listFiles().sort().name },
                     process.out.vcf.collect{ file(it[1]).name },
                     process.out.versions
                 ).match() }
@@ -79,9 +78,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.input.collect{ file(it[1]).listFiles().name },
-                    process.out.rdata.collect{ file(it[1]).listFiles().name },
-                    process.out.plots.collect{ file(it[1]).listFiles().name },
+                    process.out.input.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.rdata.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.plots.collect{ file(it[1]).listFiles().sort().name },
                     process.out.vcf.collect{ file(it[1]).name },
                     process.out.versions
                 ).match() }
@@ -117,11 +116,13 @@ nextflow_process {
                         meta, positions, target, rdata, chromosome_name, K, nGen ->
                         [ meta, positions ]
                     }
-                    .join ( STITCH_GENERATE_INPUTS.out.input )
-                    .join ( STITCH_GENERATE_INPUTS.out.rdata )
+                    .combine(
+                        STITCH_GENERATE_INPUTS.out.input
+                        .join ( STITCH_GENERATE_INPUTS.out.rdata )
+                    )
                     .map {
-                        meta, positions, target, rdata ->
-                        [ meta, positions, target, rdata, "chr21", 2, 1 ]
+                        meta, positions, metaT, target, rdata ->
+                        [ metaT, positions, target, rdata, "chr21", 2, 1 ]
                     }
                 input[0] = [[id: null], [], [], []]
                 input[1] = ch_input_2step
@@ -135,9 +136,38 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.input.collect{ file(it[1]).listFiles().name },
-                    process.out.rdata.collect{ file(it[1]).listFiles().name },
-                    process.out.plots.collect{ file(it[1]).listFiles().name },
+                    process.out.input.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.rdata.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.plots.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.vcf.collect{ file(it[1]).name },
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("test_with_bam") {
+        when {
+            process {
+                """
+                filelist = Channel.fromPath( $bams_val )
+                    .map { it[-1] as String } // get only filename
+                    .collectFile( name: "cramlist.txt", newLine: true, sort: true )
+                input[0] = Channel.of( $reads_bam ).combine( filelist )
+                input[1] = $stitch_params
+                input[2] = $reference
+                input[3] = $seed
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.input.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.rdata.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.plots.collect{ file(it[1]).listFiles().sort().name },
                     process.out.vcf.collect{ file(it[1]).name },
                     process.out.versions
                 ).match() }
