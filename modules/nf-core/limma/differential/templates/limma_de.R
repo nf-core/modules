@@ -145,9 +145,6 @@ opt[vector_opt] = lapply(strsplit(unlist(opt[vector_opt]), ','), as.numeric)
 
 library(limma)
 library(edgeR)
-library(readr)
-library(dplyr)
-library(tibble)
 
 ################################################
 ################################################
