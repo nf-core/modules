@@ -77,9 +77,7 @@ nextflow_process {
                 { assert snapshot(process.out.log,
                     process.out.stats,
                     process.out.versions).match()},
-                {
-                    println process.out.dedup[0][1]
-                    assert file(process.out.dedup[0][1].find {
+                {assert file(process.out.dedup[0][1].find {
                     file(it).name == "test_1_dedup.fastq.gz" }).exists()},
                 {assert file(process.out.dedup[0][1].find {
                     file(it).name == "test_2_dedup.fastq.gz" }).exists()},
