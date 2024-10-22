@@ -1,35 +1,35 @@
 process GTDBTK_CLASSIFYWF {
-    tag "${meta.assembler}-${meta.id}"
+    tag "${prefix}"
     label 'process_medium'
-
-    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::gtdbtk=2.1.1"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gtdbtk:2.1.1--pyhdfd78af_1' :
-        'biocontainers/gtdbtk:2.1.1--pyhdfd78af_1' }"
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ? 'https://depot.galaxyproject.org/singularity/gtdbtk:2.4.0--pyhdfd78af_1' : 'biocontainers/gtdbtk:2.4.0--pyhdfd78af_1'}"
 
     input:
-    tuple val(meta), path("bins/*")
+    tuple val(meta)   , path("bins/*")
     tuple val(db_name), path("database/*")
+    val use_pplacer_scratch_dir
+    path mash_db
 
     output:
-    path "gtdbtk.${meta.assembler}-${meta.id}.*.summary.tsv"        , emit: summary
-    path "gtdbtk.${meta.assembler}-${meta.id}.*.classify.tree.gz"   , emit: tree
-    path "gtdbtk.${meta.assembler}-${meta.id}.*.markers_summary.tsv", emit: markers
-    path "gtdbtk.${meta.assembler}-${meta.id}.*.msa.fasta.gz"       , emit: msa
-    path "gtdbtk.${meta.assembler}-${meta.id}.*.user_msa.fasta"     , emit: user_msa
-    path "gtdbtk.${meta.assembler}-${meta.id}.*.filtered.tsv"       , emit: filtered
-    path "gtdbtk.${meta.assembler}-${meta.id}.log"                  , emit: log
-    path "gtdbtk.${meta.assembler}-${meta.id}.warnings.log"         , emit: warnings
-    path "gtdbtk.${meta.assembler}-${meta.id}.failed_genomes.tsv"   , emit: failed
-    path "versions.yml"                                             , emit: versions
+    tuple val(meta), path("gtdbtk.${prefix}.*.summary.tsv")        , emit: summary
+    tuple val(meta), path("gtdbtk.${prefix}.*.classify.tree.gz")   , emit: tree    , optional: true
+    tuple val(meta), path("gtdbtk.${prefix}.*.markers_summary.tsv"), emit: markers , optional: true
+    tuple val(meta), path("gtdbtk.${prefix}.*.msa.fasta.gz")       , emit: msa     , optional: true
+    tuple val(meta), path("gtdbtk.${prefix}.*.user_msa.fasta.gz")  , emit: user_msa, optional: true
+    tuple val(meta), path("gtdbtk.${prefix}.*.filtered.tsv")       , emit: filtered, optional: true
+    tuple val(meta), path("gtdbtk.${prefix}.failed_genomes.tsv")   , emit: failed  , optional: true
+    tuple val(meta), path("gtdbtk.${prefix}.log")                  , emit: log
+    tuple val(meta), path("gtdbtk.${prefix}.warnings.log")         , emit: warnings
+    path ("versions.yml"), emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def pplacer_scratch = params.gtdbtk_pplacer_scratch ? "--scratch_dir pplacer_tmp" : ""
+    def pplacer_scratch = use_pplacer_scratch_dir ? "--scratch_dir pplacer_tmp" : ""
+    def mash_mode       = mash_db                 ? "--mash_db ${mash_db}"      : "--skip_ani_screen"
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     export GTDBTK_DATA_PATH="\${PWD}/database"
@@ -38,19 +38,33 @@ process GTDBTK_CLASSIFYWF {
     fi
 
     gtdbtk classify_wf \\
-        $args \\
+        ${args} \\
         --genome_dir bins \\
-        --prefix "gtdbtk.${meta.assembler}-${meta.id}" \\
+        --prefix "gtdbtk.${prefix}" \\
         --out_dir "\${PWD}" \\
-        --cpus $task.cpus \\
-        --pplacer_cpus $params.gtdbtk_pplacer_cpus \\
-        $pplacer_scratch \\
-        --min_perc_aa $params.gtdbtk_min_perc_aa \\
-        --min_af $params.gtdbtk_min_af
+        --cpus ${task.cpus} \\
+        ${mash_mode} \\
+        ${pplacer_scratch}
 
-    gzip "gtdbtk.${meta.assembler}-${meta.id}".*.classify.tree "gtdbtk.${meta.assembler}-${meta.id}".*.msa.fasta
-    mv gtdbtk.log "gtdbtk.${meta.assembler}-${meta.id}.log"
-    mv gtdbtk.warnings.log "gtdbtk.${meta.assembler}-${meta.id}.warnings.log"
+    ## If mash db given, classify/ and identify/ directories won't be created
+    if [[ -d classify/ && \$(ls -A classify/) ]]; then
+        mv classify/* .
+    fi
+
+    if [[ -d identify/ && \$(ls -A identify/) ]]; then
+        mv identify/* .
+    fi
+
+    ## If nothing aligns, no output, so only run
+    if [[ -d align/ && \$(ls -A align/) ]]; then
+        mv align/* .
+    fi
+
+    mv gtdbtk.log "gtdbtk.${prefix}.log"
+
+    mv gtdbtk.warnings.log "gtdbtk.${prefix}.warnings.log"
+
+    find -name "gtdbtk.${prefix}.*.classify.tree" | xargs -r gzip # do not fail if .tree is missing
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -59,22 +73,21 @@ process GTDBTK_CLASSIFYWF {
     """
 
     stub:
-    def VERSION = '2.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch gtdbtk.${meta.assembler}-${meta.id}.stub.summary.tsv
-    touch gtdbtk.${meta.assembler}-${meta.id}.stub.classify.tree.gz
-    touch gtdbtk.${meta.assembler}-${meta.id}.stub.markers_summary.tsv
-    touch gtdbtk.${meta.assembler}-${meta.id}.stub.msa.fasta.gz
-    touch gtdbtk.${meta.assembler}-${meta.id}.stub.user_msa.fasta
-    touch gtdbtk.${meta.assembler}-${meta.id}.stub.filtered.tsv
-    touch gtdbtk.${meta.assembler}-${meta.id}.log
-    touch gtdbtk.${meta.assembler}-${meta.id}.warnings.log
-    touch gtdbtk.${meta.assembler}-${meta.id}.failed_genomes.tsv
+    touch gtdbtk.${prefix}.stub.summary.tsv
+    echo "" | gzip > gtdbtk.${prefix}.stub.classify.tree.gz
+    touch gtdbtk.${prefix}.stub.markers_summary.tsv
+    echo "" | gzip > gtdbtk.${prefix}.stub.msa.fasta.gz
+    echo "" | gzip > gtdbtk.${prefix}.stub.user_msa.fasta.gz
+    touch gtdbtk.${prefix}.stub.filtered.tsv
+    touch gtdbtk.${prefix}.log
+    touch gtdbtk.${prefix}.warnings.log
+    touch gtdbtk.${prefix}.failed_genomes.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gtdbtk: \$(echo "$VERSION")
+        gtdbtk: \$(echo \$(gtdbtk --version -v 2>&1) | sed "s/gtdbtk: version //; s/ Copyright.*//")
     END_VERSIONS
     """
 }

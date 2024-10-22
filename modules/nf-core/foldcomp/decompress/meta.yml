@@ -1,0 +1,47 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "foldcomp_decompress"
+description: Decompression tool for foldcomp compressed structures
+keywords:
+  - protein
+  - structure
+  - compression
+tools:
+  - "foldcomp":
+      description: "Foldcomp: a library and format for compressing and indexing large
+        protein structure sets"
+      homepage: "https://github.com/steineggerlab/foldcomp"
+      documentation: "https://github.com/steineggerlab/foldcomp"
+      tool_dev_url: "https://github.com/steineggerlab/foldcomp"
+      doi: "10.1093/bioinformatics/btad153"
+      licence: ["GPL v3-or-later"]
+      identifier: biotools:foldcomp
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - fcz:
+        type: file
+        description: Foldcomp compressed protein structure(s) (also works with folder
+          input)
+        pattern: "*{*,*.fcz}"
+output:
+  - pdb:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "{*pdb,*.cif}":
+          type: file
+          description: |
+            Either single protein structure (if input was file) or folder with all decompressed protein structures (if input was directory)
+          pattern: "{*_pdb,*.pdb,*.cif}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@vagkaratzas"

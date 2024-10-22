@@ -2,6 +2,8 @@ name: genmap_index
 description: create index file for genmap
 keywords:
   - index
+  - mappability
+  - fasta
 tools:
   - genmap:
       description: Ultra-fast computation of genome mappability.
@@ -10,22 +12,35 @@ tools:
       tool_dev_url: https://github.com/cpockrandt/genmap
       doi: "10.1093/bioinformatics/btaa222"
       licence: ["BSD-3-Clause"]
-
+      identifier: ""
 input:
-  - fasta:
-      type: file
-      description: fasta file
-      pattern: "*.{fasta,fa}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: fasta file to index
+        pattern: "*.{fasta,fa,fna}"
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - index:
-      type: index
-      description: Genmap index file
-      pattern: "{index}.*"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}:
+          type: directory
+          description: Genmap index directory
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jianhong"
+  - "@nvnieuwk"
+maintainers:
+  - "@jianhong"
+  - "@nvnieuwk"

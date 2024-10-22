@@ -1,0 +1,149 @@
+nextflow_process {
+
+    name "Test Process BLAST_BLASTP"
+    script "../main.nf"
+    process "BLAST_BLASTP"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "blast"
+    tag "blast/blastp"
+    tag "blast/makeblastdb"
+
+    setup {
+        run("BLAST_MAKEBLASTDB") {
+            script "../../makeblastdb/main.nf"
+            process {
+                """
+                input[0] = [ [id:'test2'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
+                """
+            }
+        }
+    }
+
+    test("Should search for proteins against a blast db and return the default (tsv) file with hits") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
+                input[1] = BLAST_MAKEBLASTDB.out.db
+                input[2] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.tsv).match("tsv_default") },
+                { assert snapshot(process.out.versions).match("versions_tsv_default") }
+            )
+        }
+
+    }
+
+    test("Should search for zipped proteins against a blast db and return the default (tsv) file with hits") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta.gz', checkIfExists: true) ]
+                input[1] = BLAST_MAKEBLASTDB.out.db
+                input[2] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.tsv).match("gz_tsv_default") },
+                { assert snapshot(process.out.versions).match("versions_gz_tsv_default") }
+            )
+        }
+
+    }
+
+    test("Should search for proteins against a blast db and return an xml file with hits") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
+                input[1] = BLAST_MAKEBLASTDB.out.db
+                input[2] = 'xml'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.xml).match("xml") },
+                { assert snapshot(process.out.versions).match("versions_xml") }
+            )
+        }
+
+    }
+
+    test("Should search for proteins against a blast db and return a tsv file with hits") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
+                input[1] = BLAST_MAKEBLASTDB.out.db
+                input[2] = 'tsv'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.tsv).match("tsv") },
+                { assert snapshot(process.out.versions).match("versions_tsv") }
+            )
+        }
+
+    }
+
+    test("Should search for proteins against a blast db and return a csv file with hits") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
+                input[1] = BLAST_MAKEBLASTDB.out.db
+                input[2] = 'csv'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.csv).match("csv") },
+                { assert snapshot(process.out.versions).match("versions_csv") }
+            )
+        }
+
+    }
+
+}

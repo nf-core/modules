@@ -2,7 +2,7 @@ process ENTREZDIRECT_ESUMMARY {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::entrez-direct=16.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/entrez-direct:16.2--he881be0_1':
         'biocontainers/entrez-direct:16.2--he881be0_1' }"
@@ -29,6 +29,20 @@ process ENTREZDIRECT_ESUMMARY {
         $args \\
         -db $database \\
         $input > ${prefix}.xml
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        esummary: \$(esummary -version)
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if (!uid && !uids_file) error "No input. Valid input: an identifier or a .txt file with identifiers"
+    if (uid && uids_file) error "Only one input is required: a single identifier or a .txt file with identifiers"
+    """
+    touch ${prefix}.xml
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

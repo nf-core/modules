@@ -2,7 +2,7 @@ process PASTY {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::pasty=1.0.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pasty:1.0.0--hdfd78af_0':
         'biocontainers/pasty:1.0.0--hdfd78af_0' }"
@@ -27,6 +27,19 @@ process PASTY {
         $args \\
         --prefix $prefix \\
         --assembly $fasta
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        pasty: \$(echo \$(pasty --version 2>&1) | sed 's/^.*pasty, version //;' )
+    END_VERSIONS
+    """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.tsv
+    touch ${prefix}.blastn.tsv
+    touch ${prefix}.details.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

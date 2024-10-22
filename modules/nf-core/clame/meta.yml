@@ -1,0 +1,97 @@
+name: "clame"
+description: binning of metagenomic sequences
+keywords:
+  - sort
+  - example
+  - genomics
+tools:
+  - "clame":
+      description: "CLAME is a binning software for metagenomic reads. It immplements
+        a fm-index search algorithm for nucleotide sequence alignment. Then it uses
+        strongly connected component strategy to bin sequences with similar DNA composition."
+      homepage: "https://github.com/andvides/CLAME"
+      documentation: "https://github.com/andvides/CLAME"
+      tool_dev_url: "https://github.com/andvides/CLAME"
+      doi: "10.1186/s12864-018-5191-y"
+      licence: ["GPLv3"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - fasta:
+        type: file
+        description: Nucleotide sequences in FASTA format
+        pattern: "*.{fasta,fa,fna,faa}"
+output:
+  - fasta:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.fasta":
+          type: file
+          description: Output fasta file for all the bins reported, optional since it
+            will be created when bins can be found
+          pattern: "*.{fasta}"
+  - bins:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.binning":
+          type: file
+          description: All bins reported
+          pattern: "*.{binning}"
+  - fm:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.fm9":
+          type: file
+          description: FM-index output
+          pattern: "*.{fm9}"
+  - index:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.index":
+          type: file
+          description: 1st column contains the original name for each read, 2nd column
+            the index used by CLAME
+          pattern: "*.{index}"
+  - links:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.links":
+          type: file
+          description: Histogram links by number of reads
+          pattern: "*.{links}"
+  - result:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.result":
+          type: file
+          description: Adjacency list for the overlap detected by each read
+          pattern: "*.{result}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@alxndrdiaz"

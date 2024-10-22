@@ -23,6 +23,25 @@ workflow test_gfastats_fasta_gfa {
     )
 }
 
+workflow test_gfastats_gfa_fasta {
+
+    input = [
+        [ id:'test', single_end:false ], // meta map
+        file(params.test_data['sarscov2']['illumina']['assembly_gfa'], checkIfExists: true)
+    ]
+
+    GFASTATS (
+        input,
+        'fasta', // Fasta output format
+        '',      // No genome size
+        '',      // No target
+        [],      // No agp file
+        [],      // No include bed file
+        [],      // No exclude bed file
+        []       // No swiss army knife instructions
+    )
+}
+
 workflow test_gfastats_include_bed {
 
     input = [

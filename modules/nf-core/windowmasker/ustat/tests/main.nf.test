@@ -1,0 +1,66 @@
+nextflow_process {
+
+    name "Test Process WINDOWMASKER_USTAT"
+    script "../main.nf"
+    process "WINDOWMASKER_USTAT"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "windowmasker"
+    tag "windowmasker/ustat"
+    tag "windowmasker/mkcounts"
+
+
+    setup {
+        run("WINDOWMASKER_MKCOUNTS") {
+            script "../../mkcounts/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id: "test" ],
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                ]
+                """
+            }
+        }
+    }
+
+    test("sarscov2_fasta") {
+        when {
+            process {
+                """
+                input[0] = WINDOWMASKER_MKCOUNTS.out.counts
+                input[1] = [
+                    [id: "test" ],
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                ]
+                """
+            }
+        }
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+    }
+
+    test("sarscov2_fasta_stub") {
+        when {
+            process {
+                """
+                input[0] = WINDOWMASKER_MKCOUNTS.out.counts
+                input[1] = [
+                    [id: "test" ],
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                ]
+                """
+            }
+        }
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+
+    }
+
+}

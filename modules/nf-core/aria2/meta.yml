@@ -1,30 +1,49 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "aria2"
 description: CLI Download utility
 keywords:
   - download
+  - utility
+  - http(s)
 tools:
   - "aria2":
-      description: "aria2 is a lightweight multi-protocol & multi-source, cross platform download utility operated in command-line. It supports HTTP/HTTPS, FTP, SFTP, BitTorrent and Metalink."
-
+      description: "aria2 is a lightweight multi-protocol & multi-source, cross platform
+        download utility operated in command-line. It supports HTTP/HTTPS, FTP, SFTP,
+        BitTorrent and Metalink."
+      homepage: "https://aria2.github.io/"
+      documentation: "https://aria2.github.io/manual/en/html/index.html"
       tool_dev_url: "https://github.com/aria2/aria2/"
-
-      licence: "['GPL v2']"
-
+      licence: ["GPL v2"]
+      identifier: ""
 input:
-  - source_url:
-      type: url
-      description: Source URL to be downloaded
-      pattern: "{http,https}*"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - source_url:
+        type: string
+        description: Source URL to be downloaded
+        pattern: "{http,https}*"
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - downloaded_file:
-      type: file
-      description: Downloaded files from source
-      pattern: "*.*"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - $downloaded_file:
+          type: file
+          description: Downloaded file from source
+          pattern: "*.*"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@JoseEspinosa"
+  - "@leoisl"
+maintainers:
+  - "@JoseEspinosa"
+  - "@leoisl"

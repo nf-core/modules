@@ -3,7 +3,7 @@ process MCRONI {
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::mcroni=1.0.4"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mcroni%3A1.0.4--pyh5e36f6f_0':
         'biocontainers/mcroni:1.0.4--pyh5e36f6f_0' }"
@@ -34,6 +34,19 @@ process MCRONI {
         $args \\
         --output $prefix \\
         --fasta $fasta_name
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        mcroni: $VERSION
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.0.4' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    touch ${prefix}.tsv
+    touch ${prefix}.fa
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -2,10 +2,10 @@ process FLYE {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::flye=2.9"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/flye:2.9--py39h6935b12_1' :
-        'biocontainers/flye:2.9--py39h6935b12_1' }"
+        'oras://community.wave.seqera.io/library/flye:2.9.5--eb07d7b7094f222c' :
+        'community.wave.seqera.io/library/flye:2.9.5--0221998e9c3ec606' }"
 
     input:
     tuple val(meta), path(reads)
@@ -53,9 +53,9 @@ process FLYE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo stub > assembly.fasta | gzip -c assembly.fasta > ${prefix}.assembly.fasta.gz
-    echo stub > assembly_graph.gfa | gzip -c assembly_graph.gfa > ${prefix}.assembly_graph.gfa.gz
-    echo stub > assembly_graph.gv | gzip -c assembly_graph.gv > ${prefix}.assembly_graph.gv.gz
+    echo stub | gzip -c > ${prefix}.assembly.fasta.gz
+    echo stub | gzip -c > ${prefix}.assembly_graph.gfa.gz
+    echo stub | gzip -c > ${prefix}.assembly_graph.gv.gz
     echo contig_1 > ${prefix}.assembly_info.txt
     echo stub > ${prefix}.flye.log
     echo stub > ${prefix}.params.json

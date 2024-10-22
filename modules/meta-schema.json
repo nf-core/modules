@@ -1,0 +1,187 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "Meta yaml",
+    "description": "Validate the meta yaml file for an nf-core module",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "description": "Name of the module"
+        },
+        "description": {
+            "type": "string",
+            "description": "Description of the module"
+        },
+        "keywords": {
+            "type": "array",
+            "description": "Keywords for the module",
+            "items": {
+                "type": "string"
+            },
+            "minItems": 3
+        },
+        "authors": {
+            "type": "array",
+            "description": "Authors of the module",
+            "items": {
+                "type": "string"
+            }
+        },
+        "maintainers": {
+            "type": "array",
+            "description": "Maintainers of the module",
+            "items": {
+                "type": "string"
+            }
+        },
+        "input": {
+            "type": "array",
+            "description": "Input channels for the module",
+            "items": {
+                "type": "array",
+                "items": { "$ref": "#/definitions/elementProperties" }
+            }
+        },
+        "output": {
+            "type": "array",
+            "description": "Output channels for the module",
+            "items": {
+                "type": "object",
+                "items": { "$ref": "#/definitions/elementProperties" }
+            }
+        },
+        "tools": {
+            "type": "array",
+            "description": "Tools used by the module",
+            "items": {
+                "type": "object",
+                "patternProperties": {
+                    ".*": {
+                        "type": "object",
+                        "properties": {
+                            "description": {
+                                "type": "string",
+                                "description": "Description of the output channel"
+                            },
+                            "homepage": {
+                                "type": "string",
+                                "description": "Homepage of the tool",
+                                "pattern": "^(http|https)://.*$"
+                            },
+                            "documentation": {
+                                "type": "string",
+                                "description": "Documentation of the tool",
+                                "pattern": "^(http|https|ftp)://.*$"
+                            },
+                            "tool_dev_url": {
+                                "type": "string",
+                                "description": "URL of the development version of the tool's documentation",
+                                "pattern": "^(http|https)://.*$"
+                            },
+                            "doi": {
+                                "description": "DOI of the tool",
+                                "anyOf": [
+                                    {
+                                        "type": "string",
+                                        "pattern": "^10\\.\\d{4,9}\\/[^,]+$"
+                                    },
+                                    {
+                                        "type": "string",
+                                        "enum": ["no DOI available"]
+                                    }
+                                ]
+                            },
+                            "licence": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "description": "Licence of the tool",
+                                "minItems": 1,
+                                "uniqueItems": true,
+                                "message": "Licence must be an array of one or more entries, e.g. [\"MIT\"]"
+                            },
+                            "identifier": {
+                                "description": "bio.tools identifier of the tool",
+                                "anyOf": [
+                                    {
+                                        "type": "string",
+                                        "pattern": "^biotools:.*$"
+                                    },
+                                    {
+                                        "type": "string",
+                                        "maxLength": 0
+                                    }
+                                ]
+                            }
+                        },
+                        "required": ["description"],
+                        "anyOf": [
+                            {
+                                "required": ["homepage"]
+                            },
+                            {
+                                "required": ["documentation"]
+                            },
+                            {
+                                "required": ["tool_dev_url"]
+                            },
+                            {
+                                "required": ["doi"]
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "elementProperties": {
+            "type": "object",
+            "patternProperties": {
+                ".*": {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "description": "Type of the channel element",
+                            "enum": ["map", "file", "directory", "string", "integer", "float", "boolean", "list"]
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "Description of the channel"
+                        },
+                        "pattern": {
+                            "type": "string",
+                            "description": "Pattern of the channel, given in Java glob syntax"
+                        },
+                        "enum": {
+                            "type": "array",
+                            "description": "List of allowed values for the channel",
+                            "items": {
+                                "type": ["string", "number", "boolean", "array", "object"]
+                            },
+                            "uniqueItems": true
+                        },
+                        "ontologies": {
+                            "type": "array",
+                            "description": "List of ontologies for the channel",
+                            "uniqueItems": true,
+                            "items": {
+                                "type": "object",
+                                "patternProperties": {
+                                    ".*": {
+                                        "type": "string",
+                                        "pattern": "^(http|https)://.*"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "required": ["type", "description"]
+                }
+            }
+        }
+    },
+    "required": ["name", "description", "keywords", "authors", "output", "tools"]
+}

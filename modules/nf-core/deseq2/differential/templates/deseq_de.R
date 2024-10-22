@@ -6,6 +6,22 @@
 ################################################
 ################################################
 
+#' Check for Non-Empty, Non-Whitespace String
+#'
+#' This function checks if the input is non-NULL and contains more than just whitespace.
+#' It returns TRUE if the input is a non-empty, non-whitespace string, and FALSE otherwise.
+#'
+#' @param input A variable to check.
+#' @return A logical value: TRUE if the input is a valid, non-empty, non-whitespace string; FALSE otherwise.
+#' @examples
+#' is_valid_string("Hello World") # Returns TRUE
+#' is_valid_string("   ")         # Returns FALSE
+#' is_valid_string(NULL)          # Returns FALSE
+
+is_valid_string <- function(input) {
+    !is.null(input) && nzchar(trimws(input))
+}
+
 #' Parse out options from a string without recourse to optparse
 #'
 #' @param x Long-form argument list like --opt1 val1 --opt2 val2
@@ -52,34 +68,6 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.nam
     )
 }
 
-#' Round numeric dataframe columns to fixed decimal places by applying
-#' formatting and converting back to numerics
-#'
-#' @param dataframe A data frame
-#' @param columns Which columns to round (assumes all of them by default)
-#' @param digits How many decimal places to round to?
-#'
-#' @return output Data frame
-
-round_dataframe_columns <- function(df, columns = NULL, digits = 8){
-    if (is.null(columns)){
-        columns <- colnames(df)
-    }
-
-    df[,columns] <- format(
-        data.frame(df[, columns], check.names = FALSE),
-        nsmall = digits
-    )
-
-    # Convert columns back to numeric
-
-    for (c in columns) {
-        df[[c]][grep("^ *NA\$", df[[c]])] <- NA
-        df[[c]] <- as.numeric(df[[c]])
-    }
-    df
-}
-
 ################################################
 ################################################
 ## PARSE PARAMETERS FROM NEXTFLOW             ##
@@ -93,6 +81,7 @@ round_dataframe_columns <- function(df, columns = NULL, digits = 8){
 # Set defaults and classes
 
 opt <- list(
+    output_prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
     count_file = '$counts',
     sample_file = '$samplesheet',
     contrast_variable = '$contrast_variable',
@@ -100,6 +89,7 @@ opt <- list(
     target_level = '$target',
     blocking_variables = NULL,
     control_genes_file = '$control_genes_file',
+    transcript_lengths_file = '$transcript_lengths_file',
     sizefactors_from_controls = FALSE,
     gene_id_col = "gene_id",
     sample_id_col = "experiment_accession",
@@ -121,7 +111,8 @@ opt <- list(
     shrink_lfc = TRUE,
     cores = 1,
     vs_blind = TRUE,
-    vst_nsub = 1000
+    vst_nsub = 1000,
+    round_digits = NULL
 )
 opt_types <- lapply(opt, class)
 
@@ -140,11 +131,14 @@ for ( ao in names(args_opt)){
         opt[[ao]] <- args_opt[[ao]]
     }
 }
+if ( ! is.null(opt\$round_digits)){
+    opt\$round_digits <- as.numeric(opt\$round_digits)
+}
 
 # Check if required parameters have been provided
 
-required_opts <- c('contrast_variable', 'reference_level', 'target_level')
-missing <- required_opts[unlist(lapply(opt[required_opts], is.null)) | ! required_opts %in% names(opt)]
+required_opts <- c('contrast_variable', 'reference_level', 'target_level', 'output_prefix')
+missing <- required_opts[!unlist(lapply(opt[required_opts], is_valid_string)) | !required_opts %in% names(opt)]
 
 if (length(missing) > 0){
     stop(paste("Missing required options:", paste(missing, collapse=', ')))
@@ -153,7 +147,7 @@ if (length(missing) > 0){
 # Check file inputs are valid
 
 for (file_input in c('count_file', 'sample_file')){
-    if (is.null(opt[[file_input]])) {
+    if (! is_valid_string(opt[[file_input]])) {
         stop(paste("Please provide", file_input), call. = FALSE)
     }
 
@@ -244,7 +238,7 @@ if (!contrast_variable %in% colnames(sample.sheet)) {
         'column of the sample sheet'
         )
     )
-} else if (!is.null(opt\$blocking_variables)) {
+} else if (is_valid_string(opt\$blocking_variables)) {
     blocking.vars = make.names(unlist(strsplit(opt\$blocking_variables, split = ';')))
     if (!all(blocking.vars %in% colnames(sample.sheet))) {
         missing_block <- paste(blocking.vars[! blocking.vars %in% colnames(sample.sheet)], collapse = ',')
@@ -269,7 +263,7 @@ if (opt\$subset_to_contrast_samples){
 # Optionally, remove samples with specified values in a given field (probably
 # don't use this as well as the above)
 
-if ((! is.null(opt\$exclude_samples_col)) && (! is.null(opt\$exclude_samples_values))){
+if ((is_valid_string(opt\$exclude_samples_col)) && (is_valid_string(opt\$exclude_samples_values))){
     exclude_values = unlist(strsplit(opt\$exclude_samples_values, split = ';'))
 
     if (! opt\$exclude_samples_col %in% colnames(sample.sheet)){
@@ -287,10 +281,10 @@ if ((! is.null(opt\$exclude_samples_col)) && (! is.null(opt\$exclude_samples_val
 # Now specify the model. Use cell-means style so we can be explicit with the
 # contrasts
 
-model <- '~ 0 +'
+model <- '~ 0'
 
-if (!is.null(opt\$blocking_variables)) {
-    model <- paste(model, paste(blocking.vars, collapse = '+'))
+if (is_valid_string(opt\$blocking_variables)) {
+    model <- paste(model, paste(blocking.vars, collapse = ' + '), sep=' + ')
 }
 
 # Make sure all the appropriate variables are factors
@@ -322,6 +316,22 @@ dds <- DESeqDataSetFromMatrix(
     colData = sample.sheet,
     design = as.formula(model)
 )
+
+# Build in transcript lengths. Copying what tximport does here:
+# https://github.com/thelovelab/DESeq2/blob/6947d5bc629015fb8ffb2453a91b71665a164483/R/AllClasses.R#L409
+
+if (opt\$transcript_lengths_file != ''){
+    lengths <-
+        read_delim_flexible(
+            file = opt\$transcript_lengths_file,
+            header = TRUE,
+            row.names = opt\$gene_id_col,
+            check.names = FALSE
+        )
+    lengths <- lengths[rownames(count.table), colnames(count.table)]
+    dimnames(lengths) <- dimnames(dds)
+    assays(dds)[["avgTxLength"]] <- lengths
+}
 
 if (opt\$control_genes_file != '' && opt\$sizefactors_from_controls){
     print(paste('Estimating size factors using', length(control_genes), 'control genes'))
@@ -363,15 +373,19 @@ if (opt\$shrink_lfc){
     )
 }
 
+# See https://support.bioconductor.org/p/97676/
+
+if (opt\$transcript_lengths_file != ''){
+    size_factors = estimateSizeFactorsForMatrix(counts(dds) / assays(dds)[["avgTxLength"]])
+}else {
+    size_factors = sizeFactors(dds)
+}
+
 ################################################
 ################################################
 ## Generate outputs                           ##
 ################################################
 ################################################
-
-prefix_part_names <- c('contrast_variable', 'reference_level', 'target_level', 'blocking_variables')
-prefix_parts <- unlist(lapply(prefix_part_names, function(x) gsub("[^[:alnum:]]", "_", opt[[x]])))
-output_prefix <- paste(prefix_parts[prefix_parts != ''], collapse = '-')
 
 contrast.name <-
     paste(opt\$target_level, opt\$reference_level, sep = "_vs_")
@@ -380,13 +394,21 @@ cat("Saving results for ", contrast.name, " ...\n", sep = "")
 # Differential expression table- note very limited rounding for consistency of
 # results
 
-write.table(
+if (! is.null(opt\$round_digits)){
+    comp.results <- apply(data.frame(comp.results), 2, function(x) round(x, opt\$round_digits))
+}
+comp.results <- `colnames<-`(
     data.frame(
         gene_id = rownames(comp.results),
-        round_dataframe_columns(data.frame(comp.results, check.names = FALSE)),
+        comp.results,
         check.names = FALSE
     ),
-    file = paste(output_prefix, 'deseq2.results.tsv', sep = '.'),
+    c(opt\$gene_id_col, colnames(comp.results))  # Setting all column names
+)
+
+write.table(
+    comp.results,
+    file = paste(opt\$output_prefix, 'deseq2.results.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
     sep = '\t',
@@ -396,7 +418,7 @@ write.table(
 # Dispersion plot
 
 png(
-    file = paste(output_prefix, 'deseq2.dispersion.png', sep = '.'),
+    file = paste(opt\$output_prefix, 'deseq2.dispersion.png', sep = '.'),
     width = 600,
     height = 600
 )
@@ -405,19 +427,19 @@ dev.off()
 
 # R object for other processes to use
 
-saveRDS(dds, file = paste(output_prefix, 'dds.rld.rds', sep = '.'))
+saveRDS(dds, file = paste(opt\$output_prefix, 'dds.rld.rds', sep = '.'))
 
 # Size factors
 
 sf_df = data.frame(
-    sample = names(sizeFactors(dds)),
-    data.frame(sizeFactors(dds), check.names = FALSE),
+    sample = names(size_factors),
+    data.frame(size_factors, check.names = FALSE),
     check.names = FALSE
 )
 colnames(sf_df) <- c('sample', 'sizeFactor')
 write.table(
     sf_df,
-    file = paste(output_prefix, 'deseq2.sizefactors.tsv', sep = '.'),
+    file = paste(opt\$output_prefix, 'deseq2.sizefactors.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
     sep = '\t',
@@ -426,13 +448,22 @@ write.table(
 
 # Write specified matrices
 
-write.table(
+normalised_matrix <- counts(dds, normalized = TRUE)
+if (! is.null(opt\$round_digits)){
+    normalised_matrix <- apply(normalised_matrix, 2, function(x) round(x, opt\$round_digits))
+}
+normalised_matrix <- `colnames<-`(
     data.frame(
-        gene_id=rownames(counts(dds)),
-        counts(dds, normalized = TRUE),
+        gene_id = rownames(counts(dds)),  # First column with row names from counts(dds)
+        normalised_matrix,                # Other columns
         check.names = FALSE
     ),
-    file = paste(output_prefix, 'normalised_counts.tsv', sep = '.'),
+    c(opt\$gene_id_col, colnames(normalised_matrix))  # Setting all column names
+)
+
+write.table(
+    normalised_matrix,
+    file = paste(opt\$output_prefix, 'normalised_counts.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
     sep = '\t',
@@ -443,22 +474,27 @@ write.table(
 
 for (vs_method_name in strsplit(opt\$vs_method, ',')){
     if (vs_method_name == 'vst'){
-        vs_mat <- vst(dds, blind = opt\$vs_blind, nsub = opt\$vst_nsub)
+        vs_mat <- assay(vst(dds, blind = opt\$vs_blind, nsub = opt\$vst_nsub))
     }else if (vs_method_name == 'rlog'){
-        vs_mat <- rlog(dds, blind = opt\$vs_blind, fitType = opt\$fit_type)
+        vs_mat <- assay(rlog(dds, blind = opt\$vs_blind, fitType = opt\$fit_type))
     }
 
-    # Again apply the slight rounding and then restore numeric
+    if (! is.null(opt\$round_digits)){
+        vs_mat <- apply(vs_mat, 2, function(x) round(x, opt\$round_digits))
+    }
 
-    write.table(
+    vs_mat <- `colnames<-`(
         data.frame(
-            gene_id=rownames(counts(dds)),
-            round_dataframe_columns(
-                data.frame(assay(vs_mat), check.names = FALSE)
-            ),
+            gene_id = rownames(counts(dds)),  # First column with row names from counts(dds)
+            vs_mat,                           # Other columns from vs_mat
             check.names = FALSE
         ),
-        file = paste(output_prefix, vs_method_name,'tsv', sep = '.'),
+        c(opt\$gene_id_col, colnames(vs_mat))  # Setting all column names
+    )
+
+    write.table(
+        vs_mat,
+        file = paste(opt\$output_prefix, vs_method_name, 'tsv', sep = '.'),
         col.names = TRUE,
         row.names = FALSE,
         sep = '\t',
@@ -466,13 +502,17 @@ for (vs_method_name in strsplit(opt\$vs_method, ',')){
     )
 }
 
+# Save model to file
+
+write(model, file=paste(opt\$output_prefix, 'deseq2.model.txt', sep = '.'))
+
 ################################################
 ################################################
 ## R SESSION INFO                             ##
 ################################################
 ################################################
 
-sink(paste(output_prefix, "R_sessionInfo.log", sep = '.'))
+sink(paste(opt\$output_prefix, "R_sessionInfo.log", sep = '.'))
 print(sessionInfo())
 sink()
 

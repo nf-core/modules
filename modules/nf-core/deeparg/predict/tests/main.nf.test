@@ -1,0 +1,81 @@
+nextflow_process {
+
+    name "Test Process DEEPARG_PREDICT"
+    script "../main.nf"
+    process "DEEPARG_PREDICT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "deeparg"
+    tag "deeparg/predict"
+    tag "deeparg/downloaddata"
+
+    setup {
+            run("DEEPARG_DOWNLOADDATA") {
+                script "../../../deeparg/downloaddata/main.nf"
+                process {
+                    """
+                    // No input necessary
+                    """
+                }
+            }
+
+    }
+
+    test("bacteroides_fragilis - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true),
+                            'LS'
+                        ]
+                input[1] = DEEPARG_DOWNLOADDATA.out.db
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out.daa_tsv,
+                        process.out.arg,
+                        file(process.out.daa[0][1]).name,
+                        path(process.out.potential_arg[0][1]).readLines().first().contains("#ARG")
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("bacteroides_fragilis - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true),
+                            'LS'
+                        ]
+                input[1] = DEEPARG_DOWNLOADDATA.out.db
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

@@ -2,7 +2,7 @@ process ADAPTERREMOVAL {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::adapterremoval=2.3.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/adapterremoval:2.3.2--hb7ba0dd_0' :
         'biocontainers/adapterremoval:2.3.2--hb7ba0dd_0' }"

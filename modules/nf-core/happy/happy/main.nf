@@ -3,7 +3,7 @@ process HAPPY_HAPPY {
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::hap.py=0.3.14"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hap.py:0.3.14--py27h5c5a3ab_0':
         'biocontainers/hap.py:0.3.14--py27h5c5a3ab_0' }"
@@ -62,19 +62,21 @@ process HAPPY_HAPPY {
 
     stub:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '0.3.14' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
+    echo "" | gzip > ${prefix}.roc.all.csv.gz
+    echo "" | gzip > ${prefix}.roc.Locations.INDEL.csv.gz
+    echo "" | gzip > ${prefix}.roc.Locations.INDEL.PASS.csv.gz
+    echo "" | gzip > ${prefix}.roc.Locations.SNP.csv.gz
+    echo "" | gzip > ${prefix}.roc.Locations.SNP.PASS.csv.gz
+    echo "" | gzip > ${prefix}.metrics.json.gz
+    echo "" | gzip > ${prefix}.vcf.gz
+    touch ${prefix}.vcf.gz.tbi
     touch ${prefix}.summary.csv
-    touch ${prefix}.roc.all.csv.gz
-    touch ${prefix}.roc.Locations.INDEL.csv.gz
-    touch ${prefix}.roc.Locations.INDEL.PASS.csv.gz
-    touch ${prefix}.roc.Locations.SNP.csv.gz
-    touch ${prefix}.roc.Locations.SNP.PASS.csv.gz
     touch ${prefix}.extended.csv
     touch ${prefix}.runinfo.json
-    touch ${prefix}.metrics.json.gz
-    touch ${prefix}.vcf.gz
-    touch ${prefix}.vcf.gz.tbi
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

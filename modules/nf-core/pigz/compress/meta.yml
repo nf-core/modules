@@ -1,0 +1,44 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "pigz_compress"
+description: Compresses files with pigz.
+keywords:
+  - compress
+  - gzip
+  - parallelized
+tools:
+  - "pigz":
+      description: "Parallel implementation of the gzip algorithm."
+      homepage: "https://zlib.net/pigz/"
+      documentation: "https://zlib.net/pigz/pigz.pdf"
+
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - raw_file:
+        type: file
+        description: File to be compressed
+        pattern: "*.*"
+output:
+  - archive:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - $archive:
+          type: file
+          description: The compressed file
+          pattern: "*.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@leoisl"
+maintainers:
+  - "@leoisl"

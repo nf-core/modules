@@ -1,0 +1,35 @@
+nextflow_process {
+
+    name "Test Process GENMOD_MODELS"
+    script "modules/nf-core/genmod/models/main.nf"
+    process "GENMOD_MODELS"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "genmod"
+    tag "genmod/models"
+
+    test("genmod_models") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test_annotate.vcf.gz', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky.ped', checkIfExists: true)
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            {assert process.success},
+            {assert path(process.out.vcf.get(0).get(1)).readLines().contains("##fileformat=VCFv4.2")}
+            )
+        }
+
+    }
+
+}

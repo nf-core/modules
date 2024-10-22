@@ -2,7 +2,7 @@ process SEQUENCETOOLS_PILEUPCALLER {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::sequencetools=1.5.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sequencetools:1.5.2--hec16e2b_1':
         'biocontainers/sequencetools:1.5.2--hec16e2b_1' }"

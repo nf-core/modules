@@ -2,7 +2,7 @@ process GLIMPSE_CHUNK {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::glimpse-bio=1.1.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/glimpse-bio:1.1.1--h2ce4488_2':
         'biocontainers/glimpse-bio:1.1.1--hce55b13_1' }"
@@ -31,7 +31,19 @@ process GLIMPSE_CHUNK {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        glimpse: "\$(GLIMPSE_phase --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
+        glimpse: "\$(GLIMPSE_chunk --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix  = task.ext.prefix ?: "${meta.id}"
+    def args    = task.ext.args   ?: ""
+    """
+    touch ${prefix}.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        glimpse: "\$(GLIMPSE_chunk --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
     END_VERSIONS
     """
 }

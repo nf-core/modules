@@ -1,10 +1,11 @@
-name: Fix linting from a comment
+name: fix-linting
+run-name: fix linting (automated)
 on:
   issue_comment:
     types: [created]
 
 jobs:
-  deploy:
+  fix-linting:
     # Only run if comment is on a PR with the main repo, and if it contains the magic keywords
     if: >
       contains(github.event.comment.html_url, '/pull/') &&
@@ -13,13 +14,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Use the @nf-core-bot token to check out so we can push later
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
         with:
           token: ${{ secrets.nf_core_bot_auth_token }}
 
       # indication that the linting is being fixed
       - name: React on comment
-        uses: peter-evans/create-or-update-comment@v2
+        uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043 # v4
         with:
           comment-id: ${{ github.event.comment.id }}
           reactions: eyes
@@ -31,7 +32,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.nf_core_bot_auth_token }}
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4
 
       - name: Install Prettier
         run: npm install -g prettier @prettier/plugin-php
@@ -51,7 +52,7 @@ jobs:
 
       - name: Post nothing-to-do comment
         if: steps.prettier_status.outputs.result == 'pass'
-        uses: peter-evans/create-or-update-comment@v2
+        uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043 # v4
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |

@@ -1,0 +1,51 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "seqkit_seq"
+description: Transforms sequences (extract ID, filter by length, remove gaps, reverse
+  complement...)
+keywords:
+  - genomics
+  - fasta
+  - fastq
+  - transform
+  - filter
+  - gaps
+  - complement
+tools:
+  - "seqkit":
+      description: "A cross-platform and ultrafast toolkit for FASTA/Q file manipulation"
+      homepage: "https://bioinf.shenwei.me/seqkit/"
+      documentation: "https://bioinf.shenwei.me/seqkit/usage/"
+      tool_dev_url: "https://github.com/shenwei356/seqkit"
+      doi: "10.1371/journal.pone.0163962"
+      licence: ["MIT"]
+      identifier: biotools:seqkit
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fastx:
+        type: file
+        description: Input fasta/fastq file
+        pattern: "*.{fsa,fas,fa,fasta,fastq,fq,fsa.gz,fas.gz,fa.gz,fasta.gz,fastq.gz,fq.gz}"
+output:
+  - fastx:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.*:
+          type: file
+          description: Output fasta/fastq file
+          pattern: "*.{fasta,fasta.gz,fastq,fastq.gz}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@GallVp"
+maintainers:
+  - "@GallVp"

@@ -2,7 +2,7 @@ process SGDEMUX {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::sgdemux=1.1.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sgdemux:1.1.1--ha982bd6_0' :
         'biocontainers/sgdemux:1.1.1--ha982bd6_0' }"

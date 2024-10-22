@@ -2,30 +2,29 @@ process BCLCONVERT {
     tag {"$meta.lane" ? "$meta.id"+"."+"$meta.lane" : "$meta.id" }
     label 'process_high'
 
-    container "docker.io/nfcore/bclconvert:4.0.3"
-
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "BCLCONVERT module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
+    container "nf-core/bclconvert:4.3.6"
 
     input:
     tuple val(meta), path(samplesheet), path(run_dir)
 
     output:
-    tuple val(meta), path("**[!Undetermined]_S*_R?_00?.fastq.gz"), emit: fastq
-    tuple val(meta), path("**[!Undetermined]_S*_I?_00?.fastq.gz"), optional:true, emit: fastq_idx
-    tuple val(meta), path("**Undetermined_S0*_R?_00?.fastq.gz")  , optional:true, emit: undetermined
-    tuple val(meta), path("**Undetermined_S0*_I?_00?.fastq.gz")  , optional:true, emit: undetermined_idx
-    tuple val(meta), path("Reports")                             , emit: reports
-    tuple val(meta), path("Logs")                                , emit: logs
-    tuple val(meta), path("InterOp/*.bin")                       , emit: interop
-    path("versions.yml")                                         , emit: versions
+    tuple val(meta), path("output/**_S[1-9]*_R?_00?.fastq.gz")           , emit: fastq
+    tuple val(meta), path("output/**_S[1-9]*_I?_00?.fastq.gz")           , optional:true, emit: fastq_idx
+    tuple val(meta), path("output/**Undetermined_S0*_R?_00?.fastq.gz")   , optional:true, emit: undetermined
+    tuple val(meta), path("output/**Undetermined_S0*_I?_00?.fastq.gz")   , optional:true, emit: undetermined_idx
+    tuple val(meta), path("output/Reports")                              , emit: reports
+    tuple val(meta), path("output/Logs")                                 , emit: logs
+    tuple val(meta), path("**/InterOp/*.bin", includeInputs: true), emit: interop
+    path("versions.yml")                                          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "BCLCONVERT module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def args3 = task.ext.args3 ?: ''
@@ -59,12 +58,9 @@ process BCLCONVERT {
 
     bcl-convert \\
         $args \\
-        --output-directory . \\
+        --output-directory output \\
         --bcl-input-directory ${input_dir} \\
-        --sample-sheet ${samplesheet} \\
-        --bcl-num-parallel-tiles ${task.cpus}
-
-    cp -r ${input_dir}/InterOp .
+        --sample-sheet ${samplesheet}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

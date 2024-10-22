@@ -1,0 +1,77 @@
+nextflow_process {
+
+    name "Test Process RIBOTRICER_PREPAREORFS"
+    script "../main.nf"
+    process "RIBOTRICER_PREPAREORFS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ribotricer"
+    tag "ribotricer/prepareorfs"
+    tag "gunzip"
+
+    setup {
+        run("GUNZIP") {
+            script "modules/nf-core/gunzip/main.nf"
+            process {
+            """
+            input[0] = [
+                [ ],
+                file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.dna.chromosome.20.fa.gz", checkIfExists: true)
+            ]
+            """
+            }
+        }
+    }
+
+    test("human chr20 - fasta - gtf") {
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip.map{[
+                    [id:'homo_sapiens_chr20'], 
+                    it[1],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)
+                ]}
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+    test("human chr20 - fasta - gtf - stub") {
+
+        options '-stub'
+        
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip.map{[
+                    [id:'homo_sapiens_chr20'], 
+                    it[1],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)
+                ]}
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+}
+
+
+
+

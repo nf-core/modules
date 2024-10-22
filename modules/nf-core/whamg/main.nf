@@ -2,7 +2,7 @@ process WHAMG {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::wham=1.8.0 bioconda::tabix=1.11"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-fb3127231a8f88daa68d5eb0eec49593cd98b440:e6a1c182ebdfe372b5e3cdc05a6cece64cef7274-0':
         'biocontainers/mulled-v2-fb3127231a8f88daa68d5eb0eec49593cd98b440:e6a1c182ebdfe372b5e3cdc05a6cece64cef7274-0' }"

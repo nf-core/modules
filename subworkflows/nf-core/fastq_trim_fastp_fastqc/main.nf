@@ -13,7 +13,7 @@ import groovy.json.JsonSlurper
 
 def getFastpReadsAfterFiltering(json_file) {
     def Map json = (Map) new JsonSlurper().parseText(json_file.text).get('summary')
-    return json['after_filtering']['total_reads'].toInteger()
+    return json['after_filtering']['total_reads'].toLong()
 }
 
 workflow FASTQ_TRIM_FASTP_FASTQC {
@@ -35,8 +35,8 @@ workflow FASTQ_TRIM_FASTP_FASTQC {
         FASTQC_RAW (
             ch_reads
         )
-        fastqc_raw_html = FASTQC_RAW.out.html
-        fastqc_raw_zip  = FASTQC_RAW.out.zip
+        ch_fastqc_raw_html = FASTQC_RAW.out.html
+        ch_fastqc_raw_zip  = FASTQC_RAW.out.zip
         ch_versions     = ch_versions.mix(FASTQC_RAW.out.versions.first())
     }
 

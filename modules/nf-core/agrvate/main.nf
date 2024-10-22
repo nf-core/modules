@@ -2,7 +2,7 @@ process AGRVATE {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::agrvate=1.0.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/agrvate:1.0.2--hdfd78af_0' :
         'biocontainers/agrvate:1.0.2--hdfd78af_0' }"
@@ -25,6 +25,19 @@ process AGRVATE {
     agrvate \\
         $args \\
         -i $fasta
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        agrvate: \$(echo \$(agrvate -v 2>&1) | sed 's/agrvate v//;')
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir ${fasta.baseName}-results
+    touch ${fasta.baseName}-results/${fasta.baseName}-summary.tab
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -1,0 +1,78 @@
+name: "celesta"
+description: Unsupervised machine learning for cell type identification in multiplexed
+  imaging using protein expression and cell neighborhood information without ground
+  truth
+keywords:
+  - highly_multiplexed_imaging
+  - cell_type_identification
+  - cell_phenotyping
+  - image_analysis
+  - mcmicro
+  - machine_learning
+tools:
+  - "celesta":
+      description: "Automate unsupervised machine learning cell type identification
+        using both protein expressions and cell spatial neighborhood information"
+      homepage: https://github.com/SchapiroLabor/mcmicro-celesta
+      documentation: https://github.com/SchapiroLabor/mcmicro-celesta/blob/main/README.md
+      tool_dev_url: "https://github.com/plevritis-lab/CELESTA"
+      doi: "10.1038/s41592-022-01498-z"
+      licence: ["Apache-2.0"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test']`
+    - img_data:
+        type: file
+        description: "Quantification table with single cells as rows, markers (e.g.
+          CD3 or CD8 but names do not have to match exactly) and X/Y coordinates as
+          columns"
+        pattern: "*.csv"
+  - - signature:
+        type: file
+        description: "Signature Matrix containing the definition of cell types according
+          to markers"
+        pattern: "*.csv"
+  - - high_thresholds:
+        type: file
+        description: "csv file with user-defined probability high thresholds for anchor
+          cell (row 1) and index cell (row 2) definition"
+        pattern: "*.csv"
+  - - low_thresholds:
+        type: file
+        description: "optional csv file with user-defined probability low thresholds
+          for anchor cell (row 1) and index cell (row 2) definition"
+        pattern: "*.csv"
+output:
+  - celltypes:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*results.csv":
+          type: file
+          description: File with final celltype annotations concatenated to the original
+            input quantification, due to the mechanism its non-deterministic
+          pattern: "*.csv"
+  - quality:
+      - "*quality.csv":
+          type: file
+          description: File with final calculated marker probabilities for inspection,
+            non-deterministic
+          pattern: "*.csv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@LukasHats"
+  - "@ArozHada"
+maintainers:
+  - "@LukasHats"
+  - "@ArozHada"

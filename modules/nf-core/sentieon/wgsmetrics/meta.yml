@@ -1,0 +1,75 @@
+name: sentieon_wgsmetrics
+description: Collects whole genome quality metrics from a bam file
+keywords:
+  - metrics
+  - bam
+  - sentieon
+tools:
+  - sentieon:
+      description: |
+        Sentieon® provides complete solutions for secondary DNA/RNA analysis for a variety of sequencing platforms, including short and long reads.
+        Our software improves upon BWA, STAR, Minimap2, GATK, HaplotypeCaller, Mutect, and Mutect2 based pipelines and is deployable on any generic-CPU-based computing system.
+      homepage: https://www.sentieon.com/
+      documentation: https://www.sentieon.com/
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+    - bai:
+        type: file
+        description: Index of th sorted BAM/CRAM/SAM file
+        pattern: "*.{bai,crai,sai}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'test' ]`
+    - fasta:
+        type: file
+        description: Genome fasta file
+        pattern: "*.{fa,fasta}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'test' ]`
+    - fai:
+        type: file
+        description: Index of the genome fasta file
+        pattern: "*.fai"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'test' ]`
+    - intervals_list:
+        type: file
+        description: intervals
+output:
+  - wgs_metrics:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.txt":
+          type: file
+          description: File containing the information about mean base quality score for
+            each sequencing cycle
+          pattern: "*.txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@ramprasadn"
+maintainers:
+  - "@ramprasadn"

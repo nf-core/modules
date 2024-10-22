@@ -3,12 +3,10 @@ process SENTIEON_BWAINDEX {
     label 'process_high'
     label 'sentieon'
 
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "Sentieon modules does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-
-    container 'docker.io/nfcore/sentieon:202112.06'
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a6/a64461f38d76bebea8e21441079e76e663e1168b0c59dafee6ee58440ad8c8ac/data' :
+        'community.wave.seqera.io/library/sentieon:202308.03--59589f002351c221' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -22,13 +20,14 @@ process SENTIEON_BWAINDEX {
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ? "bwa/${task.ext.prefix}" : "bwa/${fasta.baseName}"
     """
     mkdir bwa
 
     sentieon \\
         bwa index \\
         $args \\
-        -p bwa/${fasta.baseName} \\
+        -p $prefix \\
         $fasta
 
     cat <<-END_VERSIONS > versions.yml

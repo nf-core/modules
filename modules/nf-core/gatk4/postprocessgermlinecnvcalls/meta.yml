@@ -1,9 +1,10 @@
 name: "gatk4_postprocessgermlinecnvcalls"
-description: Postprocesses the output of GermlineCNVCaller and generates VCFs and denoised copy ratios
+description: Postprocesses the output of GermlineCNVCaller and generates VCFs and
+  denoised copy ratios
 keywords:
+  - copy number
   - gatk4
   - postprocessgermlinecnvcalls
-  - copy number
 tools:
   - gatk4:
       description: |
@@ -14,53 +15,70 @@ tools:
       documentation: https://gatk.broadinstitute.org/hc/en-us/articles/360037593411-PostprocessGermlineCNVCalls
       doi: 10.1158/1538-7445.AM2017-3590
       licence: ["Apache-2.0"]
-
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - ploidy:
-      type: directory
-      description: |
-        Optional - A folder containing the ploidy model.
-        When a model is supplied to tool will run in CASE mode.
-        The folder can be tar-zipped.
-      pattern: "*.tar.gz"
-  - calls:
-      type: directory
-      description: A folder containing the calls from the input files
-      pattern: "*.tar.gz"
-  - model:
-      type: directory
-      description: |
-        A folder containing the model from the input files.
-        This will only be created in COHORT mode (when no model is supplied to the process).
-      pattern: "*.tar.gz"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - calls:
+        type: directory
+        description: A folder containing the calls from the input files
+        pattern: "*-cnv-calls/*-calls"
+    - model:
+        type: directory
+        description: |
+          A folder containing the model from the input files.
+          This will only be created in COHORT mode (when no model is supplied to the process).
+        pattern: "*-cnv-model/*-model"
+    - ploidy:
+        type: directory
+        description: |
+          Optional - A folder containing the ploidy model.
+          When a model is supplied to tool will run in CASE mode.
+        pattern: "*-calls/"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - denoised:
-      type: file
-      description: Denoised copy ratio file
-      pattern: "*.vcf.gz"
-  - segments:
-      type: file
-      description: Segments VCF file
-      pattern: "*.vcf.gz"
   - intervals:
-      type: file
-      description: Intervals VCF file
-      pattern: "*.vcf.gz"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_genotyped_intervals.vcf.gz":
+          type: file
+          description: Intervals VCF file
+          pattern: "*.vcf.gz"
+      - s:
+          type: file
+          description: Intervals VCF file
+          pattern: "*.vcf.gz"
+  - segments:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_genotyped_segments.vcf.gz":
+          type: file
+          description: Segments VCF file
+          pattern: "*.vcf.gz"
+  - denoised:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_denoised.vcf.gz":
+          type: file
+          description: Denoised copy ratio file
+          pattern: "*.vcf.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
+  - "@ryanjameskennedy"
+maintainers:
   - "@ryanjameskennedy"

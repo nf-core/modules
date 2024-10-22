@@ -2,10 +2,10 @@ process GATK4_CONDENSEDEPTHEVIDENCE {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::gatk4=4.4.0.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
-        'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.5.0.0--py36hdfd78af_0':
+        'biocontainers/gatk4:4.5.0.0--py36hdfd78af_0' }"
 
     input:
     tuple val(meta), path(depth_evidence), path(depth_evidence_index)
@@ -37,12 +37,25 @@ process GATK4_CONDENSEDEPTHEVIDENCE {
     }
 
     """
-    gatk --java-options "-Xmx${avail_mem}M" CondenseDepthEvidence \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        CondenseDepthEvidence \\
         --depth-evidence ${depth_evidence} \\
         --output ${prefix}.rd.txt.gz \\
         --reference ${fasta} \\
         --tmp-dir . \\
         ${args}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.rd.txt.gz
+    touch ${prefix}.rd.txt.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

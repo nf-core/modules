@@ -2,10 +2,10 @@ process RSEQC_INNERDISTANCE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::rseqc=3.0.1 'conda-forge::r-base>=3.5'"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/rseqc:3.0.1--py37h516909a_1' :
-        'biocontainers/rseqc:3.0.1--py37h516909a_1' }"
+        'https://depot.galaxyproject.org/singularity/rseqc:5.0.3--py39hf95cd2a_0' :
+        'biocontainers/rseqc:5.0.3--py39hf95cd2a_0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -48,4 +48,19 @@ process RSEQC_INNERDISTANCE {
         END_VERSIONS
         """
     }
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.inner_distance.txt
+    touch ${prefix}.inner_distance_freq.txt
+    touch ${prefix}.inner_distance_mean.txt
+    touch ${prefix}.inner_distance_plot.pdf
+    touch ${prefix}.inner_distance_plot.r
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        rseqc: \$(inner_distance.py --version | sed -e "s/inner_distance.py //g")
+    END_VERSIONS
+    """
 }

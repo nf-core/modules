@@ -2,10 +2,10 @@ process GUNZIP {
     tag "$archive"
     label 'process_single'
 
-    conda "conda-forge::sed=4.7"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ubuntu:20.04' :
-        'nf-core/ubuntu:20.04' }"
+        'https://depot.galaxyproject.org/singularity/ubuntu:22.04' :
+        'nf-core/ubuntu:22.04' }"
 
     input:
     tuple val(meta), path(archive)
@@ -18,13 +18,20 @@ process GUNZIP {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    gunzip = archive.toString() - '.gz'
+    def args        = task.ext.args ?: ''
+    def extension   = ( archive.toString() - '.gz' ).tokenize('.')[-1]
+    def name        = archive.toString() - '.gz' - ".$extension"
+    def prefix      = task.ext.prefix ?: name
+    gunzip          = prefix + ".$extension"
     """
-    gunzip \\
-        -f \\
+    # Not calling gunzip itself because it creates files
+    # with the original group ownership rather than the
+    # default one for that user / the work directory
+    gzip \\
+        -cd \\
         $args \\
-        $archive
+        $archive \\
+        > $gunzip
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -33,7 +40,11 @@ process GUNZIP {
     """
 
     stub:
-    gunzip = archive.toString() - '.gz'
+    def args        = task.ext.args ?: ''
+    def extension   = ( archive.toString() - '.gz' ).tokenize('.')[-1]
+    def name        = archive.toString() - '.gz' - ".$extension"
+    def prefix      = task.ext.prefix ?: name
+    gunzip          = prefix + ".$extension"
     """
     touch $gunzip
     cat <<-END_VERSIONS > versions.yml

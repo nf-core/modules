@@ -3,23 +3,19 @@ process SENTIEON_BWAMEM {
     label 'process_high'
     label 'sentieon'
 
-    secret 'SENTIEON_LICENSE_BASE64'
-
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "Sentieon modules does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-
-    container 'docker.io/nfcore/sentieon:202112.06'
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a6/a64461f38d76bebea8e21441079e76e663e1168b0c59dafee6ee58440ad8c8ac/data' :
+        'community.wave.seqera.io/library/sentieon:202308.03--59589f002351c221' }"
 
     input:
     tuple val(meta), path(reads)
     tuple val(meta2), path(index)
-    path(fasta)
-    path(fasta_fai)
+    tuple val(meta3), path(fasta)
+    tuple val(meta4), path(fasta_fai)
 
     output:
-    tuple val(meta), path("*.bam"), path("*.bai"), emit: bam_and_bai
+    tuple val(meta), path("${prefix}"), path("${prefix}.{bai,crai}"), emit: bam_and_bai
     path  "versions.yml"          , emit: versions
 
     when:
@@ -27,19 +23,14 @@ process SENTIEON_BWAMEM {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def sentieon_auth_mech_base64 = task.ext.sentieon_auth_mech_base64 ?: ''
-    def sentieon_auth_data_base64 = task.ext.sentieon_auth_data_base64 ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}.bam"
+    def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64 ?
+        "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; " :
+        ""
 
     """
-    export SENTIEON_LICENSE=\$(echo -n "\$SENTIEON_LICENSE_BASE64" | base64 -d)
-
-    if  [ ${sentieon_auth_mech_base64} ] && [ ${sentieon_auth_data_base64} ]; then
-        # If sentieon_auth_mech_base64 and sentieon_auth_data_base64 are non-empty strings, then Sentieon is mostly likely being run with some test-license.
-        export SENTIEON_AUTH_MECH=\$(echo -n "${sentieon_auth_mech_base64}" | base64 -d)
-        export SENTIEON_AUTH_DATA=\$(echo -n "${sentieon_auth_data_base64}" | base64 -d)
-        echo "Decoded and exported Sentieon test-license system environment variables"
-    fi
+    $sentieonLicense
+    export bwt_max_mem="${(task.memory * 0.9).toGiga()}G"
 
     INDEX=`find -L ./ -name "*.amb" | sed 's/.amb//'`
 
@@ -48,7 +39,12 @@ process SENTIEON_BWAMEM {
         -t $task.cpus \\
         \$INDEX \\
         $reads \\
-        | sentieon util sort -r $fasta -t $task.cpus -o ${prefix}.bam --sam2bam -
+        | sentieon util sort -r $fasta -t $task.cpus -o ${prefix} --sam2bam -
+
+    # Delete *.bai file if prefix ends with .cram
+    if [[ "${prefix}" == *.cram ]]; then
+        rm -f "${prefix}.bai"
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -58,10 +54,12 @@ process SENTIEON_BWAMEM {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}.bam"
+    index  = prefix.tokenize('.')[-1] == "bam" ? "bai" : "crai"
+
     """
-    touch ${prefix}.bam
-    touch ${prefix}.bam.bai
+    touch ${prefix}
+    touch ${prefix}.${index}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

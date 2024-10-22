@@ -65,7 +65,7 @@ workflow FASTA_INDEX_DNA {
             ch_versions = ch_versions.mix(SNAP_INDEX.out.versions)
             break
         default:
-            exit 1, "Unknown aligner: ${val_aligner}"
+            error "Unknown aligner: ${val_aligner}"
     }
 
     emit:

@@ -1,0 +1,10 @@
+- name: sentieon test_tnscope
+  command: nextflow run ./tests/modules/nf-core/sentieon/tnscope -entry test_tnscope -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/tnscope/nextflow.config
+  tags:
+    - sentieon
+    - sentieon/tnscope
+  files:
+    - path: ./output/sentieon/test.vcf.gz
+      contains: ["##fileformat=VCFv4.2"]
+    - path: ./output/sentieon/test.vcf.gz.tbi
+    - path: ./output/sentieon/versions.yml

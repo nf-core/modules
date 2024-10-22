@@ -2,7 +2,7 @@ process GSEA_GSEA {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::gsea=4.3.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gsea:4.3.2--hdfd78af_0':
         'biocontainers/gsea:4.3.2--hdfd78af_0' }"
@@ -22,11 +22,11 @@ process GSEA_GSEA {
     tuple val(meta), path("*gsea_report_for_${target}.html")   , emit: report_htmls_target
     tuple val(meta), path("*ranked_gene_list*.tsv")            , emit: ranked_gene_list
     tuple val(meta), path("*gene_set_sizes.tsv")               , emit: gene_set_sizes
-    tuple val(meta), path("*butterfly_plot.png")               , emit: butterfly_plot
     tuple val(meta), path("*global_es_histogram.png")          , emit: histogram
     tuple val(meta), path("*heat_map_1.png")                   , emit: heatmap
     tuple val(meta), path("*pvalues_vs_nes_plot.png")          , emit: pvalues_vs_nes_plot
     tuple val(meta), path("*ranked_list_corr_2.png")           , emit: ranked_list_corr
+    tuple val(meta), path("*butterfly_plot.png")               , emit: butterfly_plot, optional: true
     tuple val(meta), path("*[!gene_set_size|gsea_report|ranked_gene_list]*.tsv"), emit: gene_set_tsv, optional: true
     tuple val(meta), path("*[!gsea_report|heat_map_corr_plot|index|pos_snapshot|neg_snapshot]*.html"), emit: gene_set_html, optional: true
     tuple val(meta), path("*[!butterfly|enplot|global_es_histogram|gset_rnd_es_dist|heat_map|pvalues_vs_nes_plot|ranked_list_corr]*.png"), emit: gene_set_heatmap, optional: true

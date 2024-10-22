@@ -1,0 +1,56 @@
+name: "getorganelle_fromreads"
+description: Assembles organelle genomes from genomic data
+keywords:
+  - assembly
+  - organelle
+  - mitochondria
+  - illumina
+tools:
+  - "getorganelle":
+      description: "Get organelle genomes from genome skimming data"
+      homepage: "https://github.com/Kinggerm/GetOrganelle"
+      documentation: "https://github.com/Kinggerm/GetOrganelle"
+      tool_dev_url: "https://github.com/Kinggerm/GetOrganelle"
+      doi: "10.1186/s13059-020-02154-5"
+      licence: ["GPL v3"]
+      identifier: biotools:getorganelle
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - fastq:
+        type: file
+        description: Input fastq files
+        pattern: "*.{fastq.gz}"
+  - - organelle_type:
+        type: string
+        description: |
+          Type of database, esp. embplant_pt (embryophyta plant plastome), other_pt (non-embryophyta plant plastome), embplant_mt (plant mitochondrion), embplant_nr (plant nuclear ribosomal RNA), animal_mt (animal mitochondrion), and fungus_mt (fungus mitochondrion), fungus_nr (fungus nuclear ribosomal RNA)
+    - db:
+        type: directory
+        description: GetOrganelle database
+output:
+  - fasta:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - results/${prefix}.${organelle_type}.fasta.gz:
+          type: file
+          description: Complete or partial organelle sequences
+          pattern: "*.fasta.gz"
+  - etc:
+      - results/*:
+          type: file
+          description: Other output files
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@erinyoung"

@@ -1,8 +1,8 @@
 process LIMMA_DIFFERENTIAL {
     tag "$meta"
-    label 'process_medium'
+    label 'process_single'
 
-    conda "bioconda::bioconductor-limma=3.54.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bioconductor-limma:3.54.0--r42hc0cfd56_0' :
         'biocontainers/bioconductor-limma:3.54.0--r42hc0cfd56_0' }"
@@ -15,6 +15,7 @@ process LIMMA_DIFFERENTIAL {
     tuple val(meta), path("*.limma.results.tsv")          , emit: results
     tuple val(meta), path("*.limma.mean_difference.png")  , emit: md_plot
     tuple val(meta), path("*.MArrayLM.limma.rds")         , emit: rdata
+    tuple val(meta), path("*.limma.model.txt")            , emit: model
     tuple val(meta), path("*.R_sessionInfo.log")          , emit: session_info
     path "versions.yml"                                   , emit: versions
 

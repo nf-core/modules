@@ -2,7 +2,7 @@ process KRONA_KTIMPORTTEXT {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::krona=2.8.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/krona:2.8.1--pl5321hdfd78af_1':
         'biocontainers/krona:2.8.1--pl5321hdfd78af_1' }"
@@ -25,6 +25,18 @@ process KRONA_KTIMPORTTEXT {
         $args \\
         -o ${prefix}.html \\
         $report
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        krona: \$( echo \$(ktImportText 2>&1) | sed 's/^.*KronaTools //g; s/- ktImportText.*\$//g')
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.html
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

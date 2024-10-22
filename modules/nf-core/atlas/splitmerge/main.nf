@@ -2,7 +2,7 @@ process ATLAS_SPLITMERGE {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::atlas=0.9.9"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/atlas:0.9.9--h082e891_0':
         'biocontainers/atlas:0.9.9--h082e891_0' }"
@@ -11,7 +11,8 @@ process ATLAS_SPLITMERGE {
     tuple val(meta), path(bam), path(bai), path(read_group_settings), path(blacklist)
 
     output:
-    tuple val(meta), path("*_mergedReads.bam"), path("*.txt.gz"), emit: data
+    tuple val(meta), path("*_mergedReads.bam")  , emit: bam
+    tuple val(meta), path("*.txt.gz")           , emit: txt
     path "versions.yml", emit: versions
 
     when:

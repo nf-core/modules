@@ -2,14 +2,14 @@ process SAMTOOLS_MARKDUP {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::samtools=1.17"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.17--h00cdaf9_0' :
-        'biocontainers/samtools:1.17--h00cdaf9_0' }"
+        'https://depot.galaxyproject.org/singularity/samtools:1.21--h50ea8bc_0' :
+        'biocontainers/samtools:1.21--h50ea8bc_0' }"
 
     input:
     tuple val(meta), path(input)
-    path fasta
+    tuple val(meta2), path(fasta)
 
     output:
     tuple val(meta), path("*.bam"),  emit: bam, optional: true
@@ -41,7 +41,23 @@ process SAMTOOLS_MARKDUP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' ))
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def extension = args.contains("--output-fmt sam") ? "sam" :
+                    args.contains("--output-fmt bam") ? "bam" :
+                    args.contains("--output-fmt cram") ? "cram" :
+                    "bam"
+    if ("$input" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    """
+    touch ${prefix}.${extension}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 }

@@ -2,7 +2,7 @@ process SURVIVOR_FILTER {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::survivor=1.0.7"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/survivor:1.0.7--h9a82719_1':
         'biocontainers/survivor:1.0.7--h9a82719_1' }"

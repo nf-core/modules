@@ -1,0 +1,140 @@
+// nf-core modules test velocyto
+nextflow_process {
+    name 'Test Process VELOCYTO'
+    tag "modules"
+    tag "modules_nfcore"
+    tag "velocyto"
+    tag "samtools/sort"
+
+    script '../main.nf'
+    process 'VELOCYTO'
+    config "modules/nf-core/velocyto/tests/test.config"
+
+    test('mus_musculus - barcodes and bam with samtools sort') {
+        setup {
+            run("SAMTOOLS_SORT") {
+                script "../../samtools/sort/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'Sample_X' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/rna_velocity/possorted_genome_bam.bam', checkIfExists: true),
+                    ]
+                    input[1] = [
+                        [ id:'Sample_X' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.fa.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = Channel
+                    .fromList(
+                        [
+                            [ id:'Sample_X' ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/mus_musculus/rna_velocity/barcodes.tsv.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/mus_musculus/rna_velocity/possorted_genome_bam.bam', checkIfExists: true),
+                        ]
+                    )
+                    .collect()
+                    .join(SAMTOOLS_SORT.out.bam)
+
+                input[1] = file(params.modules_testdata_base_path + 'genomics/mus_musculus/rna_velocity/gencode.vM19.annotation.chr19.gtf', checkIfExists: true)
+                """
+            }
+        }
+        then {
+            assertAll(
+            { assert process.success },
+            {
+                assert snapshot(
+                    process.out.versions
+                ).match("version")
+            },
+            // this is to check if velocyto is correctly skipping the samtools sort part
+            {
+                with(process.out.loom) {
+                    with(get(0)) {
+                        assert path(get(2)).readLines().any {
+                            it.contains('cellsorted_possorted_genome_bam.bam already exists')
+                        }
+                    }
+                }
+            },
+            { assert process.out.loom.get(0).get(1) ==~ ".*/Sample_X.loom" }
+            )
+        }
+    }
+
+    test('mus_musculus - barcodes, bam and bam cellsorted') {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'Sample_X' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rna_velocity/barcodes.tsv.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rna_velocity/possorted_genome_bam.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rna_velocity/cellsorted_possorted_genome_bam.bam', checkIfExists: true)
+                ]
+
+                input[1] = file(params.modules_testdata_base_path + 'genomics/mus_musculus/rna_velocity/gencode.vM19.annotation.chr19.gtf', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            {
+                assert snapshot(
+                    process.out.versions
+                ).match("presorted_version")
+            },
+            // this is to check if velocyto is correctly skipping the samtools sort part
+            {
+                with(process.out.loom) {
+                    with(get(0)) {
+                        assert path(get(2)).readLines().any {
+                            it.contains('cellsorted_possorted_genome_bam.bam already exists')
+                        }
+                    }
+                }
+            },
+            { assert process.out.loom.get(0).get(1) ==~ ".*/Sample_X.loom" }
+            )
+        }
+    }
+
+    test('mus_musculus - barcodes and bams - stub') {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'Sample_X' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rna_velocity/barcodes.tsv.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rna_velocity/possorted_genome_bam.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rna_velocity/cellsorted_possorted_genome_bam.bam', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/mus_musculus/rna_velocity/gencode.vM19.annotation.chr19.gtf', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        process.out.versions,
+                        process.out.loom
+                    ).match()
+                },
+            )
+        }
+    }
+}

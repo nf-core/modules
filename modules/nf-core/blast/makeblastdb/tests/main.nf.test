@@ -1,0 +1,92 @@
+nextflow_process {
+
+    name "Test Process BLAST_MAKEBLASTDB"
+    script "../main.nf"
+    process "BLAST_MAKEBLASTDB"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "blast"
+    tag "blast/makeblastdb"
+
+    test("Should build a blast db folder from a fasta file") {
+
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert process.out.db.size() == 1
+
+                    def all_files = ( new File(process.out.db[0][1]) ).listFiles()
+                    def stable_file_names = [
+                        'genome.fasta',
+                        'genome.fasta.ndb',
+                        'genome.fasta.nhr',
+                        'genome.fasta.not',
+                        'genome.fasta.nsq',
+                        'genome.fasta.ntf',
+                        'genome.fasta.nto'
+                    ]
+
+                    def stable_files = all_files.findAll { it.name in stable_file_names }.toSorted()
+
+                    assert snapshot(
+                        all_files.collect { it.name }.toSorted(),
+                        stable_files,
+                        process.out.versions[0]
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("Should build a blast db folder from a zipped fasta file") {
+
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert process.out.db.size() == 1
+
+                    def all_files = ( new File(process.out.db[0][1]) ).listFiles()
+                    def stable_file_names = [
+                        'genome.fasta',
+                        'genome.fasta.ndb',
+                        'genome.fasta.nhr',
+                        'genome.fasta.not',
+                        'genome.fasta.nsq',
+                        'genome.fasta.ntf',
+                        'genome.fasta.nto'
+                    ]
+
+                    def stable_files = all_files.findAll { it.name in stable_file_names }.toSorted()
+
+                    assert snapshot(
+                        all_files.collect { it.name }.toSorted(),
+                        stable_files,
+                        process.out.versions[0]
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+}

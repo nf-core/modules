@@ -1,0 +1,123 @@
+nextflow_process {
+
+    name "Test Process MERYL_UNIONSUM"
+    script "../main.nf"
+    process "MERYL_UNIONSUM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "meryl"
+    tag "meryl/unionsum"
+    tag "meryl/count"
+
+    test("sarscov2 - fastq - single_end") {
+
+        setup {
+            run('MERYL_COUNT'){
+                script "../../../../../modules/nf-core/meryl/count/main.nf"
+                process {
+                    """
+                    input[0] = Channel.value([
+                        [ id: 'test', single_end: true ], // meta map
+                        file( params.modules_testdata_base_path + "/genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true )
+                    ])
+                    input[1] = Channel.value(21)
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = MERYL_COUNT.out.meryl_db
+                input[1] = Channel.value(21)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fastq - paired_end") {
+
+        setup {
+            run('MERYL_COUNT'){
+                script "../../../../../modules/nf-core/meryl/count/main.nf"
+                process {
+                    """
+                    input[0] = Channel.value([
+                        [ id: 'test', single_end: false ], // meta map
+                        [
+                            file( params.modules_testdata_base_path + "/genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true ),
+                            file( params.modules_testdata_base_path + "/genomics/sarscov2/illumina/fastq/test_2.fastq.gz", checkIfExists: true )
+                        ]
+                    ])
+                    input[1] = Channel.value(21)
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = MERYL_COUNT.out.meryl_db
+                input[1] = Channel.value(21)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fastq- stub") {
+
+        options "-stub"
+
+        setup {
+            run('MERYL_COUNT'){
+                script "../../../../../modules/nf-core/meryl/count/main.nf"
+                process {
+                    """
+                    input[0] = Channel.value([
+                        [ id: 'test', single_end: true ], // meta map
+                        file( params.modules_testdata_base_path + "/genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true )
+                    ])
+                    input[1] = Channel.value(21)
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = MERYL_COUNT.out.meryl_db
+                input[1] = Channel.value(21)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

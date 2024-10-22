@@ -1,0 +1,189 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "ampcombi2_parsetables"
+description: A submodule that parses and standardizes the results from various antimicrobial
+  peptide identification tools.
+keywords:
+  - antimicrobial peptides
+  - amps
+  - parsing
+  - reporting
+  - align
+  - macrel
+  - amplify
+  - hmmsearch
+  - neubi
+  - ampir
+  - ampgram
+  - amptransformer
+  - DRAMP
+tools:
+  - ampcombi2/parsetables:
+      description: "A parsing tool to convert and summarise the outputs from multiple
+        AMP detection tools in a standardized format."
+      homepage: "https://github.com/Darcy220606/AMPcombi"
+      documentation: "https://github.com/Darcy220606/AMPcombi"
+      tool_dev_url: "https://github.com/Darcy220606/AMPcombi/tree/dev"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - amp_input:
+        type: list
+        description: The path to the directory containing the results for the AMP tools
+          for each processed sample or a list of files corresponding to each file generated
+          by AMP tools.
+        pattern: "[*amptool.tsv, *amptool.tsv]"
+  - - faa_input:
+        type: file
+        description: The path to the file corresponding to the respective protein fasta
+          files with '.faa' extension. File names have to contain the corresponding
+          sample name, i.e. sample_1.faa
+        pattern: "*.faa"
+  - - gbk_input:
+        type: file
+        description: The path to the file corresponding to the respective annotated
+          files with either '.gbk' or '.gbff' extensions. File names must contain the
+          corresponding sample name, i.e. sample_1.faa where "sample_1" is the sample
+          name.
+        pattern: "*.gbk"
+  - - opt_amp_db:
+        type: directory
+        description: The path to the folder containing the fasta and tsv database files.
+        pattern: "*/"
+output:
+  - sample_dir:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${meta.id}/:
+          type: directory
+          description: The output directory that contains the summary output and related
+            alignment files for one sample.
+          pattern: "/*"
+  - contig_gbks:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${meta.id}/contig_gbks/:
+          type: directory
+          description: The output subdirectory that contains the gbk files containing
+            the AMP hits for each sample.
+          pattern: "/*/contig_gbks"
+  - txt:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${meta.id}/${meta.id}_diamond_matches.txt:
+          type: file
+          description: An alignment file containing the results from the DIAMOND alignment
+            step done on all AMP hits.
+          pattern: "/*/*_diamond_matches.txt"
+  - tsv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${meta.id}/${meta.id}_ampcombi.tsv:
+          type: file
+          description: A file containing the summary report of all predicted AMP hits
+            from all AMP tools given as input, the corresponding taxonomic and functional
+            classification from the alignment step and the estimated physiochemical properties.
+          pattern: "/*/*_ampcombi.tsv"
+  - faa:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${meta.id}/${meta.id}_amp.faa:
+          type: file
+          description: A fasta file containing the amino acid sequences of all predicted
+            AMP hits.
+          pattern: "/*/*_amp.faa"
+  - sample_log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${meta.id}/${meta.id}_ampcombi.log:
+          type: file
+          description: A log file that captures the standard output per sample in a log
+            file. Can be activated by `--log`.
+          pattern: "/*/*.log"
+  - full_log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - Ampcombi_parse_tables.log:
+          type: file
+          description: A log file that captures the standard output for the entire process
+            in a log file. Can be activated by `--log`.
+          pattern: "Ampcombi_parse_tables.log"
+  - results_db:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - amp_ref_database/:
+          type: directory
+          description: If the AMP reference database is not provided by the user using
+            the flag `--amp_database', by default the DRAMP database will be downloaded,
+            filtered and stored in this folder.
+          pattern: "/amp_ref_database"
+  - results_db_dmnd:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - amp_ref_database/*.dmnd:
+          type: file
+          description: AMP reference database converted to DIAMOND database format.
+          pattern: "/amp_ref_database/*.dmnd"
+  - results_db_fasta:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - amp_ref_database/*.clean.fasta:
+          type: file
+          description: AMP reference database fasta file, cleaned of diamond-uncompatible
+            characters.
+          pattern: "/amp_ref_database/*.clean.fasta"
+  - results_db_tsv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - amp_ref_database/*.tsv:
+          type: file
+          description: AMP reference database in tsv-format with two columns containing
+            header and sequence.
+          pattern: "/amp_ref_database/*.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@darcy220606"
+maintainers:
+  - "@darcy220606"

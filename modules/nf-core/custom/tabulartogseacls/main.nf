@@ -2,7 +2,7 @@ process CUSTOM_TABULARTOGSEACLS {
     tag "$meta.id"
     label 'process_single'
 
-    conda "conda-forge::coreutils=9.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ubuntu:20.04' :
         'nf-core/ubuntu:20.04' }"
@@ -27,8 +27,8 @@ process CUSTOM_TABULARTOGSEACLS {
     """
     cls_file=${prefix}.cls
 
-    column_number=\$(cat $samples | head -n 1 | tr '$separator' "\\n" | grep -En "^$variable" | awk -F':' '{print \$1}')
-    classes=\$(tail -n +2 $samples | awk -F'$separator' '{print \$'\$column_number'}')
+    column_number=\$(cat $samples | head -n 1 | tr '$separator' "\\n" | grep -En "^$variable\$" | awk -F':' '{print \$1}')
+    classes=\$(tail -n +2 $samples | awk -F'$separator' '{print \$'\$column_number'}' | sed 's/^\$/empty/g')
     unique_classes=\$(echo -e "\$classes" | awk '!x[\$0]++')
 
     echo -e "\$(echo -e \"\$classes\" | wc -l) \$(echo -e \"\$unique_classes\" | wc -l) 1" > \$cls_file

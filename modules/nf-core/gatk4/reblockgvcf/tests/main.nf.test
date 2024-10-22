@@ -1,0 +1,99 @@
+nextflow_process {
+
+    name "Test Process GATK4_REBLOCKGVCF"
+    script "../main.nf"
+    process "GATK4_REBLOCKGVCF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gatk4"
+    tag "gatk4/reblockgvcf"
+
+    test("test_gatk4_reblockgvcf") {
+        when {
+            process {
+                """
+                input[0] = [[ id:'test', single_end:false ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz.tbi', checkIfExists: true), []]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
+                input[4] = []
+                input[5] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.vcf[0][1]).name,
+                    file(process.out.vcf[0][2]).name,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("test_gatk4_reblockgvcf_intervals") {
+        when {
+            process {
+                """
+                input[0] = [[ id:'test', single_end:false ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz.tbi', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
+                input[4] = []
+                input[5] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.vcf[0][1]).name,
+                    file(process.out.vcf[0][2]).name,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("test_gatk4_reblockgvcf_stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [[ id:'test', single_end:false ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz.tbi', checkIfExists: true), []]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
+                input[4] = []
+                input[5] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.vcf[0][1]).name,
+                    file(process.out.vcf[0][2]).name,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+}

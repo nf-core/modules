@@ -1,0 +1,65 @@
+nextflow_process {
+
+    name "Test Process MAGECK_MLE"
+    script "../main.nf"
+    process "MAGECK_MLE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mageck"
+    tag "mageck/mle"
+
+    test("mageck_mle - csv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                 file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/count_table.csv', checkIfExists: true)
+                ]
+                input[1] =
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/design_matrix.txt', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match() },
+                { assert file(process.out.gene_summary[0][1]).readLines().first().contains("Gene") },
+                { assert file(process.out.sgrna_summary[0][1]).exists() }
+                )
+
+        }
+
+    }
+
+    test("mageck_mle - csv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                 file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/count_table.csv', checkIfExists: true)
+                ]
+                input[1] =
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/design_matrix.txt', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

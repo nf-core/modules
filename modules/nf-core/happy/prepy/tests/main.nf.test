@@ -1,0 +1,113 @@
+nextflow_process {
+
+    name "Test Process HAPPY_PREPY"
+    script "../main.nf"
+    process "HAPPY_PREPY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "happy"
+    tag "happy/prepy"
+
+    test("homo_sapiens - illumina - vcf - bed") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true)
+                        ]
+                input[1] = [
+                        [ id:'test2' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                        ]
+                input[2] = [
+                        [ id:'test3' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                        ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.preprocessed_vcf[0].collect { it instanceof Map ? it : path(it).linesGzip[-3..-1] }
+                ).match("bed_preprocessed_vcf") },
+                { assert snapshot(process.out.versions).match("bed_versions") }
+            )
+        }
+
+    }
+    test("homo_sapiens - illumina - vcf") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz', checkIfExists: true),
+                        []
+                        ]
+                input[1] = [
+                        [ id:'test2' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                        ]
+                input[2] = [
+                        [ id:'test3' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                        ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.preprocessed_vcf[0].collect { it instanceof Map ? it : path(it).linesGzip[-3..-1] }
+                ).match("preprocessed_vcf") },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+    test("stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true)
+                        ]
+                input[1] = [
+                        [ id:'test2' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                        ]
+                input[2] = [
+                        [ id:'test3' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                        ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.preprocessed_vcf).match("stub_preprocessed_vcf") },
+                { assert snapshot(process.out.versions).match("stub_versions") }
+            )
+        }
+
+    }
+
+}

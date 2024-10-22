@@ -1,0 +1,415 @@
+nextflow_process {
+
+    name "Test Process BUSCO_BUSCO"
+    script "../main.nf"
+    process "BUSCO_BUSCO"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "busco"
+    tag "busco/busco"
+
+    test("test_busco_genome_single_fasta") {
+
+        config './nextflow.config'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                ]
+                input[1] = 'genome'
+                input[2] = 'bacteria_odb10' // Launch with 'auto' to use --auto-lineage, and specified lineages // 'auto' removed from test due to memory issues
+                input[3] = [] // Download busco lineage
+                input[4] = [] // No config
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            with(path(process.out.short_summaries_txt[0][1]).text) {
+                assert contains('BUSCO version')
+                assert contains('The lineage dataset is')
+                assert contains('BUSCO was run in mode')
+                assert contains('Complete BUSCOs')
+                assert contains('Missing BUSCOs')
+                assert contains('Dependencies and versions')
+            }
+
+            with(path(process.out.short_summaries_json[0][1]).text) {
+                assert contains('one_line_summary')
+                assert contains('mode')
+                assert contains('dataset')
+            }
+
+            assert snapshot(
+                    process.out.batch_summary[0][1],
+                    process.out.full_table[0][1],
+                    process.out.missing_busco_list[0][1],
+                    process.out.versions[0]
+                ).match()
+
+            with(file(process.out.seq_dir[0][1]).listFiles().collect { it.name }) {
+                assert contains('single_copy_busco_sequences.tar.gz')
+                assert contains('multi_copy_busco_sequences.tar.gz')
+                assert contains('fragmented_busco_sequences.tar.gz')
+            }
+
+            with(path("${process.out.busco_dir[0][1]}/logs/busco.log").text) {
+                assert contains('DEBUG:busco.run_BUSCO')
+                assert contains('Results from dataset')
+                assert contains('how to cite BUSCO')
+            }
+
+            assert process.out.single_copy_proteins == []
+            assert process.out.translated_dir == []
+        }
+    }
+
+    test("test_busco_genome_multi_fasta") {
+
+        config './nextflow.config'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists: true)
+                    ]
+                ]
+                input[1] = 'genome'
+                input[2] = 'bacteria_odb10'
+                input[3] = []
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            with(path(process.out.short_summaries_txt[0][1][0]).text) {
+                assert contains('BUSCO version')
+                assert contains('The lineage dataset is')
+                assert contains('BUSCO was run in mode')
+                assert contains('Complete BUSCOs')
+                assert contains('Missing BUSCOs')
+                assert contains('Dependencies and versions')
+            }
+
+            with(path(process.out.short_summaries_txt[0][1][1]).text) {
+                assert contains('BUSCO version')
+                assert contains('The lineage dataset is')
+                assert contains('BUSCO was run in mode')
+                assert contains('Complete BUSCOs')
+                assert contains('Missing BUSCOs')
+                assert contains('Dependencies and versions')
+            }
+
+            with(path(process.out.short_summaries_json[0][1][0]).text) {
+                assert contains('one_line_summary')
+                assert contains('mode')
+                assert contains('dataset')
+            }
+
+            with(path(process.out.short_summaries_json[0][1][1]).text) {
+                assert contains('one_line_summary')
+                assert contains('mode')
+                assert contains('dataset')
+            }
+
+            assert snapshot(
+                    process.out.batch_summary[0][1],
+                    process.out.full_table[0][1],
+                    process.out.missing_busco_list[0][1],
+                    process.out.versions[0]
+                ).match()
+
+            with(file(process.out.seq_dir[0][1][0]).listFiles().collect { it.name }) {
+                assert contains('single_copy_busco_sequences.tar.gz')
+                assert contains('multi_copy_busco_sequences.tar.gz')
+                assert contains('fragmented_busco_sequences.tar.gz')
+            }
+
+            with(file(process.out.seq_dir[0][1][1]).listFiles().collect { it.name }) {
+                assert contains('single_copy_busco_sequences.tar.gz')
+                assert contains('multi_copy_busco_sequences.tar.gz')
+                assert contains('fragmented_busco_sequences.tar.gz')
+            }
+
+            with(path("${process.out.busco_dir[0][1]}/logs/busco.log").text) {
+                assert contains('DEBUG:busco.run_BUSCO')
+                assert contains('Results from dataset')
+                assert contains('how to cite BUSCO')
+            }
+
+            assert process.out.single_copy_proteins == []
+            assert process.out.translated_dir == []
+        }
+
+    }
+
+    test("test_busco_eukaryote_metaeuk") {
+
+        config './nextflow.metaeuk.config'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = 'genome'
+                input[2] = 'eukaryota_odb10'
+                input[3] = []
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            with(path(process.out.short_summaries_txt[0][1]).text) {
+                assert contains('BUSCO version')
+                assert contains('The lineage dataset is')
+                assert contains('BUSCO was run in mode')
+                assert contains('Complete BUSCOs')
+                assert contains('Missing BUSCOs')
+                assert contains('Dependencies and versions')
+            }
+
+            with(path(process.out.short_summaries_json[0][1]).text) {
+                assert contains('one_line_summary')
+                assert contains('mode')
+                assert contains('dataset')
+            }
+
+            assert snapshot(
+                    process.out.batch_summary[0][1],
+                    process.out.full_table[0][1],
+                    process.out.missing_busco_list[0][1],
+                    process.out.versions[0]
+                ).match()
+
+            with(file(process.out.seq_dir[0][1]).listFiles().collect { it.name }) {
+                assert contains('single_copy_busco_sequences.tar.gz')
+                assert contains('multi_copy_busco_sequences.tar.gz')
+                assert contains('fragmented_busco_sequences.tar.gz')
+            }
+
+            with(path("${process.out.busco_dir[0][1]}/logs/busco.log").text) {
+                assert contains('DEBUG:busco.run_BUSCO')
+                assert contains('Results from dataset')
+                assert contains('how to cite BUSCO')
+
+            }
+
+            assert process.out.single_copy_proteins == []
+            assert process.out.translated_dir == []
+        }
+
+    }
+
+    test("test_busco_eukaryote_augustus") {
+
+        config './nextflow.augustus.config'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = 'genome'
+                input[2] = 'eukaryota_odb10'
+                input[3] = []
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            assert snapshot(
+                    process.out.batch_summary[0][1],
+                    process.out.versions[0]
+                ).match()
+
+            with(path("${process.out.busco_dir[0][1]}/logs/busco.log").text) {
+                assert contains('DEBUG:busco.run_BUSCO')
+                assert contains('Augustus did not recognize any genes')
+
+            }
+
+            assert process.out.short_summaries_json == []
+            assert process.out.short_summaries_txt == []
+            assert process.out.missing_busco_list == []
+            assert process.out.full_table == []
+            assert process.out.single_copy_proteins == []
+            assert process.out.translated_dir == []
+        }
+
+    }
+
+    test("test_busco_protein") {
+
+        config './nextflow.config'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
+                ]
+                input[1] = 'proteins'
+                input[2] = 'bacteria_odb10'
+                input[3] = []
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            with(path(process.out.short_summaries_txt[0][1]).text) {
+                assert contains('BUSCO version')
+                assert contains('The lineage dataset is')
+                assert contains('BUSCO was run in mode')
+                assert contains('Complete BUSCOs')
+                assert contains('Missing BUSCOs')
+                assert contains('Dependencies and versions')
+            }
+
+            with(path(process.out.short_summaries_json[0][1]).text) {
+                assert contains('one_line_summary')
+                assert contains('mode')
+                assert contains('dataset')
+            }
+
+            assert snapshot(
+                    process.out.batch_summary[0][1],
+                    process.out.full_table[0][1],
+                    process.out.missing_busco_list[0][1],
+                    process.out.versions[0]
+                ).match()
+
+            with(file(process.out.seq_dir[0][1]).listFiles().collect { it.name }) {
+                assert contains('single_copy_busco_sequences.tar.gz')
+                assert contains('multi_copy_busco_sequences.tar.gz')
+                assert contains('fragmented_busco_sequences.tar.gz')
+            }
+
+            with(path("${process.out.busco_dir[0][1]}/logs/busco.log").text) {
+                assert contains('DEBUG:busco.run_BUSCO')
+                assert contains('Results from dataset')
+                assert contains('how to cite BUSCO')
+            }
+
+            assert process.out.single_copy_proteins == []
+            assert process.out.translated_dir == []
+        }
+
+    }
+
+    test("test_busco_transcriptome") {
+
+        config './nextflow.config'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists: true)
+                ]
+                input[1] = 'transcriptome'
+                input[2] = 'bacteria_odb10'
+                input[3] = []
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            with(path(process.out.short_summaries_txt[0][1]).text) {
+                assert contains('BUSCO version')
+                assert contains('The lineage dataset is')
+                assert contains('BUSCO was run in mode')
+                assert contains('Complete BUSCOs')
+                assert contains('Missing BUSCOs')
+                assert contains('Dependencies and versions')
+            }
+
+            with(path(process.out.short_summaries_json[0][1]).text) {
+                assert contains('one_line_summary')
+                assert contains('mode')
+                assert contains('dataset')
+            }
+
+            assert snapshot(
+                    process.out.batch_summary[0][1],
+                    process.out.full_table[0][1],
+                    process.out.missing_busco_list[0][1],
+                    process.out.translated_dir[0][1],
+                    process.out.single_copy_proteins[0][1],
+                    process.out.versions[0]
+                ).match()
+
+            with(file(process.out.seq_dir[0][1]).listFiles().collect { it.name }) {
+                assert contains('single_copy_busco_sequences.tar.gz')
+                assert contains('multi_copy_busco_sequences.tar.gz')
+                assert contains('fragmented_busco_sequences.tar.gz')
+            }
+
+            with(path("${process.out.busco_dir[0][1]}/logs/busco.log").text) {
+                assert contains('DEBUG:busco.run_BUSCO')
+                assert contains('Results from dataset')
+                assert contains('how to cite BUSCO')
+            }
+        }
+
+    }
+
+    test("minimal-stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                ]
+                input[1] = 'genome'
+                input[2] = 'bacteria_odb10'
+                input[3] = []
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

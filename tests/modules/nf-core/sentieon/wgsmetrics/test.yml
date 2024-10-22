@@ -1,0 +1,8 @@
+- name: "sentieon wgsmetrics"
+  command: nextflow run ./tests/modules/nf-core/sentieon/wgsmetrics -entry test_sentieon_wgsmetrics -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sentieon/wgsmetrics/nextflow.config
+  tags:
+    - "sentieon"
+    - "sentieon/wgsmetrics"
+  files:
+    - path: "output/sentieon/test.txt"
+    - path: "output/sentieon/versions.yml"

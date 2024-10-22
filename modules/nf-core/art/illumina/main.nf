@@ -4,7 +4,7 @@ process ART_ILLUMINA {
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::art=2016.06.05"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/art:2016.06.05--h589041f_9':
         'biocontainers/art:2016.06.05--h589041f_9' }"
@@ -53,9 +53,9 @@ process ART_ILLUMINA {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '2016.06.05'
     """
-    touch ${prefix}.fq.gz
-    touch ${prefix}1.fq.gz
-    touch ${prefix}2.fq.gz
+    echo "" | gzip > ${prefix}.fq.gz
+    echo "" | gzip >  ${prefix}1.fq.gz
+    echo "" | gzip >  ${prefix}2.fq.gz
     touch ${prefix}.aln
     touch ${prefix}1.aln
     touch ${prefix}2.aln

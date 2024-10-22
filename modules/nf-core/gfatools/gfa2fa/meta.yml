@@ -1,0 +1,49 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "gfatools_gfa2fa"
+description: Converts GFA or rGFA files to FASTA
+keywords:
+  - gfa
+  - rgfa
+  - fasta
+  - assembly
+  - genome graph
+  - genomics
+tools:
+  - "gfatools":
+      description: "Tools for manipulating sequence graphs in the GFA and rGFA formats"
+      homepage: "https://github.com/lh3/gfatools"
+      documentation: "https://github.com/lh3/gfatools"
+      tool_dev_url: "https://github.com/lh3/gfatools"
+      doi: "no DOI available"
+      licence: ["Unknown"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - gfa:
+        type: file
+        description: GFA or rGFA file
+        pattern: "*.gfa"
+output:
+  - fasta:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.fasta.gz":
+          type: file
+          description: FASTA file
+          pattern: "*.fasta"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@mahesh-panchal"
+maintainers:
+  - "@mahesh-panchal"

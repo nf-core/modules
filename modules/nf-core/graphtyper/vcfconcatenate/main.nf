@@ -2,7 +2,7 @@ process GRAPHTYPER_VCFCONCATENATE {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::graphtyper=2.7.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/graphtyper:2.7.2--h7d7f7ad_0':
         'biocontainers/graphtyper:2.7.2--h7d7f7ad_0' }"
@@ -30,6 +30,21 @@ process GRAPHTYPER_VCFCONCATENATE {
         $args \\
         --write_tbi \\
         --output=${prefix}.vcf.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        graphtyper: \$(graphtyper --help | tail -n 1 | sed 's/^   //')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("$vcf" == "${prefix}.vcf.gz") {
+        error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    }
+    """
+    echo | gzip > ${prefix}.vcf.gz
+    touch ${prefix}.tbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -1,0 +1,38 @@
+nextflow_process {
+
+    name "Test Process CHECKM_LINEAGEWF"
+    script "../main.nf"
+    process "CHECKM_LINEAGEWF"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "checkm"
+    tag "checkm/lineagewf"
+
+    test("Should run without failures") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+                ]
+                input[1] = 'fasta'
+                input[2] = [] // Download CheckM database
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert file(process.out.checkm_output[0][1]).list().find { file(it).name == "checkm.log" }
+            assert snapshot(
+                path(process.out.marker_file[0][1]).readLines().any{it.contains("PF00312.17")},
+                process.out.checkm_tsv,
+                process.out.versions
+                ).match()
+        }
+
+    }
+
+}

@@ -1,0 +1,43 @@
+name: windowmasker_mkcounts
+description: A program to generate frequency counts of repetitive units.
+keywords:
+  - fasta
+  - interval
+  - windowmasker
+tools:
+  - windowmasker:
+      description: |
+        A program to mask highly repetitive and low complexity DNA sequences within a genome.
+      homepage: https://github.com/ncbi/ncbi-cxx-toolkit-public
+      documentation: https://ncbi.github.io/cxx-toolkit/
+      licence: ["MIT"]
+      identifier: biotools:windowmasker
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - ref:
+        type: file
+        description: An input nucleotide fasta file.
+output:
+  - counts:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt":
+          type: file
+          description: A file containing frequency counts of repetitive units.
+          pattern: "*.txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@DLBPointon"
+maintainers:
+  - "@DLBPointon"

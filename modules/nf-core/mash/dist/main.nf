@@ -2,7 +2,7 @@ process MASH_DIST {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::mash=2.3"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mash:2.3--he348c14_1' :
         'biocontainers/mash:2.3--he348c14_1' }"
@@ -28,6 +28,17 @@ process MASH_DIST {
         $args \\
         $reference \\
         $query > ${prefix}.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        mash: \$(mash --version 2>&1)
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

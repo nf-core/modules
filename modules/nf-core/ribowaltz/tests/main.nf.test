@@ -1,0 +1,76 @@
+// nf-core modules test ribowaltz
+nextflow_process {
+
+    name "Test Process RIBOWALTZ"
+    script "../main.nf"
+    process "RIBOWALTZ"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ribowaltz"
+
+    test("human chr20 [transcriptome bam]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true, strandedness:'forward' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888.Aligned.toTranscriptome.out.bam", checkIfExists: true)
+                    ]
+                input[1] = [[id:'homo_sapiens_chr20'], file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)]
+                input[2] = [[id:'homo_sapiens_chr20'], file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.dna.chromosome.20.fa.gz", checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.best_offset).match('best_offset') },
+                { assert snapshot(process.out.offset).match('offset') },
+                { assert snapshot(process.out.offset_plot.size() == 10)},
+                { assert snapshot(process.out.psites).match('psites') },
+                { assert snapshot(process.out.codon_coverage_rpf).match('codon_coverage_rpf') },
+                { assert snapshot(process.out.codon_coverage_psite).match('codon_coverage_psite') },
+                { assert snapshot(process.out.cds_coverage).match('cds_coverage') },
+                { assert snapshot(process.out.cds_window_coverage).match('cds_window_coverage') },
+                { assert snapshot(process.out.ribowaltz_qc.size() == 8) },
+                { assert snapshot(process.out.versions).match('versions') }
+            )
+        }
+    }
+
+    test("human chr20 [transcriptome bam] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true, strandedness:'forward' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888.Aligned.toTranscriptome.out.bam", checkIfExists: true)
+                    ]
+                input[1] = [[id:'homo_sapiens_chr20'], file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)]
+                input[2] = [[id:'homo_sapiens_chr20'], file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.dna.chromosome.20.fa.gz", checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.best_offset).match('best_offset_stub') },
+                { assert snapshot(process.out.offset).match('offset_stub') },
+                { assert snapshot(process.out.offset_plot.size() == 1)},
+                { assert snapshot(process.out.psites).match('psites_stub') },
+                { assert snapshot(process.out.codon_coverage_rpf).match('codon_coverage_rpf_stub') },
+                { assert snapshot(process.out.codon_coverage_psite).match('codon_coverage_psite_stub') },
+                { assert snapshot(process.out.cds_coverage).match('cds_coverage_stub') },
+                { assert snapshot(process.out.ribowaltz_qc.size() == 1) },
+                { assert snapshot(process.out.versions).match('versions_stub') }
+            )
+        }
+    }
+}

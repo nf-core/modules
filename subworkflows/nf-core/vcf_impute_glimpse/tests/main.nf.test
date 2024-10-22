@@ -1,0 +1,101 @@
+nextflow_workflow {
+
+    name "Test Workflow VCF_IMPUTE_GLIMPSE"
+    script "../main.nf"
+    workflow "VCF_IMPUTE_GLIMPSE"
+
+    tag "subworkflows"
+    tag "bcftools/index"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/vcf_impute_glimpse"
+    tag "glimpse/phase"
+    tag "glimpse/ligate"
+    tag "glimpse/chunk"
+
+    test("Should run without failures") {
+        config "./nextflow.config"
+
+        when {
+            params {
+                outdir = "tests/results"
+            }
+            workflow {
+                """
+                samples_infos = Channel.of('NA12878 2').collectFile(name: 'sampleinfos.txt')
+
+                ch_panel = Channel.fromList([
+                    [[ ref:'ref_panel'],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/panel/21_22/1000GP.chr21_22.s.norel.bcf",
+                        checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/panel/21_22/1000GP.chr21_22.s.norel.bcf.csi",
+                        checkIfExists: true)],
+                    [[ ref:'ref_panel2'],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/panel/21_22/1000GP.chr21_22.s.norel.bcf",
+                        checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/panel/21_22/1000GP.chr21_22.s.norel.bcf.csi",
+                        checkIfExists: true)]
+                ])
+                region = Channel.fromList([
+                    [[chr: "chr21", region: "chr21:16600000-16800000"], "chr21:16600000-16800000"],
+                    [[chr: "chr22", region: "chr22:16600000-16800000"], "chr22:16600000-16800000"]
+                ])
+
+                input_vcf = Channel.fromList([
+                    [[ id:'NA12878'], // meta map
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/individuals/NA12878/NA12878.s.1x.bcf", checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/individuals/NA12878/NA12878.s.1x.bcf.csi", checkIfExists: true),
+                    ],
+                    [[ id:'NA19401'], // meta map
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/individuals/NA19401/NA19401.s.1x.bcf", checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/individuals/NA19401/NA19401.s.1x.bcf.csi", checkIfExists: true),
+                    ]
+                ])
+                input_vcf_multiple = input_vcf
+                    .combine( samples_infos )
+                    .combine( region )
+                    .map{ metaI, vcf, index, sample, metaCR, region ->
+                        [metaI + metaCR, vcf, index, sample, region ]
+                    }
+
+                ch_map = Channel.fromList([
+                    [[ chr: "chr21"],
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/reference_genome/21/GRCh38_chr21.s.map", checkIfExists: true)
+                    ],
+                    [[ chr: "chr22"],
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/reference_genome/22/GRCh38_chr22.s.map", checkIfExists: true)
+                    ]
+                ])
+
+                // Combine input and map depending on chromosome name
+                ch_input_map = input_vcf_multiple
+                    .map{ metaIRC, vcf, index, sample, region ->
+                        [metaIRC.subMap(["chr"]), metaIRC, vcf, index, sample, region]
+                    }
+                    .combine(ch_map, by: 0)
+                    .map{ metaC, metaIRC, vcf, index, sample, region, map ->
+                        [metaIRC, vcf, index, sample, region, map] }
+
+                // Combine input and map to reference panel could also be done by chromosome
+                input[0] = ch_input_map
+                    .combine(ch_panel)
+                    .map{ metaIRC, vcf, index, sample, region, map, metaP, ref, ref_index ->
+                        [ metaIRC + metaP, vcf, index, sample, region, ref, ref_index, map ]
+                    }
+                """
+            }
+        }
+
+        then {
+            def lines = path(workflow.out.merged_variants.get(0).get(1)).linesGzip.last()
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out.versions).match("versions") },
+                { assert snapshot(workflow.out.chunk_chr).match("chunk_chr") },
+                { assert workflow.out.merged_variants.size() == 8},
+                { assert snapshot(lines).match("merged") }
+            )
+        }
+
+    }
+
+}

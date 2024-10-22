@@ -1,9 +1,0 @@
-- name: sambamba markdup test_sambamba_markdup
-  command: nextflow run ./tests/modules/nf-core/sambamba/markdup -entry test_sambamba_markdup -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sambamba/markdup/nextflow.config
-  tags:
-    - sambamba/markdup
-    - sambamba
-  files:
-    - path: output/sambamba/test.bam
-      md5sum: e2546a7d190021a56f17acb290acc94a
-    - path: output/sambamba/versions.yml

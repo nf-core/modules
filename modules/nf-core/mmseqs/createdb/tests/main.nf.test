@@ -1,0 +1,64 @@
+nextflow_process {
+
+    name "Test Process MMSEQS_CREATEDB"
+    script "../main.nf"
+    process "MMSEQS_CREATEDB"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mmseqs"
+    tag "mmseqs/createdb"
+
+    test("Should build an mmseqs db from a contigs fasta file") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.db,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("Should build an mmseqs db from a zipped amino acid sequence file") {
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.db,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+}

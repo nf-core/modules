@@ -12,55 +12,122 @@ tools:
       documentation: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
       tool_dev_url: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
       doi: "10.1093/nar/gky1263"
-      licence: "['Attribution-NonCommercial-ShareAlike CC BY-NC-SA']"
-
+      licence: ["Attribution-NonCommercial-ShareAlike CC BY-NC-SA"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - npz:
-      type: file
-      description: An NPZ file created with WisecondorX convert
-      pattern: "*.npz"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test', single_end:false ]
-  - reference:
-      type: file
-      description: A reference NPZ file created with WisecondorX newref
-      pattern: "*.npz"
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - blacklist:
-      type: file
-      description: OPTIONAL - A BED file containing blacklist regions (used mainly when the reference is small)
-      pattern: "*.bed"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - npz:
+        type: file
+        description: An NPZ file created with WisecondorX convert
+        pattern: "*.npz"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test', single_end:false ]
+    - reference:
+        type: file
+        description: A reference NPZ file created with WisecondorX newref
+        pattern: "*.npz"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - blacklist:
+        type: file
+        description: OPTIONAL - A BED file containing blacklist regions (used mainly
+          when the reference is small)
+        pattern: "*.bed"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+  - aberrations_bed:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*_aberrations.bed"
+      - "*_aberrations.bed":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*_aberrations.bed"
+  - bins_bed:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*_bins.bed"
+      - "*_bins.bed":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*_bins.bed"
+  - segments_bed:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*_segments.bed"
+      - "*_segments.bed":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*_segments.bed"
+  - chr_statistics:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*_chr_statistics.txt"
+      - "*_statistics.txt":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*_chr_statistics.txt"
+  - chr_plots:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "[!genome_wide]*.png"
+      - "[!genome_wide]*.png":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "[!genome_wide]*.png"
+  - genome_plot:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "genome_wide.png"
+      - genome_wide.png:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "genome_wide.png"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - bed:
-      type: file
-      description: OPTIONAL - Output in BED format containing the most important information
-      pattern: "*.bed"
-  - plot:
-      type: file
-      description: OPTIONAL - Output in PNG format to easily visualize the results
-      pattern: "*.png"
-
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"
