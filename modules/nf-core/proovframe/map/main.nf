@@ -30,7 +30,7 @@ process PROOVFRAME_MAP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        proovframe: 0.9.7
+        proovframe: \$(proovframe 2>&1 | grep -o 'proovframe-v[0-9]*\\.[0-9]*\\.[0-9]*' | grep -o '[0-9]*\\.[0-9]*\\.[0-9]*')
     END_VERSIONS
     """
 
@@ -42,7 +42,7 @@ process PROOVFRAME_MAP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        proovframe: 0.9.7
+        proovframe: \$(proovframe 2>&1 | grep -o 'proovframe-v[0-9]*\\.[0-9]*\\.[0-9]*' | grep -o '[0-9]*\\.[0-9]*\\.[0-9]*')
     END_VERSIONS
     """
 }

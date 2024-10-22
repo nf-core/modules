@@ -25,7 +25,9 @@ process BISMARK_COVERAGE2CYTOSINE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mv $fasta $index/
+    if [ ! -f $index/$fasta ]; then
+        ln -s \$(readlink $fasta) $index/$fasta;
+    fi
 
     coverage2cytosine \\
         $coverage_file \\
