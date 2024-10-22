@@ -26,7 +26,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [id: "test_run"]
+                input[0] = [id: "test_xeniumranger_relabel"]
                 input[1] = UNZIP.out.unzipped_archive.map { it[1] }
                 input[2] = UNZIP.out.unzipped_archive.map { it[1] } + "/gene_panel.json"
                 """
@@ -39,16 +39,16 @@ nextflow_process {
                 {
                     assert snapshot(
                         process.out.versions,
-                        process.out.outs.get(0).findAll { file(it).name !in [
+                        process.out.outs.get(0).get(1).findAll { file(it).name !in [
                             "analysis_summary.html",
                             "cell_feature_matrix.h5",
                             "cell_feature_matrix.zarr.zip",
                         ]}
                     ).match()
                 },
-                { assert path(process.out.outs.get(0).find { file(it).name == 'analysis_summary.html' }).exists() },
-                { assert path(process.out.outs.get(0).find { file(it).name == 'cell_feature_matrix.h5' }).exists() },
-                { assert path(process.out.outs.get(0).find { file(it).name == 'cell_feature_matrix.zarr.zip' }).exists() },
+                { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'analysis_summary.html' }).exists() },
+                { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'cell_feature_matrix.h5' }).exists() },
+                { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'cell_feature_matrix.zarr.zip' }).exists() },
             )
         }
     }
@@ -58,7 +58,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [id: "test_run"]
+                input[0] = [id: "test_xeniumranger_relabel"]
                 input[1] = UNZIP.out.unzipped_archive.map { it[1] }
                 input[2] = UNZIP.out.unzipped_archive.map { it[1] } + "/gene_panel.json"
                 """

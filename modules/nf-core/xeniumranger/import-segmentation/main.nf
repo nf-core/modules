@@ -13,10 +13,9 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
     path(cells)
     path(transcript_assignment)
     path(cell_boundary_polygons)
-    path(segmentation_file)
 
     output:
-    path("**/outs/**"), emit: outs
+    tuple val(meta), path("**/outs/**"), emit: outs
     path "versions.yml", emit: versions
 
     when:
@@ -34,7 +33,7 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
     def expansion_distance = expansion_distance ? "--expansion-distance=\"${expansion_distance}\"": "" // expansion distance (default - 5, range - 0 - 100)
     def coordinate_transform = coordinate_transform ? "--coordinate-transform=\"${coordinate_transform}\"": ""
     def nuclei_detection = nuclei ? "--nuclei=\"${nuclei}\"": ""
-    def cells = cells ? "--cells=\"${segmentation_file}\"": ""
+    def cells = cells ? "--cells=\"${cells}\"": ""
 
     // transcript based segmentation
     def transcript_assignment = transcript_assignment ? "--transcript-assignment=\"${transcript_assignment}\"": ""

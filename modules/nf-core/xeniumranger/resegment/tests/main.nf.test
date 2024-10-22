@@ -26,7 +26,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [id: "test_run"]
+                input[0] = [id: "test_xeniumranger_resegment"]
                 input[1] = UNZIP.out.unzipped_archive.map { it[1] }
                 input[2] = []
                 input[3] = []
@@ -42,7 +42,7 @@ nextflow_process {
                 {
                     assert snapshot(
                         process.out.versions,
-                        process.out.outs.get(0).findAll { file(it).name !in [
+                        process.out.outs.get(0).get(1).findAll { file(it).name !in [
                             'analysis_summary.html',
                             'cells.csv.gz',
                             'cells.parquet',
@@ -53,13 +53,13 @@ nextflow_process {
                         ]}
                     ).match()
                 },
-                { assert file(process.out.outs.get(0).find { file(it).name == 'analysis_summary.html' }).exists() },
-                { assert file(process.out.outs.get(0).find { file(it).name == 'cells.csv.gz' }).exists() },
-                { assert file(process.out.outs.get(0).find { file(it).name == 'cells.parquet' }).exists() },
-                { assert file(process.out.outs.get(0).find { file(it).name == 'cells.zarr.zip' }).exists() },
-                { assert file(process.out.outs.get(0).find { file(it).name == 'transcripts.parquet' }).exists() },
-                { assert file(process.out.outs.get(0).find { file(it).name == 'transcripts.zarr.zip' }).exists() },
-                { assert file(process.out.outs.get(0).find { file(it).name == 'analysis.zarr.zip' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'analysis_summary.html' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.csv.gz' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.parquet' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.zarr.zip' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.parquet' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.zarr.zip' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'analysis.zarr.zip' }).exists() },
             )
         }
     }
@@ -69,7 +69,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [id: "test_run"]
+                input[0] = [id: "test_xeniumranger_resegment"]
                 input[1] = UNZIP.out.unzipped_archive.map { it[1] }
                 input[2] = []
                 input[3] = []

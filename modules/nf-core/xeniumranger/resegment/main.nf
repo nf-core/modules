@@ -13,7 +13,7 @@ process XENIUMRANGER_RESEGMENT {
     val(interior_stain)
 
     output:
-    path("**/outs/**"), emit: outs
+    tuple val(meta), path("**/outs/**"), emit: outs
     path "versions.yml", emit: versions
 
     when:
