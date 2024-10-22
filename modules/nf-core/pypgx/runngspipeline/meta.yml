@@ -1,0 +1,77 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "pypgx_runngspipeline"
+
+description: PyPGx pharmacogenomics genotyping pipeline for NGS data.
+keywords:
+  - pypgx
+  - pharmacogenetics
+  - genotyping
+tools:
+  - "pypgx":
+      description: "A Python package for pharmacogenomics research"
+      homepage: "https://pypgx.readthedocs.io/en/latest/"
+      documentation: "https://pypgx.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/sbslee/pypgx"
+      doi: "10.1371/journal.pone.0272129"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`.
+    - vcf:
+        type: file
+        description: BGZIP compressed VCF file with SNVs/indels. Output of pypgx/createinputvcf.
+        pattern: "*.{vcf.gz}"
+    - tbi:
+        type: file
+        description: VCF tabix index.
+        pattern: "*.{vcf.gz.tbi}"
+    - coverage:
+        type: file
+        description: ZIP compressed file with depth of coverage information. Output
+          of pypgx/preparedepthofcoverage.
+        pattern: "*.{zip}"
+    - control_stats:
+        type: file
+        description: ZIP compressed file with control statistics. Output of pypgx/computecontrolstatistics.
+    - pgx_gene:
+        type: string
+        description: Pharmacogene to genotype/phenotype.
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`.
+    - resource_bundle:
+        type: directory
+        description: Path to the pypgx resource bundle (https://github.com/sbslee/pypgx-bundle).
+  - - assembly_version:
+        type: string
+        description: Genome assembly version to use.
+output:
+  - outdir:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - pgx_gene:
+          type: string
+          description: Pharmacogene used to genotype/phenotype
+      - "*pypgx_output":
+          type: directory
+          description: Directory containing all pipeline output files
+          pattern: "*pypgx_output*"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@jorivansteenbrugge"
+maintainers:
+  - "@jorivansteenbrugge"
