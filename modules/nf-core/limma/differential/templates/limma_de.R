@@ -367,17 +367,29 @@ fit <- do.call(lmFit, lmfit_args)
 
 # Create the contrast string for the specified comparison
 
-treatment_target = paste0(contrast_variable, ".", opt\$target_level)
-treatment_reference = paste0(contrast_variable, ".", opt\$reference_level)
+# Construct the expected column names for the target and reference levels in the design matrix
+treatment_target <- paste0(contrast_variable, ".", opt\$target_level)
+treatment_reference <- paste0(contrast_variable, ".", opt\$reference_level)
 
-if ((treatment_target %in% colnames(design)) && (treatment_reference %in% colnames(design)))  {
+# Determine how to construct the contrast string based on which levels are present in the design matrix
+if ((treatment_target %in% colnames(design)) && (treatment_reference %in% colnames(design))) {
+    # Both target and reference levels are present in the design matrix
+    # We can directly compare the two levels
     contrast_string <- paste0(treatment_target, "-", treatment_reference)
-} else if (!(treatment_target %in% colnames(design)) && (treatment_reference %in% colnames(design))) {
-    contrast_string <- paste0(treatment_reference, "-0")
-} else if ((treatment_target %in% colnames(design)) && !(treatment_reference %in% colnames(design)))  {
-    contrast_string <- paste0(treatment_target, "-0")
+} else if (treatment_target %in% colnames(design)) {
+    # Only the target level is present in the design matrix
+    # The reference level may have been omitted due to collinearity or being set as the baseline
+    # We compare the target level to zero (implicit reference)
+    contrast_string <- paste0(treatment_target, "- 0")
+} else if (treatment_reference %in% colnames(design)) {
+    # Only the reference level is present in the design matrix
+    # The target level may have been omitted from the design matrix
+    # We compare zero (implicit target) to the reference level
+    contrast_string <- paste0("0 - ", treatment_reference)
 } else {
-    stop(paste0(treatment_target, " and ", treatment_reference, " Not found in design array"))
+    # Neither level is present in the design matrix
+    # This indicates an error; the specified levels are not found
+    stop(paste0(treatment_target, " and ", treatment_reference, " not found in design matrix"))
 }
 
 # Create the contrast matrix
