@@ -1,7 +1,3 @@
-// TODO nf-core: If in doubt look at other nf-core/modules to see how we are doing things! :)
-//               https://github.com/nf-core/modules/tree/master/modules/nf-core/
-//               You can also ask for help via your pull request or on the #modules channel on the nf-core Slack workspace:
-//               https://nf-co.re/join
 // TODO nf-core: A module file SHOULD only define input and output files as command-line parameters.
 //               All other parameters MUST be provided using the "task.ext" directive, see here:
 //               https://www.nextflow.io/docs/latest/process.html#ext
@@ -36,10 +32,11 @@ process PBSV {
     // TODO nf-core: Where applicable please provide/convert compressed files as input/output
     //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
     tuple val(meta), path(bam)
+    path(fasta)
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.vcf"), emit: vcf
     // TODO nf-core: List additional required output channels/values here
     path "versions.yml"           , emit: versions
 
@@ -59,17 +56,13 @@ process PBSV {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
-    samtools \\
-        sort \\
-        $args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
+    #pbmm2 align ${fasta} ${bam} ${prefix}.bam
+    pbsv discover ${bam} ${prefix}.svsig.gz
+    pbsv call -j 8  ${fasta} ${prefix}.svsig.gz ${prefix}.pbsv.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pbsv: \$(samtools --version |& sed '1!d ; s/samtools //')
+        pbsv: \$(pbsv --version |& sed '1!d ; s/pbsv //')
     END_VERSIONS
     """
 
@@ -82,10 +75,11 @@ process PBSV {
     //               Complex example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bedtools/split/main.nf#L38-L54
     """
     touch ${prefix}.bam
+    touch ${prefix}.pbsv.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pbsv: \$(samtools --version |& sed '1!d ; s/samtools //')
+        pbsv: \$(pbsv --version |& sed '1!d ; s/pbsv //')
     END_VERSIONS
     """
 }
