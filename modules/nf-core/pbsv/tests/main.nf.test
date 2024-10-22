@@ -11,7 +11,7 @@ nextflow_process {
     test("pbsv_bam") {
         when {
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path +  'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true)
@@ -29,7 +29,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("versions") },
-                { assert process.out.vcf != null },                
+                { assert process.out.vcf != null },
                 { assert file(process.out.vcf[0][1]).name == "test.pbsv.vcf" }
             )
         }
@@ -43,15 +43,15 @@ nextflow_process {
 
         when {
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path +  'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true)
-                    ]
+                ]
                 input[1] = [
                     [ id:'test', single_end:false ], // meta map
 		            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true)
-		    ]
+		        ]
                 """
             }
         }

@@ -35,7 +35,6 @@ process PBSV {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.bam
     touch ${prefix}.pbsv.vcf
 
     cat <<-END_VERSIONS > versions.yml
