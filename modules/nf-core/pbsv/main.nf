@@ -39,7 +39,7 @@ process PBSV {
     touch ${prefix}.pbsv.vcf
 
     cat <<-END_VERSIONS > versions.yml
-    "${task.process}": 
+    "${task.process}":
         pbsv: \$(pbsv --version |& sed '1!d ; s/pbsv //')
     END_VERSIONS
     """
