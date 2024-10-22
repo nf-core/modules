@@ -148,7 +148,6 @@ library(edgeR)
 library(readr)
 library(dplyr)
 library(tibble)
-library(IHW)
 
 ################################################
 ################################################
