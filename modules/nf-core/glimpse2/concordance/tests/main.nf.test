@@ -94,7 +94,8 @@ nextflow_process {
                     process.out.errors_grp.collect{ file(it[1]).name },
                     process.out.errors_spl.collect{ file(it[1]).name },
                     process.out.rsquare_grp.collect{ file(it[1]).name },
-                    process.out.rsquare_spl.collect{ file(it[1]).name }
+                    process.out.rsquare_spl.collect{ file(it[1]).name },
+                    process.out.versions
                 ).match() }
             )
         }
@@ -139,7 +140,8 @@ nextflow_process {
                     process.out.errors_grp.collect{ file(it[1]).name },
                     process.out.errors_spl.collect{ file(it[1]).name },
                     process.out.rsquare_grp.collect{ file(it[1]).name },
-                    process.out.rsquare_spl.collect{ file(it[1]).name }
+                    process.out.rsquare_spl.collect{ file(it[1]).name },
+                    process.out.versions
                 ).match()
                 }
             )
@@ -185,7 +187,8 @@ nextflow_process {
                     process.out.errors_spl.collect{ file(it[1]).name },
                     process.out.rsquare_grp.collect{ file(it[1]).name },
                     process.out.rsquare_spl.collect{ file(it[1]).name },
-                    process.out.rsquare_per_site.collect{ file(it[1]).name }
+                    process.out.rsquare_per_site.collect{ file(it[1]).name },
+                    process.out.versions
                 ).match()
                 }
             )
