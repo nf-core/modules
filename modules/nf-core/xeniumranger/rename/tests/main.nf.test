@@ -27,7 +27,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [id: "test_xeniumranger_rename"]
-                input[1] = input[1] = UNZIP.out.unzipped_archive.map { it[1] }
+                input[1] = UNZIP.out.unzipped_archive.map { it[1] }
                 input[2] = "test_region"
                 input[3] = "test_cassette1"
                 """
