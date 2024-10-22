@@ -9,7 +9,7 @@ process PBSV {
 
     input:
     tuple val(meta), path(bam)
-    path(fasta)
+    tuple val(meta2), path(fasta)
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
