@@ -31,7 +31,21 @@ input:
         description: |
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
-  - - index:
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: |
+          Reference genome FASTA file
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - index:
         type: directory
         description: Bismark genome index directory
         pattern: "BismarkIndex"
@@ -75,3 +89,4 @@ authors:
   - "@phue"
 maintainers:
   - "@phue"
+  - "@sateeshperi"
