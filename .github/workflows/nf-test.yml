@@ -21,9 +21,12 @@ concurrency:
   cancel-in-progress: true
 
 env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  NFT_VER: "0.9.0"
+  NXF_ANSI_LOG: false
   NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
   NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  NXF_VER: "24.04.4"
 
 jobs:
   install-nf-test:
@@ -32,7 +35,7 @@ jobs:
       - name: Install nf-test
         uses: nf-core/setup-nf-test@v1
         with:
-          version: ${{ env.NFTEST_VER }}
+          version: ${{ env.NFT_VER }}
 
 
   get-number-of-shards:
@@ -70,9 +73,6 @@ jobs:
         profile: [conda, docker_self_hosted, singularity]
         shard: ${{ fromJSON(needs.get-number-of-shards.outputs.shards) }}
     env:
-      NXF_ANSI_LOG: false
-      NXF_VER: "24.04.4"
-      NFTEST_VER: "0.9.0"
       TOTAL_SHARDS: ${{ needs.get-number-of-shards.outputs.total_shards }}
       SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
       SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
@@ -93,11 +93,6 @@ jobs:
         uses: nf-core/setup-nextflow@v2
         with:
           version: ${{ env.NXF_VER }}
-
-      - name: Install nf-test
-        uses: nf-core/setup-nf-test@v1
-        with:
-          version: ${{ env.NFTEST_VER }}
 
       - name: Setup apptainer
         if: matrix.profile == 'singularity'
