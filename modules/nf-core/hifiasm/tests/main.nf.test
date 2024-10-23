@@ -9,14 +9,20 @@ nextflow_process {
     tag "modules_nfcore"
     tag "hifiasm"
 
-    test("homo_sapiens pacbio hifi [fastq, , , , ]") {
+    test("homo_sapiens pacbio hifi [fastq, [,], [,] ]") {
         when {
             process {
                 """
                 input[0] = [
                     [ id : 'test'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = [
                     [],
+                    [],
+                    []
+                ]
+                input[2] = [
                     [],
                     [],
                     []
@@ -43,15 +49,21 @@ nextflow_process {
         }
     }
 
-    test("homo_sapiens pacbio hifi [fastq, yak, yak, , ]") {
+    test("homo_sapiens pacbio hifi [fastq, [yak, yak], [,] ]") {
         when {
             process {
                 """
                 input[0] = [
                     [ id : 'test'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id : 'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/yak/test.yak', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/yak/test2.yak', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/yak/test2.yak', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id : 'test' ],
                     [],
                     []
                 ]
@@ -76,15 +88,21 @@ nextflow_process {
         }
     }
 
-    test("homo_sapiens pacbio hifi [fastq, , , fastq, fastq]") {
+    test("homo_sapiens pacbio hifi [fastq, [,], [fastq, fastq] ]") {
         when {
             process {
                 """
                 input[0] = [
                     [ id : 'test'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id : 'test' ],
                     [],
-                    [],
+                    []
+                ]
+                input[2] = [
+                    [ id : 'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                 ]
@@ -109,14 +127,20 @@ nextflow_process {
         }
     }
 
-    test("homo_sapiens pacbio hifi [fastq, yak, yak, fastq, fastq]") {
+    test("homo_sapiens pacbio hifi [fastq, [yak, yak], [fastq, fastq] ]") {
         when {
                 """
                 input[0] = [
                     [ id : 'test'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id : 'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/yak/test.yak', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/yak/test2.yak', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/yak/test2.yak', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id : 'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz, checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz, checkIfExists: true)
                 ]
@@ -129,17 +153,19 @@ nextflow_process {
         }
     }
 
-    test("homo_sapiens pacbio hifi [fastq, yak, , , ]") {
+    test("homo_sapiens pacbio hifi [fastq, [yak, ], [,] ]") {
         when {
                 """
                 input[0] = [
                     [ id : 'test'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id : 'test'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/yak/test.yak', checkIfExists: true),
-                    [],
-                    [],
                     []
                 ]
+                input[2] = []
                 """
         }
         then {
@@ -149,14 +175,16 @@ nextflow_process {
         }
     }
 
-    test("homo_sapiens pacbio hifi [fastq, , , , fastq]") {
+    test("homo_sapiens pacbio hifi [fastq, [,], [, fastq] ]") {
         when {
                 """
                 input[0] = [
                     [ id : 'test'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true),
-                    [],
-                    [],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = []
+                input[2] = [
+                    [ id : 'test'],
                     [],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                 ]
@@ -169,15 +197,21 @@ nextflow_process {
         }
     }
 
-    test("homo_sapiens pacbio hifi [fastq, , , , ] - stub") {
+    test("homo_sapiens pacbio hifi [fastq, [,], [,] ] - stub") {
         options "-stub"
         when {
             process {
                 """
                 input[0] = [
                     [ id : 'test'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = [
                     [],
+                    [],
+                    []
+                ]
+                input[2] = [
                     [],
                     [],
                     []

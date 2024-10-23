@@ -26,6 +26,10 @@ input:
         type: file
         description: FASTQ file with PacBio HiFi reads
         pattern: "*.{fastq}"
+  - - meta1:
+        type: map
+        description: |
+          Groovy Map containing information about parental kmers.
     - paternal_kmer_dump:
         type: file
         description: Yak kmer dump file for paternal reads (can be used for haplotype
@@ -34,6 +38,10 @@ input:
         type: file
         description: Yak kmer dump file for maternal reads (can be used for haplotype
           resolution). It can have an arbitrary extension.
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing information about Hi-C reads
     - hic_read1:
         type: file
         description: Hi-C data Forward reads.
