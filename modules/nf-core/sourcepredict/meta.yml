@@ -36,6 +36,15 @@ input:
         description: Labels for the sources table in csv format. Default can be downloaded from
           https://raw.githubusercontent.com/maxibor/sourcepredict/master/data/modern_gut_microbiomes_labels.csv
         pattern: "*.csv"      
+    
+  - - taxa_sqlite:
+        type: file
+        description: taxa.splite file downloaded with ete3 toolkit
+
+  - - taxa_sqlite_traverse_pkl:
+        type: file
+        description: taxa.splite.traverse.pkl file downloaded with ete3 toolkit
+        pattern: "taxa.splite.traverse.pkl"  
 
 output:
   - report:

@@ -11,6 +11,8 @@ process SOURCEPREDICT {
     tuple val(meta), path(kraken_parse)
     path sources
     path labels
+    path taxa_sqlite, stageAs:'.etetoolkit/*'
+    path taxa_sqlite_traverse_pkl, stageAs:'.etetoolkit/*'
 
     output:
     tuple val(meta), path("*.sourcepredict.csv"), emit: report
@@ -23,7 +25,10 @@ process SOURCEPREDICT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    """
+    """    
+    export NUMBA_CACHE_DIR='/tmp'
+    export HOME='./'
+    
     sourcepredict \\
         -s $sources \\
         -l $labels \\
@@ -34,7 +39,7 @@ process SOURCEPREDICT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sourcepredict: \$(echo \$(sourcepredict --help 2>&1 | head -n 1 | sed -n "s/.*SourcePredict v\\([0-9.]*\\).*/\\1/p")
+        sourcepredict: \$(python -c "import sourcepredict; print(sourcepredict.__version__)")
     END_VERSIONS
     """
 
@@ -47,7 +52,7 @@ process SOURCEPREDICT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sourcepredict: \$(echo \$(sourcepredict --help 2>&1 | head -n 1 | sed -n "s/.*SourcePredict v\\([0-9.]*\\).*/\\1/p")
+        sourcepredict: \$(python -c "import sourcepredict; print(sourcepredict.__version__)")
     END_VERSIONS
     """
 }
