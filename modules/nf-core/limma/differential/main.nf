@@ -48,7 +48,7 @@ process LIMMA_DIFFERENTIAL {
     limma.version <- as.character(packageVersion('limma'))
     writeLines(
         c(
-            '"task.process":',
+            '"${task.process}":',
             paste('    r-base:', r.version),
             paste('    bioconductor-limma:', limma.version)
         ),
