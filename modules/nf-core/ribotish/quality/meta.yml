@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "ribotish_quality"
 description: Quality control of riboseq bam data
@@ -8,67 +7,79 @@ keywords:
   - bam
 tools:
   - "ribotish":
-      description: "Ribo TIS Hunter (Ribo-TISH) identifies translation activities using ribosome profiling data."
+      description: "Ribo TIS Hunter (Ribo-TISH) identifies translation activities using
+        ribosome profiling data."
       homepage: "https://github.com/zhpn1024/ribotish"
       documentation: "https://github.com/zhpn1024/ribotish"
       tool_dev_url: "https://github.com/zhpn1024/ribotish"
       doi: "10.1038/s41467-017-01981-8"
       licence: ["GPL v3"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam}"
-  - bai:
-      type: file
-      description: Index for sorted BAM/CRAM/SAM file
-      pattern: "*.{bai}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. `[ id:'Ensembl human v.111' ]`
-  - gtf:
-      type: file
-      description: |
-        GTF-format annotation file for reference sequences used in the bam file
-      pattern: "*.gtf"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM/SAM file
+        pattern: "*.{bam}"
+    - bai:
+        type: file
+        description: Index for sorted BAM/CRAM/SAM file
+        pattern: "*.{bai}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'Ensembl human v.111' ]`
+    - gtf:
+        type: file
+        description: |
+          GTF-format annotation file for reference sequences used in the bam file
+        pattern: "*.gtf"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - txt:
-      type: file
-      description: |
-        txt file recording all distribution data in python format for each
-        group of reads
-      pattern: "*.{txt}"
+  - distribution:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.txt":
+          type: file
+          description: file containing distribution
+          pattern: "*.{txt}"
   - pdf:
-      type: file
-      description: |
-        Pdf figure file is plot of all the distributions and illustration of
-        quality and P-site offset
-      pattern: "*.{pdf}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.pdf":
+          type: file
+          description: |
+            Pdf figure file is plot of all the distributions and illustration of
+            quality and P-site offset
+          pattern: "*.{pdf}"
   - offset:
-      type: file
-      description: |
-        This file saves P-site offsets for different reads lengths in python
-        code dict format, and can be used in further analysis
-      pattern: "*.{para.py}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.para.py":
+          type: file
+          description: |
+            This file saves P-site offsets for different reads lengths in python
+            code dict format, and can be used in further analysis
+          pattern: "*.{para.py}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@pinin4fjords"
 maintainers:

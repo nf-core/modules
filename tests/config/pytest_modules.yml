@@ -1,9 +1,18 @@
 amps:
   - modules/nf-core/amps/**
   - tests/modules/nf-core/amps/**
-arriba/arriba:
-  - modules/nf-core/arriba/arriba/**
-  - tests/modules/nf-core/arriba/arriba/**
+angsd/contamination:
+  - modules/nf-core/angsd/contamination/**
+  - tests/modules/nf-core/angsd/contamination/**
+angsd/docounts:
+  - modules/nf-core/angsd/docounts/**
+  - tests/modules/nf-core/angsd/docounts/**
+arcashla/extract:
+  - modules/nf-core/arcashla/extract/**
+  - tests/modules/nf-core/arcashla/extract/**
+ariba/getref:
+  - modules/nf-core/ariba/getref/**
+  - tests/modules/nf-core/ariba/getref/**
 artic/guppyplex:
   - modules/nf-core/artic/guppyplex/**
   - tests/modules/nf-core/artic/guppyplex/**
@@ -40,12 +49,6 @@ bbmap/align:
 bcftools/convert:
   - modules/nf-core/bcftools/convert/**
   - tests/modules/nf-core/bcftools/convert/**
-bedtools/intersect:
-  - modules/nf-core/bedtools/intersect/**
-  - tests/modules/nf-core/bedtools/intersect/**
-bedtools/unionbedg:
-  - modules/nf-core/bedtools/unionbedg/**
-  - tests/modules/nf-core/bedtools/unionbedg/**
 biohansel:
   - modules/nf-core/biohansel/**
   - tests/modules/nf-core/biohansel/**
@@ -293,9 +296,6 @@ gunc/run:
 hicexplorer/hicpca:
   - modules/nf-core/hicexplorer/hicpca/**
   - tests/modules/nf-core/hicexplorer/hicpca/**
-hifiasm:
-  - modules/nf-core/hifiasm/**
-  - tests/modules/nf-core/hifiasm/**
 hlala/preparegraph:
   - modules/nf-core/hlala/preparegraph/**
   - tests/modules/nf-core/hlala/preparegraph/**
@@ -443,9 +443,6 @@ mmseqs/tsv2exprofiledb:
 motus/downloaddb:
   - modules/nf-core/motus/downloaddb/**
   - tests/modules/nf-core/motus/downloaddb/**
-motus/merge:
-  - modules/nf-core/motus/merge/**
-  - tests/modules/nf-core/motus/merge/**
 msisensor/msi:
   - modules/nf-core/msisensor/msi/**
   - tests/modules/nf-core/msisensor/msi/**
@@ -476,9 +473,6 @@ nucmer:
 oncocnv:
   - modules/nf-core/oncocnv/**
   - tests/modules/nf-core/oncocnv/**
-pangolin:
-  - modules/nf-core/pangolin/**
-  - tests/modules/nf-core/pangolin/**
 parabricks/applybqsr:
   - modules/nf-core/parabricks/applybqsr/**
   - tests/modules/nf-core/parabricks/applybqsr/**
@@ -515,12 +509,6 @@ paragraph/multigrmpy:
 phyloflash:
   - modules/nf-core/phyloflash/**
   - tests/modules/nf-core/phyloflash/**
-picard/collectrnaseqmetrics:
-  - modules/nf-core/picard/collectrnaseqmetrics/**
-  - tests/modules/nf-core/picard/collectrnaseqmetrics/**
-picard/filtersamreads:
-  - modules/nf-core/picard/filtersamreads/**
-  - tests/modules/nf-core/picard/filtersamreads/**
 plink/exclude:
   - modules/nf-core/plink/exclude/**
   - tests/modules/nf-core/plink/exclude/**
@@ -584,15 +572,6 @@ roary:
 rtgtools/format:
   - modules/nf-core/rtgtools/format/**
   - tests/modules/nf-core/rtgtools/format/**
-rtgtools/vcfeval:
-  - modules/nf-core/rtgtools/vcfeval/**
-  - tests/modules/nf-core/rtgtools/vcfeval/**
-samtools/markdup:
-  - modules/nf-core/samtools/markdup/**
-  - tests/modules/nf-core/samtools/markdup/**
-samtools/reheader:
-  - modules/nf-core/samtools/reheader/**
-  - tests/modules/nf-core/samtools/reheader/**
 scramble/clusteranalysis:
   - modules/nf-core/scramble/clusteranalysis/**
   - tests/modules/nf-core/scramble/clusteranalysis/**
@@ -654,9 +633,6 @@ sourmash/taxannotate:
 spatyper:
   - modules/nf-core/spatyper/**
   - tests/modules/nf-core/spatyper/**
-spring/decompress:
-  - modules/nf-core/spring/decompress/**
-  - tests/modules/nf-core/spring/decompress/**
 srst2/srst2:
   - modules/nf-core/srst2/srst2/**
   - tests/modules/nf-core/srst2/srst2/**
@@ -738,9 +714,6 @@ subworkflows/utils_nfcore_pipeline:
 subworkflows/vcf_annotate_ensemblvep:
   - subworkflows/nf-core/vcf_annotate_ensemblvep/**
   - tests/subworkflows/nf-core/vcf_annotate_ensemblvep/**
-subworkflows/vcf_annotate_ensemblvep_snpeff:
-  - subworkflows/nf-core/vcf_annotate_ensemblvep_snpeff/**
-  - tests/subworkflows/nf-core/vcf_annotate_ensemblvep_snpeff/**
 subworkflows/vcf_annotate_snpeff:
   - subworkflows/nf-core/vcf_annotate_snpeff/**
   - tests/subworkflows/nf-core/vcf_annotate_snpeff/**
@@ -804,18 +777,15 @@ umitools/group:
 universc:
   - modules/nf-core/universc/**
   - tests/modules/nf-core/universc/**
-untarfiles:
-  - modules/nf-core/untarfiles/**
-  - tests/modules/nf-core/untarfiles/**
 varlociraptor/callvariants:
   - modules/nf-core/varlociraptor/callvariants/**
   - tests/modules/nf-core/varlociraptor/callvariants/**
 varlociraptor/preprocess:
   - modules/nf-core/varlociraptor/preprocess/**
   - tests/modules/nf-core/varlociraptor/preprocess/**
-vcf2maf:
-  - modules/nf-core/vcf2maf/**
-  - tests/modules/nf-core/vcf2maf/**
+vcflib/vcfbreakmulti:
+  - modules/nf-core/vcflib/vcfbreakmulti/**
+  - tests/modules/nf-core/vcflib/vcfbreakmulti/**
 verifybamid/verifybamid2:
   - modules/nf-core/verifybamid/verifybamid2/**
   - tests/modules/nf-core/verifybamid/verifybamid2/**

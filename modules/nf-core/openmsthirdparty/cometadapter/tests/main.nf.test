@@ -1,0 +1,86 @@
+nextflow_process {
+
+    name "Test Process OPENMSTHIRDPARTY_COMETADAPTER"
+    script "../main.nf"
+    process "OPENMSTHIRDPARTY_COMETADAPTER"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "openms"
+    tag "openmsthirdparty"
+    tag "openmsthirdparty/cometadapter"
+    tag "thermorawfileparser"
+    tag "openms/decoydatabase"
+
+    setup {
+        run("THERMORAWFILEPARSER") {
+            script "../../../thermorawfileparser/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'proteomics/msspectra/PXD012083_e005640_II.raw', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        run("OPENMS_DECOYDATABASE") {
+            script "../../../openms/decoydatabase/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'proteomics/database/UP000005640_9606.fasta', checkIfExists: true)
+                ])
+                """
+            }
+        }
+    }
+
+    test("proteomics - comet") {
+
+        when {
+            process {
+                """
+                input[0] =
+                    THERMORAWFILEPARSER.out.spectra.join(
+                    OPENMS_DECOYDATABASE.out.decoy_fasta
+                    )
+                """
+            }
+        }
+        // Comet stores timestamp in output file, so we cannot compare checksums
+        then {
+            assert process.success
+            // Assert the search metadata
+            assert snapshot(file(process.out.idxml[0][1]).readLines()[0..30]).match()
+            // Make sure the file is not empty
+            assert file(process.out.idxml[0][1]).readLines().any { it.contains('ProteinHit') }
+            assert file(process.out.idxml[0][1]).readLines().any { it.contains('PeptideHit') }
+            assert snapshot(path(process.out.versions.get(0)).yaml).match("versions")
+        }
+    }
+
+    test("proteomics - comet - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] =
+                    THERMORAWFILEPARSER.out.spectra.join(
+                    OPENMS_DECOYDATABASE.out.decoy_fasta
+                    )
+                """
+            }
+        }
+
+        then {
+            assert process.success
+        }
+    }
+
+}

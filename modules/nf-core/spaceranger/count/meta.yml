@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "spaceranger_count"
-description: Module to use the 10x Space Ranger pipeline to process 10x spatial transcriptomics data
+description: Module to use the 10x Space Ranger pipeline to process 10x spatial transcriptomics
+  data
 keywords:
   - align
   - count
@@ -22,73 +22,77 @@ tools:
       tool_dev_url: "https://support.10xgenomics.com/spatial-gene-expression/software/pipelines/latest/what-is-space-ranger"
       licence:
         - "10x Genomics EULA"
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', slide:'10L13-020', area: 'B1']
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', slide:'10L13-020', area: 'B1']
 
-        `id`, `slide` and `area` are mandatory information!
-  - reads:
-      type: file
-      description: |
-        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-        respectively.
-      pattern: "${Sample_Name}_S1_L00${Lane_Number}_${I1,I2,R1,R2}_001.fastq.gz"
-  - image:
-      type: file
-      description: Brightfield tissue H&E image in JPEG or TIFF format.
-      pattern: "*.{tif,tiff,jpg,jpeg}"
-  - cytaimage:
-      type: file
-      description: |
-        CytAssist instrument captured eosin stained Brightfield tissue image with fiducial
-        frame in TIFF format. The size of this image is set at 3k in both dimensions and this image should
-        not be modified any way before passing it as input to either Space Ranger or Loupe Browser.
-      pattern: "*.{tif,tiff}"
-  - darkimage:
-      type: file
-      description: |
-        Optional for dark background fluorescence microscope image input. Multi-channel, dark-background fluorescence
-        image as either a single, multi-layer TIFF file or as multiple TIFF or JPEG files.
-      pattern: "*.{tif,tiff,jpg,jpeg}"
-  - colorizedimage:
-      type: file
-      description: |
-        Required for color composite fluorescence microscope image input.
-        A color composite of one or more fluorescence image channels saved as a single-page,
-        single-file color TIFF or JPEG.
-      pattern: "*.{tif,tiff,jpg,jpeg}"
-  - alignment:
-      type: file
-      description: OPTIONAL - Path to manual image alignment.
-      pattern: "*.json"
-  - slidefile:
-      type: file
-      description: OPTIONAL - Path to slide specifications.
-      pattern: "*.json"
-  - reference:
-      type: directory
-      description: Folder containing all the reference indices needed by Space Ranger
-  - probeset:
-      type: file
-      description: OPTIONAL - Probe set specification.
-      pattern: "*.csv"
+          `id`, `slide` and `area` are mandatory information!
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively.
+        pattern: "${Sample_Name}_S1_L00${Lane_Number}_${I1,I2,R1,R2}_001.fastq.gz"
+    - image:
+        type: file
+        description: Brightfield tissue H&E image in JPEG or TIFF format.
+        pattern: "*.{tif,tiff,jpg,jpeg}"
+    - cytaimage:
+        type: file
+        description: |
+          CytAssist instrument captured eosin stained Brightfield tissue image with fiducial
+          frame in TIFF format. The size of this image is set at 3k in both dimensions and this image should
+          not be modified any way before passing it as input to either Space Ranger or Loupe Browser.
+        pattern: "*.{tif,tiff}"
+    - darkimage:
+        type: file
+        description: |
+          Optional for dark background fluorescence microscope image input. Multi-channel, dark-background fluorescence
+          image as either a single, multi-layer TIFF file or as multiple TIFF or JPEG files.
+        pattern: "*.{tif,tiff,jpg,jpeg}"
+    - colorizedimage:
+        type: file
+        description: |
+          Required for color composite fluorescence microscope image input.
+          A color composite of one or more fluorescence image channels saved as a single-page,
+          single-file color TIFF or JPEG.
+        pattern: "*.{tif,tiff,jpg,jpeg}"
+    - alignment:
+        type: file
+        description: OPTIONAL - Path to manual image alignment.
+        pattern: "*.json"
+    - slidefile:
+        type: file
+        description: OPTIONAL - Path to slide specifications.
+        pattern: "*.json"
+  - - reference:
+        type: directory
+        description: Folder containing all the reference indices needed by Space Ranger
+  - - probeset:
+        type: file
+        description: OPTIONAL - Probe set specification.
+        pattern: "*.csv"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - outs:
-      type: file
-      description: Files containing the outputs of Space Ranger, see official 10X Genomics documentation for a complete list
-      pattern: "outs/*"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - outs/**:
+          type: file
+          description: Files containing the outputs of Space Ranger, see official 10X
+            Genomics documentation for a complete list
+          pattern: "outs/*"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@grst"
 maintainers:
