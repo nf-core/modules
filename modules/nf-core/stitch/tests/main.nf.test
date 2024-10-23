@@ -1,5 +1,5 @@
-def pathbam = "file('https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/illumina/"
-def pathgenome = "file('https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/genome/chr21/sequence/"
+def pathbam = "file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/"
+def pathgenome = "file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/"
 // positions and essential parameters
 def posfile             = "${pathgenome}dbsnp_138.hg38.first_10_biallelic_sites.tsv', checkIfExists: true)"
 def stitch_params       = "[ [ id: 'test_positions' ], $posfile, [], [], 'chr21', 2, 1 ]"
