@@ -29,15 +29,6 @@ env:
   NXF_VER: "24.04.4"
 
 jobs:
-  install-nf-test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install nf-test
-        uses: nf-core/setup-nf-test@v1
-        with:
-          version: ${{ env.NFT_VER }}
-
-
   get-number-of-shards:
     runs-on: ubuntu-latest
     outputs:
@@ -45,6 +36,11 @@ jobs:
       shards: ${{ steps.shards.outputs.shards }}
       total_shards: ${{ steps.shards.outputs.total_shards }}
     steps:
+      - name: Install nf-test
+        uses: nf-core/setup-nf-test@v1
+        with:
+          version: ${{ env.NFT_VER }}
+
       - id: shards
         run: |
           nftest_output=$(nf-test test --dry-run --changed-since HEAD^ --filter process --follow-dependencies)
@@ -63,7 +59,7 @@ jobs:
     # process | docker_self_hosted | 1
     # ...
     # workflow | singularity | 3
-    name: ${{ matrix.filter }} | ${{ matrix.profile }} | ${{ matrix.shard }}
+    name: "${{ matrix.filter }} | ${{ matrix.profile }} | ${{ matrix.shard }}"
     needs: get-number-of-shards
     if: ${{ fromJSON(needs.get-number-of-shards.outputs.shards) != fromJSON('["1", "0"]') }}
     strategy:
@@ -89,10 +85,16 @@ jobs:
         with:
           distribution: "temurin"
           java-version: "17"
+
       - name: Setup Nextflow
         uses: nf-core/setup-nextflow@v2
         with:
           version: ${{ env.NXF_VER }}
+
+      - name: Install nf-test
+        uses: nf-core/setup-nf-test@v1
+        with:
+          version: ${{ env.NFT_VER }}
 
       - name: Setup apptainer
         if: matrix.profile == 'singularity'
