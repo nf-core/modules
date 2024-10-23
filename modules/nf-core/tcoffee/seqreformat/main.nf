@@ -38,7 +38,9 @@ process TCOFFEE_SEQREFORMAT {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch "${prefix}_${seq_reformat_type}.txt"
+    # Otherwise, tcoffee will crash when calling its version
+    export TEMP='./'
+    touch "${prefix}.txt"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -46,5 +48,3 @@ process TCOFFEE_SEQREFORMAT {
     END_VERSIONS
     """
 }
-
-

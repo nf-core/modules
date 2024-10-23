@@ -1,0 +1,58 @@
+name: "bracken_build"
+description: Extends a Kraken2 database to be compatible with Bracken
+keywords:
+  - kraken2
+  - bracken
+  - database
+  - build
+tools:
+  - "bracken":
+      description: "Bracken (Bayesian Reestimation of Abundance with KrakEN) is a highly
+        accurate statistical method that computes the abundance of species in DNA sequences
+        from a metagenomics sample."
+      homepage: "https://ccb.jhu.edu/software/bracken/"
+      documentation: "https://ccb.jhu.edu/software/bracken/"
+      tool_dev_url: "https://github.com/jenniferlu717/Bracken/"
+      doi: "10.7717/peerj-cs.104 "
+      licence: ["GPL v3"]
+      identifier: biotools:bracken
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - kraken2db:
+        type: directory
+        description: A Kraken2 database directory
+        pattern: "*/"
+output:
+  - db:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "kraken2db               , includeInputs: true":
+          type: directory
+          description: A Kraken2 database directory with required bracken files in side
+          pattern: "*/"
+  - bracken_files:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - '${kraken2db}/database*", includeInputs: true':
+          type: directory
+          description: Bracken files required to extend the Kraken2 database
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@jfy133"
+maintainers:
+  - "@jfy133"

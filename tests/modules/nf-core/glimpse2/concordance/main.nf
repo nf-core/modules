@@ -47,9 +47,9 @@ workflow preprocessing {
         file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.bcf.csi",checkIfExists:true)
     ])
 
-    BCFTOOLS_INDEX ( GLIMPSE2_PHASE.output.phased_variant )
+    BCFTOOLS_INDEX ( GLIMPSE2_PHASE.output.phased_variants )
 
-    list_inputs = GLIMPSE2_PHASE.output.phased_variant
+    list_inputs = GLIMPSE2_PHASE.output.phased_variants
                         .join( BCFTOOLS_INDEX.out.csi )
                         .combine( truth )
                         .combine( allele_freq )

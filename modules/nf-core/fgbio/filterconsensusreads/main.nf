@@ -1,18 +1,18 @@
 process FGBIO_FILTERCONSENSUSREADS {
     tag "$meta.id"
     label 'process_single'
+
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fgbio:2.0.2--hdfd78af_0' :
-        'biocontainers/fgbio:2.0.2--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/fgbio:2.2.1--hdfd78af_0' :
+        'biocontainers/fgbio:2.2.1--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam)
-    path fasta
-    // please note:
-    // --min-reads is a required argument with no default
-    // --min-base-quality is a required argument with no default
-    // make sure they are specified via ext.args in your config
+    tuple val(meta2), path(fasta)
+    val(min_reads)
+    val(min_baseq)
+    val(max_base_error_rate)
 
     output:
     tuple val(meta), path("${prefix}.bam"), emit: bam
@@ -35,6 +35,7 @@ process FGBIO_FILTERCONSENSUSREADS {
             mem_gb = task.memory.giga - 1
         }
     }
+    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
 
     """
     fgbio \\
@@ -45,7 +46,22 @@ process FGBIO_FILTERCONSENSUSREADS {
         --input $bam \\
         --output ${prefix}.bam \\
         --ref ${fasta} \\
+        --min-reads ${min_reads} \\
+        --min-base-quality ${min_baseq} \\
+        --max-base-error-rate ${max_base_error_rate} \\
         $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        fgbio: \$( echo \$(fgbio --version 2>&1 | tr -d '[:cntrl:]' ) | sed -e 's/^.*Version: //;s/\\[.*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}_consensus_filtered"
+    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    """
+    touch ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -1,0 +1,51 @@
+nextflow_process {
+
+    name "Test Process VIENNARNA_RNALFOLD"
+    script "../main.nf"
+    process "VIENNARNA_RNALFOLD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "viennarna"
+    tag "viennarna/rnalfold"
+
+    test("rnalfold - fasta") {
+        when {
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.rnalfold_txt, process.out.versions).match() }
+            )
+        }
+
+    }
+
+    test("rnalfold - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.rnalfold_txt, process.out.versions).match() }
+            )
+        }
+
+    }
+
+}

@@ -1,5 +1,6 @@
 name: "survivor_merge"
-description: Compare or merge VCF files to generate a consensus or multi sample VCF files.
+description: Compare or merge VCF files to generate a consensus or multi sample VCF
+  files.
 keywords:
   - survivor
   - merge
@@ -12,51 +13,55 @@ tools:
       documentation: "https://github.com/fritzsedlazeck/SURVIVOR/wiki"
       tool_dev_url: "https://github.com/fritzsedlazeck/SURVIVOR"
       doi: "10.1038/NCOMMS14061"
-      licence: "['MIT']"
+      licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcfs:
-      type: files
-      description: |
-        The VCF files to be merged
-        Gzipped VCF files are not supported: https://github.com/fritzsedlazeck/SURVIVOR/issues/158
-      pattern: "*.vcf"
-  - max_distance_breakpoints:
-      type: integer
-      description: Max distance between breakpoints (0-1 percent of length, 1- number of bp)
-  - min_supporting_callers:
-      type: integer
-      description: Minimum number of supporting caller
-  - account_for_type:
-      type: integer
-      description: Take the type into account (1==yes, else no)
-  - account_for_sv_strands:
-      type: integer
-      description: Take the strands of SVs into account (1==yes, else no)
-  - estimate_distanced_by_sv_size:
-      type: integer
-      description: Estimate distance based on the size of SV (1==yes, else no)
-  - min_sv_size:
-      type: integer
-      description: Minimum size of SVs to be taken into account
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcfs:
+        type: list
+        description: |
+          The VCF files to be merged
+          Gzipped VCF files are not supported: https://github.com/fritzsedlazeck/SURVIVOR/issues/158
+        pattern: "*.vcf"
+  - - max_distance_breakpoints:
+        type: integer
+        description: Max distance between breakpoints (0-1 percent of length, 1- number
+          of bp)
+  - - min_supporting_callers:
+        type: integer
+        description: Minimum number of supporting caller
+  - - account_for_type:
+        type: integer
+        description: Take the type into account (1==yes, else no)
+  - - account_for_sv_strands:
+        type: integer
+        description: Take the strands of SVs into account (1==yes, else no)
+  - - estimate_distanced_by_sv_size:
+        type: integer
+        description: Estimate distance based on the size of SV (1==yes, else no)
+  - - min_sv_size:
+        type: integer
+        description: Minimum size of SVs to be taken into account
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - vcf:
-      type: file
-      description: The merged VCF file
-      pattern: "*.vcf"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf":
+          type: file
+          description: The merged VCF file
+          pattern: "*.vcf"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

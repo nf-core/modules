@@ -1,4 +1,5 @@
-name: last_train
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "last_train"
 description: Find suitable score parameters for sequence alignment
 keywords:
   - LAST
@@ -6,41 +7,56 @@ keywords:
   - fastq
   - fasta
 tools:
-  - last:
-      description: LAST finds & aligns related regions of sequences.
-      homepage: https://gitlab.com/mcfrith/last
-      documentation: https://gitlab.com/mcfrith/last/-/blob/main/doc/last-train.rst
-      tool_dev_url: https://gitlab.com/mcfrith/last
+  - "last":
+      description: "LAST finds & aligns related regions of sequences."
+      homepage: "https://gitlab.com/mcfrith/last"
+      documentation: "https://gitlab.com/mcfrith/last/-/blob/main/doc/last-train.rst"
+      tool_dev_url: "https://gitlab.com/mcfrith/last"
       licence: ["GPL v3-or-later"]
+      identifier: ""
 input:
-  - index:
-      type: directory
-      description: Directory containing the files of the LAST index
-      pattern: "lastdb/"
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fastx:
-      type: file
-      description: FASTA/FASTQ file
-      pattern: "*.{fasta,fastq}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fastx:
+        type: file
+        description: FASTA/FASTQ file
+        pattern: "*.{fasta,fastq}"
+  - - index:
+        type: directory
+        description: Directory containing the files of the LAST index
+        pattern: "lastdb/"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - param_file:
-      type: file
-      description: Trained parameter file
-      pattern: "*.par"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.train":
+          type: file
+          description: Trained parameter file
+          pattern: "*.train"
+  - multiqc:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.tsv":
+          type: file
+          description: Alignment parameter summary for MultiQC
+          pattern: "*.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@aleksandrabliznina"
+  - "@charles-plessy"
+  - "@U13bs1125"
 maintainers:
-  - "@aleksandrabliznina"
+  - "@charles-plessy"

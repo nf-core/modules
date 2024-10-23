@@ -4,8 +4,8 @@ process GLIMPSE2_LIGATE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/glimpse-bio:2.0.0--hf340a29_0':
-        'biocontainers/glimpse-bio:2.0.0--hf340a29_0' }"
+        'https://depot.galaxyproject.org/singularity/glimpse-bio:2.0.1--h46b9e50_1':
+        'biocontainers/glimpse-bio:2.0.1--h46b9e50_1' }"
 
     input:
     tuple val(meta), path(input_list), path(input_index)
@@ -22,7 +22,7 @@ process GLIMPSE2_LIGATE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "vcf.gz"
     """
-    printf "%s\\n" $input_list | tr -d '[],' > all_files.txt
+    printf "%s\\n" $input_list | tr -d '[],' | sort -V > all_files.txt
 
     GLIMPSE2_ligate \\
         $args \\

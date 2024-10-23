@@ -1,5 +1,6 @@
 name: "shapeit5_phasecommon"
-description: Tool to phase common sites, typically SNP array data, or the first step of WES/WGS data.
+description: Tool to phase common sites, typically SNP array data, or the first step
+  of WES/WGS data.
 keywords:
   - phasing
   - haplotype
@@ -11,68 +12,86 @@ tools:
       documentation: "https://odelaneau.github.io/shapeit5/docs/documentation"
       tool_dev_url: "https://github.com/odelaneau/shapeit5"
       doi: "10.1101/2022.10.19.512867 "
-      licence: "['MIT']"
+      licence: ["MIT"]
+      identifier: biotools:shapeit5
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - input:
-      type: file
-      description: |
-        Target dataset in VCF/BCF format defined at all variable positions.
-        The file could possibly be without GT field (for efficiency reasons a file containing only the positions is recommended).
-      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-  - input_index:
-      type: file
-      description: Index file of the input VCF/BCF file containing genotype likelihoods.
-      pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
-  - pedigree:
-      type: file
-      description: |
-        Pedigree information in the following format: offspring father mother.
-      pattern: "*.{txt, tsv}"
-  - region:
-      type: string
-      description: |
-        Target region, usually a full chromosome (e.g. chr20:1000000-2000000 or chr20).
-        For chrX, please treat PAR and non-PAR regions as different choromosome in order to avoid mixing ploidy.
-      pattern: "chrXX:leftBufferPosition-rightBufferPosition"
-  - reference:
-      type: file
-      description: Reference panel of haplotypes in VCF/BCF format.
-      pattern: "*.{vcf.gz,bcf.gz}"
-  - reference_index:
-      type: file
-      description: Index file of the Reference panel file.
-      pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
-  - scaffold:
-      type: file
-      description: Scaffold of haplotypes in VCF/BCF format.
-      pattern: "*.{vcf.gz,bcf.gz}"
-  - scaffold_index:
-      type: file
-      description: Index file of the scaffold file.
-      pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
-  - map:
-      type: file
-      description: File containing the genetic map.
-      pattern: "*.gmap"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input:
+        type: file
+        description: |
+          Target dataset in VCF/BCF format defined at all variable positions.
+          The file could possibly be without GT field (for efficiency reasons a file containing only the positions is recommended).
+        pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+    - input_index:
+        type: file
+        description: Index file of the input VCF/BCF file containing genotype likelihoods.
+        pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
+    - pedigree:
+        type: file
+        description: |
+          Pedigree information in the following format: offspring father mother.
+        pattern: "*.{txt, tsv}"
+    - region:
+        type: string
+        description: |
+          Target region, usually a full chromosome (e.g. chr20:1000000-2000000 or chr20).
+          For chrX, please treat PAR and non-PAR regions as different choromosome in order to avoid mixing ploidy.
+        pattern: "chrXX:leftBufferPosition-rightBufferPosition"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reference:
+        type: file
+        description: Reference panel of haplotypes in VCF/BCF format.
+        pattern: "*.{vcf.gz,bcf.gz}"
+    - reference_index:
+        type: file
+        description: Index file of the Reference panel file.
+        pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - scaffold:
+        type: file
+        description: Scaffold of haplotypes in VCF/BCF format.
+        pattern: "*.{vcf.gz,bcf.gz}"
+    - scaffold_index:
+        type: file
+        description: Index file of the scaffold file.
+        pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - map:
+        type: file
+        description: File containing the genetic map.
+        pattern: "*.gmap"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - phased_variants:
-      type: file
-      description: Phased haplotypes in VCF/BCF format.
-      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+  - phased_variant:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.{vcf,bcf,vcf.gz,bcf.gz}":
+          type: file
+          description: Phased variant dataset in VCF/BCF format.
+          pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@LouisLeNezet"
 maintainers:

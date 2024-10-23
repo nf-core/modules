@@ -12,42 +12,87 @@ tools:
       documentation: "https://github.com/lczech/gappa/wiki"
       tool_dev_url: "https://github.com/lczech/gappa"
       doi: "10.1093/bioinformatics/btaa070"
-      licence: "['GPL v3']"
+      licence: ["GPL v3"]
+      identifier: biotools:GAPPA
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - jplace:
-      type: file
-      description: jplace file output from phylogenetic placement, e.g. EPA-NG, gzipped or not
-      pattern: "*.{jplace,jplace.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - jplace:
+        type: file
+        description: jplace file output from phylogenetic placement, e.g. EPA-NG, gzipped
+          or not
+        pattern: "*.{jplace,jplace.gz}"
+    - taxonomy:
+        type: file
+        description: taxonomy file
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - examineassign:
-      type: directory
-      description: Execution directory
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ./.:
+          type: directory
+          description: Execution directory
   - profile:
-      type: file
-      description: profile tsv file
-      pattern: "*profile.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*profile.tsv":
+          type: file
+          description: profile tsv file
+          pattern: "*profile.tsv"
   - labelled_tree:
-      type: file
-      description: labelled tree in newick format
-      pattern: "*labelled_tree.newick"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*labelled_tree.newick":
+          type: file
+          description: labelled tree in newick format
+          pattern: "*labelled_tree.newick"
   - per_query:
-      type: file
-      description: per query taxonomy assignments in tsv format
-      pattern: "*per_query.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*per_query.tsv":
+          type: file
+          description: per query taxonomy assignments in tsv format
+          pattern: "*per_query.tsv"
+  - krona:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*krona.profile":
+          type: file
+          description: krona profile file
+          pattern: "*krona.profile"
+  - sativa:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*sativa.tsv":
+          type: file
+          description: sativa output file
+          pattern: "*sativa.tsv"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@erikrikarddaniel"
 maintainers:

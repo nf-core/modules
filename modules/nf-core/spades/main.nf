@@ -4,8 +4,8 @@ process SPADES {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/spades:3.15.5--h95f258a_1' :
-        'biocontainers/spades:3.15.5--h95f258a_1' }"
+        'https://depot.galaxyproject.org/singularity/spades:4.0.0--h5fb382e_1' :
+        'biocontainers/spades:4.0.0--h5fb382e_1' }"
 
     input:
     tuple val(meta), path(illumina), path(pacbio), path(nanopore)
@@ -18,7 +18,8 @@ process SPADES {
     tuple val(meta), path('*.transcripts.fa.gz')  , optional:true, emit: transcripts
     tuple val(meta), path('*.gene_clusters.fa.gz'), optional:true, emit: gene_clusters
     tuple val(meta), path('*.assembly.gfa.gz')    , optional:true, emit: gfa
-    tuple val(meta), path('*.log')                , emit: log
+    tuple val(meta), path('*.warnings.log')         , optional:true, emit: warnings
+    tuple val(meta), path('*.spades.log')         , emit: log
     path  "versions.yml"                          , emit: versions
 
     when:
@@ -65,9 +66,37 @@ process SPADES {
         gzip -n ${prefix}.gene_clusters.fa
     fi
 
+    if [ -f warnings.log ]; then
+        mv warnings.log ${prefix}.warnings.log
+    fi
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        spades: \$(spades.py --version 2>&1 | sed 's/^.*SPAdes genome assembler v//; s/ .*\$//')
+        spades: \$(spades.py --version 2>&1 | sed -n 's/^.*SPAdes genome assembler v//p')
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def maxmem = task.memory.toGiga()
+    def illumina_reads = illumina ? ( meta.single_end ? "-s $illumina" : "-1 ${illumina[0]} -2 ${illumina[1]}" ) : ""
+    def pacbio_reads = pacbio ? "--pacbio $pacbio" : ""
+    def nanopore_reads = nanopore ? "--nanopore $nanopore" : ""
+    def custom_hmms = hmm ? "--custom-hmms $hmm" : ""
+    def reads = yml ? "--dataset $yml" : "$illumina_reads $pacbio_reads $nanopore_reads"
+    """
+    echo "" | gzip > ${prefix}.scaffolds.fa.gz
+    echo "" | gzip > ${prefix}.contigs.fa.gz
+    echo "" | gzip > ${prefix}.transcripts.fa.gz
+    echo "" | gzip > ${prefix}.gene_clusters.fa.gz
+    echo "" | gzip > ${prefix}.assembly.gfa.gz
+    touch ${prefix}.spades.log
+    touch ${prefix}.warnings.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        spades: \$(spades.py --version 2>&1 | sed -n 's/^.*SPAdes genome assembler v//p')
     END_VERSIONS
     """
 }

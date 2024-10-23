@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "gt_ltrharvest"
 description: Predicts LTR retrotransposons using GenomeTools gt-ltrharvest utility
@@ -17,42 +16,64 @@ tools:
       tool_dev_url: "https://github.com/genometools/genometools"
       doi: "10.1109/TCBB.2013.68"
       licence: ["ISC"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1' ]`
-  - index:
-      type: directory
-      description: Folder containing the suffixerator index files
-      pattern: "suffixerator"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - index:
+        type: directory
+        description: Folder containing the suffixerator index files
+        pattern: "suffixerator"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1' ]`
   - tabout:
-      type: file
-      description: Old tabular output by default or when `-tabout yes` argument is present
-      pattern: "*.tabout"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.tabout":
+          type: file
+          description: Old tabular output by default or when `-tabout yes` argument is
+            present
+          pattern: "*.tabout"
   - gff3:
-      type: file
-      description: GFF3 output when `-tabout no` argument is present
-      pattern: "*.gff3"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.gff3":
+          type: file
+          description: GFF3 output when `-tabout no` argument is present
+          pattern: "*.gff3"
   - fasta:
-      type: file
-      description: FASTA output when `-out` argument is present
-      pattern: "*.{fa,fsa,fasta}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - $out_name:
+          type: file
+          description: FASTA output when `-out` argument is present
+          pattern: "*.{fa,fsa,fasta}"
   - inner_fasta:
-      type: file
-      description: FASTA output for inner regions when `-outinner` argument is present
-      pattern: "*.{fa,fsa,fasta}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - $outinner_name:
+          type: file
+          description: FASTA output for inner regions when `-outinner` argument is present
+          pattern: "*.{fa,fsa,fasta}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@GallVp"
 maintainers:

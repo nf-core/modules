@@ -3,8 +3,8 @@ process KRAKEN2_BUILD {
     label 'process_medium'
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-f8c4015c836dd3ce5c118cfed97ec8259bab9e9d:2e0b144854b4a3d69b5df7a0340a60db846cc8bf-0':
-        'biocontainers/mulled-v2-f8c4015c836dd3ce5c118cfed97ec8259bab9e9d:2e0b144854b4a3d69b5df7a0340a60db846cc8bf-0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-8706a1dd73c6cc426e12dd4dd33a5e917b3989ae:c8cbdc8ff4101e6745f8ede6eb5261ef98bdaff4-0':
+        'biocontainers/mulled-v2-8706a1dd73c6cc426e12dd4dd33a5e917b3989ae:c8cbdc8ff4101e6745f8ede6eb5261ef98bdaff4-0' }"
 
     input:
     tuple val(meta), path(db)

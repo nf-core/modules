@@ -9,8 +9,8 @@ process JASMINESV {
 
     input:
     tuple val(meta), path(vcfs), path(bams), path(sample_dists)
-    path(fasta)
-    path(fasta_fai)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fasta_fai)
     path(chr_norm)
 
     output:
@@ -63,7 +63,7 @@ process JASMINESV {
     def prefix  = task.ext.prefix ?: "${meta.id}"
 
     """
-    touch ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

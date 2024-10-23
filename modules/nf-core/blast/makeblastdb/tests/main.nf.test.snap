@@ -1,86 +1,63 @@
 {
-    "genome.fasta": {
+    "Should build a blast db folder from a fasta file": {
         "content": [
-            "genome.fasta:md5,6e9fe4042a72f2345f644f239272b7e6"
+            [
+                "genome.fasta",
+                "genome.fasta.ndb",
+                "genome.fasta.nhr",
+                "genome.fasta.nin",
+                "genome.fasta.njs",
+                "genome.fasta.not",
+                "genome.fasta.nsq",
+                "genome.fasta.ntf",
+                "genome.fasta.nto"
+            ],
+            [
+                "genome.fasta:md5,6e9fe4042a72f2345f644f239272b7e6",
+                "genome.fasta.ndb:md5,0d553c830656469211de113c5022f06d",
+                "genome.fasta.nhr:md5,f4b4ddb034fd3dd7b25c89e9d50c004e",
+                "genome.fasta.not:md5,1e53e9d08f1d23af0299cfa87478a7bb",
+                "genome.fasta.nsq:md5,982cbc7d9e38743b9b1037588862b9da",
+                "genome.fasta.ntf:md5,de1250813f0c7affc6d12dac9d0fb6bb",
+                "genome.fasta.nto:md5,33cdeccccebe80329f1fdbee7f5874cb"
+            ],
+            "versions.yml:md5,cb63396fd8d8f4df57913b63452d6ba8"
         ],
-        "timestamp": "2023-11-07T12:52:38.457245596"
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-08-09T15:40:32.52079"
     },
-    "gz_genome.fasta.ntf": {
+    "Should build a blast db folder from a zipped fasta file": {
         "content": [
-            "genome.fasta.ntf:md5,de1250813f0c7affc6d12dac9d0fb6bb"
+            [
+                "genome.fasta",
+                "genome.fasta.gz",
+                "genome.fasta.ndb",
+                "genome.fasta.nhr",
+                "genome.fasta.nin",
+                "genome.fasta.njs",
+                "genome.fasta.not",
+                "genome.fasta.nsq",
+                "genome.fasta.ntf",
+                "genome.fasta.nto"
+            ],
+            [
+                "genome.fasta:md5,6e9fe4042a72f2345f644f239272b7e6",
+                "genome.fasta.ndb:md5,0d553c830656469211de113c5022f06d",
+                "genome.fasta.nhr:md5,f4b4ddb034fd3dd7b25c89e9d50c004e",
+                "genome.fasta.not:md5,1e53e9d08f1d23af0299cfa87478a7bb",
+                "genome.fasta.nsq:md5,982cbc7d9e38743b9b1037588862b9da",
+                "genome.fasta.ntf:md5,de1250813f0c7affc6d12dac9d0fb6bb",
+                "genome.fasta.nto:md5,33cdeccccebe80329f1fdbee7f5874cb"
+            ],
+            "versions.yml:md5,cb63396fd8d8f4df57913b63452d6ba8"
         ],
-        "timestamp": "2023-11-07T12:58:02.121840034"
-    },
-    "genome.fasta.not": {
-        "content": [
-            "genome.fasta.not:md5,1e53e9d08f1d23af0299cfa87478a7bb"
-        ],
-        "timestamp": "2023-11-07T12:55:33.862012946"
-    },
-    "genome.fasta.nhr": {
-        "content": [
-            "genome.fasta.nhr:md5,f4b4ddb034fd3dd7b25c89e9d50c004e"
-        ],
-        "timestamp": "2023-11-07T12:55:33.857994517"
-    },
-    "gz_genome.fasta.nhr": {
-        "content": [
-            "genome.fasta.nhr:md5,f4b4ddb034fd3dd7b25c89e9d50c004e"
-        ],
-        "timestamp": "2023-11-07T12:58:02.102407993"
-    },
-    "genome.fasta.ntf": {
-        "content": [
-            "genome.fasta.ntf:md5,de1250813f0c7affc6d12dac9d0fb6bb"
-        ],
-        "timestamp": "2023-11-07T12:55:33.877288786"
-    },
-    "gz_genome.fasta.not": {
-        "content": [
-            "genome.fasta.not:md5,1e53e9d08f1d23af0299cfa87478a7bb"
-        ],
-        "timestamp": "2023-11-07T12:58:02.108135313"
-    },
-    "gz_genome.fasta.ndb": {
-        "content": [
-            "genome.fasta.ndb:md5,0d553c830656469211de113c5022f06d"
-        ],
-        "timestamp": "2023-11-07T12:58:02.094305556"
-    },
-    "gz_genome.fasta.nsq": {
-        "content": [
-            "genome.fasta.nsq:md5,982cbc7d9e38743b9b1037588862b9da"
-        ],
-        "timestamp": "2023-11-07T12:58:02.115010863"
-    },
-    "genome.fasta.nto": {
-        "content": [
-            "genome.fasta.nto:md5,33cdeccccebe80329f1fdbee7f5874cb"
-        ],
-        "timestamp": "2023-11-07T12:55:33.890761822"
-    },
-    "gz_genome.fasta.nto": {
-        "content": [
-            "genome.fasta.nto:md5,33cdeccccebe80329f1fdbee7f5874cb"
-        ],
-        "timestamp": "2023-11-07T12:58:02.12931429"
-    },
-    "genome.fasta.ndb": {
-        "content": [
-            "genome.fasta.ndb:md5,0d553c830656469211de113c5022f06d"
-        ],
-        "timestamp": "2023-11-07T12:55:33.853303997"
-    },
-    "genome.fasta.nsq": {
-        "content": [
-            "genome.fasta.nsq:md5,982cbc7d9e38743b9b1037588862b9da"
-        ],
-        "timestamp": "2023-11-07T12:55:33.866667927"
-    },
-    "gz_genome.fasta": {
-        "content": [
-            "genome.fasta:md5,6e9fe4042a72f2345f644f239272b7e6"
-        ],
-        "timestamp": "2023-11-07T12:58:02.081764854"
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-08-09T15:40:37.45154"
     }
 }

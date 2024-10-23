@@ -1,0 +1,84 @@
+
+nextflow_process {
+
+    name "Test Process KMCP_COMPUTE"
+    script "../main.nf"
+    process "KMCP_COMPUTE"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "kmcp"
+    tag "kmcp/compute"
+    tag "untar"
+
+    setup {
+        run ("UNTAR") {
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = [[id:'test'],file(params.modules_testdata_base_path + 'delete_me/kmcp/kmcp_profile.tar.gz', checkIfExists: true)]
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - directory") {
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [[id:'test'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [[id:'test'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

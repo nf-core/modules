@@ -4,38 +4,41 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/krakenuniq:1.0.4--pl5321h19e8d03_0':
-        'biocontainers/krakenuniq:1.0.4--pl5321h19e8d03_0' }"
+        'https://depot.galaxyproject.org/singularity/krakenuniq:1.0.4--pl5321h6dccd9a_2':
+        'biocontainers/krakenuniq:1.0.4--pl5321h6dccd9a_2' }"
 
     input:
-    tuple val(meta), path(fastqs)
-    path  db
+    tuple val(meta), path(sequences)
+    val sequence_type
+    path db
     val ram_chunk_size
     val save_output_reads
     val report_file
     val save_output
 
     output:
-    tuple val(meta), path('*.classified.fasta.gz')      , optional:true, emit: classified_reads_fasta
-    tuple val(meta), path('*.unclassified.fasta.gz')    , optional:true, emit: unclassified_reads_fasta
-    tuple val(meta), path('*.krakenuniq.classified.txt'), optional:true, emit: classified_assignment
-    tuple val(meta), path('*.krakenuniq.report.txt')                   , emit: report
-    path "versions.yml"                                                , emit: versions
+    tuple val(meta), path("*.classified.${sequence_type}.gz")  , optional:true, emit: classified_reads
+    tuple val(meta), path("*.unclassified.${sequence_type}.gz"), optional:true, emit: unclassified_reads
+    tuple val(meta), path('*.krakenuniq.classified.txt')       , optional:true, emit: classified_assignment
+    tuple val(meta), path('*.krakenuniq.report.txt')           , emit: report
+    path "versions.yml"                                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+    assert sequence_type in ['fasta', 'fastq']
+
     def args = task.ext.args ?: ''
     def args2 = task.ext.args ?: ''
 
-    def classified   = meta.single_end ? '"\${PREFIX}.classified.fasta"'   : '"\${PREFIX}.merged.classified.fasta"'
-    def unclassified = meta.single_end ? '"\${PREFIX}.unclassified.fasta"' : '"\${PREFIX}.merged.unclassified.fasta"'
-    def classified_option = save_output_reads ? "--classified-out ${classified}" : ''
-    def unclassified_option = save_output_reads ? "--unclassified-out ${unclassified}" : ''
+    classified   = meta.single_end ? "\${PREFIX}.classified.${sequence_type}"   : "\${PREFIX}.merged.classified.${sequence_type}"
+    unclassified = meta.single_end ? "\${PREFIX}.unclassified.${sequence_type}" : "\${PREFIX}.merged.unclassified.${sequence_type}"
+    classified_option = save_output_reads ? "--classified-out \"${classified}\"" : ''
+    unclassified_option = save_output_reads ? "--unclassified-out \"${unclassified}\"" : ''
     def output_option = save_output ? '--output "\${PREFIX}.krakenuniq.classified.txt"' : ''
     def report = report_file ? '--report-file "\${PREFIX}.krakenuniq.report.txt"' : ''
-    def compress_reads_command = save_output_reads ? 'gzip --no-name *.fasta' : ''
+    compress_reads_command = save_output_reads ? "find . -name '*.${sequence_type}' -print0 | xargs -0 -t -P ${task.cpus} -I % gzip --no-name %" : ''
     if (meta.single_end) {
         """
         krakenuniq \\
@@ -51,7 +54,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             echo "\${result%%.*}"
         }
 
-        printf "%s\\n" ${fastqs} | while read FASTQ; do \\
+        printf "%s\\n" ${sequences} | while read FASTQ; do \\
             PREFIX="\$(strip_suffix "\${FASTQ}")"
 
             krakenuniq \\
@@ -89,7 +92,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             echo "\${result%.}"
         }
 
-        printf "%s %s\\n" ${fastqs} | while read FASTQ; do \\
+        printf "%s %s\\n" ${sequences} | while read FASTQ; do \\
             read -r -a FASTQ <<< "\${FASTQ}"
             PREFIX="\$(printf "%s\\n" "\${FASTQ[@]}" |  sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' | strip_suffix)"
 
@@ -115,16 +118,18 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     }
 
     stub:
+    assert sequence_type in ['fasta', 'fastq']
+
     def args = task.ext.args ?: ''
     def args2 = task.ext.args ?: ''
 
-    def classified   = meta.single_end ? '"\${PREFIX}.classified.fasta"'   : '"\${PREFIX}.merged.classified.fasta"'
-    def unclassified = meta.single_end ? '"\${PREFIX}.unclassified.fasta"' : '"\${PREFIX}.merged.unclassified.fasta"'
-    def classified_option = save_output_reads ? "--classified-out ${classified}" : ''
-    def unclassified_option = save_output_reads ? "--unclassified-out ${unclassified}" : ''
+    classified   = meta.single_end ? "\${PREFIX}.classified.${sequence_type}"   : "\${PREFIX}.merged.classified.${sequence_type}"
+    unclassified = meta.single_end ? "\${PREFIX}.unclassified.${sequence_type}" : "\${PREFIX}.merged.unclassified.${sequence_type}"
+    classified_option = save_output_reads ? "--classified-out \"${classified}\"" : ''
+    unclassified_option = save_output_reads ? "--unclassified-out \"${unclassified}\"" : ''
     def output_option = save_output ? '--output "\${PREFIX}.krakenuniq.classified.txt"' : ''
     def report = report_file ? '--report-file "\${PREFIX}.krakenuniq.report.txt"' : ''
-    def compress_reads_command = save_output_reads ? 'gzip --no-name *.fasta' : ''
+    compress_reads_command = save_output_reads ? "find . -name '*.${sequence_type}' -print0 | xargs -0 -t -P ${task.cpus} -I % gzip --no-name %" : ''
     if (meta.single_end) {
         """
         echo krakenuniq \\
@@ -148,7 +153,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             echo '<3 nf-core' | gzip -n > "\$1"
         }
 
-        printf "%s\\n" ${fastqs} | while read FASTQ; do \\
+        printf "%s\\n" ${sequences} | while read FASTQ; do \\
             echo "\${FASTQ}"
             PREFIX="\$(strip_suffix "\${FASTQ}")"
             echo "\${PREFIX}"
@@ -165,11 +170,11 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
 
             create_file "\${PREFIX}.krakenuniq.classified.txt"
             create_file "\${PREFIX}.krakenuniq.report.txt"
-            create_gzip_file "\${PREFIX}.classified.fasta.gz"
-            create_gzip_file "\${PREFIX}.unclassified.fasta.gz"
+            create_gzip_file "\${PREFIX}.classified.${sequence_type}.gz"
+            create_gzip_file "\${PREFIX}.unclassified.${sequence_type}.gz"
         done
 
-        echo $compress_reads_command
+        echo "$compress_reads_command"
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -201,7 +206,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             echo '<3 nf-core' | gzip -n > "\$1"
         }
 
-        printf "%s %s\\n" ${fastqs} | while read FASTQ; do \\
+        printf "%s %s\\n" ${sequences} | while read FASTQ; do \\
             read -r -a FASTQ <<< "\${FASTQ}"
             echo "\${FASTQ[@]}"
             PREFIX="\$(printf "%s\\n" "\${FASTQ[@]}" |  sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' | strip_suffix)"
@@ -220,11 +225,11 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
 
             create_file "\${PREFIX}.krakenuniq.classified.txt"
             create_file "\${PREFIX}.krakenuniq.report.txt"
-            create_gzip_file "\${PREFIX}.merged.classified.fasta.gz"
-            create_gzip_file "\${PREFIX}.merged.unclassified.fasta.gz"
+            create_gzip_file "\${PREFIX}.merged.classified.${sequence_type}.gz"
+            create_gzip_file "\${PREFIX}.merged.unclassified.${sequence_type}.gz"
         done
 
-        echo $compress_reads_command
+        echo "$compress_reads_command"
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":

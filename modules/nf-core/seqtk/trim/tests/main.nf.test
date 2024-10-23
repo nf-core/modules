@@ -1,0 +1,65 @@
+nextflow_process {
+
+    name "Test Process SEQTK_TRIM"
+    script "modules/nf-core/seqtk/trim/main.nf"
+    process "SEQTK_TRIM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "seqtk"
+    tag "seqtk/trim"
+
+    test("Single-end") {
+
+        when {
+            params {
+                outdir = $outputDir
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+            { assert process.success },
+            { assert snapshot(process.out).match()}
+            )
+        }
+
+    }
+
+test("Paired-end") {
+
+        when {
+            params {
+                outdir = $outputDir
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+            { assert process.success },
+            { assert snapshot(process.out).match()}
+            )
+        }
+
+    }
+
+}

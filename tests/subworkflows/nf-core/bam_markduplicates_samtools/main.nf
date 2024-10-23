@@ -8,5 +8,7 @@ workflow test_bam_markduplicates_samtools {
 
     input = [ [ id:'test' ], file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true) ]
 
-    BAM_MARKDUPLICATES_SAMTOOLS ( input, Channel.value([]) )
+    fasta = [ [ id:'fasta' ], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+
+    BAM_MARKDUPLICATES_SAMTOOLS ( input, fasta )
 }

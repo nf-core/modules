@@ -63,6 +63,74 @@ read_delim_flexible <- function(file, header = TRUE, row.names = 1, check.names 
     return(mat)
 }
 
+#' Extract the values for a single metric and convert it into a genes x genes matrix.
+#'
+#' @param object propd object
+one_metric_df <- function(object){
+    results <- getResults(object)
+    #keep only the metric of interest
+    one_metric <- cbind(results\$Partner, results\$Pair, results\$theta)
+    colnames(one_metric) <- c("Partner", "Pair", "theta")
+    one_metric <- as.data.frame(one_metric)
+
+    # Extract the unique gene names
+    gene_names <- sort(unique(c(one_metric\$Partner, one_metric\$Pair)))
+    # Initialize a square matrix with NA
+    square_matrix <- matrix(NA, nrow = length(gene_names), ncol = length(gene_names))
+    rownames(square_matrix) <- gene_names
+    colnames(square_matrix) <- gene_names
+
+    # Use the `match` function to get the row and column indices
+    row_indices <- match(one_metric\$Partner, gene_names)
+    col_indices <- match(one_metric\$Pair, gene_names)
+    # Use these indices to populate the matrix
+    square_matrix[cbind(row_indices, col_indices)] <- one_metric[["theta"]]
+    # Populate the reverse pairs to ensure symmetry
+    square_matrix[cbind(col_indices, row_indices)] <- one_metric[["theta"]]
+    return(square_matrix)
+}
+
+#' Extract the differential proportionality cutoff for a specified FDR value.
+#' Gene pairs with a value higher than the extracted cutoff will be considered significantly differentially proportional.
+#'
+#' @param object propd object. Output from propd function. updateCutoffs function should be applied to the object previous to valCutoff.
+#' @param fdrVal FDR value to extract the cutoff for. Per default 0.05.
+#'
+#' @return cutoff value. Differential proportionality values lower than this cutoff are considered significant.
+valCutoff  <- function(object, fdrVal = 0.05){
+    fdr_df <- object@fdr
+    if (prod(dim(fdr_df) == 0)){
+        warning("Please run updateCutoff on propd first")
+    }else{
+        fdr_vals <- fdr_df\$FDR
+        if (any(!is.na(fdr_vals))){ # Si hay algun valor de FDR correcto
+            threshold <- any(fdr_vals <= fdrVal)
+            if (threshold){
+                fdr_threshold <- fdr_vals[which.min(fdr_vals <= fdrVal) - 1]
+            }else{
+                warning("FDR is higher than the specified threshold for all proportionality values. Using the lowest fdr instead")
+                fdr_threshold <- fdr_vals[1]
+            }
+        }else{
+            stop("No true counts in the given interval. FDR values are not defined")
+            geterrmessage()
+        }
+    }
+    cutoff <- fdr_df\$cutoff[fdr_df\$FDR == fdr_threshold]
+    return(cutoff)
+}
+
+#' Convert a proportionality matrix to an adjacency matrix based on a threshold.
+#'
+#' @param matrix proportionality matrix. Can be extracted from propr object with getMatrix().
+#' @param cutoff Significant proportionality value extracted from valCutoff function.
+#'
+#' @return Adjacency matrix. Gene pairs with a proportionality value lower than the threshold will have 1, otherwise 0.
+convert_to_adjacency <- function(matrix, cutoff) {
+    adjacency <- ifelse(matrix < cutoff, 1, 0)
+    return(adjacency)
+}
+
 ################################################
 ################################################
 ## Parse arguments                            ##
@@ -82,6 +150,9 @@ opt <- list(
     cutoff_min      = NA,                   # minimun threshold to test
     cutoff_max      = NA,                   # maximun threshold to test
     cutoff_interval = NA,                   # interval between thresholds
+    fixseed         = FALSE,
+    adjacency       = FALSE,
+    fdrVal          = 0.05,
     ncores          = as.integer('$task.cpus')
 )
 opt_types <- list(
@@ -97,6 +168,9 @@ opt_types <- list(
     cutoff_min      = 'numeric',
     cutoff_max      = 'numeric',
     cutoff_interval = 'numeric',
+    fixseed         = 'logical',
+    adjacency       = 'logical',
+    fdrVal          = 'numeric',
     ncores          = 'numeric'
 )
 
@@ -186,8 +260,10 @@ pd <- propd(
     group    = group,
     alpha    = opt\$alpha,
     weighted = FALSE,
-    p        = opt\$permutation
+    p        = opt\$permutation,
+    fixseed = opt\$fixseed
 )
+
 if (opt\$metric == 'theta_d'){
     pd <- setDisjointed(pd)
 } else if (opt\$metric == 'theta_e'){
@@ -207,6 +283,13 @@ if (opt\$permutation > 0) {
     if (opt\$metric == 'theta_d') pd <- updateF(pd)
 }
 
+# Extract adjacency matrix if required
+if (opt\$adjacency == TRUE) {
+    matrix <- one_metric_df(pd)
+    cutoff <- valCutoff(pd, opt\$fdrVal)
+    adj <- convert_to_adjacency(matrix, cutoff)
+}
+
 ################################################
 ################################################
 ## Generate outputs                           ##
@@ -223,7 +306,7 @@ write.table(
     file      = paste0(opt\$prefix, '.propd.tsv'),
     col.names = TRUE,
     row.names = FALSE,
-    sep       = '\t',
+    sep       = '\\t',
     quote     = FALSE
 )
 
@@ -232,10 +315,31 @@ if (opt\$permutation > 0) {
         pd@fdr,
         file      = paste0(opt\$prefix, '.fdr.tsv'),
         col.names = TRUE,
-        sep       = '\t',
+        sep       = '\\t',
         quote     = FALSE
     )
 }
+
+if (opt\$adjacency == TRUE) {
+    write.table(
+        adj,
+        file      = paste0(opt\$prefix, '.adj.csv'),
+        col.names = TRUE,
+        row.names = TRUE,
+        sep       = ',',
+        quote     = FALSE
+    )
+}
+
+################################################
+################################################
+## WARNINGS                                   ##
+################################################
+################################################
+
+sink(paste0(opt\$prefix, ".warnings.log"))
+print(warnings())
+sink()
 
 ################################################
 ################################################
@@ -253,13 +357,11 @@ sink()
 ################################################
 ################################################
 
-r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
 propr.version <- as.character(packageVersion('propr'))
 
 writeLines(
     c(
         '"${task.process}":',
-        paste('    r-base:', r.version),
         paste('    r-propr:', propr.version)
     ),
 'versions.yml')

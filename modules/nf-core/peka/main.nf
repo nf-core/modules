@@ -15,10 +15,14 @@ process PEKA {
     path gtf
 
     output:
-    tuple val(meta), path("*mer_cluster_distribution*"), emit: cluster,      optional: true
-    tuple val(meta), path("*mer_distribution*")        , emit: distribution, optional: true
-    tuple val(meta), path("*.pdf")                     , emit: pdf,          optional: true
-    path "versions.yml"                                , emit: versions
+    tuple val(meta), path("*mer_cluster_distribution*")    , emit: cluster,      optional: true
+    tuple val(meta), path("*mer_distribution*")            , emit: distribution, optional: true
+    tuple val(meta), path("*rtxn*")                        , emit: rtxn,         optional: true
+    tuple val(meta), path("*.pdf")                         , emit: pdf,          optional: true
+    tuple val(meta), path("*thresholded_sites*.bed.gz")    , emit: tsites,       optional: true
+    tuple val(meta), path("*oxn*.bed.gz")                  , emit: oxn,          optional: true
+    tuple val(meta), path("*_clusters.csv")                , emit: clust,        optional: true
+    path "versions.yml"                                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -44,6 +48,7 @@ process PEKA {
         peka: $VERSION
     END_VERSIONS
     """
+
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.0.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.

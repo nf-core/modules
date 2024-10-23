@@ -1,0 +1,70 @@
+name: bbmap_filterbyname
+description: Filter out sequences by sequence header name(s)
+keywords:
+  - fastq
+  - fasta
+  - filter
+tools:
+  - bbmap:
+      description: BBMap is a short read aligner, as well as various other bioinformatic
+        tools.
+      homepage: https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/clumpify-guide/
+      documentation: https://www.biostars.org/p/225338/
+      licence: ["UC-LBL license (see package)"]
+      identifier: biotools:bbmap
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for single-end and
+          paired-end data, respectively.
+  - - names_to_filter:
+        type: string
+        description: |
+          String containing names of reads to filter out of the fastq files.
+  - - output_format:
+        type: string
+        description: |
+          String with the format of the output file, e.g. fastq.gz, fasta, fasta.bz2
+  - - interleaved_output:
+        type: boolean
+        description: |
+          Whether to produce an interleaved fastq output file
+output:
+  - reads:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.${output_format}":
+          type: file
+          description: The trimmed/modified fastq reads
+          pattern: "*${output_format}"
+  - log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: filterbyname.sh log file
+          pattern: "*.filterbyname.log"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@tokarevvasily"
+  - "@sppearce"
+
+maintainers:
+  - "@sppearce"

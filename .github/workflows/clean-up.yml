@@ -2,6 +2,7 @@ name: "Close user-tagged issues and PRs"
 on:
   schedule:
     - cron: "0 0 * * 0" # Once a week
+  workflow_dispatch:
 
 jobs:
   clean-up:
@@ -21,4 +22,3 @@ jobs:
           any-of-labels: "awaiting-changes,awaiting-feedback"
           exempt-issue-labels: "WIP"
           exempt-pr-labels: "WIP"
-          repo-token: ${{ secrets.GITHUB_TOKEN }}}

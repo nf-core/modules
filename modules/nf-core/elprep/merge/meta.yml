@@ -6,37 +6,41 @@ keywords:
   - merge
 tools:
   - "elprep":
-      description: "elPrep is a high-performance tool for preparing .sam/.bam files for variant calling in sequencing pipelines. It can be used as a drop-in replacement for SAMtools/Picard/GATK4."
+      description: "elPrep is a high-performance tool for preparing .sam/.bam files
+        for variant calling in sequencing pipelines. It can be used as a drop-in replacement
+        for SAMtools/Picard/GATK4."
       homepage: "https://github.com/ExaScience/elprep"
       documentation: "https://github.com/ExaScience/elprep"
       tool_dev_url: "https://github.com/ExaScience/elprep"
       doi: "10.1371/journal.pone.0244471"
-      licence: "['AGPL v3']"
+      licence: ["AGPL v3"]
+      identifier: biotools:elprep
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: List of BAM/SAM chunks to merge
-      pattern: "*.{bam,sam}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: List of BAM/SAM chunks to merge
+        pattern: "*.{bam,sam}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  #
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - bam:
-      type: file
-      description: Merged BAM/SAM file
-      pattern: "*.{bam,sam}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - output/**.{bam,sam}:
+          type: file
+          description: Merged BAM/SAM file
+          pattern: "*.{bam,sam}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@matthdsm"
 maintainers:

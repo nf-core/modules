@@ -7,6 +7,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "plink2"
     tag "plink2/score"
+    tag "plink2/vcf"
 
     test("plink2_score") {
         config "./nextflow.config"
@@ -18,7 +19,7 @@ nextflow_process {
                     input[0] = [
                         [ id: 'test', single_end:false ],
                         [
-                            file(params.test_data['homo_sapiens']['genome']['syntheticvcf_short_vcf_gz'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/syntheticvcf_short.vcf.gz', checkIfExists: true)
                         ]
                     ]
                     """
@@ -34,7 +35,7 @@ nextflow_process {
                 """
                 ch = PLINK2_VCF.out.pgen.concat(PLINK2_VCF.out.psam, PLINK2_VCF.out.pvar).groupTuple().map{ it.flatten() }
                 input[0] = ch
-                input[1] = file(params.test_data['homo_sapiens']['genome']['syntheticvcf_short_score'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/syntheticvcf_short.score', checkIfExists: true)
                 """
             }
         }

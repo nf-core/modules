@@ -40,7 +40,7 @@ process EXPANSIONHUNTER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        expansionhunter: \$( echo \$(ExpansionHunter --version 2>&1) | sed 's/^.*ExpansionHunter v//')
+        expansionhunter: \$( echo \$(ExpansionHunter --version 2>&1) | head -1 | sed 's/^.*ExpansionHunter v//')
         bgzip: \$(echo \$(bgzip -h 2>&1) | sed 's/^.*Version: //;s/Usage:.*//')
     END_VERSIONS
     """
@@ -48,13 +48,13 @@ process EXPANSIONHUNTER {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.vcf.gz
-    touch ${prefix}.json.gz
+    echo "" | gzip > ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.json.gz
     touch ${prefix}_realigned.bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        expansionhunter: \$( echo \$(ExpansionHunter --version 2>&1) | sed 's/^.*ExpansionHunter v//')
+        expansionhunter: \$( echo \$(ExpansionHunter --version 2>&1) | head -1 | sed 's/^.*ExpansionHunter v//')
         bgzip: \$(echo \$(bgzip -h 2>&1) | sed 's/^.*Version: //;s/Usage:.*//')
     END_VERSIONS
     """

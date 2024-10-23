@@ -6,38 +6,45 @@ keywords:
   - introns
 tools:
   - agat:
-      description: "Another Gff Analysis Toolkit (AGAT). Suite of tools to handle gene annotations in any GTF/GFF format."
+      description: "Another Gff Analysis Toolkit (AGAT). Suite of tools to handle gene
+        annotations in any GTF/GFF format."
       homepage: "https://agat.readthedocs.io/en/latest/"
       documentation: "https://agat.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/NBISweden/AGAT"
       licence: ["GPL v3"]
+      identifier: biotools:AGAT
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - gff:
-      type: file
-      description: Input gtf/gff file
-      pattern: "*.{gff,gff3,gtf}"
-  - config:
-      type: file
-      description: Optional input agat config file
-      pattern: "*.{yaml,yml}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - gff:
+        type: file
+        description: Input gtf/gff file
+        pattern: "*.{gff,gff3,gtf}"
+  - - config:
+        type: file
+        description: Optional input agat config file
+        pattern: "*.{yaml,yml}"
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - gff:
-      type: file
-      description: Output gff3 file with introns
-      pattern: "*.gff"
-
+      - meta:
+          type: file
+          description: Output gff3 file with introns
+          pattern: "*.gff"
+      - ${output}:
+          type: file
+          description: Output gff3 file with introns
+          pattern: "*.gff"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@anoronh4"
 maintainers:
   - "@anoronh4"
+  - "@gallvp"

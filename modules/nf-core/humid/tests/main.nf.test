@@ -1,0 +1,136 @@
+nextflow_process {
+
+    name "Test Process HUMID"
+    script "../main.nf"
+    process "HUMID"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "humid"
+    tag "fastp"
+
+    test("sarscov2 - paired-end") {
+
+        setup {
+            run("FASTP") {
+                script "../../fastp/main.nf"
+                config "./nextflow.config"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id:'test', single_end:false ],
+                        [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
+                    ])
+                    input[1] = []
+                    input[2] = false
+                    input[3] = false
+                    input[4] = false
+                    """
+                }
+            }
+        }
+
+        when {
+            config "./nextflow.config"
+            process {
+                """
+                input[0] = FASTP.out.reads
+                input[1] = [[:],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.stats,
+                    process.out.dedup,
+                    process.out.annotated,
+                    process.out.versions).match()},
+                {assert path(process.out.log.get(0).get(1)).text.contains("Reading data... done.")},
+            )
+        }
+
+    }
+
+    test("sarscov2 - paired-end - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                        [ id:'test', single_end:false ],
+                        [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
+                    ])
+                input[1] = [[:],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.log,
+                    process.out.stats,
+                    process.out.versions).match()},
+                {assert file(process.out.dedup[0][1].find {
+                    file(it).name == "test_1_dedup.fastq.gz" }).exists()},
+                {assert file(process.out.dedup[0][1].find {
+                    file(it).name == "test_2_dedup.fastq.gz" }).exists()},
+                {assert file(process.out.annotated[0][1].find {
+                    file(it).name == "test_1_annotated.fastq.gz" }).exists()},
+                {assert file(process.out.annotated[0][1].find {
+                    file(it).name == "test_2_annotated.fastq.gz" }).exists()}
+            )
+        }
+    }
+
+
+    test("sarscov2 - single-end") {
+
+        setup {
+            run("FASTP") {
+                script "../../fastp/main.nf"
+                config "./nextflow.config"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id:'test', single_end:true ],
+                        [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
+                    ])
+                    input[1] = []
+                    input[2] = false
+                    input[3] = false
+                    input[4] = false
+                    """
+                }
+            }
+        }
+
+        when {
+            config "./nextflow.config"
+            process {
+                """
+                input[0] = FASTP.out.reads
+                input[1] = [[:],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.stats,
+                    process.out.dedup,
+                    process.out.annotated,
+                    process.out.versions).match()},
+                {assert path(process.out.log.get(0).get(1)).text.contains("Reading data... done.")},
+            )
+        }
+    }
+
+}

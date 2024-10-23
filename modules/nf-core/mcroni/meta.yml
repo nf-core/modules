@@ -3,41 +3,52 @@ description: Analysis of mcr-1 gene (mobilized colistin resistance) for sequence
 keywords:
   - resistance
   - fasta
+  - mcr-1
 tools:
   - "mcroni":
-      description: "Scripts for finding and processing promoter variants upstream of mcr-1"
+      description: "Scripts for finding and processing promoter variants upstream of
+        mcr-1"
       homepage: "https://github.com/liampshaw/mcroni"
       documentation: "https://github.com/liampshaw/mcroni"
       tool_dev_url: "https://github.com/liampshaw/mcroni"
-      licence: "['MIT']"
+      licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: A fasta file.
-      pattern: "*.{fasta.gz,fasta,fa.gz,fa,fna.gz,fna}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: A fasta file.
+        pattern: "*.{fasta.gz,fasta,fa.gz,fa,fna.gz,fna}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - tsv:
-      type: file
-      description: mcroni results in TSV format
-      pattern: "*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: mcroni results in TSV format
+          pattern: "*.tsv"
   - fa:
-      type: file
-      description: mcr-1 matching sequences
-      pattern: "*.fa"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fa":
+          type: file
+          description: mcr-1 matching sequences
+          pattern: "*.fa"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@rpetit3"
 maintainers:

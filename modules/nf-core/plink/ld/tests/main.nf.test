@@ -1,4 +1,3 @@
-
 nextflow_process {
 
     name "Test Process PLINK_LD"
@@ -21,12 +20,12 @@ nextflow_process {
                 input[0] = [ [id:"null"], [], [], []]
                 input[1] = [
                     [id:"test"],
-                    file(params.test_data['homo_sapiens']['popgen']['plink_case_control_vcf_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.vcf.gz', checkIfExists: true)
                     ]
                 input[2] = [ [id:"null"], []]
                 input[3] = [
                     [id:"test"],
-                    file(params.test_data['homo_sapiens']['popgen']['plink_random_selected_snp'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_random_selected_snp.txt', checkIfExists: true)
                     ]
                 """
             }
@@ -34,8 +33,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.version).match("version") },
-                { assert snapshot(process.out.ld).match() }
+                { assert process.out.log.get(0).get(1) ==~ ".*/*.log" },
+                { assert snapshot(
+                    process.out.ld,
+                    process.out.nosex,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
     }
@@ -50,15 +54,15 @@ nextflow_process {
                 """
                 input[0] = [
                     [id:"test"],
-                    file(params.test_data['homo_sapiens']['popgen']['plink_case_control_bed'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['popgen']['plink_case_control_bim'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['popgen']['plink_case_control_fam'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
                     ]
                 input[1] = [ [id:"null"], []]
                 input[2] = [ [id:"null"], []]
                 input[3] = [
                     [id:"test"],
-                    file(params.test_data['homo_sapiens']['popgen']['plink_random_selected_snp'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_random_selected_snp.txt', checkIfExists: true)
                     ]
                 """
             }
@@ -66,7 +70,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.ld).match() }
+                { assert process.out.log.get(0).get(1) ==~ ".*/*.log" },
+                { assert snapshot(
+                    process.out.ld,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
     }
@@ -83,11 +92,11 @@ nextflow_process {
                 input[1] = [ [id:"null"], []]
                 input[2] = [
                     [id:"test"],
-                    file(params.test_data['homo_sapiens']['popgen']['plink_case_control_bcf_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bcf.gz', checkIfExists: true)
                     ]
                 input[3] = [
                     [id:"test"],
-                    file(params.test_data['homo_sapiens']['popgen']['plink_random_selected_snp'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_random_selected_snp.txt', checkIfExists: true)
                     ]
                 """
             }
@@ -95,7 +104,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.ld).match() }
+                { assert process.out.log.get(0).get(1) ==~ ".*/*.log" },
+                { assert snapshot(
+                    process.out.ld,
+                    process.out.nosex,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
     }

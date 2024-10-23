@@ -68,34 +68,6 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.nam
     )
 }
 
-#' Round numeric dataframe columns to fixed decimal places by applying
-#' formatting and converting back to numerics
-#'
-#' @param dataframe A data frame
-#' @param columns Which columns to round (assumes all of them by default)
-#' @param digits How many decimal places to round to?
-#'
-#' @return output Data frame
-
-round_dataframe_columns <- function(df, columns = NULL, digits = 8){
-    if (is.null(columns)){
-        columns <- colnames(df)
-    }
-
-    df[,columns] <- format(
-        data.frame(df[, columns], check.names = FALSE),
-        nsmall = digits
-    )
-
-    # Convert columns back to numeric
-
-    for (c in columns) {
-        df[[c]][grep("^ *NA\$", df[[c]])] <- NA
-        df[[c]] <- as.numeric(df[[c]])
-    }
-    df
-}
-
 ################################################
 ################################################
 ## PARSE PARAMETERS FROM NEXTFLOW             ##
@@ -139,7 +111,8 @@ opt <- list(
     shrink_lfc = TRUE,
     cores = 1,
     vs_blind = TRUE,
-    vst_nsub = 1000
+    vst_nsub = 1000,
+    round_digits = NULL
 )
 opt_types <- lapply(opt, class)
 
@@ -157,6 +130,9 @@ for ( ao in names(args_opt)){
         }
         opt[[ao]] <- args_opt[[ao]]
     }
+}
+if ( ! is.null(opt\$round_digits)){
+    opt\$round_digits <- as.numeric(opt\$round_digits)
 }
 
 # Check if required parameters have been provided
@@ -418,14 +394,20 @@ cat("Saving results for ", contrast.name, " ...\n", sep = "")
 # Differential expression table- note very limited rounding for consistency of
 # results
 
-out_df <- cbind(
-    setNames(data.frame(rownames(comp.results)), opt\$gene_id_col),
-    round_dataframe_columns(
-        data.frame(comp.results[, !(colnames(comp.results) %in% opt\$gene_id_col)], check.names = FALSE)
-    )
+if (! is.null(opt\$round_digits)){
+    comp.results <- apply(data.frame(comp.results), 2, function(x) round(x, opt\$round_digits))
+}
+comp.results <- `colnames<-`(
+    data.frame(
+        gene_id = rownames(comp.results),
+        comp.results,
+        check.names = FALSE
+    ),
+    c(opt\$gene_id_col, colnames(comp.results))  # Setting all column names
 )
+
 write.table(
-    out_df,
+    comp.results,
     file = paste(opt\$output_prefix, 'deseq2.results.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
@@ -466,12 +448,21 @@ write.table(
 
 # Write specified matrices
 
-out_df <- cbind(
-    setNames(data.frame(rownames(counts(dds))), opt\$gene_id_col),
-    data.frame(counts(dds, normalized = TRUE)[, !(colnames(counts(dds, normalized = TRUE)) %in% opt\$gene_id_col)], check.names = FALSE)
+normalised_matrix <- counts(dds, normalized = TRUE)
+if (! is.null(opt\$round_digits)){
+    normalised_matrix <- apply(normalised_matrix, 2, function(x) round(x, opt\$round_digits))
+}
+normalised_matrix <- `colnames<-`(
+    data.frame(
+        gene_id = rownames(counts(dds)),  # First column with row names from counts(dds)
+        normalised_matrix,                # Other columns
+        check.names = FALSE
+    ),
+    c(opt\$gene_id_col, colnames(normalised_matrix))  # Setting all column names
 )
+
 write.table(
-    out_df,
+    normalised_matrix,
     file = paste(opt\$output_prefix, 'normalised_counts.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
@@ -483,21 +474,26 @@ write.table(
 
 for (vs_method_name in strsplit(opt\$vs_method, ',')){
     if (vs_method_name == 'vst'){
-        vs_mat <- vst(dds, blind = opt\$vs_blind, nsub = opt\$vst_nsub)
+        vs_mat <- assay(vst(dds, blind = opt\$vs_blind, nsub = opt\$vst_nsub))
     }else if (vs_method_name == 'rlog'){
-        vs_mat <- rlog(dds, blind = opt\$vs_blind, fitType = opt\$fit_type)
+        vs_mat <- assay(rlog(dds, blind = opt\$vs_blind, fitType = opt\$fit_type))
     }
 
-    # Again apply the slight rounding and then restore numeric
+    if (! is.null(opt\$round_digits)){
+        vs_mat <- apply(vs_mat, 2, function(x) round(x, opt\$round_digits))
+    }
 
-    out_df <- cbind(
-        setNames(data.frame(rownames(counts(dds))), opt\$gene_id_col),
-        round_dataframe_columns(
-            data.frame(assay(vs_mat)[, !(colnames(assay(vs_mat)) %in% opt\$gene_id_col)], check.names = FALSE)
-        )
+    vs_mat <- `colnames<-`(
+        data.frame(
+            gene_id = rownames(counts(dds)),  # First column with row names from counts(dds)
+            vs_mat,                           # Other columns from vs_mat
+            check.names = FALSE
+        ),
+        c(opt\$gene_id_col, colnames(vs_mat))  # Setting all column names
     )
+
     write.table(
-        out_df,
+        vs_mat,
         file = paste(opt\$output_prefix, vs_method_name, 'tsv', sep = '.'),
         col.names = TRUE,
         row.names = FALSE,

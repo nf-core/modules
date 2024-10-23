@@ -43,7 +43,7 @@ process AMRFINDERPLUS_RUN {
         mkdir amrfinderdb
         tar xzvf $db -C amrfinderdb
     else
-        cp $db amrfinderdb
+        mv $db amrfinderdb
     fi
 
     amrfinder \\

@@ -4,8 +4,8 @@ process DEEPTOOLS_PLOTPROFILE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/deeptools:3.5.1--py_0' :
-        'biocontainers/deeptools:3.5.1--py_0' }"
+        'https://depot.galaxyproject.org/singularity/deeptools:3.5.5--pyhdfd78af_0':
+        'biocontainers/deeptools:3.5.5--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(matrix)
@@ -27,6 +27,18 @@ process DEEPTOOLS_PLOTPROFILE {
         --matrixFile $matrix \\
         --outFileName ${prefix}.plotProfile.pdf \\
         --outFileNameData ${prefix}.plotProfile.tab
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        deeptools: \$(plotProfile --version | sed -e "s/plotProfile //g")
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.plotProfile.pdf
+    touch ${prefix}.plotProfile.tab
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

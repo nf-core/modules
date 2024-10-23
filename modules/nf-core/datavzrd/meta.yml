@@ -1,0 +1,44 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "datavzrd"
+description: Datavzrd is a tool to create visual HTML reports from collections of
+  CSV/TSV tables.
+keywords:
+  - visualisation
+  - tsv
+  - csv
+tools:
+  - datavzrd:
+      description: Datavzrd is a tool to create visual HTML reports from collections
+        of CSV/TSV tables.
+      homepage: https://datavzrd.github.io/
+      documentation: https://datavzrd.github.io/docs/index.html
+      tool_dev_url: https://github.com/datavzrd/datavzrd
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+output:
+  - report:
+      - meta:
+          type: directory
+          description: directory with HTML report of provided CSV/TSV files
+          pattern: "/output/"
+      - ${prefix}:
+          type: directory
+          description: directory with HTML report of provided CSV/TSV files
+          pattern: "/output/"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@vickylaram"
+  - "@famosab"
+maintainers:
+  - "@famosab"

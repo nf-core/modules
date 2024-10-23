@@ -5,8 +5,8 @@ process WISECONDORX_GENDER {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/wisecondorx:1.2.5--pyh5e36f6f_0':
-        'biocontainers/wisecondorx:1.2.5--pyh5e36f6f_0' }"
+        'https://depot.galaxyproject.org/singularity/wisecondorx:1.2.9--pyhdfd78af_0':
+        'biocontainers/wisecondorx:1.2.9--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(npz)
@@ -20,7 +20,7 @@ process WISECONDORX_GENDER {
     task.ext.when == null || task.ext.when
 
     script:
-    def VERSION = '1.2.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '1.2.9' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     WisecondorX gender \\
@@ -34,7 +34,7 @@ process WISECONDORX_GENDER {
     """
 
     stub:
-    def VERSION = '1.2.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '1.2.9' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     echo male

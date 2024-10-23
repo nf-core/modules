@@ -8,8 +8,8 @@ process LOFREQ_INDELQUAL {
         'biocontainers/lofreq:2.1.5--py38h588ecb2_4' }"
 
     input:
-    tuple val(meta), path(bam)
-    path fasta
+    tuple val(meta),  path(bam)
+    tuple val(meta2), path(fasta)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
@@ -27,6 +27,18 @@ process LOFREQ_INDELQUAL {
         -f $fasta \\
         -o ${prefix}.bam \\
         $bam
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        lofreq: \$(echo \$(lofreq version 2>&1) | sed 's/^version: //; s/ *commit.*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -2,6 +2,7 @@ name: "atlasgeneannotationmanipulation_gtf2featureannotation"
 description: Generate tables of feature metadata from GTF files
 keywords:
   - gtf
+  - gene
   - annotation
 tools:
   - "atlasgeneannotationmanipulation":
@@ -9,45 +10,62 @@ tools:
       homepage: "https://github.com/ebi-gene-expression-group/atlas-gene-annotation-manipulation"
       documentation: "https://github.com/ebi-gene-expression-group/atlas-gene-annotation-manipulation"
       tool_dev_url: "https://github.com/ebi-gene-expression-group/atlas-gene-annotation-manipulation"
-      licence: "['Apache-2.0']"
+      licence: ["Apache-2.0"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing information on input GTF file
-        e.g. [ id:'test' ]
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing information in input FASTA file
-        e.g. [ id:'test' ]
-  - gtf:
-      type: file
-      description: gtf annotation file
-      pattern: "*.{gtf}"
-  - fasta:
-      type: file
-      description: |
-        An optional cDNA file for extracting meta info and/or filtering.
-      pattern: "*.{gtf}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing information on input GTF file
+          e.g. [ id:'test' ]
+    - gtf:
+        type: file
+        description: gtf annotation file
+        pattern: "*.{gtf}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing information in input FASTA file
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: |
+          An optional cDNA file for extracting meta info and/or filtering.
+        pattern: "*.{gtf}"
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - feature_annotation:
-      type: file
-      description: TSV file with feature annotation
-      pattern: "*.{tsv}"
+      - meta:
+          type: file
+          description: TSV file with feature annotation
+          pattern: "*.{tsv}"
+      - "*.anno.tsv":
+          type: file
+          description: TSV file with feature annotation
+          pattern: "*.{tsv}"
   - filtered_cdna:
-      type: file
-      description: |
-        Where --parse-cdnas is specified in ext.args and an input fasta file is
-        provided, filtered sequences are output to the specified file. No file
-        will be output if this is not specified (for example for use of
-        --dummy-from-cdnas only). See documentation at
-        https://github.com/ebi-gene-expression-group/atlas-gene-annotation-manipulation.
-      pattern: "*.{tsv}"
+      - meta:
+          type: file
+          description: |
+            Where --parse-cdnas is specified in ext.args and an input fasta file is
+            provided, filtered sequences are output to the specified file. No file
+            will be output if this is not specified (for example for use of
+            --dummy-from-cdnas only). See documentation at
+            https://github.com/ebi-gene-expression-group/atlas-gene-annotation-manipulation.
+          pattern: "*.{tsv}"
+      - "*.fa.gz":
+          type: file
+          description: |
+            Where --parse-cdnas is specified in ext.args and an input fasta file is
+            provided, filtered sequences are output to the specified file. No file
+            will be output if this is not specified (for example for use of
+            --dummy-from-cdnas only). See documentation at
+            https://github.com/ebi-gene-expression-group/atlas-gene-annotation-manipulation.
+          pattern: "*.{tsv}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@pinin4fjords"
 maintainers:

@@ -36,4 +36,15 @@ process LOFREQ_CALL {
         lofreq: \$(echo \$(lofreq version 2>&1) | sed 's/^version: //; s/ *commit.*\$//')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo | gzip > ${prefix}.vcf.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        lofreq: \$(echo \$(lofreq version 2>&1) | sed 's/^version: //; s/ *commit.*\$//')
+    END_VERSIONS
+    """
 }

@@ -19,17 +19,27 @@ nextflow_workflow {
             workflow {
                 """
                 // ch_mutect2_in
-                input[0] = Channel.of([[ id:'test1' ], file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam'], checkIfExists: true), file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true),[]],[[ id:'test2' ], file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true), file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true), []])
+                input[0] = Channel.of([
+                        [ id:'test1' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true),
+                        [] ],
+                    [
+                        [ id:'test2' ],
+                        file(params.modules_testdata_base_path+ 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path+ 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true),
+                        [] ]
+                )
                 // ch_fasta
-                input[1] = Channel.value([ [ id:'genome' ], file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)])
+                input[1] = Channel.value([ [ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)])
                 // ch_fai
-                input[2] = Channel.value([ [ id:'genome' ], file(params.test_data['homo_sapiens']['genome']['genome_21_fasta_fai'], checkIfExists: true)])
+                input[2] = Channel.value([ [ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)])
                 // ch_dict
-                input[3] = Channel.value([ [ id:'genome' ], file(params.test_data['homo_sapiens']['genome']['genome_21_dict'], checkIfExists:true)])
+                input[3] = Channel.value([ [ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.dict', checkIfExists:true)])
                 // str_pon_norm
                 input[4] = "test_panel"
                 // ch_interval_file
-                input[5] = Channel.value(file(params.test_data['homo_sapiens']['genome']['genome_21_interval_list'], checkIfExists: true))
+                input[5] = Channel.value(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true))
                 """
             }
         }

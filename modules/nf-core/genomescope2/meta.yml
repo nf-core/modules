@@ -1,5 +1,6 @@
 name: "genomescope2"
-description: Estimate genome heterozygosity, repeat content, and size from sequencing reads using a kmer-based statistical approach
+description: Estimate genome heterozygosity, repeat content, and size from sequencing
+  reads using a kmer-based statistical approach
 keywords:
   - "genome size"
   - "genome heterozygosity"
@@ -11,55 +12,104 @@ tools:
       documentation: "https://github.com/tbenavi1/genomescope2.0/blob/master/README.md"
       tool_dev_url: "https://github.com/tbenavi1/genomescope2.0"
       doi: "10.1038/s41467-020-14998-3"
-      licence: "['Apache License, Version 2.0 (Apache-2.0)']"
+      licence: ["Apache-2.0"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - histogram:
-      type: file
-      description: A K-mer histogram file
-      pattern: "*.hist"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - histogram:
+        type: file
+        description: A K-mer histogram file
+        pattern: "*.hist"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - linear_plot_png:
-      type: file
-      description: A genomescope2 linear plot in PNG format
-      pattern: "*_linear_plot.png"
-  - linear_plot_png:
-      type: file
-      description: A genomescope2 linear plot in PNG format
-      pattern: "*_linear_plot.png"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}_linear_plot.png:
+          type: file
+          description: A genomescope2 linear plot in PNG format
+          pattern: "*_linear_plot.png"
   - transformed_linear_plot_png:
-      type: file
-      description: A genomescope2 transformed linear plot in PNG format
-      pattern: "*_transformed_linear_plot.png"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}_transformed_linear_plot.png:
+          type: file
+          description: A genomescope2 transformed linear plot in PNG format
+          pattern: "*_transformed_linear_plot.png"
   - log_plot_png:
-      type: file
-      description: A genomescope2 log plot in PNG format
-      pattern: "*_log_plot.png"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}_log_plot.png:
+          type: file
+          description: A genomescope2 log plot in PNG format
+          pattern: "*_log_plot.png"
   - transformed_log_plot_png:
-      type: file
-      description: A genomescope2 transformed log plot in PNG format
-      pattern: "*_transformed_log_plot.png"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}_transformed_log_plot.png:
+          type: file
+          description: A genomescope2 transformed log plot in PNG format
+          pattern: "*_transformed_log_plot.png"
   - model:
-      type: file
-      description: Genomescope2 model fit summary
-      pattern: "*_model.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}_model.txt:
+          type: file
+          description: Genomescope2 model fit summary
+          pattern: "*_model.txt"
   - summary:
-      type: file
-      description: Genomescope2 histogram summary
-      pattern: "*_summary.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}_summary.txt:
+          type: file
+          description: Genomescope2 histogram summary
+          pattern: "*_summary.txt"
+  - lookup_table:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}_lookup_table.txt:
+          type: file
+          description: Fitted histogram lookup table
+          pattern: "*_lookup_table.txt"
+  - fitted_histogram_png:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}_fitted_hist.png:
+          type: file
+          description: A genomescope2 fitted histogram plot in PNG format
+          pattern: "*_fitted_hist.png"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@mahesh-panchal"
 maintainers:

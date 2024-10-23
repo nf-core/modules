@@ -3,37 +3,45 @@ description: A genomic k-mer counter (and sequence utility) with nice features.
 keywords:
   - k-mer
   - unionsum
+  - reference-free
 tools:
   - "meryl":
       description: "A genomic k-mer counter (and sequence utility) with nice features. "
       homepage: "https://github.com/marbl/meryl"
       documentation: "https://meryl.readthedocs.io/en/latest/quick-start.html"
       tool_dev_url: "https://github.com/marbl/meryl"
-      licence: "['GPL']"
+      licence: ["GPL"]
+      identifier: biotools:meryl
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - meryl_dbs:
-      type: directory
-      description: Meryl k-mer databases
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - meryl_dbs:
+        type: directory
+        description: Meryl k-mer databases
+  - - kvalue:
+        type: integer
+        description: An integer value of k to use as the k-mer value.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - meryl_db:
-      type: directory
-      description: A Meryl k-mer database that is the union sum of the input databases
-      pattern: "*.unionsum.meryldb"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.unionsum.meryl":
+          type: directory
+          description: A Meryl k-mer database that is the union sum of the input databases
+          pattern: "*.unionsum.meryl"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@mahesh-panchal"
 maintainers:
   - "@mahesh-panchal"
+  - "@gallvp"

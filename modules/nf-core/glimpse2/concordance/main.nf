@@ -4,8 +4,8 @@ process GLIMPSE2_CONCORDANCE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/glimpse-bio:2.0.0--hf340a29_0':
-        'biocontainers/glimpse-bio:2.0.0--hf340a29_0' }"
+        'https://depot.galaxyproject.org/singularity/glimpse-bio:2.0.1--h46b9e50_1':
+        'biocontainers/glimpse-bio:2.0.1--h46b9e50_1' }"
 
     input:
     tuple val(meta), path(estimate), path(estimate_index), path(truth), path(truth_index), path(freq), path(freq_index), path(samples), val(region)

@@ -17,7 +17,7 @@ nextflow_process {
                 """
                     input[0] = [
                         [ id:'test' ], // meta map
-                        file(params.test_data['homo_sapiens']['illumina']['test2_haplotc_vcf_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz', checkIfExists: true)
                         ]
                     input[1] = -1
                     input[2] = -1
@@ -47,7 +47,7 @@ nextflow_process {
                 """
                     input[0] = [
                         [ id:'test' ], // meta map
-                        file(params.test_data['homo_sapiens']['illumina']['test_test2_paired_mutect2_calls_vcf_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz', checkIfExists: true)
                         ]
                     input[1] = -1
                     input[2] = -1
