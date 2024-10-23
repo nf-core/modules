@@ -26,6 +26,15 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
+  install-nf-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install nf-test
+        uses: nf-core/setup-nf-test@v1
+        with:
+          version: ${{ env.NFTEST_VER }}
+
+
   get-number-of-shards:
     runs-on: ubuntu-latest
     outputs:
