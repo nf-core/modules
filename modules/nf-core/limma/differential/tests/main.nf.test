@@ -23,7 +23,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [id: 'test'],
-                        file(params.test_data['homo_sapiens']['genome']['affy_array_celfiles_tar'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751_RAW.tar", checkIfExists: true)
                     ]
                     """
                 }
@@ -34,7 +34,7 @@ nextflow_process {
                     """
                     ch_samplesheet = Channel.of([
                         [ id:'test' ],
-                        file(params.test_data['homo_sapiens']['genome']['affy_array_samplesheet'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true)
                         ]
                     )
                     input[0] = ch_samplesheet.join(UNTAR.out.untar)
@@ -49,7 +49,7 @@ nextflow_process {
                 """
                 ch_samplesheet = Channel.of([
                     [ id:'test' ],
-                    file(params.test_data['homo_sapiens']['genome']['affy_array_samplesheet'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true)
                     ]
                 )
                 input[0] = Channel.of(['id': 'diagnosis_normal_uremia', 'variable': 'diagnosis', 'reference': 'normal', 'target': 'uremia'])
@@ -85,7 +85,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [id: 'test'],
-                        file(params.test_data['homo_sapiens']['genome']['affy_array_celfiles_tar'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751_RAW.tar", checkIfExists: true)
                     ]
                     """
                 }
@@ -96,7 +96,7 @@ nextflow_process {
                     """
                     ch_samplesheet = Channel.of([
                         [ id:'test' ],
-                        file(params.test_data['homo_sapiens']['genome']['affy_array_samplesheet'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true)
                         ]
                     )
                     input[0] = ch_samplesheet.join(UNTAR.out.untar)
@@ -111,7 +111,7 @@ nextflow_process {
                 """
                 ch_samplesheet = Channel.of([
                     [ id:'test' ],
-                    file(params.test_data['homo_sapiens']['genome']['affy_array_samplesheet'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true)
                     ]
                 )
                 input[0] = Channel.of(['id': 'diagnosis_normal_uremia', 'variable': 'diagnosis', 'reference': 'normal', 'target': 'uremia'])
@@ -148,7 +148,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [id: 'test'],
-                        file(params.test_data['homo_sapiens']['genome']['affy_array_celfiles_tar'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751_RAW.tar", checkIfExists: true)
                     ]
                     """
                 }
@@ -159,7 +159,7 @@ nextflow_process {
                     """
                     ch_samplesheet = Channel.of([
                         [ id:'test' ],
-                        file(params.test_data['homo_sapiens']['genome']['affy_array_samplesheet'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true)
                         ]
                     )
                     input[0] = ch_samplesheet.join(UNTAR.out.untar)
@@ -174,7 +174,7 @@ nextflow_process {
                 """
                 ch_samplesheet = Channel.of([
                     [ id:'test' ],
-                    file(params.test_data['homo_sapiens']['genome']['affy_array_samplesheet'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true)
                     ]
                 )
                 input[0] = Channel.of(['id': 'diagnosis_normal_uremia', 'variable': 'diagnosis', 'reference': 'normal', 'target': 'uremia'])
