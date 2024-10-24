@@ -27,7 +27,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip[2].contains("--vcf test.vcf") }, // SVDB command line
+                { assert path(process.out.vcf.get(0).get(1)).linesGzip[3].contains("--vcf test.vcf") }, // SVDB command line
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
@@ -55,7 +55,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip[2].contains("--vcf test.vcf") }, // SVDB command line
+                { assert path(process.out.vcf.get(0).get(1)).linesGzip[3].contains("--vcf test.vcf") }, // SVDB command line
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
@@ -83,7 +83,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip[2].contains("--priority tiddit --vcf test.vcf:tiddit") }, // SVDB command line
+                { assert path(process.out.vcf.get(0).get(1)).linesGzip[3].contains("--priority tiddit --vcf test.vcf:tiddit") }, // SVDB command line
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
@@ -111,7 +111,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip[2].contains("--priority tiddit --vcf test.vcf:tiddit") }, // SVDB command line
+                { assert path(process.out.vcf.get(0).get(1)).linesGzip[3].contains("--priority tiddit --vcf test.vcf:tiddit") }, // SVDB command line
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
@@ -142,7 +142,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip[2].contains("--vcf test2.vcf test.vcf") }, // SVDB command line
+                { assert path(process.out.vcf.get(0).get(1)).linesGzip[3].contains("--vcf test2.vcf test.vcf") }, // SVDB command line
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
@@ -173,7 +173,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip[2].contains("--vcf test.vcf test2.vcf") }, // SVDB command line
+                { assert path(process.out.vcf.get(0).get(1)).linesGzip[3].contains("--vcf test.vcf test2.vcf") }, // SVDB command line
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
@@ -204,7 +204,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip[2].contains("--priority tiddit,cnvnator --vcf test2.vcf:tiddit test.vcf:cnvnator") }, // SVDB command line
+                { assert path(process.out.vcf.get(0).get(1)).linesGzip[3].contains("--priority tiddit,cnvnator --vcf test2.vcf:tiddit test.vcf:cnvnator") }, // SVDB command line
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
@@ -235,7 +235,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip[2].contains("--priority tiddit,cnvnator --vcf test.vcf:cnvnator test2.vcf:tiddit") }, // SVDB command line
+                { assert path(process.out.vcf.get(0).get(1)).linesGzip[3].contains("--priority tiddit,cnvnator --vcf test.vcf:cnvnator test2.vcf:tiddit") }, // SVDB command line
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
