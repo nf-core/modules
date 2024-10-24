@@ -29,18 +29,18 @@ input:
 output:
   - samplesheet:
       - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', lane:1 ]
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', lane:1 ]
       - "*_formatted.csv":
-        type: file
-        description: "illumina v2 samplesheet"
+          type: file
+          description: "illumina v2 samplesheet"
   - versions:
       - versions.yml:
-        type: file
-        description: File containing software version
-        pattern: "versions.yml"
+          type: file
+          description: File containing software version
+          pattern: "versions.yml"
 authors:
   - "@nschcolnicov"
 maintainers:
