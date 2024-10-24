@@ -1,0 +1,33 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core subworkflows test load_test_data
+nextflow_workflow {
+
+    name "Test Subworkflow LOAD_TEST_DATA"
+    script "../main.nf"
+    workflow "LOAD_TEST_DATA"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/load_test_data"
+    tag "testdata"
+    tag "testdata/scilpy"
+
+    test("load multiple packages") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.from( ["bids_json.zip", "plot.zip", "stats.zip"] )
+                input[1] = "test.load_test_data"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
+}
