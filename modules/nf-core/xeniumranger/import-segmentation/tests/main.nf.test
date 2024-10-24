@@ -1,5 +1,3 @@
-//                    #input[0] = [[], file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialxe/Xenium_Prime_Mouse_Ileum_tiny_outs.zip', checkIfExists: true)]
-
 nextflow_process {
 
     name "Test Process XENIUMRANGER_IMPORT_SEGMENTATION"
@@ -18,7 +16,7 @@ nextflow_process {
                 script "modules/nf-core/unzip/main.nf"
                 process {
                     """
-                    input[0] = [[], file('/data/sail/projects/tools/modules/testdata/tiny.zip', checkIfExists: true)]
+                    input[0] = [[], file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialxe/Xenium_Prime_Mouse_Ileum_tiny_outs.zip', checkIfExists: true)]
                     """
                 }
             }
