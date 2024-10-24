@@ -18,7 +18,7 @@ RUN mkdir -p /opt/quarto \
 #
 # Second stage: Conda environment
 #
-FROM condaforge/mambaforge:24.1.2-0@sha256:64c45c1a743737f61cf201f54cae974b5c853be94f9c1a84f5e82e0e854f0407
+FROM condaforge/mambaforge:24.9.0-0@sha256:1861be34a0cc0d2cf37be83469c62818e90dbee4cf7d3da99a355fc148ad77a7
 COPY --from=quarto /opt/quarto /opt/quarto
 ENV PATH="${PATH}:/opt/quarto/bin"
 
