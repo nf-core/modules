@@ -12,7 +12,7 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
     path(nuclei)
     path(cells)
     path(transcript_assignment)
-    path(cell_boundary_polygons)
+    path(viz_polygons)
 
     output:
     tuple val(meta), path("**/outs/**"), emit: outs
@@ -32,12 +32,13 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
     // image based segmentation options
     def expansion_distance = expansion_distance ? "--expansion-distance=\"${expansion_distance}\"": "" // expansion distance (default - 5, range - 0 - 100)
     def coordinate_transform = coordinate_transform ? "--coordinate-transform=\"${coordinate_transform}\"": ""
+
     def nuclei_detection = nuclei ? "--nuclei=\"${nuclei}\"": ""
     def cells = cells ? "--cells=\"${cells}\"": ""
 
     // transcript based segmentation
     def transcript_assignment = transcript_assignment ? "--transcript-assignment=\"${transcript_assignment}\"": ""
-    def cell_boundary_polygons = cell_boundary_polygons ? "--viz-polygons=\"${cell_boundary_polygons}\"":""
+    def viz_polygons = viz_polygons ? "--viz-polygons=\"${viz_polygons}\"":""
 
     // shared argument
     def units = coordinate_transform ? "--units=microns": "--units=pixels"
@@ -53,7 +54,7 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
         ${cells} \\
         ${expansion_distance} \\
         ${transcript_assignment} \\
-        ${cell_boundary_polygons} \\
+        ${viz_polygons} \\
         ${units} \\
         ${args}
 
