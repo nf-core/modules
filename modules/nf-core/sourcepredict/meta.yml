@@ -48,21 +48,21 @@ input:
 
 output:
   - report:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - "*.sourcepredict.csv":
-        type: file
-        description: Table containing the predicted proportion of each source in each sample
-        pattern: "*.sourcepredict.csv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.sourcepredict.csv":
+          type: file
+          description: Table containing the predicted proportion of each source in each sample
+          pattern: "*.sourcepredict.csv"
 
   - versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 
 authors:
   - "@MeriamOs"
