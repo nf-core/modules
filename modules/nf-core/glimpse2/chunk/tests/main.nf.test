@@ -9,19 +9,18 @@ nextflow_process {
     tag "modules"
 
     test("Should run without map") {
-        config "modules/nf-core/glimpse2/chunk/tests/nextflow.config"
+        config "./nextflow.config"
 
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true),
-                    "chr21"
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true),
+                    "chr21", []
                 ]
-                input[1]= [[ id:'map'],[]]
-                input[2]= "recursive"
+                input[1]= "recursive"
                 """
             }
         }
@@ -36,19 +35,19 @@ nextflow_process {
     }
 
     test("Should run with map") {
-        config "modules/nf-core/glimpse2/chunk/tests/nextflow.config"
+        config "./nextflow.config"
 
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true),
-                    "chr21"
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true),
+                    "chr21",
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/chr21.b38.gmap.gz", checkIfExists: true)
                 ]
-                input[1]= [[ id:'map'],file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/chr21.b38.gmap.gz", checkIfExists: true)]
-                input[2]= "recursive"
+                input[1]= "recursive"
                 """
             }
         }
