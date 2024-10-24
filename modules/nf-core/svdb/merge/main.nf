@@ -8,7 +8,7 @@ process SVDB_MERGE {
 
     input:
     tuple val(meta), path(vcfs)
-    val(priority)
+    val(input_priority)
     val(sort_inputs)
 
     output:
@@ -22,34 +22,37 @@ process SVDB_MERGE {
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
+    println vcfs.collect()
+    println input_priority.collect().size()
+
     // Ensure priority list matches the number of VCFs if priority is provided
-    if (priority && vcfs.collect().size() != priority.collect().size()) {
+    if (input_priority && vcfs.collect().size() != input_priority.collect().size()) {
         error "If priority is used, one tag per VCF is needed"
     }
 
-    if (sort_inputs && vcfs.collect().size() > 1) {
-        if (priority) {
+    def input = ""
+    def prio = ""
+    if (input_priority) {
+        if (vcfs.collect().size() > 1 && sort_inputs) {
             // make vcf-prioprity pairs and sort on VCF name, so priority is also sorted the same
-            def pairs = vcfs.indices.collect { [vcfs[it], priority[it]] }
+            def pairs = vcfs.indices.collect { [vcfs[it], input_priority[it]] }
             pairs = pairs.sort { a, b -> a[0].name <=> b[0].name }
             vcfs = pairs.collect { it[0] }
             priority = pairs.collect { it[1] }
         } else {
-            // if there's no priority input just sort the vcfs by name
-            vcfs = vcfs.sort { it.name }
+            priority = input_priority
         }
-    }
 
-    // If there's only one input VCF the code above is not executed, and that VCF becomes the input
-    input = vcfs
-
-    def prio = ""
-    if(priority) {
-        prio = "--priority ${priority.join(',')}"
+        // Build inputs
+        prio = "--priority ${input_priority.join(',')}"
         input = ""
         for (int index = 0; index < vcfs.collect().size(); index++) {
             input += "${vcfs[index]}:${priority[index]} "
         }
+
+    } else {
+        // if there's no priority input just sort the vcfs by name if possible
+        input = (vcfs.collect().size() > 1 && sort_inputs) ? vcfs.sort { it.name } : vcfs
     }
 
     """
