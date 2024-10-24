@@ -44,12 +44,14 @@ nextflow_process {
                         process.out.versions,
                         process.out.outs.get(0).get(1).findAll { file(it).name !in [
                             'analysis_summary.html',
+                            'experiment.xenium',
                             'cells.csv.gz',
                             'cells.parquet',
                             'cells.zarr.zip',
                             'transcripts.parquet',
                             'transcripts.zarr.zip',
                             'analysis.zarr.zip',
+                            'cell_feature_matrix.zarr.zip'
                         ]}
                     ).match()
                 },
@@ -60,6 +62,7 @@ nextflow_process {
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.parquet' }).exists() },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.zarr.zip' }).exists() },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'analysis.zarr.zip' }).exists() },
+                { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'cell_feature_matrix.zarr.zip' }).exists() }
             )
         }
     }

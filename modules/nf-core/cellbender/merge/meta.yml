@@ -1,0 +1,52 @@
+name: cellbender_merge
+description: Module to use CellBender to remove ambient RNA from single-cell RNA-seq
+  data
+keywords:
+  - single-cell
+  - scRNA-seq
+  - ambient RNA removal
+tools:
+  - cellbender:
+      description: CellBender is a software package for eliminating technical artifacts
+        from high-throughput single-cell RNA sequencing (scRNA-seq) data.
+      documentation: https://cellbender.readthedocs.io/en/latest/
+      tool_dev_url: https://github.com/broadinstitute/CellBender
+      licence: ["BSD-3-Clause"]
+      identifier: biotools:CellBender
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - filtered:
+        type: file
+        description: AnnData file containing filtered data (without empty droplets)
+        pattern: "*.h5ad"
+    - unfiltered:
+        type: file
+        description: AnnData file containing unfiltered data (with empty droplets)
+        pattern: "*.h5ad"
+    - cellbender_h5:
+        type: file
+        description: CellBender h5 file containing ambient RNA estimates
+        pattern: "*.h5"
+output:
+  - h5ad:
+      - meta:
+          type: file
+          description: AnnData file containing decontaminated counts as `adata.X`
+          pattern: "*.h5ad"
+      - ${prefix}.h5ad:
+          type: file
+          description: AnnData file containing decontaminated counts as `adata.X`
+          pattern: "*.h5ad"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software version
+          pattern: "versions.yml"
+authors:
+  - "@nictru"
+maintainers:
+  - "@nictru"

@@ -1,0 +1,49 @@
+name: "seqcluster_collapse"
+description: Seqcluster collapse reduces computational complexity by collapsing identical
+  sequences in a FASTQ file.
+keywords:
+  - smrnaseq
+  - cluster
+  - mirna
+tools:
+  - "seqcluster":
+      description: "Small RNA analysis from NGS data. Seqcluster generates a list of
+        clusters of small RNA sequences, their genome location, their annotation and
+        the abundance in all the sample of the project."
+      homepage: "https://github.com/lpantano/seqcluster"
+      documentation: "https://github.com/lpantano/seqcluster"
+      tool_dev_url: "https://github.com/lpantano/seqcluster"
+      doi: "10.1093/bioinformatics/btr527"
+      licence: ["MIT"]
+      identifier: biotools:seqcluster
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fastq:
+        type: file
+        description: FASTQ file
+        pattern: "*.{fastq.gz}"
+output:
+  - fastq:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.fastq.gz":
+          type: file
+          description: FASTQ file
+          pattern: "*.{fastq.gz}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@atrigila"
+maintainers:
+  - "@atrigila"

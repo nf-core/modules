@@ -1,0 +1,69 @@
+name: "cafe"
+description: Analysis of gene family evolution
+keywords:
+  - gene
+  - phylogeny
+  - genomics
+tools:
+  - "cafe":
+      description: "Computational Analysis of gene Family Evolution (CAFE)"
+      homepage: "https://github.com/hahnlab/CAFE5"
+      documentation: "https://github.com/hahnlab/CAFE5"
+      tool_dev_url: "https://github.com/hahnlab/CAFE5"
+      doi: "10.1093/bioinformatics/btaa1027"
+      licence: ["IU OPEN SOURCE LICENSE (see https://github.com/hahnlab/CAFE5/blob/master/LICENSE)"]
+      identifier: biotools:CaFE_Calculation_of_Free_Energy
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - infile:
+        type: file
+        description: Gene counts table (from OrthoMCL, SwiftOrtho, FastOrtho, OrthAgogue
+          or OrthoFinder)
+        pattern: "*.{txt,tsv,tab}"
+  - - tree:
+        type: file
+        description: Newick formatted tree
+        pattern: "*.{txt}"
+output:
+  - cafe:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}:
+          type: directory
+          description: A folder with all the cafe output
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+  - cafe_base_count:
+      - $prefix/*_count.tab:
+          type: file
+          description: File containing counts of genes per orthogroup
+          pattern: "*_count.tab"
+  - cafe_significant_trees:
+      - $prefix/*.tre:
+          type: file
+          description: File containing significant trees (newick format)
+          pattern: "*.tre"
+  - cafe_report:
+      - $prefix/*_report.cafe:
+          type: file
+          description: File containing the final report from cafe
+          pattern: "*_report.cafe"
+  - cafe_results:
+      - $prefix/*results.txt:
+          type: file
+          description: File containing the main result files from cafe
+          pattern: "*results.txt"
+authors:
+  - "@chriswyatt1"
+maintainers:
+  - "@chriswyatt1"

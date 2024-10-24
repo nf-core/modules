@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "mmseqs_createtsv"
-description: Create a tsv file from a query and a target database as well as the result database
+description: Create a tsv file from a query and a target database as well as the result
+  database
 keywords:
   - protein sequence
   - databases
@@ -12,53 +12,58 @@ keywords:
   - tsv
 tools:
   - "mmseqs":
-      description: "MMseqs2: ultra fast and sensitive sequence search and clustering suite"
+      description: "MMseqs2: ultra fast and sensitive sequence search and clustering
+        suite"
       homepage: "https://github.com/soedinglab/MMseqs2"
       documentation: "https://mmseqs.com/latest/userguide.pdf"
       tool_dev_url: "https://github.com/soedinglab/MMseqs2"
       doi: "10.1093/bioinformatics/btw006"
       licence: ["GPL v3"]
+      identifier: biotools:mmseqs
 input:
   # Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - db_result:
-      type: directory
-      description: an MMseqs2 database with result data
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - db_query:
-      type: directory
-      description: an MMseqs2 database with query data
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - db_target:
-      type: directory
-      description: an MMseqs2 database with target data
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - db_result:
+        type: directory
+        description: an MMseqs2 database with result data
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - db_query:
+        type: directory
+        description: an MMseqs2 database with query data
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - db_target:
+        type: directory
+        description: an MMseqs2 database with target data
 output:
   #Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
   - tsv:
-      type: file
-      description: The resulting tsv file created using the query, target and result MMseqs databases
-      pattern: "*.{tsv}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.tsv":
+          type: file
+          description: The resulting tsv file created using the query, target and result
+            MMseqs databases
+          pattern: "*.{tsv}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@Joon-Klaps"
 maintainers:

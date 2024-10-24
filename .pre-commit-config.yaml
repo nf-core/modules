@@ -1,12 +1,12 @@
 repos:
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: "v3.1.0"
+    rev: "v4.0.0-alpha.8"
     hooks:
       - id: prettier
         additional_dependencies:
           - prettier@3.2.5
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.28.3
+    rev: 0.29.4
     hooks:
       - id: check-jsonschema
         # match meta.ymls in one of the subdirectories of modules/nf-core
@@ -18,12 +18,12 @@ repos:
         args: ["--schemafile", "subworkflows/yaml-schema.json"]
       - id: check-github-workflows
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 37.356.1
+    rev: 38.46.0
     hooks:
       - id: renovate-config-validator
   # use ruff for python files
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.4.3
+    rev: v0.7.0
     hooks:
       - id: ruff
         files: \.py$

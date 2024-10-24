@@ -1,0 +1,59 @@
+nextflow_process {
+
+    name "Test Process SURVIVOR_BEDPETOVCF"
+    script "../main.nf"
+    process "SURVIVOR_BEDPETOVCF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "survivor"
+    tag "survivor/bedpetovcf"
+
+    test("sarscov2 - bedpe") {
+
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bedpe', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bedpe - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bedpe', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

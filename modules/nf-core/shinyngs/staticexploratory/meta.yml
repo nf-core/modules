@@ -1,5 +1,6 @@
 name: "shinyngs_staticexploratory"
-description: Make exploratory plots for analysis of matrix data, including PCA, Boxplots and density plots
+description: Make exploratory plots for analysis of matrix data, including PCA, Boxplots
+  and density plots
 keywords:
   - exploratory
   - plot
@@ -8,93 +9,162 @@ keywords:
   - PCA
 tools:
   - "shinyngs":
-      description: "Provides Shiny applications for various array and NGS applications. Currently very RNA-seq centric, with plans for expansion."
+      description: "Provides Shiny applications for various array and NGS applications.
+        Currently very RNA-seq centric, with plans for expansion."
       homepage: "https://github.com/pinin4fjords/shinyngs"
       documentation: "https://rawgit.com/pinin4fjords/shinyngs/master/vignettes/shinyngs.html"
       tool_dev_url: "https://github.com/pinin4fjords/shinyngs"
       licence: ["AGPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing information on variables for use in plots,
-        probably experimental information, but at a minimum an id.
-        e.g. [ id:'treatment' ]
-  - sample:
-      type: file
-      description: |
-        CSV-format sample sheet with sample metadata
-  - feature_meta:
-      type: file
-      description: |
-        TSV-format feature (e.g. gene) metadata
-  - assay_files:
-      type: file
-      description: |
-        List of TSV-format matrix files representing different measures for the same samples (e.g. raw and normalised).
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing information on variables for use in plots,
+          probably experimental information, but at a minimum an id.
+          e.g. [ id:'treatment' ]
+    - sample:
+        type: file
+        description: |
+          CSV-format sample sheet with sample metadata
+    - feature_meta:
+        type: file
+        description: |
+          TSV-format feature (e.g. gene) metadata
+    - assay_files:
+        type: file
+        description: |
+          List of TSV-format matrix files representing different measures for the same samples (e.g. raw and normalised).
 output:
   - boxplots_png:
-      type: file
-      description: |
-        Meta-keyed tuple containing PNG output for box plots covering input
-        matrices.
+      - meta:
+          type: file
+          description: |
+            Meta-keyed tuple containing PNG output for box plots covering input
+            matrices.
+      - "*/png/boxplot.png":
+          type: file
+          description: |
+            Meta-keyed tuple containing PNG output for box plots covering input
+            matrices.
   - boxplots_html:
-      type: file
-      description: |
-        Meta-keyed tuple containing HTML output for box plots covering input
-        matrices.
+      - meta:
+          type: file
+          description: |
+            Meta-keyed tuple containing HTML output for box plots covering input
+            matrices.
+      - "*/html/boxplot.html":
+          type: file
+          description: |
+            Meta-keyed tuple containing HTML output for box plots covering input
+            matrices.
   - densities_png:
-      type: file
-      description: |
-        Meta-keyed tuple containing PNG output for density plots
-        covering input matrices.
+      - meta:
+          type: file
+          description: |
+            Meta-keyed tuple containing PNG output for density plots
+            covering input matrices.
+      - "*/png/density.png":
+          type: file
+          description: |
+            Meta-keyed tuple containing PNG output for density plots
+            covering input matrices.
   - densities_html:
-      type: file
-      description: |
-        Meta-keyed tuple containing HTML output for density plots
-        covering input matrices.
+      - meta:
+          type: file
+          description: |
+            Meta-keyed tuple containing HTML output for density plots
+            covering input matrices.
+      - "*/html/density.html":
+          type: file
+          description: |
+            Meta-keyed tuple containing HTML output for density plots
+            covering input matrices.
   - pca2d_png:
-      type: file
-      description: |
-        Meta-keyed tuple containing a PNG output for 2D PCA plots covering
-        specified input matrix (by default the last one in the input list.
+      - meta:
+          type: file
+          description: |
+            Meta-keyed tuple containing a PNG output for 2D PCA plots covering
+            specified input matrix (by default the last one in the input list.
+      - "*/png/pca2d.png":
+          type: file
+          description: |
+            Meta-keyed tuple containing a PNG output for 2D PCA plots covering
+            specified input matrix (by default the last one in the input list.
   - pca2d_html:
-      type: file
-      description: |
-        Meta-keyed tuple containing an HTML output for 2D PCA plots covering
-        specified input matrix (by default the last one in the input list.
+      - meta:
+          type: file
+          description: |
+            Meta-keyed tuple containing an HTML output for 2D PCA plots covering
+            specified input matrix (by default the last one in the input list.
+      - "*/html/pca2d.html":
+          type: file
+          description: |
+            Meta-keyed tuple containing an HTML output for 2D PCA plots covering
+            specified input matrix (by default the last one in the input list.
   - pca3d_png:
-      type: file
-      description: |
-        Meta-keyed tuple containing a PNG output for 3D PCA plots covering
-        specified input matrix (by default the last one in the input list.
+      - meta:
+          type: file
+          description: |
+            Meta-keyed tuple containing a PNG output for 3D PCA plots covering
+            specified input matrix (by default the last one in the input list.
+      - "*/png/pca3d.png":
+          type: file
+          description: |
+            Meta-keyed tuple containing a PNG output for 3D PCA plots covering
+            specified input matrix (by default the last one in the input list.
   - pca3d_html:
-      type: file
-      description: |
-        Meta-keyed tuple containing an HTML output for 3D PCA plots covering
-        specified input matrix (by default the last one in the input list.
+      - meta:
+          type: file
+          description: |
+            Meta-keyed tuple containing an HTML output for 3D PCA plots covering
+            specified input matrix (by default the last one in the input list.
+      - "*/html/pca3d.html":
+          type: file
+          description: |
+            Meta-keyed tuple containing an HTML output for 3D PCA plots covering
+            specified input matrix (by default the last one in the input list.
   - mad_png:
-      type: file
-      description: |
-        Meta-keyed tuple containing a PNG output for MAD correlation plots
-        covering specified input matrix (by default the last one in the input
-        list.
-  - mad_dendro:
-      type: file
-      description: |
-        Meta-keyed tuple containing an HTML output for MAD correlation plots
-        covering specified input matrix (by default the last one in the input
-        list.
+      - meta:
+          type: file
+          description: |
+            Meta-keyed tuple containing a PNG output for MAD correlation plots
+            covering specified input matrix (by default the last one in the input
+            list.
+      - "*/png/mad_correlation.png":
+          type: file
+          description: |
+            Meta-keyed tuple containing a PNG output for MAD correlation plots
+            covering specified input matrix (by default the last one in the input
+            list.
+  - mad_html:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*/html/mad_correlation.html":
+          type: file
+          description: HTML output for MAD correlation plots
+          pattern: "*{.html}"
   - dendro:
-      type: file
-      description: |
-        Meta-keyed tuple containing a PNG, for a sample clustering
-        dendrogramcovering specified input matrix (by default the last one in
-        the input list.
+      - meta:
+          type: file
+          description: |
+            Meta-keyed tuple containing a PNG, for a sample clustering
+            dendrogramcovering specified input matrix (by default the last one in
+            the input list.
+      - "*/png/sample_dendrogram.png":
+          type: file
+          description: |
+            Meta-keyed tuple containing a PNG, for a sample clustering
+            dendrogramcovering specified input matrix (by default the last one in
+            the input list.
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@pinin4fjords"
 maintainers:

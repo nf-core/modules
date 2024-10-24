@@ -9,104 +9,209 @@ tools:
       description: "FastK based version of Merqury"
       homepage: "https://github.com/thegenemyers/MERQURY.FK"
       tool_dev_url: "https://github.com/thegenemyers/MERQURY.FK"
-      licence: "https://github.com/thegenemyers/MERQURY.FK/blob/main/LICENSE"
+      licence: ["https://github.com/thegenemyers/MERQURY.FK/blob/main/LICENSE"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fastk_hist:
-      type: file
-      description: A histogram files from the program FastK
-      pattern: "*.hist"
-  - fastk_ktab:
-      type: file
-      description: Histogram ktab files from the program FastK (option -t)
-      pattern: "*.ktab*"
-  - assembly:
-      type: file
-      description: Genome (primary) assembly files (fasta format)
-      pattern: ".fasta"
-  - haplotigs:
-      type: file
-      description: Assembly haplotigs (fasta format)
-      pattern: ".fasta"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fastk_hist:
+        type: file
+        description: A histogram files from the program FastK
+        pattern: "*.hist"
+    - fastk_ktab:
+        type: file
+        description: Histogram ktab files from the program FastK (option -t)
+        pattern: "*.ktab*"
+    - assembly:
+        type: file
+        description: Genome (primary) assembly files (fasta format)
+        pattern: ".fasta"
+    - haplotigs:
+        type: file
+        description: Assembly haplotigs (fasta format)
+        pattern: ".fasta"
+  - - matktab:
+        type: file
+        description: trio maternal histogram ktab files from the program FastK (option
+          -t)
+        pattern: "*.ktab*"
+  - - patktab:
+        type: file
+        description: trio paternal histogram ktab files from the program FastK (option
+          -t)
+        pattern: "*.ktab*"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - stats:
-      type: file
-      description: Assembly statistics file
-      pattern: "*.completeness.stats"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.completeness.stats:
+          type: file
+          description: Assembly statistics file
+          pattern: "*.completeness.stats"
   - bed:
-      type: file
-      description: Assembly only kmer positions not supported by reads in bed format
-      pattern: "*_only.bed"
-  - spectra_cn_fl_png:
-      type: file
-      description: "Unstacked copy number spectra filled plot in PNG format"
-      pattern: "*.spectra-cn.fl.png"
-  - spectra_cn_ln_png:
-      type: file
-      description: "Unstacked copy number spectra line plot in PNG format"
-      pattern: "*.spectra-cn.ln.png"
-  - spectra_cn_st_png:
-      type: file
-      description: "Stacked copy number spectra line plot in PNG format"
-      pattern: "*.spectra-cn.st.png"
-  - spectra_asm_fl_png:
-      type: file
-      description: "Unstacked assembly spectra filled plot in PNG format"
-      pattern: "*.spectra-asm.fl.png"
-  - spectra_asm_ln_png:
-      type: file
-      description: "Unstacked assembly spectra line plot in PNG format"
-      pattern: "*.spectra-asm.ln.png"
-  - spectra_asm_st_png:
-      type: file
-      description: "Stacked assembly spectra line plot in PNG format"
-      pattern: "*.spectra-asm.st.png"
-  - spectra_cn_fl_pdf:
-      type: file
-      description: "Unstacked copy number spectra filled plot in PDF format"
-      pattern: "*.spectra-cn.fl.pdf"
-  - spectra_cn_ln_pdf:
-      type: file
-      description: "Unstacked copy number spectra line plot in PDF format"
-      pattern: "*.spectra-cn.ln.pdf"
-  - spectra_cn_st_pdf:
-      type: file
-      description: "Stacked copy number spectra line plot in PDF format"
-      pattern: "*.spectra-cn.st.pdf"
-  - spectra_asm_fl_pdf:
-      type: file
-      description: "Unstacked assembly spectra filled plot in PDF format"
-      pattern: "*.spectra-asm.fl.pdf"
-  - spectra_asm_ln_pdf:
-      type: file
-      description: "Unstacked assembly spectra line plot in PDF format"
-      pattern: "*.spectra-asm.ln.pdf"
-  - spectra_asm_st_pdf:
-      type: file
-      description: "Stacked assembly spectra line plot in PDF format"
-      pattern: "*.spectra-asm.st.pdf"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.*_only.bed:
+          type: file
+          description: Assembly only kmer positions not supported by reads in bed format
+          pattern: "*_only.bed"
   - assembly_qv:
-      type: file
-      description: "error and qv table for each scaffold of the assembly"
-      pattern: "*.qv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.*.qv:
+          type: file
+          description: "error and qv table for each scaffold of the assembly"
+          pattern: "*.qv"
+  - spectra_cn_fl:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.*.spectra-cn.fl.{png,pdf}:
+          type: file
+          description: "Unstacked copy number spectra filled plot in PNG or PDF format"
+          pattern: "*.spectra-cn.fl.{png,pdf}"
+  - spectra_cn_ln:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.*.spectra-cn.ln.{png,pdf}:
+          type: file
+          description: "Unstacked copy number spectra line plot in PNG or PDF format"
+          pattern: "*.spectra-cn.ln.{png,pdf}"
+  - spectra_cn_st:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.*.spectra-cn.st.{png,pdf}:
+          type: file
+          description: "Stacked copy number spectra line plot in PNG or PDF format"
+          pattern: "*.spectra-cn.st.{png,pdf}"
   - qv:
-      type: file
-      description: "error and qv of each assembly as a whole"
-      pattern: "*.qv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.qv:
+          type: file
+          description: "error and qv of each assembly as a whole"
+          pattern: "*.qv"
+  - spectra_asm_fl:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.spectra-asm.fl.{png,pdf}:
+          type: file
+          description: "Unstacked assembly spectra filled plot in PNG or PDF format"
+          pattern: "*.spectra-asm.fl.{png,pdf}"
+  - spectra_asm_ln:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.spectra-asm.ln.{png,pdf}:
+          type: file
+          description: "Unstacked assembly spectra line plot in PNG or PDF format"
+          pattern: "*.spectra-asm.ln.{png,pdf}"
+  - spectra_asm_st:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.spectra-asm.st.{png,pdf}:
+          type: file
+          description: "Stacked assembly spectra line plot in PNG or PDF format"
+          pattern: "*.spectra-asm.st.{png,pdf}"
+  - phased_block_bed:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.phased_block.bed:
+          type: file
+          description: Assembly kmer positions seperated by block in bed format
+          pattern: "*.phased.block.bed"
+  - phased_block_stats:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.phased_block.stats:
+          type: file
+          description: phased assembly statistics file
+          pattern: "*.phased.block.stats"
+  - continuity_N:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.continuity.N.{pdf,png}:
+          type: file
+          description: "Stacked assembly N continuity plot in PNG or PDF format"
+          pattern: "*.continuity.N.{png,pdf}"
+  - block_N:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.block.N.{pdf,png}:
+          type: file
+          description: "Stacked assembly N continuity by block plot in PNG or PDF format"
+          pattern: "*.block.N.{png,pdf}"
+  - block_blob:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.block.blob.{pdf,png}:
+          type: file
+          description: "Stacked assembly block plot in PNG or PDF format"
+          pattern: "*.block.blob.{png,pdf}"
+  - hapmers_blob:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.hapmers.blob.{pdf,png}:
+          type: file
+          description: "Stacked assembly hapmers block plot in PNG or PDF format"
+          pattern: "*.hapmers.blob.{png,pdf}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@mahesh-panchal"
+  - "@yumisims"
 maintainers:
   - "@mahesh-panchal"
+  - "@yumisims"

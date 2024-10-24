@@ -1,0 +1,50 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "mcstaging_imc2mc"
+description: Staging module for MCMICRO transforming Imaging Mass Cytometry .txt files
+  to .tif files with OME-XML metadata. Includes optional hot pixel removal.
+keywords:
+  - imaging
+  - ome-tif
+  - staging
+  - MCMICRO
+tools:
+  - "mcstaging":
+      description: "Staging modules for MCMICRO"
+      homepage: "https://github.com/SchapiroLabor/imc2mc"
+      documentation: "https://github.com/SchapiroLabor/imc2mc/README.md"
+      tool_dev_url: "https://github.com/SchapiroLabor/imc2mc"
+      licence: ["GPL-3.0 license"]
+      identifier: ""
+
+input:
+  # Only when we have meta
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - txtfile:
+        type: file
+        description: Acquisition .txt file
+        pattern: "*.{txt}"
+output:
+  #Only when we have meta
+  - tif:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.tif":
+          type: file
+          description: One output .tif file containing acquisition and metadata
+          pattern: "*.{tif}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@MargotCh"
+maintainers:
+  - "@MargotCh"

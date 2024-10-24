@@ -12,35 +12,44 @@ tools:
       documentation: "https://github.com/weizhongli/cdhit/wiki"
       tool_dev_url: "https://github.com/weizhongli/cdhit"
       doi: "10.1093/bioinformatics/btl158"
-      licence: "['GPL v2']"
+      licence: ["GPL v2"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - sequences:
-      type: file
-      description: fasta or fastq file of sequences to be clustered
-      pattern: "*.{fasta,fastq}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - sequences:
+        type: file
+        description: fasta or fastq file of sequences to be clustered
+        pattern: "*.{fasta,fastq}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - fasta:
-      type: file
-      description: fasta or fastq file of the representative sequences for each cluster
-      pattern: "*.{fasta,fastq}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.{fa,fq}":
+          type: file
+          description: fasta or fastq file of the representative sequences for each cluster
+          pattern: "*.{fasta,fastq}"
   - clusters:
-      type: file
-      description: List of clusters
-      pattern: "*.{clstr}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.clstr":
+          type: file
+          description: List of clusters
+          pattern: "*.{clstr}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@Joon-Klaps"
 maintainers:

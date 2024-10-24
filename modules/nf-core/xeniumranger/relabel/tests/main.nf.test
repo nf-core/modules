@@ -40,9 +40,11 @@ nextflow_process {
                     assert snapshot(
                         process.out.versions,
                         process.out.outs.get(0).get(1).findAll { file(it).name !in [
+                            "analysis.zarr.zip",
+                            "experiment.xenium",
+                            "transcripts.zarr.zip",
                             "analysis_summary.html",
-                            "cell_feature_matrix.h5",
-                            "cell_feature_matrix.zarr.zip",
+                            "cell_feature_matrix.zarr.zip"
                         ]}
                     ).match()
                 },

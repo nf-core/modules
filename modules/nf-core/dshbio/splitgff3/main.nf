@@ -4,8 +4,8 @@ process DSHBIO_SPLITGFF3 {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/dsh-bio:2.3--hdfd78af_0' :
-        'biocontainers/dsh-bio:2.3--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/dsh-bio:2.4--hdfd78af_0' :
+        'biocontainers/dsh-bio:2.4--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(gff3)
@@ -27,6 +27,18 @@ process DSHBIO_SPLITGFF3 {
         -p $prefix \\
         -s '.gff3.gz' \\
         -i $gff3
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        dshbio: \$(dsh-bio --version 2>&1 | grep -o 'dsh-bio-tools .*' | cut -f2 -d ' ')
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo | gzip > ${prefix}.gff3.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

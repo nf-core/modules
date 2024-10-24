@@ -10,42 +10,43 @@ keywords:
   - index
 tools:
   - "kmcp":
-      description: "Accurate metagenomic profiling of both prokaryotic and viral populations by pseudo-mapping"
+      description: "Accurate metagenomic profiling of both prokaryotic and viral populations
+        by pseudo-mapping"
       homepage: "https://github.com/shenwei356/kmcp"
       documentation: "https://bioinf.shenwei.me/kmcp/usage/#profile"
       tool_dev_url: "https://github.com/shenwei356/kmcp"
       doi: "10.1093/bioinformatics/btac845"
-      licence: "['MIT']"
+      licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - db:
-      type: directory
-      description: Database directory containing taxdump files and taxid file
-  - search_results:
-      type: file
-      description: Gzipped file output from kmcp search module
-      pattern: "*.gz"
-  - mode:
-      type: integer
-      description: Profiling mode. 0-pathogen detection 1-higher recall 2-high recall 3-default 4-high precision 5-higher precision
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - search_results:
+        type: file
+        description: Gzipped file output from kmcp search module
+        pattern: "*.gz"
+  - - db:
+        type: directory
+        description: Database directory containing taxdump files and taxid file
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - profile:
-      type: file
-      description: Tab-delimited format file with 17 columns.
-      pattern: "*.profile"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.profile":
+          type: file
+          description: Tab-delimited format file with 17 columns.
+          pattern: "*.profile"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@sofstam"
 maintainers:

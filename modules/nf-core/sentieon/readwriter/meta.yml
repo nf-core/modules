@@ -1,5 +1,6 @@
 name: sentieon_readwriter
-description: Merges BAM files, and/or convert them into cram files. Also, outputs the result of applying the Base Quality Score Recalibration to a file.
+description: Merges BAM files, and/or convert them into cram files. Also, outputs
+  the result of applying the Base Quality Score Recalibration to a file.
 keywords:
   - merge
   - convert
@@ -12,59 +13,78 @@ tools:
         Our software improves upon BWA, STAR, Minimap2, GATK, HaplotypeCaller, Mutect, and Mutect2 based pipelines and is deployable on any generic-CPU-based computing system.
       homepage: https://www.sentieon.com/
       documentation: https://www.sentieon.com/
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information.
-        e.g. [ id:'test', single_end:false ]
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information.
-        e.g. [ id:'test' ]
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing reference information.
-        e.g. [ id:'test' ]
-  - input:
-      type: file
-      description: BAM/CRAM file.
-      pattern: "*.{bam,cram}"
-  - index:
-      type: file
-      description: BAI/CRAI file.
-      pattern: "*.{bai,crai}"
-  - fasta:
-      type: file
-      description: Genome fasta file
-      pattern: "*.{fa,fasta}"
-  - fai:
-      type: file
-      description: The index of the FASTA reference.
-      pattern: "*.fai"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information.
+          e.g. [ id:'test', single_end:false ]
+    - input:
+        type: file
+        description: BAM/CRAM file.
+        pattern: "*.{bam,cram}"
+    - index:
+        type: file
+        description: BAI/CRAI file.
+        pattern: "*.{bai,crai}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information.
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: Genome fasta file
+        pattern: "*.{fa,fasta}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information.
+          e.g. [ id:'test' ]
+    - fai:
+        type: file
+        description: The index of the FASTA reference.
+        pattern: "*.fai"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing reference information.
-        e.g. [ id:'test', single_end:false ]
   - output:
-      type: file
-      description: BAM/CRAM file
-      pattern: "*.{bam,cram}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing reference information.
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}:
+          type: file
+          description: BAM/CRAM file. Depends on how ext.prefix is set. BAM "ext.prefix
+            = <filename>.bam", CRAM "ext.prefix = <filename>.cram". Defaults to cram
+          pattern: "*.{bam,cram}"
   - index:
-      type: file
-      description: BAM/CRAM index file
-      pattern: "*.{bai,crai}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing reference information.
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.${index}:
+          type: file
+          description: BAM/CRAM index file
+          pattern: "*.{bai,crai}"
   - output_index:
-      type: file
-      description: BAM/CRAM alignment and the corresponding index file
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing reference information.
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}:
+          type: file
+          description: BAM/CRAM alignment and the corresponding index file
+      - ${prefix}.${index}:
+          type: file
+          description: BAM/CRAM alignment and the corresponding index file
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@ramprasadn"
 maintainers:

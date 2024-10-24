@@ -1,0 +1,46 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTA_BINNING_CONCOCT"
+    script "../main.nf"
+    workflow "FASTA_BINNING_CONCOCT"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fasta_binning_concoct"
+
+    tag "concoct"
+    tag "concoct/cutupfasta"
+    tag "concoct/concoctcoveragetable"
+    tag "concoct/concoct"
+    tag "concoct/mergecutupclustering"
+    tag "concoct/extractfastabins"
+
+
+    test("sarscov2 - genome - fasta") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                     [[ id: 'test' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)],
+                     [[ id: 'test2'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                 )
+
+                input[1] = Channel.of(
+                     [[ id: 'test' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true),
+                                      file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam.bai', checkIfExists: true)],
+                     [[ id: 'test2'], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                                      file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)]
+                 )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
+}

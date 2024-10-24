@@ -15,9 +15,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [[ id:'test', single_end:false ], // meta map
-                            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                             ]
-                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_header'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.header', checkIfExists: true)
                 """
             }
         }
@@ -37,7 +37,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [[ id:'test', single_end:false ], // meta map
-                            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                             ]
                 input[1] = []
                 """
@@ -61,9 +61,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [[ id:'test', single_end:false ], // meta map
-                            file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                             ]
-                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_header'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.header', checkIfExists: true)
                 """
             }
         }

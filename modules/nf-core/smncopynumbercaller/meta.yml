@@ -1,7 +1,13 @@
 name: "smncopynumbercaller"
-description: tool to call the copy number of full-length SMN1, full-length SMN2, as well as SMN2Δ7–8 (SMN2 with a deletion of Exon7-8) from a whole-genome sequencing (WGS) BAM file.
+description: tool to call the copy number of full-length SMN1, full-length SMN2, as
+  well as SMN2Δ7–8 (SMN2 with a deletion of Exon7-8) from a whole-genome sequencing
+  (WGS) BAM file.
 keywords:
-  - copy number, BAM, CRAM, SMN1, SMN2
+  - copy number
+  - BAM
+  - CRAM
+  - SMN1
+  - SMN2
 tools:
   - "smncopynumbercaller":
       description: "call copy number of SMN1, SMN2, SMN2Δ7–8 from a bam file"
@@ -9,39 +15,48 @@ tools:
       documentation: "https://github.com/Illumina/SMNCopyNumberCaller"
       tool_dev_url: "https://github.com/Illumina/SMNCopyNumberCaller"
       doi: "10.1038/s41436-020-0754-0"
-      licence: "Apache License Version 2.0"
+      licence: ["Apache License Version 2.0"]
+      identifier: ""
 input:
-  - bam:
-      type: file
-      description: BAM/CRAM file
-      pattern: "*.{bam,cram}"
-  - bai:
-      type: file
-      description: BAM/CRAM index file
-      pattern: "*.{bai,crai}"
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM/CRAM file
+        pattern: "*.{bam,cram}"
+    - bai:
+        type: file
+        description: BAM/CRAM index file
+        pattern: "*.{bai,crai}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - run_metrics:
-      type: file
-      description: File containing run parameters of SMNCopyNumberCaller
-      pattern: "*.{json}"
   - smncopynumber:
-      type: file
-      description: File containing the output of SMNCopyNumberCaller
-      pattern: "*.{tsv}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - out/*.tsv:
+          type: file
+          description: File containing the output of SMNCopyNumberCaller
+          pattern: "*.{tsv}"
+  - run_metrics:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - out/*.json:
+          type: file
+          description: File containing run parameters of SMNCopyNumberCaller
+          pattern: "*.{json}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@peterpru"
 maintainers:
