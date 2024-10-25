@@ -1,6 +1,8 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: bam_create_som_pon_gatk
-description: Perform variant calling on a set of normal samples using mutect2 panel of normals mode. Group them into a genomicsdbworkspace using genomicsdbimport, then use this to create a panel of normals using createsomaticpanelofnormals.
+description: Perform variant calling on a set of normal samples using mutect2 panel
+  of normals mode. Group them into a genomicsdbworkspace using genomicsdbimport, then
+  use this to create a panel of normals using createsomaticpanelofnormals.
 keywords:
   - gatk4
   - mutect2
@@ -15,54 +17,123 @@ components:
   - gatk4/createsomaticpanelofnormals
 input:
   - ch_mutect2_in:
-      type: list
-      description: |
-        An input channel containing the following files:
-        - input: One or more BAM/CRAM files
-        - input_index: The index/indices from the BAM/CRAM file(s)
-        - interval_file: An interval file to be used with the mutect call
-        Structure: [ meta, input, input_index, interval_file ]
-  - fasta:
-      type: file
-      description: The reference fasta file
-      pattern: "*.fasta"
-  - fai:
-      type: file
-      description: Index of reference fasta file
-      pattern: "*.fasta.fai"
-  - dict:
-      type: file
-      description: GATK sequence dictionary
-      pattern: "*.dict"
+      description: An input channel containing the following files
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - input:
+            type: file
+            description: "BAM/CRAM file"
+        - input_index:
+            type: file
+            description: "Index of BAM/CRAM file"
+        - interval_file:
+            type: file
+            description: "Interval file to be used with the mutect call"
+  - ch_fasta:
+      description: "The reference fasta file"
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - fasta:
+            type: file
+            description: "The reference fasta file"
+  - ch_fai:
+      description: "Index of reference fasta file"
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - fai:
+            type: file
+            description: "Index of reference fasta file"
+  - ch_dict:
+      description: "GATK sequence dictionary"
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - dict:
+            type: file
+            description: "GATK sequence dictionary"
+  - val_pon_norm:
+      type: string
+      description: "name for panel of normals"
+  - ch_gendb_intervals:
+      description: "channel with interval file"
+      structure:
+        - interval_file:
+            type: file
+            description: "Interval file"
 output:
   - versions:
-      type: file
       description: File containing software versions
-      pattern: "versions.yml"
+      structure:
+        - versions:
+            type: file
+            description: "File containing software versions"
+            pattern: "versions.yml"
   - mutect2_vcf:
-      type: list
       description: List of compressed vcf files to be used to make the gendb workspace
-      pattern: "[ *.vcf.gz ]"
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - vcf:
+            type: file
+            description: "Compressed vcf file"
+            pattern: "*.vcf.gz"
   - mutect2_index:
-      type: list
       description: List of indexes of mutect2_vcf files
-      pattern: "[ *vcf.gz.tbi ]"
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - tbi:
+            type: file
+            description: "Index of vcf file"
+            pattern: "*.vcf.gz.tbi"
   - mutect2_stats:
-      type: list
       description: List of stats files that pair with mutect2_vcf files
-      pattern: "[ *vcf.gz.stats ]"
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - stats:
+            type: file
+            description: "Stats file"
+            pattern: "*vcf.gz.stats"
   - genomicsdb:
-      type: directory
       description: Directory containing the files that compose the genomicsdb workspace.
-      pattern: "path/name_of_workspace"
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - genomicsdb:
+            type: directory
+            description: "GenomicsDB workspace"
   - pon_vcf:
-      type: file
       description: Panel of normal as compressed vcf file
-      pattern: "*.vcf.gz"
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - vcf:
+            type: file
+            description: "Compressed vcf file"
+            pattern: "*.vcf.gz"
   - pon_index:
-      type: file
       description: Index of pon_vcf file
-      pattern: "*vcf.gz.tbi"
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - tbi:
+            type: file
+            description: "Index of vcf file"
+            pattern: "*vcf.gz.tbi"
 authors:
   - "@GCJMackenzie"
 maintainers:
