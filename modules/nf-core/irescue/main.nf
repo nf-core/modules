@@ -1,6 +1,7 @@
 process IRESCUE {
     tag "$meta.id"
     label 'process_medium'
+    
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/irescue:1.1.2--pyhdfd78af_0':
@@ -28,6 +29,7 @@ process IRESCUE {
     def genome_assembly = reference ? '' : "--genome $genome"
     """
     mkdir -p $prefix
+    
     irescue \\
         --bam $bam \\
         $reference \\
