@@ -45,7 +45,7 @@ input:
         pattern: "*.txt"
 output:
   - summary:
-      - "*report.{html":
+      - "*report.{html,txt}":
           type: file
           description: Bismark summary
           pattern: "*.{html,txt}"
@@ -58,3 +58,4 @@ authors:
   - "@phue"
 maintainers:
   - "@phue"
+  - "@sateeshperi"

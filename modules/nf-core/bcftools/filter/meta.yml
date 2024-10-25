@@ -23,6 +23,10 @@ input:
         type: file
         description: VCF input file
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+    - tbi:
+        type: file
+        description: VCF index file
+        pattern: "*.tbi"
 output:
   - vcf:
       - meta:
