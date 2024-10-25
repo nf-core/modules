@@ -4,8 +4,8 @@ process CRABS_DBIMPORT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/cutadapt_muscle_vsearch_wget_pruned:0cd5cb1e549e5033':
-        'community.wave.seqera.io/library/cutadapt_muscle_vsearch_wget_pruned:04f6c0370c0226c5' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e0/e0007b6b35c9783203b7fde287c383ac38168ecfee79639393e3cb1cd4afdaef/data':
+        'community.wave.seqera.io/library/crabs:1.0.4--1de4f5571e3e4ab0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -27,7 +27,7 @@ process CRABS_DBIMPORT {
         gzip -c -d ${fasta} > ${fasta_name}
     fi
 
-    crabs db_import \\
+    crabs --import \\
         --input ${fasta_name} \\
         --output ${prefix}.crabsdb.fa \\
         $args
