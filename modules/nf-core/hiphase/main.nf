@@ -9,7 +9,7 @@ process HIPHASE {
 
     input:
     tuple val(meta), path(vcf)
-    tuple val(meta1), path(index)
+    tuple val(meta1), path(csi)
     tuple val(meta2), path(bam)
     tuple val(meta3), path(bai)
     tuple val(meta4), path(fasta)
@@ -33,7 +33,7 @@ process HIPHASE {
         --output-vcf ${prefix}.phased.vcf \
         --output-bam ${prefix}.phased.bam \
         --reference $fasta \
-	--stats-file ${prefix}.stats.csv \
+        --stats-file ${prefix}.stats.csv \
         $args \
         --threads ${task.cpus}
 
