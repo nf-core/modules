@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "hiphase"
 description: write your description here
@@ -21,20 +20,38 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-    - bam:
+    - vcf:
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam}"
+        description: VCF File
+        pattern: "*.{vcf}"
+  - - meta1:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - index:
+        type: file
+        description: CSI File associated with VCF
+        pattern: "*.{csi}"
   - - meta2:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-    - vcf:
+    - bam:
         type: file
-        description: VCF File
-        pattern: "*.{vcf}"
+        description: Sorted BAM/CRAM/SAM file
+        pattern: "*.{bam}"
   - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bai:
+        type: file
+        description: Index File BAI associated with BAM file
+        pattern: "*.{bai}"
+  - - meta4:
         type: map
         description: |
           Groovy Map containing sample information
@@ -54,16 +71,16 @@ output:
           type: file
           description: Phased VCF file
           pattern: "*.vcf"
-  - bam:
+  - csv:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.bam":
+      - "*.csv":
           type: file
-          description: Haplo-tagged BAM files
-          pattern: "*.bam"
+          description: stats associated with the phasing
+          pattern: "*.csv"
 
   - versions:
       - "versions.yml":

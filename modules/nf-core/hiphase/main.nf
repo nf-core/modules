@@ -16,7 +16,7 @@ process HIPHASE {
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.csv"),  emit: csv
     path "versions.yml"           , emit: versions
 
     when:
@@ -25,15 +25,17 @@ process HIPHASE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+
     """
     hiphase \
         --bam $bam \
         --vcf $vcf \
-        --output-vcf ${prefix}.vcf \
-        --output-bam ${prefix}.bam \
-        --reference $fasta
+        --output-vcf ${prefix}.phased.vcf \
+        --output-bam ${prefix}.phased.bam \
+        --reference $fasta \
+	--stats-file ${prefix}.stats.csv \
+        $args \
         --threads ${task.cpus}
-
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -45,8 +47,8 @@ process HIPHASE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.vcf
-    touch ${prefix}.bam
+    touch ${prefix}.phased.vcf
+    touch ${prefix}.stats.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -42,8 +42,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert file(process.out.vcf[0][1]).name == "test.vcf" },
-                { assert file(process.out.bam[0][1]).name == "test.bam" }
+                { assert file(process.out.vcf[0][1]).name == "test.phased.vcf" },
+                { assert file(process.out.csv[0][1]).name == "test.stats.csv" }
+
             )
         }
 
