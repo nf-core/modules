@@ -43,48 +43,19 @@ input:
         type: file
         description: Annotation GTF file
         pattern: "*.{gtf}"
-  - - meta4:
-        type: map
-        description: |
-          Groovy Map containing reference information
-          e.g. [ id:'test' ]
-    - blacklist:
+  - - blacklist:
         type: file
         description: Blacklist file
         pattern: "*.{tsv}"
-  - - meta5:
-        type: map
-        description: |
-          Groovy Map containing reference information
-          e.g. [ id:'test' ]
-    - known_fusions:
+  - - known_fusions:
         type: file
         description: Known fusions file
         pattern: "*.{tsv}"
-  - - meta6:
-        type: map
-        description: |
-          Groovy Map containing reference information
-          e.g. [ id:'test' ]
-    - structural_variants:
+  - - cytobands:
         type: file
-        description: Structural variants file
+        description: Cytobands file
         pattern: "*.{tsv}"
-  - - meta7:
-        type: map
-        description: |
-          Groovy Map containing reference information
-          e.g. [ id:'test' ]
-    - tags:
-        type: file
-        description: Tags file
-        pattern: "*.{tsv}"
-  - - meta8:
-        type: map
-        description: |
-          Groovy Map containing reference information
-          e.g. [ id:'test' ]
-    - protein_domains:
+  - - protein_domains:
         type: file
         description: Protein domains file
         pattern: "*.{gff3}"
