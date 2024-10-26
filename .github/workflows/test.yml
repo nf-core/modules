@@ -727,6 +727,7 @@ jobs:
 
       # Test the module
       - name: Run nf-test
+        if: ${{ matrix.path != '' }}
         env:
           NFT_DIFF: "pdiff"
           NFT_DIFF_ARGS: "--line-numbers --width 120 --expand-tabs=2"
@@ -748,6 +749,7 @@ jobs:
             ${{ matrix.path }}
 
       - uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
+        if: ${{ matrix.path != '' }}
         with:
           path: >-
             test.tap
