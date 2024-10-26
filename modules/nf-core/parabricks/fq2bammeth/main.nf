@@ -38,7 +38,6 @@ process PARABRICKS_FQ2BAMMETH {
 
     pbrun \\
         fq2bam_meth \\
-        --low-memory \\
         --ref $index/$fasta \\
         $in_fq_command \\
         --out-bam ${prefix}.bam \\
