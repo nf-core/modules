@@ -32,19 +32,19 @@ process PARABRICKS_FQ2BAMMETH {
     def in_fq_command = meta.single_end ? "--in-se-fq $reads" : "--in-fq $reads"
     def known_sites_command = known_sites ? known_sites.collect{"--knownSites $it"}.join(' ') : ""
     def known_sites_output = known_sites ? "--out-recal-file ${prefix}.table" : ""
+    def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
     """
-    INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
-    mv $fasta \$INDEX
+    ln -sf \$(readlink $fasta) $index/$fasta
 
     pbrun \\
         fq2bam_meth \\
-        --ref \$INDEX \\
+        --low-memory \\
+        --ref $index/$fasta \\
         $in_fq_command \\
-        --read-group-sm $meta.id \\
         --out-bam ${prefix}.bam \\
         $known_sites_command \\
         $known_sites_output \\
-        --num-gpus $task.accelerator.request \\
+        $num_gpus \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
