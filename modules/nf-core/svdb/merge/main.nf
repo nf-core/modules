@@ -59,7 +59,7 @@ process SVDB_MERGE {
                     args2.contains("--output-type u") || args2.contains("-Ou") ? "bcf" :
                     args2.contains("--output-type z") || args2.contains("-Oz") ? "vcf.gz" :
                     args2.contains("--output-type v") || args2.contains("-Ov") ? "vcf" :
-                    "vcf"
+                    "vcf.gz"
     """
     svdb \\
         --merge \\
@@ -84,7 +84,7 @@ process SVDB_MERGE {
                     args2.contains("--output-type u") || args2.contains("-Ou") ? "bcf" :
                     args2.contains("--output-type z") || args2.contains("-Oz") ? "vcf.gz" :
                     args2.contains("--output-type v") || args2.contains("-Ov") ? "vcf" :
-                    "vcf"
+                    "vcf.gz"
     def index = args2.contains("--write-index=tbi") || args2.contains("-W=tbi") ? "tbi" :
                 args2.contains("--write-index=csi") || args2.contains("-W=csi") ? "csi" :
                 args2.contains("--write-index") || args2.contains("-W") ? "csi" :
