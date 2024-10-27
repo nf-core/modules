@@ -56,9 +56,7 @@ process BISMARK_ALIGN {
         }
     }
     """
-    if [ ! -f $index/$fasta ]; then
-        ln -s \$(readlink $fasta) $index/$fasta;
-    fi
+    ln -sf \$(readlink $fasta) $index/$fasta
 
     bismark \\
         $fastq \\
