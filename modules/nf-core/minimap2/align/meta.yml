@@ -16,7 +16,8 @@ tools:
       licence: ["MIT"]
       identifier: ""
 input:
-  - - meta:
+  - 0:
+    - meta:
         type: map
         description: |
           Groovy Map containing sample information
@@ -26,55 +27,67 @@ input:
         description: |
           List of input FASTA or FASTQ files of size 1 and 2 for single-end
           and paired-end data, respectively.
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing reference information
-          e.g. [ id:'test_ref']
-    - reference:
-        type: file
-        description: |
-          Reference database in FASTA format.
-  - bam_format:
+  - 1:
+    - name: meta2
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test_ref']
+    - name: reference
+      type: file
+      description: |
+        Reference database in FASTA format.
+  - 2:
+      name: bam_format
       type: boolean
       description: Specify that output should be in BAM format
-  - bam_index_extension:
+  - 3:
+      name: bam_index_extension
       type: string
       description: BAM alignment index extension (e.g. "bai")
-  - cigar_paf_format:
+  - 4:
+      name: cigar_paf_format
       type: boolean
       description: Specify that output CIGAR should be in PAF format
-  - cigar_bam:
+  - 5:
+      name: cigar_bam
       type: boolean
       description: |
         Write CIGAR with >65535 ops at the CG tag. This is recommended when
         doing XYZ (https://github.com/lh3/minimap2#working-with-65535-cigar-operations)
 output:
   - paf:
-      - type: map
+      - name: meta
+        type: map
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-      - type: file
+      - name: "*.paf"
+        type: file
         description: Alignment in PAF format
         pattern: "*.paf"
   - bam:
-      - type: map
+      - name: meta
+        type: map
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-      - type: file
+      - name: "*.bam"
+        type: file
         description: Alignment in BAM format
         pattern: "*.bam"
   - index:
-      - type: map
+      - name: meta
+        type: map
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-      - type: file
+      - name: "*.bam.${bam_index_extension}"
+        type: file
         description: BAM alignment index
         pattern: "*.bam.*"
   - versions:
+      name: "versions.yml"
       type: file
       description: File containing software versions
       pattern: "versions.yml"
