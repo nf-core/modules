@@ -39,12 +39,13 @@ input:
 
   - - taxa_sqlite:
         type: file
-        description: taxa.splite file downloaded with ete3 toolkit
+        description: taxa.sqlite file downloaded with ete3 toolkit
+        pattern: "taxa.sqlite"
 
   - - taxa_sqlite_traverse_pkl:
         type: file
-        description: taxa.splite.traverse.pkl file downloaded with ete3 toolkit
-        pattern: "taxa.splite.traverse.pkl"
+        description: taxa.sqlite.traverse.pkl file downloaded with ete3 toolkit
+        pattern: "taxa.sqlite.traverse.pkl"
 
 output:
   - report:

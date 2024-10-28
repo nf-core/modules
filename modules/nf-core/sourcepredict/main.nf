@@ -15,8 +15,8 @@ process SOURCEPREDICT {
     path(taxa_sqlite_traverse_pkl, stageAs: '.etetoolkit/*')
 
     output:
-    tuple val(meta), path("*.sourcepredict.csv"), emit: report
-    path "versions.yml"                                       , emit: versions
+    tuple val(meta), path("*.sourcepredict.csv")    , emit: report
+    path "versions.yml"                             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,7 +25,7 @@ process SOURCEPREDICT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    export NUMBA_CACHE_DIR='/tmp'
+    export NUMBA_CACHE_DIR='./tmp'
     export HOME='./'
 
     sourcepredict \\
