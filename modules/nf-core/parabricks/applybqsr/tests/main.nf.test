@@ -69,33 +69,33 @@ nextflow_process {
 
     test("parabricks_applybqsr_intervals_stub") {
 
-            options "-stub"
+        options "-stub"
 
-            when {
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test'],
-                        file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
-                        file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
-                        file(params.test_data['sarscov2']['illumina']['test_baserecalibrator_table'], checkIfExists: true),
-                        file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'],
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['illumina']['test_baserecalibrator_table'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'reference'],
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
                     ]
-                    input[1] = [
-                        [ id:'reference'],
-                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                        ]
-                    """
-                }
+                """
             }
-
-            then {
-                assertAll(
-                    { assert process.success },
-                    { assert snapshot(process.out).match() }
-                )
-            }
-
         }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
 
 }
