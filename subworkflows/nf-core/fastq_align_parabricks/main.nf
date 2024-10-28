@@ -29,9 +29,9 @@ workflow FASTQ_ALIGN_PARABRICKS {
     // Collecting FQ2BAM outputs
     ch_bam = ch_bam.mix(PARABRICKS_FQ2BAM.out.bam)
     ch_bai = ch_bai.mix(PARABRICKS_FQ2BAM.out.bai)
-    ch_bqsr_table = ch_bqsr_table(PARABRICKS_FQ2BAM.out.bqsr_table)
-    ch_qc_metrics = ch_qc_metrics(PARABRICKS_FQ2BAM.out.qc_metrics)
-    ch_duplicate_metrics = ch_duplicate_metrics(PARABRICKS_FQ2BAM.out.duplicate_metrics)
+    ch_bqsr_table = ch_bqsr_table.mix(PARABRICKS_FQ2BAM.out.bqsr_table)
+    ch_qc_metrics = ch_qc_metrics.mix(PARABRICKS_FQ2BAM.out.qc_metrics)
+    ch_duplicate_metrics = ch_duplicate_metrics.mix(PARABRICKS_FQ2BAM.out.duplicate_metrics)
 
     // Apply BQSR
     PARABRICKS_APPLYBQSR(ch_bam.map{meta, bam -> [ch_bam, ch_bai, ch_bqsr_table, ch_interval_file] })
