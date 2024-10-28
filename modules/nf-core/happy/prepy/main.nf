@@ -23,7 +23,7 @@ process HAPPY_PREPY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def restrict_region = bed ? "-f ${bed}": ""
+    def restrict_region = bed ? "-R ${bed}": ""
     def VERSION = '0.3.14' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     pre.py \\
