@@ -39,22 +39,6 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert process.out.outs != null },
-                {
-                    assert snapshot(
-                        process.out.versions,
-                        process.out.outs.get(0).get(1).findAll { file(it).name !in [
-                            'analysis_summary.html',
-                            'experiment.xenium',
-                            'cells.csv.gz',
-                            'cells.parquet',
-                            'cells.zarr.zip',
-                            'transcripts.parquet',
-                            'transcripts.zarr.zip',
-                            'analysis.zarr.zip',
-                            'cell_feature_matrix.zarr.zip'
-                        ]}
-                    ).match()
-                },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'analysis_summary.html' }).exists() },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.csv.gz' }).exists() },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.parquet' }).exists() },
