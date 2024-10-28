@@ -10,27 +10,48 @@ keywords:
 components:
   - samtools/view
   - samtools/index
+
 input:
   - ch_bam:
-      description: |
-        The input channel of this subworkflow containing:
-        - meta: Groovy Map containing sample information => doesn't have a field called 'genomic_region'
-        - bam: BAM/CRAM/SAM file
-        - bai: Index for BAM/CRAM/SAM file
-        - regions_file: A file containing the genomic regions used to separate the reads in the
-            input bam. This should be a BED or TSV file containing either a single
-            column of chromosome names, two columns (chromosome name and position),
-            or three columns (chromosome name, start position, and end position).
-        Structure: [ val(meta), path(bam), path(bai), path(regions_file) ]
+      description: The input channel of this subworkflow containing meta, bam, bai and regions_file
+      structure:
+        - meta:
+            type: map
+            description: Groovy Map containing sample information => doesn't have a field called 'genomic_region'
+        - bam:
+            type: file
+            description: BAM/CRAM/SAM file
+        - bai:
+            type: file
+            description: Index for BAM/CRAM/SAM file
+        - regions_file:
+            type: file
+            description: |
+              A file containing the genomic regions used to separate the reads in the
+              input bam. This should be a BED or TSV file containing either a single
+              column of chromosome names, two columns (chromosome name and position),
+              or three columns (chromosome name, start position, and end position).
 output:
   - bam_bai:
-      description: |
-        BAM/CRAM/SAM file, the meta contains a new 'genomic_region' field with the included regions
-        Structure: [ val(meta), path(bam), path(bai) ]
+      description: Channel containing a meta map, bam file and index bai file.
+      structure:
+        - meta:
+            type: map
+            description: |
+              Groovy Map containing sample information
+              It contains a new 'genomic_region' field with the included regions
+        - bam:
+            type: file
+            description: BAM/CRAM/SAM file
+        - bai:
+            type: file
+            description: BAM index file
   - versions:
-      description: |
-        Files containing software versions
-        Structure: [ path(versions.yml) ]
+      description: Channel containing software versions
+      structure:
+        - versions.yml:
+            type: file
+            description: Files containing software versions
 authors:
   - "@TCLamnidis"
 maintainers:
