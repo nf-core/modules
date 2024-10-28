@@ -22,7 +22,7 @@ input:
 output:
   - blacklist:
       - blacklist*${genome}*.tsv.gz:
-          type: str
+          type: string
           description: The blacklist removes recurrent alignment artifacts and transcripts
             which are present in healthy tissue
           pattern: ".tsv.gz"

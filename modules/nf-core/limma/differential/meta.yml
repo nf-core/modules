@@ -98,6 +98,15 @@ output:
           type: file
           description: dump of R SessionInfo
           pattern: "*.log"
+  - normalised_counts:
+      - meta:
+          type: file
+          description: normalised TSV format expression matrix with probes by row and samples by column
+          pattern: "*.normalised_counts.tsv"
+      - "*.normalised_counts.tsv":
+          type: file
+          description: normalised TSV format expression matrix with probes by row and samples by column
+          pattern: "*.normalised_counts.tsv"
   - versions:
       - versions.yml:
           type: file
