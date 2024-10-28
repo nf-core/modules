@@ -1,6 +1,6 @@
-process PURECN_RUN {
+process PURECN_DX {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
