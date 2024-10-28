@@ -1,7 +1,6 @@
-process PBSV {
+process PBSV_DISCOVER {
     tag "$meta.id"
     label 'process_single'
-
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pbsv:2.9.0--h9ee0642_0':
@@ -12,7 +11,7 @@ process PBSV {
     tuple val(meta2), path(fasta)
 
     output:
-    tuple val(meta), path("*.vcf"), emit: vcf
+    tuple val(meta), path("*.svsig.gz"), emit: svsig
     path "versions.yml"           , emit: versions
 
     when:
@@ -22,9 +21,7 @@ process PBSV {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    pbsv discover ${bam} ${prefix}.svsig.gz
-    pbsv call -j ${task.cpus}  ${fasta} ${prefix}.svsig.gz ${prefix}.pbsv.vcf
-
+    pbsv discover ${bam} ${prefix}.pbsv.svsig.gz
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         pbsv: \$(pbsv --version |& sed '1!d ; s/pbsv //')
@@ -35,7 +32,9 @@ process PBSV {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.pbsv.vcf
+    echo "test" > test.txt
+    gzip test.txt
+    mv test.txt.gz ${prefix}.pbsv.svsig.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -1,10 +1,10 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "pbsv"
-description: Pacbio Structural Variant Caller in reads
+name: "pbsv_discover"
+description: "pbsv - PacBio structural variant (SV) signature discovery tool"
 keywords:
-  - structural variants
-  - long-read analysis
-  - sequence analysis
+  - sort
+  - example
+  - genomics
 tools:
   - "pbsv":
       description: "pbsv - PacBio structural variant (SV) calling and analysis tools"
@@ -21,28 +21,28 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - bam:
         type: file
-        description: "A BAM file containing an aligned reads"
-        pattern: "*.bam"
+        description: Sorted BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
   - - meta2:
         type: map
         description: |
-          Groovy Map containing reference information
-          e.g. [ id:'test' ]
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
     - fasta:
         type: file
-        description: Fasta file
+        description: fasta file
+        pattern: "*.fasta"
 output:
-  - vcf:
+  - svsig:
       - meta:
-          type: map
+          type: file
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-          pattern: "*.vcf.gz"
-      - "*.vcf":
+      - "*.svsig.gz":
           type: file
-          description: VCF file
-          pattern: "*.vcf.gz"
+          description: structural variant signatures files
+          pattern: "*.svsig.gz"
   - versions:
       - versions.yml:
           type: file

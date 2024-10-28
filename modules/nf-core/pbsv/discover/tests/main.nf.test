@@ -1,12 +1,13 @@
 nextflow_process {
 
-    name "Test Process PBSV"
+    name "Test Process PBSV_DISCOVER"
     script "../main.nf"
-    process "PBSV"
+    process "PBSV_DISCOVER"
 
     tag "modules"
     tag "modules_nfcore"
     tag "pbsv"
+    tag "pbsv/discover"
 
     test("pbsv_bam") {
         when {
@@ -29,8 +30,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("versions") },
-                { assert process.out.vcf != null },
-                { assert file(process.out.vcf[0][1]).name == "test.pbsv.vcf" }
+                { assert snapshot(process.out.svsig).match("svsig")}
             )
         }
 
@@ -50,8 +50,8 @@ nextflow_process {
                 ]
                 input[1] = [
                     [ id:'test', single_end:false ], // meta map
-		            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true)
-		        ]
+ 		            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true)
+ 		        ]
                 """
             }
         }
@@ -62,7 +62,5 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
-
 }
