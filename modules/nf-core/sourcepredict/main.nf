@@ -24,7 +24,6 @@ process SOURCEPREDICT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     export NUMBA_CACHE_DIR='/tmp'
     export HOME='./'
