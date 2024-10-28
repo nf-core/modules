@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "paraphase"
 description: "HiFi-based caller for highly homologous genes"
@@ -14,73 +13,96 @@ tools:
       tool_dev_url: "https://github.com/PacificBiosciences/paraphase"
       doi: "10.1016/j.ajhg.2023.01.001"
       licence: ["BSD-3-clause-Clear"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:true ]`
-
-  - bam:
-      type: file
-      description: Sorted BAM file
-      pattern: "*.bam"
-
-  - bai:
-      type: file
-      description: Index of BAM file
-      pattern: "*.bai"
-
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'genome' ]
-  - fasta:
-      type: file
-      description: The reference fasta file
-      pattern: "*.fasta"
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing config information
-        e.g. [ id:'config' ]
-  - config:
-      type: file
-      description: Config file
-      pattern: "*.yaml"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:true ]`
+    - bam:
+        type: file
+        description: Sorted BAM file
+        pattern: "*.bam"
+    - bai:
+        type: file
+        description: Index of BAM file
+        pattern: "*.bai"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: The reference fasta file
+        pattern: "*.fasta"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing config information
+          e.g. [ id:'config' ]
+    - config:
+        type: file
+        description: Config file
+        pattern: "*.yaml"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:true ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - bam:
-      type: file
-      description: (re)aligned BAM file
-      pattern: "*.paraphase.bam"
-  - bai:
-      type: file
-      description: Index of (re)aligned BAM file
-      pattern: "*.paraphase.bam.bai"
   - json:
-      type: file
-      description: Summary of haplotype and variant calls
-      pattern: "*.paraphase.json"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:true ]`
+      - "*.paraphase.json":
+          type: file
+          description: Summary of haplotype and variant calls
+          pattern: "*.paraphase.json"
+  - bam:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:true ]`
+      - "*.paraphase.bam":
+          type: file
+          description: (re)aligned BAM file
+          pattern: "*.paraphase.bam"
+  - bai:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:true ]`
+      - "*.paraphase.bam.bai":
+          type: file
+          description: Index of (re)aligned BAM file
+          pattern: "*.paraphase.bam.bai"
   - vcf:
-      type: file
-      description: compressed VCF file(s) per gene
-      pattern: "*.vcf.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:true ]`
+      - ${prefix}_paraphase_vcfs/*.vcf.gz:
+          type: file
+          description: compressed VCF file(s) per gene
+          pattern: "*.vcf.gz"
   - vcf_index:
-      type: file
-      description: compressed VCF file index
-      pattern: "*.vcf.gz.{tbi,csi}"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:true ]`
+      - ${prefix}_paraphase_vcfs/*.vcf.gz.{csi,tbi}:
+          type: file
+          description: compressed VCF file index
+          pattern: "*.vcf.gz.{tbi,csi}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@fellen31"
 maintainers:

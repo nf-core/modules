@@ -23,9 +23,22 @@ process KALIGN_ALIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def write_output = compress ? ">(pigz -cp ${task.cpus} > ${prefix}.aln.gz)" : "${prefix}.aln"
     """
+    error_handler() {
+    exit_code=\$?
+        if [ \$exit_code -eq 132 ]; then
+            echo "KALIGN failed because is incompatible with some CPU types, see https://github.com/TimoLassmann/kalign/issues/46."
+        else
+            trap - ERR
+            return \$exit_code
+        fi
+    }
+
+    trap 'error_handler' ERR
+
     unpigz -cdf $fasta | \\
     kalign \\
         $args \\
+        -n ${task.cpus} \\
         -o ${write_output}
 
     cat <<-END_VERSIONS > versions.yml

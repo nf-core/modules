@@ -12,33 +12,38 @@ tools:
       tool_dev_url: "https://github.com/Gaius-Augustus/learnMSA"
       doi: "10.1093/gigascience/giac104"
       licence: ["MIT"]
+      identifier: biotools:learnMSA
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test']`
-  - fasta:
-      type: file
-      description: Input sequences in FASTA format. May be gz-compressed or uncompressed.
-      pattern: "*.{fa,fasta}{.gz,}"
-  - compress:
-      type: boolean
-      description: Flag representing whether the output MSA should be compressed. Set to true to enable/false to disable compression. Compression is done using pigz, and is multithreaded.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test']`
+    - fasta:
+        type: file
+        description: Input sequences in FASTA format. May be gz-compressed or uncompressed.
+        pattern: "*.{fa,fasta}{.gz,}"
+  - - compress:
+        type: boolean
+        description: Flag representing whether the output MSA should be compressed.
+          Set to true to enable/false to disable compression. Compression is done using
+          pigz, and is multithreaded.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test']`
   - alignment:
-      type: file
-      description: Alignment file, in FASTA format. May be gzipped or uncompressed.
-      pattern: "*.aln{.gz,}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test']`
+      - "*.aln{.gz,}":
+          type: file
+          description: Alignment file, in FASTA format. May be gzipped or uncompressed.
+          pattern: "*.aln{.gz,}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@luisas"
   - "@JoseEspinosa"

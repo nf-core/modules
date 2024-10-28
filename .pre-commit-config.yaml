@@ -6,7 +6,7 @@ repos:
         additional_dependencies:
           - prettier@3.2.5
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.29.2
+    rev: 0.29.4
     hooks:
       - id: check-jsonschema
         # match meta.ymls in one of the subdirectories of modules/nf-core
@@ -23,7 +23,7 @@ repos:
       - id: renovate-config-validator
   # use ruff for python files
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.6.5
+    rev: v0.7.0
     hooks:
       - id: ruff
         files: \.py$
