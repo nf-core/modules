@@ -2,7 +2,7 @@ process PARABRICKS_FQ2BAM {
     tag "$meta.id"
     label 'process_high'
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.0.1-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.3.2-1"
 
     /*
     NOTE: Parabricks requires the files to be non-symlinked
