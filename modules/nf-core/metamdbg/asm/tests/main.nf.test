@@ -7,7 +7,8 @@ nextflow_process {
 
     tag "modules"
     tag "modules_nfcore"
-    tag "metamdbg_asm"
+    tag "metamdbg"
+    tag "metamdbg/asm"
 
     test("metamdbg_asm - ont") {
 
@@ -18,7 +19,7 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/nanopore/fastq/test.fastq.gz', checkIfExists: true),
                 ]
-                input[1] = ["ont"]
+                input[1] = "ont"
                 """
             }
         }
@@ -26,10 +27,88 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.contigs).match() }
-                { assert snapshot(process.out.versions).match("versions") }
+                // output seems to be stochastic
+                { assert file(process.out.contigs[0][1].find { file(it).name == "contigs.fasta.gz" }).exists() },
+                { assert file(process.out.log[0][1].find { file(it).name == "metaMDBG.log" }).exists() },
+                { assert snapshot(process.out.versions).match("ont_versions") }
             )
         }
+    }
+
+    test("metamdbg_asm - hifi") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true),
+                ]
+                input[1] = "hifi"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                // output seems to be stochastic
+                { assert file(process.out.contigs[0][1].find { file(it).name == "contigs.fasta.gz" }).exists() },
+                { assert file(process.out.log[0][1].find { file(it).name == "metaMDBG.log" }).exists() },
+                { assert snapshot(process.out.versions).match("hifi_versions") }
+            )
+        }
+
+    }
+
+    test("metamdbg_asm - wrong format") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true),
+                ]
+                input[1] = "wrong"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("ERROR: input_type must be one of either 'hifi' or 'ont'.") }
+            )
+        }
+
+    }
+
+    test("metamdbg_asm - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true),
+                ]
+                input[1] = "hifi"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.contigs[0][1].find { file(it).name == "contigs.fasta.gz" }).exists() },
+                { assert file(process.out.log[0][1].find { file(it).name == "metaMDBG.log" }).exists() },
+                { assert snapshot(process.out.versions).match("stub_versions") }
+            )
+        }
+
     }
 
 }
