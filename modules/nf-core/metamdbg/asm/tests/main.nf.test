@@ -1,0 +1,35 @@
+// nf-core modules test metamdbg
+nextflow_process {
+
+    name "Test Process METAMDBG_ASM"
+    script "../main.nf"
+    process "METAMDBG_ASM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "metamdbg_asm"
+
+    test("metamdbg_asm - ont") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/nanopore/fastq/test.fastq.gz', checkIfExists: true),
+                ]
+                input[1] = ["ont"]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.contigs).match() }
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
+
+}
