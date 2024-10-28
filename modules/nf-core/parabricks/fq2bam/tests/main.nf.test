@@ -1,0 +1,93 @@
+nextflow_process {
+
+    name "Test Process PARABRICKS_FQ2BAM"
+    script "../main.nf"
+    process "PARABRICKS_FQ2BAM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "parabricks"
+    tag "parabricks/fq2bam"
+
+    test("parabricks_fq2bam") {
+
+
+    test("parabricks_fq2bam_pe_default") {
+
+   input[0] = [
+       [ id:'test', single_end:false],
+       [
+           file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+           file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+       ],
+       []
+   ]
+   input[1] = [
+       [id: 'reference'],
+       file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+   ]
+    BWA_INDEX ( fasta )
+    PARABRICKS_FQ2BAM ( input, fasta, BWA_INDEX.out.index, known_sites=[] )
+
+    }
+
+    test("parabricks_fq2bam_se_default") {
+
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true],
+                    [file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)],
+                    []
+                ]
+
+                input[1] = [
+                    [id: 'reference'],
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("parabricks_fq2bam_se_default_stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true],
+                    [file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)],
+                    []
+                ]
+
+                input[1] = [
+                    [id: 'reference'],
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+
+
+}
