@@ -1,0 +1,85 @@
+name: "purecn_run"
+description: Run PureCN to extract copy number and mutation metrics commonly used as biomarkers
+keywords:
+  - copy number alteration calling
+  - hybrid capture sequencing
+  - targeted sequencing
+  - DNA sequencing
+tools:
+  - "purecn":
+      description: "Copy number calling and SNV classification using targeted short
+        read sequencing"
+      homepage: "https://bioconductor.org/packages/release/bioc/html/PureCN.html"
+      documentation: "https://bioconductor.org/packages/release/bioc/html/PureCN.html"
+      tool_dev_url: "https://github.com/lima1/PureCN"
+      doi: "10.1186/s13029-016-0060-z"
+      license: ["Artistic-2.0"]
+      args_id: "$args"
+      identifier: biotools:purecn
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - rds_file:
+        type: file
+        description: |
+          RDS file containing the results of a PureCN run
+        pattern: "{*.rds}"
+    - callable_regions:
+        type: file
+        description: Coverage file generated from Coverage.R
+        pattern: "*.txt"
+    - exclude_regions:
+        type: file
+        description: Regions to exclude from the analysis
+output:
+  - mutation_burden_csv:
+      - meta:
+          type: file
+          description: |
+            CSV file containing mutation burden data
+          pattern: "*_mutation_burden.csv"
+      - "*_mutation_burden.csv":
+          type: file
+          description: |
+            CSV file containing mutation burden data
+          pattern: "*_mutation_burden.csv"
+  - cin_csv:
+      - meta:
+          type: file
+          description: |
+            CSV file containing chromosomal instability data
+          pattern: "*_cin_csv"
+      - "*_cin_csv":
+          type: file
+          description: |
+            CSV file containing chromosomal instability data
+          pattern: "*_cin_csv"
+  - signatures_csv:
+      - meta:
+          type: file
+          description: |
+            CSV containing mutational signatures data
+          pattern: "*_signatures.csv"
+      - "*_signatures.csv":
+          type: file
+          description: |
+            CSV containing mutational signatures data. Optional.
+          pattern: "*_signatures.csv"
+  - signatures_pdf:
+      - meta:
+          type: file
+          description: |
+            PDF file with mutational signature plots. Optional.
+          pattern: "*_signatures.pdf"
+      - "*_genes.csv":
+          type: file
+          description: |
+           PDF file with mutational signature plots. Optional.
+          pattern: "*_signatures.pdf"
+authors:
+  - "@lbeltrame"
+maintainers:
+  - "@lbeltrame"
