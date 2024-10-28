@@ -24,7 +24,7 @@ workflow FASTQ_ALIGN_PARABRICKS {
     ch_qc_metrics = Channel.empty()
     ch_duplicate_metrics = Channel.empty()
 
-    PARABRICKS_FQ2BAM(ch_reads.map{meta, reads -> [ meta, ch_reads, ch_interval_file ]}, ch_fasta, ch_fasta_fai, ch_known_sites)
+    PARABRICKS_FQ2BAM(ch_reads.map{meta, reads -> [ meta, reads, ch_interval_file ]}, ch_fasta, ch_fasta_fai, ch_known_sites)
 
     // Collecting FQ2BAM outputs
     ch_bam = ch_bam.mix(PARABRICKS_FQ2BAM.out.bam)

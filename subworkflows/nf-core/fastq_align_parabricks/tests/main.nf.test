@@ -20,7 +20,7 @@ nextflow_workflow {
                         [ id:'test', single_end:true ],
                         [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
                         ])
-                input[1] = [] // interval file
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/baits.interval_list', checkIfExists: true)
                 input[2] = Channel.value([
                         [id: 'reference'],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
