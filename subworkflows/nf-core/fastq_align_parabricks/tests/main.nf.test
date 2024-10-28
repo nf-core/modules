@@ -29,10 +29,7 @@ nextflow_workflow {
                         [id: 'reference_index'],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                         ])
-                input[4] = Channel.value([
-                        [id: 'known_sites'],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
-                        ])
+                input[4] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
                 """
             }
         }
