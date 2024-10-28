@@ -6,18 +6,22 @@ process STIMULUS_CHECKTORCHMODEL {
     container "docker.io/mathysgrapotte/stimulus-py:latest"
 
     input:
-    tuple val(meta), path(original_csv), path(experiment_config)
-    tuple val(meta2), path(model), path(ray_tune_config), path(initial_weights)
+    path(original_csv)
+    path(experiment_config)
+    path(model)
+    path(ray_tune_config)
+    path(initial_weights)
 
     output:
-    tuple val(meta2), path("${meta.id}_${meta2.id}_modelcheck.log"), emit: log
-    path "versions.yml"                                            , emit: versions
+    tuple val(meta), path("*_modelcheck.log"), emit: log
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: model.replaceFirst(/\.py/, "")
     """
     stimulus-check-model \
         -d ${original_csv} \
@@ -28,7 +32,7 @@ process STIMULUS_CHECKTORCHMODEL {
         --gpus ${task.accelerator.request} \
         --cpus ${task.cpus} \
         --memory "${task.memory}" \
-        $args > ${meta.id}_${meta2.id}_modelcheck.log
+        $args > ${prefix}_modelcheck.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -39,13 +43,14 @@ process STIMULUS_CHECKTORCHMODEL {
 
     stub:
     def args = task.ext.args ?: ''
+    def STIMULUS_VER = '0.0.9' // container not used in stub, change manually
     """
-    touch ${meta.id}_${meta2.id}_modelcheck.log
+    touch ${meta.id}_modelcheck.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         Python: \$(python --version | cut -d ' ' -f 2)
-        Stimulus-py: \$(pip show stimulus-py | grep Version | cut -d ' ' -f 2)
+        Stimulus-py: ${STIMULUS_VER}
     END_VERSIONS
     """
 }

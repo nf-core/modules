@@ -1,7 +1,6 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "stimulus_checktorchmodel"
-## TODO nf-core: Add a description of the module and list keywords
 description: Sanity check a Pytorch model using raytune
 keywords:
   - machine learning
@@ -9,55 +8,43 @@ keywords:
   - unit test
 tools:
   - "stimulus":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Stochastic Testing and Input Manipulation for Unbiased Learning Systems"
       homepage: "https://github.com/mathysgrapotte/stimulus-py"
       documentation: ""
       tool_dev_url: "https://github.com/mathysgrapotte/stimulus-py"
       doi: ""
-      licence: "MIT"
+      licence: ["MIT"]
       identifier: 
 
 input:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing data information
-            e.g. [ id:'test' ]
-      - original_csv:
-          type: file
-          description: A CSV file with untransformed data
-          pattern: "*.csv"
-          ontologies:
-            - edam: "http://edamontology.org/format_3752"
-      - experiment_config:
-          type: file
-          # nb will be YAML later
-          description: A JSON file describing data transformations
-          pattern: "*.json"
-          ontologies:
-            - edam: "http://edamontology.org/format_3464"
-    - - meta2:
-          type: map
-          description: |
-            Groovy Map containing model information
-            e.g. [ id:'test' ]
-      - model:
-          type: file
-          description: Python source file containing the model
-          pattern: "*.py"
-          ontologies:
-            - edam: "http://edamontology.org/format_3996"
-      - ray_tune_config:
-          type: file
-          description: YAML file containing RayTune tuning parameters
-          pattern: "*.{yaml,yml}"
-          ontologies:
-            - edam: "http://edamontology.org/format_3750"
-      - initial_weights:
-          type: file
-          description: An optional SafeTensors file containing initial weights
-          pattern: "*.safetensors"
+    - original_csv:
+        type: file
+        description: A CSV file with untransformed data
+        pattern: "*.csv"
+        ontologies:
+          - edam: "http://edamontology.org/format_3752"
+    - experiment_config:
+        type: file
+        description: A YAML file describing data transformations
+        pattern: "*.{yml,yaml}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3464"
+    - model:
+        type: file
+        description: Python source file containing the model
+        pattern: "*.py"
+        ontologies:
+          - edam: "http://edamontology.org/format_3996"
+    - ray_tune_config:
+        type: file
+        description: YAML file containing RayTune tuning parameters
+        pattern: "*.{yml,yaml}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750"
+    - initial_weights:
+        type: file
+        description: An optional SafeTensors file containing initial weights
+        pattern: "*.safetensors"
         
 
 output:
