@@ -11,7 +11,7 @@ process SOURCEPREDICT {
     tuple val(meta), path(kraken_parse)
     path sources
     path labels
-    path taxa_sqlite, stageAs:'.etetoolkit/*'
+    path(taxa_sqlite, stageAs: '.etetoolkit/*')
     path taxa_sqlite_traverse_pkl, stageAs:'.etetoolkit/*'
 
     output:
