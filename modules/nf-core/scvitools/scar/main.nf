@@ -4,8 +4,8 @@ process SCVITOOLS_SCAR {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/anndata_scvi-tools:54d2eb2f946e0e43':
-        'community.wave.seqera.io/library/anndata_scvi-tools:fa9451a13918eae0' }"
+        'oras://community.wave.seqera.io/library/scvi-tools_scipy_numpy_python:5ac7a6cc632945ac':
+        'community.wave.seqera.io/library/scvi-tools_scipy_numpy_python:5ac7a6cc632945ac' }"
 
     input:
     tuple val(meta), path(filtered), path(unfiltered)
