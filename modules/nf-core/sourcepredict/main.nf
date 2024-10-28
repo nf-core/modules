@@ -12,7 +12,7 @@ process SOURCEPREDICT {
     path sources
     path labels
     path(taxa_sqlite, stageAs: '.etetoolkit/*')
-    path taxa_sqlite_traverse_pkl, stageAs:'.etetoolkit/*'
+    path(taxa_sqlite_traverse_pkl, stageAs: '.etetoolkit/*')
 
     output:
     tuple val(meta), path("*.sourcepredict.csv"), emit: report
