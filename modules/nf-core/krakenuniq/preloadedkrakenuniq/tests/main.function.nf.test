@@ -1,0 +1,129 @@
+nextflow_function {
+    name "Test Functions in Module KRAKENUNIQ_PRELOADEDKRAKENUNIQ"
+    script "../main.nf"
+    tag "krakenuniq"
+    tag "krakenuniq/preloadedkrakenuniq"
+
+    test("Test Function get_single_prefix with FASTA input") {
+
+        function "get_single_prefix"
+
+        when {
+            function {
+                """
+                input[0] = file('sample.1234.fasta')
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert function.success },
+                { assert function.result == 'sample.1234' },
+            )
+        }
+    }
+
+    test("Test Function get_single_prefix with compressed FASTA input") {
+
+        function "get_single_prefix"
+
+        when {
+            function {
+                """
+                input[0] = file('sample.1234.fasta.gz')
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert function.success },
+                { assert function.result == 'sample.1234' },
+            )
+        }
+    }
+
+    test("Test Function get_single_prefix with FASTQ input") {
+
+        function "get_single_prefix"
+
+        when {
+            function {
+                """
+                input[0] = file('sample.1234.fastq')
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert function.success },
+                { assert function.result == 'sample.1234' },
+            )
+        }
+    }
+
+    test("Test Function get_single_prefix with compressed FASTQ input") {
+
+        function "get_single_prefix"
+
+        when {
+            function {
+                """
+                input[0] = file('sample.1234.fastq.gz')
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert function.success },
+                { assert function.result == 'sample.1234' },
+            )
+        }
+    }
+
+    test("Test Function get_paired_prefix with compressed FASTA input") {
+
+        function "get_paired_prefix"
+
+        when {
+            function {
+                """
+                input[0] = file('sample.1234.1.fasta.gz')
+                input[1] = file('sample.1234.2.fasta.gz')
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert function.success },
+                { assert function.result == 'sample.1234' },
+            )
+        }
+    }
+
+    test("Test Function get_paired_prefix with compressed FASTQ input") {
+
+        function "get_paired_prefix"
+
+        when {
+            function {
+                """
+                input[0] = file('sample_1234_1.fasta.gz')
+                input[1] = file('sample_1234_2.fasta.gz')
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert function.success },
+                { assert function.result == 'sample_1234' },
+            )
+        }
+    }
+
+}
