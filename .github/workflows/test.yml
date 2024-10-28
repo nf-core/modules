@@ -256,8 +256,6 @@ jobs:
             tags: subworkflows/fasta_clean_fcs
           - profile: "conda"
             tags: islandpath
-          - profile: "conda"
-            tags: parabricks
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
@@ -445,6 +443,10 @@ jobs:
             tags: universc
           - profile: "conda"
             tags: subworkflows/vcf_annotate_ensemblvep
+          - profile: "conda"
+            tags: parabricks/fq2bam
+          - profile: "conda"
+            tags: parabricks/applybqsr
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
