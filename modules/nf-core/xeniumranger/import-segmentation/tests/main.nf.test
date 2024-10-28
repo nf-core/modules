@@ -22,6 +22,157 @@ nextflow_process {
             }
     }
 
+    test("xeniumranger import-segmentation nuclei npy") {
+        when {
+            process {
+                """
+                input[0] = [id: "test_xeniumranger_import-segmentation"]
+                input[1] = UNZIP.out.unzipped_archive.map { it[1] }
+                input[2] = 0
+                input[3] = []
+                input[4] = UNZIP.out.unzipped_archive.map { it[1] } + "/segmentations/nuclei.npy"
+                input[5] = []
+                input[6] = []
+                input[7] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.outs.get(0).get(1).findAll { file(it).name !in [
+                        'analysis_summary.html',
+                        'metrics_summary.csv',
+                        'cell_boundaries.csv.gz',
+                        'cell_boundaries.parquet',
+                        'nucleus_boundaries.csv.gz',
+                        'nucleus_boundaries.parquet',
+                        'cells.csv.gz',
+                        'cells.parquet',
+                        'cells.zarr.zip',
+                        'transcripts.parquet',
+                        'transcripts.zarr.zip'
+                        ]}
+                    ).match()
+                },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'analysis_summary.html' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'metrics_summary.csv' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cell_boundaries.csv.gz' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cell_boundaries.parquet' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'nucleus_boundaries.csv.gz' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'nucleus_boundaries.parquet' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.csv.gz' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.parquet' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.zarr.zip' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.parquet' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.zarr.zip' }).exists() },
+            )
+        }
+    }
+
+
+    test("xeniumranger import-segmentation nuclei tif") {
+        when {
+            process {
+                """
+                input[0] = [id: "test_xeniumranger_import-segmentation"]
+                input[1] = UNZIP.out.unzipped_archive.map { it[1] }
+                input[2] = 0
+                input[3] = []
+                input[4] = UNZIP.out.unzipped_archive.map { it[1] } + "/segmentations/nuclei.npy"
+                input[5] = []
+                input[6] = []
+                input[7] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.outs.get(0).get(1).findAll { file(it).name !in [
+                        'analysis_summary.html',
+                        'metrics_summary.csv',
+                        'cell_boundaries.csv.gz',
+                        'cell_boundaries.parquet',
+                        'nucleus_boundaries.csv.gz',
+                        'nucleus_boundaries.parquet',
+                        'cells.csv.gz',
+                        'cells.parquet',
+                        'cells.zarr.zip',
+                        'transcripts.parquet',
+                        'transcripts.zarr.zip'
+                        ]}
+                    ).match()
+                },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'analysis_summary.html' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'metrics_summary.csv' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cell_boundaries.csv.gz' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cell_boundaries.parquet' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'nucleus_boundaries.csv.gz' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'nucleus_boundaries.parquet' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.csv.gz' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.parquet' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.zarr.zip' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.parquet' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.zarr.zip' }).exists() },
+            )
+        }
+    }
+
+    test("xeniumranger import-segmentation segmentation csv") {
+        when {
+            process {
+                """
+                input[0] = [id: "test_xeniumranger_import-segmentation"]
+                input[1] = UNZIP.out.unzipped_archive.map { it[1] }
+                input[2] = 0
+                input[3] = UNZIP.out.unzipped_archive.map { it[1] } + "/segmentations/imagealignment.csv"
+                input[4] = []
+                input[5] = []
+                input[6] = UNZIP.out.unzipped_archive.map { it[1] } + "/segmentations/segmentation.csv"
+                input[7] = UNZIP.out.unzipped_archive.map { it[1] } + "/segmentations/segmentation_polygons.json"
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.outs.get(0).get(1).findAll { file(it).name !in [
+                        'analysis_summary.html',
+                        'metrics_summary.csv',
+                        'cell_boundaries.csv.gz',
+                        'cell_boundaries.parquet',
+                        'nucleus_boundaries.csv.gz',
+                        'nucleus_boundaries.parquet',
+                        'cells.csv.gz',
+                        'cells.parquet',
+                        'cells.zarr.zip',
+                        'transcripts.parquet',
+                        'transcripts.zarr.zip'
+                        ]}
+                    ).match()
+                },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'analysis_summary.html' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'metrics_summary.csv' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cell_boundaries.csv.gz' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cell_boundaries.parquet' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'nucleus_boundaries.csv.gz' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'nucleus_boundaries.parquet' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.csv.gz' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.parquet' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.zarr.zip' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.parquet' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.zarr.zip' }).exists() },
+            )
+        }
+    }
+
     test("xeniumranger import-segmentation") {
         when {
             process {
