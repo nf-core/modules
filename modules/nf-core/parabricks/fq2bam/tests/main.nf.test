@@ -26,9 +26,9 @@ nextflow_process {
                    [ id: 'interval_file'],
                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
                ]
-               input[2] = [[ id: 'fasta'],]
-               input[3] = [[ id: 'index'],]
-               input[4] = [[ id: 'known_sites'],]
+               input[2] = [[ id: 'fasta'],[]]
+               input[3] = [[ id: 'index'],[]]
+               input[4] = [[ id: 'known_sites'],[]]
                 """
             }
         }
@@ -57,9 +57,9 @@ nextflow_process {
                     [ id: 'interval_file'],
                     file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
                 ]
-                input[2] = [[ id: 'fasta'],]
-                input[3] = [[ id: 'index'],]
-                input[4] = [[ id: 'known_sites'],]
+                input[2] = [[ id: 'fasta'],[]]
+                input[3] = [[ id: 'index'],[]]
+                input[4] = [[ id: 'known_sites'],[]]
                     """
             }
         }
@@ -91,9 +91,9 @@ nextflow_process {
                     file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
                 ]
                     """"
-                input[2] = [[ id: 'fasta'],]
-                input[3] = [[ id: 'index'],]
-                input[4] = [[ id: 'known_sites'],]
+                input[2] = [[ id: 'fasta'],[]]
+                input[3] = [[ id: 'index'],[]]
+                input[4] = [[ id: 'known_sites'],[]]
 
             }
         }
