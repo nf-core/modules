@@ -1,0 +1,78 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test testdata/scilpy
+import java.nio.file.Files
+
+nextflow_process {
+
+    name "Test Process TESTDATA_SCILPY"
+    script "../main.nf"
+    process "TESTDATA_SCILPY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "testdata"
+    tag "testdata/scilpy"
+
+    test("load_bids - temp") {
+
+        when {
+            process {
+                """
+                input[0] = "bids_json.zip"
+                input[1] = File.createTempFile("test.test-data.scilpy.bids-json", "").getAbsolutePath()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("load_bids - work") {
+
+        when {
+            process {
+                """
+                input[0] = "bids_json.zip"
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("load_bids - temp - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = "bids_json.zip"
+                input[1] = File.createTempFile("test.test-data.scilpy.bids-json", "").getAbsolutePath()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
