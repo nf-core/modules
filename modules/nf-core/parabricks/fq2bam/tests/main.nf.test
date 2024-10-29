@@ -61,102 +61,109 @@ nextflow_process {
         }
     }
 
-    // test("sarscov2 - fastq.gz - paired-end") {
+    test("sarscov2 - fastq.gz - paired-end") {
 
-    //     when {
-    //         process {
-    //             """
-    //             input[0] = [
-    //                [ id:'reads', single_end:false],
-    //                [
-    //                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true),
-    //                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_2.fastq.gz", checkIfExists: true)
-    //                ],
-    //                []
-    //            ]
-    //            input[1] = [
-    //                [ id: 'interval_file'],
-    //                file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
-    //            ]
-    //            input[2] = [[ id: 'fasta'],[]]
-    //            input[3] = [[ id: 'index'],[]]
-    //            input[4] = [[ id: 'known_sites'],[]]
-    //             """
-    //         }
-    //     }
+        when {
+            process {
+                """
+                input[0] = [
+                   [ id:'reads', single_end:false],
+                   [
+                       file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true),
+                       file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_2.fastq.gz", checkIfExists: true)
+                   ],
+                   []
+               ]
+               input[1] = [
+                   [ id: 'fasta'],
+                   file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+               ]
+               input[2] = BWAINDEX.out.index
+               input[3] = [ ] // interval_file
+               input[4] = [ ] // known_sites
+                """
+            }
+        }
 
-    //     then {
-    //         assertAll(
-    //             { assert process.success },
-    //             { assert snapshot(process.out).match() }
-    //         )
-    //     }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    process.out.bai,
+                    process.out.versions
+                ).match() }
+            )
+        }
 
-    // }
+    }
 
-    // test("sarscov2 - fastq.gz - single-end") {
+    test("sarscov2 - fastq.gz - single-end") {
 
-    //     when {
-    //         process {
-    //             """
-    //             input[0] = [
-    //                 [ id:'reads', single_end:true],
-    //                 [file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true)],
-    //                 []
-    //             ]
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'reads', single_end:true],
+                    [file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true)],
+                    []
+                ]
 
-    //             input[1] = [
-    //                 [ id: 'interval_file'],
-    //                 file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
-    //             ]
-    //             input[2] = [[ id: 'fasta'],[]]
-    //             input[3] = [[ id: 'index'],[]]
-    //             input[4] = [[ id: 'known_sites'],[]]
-    //                 """
-    //         }
-    //     }
+                input[1] = [
+                    [ id: 'reference'],
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+                ]
+               input[2] = BWAINDEX.out.index
+               input[3] = [ ] // interval_file
+               input[4] = [ ] // known_sites
+                    """
+            }
+        }
 
-    //     then {
-    //         assertAll(
-    //             { assert process.success },
-    //             { assert snapshot(process.out).match() }
-    //         )
-    //     }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    process.out.bai,
+                    process.out.versions
+                ).match() }
+            )
+        }
 
-    // }
+    }
 
-    // test("sarscov2 - fastq.gz - single-end - stub") {
+    test("sarscov2 - fastq.gz - single-end - stub") {
 
-    //     options "-stub"
+        options "-stub"
 
-    //     when {
-    //         process {
-    //             """
-    //             input[0] = [
-    //                 [ id:'test', single_end:true],
-    //                 [file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true)],
-    //                 []
-    //             ]
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true],
+                    [file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true)],
+                    []
+                ]
 
-    //             input[1] = [
-    //                 [ id: 'interval_file'],
-    //                 file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
-    //             ]
-    //                 """"
-    //             input[2] = [[ id: 'fasta'],[]]
-    //             input[3] = [[ id: 'index'],[]]
-    //             input[4] = [[ id: 'known_sites'],[]]
+                input[1] = [
+                    [ id: 'reference'],
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+                ]
+                input[2] = BWAINDEX.out.index
+               input[3] = [ ] // interval_file
+               input[4] = [ ] // known_sites
+                """
+            }
+        }
 
-    //         }
-    //     }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
 
-    //     then {
-    //         assertAll(
-    //             { assert process.success },
-    //             { assert snapshot(process.out).match() }
-    //         )
-    //     }
-
-    // }
+    }
 
 }
