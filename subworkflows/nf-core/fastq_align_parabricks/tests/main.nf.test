@@ -10,8 +10,23 @@ nextflow_workflow {
     tag "parabricks"
     tag "parabricks/fq2bam"
     tag "parabricks/applybqsr"
+    tag "bwamem/index"
 
     test("fastq_align_parabricks_single_end") {
+
+        setup {
+            run("BWAMEM_INDEX") {
+                script "../../../bwamem/index/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ])
+                    """
+                }
+            }
+        }
 
         when {
             workflow {
@@ -25,10 +40,7 @@ nextflow_workflow {
                         [id: 'reference'],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                         ])
-                input[3] = Channel.value([
-                        [id: 'reference_index'],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
-                        ])
+                input[3] = BWAMEM_INDEX.out.index
                 input[4] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
                 """
             }
