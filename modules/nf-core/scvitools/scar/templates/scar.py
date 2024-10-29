@@ -11,6 +11,7 @@ threadpool_limits(int("${task.cpus}"))
 
 scvi.settings.seed = 0
 
+
 def format_yaml_like(data: dict, indent: int = 0) -> str:
     """Formats a dictionary to a YAML-like string.
 
@@ -53,12 +54,7 @@ adata.write_h5ad("${prefix}.h5ad")
 
 # Versions
 
-versions = {
-    "${task.process}": {
-        "python": platform.python_version(),
-        "scvi": scvi.__version__
-    }
-}
+versions = {"${task.process}": {"python": platform.python_version(),"scvi": scvi.__version__}}
 
 with open("versions.yml", "w") as f:
     f.write(format_yaml_like(versions))
