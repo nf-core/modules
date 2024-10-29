@@ -13,16 +13,17 @@ process STIMULUS_CHECKTORCHMODEL {
     path(initial_weights)
 
     output:
-    tuple val(meta), path("*_modelcheck.log"), emit: log
-    path "versions.yml"                      , emit: versions
+    path "*_modelcheck.log", emit: log
+    path "versions.yml"    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: model.replaceFirst(/\.py/, "")
+    def args        = task.ext.args ?: ''
+    prefix          = task.ext.prefix ?: model.baseName.replaceFirst(/\.py/, "")
     def weights_arg = initial_weights ? "--initial_weights ${initial_weights}" : ""
+    def gpu_arg     = task.accelerator ? "--gpus ${task.accelerator.request}" : ""
     """
     stimulus-check-model \
         -d ${original_csv} \
@@ -30,7 +31,7 @@ process STIMULUS_CHECKTORCHMODEL {
         -e ${experiment_config} \
         -c ${ray_tune_config} \
         ${weights_arg} \
-        --gpus ${task.accelerator.request} \
+        ${gpu_arg} \
         --cpus ${task.cpus} \
         --memory "${task.memory}" \
         $args > ${prefix}_modelcheck.log
@@ -43,10 +44,11 @@ process STIMULUS_CHECKTORCHMODEL {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+    def args         = task.ext.args ?: ''
+    prefix           = task.ext.prefix ?: model.baseName.replaceFirst(/\.py/, "")
     def STIMULUS_VER = '0.0.9' // container not used in stub, change manually
     """
-    touch ${meta.id}_modelcheck.log
+    touch ${prefix}_modelcheck.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
