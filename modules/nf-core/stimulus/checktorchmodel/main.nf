@@ -22,13 +22,14 @@ process STIMULUS_CHECKTORCHMODEL {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: model.replaceFirst(/\.py/, "")
+    def weights_arg = initial_weights ? "--initial_weights ${initial_weights}" : ""
     """
     stimulus-check-model \
         -d ${original_csv} \
         -m ${model} \
         -e ${experiment_config} \
         -c ${ray_tune_config} \
-        --initial_weights ${initial_weights} \
+        ${weights_arg} \
         --gpus ${task.accelerator.request} \
         --cpus ${task.cpus} \
         --memory "${task.memory}" \
