@@ -1,22 +1,23 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "stimulus_analysisdefault"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+## DONE nf-core: Add a description of the module and list keywords
+description: Model robustness analysis and reporting from the stimulus package.
 keywords:
-  - sort
-  - example
-  - genomics
+  - reporting
+  - machine learning
+  - hyperparameters
+  - optimisation
 tools:
   - "stimulus":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: ""
-      homepage: ""
-      documentation: ""
-      tool_dev_url: ""
+      ## DONE nf-core: Add a description and other details for the software below
+      description: "Python package for processing deep learning models"
+      homepage: "https://github.com/mathysgrapotte/stimulus-py"
+      documentation: "https://github.com/mathysgrapotte/stimulus-py"
+      tool_dev_url: "https://github.com/mathysgrapotte/stimulus-py"
       doi: ""
-      licence: 
-      identifier: 
+      licence: ["MIT License"]
+      identifier: ""
 
 ## TODO nf-core: Add a description of all of the variables used as input
 input:
