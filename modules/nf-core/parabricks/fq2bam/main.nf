@@ -34,11 +34,12 @@ process PARABRICKS_FQ2BAM {
     def interval_file_command = interval_file ? interval_file.collect{"--interval-file $it"}.join(' ') : ""
     def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
     """
+    INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
 
     pbrun \\
         fq2bam \\
         --low-memory \\
-        --ref $fasta \\
+        --ref \$INDEX\\
         $in_fq_command \\
         --read-group-sm $meta.id \\
         --out-bam ${prefix}.bam \\
