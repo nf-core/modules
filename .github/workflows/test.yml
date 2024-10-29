@@ -347,8 +347,6 @@ jobs:
           - profile: conda
             tags: parabricks/deepvariant
           - profile: conda
-            tags: parabricks/fq2bam
-          - profile: conda
             tags: parabricks/genotypegvcf
           - profile: conda
             tags: parabricks/haplotypecaller
@@ -654,6 +652,8 @@ jobs:
             path: subworkflows/nf-core/fastq_align_bamcmp_bwa
           - profile: conda
             path: subworkflows/nf-core/fastq_align_bwa
+          - profile: conda
+            path: parabricks/fq2bam
     env:
       NXF_ANSI_LOG: false
       NFTEST_VER: "0.9.0"
