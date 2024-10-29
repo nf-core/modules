@@ -32,6 +32,7 @@ process PARABRICKS_FQ2BAM {
     def known_sites_command = known_sites ? known_sites.collect{"--knownSites $it"}.join(' ') : ""
     def known_sites_output = known_sites ? "--out-recal-file ${prefix}.table" : ""
     def interval_file_command = interval_file ? interval_file.collect{"--interval-file $it"}.join(' ') : ""
+    def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
     """
 
     INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
@@ -46,7 +47,7 @@ process PARABRICKS_FQ2BAM {
         $known_sites_command \\
         $known_sites_output \\
         $interval_file_command \\
-        --num-gpus $task.accelerator.request \\
+        $num_gpus \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
