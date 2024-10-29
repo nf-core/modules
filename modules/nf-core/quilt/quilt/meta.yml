@@ -31,6 +31,11 @@ input:
         type: file
         description: (Mandatory) BAM/CRAM index files
         pattern: "*.{bai}"
+    - bamlist:
+        type: file
+        description: (Optional) File with list of BAM/CRAM files to impute. One file
+          per line.
+        pattern: "*.{txt}"
     - reference_haplotype_file:
         type: file
         description: (Mandatory) Reference haplotype file in IMPUTE format (file with
