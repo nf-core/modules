@@ -1,5 +1,6 @@
 name: "bcftools_roh"
-description: A program for detecting runs of homo/autozygosity. Only bi-allelic sites are considered.
+description: A program for detecting runs of homo/autozygosity. Only bi-allelic sites
+  are considered.
 keywords:
   - roh
   - biallelic
@@ -7,53 +8,65 @@ keywords:
   - autozygosity
 tools:
   - "roh":
-      description: "A program for detecting runs of homo/autozygosity. Only bi-allelic sites are considered."
+      description: "A program for detecting runs of homo/autozygosity. Only bi-allelic
+        sites are considered."
       homepage: https://www.htslib.org/
       documentation: http://www.htslib.org/doc/bcftools.html
       doi: 10.1093/bioinformatics/btp352
       licence: ["MIT"]
+      identifier: biotools:bcftools
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: VCF file
-      pattern: "*.{vcf,.vcf.gz}"
-  - af_file:
-      type: file
-      description: "Read allele frequencies from a tab-delimited file containing the columns: CHROM\tPOS\tREF,ALT\tAF."
-  - af_file_tbi:
-      type: file
-      description: "tbi index of af_file."
-  - genetic_map:
-      type: file
-      description: "Genetic map in the format required also by IMPUTE2."
-  - regions_file:
-      type: file
-      description: "Regions can be specified either on command line or in a VCF, BED, or tab-delimited file (the default)."
-  - samples_file:
-      type: file
-      description: "File of sample names to include or exclude if prefixed with '^'."
-  - targets_file:
-      type: file
-      description: "Targets can be specified either on command line or in a VCF, BED, or tab-delimited file (the default)."
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: VCF file
+        pattern: "*.{vcf,.vcf.gz}"
+    - tbi:
+        type: file
+        description: TBI file
+        patthern: "*.tbi"
+  - - af_file:
+        type: file
+        description: "Read allele frequencies from a tab-delimited file containing the
+          columns: CHROM\tPOS\tREF,ALT\tAF."
+    - af_file_tbi:
+        type: file
+        description: "tbi index of af_file."
+  - - genetic_map:
+        type: file
+        description: "Genetic map in the format required also by IMPUTE2."
+  - - regions_file:
+        type: file
+        description: "Regions can be specified either on command line or in a VCF, BED,
+          or tab-delimited file (the default)."
+  - - samples_file:
+        type: file
+        description: "File of sample names to include or exclude if prefixed with '^'."
+  - - targets_file:
+        type: file
+        description: "Targets can be specified either on command line or in a VCF, BED,
+          or tab-delimited file (the default)."
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - roh:
-      type: file
-      description: Contains site-specific and/or per-region runs of homo/autozygosity calls.
-      pattern: "*.{roh}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.roh":
+          type: file
+          description: Contains site-specific and/or per-region runs of homo/autozygosity
+            calls.
+          pattern: "*.{roh}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@ramprasadn"
 maintainers:

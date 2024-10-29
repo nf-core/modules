@@ -3,6 +3,8 @@ description: Gene Allele Mutation Microbial Assessment
 keywords:
   - gamma
   - gene-calling
+  - microbial
+  - allele
 tools:
   - "gamma":
       description: "Tool for Gene Allele Mutation Microbial Assessment"
@@ -10,47 +12,68 @@ tools:
       documentation: "https://github.com/rastanton/GAMMA"
       tool_dev_url: "https://github.com/rastanton/GAMMA"
       doi: "10.1093/bioinformatics/btab607"
-      licence: "['Apache License 2.0']"
+      licence: ["Apache License 2.0"]
+      identifier: biotools:gamma
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: FASTA file
-      pattern: "*.{fa,fasta}"
-  - db:
-      type: file
-      description: Database in FASTA format
-      pattern: "*.{fa,fasta}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: FASTA file
+        pattern: "*.{fa,fasta}"
+  - - db:
+        type: file
+        description: Database in FASTA format
+        pattern: "*.{fa,fasta}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - gamma:
-      type: file
-      description: GAMMA file with annotated gene matches
-      pattern: "*.{gamma}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.gamma":
+          type: file
+          description: GAMMA file with annotated gene matches
+          pattern: "*.{gamma}"
   - psl:
-      type: file
-      description: PSL file with all gene matches found
-      pattern: "*.{psl}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.psl":
+          type: file
+          description: PSL file with all gene matches found
+          pattern: "*.{psl}"
   - gff:
-      type: file
-      description: GFF file
-      pattern: "*.{gff}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.gff":
+          type: file
+          description: GFF file
+          pattern: "*.{gff}"
   - fasta:
-      type: file
-      description: multifasta file of the gene matches
-      pattern: "*.{fasta}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fasta":
+          type: file
+          description: multifasta file of the gene matches
+          pattern: "*.{fasta}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@sateeshperi"
   - "@rastanton"

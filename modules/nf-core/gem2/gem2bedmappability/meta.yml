@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "gem2_gem2bedmappability"
 description: Convert a mappability file to bedgraph format
@@ -9,46 +8,57 @@ keywords:
   - gem
 tools:
   - "gem2":
-      description: "GEM2 is a high-performance mapping tool. It also provide a unique tool to evaluate mappability."
-      homepage: "https://paoloribeca.science/gem"
-      # This is not a valid link because all documentation is gone for this tool (it's here because the linter isn't happy otherwise)
-      licence: "['Custom']"
+      description: "GEM2 is a high-performance mapping tool. It also provide a unique
+        tool to evaluate mappability."
+      homepage:
+        "https://paoloribeca.science/gem"
+        # This is not a valid link because all documentation is gone for this tool (it's here because the linter isn't happy otherwise)
+      licence: ["Custom"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - map:
-      type: file
-      description: The mappability file created from the index
-      pattern: "*.mappability"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing index information
-  - index:
-      type: file
-      description: The index of the reference FASTA
-      pattern: "*.gem"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - map:
+        type: file
+        description: The mappability file created from the index
+        pattern: "*.mappability"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing index information
+    - index:
+        type: file
+        description: The index of the reference FASTA
+        pattern: "*.gem"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - bedgraph:
-      type: file
-      description: The resulting bedgraph file
-      pattern: "*.bg"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bg":
+          type: file
+          description: The resulting bedgraph file
+          pattern: "*.bg"
   - sizes:
-      type: file
-      description: The chromosome sizes
-      pattern: "*.sizes"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.sizes":
+          type: file
+          description: The chromosome sizes
+          pattern: "*.sizes"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

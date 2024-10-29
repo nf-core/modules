@@ -9,19 +9,20 @@ nextflow_process {
         tag "mtmalign/align"
         tag "untar"
 
-        test("Test on seatoxin dataset - uncompressed") {
-            setup {
+        setup {
 
-                run("UNTAR") {
-                    script "../../../../../modules/nf-core/untar/main.nf"
-                        process {
-                            """
-                                archive = file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/structures/seatoxin-ref.tar.gz", checkIfExists: true)
-                                input[0] = Channel.of(tuple([id:'test'], archive))
-                            """
-                        }
-                }
+            run("UNTAR") {
+                script "../../../../../modules/nf-core/untar/main.nf"
+                    process {
+                        """
+                            archive = file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/structures/seatoxin-ref.tar.gz", checkIfExists: true)
+                            input[0] = Channel.of(tuple([id:'test'], archive))
+                        """
+                    }
             }
+        }
+
+        test("seatoxin - uncompressed") {
 
             when {
                 params {
@@ -49,19 +50,7 @@ nextflow_process {
             }
         }
 
-        test("Test on seatoxin dataset - compressed") {
-            setup {
-
-                run("UNTAR") {
-                    script "../../../../../modules/nf-core/untar/main.nf"
-                        process {
-                            """
-                                archive = file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/structures/seatoxin-ref.tar.gz", checkIfExists: true)
-                                input[0] = Channel.of(tuple([id:'test'], archive))
-                            """
-                        }
-                }
-            }
+        test("seatoxin - compressed") {
 
             when {
                 params {
@@ -87,4 +76,27 @@ nextflow_process {
                     )
             }
         }
+
+        test("seatoxin - uncompressed - stub") {
+
+            options '-stub'
+            when {
+                params {
+                }
+                process {
+                    """
+                        input[0] = UNTAR.out.untar.map { meta,dir -> [[ id:'test' ], file(dir).listFiles().collect()]}
+                        input[1] = false
+                    """
+                }
+            }
+
+            then {
+                assertAll(
+                    { assert process.success  },
+                    { assert snapshot(process.out).match() }
+                    )
+            }
+        }
+
 }

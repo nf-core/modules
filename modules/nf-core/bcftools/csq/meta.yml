@@ -1,0 +1,95 @@
+name: bcftools_csq
+description: bcftools Haplotype-aware consequence caller
+keywords:
+  - annotation
+  - gff
+  - gff3
+  - protein
+  - functional
+  - vcf
+  - bcf
+  - bcftools
+tools:
+  - reheader:
+      description: |
+        Haplotype-aware consequence caller
+      homepage: http://samtools.github.io/bcftools/bcftools.html
+      documentation: http://samtools.github.io/bcftools/bcftools.html#csq
+      doi: 10.1093/gigascience/giab008
+      licence: ["MIT"]
+      identifier: biotools:bcftools
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: VCF/BCF file
+        pattern: "*.{vcf.gz,vcf,bcf}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing fasta information
+    - fasta:
+        type: file
+        description: Fasta reference
+        pattern: "*.{fasta,fa}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing fai information
+    - fai:
+        type: file
+        description: Fasta index
+        pattern: "*.{fai}"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing gff3 information
+    - gff3:
+        type: file
+        description: GFF3 file
+        pattern: "*.{gff,gff.gz,gff3,gff3.gz}"
+output:
+  - vcf:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.${extension}":
+          type: file
+          description: VCF with annotation, bgzipped per default
+          pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+  - tbi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tbi":
+          type: file
+          description: Alternative VCF file index
+          pattern: "*.tbi"
+  - csi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.csi":
+          type: file
+          description: Default VCF file index
+          pattern: "*.csi"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@lindenb"
+
+maintainers:
+  - "@lindenb"

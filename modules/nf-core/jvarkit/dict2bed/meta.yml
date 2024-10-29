@@ -1,0 +1,51 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "jvarkit_dict2xml"
+description: Extract BED file from hts files containing a dictionary (VCF,BAM, CRAM, DICT, etc...)
+keywords:
+  - vcf
+  - bcf
+  - bed
+  - dict
+  - dictionary
+  - fasta
+  - fai
+tools:
+  - "jvarkit":
+      description: "Java utilities for Bioinformatics."
+      homepage: "https://github.com/lindenb/jvarkit"
+      documentation: "https://jvarkit.readthedocs.io/"
+      tool_dev_url: "https://github.com/lindenb/jvarkit"
+      doi: "10.6084/m9.figshare.1425030"
+      licence: ["MIT License"]
+      args_id: "$args"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing dict file information
+          e.g. [ id:'test_reference' ]
+    - dict_files:
+        type: file
+        description: File(s) containing a dictionary VCF/BCF/BAM/DICT etc...
+        pattern: "*.{vcf,bcf,vcf.gz,bcf.gz,dict,fai,bam,cram,interval_list}"
+output:
+  - bed:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing VCF information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bed":
+          type: file
+          description: BED output file
+          pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@lindenb"
+maintainers:
+  - "@lindenb"

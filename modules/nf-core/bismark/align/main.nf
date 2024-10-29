@@ -4,17 +4,18 @@ process BISMARK_ALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bismark:0.24.0--hdfd78af_0' :
-        'biocontainers/bismark:0.24.0--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/bismark:0.24.2--hdfd78af_0' :
+        'biocontainers/bismark:0.24.2--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(reads)
-    path index
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(index)
 
     output:
     tuple val(meta), path("*bam")       , emit: bam
     tuple val(meta), path("*report.txt"), emit: report
-    tuple val(meta), path("*fq.gz")     , optional:true, emit: unmapped
+    tuple val(meta), path("*fq.gz")     , emit: unmapped, optional: true
     path "versions.yml"                 , emit: versions
 
     when:
@@ -54,13 +55,27 @@ process BISMARK_ALIGN {
             args += " --multicore ${ccore}"
         }
     }
-
     """
+    ln -sf \$(readlink $fasta) $index/$fasta
+
     bismark \\
         $fastq \\
         --genome $index \\
         --bam \\
         $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bismark: \$(echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bam
+    touch ${prefix}.report.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
