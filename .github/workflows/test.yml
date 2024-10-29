@@ -443,6 +443,8 @@ jobs:
             tags: universc
           - profile: "conda"
             tags: subworkflows/vcf_annotate_ensemblvep
+          - profile: "conda"
+            tags: parabricks/applybqsr
     env:
       NXF_ANSI_LOG: false
       SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
