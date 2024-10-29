@@ -87,7 +87,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             --preload-size $ram_chunk_size \\
             --threads $task.cpus
 
-        while IFS= read -r SEQ PREFIX; do
+        while IFS=' ' read -r SEQ PREFIX; do
             krakenuniq \\
                 --db $db \\
                 --threads $task.cpus \\
@@ -97,7 +97,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
                 $classified_option \\
                 $args2 \\
                 "\${SEQ}"
-        done
+        done < options.txt
 
         $compress_reads_command
 
@@ -120,7 +120,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             --preload-size $ram_chunk_size \\
             --threads $task.cpus
 
-        while IFS= read -r SEQ_1 SEQ_2 PREFIX; do
+        while IFS=' ' read -r SEQ_1 SEQ_2 PREFIX; do
             krakenuniq \\
                 --db $db \\
                 --threads $task.cpus \\
@@ -131,7 +131,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
                 --paired \\
                 $args2 \\
                 "\${SEQ_1}" "\${SEQ_2}"
-        done
+        done < options.txt
 
         $compress_reads_command
 
@@ -178,7 +178,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             echo '<3 nf-core' | gzip -n > "\$1"
         }
 
-        while IFS= read -r SEQ PREFIX; do
+        while IFS=' ' read -r SEQ PREFIX; do
             echo "\${SEQ}"
             echo "\${PREFIX}"
 
@@ -196,7 +196,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             create_file "\${PREFIX}.krakenuniq.report.txt"
             create_gzip_file "\${PREFIX}.classified.${sequence_type}.gz"
             create_gzip_file "\${PREFIX}.unclassified.${sequence_type}.gz"
-        done
+        done < options.txt
 
         echo "$compress_reads_command"
 
@@ -227,14 +227,17 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             echo '<3 nf-core' | gzip -n > "\$1"
         }
 
-        while IFS= read -r SEQ_1 SEQ_2 PREFIX; do
+        while IFS=' ' read -r SEQ_1 SEQ_2 PREFIX; do
             echo "\${SEQ_1} \${SEQ_2}"
             echo "\${PREFIX}"
 
             echo krakenuniq \\
                 --db $db \\
                 --threads $task.cpus \\
-                \${OPTIONS} \\
+                $report \\
+                $output_option \\
+                $unclassified_option \\
+                $classified_option \\
                 --paired \\
                 $args2 \\
                 "\${SEQ_1}" "\${SEQ_2}"
@@ -243,7 +246,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             create_file "\${PREFIX}.krakenuniq.report.txt"
             create_gzip_file "\${PREFIX}.merged.classified.${sequence_type}.gz"
             create_gzip_file "\${PREFIX}.merged.unclassified.${sequence_type}.gz"
-        done
+        done < options.txt
 
         echo "$compress_reads_command"
 
