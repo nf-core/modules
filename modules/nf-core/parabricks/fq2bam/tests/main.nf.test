@@ -78,7 +78,7 @@ nextflow_process {
                    [ id: 'fasta'],
                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
                ]
-               input[2] = BWAINDEX.out.index
+               input[2] = BWA_INDEX.out.index
                input[3] = [ ] // interval_file
                input[4] = [ ] // known_sites
                 """
@@ -113,7 +113,7 @@ nextflow_process {
                     [ id: 'reference'],
                     file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
                 ]
-               input[2] = BWAINDEX.out.index
+               input[2] = BWA_INDEX.out.index
                input[3] = [ ] // interval_file
                input[4] = [ ] // known_sites
                     """
@@ -150,7 +150,7 @@ nextflow_process {
                     [ id: 'reference'],
                     file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
                 ]
-                input[2] = BWAINDEX.out.index
+                input[2] = BWA_INDEX.out.index
                input[3] = [ ] // interval_file
                input[4] = [ ] // known_sites
                 """
