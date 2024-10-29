@@ -1,6 +1,7 @@
 process PARABRICKS_APPLYBQSR {
     tag "$meta.id"
     label 'process_high'
+    label 'process_gpu'
 
     container "nvcr.io/nvidia/clara/clara-parabricks:4.3.2-1"
 
@@ -25,6 +26,7 @@ process PARABRICKS_APPLYBQSR {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def interval_command = intervals ? intervals.collect{"--interval-file $it"}.join(' ') : ""
     def copy_index_command = bam_index ? "cp -L $bam_index `readlink -f $bam`.bai" : ""
+    def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
     """
     # parabricks complains when index is not a regular file in the same directory as the bam
     # copy the index to this path.
@@ -38,7 +40,7 @@ process PARABRICKS_APPLYBQSR {
         $interval_command \\
         --out-bam ${prefix}.bam \\
         --num-threads $task.cpus \\
-        --num-gpus $task.accelerator.request \\
+        $num_gpus \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
