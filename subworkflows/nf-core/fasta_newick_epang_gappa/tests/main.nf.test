@@ -32,7 +32,7 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of(
                     [
-                        meta: [ id: "hmmer" ],
+                        meta: [ id: "hmmer", min_bitscore: 4 ],
                         data: [
                             alignmethod:  'hmmer',
                             queryseqfile: file("https://github.com/nf-core/test-datasets/raw/phyloplace/testdata/PF14720_3_sequences.faa", checkIfExists: true),

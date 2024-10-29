@@ -4,9 +4,10 @@ process CELLBENDER_REMOVEBACKGROUND {
     label 'process_gpu'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/cellbender:0.3.0--c4addb97ab2d83fe':
-        'community.wave.seqera.io/library/cellbender:0.3.0--41318a055fc3aacb' }"
+    container "${ task.ext.use_gpu ? 'us.gcr.io/broad-dsde-methods/cellbender:0.3.2' :
+        workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'oras://community.wave.seqera.io/library/cellbender_webcolors:25a137ec5e8341f2':
+        'community.wave.seqera.io/library/cellbender_webcolors:9cfb55914fc5dcea' }"
 
     input:
     tuple val(meta), path(h5ad)
