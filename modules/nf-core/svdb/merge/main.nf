@@ -67,6 +67,7 @@ process SVDB_MERGE {
         $prio \\
         --vcf $input |\\
         bcftools view \\
+            $args2 \\
             --threads ${task.cpus} \\
             --output ${prefix}.${extension}
 
