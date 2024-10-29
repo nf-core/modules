@@ -1,33 +1,30 @@
-import java.nio.file.Path
-import java.nio.file.Paths
-
-boolean is_compressed(Path filename, Set<String> extensions = ['gz', 'gzip'] as Set<String>) {
+def is_compressed(filename, extensions = ['gz', 'gzip'] as Set<String>) {
     return extensions.contains(filename.extension)
 }
 
-boolean is_sequence(Path filename, Set<String> extensions = ['fasta', 'fa', 'fastq', 'fq'] as Set<String>) {
+def is_sequence(filename, extensions = ['fasta', 'fa', 'fastq', 'fq'] as Set<String>) {
     return extensions.contains(filename.extension)
 }
 
-String get_simple_name(Path filename) {
+def get_simple_name(filename) {
     // If the input has a gzip compression, strip the file extension.
     if (is_compressed(filename)) {
-        filename = Paths.get(filename.baseName)
+        filename = java.nio.file.Paths.get(filename.baseName)
     }
     // Strip an expected sequencing file extension.
     if (is_sequence(filename)) {
-        filename = Paths.get(filename.baseName)
+        filename = java.nio.file.Paths.get(filename.baseName)
     } else {
         throw new Exception("Unrecognized sequencing file extension '${filename.extension}'.")
     }
     return filename.name
 }
 
-String get_single_prefix(Path sequence_file) {
+def get_single_prefix(sequence_file) {
     return get_simple_name(sequence_file)
 }
 
-String get_paired_prefix(Path first, Path second) {
+def get_paired_prefix(first, _second) {
     // Paired sequencing files usually have a suffix of `_1` or `.1` in their name,
     // which we remove.
     return get_simple_name(first) - ~/[._]1$/
