@@ -31,7 +31,7 @@ process STIMULUS_SPLITCSV {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         Python: \$(python --version | cut -d ' ' -f 2)
-        Stimulus-py: \$( pip show stimulus-py | grep Version)
+        Stimulus-py: \$( pip show stimulus-py | grep Version | sed 's/Version: //')
     END_VERSIONS
     """
 
