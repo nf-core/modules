@@ -107,7 +107,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
         END_VERSIONS
         """
     } else {
-        command_input = sequences.collect { first, second -> "${first} ${second} ${get_paired_prefix(first, second)}" }
+        command_input = sequences.collate(2).collect { first, second -> "${first} ${second} ${get_paired_prefix(first, second)}" }
         """
         cat <<-END_OPTIONS > options.txt
         ${command_input.join('\n')}
@@ -206,7 +206,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
         END_VERSIONS
         """
     } else {
-        command_input = sequences.collect { first, second -> "${first} ${second} ${get_paired_prefix(first, second)}" }
+        command_input = sequences.collate(2).collect { first, second -> "${first} ${second} ${get_paired_prefix(first, second)}" }
         """
         cat <<-END_OPTIONS > options.txt
         ${command_input.join('\n')}
