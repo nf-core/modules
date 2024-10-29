@@ -35,7 +35,7 @@ nextflow_process {
                 input[1] = BOWTIE2_BUILD.out.index
                 input[2] = [[ id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                 input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[4] = true //sort
                 """
             }
         }
@@ -81,7 +81,7 @@ nextflow_process {
                 input[1] = BOWTIE2_BUILD.out.index
                 input[2] = [[ id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                 input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[4] = true //sort
                 """
             }
         }
@@ -90,7 +90,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.sam[0][1]).readLines()[0..4],
+                    file(process.out.sam[0][1]).readLines()[0..10],
                     process.out.log,
                     process.out.fastq,
                     process.out.versions
@@ -127,7 +127,7 @@ nextflow_process {
                 input[1] = BOWTIE2_BUILD.out.index
                 input[2] = [[ id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                 input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[4] = true //sort
                 """
             }
         }
@@ -136,7 +136,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.sam[0][1]).readLines()[0..4],
+                    file(process.out.sam[0][1]).readLines()[0..10],
                     process.out.log,
                     process.out.fastq,
                     process.out.versions
@@ -172,7 +172,7 @@ nextflow_process {
                 input[1] = BOWTIE2_BUILD.out.index
                 input[2] = [[ id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                 input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[4] = true //sort
                 """
             }
         }
@@ -220,7 +220,7 @@ nextflow_process {
                 input[1] = BOWTIE2_BUILD.out.index
                 input[2] = [[ id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                 input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[4] = true //sort
                 """
             }
         }
@@ -268,7 +268,7 @@ nextflow_process {
                 input[1] = BOWTIE2_BUILD.out.index
                 input[2] = [[ id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                 input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[4] = true //sort
                 """
             }
         }
@@ -314,7 +314,7 @@ nextflow_process {
                 input[1] = BOWTIE2_BUILD.out.index
                 input[2] = [[ id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                 input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[4] = true //sort
                 """
             }
         }
@@ -363,7 +363,7 @@ nextflow_process {
                 input[1] = BOWTIE2_BUILD.out.index
                 input[2] = [[ id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                 input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[4] = true //sort
                 """
             }
         }
@@ -411,7 +411,7 @@ nextflow_process {
                 input[1] = BOWTIE2_BUILD.out.index
                 input[2] = [[ id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                 input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[4] = true //sort
                 """
             }
         }
@@ -456,7 +456,7 @@ nextflow_process {
                 input[1] = BOWTIE2_BUILD.out.index
                 input[2] = [[ id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                 input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[4] = true //sort
                 """
             }
         }
@@ -553,7 +553,7 @@ nextflow_process {
                 input[1] = BOWTIE2_BUILD.out.index
                 input[2] = [[ id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                 input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[4] = true //sort
                 """
             }
         }
@@ -600,7 +600,7 @@ nextflow_process {
                 input[1] = BOWTIE2_BUILD.out.index
                 input[2] = [[ id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                 input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[4] = true //sort
                 """
             }
         }
