@@ -1,0 +1,57 @@
+---
+name: "stimulus_splitcsv"
+description: Split the data.
+keywords:
+  - data analysis
+tools:
+  - "stimulus":
+      ## TODO nf-core: Add a description and other details for the software below
+      description: ""
+      homepage: ""
+      documentation: ""
+      tool_dev_url: ""
+      doi: ""
+      licence: 
+      identifier: 
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+  
+    - split_json:
+        type: file
+        description: json file with the data split configuration 
+        pattern: "*.json"
+  
+  - data_csv:
+        type: file
+        description: csv file with the data for training the models 
+        pattern: "*.csv"
+
+
+output:
+  - split_csv:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - "*.csv":
+        type: file
+        description: csv file splitted with stimulus
+        pattern: "*.csv"
+
+          
+  - versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@yocra3"
+maintainers:
+  - "@yocra3"

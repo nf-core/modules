@@ -1,0 +1,66 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test stimulus/splitcsv
+nextflow_process {
+
+    name "Test Process STIMULUS_SPLITCSV"
+    script "../main.nf"
+    process "STIMULUS_SPLITCSV"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "stimulus"
+    tag "stimulus/splitcsv"
+
+    test("split_csv") {
+
+       when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], 
+                     file('https://raw.githubusercontent.com/nf-core/test-datasets/deepmodeloptim/testdata/dna_experiment/experiment_config.json', checkIfExists: true)
+                ]
+                input[1] = [
+                     file('https://raw.githubusercontent.com/nf-core/test-datasets/deepmodeloptim/testdata/dna_experiment/input_data_with_split.csv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("split_csv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], 
+                     file('https://raw.githubusercontent.com/nf-core/test-datasets/deepmodeloptim/testdata/dna_experiment/experiment_config.json', checkIfExists: true)
+                ]
+                input[1] = [
+                     file('https://raw.githubusercontent.com/nf-core/test-datasets/deepmodeloptim/testdata/dna_experiment/input_data_with_split.csv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
