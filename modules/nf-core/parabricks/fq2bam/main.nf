@@ -37,6 +37,7 @@ process PARABRICKS_FQ2BAM {
     def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
     """
     ln -sf \$(readlink $fasta) $index/$fasta
+    cp $fasta $index/$fasta
 
     pbrun \\
         fq2bam \\
