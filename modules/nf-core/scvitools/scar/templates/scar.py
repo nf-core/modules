@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
-import scvi
-import anndata as ad
-from scvi.external import SCAR
 import platform
 
+import anndata as ad
+import scvi
+from scvi.external import SCAR
 from threadpoolctl import threadpool_limits
+
 threadpool_limits(int("${task.cpus}"))
 
 scvi.settings.seed = 0
