@@ -42,6 +42,7 @@ process PARABRICKS_FQ2BAM {
     pbrun \\
         fq2bam \\
         --ref \$INDEX \\
+        --low-memory \\
         $in_fq_command \\
         --out-bam ${prefix}.bam \\
         $known_sites_command \\
