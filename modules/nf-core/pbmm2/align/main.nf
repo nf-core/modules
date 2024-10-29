@@ -23,7 +23,7 @@ process PBMM2_ALIGN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    pbmm2 align $fasta $bam ${prefix}.pbmm2.bam
+    pbmm2 align $fasta $bam ${prefix}.pbmm2.bam --num-threads ${task.cpus}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
