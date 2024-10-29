@@ -16,7 +16,7 @@ nextflow_workflow {
 
         setup {
             run("BWAMEM_INDEX") {
-                script "../../../bwamem/index/main.nf"
+                script "../../../../modules/nf-core/bwamem/index/main.nf"
                 process {
                     """
                     input[0] = Channel.of([
