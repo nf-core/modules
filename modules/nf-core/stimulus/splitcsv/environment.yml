@@ -4,14 +4,16 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - python=3.12
-  - pytorch
-  - matplotlib
-  - pandas
-  - polars
-  - ray
-  - safetensors
-  - scikit-learn
+  - conda-forge::python=3.12
+  - conda-forge::pytorch=2.4.1
+  - conda-forge::matplotlib=3.9.2
+  - conda-forge::pandas=2.2.3
+  - conda-forge::polars=1.9.0
+  - conda-forge::ray-core=2.37.0
+  - conda-forge::safetensors=0.4.5
+  - conda-forge::scikit-learn=1.5.2
   # NOTE https://github.com/nf-core/modules/issues/5814
   - pip:
-      - stimulus-py 
+      # this will not lint, it fails the check with 1 equal sign
+      # and crashes tools with 2
+      - stimulus-py=0.0.9
