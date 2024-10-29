@@ -10,41 +10,39 @@ tools:
   - "stimulus":
       description: "Stochastic Testing and Input Manipulation for Unbiased Learning Systems"
       homepage: "https://github.com/mathysgrapotte/stimulus-py"
-      documentation: ""
+      documentation: "https://github.com/mathysgrapotte/stimulus-py"
       tool_dev_url: "https://github.com/mathysgrapotte/stimulus-py"
-      doi: ""
       licence: ["MIT"]
-      identifier: 
 
 input:
-    - original_csv:
-        type: file
-        description: A CSV file with untransformed data
-        pattern: "*.csv"
-        ontologies:
-          - edam: "http://edamontology.org/format_3752"
-    - experiment_config:
-        type: file
-        description: A YAML file describing data transformations
-        pattern: "*.{yml,yaml}"
-        ontologies:
-          - edam: "http://edamontology.org/format_3464"
-    - model:
-        type: file
-        description: Python source file containing the model
-        pattern: "*.py"
-        ontologies:
-          - edam: "http://edamontology.org/format_3996"
-    - ray_tune_config:
-        type: file
-        description: YAML file containing RayTune tuning parameters
-        pattern: "*.{yml,yaml}"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750"
-    - initial_weights:
-        type: file
-        description: An optional SafeTensors file containing initial weights
-        pattern: "*.safetensors"
+    - - original_csv:
+          type: file
+          description: A CSV file with untransformed data
+          pattern: "*.csv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3752"
+    - - experiment_config:
+          type: file
+          description: A YAML file describing data transformations
+          pattern: "*.{yml,yaml}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464"
+    - - model:
+          type: file
+          description: Python source file containing the model
+          pattern: "*.py"
+          ontologies:
+            - edam: "http://edamontology.org/format_3996"
+    - - ray_tune_config:
+          type: file
+          description: YAML file containing RayTune tuning parameters
+          pattern: "*.{yml,yaml}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3750"
+    - - initial_weights:
+          type: file
+          description: An optional SafeTensors file containing initial weights
+          pattern: "*.safetensors"
         
 
 output:
