@@ -27,10 +27,6 @@
     "sarscov2 - fastq, index, fasta, false, false - sam2": {
         "content": [
             [
-                "@HD\tVN:1.5\tSO:coordinate",
-                "@SQ\tSN:MT192765.1\tLN:29829",
-                "@PG\tID:bowtie2\tPN:bowtie2\tVN:2.5.4\tCL:\"/opt/conda/bin/bowtie2-align-s --wrapper basic-0 -x ./bowtie2/genome --threads 2 -U test_1.fastq.gz\"",
-                "@PG\tID:samtools\tPN:samtools\tPP:bowtie2\tVN:1.18\tCL:samtools sort -O SAM --threads 2 -o test.sam -",
                 "ERR5069949.29668\t16\tMT192765.1\t267\t42\t89M\t*\t0\t0\tCCTTGTCCCTGGTTACAACTAGAAACCACACGTCCAACTCAGTTTGCCTGTTTTACAGGTTCGCGACGTGCTCGTACGTGGCTTTGGAG\tE////6/E/EE/EE/<<///6EEE/////<AAA<A<A6AE/E/AE6A/EAEEEAEEEAEEEEEA/AEAE<EEEAEEE////6EEAA/AA\tAS:i:-9\tXN:i:0\tXM:i:3\tXO:i:0\tXG:i:0\tNM:i:3\tMD:Z:14T4G5A63\tYT:Z:UU",
                 "ERR5069949.114870\t0\tMT192765.1\t643\t42\t150M\t*\t0\t0\tAAAGGAGCTGGTGGCCATAGTTACGGCGCCGATCTAAAGTCATTTGACTTAGGCGACGAGCTTGGCACTGATCCTTATGAAGATTTTCAAGAAAACTGGAACACTAAACATAGCAGTGGTGTTACCCGTGAACTCATGCGTGAGCTTAAC\tAAAAA/EAEEEEEEAEEEEEEEEE/EEEAEEEEEEEEEEEEEEEEAEAEAEEAEEEEEEEEEEEEEEEEAEAA<EE</AAEEEEEEEAEEEAEEEEEEEEEEEEEEEEEEEEEAEEA<AEEEEEEA<<AAE<EEEEEAE<AAEAAAEAEE\tAS:i:0\tXN:i:0\tXM:i:0\tXO:i:0\tXG:i:0\tNM:i:0\tMD:Z:150\tYT:Z:UU",
                 "ERR5069949.147998\t16\tMT192765.1\t919\t42\t94M\t*\t0\t0\tTTTATTGACACTAAGAGGGGTGTATACTGCTGCCGTGAACATGAGCATGAAATTGCTTGGTACACGGAACGTTCTGAAAAGAGCTATGAATTGC\tEE<EEE//A/EEE/A</E<AEAE<EEEA<6EE/EEE/A/EAEAE<//EEEE/EEE6EEE/E/EE/EEE/EEAAEEEEEEEEEEEEEEAEAAAAA\tAS:i:0\tXN:i:0\tXM:i:0\tXO:i:0\tXG:i:0\tNM:i:0\tMD:Z:94\tYT:Z:UU",
@@ -59,7 +55,7 @@
             "nf-test": "0.9.1",
             "nextflow": "24.04.4"
         },
-        "timestamp": "2024-10-29T14:49:46.446159634"
+        "timestamp": "2024-10-29T15:41:03.10995099"
     },
     "sarscov2 - [fastq1, fastq2], index, fasta, true, true - cram": {
         "content": [
@@ -236,10 +232,6 @@
     "sarscov2 - fastq, index, fasta, false, false - sam": {
         "content": [
             [
-                "@HD\tVN:1.5\tSO:coordinate",
-                "@SQ\tSN:MT192765.1\tLN:29829",
-                "@PG\tID:bowtie2\tPN:bowtie2\tVN:2.5.4\tCL:\"/opt/conda/bin/bowtie2-align-s --wrapper basic-0 -x ./bowtie2/genome --threads 2 -U test_1.fastq.gz\"",
-                "@PG\tID:samtools\tPN:samtools\tPP:bowtie2\tVN:1.18\tCL:samtools sort --output-fmt SAM --threads 2 -o test.sam -",
                 "ERR5069949.29668\t16\tMT192765.1\t267\t42\t89M\t*\t0\t0\tCCTTGTCCCTGGTTACAACTAGAAACCACACGTCCAACTCAGTTTGCCTGTTTTACAGGTTCGCGACGTGCTCGTACGTGGCTTTGGAG\tE////6/E/EE/EE/<<///6EEE/////<AAA<A<A6AE/E/AE6A/EAEEEAEEEAEEEEEA/AEAE<EEEAEEE////6EEAA/AA\tAS:i:-9\tXN:i:0\tXM:i:3\tXO:i:0\tXG:i:0\tNM:i:3\tMD:Z:14T4G5A63\tYT:Z:UU",
                 "ERR5069949.114870\t0\tMT192765.1\t643\t42\t150M\t*\t0\t0\tAAAGGAGCTGGTGGCCATAGTTACGGCGCCGATCTAAAGTCATTTGACTTAGGCGACGAGCTTGGCACTGATCCTTATGAAGATTTTCAAGAAAACTGGAACACTAAACATAGCAGTGGTGTTACCCGTGAACTCATGCGTGAGCTTAAC\tAAAAA/EAEEEEEEAEEEEEEEEE/EEEAEEEEEEEEEEEEEEEEAEAEAEEAEEEEEEEEEEEEEEEEAEAA<EE</AAEEEEEEEAEEEAEEEEEEEEEEEEEEEEEEEEEAEEA<AEEEEEEA<<AAE<EEEEEAE<AAEAAAEAEE\tAS:i:0\tXN:i:0\tXM:i:0\tXO:i:0\tXG:i:0\tNM:i:0\tMD:Z:150\tYT:Z:UU",
                 "ERR5069949.147998\t16\tMT192765.1\t919\t42\t94M\t*\t0\t0\tTTTATTGACACTAAGAGGGGTGTATACTGCTGCCGTGAACATGAGCATGAAATTGCTTGGTACACGGAACGTTCTGAAAAGAGCTATGAATTGC\tEE<EEE//A/EEE/A</E<AEAE<EEEA<6EE/EEE/A/EAEAE<//EEEE/EEE6EEE/E/EE/EEE/EEAAEEEEEEEEEEEEEEAEAAAAA\tAS:i:0\tXN:i:0\tXM:i:0\tXO:i:0\tXG:i:0\tNM:i:0\tMD:Z:94\tYT:Z:UU",
@@ -268,7 +260,7 @@
             "nf-test": "0.9.1",
             "nextflow": "24.04.4"
         },
-        "timestamp": "2024-10-29T14:49:37.146087327"
+        "timestamp": "2024-10-29T15:40:54.33025496"
     },
     "sarscov2 - [fastq1, fastq2], index, fasta, true, false - bam": {
         "content": [

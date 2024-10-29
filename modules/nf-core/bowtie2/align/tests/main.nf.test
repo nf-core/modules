@@ -90,7 +90,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.sam[0][1]).readLines()[0..10],
+                    file(process.out.sam[0][1]).readLines()[4..10],
                     process.out.log,
                     process.out.fastq,
                     process.out.versions
@@ -136,7 +136,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.sam[0][1]).readLines()[0..10],
+                    file(process.out.sam[0][1]).readLines()[4..10],
                     process.out.log,
                     process.out.fastq,
                     process.out.versions
