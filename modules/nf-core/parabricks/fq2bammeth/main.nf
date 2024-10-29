@@ -35,7 +35,6 @@ process PARABRICKS_FQ2BAMMETH {
     def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
     """
     ln -sf \$(readlink $fasta) $index/$fasta
-
     pbrun \\
         fq2bam_meth \\
         --ref $index/$fasta \\
@@ -45,7 +44,6 @@ process PARABRICKS_FQ2BAMMETH {
         $known_sites_output \\
         $num_gpus \\
         $args
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
@@ -59,19 +57,9 @@ process PARABRICKS_FQ2BAMMETH {
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def in_fq_command = meta.single_end ? "--in-se-fq $reads" : "--in-fq $reads"
-    def known_sites_command = known_sites ? known_sites.collect{"--knownSites $it"}.join(' ') : ""
-    def known_sites_output = known_sites ? "--out-recal-file ${prefix}.table" : ""
-    def metrics_output_command = args = "--out-duplicate-metrics duplicate-metrics.txt" ? "touch duplicate-metrics.txt" : ""
-    def known_sites_output_command = known_sites ? "touch ${prefix}.table" : ""
-    def qc_metrics_output_command = args = "--out-qc-metrics-dir qc_metrics " ? "mkdir qc_metrics && touch qc_metrics/alignment.txt" : ""
     """
     touch ${prefix}.bam
     touch ${prefix}.bam.bai
-    $metrics_output_command
-    $known_sites_output_command
-    $qc_metrics_output_command
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
