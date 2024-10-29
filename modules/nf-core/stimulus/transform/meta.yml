@@ -1,0 +1,53 @@
+---
+name: "stimulus_transform"
+description: Use stimulus-py package to transform the data.
+keywords:
+  - deeplearning
+  - noise
+  - preprocessing
+tools:
+  - "stimulus":
+      description: "Python package for processing deep learning models"
+      homepage: "https://github.com/mathysgrapotte/stimulus-py"
+      documentation: "https://github.com/mathysgrapotte/stimulus-py"
+      tool_dev_url: "https://github.com/mathysgrapotte/stimulus-py"
+      doi: ""
+      licence: "MIT"
+
+input:
+  - - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1' ]`
+    
+    - transform_json:
+        type: file
+        description: Json file with the transformation instructions
+        pattern: "*.json"
+
+  - - csv:
+        type: file
+        description: Csv file to be transformed
+        pattern: "*.csv"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - csv:
+      type: file
+      description: CSV file with the transformed data
+      pattern: "*.csv"
+
+authors:
+  - "@luisas"
+maintainers:
+  - "@luisas"
