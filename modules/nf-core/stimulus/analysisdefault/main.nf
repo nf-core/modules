@@ -7,17 +7,17 @@ process STIMULUS_ANALYSISDEFAULT {
     //     'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
     //     'biocontainers/YOUR-TOOL-HERE' }"
 
-    conda "${moduleDir}/environment.yml"
+    // TODO: Enable when stimulus is on conda-forge
+    // conda "${moduleDir}/environment.yml"
     container "docker.io/mathysgrapotte/stimulus-py:latest"
 
     input:
-    path(data)
+    path(model)
+    path(weights)
+    path(metrics)
     tuple val(meta), path(experiment_config)
     path(model_config)
-    path(weights)
-    path(optimizer)
-    path(metrics)
-    path(model)
+    path(data)
 
     output:
     tuple val(meta), path("performance_tune_train/"), path("performance_robustness/"), emit: analysis
@@ -29,7 +29,7 @@ process STIMULUS_ANALYSISDEFAULT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
+    def STIMULUS_VER = '0.0.9'
     """
     stimulus-analysis-default \\
         $args \\
@@ -44,7 +44,7 @@ process STIMULUS_ANALYSISDEFAULT {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         Python: \$(python --version | cut -d ' ' -f 2)
-        Stimulus-py: \$( pip show stimulus-py | grep Version)
+        Stimulus-py: ${STIMULUS_VER}
     END_VERSIONS
     """
 
