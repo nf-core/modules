@@ -4,7 +4,7 @@ process PARABRICKS_FQ2BAM {
 
     container "nvcr.io/nvidia/clara/clara-parabricks:4.3.2-1"
 
-    stageInMode: 'copy'
+    stageInMode 'copy'
 
     input:
     tuple val(meta), path(reads), path(interval_file)
