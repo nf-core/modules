@@ -14,9 +14,9 @@ process PARABRICKS_FQ2BAM {
 
     input:
     tuple val(meta), path(reads),
-    tuple val(meta2), path(interval_file)
-    tuple val(meta3), path(fasta)
-    tuple val(meta4), path(index)
+    tuple val(meta2), path(interval_file),
+    tuple val(meta3), path(fasta),
+    tuple val(meta4), path(index),
     tuple val(meta5), path(known_sites)
 
     output:
