@@ -15,7 +15,7 @@ process STIMULUS_SPLITCSV {
     path(data_csv)
 
     output:
-    tuple val(meta), path("${meta.id}.csv"), emit: split_csv
+    tuple val(meta), path("${prefix}.csv"), emit: split_csv
     path "versions.yml"           , emit: versions
 
     when:
@@ -23,7 +23,7 @@ process STIMULUS_SPLITCSV {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     stimulus-split-csv -c ${data_csv} -j ${split_json} -o ${prefix}.csv
@@ -37,7 +37,7 @@ process STIMULUS_SPLITCSV {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def STIMULUS_VER = '0.0.9' // container not used in stub, change manually
     """
     touch ${prefix}.csv
