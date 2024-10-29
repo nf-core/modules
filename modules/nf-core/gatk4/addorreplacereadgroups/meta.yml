@@ -1,0 +1,95 @@
+name: gatk4_addorreplacereadgroups
+description: Assigns all the reads in a file to a single new read-group
+keywords:
+  - add
+  - replace
+  - read-group
+  - picard
+  - gatk
+tools:
+  - gatk4:
+      description: |
+        Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools
+        with a primary focus on variant discovery and genotyping. Its powerful processing engine
+        and high-performance computing features make it capable of taking on projects of any size.
+      homepage: https://gatk.broadinstitute.org/hc/en-us
+      documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
+      doi: 10.1158/1538-7445.AM2017-3590
+      licence: ["Apache-2.0"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: Input BAM file
+        pattern: "*.{bam}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Reference genome file
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta_index:
+        type: file
+        description: Reference genome index file
+        pattern: "*.{fai,fasta.fai,fa.fai,fasta.gz.fai,fa.gz.fai}"
+output:
+  - bam:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bam":
+          type: file
+          description: Output BAM file
+          pattern: "*.{bam}"
+  - bai:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bai":
+          type: file
+          description: An optional BAM index file
+          pattern: "*.{bai}"
+  - cram:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.cram":
+          type: file
+          description: Output CRAM file
+          pattern: "*.{cram}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@sateeshperi"
+  - "@mjcipriano"
+  - "@hseabolt"
+  - "@cmatKhan"
+  - "@muffato"
+maintainers:
+  - "@sateeshperi"
+  - "@mjcipriano"
+  - "@hseabolt"
+  - "@cmatKhan"
+  - "@muffato"

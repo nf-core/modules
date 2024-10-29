@@ -1,0 +1,60 @@
+// test with: nf-core modules test molkartgarage/clahe
+nextflow_process {
+
+    name "Test Process MOLKARTGARAGE_CLAHE"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "MOLKARTGARAGE_CLAHE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "molkartgarage"
+    tag "molkartgarage/clahe"
+
+    test("clahe - tiff") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'imaging/tiff/mindagap.mouse_heart.wga.tiff', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.img_clahe }, // uuid in metadata changes so md5sums are not the same
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+    test("clahe - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'imaging/tiff/mindagap.mouse_heart.wga.tiff', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success }
+            )
+        }
+
+    }
+
+}

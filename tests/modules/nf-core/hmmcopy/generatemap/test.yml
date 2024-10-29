@@ -1,9 +1,0 @@
-- name: hmmcopy generatemap test_hmmcopy_generatemap
-  command: nextflow run ./tests/modules/nf-core/hmmcopy/generatemap -entry test_hmmcopy_generatemap -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/hmmcopy/generatemap/nextflow.config
-  tags:
-    - hmmcopy/generatemap
-    - hmmcopy
-  files:
-    - path: output/hmmcopy/genome.fasta.map.bw
-      md5sum: 7ad68224a1e40287978284c387e8eb70
-    - path: output/hmmcopy/versions.yml

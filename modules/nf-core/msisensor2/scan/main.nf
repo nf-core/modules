@@ -2,7 +2,7 @@ process MSISENSOR2_SCAN {
     tag "$fasta"
     label 'process_medium'
 
-    conda "bioconda::msisensor2=0.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/msisensor2:0.1--hd03093a_0':
         'biocontainers/msisensor2:0.1--hd03093a_0' }"
@@ -27,6 +27,17 @@ process MSISENSOR2_SCAN {
         $args \\
         $inputs \\
         -o $output_path
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        msisensor2: \$(echo \$(msisensor2 2> >(grep Version) | sed 's/Version: v//g'))
+    END_VERSIONS
+    """
+
+    stub:
+    output_path = output ?: "output.scan"
+    """
+    touch $output_path
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

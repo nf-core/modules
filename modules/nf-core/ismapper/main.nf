@@ -2,7 +2,7 @@ process ISMAPPER {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::ismapper=2.0.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ismapper:2.0.2--pyhdfd78af_1' :
         'biocontainers/ismapper:2.0.2--pyhdfd78af_1' }"
@@ -28,6 +28,19 @@ process ISMAPPER {
         --queries $query \\
         --reference $reference \\
         --reads $reads
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ismapper: \$( echo \$( ismap --version 2>&1 ) | sed 's/^.*ismap //' )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir -p results/${prefix}
+
+    touch results/${prefix}/${prefix}_left_final.fastq
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

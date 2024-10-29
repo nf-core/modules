@@ -2,7 +2,7 @@ process BISCUIT_PILEUP {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::biscuit=1.1.0.20220707 bioconda::samtools=1.16.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-d94f582b04a3edcede1215189c0d881506640fd9:6519548ea4f3d6a526c78ad0350c58f867f28574-0':
         'biocontainers/mulled-v2-d94f582b04a3edcede1215189c0d881506640fd9:6519548ea4f3d6a526c78ad0350c58f867f28574-0' }"
@@ -36,6 +36,17 @@ process BISCUIT_PILEUP {
         \$INDEX \\
         $input \\
         | bgzip -@ $bgzip_cpus $args2 > ${prefix}.vcf.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        biscuit: \$( biscuit version |& sed '1!d; s/^.*BISCUIT Version: //' )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo | gzip > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

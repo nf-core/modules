@@ -2,7 +2,7 @@ process CNVKIT_TARGET {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::cnvkit=0.9.10 bioconda::samtools=1.17"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cnvkit:0.9.10--pyhdfd78af_0':
         'biocontainers/cnvkit:0.9.10--pyhdfd78af_0' }"
@@ -29,6 +29,17 @@ process CNVKIT_TARGET {
         $annotate_cmd \\
         $args \\
         --output ${prefix}.bed
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        cnvkit: \$(cnvkit.py version | sed -e "s/cnvkit v//g")
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bed
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

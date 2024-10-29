@@ -3,7 +3,7 @@ process MMSEQS_SEARCH {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::mmseqs2=14.7e284"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mmseqs2:14.7e284--pl5321h6a68c12_2':
         'biocontainers/mmseqs2:14.7e284--pl5321h6a68c12_2' }"
@@ -30,8 +30,8 @@ process MMSEQS_SEARCH {
     mkdir -p ${prefix}
 
     # Extract files with specified args based suffix | remove suffix | isolate longest common substring of files
-    DB_QUERY_PATH_NAME=\$(find -L "$db_query/" -maxdepth 1 -name "$args2" | sed 's/\\.\\[^.\\]*\$//' | sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
-    DB_TARGET_PATH_NAME=\$(find -L "$db_target/" -maxdepth 1 -name "$args3" | sed 's/\\.\\[^.\\]*\$//' | sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
+    DB_QUERY_PATH_NAME=\$(find -L "$db_query/" -maxdepth 1 -name "$args2" | sed 's/\\.[^.]*\$//' | sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
+    DB_TARGET_PATH_NAME=\$(find -L "$db_target/" -maxdepth 1 -name "$args3" | sed 's/\\.[^.]*\$//' | sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
 
     mmseqs \\
         search \\

@@ -1,0 +1,87 @@
+name: "decoupler"
+
+description: |
+  decoupler is a package containing different statistical methods
+  to extract biological activities from omics data within a unified framework.
+  It allows to flexibly test any enrichment method with any prior knowledge
+  resource and incorporates methods that take into account the sign and weight.
+  It can be used with any omic, as long as its features can be linked to a
+  biological process based on prior knowledge. For example, in transcriptomics
+  gene sets regulated by a transcription factor, or in phospho-proteomics
+  phosphosites that are targeted by a kinase.
+
+keywords:
+  - enrichment
+  - omics
+  - biological activity
+  - functional analysis
+  - prior knowledge
+
+tools:
+  - "decoupler":
+      description: "Ensemble of methods to infer biological activities from omics data"
+      homepage: "https://github.com/saezlab/decoupler-py"
+      documentation: "https://decoupler-py.readthedocs.io/en/latest/api.html"
+      tool_dev_url: "https://decoupler-py.readthedocs.io"
+      doi: "10.1093/bioadv/vbac016"
+      licence: ["GPL v3"]
+      identifier: biotools:decoupler
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:‘test’, single_end ]
+    - mat:
+        type: file
+        description: |
+          Path to the matrix file (e.g. gene/protein expression, etc.).
+          Should be in in tab-separated format (`*.tab`)
+        pattern: "*.tsv"
+  - - net:
+        type: file
+        description: |
+          The prior knowledge network linking the features of the
+          expression matrix to a process/component (e.g. gene set,
+          transcription factor, kinase, etc.)
+        pattern: "*.tsv"
+output:
+  - dc_estimate:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:‘test’, single_end ]
+      - "*estimate__decoupler.tsv":
+          type: file
+          description: |
+            The file containing the estimation results of the enrichment(s)
+          pattern: "*estimate__decoupler.tsv"
+  - dc_pvals:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:‘test’, single_end ]
+      - "*pvals__decoupler.tsv":
+          type: file
+          description: |
+            The file containing the p-value associated to the estimation
+            results of the enrichment(s)
+          pattern: "*pvals__decoupler.tsv"
+      - s:
+          type: file
+          description: |
+            The file containing the p-value associated to the estimation
+            results of the enrichment(s)
+          pattern: "*pvals__decoupler.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@gabora"
+  - "@vicpaton"
+  - "@Nic-Nic"

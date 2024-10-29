@@ -2,7 +2,7 @@ process GAPPA_EXAMINEGRAFT {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::gappa=0.8.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gappa:0.8.0--h9a82719_0':
         'biocontainers/gappa:0.8.0--h9a82719_0' }"
@@ -28,6 +28,17 @@ process GAPPA_EXAMINEGRAFT {
         --threads $task.cpus \\
         --file-prefix ${prefix}. \\
         --jplace-path $jplace
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gappa: \$(echo \$(gappa --version 2>&1 | sed 's/v//' ))
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.newick
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

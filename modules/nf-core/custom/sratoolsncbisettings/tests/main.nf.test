@@ -1,0 +1,42 @@
+nextflow_process {
+
+    name "Test Process CUSTOM_SRATOOLSNCBISETTINGS"
+    script "../main.nf"
+    process "CUSTOM_SRATOOLSNCBISETTINGS"
+    config "modules/nf-core/custom/sratoolsncbisettings/tests/nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "custom"
+    tag "custom/sratoolsncbisettings"
+
+    test("Should run without failures") {
+
+        when {
+            params {
+                settings_path = '/tmp/.ncbi'
+                settings_file  = "${params.settings_path}/user-settings.mkfg"
+            }
+
+            process {
+                """
+                input[0] = ["SRX6725035"]
+                file(params.settings_path).mkdirs()
+                def settings = file(params.modules_testdata_base_path + 'generic/config/ncbi_user_settings.mkfg', checkIfExists: true)
+                settings.copyTo(params.settings_file)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(
+                process.out.versions
+            ).match()
+
+            with(process.out.ncbi_settings) {
+                assert path(get(0)).readLines().any { it.contains('/LIBS/GUID') }
+                assert path(get(0)).readLines().any { it.contains('/libs/cloud/report_instance_identity') }
+            }
+        }
+    }
+}

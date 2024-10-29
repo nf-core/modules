@@ -1,0 +1,87 @@
+nextflow_process {
+
+    name "Test Process SEQFU_DEREP"
+    script "../main.nf"
+    process "SEQFU_DEREP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "seqfu"
+    tag "seqfu/derep"
+
+    test("derep - 3 fastas") {
+ 
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test' ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                            ]
+                        ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert process.out.fasta.size() == 1 }
+            )
+        }
+
+    }
+    test("derep - conflict") {
+ 
+        when {
+            process {
+                """
+                input[0] = Channel.of(">T1;size=300",
+                    "TTGATCACATA",
+                    ">T2;size=10",
+                    "TTGATCTCATA",
+                    "T3;size=4",
+                    "TTGATGACATA")
+                .collectFile(name: "test_derep.fasta.gz", newLine:true, sort:false)
+                .map { file -> [ [ id:'test', single_end:true ], file ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("derep - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

@@ -1,0 +1,129 @@
+nextflow_workflow {
+
+    name "Test Workflow BAM_VARIANT_DEMIX_BOOT_FREYJA"
+    script "../main.nf"
+    workflow "BAM_VARIANT_DEMIX_BOOT_FREYJA"
+    config "./nextflow.config"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "bam_variant_demix_boot_freyja"
+    tag "subworkflows/bam_variant_demix_boot_freyja"
+    tag "freyja"
+    tag "freyja/variants"
+    tag "freyja/update"
+    tag "freyja/demix"
+    tag "freyja/boot"
+
+    test("sarscov2 - bam - val - nodb"){
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                      file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                ])
+                input[1] = Channel.of([file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                input[2] = false
+                input[3] = 3
+                input[4] = 'freyja_db'
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out.variants,
+                                  workflow.out.versions).match() },
+                // All depend on a database that gets updated regularly
+                { assert path(workflow.out.demix.get(0).get(1)).getText().contains("summarized") },
+                { assert path(workflow.out.summarized.get(0).get(1)).getText().contains("0.025,") },
+                { assert path(workflow.out.lineages.get(0).get(1)).getText().contains("0.025,") },
+                { assert path(workflow.out.barcodes.get(0)).exists() },
+                { assert path(workflow.out.lineages_meta.get(0)).exists() },
+            )
+        }
+    }
+
+    test("sarscov2 - bam - val - db"){
+
+        setup {
+            run("FREYJA_UPDATE") {
+                script "../../../../modules/nf-core/freyja/update/main.nf"
+                process {
+                    """
+                    input[0] = "test_db"
+                    """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                      file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                ])
+                input[1] = Channel.of([file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                input[2] = false
+                input[3] = 3
+                input[4] = 'test_db'
+                input[5] = FREYJA_UPDATE.out.barcodes
+                input[6] = FREYJA_UPDATE.out.lineages_meta
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out.variants,
+                                  workflow.out.versions).match() },
+                // All depend on a database that gets updated regularly
+                { assert path(workflow.out.demix.get(0).get(1)).getText().contains("summarized") },
+                { assert path(workflow.out.summarized.get(0).get(1)).getText().contains("0.025,") },
+                { assert path(workflow.out.lineages.get(0).get(1)).getText().contains("0.025,") },
+                { assert path(workflow.out.barcodes.get(0)).exists() },
+                { assert path(workflow.out.lineages_meta.get(0)).exists() },
+            )
+        }
+    }
+
+    test("sarscov2 - bam - skip - val - nodb"){
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                      file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                ])
+                input[1] = Channel.of([file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                input[2] = true
+                input[3] = 0
+                input[4] = 'test_db'
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out.variants,
+                                  workflow.out.versions).match() },
+                // All depend on a database that gets updated regularly
+                { assert path(workflow.out.demix.get(0).get(1)).getText().contains("summarized") },
+                { assert path(workflow.out.barcodes.get(0)).exists() },
+                { assert path(workflow.out.lineages_meta.get(0)).exists() },
+            )
+        }
+    }
+
+}

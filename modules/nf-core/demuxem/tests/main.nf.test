@@ -1,0 +1,74 @@
+// nf-core modules test demuxem
+nextflow_process {
+
+    name "Test Process DEMUXEM"
+    script "../main.nf"
+    process "DEMUXEM"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "demuxem"
+
+    test("Standard_Multiome - h5 - csv") {
+
+        when {
+            process {
+                """
+                
+                input[0] = [
+                    [ id:'sample1'],
+                    file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/438-21-raw_feature_bc_matrix.h5",checkIfExists: true),
+                    file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/438_21_raw_HTO.csv",checkIfExists: true)
+                    ]
+                input[1] = "results"
+                input[2] = ""
+                input[3] = ""
+                input[4] = ""
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.zarr.get(0).get(1)).exists() },
+                { assert path(process.out.out_zarr.get(0).get(1)).exists() },
+                
+            )
+        }
+
+    }
+
+    test("Standard_Multiome - h5 - csv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                
+                input[0] = [
+                    [ id:'sample1'],
+                    file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/438-21-raw_feature_bc_matrix.h5",checkIfExists: true),
+                    file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/438_21_raw_HTO.csv",checkIfExists: true)
+                    ]
+                input[1] = "results"
+                input[2] = ""
+                input[3] = ""
+                input[4] = "True"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.zarr.get(0).get(1)).exists() },
+                { assert path(process.out.out_zarr.get(0).get(1)).exists() },
+            )
+        }
+
+    }
+
+}

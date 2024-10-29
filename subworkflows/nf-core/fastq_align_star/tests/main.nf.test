@@ -1,0 +1,250 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTQ_ALIGN_STAR"
+    script "../main.nf"
+    workflow "FASTQ_ALIGN_STAR"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fastq_align_star"
+    tag "star/align"
+    tag "star/genomegenerate"
+    tag "rsem/preparereference"
+    tag "subworkflows/bam_sort_stats_samtools"
+
+    setup {
+        run("STAR_GENOMEGENERATE") {
+            script "../../../../modules/nf-core/star/genomegenerate/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test_fasta' ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                ])
+                input[1] = Channel.of([
+                    [ id:'test_gtf' ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
+                ])
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens - fastq - single_end") {
+        config "./nextflow.config"
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true) ]
+                ])
+                input[1] = STAR_GENOMEGENERATE.out.index
+                input[2] = Channel.of([
+                    [ id:'test_gtf' ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
+                ])
+                input[3] = true       // star_ignore_sjdbgtf
+                input[4] = 'illumina' // seq_platform
+                input[5] = false      // seq_center
+                input[6] = Channel.of([
+                    [ id:'test_fasta' ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                ])
+                input[7] = Channel.of([[:], []])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    bam(workflow.out.bam[0][1]).getReadsMD5(),
+                    bam(workflow.out.orig_bam[0][1]).getReadsMD5(),
+                    workflow.out.fastq,
+                    workflow.out.tab,
+                    workflow.out.stats,
+                    workflow.out.flagstat,
+                    workflow.out.idxstats,
+                    workflow.out.versions
+                ).match() },
+                { assert path(workflow.out.bai.get(0).get(1)).exists() },
+                { assert path(workflow.out.log_out.get(0).get(1)).exists() },
+                { assert path(workflow.out.log_final.get(0).get(1)).exists() },
+                { assert path(workflow.out.log_progress.get(0).get(1)).exists() }
+            )
+        }
+    }
+
+    test("homo_sapiens - fastq - paired_end") {
+        config "./nextflow.config"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = STAR_GENOMEGENERATE.out.index
+                input[2] = Channel.of([
+                    [ id:'test_gtf' ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
+                ])
+                input[3] = true       // star_ignore_sjdbgtf
+                input[4] = 'illumina' // seq_platform
+                input[5] = false      // seq_center
+                input[6] = Channel.of([
+                    [ id:'test_fasta' ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                ])
+                input[7] = Channel.of([[:], []])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    bam(workflow.out.bam[0][1]).getReadsMD5(),
+                    bam(workflow.out.orig_bam[0][1]).getReadsMD5(),
+                    workflow.out.fastq,
+                    workflow.out.tab,
+                    workflow.out.stats,
+                    workflow.out.flagstat,
+                    workflow.out.idxstats,
+                    workflow.out.versions
+                ).match() },
+                { assert path(workflow.out.bai.get(0).get(1)).exists() },
+                { assert path(workflow.out.log_out.get(0).get(1)).exists() },
+                { assert path(workflow.out.log_final.get(0).get(1)).exists() },
+                { assert path(workflow.out.log_progress.get(0).get(1)).exists() }
+            )
+        }
+    }
+
+    test("homo_sapiens - fastq - paired_end - with_transcriptome") {
+        config "./with_transcripts.config"
+
+        setup {
+            run("RSEM_PREPAREREFERENCE") {
+                script "../../../../modules/nf-core/rsem/preparereference/main.nf"
+                process {
+                    """
+                    input[0] = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkifexists: true))
+                    input[1] = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkifexists: true))
+                    """
+                }
+            }
+        }
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = STAR_GENOMEGENERATE.out.index
+                input[2] = Channel.of([
+                    [ id:'test_gtf' ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
+                ])
+                input[3] = true       // star_ignore_sjdbgtf
+                input[4] = 'illumina' // seq_platform
+                input[5] = false      // seq_center
+                input[6] = Channel.of([
+                    [ id:'test_fasta' ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                ])
+                input[7] = RSEM_PREPAREREFERENCE.out.transcript_fasta.map{[[:], it]}
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    bam(workflow.out.bam[0][1]).getReadsMD5(),
+                    bam(workflow.out.orig_bam[0][1]).getReadsMD5(),
+                    bam(workflow.out.bam_transcript[0][1]).getReadsMD5(),
+                    bam(workflow.out.orig_bam_transcript[0][1]).getReadsMD5(),
+                    workflow.out.fastq,
+                    workflow.out.tab,
+                    workflow.out.stats,
+                    workflow.out.flagstat,
+                    workflow.out.idxstats,
+                    workflow.out.stats_transcript,
+                    workflow.out.flagstat_transcript,
+                    workflow.out.idxstats_transcript,
+                    workflow.out.versions
+                ).match() },
+                { assert path(workflow.out.bai.get(0).get(1)).exists() },
+                { assert path(workflow.out.bai_transcript.get(0).get(1)).exists() },
+                { assert path(workflow.out.log_out.get(0).get(1)).exists() },
+                { assert path(workflow.out.log_final.get(0).get(1)).exists() },
+                { assert path(workflow.out.log_progress.get(0).get(1)).exists() }
+            )
+        }
+    }
+
+    test("homo_sapiens - fastq - paired_end - transcripts - no_transcriptome") {
+        config "./with_transcripts.config"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = STAR_GENOMEGENERATE.out.index
+                input[2] = Channel.of([
+                    [ id:'test_gtf' ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
+                ])
+                input[3] = true       // star_ignore_sjdbgtf
+                input[4] = 'illumina' // seq_platform
+                input[5] = false      // seq_center
+                input[6] = Channel.of([
+                    [ id:'test_fasta' ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                ])
+                input[7] = Channel.of([[:], []])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    bam(workflow.out.bam[0][1]).getReadsMD5(),
+                    bam(workflow.out.orig_bam[0][1]).getReadsMD5(),
+                    workflow.out.fastq,
+                    workflow.out.tab,
+                    workflow.out.stats,
+                    workflow.out.flagstat,
+                    workflow.out.idxstats,
+                    workflow.out.stats_transcript,
+                    workflow.out.versions
+                ).match() },
+                { assert path(workflow.out.bai.get(0).get(1)).exists() },
+                { assert path(workflow.out.log_out.get(0).get(1)).exists() },
+                { assert path(workflow.out.log_final.get(0).get(1)).exists() },
+                { assert path(workflow.out.log_progress.get(0).get(1)).exists() }
+            )
+        }
+    }
+}

@@ -6,7 +6,7 @@ params.fastq_files = "out_L001_I1_001.fastq.gz out_L001_I2_001.fastq.gz out_L001
 params.read_structures = "8B 8B 150T 150T"
 
 include { FQTK  } from '../../../../modules/nf-core/fqtk/main.nf'
-include { UNTAR   } from '../../../modules/nf-core/untar/main.nf'
+include { UNTAR   } from '../../../../modules/nf-core/untar/main.nf'
 
 workflow test_fqtk { 
     // Split params into lists and put into channels 

@@ -2,10 +2,10 @@ process BEDTOOLS_SPLIT {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::bedtools=2.30.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bedtools:2.30.0--h468198e_3':
-        'biocontainers/bedtools:2.30.0--h7d7f7ad_2' }"
+        'https://depot.galaxyproject.org/singularity/bedtools:2.31.1--hf5e1c6e_0' :
+        'biocontainers/bedtools:2.31.1--hf5e1c6e_0' }"
 
     input:
     tuple val(meta), path(bed), val(count)
@@ -38,9 +38,9 @@ process BEDTOOLS_SPLIT {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    create_beds = (1..count).collect {
-        number = "0".multiply(4 - it.toString().size()) + "${it}"
-        "    touch ${prefix}.${number}.bed"
+    def create_beds = (1..count).collect { number ->
+        def numberString = "0".multiply(4 - number.toString().size()) + "${number}"
+        "    touch ${prefix}.${numberString}.bed"
     }.join("\n")
 
     """

@@ -2,7 +2,7 @@ process ROARY {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::roary=3.13.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/roary:3.13.0--pl526h516909a_0' :
         'biocontainers/roary:3.13.0--pl526h516909a_0' }"

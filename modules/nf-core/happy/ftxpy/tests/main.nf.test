@@ -1,0 +1,113 @@
+nextflow_process {
+
+    name "Test Process HAPPY_FTXPY"
+    script "../main.nf"
+    process "HAPPY_FTXPY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "happy"
+    tag "happy/ftxpy"
+
+    test("homo_sapiens - illumina - mutect") {
+
+        config "./feature.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz', checkIfExists: true),
+                        [],
+                        [],
+                        []
+                        ]
+                input[1] = [
+                        [ id:'test2' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                        ]
+                input[2] = [
+                        [ id:'test3' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                        ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+        test("homo_sapiens - illumina - mutect - bam") {
+        when {
+            process {
+                """
+                input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz', checkIfExists: true),
+                        [],
+                        [],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true),
+                        ]
+                input[1] = [
+                        [ id:'test2' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                        ]
+                input[2] = [
+                        [ id:'test3' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                        ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - illumina - mutect - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz', checkIfExists: true),
+                        [],
+                        [],
+                        []
+                        ]
+                input[1] = [
+                        [ id:'test2' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                        ]
+                input[2] = [
+                        [ id:'test3' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                        ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

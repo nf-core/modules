@@ -2,14 +2,14 @@ process STITCH {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::r-stitch=1.6.10"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/r-stitch:1.6.10--r43h06b5641_0':
         'biocontainers/r-stitch:1.6.10--r43h06b5641_0' }"
 
     input:
-    tuple val(meta) , path(posfile), path(input, stageAs: "input"), path(rdata, stageAs: "RData_in"), val(chromosome_name), val(K), val(nGen)
-    tuple val(meta2), path(collected_crams), path(collected_crais), path(cramlist)
+    tuple val(meta), path(collected_crams), path(collected_crais), path(cramlist)
+    tuple val(meta2), path(posfile), path(input, stageAs: "input"), path(rdata, stageAs: "RData_in"), val(chromosome_name), val(K), val(nGen)
     tuple val(meta3), path(fasta), path(fasta_fai)
     val seed
 
@@ -63,13 +63,13 @@ process STITCH {
     """
 
     stub:
-    def prefix               = task.ext.prefix     ?: "${meta.id}"
-    def args                 = task.ext.args       ?: ""
-    def args2                = task.ext.args2      ?: ""
+    def prefix               = task.ext.prefix      ?: "${meta.id}"
+    def args                 = task.ext.args        ?: ""
+    def args2                = task.ext.args2       ?: ""
     def generate_input_only  = args2.contains( "--generateInputOnly TRUE" )
-    def generate_plots_cmd   = generate_input_only ? "mkdir plots"                                                                   : ""
-    def generate_vcf_cmd     = generate_input_only ? "touch ${prefix}.vcf.gz"                                                        : ""
-    def rsync_version_cmd    = rdata               ? "rsync: \$(rsync --version | head -n1 | sed 's/^rsync  version //; s/ .*\$//')" : ""
+    def generate_plots_cmd   = !generate_input_only ? "mkdir plots"                                                                   : ""
+    def generate_vcf_cmd     = !generate_input_only ? "touch ${prefix}.vcf.gz"                                                        : ""
+    def rsync_version_cmd    = rdata                ? "rsync: \$(rsync --version | head -n1 | sed 's/^rsync  version //; s/ .*\$//')" : ""
     """
     touch input
     touch RData

@@ -2,10 +2,10 @@ process DSHBIO_SPLITBED {
     tag "${meta.id}"
     label 'process_medium'
 
-    conda "bioconda::dsh-bio=2.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/dsh-bio:2.1--hdfd78af_0' :
-        'biocontainers/dsh-bio:2.1--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/dsh-bio:2.4--hdfd78af_0' :
+        'biocontainers/dsh-bio:2.4--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(bed)
@@ -27,6 +27,18 @@ process DSHBIO_SPLITBED {
         -p $prefix \\
         -s '.bed.gz' \\
         -i $bed
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        dshbio: \$(dsh-bio --version 2>&1 | grep -o 'dsh-bio-tools .*' | cut -f2 -d ' ')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo | gzip > ${prefix}0.bed.gz
+    echo | gzip > ${prefix}1.bed.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

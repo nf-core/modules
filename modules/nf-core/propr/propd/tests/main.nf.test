@@ -1,0 +1,154 @@
+nextflow_process {
+
+    name "Test Process PROPR_PROPD"
+    script "../main.nf"
+    process "PROPR_PROPD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "propr"
+    tag "propr/propd"
+
+    test("Test propr/propd using default permutation") {
+
+        tag "default"
+        config "./default_permutation.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv")
+                ]
+                input[1] = [
+                    [ id: 'test'], 
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv")
+                ]
+                """
+            }
+        }
+        
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.results).match("Test propr/propd using default permutation - results") },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
+
+    test("Test propr/propd using default boxcox permutation") {
+
+        tag "default_boxcox"
+        config "./default_boxcox.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv")
+                ]
+                input[1] = [
+                    [ id: 'test'], 
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv")
+                ]
+                """
+            }
+        }
+        
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.results).match(" Test propr/propd using default boxcox permutation - results") },
+                { assert snapshot(process.out.fdr).match(" Test propr/propd using default boxcox permutation - fdr") }
+            )
+        }
+    }
+
+    test("Test propr/propd using theta_e permutation") {
+
+        tag "theta_e"
+        config "./theta_e.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv")
+                ]
+                input[1] = [
+                    [ id: 'test'], 
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv")
+                ]
+                """
+            }
+        }
+        
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.results).match("Test propr/propd using theta_e permutation - results") }
+            )
+        }
+    }
+
+    test("Test propr/propd using theta_e and boxcox permutation") {
+
+        tag "boxcox_theta_e"
+        config "./boxcox_theta_e.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv")
+                ]
+                input[1] = [
+                    [ id: 'test'], 
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv")
+                ]
+                """
+            }
+        }
+        
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.results).match("Test propr/propd using theta_e and boxcox permutation - results") }
+            )
+        }
+    }
+
+    test("Test propr/propd with adjacency matrix") {
+
+        tag "adjacency"
+        config "./adjacency.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv")
+                ]
+                input[1] = [
+                    [ id: 'test'], 
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv")
+                ]
+                """
+            }
+        }
+        
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.adj).match("Test propr/propd with adjacency matrix - adj") },
+                { assert snapshot(process.out.results).match(" - results") }
+            )
+        }
+    }
+} 

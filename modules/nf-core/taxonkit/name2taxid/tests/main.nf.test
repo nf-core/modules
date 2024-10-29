@@ -1,0 +1,100 @@
+nextflow_process {
+
+    name "Test Process TAXONKIT_NAME2TAXID"
+    script "../main.nf"
+    process "TAXONKIT_NAME2TAXID"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "untar"
+    tag "taxonkit"
+    tag "taxonkit/name2taxid"
+
+    setup {
+        run("UNTAR"){
+            script "modules/nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file("ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - name") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    "SARS-CoV-2",
+                    []
+                ]
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - list") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of( [
+                    [ id:'test', single_end:false ], // meta map
+                    ''
+                ] ).combine( Channel.of("SARS-CoV-2").collectFile( name:'names.txt', newLine: true ) )
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - name - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    "SARS-CoV-2",
+                    []
+                ]
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

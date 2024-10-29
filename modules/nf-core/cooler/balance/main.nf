@@ -2,7 +2,7 @@ process COOLER_BALANCE {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::cooler=0.9.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cooler:0.9.2--pyh7cba7a3_0' :
         'biocontainers/cooler:0.9.2--pyh7cba7a3_0' }"
@@ -24,7 +24,7 @@ process COOLER_BALANCE {
     extension = cool.getExtension()
     if ("$cool" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
-    cp ${cool} ${prefix}.${extension}
+    ln -s ${cool} ${prefix}.${extension}
 
     cooler balance \\
         $args \\

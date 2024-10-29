@@ -1,0 +1,50 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "gt_suffixerator"
+description: Computes enhanced suffix array using GenomeTools gt-suffixerator utility
+keywords:
+  - genomics
+  - genome
+  - fasta
+  - index
+tools:
+  - "gt":
+      description: "The GenomeTools genome analysis system"
+      homepage: "https://genometools.org/index.html"
+      documentation: "https://genometools.org/documentation.html"
+      tool_dev_url: "https://github.com/genometools/genometools"
+      doi: "10.1109/TCBB.2013.68"
+      licence: ["ISC"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Input fasta file to index
+        pattern: "*.{fsa,fa,fasta}"
+  - - mode:
+        type: string
+        description: Mode must be one of 'dna', or 'protein'
+output:
+  - index:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - $prefix:
+          type: directory
+          description: Folder containing the suffixerator index files
+          pattern: "suffixerator"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@GallVp"
+maintainers:
+  - "@GallVp"

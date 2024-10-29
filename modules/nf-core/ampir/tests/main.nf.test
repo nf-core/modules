@@ -1,0 +1,65 @@
+nextflow_process {
+
+    name "Test Process AMPIR"
+    script "../main.nf"
+    process "AMPIR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ampir"
+
+    test("candidatus_portiera_aleyrodidarum proteome [fasta]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true),
+                ]
+                input[1] = "precursor" // model
+                input[2] = 10          // min_length
+                input[3] = "0.7"       // min_probability
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("candidatus_portiera_aleyrodidarum proteome [fasta] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true),
+                ]
+                input[1] = "precursor" // model
+                input[2] = 10          // min_length
+                input[3] = "0.7"       // min_probability
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.amps_faa.collect { file(it[1]).getName() } +
+                                process.out.amps_tsv.collect { file(it[1]).getName() } +
+                                process.out.versions).match() }
+            )
+        }
+
+    }
+
+}

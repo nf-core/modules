@@ -3,14 +3,16 @@ process SENTIEON_DATAMETRICS {
     label 'process_medium'
     label 'sentieon'
 
-    secret 'SENTIEON_LICENSE_BASE64'
-
-    container 'nf-core/sentieon:202112.06'
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a6/a64461f38d76bebea8e21441079e76e663e1168b0c59dafee6ee58440ad8c8ac/data' :
+        'community.wave.seqera.io/library/sentieon:202308.03--59589f002351c221' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
+    val plot_results
 
     output:
     tuple val(meta), path('*mq_metrics.txt') , emit: mq_metrics
@@ -19,37 +21,24 @@ process SENTIEON_DATAMETRICS {
     tuple val(meta), path('*gc_metrics.txt') , emit: gc_metrics
     tuple val(meta), path('*aln_metrics.txt'), emit: aln_metrics
     tuple val(meta), path('*is_metrics.txt') , emit: is_metrics
+    tuple val(meta), path('*mq_metrics.pdf') , emit: mq_plot, optional: true
+    tuple val(meta), path('*qd_metrics.pdf') , emit: qd_plot, optional: true
+    tuple val(meta), path('*is_metrics.pdf') , emit: is_plot, optional: true
+    tuple val(meta), path('*gc_metrics.pdf') , emit: gc_plot, optional: true
     path  "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "Sentieon modules do not support Conda. Please use Docker / Singularity / Podman instead."
-    }
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def input  = bam.sort().collect{"-i $it"}.join(' ')
-    def sentieon_auth_mech_base64 = task.ext.sentieon_auth_mech_base64 ?: ''
-    def sentieon_auth_data_base64 = task.ext.sentieon_auth_data_base64 ?: ''
+    def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64 ?
+        "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; " :
+        ""
     """
-    if [ "\${#SENTIEON_LICENSE_BASE64}" -lt "1500" ]; then  # If the string SENTIEON_LICENSE_BASE64 is short, then it is an encrypted url.
-        export SENTIEON_LICENSE=\$(echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d)
-    else  # Localhost license file
-        # The license file is stored as a nextflow variable like, for instance, this:
-        # nextflow secrets set SENTIEON_LICENSE_BASE64 \$(cat <sentieon_license_file.lic> | base64 -w 0)
-        export SENTIEON_LICENSE=\$(mktemp)
-        echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d > \$SENTIEON_LICENSE
-    fi
-
-    if  [ ${sentieon_auth_mech_base64} ] && [ ${sentieon_auth_data_base64} ]; then
-        # If sentieon_auth_mech_base64 and sentieon_auth_data_base64 are non-empty strings, then Sentieon is mostly likely being run with some test-license.
-        export SENTIEON_AUTH_MECH=\$(echo -n "${sentieon_auth_mech_base64}" | base64 -d)
-        export SENTIEON_AUTH_DATA=\$(echo -n "${sentieon_auth_data_base64}" | base64 -d)
-        echo "Decoded and exported Sentieon test-license system environment variables"
-    fi
+    $sentieonLicense
 
     sentieon \\
         driver \\
@@ -62,6 +51,14 @@ process SENTIEON_DATAMETRICS {
         --algo QualDistribution ${prefix}_qd_metrics.txt \\
         --algo InsertSizeMetricAlgo ${prefix}_is_metrics.txt  \\
         --algo AlignmentStat ${prefix}_aln_metrics.txt
+
+    if $plot_results
+    then
+        sentieon plot GCBias -o ${prefix}_gc_metrics.pdf ${prefix}_gc_metrics.txt
+        sentieon plot MeanQualityByCycle -o ${prefix}_mq_metrics.pdf ${prefix}_mq_metrics.txt
+        sentieon plot QualDistribution -o ${prefix}_qd_metrics.pdf  ${prefix}_qd_metrics.txt
+        sentieon plot InsertSizeMetricAlgo -o ${prefix}_is_metrics.pdf ${prefix}_is_metrics.txt
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -78,6 +75,14 @@ process SENTIEON_DATAMETRICS {
     touch ${prefix}_gc_metrics.txt
     touch ${prefix}_aln_metrics.txt
     touch ${prefix}_is_metrics.txt
+
+    if $plot_results
+    then
+        touch ${prefix}_gc_metrics.pdf
+        touch ${prefix}_mq_metrics.pdf
+        touch ${prefix}_qd_metrics.pdf
+        touch ${prefix}_is_metrics.pdf
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

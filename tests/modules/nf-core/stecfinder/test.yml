@@ -1,0 +1,17 @@
+- name: stecfinder test_stecfinder_fasta
+  command: nextflow run ./tests/modules/nf-core/stecfinder -entry test_stecfinder_fasta -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/stecfinder/nextflow.config
+  tags:
+    - stecfinder
+  files:
+    - path: output/stecfinder/test.tsv
+      md5sum: c17e1e69728b48c06c47a7d10086f1da
+    - path: output/stecfinder/versions.yml
+
+- name: stecfinder test_stecfinder_reads
+  command: nextflow run ./tests/modules/nf-core/stecfinder -entry test_stecfinder_reads -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/stecfinder/nextflow.config
+  tags:
+    - stecfinder
+  files:
+    - path: output/stecfinder/test.tsv
+      md5sum: f0a5c4e3509bc8bd03f09aa21c31c526
+    - path: output/stecfinder/versions.yml

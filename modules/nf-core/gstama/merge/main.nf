@@ -2,7 +2,7 @@ process GSTAMA_MERGE {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::gs-tama=1.0.3"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gs-tama:1.0.3--hdfd78af_0' :
         'biocontainers/gs-tama:1.0.3--hdfd78af_0' }"

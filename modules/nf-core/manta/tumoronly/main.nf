@@ -3,7 +3,7 @@ process MANTA_TUMORONLY {
     label 'process_medium'
     label 'error_retry'
 
-    conda "bioconda::manta=1.6.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/manta:1.6.0--h9ee0642_1' :
         'biocontainers/manta:1.6.0--h9ee0642_1' }"
@@ -64,11 +64,11 @@ process MANTA_TUMORONLY {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.candidate_small_indels.vcf.gz
+    echo "" | gzip > ${prefix}.candidate_small_indels.vcf.gz
     touch ${prefix}.candidate_small_indels.vcf.gz.tbi
-    touch ${prefix}.candidate_sv.vcf.gz
+    echo "" | gzip > ${prefix}.candidate_sv.vcf.gz
     touch ${prefix}.candidate_sv.vcf.gz.tbi
-    touch ${prefix}.tumor_sv.vcf.gz
+    echo "" | gzip > ${prefix}.tumor_sv.vcf.gz
     touch ${prefix}.tumor_sv.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml

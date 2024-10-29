@@ -2,7 +2,7 @@ process CNVPYTOR_VIEW {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::cnvpytor=1.2.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cnvpytor:1.2.1--pyhdfd78af_0':
         'biocontainers/cnvpytor:1.2.1--pyhdfd78af_0' }"
@@ -42,7 +42,7 @@ process CNVPYTOR_VIEW {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/CNVpytor //' )
+        cnvpytor: \$(cnvpytor --version | sed -n 's/.*CNVpytor \\(.*\\)/\\1/p')
     END_VERSIONS
     """
 
@@ -54,7 +54,7 @@ process CNVPYTOR_VIEW {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/CNVpytor //' )
+        cnvpytor: \$(cnvpytor --version | sed -n 's/.*CNVpytor \\(.*\\)/\\1/p')
     END_VERSIONS
     """
 }

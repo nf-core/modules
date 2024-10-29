@@ -3,10 +3,10 @@ process VCF2DB {
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::vcf2db=2020.02.24"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vcf2db:2020.02.24--hdfd78af_1':
-        'biocontainers/vcf2db:2020.02.24--hdfd78af_1' }"
+        'https://depot.galaxyproject.org/singularity/vcf2db:2020.02.24--pl5321hdfd78af_3':
+        'biocontainers/vcf2db:2020.02.24--pl5321hdfd78af_3' }"
 
     input:
     tuple val(meta), path(vcf), path(ped)

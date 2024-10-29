@@ -2,14 +2,14 @@ process ARIBA_RUN {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::ariba=2.14.6"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ariba:2.14.6--py39h67e14b5_3':
         'biocontainers/ariba:2.14.6--py39h67e14b5_3' }"
 
     input:
     tuple val(meta), path(reads)
-    each path(db)
+    tuple val(meta), path(db)
 
     output:
     tuple val(meta), path("${prefix}/*"), emit: results

@@ -69,6 +69,21 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, nrows = -
     )
 }
 
+#' Identify rows that are among the top n most variant
+#'
+#' @param matrix_data Matrix object
+#'
+#' @return output Boolean vector
+
+most_variant_test <- function(matrix_data) {
+
+    # Determine the indices of the top variant rows based on variance
+    top_indices <- order(-apply(matrix_data, 1, var, na.rm = TRUE))[1:opt\$most_variant_features]
+
+    # Return a boolean vector indicating if each row is among the top variant ones
+    1:nrow(matrix_data) %in% top_indices
+}
+
 # Set up default options
 
 opt <- list(
@@ -80,7 +95,8 @@ opt <- list(
     minimum_proportion = 0,
     grouping_variable = NULL,
     minimum_proportion_not_na = 0.5,
-    minimum_samples_not_na = NULL
+    minimum_samples_not_na = NULL,
+    most_variant_features = NULL
 )
 opt_types <- lapply(opt, class)
 
@@ -156,6 +172,8 @@ if ((opt\$sample_file != '') && ( ! is.null(opt\$grouping_variable))){
 
 # Also set up filtering for NAs; use by default minimum_proportion_not_na; only
 # use minimum_samples_not_na if it is provided (default NULL)
+# -->NA test can always use minimum_samples_not_na as this will contain the correct
+# value even if the proportion is to be used
 
 if (is.null(opt\$minimum_samples_not_na)) {
     opt\$minimum_samples_not_na <- ncol(abundance_matrix) * opt\$minimum_proportion_not_na
@@ -164,8 +182,8 @@ if (is.null(opt\$minimum_samples_not_na)) {
 # Define the tests
 
 tests <- list(
-    'abundance' = function(x) sum(x > opt\$minimum_abundance, na.rm = T) >= opt\$minimum_samples,
-    'na' = function(x) !any(is.na(x)) || sum(!is.na(x))/length(x) >= opt\$minimum_samples_not_n
+    'abundance' = function(x) sum(x >= opt\$minimum_abundance, na.rm = T) >= opt\$minimum_samples, # check if rows have sufficiently high abundance
+    'na' = function(x) !any(is.na(x)) || sum(!is.na(x)) >= opt\$minimum_samples_not_na  # check if enough values in row are not NA
 )
 
 # Apply the functions row-wise on the abundance_matrix and store the result in a boolean matrix
@@ -173,6 +191,14 @@ tests <- list(
 boolean_matrix <- t(apply(abundance_matrix, 1, function(row) {
     sapply(tests, function(f) f(row))
 }))
+
+# Apply the 'most_variant_test' function to identify the most variant rows and add
+# the result to the boolean matrix
+
+if (! is.null(opt\$most_variant_features)) {
+    most_variant_vectors <- most_variant_test(abundance_matrix)
+    boolean_matrix <- cbind(boolean_matrix, most_variant_vectors)
+}
 
 # We will retain features passing all tests
 

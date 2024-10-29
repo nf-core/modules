@@ -3,7 +3,7 @@ process HOMER_ANNOTATEPEAKS {
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::homer=4.11"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/homer:4.11--pl526hc9558a2_3' :
         'biocontainers/homer:4.11--pl526hc9558a2_3' }"
@@ -33,6 +33,18 @@ process HOMER_ANNOTATEPEAKS {
         -gtf $gtf \\
         -cpu $task.cpus \\
         > ${prefix}.annotatePeaks.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        homer: $VERSION
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '4.11' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    touch ${prefix}.annotatePeaks.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

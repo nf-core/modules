@@ -1,0 +1,115 @@
+name: "pharokka_pharokka"
+description: Functional annotation of phages
+keywords:
+  - pharokka
+  - phage
+  - function
+  - prokka
+  - bakta
+
+tools:
+  - "pharokka":
+      description: "Fast Phage Annotation Program"
+      homepage: "https://pharokka.readthedocs.io"
+      documentation: "https://pharokka.readthedocs.io"
+      tool_dev_url: "https://github.com/gbouras13/pharokka"
+      doi: "10.1093/bioinformatics/btac776"
+      licence: ["MIT"]
+      identifier: biotools:pharokka
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - phage_fasta:
+        type: file
+        description: A FASTA file containing phage sequence(s)
+        pattern: "*.{fasta,fna,fa}"
+  - - pharokka_db:
+        type: file
+        description: Directory containing Pharokka's database
+output:
+  - cds_final_merged_output:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}_pharokka/${prefix}_cds_final_merged_output.tsv:
+          type: file
+          description: A file containing the final merged output of CDSs
+          pattern: "*_cds_final_merged_output.tsv"
+  - cds_functions:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}_pharokka/${prefix}_cds_functions.tsv:
+          type: file
+          description: A file that includes count of CDSs, tRNAs, CRISPRs, tmRNAs, and
+            PHROG functions assigned to CDSs
+          pattern: "*_cds_functions.tsv"
+  - length_gc_cds_density:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}_pharokka/${prefix}_length_gc_cds_density.tsv:
+          type: file
+          description: A file containing the length, GC content, and CDS density of
+            the phage genome
+          pattern: "*_length_gc_cds_density.tsv"
+  - card:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}_pharokka/${prefix}_top_hits_card.tsv:
+          type: file
+          description: OPTIONAL - A file containing any CARD database hits
+          pattern: "*top_hits_card.tsv"
+  - vfdb:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}_pharokka/${prefix}_top_hits_vfdb.tsv:
+          type: file
+          description: OPTIONAL - A file containing any VFDB database hits
+          pattern: "*top_hits_vfdb.tsv"
+  - mash:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}_pharokka/${prefix}_top_hits_mash_inphared.tsv:
+          type: file
+          description: OPTIONAL - File containing top hits to INPHARED database
+          pattern: "*_top_hits_mash_inphared.tsv"
+  - reoriented:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}_pharokka/${prefix}_genome_terminase_reoriented.fasta:
+          type: file
+          description: OPTIONAL - FASTA file reoriented to start with the large terminase
+            subunit
+          pattern: "*_genome_terminase_reoriented.fasta"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@CarsonJM"
+maintainers:
+  - "@CarsonJM"

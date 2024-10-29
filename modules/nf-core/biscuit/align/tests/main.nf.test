@@ -1,0 +1,72 @@
+nextflow_process {
+
+    name "Test Process BISCUIT_ALIGN"
+    script "../main.nf"
+    process "BISCUIT_ALIGN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "biscuit"
+    tag "biscuit/align"
+    tag "biscuit/index"
+
+    setup {
+        run("BISCUIT_INDEX") {
+            script "../../index/main.nf"
+            process {
+            """
+            input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+            """
+        }
+        }
+    }
+
+    test("Single-End sarscov2 test_methylated_1 [fastq_gz]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test' ], // meta map
+                            [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true) ]
+                ]
+                input[1] = BISCUIT_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.bam[0][1]).name == "test.bam" },
+                { assert file(process.out.bai[0][1]).name == "test.bam.bai" },
+                { assert snapshot(process.out.versions).match("single-end-versions") }
+          )
+        }
+    }
+
+    test("Paired-End sarscov2 test_methylated_1 [fastq_gz]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test' ], // meta map
+                            [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
+                              file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true) ]
+                ]
+                input[1] = BISCUIT_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.bam[0][1]).name == "test.bam" },
+                { assert file(process.out.bai[0][1]).name == "test.bam.bai" },
+                { assert snapshot(process.out.versions).match("paired-end-versions") }
+          )
+        }
+    }
+}

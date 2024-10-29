@@ -2,7 +2,7 @@ process SEXDETERRMINE {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::sexdeterrmine=1.1.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sexdeterrmine:1.1.2--hdfd78af_1':
         'biocontainers/sexdeterrmine:1.1.2--hdfd78af_1' }"

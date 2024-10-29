@@ -1,0 +1,64 @@
+nextflow_process {
+
+    name "Test Process GLIMPSE2_CHUNK"
+    script "../main.nf"
+    process "GLIMPSE2_CHUNK"
+    tag "glimpse2"
+    tag "glimpse2/chunk"
+    tag "modules_nfcore"
+    tag "modules"
+
+    test("Should run without map") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true),
+                    "chr21", []
+                ]
+                input[1]= "recursive"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("Should run with map") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true),
+                    "chr21",
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/chr21.b38.gmap.gz", checkIfExists: true)
+                ]
+                input[1]= "recursive"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

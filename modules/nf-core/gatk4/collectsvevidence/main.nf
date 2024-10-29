@@ -2,10 +2,10 @@ process GATK4_COLLECTSVEVIDENCE {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::gatk4=4.4.0.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
-        'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.5.0.0--py36hdfd78af_0':
+        'biocontainers/gatk4:4.5.0.0--py36hdfd78af_0' }"
 
     input:
     tuple val(meta), path(input), path(input_index), path(site_depth_vcf), path(site_depth_vcf_tbi)
@@ -48,6 +48,24 @@ process GATK4_COLLECTSVEVIDENCE {
         ${sd_vcf} \\
         ${reference} \\
         --tmp-dir . \\
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def sd_vcf = site_depth_vcf ? "echo '' | gzip > ${prefix}.sd.txt.gz" : ""
+    def sd_vcf_tbi = site_depth_vcf_tbi ? "touch ${prefix}.sd.txt.gz.tbi" : ""
+    """
+    echo "" | gzip > ${prefix}.sr.txt.gz
+    touch ${prefix}.sr.txt.gz.tbi
+    echo "" | gzip > ${prefix}.pe.txt.gz
+    touch ${prefix}.pe.txt.gz.tbi
+    ${sd_vcf}
+    ${sd_vcf_tbi}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

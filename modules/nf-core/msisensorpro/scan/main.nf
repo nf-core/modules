@@ -2,7 +2,7 @@ process MSISENSORPRO_SCAN {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::msisensor-pro=1.2.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/msisensor-pro:1.2.0--hfc31af2_0' :
         'biocontainers/msisensor-pro:1.2.0--hfc31af2_0' }"
@@ -26,6 +26,17 @@ process MSISENSORPRO_SCAN {
         -d $fasta \\
         -o ${prefix}.msisensor_scan.list \\
         $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        msisensor-pro: \$(msisensor-pro 2>&1 | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.msisensor_scan.list
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

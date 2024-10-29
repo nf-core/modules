@@ -1,10 +1,10 @@
 process GENOMAD_DOWNLOAD {
     label 'process_single'
 
-    conda "bioconda::genomad=1.5.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/genomad:1.5.2--pyhdfd78af_0':
-        'biocontainers/genomad:1.5.2--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/genomad:1.7.4--pyhdfd78af_0':
+        'biocontainers/genomad:1.7.4--pyhdfd78af_0' }"
 
     output:
     path "genomad_db/"  , emit: genomad_db

@@ -1,0 +1,51 @@
+- name: truvari bench test_truvari_bench
+  command: nextflow run ./tests/modules/nf-core/truvari/bench -entry test_truvari_bench -c ./tests/config/nextflow.config
+  tags:
+    - truvari
+    - truvari/bench
+  files:
+    - path: output/truvari/test.fn.vcf.gz
+      md5sum: 85a050097d9a87d11e69097133e0b0a0
+    - path: output/truvari/test.fn.vcf.gz.tbi
+      md5sum: e7180bb953d2bd657c420a5f76a7164d
+    - path: output/truvari/test.fp.vcf.gz
+      md5sum: 32a89ce21f5e22a10588a73560a08157
+    - path: output/truvari/test.fp.vcf.gz.tbi
+      md5sum: e7180bb953d2bd657c420a5f76a7164d
+    - path: output/truvari/test.summary.json
+      md5sum: abc56d019709990a395a9efbb9d66e5d
+    - path: output/truvari/test.tp-base.vcf.gz
+      md5sum: 85a050097d9a87d11e69097133e0b0a0
+    - path: output/truvari/test.tp-base.vcf.gz.tbi
+      md5sum: e7180bb953d2bd657c420a5f76a7164d
+    - path: output/truvari/test.tp-comp.vcf.gz
+      md5sum: 32a89ce21f5e22a10588a73560a08157
+    - path: output/truvari/test.tp-comp.vcf.gz.tbi
+      md5sum: e7180bb953d2bd657c420a5f76a7164d
+    - path: output/truvari/versions.yml
+
+- name: truvari bench test_truvari_bench_bed
+  command: nextflow run ./tests/modules/nf-core/truvari/bench -entry test_truvari_bench_bed -c ./tests/config/nextflow.config
+  tags:
+    - truvari
+    - truvari/bench
+  files:
+    - path: output/truvari/test.fn.vcf.gz
+      md5sum: 85a050097d9a87d11e69097133e0b0a0
+    - path: output/truvari/test.fn.vcf.gz.tbi
+      md5sum: e7180bb953d2bd657c420a5f76a7164d
+    - path: output/truvari/test.fp.vcf.gz
+      md5sum: 32a89ce21f5e22a10588a73560a08157
+    - path: output/truvari/test.fp.vcf.gz.tbi
+      md5sum: e7180bb953d2bd657c420a5f76a7164d
+    - path: output/truvari/test.summary.json
+      md5sum: abc56d019709990a395a9efbb9d66e5d
+    - path: output/truvari/test.tp-base.vcf.gz
+      md5sum: 85a050097d9a87d11e69097133e0b0a0
+    - path: output/truvari/test.tp-base.vcf.gz.tbi
+      md5sum: e7180bb953d2bd657c420a5f76a7164d
+    - path: output/truvari/test.tp-comp.vcf.gz
+      md5sum: 32a89ce21f5e22a10588a73560a08157
+    - path: output/truvari/test.tp-comp.vcf.gz.tbi
+      md5sum: e7180bb953d2bd657c420a5f76a7164d
+    - path: output/truvari/versions.yml

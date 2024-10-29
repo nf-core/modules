@@ -6,24 +6,25 @@ include { PROTEUS_READPROTEINGROUPS } from '../../../../../modules/nf-core/prote
 
 workflow test_proteus_readproteingroups {
 
-    input = [
-        [ id:'test' ],                                                                              // meta map
-        file(params.test_data['proteomics']['maxquant']['mq_samplesheet'], checkIfExists: true),    // samplesheet
-        file(params.test_data['proteomics']['maxquant']['mq_proteingroups'], checkIfExists: true)   // intensities
-    ]
+    ch_input = Channel.of(
+        [
+            file(params.test_data['proteomics']['maxquant']['mq_samplesheet'], checkIfExists: true),    // samplesheet
+            file(params.test_data['proteomics']['maxquant']['mq_proteingroups'], checkIfExists: true)   // intensities
+        ]
+    )
+    
     ch_contrasts_file = Channel.fromPath(file(params.test_data['proteomics']['maxquant']['mq_contrasts'], checkIfExists: true))    
     ch_contrasts = ch_contrasts_file
         .splitCsv(header:true, sep:',')
         .map{
             tuple(
-                it,             // meta map
-                it.variable     // contrast variable
+                [ id: it.variable ]                                                                     // metamap with contrast variable,
             )
         }
+    ch_proteus_in = ch_contrasts.combine(ch_input)
 
     PROTEUS_READPROTEINGROUPS (
-        input,
-        ch_contrasts
+        ch_proteus_in
     )
 
 }

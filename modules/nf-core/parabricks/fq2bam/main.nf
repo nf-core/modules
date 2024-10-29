@@ -2,14 +2,7 @@ process PARABRICKS_FQ2BAM {
     tag "$meta.id"
     label 'process_high'
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.0.1-1"
-
-    /*
-    NOTE: Parabricks requires the files to be non-symlinked
-    Do not change the stageInMode to soft linked! This is default on Nextflow.
-    If you change this setting be careful.
-    */
-    stageInMode "copy"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.3.0-1"
 
     input:
     tuple val(meta), path(reads), path(interval_file)
@@ -42,10 +35,11 @@ process PARABRICKS_FQ2BAM {
     """
 
     INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
+    mv $fasta \$INDEX
 
     pbrun \\
         fq2bam \\
-        --ref $fasta \\
+        --ref \$INDEX \\
         $in_fq_command \\
         --read-group-sm $meta.id \\
         --out-bam ${prefix}.bam \\

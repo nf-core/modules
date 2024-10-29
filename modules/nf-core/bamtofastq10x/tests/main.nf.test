@@ -1,0 +1,55 @@
+nextflow_process {
+
+    name "Test Process BAMTOFASTQ10X"
+    script "../main.nf"
+    process "BAMTOFASTQ10X"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bamtofastq10x"
+
+    test("human - bam") {
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/10x_cr12.bam', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+
+            )
+        }
+    }
+
+
+    test("human - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/10x_cr12.bam', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success }
+            )
+        }
+
+    }
+}

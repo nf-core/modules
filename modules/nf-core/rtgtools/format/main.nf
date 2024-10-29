@@ -2,7 +2,7 @@ process RTGTOOLS_FORMAT {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::rtg-tools=3.12.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/rtg-tools:3.12.1--hdfd78af_0':
         'biocontainers/rtg-tools:3.12.1--hdfd78af_0' }"

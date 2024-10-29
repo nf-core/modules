@@ -2,7 +2,7 @@ process PLINK2_VCF {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::plink2=2.00a2.3"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/plink2:2.00a2.3--h712d239_1' :
         'biocontainers/plink2:2.00a2.3--h712d239_1' }"
@@ -13,7 +13,8 @@ process PLINK2_VCF {
     output:
     tuple val(meta), path("*.pgen")    , emit: pgen
     tuple val(meta), path("*.psam")    , emit: psam
-    tuple val(meta), path("*.pvar.zst"), emit: pvar
+    tuple val(meta), path("*.pvar")    , emit: pvar
+    tuple val(meta), path("*.pvar.zst"), emit: pvar_zst, optional: true
     path "versions.yml"                , emit: versions
 
     when:
@@ -29,7 +30,6 @@ process PLINK2_VCF {
         --memory $mem_mb \\
         $args \\
         --vcf $vcf \\
-        --make-pgen vzs \\
         --out ${prefix}
 
     cat <<-END_VERSIONS > versions.yml

@@ -1,0 +1,57 @@
+nextflow_process {
+
+    name "Test Process TCOFFEE_ALNCOMPARE"
+    script "../main.nf"
+    process "TCOFFEE_ALNCOMPARE"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "tcoffee"
+    tag "tcoffee/alncompare"
+
+    test("seatoxin") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                                [ id:'test' ], // meta map
+                                file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true),
+                                file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
+                            ]
+                """
+            }
+
+        }
+
+        then {
+        assertAll(
+            { assert process.success },
+            { assert snapshot(process.out).match() }
+        )
+        }
+
+    }
+    test("seatoxin - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                                [ id:'test' ], // meta map
+                                file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true),
+                                file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
+                            ]
+                """
+            }
+
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+
+    }
+
+}

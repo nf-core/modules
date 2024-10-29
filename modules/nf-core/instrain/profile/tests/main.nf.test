@@ -1,0 +1,73 @@
+nextflow_process {
+
+    name "Test Process INSTRAIN_PROFILE"
+    script "../main.nf"
+    process "INSTRAIN_PROFILE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "instrain"
+    tag "instrain/profile"
+
+    test("sarscov2 - illumina - test_paired_end - bam") {
+
+        when {
+            params
+            process {
+                """
+                input[0] =
+                [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                input[2] = []
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.snvs,
+                    process.out.linkage,
+                    process.out.scaffold_info[0][1].readLines()[1],
+                    process.out.versions
+                    ).match()
+                },
+                { assert path(process.out.mapping_info[0][1]).text.contains("MT192765.1\t97\t96")},
+                { assert path(process.out.genome_info[0][1]).text.contains("all_scaffolds\t0.6096080995004861\t0.4007509470649368")}
+            )
+        }
+    }
+
+    test("sarscov2 - illumina - test_paired_end - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] =
+                [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                input[2] = []
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

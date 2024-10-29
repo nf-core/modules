@@ -1,0 +1,105 @@
+nextflow_process {
+
+    name "Test Process FOLDCOMP_COMPRESS"
+    script "../main.nf"
+    process "FOLDCOMP_COMPRESS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "foldcomp"
+    tag "foldcomp/compress"
+
+    test("proteomics - pdb") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'proteomics/pdb/1tim.pdb', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(file(process.out.fcz[0][1].find { file(it).name == "testA_0.fcz" })).match('testA_0')},
+                { assert file(process.out.fcz[0][1].find { file(it).name == "testA_1.fcz" }).exists() },
+                { assert file(process.out.fcz[0][1].find { file(it).name == "testB_0.fcz" }).exists() },
+                { assert file(process.out.fcz[0][1].find { file(it).name == "testB_1.fcz" }).exists() },
+                { assert snapshot(process.out.versions).match('versions') }
+            )
+        }
+
+    }
+
+    test("proteomics - pdb folder") {
+        when {
+            params {
+                folderPath = 'pdb_dir'
+            }
+
+            process {
+                """
+                file(params.folderPath).mkdirs()
+                originalFile = file(params.modules_testdata_base_path + 'proteomics/pdb/1tim.pdb', checkIfExists: true)
+                copy_1 = originalFile.copyTo(file("tim1_cop1.pdb"))
+                copy_2 = originalFile.copyTo(file("tim1_cop2.pdb"))
+                copy_1.moveTo(file(params.folderPath + "/tim1_cop1.pdb"))
+                copy_2.moveTo(file(params.folderPath + "/tim1_cop2.pdb"))
+
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.folderPath, checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.fcz
+                    with(process.out.fcz) {
+                        assert size() == 1
+                        with(get(0).get(1)) {
+                            File folder = new File(get(0).get(1))
+                            File[] listOfFiles = folder.listFiles()
+                            listOfFiles = listOfFiles.sort { it.name }
+                            assert listOfFiles.length == 8
+                        }
+                    }
+                },
+                { assert snapshot(process.out.versions).match('versions_dir') }
+            )
+        }
+
+    }
+
+    test("proteomics - pdb - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'proteomics/pdb/1tim.pdb', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

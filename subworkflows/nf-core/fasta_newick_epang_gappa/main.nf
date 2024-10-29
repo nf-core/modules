@@ -98,7 +98,12 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     // 2.a MAFFT profile alignment of query sequences to reference alignment
     MAFFT (
         ch_mafft_data.map { [ it.meta, it.data.refseqfile ] },
-        ch_mafft_data.map { [ it.data.queryseqfile ] }
+        ch_mafft_data.map { [ it.meta, it.data.queryseqfile ] },
+        [ [], [] ],
+        [ [], [] ],
+        [ [], [] ],
+        [ [], [] ],
+        false
     )
     ch_versions = ch_versions.mix(MAFFT.out.versions)
 
@@ -151,4 +156,3 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     heattree            = GAPPA_HEATTREE.out.svg
     versions            = ch_versions                     // channel: [ versions.yml ]
 }
-

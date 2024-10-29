@@ -2,7 +2,7 @@ process GLNEXUS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::glnexus=1.4.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/glnexus:1.4.1--h40d77a6_0' :
         'biocontainers/glnexus:1.4.1--h40d77a6_0' }"

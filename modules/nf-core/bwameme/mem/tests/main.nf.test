@@ -1,0 +1,190 @@
+nextflow_process {
+
+    name "Test Process BWAMEME_MEM"
+    script "../main.nf"
+    process "BWAMEME_MEM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bwameme"
+    tag "bwameme/mem"
+    tag "bwameme/index"
+    config "./nextflow.config"
+
+    setup {
+        run("BWAMEME_INDEX") {
+            script "../../index/main.nf"
+            config "./nextflow.config"
+            process {
+                """
+                input[0] = Channel.of([
+                    [:], // meta map
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                ])
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - fastq, index, fasta, false, 0, 4") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true ], // meta map
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
+                ])
+                input[1] = BWAMEME_INDEX.out.index
+                input[2] = Channel.of([[:], [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]])
+                input[3] = false
+                input[4] = 0
+                input[5] = 4
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    bam(process.out.bam[0][1]).getHeaderMD5(),
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fastq, index, fasta, true, 2048, 4") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true ], // meta map
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
+                ])
+                input[1] = BWAMEME_INDEX.out.index
+                input[2] = Channel.of([[:], [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]])
+                input[3] = true
+                input[4] = 2048
+                input[5] = 4
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    bam(process.out.bam[0][1]).getHeaderMD5(),
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - [fastq1, fastq2], index, fasta, false, 0, 4") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = BWAMEME_INDEX.out.index
+                input[2] = Channel.of([[:], [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]])
+                input[3] = false
+                input[4] = 0
+                input[5] = 4
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    bam(process.out.bam[0][1]).getHeaderMD5(),
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - [fastq1, fastq2], index, fasta, true, 2048, ''") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = BWAMEME_INDEX.out.index
+                input[2] = Channel.of([[:], [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]])
+                input[3] = true
+                input[4] = 2048
+                input[5] = ""
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    bam(process.out.bam[0][1]).getHeaderMD5(),
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - [fastq1, fastq2], index, fasta, true, 2048, 4 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = BWAMEME_INDEX.out.index
+                input[2] = Channel.of([[:], [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]])
+                input[3] = true
+                input[4] = 2048
+                input[5] = 4
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+}

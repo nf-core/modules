@@ -2,7 +2,7 @@ process PURECLIP {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::pureclip=1.3.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pureclip:1.3.1--0':
         'biocontainers/pureclip:1.3.1--0' }"
@@ -56,10 +56,12 @@ process PURECLIP {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    crosslinks_output_name = "${prefix}_pureclip_crosslinks.bed"
+    peaks_output_name      = "${prefix}_pureclip_peaks.bed"
 
     """
-    touch ${prefix}_pureclip_crosslinks.bed
-    touch ${prefix}_pureclip_peaks.bed
+    touch $crosslinks_output_name
+    touch $peaks_output_name
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

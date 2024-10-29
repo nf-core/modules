@@ -1,0 +1,100 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fastq_align_mapad"
+description: Align FASTQ files against reference genome with the mapAD aDNA short-read aligner producing a sorted and indexed BAM files
+keywords:
+  - sort
+  - fastq
+  - bam
+  - mapad
+  - align
+  - map
+components:
+  - mapad/map
+  - samtools/sort
+  - samtools/index
+  - samtools/stats
+  - samtools/idxstats
+  - samtools/flagstat
+  - bam_sort_stats_samtools
+input:
+  - ch_reads:
+      description: |
+        List of input FASTQ file
+        Structure: [ val(meta), path(reads) ]
+  - ch_index:
+      description: |
+        mapAD genome index files
+        Structure: [ val(meta), path(index) ]
+  - ch_fasta:
+      type: file
+      description: |
+        Reference fasta file
+        Structure: [ val(meta), path(fasta) ]
+  - val_mismatch_parameter:
+      type: float
+      description: |
+        `bwa aln` compatible allowed-mismatches parameter
+  - val_double_stranded_library:
+      type: boolean
+      description: |
+        If true, `--library` is set to `double_stranded`
+      pattern: "true|false"
+  - val_five_prime_overhang:
+      type: float
+      description: |
+        5' overhang parameter (global overhang parameter
+        if `val_double_stranded_library` is set to `true`)
+  - val_three_prime_overhang:
+      type: float
+      description: |
+        3' overhang parameter (ignored if
+        `val_double_stranded_library` is set to `true`)
+  - val_deam_rate_double_stranded:
+      type: float
+      description: |
+        `-d` parameter. Specifies the expected deamination
+        rate in double-stranded stems of the reads.
+  - val_deam_rate_single_stranded:
+      type: float
+      description: |
+        `-s` parameter. Specifies the expected deamination
+        rate in single-stranded overhangs of the reads.
+  - val_indel_rate:
+      type: float
+      description: |
+        `-i` parameter. Specifies the expected rate of InDels.
+output:
+  - bam_unsorted:
+      description: |
+        BAM file produced by mapAD
+        Structure: [ val(meta), path(bam) ]
+  - bam:
+      description: |
+        BAM file sorted by samtools
+        Structure: [ val(meta), path(bam) ]
+  - bai:
+      description: |
+        BAI index of the sorted BAM file
+        Structure: [ val(meta), path(bai) ]
+  - csi:
+      description: |
+        CSI index of the sorted BAM file
+        Structure: [ val(meta), path(csi) ]
+  - stats:
+      description: |
+        File containing samtools stats output
+        Structure: [ val(meta), path(stats) ]
+  - flagstat:
+      description: |
+        File containing samtools flagstat output
+        Structure: [ val(meta), path(flagstat) ]
+  - idxstats:
+      description: |
+        File containing samtools idxstats output
+        Structure: [ val(meta), path(idxstats) ]
+  - versions:
+      description: |
+        Files containing software versions
+        Structure: [ path(versions.yml) ]
+authors:
+  - "@jch-13"

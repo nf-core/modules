@@ -2,7 +2,7 @@ process STAPHOPIASCCMEC {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::staphopia-sccmec=1.0.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/staphopia-sccmec:1.0.0--hdfd78af_0' :
         'biocontainers/staphopia-sccmec:1.0.0--hdfd78af_0' }"

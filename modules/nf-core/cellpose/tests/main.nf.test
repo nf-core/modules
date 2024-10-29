@@ -1,0 +1,63 @@
+nextflow_process {
+
+    name "Test Process CELLPOSE"
+    script "../main.nf"
+    process "CELLPOSE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cellpose"
+
+    test("cellpose - with flows, no model") {
+
+        when {
+            config "./nextflow_wflows.config"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'imaging/segmentation/cycif_tonsil_registered.ome.tif', checkIfExists: true)
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out.mask).match("mask") },
+                { assert snapshot(process.out.flows).match("flows") },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+
+    test("cellpose - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'imaging/segmentation/cycif_tonsil_registered.ome.tif', checkIfExists: true)
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

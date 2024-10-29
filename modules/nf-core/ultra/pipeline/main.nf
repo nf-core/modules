@@ -2,7 +2,7 @@ process ULTRA_PIPELINE {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::ultra_bioinformatics=0.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ultra_bioinformatics:0.1--pyh7cba7a3_1':
         'biocontainers/ultra_bioinformatics:0.1--pyh7cba7a3_1' }"

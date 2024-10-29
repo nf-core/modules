@@ -2,18 +2,18 @@ process GATK4_SELECTVARIANTS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::gatk4=4.4.0.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
-        'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gatk4:4.5.0.0--py36hdfd78af_0':
+        'biocontainers/gatk4:4.5.0.0--py36hdfd78af_0' }"
 
     input:
     tuple val(meta), path(vcf), path(vcf_idx), path (intervals)
 
     output:
-    tuple val(meta), path("*.selectvariants.vcf.gz")       , emit: vcf
-    tuple val(meta), path("*.selectvariants.vcf.gz.tbi")   , emit: tbi
-    path "versions.yml"		                               , emit: versions
+    tuple val(meta), path("*.vcf.gz")       , emit: vcf
+    tuple val(meta), path("*.vcf.gz.tbi")   , emit: tbi
+    path "versions.yml"		                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,7 +33,7 @@ process GATK4_SELECTVARIANTS {
     gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         SelectVariants \\
         --variant $vcf \\
-        --output ${prefix}.selectvariants.vcf.gz \\
+        --output ${prefix}.vcf.gz \\
         $interval \\
         --tmp-dir . \\
         $args
@@ -47,8 +47,8 @@ process GATK4_SELECTVARIANTS {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.selectvariants.vcf.gz
-    touch ${prefix}.selectvariants.vcf.gz.tbi
+    touch ${prefix}.vcf.gz
+    touch ${prefix}.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

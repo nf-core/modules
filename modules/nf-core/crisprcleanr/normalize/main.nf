@@ -2,7 +2,7 @@ process CRISPRCLEANR_NORMALIZE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::r-crisprcleanr=3.0.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/r-crisprcleanr:3.0.0--r42hdfd78af_1':
         'biocontainers/r-crisprcleanr:3.0.0--r42hdfd78af_1' }"

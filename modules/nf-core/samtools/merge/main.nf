@@ -2,10 +2,10 @@ process SAMTOOLS_MERGE {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::samtools=1.17"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.17--h00cdaf9_0' :
-        'biocontainers/samtools:1.17--h00cdaf9_0' }"
+        'https://depot.galaxyproject.org/singularity/samtools:1.21--h50ea8bc_0' :
+        'biocontainers/samtools:1.21--h50ea8bc_0' }"
 
     input:
     tuple val(meta), path(input_files, stageAs: "?/*")
@@ -16,6 +16,7 @@ process SAMTOOLS_MERGE {
     tuple val(meta), path("${prefix}.bam") , optional:true, emit: bam
     tuple val(meta), path("${prefix}.cram"), optional:true, emit: cram
     tuple val(meta), path("*.csi")         , optional:true, emit: csi
+    tuple val(meta), path("*.crai")        , optional:true, emit: crai
     path  "versions.yml"                                  , emit: versions
 
 
@@ -43,10 +44,14 @@ process SAMTOOLS_MERGE {
     """
 
     stub:
+    def args = task.ext.args   ?: ''
     prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     def file_type = input_files instanceof List ? input_files[0].getExtension() : input_files.getExtension()
+    def index_type = file_type == "bam" ? "csi" : "crai"
+    def index = args.contains("--write-index") ? "touch ${prefix}.${index_type}" : ""
     """
     touch ${prefix}.${file_type}
+    ${index}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -1,0 +1,60 @@
+nextflow_process {
+
+    name "Test Process BAMSTATS_GENERALSTATS"
+    script "../main.nf"
+    process "BAMSTATS_GENERALSTATS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bamstats"
+    tag "bamstats/generalstats"
+
+    test("sarscov2 - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.json.get(0)[1]).exists() },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.json.get(0)[1]).exists() },
+                { assert snapshot(process.out.versions).match("versions_stub") }
+            )
+        }
+
+    }
+
+}

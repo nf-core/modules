@@ -2,7 +2,7 @@ process EXPANSIONHUNTERDENOVO_MERGE {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::expansionhunterdenovo=0.9.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/expansionhunterdenovo:0.9.0--hdc99072_3':
         'biocontainers/expansionhunterdenovo:0.9.0--hdc99072_3' }"

@@ -2,7 +2,7 @@ process QUILT_QUILT {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::r-quilt=1.0.5"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/r-quilt:1.0.5--r43h06b5641_0':
         'biocontainers/r-quilt:1.0.5--r43h06b5641_0' }"
@@ -27,18 +27,24 @@ process QUILT_QUILT {
     def prefix                      =   task.ext.prefix ?: "${meta.id}"
     def extensions                  =   bams.collect { it.extension }
     def extension                   =   extensions.flatten().unique()
-    def list_command                =   extension == ["bam"]  ? "--bamlist=${bamlist}"                       :
-                                        extension == ["cram"] ? "--cramlist=${bamlist} --reference=${fasta}" : ""
+    def list_command                =   extension == ["bam"]  ? "--bamlist="                       :
+                                        extension == ["cram"] ? "--reference=${fasta} --cramlist=" : ""
     def genetic_map_file_command    =   genetic_map_file      ? "--genetic_map_file=${genetic_map_file}"     : ""
     def posfile_command             =   posfile               ? "--posfile=${posfile}"                       : ""
     def phasefile_command           =   phasefile             ? "--phasefile=${phasefile}"                   : ""
     if (!(args ==~ /.*--seed.*/)) {args += " --seed=1"}
 
     """
-
+    if [ -n "$bamlist" ] ;
+    then
+        BAM_LIST="$bamlist"
+    else
+        printf "%s\\n" $bams | tr -d '[],' > all_files.txt
+        BAM_LIST="all_files.txt"
+    fi
 
     QUILT.R \\
-        $list_command \\
+        ${list_command}\$BAM_LIST \\
         $genetic_map_file_command \\
         $posfile_command \\
         $phasefile_command \\

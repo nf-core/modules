@@ -2,14 +2,14 @@ process KMCP_SEARCH {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::kmcp=0.9.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/kmcp:0.9.1--h9ee0642_0':
-        'biocontainers/kmcp:0.9.1--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/kmcp:0.9.4--h9ee0642_0':
+        'biocontainers/kmcp:0.9.4--h9ee0642_0' }"
 
     input:
-    path(db)
     tuple val(meta), path(reads)
+    path(db)
 
     output:
     tuple val(meta), path("*.gz") , emit: result
@@ -40,7 +40,7 @@ process KMCP_SEARCH {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.gz
+    echo "" | gzip > ${prefix}.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

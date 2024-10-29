@@ -1,0 +1,46 @@
+nextflow_process {
+
+    name "Test Process CHECKM2_PREDICT"
+    tag "modules_nfcore"
+    tag "modules"
+    tag "checkm2"
+    tag "checkm2/predict"
+    tag "checkm2/databasedownload"
+    script "modules/nf-core/checkm2/predict/main.nf"
+    process "CHECKM2_PREDICT"
+
+    test("Test CheckM2 Predict") {
+
+        setup {
+            run("CHECKM2_DATABASEDOWNLOAD") {
+                script "../../databasedownload/main.nf"
+                process {
+                    """
+                    input[0] = []
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                outdir = "${launchDir}/tests/results"
+            }
+            process {
+                """
+                input[0] = [ [id: 'test'], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)] ]
+                input[1] = CHECKM2_DATABASEDOWNLOAD.out.database
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.checkm2_tsv, process.out.versions).match() }
+            )
+        }
+
+    }
+
+}

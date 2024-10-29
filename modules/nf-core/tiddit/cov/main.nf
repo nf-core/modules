@@ -2,7 +2,7 @@ process TIDDIT_COV {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::tiddit=3.6.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/tiddit:3.6.1--py38h24c8ff8_0' :
         'biocontainers/tiddit:3.6.1--py38h24c8ff8_0' }"
@@ -41,7 +41,7 @@ process TIDDIT_COV {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.wig
-    touch ${prefix}.tab
+    touch ${prefix}.bed
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

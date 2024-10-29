@@ -1,7 +1,7 @@
 process ATAQV_MKARV {
     label 'process_medium'
 
-    conda 'bioconda::ataqv=1.3.1'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ataqv:1.3.1--py310ha155cf9_1':
         'biocontainers/ataqv:1.3.1--py310ha155cf9_1' }"

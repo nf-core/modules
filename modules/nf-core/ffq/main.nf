@@ -2,7 +2,7 @@ process FFQ {
     tag "${ids.size() == 1 ? ids[0] : "${ids[0]+'..'+ids[-1]}"}"
     label 'process_low'
 
-    conda "bioconda::ffq=0.2.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ffq:0.2.1--pyhdfd78af_0':
         'biocontainers/ffq:0.2.1--pyhdfd78af_0' }"

@@ -2,7 +2,7 @@ process HMMER_HMMBUILD {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::hmmer=3.3.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hmmer:3.3.2--h87f3376_2':
         'biocontainers/hmmer:3.3.2--h1b792b2_1' }"
@@ -35,6 +35,18 @@ process HMMER_HMMBUILD {
         $alignment
 
     gzip ${prefix}.hmm
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        hmmer: \$(echo \$(hmmbuild -h | grep HMMER | sed 's/# HMMER //' | sed 's/ .*//' 2>&1))
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix    = task.ext.prefix ?: "${meta.id}"
+    """
+    echo | gzip > ${prefix}.hmm.gz
+    touch ${prefix}.hmmbuild.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

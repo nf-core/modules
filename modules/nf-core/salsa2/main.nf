@@ -3,7 +3,7 @@ process SALSA2 {
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::salsa2=2.3"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/salsa2:2.3--py27hee3b9ab_0':
         'biocontainers/salsa2:2.3--py27hee3b9ab_0' }"
