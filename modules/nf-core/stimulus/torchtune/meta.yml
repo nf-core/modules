@@ -1,0 +1,75 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "stimulus_torchtune"
+## TODO nf-core: Add a description of the module and list keywords
+description: write your description here
+keywords:
+  - machine learning
+  - neural network
+  - unit test
+tools:
+  - "stimulus":
+      ## TODO nf-core: Add a description and other details for the software below
+      description: "Stochastic Testing and Input Manipulation for Unbiased Learning Systems"
+      homepage: "https://github.com/mathysgrapotte/stimulus-p"
+      documentation: "https://github.com/mathysgrapotte/stimulus-py"
+      tool_dev_url: "https://github.com/mathysgrapotte/stimulus-py"
+      licence: ["MIT"]
+
+## TODO nf-core: Add a description of all of the variables used as input
+input:
+  # Only when we have meta
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+  
+  ## TODO nf-core: Delete / customise this example input
+    - model:
+        type: file
+        description: The model file
+    - model_config: 
+        type: 
+        description: The file path for the config file
+    - data: 
+        type: 
+        description: The data file
+    - experiment_config: 
+        type: 
+        description: |
+          The json used to modify the data. 
+          Inside it has the experiment name as specified in the experimets.py, 
+          this will then be dinamically imported during training. 
+          It is necessary to recover how the user specified the encoding of the data. 
+          Data is encoded on the fly.
+
+    
+
+          
+
+## TODO nf-core: Add a description of all of the variables used as output
+output:
+  - weights:
+  #Only when we have meta
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+  ## TODO nf-core: Delete / customise this example output
+    - optimizer:
+        type: file
+        description: Sorted BAM/CRAM/SAM file
+    - metrics: 
+        type: 
+        description: 
+          
+  - versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@caraiz2001"
+maintainers:
+  - "@caraiz2001"
