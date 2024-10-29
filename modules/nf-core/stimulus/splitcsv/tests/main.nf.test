@@ -15,7 +15,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test'], 
+                    [ id:'test'],
                      file('https://raw.githubusercontent.com/nf-core/test-datasets/deepmodeloptim/testdata/dna_experiment/experiment_config.json', checkIfExists: true)
                 ]
                 input[1] = [
@@ -42,7 +42,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test'], 
+                    [ id:'test'],
                      file('https://raw.githubusercontent.com/nf-core/test-datasets/deepmodeloptim/testdata/dna_experiment/experiment_config.json', checkIfExists: true)
                 ]
                 input[1] = [

@@ -11,8 +11,8 @@ tools:
       documentation: ""
       tool_dev_url: ""
       doi: ""
-      licence: 
-      identifier: 
+      licence:
+      identifier:
 
 input:
   - - meta:
@@ -20,15 +20,15 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-  
+
     - split_json:
         type: file
-        description: json file with the data split configuration 
+        description: json file with the data split configuration
         pattern: "*.json"
-  
+
   - data_csv:
         type: file
-        description: csv file with the data for training the models 
+        description: csv file with the data for training the models
         pattern: "*.csv"
 
 
@@ -44,7 +44,7 @@ output:
         description: csv file splitted with stimulus
         pattern: "*.csv"
 
-          
+
   - versions:
     - "versions.yml":
         type: file
