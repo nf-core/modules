@@ -12,9 +12,9 @@ process METAMDBG_ASM {
     val(input_type)
 
     output:
-    tuple val(meta), path("*.fasta.gz"), emit: contigs
-    tuple val(meta), path("*.log")     , emit: log
-    path "versions.yml"                , emit: versions
+    tuple val(meta), path("contigs.fasta.gz"), emit: contigs
+    tuple val(meta), path("metaMDBG.log")    , emit: log
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
