@@ -36,6 +36,8 @@ process PARABRICKS_FQ2BAM {
     def interval_file_command = interval_file ? interval_file.collect{"--interval-file $it"}.join(' ') : ""
     def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
     """
+    ln -sf \$(readlink $fasta) $index/$fasta
+
     pbrun \\
         fq2bam \\
         --low-memory \\
