@@ -44,13 +44,27 @@ nextflow_process {
                             "experiment.xenium",
                             "transcripts.zarr.zip",
                             "analysis_summary.html",
-                            "cell_feature_matrix.zarr.zip"
+                            "cell_feature_matrix.zarr.zip",
+                            "differential_expression.csv",
+                            "components.csv",
+                            "projection.csv",
+                            "variance.csv",
+                            "metrics_summary.csv"
                         ]}
                     ).match()
                 },
                 { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'analysis_summary.html' }).exists() },
-                { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'cell_feature_matrix.h5' }).exists() },
+                { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'analysis.zarr.zip' }).exists() },
+                { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'experiment.xenium' }).exists() },
+                { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.zarr.zip' }).exists() },
+                { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'analysis_summary.html' }).exists() },
                 { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'cell_feature_matrix.zarr.zip' }).exists() },
+                { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'differential_expression.csv' }).exists() },
+                { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'components.csv' }).exists() },
+                { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'projection.csv' }).exists() },
+                { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'variance.csv' }).exists() },
+                { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'metrics_summary.csv' }).exists() },
+
             )
         }
     }
