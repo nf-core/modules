@@ -15,37 +15,42 @@ tools:
       licence: ["MIT"]
 
 input:
-  - - model:
-        type: file
-        description: "The model .py file."
-        pattern: "*.py"
-  - - weights:
-        type: file
-        description: "Model weights .pt file."
-        pattern: "*.pt"
-  - - metrics:
-        type: file
-        description: "The file path for the metrics file obtained during tuning."
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
+    - data:
+        type: file
+        description: "List of data files to be used for the analysis."
+        pattern: ".csv"
     - experiment_config:
         type: file
         description: "The experiment config used to modify the data."
         pattern: "*.yml"
-  - - model_config:
+    - model_config:
         type: file
         description: "The tune config file."
         pattern: "*.yml"
-  - - data:
+    - weights:
         type: file
-        description: "List of data files to be used for the analysis."
+        description: "Model weights .pt file."
+        pattern: "*.pt"
+    - optimizer:
+        type: file
+        description: "The best optimizer used during training."
+        pattern: "*.pt"
+    - metrics:
+        type: file
+        description: "The file path for the metrics file obtained during tuning."
+        pattern: "*.csv"
+  - - model:
+        type: file
+        description: "The model .py file."
+        pattern: "*.py"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:        
-  - analysis:
+  - tune_train:
     - meta:
         type: map
         description: |
@@ -54,6 +59,13 @@ output:
     - "performance_tune_train/":
         type: directory
         description: "Output directory with images detailing performance during tuning/training."
+
+  - robustness:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
     - "performance_robustness/":
         type: directory
         description: "Output directory with images detailing model robustness."

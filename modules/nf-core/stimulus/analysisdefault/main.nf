@@ -12,15 +12,12 @@ process STIMULUS_ANALYSISDEFAULT {
     container "docker.io/mathysgrapotte/stimulus-py:latest"
 
     input:
+    tuple val(meta), path(data), path(experiment_config), path(model_config), path(weights), path(optimizer), path(metrics)
     path(model)
-    path(weights)
-    path(metrics)
-    tuple val(meta), path(experiment_config)
-    path(model_config)
-    path(data)
 
     output:
-    tuple val(meta), path("performance_tune_train/"), path("performance_robustness/"), emit: analysis
+    tuple val(meta), path("performance_tune_train/"), emit: tune_train 
+    tuple val(meta), path("performance_robustness/"), emit: robustness
     path "versions.yml"           , emit: versions
 
     when:
