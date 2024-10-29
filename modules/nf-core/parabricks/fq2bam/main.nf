@@ -39,7 +39,7 @@ process PARABRICKS_FQ2BAM {
     pbrun \\
         fq2bam \\
         --low-memory \\
-        --ref $fasta \\
+        --ref $task.workDir \\
         $in_fq_command \\
         --read-group-sm $meta.id \\
         --out-bam ${prefix}.bam \\
