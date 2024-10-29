@@ -55,10 +55,10 @@ data_raw = get_counts(sce_raw)
 
 sc = soupx.SoupChannel(data_raw, data, calcSoupProfile=False)
 
-soupProf = ro.r(
+soup_prof = ro.r(
     "function(data) { data.frame(row.names = rownames(data), est = rowSums(data)/sum(data), counts = rowSums(data)) }"
 )(data)
-sc = soupx.setSoupProfile(sc, soupProf)
+sc = soupx.setSoupProfile(sc, soup_prof)
 sc = soupx.setClusters(sc, soupx_groups)
 sc = soupx.autoEstCont(sc, doPlot=False)
 out = soupx.adjustCounts(sc, roundToInt=False)
