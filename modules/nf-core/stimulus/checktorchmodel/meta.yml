@@ -15,47 +15,46 @@ tools:
       licence: ["MIT"]
 
 input:
-    - - original_csv:
-          type: file
-          description: A CSV file with untransformed data
-          pattern: "*.csv"
-          ontologies:
-            - edam: "http://edamontology.org/format_3752"
-    - - experiment_config:
-          type: file
-          description: A YAML file describing data transformations
-          pattern: "*.{yml,yaml}"
-          ontologies:
-            - edam: "http://edamontology.org/format_3464"
-    - - model:
-          type: file
-          description: Python source file containing the model
-          pattern: "*.py"
-          ontologies:
-            - edam: "http://edamontology.org/format_3996"
-    - - ray_tune_config:
-          type: file
-          description: YAML file containing RayTune tuning parameters
-          pattern: "*.{yml,yaml}"
-          ontologies:
-            - edam: "http://edamontology.org/format_3750"
-    - - initial_weights:
-          type: file
-          description: An optional SafeTensors file containing initial weights
-          pattern: "*.safetensors"
-        
+  - - original_csv:
+        type: file
+        description: A CSV file with untransformed data
+        pattern: "*.csv"
+        ontologies:
+          - edam: "http://edamontology.org/format_3752"
+  - - experiment_config:
+        type: file
+        description: A YAML file describing data transformations
+        pattern: "*.{yml,yaml}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3464"
+  - - model:
+        type: file
+        description: Python source file containing the model
+        pattern: "*.py"
+        ontologies:
+          - edam: "http://edamontology.org/format_3996"
+  - - ray_tune_config:
+        type: file
+        description: YAML file containing RayTune tuning parameters
+        pattern: "*.{yml,yaml}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750"
+  - - initial_weights:
+        type: file
+        description: An optional SafeTensors file containing initial weights
+        pattern: "*.safetensors"
 
 output:
   - log:
-    - "*_modelcheck.log":
-        type: file
-        description: Model check output
-        pattern: "*.log"
+      - "*_modelcheck.log":
+          type: file
+          description: Model check output
+          pattern: "*.log"
   - versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 
 authors:
   - "@mathysgrapotte"
