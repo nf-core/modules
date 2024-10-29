@@ -17,10 +17,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/input_data_with_split.csv', checkIfExists: true),
-                input[1] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/experiment_config.yaml', checkIfExists: true),
-                input[2] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/dna_to_float_model.py', checkIfExists: true),
-                input[3] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/tune_config.yaml', checkIfExists: true),
+                input[0] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/input_data_with_split.csv', checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/experiment_config.yaml', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/dna_to_float_model.py', checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/tune_config.yaml', checkIfExists: true)
                 input[4] = []
                 """
             }
@@ -46,10 +46,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/input_data_with_split.csv', checkIfExists: true),
-                input[1] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/experiment_config.yaml', checkIfExists: true),
-                input[2] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/dna_to_float_model.py', checkIfExists: true),
-                input[3] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/tune_config.yaml', checkIfExists: true),
+                input[0] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/input_data_with_split.csv', checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/experiment_config.yaml', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/dna_to_float_model.py', checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/tune_config.yaml', checkIfExists: true)
                 input[4] = []
                 """
             }
