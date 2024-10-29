@@ -4,8 +4,6 @@ process PARABRICKS_FQ2BAM {
 
     container "nvcr.io/nvidia/clara/clara-parabricks:4.3.2-1"
 
-    stageInMode 'copy'
-
     input:
     tuple val(meta), path(reads), path(interval_file)
     tuple val(meta2), path(fasta)
@@ -37,7 +35,6 @@ process PARABRICKS_FQ2BAM {
     def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
     """
     ln -sf \$(readlink $fasta) $index/$fasta
-    cp $fasta $index/$fasta
 
     pbrun \\
         fq2bam \\
