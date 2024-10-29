@@ -9,7 +9,7 @@ nextflow_process {
     tag "parabricks"
     tag "parabricks/fq2bam"
 
-    test("parabricks_fq2bam_pe_default") {
+    test("sarscov2 - fastq.gz - paired-end") {
 
         when {
             process {
@@ -42,7 +42,7 @@ nextflow_process {
 
     }
 
-    test("parabricks_fq2bam_se_default") {
+    test("sarscov2 - fastq.gz - single-end") {
 
         when {
             process {
@@ -73,7 +73,7 @@ nextflow_process {
 
     }
 
-    test("parabricks_fq2bam_se_default_stub") {
+    test("sarscov2 - fastq.gz - single-end - stub") {
 
         options "-stub"
 
