@@ -1,22 +1,31 @@
 process PARABRICKS_FQ2BAM {
     tag "$meta.id"
     label 'process_high'
+    label 'process_gpu'
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.3.0-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.3.2-1"
+
+    /*
+    NOTE: Parabricks requires the files to be non-symlinked
+    Do not change the stageInMode to soft linked! This is default on Nextflow.
+    If you change this setting be careful.
+    */
+    stageInMode "copy"
 
     input:
-    tuple val(meta), path(reads), path(interval_file)
-    tuple val(meta2), path(fasta)
-    tuple val(meta3), path(index)
-    path known_sites
+    tuple val(meta), path(reads)
+    tuple val(meta2), path(interval_file)
+    tuple val(meta3), path(fasta)
+    tuple val(meta4), path(index)
+    tuple val(meta5), path(known_sites)
 
     output:
     tuple val(meta), path("*.bam")                , emit: bam
     tuple val(meta), path("*.bai")                , emit: bai
     path "versions.yml"                           , emit: versions
-    path "qc_metrics", optional:true              , emit: qc_metrics
-    path("*.table"), optional:true                , emit: bqsr_table
-    path("duplicate-metrics.txt"), optional:true  , emit: duplicate_metrics
+    tuple val(meta), path "qc_metrics", optional:true              , emit: qc_metrics
+    tuple val(meta), path("*.table"), optional:true                , emit: bqsr_table
+    tuple val(meta), path("duplicate-metrics.txt"), optional:true  , emit: duplicate_metrics
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,10 +41,10 @@ process PARABRICKS_FQ2BAM {
     def known_sites_command = known_sites ? known_sites.collect{"--knownSites $it"}.join(' ') : ""
     def known_sites_output = known_sites ? "--out-recal-file ${prefix}.table" : ""
     def interval_file_command = interval_file ? interval_file.collect{"--interval-file $it"}.join(' ') : ""
+    def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
     """
-
     INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
-    mv $fasta \$INDEX
+    cp $fasta \$INDEX
 
     pbrun \\
         fq2bam \\
@@ -46,7 +55,7 @@ process PARABRICKS_FQ2BAM {
         $known_sites_command \\
         $known_sites_output \\
         $interval_file_command \\
-        --num-gpus $task.accelerator.request \\
+        $num_gpus \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
