@@ -5,53 +5,25 @@
                 "versions.yml:md5,d76e870d71abf94ed9ae972a08b83f63"
             ],
             [
-                "clusters.csv:md5,dc81c4f477e1a80b693818f7bfd3d8bb",
-                "clusters.csv:md5,7acdd6883a131ab93188ddbae46a876b",
-                "clusters.csv:md5,c50cc9ff364548abbf350d4855184fd2",
-                "clusters.csv:md5,e3baf175f56e18c414b77ffea0e3f68e",
-                "clusters.csv:md5,431fbab57e5bce8e75487b1a23a20a04",
-                "clusters.csv:md5,26c51a9ffb3747c15feef9709b5053cc",
-                "clusters.csv:md5,217d240dd587eec8814770bb31db8b95",
-                "clusters.csv:md5,701edc649ec0f894154bfc1cc8c4c3e4",
-                "clusters.csv:md5,d6c183c0491cdba01a91a77fb826a2f7",
-                "clusters.csv:md5,12656931988f612717909b9c41ba56f5",
-                "differential_expression.csv:md5,7c66ba72a51ca562e8a47f3ef0acfd2d",
-                "differential_expression.csv:md5,e10a431911c1d9a7d5a231d0837153a3",
-                "differential_expression.csv:md5,897666356892864b17c8d3881b3471cb",
-                "differential_expression.csv:md5,083df9f6b72d6101a8f318034ed725f2",
-                "differential_expression.csv:md5,d2f8ffc1bd1141361f3e839997bd58b4",
-                "differential_expression.csv:md5,d0d62620461c445eb2abccdbf9aedf26",
-                "differential_expression.csv:md5,3c0f1228921219cd8b16c175ac287f7f",
-                "differential_expression.csv:md5,1368d8e4c302c435ba794ccb7e398952",
-                "differential_expression.csv:md5,5d128e956c36d0e79cf34a8944e11e0b",
-                "differential_expression.csv:md5,084a2e6a4360d5e663df624f6ef732ab",
-                "components.csv:md5,0c53cf8c027928fd2a4999ef7bfc8acc",
+                "analysis.zarr.zip:md5,9abe2ae4a16b19dcb611ead07d88bcc1",
                 "dispersion.csv:md5,e8b1abb880ece8fb730ce34a15f958b4",
                 "features_selected.csv:md5,c5e32d69f001f938ed316d2108a21e00",
-                "projection.csv:md5,930a9e650f3164540ae251a939e4adc8",
-                "variance.csv:md5,7d803a2c24f49b699f73728226ee0451",
-                "projection.csv:md5,a69578a8549513482d66940b62532670",
-                "cell_boundaries.csv.gz:md5,8b4f2aa455a6fb14b2669a42db32ea7e",
-                "cell_boundaries.parquet:md5,e55d6a7fbec336103994baad8c8e4a9a",
                 "cell_feature_matrix.h5:md5,96cb400f1b1dd6f8796daea0ad5c74e6",
+                "cell_feature_matrix.zarr.zip:md5,ba2f1a27a878c15125f41e8c14749b7b",
                 "barcodes.tsv.gz:md5,04ea06796d6b28517c288904ca043582",
                 "features.tsv.gz:md5,7862242129681900a9cc4086dc83b62e",
                 "matrix.mtx.gz:md5,489f86fbd8d65d6b973bb9cc7c5a76f1",
-                "cells.csv.gz:md5,3cef2d7cc8cfba1d47bdb7c65c3d5d5f",
-                "cells.parquet:md5,9b30b35ab961d2d243a1426e8dc980fe",
+                "experiment.xenium:md5,0043cfce849ff40087421aca2df6142a",
                 "gene_panel.json:md5,8890dd5fd90706e751554ac3fdfdedde",
                 "morphology.ome.tif:md5,6b65fff28a38a001b8f25061737fbf9b",
-                "morphology_focus_0000.ome.tif:md5,90e796ad634d14e62cf2ebcadf2eaf98",
-                "nucleus_boundaries.csv.gz:md5,e417b6e293298870956d42c7106cbd0c",
-                "nucleus_boundaries.parquet:md5,bacbfc3c2e956d899e1d8ccba5dd7c5e",
-                "transcripts.parquet:md5,c0f40d5c61b87404bc9efb84ff0563a8"
+                "morphology_focus_0000.ome.tif:md5,90e796ad634d14e62cf2ebcadf2eaf98"
             ]
         ],
         "meta": {
             "nf-test": "0.9.0",
             "nextflow": "24.04.4"
         },
-        "timestamp": "2024-10-23T23:04:54.909612"
+        "timestamp": "2024-10-29T21:54:38.744837"
     },
     "xeniumranger import-segmentation nuclei npy": {
         "content": [
@@ -59,39 +31,15 @@
                 "versions.yml:md5,d76e870d71abf94ed9ae972a08b83f63"
             ],
             [
-                "analysis.zarr.zip:md5,ed324c1eecee31e87660909d532bc788",
-                "clusters.csv:md5,dc81c4f477e1a80b693818f7bfd3d8bb",
-                "clusters.csv:md5,7acdd6883a131ab93188ddbae46a876b",
-                "clusters.csv:md5,c50cc9ff364548abbf350d4855184fd2",
-                "clusters.csv:md5,e3baf175f56e18c414b77ffea0e3f68e",
-                "clusters.csv:md5,431fbab57e5bce8e75487b1a23a20a04",
-                "clusters.csv:md5,26c51a9ffb3747c15feef9709b5053cc",
-                "clusters.csv:md5,217d240dd587eec8814770bb31db8b95",
-                "clusters.csv:md5,701edc649ec0f894154bfc1cc8c4c3e4",
-                "clusters.csv:md5,d6c183c0491cdba01a91a77fb826a2f7",
-                "clusters.csv:md5,12656931988f612717909b9c41ba56f5",
-                "differential_expression.csv:md5,7c66ba72a51ca562e8a47f3ef0acfd2d",
-                "differential_expression.csv:md5,e10a431911c1d9a7d5a231d0837153a3",
-                "differential_expression.csv:md5,897666356892864b17c8d3881b3471cb",
-                "differential_expression.csv:md5,083df9f6b72d6101a8f318034ed725f2",
-                "differential_expression.csv:md5,d2f8ffc1bd1141361f3e839997bd58b4",
-                "differential_expression.csv:md5,d0d62620461c445eb2abccdbf9aedf26",
-                "differential_expression.csv:md5,3c0f1228921219cd8b16c175ac287f7f",
-                "differential_expression.csv:md5,1368d8e4c302c435ba794ccb7e398952",
-                "differential_expression.csv:md5,5d128e956c36d0e79cf34a8944e11e0b",
-                "differential_expression.csv:md5,084a2e6a4360d5e663df624f6ef732ab",
-                "components.csv:md5,0c53cf8c027928fd2a4999ef7bfc8acc",
+                "analysis.zarr.zip:md5,cfa093d4e1747c5759c9e8901141f528",
                 "dispersion.csv:md5,e8b1abb880ece8fb730ce34a15f958b4",
                 "features_selected.csv:md5,c5e32d69f001f938ed316d2108a21e00",
-                "projection.csv:md5,930a9e650f3164540ae251a939e4adc8",
-                "variance.csv:md5,7d803a2c24f49b699f73728226ee0451",
-                "projection.csv:md5,a69578a8549513482d66940b62532670",
                 "cell_feature_matrix.h5:md5,96cb400f1b1dd6f8796daea0ad5c74e6",
-                "cell_feature_matrix.zarr.zip:md5,d816be002025c3977ea9e27fa8ee67dd",
+                "cell_feature_matrix.zarr.zip:md5,c8f3c8d1c9ad986719baf004e21f5383",
                 "barcodes.tsv.gz:md5,04ea06796d6b28517c288904ca043582",
                 "features.tsv.gz:md5,7862242129681900a9cc4086dc83b62e",
                 "matrix.mtx.gz:md5,489f86fbd8d65d6b973bb9cc7c5a76f1",
-                "experiment.xenium:md5,46a106d37e13571e8cf4eb28131feadb",
+                "experiment.xenium:md5,4d923a63dfb2546015c634b8a999a866",
                 "gene_panel.json:md5,8890dd5fd90706e751554ac3fdfdedde",
                 "morphology.ome.tif:md5,6b65fff28a38a001b8f25061737fbf9b",
                 "morphology_focus_0000.ome.tif:md5,90e796ad634d14e62cf2ebcadf2eaf98"
@@ -101,7 +49,7 @@
             "nf-test": "0.9.0",
             "nextflow": "24.04.4"
         },
-        "timestamp": "2024-10-29T15:04:11.416299"
+        "timestamp": "2024-10-29T21:31:22.857543"
     },
     "xeniumranger import-segmentation segmentation csv": {
         "content": [
@@ -109,39 +57,15 @@
                 "versions.yml:md5,d76e870d71abf94ed9ae972a08b83f63"
             ],
             [
-                "analysis.zarr.zip:md5,18983e26cc1cb59b54ec35303f91a9da",
-                "clusters.csv:md5,f70de65852e7bb1bbd4e85ebd73c444e",
-                "clusters.csv:md5,722e5776f14c66d1439a906d2dfd782c",
-                "clusters.csv:md5,ad569cf626cb81c3dceec703b0bdcea2",
-                "clusters.csv:md5,721a0e7c24df44fad267700eccd7824a",
-                "clusters.csv:md5,b6661fc744a7f0693c2266c5ca817874",
-                "clusters.csv:md5,12a7f349fc7f5b8842fb29db88c582d7",
-                "clusters.csv:md5,2b7763cc6f03c2edb54fbcd0da5065b1",
-                "clusters.csv:md5,e5c7d86c11df05486404dfcd65e6db23",
-                "clusters.csv:md5,98ea10c79df708321eb7b29938eab280",
-                "clusters.csv:md5,d90b37aa721ae8640174f51af938dd41",
-                "differential_expression.csv:md5,7c66ba72a51ca562e8a47f3ef0acfd2d",
-                "differential_expression.csv:md5,e10a431911c1d9a7d5a231d0837153a3",
-                "differential_expression.csv:md5,897666356892864b17c8d3881b3471cb",
-                "differential_expression.csv:md5,083df9f6b72d6101a8f318034ed725f2",
-                "differential_expression.csv:md5,d2f8ffc1bd1141361f3e839997bd58b4",
-                "differential_expression.csv:md5,d0d62620461c445eb2abccdbf9aedf26",
-                "differential_expression.csv:md5,3c0f1228921219cd8b16c175ac287f7f",
-                "differential_expression.csv:md5,1368d8e4c302c435ba794ccb7e398952",
-                "differential_expression.csv:md5,5d128e956c36d0e79cf34a8944e11e0b",
-                "differential_expression.csv:md5,084a2e6a4360d5e663df624f6ef732ab",
-                "components.csv:md5,0c53cf8c027928fd2a4999ef7bfc8acc",
+                "analysis.zarr.zip:md5,4b40b23fd833ff34c451094af96346e5",
                 "dispersion.csv:md5,e8b1abb880ece8fb730ce34a15f958b4",
                 "features_selected.csv:md5,c5e32d69f001f938ed316d2108a21e00",
-                "projection.csv:md5,1f0778860f5a0036b2fca7dbafb8328d",
-                "variance.csv:md5,7d803a2c24f49b699f73728226ee0451",
-                "projection.csv:md5,e826321c62b914162a1cebcbf616f5fa",
                 "cell_feature_matrix.h5:md5,5d74ea595561e0300b6c3e5ec8d06fff",
-                "cell_feature_matrix.zarr.zip:md5,6db1deed7929aca03efe2492dbe8bc88",
+                "cell_feature_matrix.zarr.zip:md5,0795648b0bb15ffa846d2bafa847dcfc",
                 "barcodes.tsv.gz:md5,97496a9b448d9380cff0575b8e7a6f57",
                 "features.tsv.gz:md5,7862242129681900a9cc4086dc83b62e",
                 "matrix.mtx.gz:md5,f93ed82a2a74c154392fc6237642f1d2",
-                "experiment.xenium:md5,19801ac341620226e42dfa885fe059d5",
+                "experiment.xenium:md5,2a6b216730b6bd5180515b3252980e39",
                 "gene_panel.json:md5,8890dd5fd90706e751554ac3fdfdedde",
                 "morphology.ome.tif:md5,6b65fff28a38a001b8f25061737fbf9b",
                 "morphology_focus_0000.ome.tif:md5,90e796ad634d14e62cf2ebcadf2eaf98"
@@ -151,7 +75,7 @@
             "nf-test": "0.9.0",
             "nextflow": "24.04.4"
         },
-        "timestamp": "2024-10-29T15:18:15.5267"
+        "timestamp": "2024-10-29T21:45:41.668014"
     },
     "xeniumranger import-segmentation stub": {
         "content": [
@@ -192,39 +116,15 @@
                 "versions.yml:md5,d76e870d71abf94ed9ae972a08b83f63"
             ],
             [
-                "analysis.zarr.zip:md5,978244a324238af8e3113c507bc52fab",
-                "clusters.csv:md5,dc81c4f477e1a80b693818f7bfd3d8bb",
-                "clusters.csv:md5,7acdd6883a131ab93188ddbae46a876b",
-                "clusters.csv:md5,c50cc9ff364548abbf350d4855184fd2",
-                "clusters.csv:md5,e3baf175f56e18c414b77ffea0e3f68e",
-                "clusters.csv:md5,431fbab57e5bce8e75487b1a23a20a04",
-                "clusters.csv:md5,26c51a9ffb3747c15feef9709b5053cc",
-                "clusters.csv:md5,217d240dd587eec8814770bb31db8b95",
-                "clusters.csv:md5,701edc649ec0f894154bfc1cc8c4c3e4",
-                "clusters.csv:md5,d6c183c0491cdba01a91a77fb826a2f7",
-                "clusters.csv:md5,12656931988f612717909b9c41ba56f5",
-                "differential_expression.csv:md5,7c66ba72a51ca562e8a47f3ef0acfd2d",
-                "differential_expression.csv:md5,e10a431911c1d9a7d5a231d0837153a3",
-                "differential_expression.csv:md5,897666356892864b17c8d3881b3471cb",
-                "differential_expression.csv:md5,083df9f6b72d6101a8f318034ed725f2",
-                "differential_expression.csv:md5,d2f8ffc1bd1141361f3e839997bd58b4",
-                "differential_expression.csv:md5,d0d62620461c445eb2abccdbf9aedf26",
-                "differential_expression.csv:md5,3c0f1228921219cd8b16c175ac287f7f",
-                "differential_expression.csv:md5,1368d8e4c302c435ba794ccb7e398952",
-                "differential_expression.csv:md5,5d128e956c36d0e79cf34a8944e11e0b",
-                "differential_expression.csv:md5,084a2e6a4360d5e663df624f6ef732ab",
-                "components.csv:md5,0c53cf8c027928fd2a4999ef7bfc8acc",
+                "analysis.zarr.zip:md5,658edea9fba50c928b039b872cf18ed3",
                 "dispersion.csv:md5,e8b1abb880ece8fb730ce34a15f958b4",
                 "features_selected.csv:md5,c5e32d69f001f938ed316d2108a21e00",
-                "projection.csv:md5,930a9e650f3164540ae251a939e4adc8",
-                "variance.csv:md5,7d803a2c24f49b699f73728226ee0451",
-                "projection.csv:md5,a69578a8549513482d66940b62532670",
                 "cell_feature_matrix.h5:md5,96cb400f1b1dd6f8796daea0ad5c74e6",
-                "cell_feature_matrix.zarr.zip:md5,77de6d31d3d1b0f42bd037a6a9bbbeea",
+                "cell_feature_matrix.zarr.zip:md5,f4f45065c51aec5a6b06b29de8cea46b",
                 "barcodes.tsv.gz:md5,04ea06796d6b28517c288904ca043582",
                 "features.tsv.gz:md5,7862242129681900a9cc4086dc83b62e",
                 "matrix.mtx.gz:md5,489f86fbd8d65d6b973bb9cc7c5a76f1",
-                "experiment.xenium:md5,ae76eb007f45bc08e58687841c367a44",
+                "experiment.xenium:md5,07a740c5f4a7b79657b2fb54223c6b12",
                 "gene_panel.json:md5,8890dd5fd90706e751554ac3fdfdedde",
                 "morphology.ome.tif:md5,6b65fff28a38a001b8f25061737fbf9b",
                 "morphology_focus_0000.ome.tif:md5,90e796ad634d14e62cf2ebcadf2eaf98"
@@ -234,6 +134,6 @@
             "nf-test": "0.9.0",
             "nextflow": "24.04.4"
         },
-        "timestamp": "2024-10-29T15:12:28.743916"
+        "timestamp": "2024-10-29T21:39:47.978741"
     }
 }

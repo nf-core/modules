@@ -53,7 +53,12 @@ nextflow_process {
                         'cells.parquet',
                         'cells.zarr.zip',
                         'transcripts.parquet',
-                        'transcripts.zarr.zip'
+                        'transcripts.zarr.zip',
+                        'clusters.csv',
+                        'differential_expression.csv',
+                        'components.csv',
+                        'projection.csv',
+                        'variance.csv'
                         ]}
                     ).match()
                 },
@@ -67,7 +72,11 @@ nextflow_process {
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.parquet' }).exists() },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.zarr.zip' }).exists() },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.parquet' }).exists() },
-                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.zarr.zip' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'clusters.csv' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'differential_expression.csv' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'components.csv' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'projection.csv' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'variance.csv' }).exists() },
             )
         }
     }
@@ -104,7 +113,12 @@ nextflow_process {
                         'cells.parquet',
                         'cells.zarr.zip',
                         'transcripts.parquet',
-                        'transcripts.zarr.zip'
+                        'transcripts.zarr.zip',
+                        'clusters.csv',
+                        'differential_expression.csv',
+                        'components.csv',
+                        'projection.csv',
+                        'variance.csv'
                         ]}
                     ).match()
                 },
@@ -118,7 +132,11 @@ nextflow_process {
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.parquet' }).exists() },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.zarr.zip' }).exists() },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.parquet' }).exists() },
-                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.zarr.zip' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'clusters.csv' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'differential_expression.csv' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'components.csv' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'projection.csv' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'variance.csv' }).exists() },
             )
         }
     }
@@ -154,7 +172,12 @@ nextflow_process {
                         'cells.parquet',
                         'cells.zarr.zip',
                         'transcripts.parquet',
-                        'transcripts.zarr.zip'
+                        'transcripts.zarr.zip',
+                        'clusters.csv',
+                        'differential_expression.csv',
+                        'components.csv',
+                        'projection.csv',
+                        'variance.csv'
                         ]}
                     ).match()
                 },
@@ -168,7 +191,11 @@ nextflow_process {
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.parquet' }).exists() },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.zarr.zip' }).exists() },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.parquet' }).exists() },
-                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.zarr.zip' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'clusters.csv' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'differential_expression.csv' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'components.csv' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'projection.csv' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'variance.csv' }).exists() },
             )
         }
     }
@@ -195,22 +222,39 @@ nextflow_process {
                     process.out.versions,
                     process.out.outs.get(0).get(1).findAll { file(it).name !in [
                         'analysis_summary.html',
-                        'experiment.xenium',
                         'metrics_summary.csv',
+                        'cell_boundaries.csv.gz',
+                        'cell_boundaries.parquet',
+                        'nucleus_boundaries.csv.gz',
+                        'nucleus_boundaries.parquet',
+                        'cells.csv.gz',
+                        'cells.parquet',
                         'cells.zarr.zip',
-                        'analysis.zarr.zip',
-                        'cell_feature_matrix.zarr.zip',
-                        'transcripts.zarr.zip'
+                        'transcripts.parquet',
+                        'transcripts.zarr.zip',
+                        'clusters.csv',
+                        'differential_expression.csv',
+                        'components.csv',
+                        'projection.csv',
+                        'variance.csv'
                         ]}
                     ).match()
                 },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'analysis_summary.html' }).exists() },
-                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'experiment.xenium' }).exists() },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'metrics_summary.csv' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cell_boundaries.csv.gz' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cell_boundaries.parquet' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'nucleus_boundaries.csv.gz' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'nucleus_boundaries.parquet' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.csv.gz' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.parquet' }).exists() },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cells.zarr.zip' }).exists() },
-                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'analysis.zarr.zip' }).exists() },
-                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'cell_feature_matrix.zarr.zip' }).exists() },
-                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.zarr.zip' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.parquet' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'clusters.csv' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'differential_expression.csv' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'components.csv' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'projection.csv' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'variance.csv' }).exists() },
             )
         }
     }

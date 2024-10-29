@@ -49,7 +49,8 @@ nextflow_process {
                             "components.csv",
                             "projection.csv",
                             "variance.csv",
-                            "metrics_summary.csv"
+                            "metrics_summary.csv",
+                            "clusters.csv"
                         ]}
                     ).match()
                 },
@@ -64,6 +65,7 @@ nextflow_process {
                 { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'projection.csv' }).exists() },
                 { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'variance.csv' }).exists() },
                 { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'metrics_summary.csv' }).exists() },
+                { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'clusters.csv' }).exists() },
 
             )
         }
