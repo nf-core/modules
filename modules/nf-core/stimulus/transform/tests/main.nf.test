@@ -12,14 +12,12 @@ nextflow_process {
     test("test") {
         when {
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'test'], // meta map
                     file(params.modules_testdata_base_path + "../../deepmodeloptim/testdata/dna_experiment/experiment_config.json", checkIfExists: true)
                     ]
-                input[1] = [
-                    file(params.modules_testdata_base_path + "../../deepmodeloptim/testdata/dna_experiment/input_data_with_split.csv", checkIfExists: true),
-                ]
+                input[1] = file(params.modules_testdata_base_path + "../../deepmodeloptim/testdata/dna_experiment/input_data_with_split.csv", checkIfExists: true)
                 """
             }
         }
@@ -39,14 +37,12 @@ nextflow_process {
 
         when {
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'test'], // meta map
                     file(params.modules_testdata_base_path + "../../deepmodeloptim/testdata/dna_experiment/experiment_config.json", checkIfExists: true)
                     ]
-                input[1] = [
-                    file(params.modules_testdata_base_path + "../../deepmodeloptim/testdata/dna_experiment/input_data_with_split.csv", checkIfExists: true),
-                ]
+                input[1] = file(params.modules_testdata_base_path + "../../deepmodeloptim/testdata/dna_experiment/input_data_with_split.csv", checkIfExists: true)
                 """
             }
         }

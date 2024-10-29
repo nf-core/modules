@@ -16,7 +16,7 @@ process STIMULUS_TRANSFORM {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def STIMULUS_VER = '0.0.9'
     """
     stimulus-transform-csv -c ${csv} -j ${transform_json} -o ${prefix}.csv
@@ -30,9 +30,10 @@ process STIMULUS_TRANSFORM {
 
     stub:
     def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
     def STIMULUS_VER = '0.0.9' // container not used in stub, change manually
     """
-    touch ${meta.id}_modelcheck.log
+    touch ${meta.id}.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
