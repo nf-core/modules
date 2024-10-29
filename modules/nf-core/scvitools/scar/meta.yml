@@ -31,20 +31,20 @@ input:
         pattern: "*.h5ad"
 output:
   - h5ad:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test' ]
-    - '*.h5ad':
-        type: file
-        description: AnnData file containing decontaminated counts as `adata.X`
-        pattern: "*.h5ad"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.h5ad":
+          type: file
+          description: AnnData file containing decontaminated counts as `adata.X`
+          pattern: "*.h5ad"
   - versions:
-    - versions.yml:
-        type: file
-        description: File containing software version
-        pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software version
+          pattern: "versions.yml"
 authors:
   - "@nictru"
 maintainers:
