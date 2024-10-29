@@ -1,60 +1,45 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "soupx"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Estimation and removal of cell free mRNA contamination in droplet based single cell RNA-seq data
 keywords:
-  - sort
-  - example
-  - genomics
+  - single-cell
+  - transcriptomics
+  - ambient
 tools:
   - "soupx":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: ""
-      homepage: ""
-      documentation: ""
-      tool_dev_url: ""
-      doi: ""
-      licence:
-      identifier: biotools:soupx
+      description: "Estimation and removal of cell free mRNA contamination in droplet based single cell RNA-seq data"
+      documentation: "https://rawcdn.githack.com/constantAmateur/SoupX/204b602418df12e9fdb4b68775a8b486c6504fe4/inst/doc/pbmcTutorial.html"
+      tool_dev_url: "https://github.com/constantAmateur/SoupX"
+      doi: "10.1093/gigascience/giaa151"
+      licence: ["MIT"]
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
 
-    ## TODO nf-core: Delete / customise this example input
-    - bam:
+    - h5ad_filtered:
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
-        ontologies:
-          - edam: "http://edamontology.org/format_25722"
-          - edam: "http://edamontology.org/format_2573"
-          - edam: "http://edamontology.org/format_3462"
+        description: filtered H5AD file (after CellRanger filtering)
+        pattern: "*.h5ad"
 
-## TODO nf-core: Add a description of all of the variables used as output
+    - h5ad_raw:
+        type: file
+        description: raw H5AD file (before CellRanger filtering)
+        pattern: "*.h5ad"
+
 output:
-  - bam:
-      #Only when we have meta
+  - h5ad:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      ## TODO nf-core: Delete / customise this example output
-      - "*.bam":
+      - "*.h5ad":
           type: file
-          description: Sorted BAM/CRAM/SAM file
-          pattern: "*.{bam,cram,sam}"
-          ontologies:
-            - edam: "http://edamontology.org/format_25722"
-            - edam: "http://edamontology.org/format_2573"
-            - edam: "http://edamontology.org/format_3462"
+          description: H5AD anndata object with ambient RNA removed
+          pattern: "*.h5ad"
 
   - versions:
       - "versions.yml":
