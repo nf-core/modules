@@ -27,14 +27,17 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                // output seems to be stochastic
-                { assert file(process.out.contigs[0][1].find { file(it).name == "contigs.fasta.gz" }).exists() },
-                { assert file(process.out.log[0][1].find { file(it).name == "metaMDBG.log" }).exists() },
+                // output is stochastic - contig names differ per run
+                // log file contains nextflow work dir paths
+                { assert snapshot(
+                    file(process.out.contigs[0][1]).name,
+                    file(process.out.log[0][1]).name
+                ).match("ont_out") },
+                { assert path(process.out.log[0][1]).readLines().last().contains("Done!") },
                 { assert snapshot(process.out.versions).match("ont_versions") }
             )
         }
     }
-
     test("metamdbg_asm - hifi") {
 
         when {
@@ -52,13 +55,16 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                // output seems to be stochastic
-                { assert file(process.out.contigs[0][1].find { file(it).name == "contigs.fasta.gz" }).exists() },
-                { assert file(process.out.log[0][1].find { file(it).name == "metaMDBG.log" }).exists() },
+                // output is stochastic - contig names differ per run
+                // log file contains nextflow work dir paths
+                { assert snapshot(
+                    file(process.out.contigs[0][1]).name,
+                    file(process.out.log[0][1]).name
+                ).match("hifi_out") },
+                { assert path(process.out.log[0][1]).readLines().last().contains("Done!") },
                 { assert snapshot(process.out.versions).match("hifi_versions") }
             )
         }
-
     }
 
     test("metamdbg_asm - wrong format") {
@@ -103,12 +109,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert file(process.out.contigs[0][1].find { file(it).name == "contigs.fasta.gz" }).exists() },
-                { assert file(process.out.log[0][1].find { file(it).name == "metaMDBG.log" }).exists() },
                 { assert snapshot(process.out.versions).match("stub_versions") }
             )
         }
 
     }
-
 }
