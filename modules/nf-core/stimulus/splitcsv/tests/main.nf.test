@@ -16,10 +16,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test'],
-                     file('https://raw.githubusercontent.com/nf-core/test-datasets/deepmodeloptim/testdata/dna_experiment/experiment_config.json', checkIfExists: true)
+                      file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/experiment_config.json', checkIfExists: true)
                 ]
                 input[1] = [
-                     file('https://raw.githubusercontent.com/nf-core/test-datasets/deepmodeloptim/testdata/dna_experiment/input_data_with_split.csv', checkIfExists: true)
+                     file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/input_data_with_split.csv', checkIfExists: true)
                 ]
                 """
             }
@@ -43,10 +43,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test'],
-                     file('https://raw.githubusercontent.com/nf-core/test-datasets/deepmodeloptim/testdata/dna_experiment/experiment_config.json', checkIfExists: true)
+                      file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/experiment_config.json', checkIfExists: true)
                 ]
                 input[1] = [
-                     file('https://raw.githubusercontent.com/nf-core/test-datasets/deepmodeloptim/testdata/dna_experiment/input_data_with_split.csv', checkIfExists: true)
+                     file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/input_data_with_split.csv', checkIfExists: true)
                 ]
                 """
             }
