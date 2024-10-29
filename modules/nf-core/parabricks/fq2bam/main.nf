@@ -36,11 +36,10 @@ process PARABRICKS_FQ2BAM {
     """
 
     INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
-    mv $fasta \$INDEX
 
     pbrun \\
         fq2bam \\
-        --ref \$INDEX \\
+        --ref $fasta \\
         $in_fq_command \\
         --read-group-sm $meta.id \\
         --out-bam ${prefix}.bam \\
