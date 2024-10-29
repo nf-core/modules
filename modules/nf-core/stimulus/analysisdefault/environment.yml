@@ -4,4 +4,14 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - "YOUR-TOOL-HERE"
+  - python=3.12
+  - pytorch
+  - matplotlib
+  - pandas
+  - polars
+  - ray
+  - safetensors
+  - scikit-learn
+  # NOTE https://github.com/nf-core/modules/issues/5814
+  - pip:
+      - stimulus-py
