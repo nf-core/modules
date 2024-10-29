@@ -1,0 +1,49 @@
+name: anndata_barcodes
+description: Module to append droplet barcodes to the AnnData file
+authors:
+  - "Nico Trummer <nictru32@gmail.com>"
+keywords:
+  - single-cell
+  - scRNA-seqq
+  - barcodes
+  - anndata
+tools:
+  - anndata:
+      description: |
+        anndata is a Python library specifically designed for handling |
+        and managing large-scale single-cell RNA sequencing (scRNA-seq) |
+        data. It’s part of the Scanpy ecosystem and is widely used in |
+        single-cell bioinformatics workflows.
+      homepage: |
+        https://github.com/scverse/anndata
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - h5ad:
+        type: file
+        description: |
+          AnnData file containing filtered (with background RNA removed) data
+        pattern: "*.h5ad"
+    - barcodes_csv:
+        type: file
+        description: |
+          CSV file containing all the droplet barcodes which were determined to have a > 50% posterior probability of containing cells. |
+          Barcodes are written in plain text. This information is also contained in each of the above outputs, |
+          but is included as a separate output for convenient use in certain downstream applications.
+        pattern: "*.csv"
+output:
+  - h5ad:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}.h5ad:
+          type: file
+          description: |
+            AnnData file containing the droplot barcodes appanded by barcodes.py
+          pattern: "*.h5ad"
