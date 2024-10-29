@@ -35,12 +35,10 @@ process PARABRICKS_FQ2BAM {
     def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
     """
 
-    ln -sf \$(readlink $fasta) $index/$fasta
-
     pbrun \\
         fq2bam \\
         --low-memory \\
-        --ref $index/$fasta \\
+        --ref $fasta \\
         $in_fq_command \\
         --read-group-sm $meta.id \\
         --out-bam ${prefix}.bam \\
