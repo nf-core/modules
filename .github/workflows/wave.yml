@@ -99,8 +99,8 @@ jobs:
             # --ci \
             --verbose \
             --only-changed \
-            --shard ${{ matrix.shard }}/${{ env.TOTAL_SHARDS }} \
-            --filter ${{ matrix.filter }} \
+            # --shard ${{ matrix.shard }}/${{ env.TOTAL_SHARDS }} \
+            # --filter ${{ matrix.filter }} \
             --follow-dependencies \
             --tag version \
             --update-snapshot
