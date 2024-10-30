@@ -30,7 +30,15 @@ nextflow_process {
                 script "../../../stimulus/torchtune/main.nf"
                 process {
                     """
-                    // TODO define inputs
+                    experiment_ch = Channel.of([
+                        [ id:'test'],
+                        file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/experiment_config.json', checkIfExists: true)
+                    ])
+                    input[0] = STIMULUS_SPLITCSV.out.split_csv.join(experiment_ch)
+                    input[1] = [
+                        file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/tune_config.yaml',  checkIfExists: true),
+                        file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/dna_to_float_model.py',  checkIfExists: true)
+                    ]
                     """
                 }
             }
@@ -87,7 +95,15 @@ nextflow_process {
                 script "../../../stimulus/torchtune/main.nf"
                 process {
                     """
-                    // TODO copy
+                    experiment_ch = Channel.of([
+                        [ id:'test'],
+                        file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/experiment_config.json', checkIfExists: true)
+                    ])
+                    input[0] = STIMULUS_SPLITCSV.out.split_csv.join(experiment_ch)
+                    input[1] = [
+                        file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/tune_config.yaml',  checkIfExists: true),
+                        file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/dna_to_float_model.py',  checkIfExists: true)
+                    ]
                     """
                 }
             }
