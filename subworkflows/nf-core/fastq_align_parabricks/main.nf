@@ -34,7 +34,7 @@ workflow FASTQ_ALIGN_PARABRICKS {
     ch_duplicate_metrics = ch_duplicate_metrics.mix(PARABRICKS_FQ2BAM.out.duplicate_metrics)
 
     // Apply BQSR
-    PARABRICKS_APPLYBQSR(ch_bam.map{meta, bam -> [ch_bam, ch_bai, ch_bqsr_table, ch_interval_file]}, ch_fasta)
+    PARABRICKS_APPLYBQSR(ch_bam, ch_bai, ch_bqsr_table, ch_interval_file, ch_fasta)
 
     ch_versions = ch_versions.mix(PARABRICKS_FQ2BAM.out.versions)
     ch_versions = ch_versions.mix(PARABRICKS_APPLYBQSR.out.versions)
