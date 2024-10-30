@@ -17,32 +17,32 @@ tools:
       identifier: biotools:coptr
 
 input:
-- - meta:
-      type: map
-      description: Name of the reference genome index
-  - indexfasta:
-      type: file
-      description: Fasta file(s) ending in [.fasta, .fna, .fa]
-      pattern: "*.{.fasta,.fna,.fa}"
-      ontologies:
-      - edam: "http://edamontology.org/format_1929"
+  - - meta:
+        type: map
+        description: Name of the reference genome index
+    - indexfasta:
+        type: file
+        description: Fasta file(s) ending in [.fasta, .fna, .fa]
+        pattern: "*.{.fasta,.fna,.fa}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
 
 output:
-- genome:
-  - meta:
-      type: map
-      description: name of the reference genome index
-  - '*.genomes" ':
-      type: map
-      description: index genome
-      ontologies: 
-      - edan: "http://edamontology.org/data_3210"
-      pattern: "*.{genome}"
-- versions:
-  - versions.yml:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  - genome:
+      - meta:
+          type: map
+          description: name of the reference genome index
+      - '*.genomes" ':
+          type: map
+          description: index genome
+          ontologies:
+            - edan: "http://edamontology.org/data_3210"
+          pattern: "*.{genome}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 
 authors:
   - "@ramirobarrantes"
