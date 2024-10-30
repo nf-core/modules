@@ -1,0 +1,46 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "fastqe"
+description: Compute quality stats for FASTQ files and print those stats as emoji
+keywords:
+  - fastq
+  - quality
+  - emoji
+  - qc
+tools:
+  - "fastqe":
+      description: "A tool that converts FASTQ quality scores to emoji for visualization"
+      homepage: "https://github.com/fastqe/fastqe"
+      documentation: "https://github.com/fastqe/fastqe"
+      licence: ['BSD-3-clause']
+
+input:
+  - meta:
+      type: [ "map" ]
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - reads:
+      type: [ "file" ]
+      description: FASTQ file(s)
+      pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
+
+output:
+  - meta:
+      type: [ "map" ]
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - report:
+      type: [ "file" ]
+      description: Text file containing emoji representation of quality scores
+      pattern: "*.txt"
+  - versions:
+      type: [ "file" ]
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@edmundmiller"
+maintainers:
+  - "@edmundmiller"
