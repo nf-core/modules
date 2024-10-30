@@ -36,9 +36,7 @@ process PBSV_DISCOVER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo "test" > test.txt
-    gzip test.txt
-    mv test.txt.gz ${prefix}.pbsv.svsig.gz
+    echo | gzip > ${prefix}.svsig.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
