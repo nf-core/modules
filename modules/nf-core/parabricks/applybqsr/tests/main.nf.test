@@ -90,7 +90,7 @@ nextflow_process {
         }
     }
 
-    test("human - cram - pe - intervals") {
+    test("human - cram - pe") {
 
         when {
             process {
@@ -108,8 +108,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/test.baserecalibrator.table', checkIfExists: true)
                 ]
                 input[3] = [
-                    [ id:'intervals'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
+                    [], []  // no intervals
                 ]
                 input[4] = [
                     [ id:'reference'],
