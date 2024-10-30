@@ -3,8 +3,8 @@
 import platform
 import random
 
-import numpy as np
 import anndata as ad
+import numpy as np
 import scvi
 import torch
 from scvi.external import SOLO
