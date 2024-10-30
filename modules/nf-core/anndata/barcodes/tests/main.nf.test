@@ -21,14 +21,12 @@ nextflow_process {
             process {
                 """
                 // TODO nf-core: define inputs of the process here. Example:
-                {% if has_meta %}
-                input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                ]
-                {%- else %}
-                input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                {%- endif %}
+                input[0] = Channel.value([
+                    [id:'test'] , // meta map
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_raw_matrix_5k.h5ad", checkIfExists: true)
+                ]).combine(
+                    Channel.of('CTACATTGTTTACTCT', 'GGGAATGAGTGTACGG', 'CATCCACGTAAATACG')
+                        .collectFile(newLine: true))
                 """
             }
         }
