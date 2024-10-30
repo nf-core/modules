@@ -13,21 +13,21 @@ nextflow_workflow {
     tag "bwa"
     tag "bwa/index"
 
-    test("fastq_align_parabricks_single_end") {
-
-        setup {
-            run("BWA_INDEX") {
-                script "../../../../modules/nf-core/bwa/index/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of([
-                        [ id:'test' ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                    ])
-                    """
-                }
+    setup {
+        run("BWA_INDEX") {
+            script "../../../../modules/nf-core/bwa/index/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                """
             }
         }
+    }
+
+    test("sarscov2 - fastq.gz - single end") {
 
         when {
             workflow {
@@ -55,25 +55,26 @@ nextflow_workflow {
         }
     }
 
-    // test("fastq_align_parabricks_paired_end") {
+    test("sarscov2 - fastq.gz - paired end") {
 
-    //     when {
-    //         workflow {
-    //             """
-    //             input[0] = Channel.of([[ id:'test', single_end:false ], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]
-    //          ] )
-    //             input[1] = BWA_INDEX.out.index
-    //             input[2] = false
-    //             input[3] = Channel.value([[id: 'genome'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
-    //             """
-    //         }
-    //     }
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([[ id:'test', single_end:false ],
+                        [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]
+                        ])
+                input[1] = BWA_INDEX.out.index
+                input[2] = false
+                input[3] = Channel.value([[id: 'genome'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                """
+            }
+        }
 
-    //     then {
-    //         assertAll(
-    //             { assert workflow.success},
-    //             { assert snapshot(workflow.out).match()}
-    //         )
-    //     }
-    // }
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
 }
