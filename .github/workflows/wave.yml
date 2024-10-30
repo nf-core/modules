@@ -5,8 +5,12 @@ on:
     paths:
       - "**/environment.yml"
 
+# TODO On complete call testing CI
+# TODO Skip testing CI if any changes to environment.yml
+
 env:
   WAVE_VER: "1.5.0"
+  NFTEST_VER: "0.9.1"
 
 jobs:
   gen-matrix:
@@ -78,10 +82,21 @@ jobs:
               --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }} \
               --singularity
 
-      - name: Bump Versions
+      - uses: actions/setup-java@8df1039502a15bceb9433410b1a100fbe190c53b # v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - uses: nf-core/setup-nextflow@v2
+
+      - uses: nf-core/setup-nf-test@v1
+        with:
+          version: ${{ env.NFTEST_VER }}
+
+      - name: Bump Snapshot Versions
         env:
-          NFT_DIFF: "pdiff"
-          NFT_DIFF_ARGS: "--line-numbers --width 120 --expand-tabs=2"
+          # NFT_DIFF: "pdiff"
+          # NFT_DIFF_ARGS: "--line-numbers --width 120 --expand-tabs=2"
           SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
           SENTIEON_AUTH_MECH: "GitHub Actions - token"
         run: |
