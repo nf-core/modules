@@ -19,35 +19,13 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of([
-                    [ id:'test' ], // meta map
-                    file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                    [ id:'reference' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
                 ])
                 """
             }
         }
     }
-
-    test("SRR389222 - fastq - se") {
-
-        when {
-            process {
-                """
-                input[0] = Channel.of([
-				    [ id:'test', single_end:true ], // meta map
-				    [
-				        file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz', checkIfExists: true)
-				    ]
-				])
-                input[1] = Channel.of([
-                    [ id:'test' ], // meta map
-                    file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
-                ])
-				input[2] = BWA_INDEX.out.index
-                input[3] = []
-                input[4] = []
-                """
-            }
-        }
 
         then {
             assertAll(
@@ -67,20 +45,19 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                   [ id:'reads', single_end:false],
-                   [
-                       file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true),
-                       file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_2.fastq.gz", checkIfExists: true)
-                   ],
-                   []
-               ]
-               input[1] = [
-                   [ id: 'fasta'],
-                   file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
-               ]
-               input[2] = BWA_INDEX.out.index
-               input[3] = [ ] // interval_file
-               input[4] = [ ] // known_sites
+                    [ id:'reads', single_end:false],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_2.fastq.gz", checkIfExists: true)
+                    ]
+                ]
+                input[1] = [
+                    [ id: 'fasta'],
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+                ]
+                input[2] = BWA_INDEX.out.index
+                input[3] = [ ] // interval_file
+                input[4] = [ ] // known_sites
                 """
             }
         }
@@ -105,18 +82,16 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'reads', single_end:true],
-                    [file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true)],
-                    []
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true),
                 ]
-
                 input[1] = [
                     [ id: 'reference'],
                     file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
                 ]
-               input[2] = BWA_INDEX.out.index
-               input[3] = [ ] // interval_file
-               input[4] = [ ] // known_sites
-                    """
+                input[2] = BWA_INDEX.out.index
+                input[3] = [ ] // interval_file
+                input[4] = [ ] // known_sites
+                """
             }
         }
 
@@ -142,8 +117,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:true],
-                    [file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true)],
-                    []
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true)
                 ]
 
                 input[1] = [
@@ -151,8 +125,8 @@ nextflow_process {
                     file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
                 ]
                 input[2] = BWA_INDEX.out.index
-               input[3] = [ ] // interval_file
-               input[4] = [ ] // known_sites
+                input[3] = [ ] // interval_file
+                input[4] = [ ] // known_sites
                 """
             }
         }
