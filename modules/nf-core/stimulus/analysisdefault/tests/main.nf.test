@@ -47,17 +47,17 @@ nextflow_process {
         when {
             process {
                 """
-                // TODO: some nextflow channeling here
+                config_ch = Channel.of([
+                        [ id:'test'],
+                        file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/experiment_config.json', checkIfExists: true),
+                        file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/tune_config.yaml', checkIfExists: true)
+                ])
 
-                input[0] = [
-                    [ id:'test'], // meta map
-                    // SPLIT_CSV.out.map { it => [ it [1] ] },
-                    file(params.modules_testdata_base_path + "../../deepmodeloptim/testdata/dna_experiment/experiment_config.json", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "../../deepmodeloptim/testdata/dna_experiment/tune_config.yaml", checkIfExists: true),
-                    // TORCH_TUNE.out.weights.map { it => [ it [1] ] },
-                    // TORCH_TUNE.out.optimizer.map { it => [ it [1] ] },
-                    // TORCH_TUNE.out.metrics.map { it => [ it [1] ] },
-                    ]
+                split_csv_ch = STIMULUS_SPLITCSV.out.split_csv.join(config_ch)
+                weights_ch = split_csv_ch.join(STIMULUS_TORCHTUNE.out.weights)
+                optimizer_ch = weights_ch.join(STIMULUS_TORCHTUNE.out.optimizer)
+                metrics_ch = optimizer_ch.join(STIMULUS_TORCHTUNE.out.metrics)
+                input[0] = metrics_ch
                 input[1] = file(params.modules_testdata_base_path + "../../deepmodeloptim/testdata/dna_experiment/dna_to_float_model.py", checkIfExists: true)
                 """
             }
@@ -112,7 +112,18 @@ nextflow_process {
         when {
             process {
                 """
-                // TODO copy
+                config_ch = Channel.of([
+                        [ id:'test'],
+                        file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/experiment_config.json', checkIfExists: true),
+                        file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/tune_config.yaml', checkIfExists: true)
+                ])
+
+                split_csv_ch = STIMULUS_SPLITCSV.out.split_csv.join(config_ch)
+                weights_ch = split_csv_ch.join(STIMULUS_TORCHTUNE.out.weights)
+                optimizer_ch = weights_ch.join(STIMULUS_TORCHTUNE.out.optimizer)
+                metrics_ch = optimizer_ch.join(STIMULUS_TORCHTUNE.out.metrics)
+                input[0] = metrics_ch
+                input[1] = file(params.modules_testdata_base_path + "../../deepmodeloptim/testdata/dna_experiment/dna_to_float_model.py", checkIfExists: true)
                 """
             }
         }
