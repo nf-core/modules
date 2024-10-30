@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 
 import platform
-import random
 
 import anndata as ad
-import numpy as np
 import scvi
 import torch
 from scvi.external import SOLO
@@ -13,10 +11,6 @@ from threadpoolctl import threadpool_limits
 
 torch.set_float32_matmul_precision("medium")
 scvi.settings.seed = 0
-torch.manual_seed(0)
-np.random.seed(0)
-random.seed(0)
-torch.use_deterministic_algorithms(True)
 
 threadpool_limits(int("${task.cpus}"))
 scvi.settings.num_threads = int("${task.cpus}")
@@ -54,7 +48,7 @@ def train_model(model):
 
     for batch_size in generate_batch_sizes():
         try:
-            model.train(batch_size=batch_size, max_epochs=int("${max_epochs}"))
+            model.train(batch_size=batch_size, max_epochs=int("${max_epochs}") if "${max_epochs}" else None)
             break
         except Exception as e:
             print(f"Failed with batch size {batch_size}: {e}")
