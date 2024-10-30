@@ -27,18 +27,6 @@ nextflow_process {
         }
     }
 
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    bam(process.out.bam[0][1]).getReadsMD5(),
-                    process.out.bai,
-                    process.out.versions
-                ).match() }
-            )
-        }
-    }
-
     test("sarscov2 - fastq.gz - paired-end") {
 
         when {
