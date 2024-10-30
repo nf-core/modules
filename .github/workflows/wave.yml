@@ -82,52 +82,57 @@ jobs:
               --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }} \
               --singularity
 
-      - uses: actions/setup-java@8df1039502a15bceb9433410b1a100fbe190c53b # v4
-        with:
-          distribution: "temurin"
-          java-version: "17"
-
-      - uses: nf-core/setup-nextflow@v2
-
-      - uses: nf-core/setup-nf-test@v1
-        with:
-          version: ${{ env.NFTEST_VER }}
-
-      - name: Bump Snapshot Versions
-        env:
-          # NFT_DIFF: "pdiff"
-          # NFT_DIFF_ARGS: "--line-numbers --width 120 --expand-tabs=2"
-          SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
-          SENTIEON_AUTH_MECH: "GitHub Actions - token"
-        run: |
-          # use "docker_self_hosted" if it runs on self-hosted runner and matrix.profile=docker
-          if [ "${{ matrix.profile }}" == "docker" ]; then
-            PROFILE="docker_self_hosted"
-          else
-            PROFILE=${{ matrix.profile }}
-          fi
-
-          NFT_WORKDIR=~ \
-          nf-test test \
-            --profile=${{ matrix.profile }} \
-            --tap=test.tap \
-            # --ci \
-            --verbose \
-            --only-changed \
-            # --shard ${{ matrix.shard }}/${{ env.TOTAL_SHARDS }} \
-            # --filter ${{ matrix.filter }} \
-            --follow-dependencies \
-            --tag version \
-            --update-snapshot
-
-      - name: Commit & push version bumps
-        run: |
-          git config user.email "core@nf-co.re"
-          git config user.name "nf-core-bot"
-          git config push.default upstream
-          git add .
-          git status
-          git commit -m "[automated] Bump versions snapshot"
-          git push
-
     # TODO Build from Dockerfiles
+
+  # bump-versions:
+  #   needs: gen-matrix
+  #   name: bump-versions
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/setup-java@8df1039502a15bceb9433410b1a100fbe190c53b # v4
+  #       with:
+  #         distribution: "temurin"
+  #         java-version: "17"
+
+  #     - uses: nf-core/setup-nextflow@v2
+
+  #     - uses: nf-core/setup-nf-test@v1
+  #       with:
+  #         version: ${{ env.NFTEST_VER }}
+
+  #     - name: Bump Snapshot Versions
+  #       env:
+  #         # NFT_DIFF: "pdiff"
+  #         # NFT_DIFF_ARGS: "--line-numbers --width 120 --expand-tabs=2"
+  #         SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
+  #         SENTIEON_AUTH_MECH: "GitHub Actions - token"
+  #       run: |
+  #         # use "docker_self_hosted" if it runs on self-hosted runner and matrix.profile=docker
+  #         if [ "${{ matrix.profile }}" == "docker" ]; then
+  #           PROFILE="docker_self_hosted"
+  #         else
+  #           PROFILE=${{ matrix.profile }}
+  #         fi
+
+  #         NFT_WORKDIR=~ \
+  #         nf-test test \
+  #           --profile=${{ matrix.profile }} \
+  #           --tap=test.tap \
+  #           # --ci \
+  #           --verbose \
+  #           --only-changed \
+  #           # --shard ${{ matrix.shard }}/${{ env.TOTAL_SHARDS }} \
+  #           # --filter ${{ matrix.filter }} \
+  #           --follow-dependencies \
+  #           --tag version \
+  #           --update-snapshot
+
+  #     - name: Commit & push version bumps
+  #       run: |
+  #         git config user.email "core@nf-co.re"
+  #         git config user.name "nf-core-bot"
+  #         git config push.default upstream
+  #         git add .
+  #         git status
+  #         git commit -m "[automated] Bump versions snapshot"
+  #         git push
