@@ -8,15 +8,15 @@ process PARABRICKS_FQ2BAM {
     tuple val(meta), path(reads)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(index)
-    path(interval_file)
+    tuple val(meta4), path(interval_file)
     path(known_sites)
 
     output:
     tuple val(meta), path("*.bam")  , emit: bam
     tuple val(meta), path("*.bai")  , emit: bai
+    tuple val(meta), path("*.table"), emit: bqsr_table          , optional:true
     path "versions.yml"             , emit: versions
     path "qc_metrics"               , emit: qc_metrics          , optional:true
-    path("*.table")                 , emit: bqsr_table          , optional:true
     path("duplicate-metrics.txt")   , emit: duplicate_metrics   , optional:true
 
     when:
