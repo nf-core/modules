@@ -6,7 +6,7 @@ process SOUPX {
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'oras://community.wave.seqera.io/library/anndata2ri_bioconductor-singlecellexperiment_leidenalg_python-igraph_pruned:c2538291aadd50cb':
         'community.wave.seqera.io/library/anndata2ri_bioconductor-singlecellexperiment_leidenalg_python-igraph_pruned:1b1b2ad4205f41be' }"
-    
+
     // Prevent /tmp mount for singularity and set the numba cache dir and general TMPDIR
     containerOptions "${workflow.containerEngine == 'singularity' ? '--no-mount tmp --env NUMBA_CACHE_DIR=' + workDir + ' --env TMPDIR=' + workDir : ''}"
 
