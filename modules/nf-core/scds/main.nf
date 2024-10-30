@@ -4,8 +4,8 @@ process SCDS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/bioconductor-scds_r-seurat:9433ff91d563da96':
-        'community.wave.seqera.io/library/bioconductor-scds_r-seurat:0a9b33d0ff3ee819' }"
+        'https://depot.galaxyproject.org/singularity/bioconductor-scds:1.18.0--r43hdfd78af_0':
+        'biocontainers/bioconductor-scds:1.18.0--r43hdfd78af_0' }"
 
     input:
     tuple val(meta), path(rds)
