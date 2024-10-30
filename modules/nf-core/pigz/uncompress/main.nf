@@ -38,7 +38,7 @@ process PIGZ_UNCOMPRESS {
     def args = task.ext.args ?: ''
     uncompressed_filename = zip.toString() - '.gz'
     """
-    touch ${zip.dropRight(3)}
+    touch $uncompressed_filename
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
