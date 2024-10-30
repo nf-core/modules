@@ -24,7 +24,7 @@ process STIMULUS_TRANSFORM {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         Python: \$(python --version | cut -d ' ' -f 2)
-        Stimulus-py: ${STIMULUS_VER}
+        Stimulus-py: \$( pip show stimulus-py | grep Version | sed 's/Version: //')
     END_VERSIONS
     """
 
