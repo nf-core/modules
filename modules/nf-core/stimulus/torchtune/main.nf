@@ -19,7 +19,7 @@ process STIMULUS_TORCHTUNE {
     path("ray_results/*/debug/worker_with_seed_*/model.safetensors")            , emit: safetensors     , optional: true
     path("ray_results/*/debug/worker_with_seed_*/seeds.txt")                    , emit: debug           , optional: true
 
-    path "versions.yml"                                                                                         , emit: versions
+    path "versions.yml"                                                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

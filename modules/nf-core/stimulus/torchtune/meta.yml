@@ -1,4 +1,3 @@
----
 name: "stimulus_torchtune"
 description: write your description here
 keywords:
@@ -7,21 +6,23 @@ keywords:
   - unit test
 tools:
   - "stimulus":
-      description: "Stochastic Testing and Input Manipulation for Unbiased Learning Systems"
+      description: "Stochastic Testing and Input Manipulation for Unbiased Learning
+        Systems"
       homepage: "https://github.com/mathysgrapotte/stimulus-p"
       documentation: "https://github.com/mathysgrapotte/stimulus-py"
       tool_dev_url: "https://github.com/mathysgrapotte/stimulus-py"
       licence: ["MIT"]
+      identifier: ""
 
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-    - data: 
+    - data:
         type: file
         description: The data file
-    - experiment_config: 
+    - experiment_config:
         type: file
         description: |
           The json used to modify the data. 
@@ -29,58 +30,56 @@ input:
           this will then be dinamically imported during training. 
           It is necessary to recover how the user specified the encoding of the data. 
           Data is encoded on the fly.
-  - - model:
-        type: file
-        description: The model file
-    - model_config: 
+  - - model_config:
         type: file
         description: The file path for the config file
-    
-
+    - model:
+        type: file
+        description: The model file
 output:
   - weights:
-    - meta: 
-        type: map
-        description: | 
-          Groovy Map containing sample information
-    - "*-model.safetensors": 
-        type: file
-        description: Model weights
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*-model.safetensors":
+          type: file
+          description: Model weights
   - optimizer:
-    - meta: 
-        type: map
-        description: |
-          Groovy Map containing sample information
-    - "*-optimizer.pt":
-        type: file
-        description: The path to write the best optimizer to
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*-optimizer.pt":
+          type: file
+          description: The path to write the best optimizer to
   - metrics:
-    - meta: 
-        type: map
-        description: |
-          Groovy Map containing sample information
-    - "*-metrics.csv": 
-        type: file
-        description: The path to write the best metrics to
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*-metrics.csv":
+          type: file
+          description: The path to write the best metrics to
   - bestmodel:
-    - "ray_results/*/debug/best_model_*.txt": 
-        type: file
-        description: blabla
-        pattern: "*.txt"
-  - safetensors: 
-    - "ray_results/*/debug/worker_with_seed_*/model.safetensors":
-        type: file
-        description: bleble
+      - "ray_results/*/debug/best_model_*.txt":
+          type: file
+          description: blabla
+          pattern: "*.txt"
+  - safetensors:
+      - "ray_results/*/debug/worker_with_seed_*/model.safetensors":
+          type: file
+          description: bleble
   - debug:
-    - "ray_results/*/debug/worker_with_seed_*/seeds.txt": 
-        type: file
-        description: 
-        pattern: "*.txt"        
+      - "ray_results/*/debug/worker_with_seed_*/seeds.txt":
+          type: file
+          description: blabla
+          pattern: "*.txt"
   - versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 
 authors:
   - "@caraiz2001"
