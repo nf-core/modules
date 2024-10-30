@@ -42,7 +42,6 @@ scds.version <- as.character(packageVersion('scds'))
 writeLines(
     c(
         '"${task.process}":',
-        paste('    R:', r.version),
         paste('    scds:', scds.version)
     ),
 'versions.yml')

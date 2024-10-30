@@ -23,11 +23,14 @@ process SCDS {
     template 'scds.R'
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.rds
     touch ${prefix}.csv
-    touch versions.yml
+    
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        scds: \$(Rscript -e "library(scds); cat(as.character(packageVersion('scds')))")
+    END_VERSIONS
     """
 }
