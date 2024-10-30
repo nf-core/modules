@@ -6,6 +6,7 @@ keywords:
   - union
   - complement
   - VCF
+  - BCF
 tools:
   - isec:
       description: |
@@ -14,36 +15,40 @@ tools:
       documentation: http://www.htslib.org/doc/bcftools.html
       doi: 10.1093/bioinformatics/btp352
       licence: ["MIT"]
+      identifier: biotools:bcftools
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcfs:
-      type: list
-      description: |
-        List containing 2 or more vcf files
-        e.g. [ 'file1.vcf', 'file2.vcf' ]
-  - tbis:
-      type: list
-      description: |
-        List containing the tbi index files corresponding to the vcfs input files
-        e.g. [ 'file1.vcf.tbi', 'file2.vcf.tbi' ]
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcfs:
+        type: list
+        description: |
+          List containing 2 or more vcf/bcf files. These must be compressed and have an associated index.
+          e.g. [ 'file1.vcf.gz', 'file2.vcf' ]
+    - tbis:
+        type: list
+        description: |
+          List containing the tbi index files corresponding to the vcf/bcf input files
+          e.g. [ 'file1.vcf.tbi', 'file2.vcf.tbi' ]
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - results:
-      type: directory
-      description: Folder containing the set operations results perform on the vcf files
-      pattern: "${prefix}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - '${prefix}", type: "dir':
+          type: directory
+          description: Folder containing the set operations results perform on the vcf
+            files
+          pattern: "${prefix}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@joseespinosa"
   - "@drpatelh"

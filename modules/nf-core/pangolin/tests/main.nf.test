@@ -1,0 +1,57 @@
+nextflow_process {
+
+    name "Test Process PANGOLIN"
+    script "../main.nf"
+    process "PANGOLIN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pangolin"
+
+    test("sarscov2 genome [fasta]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test' ], // meta map
+                            [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 genome [fasta] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test' ], // meta map
+                            [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

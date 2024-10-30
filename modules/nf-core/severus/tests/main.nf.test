@@ -1,0 +1,208 @@
+nextflow_process {
+
+    name "Test Process SEVERUS"
+    script "../main.nf"
+    process "SEVERUS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "severus"
+
+    test("homo_sapiens - [ bam, bai, [], [], [] ], [[],[]]") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam.bai', checkIfExists: true),
+                    [],
+                    [],
+                    []
+                    ]
+                input[1] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.log.get(0).get(1)).readLines().last().contains("Writing VCF"),
+                    process.out.read_qual,
+                    process.out.breakpoints_double,
+                    file(process.out.all_vcf.get(0).get(1)).readLines()[0..2], // Line 3 contains date
+                    file(process.out.all_vcf.get(0).get(1)).readLines()[4..39],
+                    process.out.all_breakpoints_clusters_list,
+                    process.out.all_breakpoints_clusters,
+                    process.out.versions
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - [ bam, bai, bam, bai, [] ], [[],[]]") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true),
+                    []
+                ]
+                input[1] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.log.get(0).get(1)).readLines().last().contains("Writing VCF"),
+                    process.out.read_qual,
+                    process.out.breakpoints_double,
+                    file(process.out.all_vcf.get(0).get(1)).readLines()[0..2], // Line 3 contains date
+                    file(process.out.all_vcf.get(0).get(1)).readLines()[4..39],
+                    process.out.all_breakpoints_clusters_list,
+                    process.out.all_breakpoints_clusters,
+                    process.out.somatic_vcf,
+                    process.out.somatic_breakpoints_clusters_list,
+                    process.out.somatic_breakpoints_clusters,
+                    process.out.versions
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - [ bam, bai, bam, bai, vcf ], [[],[]]") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true),
+                ]
+                input[1] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.log.get(0).get(1)).readLines().last().contains("Writing VCF"),
+                    process.out.read_qual,
+                    process.out.breakpoints_double,
+                    file(process.out.all_vcf.get(0).get(1)).readLines()[0..2], // Line 3 contains date
+                    file(process.out.all_vcf.get(0).get(1)).readLines()[4..39],
+                    process.out.all_breakpoints_clusters_list,
+                    process.out.all_breakpoints_clusters,
+                    process.out.somatic_vcf,
+                    process.out.somatic_breakpoints_clusters_list,
+                    process.out.somatic_breakpoints_clusters,
+                    process.out.versions
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - [ bam, bai, bam, bai, vcf ], [ bed ]") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'bed'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.blacklist_intervals.bed', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.log.get(0).get(1)).readLines().last().contains("Writing VCF"),
+                    process.out.read_qual,
+                    process.out.breakpoints_double,
+                    file(process.out.all_vcf.get(0).get(1)).readLines()[0..2], // Line 3 contains date
+                    file(process.out.all_vcf.get(0).get(1)).readLines()[4..39],
+                    process.out.all_breakpoints_clusters_list,
+                    process.out.all_breakpoints_clusters,
+                    process.out.somatic_vcf,
+                    process.out.somatic_breakpoints_clusters_list,
+                    process.out.somatic_breakpoints_clusters,
+                    process.out.versions
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - [ bam, bai, [], [], [] ], [[],[]] - stub") {
+
+        config "./nextflow.config"
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true),
+                    [],
+                    [],
+                    []
+                    ]
+                input[1] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

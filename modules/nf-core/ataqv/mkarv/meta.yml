@@ -8,25 +8,31 @@ keywords:
   - mkarv
 tools:
   - "ataqv":
-      description: "ataqv is a toolkit for measuring and comparing ATAC-seq results. It was written to help understand how well ATAC-seq assays have worked, and to make it easier to spot differences that might be caused by library prep or sequencing."
+      description: "ataqv is a toolkit for measuring and comparing ATAC-seq results.
+        It was written to help understand how well ATAC-seq assays have worked, and
+        to make it easier to spot differences that might be caused by library prep or
+        sequencing."
       homepage: "https://github.com/ParkerLab/ataqv/blob/master/README.rst"
       documentation: "https://github.com/ParkerLab/ataqv/blob/master/README.rst"
       tool_dev_url: "https://github.com/ParkerLab/ataqv"
-      licence: "['GPL v3']"
+      licence: ["GPL v3"]
+      identifier: biotools:ataqv
 input:
-  - json:
-      type: file
-      description: The JSON file with ataqv metrics
-      pattern: "*.json"
+  - - '"jsons/*"':
+        type: file
+        description: JSON files
+        pattern: "*.json"
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - html:
-      type: directory
-      description: Web application to visualize results in HTML format
-      pattern: "*.html"
+      - html:
+          type: directory
+          description: Web application to visualize results in HTML format
+          pattern: "*.html"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@bjlang"
 maintainers:

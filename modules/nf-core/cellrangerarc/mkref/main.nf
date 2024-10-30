@@ -35,8 +35,9 @@ process CELLRANGERARC_MKREF {
         reference_name = "cellrangerarc_reference"
     }
 
+    // unlike cellranger mkref and spaceranger mkref, cellranger-arc mkref is not *yet* implemented in the
+    // 10x martian runtime. It is therefore not necessary to specify --localcores and --localmem
     """
-
     python3 <<CODE
 
     from os.path import exists
@@ -73,6 +74,7 @@ process CELLRANGERARC_MKREF {
     cellranger-arc \\
         mkref \\
         --config=config \\
+        --nthreads=${task.cpus} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

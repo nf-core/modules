@@ -17,41 +17,60 @@ tools:
       tool_dev_url: "https://github.com/apeltzer/CircularMapper/"
       doi: "10.1186/s13059-016-0918-z"
       licence: ["GPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - bam:
-      type: file
-      description: BAM/SAM file
-      pattern: "*.{bam,sam}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. `[ id:'test' ]`
-  - fasta:
-      type: file
-      description: Input elongated genome fasta
-  - elongation_factor:
-      type: integer
-      description: The elongation factor used when running circulargenerator, i.e. the number of bases that the ends of the target chromosome in the reference genome was elongated by
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - bam:
+        type: file
+        description: BAM/SAM file
+        pattern: "*.{bam,sam}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'test' ]`
+    - fasta:
+        type: file
+        description: Input elongated genome fasta
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'test' ]`
+    - elongation_factor:
+        type: integer
+        description: The elongation factor used when running circulargenerator, i.e.
+          the number of bases that the ends of the target chromosome in the reference
+          genome was elongated by
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'test' ]`
+    - elongated_chr_list:
+        type: file
+        description: File listing the chromosomes that were elongated
+        pattern: "*_elongated"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
   - bam:
-      type: file
-      description: Realigned BAM file
-      pattern: "*.bam"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*_realigned.bam":
+          type: file
+          description: Realigned BAM file
+          pattern: "*.bam"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@shyama-mama"
   - "@jbv2"

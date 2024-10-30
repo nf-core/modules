@@ -1,4 +1,3 @@
----
 name: icountmini_segment
 description: Formats a GTF file for use with iCount sigxls
 keywords:
@@ -13,29 +12,43 @@ tools:
       tool_dev_url: https://github.com/ulelab/iCount-Mini
       doi: "10.1038/nsmb.1838"
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - gtf:
-      type: file
-      description: A GTF file to use for the segmentation
-      pattern: "*.{gtf}"
-  - fai:
-      type: file
-      description: FAI file corresponding to the reference sequence
-      pattern: "*.{fai}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - gtf:
+        type: file
+        description: A GTF file to use for the segmentation
+        pattern: "*.{gtf}"
+  - - fai:
+        type: file
+        description: FAI file corresponding to the reference sequence
+        pattern: "*.{fai}"
 output:
   - gtf:
-      type: file
-      description: Segmented GTF file for use with iCount sigxls
-      pattern: "*.{gtf}"
+      - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*_seg.gtf":
+          type: file
+          description: Segmented GTF file for use with iCount sigxls
+          pattern: "*.{gtf}"
+  - regions:
+      - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*_regions.gtf.gz":
+          type: file
+          description: Regions file for use with iCount sigxls
+          pattern: "*.{gtf.gz}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@marc-jones"
   - "@chris-cheshire"

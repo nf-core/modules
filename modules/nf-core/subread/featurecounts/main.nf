@@ -4,8 +4,8 @@ process SUBREAD_FEATURECOUNTS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/subread:2.0.1--hed695b0_0' :
-        'biocontainers/subread:2.0.1--hed695b0_0' }"
+        'https://depot.galaxyproject.org/singularity/subread:2.0.6--he4a0461_2' :
+        'biocontainers/subread:2.0.6--he4a0461_2' }"
 
     input:
     tuple val(meta), path(bams), path(annotation)
@@ -38,6 +38,18 @@ process SUBREAD_FEATURECOUNTS {
         -s $strandedness \\
         -o ${prefix}.featureCounts.txt \\
         ${bams.join(' ')}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        subread: \$( echo \$(featureCounts -v 2>&1) | sed -e "s/featureCounts v//g")
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.featureCounts.txt
+    touch ${prefix}.featureCounts.txt.summary
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

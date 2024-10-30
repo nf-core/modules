@@ -11,8 +11,8 @@ process COBS_CLASSICCONSTRUCT {
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path("*.index.cobs_classic"), emit: index
-    path "versions.yml"              , emit: versions
+    tuple val(meta), path("*.index.cobs_classic")   , emit: index
+    path "versions.yml"                             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

@@ -1,5 +1,9 @@
 name: "gatk4_printsvevidence"
-description: WARNING - this tool is still experimental and shouldn't be used in a production setting. Gathers paired-end and split read evidence files for use in the GATK-SV pipeline. Output files are a file containing the location of and orientation of read pairs marked as discordant, and a file containing the clipping location of all soft clipped reads and the orientation of the clipping.
+description: WARNING - this tool is still experimental and shouldn't be used in a
+  production setting. Gathers paired-end and split read evidence files for use in
+  the GATK-SV pipeline. Output files are a file containing the location of and orientation
+  of read pairs marked as discordant, and a file containing the clipping location
+  of all soft clipped reads and the orientation of the clipping.
 keywords:
   - gatk4
   - printsvevidence
@@ -14,54 +18,66 @@ tools:
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
       doi: 10.1158/1538-7445.AM2017-3590
       licence: ["Apache-2.0"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - evidence_files:
-      type: file
-      description: The evidence files created by CollectSVEvidence. They all need to be of the same type to print the SV evidence.
-      pattern: "*.{pe,sr,baf,rd}.txt(.gz)"
-  - evidence_indices:
-      type: file
-      description: The indices of the evidence files created by CollectSVEvidence
-      pattern: "*.{pe,sr,baf,rd}.txt(.gz).tbi"
-  - bed:
-      type: file
-      description: An optional BED file
-      pattern: "*.bed"
-  - fasta:
-      type: file
-      description: An optional reference FASTA file
-      pattern: "*.{fa,fasta}"
-  - fasta_fai:
-      type: file
-      description: An optional reference FASTA file index
-      pattern: "*.fai"
-  - dict:
-      type: file
-      description: The mandatory sequence dictionary file
-      pattern: "*.dict"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - evidence_files:
+        type: file
+        description: The evidence files created by CollectSVEvidence. They all need
+          to be of the same type to print the SV evidence.
+        pattern: "*.{pe,sr,baf,rd}.txt(.gz)"
+    - evidence_indices:
+        type: file
+        description: The indices of the evidence files created by CollectSVEvidence
+        pattern: "*.{pe,sr,baf,rd}.txt(.gz).tbi"
+  - - bed:
+        type: file
+        description: An optional BED file
+        pattern: "*.bed"
+  - - fasta:
+        type: file
+        description: An optional reference FASTA file
+        pattern: "*.{fa,fasta}"
+  - - fasta_fai:
+        type: file
+        description: An optional reference FASTA file index
+        pattern: "*.fai"
+  - - dict:
+        type: file
+        description: The mandatory sequence dictionary file
+        pattern: "*.dict"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+  - printed_evidence:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt.gz":
+          type: file
+          description: The output file containing the discordant read pairs or the soft
+            clipped reads
+          pattern: "*.{pe,sr,baf,rd}.txt.gz"
+  - printed_evidence_index:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt.gz.tbi":
+          type: file
+          description: The index file of the output compressed text file containing the discordant read
+            pairs or the soft clipped reads
+          pattern: "*.{pe,sr,baf,rd}.txt.gz.tbi"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - printed_evidence:
-      type: file
-      description: The output file containing the discordant read pairs or the soft clipped reads
-      pattern: "*.{pe,sr,baf,rd}.txt.gz"
-  - printed_evidence:
-      type: file
-      description: The index of the output file containing the discordant read pairs or the soft clipped reads
-      pattern: "*.{pe,sr,baf,rd}.txt.gz.tbi"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

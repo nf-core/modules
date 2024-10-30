@@ -38,6 +38,15 @@ public static String multiqcTsvFromList(tsv_data, header) {
     return tsv_string
 }
 
+def deprecation_message = """
+WARNING: This subworkflow has been deprecated. Please use
+nf-core/modules/subworkflows/fastq_qc_trim_filter_setstrandedness
+
+Reason:
+Subworkflow naming rules were introduced necessitating this move, see
+https://nf-co.re/docs/guidelines/components/subworkflows#name-format-of-subworkflow-files
+"""
+
 workflow PREPROCESS_RNASEQ {
 
     take:
@@ -63,6 +72,8 @@ workflow PREPROCESS_RNASEQ {
     umi_discard_read     // integer: 0, 1 or 2
 
     main:
+
+    assert false: deprecation_message
 
     ch_versions        = Channel.empty()
     ch_filtered_reads  = Channel.empty()
@@ -267,5 +278,3 @@ workflow PREPROCESS_RNASEQ {
     multiqc_files   = ch_multiqc_files.transpose().map{it[1]}
     versions        = ch_versions                     // channel: [ versions.yml ]
 }
-
-

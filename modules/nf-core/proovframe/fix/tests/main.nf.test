@@ -1,0 +1,76 @@
+nextflow_process {
+
+    name "Test Process PROOVFRAME_FIX"
+    script "../main.nf"
+    process "PROOVFRAME_FIX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "proovframe"
+    tag "proovframe/map"
+    tag "proovframe/fix"
+
+    setup {
+        run("PROOVFRAME_MAP") {
+            script "../../map/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("test - fa_tsv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = PROOVFRAME_MAP.out.tsv
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("test - faa_fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = PROOVFRAME_MAP.out.tsv
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

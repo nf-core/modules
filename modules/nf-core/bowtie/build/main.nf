@@ -1,5 +1,5 @@
 process BOWTIE_BUILD {
-    tag "$fasta"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
@@ -8,24 +8,43 @@ process BOWTIE_BUILD {
         'community.wave.seqera.io/library/bowtie_samtools:772b3bee982574e4' }"
 
     input:
-    path fasta
+    tuple val(meta), path(fasta)
 
     output:
-    path 'bowtie'       , emit: index
-    path "versions.yml" , emit: versions
-    tuple val("$task.process"), val("bowtie"), eval("echo \$(bowtie --version 2>&1) | sed 's/^.*bowtie-align-s version //; s/ .*\$//'"), topic: version
+    tuple val(meta), path('bowtie') , emit: index
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir bowtie
-    bowtie-build --threads $task.cpus $fasta bowtie/${fasta.baseName}
+    mkdir -p bowtie
+    bowtie-build --threads $task.cpus $fasta bowtie/${prefix}
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         bowtie: \$(echo \$(bowtie --version 2>&1) | sed 's/^.*bowtie-align-s version //; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir -p bowtie
+    touch bowtie/${prefix}.1.ebwt
+    touch bowtie/${prefix}.2.ebwt
+    touch bowtie/${prefix}.3.ebwt
+    touch bowtie/${prefix}.4.ebwt
+    touch bowtie/${prefix}.rev.1.ebwt
+    touch bowtie/${prefix}.rev.2.ebwt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bowtie: \$(echo \$(bowtie --version 2>&1) | sed 's/^.*bowtie-align-s version //; s/ .*\$//')
+    END_VERSIONS
+    """
+
 }

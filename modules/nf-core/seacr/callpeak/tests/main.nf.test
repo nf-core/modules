@@ -1,0 +1,62 @@
+
+nextflow_process {
+
+    name "Test Process SEACR_CALLPEAK"
+    script "../main.nf"
+    process "SEACR_CALLPEAK"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "seacr"
+    tag "seacr/callpeak"
+
+    test("test-seacr-callpeak") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_1'],
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bedgraph/cutandtag_h3k27me3_test_1.bedGraph', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bedgraph/cutandtag_igg_test_1.bedGraph', checkIfExists: true)
+				]
+				input[1] = 0.05
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-seacr-callpeak-threshold") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_1'],
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bedgraph/cutandtag_h3k27me3_test_1.bedGraph', checkIfExists: true),
+				    []
+				]
+				input[1] = 0.05
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

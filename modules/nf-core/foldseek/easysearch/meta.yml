@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "foldseek_easysearch"
-description: Search for protein structural hits against a foldseek database of protein structures
+description: Search for protein structural hits against a foldseek database of protein
+  structures
 keywords:
   - protein
   - structure
@@ -13,42 +13,46 @@ tools:
       documentation: "https://github.com/steineggerlab/foldseek"
       tool_dev_url: "https://github.com/steineggerlab/foldseek"
       doi: "10.1038/s41587-023-01773-0"
-      licence: "['GPL v3']"
+      licence: ["GPL v3"]
+      identifier: biotools:foldseek
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - pdb:
-      type: file
-      description: Protein structure(s) in PDB, mmCIF or mmJSON format to compare against a foldseek database (also works with folder input)
-      pattern: "*.{pdb,mmcif,mmjson}"
-  - meta_db:
-      type: map
-      description: |
-        Groovy Map containing sample information for the foldseek db
-        e.g. `[ id:'test', single_end:false ]`
-  - db:
-      type: directory
-      description: foldseek database from protein structures
-      pattern: "*"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - pdb:
+        type: file
+        description: Protein structure(s) in PDB, mmCIF or mmJSON format to compare
+          against a foldseek database (also works with folder input)
+        pattern: "*.{pdb,mmcif,mmjson}"
+  - - meta_db:
+        type: map
+        description: |
+          Groovy Map containing sample information for the foldseek db
+          e.g. `[ id:'test', single_end:false ]`
+    - db:
+        type: directory
+        description: foldseek database from protein structures
+        pattern: "*"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
   - aln:
-      type: file
-      description: |
-        Structural comparisons file output
-        Query, Target, Identity, Alignment length, Mismatches, Gap openings,
-        Query start, Query end, Target start, Target end, E-value, Bit score
-      pattern: "*.{m8}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - ${meta.id}.m8:
+          type: file
+          description: |
+            Structural comparisons file output
+            Query, Target, Identity, Alignment length, Mismatches, Gap openings,
+            Query start, Query end, Target start, Target end, E-value, Bit score
+          pattern: "*.{m8}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@vagkaratzas"

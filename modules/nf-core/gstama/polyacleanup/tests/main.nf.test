@@ -1,0 +1,42 @@
+
+nextflow_process {
+
+    name "Test Process GSTAMA_POLYACLEANUP"
+    script "../main.nf"
+    process "GSTAMA_POLYACLEANUP"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gstama"
+    tag "gstama/polyacleanup"
+
+    test("test-gstama-polyacleanup") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					path(process.out.report[0][1]).linesGzip[0..2],
+					path(process.out.fasta[0][1]).linesGzip[3..7],
+					path(process.out.tails[0][1]).linesGzip[3..7],
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

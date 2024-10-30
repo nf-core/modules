@@ -1,7 +1,0 @@
-- name: kleborate
-  command: nextflow run ./tests/modules/nf-core/kleborate -entry test_kleborate -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/kleborate/nextflow.config
-  tags:
-    - kleborate
-  files:
-    - path: output/kleborate/test.results.txt
-      contains: ["strain", "genome", "scaffolds"]

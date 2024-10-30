@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "nonpareil_curve"
-description: Visualise metagenome redundancy curve from a single Nonpareil npo file
+description: Visualise metagenome redundancy curve in PNG format from a single Nonpareil
+  npo file
 keywords:
   - metagenomics
   - statistics
@@ -18,30 +18,33 @@ tools:
       tool_dev_url: "https://github.com/lmrodriguezr/nonpareil"
       doi: "10.1128/msystems.00039-"
       licence: ["Artistic License 2.0"]
+      identifier: biotools:nonpareil
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - npo:
-      type: file
-      description: Single npo redundancy summary file from nonpareil itself
-      pattern: "*.npo"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - npo:
+        type: file
+        description: Single npo redundancy summary file from nonpareil itself
+        pattern: "*.npo"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - png:
-      type: file
-      description: PNG file of the Nonpareil curve
-      pattern: "*.png"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.png":
+          type: file
+          description: PNG file of the Nonpareil curve
+          pattern: "*.png"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jfy133"
 maintainers:

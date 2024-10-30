@@ -1,7 +1,9 @@
 name: minia
 description: Minia is a short-read assembler based on a de Bruijn graph
 keywords:
-  - assembly
+  - assembler
+  - short-read
+  - de Bruijn
 tools:
   - minia:
       description: |
@@ -10,38 +12,53 @@ tools:
       homepage: https://github.com/GATB/minia
       documentation: https://github.com/GATB/minia
       licence: ["AGPL-3.0-or-later"]
+      identifier: biotools:minia
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: Input reads in FastQ format
-      pattern: "*.{fastq.gz, fastq}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: Input reads in FastQ format
+        pattern: "*.{fastq.gz, fastq}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - contigs:
-      type: file
-      description: The assembled contigs
-      pattern: "*.contigs.fa"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.contigs.fa":
+          type: file
+          description: The assembled contigs
+          pattern: "*.contigs.fa"
   - unitigs:
-      type: file
-      description: The assembled unitigs
-      pattern: "*.unitigs.fa"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.unitigs.fa":
+          type: file
+          description: The assembled unitigs
+          pattern: "*.unitigs.fa"
   - h5:
-      type: file
-      description: Minia output h5 file
-      pattern: "*{.h5}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.h5":
+          type: file
+          description: Minia output h5 file
+          pattern: "*{.h5}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@drpatelh"
   - "@kevinmenden"

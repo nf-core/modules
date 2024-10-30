@@ -4,11 +4,12 @@ process LAST_DOTPLOT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/last:1542--h43eeafb_1' :
-        'biocontainers/last:1542--h43eeafb_1' }"
+        'https://depot.galaxyproject.org/singularity/last:1571--h43eeafb_0' :
+        'biocontainers/last:1571--h43eeafb_0' }"
 
     input:
-    tuple val(meta), path(maf)
+    tuple val(meta), path(maf), path(annot_b)
+    tuple val(meta2), path(annot_a)
     val(format)
 
     output:
@@ -22,9 +23,13 @@ process LAST_DOTPLOT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def annot_a_arg = annot_a ? "-a ${annot_a}" : ''
+    def annot_b_arg = annot_b ? "-b ${annot_b}" : ''
     """
     last-dotplot \\
         $args \\
+        $annot_a_arg \\
+        $annot_b_arg \\
         $maf \\
         $prefix.$format
 
