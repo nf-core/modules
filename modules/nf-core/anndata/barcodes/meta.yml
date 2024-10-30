@@ -1,7 +1,7 @@
 name: anndata_barcodes
 description: |
-  Module to subset AnnData to obtain the droplots whose barcodes were determined |
-  to have a > 50% posterior probability of containing cells
+  Module to subset AnnData to obtain the droplots whose barcodes match |
+  those in the input barcodes CSV file
 authors:
   - "@nictru"
 maintainers:
@@ -50,7 +50,8 @@ output:
       - "*.h5ad":
           type: file
           description: |
-            AnnData file with the droplots whose barcodes were determined to have a > 50% posterior probability of containing cells
+            AnnData file containing droplets with barcodes that match |
+            those in the input barcodes CSV file
           pattern: "*.h5ad"
   - versions:
       - versions.yml:
