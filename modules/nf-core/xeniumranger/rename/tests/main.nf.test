@@ -27,7 +27,7 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of([
-                            [id: "test_xeniumranger_relabel"],
+                            [id: "test_xeniumranger_rename"],
                         ]).combine(UNZIP.out.unzipped_archive.map { it[1] })
                 input[1] = "test_region"
                 input[2] = "test_cassette"
@@ -60,7 +60,7 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of([
-                            [id: "test_xeniumranger_relabel"],
+                            [id: "test_xeniumranger_rename"],
                         ]).combine(UNZIP.out.unzipped_archive.map { it[1] })
                 input[1] = "test_region"
                 input[2] = "test_cassette"
