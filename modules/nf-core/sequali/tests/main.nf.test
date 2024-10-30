@@ -25,8 +25,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert process.out.html[0][1] ==~ ".*/test.html"},
-                { assert process.out.json[0][1] ==~ ".*/test.json"},
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot( path(process.out.json[0][1]).json.key != "meta" + process.out.versions ).match() }
             )
         }
 
@@ -50,8 +49,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert process.out.html[0][1] ==~ ".*/test.html"},
-                { assert process.out.json[0][1] ==~ ".*/test.json"},
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot( path(process.out.json[0][1]).json.key != "meta" + process.out.versions ).match() }
             )
         }
 
@@ -74,8 +72,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert process.out.html[0][1] ==~ ".*/test.html"},
-                { assert process.out.json[0][1] ==~ ".*/test.json"},
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot( path(process.out.json[0][1]).json.key != "meta" + process.out.versions ).match() }
             )
         }
 
