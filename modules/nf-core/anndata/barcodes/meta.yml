@@ -1,5 +1,5 @@
 name: anndata_barcodes
-description: Module to append droplet barcodes to the AnnData file
+description: Module to subset AnnData to obtain the droplots with a > 50% posterior probability of containing cells
 authors:
   - "@nictru"
 maintainers:
@@ -47,5 +47,5 @@ output:
       - ${prefix}.h5ad:
           type: file
           description: |
-            AnnData file containing the droplot barcodes appanded by barcodes.py
+            AnnData file containing subset of droplets with matched barcodes (that have a > 50% posterior probability of containing cells) by barcodes.py
           pattern: "*.h5ad"
