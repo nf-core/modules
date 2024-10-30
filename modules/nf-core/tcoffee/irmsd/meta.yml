@@ -26,14 +26,17 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', ... ]
-    - msa: {}
+    - msa: 
+        type: file
   - - meta2:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - template: {}
-    - structures: {}
+    - template: 
+        type: file
+    - structures: 
+        type: file
 output:
   - irmsd:
       - meta:
