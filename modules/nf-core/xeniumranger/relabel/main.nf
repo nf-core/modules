@@ -5,8 +5,7 @@ process XENIUMRANGER_RELABEL {
     container "nf-core/xeniumranger:3.0.1"
 
     input:
-    val(meta)
-    path(xenium_bundle)
+    tuple val(meta), path(xenium_bundle)
     path(gene_panel)
 
     output:

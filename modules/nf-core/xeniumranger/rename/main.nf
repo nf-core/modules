@@ -5,8 +5,7 @@ process XENIUMRANGER_RENAME {
     container "nf-core/xeniumranger:3.0.1"
 
     input:
-    val(meta)
-    path(xenium_bundle)
+    tuple val(meta), path(xenium_bundle)
     val(region_name)
     val(cassette_name)
 

@@ -26,9 +26,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [id: "test_xeniumranger_relabel"]
-                input[1] = UNZIP.out.unzipped_archive.map { it[1] }
-                input[2] = UNZIP.out.unzipped_archive.map { it[1] } + "/gene_panel.json"
+                input[0] = Channel.of([
+                        [id: "test_xeniumranger_relabel"],
+                    ]).combine(UNZIP.out.unzipped_archive.map { it[1] })
+                input[1] = UNZIP.out.unzipped_archive.map { it[1] } + "/gene_panel.json"
                 """
             }
         }
@@ -66,7 +67,6 @@ nextflow_process {
                 { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'variance.csv' }).exists() },
                 { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'metrics_summary.csv' }).exists() },
                 { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'clusters.csv' }).exists() },
-
             )
         }
     }
@@ -76,9 +76,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [id: "test_xeniumranger_relabel"]
-                input[1] = UNZIP.out.unzipped_archive.map { it[1] }
-                input[2] = UNZIP.out.unzipped_archive.map { it[1] } + "/gene_panel.json"
+                input[0] = Channel.of([
+                        [id: "test_xeniumranger_relabel"],
+                    ]).combine(UNZIP.out.unzipped_archive.map { it[1] })
+                input[1] = UNZIP.out.unzipped_archive.map { it[1] } + "/gene_panel.json"
                 """
             }
         }
