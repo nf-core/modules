@@ -27,7 +27,7 @@ process COPTR_INDEX {
         $args \
         --bt2-threads $task.cpus \
         fastafolder \
-	$prefix
+        $prefix
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         coptr: \$(coptr |& sed -E '11!d ; s/CoPTR.*?\\(v(.*?)\\).*/\\1/')
@@ -37,7 +37,6 @@ process COPTR_INDEX {
     stub:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    
     """
     touch ${prefix}.genomes
 
