@@ -21,7 +21,11 @@ process PBSV_DISCOVER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    pbsv discover ${bam} ${prefix}.pbsv.svsig.gz
+    pbsv \\
+        discover \\
+        $args \\
+        ${bam} \\
+        ${prefix}.svsig.gz
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         pbsv: \$(pbsv --version |& sed '1!d ; s/pbsv //')
