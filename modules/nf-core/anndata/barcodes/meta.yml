@@ -1,5 +1,7 @@
 name: anndata_barcodes
-description: Module to subset AnnData to obtain the droplots with a > 50% posterior probability of containing cells
+description: |
+  Module to subset AnnData to obtain the droplots whose barcodes were determined |
+  to have a > 50% posterior probability of containing cells
 authors:
   - "@nictru"
 maintainers:
@@ -18,7 +20,7 @@ tools:
         single-cell bioinformatics workflows.
       homepage: |
         https://github.com/scverse/anndata
-
+      identifier: biotools:anndata
 input:
   - - meta:
         type: map
@@ -28,7 +30,7 @@ input:
     - h5ad:
         type: file
         description: |
-          AnnData file containing filtered (with background RNA removed) data
+          AnnData file for raw or filtered (with background RNA removed) data
         pattern: "*.h5ad"
     - barcodes_csv:
         type: file
@@ -44,8 +46,14 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - ${prefix}.h5ad:
+          pattern: "*.h5ad"
+      - "*.h5ad":
           type: file
           description: |
-            AnnData file containing subset of droplets with matched barcodes (that have a > 50% posterior probability of containing cells) by barcodes.py
+            AnnData file with the droplots whose barcodes were determined to have a > 50% posterior probability of containing cells
           pattern: "*.h5ad"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"

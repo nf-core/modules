@@ -4,10 +4,10 @@ nextflow_process {
     script '../main.nf'
     process 'ANNDATA_BARCODES'
 
-    tag 'modules'
-    tag 'modules_nfcore'
-    tag 'anndata/barcodes'
-    tag 'anndata'
+    tag "modules"
+    tag "modules_nfcore"
+    tag "anndata/barcodes"
+    tag "anndata"
 
     test("test_anndata_barcodes") {
         when {
@@ -30,8 +30,6 @@ nextflow_process {
                 { assert file(process.out.h5ad.get(0).get(1)).exists() },
                 { assert snapshot(process.out).match() },
                 { assert snapshot(process.out.versions).match("anndata_barcodes_versions") }
-                //TODO nf-core: Add all required assertions to verify the test output.
-                // See https://nf-co.re/docs/contributing/tutorials/nf-test_assertions for more information and examples.
             )
         }
 
