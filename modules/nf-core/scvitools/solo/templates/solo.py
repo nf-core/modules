@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
 import platform
+import random
 
+import numpy as np
 import anndata as ad
 import scvi
 import torch
@@ -11,6 +13,10 @@ from threadpoolctl import threadpool_limits
 
 torch.set_float32_matmul_precision("medium")
 scvi.settings.seed = 0
+torch.manual_seed(0)
+np.random.seed(0)
+random.seed(0)
+torch.use_deterministic_algorithms(True)
 
 threadpool_limits(int("${task.cpus}"))
 scvi.settings.num_threads = int("${task.cpus}")
