@@ -5,6 +5,12 @@ nextflow_process {
     process "PARABRICKS_FQ2BAM"
     config "./nextflow.config"
 
+    tag "bwa/index"
+    tag "modules"
+    tag "parabricks/fq2bam"
+    tag "modules_nfcore"
+    tag "parabricks"
+
     setup {
         run("BWA_INDEX") {
             script "../../../bwa/index/main.nf"
