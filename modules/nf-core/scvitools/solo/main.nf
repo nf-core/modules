@@ -10,7 +10,7 @@ process SCVITOOLS_SOLO {
         'community.wave.seqera.io/library/anndata_scvi-tools:fa9451a13918eae0' }"
 
     // Prevent /tmp mount for singularity and set the MATPLOTLIB TMPDIR
-    containerOptions  "${workflow.containerEngine == 'singularity' ? '--no-mount tmp --env MPLCONFIGDIR=' + workDir : ''}"
+    containerOptions "${workflow.containerEngine == 'singularity' ? '--no-mount tmp --env MPLCONFIGDIR=' + workDir : ''}"
 
     input:
     tuple val(meta), path(h5ad)

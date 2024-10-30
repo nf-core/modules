@@ -1,18 +1,20 @@
 #!/usr/bin/env python3
 
-import scvi
-import anndata as ad
-from scvi.model import SCVI
-from scvi.external import SOLO
 import platform
-import torch
 
-torch.set_float32_matmul_precision('medium')
+import anndata as ad
+import scvi
+import torch
+from scvi.external import SOLO
+from scvi.model import SCVI
+from threadpoolctl import threadpool_limits
+
+torch.set_float32_matmul_precision("medium")
 scvi.settings.seed = 0
 
-from threadpoolctl import threadpool_limits
 threadpool_limits(int("${task.cpus}"))
 scvi.settings.num_threads = int("${task.cpus}")
+
 
 def format_yaml_like(data: dict, indent: int = 0) -> str:
     """Formats a dictionary to a YAML-like string.
@@ -33,9 +35,10 @@ def format_yaml_like(data: dict, indent: int = 0) -> str:
             yaml_str += f"{spaces}{key}: {value}\\n"
     return yaml_str
 
+
 def train_model(model):
     def generate_batch_sizes():
-        attempts=0
+        attempts = 0
         while True:
             yield 128 + 32 * attempts
             attempts += 1
@@ -49,6 +52,7 @@ def train_model(model):
             break
         except Exception as e:
             print(f"Failed with batch size {batch_size}: {e}")
+
 
 adata = ad.read_h5ad("${h5ad}")
 
@@ -65,9 +69,7 @@ adata.obs["doublet"] = False
 
 batches = adata.obs["batch"].unique() if "${batch_key}" else [0]
 for batch in batches:
-    model = SOLO.from_scvi_model(
-        model, restrict_to_batch=batch if len(batches) > 1 else None
-    )
+    model = SOLO.from_scvi_model(model, restrict_to_batch=batch if len(batches) > 1 else None)
 
     train_model(model)
     result = model.predict(False)
