@@ -643,6 +643,12 @@ jobs:
           - profile: singularity
             path: modules/nf-core/parabricks/fq2bammeth
           - profile: conda
+            path: modules/nf-core/parabricks/fq2bam
+          - profile: docker_self_hosted
+            path: modules/nf-core/parabricks/fq2bam
+          - profile: singularity
+            path: modules/nf-core/parabricks/fq2bam
+          - profile: conda
             path: subworkflows/nf-core/vcf_annotate_ensemblvep
           - profile: conda
             path: subworkflows/nf-core/bcl_demultiplex
@@ -652,6 +658,8 @@ jobs:
             path: subworkflows/nf-core/fastq_align_bamcmp_bwa
           - profile: conda
             path: subworkflows/nf-core/fastq_align_bwa
+          - profile: conda
+            path: subworkflows/nf-core/fasta_newick_epang_gappa
           - profile: conda
             tags: parabricks/applybqsr
     env:
