@@ -16,8 +16,8 @@ process STIMULUS_ANALYSISDEFAULT {
     path(model)
 
     output:
-    tuple val(meta), path("performance_tune_train/"), emit: tune_train 
-    tuple val(meta), path("performance_robustness/"), emit: robustness
+    tuple val(meta), path("performance_tune_train"), emit: performance_tune_train
+    tuple val(meta), path("performance_robustness"), emit: performance_robustness
     path "versions.yml"           , emit: versions
 
     when:
@@ -50,8 +50,7 @@ process STIMULUS_ANALYSISDEFAULT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def STIMULUS_VER = '0.0.9' // container not used in stub, change manually
     """
-    mkdir performance_tune_train/
-    mkdir performance_robustness/
+    mkdir performance_tune_train performance_robustness
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

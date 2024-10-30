@@ -27,11 +27,11 @@ input:
     - experiment_config:
         type: file
         description: "The experiment config used to modify the data."
-        pattern: "*.yml"
+        pattern: "*.json"
     - model_config:
         type: file
         description: "The tune config file."
-        pattern: "*.yml"
+        pattern: "*.json"
     - weights:
         type: file
         description: "Model weights .pt file."
@@ -50,23 +50,23 @@ input:
         pattern: "*.py"
 
 output:        
-  - tune_train:
+  - performance_tune_train:
     - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-    - "performance_tune_train/":
+    - "performance_tune_train":
         type: directory
         description: "Output directory with images detailing performance during tuning/training."
 
-  - robustness:
+  - performance_robustness:
     - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-    - "performance_robustness/":
+    - "performance_robustness":
         type: directory
         description: "Output directory with images detailing model robustness."
           
