@@ -1,6 +1,6 @@
 process PBMM2_ALIGN {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_large'
 
 
     conda "${moduleDir}/environment.yml"
