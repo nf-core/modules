@@ -24,11 +24,6 @@ input:
         type: file
         description: fastq.gz files
         pattern: "*.fastq.gz"
-    - interval_file:
-        type: file
-        description: (optional) file(s) containing genomic intervals for use in base
-          quality score recalibration (BQSR)
-        pattern: "*.{bed,interval_list,picard,list,intervals}"
   - - meta2:
         type: map
         description: |
@@ -45,6 +40,11 @@ input:
         type: file
         description: reference BWA index
         pattern: "*.{amb,ann,bwt,pac,sa}"
+  - - interval_file:
+        type: file
+        description: (optional) file(s) containing genomic intervals for use in base
+          quality score recalibration (BQSR)
+        pattern: "*.{bed,interval_list,picard,list,intervals}"
   - - known_sites:
         type: file
         description: (optional) known sites file(s) for calculating BQSR. markdups must
@@ -99,3 +99,4 @@ authors:
 maintainers:
   - "@bsiranosian"
   - "@adamrtalbot"
+  - "@gallvp"
