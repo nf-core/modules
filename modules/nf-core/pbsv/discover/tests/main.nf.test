@@ -29,8 +29,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("versions") },
-                { assert snapshot(process.out.svsig).match("svsig")}
+                { assert snapshot(process.out).match() }
             )
         }
 
