@@ -6,8 +6,8 @@ process SCVITOOLS_SOLO {
     conda "${moduleDir}/environment.yml"
     container "${ task.ext.use_gpu ? 'docker.io/nicotru/scvitools-gpu:cuda-12' :
         workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/anndata_scvi-tools:54d2eb2f946e0e43':
-        'community.wave.seqera.io/library/anndata_scvi-tools:fa9451a13918eae0' }"
+        'oras://community.wave.seqera.io/library/scvi-tools:1.2.0--adbeb4160de8b08e':
+        'community.wave.seqera.io/library/scvi-tools:1.2.0--680d378b86801b8a' }"
 
     // Prevent /tmp mount for singularity and set the MATPLOTLIB TMPDIR
     containerOptions "${workflow.containerEngine == 'singularity' ? '--no-mount tmp --env MPLCONFIGDIR=' + workDir : ''}"
