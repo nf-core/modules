@@ -10,7 +10,7 @@ process PBMM2_ALIGN {
 
     input:
     tuple val(meta), path(bam)
-    tuple val(meta), path(fasta)
+    tuple val(meta2), path(fasta)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
