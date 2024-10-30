@@ -12,7 +12,7 @@ tools:
       documentation: "https://github.com/fastqe/fastqe#readme"
       tool_dev_url: "https://github.com/fastqe/fastqe"
       doi: "10.21105/joss.02400"
-      licence: ['MIT']
+      licence: ["MIT"]
       identifier: "biotools:fastqe"
 
 ## TODO nf-core: Add a description of all of the variables used as input
@@ -23,23 +23,23 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  
+
   - fastq:
       type: file
       description: FASTQ file (can be gzipped)
       pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
-          
+
 output:
   - bam:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - "*.tsv":
-        type: file
-        description: Text file containing emoji 
-        pattern: "*.txt" 
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.tsv":
+          type: file
+          description: Text file containing emoji
+          pattern: "*.txt"
   - versions:
       - versions.yml:
           type: file
