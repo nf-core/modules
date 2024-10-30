@@ -16,9 +16,14 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test'], // meta map
-                    file(params.modules_testdata_base_path + "../../deepmodeloptim/testdata/dna_experiment/experiment_config.json", checkIfExists: true)
+                    // output of SPLIT_CSV,
+                    file(params.modules_testdata_base_path + "../../deepmodeloptim/testdata/dna_experiment/experiment_config.json", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "../../deepmodeloptim/testdata/dna_experiment/tune_config.yaml", checkIfExists: true),
+                    // weights output of TORCH_TUNE,
+                    // optimizer output of TORCH_TUNE,
+                    // metrics output of TORCH_TUNE,
                     ]
-                input[1] = file(params.modules_testdata_base_path + "../../deepmodeloptim/testdata/dna_experiment/input_data_with_split.csv", checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + "../../deepmodeloptim/testdata/dna_experiment/dna_to_float_model.py", checkIfExists: true)
                 """
             }
         }
@@ -41,9 +46,14 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test'], // meta map
-                    file(params.modules_testdata_base_path + "../../deepmodeloptim/testdata/dna_experiment/experiment_config.json", checkIfExists: true)
+                    // output of SPLIT_CSV,
+                    file(params.modules_testdata_base_path + "../../deepmodeloptim/testdata/dna_experiment/experiment_config.json", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "../../deepmodeloptim/testdata/dna_experiment/tune_config.yaml", checkIfExists: true),
+                    // weights output of TORCH_TUNE,
+                    // optimizer output of TORCH_TUNE,
+                    // metrics output of TORCH_TUNE,
                     ]
-                input[1] = file(params.modules_testdata_base_path + "../../deepmodeloptim/testdata/dna_experiment/input_data_with_split.csv", checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + "../../deepmodeloptim/testdata/dna_experiment/dna_to_float_model.py", checkIfExists: true)
                 """
             }
         }
