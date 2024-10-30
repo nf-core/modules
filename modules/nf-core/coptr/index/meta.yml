@@ -2,21 +2,22 @@
 name: "coptr_index"
 description: Indexes a directory of fasta files for use with CoPTR
 keywords:
-- coptr
-- index
-- ptr
+  - coptr
+  - index
+  - ptr
 tools:
-- "coptr":
-    description: "Accurate and robust inference of microbial growth dynamics from
-      metagenomic sequencing reads."
-    homepage: "https://github.com/tyjo/coptr"
-    documentation: "https://coptr.readthedocs.io/"
-    tool_dev_url: "https://github.com/tyjo/coptr"
-    doi: "10.1101/gr.275533.121"
-    licence: ['GPL v3']
-    identifier: biotools:coptr
+  - "coptr":
+      description: "Accurate and robust inference of microbial growth dynamics from
+        metagenomic sequencing reads."
+      homepage: "https://github.com/tyjo/coptr"
+      documentation: "https://coptr.readthedocs.io/"
+      tool_dev_url: "https://github.com/tyjo/coptr"
+      doi: "10.1101/gr.275533.121"
+      licence: ["GPL v3"]
+      identifier: biotools:coptr
 
 input:
+<<<<<<< HEAD
 - - meta:
       type: map
       description: Name of the reference genome index
@@ -43,7 +44,8 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
+
 authors:
-- "@ramirobarrantes"
+  - "@ramirobarrantes"
 maintainers:
-- "@ramirobarrantes"
+  - "@ramirobarrantes"
