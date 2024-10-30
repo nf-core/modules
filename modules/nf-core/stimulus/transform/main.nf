@@ -1,7 +1,7 @@
 process STIMULUS_TRANSFORM {
     tag "$meta.id"
     label 'process_medium'
-    container "docker.io/mathysgrapotte/stimulus-py:latest"
+    container "docker.io/luisas/stimulus-py:0.0.10"
 
     input:
     tuple val(meta), path(transform_json)

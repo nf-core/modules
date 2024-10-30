@@ -11,8 +11,6 @@ nextflow_process {
 
     test("test") {
 
-        config "./memory.config"
-
         when {
             process {
                 """
@@ -35,7 +33,7 @@ nextflow_process {
     }
 
     test("test - stub") {
-        config "./memory.config"
+
         options "-stub"
 
         when {
