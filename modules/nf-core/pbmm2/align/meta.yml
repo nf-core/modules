@@ -2,8 +2,8 @@
 name: "pbmm2_align"
 description: Alignment with PacBio's minimap2 frontend
 keywords:
-  - sort
-  - example
+  - align
+  - pacbio
   - genomics
 tools:
   - "pbmm2":
@@ -31,7 +31,7 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - fasta:
         type: file
-        description: Sorted BAM/CRAM/SAM file
+        description: fasta file to align bam to
         pattern: "*.{fasta}"
 output:
   - bam:
@@ -45,7 +45,7 @@ output:
           description: Sorted BAM/CRAM/SAM file
           pattern: "*.{bam,cram,sam}"
           ontologies:
-            - edam: "http://edamontology.org/format_25722"
+            - edam: "http://edamontology.org/format_2572"
             - edam: "http://edamontology.org/format_2573"
             - edam: "http://edamontology.org/format_3462"
 
