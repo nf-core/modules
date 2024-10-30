@@ -9,11 +9,11 @@ workflow FASTQ_ALIGN_PARABRICKS {
 
     take:
     ch_reads // channel: [mandatory] meta, reads
-    ch_interval_file // channel: [optional for parabricks] intervals_bed_combined
-    // val_sort  // boolean: [mandatory] true -> sort, false -> don't sort
     ch_fasta
-    ch_fasta_fai
+    ch_index
+    ch_interval_file // channel: [optional for parabricks] intervals_bed_combined
     ch_known_sites // channel [optional for parabricks] known_sites_indels
+    // val_sort  // boolean: [mandatory] true -> sort, false -> don't sort
 
     main:
     ch_reports = Channel.empty()
@@ -24,7 +24,7 @@ workflow FASTQ_ALIGN_PARABRICKS {
     ch_qc_metrics = Channel.empty()
     ch_duplicate_metrics = Channel.empty()
 
-    PARABRICKS_FQ2BAM(ch_reads.map{meta, reads -> [ meta, reads, ch_interval_file ]}, ch_fasta, ch_fasta_fai, ch_known_sites)
+    PARABRICKS_FQ2BAM(ch_reads.map{meta, reads -> [ meta, reads ]}, ch_fasta, ch_index, ch_interval_file, ch_known_sites)
 
     // Collecting FQ2BAM outputs
     ch_bam = ch_bam.mix(PARABRICKS_FQ2BAM.out.bam)

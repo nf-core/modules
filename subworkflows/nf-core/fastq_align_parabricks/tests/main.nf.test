@@ -36,12 +36,12 @@ nextflow_workflow {
                         [ id:'test', single_end:true ],
                         [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
                         ])
-                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/baits.interval_list', checkIfExists: true)
-                input[2] = Channel.value([
+                input[1] = Channel.value([
                         [id: 'reference'],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                         ])
-                input[3] = BWA_INDEX.out.index
+                input[2] = BWA_INDEX.out.index
+                input[3] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/baits.interval_list', checkIfExists: true)
                 input[4] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
                 """
             }
@@ -63,9 +63,13 @@ nextflow_workflow {
                 input[0] = Channel.of([[ id:'test', single_end:false ],
                         [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]
                         ])
-                input[1] = BWA_INDEX.out.index
-                input[2] = false
-                input[3] = Channel.value([[id: 'genome'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                input[1] = Channel.value([
+                        [id: 'reference'],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                        ])
+                input[2] = BWA_INDEX.out.index
+                input[3] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/baits.interval_list', checkIfExists: true)
+                input[4] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
                 """
             }
         }
