@@ -330,7 +330,7 @@ if (!is.null(opt\$use_voom) && opt\$use_voom) {
         corfit_args <- list(object = voom_result, design = design, block =  sample.sheet[[opt\$block]])
         corfit = do.call(duplicateCorrelation, corfit_args)
     }
-
+  
     data_for_fit <- voom_result
 
     # Write the normalized counts matrix to a TSV file

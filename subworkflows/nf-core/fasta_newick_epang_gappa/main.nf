@@ -139,7 +139,7 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     GAPPA_ASSIGN (
         EPANG_PLACE.out.jplace
             .map { [ [ id:it[0].id ], it[1] ] }
-            .join( ch_pp_data.map { [ it.meta, it.data.taxonomy ] } )
+            .join( ch_pp_data.map { [ [ id: it.meta.id ], it.data.taxonomy ] } )
     )
     ch_versions = ch_versions.mix(GAPPA_ASSIGN.out.versions)
 
