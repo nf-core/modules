@@ -15,22 +15,20 @@ tools:
       licence: ["MIT"]
       identifier: "biotools:fastqe"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-
-  - fastq:
-      type: file
-      description: FASTQ file (can be gzipped)
-      pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fastq:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively.
 
 output:
-  - bam:
+  - tsv:
       - meta:
           type: map
           description: |
