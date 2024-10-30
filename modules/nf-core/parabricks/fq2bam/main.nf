@@ -2,7 +2,7 @@ process PARABRICKS_FQ2BAM {
     tag "$meta.id"
     label 'process_high'
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.3.2-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.3.0-1"
 
     input:
     tuple val(meta), path(reads), path(interval_file)
@@ -32,22 +32,21 @@ process PARABRICKS_FQ2BAM {
     def known_sites_command = known_sites ? known_sites.collect{"--knownSites $it"}.join(' ') : ""
     def known_sites_output = known_sites ? "--out-recal-file ${prefix}.table" : ""
     def interval_file_command = interval_file ? interval_file.collect{"--interval-file $it"}.join(' ') : ""
-    def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
     """
+
     INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
-    cp $fasta \$INDEX
+    mv $fasta \$INDEX
 
     pbrun \\
         fq2bam \\
         --ref \$INDEX \\
-        --low-memory \\
         $in_fq_command \\
         --read-group-sm $meta.id \\
         --out-bam ${prefix}.bam \\
         $known_sites_command \\
         $known_sites_output \\
         $interval_file_command \\
-        $num_gpus \\
+        --num-gpus $task.accelerator.request \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
