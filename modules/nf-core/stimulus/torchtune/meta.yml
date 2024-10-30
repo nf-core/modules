@@ -64,16 +64,16 @@ output:
   - bestmodel:
       - "ray_results/*/debug/best_model_*.txt":
           type: file
-          description: blabla
+          description: Model arquitecture saved before last step for debugging
           pattern: "*.txt"
   - safetensors:
       - "ray_results/*/debug/worker_with_seed_*/model.safetensors":
           type: file
-          description: bleble
+          description: Model weights at a given time point for debugging
   - debug:
       - "ray_results/*/debug/worker_with_seed_*/seeds.txt":
           type: file
-          description: blabla
+          description: File containing the seeds used by all the libraries in the module
           pattern: "*.txt"
   - versions:
       - "versions.yml":
