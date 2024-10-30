@@ -78,6 +78,7 @@ opt <- list(
     exclude_samples_col = NULL,
     exclude_samples_values = NULL,
     use_voom = FALSE,
+    mixed_model = FALSE,
     number = Inf,
     ndups = NULL,                # lmFit
     spacing = NULL,              # lmFit
@@ -317,6 +318,19 @@ if (!is.null(opt\$use_voom) && opt\$use_voom) {
 
     # Run voom to transform the data
     voom_result <- voom(dge, design)
+
+    if (!is.null(opt\$mixed_model) && opt\$mixed_model) {
+
+        corfit_args <- list(object = voom_result, design = design, block = sample.sheet[[opt\$block]])
+        corfit = do.call(duplicateCorrelation, corfit_args)
+
+        voom_args <- list(counts = dge, design = design, plot = FALSE, correlation = corfit\$consensus.correlation)
+        voom_result <- do.call(voom, voom_args)
+
+        corfit_args <- list(object = voom_result, design = design, block =  sample.sheet[[opt\$block]])
+        corfit = do.call(duplicateCorrelation, corfit_args)
+    }
+
     data_for_fit <- voom_result
 
     # Write the normalized counts matrix to a TSV file
@@ -353,6 +367,8 @@ if (! is.null(opt\$block)){
 }
 if (! is.null(opt\$correlation)){
     lmfit_args[['correlation']] <- as.numeric(opt\$correlation)
+} else if (!is.null(opt\$mixed_model) && opt\$mixed_model) {
+    lmfit_args[['correlation']] <- corfit\$consensus.correlation
 }
 if (! is.null(opt\$method)){
     lmfit_args[['method']] <- opt\$method
