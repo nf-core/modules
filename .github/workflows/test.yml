@@ -768,7 +768,7 @@ jobs:
           sudo rm -rf /home/ubuntu/tests/
 
   nf-test-gpu:
-    runs-on: ${{ github.event.inputs.runners  || 'self-hosted-gpu' }}
+    runs-on: ${{ github.event.inputs.runners  || 'gpu' }}
     name: nf-test
     needs: [nf-test-changes]
     if: ( needs.nf-test-changes.outputs.paths != '[]' )
