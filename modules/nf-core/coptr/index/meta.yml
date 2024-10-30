@@ -19,8 +19,7 @@ tools:
 input:
 - - meta:
       type: map
-      description: |
-        Groovy Map containing genome information
+      description: Name of the reference genome index
   - indexfasta:
       type: file
       description: Fasta file(s) ending in [.fasta, .fna, .fa]
@@ -32,15 +31,12 @@ output:
 - genome:
   - meta:
       type: map
-      description: |
-        Groovy Map containing genome information
-      ontologies: &id001
-      - edan: "http://edamontology.org/data_3210"
+      description: name of the reference genome index
   - '*.genomes" ':
       type: map
-      description: |
-        Groovy Map containing genome information
-      ontologies: *id001
+      description: index genome
+      ontologies: 
+      - edan: "http://edamontology.org/data_3210"
       pattern: "*.{genome}"
 - versions:
   - versions.yml:
