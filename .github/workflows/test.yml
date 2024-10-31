@@ -662,7 +662,9 @@ jobs:
             path: subworkflows/nf-core/fasta_newick_epang_gappa
           - profile: conda
             tags: parabricks/applybqsr
-          - path: modules/nf-core/parabricks/
+          - path: modules/nf-core/parabricks/fq2bammeth
+          - path: modules/nf-core/parabricks/fq2bam
+          - path: modules/nf-core/parabricks/applybqsr
     env:
       NXF_ANSI_LOG: false
       NFTEST_VER: "0.9.0"
