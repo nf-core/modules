@@ -31,6 +31,12 @@ input:
         type: file
         description: Index file of the input BAM/CRAM/VCF/BCF file.
         pattern: "*.{bam.bai,cram.crai,vcf.gz.csi,bcf.gz.csi}"
+    - bamlist:
+        type: file
+        description: |
+          File containing the list of BAM/CRAM files to be phased.
+          One file per line and a second column can be added to indicate the sample name.
+        pattern: "*.{txt,tsv}"
     - samples_file:
         type: file
         description: |
