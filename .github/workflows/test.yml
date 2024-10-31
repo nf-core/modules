@@ -782,6 +782,13 @@ jobs:
           - path: modules/nf-core/parabricks/applybqsr
           - path: modules/nf-core/parabricks/fq2bam
           - path: modules/nf-core/parabricks/fq2bammeth
+        exclude:
+          - profile: conda
+            path: modules/nf-core/parabricks/fq2bam
+          - profile: conda
+            path: modules/nf-core/parabricks/fq2bammeth
+          - profile: conda
+            path: modules/nf-core/parabricks/applybqsr
     env:
       NXF_ANSI_LOG: false
       NFTEST_VER: "0.9.0"
