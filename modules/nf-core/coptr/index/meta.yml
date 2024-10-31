@@ -28,11 +28,11 @@ input:
           - edam: "http://edamontology.org/format_1929"
 
 output:
-  - genome:
+  - index:
       - meta:
           type: map
           description: name of the reference genome index
-      - '*.genomes" ':
+      - 'bowtie2':
           type: map
           description: index genome
           ontologies:
