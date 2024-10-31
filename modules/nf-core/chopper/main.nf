@@ -4,8 +4,8 @@ process CHOPPER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/chopper:0.3.0--hd03093a_0':
-        'biocontainers/chopper:0.3.0--hd03093a_0' }"
+        'https://depot.galaxyproject.org/singularity/chopper:0.9.0--hdcf5f25_0':
+        'biocontainers/chopper:0.9.0--hdcf5f25_0' }"
 
     input:
     tuple val(meta), path(fastq)
@@ -25,7 +25,6 @@ process CHOPPER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def fasta_filtering = fasta ? "--contam ${fasta}" : ""
 
-
     if ("$fastq" == "${prefix}.fastq.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     zcat \\
@@ -37,6 +36,17 @@ process CHOPPER {
         $args2 | \\
     gzip \\
         $args3 > ${prefix}.fastq.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        chopper: \$(chopper --version 2>&1 | cut -d ' ' -f 2)
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo | gzip > ${prefix}.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

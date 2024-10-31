@@ -40,7 +40,7 @@ input:
         pattern: "*.{fastq.gz}"
   - - fasta:
         type: file
-        description: A reference fasta file against which to filter.
+        description: An optional reference fasta file against which to remove reads that align to it.
         pattern: "*.fasta"
 output:
   - fastq:
