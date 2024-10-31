@@ -7,7 +7,8 @@ process DOUBLETDETECTION {
         'community.wave.seqera.io/library/anndata_louvain_pip_doubletdetection:cbe92394c10372fa' }"
 
     // Prevent /tmp mount for singularity and set the MATPLOTLIB TMPDIR
-    containerOptions "${workflow.containerEngine == 'singularity' ? '--no-mount tmp --env MPLCONFIGDIR=' + workDir : ''}"
+    containerOptions "${workflow.containerEngine == 'singularity' ?
+        '--no-mount tmp --env MPLCONFIGDIR=' + workDir + ' --env NUMBA_CACHE_DIR=' + workDir : ''}"
 
     input:
     tuple val(meta), path(h5ad)
