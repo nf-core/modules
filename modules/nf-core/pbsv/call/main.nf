@@ -3,8 +3,8 @@ process PBSV_CALL {
     label 'process_single'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-         'https://depot.galaxyproject.org/singularity/pbsv:2.9.0--h9ee0642_0':
-         'biocontainers/pbsv:2.9.0--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/pbsv:2.9.0--h9ee0642_0':
+        'biocontainers/pbsv:2.9.0--h9ee0642_0' }"
 
     input:
     tuple val(meta),  path(svsig)
