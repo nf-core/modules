@@ -37,10 +37,21 @@ def format_yaml_like(data: dict, indent: int = 0) -> str:
 
 
 def train_model(model):
+    def generate_batch_sizes():
+        attempts = 0
+        while True:
+            yield 128 + 32 * attempts
+            attempts += 1
+
     if "${task.ext.use_gpu}" == "true":
         model.to_device(0)
 
-    model.train(max_epochs=int("${max_epochs}") if "${max_epochs}" else None)
+    for batch_size in generate_batch_sizes():
+        try:
+            model.train(batch_size=batch_size, max_epochs=int("${max_epochs}") if "${max_epochs}" else None)
+            break
+        except ValueError as e:
+            print(f"Failed with batch size {batch_size}: {e}")
 
 
 adata = ad.read_h5ad("${h5ad}")
