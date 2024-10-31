@@ -3,8 +3,10 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     tag "$meta.id"
     label 'process_single'
 
-    //Conda is not supported at the moment: https://github.com/broadinstitute/gatk/issues/7811
-    container "nf-core/gatk:4.5.0.0" //Biocontainers is missing a package
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/gatk4:4.6.1.0--py310hdfd78af_0':
+        'biocontainers/gatk4:4.6.1.0--py310hdfd78af_0' }"
 
     input:
     tuple val(meta), path(counts), path(bed), path(exclude_beds)
