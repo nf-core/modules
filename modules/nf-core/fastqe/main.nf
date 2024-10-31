@@ -20,6 +20,7 @@ process FASTQE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '0.3.3'
     """
     fastqe \\
         $args \\
@@ -28,19 +29,20 @@ process FASTQE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        fastqe: \$(fastqe --version)
+        fastqe: $VERSION
     END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '0.3.3'
     """
     touch ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        fastqe: \$(samtools --version |& sed '1!d ; s/samtools //')
+        fastqe: $VERSION
     END_VERSIONS
     """
 }
