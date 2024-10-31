@@ -25,8 +25,8 @@ process PBSV_CALL {
         -j ${task.cpus} \\
         ${fasta} \\
         ${svsig} \\
-        ${args} \\
         ${prefix}.vcf \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
