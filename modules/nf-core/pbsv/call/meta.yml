@@ -1,48 +1,44 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "pbsv_discover"
-description: "pbsv - PacBio structural variant (SV) signature discovery tool"
+name: "pbsv_call"
+description: "pbsv/call - PacBio structural variant (SV) calling and analysis tools"
 keywords:
-  - sort
-  - example
+  - variant
+  - pacbio
   - genomics
 tools:
   - "pbsv":
       description: "pbsv - PacBio structural variant (SV) calling and analysis tools"
-      homepage: "https://github.com/PacificBiosciences/pbsv"
-      documentation: "https://github.com/PacificBiosciences/pbsv"
-      tool_dev_url: "https://github.com/PacificBiosciences/pbsv"
+      homepage: "https://github.com/PacificBiosciences/"
+      documentation: "https://github.com/PacificBiosciences/"
+      tool_dev_url: "https://github.com/PacificBiosciences/"
       licence: ["BSD-3-clause-Clear"]
-      identifier: ""
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-    - bam:
+    - svsig:
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
+        description: structural variant file
   - - meta2:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
+          e.g. `[ id:'reference']`
     - fasta:
         type: file
-        description: fasta file
-        pattern: "*.fasta"
+        description: fasta file used as reference
 output:
-  - svsig:
+  - vcf:
       - meta:
-          type: file
+          type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.svsig.gz":
+      - "*.vcf":
           type: file
-          description: structural variant signatures files
-          pattern: "*.svsig.gz"
+          description: structural variant file
   - versions:
       - versions.yml:
           type: file
