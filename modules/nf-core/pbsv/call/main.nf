@@ -2,6 +2,7 @@ process PBSV_CALL {
     tag "$meta.id"
     label 'process_single'
 
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pbsv:2.9.0--h9ee0642_0':
         'biocontainers/pbsv:2.9.0--h9ee0642_0' }"
@@ -21,7 +22,7 @@ process PBSV_CALL {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    pbsv call -j ${task.cpus} ${fasta} ${svsig} ${prefix}.vcf ${args}
+    pbsv call -j ${task.cpus} ${fasta} ${svsig} ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
