@@ -22,7 +22,13 @@ process PBSV_CALL {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    pbsv call -j ${task.cpus} ${fasta} ${svsig} ${prefix}.vcf $args
+    pbsv \\
+        call \\
+        $args \\
+        -j ${task.cpus} \\
+        ${fasta} \\
+        ${svsig} \\
+        ${prefix}.vcf 
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
