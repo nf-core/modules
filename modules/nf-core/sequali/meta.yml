@@ -1,0 +1,60 @@
+---
+name: sequali
+description: Sequence quality metrics for FASTQ and uBAM files.
+keywords:
+  - quality_control
+  - qc
+  - preprocessing
+tools:
+  - sequali:
+      description: Fast sequencing quality metrics
+      homepage: "https://github.com/rhpvorderman/sequali"
+      documentation: "https://sequali.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/rhpvorderman/sequali"
+      doi: "10.5281/zenodo.10854010"
+      licence: ["AGPL v3-or-later"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+
+    - reads:
+        type: file
+        description: Input FASTQ(s) or uBAM file. The format is autodetected and compressed formats are supported.
+        pattern: "*.{fastq,fq,fastq.gz,fq.gz,bam}"
+output:
+  - json:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.json":
+          type: file
+          description: JSON output file.
+          pattern: "*.{json}"
+  - html:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.html":
+          type: file
+          description: HTML output file.
+          pattern: "*.{html}"
+
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions.
+          pattern: "versions.yml"
+authors:
+  - "@irliampa"
+  - "@DarkoCucin"
+maintainers:
+  - "@irliampa"
+  - "@DarkoCucin"
