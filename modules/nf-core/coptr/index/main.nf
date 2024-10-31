@@ -11,8 +11,8 @@ process COPTR_INDEX {
     tuple val(meta), path(indexfasta, stageAs: "fastafolder/*")
 
     output:
-    tuple val(meta), path("*.genomes" ), emit: genome
-    path "versions.yml"                , emit: versions
+    tuple val(meta), path("bowtie2"), emit: index
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,12 +22,13 @@ process COPTR_INDEX {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
+    mkdir bowtie2
     coptr \
         index \
         $args \
         --bt2-threads $task.cpus \
         fastafolder \
-        $prefix
+        bowtie2/${prefix}
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         coptr: \$(coptr |& sed -E '11!d ; s/CoPTR.*?\\(v(.*?)\\).*/\\1/')
@@ -38,7 +39,10 @@ process COPTR_INDEX {
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.genomes
+    mkdir bowtie2
+    touch bowtie2/${prefix}.{1..4}.bt2
+    touch bowtie2/${prefix}.rev.{1,2}.bt2
+    touch bowtie2/${prefix}.genomes
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
