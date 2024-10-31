@@ -1,0 +1,61 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "pypgx_preparedepthofcoverage"
+description: Prepare a depth of coverage file for all target genes with SV from BAM
+  files.
+keywords:
+  - Pharmacogenetics
+  - pypgx
+  - SV
+tools:
+  - "pypgx":
+      description: "A Python package for pharmacogenomics research"
+      homepage: "https://pypgx.readthedocs.io/en/latest/"
+      documentation: "https://pypgx.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/sbslee/pypgx"
+      doi: "10.1371/journal.pone.0272129"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: Input BAM file
+        pattern: "*.{bam}"
+    - bai:
+        type: file
+        description: Input BAM index file
+        pattern: "*.{bam.bai}"
+  - - pgx_genes:
+        type: list
+        description: List of PGx genes supported by PyPGx to include in variant calling.
+  - - assembly_version:
+        type: string
+        description: Genome assembly version to use.
+        pattern: "{GRCh37,GRCh38}"
+output:
+  - coverage:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+          pattern: "*.{zip}"
+      - "*.zip":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+          pattern: "*.{zip}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@jorivansteenbrugge"
+maintainers:
+  - "@jorivansteenbrugge"

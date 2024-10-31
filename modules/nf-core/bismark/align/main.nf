@@ -56,7 +56,7 @@ process BISMARK_ALIGN {
         }
     }
     """
-    mv $fasta $index/
+    ln -sf \$(readlink $fasta) $index/$fasta
 
     bismark \\
         $fastq \\
