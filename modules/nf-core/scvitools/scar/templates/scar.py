@@ -5,6 +5,7 @@ import platform
 import anndata as ad
 import scvi
 from scvi.external import SCAR
+from scipy.sparse import csr_matrix
 from threadpoolctl import threadpool_limits
 
 threadpool_limits(int("${task.cpus}"))
@@ -48,9 +49,9 @@ vae.train(
 )
 
 if "${output_layer}" == "X":
-    adata.X = vae.get_denoised_counts()
+    adata.X = csr_matrix(vae.get_denoised_counts())
 else:
-    adata.layers["${output_layer}"] = vae.get_denoised_counts()
+    adata.layers["${output_layer}"] = csr_matrix(vae.get_denoised_counts())
 
 del adata.uns["_scvi_uuid"], adata.uns["_scvi_manager_uuid"]
 
