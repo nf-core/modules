@@ -4,8 +4,8 @@ import platform
 
 import anndata as ad
 import scvi
-from scvi.external import SCAR
 from scipy.sparse import csr_matrix
+from scvi.external import SCAR
 from threadpoolctl import threadpool_limits
 
 threadpool_limits(int("${task.cpus}"))
