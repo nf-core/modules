@@ -8,7 +8,7 @@ process GUNC_RUN {
         'biocontainers/gunc:1.0.6--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(fasta_files, stageAs: 'input_files/*.fa')
+    tuple val(meta), path(fasta_files, stageAs: 'input_files/genome*.fa')
     path(db)
 
     output:
