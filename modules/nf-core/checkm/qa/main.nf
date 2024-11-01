@@ -4,8 +4,8 @@ process CHECKM_QA {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/checkm-genome:1.2.1--pyhdfd78af_0' :
-        'biocontainers/checkm-genome:1.2.2--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/checkm-genome:1.2.3--pyhdfd78af_1' :
+        'biocontainers/checkm-genome:1.2.3--pyhdfd78af_1' }"
 
     input:
     tuple val(meta), path(analysis_dir), path(marker_file), path(coverage_file)
@@ -23,8 +23,8 @@ process CHECKM_QA {
     def args     = task.ext.args ?: ''
     prefix       = task.ext.prefix ?: "${meta.id}"
     suffix       = task.ext.args?.matches(".*-o 9.*|.*--out_file 9.*") ? "fasta" : "txt"
-    def coverage = coverage_file                                   ? "--coverage_file ${coverage_file}"  : ""
-    def exclude  = exclude_marker_file                             ? "--exclude_markers ${marker_filer}" : ""
+    def coverage = coverage_file.isFile()                              ? "--coverage_file ${coverage_file}"  : ""
+    def exclude  = exclude_marker_file                                 ? "--exclude_markers ${exclude_marker_file}" : ""
     """
     checkm \\
         qa \\
@@ -33,7 +33,6 @@ process CHECKM_QA {
         $marker_file \\
         $analysis_dir \\
         $coverage \\
-        $exclude \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
