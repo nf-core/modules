@@ -44,7 +44,7 @@ vae = SCAR(adata)
 vae.train(
     max_epochs=int("${max_epochs}") if "${max_epochs}" else None,
     early_stopping=True,
-    datasplitter_kwargs={"drop_last": True}
+    datasplitter_kwargs={"drop_last": True},
 )
 
 if "${output_layer}" == "X":
@@ -57,12 +57,7 @@ del adata.uns["_scvi_uuid"], adata.uns["_scvi_manager_uuid"]
 adata.write_h5ad("${prefix}.h5ad")
 
 # Versions
-versions = {
-    "${task.process}": {
-        "python": platform.python_version(),
-        "scvi": scvi.__version__
-    }
-}
+versions = {"${task.process}": {"python": platform.python_version(), "scvi": scvi.__version__}}
 
 with open("versions.yml", "w") as f:
     f.write(format_yaml_like(versions))
