@@ -21,9 +21,20 @@ nextflow_process {
         }
 
         then {
+            def mb = 1024 * 1024 
+            def kb = 1024
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+
+                // Only check if output exists, as phenotype supports no random seeding:
+                // https://github.com/jacoblevine/PhenoGraph/issues/16
+                { assert path(process.out.h5ad.get(0).get(1)).exists() },
+                { assert path(process.out.predictions.get(0).get(1)).exists() },
+
+                { assert path(process.out.h5ad.get(0).get(1)).size() > 30 * mb },
+                { assert path(process.out.predictions.get(0).get(1)).size() > 50 * kb },
+
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
 
