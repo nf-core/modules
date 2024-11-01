@@ -4,8 +4,8 @@ process GUNC_MERGECHECKM {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gunc:1.0.5--pyhdfd78af_0' :
-        'biocontainers/gunc:1.0.5--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gunc:1.0.6--pyhdfd78af_0' :
+        'biocontainers/gunc:1.0.6--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(gunc_file), path(checkm_file)

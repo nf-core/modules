@@ -1,0 +1,54 @@
+nextflow_process {
+
+    name "Test Process GUNC_RUN"
+    script "../main.nf"
+    process "GUNC_RUN"
+
+    tag "modules_nfcore"
+    tag "modules"
+    tag "gunc"
+    tag "gunc/run"
+    tag "gunc/downloadb"
+
+    test("Test GUNC Run") {
+
+        setup {
+            run("GUNC_DOWNLOADDB") {
+                script "../../downloadb/main.nf"
+                process {
+                    """
+                    input[0] = 'progenomes'
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                outdir = "${launchDir}/tests/results"
+            }
+            process {
+                """
+                input[0] = [
+                  [id: 'test'],
+                  [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)]
+                ]
+                input[1] = GUNC_DOWNLOADDB.out.db
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.maxcss_level_tsv,
+                    process.out.all_levels_tsv,
+                    process.out.versions
+                  ).match() }
+            )
+        }
+
+    }
+
+}
