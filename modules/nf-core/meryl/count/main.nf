@@ -28,7 +28,7 @@ process MERYL_COUNT {
             threads=$task.cpus \\
             memory=${task.memory.toGiga()} \\
             $args \\
-            $reads \\
+            \$READ \\
             output read.\${READ%.f*}.meryl
     done
 
