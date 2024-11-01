@@ -10,22 +10,22 @@ nextflow_process {
     tag "coptr/index"
     tag "coptr/map"
 
-    test("sarscov2 - single end") {
-
-        setup {
-            run("COPTR_INDEX") {
-                script "../../index/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                    ]
-                    """
-                }
-            }
+    setup {
+        run("COPTR_INDEX") {
+             script "../../index/main.nf"
+             process {
+                 """
+                 input[0] = [
+                     [id:'test'],
+                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                 ]
+                 """
+             }
         }
+    }
 
+
+    test("sarscov2 - single end") {
 
         when {
             process {
@@ -48,21 +48,6 @@ nextflow_process {
     }
 
     test("sarscov2 - paired end") {
-
-        setup {
-            run("COPTR_INDEX") {
-                script "../../index/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                    ]
-                    """
-                }
-            }
-        }
-
 
         when {
             process {
@@ -90,21 +75,6 @@ nextflow_process {
     test("sarscov2 - paired end - stub") {
 
         options "-stub"
-
-        setup {
-            run("COPTR_INDEX") {
-                script "../../index/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                    ]
-                    """
-                }
-            }
-        }
-
 
         when {
             process {
