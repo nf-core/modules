@@ -3,7 +3,6 @@ process DEEPSOMATIC {
     label 'process_high'
 
     container "docker.io/google/deepsomatic:1.7.0"
-    
     input:
     tuple val(meta), path(input_normal), path(index_normal)
     tuple val(meta2), path(input_tumor), path(index_tumor)
@@ -58,7 +57,6 @@ process DEEPSOMATIC {
         error "DEEPSOMATIC module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     prefix = task.ext.prefix ?: "${meta.id}"
-    
     def VERSION = '1.7.0'
     """
     touch ${prefix}.vcf.gz
