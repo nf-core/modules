@@ -40,7 +40,7 @@ process DOUBLETDETECTION {
     touch ${prefix}.pkl
 
     cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
+    ${task.process}:
         python: \$(python3 -c 'import platform as pf; print(pf.python_version())')
         anndata: \$(python3 -c 'import anndata as ad; print(ad.__version__)')
         doubletdetection: \$(python3 -c 'import doubletdetection as dt; print(dt.__version__)')
