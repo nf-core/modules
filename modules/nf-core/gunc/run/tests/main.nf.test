@@ -8,13 +8,13 @@ nextflow_process {
     tag "modules"
     tag "gunc"
     tag "gunc/run"
-    tag "gunc/downloadb"
+    tag "gunc/downloaddb"
 
     test("Test GUNC Run") {
 
         setup {
             run("GUNC_DOWNLOADDB") {
-                script "../../downloadb/main.nf"
+                script "../../downloaddb/main.nf"
                 process {
                     """
                     input[0] = 'progenomes'

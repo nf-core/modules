@@ -8,7 +8,7 @@ process GUNC_RUN {
         'biocontainers/gunc:1.0.6--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(fasta_files)
+    tuple val(meta), path(fasta_files, stageAs: 'input_files/*.fa')
     path(db)
 
     output:
@@ -23,11 +23,10 @@ process GUNC_RUN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    ls ${fasta_files} > input_files.txt
-
     gunc \\
         run \\
-        --input_file input_files.txt \\
+        --input_dir input_files/ \\
+        --file_suffix .fa \\
         --db_file $db \\
         --threads $task.cpus \\
         $args
