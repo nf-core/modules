@@ -19,7 +19,8 @@ tools:
 input:
   - - meta:
         type: map
-        description: Name of the reference genome index
+        description: |
+        Groovy Map containing genome information
     - indexfasta:
         type: file
         description: Fasta file(s) ending in [.fasta, .fna, .fa]
@@ -31,12 +32,13 @@ output:
   - index:
       - meta:
           type: map
-          description: name of the reference genome index
+          description: |
+          Groovy Map containing genome information
       - "bowtie2":
           type: map
-          description: index genome
+          description: index genome directory
           ontologies:
-            - edan: "http://edamontology.org/data_3210"
+            - edam: "http://edamontology.org/data_3210"
           pattern: "*.{genome}"
   - versions:
       - versions.yml:
