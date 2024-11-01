@@ -11,7 +11,7 @@ process COPTR_INDEX {
     tuple val(meta), path(indexfasta, stageAs: "fastafolder/*")
 
     output:
-    tuple val(meta), path("bowtie2"), emit: index
+    tuple val(meta), path("bowtie2"), emit: index_dir
     path "versions.yml"             , emit: versions
 
     when:
