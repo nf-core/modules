@@ -21,6 +21,7 @@ process SCVITOOLS_SCAR {
     prefix = task.ext.prefix ?: "${meta.id}"
     input_layer = task.ext.input_layer ?: "X"
     output_layer = task.ext.output_layer ?: "scar"
+    max_epochs = task.ext.max_epochs ?: ""
     template 'scar.py'
 
     stub:
@@ -29,7 +30,7 @@ process SCVITOOLS_SCAR {
     touch "${prefix}.h5ad"
 
     cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
+    ${task.process}:
         python: \$(python --version)
         scvi: \$(python -c "import scvi; print(scvi.__version__)")
     END_VERSIONS

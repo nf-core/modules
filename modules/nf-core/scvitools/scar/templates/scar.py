@@ -24,7 +24,7 @@ def format_yaml_like(data: dict, indent: int = 0) -> str:
     """
     yaml_str = ""
     for key, value in data.items():
-        spaces = "  " * indent
+        spaces = "    " * indent
         if isinstance(value, dict):
             yaml_str += f"{spaces}{key}:\\n{format_yaml_like(value, indent + 1)}"
         else:
@@ -41,7 +41,11 @@ SCAR.get_ambient_profile(adata, adata_unfiltered)
 vae = SCAR(adata)
 
 # Prevent errors like https://discourse.scverse.org/t/scvi-21618-problem/2294
-vae.train(early_stopping=True, datasplitter_kwargs={"drop_last": True})
+vae.train(
+    max_epochs=int("${max_epochs}") if "${max_epochs}" else None,
+    early_stopping=True,
+    datasplitter_kwargs={"drop_last": True}
+)
 
 if "${output_layer}" == "X":
     adata.X = vae.get_denoised_counts()
@@ -53,8 +57,12 @@ del adata.uns["_scvi_uuid"], adata.uns["_scvi_manager_uuid"]
 adata.write_h5ad("${prefix}.h5ad")
 
 # Versions
-
-versions = {"${task.process}": {"python": platform.python_version(), "scvi": scvi.__version__}}
+versions = {
+    "${task.process}": {
+        "python": platform.python_version(),
+        "scvi": scvi.__version__
+    }
+}
 
 with open("versions.yml", "w") as f:
     f.write(format_yaml_like(versions))
