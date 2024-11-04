@@ -758,7 +758,7 @@ jobs:
 
   nf-test-gpu:
     runs-on: ${{ github.event.inputs.runners  || 'gpu' }}
-    name: nf-test
+    name: nf-test with GPUs
     needs: [nf-test-changes]
     if: ( needs.nf-test-changes.outputs.paths != '[]' )
     strategy:
@@ -848,8 +848,6 @@ jobs:
         run: |
           nextflow secrets set SENTIEON_AUTH_DATA $(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "${{ secrets.SENTIEON_ENCRYPTION_KEY }}" --message "${{ secrets.SENTIEON_LICENSE_MESSAGE }}")
       # FIXME docker debugging
-      - name: ssh debugging
-        uses: Warpbuilds/action-debugger@v1.3
       - name: Verify Docker Environment
         run: |
           source ~/.bashrc
@@ -904,6 +902,10 @@ jobs:
         if: always()
         run: |
           sudo rm -rf /home/ubuntu/tests/
+
+      - name: ssh debugging
+        if: always()
+        uses: Warpbuilds/action-debugger@v1.3
 
   confirm-pass:
     runs-on: ubuntu-latest
