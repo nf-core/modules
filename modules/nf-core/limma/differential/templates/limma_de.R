@@ -231,6 +231,20 @@ if (!contrast_variable %in% colnames(sample.sheet)) {
         )
     }
 }
+
+# Handle conflicts between blocking variables and block
+if (!is.null(opt\$block) && !is.null(opt\$blocking_variables)) {
+    if (opt\$block %in% blocking.vars) {
+        warning(paste("Variable", opt\$block, "is specified both as a fixed effect and a random effect. It will be treated as a random effect only."))
+        blocking.vars <- setdiff(blocking.vars, opt\$block)
+        if (length(blocking.vars) == 0) {
+            opt\$blocking_variables <- NULL
+        } else {
+            opt\$blocking_variables <- paste(blocking.vars, collapse = ';')
+        }
+    }
+}
+
 # Optionally, subset to only the samples involved in the contrast
 
 if (opt\$subset_to_contrast_samples){
