@@ -29,6 +29,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
 
     script:
     assert sequence_type in ['fasta', 'fastq']
+    sequences = sequences instanceof List ? sequences : [sequences]
 
     def args = task.ext.args ?: ''
     def args2 = task.ext.args ?: ''
@@ -117,6 +118,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
 
     stub:
     assert sequence_type in ['fasta', 'fastq']
+    sequences = sequences instanceof List ? sequences : [sequences]
 
     def args = task.ext.args ?: ''
     def args2 = task.ext.args ?: ''
