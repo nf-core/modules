@@ -27,7 +27,7 @@ process GATK4_FILTERVARIANTTRANCHES {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def resources = resources.collect{"--resource $it"}.join(' ')
+    def resource_list = resources.collect{"--resource $it"}.join(' ')
 
     def avail_mem = 3072
     if (!task.memory) {
@@ -39,10 +39,23 @@ process GATK4_FILTERVARIANTTRANCHES {
     gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         FilterVariantTranches \\
         --variant $vcf \\
-        $resources \\
+        $resource_list \\
         --output ${prefix}.filtered.vcf.gz \\
         --tmp-dir . \\
         $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    echo "" | gzip -c > ${prefix}.vcf.gz
+    touch ${prefix}.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
