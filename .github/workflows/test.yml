@@ -237,8 +237,6 @@ jobs:
           - profile: singularity
             tags: bases2fastq
           - profile: conda
-            tags: basicpy
-          - profile: conda
             tags: bcl2fastq
           - profile: conda
             tags: bclconvert
@@ -510,6 +508,8 @@ jobs:
             path: modules/nf-core/bakta/baktadbdownload
           - profile: conda
             path: modules/nf-core/bases2fastq
+          - profile: conda
+            path: modules/nf-core/basicpy
           - profile: conda
             path: modules/nf-core/bcl2fastq
           - profile: conda

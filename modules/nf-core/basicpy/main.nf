@@ -19,7 +19,7 @@ process BASICPY {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "Basicpy module does not support Conda. Please use Docker / Singularity instead."
     }
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = "1.2.0-patch1" // WARN: Version information not provided by tool on CLI. Please update this string when bumping
     """
@@ -27,7 +27,7 @@ process BASICPY {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        basicpy:: $VERSION
+        basicpy: $VERSION
     END_VERSIONS
     """
 
@@ -36,13 +36,17 @@ process BASICPY {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "Basicpy module does not support Conda. Please use Docker / Singularity instead."
     }
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = "1.2.0-patch1" // WARN: Version information not provided by tool on CLI. Please update this string when bumping
+
     """
-    touch ${prefix}.-dfp.tiff
-    touch ${prefix}.-dfp.tiff
+    touch ${prefix}-dfp.tiff
+    touch ${prefix}-ffp.tiff
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        basicpy:: $VERSION
+        basicpy: $VERSION
     END_VERSIONS
     """
 }
