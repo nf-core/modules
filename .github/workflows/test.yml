@@ -847,7 +847,13 @@ jobs:
         if: env.SENTIEON_ENCRYPTION_KEY != null && env.SENTIEON_LICENSE_MESSAGE != null
         run: |
           nextflow secrets set SENTIEON_AUTH_DATA $(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "${{ secrets.SENTIEON_ENCRYPTION_KEY }}" --message "${{ secrets.SENTIEON_LICENSE_MESSAGE }}")
-
+      # FIXME docker debugging
+      - name: Verify Docker Environment
+        run: |
+          echo "Current environment:"
+          env | grep -E 'DOCKER|XDG'
+          echo "Testing Docker:"
+          docker ps
       # Test the module
       - name: Run nf-test
         if: ${{ matrix.path != '' }}
