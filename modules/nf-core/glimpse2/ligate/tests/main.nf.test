@@ -22,7 +22,7 @@ nextflow_process {
                     [ id:'input' ], // meta map
                     file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz", checkIfExists: true),
                     file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz.csi", checkIfExists: true),
-                    [],
+                    [], [],
                     "chr21:16600000-16800000",
                     "chr21:16650000-16750000"
                 ])
