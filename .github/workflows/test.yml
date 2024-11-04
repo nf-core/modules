@@ -903,10 +903,6 @@ jobs:
         run: |
           sudo rm -rf /home/ubuntu/tests/
 
-      - name: ssh debugging
-        if: always()
-        uses: Warpbuilds/action-debugger@v1.3
-
   confirm-pass:
     runs-on: ubuntu-latest
     needs:
