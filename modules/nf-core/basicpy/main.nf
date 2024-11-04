@@ -1,5 +1,5 @@
 process BASICPY {
-    tag "$meta.id"
+    tag   "$meta.id"
     label 'process_single'
 
     container "docker.io/labsyspharm/basicpy-docker-mcmicro:1.2.0-patch1"
