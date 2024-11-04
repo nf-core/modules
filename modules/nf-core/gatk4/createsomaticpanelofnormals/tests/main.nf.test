@@ -1,0 +1,82 @@
+nextflow_process {
+
+    name "Test Process GATK4_CREATESOMATICPANELOFNORMALS"
+    script "../main.nf"
+    process "GATK4_CREATESOMATICPANELOFNORMALS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "untar"
+    tag "gatk4"
+    tag "gatk4/createsomaticpanelofnormals"
+
+    setup {
+        run("UNTAR") {
+            script "../../../untar/main.nf"
+            process {
+            """
+            input[0] = [[id:'test'], file(params.test_data['homo_sapiens']['illumina']['test_genomicsdb_tar_gz'], checkIfExists: true) ]
+            """
+            }
+        }
+    }
+
+    test("homo sapiens - genomicsdb") {
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                input[1] = [ [ id:'genome' ], // meta map
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                input[2] = [ [ id:'genome' ], // meta map
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                    ]
+                input[3] = [ [ id:'genome' ], // meta map
+                    file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo sapiens - genomicsdb - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                input[1] = [ [ id:'genome' ], // meta map
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                input[2] = [ [ id:'genome' ], // meta map
+                    file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                    ]
+                input[3] = [ [ id:'genome' ], // meta map
+                    file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
