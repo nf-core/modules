@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 
+import os
 import platform
+
+os.environ["MPLCONFIGDIR"] = "./tmp"
 
 import anndata as ad
 import scvi

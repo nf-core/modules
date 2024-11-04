@@ -9,9 +9,6 @@ process SCVITOOLS_SOLO {
         'oras://community.wave.seqera.io/library/scvi-tools:1.2.0--adbeb4160de8b08e':
         'community.wave.seqera.io/library/scvi-tools:1.2.0--680d378b86801b8a' }"
 
-    // Prevent /tmp mount for singularity and set the MATPLOTLIB TMPDIR
-    containerOptions "${workflow.containerEngine == 'singularity' ? '--no-mount tmp --env MPLCONFIGDIR=' + workDir : ''}"
-
     input:
     tuple val(meta), path(h5ad)
 
@@ -32,6 +29,8 @@ process SCVITOOLS_SOLO {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    export MPLCONFIGDIR=./tmp
+
     touch ${prefix}.h5ad
     touch ${prefix}.pkl
 
