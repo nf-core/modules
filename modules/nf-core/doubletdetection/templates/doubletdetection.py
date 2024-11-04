@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 
+import os
 import platform
+
+os.environ["MPLCONFIGDIR"] = "./tmp"
+os.environ["NUMBA_CACHE_DIR"] = "./tmp"
 
 import anndata as ad
 import doubletdetection

@@ -6,10 +6,6 @@ process DOUBLETDETECTION {
         'oras://community.wave.seqera.io/library/anndata_louvain_pip_doubletdetection:42d2326cc250350b':
         'community.wave.seqera.io/library/anndata_louvain_pip_doubletdetection:cbe92394c10372fa' }"
 
-    // Prevent /tmp mount for singularity and set the MATPLOTLIB TMPDIR
-    containerOptions "${workflow.containerEngine == 'singularity' ?
-        '--no-mount tmp --env MPLCONFIGDIR=' + workDir + ' --env NUMBA_CACHE_DIR=' + workDir : ''}"
-
     input:
     tuple val(meta), path(h5ad)
 
@@ -36,6 +32,9 @@ process DOUBLETDETECTION {
     }
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    export MPLCONFIGDIR=./tmp
+    export NUMBA_CACHE_DIR=./tmp
+
     touch ${prefix}.h5ad
     touch ${prefix}.pkl
 
