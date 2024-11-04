@@ -850,43 +850,24 @@ jobs:
       # FIXME docker debugging
       - name: Verify Docker Environment
         run: |
+          source ~/.bashrc
+
           echo "Current user: $(whoami)"
           echo "User ID: $(id -u)"
+          echo "XDG_RUNTIME_DIR: $XDG_RUNTIME_DIR"
+          echo "DOCKER_HOST: $DOCKER_HOST"
 
-          # Check if systemd user service is running
-          loginctl enable-linger ubuntu
+          # Check service status
+          systemctl --user status docker || true
 
-          # Start systemd user service if needed
-          systemctl --user start docker || {
-            echo "Failed to start Docker service, checking status..."
-            systemctl --user status docker
-
-            echo "Trying to restart Docker setup..."
-            systemctl --user daemon-reload
-            systemctl --user restart docker
-          }
-
-          # Wait for Docker to be available
-          timeout=60
-          while ! docker ps > /dev/null 2>&1 && [ $timeout -gt 0 ]; do
-            echo "Waiting for Docker to start... ($timeout seconds remaining)"
-            systemctl --user status docker || true
-            sleep 1
-            timeout=$((timeout-1))
-          done
-
-          if [ $timeout -eq 0 ]; then
-            echo "Docker failed to start. Collecting debug information..."
-            echo "Docker socket status:"
-            ls -l /run/user/1000/docker.sock || true
-            echo "Docker service status:"
-            systemctl --user status docker || true
-            echo "Docker service logs:"
-            journalctl --user -u docker || true
-            exit 1
+          # Try restarting if needed
+          if ! systemctl --user is-active docker; then
+              echo "Docker not active, attempting to start..."
+              systemctl --user start docker
+              sleep 5
           fi
 
-          # Verify Docker is working
+          # Test Docker
           docker ps
       # Test the module
       - name: Run nf-test
