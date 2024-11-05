@@ -24,7 +24,7 @@ process METAMDBG_ASM {
     def prefix = task.ext.prefix ?: "${meta.id}"
     switch(input_type) {
         case "hifi": input = "--in-hifi ${reads}"; break
-        case "ont": input = "--in-ont ${reads}"; break
+        case "ont" : input = "--in-ont ${reads}" ; break
         default:
             error("ERROR: input_type must be one of either 'hifi' or 'ont'.")
             break

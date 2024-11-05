@@ -31,10 +31,10 @@ nextflow_process {
                 // log file contains nextflow work dir paths
                 { assert snapshot(
                     file(process.out.contigs[0][1]).name,
-                    file(process.out.log[0][1]).name
-                ).match("ont_out") },
-                { assert path(process.out.log[0][1]).readLines().last().contains("Done!") },
-                { assert snapshot(process.out.versions).match("ont_versions") }
+                    file(process.out.log[0][1]).name,
+                    process.out.versions
+                ).match() },
+                { assert path(process.out.log[0][1]).readLines().last().contains("Done!") }
             )
         }
     }
@@ -59,10 +59,10 @@ nextflow_process {
                 // log file contains nextflow work dir paths
                 { assert snapshot(
                     file(process.out.contigs[0][1]).name,
-                    file(process.out.log[0][1]).name
-                ).match("hifi_out") },
-                { assert path(process.out.log[0][1]).readLines().last().contains("Done!") },
-                { assert snapshot(process.out.versions).match("hifi_versions") }
+                    file(process.out.log[0][1]).name,
+                    process.out.versions
+                ).match() },
+                { assert path(process.out.log[0][1]).readLines().last().contains("Done!") }
             )
         }
     }
