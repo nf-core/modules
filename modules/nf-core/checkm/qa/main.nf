@@ -43,6 +43,7 @@ process CHECKM_QA {
     """
 
     stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt ${prefix}.fasta
 
