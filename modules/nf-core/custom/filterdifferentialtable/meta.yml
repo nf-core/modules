@@ -13,7 +13,9 @@ tools:
       tool_dev_url: "https://github.com/pandas-dev/pandas"
       doi: "10.5281/zenodo.3509134"
       licence: ["BSD-3-Clause"]
-      identifier: "pypi:pandas"
+      identifiers:
+        - "biotools:pandas"
+        - "conda:pandas"
 input:
   - - meta:
         type: map
@@ -24,21 +26,17 @@ input:
         type: file
         description: Input differential expression table (CSV, TSV, or TXT format)
         pattern: "*.{csv,tsv,txt}"
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing filtering parameters
-    - logFC_column:
+  - - logFC_column:
         type: string
         description: Name of the column containing log fold change values
-    - FC_threshold:
-        type: number
+  - - FC_threshold:
+        type: float
         description: Fold change threshold for filtering
-    - padj_column:
+  - - padj_column:
         type: string
         description: Name of the column containing adjusted p-values
-    - padj_threshold:
-        type: number
+  - - padj_threshold:
+        type: float
         description: Adjusted p-value threshold for filtering
 output:
   - filtered:
@@ -47,7 +45,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.filtered.tsv":
+      - "*_filtered.tsv":
           type: file
           description: Filtered differential expression table
           pattern: "*_filtered.tsv"
