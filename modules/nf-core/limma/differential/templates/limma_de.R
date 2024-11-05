@@ -320,9 +320,7 @@ if (!is.null(opt\$use_voom) && opt\$use_voom) {
 
     if (!is.null(opt\$block)) {
         corfit = duplicateCorrelation(voom_result, design = design, block = sample.sheet[[opt\$block]])
-        if (!is.null(opt\$use_voom) && opt\$use_voom) {
-            voom_result <- voom(counts = dge, design = design, plot = FALSE, correlation = corfit\$consensus.correlation)
-        }
+        voom_result <- voom(counts = dge, design = design, plot = FALSE, correlation = corfit\$consensus.correlation)
     }
 
     data_for_fit <- voom_result
