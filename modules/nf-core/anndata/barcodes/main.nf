@@ -4,11 +4,11 @@ process ANNDATA_BARCODES {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/anndata:0.10.7--e9840a94592528c8':
-        'community.wave.seqera.io/library/anndata:0.10.7--336c6c1921a0632b' }"
+        'oras://community.wave.seqera.io/library/anndata:0.10.9--d13580e4b297da7c':
+        'community.wave.seqera.io/library/anndata:0.10.9--1eab54e300e1e584' }"
 
     input:
-    tuple val(meta), path(h5ad), path(barcodes_csv)
+    tuple val(meta), path(h5ad), path(barcodes)
 
     output:
     tuple val(meta), path("*.h5ad"), emit: h5ad
@@ -20,4 +20,17 @@ process ANNDATA_BARCODES {
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
     template 'barcodes.py'
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.h5ad
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        python: \$(python3 -c 'import platform; print(platform.python_version())')
+        anndata: \$(python3 -c 'import anndata as ad; print(ad.__version__)')
+        pandas: \$(python3 -c 'import pandas as pd; print(pd.__version__)')
+    END_VERSIONS
+    """
 }

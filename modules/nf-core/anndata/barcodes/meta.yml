@@ -1,25 +1,19 @@
 name: anndata_barcodes
-description: |
-  Module to subset AnnData to obtain the droplots whose barcodes match |
-  those in the input barcodes CSV file
-authors:
-  - "@nictru"
-maintainers:
-  - "@nictru"
+description: Module to subset AnnData object to cells with matching barcodes from the csv file
 keywords:
   - single-cell
-  - scRNA-seqq
   - barcodes
   - anndata
+  - subsetting
+  - transcriptomics
 tools:
-  - anndata:
-      description: |
-        anndata is a Python library specifically designed for handling |
-        and managing large-scale single-cell RNA sequencing (scRNA-seq) |
-        data. It’s part of the Scanpy ecosystem and is widely used in |
-        single-cell bioinformatics workflows.
-      homepage: |
-        https://github.com/scverse/anndata
+  - "anndata":
+      description: "An annotated data matrix."
+      homepage: "https://anndata.readthedocs.io"
+      documentation: "https://anndata.readthedocs.io"
+      tool_dev_url: "https://github.com/theislab/anndata"
+      doi: "10.21105/joss.04371"
+      licence: ["BSD-3-clause"]
       identifier: biotools:anndata
 input:
   - - meta:
@@ -29,16 +23,14 @@ input:
           e.g. [ id:'test' ]
     - h5ad:
         type: file
-        description: |
-          AnnData file for raw or filtered (with background RNA removed) data
+        description: Anndata object as H5AD file
         pattern: "*.h5ad"
-    - barcodes_csv:
+    - barcodes:
         type: file
         description: |
-          CSV file containing all the droplet barcodes which were determined to have a > 50% posterior probability of containing cells. |
-          Barcodes are written in plain text. This information is also contained in each of the above outputs, |
-          but is included as a separate output for convenient use in certain downstream applications.
+          CSV file containing barcodes. Barcodes are written in plain text. One column, no header
         pattern: "*.csv"
+
 output:
   - h5ad:
       - meta:
@@ -50,11 +42,17 @@ output:
       - "*.h5ad":
           type: file
           description: |
-            AnnData file containing droplets with barcodes that match |
-            those in the input barcodes CSV file
+            AnnData file containing all cells with barcodes that match those in the input barcodes csv file
           pattern: "*.h5ad"
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+authors:
+  - "@nictru"
+  - "@chaochaowong"
+  - "@LeonHafner"
+maintainers:
+  - "@nictru"
+  - "@LeonHafner"

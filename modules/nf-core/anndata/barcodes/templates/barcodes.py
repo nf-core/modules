@@ -18,7 +18,7 @@ def format_yaml_like(data: dict, indent: int = 0) -> str:
     """
     yaml_str = ""
     for key, value in data.items():
-        spaces = "  " * indent
+        spaces = "    " * indent
         if isinstance(value, dict):
             yaml_str += f"{spaces}{key}:\\n{format_yaml_like(value, indent + 1)}"
         else:
@@ -26,7 +26,7 @@ def format_yaml_like(data: dict, indent: int = 0) -> str:
     return yaml_str
 
 
-df = pd.read_csv("${barcodes_csv}", header=None)
+df = pd.read_csv("${barcodes}", header=None)
 adata = ad.read_h5ad("${h5ad}")
 
 adata = adata[df[0].values]
