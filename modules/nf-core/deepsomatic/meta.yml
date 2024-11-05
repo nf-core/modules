@@ -32,11 +32,6 @@ input:
         type: file
         description: Index of BAM/CRAM file
         pattern: "*.bai/crai"
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
     - input_tumor:
         type: file
         description: BAM/CRAM file
@@ -45,7 +40,7 @@ input:
         type: file
         description: Index of BAM/CRAM file
         pattern: "*.bai/crai"
-  - - meta3:
+  - - meta2:
         type: map
         description: |
           Groovy Map containing sample information
@@ -53,7 +48,7 @@ input:
     - intervals:
         type: file
         description: file containing intervals
-  - - meta4:
+  - - meta3:
         type: map
         description: |
           Groovy Map containing sample information
@@ -62,7 +57,7 @@ input:
         type: file
         description: The reference fasta file
         pattern: "*.fasta"
-  - - meta5:
+  - - meta4:
         type: map
         description: |
           Groovy Map containing sample information
@@ -71,7 +66,7 @@ input:
         type: file
         description: Index of reference fasta file
         pattern: "*.fai"
-  - - meta6:
+  - - meta5:
         type: map
         description: |
           Groovy Map containing sample information

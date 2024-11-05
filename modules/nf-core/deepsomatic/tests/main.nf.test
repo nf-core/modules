@@ -15,28 +15,25 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'normal' ],
+                    [ id:'tumor_vs_normal' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
                 ]
                 input[1] = [
-                    [ id:'tumor'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true),
-                ]
-                input[2] = [
                     [ id:'intervals' ],
                     []
                 ]
-                input[3] = [
+                input[2] = [
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 ]
-                input[4] = [
+                input[3] = [
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
                 ]
-                input[5] = [
+                input[4] = [
                     [ id: 'gzi' ],
                     []
                 ]
@@ -51,8 +48,6 @@ nextflow_process {
                     assert snapshot(
                         process.out.vcf.collect { file(it[1]).getName() },
                         process.out.tbi.collect { file(it[1]).getName() },
-                        process.out.stats,
-                        process.out.f1r2,
                         process.out.versions,
                     ).match()
                 }
