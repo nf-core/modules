@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "galah"
 description: Cluster genome FASTA files by average nucleotide identity
@@ -9,54 +8,64 @@ keywords:
   - metagenomics
 tools:
   - "galah":
-      description: "Galah aims to be a more scalable metagenome assembled genome (MAG) dereplication method."
+      description: "Galah aims to be a more scalable metagenome assembled genome (MAG)
+        dereplication method."
       homepage: "https://github.com/wwood/galah"
       documentation: "https://github.com/wwood/galah"
       tool_dev_url: "https://github.com/wwood/galah"
       doi: "10.1111/NODOI"
       licence: ["GPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - bins:
-      type: file
-      description: A list of fasta-formatted genomes for dereplication
-      pattern: "*.{fa,fna,fa.gz, etc}"
-  - qc_table:
-      type: file
-      description: |
-        (optional) Either a (CheckM)[https://nf-co.re/modules/checkm_lineagewf] summary TSV containing
-        information on the completeness and contamination of the input genomes (13 columns),
-        or a 3-column csv with the header `genome,completeness,contamination`.
-        In both cases the first column should contain the names of the input genome files,
-        minus the last file extension
-        (i.e. if the genome is gzipped, the genome name should retain the .fasta extension).
-      pattern: "*.{csv,tsv}"
-  - qc_format:
-      type: string
-      description: Defines the type if input table in `qc_table`, if specified.
-      pattern: "checkm|genome_info"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - bins:
+        type: file
+        description: A list of fasta-formatted genomes for dereplication
+        pattern: "*.{fa,fna,fa.gz, etc}"
+    - qc_table:
+        type: file
+        description: |
+          (optional) Either a (CheckM)[https://nf-co.re/modules/checkm_lineagewf] summary TSV containing
+          information on the completeness and contamination of the input genomes (13 columns),
+          or a 3-column csv with the header `genome,completeness,contamination`.
+          In both cases the first column should contain the names of the input genome files,
+          minus the last file extension
+          (i.e. if the genome is gzipped, the genome name should retain the .fasta extension).
+        pattern: "*.{csv,tsv}"
+    - qc_format:
+        type: string
+        description: Defines the type if input table in `qc_table`, if specified.
+        pattern: "checkm|genome_info"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
   - tsv:
-      type: file
-      description: TSV file in the format `representative_genome` \t `member_genome`
-      pattern: "*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.tsv":
+          type: file
+          description: TSV file in the format `representative_genome` \t `member_genome`
+          pattern: "*.tsv"
   - dereplicated_bins:
-      type: file
-      description: The representative genomes following dereplication by galah.
-      pattern: "*"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - ${prefix}-dereplicated/*:
+          type: file
+          description: The representative genomes following dereplication by galah.
+          pattern: "*"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@prototaxites"
 maintainers:

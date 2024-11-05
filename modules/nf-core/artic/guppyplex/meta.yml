@@ -6,35 +6,39 @@ keywords:
   - demultiplexed reads
 tools:
   - artic:
-      description: ARTIC pipeline - a bioinformatics pipeline for working with virus sequencing data sequenced with nanopore
+      description: ARTIC pipeline - a bioinformatics pipeline for working with virus
+        sequencing data sequenced with nanopore
       homepage: https://artic.readthedocs.io/en/latest/
       documentation: https://artic.readthedocs.io/en/latest/
       tool_dev_url: https://github.com/artic-network/fieldbioinformatics
       licence: ["MIT"]
+      identifier: biotools:artic
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fastq_dir:
-      type: directory
-      description: Directory containing the fastq files with demultiplexed reads
-      pattern: "*"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fastq_dir:
+        type: directory
+        description: Directory containing the fastq files with demultiplexed reads
+        pattern: "*"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - fastq:
-      type: file
-      description: Aggregated FastQ files
-      pattern: "*.{fastq.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fastq.gz":
+          type: file
+          description: Aggregated FastQ files
+          pattern: "*.{fastq.gz}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@joseespinosa"
   - "@drpatelh"

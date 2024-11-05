@@ -1,5 +1,6 @@
 name: cnvkit_access
-description: Calculate the sequence-accessible coordinates in chromosomes from the given reference genome, output as a BED file.
+description: Calculate the sequence-accessible coordinates in chromosomes from the
+  given reference genome, output as a BED file.
 keywords:
   - cvnkit
   - access
@@ -15,38 +16,42 @@ tools:
       tool_dev_url: "https://github.com/etal/cnvkit"
       doi: 10.1371/journal.pcbi.1004873
       licence: ["Apache-2.0"]
+      identifier: biotools:cnvkit
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: Genome FASTA.
-      pattern: "*.fasta"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - exclude_bed:
-      type: file
-      description: Additional regions to exclude, in BED format. Can be used multiple times.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Genome FASTA.
+        pattern: "*.fasta"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - exclude_bed:
+        type: file
+        description: Additional regions to exclude, in BED format. Can be used multiple
+          times.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - bed:
-      type: file
-      description: File containing accessible regions.
-      pattern: "*.{bed}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bed":
+          type: file
+          description: File containing accessible regions.
+          pattern: "*.{bed}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@adamrtalbot"
   - "@priesgo"

@@ -9,38 +9,47 @@ tools:
       description: Move annotations from one assembly to another
       homepage: http://hgdownload.cse.ucsc.edu/admin/exe/
       licence: ["varies; see http://genome.ucsc.edu/license"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bed:
-      type: file
-      description: Browser Extensible Data (BED) file
-      pattern: "*.{bed}"
-  - chain:
-      type: file
-      description: Chain file
-      pattern: "*.{chain,chain.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bed:
+        type: file
+        description: Browser Extensible Data (BED) file
+        pattern: "*.{bed}"
+  - - chain:
+        type: file
+        description: Chain file
+        pattern: "*.{chain,chain.gz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software version
-      pattern: "versions.yml"
   - lifted:
-      type: file
-      description: BED file containing successfully lifted variants
-      pattern: "*.{lifted.bed}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.lifted.bed":
+          type: file
+          description: BED file containing successfully lifted variants
+          pattern: "*.{lifted.bed}"
   - unlifted:
-      type: file
-      description: BED file containing variants that couldn't be lifted
-      pattern: "*.{unlifted.bed}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.unlifted.bed":
+          type: file
+          description: BED file containing variants that couldn't be lifted
+          pattern: "*.{unlifted.bed}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software version
+          pattern: "versions.yml"
 authors:
   - "@nebfield"
 maintainers:
