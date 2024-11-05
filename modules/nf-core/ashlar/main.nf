@@ -51,7 +51,6 @@ process ASHLAR {
     """
 
     stub:
-    def args          = task.ext.args           ?: ''
     def prefix        = task.ext.prefix         ?: "${meta.id}"
     def num_files     = images instanceof List  ? images.size()    : 1
     def opt_dfp_size  = opt_dfp instanceof List ? opt_dfp.size()   : 1
