@@ -48,10 +48,12 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
         command_inputs = [sequences, prefixes].transpose().collect { seq, prefix -> "${seq}\t${prefix}" }
 
         """
+        # Store the batch of samples for later command input.
         cat <<-END_INPUTS > ${command_inputs_file}
         ${command_inputs.join('\n        ')}
         END_INPUTS
 
+        # Preload the KrakenUniq database into memory.
         krakenuniq \\
             $args \\
             --db $db \\
@@ -59,6 +61,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             --preload-size $ram_chunk_size \\
             --threads $task.cpus
 
+        # Run the KrakenUniq classification on each sample in the batch.
         while IFS='\t' read -r SEQ PREFIX; do
             krakenuniq \\
                 --db $db \\
@@ -83,10 +86,12 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
         command_inputs = [sequences.collate(2), prefixes].transpose().collect { pair, prefix -> "${pair[0]}\t${pair[1]}\t${prefix}" }
 
         """
+        # Store the batch of samples for later command input.
         cat <<-END_INPUTS > ${command_inputs_file}
         ${command_inputs.join('\n        ')}
         END_INPUTS
 
+        # Preload the KrakenUniq database into memory.
         krakenuniq \\
             $args \\
             --db $db \\
@@ -94,6 +99,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             --preload-size $ram_chunk_size \\
             --threads $task.cpus
 
+        # Run the KrakenUniq classification on each sample in the batch.
         while IFS='\t' read -r FIRST_SEQ SECOND_SEQ PREFIX; do
             krakenuniq \\
                 --db $db \\
@@ -137,10 +143,12 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
         command_inputs = [sequences, prefixes].transpose().collect { seq, prefix -> "${seq}\t${prefix}" }
 
         """
+        # Store the batch of samples for later command input.
         cat <<-END_INPUTS > ${command_inputs_file}
         ${command_inputs.join('\n        ')}
         END_INPUTS
 
+        # Preload the KrakenUniq database into memory.
         echo krakenuniq \\
             $args \\
             --db $db \\
@@ -156,6 +164,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             echo '<3 nf-core' | gzip -n > "\$1"
         }
 
+        # Run the KrakenUniq classification on each sample in the batch.
         while IFS='\t' read -r SEQ PREFIX; do
             echo krakenuniq \\
                 --db $db \\
@@ -185,10 +194,12 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
         command_inputs = [sequences.collate(2), prefixes].transpose().collect { pair, prefix -> "${pair[0]}\t${pair[1]}\t${prefix}" }
 
         """
+        # Store the batch of samples for later command input.
         cat <<-END_INPUTS > ${command_inputs_file}
         ${command_inputs.join('\n        ')}
         END_INPUTS
 
+        # Preload the KrakenUniq database into memory.
         echo krakenuniq \\
             $args \\
             --db $db \\
@@ -204,6 +215,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             echo '<3 nf-core' | gzip -n > "\$1"
         }
 
+        # Run the KrakenUniq classification on each sample in the batch.
         while IFS='\t' read -r FIRST_SEQ SECOND_SEQ PREFIX; do
             echo krakenuniq \\
                 --db $db \\
