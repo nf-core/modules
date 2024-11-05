@@ -46,7 +46,6 @@ process RTGTOOLS_FORMAT {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def avail_mem = "3G"
