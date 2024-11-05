@@ -45,7 +45,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
 
     if (meta.single_end) {
         assert sequences.size() == prefixes.size()
-        command_inputs = [sequences, prefixes].transpose().collect { seq, prefix -> "${seq} ${prefix}" }
+        command_inputs = [sequences, prefixes].transpose().collect { seq, prefix -> "${seq}\t${prefix}" }
 
         """
         cat <<-END_INPUTS > ${command_inputs_file}
@@ -59,7 +59,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             --preload-size $ram_chunk_size \\
             --threads $task.cpus
 
-        while IFS=' ' read -r SEQ PREFIX; do
+        while IFS='\t' read -r SEQ PREFIX; do
             krakenuniq \\
                 --db $db \\
                 --threads $task.cpus \\
@@ -80,7 +80,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
         """
     } else {
         assert sequences.size() / 2 == prefixes.size()
-        command_inputs = [sequences.collate(2), prefixes].transpose().collect { pair, prefix -> "${pair[0]} ${pair[1]} ${prefix}" }
+        command_inputs = [sequences.collate(2), prefixes].transpose().collect { pair, prefix -> "${pair[0]}\t${pair[1]}\t${prefix}" }
 
         """
         cat <<-END_INPUTS > ${command_inputs_file}
@@ -94,7 +94,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             --preload-size $ram_chunk_size \\
             --threads $task.cpus
 
-        while IFS=' ' read -r FIRST_SEQ SECOND_SEQ PREFIX; do
+        while IFS='\t' read -r FIRST_SEQ SECOND_SEQ PREFIX; do
             krakenuniq \\
                 --db $db \\
                 --threads $task.cpus \\
@@ -134,7 +134,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
 
     if (meta.single_end) {
         assert sequences.size() == prefixes.size()
-        command_inputs = [sequences, prefixes].transpose().collect { seq, prefix -> "${seq} ${prefix}" }
+        command_inputs = [sequences, prefixes].transpose().collect { seq, prefix -> "${seq}\t${prefix}" }
 
         """
         cat <<-END_INPUTS > ${command_inputs_file}
@@ -156,7 +156,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             echo '<3 nf-core' | gzip -n > "\$1"
         }
 
-        while IFS=' ' read -r SEQ PREFIX; do
+        while IFS='\t' read -r SEQ PREFIX; do
             echo krakenuniq \\
                 --db $db \\
                 --threads $task.cpus \\
@@ -182,7 +182,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
         """
     } else {
         assert sequences.size() / 2 == prefixes.size()
-        command_inputs = [sequences.collate(2), prefixes].transpose().collect { pair, prefix -> "${pair[0]} ${pair[1]} ${prefix}" }
+        command_inputs = [sequences.collate(2), prefixes].transpose().collect { pair, prefix -> "${pair[0]}\t${pair[1]}\t${prefix}" }
 
         """
         cat <<-END_INPUTS > ${command_inputs_file}
@@ -204,7 +204,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             echo '<3 nf-core' | gzip -n > "\$1"
         }
 
-        while IFS=' ' read -r FIRST_SEQ SECOND_SEQ PREFIX; do
+        while IFS='\t' read -r FIRST_SEQ SECOND_SEQ PREFIX; do
             echo krakenuniq \\
                 --db $db \\
                 --threads $task.cpus \\
