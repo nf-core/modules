@@ -1,5 +1,5 @@
 process CHECKM_QA {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
@@ -24,16 +24,27 @@ process CHECKM_QA {
     prefix       = task.ext.prefix ?: "${meta.id}"
     suffix       = task.ext.args?.matches(".*-o 9.*|.*--out_file 9.*") ? "fasta" : "txt"
     def coverage = coverage_file.isFile()                              ? "--coverage_file ${coverage_file}"  : ""
-    def exclude  = exclude_marker_file                                 ? "--exclude_markers ${exclude_marker_file}" : ""
+    def exclude  = exclude_marker_file && exclude_marker_file.isFile() ? "--exclude_markers ${exclude_marker_file}" : ""
     """
     checkm \\
         qa \\
         --threads ${task.cpus} \\
         --file ${prefix}.${suffix} \\
-        $marker_file \\
-        $analysis_dir \\
-        $coverage \\
-        $args
+        ${marker_file} \\
+        ${analysis_dir} \\
+        ${coverage} \\
+        ${exclude} \\
+        ${args}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        checkm: \$( checkm 2>&1 | grep '...:::' | sed 's/.*CheckM v//;s/ .*//' )
+    END_VERSIONS
+    """
+
+    stub:
+    """
+    touch ${prefix}.txt ${prefix}.fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
