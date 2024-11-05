@@ -850,8 +850,6 @@ jobs:
       # FIXME docker debugging
       - name: Verify Docker Environment
         run: |
-          source ~/.bashrc
-
           echo "Current user: $(whoami)"
           echo "User ID: $(id -u)"
           echo "XDG_RUNTIME_DIR: $XDG_RUNTIME_DIR"
