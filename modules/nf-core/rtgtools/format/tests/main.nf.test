@@ -28,7 +28,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    path(process.out.sdf[0][1]).list().collect { file(it.toString()).name }
+                    path(process.out.sdf[0][1]).list().collect { file(it.toString()).name },
+                    process.out.versions
                 ).match() }
             )
         }
@@ -69,7 +70,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    path(process.out.sdf[0][1]).list().collect { file(it.toString()).name }
+                    path(process.out.sdf[0][1]).list().collect { file(it.toString()).name },
+                    process.out.versions
                 ).match() }
             )
         }
@@ -99,7 +101,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    path(process.out.sdf[0][1]).list().collect { file(it.toString()).name }
+                    path(process.out.sdf[0][1]).list().collect { file(it.toString()).name },
+                    process.out.versions
                 ).match() }
             )
         }
