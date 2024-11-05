@@ -1,0 +1,107 @@
+nextflow_process {
+
+    name "Test Process GATK4_SITEDEPTHTOBAF"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "GATK4_SITEDEPTHTOBAF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gatk4"
+    tag "gatk4/sitedepthtobaf"
+
+    setup {
+        run("GATK4_COLLECTSVEVIDENCE") {
+            script "../../collectsvevidence/main.nf"
+            process {
+            """
+            vcf = file(params.test_data['homo_sapiens']['illumina']['test_haplotc_cnn_vcf_gz'], checkIfExists: true)
+            tbi = file(params.test_data['homo_sapiens']['illumina']['test_haplotc_cnn_vcf_gz_tbi'], checkIfExists: true)
+
+            input[0] = Channel.of(
+                [
+                    [ id:'tumor', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
+                    vcf,
+                    tbi
+                ],
+                [
+                    [ id:'normal', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam_bai'], checkIfExists: true),
+                    vcf,
+                    tbi
+                ]
+            )
+            input[1] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+            input[2] = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+            input[3] = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+            """
+            }
+        }
+    }
+
+    test("homo sapiens - bam - vcf") {
+
+        when {
+            process {
+                """
+                sitedepthtobaf_input = GATK4_COLLECTSVEVIDENCE.out.site_depths
+                                    .combine(GATK4_COLLECTSVEVIDENCE.out.site_depths_index, by:0)
+                                    .map({ meta, file, index -> [ [id:'test'], file, index ]}).groupTuple()
+
+                input[0] = sitedepthtobaf_input
+                input[1] = [
+                    file(params.test_data['homo_sapiens']['illumina']['test_haplotc_cnn_vcf_gz'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_haplotc_cnn_vcf_gz_tbi'], checkIfExists: true)
+                ]
+                input[2] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                input[3] = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                input[4] = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo sapiens - bam - vcf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                sitedepthtobaf_input = GATK4_COLLECTSVEVIDENCE.out.site_depths
+                                    .combine(GATK4_COLLECTSVEVIDENCE.out.site_depths_index, by:0)
+                                    .map({ meta, file, index -> [ [id:'test'], file, index ]}).groupTuple()
+
+                input[0] = sitedepthtobaf_input
+                input[1] = [
+                    file(params.test_data['homo_sapiens']['illumina']['test_haplotc_cnn_vcf_gz'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_haplotc_cnn_vcf_gz_tbi'], checkIfExists: true)
+                ]
+                input[2] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                input[3] = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                input[4] = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
