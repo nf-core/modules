@@ -436,7 +436,7 @@ jobs:
           mkdir -p $NXF_SINGULARITY_LIBRARYDIR
 
       - name: Set up miniconda
-        uses: conda-incubator/setup-miniconda@a4260408e20b96e80095f42ff7f1a15b27dd94ca # v3
+        uses: conda-incubator/setup-miniconda@d2e6a045a86077fb6cad6f5adf368e9076ddaa8d # v3
         with:
           miniconda-version: "latest"
           channels: conda-forge,bioconda
@@ -550,6 +550,8 @@ jobs:
             path: modules/nf-core/deepvariant/rundeepvariant
           - profile: conda
             path: modules/nf-core/deepvariant/vcfstatsreport
+          - profile: conda
+            path: modules/nf-core/doubletdetection
           - profile: conda
             path: modules/nf-core/ensemblvep/vep
           - profile: conda
@@ -711,7 +713,7 @@ jobs:
 
       - name: Set up miniconda
         if: matrix.profile == 'conda'
-        uses: conda-incubator/setup-miniconda@a4260408e20b96e80095f42ff7f1a15b27dd94ca # v3
+        uses: conda-incubator/setup-miniconda@d2e6a045a86077fb6cad6f5adf368e9076ddaa8d # v3
         with:
           miniconda-version: "latest"
           auto-update-conda: true
