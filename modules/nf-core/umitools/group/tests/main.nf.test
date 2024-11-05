@@ -94,7 +94,7 @@ nextflow_process {
 
     }
 
-    test("with_umi - bam") {
+    test("with_umi - create only bam") {
 
         when {
             process {
@@ -119,7 +119,7 @@ nextflow_process {
 
     }
 
-    test("with_umi - tsv") {
+    test("with_umi - create bam and tsv") {
 
         when {
             process {
@@ -136,6 +136,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.tsv,
+                    bam(process.out.bam[0][1]).getReadsMD5(),
                     file(process.out.log[0][1]).readLines()[0..1],
                     process.out.versions
                     ).match() }
