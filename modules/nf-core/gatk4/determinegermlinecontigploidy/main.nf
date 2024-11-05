@@ -40,6 +40,8 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     }
     """
     export THEANO_FLAGS="base_compiledir=\$PWD"
+    export OMP_NUM_THREADS=${task.cpus}
+    export MKL_NUM_THREADS=${task.cpus}
 
     gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         DetermineGermlineContigPloidy \\
