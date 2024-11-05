@@ -1,8 +1,8 @@
 nextflow_process {
 
-    name "Test Process GUNC_RUN"
+    name "Test Process GUNC_MERGECHECKM"
     script "../main.nf"
-    process "GUNC_RUN"
+    process "GUNC_MERGECHECKM"
 
     tag "modules_nfcore"
     tag "modules"
@@ -13,7 +13,7 @@ nextflow_process {
     tag "checkm/lineagewf"
     tag "checkm/qa"
 
-    test("Test GUNC Run") {
+    test("Test GUNC MergeCheckM") {
 
         setup {
             run("CHECKM_LINEAGEWF") {
