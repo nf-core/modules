@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "hiphase"
-description: write your description here
+description: pacbio structural variant calling tool
 keywords:
   - sort
   - example
@@ -11,7 +11,6 @@ tools:
       homepage: "https://github.com/PacificBiosciences/HiPhase"
       documentation: "https://github.com/PacificBiosciences/HiPhase"
       tool_dev_url: "https://github.com/PacificBiosciences/HiPhase"
-      doi: "10.1234/placeholder.doi"
       licence: ["Pacific Biosciences Software License Agreement"]
       identifier: biotools:hiphase
 input:
@@ -24,11 +23,6 @@ input:
         type: file
         description: VCF File
         pattern: "*.{vcf}"
-  - - meta1:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
     - csi:
         type: file
         description: CSI File associated with VCF
@@ -42,16 +36,11 @@ input:
         type: file
         description: Sorted BAM/CRAM/SAM file
         pattern: "*.{bam}"
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
     - bai:
         type: file
         description: Index File BAI associated with BAM file
         pattern: "*.{bai}"
-  - - meta4:
+  - - meta3:
         type: map
         description: |
           Groovy Map containing sample information

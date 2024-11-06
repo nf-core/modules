@@ -8,15 +8,13 @@ process HIPHASE {
         'biocontainers/hiphase:1.4.5--h9ee0642_0' }"
 
     input:
-    tuple val(meta), path(vcf)
-    tuple val(meta1), path(csi)
-    tuple val(meta2), path(bam)
-    tuple val(meta3), path(bai)
-    tuple val(meta4), path(fasta)
+    tuple val(meta), path(vcf), path(csi)
+    tuple val(meta2), path(bam), path(bai)
+    tuple val(meta3), path(fasta)
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
-    tuple val(meta), path("*.csv"),  emit: csv
+    tuple val(meta), path("*.csv"), emit: csv
     path "versions.yml"           , emit: versions
 
     when:
@@ -44,7 +42,6 @@ process HIPHASE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.phased.vcf
