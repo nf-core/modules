@@ -1,0 +1,62 @@
+name: "custom_filterdifferentialtable"
+description: Filters a differential expression table based on logFC and adjusted p-value thresholds
+keywords:
+  - filter
+  - differential expression
+  - logFC
+  - p-value
+tools:
+  - "pandas":
+      description: "Python library for data manipulation and analysis"
+      homepage: "https://pandas.pydata.org/"
+      documentation: "https://pandas.pydata.org/docs/"
+      tool_dev_url: "https://github.com/pandas-dev/pandas"
+      doi: "10.5281/zenodo.3509134"
+      licence: ["BSD-3-Clause"]
+      identifiers:
+        - "biotools:pandas"
+        - "conda:pandas"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input_file:
+        type: file
+        description: Input differential expression table (CSV, TSV, or TXT format)
+        pattern: "*.{csv,tsv,txt}"
+  - - logFC_column:
+        type: string
+        description: Name of the column containing log fold change values
+  - - FC_threshold:
+        type: float
+        description: Fold change threshold for filtering
+  - - padj_column:
+        type: string
+        description: Name of the column containing adjusted p-values
+  - - padj_threshold:
+        type: float
+        description: Adjusted p-value threshold for filtering
+output:
+  - filtered:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_filtered.tsv":
+          type: file
+          description: Filtered differential expression table
+          pattern: "*_filtered.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@pinin4fjords"
+  - "@WackerO"
+maintainers:
+  - "@pinin4fjords"
+  - "@WackerO"
