@@ -22,10 +22,6 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     task.ext.when == null || task.ext.when
 
     script:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "GATK4_DETERMINEGERMLINECONTIGPLOIDY module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
     def args          = task.ext.args       ?: ''
     prefix            = task.ext.prefix     ?: "${meta.id}"
     def intervals     = bed                 ? "--intervals ${bed}" : ""
@@ -64,10 +60,6 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     """
 
     stub:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "GATK4_DETERMINEGERMLINECONTIGPLOIDY module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}-calls

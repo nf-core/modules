@@ -1,0 +1,104 @@
+nextflow_process {
+
+    name "Test Process GATK4_DETERMINEGERMLINECONTIGPLOIDY"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "GATK4_DETERMINEGERMLINECONTIGPLOIDY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gatk4"
+    tag "gatk4/collectreadcounts"
+    tag "gatk4/determinegermlinecontigploidy"
+
+    setup {
+        run("GATK4_COLLECTREADCOUNTS") {
+            script "../../collectreadcounts/main.nf"
+            process {
+                """
+                bed = Channel.of(file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true))
+
+                ch_input = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
+                ],
+                [
+                    [ id:'test2', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam_bai'], checkIfExists: true)
+                ]).combine(bed)
+
+                ch_fasta = Channel.of([ [ id:'test' ], file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)]).collect()
+                ch_fai   = Channel.of([ [ id:'test' ], file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)]).collect()
+                ch_dict  = Channel.of([ [ id:'test' ], file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)]).collect()
+
+                input = [ch_input, ch_fasta, ch_fai, ch_dict]
+                """
+            }
+        }
+    }
+
+    test("homo sapiens - bam") {
+
+        when {
+            process {
+                """
+                contig_ploidy_table = file(params.test_data['homo_sapiens']['illumina']['contig_ploidy_priors_table'], checkIfExists: true)
+                bed = Channel.of(file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true))
+                    .map({bed -> return bed.text.replaceFirst("0","10001") })
+                    .collectFile( name: "genome_exclude.bed" )
+
+                input[0] = GATK4_COLLECTREADCOUNTS.out.tsv
+                    .map({ meta, tsv -> [[id:'test'] , tsv ] })
+                    .groupTuple()
+                    .combine(bed)
+                    .map({ meta, counts, bed -> [ meta, counts, [], bed ]})
+                input[1] = [[],[]]
+                input[2] = contig_ploidy_table
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo sapiens - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                contig_ploidy_table = file(params.test_data['homo_sapiens']['illumina']['contig_ploidy_priors_table'], checkIfExists: true)
+                bed = Channel.of(file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true))
+                    .map({bed -> return bed.text.replaceFirst("0","10001") })
+                    .collectFile( name: "genome_exclude.bed" )
+
+                input[0] = GATK4_COLLECTREADCOUNTS.out.tsv
+                    .map({ meta, tsv -> [[id:'test'] , tsv ] })
+                    .groupTuple()
+                    .combine(bed)
+                    .map({ meta, counts, bed -> [ meta, counts, [], bed ]})
+                input[1] = [[],[]]
+                input[2] = contig_ploidy_table
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

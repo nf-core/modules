@@ -11,7 +11,7 @@ include { GATK4_POSTPROCESSGERMLINECNVCALLS as GATK4_POSTPROCESSGERMLINECNVCALLS
 include { GATK4_POSTPROCESSGERMLINECNVCALLS as GATK4_POSTPROCESSGERMLINECNVCALLS_CASE       } from '../../../../../modules/nf-core/gatk4/postprocessgermlinecnvcalls/main.nf'
 
 workflow test_gatk4_postprocessgermlinecnvcalls {
-     input = Channel.of([
+    input = Channel.of([
         [ id:'test', single_end:false ], // meta map
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
         file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
