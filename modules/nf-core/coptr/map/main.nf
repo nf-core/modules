@@ -21,6 +21,7 @@ process COPTR_MAP {
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+
     def paired_end = ""
     if ( ! meta.single_end ) {
         paired_end = "--paired"
@@ -30,7 +31,6 @@ process COPTR_MAP {
     [ -z "\$INDEX" ] && INDEX=`find -L ./ -name "*.rev.1.bt2l" | sed "s/\\.rev.1.bt2l\$//"`
     [ -z "\$INDEX" ] && echo "Bowtie2 index files not found" 1>&2 && exit 1
 
-    mkdir ${prefix}
     coptr \
         map \
         $args $paired_end \
