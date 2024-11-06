@@ -19,7 +19,7 @@ process GATK4_MERGEMUTECTSTATS {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def input_list = stats.collect{ "--stats ${it}"}.join(' ')
 
     def avail_mem = 3072
