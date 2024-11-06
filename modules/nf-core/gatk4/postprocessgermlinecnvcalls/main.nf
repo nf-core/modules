@@ -2,8 +2,10 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     tag "$meta.id"
     label 'process_single'
 
-    //Conda is not supported at the moment: https://github.com/broadinstitute/gatk/issues/7811
-    container "nf-core/gatk:4.5.0.0" //Biocontainers is missing a package
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/gatk4:4.6.1.0--py310hdfd78af_0':
+        'biocontainers/gatk4:4.6.1.0--py310hdfd78af_0' }"
 
     input:
     tuple val(meta), path(calls), path(model), path(ploidy)
@@ -18,10 +20,6 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     task.ext.when == null || task.ext.when
 
     script:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "GATK4_POSTPROCESSGERMLINECNVCALLS module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def calls_command  = calls   ? calls.collect{"--calls-shard-path $it"}.join(' ')  : ""
@@ -42,6 +40,7 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
         $calls_command \\
         $model_command \\
         $ploidy_command \\
+        $args \\
         --output-genotyped-intervals ${prefix}_genotyped_intervals.vcf.gz \\
         --output-genotyped-segments ${prefix}_genotyped_segments.vcf.gz \\
         --output-denoised-copy-ratios ${prefix}_denoised.vcf.gz
@@ -53,10 +52,6 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     """
 
     stub:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "GATK4_POSTPROCESSGERMLINECNVCALLS module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_genotyped_intervals.vcf.gz
