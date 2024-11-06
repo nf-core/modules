@@ -25,6 +25,11 @@ input:
         type: file
         description: List of input files containing sequences. All of them must be either
           in FASTA or FASTQ format.
+    - prefixes:
+        type: string
+        description: >
+          List of sample identifiers or filename prefixes. Must correspond in order and
+          length to the 'sequences', or to the number of sequencing pairs.
   - - sequence_type:
         type: string
         description: Format of all given sequencing files as literal string, either

@@ -436,7 +436,7 @@ jobs:
           mkdir -p $NXF_SINGULARITY_LIBRARYDIR
 
       - name: Set up miniconda
-        uses: conda-incubator/setup-miniconda@a4260408e20b96e80095f42ff7f1a15b27dd94ca # v3
+        uses: conda-incubator/setup-miniconda@d2e6a045a86077fb6cad6f5adf368e9076ddaa8d # v3
         with:
           miniconda-version: "latest"
           channels: conda-forge,bioconda
@@ -551,6 +551,8 @@ jobs:
           - profile: conda
             path: modules/nf-core/deepvariant/vcfstatsreport
           - profile: conda
+            path: modules/nf-core/doubletdetection
+          - profile: conda
             path: modules/nf-core/ensemblvep/vep
           - profile: conda
             path: modules/nf-core/fastk/fastk
@@ -645,6 +647,12 @@ jobs:
           - profile: singularity
             path: modules/nf-core/parabricks/fq2bammeth
           - profile: conda
+            path: modules/nf-core/parabricks/fq2bam
+          - profile: docker_self_hosted
+            path: modules/nf-core/parabricks/fq2bam
+          - profile: singularity
+            path: modules/nf-core/parabricks/fq2bam
+          - profile: conda
             path: subworkflows/nf-core/vcf_annotate_ensemblvep
           - profile: conda
             path: subworkflows/nf-core/bcl_demultiplex
@@ -654,6 +662,17 @@ jobs:
             path: subworkflows/nf-core/fastq_align_bamcmp_bwa
           - profile: conda
             path: subworkflows/nf-core/fastq_align_bwa
+          - profile: conda
+            path: subworkflows/nf-core/fasta_newick_epang_gappa
+          - profile: conda
+            path: modules/nf-core/xeniumranger/relabel
+          - profile: conda
+            path: modules/nf-core/xeniumranger/rename
+          - profile: conda
+            path: modules/nf-core/xeniumranger/resegment
+          - profile: conda
+            path: modules/nf-core/xeniumranger/import-segmentation
+
     env:
       NXF_ANSI_LOG: false
       NFTEST_VER: "0.9.0"
@@ -703,7 +722,7 @@ jobs:
 
       - name: Set up miniconda
         if: matrix.profile == 'conda'
-        uses: conda-incubator/setup-miniconda@a4260408e20b96e80095f42ff7f1a15b27dd94ca # v3
+        uses: conda-incubator/setup-miniconda@d2e6a045a86077fb6cad6f5adf368e9076ddaa8d # v3
         with:
           miniconda-version: "latest"
           auto-update-conda: true
