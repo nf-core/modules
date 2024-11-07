@@ -1,0 +1,98 @@
+name: "NF Test Action"
+description: "Runs nf-test with common setup steps"
+inputs:
+  path:
+    description: "Path to test"
+    required: true
+  profile:
+    description: "Profile to use"
+    required: true
+  runners:
+    description: "Runners to use"
+    required: false
+    default: "self-hosted"
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-java@v4
+      with:
+        distribution: "temurin"
+        java-version: "17"
+
+    - name: Setup Nextflow
+      uses: nf-core/setup-nextflow@v2
+
+    - name: Install nf-test
+      uses: nf-core/setup-nf-test@v1
+      with:
+        version: "0.9.2"
+        install-pdiff: true
+
+    - name: Set up Python
+      uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
+      with:
+        python-version: "3.11"
+
+    - name: Setup apptainer
+      if: ${{ inputs.profile == 'singularity' }}
+      uses: eWaterCycle/setup-apptainer@main
+
+    - name: Set up Singularity
+      if: ${{ inputs.profile == 'singularity' }}
+      shell: bash
+      run: |
+        mkdir -p $NXF_SINGULARITY_CACHEDIR
+        mkdir -p $NXF_SINGULARITY_LIBRARYDIR
+
+    - name: Conda setup
+      if: ${{inputs.profile == 'conda'}}
+      shell: bash
+      with:
+        miniconda-version: "23.5.1"
+        auto-update-conda: true
+        conda-solvers: libmamba
+      run: |
+        echo $(realpath $CONDA)/condabin >> $GITHUB_PATH
+        echo $(realpath python) >> $GITHUB_PATH
+
+    # Set up secrets
+    - name: Set up nextflow secrets
+      # TODO Only run if the tag includes `sentieon`
+      if: ${{ secrets.SENTIEON_ENCRYPTION_KEY }} != null && ${{ secrets.SENTIEON_LICENSE_MESSAGE }} != null
+      shell: bash
+      run: |
+        nextflow secrets set SENTIEON_AUTH_DATA $(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "${{ secrets.SENTIEON_ENCRYPTION_KEY }}" --message "${{ secrets.SENTIEON_LICENSE_MESSAGE }}")
+
+    - name: Run nf-test
+      shell: bash
+      env:
+        SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
+        SENTIEON_AUTH_MECH: "GitHub Actions - token"
+      run: |
+        if [ "${{ inputs.profile }}" == "docker" ]; then
+          PROFILE="docker_self_hosted"
+        else
+          PROFILE=${{ inputs.profile }}
+        fi
+
+        NFT_WORKDIR=~ \
+        nf-test test \
+          --profile=${{ inputs.profile }} \
+          --tap=test.tap \
+          --verbose \
+          ${{ inputs.path }}
+
+    - uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
+      if: ${{ inputs.path != '' }}
+      with:
+        path: >-
+          test.tap
+
+    - name: Clean up
+      if: always()
+      shell: bash
+      run: |
+        sudo rm -rf /home/ubuntu/tests/
