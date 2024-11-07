@@ -65,10 +65,16 @@ process GATK4_PRINTSVEVIDENCE {
     """
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def file_name = evidence_files[0].getFileName()
+    def file_type = file_name =~ ".sr.txt" ? "sr" :
+                    file_name =~ ".pe.txt" ? "pe" :
+                    file_name =~ ".baf.txt" ? "baf" :
+                    file_name =~ ".rd.txt" ? "rd" :
+                    false
     """
-    echo "" | gzip -c > printed_evidence.txt.gz
-    touch printed_evidence.txt.gz.tbi
+    echo "" | gzip -c > ${prefix}.${file_type}.txt.gz
+    touch ${prefix}.${file_type}.txt.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
