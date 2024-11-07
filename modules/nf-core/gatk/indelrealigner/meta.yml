@@ -11,79 +11,87 @@ tools:
       description: "The full Genome Analysis Toolkit (GATK) framework, license restricted."
       homepage: "https://gatk.broadinstitute.org/hc/en-us"
       documentation: "https://github.com/broadinstitute/gatk-docs"
-      licence: "['https://software.broadinstitute.org/gatk/download/licensing', 'BSD', 'https://www.broadinstitute.org/gatk/about/#licensing']"
+      licence:
+        [
+          "https://software.broadinstitute.org/gatk/download/licensing",
+          "BSD",
+          "https://www.broadinstitute.org/gatk/about/#licensing",
+        ]
+      identifier: biotools:gatk
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: Sorted and indexed BAM file
-      pattern: "*.bam"
-  - bai:
-      type: file
-      description: BAM index file
-      pattern: "*.bai"
-  - intervals:
-      type: file
-      description: Intervals file created by gatk3 RealignerTargetCreator
-      pattern: "*.{intervals,list}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information.
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: Reference file used to generate BAM file
-      pattern: ".{fasta,fa,fna}"
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing reference information.
-        e.g. [ id:'test', single_end:false ]
-  - fai:
-      type: file
-      description: Index of reference file used to generate BAM file
-      pattern: ".fai"
-  - meta4:
-      type: map
-      description: |
-        Groovy Map containing reference information.
-        e.g. [ id:'test', single_end:false ]
-  - dict:
-      type: file
-      description: GATK dict file for reference
-      pattern: ".dict"
-  - meta5:
-      type: map
-      description: |
-        Groovy Map containing file meta-information for known_vcf.
-        e.g. [ id:'test', single_end:false ]
-  - known_vcf:
-      type: file
-      description: Optional input VCF file(s) with known indels
-      pattern: ".vcf"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: Sorted and indexed BAM file
+        pattern: "*.bam"
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.bai"
+    - intervals:
+        type: file
+        description: Intervals file created by gatk3 RealignerTargetCreator
+        pattern: "*.{intervals,list}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information.
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Reference file used to generate BAM file
+        pattern: ".{fasta,fa,fna}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information.
+          e.g. [ id:'test', single_end:false ]
+    - fai:
+        type: file
+        description: Index of reference file used to generate BAM file
+        pattern: ".fai"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing reference information.
+          e.g. [ id:'test', single_end:false ]
+    - dict:
+        type: file
+        description: GATK dict file for reference
+        pattern: ".dict"
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing file meta-information for known_vcf.
+          e.g. [ id:'test', single_end:false ]
+    - known_vcf:
+        type: file
+        description: Optional input VCF file(s) with known indels
+        pattern: ".vcf"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - bam:
-      type: file
-      description: Sorted and indexed BAM file with local realignment around variants
-      pattern: "*.bam"
-  - bai:
-      type: file
-      description: Output BAM Index file
-      pattern: "*.bai"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bam":
+          type: file
+          description: Sorted and indexed BAM file with local realignment around variants
+          pattern: "*.bam"
+      - "*.bai":
+          type: file
+          description: Sorted and indexed BAM file with local realignment around variants
+          pattern: "*.bam"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jfy133"
 maintainers:

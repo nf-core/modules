@@ -5,8 +5,8 @@ process SENTIEON_BWAMEM {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/sentieon:202308.02--ffce1b7074ce9924' :
-        'nf-core/sentieon:202308.02--c641bc397cbf79d5' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a6/a64461f38d76bebea8e21441079e76e663e1168b0c59dafee6ee58440ad8c8ac/data' :
+        'community.wave.seqera.io/library/sentieon:202308.03--59589f002351c221' }"
 
     input:
     tuple val(meta), path(reads)
@@ -40,6 +40,11 @@ process SENTIEON_BWAMEM {
         \$INDEX \\
         $reads \\
         | sentieon util sort -r $fasta -t $task.cpus -o ${prefix} --sam2bam -
+
+    # Delete *.bai file if prefix ends with .cram
+    if [[ "${prefix}" == *.cram ]]; then
+        rm -f "${prefix}.bai"
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

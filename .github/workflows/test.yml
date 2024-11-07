@@ -29,28 +29,28 @@ jobs:
   pre-commit:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      - uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
       - uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
         # FIXME Flip this off once we get to less than a couple hundred. Adding
         # this so it will only run against changed files. It'll make it much
         # easier to fix these as they come up rather than everything at once.
         with:
-          extra_args: ""
+          extra_args: "--all-files"
 
   prettier:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - name: Install NodeJS
-        uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4
         with:
           node-version: "20"
 
       - name: Install Prettier
-        run: npm install -g prettier@3.1.0
+        run: npm install -g prettier@3.2.5
 
       - name: Run Prettier --check
         run: prettier --check .
@@ -58,9 +58,9 @@ jobs:
   editorconfig:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
-      - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4
+      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4
         with:
           node-version: "20"
 
@@ -78,7 +78,7 @@ jobs:
       modules: ${{ steps.tags.outputs.modules }}
       subworkflows: ${{ steps.tags.outputs.subworkflows }}
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           fetch-depth: 2 # To retrieve the preceding commit.
 
@@ -111,7 +111,7 @@ jobs:
       # Prod for version bumping
 
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           fetch-depth: 0
 
@@ -148,14 +148,14 @@ jobs:
             "${{ fromJson(needs.nf-test-changes.outputs.modules) }}",
           ]
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - name: Set up Python
-        uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5
+        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
         with:
           python-version: "3.11"
 
-      - uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4
+      - uses: actions/cache@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4
         id: cache-pip
         with:
           path: ~/.cache/pip
@@ -166,7 +166,7 @@ jobs:
       - name: Install pip
         run: python -m pip install --upgrade pip
 
-      - uses: actions/setup-java@6a0805fcefea3d4657a47ac4c165951e33482018 # v4
+      - uses: actions/setup-java@8df1039502a15bceb9433410b1a100fbe190c53b # v4
         with:
           distribution: "temurin"
           java-version: "17"
@@ -194,17 +194,17 @@ jobs:
             "${{ fromJson(needs.nf-test-changes.outputs.subworkflows) }}",
           ]
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - name: Set up Python
-        uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5
+        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
         with:
           python-version: "3.11"
 
       - name: Install pip
         run: python -m pip install --upgrade pip
 
-      - uses: actions/setup-java@6a0805fcefea3d4657a47ac4c165951e33482018 # v4
+      - uses: actions/setup-java@8df1039502a15bceb9433410b1a100fbe190c53b # v4
         with:
           distribution: "temurin"
           java-version: "17"
@@ -258,8 +258,6 @@ jobs:
             tags: cellrangerarc/count
           - profile: conda
             tags: cellrangerarc/mkfastq
-          - profile: conda
-            tags: cellrangerarc/mkgtf
           - profile: conda
             tags: cellrangerarc/mkref
           - profile: conda
@@ -319,6 +317,8 @@ jobs:
           - profile: conda
             tags: manta/convertinversion
           - profile: conda
+            tags: mcstaging/imc2mc
+          - profile: conda
             tags: mcquant
           - profile: conda
             tags: medaka
@@ -361,8 +361,6 @@ jobs:
           - profile: conda
             tags: picard/collectwgsmetrics
           - profile: conda
-            tags: scimap/mcmicro
-          - profile: conda
             tags: sentieon/applyvarcal
           - profile: conda
             tags: sentieon/datametrics
@@ -400,14 +398,14 @@ jobs:
       NXF_ANSI_LOG: false
 
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - name: Set up Python
-        uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5
+        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
         with:
           python-version: "3.11"
 
-      - uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4
+      - uses: actions/cache@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4
         id: cache-pip-pytest
         with:
           path: ~/.cache/pip
@@ -418,7 +416,7 @@ jobs:
       - name: Install Python dependencies
         run: python -m pip install --upgrade pip pytest-workflow cryptography
 
-      - uses: actions/setup-java@6a0805fcefea3d4657a47ac4c165951e33482018 # v4
+      - uses: actions/setup-java@8df1039502a15bceb9433410b1a100fbe190c53b # v4
         with:
           distribution: "temurin"
           java-version: "17"
@@ -438,10 +436,10 @@ jobs:
           mkdir -p $NXF_SINGULARITY_LIBRARYDIR
 
       - name: Set up miniconda
-        uses: conda-incubator/setup-miniconda@a4260408e20b96e80095f42ff7f1a15b27dd94ca # v3
+        uses: conda-incubator/setup-miniconda@d2e6a045a86077fb6cad6f5adf368e9076ddaa8d # v3
         with:
           miniconda-version: "latest"
-          channels: conda-forge,bioconda,defaults
+          channels: conda-forge,bioconda
           python-version: ${{ matrix.python-version }}
 
       - name: Conda setup
@@ -474,7 +472,7 @@ jobs:
 
       - name: Upload logs on failure
         if: failure()
-        uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
         with:
           name: logs-${{ matrix.profile }}-${{ steps.parsed.outputs.result }}
           path: |
@@ -543,9 +541,23 @@ jobs:
           - profile: conda
             path: modules/nf-core/deepvariant
           - profile: conda
+            path: modules/nf-core/deepvariant/callvariants
+          - profile: conda
+            path: modules/nf-core/deepvariant/makeexamples
+          - profile: conda
+            path: modules/nf-core/deepvariant/postprocessvariants
+          - profile: conda
+            path: modules/nf-core/deepvariant/rundeepvariant
+          - profile: conda
+            path: modules/nf-core/deepvariant/vcfstatsreport
+          - profile: conda
+            path: modules/nf-core/doubletdetection
+          - profile: conda
             path: modules/nf-core/ensemblvep/vep
           - profile: conda
             path: modules/nf-core/fastk/fastk
+          - profile: conda
+            path: modules/nf-core/cellrangerarc/mkgtf
           - profile: conda
             path: modules/nf-core/fastk/histex
           - profile: conda
@@ -575,7 +587,11 @@ jobs:
           - profile: conda
             path: modules/nf-core/imputeme/vcftoprs
           - profile: conda
+            path: modules/nf-core/mcstaging/imc2mc
+          - profile: conda
             path: modules/nf-core/mcquant
+          - profile: conda
+            path: modules/nf-core/mcstaging/phenoimager2mc
           - profile: conda
             path: modules/nf-core/merquryfk/katcomp
           - profile: conda
@@ -594,6 +610,8 @@ jobs:
             path: modules/nf-core/sentieon/bwaindex
           - profile: conda
             path: modules/nf-core/sentieon/bwamem
+          - profile: conda
+            path: modules/nf-core/sentieon/datametrics
           - profile: conda
             path: modules/nf-core/sentieon/dedup
           - profile: conda
@@ -621,13 +639,40 @@ jobs:
           - profile: conda
             path: modules/nf-core/islandpath
           - profile: conda
+            path: modules/nf-core/scimap/mcmicro
+          - profile: conda
+            path: modules/nf-core/parabricks/fq2bammeth
+          - profile: docker_self_hosted
+            path: modules/nf-core/parabricks/fq2bammeth
+          - profile: singularity
+            path: modules/nf-core/parabricks/fq2bammeth
+          - profile: conda
+            path: modules/nf-core/parabricks/fq2bam
+          - profile: docker_self_hosted
+            path: modules/nf-core/parabricks/fq2bam
+          - profile: singularity
+            path: modules/nf-core/parabricks/fq2bam
+          - profile: conda
             path: subworkflows/nf-core/vcf_annotate_ensemblvep
           - profile: conda
             path: subworkflows/nf-core/bcl_demultiplex
           - profile: conda
+            path: subworkflows/nf-core/deepvariant
+          - profile: conda
             path: subworkflows/nf-core/fastq_align_bamcmp_bwa
           - profile: conda
             path: subworkflows/nf-core/fastq_align_bwa
+          - profile: conda
+            path: subworkflows/nf-core/fasta_newick_epang_gappa
+          - profile: conda
+            path: modules/nf-core/xeniumranger/relabel
+          - profile: conda
+            path: modules/nf-core/xeniumranger/rename
+          - profile: conda
+            path: modules/nf-core/xeniumranger/resegment
+          - profile: conda
+            path: modules/nf-core/xeniumranger/import-segmentation
+
     env:
       NXF_ANSI_LOG: false
       NFTEST_VER: "0.9.0"
@@ -635,9 +680,9 @@ jobs:
       SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
 
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
-      - uses: actions/setup-java@6a0805fcefea3d4657a47ac4c165951e33482018 # v4
+      - uses: actions/setup-java@8df1039502a15bceb9433410b1a100fbe190c53b # v4
         with:
           distribution: "temurin"
           java-version: "17"
@@ -646,6 +691,8 @@ jobs:
 
       - name: Install nf-test
         uses: nf-core/setup-nf-test@v1
+        with:
+          version: ${{ env.NFTEST_VER }}
 
       - name: Setup apptainer
         if: matrix.profile == 'singularity'
@@ -658,11 +705,11 @@ jobs:
           mkdir -p $NXF_SINGULARITY_LIBRARYDIR
 
       - name: Set up Python
-        uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5
+        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
         with:
           python-version: "3.11"
 
-      - uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4
+      - uses: actions/cache@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4
         id: cache-pip-pdiff
         with:
           path: ~/.cache/pip
@@ -675,11 +722,11 @@ jobs:
 
       - name: Set up miniconda
         if: matrix.profile == 'conda'
-        uses: conda-incubator/setup-miniconda@a4260408e20b96e80095f42ff7f1a15b27dd94ca # v3
+        uses: conda-incubator/setup-miniconda@d2e6a045a86077fb6cad6f5adf368e9076ddaa8d # v3
         with:
           miniconda-version: "latest"
           auto-update-conda: true
-          channels: conda-forge,bioconda,defaults
+          channels: conda-forge,bioconda
 
       - name: Conda setup
         if: matrix.profile == 'conda'
@@ -699,6 +746,7 @@ jobs:
 
       # Test the module
       - name: Run nf-test
+        if: ${{ matrix.path != '' }}
         env:
           NFT_DIFF: "pdiff"
           NFT_DIFF_ARGS: "--line-numbers --width 120 --expand-tabs=2"
@@ -720,6 +768,7 @@ jobs:
             ${{ matrix.path }}
 
       - uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
+        if: ${{ matrix.path != '' }}
         with:
           path: >-
             test.tap

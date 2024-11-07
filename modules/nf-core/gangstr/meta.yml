@@ -1,5 +1,6 @@
 name: "gangstr"
-description: GangSTR is a tool for genome-wide profiling tandem repeats from short reads.
+description: GangSTR is a tool for genome-wide profiling tandem repeats from short
+  reads.
 keywords:
   - gangstr
   - STR
@@ -8,62 +9,71 @@ keywords:
   - vcf
 tools:
   - "gangstr":
-      description: "GangSTR is a tool for genome-wide profiling tandem repeats from short reads."
+      description: "GangSTR is a tool for genome-wide profiling tandem repeats from
+        short reads."
       homepage: "https://github.com/gymreklab/GangSTR"
       documentation: "https://github.com/gymreklab/GangSTR"
       tool_dev_url: "https://github.com/gymreklab/GangSTR"
       doi: "10.1093/nar/gkz501"
-      licence: "['GPL v3-or-later']"
+      licence: ["GPL v3-or-later"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - aligment_files:
-      type: file
-      description: One or more sorted BAM/CRAM file(s)
-      pattern: "*.{bam,cram}"
-  - alignment_indices:
-      type: file
-      description: The index/indices of the BAM/CRAM file(s)
-      pattern: "*.{bai,crai}"
-  - ref_regions:
-      type: file
-      description: |
-        A reference set of regions to genotype in a BED-like format. The file should have following columns:
-        1. The name of the chromosome on which the STR is located
-        2. The start position of the STR on its chromosome
-        3. The end position of the STR on its chromosome
-        4. The motif length
-        5. The repeat motif
-      pattern: "*.bed"
-  - fasta:
-      type: file
-      description: The reference FASTA file
-      pattern: "*.{fasta,fa}"
-  - fasta_fai:
-      type: file
-      description: The index of the reference FASTA file
-      pattern: "*.fai"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - alignment_files:
+        type: file
+        description: Alignment files
+    - alignment_indices:
+        type: file
+        description: The index/indices of the BAM/CRAM file(s)
+        pattern: "*.{bai,crai}"
+    - ref_regions:
+        type: file
+        description: |
+          A reference set of regions to genotype in a BED-like format. The file should have following columns:
+          1. The name of the chromosome on which the STR is located
+          2. The start position of the STR on its chromosome
+          3. The end position of the STR on its chromosome
+          4. The motif length
+          5. The repeat motif
+        pattern: "*.bed"
+  - - fasta:
+        type: file
+        description: The reference FASTA file
+        pattern: "*.{fasta,fa}"
+  - - fasta_fai:
+        type: file
+        description: The index of the reference FASTA file
+        pattern: "*.fai"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - vcf:
-      type: file
-      description: The resulting VCF file containing the genotypes
-      pattern: "*.vcf"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf":
+          type: file
+          description: The resulting VCF file containing the genotypes
+          pattern: "*.vcf"
   - samplestats:
-      type: file
-      description: A tab-delimited file containing statistics for each sample
-      pattern: "*.tab"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.samplestats.tab":
+          type: file
+          description: A tab-delimited file containing statistics for each sample
+          pattern: "*.tab"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:
