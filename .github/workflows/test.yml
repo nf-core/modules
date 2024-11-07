@@ -653,6 +653,15 @@ jobs:
           - path: modules/nf-core/parabricks/fq2bammeth
           - path: modules/nf-core/parabricks/fq2bam
           - path: modules/nf-core/parabricks/applybqsr
+          - profile: conda
+            path: modules/nf-core/xeniumranger/relabel
+          - profile: conda
+            path: modules/nf-core/xeniumranger/rename
+          - profile: conda
+            path: modules/nf-core/xeniumranger/resegment
+          - profile: conda
+            path: modules/nf-core/xeniumranger/import-segmentation
+
     env:
       NXF_ANSI_LOG: false
       NFTEST_VER: "0.9.0"
