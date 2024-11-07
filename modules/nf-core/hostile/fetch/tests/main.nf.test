@@ -1,0 +1,51 @@
+nextflow_process {
+
+    name "Test Process HOSTILE_FETCH"
+    script "../main.nf"
+    process "HOSTILE_FETCH"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hostile"
+    tag "hostile/fetch"
+
+    test("default") {
+
+        when {
+            process {
+                """
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("default - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
