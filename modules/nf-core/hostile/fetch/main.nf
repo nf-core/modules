@@ -1,4 +1,3 @@
-
 process HOSTILE_FETCH {
     label 'process_single'
 
@@ -34,6 +33,12 @@ process HOSTILE_FETCH {
     def args = task.ext.args ?: ''
     """
     mkdir reference/
+    touch reference/human-t2t-hla.1.bt2
+    touch reference/human-t2t-hla.2.bt2
+    touch reference/human-t2t-hla.3.bt2
+    touch reference/human-t2t-hla.4.bt2
+    touch reference/human-t2t-hla.rev.1.bt2
+    touch reference/human-t2t-hla.rev.2.bt2
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
