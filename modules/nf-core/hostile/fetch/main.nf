@@ -33,6 +33,8 @@ process HOSTILE_FETCH {
     def args = task.ext.args ?: ''
     """
     mkdir reference/
+    export HOSTILE_CACHE_DIR=./reference
+
     touch reference/human-t2t-hla.1.bt2
     touch reference/human-t2t-hla.2.bt2
     touch reference/human-t2t-hla.3.bt2
