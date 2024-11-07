@@ -1,0 +1,64 @@
+nextflow_workflow {
+
+    name "Test Workflow ABUNDANCE_DIFFERENTIAL_FILTER"
+    script "../main.nf"
+    workflow "ABUNDANCE_DIFFERENTIAL_FILTER"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/abundance_differential_filter"
+
+    test("deseq2 - mouse - contrasts - matrix") {
+        config './deseq2_contrasts_matrix.config'
+        
+        when {
+            workflow {
+                """
+                // Define test data
+                def testData = [
+                    expression_test_data_dir: params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/',
+                    contrasts_file: 'SRP254919.contrasts.csv',
+                    abundance_file: 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv',
+                    samplesheet_file: 'SRP254919.samplesheet.csv',
+                    lengths_file: 'SRP254919.spoofed_lengths.tsv',
+                    spikes_file: 'SRP254919.spikes.tsv'
+                ]
+
+                // Define inputs
+                input[0] = Channel.of([
+                    [ id:'test' ], 
+                    file(testData.expression_test_data_dir + testData.abundance_file)
+                ])
+                input[1] = Channel.of([ [], [] ])
+                input[2] = Channel.of([ [], [] ])
+                input[3] = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.samplesheet_file)
+                ])
+                input[4] = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                input[5] = 'deseq2'
+                input[6] = 'vst'
+                input[7] = 1.5
+                input[8] = 0.05
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.results_genewise,
+                    workflow.out.results_genewise_filtered,
+                    workflow.out.normalised_matrix,
+                    workflow.out.variance_stabilised_matrix,
+                    workflow.out.model,
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+}
