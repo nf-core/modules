@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "fcsgx_fetchdb"
+description: Fetches the NCBI FCS-GX database using a provided manifest URL
+keywords:
+  - fcs-gx
+  - database
+  - fetch
+  - ncbi
+tools:
+  - "fcsgx":
+      description: "The NCBI Foreign Contamination Screen. Genomic cross-species aligner,
+        for contamination detection."
+      homepage: "https://github.com/ncbi/fcs-gx"
+      documentation: "https://github.com/ncbi/fcs/wiki/"
+      tool_dev_url: "https://github.com/ncbi/fcs-gx"
+      doi: "10.1186/s13059-024-03198-7"
+      licence: ["NCBI-PD"]
+      identifier: "biotools:ncbi_fcs"
+
+input:
+  - - manifest:
+        type: file
+        description: URL to a FCXGX database
+        pattern: "https://ftp*.manifest"
+
+output:
+  - database:
+      - $prefix:
+          type: directory
+          description: A directory containing an FCSGX database
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@mahesh-panchal"
+maintainers:
+  - "@mahesh-panchal"
