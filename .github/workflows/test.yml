@@ -850,27 +850,27 @@ jobs:
         run: |
           nextflow secrets set SENTIEON_AUTH_DATA $(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "${{ secrets.SENTIEON_ENCRYPTION_KEY }}" --message "${{ secrets.SENTIEON_LICENSE_MESSAGE }}")
       # FIXME docker debugging
-      - name: ssh debugging
-        uses: Warpbuilds/action-debugger@v1.3
-      - name: Verify Docker Environment
-        run: |
-          echo "Current user: $(whoami)"
-          echo "User ID: $(id -u)"
-          echo "XDG_RUNTIME_DIR: $XDG_RUNTIME_DIR"
-          echo "DOCKER_HOST: $DOCKER_HOST"
+      # - name: ssh debugging
+      #   uses: Warpbuilds/action-debugger@v1.3
+      # - name: Verify Docker Environment
+      #   run: |
+      #     echo "Current user: $(whoami)"
+      #     echo "User ID: $(id -u)"
+      #     echo "XDG_RUNTIME_DIR: $XDG_RUNTIME_DIR"
+      #     echo "DOCKER_HOST: $DOCKER_HOST"
 
-          # Check service status
-          systemctl --user status docker || true
+      #     # Check service status
+      #     systemctl --user status docker || true
 
-          # Try restarting if needed
-          if ! systemctl --user is-active docker; then
-              echo "Docker not active, attempting to start..."
-              systemctl --user start docker
-              sleep 5
-          fi
+      #     # Try restarting if needed
+      #     if ! systemctl --user is-active docker; then
+      #         echo "Docker not active, attempting to start..."
+      #         systemctl --user start docker
+      #         sleep 5
+      #     fi
 
-          # Test Docker
-          docker ps
+      #     # Test Docker
+      #     docker ps
       # Test the module
       - name: Run nf-test
         if: ${{ matrix.path != '' }}
