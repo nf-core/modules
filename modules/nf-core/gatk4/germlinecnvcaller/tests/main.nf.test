@@ -9,6 +9,8 @@ nextflow_process {
     tag "modules_nfcore"
     tag "gatk4"
     tag "gatk4/collectreadcounts"
+    tag "gatk4/determinegermlinecontigploidy"
+    tag "gatk4/bedtointervallist"
     tag "gatk4/germlinecnvcaller"
 
     setup {
@@ -40,7 +42,7 @@ nextflow_process {
             script "../../determinegermlinecontigploidy/main.nf"
             process {
             """
-            bed = file(params.test_data['homo_sapiens']['genome']['genome_multi_interval_bed'], checkIfExists: true)
+            bed = Channel.value(file(params.test_data['homo_sapiens']['genome']['genome_multi_interval_bed'], checkIfExists: true))
             contig_ploidy_table = file(params.test_data['homo_sapiens']['illumina']['contig_ploidy_priors_table'], checkIfExists:true)
 
             input[0] = GATK4_COLLECTREADCOUNTS.out.tsv
@@ -57,7 +59,7 @@ nextflow_process {
             script "../../bedtointervallist/main.nf"
             process {
             """
-            input[0] = Channel.of([ id:'test' ], file(params.test_data['homo_sapiens']['genome']['genome_multi_interval_bed'], checkIfExists: true))
+            input[0] = Channel.of([[ id:'test' ], file(params.test_data['homo_sapiens']['genome']['genome_multi_interval_bed'], checkIfExists: true)])
             input[1] = Channel.value([ [ id:'test' ], file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)])
             """
             }
@@ -69,7 +71,7 @@ nextflow_process {
             process {
                 """
                 input[0] = GATK4_COLLECTREADCOUNTS.out.tsv
-                    .map({ meta, tsv -> [[:] , tsv ]})
+                    .map({ meta, tsv -> [[:], tsv ]})
                     .groupTuple()
                     .combine(GATK4_DETERMINEGERMLINECONTIGPLOIDY.out.calls)
                     .combine(GATK4_BEDTOINTERVALLIST.out.interval_list)
@@ -95,9 +97,9 @@ nextflow_process {
             process {
                 """
                 input[0] = GATK4_COLLECTREADCOUNTS.out.tsv
-                    .map({ meta, tsv -> [ , tsv ]})
+                    .map({ meta, tsv -> [[:], tsv ]})
                     .groupTuple()
-                    .combine(GATK4_DETERMINEGERMLINECONTIGPLOIDY_COHORT.out.calls)
+                    .combine(GATK4_DETERMINEGERMLINECONTIGPLOIDY.out.calls)
                     .combine(GATK4_BEDTOINTERVALLIST.out.interval_list)
                     .map{ meta, counts, meta2, calls, meta3, bed -> [ meta, counts, bed, calls, [] ]}
                 """
