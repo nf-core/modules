@@ -70,4 +70,30 @@ nextflow_process {
         }
     }
 
+    test("sarscov2 - paired end") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end: false ],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_2.fastq.gz", checkIfExists: true)
+                    ]
+                ]
+                input[1] = COPTR_INDEX.out.index_dir
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.bam.collect{bam(it[1]).getReads(10)}).match() }
+            )
+        }
+    }
+
+
 }
