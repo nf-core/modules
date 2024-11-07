@@ -8,7 +8,7 @@ process GATK4_VARIANTSTOTABLE {
         'biocontainers/gatk4:4.6.1.0--py310hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(vcf), path(tbi), path(arguments_file), path(include_intervals), path(exclude_intervals)
+    tuple val(meta),  path(vcf), path(tbi), path(arguments_file), path(include_intervals), path(exclude_intervals)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(dict)
@@ -42,8 +42,8 @@ process GATK4_VARIANTSTOTABLE {
         --reference $fasta \\
         --tmp-dir . \\
         $arguments_file_arg \\
-        $include_intervals \\
-        $exclude_intervals
+        $include_intervals_arg \\
+        $exclude_intervals_arg
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
