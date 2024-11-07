@@ -42,7 +42,6 @@ process GATK4_SPLITCRAM {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def avail_mem = 3072
