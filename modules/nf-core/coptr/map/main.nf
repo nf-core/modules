@@ -21,6 +21,7 @@ process COPTR_MAP {
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix2 = task.ext.prefix ?: "${meta2.id}"
 
     def paired_end = ""
     if ( ! meta.single_end ) {
@@ -38,6 +39,8 @@ process COPTR_MAP {
         \$INDEX \
         fastafolder \
         .
+
+    mv ${prefix}.bam ${prefix}_${prefix2}.bam
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         coptr: \$(coptr |& sed -E '11!d ; s/CoPTR.*?\\(v(.*?)\\).*/\\1/')
