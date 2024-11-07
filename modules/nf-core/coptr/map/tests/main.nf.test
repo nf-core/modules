@@ -41,7 +41,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bam.collect{bam(it[1]).getReads()}).match() }
+                { assert snapshot(process.out.bam.collect{bam(it[1]).getReads(10)}).match() }
             )
         }
     }
@@ -65,7 +65,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bam.collect{bam(it[1]).getReads()}).match() }
+                { assert snapshot(process.out.bam.collect{bam(it[1]).getReads(10)}).match() }
             )
         }
     }
