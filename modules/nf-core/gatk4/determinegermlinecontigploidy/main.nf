@@ -4,7 +4,7 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     label 'process_single'
 
     //Conda is not supported at the moment: https://github.com/broadinstitute/gatk/issues/7811
-     container "nf-core/gatk:4.6.1.0" //Biocontainers is missing a package
+    container "nf-core/gatk:4.6.1.0" //Biocontainers is missing a package
 
     input:
     tuple val(meta), path(counts), path(bed), path(exclude_beds)

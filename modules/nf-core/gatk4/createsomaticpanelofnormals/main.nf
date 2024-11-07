@@ -47,7 +47,6 @@ process GATK4_CREATESOMATICPANELOFNORMALS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "${prefix}" | gzip -c > ${prefix}.vcf.gz
