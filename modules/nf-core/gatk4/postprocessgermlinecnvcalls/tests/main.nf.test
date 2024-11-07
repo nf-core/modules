@@ -58,7 +58,7 @@ nextflow_process {
                 bed = Channel.value(file(params.test_data['homo_sapiens']['genome']['genome_multi_interval_bed'], checkIfExists: true))
                 input = [
                     GATK4_COLLECTREADCOUNTS.out.tsv
-                        .map({ meta, tsv -> [[], tsv ] })
+                        .map({ meta, tsv -> [[id:'test'], tsv ] })
                         .groupTuple()
                         .combine(bed)
                         .map({ meta, counts, bed -> [ meta, counts, bed, [] ]}),
@@ -73,7 +73,7 @@ nextflow_process {
             process {
                 """
                 input[0] = GATK4_COLLECTREADCOUNTS.out.tsv
-                        .map({ meta, tsv -> [[], tsv ]})
+                        .map({ meta, tsv -> [[id:'test'], tsv ] })
                         .groupTuple()
                         .combine(GATK4_DETERMINEGERMLINECONTIGPLOIDY_COHORT.out.calls)
                         .combine(GATK4_BEDTOINTERVALLIST.out.interval_list)
