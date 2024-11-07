@@ -34,6 +34,7 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     }
     """
     export THEANO_FLAGS="base_compiledir=\$PWD"
+    export PYTENSOR_FLAGS="base_compiledir=\$PWD"
 
     gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         PostprocessGermlineCNVCalls \\
