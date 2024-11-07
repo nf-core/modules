@@ -2,7 +2,8 @@
 # /// script
 # requires-python = ">=3.10"
 # dependencies = [
-#     "httpx",
+#     "requests",
+#     "rich",
 # ]
 # ///
 
@@ -31,7 +32,7 @@ click.rich_click.SHOW_ARGUMENTS = True
 @click.command()
 @click.option(
     "--platform-pat",
-    envvar="TOWER_ACCESS_TOKEN",
+    envvar="SEQERA_ACCESS_TOKEN",
     show_envvar=True,
     help="Platform authentication token",
 )
