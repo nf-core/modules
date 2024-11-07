@@ -13,9 +13,10 @@ env:
   NFTEST_VER: "0.9.1"
 
 jobs:
-  gen-matrix:
+  generate-matrix:
     name: generate-matrix
     runs-on: ubuntu-latest
+    if: github.repository == 'nf-core/modules'
 
     steps:
       - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
@@ -39,6 +40,7 @@ jobs:
 
   build:
     if: "${{ fromJson(needs.gen-matrix.outputs.matrix) }}"
+    # if: github.repository == 'nf-core/modules'
     needs: gen-matrix
     name: build
     runs-on: ubuntu-latest
