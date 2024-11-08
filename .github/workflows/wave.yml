@@ -19,11 +19,11 @@ jobs:
     if: github.repository == 'nf-core/modules'
 
     steps:
-      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - name: Calculate file differences
         id: diff
-        uses: tj-actions/changed-files@v44
+        uses: tj-actions/changed-files@c65cd883420fd2eb864698a825fc4162dd94482c # v44
         with:
           json: true
           quotepath: false
@@ -50,7 +50,7 @@ jobs:
       fail-fast: false
       matrix: "${{ fromJson(needs.generate-matrix.outputs.matrix) }}"
     steps:
-      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - name: Install wave-cli
         run: |
@@ -59,7 +59,7 @@ jobs:
           chmod +x /usr/local/bin/wave
 
       - name: Create a registry name
-        uses: actions/github-script@v7
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
         id: registry-name
         with:
           result-encoding: string
