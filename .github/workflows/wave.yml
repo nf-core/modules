@@ -16,8 +16,7 @@ jobs:
   generate-matrix:
     name: generate-matrix
     runs-on: ubuntu-latest
-    if: github.repository == 'nf-core/modules'
-
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     steps:
       - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
 
