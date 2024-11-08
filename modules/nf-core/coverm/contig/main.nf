@@ -5,7 +5,7 @@ process COVERM_CONTIG {
     conda "bioconda::coverm=0.7.0-0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/coverm:0.7.0--h07ea13f_0' :
-        'quay.io/biocontainers/coverm:0.7.0--h07ea13f_0' }"
+        'biocontainers/coverm:0.7.0--h07ea13f_0' }"
 
     input:
     tuple val(meta), path(input)
@@ -16,6 +16,9 @@ process COVERM_CONTIG {
     output:
     tuple val(meta), path("*.depth.txt"), emit: coverage
     path "versions.yml"                 , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args          = task.ext.args ?: ""
