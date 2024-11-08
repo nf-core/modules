@@ -18,11 +18,11 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     steps:
-      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - name: Calculate file differences
         id: diff
-        uses: tj-actions/changed-files@v44
+        uses: tj-actions/changed-files@4edd678ac3f81e2dc578756871e4d00c19191daf # v45
         with:
           json: true
           quotepath: false
@@ -49,7 +49,7 @@ jobs:
       fail-fast: false
       matrix: "${{ fromJson(needs.generate-matrix.outputs.matrix) }}"
     steps:
-      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - name: Install wave-cli
         run: |
@@ -58,7 +58,7 @@ jobs:
           chmod +x /usr/local/bin/wave
 
       - name: Create a registry name
-        uses: actions/github-script@v7
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
         id: registry-name
         with:
           result-encoding: string
