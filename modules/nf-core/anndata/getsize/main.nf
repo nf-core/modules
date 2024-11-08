@@ -4,7 +4,7 @@ process ANNDATA_GETSIZE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/anndata:0.10.9--d13580e4b297da7c':
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/04/04529821c1eff131c79f1f867fd9e8465a53ea5473bc6e4ac9405d2b9965d976/data':
         'community.wave.seqera.io/library/anndata:0.10.9--1eab54e300e1e584' }"
 
     input:
