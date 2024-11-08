@@ -43,7 +43,9 @@ nextflow_process {
                 { assert snapshot(
                         file(process.out.fcsgx_report[0][1]).readLines()[1], // Timestamp in header L:0
                         file(process.out.taxonomy_report[0][1]).readLines()[1..2], // Timestamp in header L:0
-                        file(process.out.log[0][1]).readLines()[0..11, 232..263], // Timestamps present
+                        file(process.out.log[0][1]).readLines()[0..9], // Timestamps and binary paths present
+                        file(process.out.log[0][1]).text.contains('fcs_gx_report.txt contamination summary:'),
+                        file(process.out.log[0][1]).text.contains('fcs_gx_report.txt action summary:'),
                         process.out.hits,
                         process.out.versions
                     ).match()
