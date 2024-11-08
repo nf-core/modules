@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
 
+"""
+Author:
+    Leon Hafner
+
+Copyright (c) 2024, Leon Hafner. All rights reserved.
+
+License: MIT License
+"""
+
 import platform
 
 import anndata as ad
