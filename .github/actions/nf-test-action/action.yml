@@ -49,6 +49,7 @@ runs:
 
     - name: Conda setup
       if: ${{inputs.profile == 'conda'}}
+      uses: conda-incubator/setup-miniconda@d2e6a045a86077fb6cad6f5adf368e9076ddaa8d # v3
       shell: bash
       with:
         miniconda-version: "23.5.1"
