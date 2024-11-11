@@ -83,7 +83,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}.vcf.gz:
+      - "${prefix}.vcf.gz":
           type: file
           description: Compressed VCF file
           pattern: "*.vcf.gz"
@@ -93,14 +93,17 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}.vcf.gz.tbi: {}
+      - "${prefix}.vcf.gz.tbi":
+          type: file
+          description: Index of compressed VCF file
+          pattern: "*.vcf.gz.tbi"
   - gvcf:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}.g.vcf.gz:
+      - "${prefix}.g.vcf.gz":
           type: file
           description: Compressed GVCF file
           pattern: "*.g.vcf.gz"
@@ -110,7 +113,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}.g.vcf.gz.tbi: {}
+      - "${prefix}.g.vcf.gz.tbi":
+          type: file
+          description: Index of compressed Genotyped VCF file
+          pattern: "*.g.vcf.gz.tbi"
   - versions:
       - versions.yml:
           type: file
