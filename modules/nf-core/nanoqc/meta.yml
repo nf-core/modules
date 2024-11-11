@@ -1,0 +1,55 @@
+name: nanoqc
+description: Quality control tools for long read sequencing data aiming to replicate some of the plots made by fastQC
+keywords:
+  - quality control
+  - nanopore
+  - long read
+tools:
+  - nanoqc:
+      description: |
+        Quality control tools for long read sequencing data aiming to replicate some of the plots made by fastQC
+      homepage: https://github.com/wdecoster/nanoQC
+      documentation: https://github.com/wdecoster/nanoQC/blob/master/README.md
+      licence: ["GPL-3.0-or-later"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fastq:
+        type: file
+        description: |
+          Basecalled reads in FASTQ.GZ format
+        pattern: "*.fastq.gz"
+output:
+  - report:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.html":
+          type: file
+          description: Report in html format with fastQC-like plots.
+          pattern: "*.html"
+  - log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: Log of the nanoQC run.
+          pattern: "*.log"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@lfreitasl"
+maintainers:
+  - "@lfreitasl"
