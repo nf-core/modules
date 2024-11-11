@@ -30,7 +30,7 @@ process ANNDATA_GETSIZE {
     cat <<-END_VERSIONS > versions.yml
     ${task.process}:
         python: \$(python3 -c 'import platform; print(platform.python_version())')
-        anndata: \$(python3 -c 'import anndata as ad; print(ad.__version__)')
+        anndata: \$(python3 -c 'import anndata; print(anndata.__version__)')
     END_VERSIONS
     """
 }
