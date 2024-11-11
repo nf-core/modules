@@ -4,7 +4,6 @@
 
 include { LIMMA_DIFFERENTIAL                  } from '../../../modules/nf-core/limma/differential/main'
 include { LIMMA_DIFFERENTIAL as LIMMA_NORM    } from '../../../modules/nf-core/limma/differential/main'
-include { PROPR_PROPD                         } from "../../../modules/nf-core/propr/propd/main.nf"
 include { DESEQ2_DIFFERENTIAL                 } from '../../../modules/nf-core/deseq2/differential/main'
 include { DESEQ2_DIFFERENTIAL as DESEQ2_NORM  } from '../../../modules/nf-core/deseq2/differential/main'
 include { CUSTOM_FILTERDIFFERENTIALTABLE      } from '../../../modules/nf-core/custom/filterdifferentialtable/main'
@@ -66,7 +65,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         if (deseq2_vs_method == 'vst' ){
             ch_variance_stabilised_matrix = DESEQ2_NORM.out.vst_counts
         }
- 
+
         // Run the DESeq differential module
 
         DESEQ2_DIFFERENTIAL (
@@ -78,7 +77,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
 
         ch_results_genewise = DESEQ2_DIFFERENTIAL.out.results
         ch_model = DESEQ2_DIFFERENTIAL.out.model
-        
+
         ch_versions = ch_versions
             .mix(DESEQ2_DIFFERENTIAL.out.versions)
 
@@ -91,22 +90,22 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         // use e.g. the first run of LIMMA_DIFFERENTIAL, because it may remove
         // some samples
 
-        LIMMA_NORM (                                
+        LIMMA_NORM (
             ch_contrasts.first(),
             ch_samples_and_matrix
         )
 
         ch_normalised_matrix = LIMMA_NORM.out.normalised_counts
 
-        LIMMA_DIFFERENTIAL (                                
+        LIMMA_DIFFERENTIAL (
             ch_contrasts,
             ch_samples_and_matrix
         )
-        ch_results_genewise = LIMMA_DIFFERENTIAL.out.results    
-        ch_model = LIMMA_DIFFERENTIAL.out.model             
+        ch_results_genewise = LIMMA_DIFFERENTIAL.out.results
+        ch_model = LIMMA_DIFFERENTIAL.out.model
 
-        ch_versions = ch_versions                           
-            .mix(LIMMA_DIFFERENTIAL.out.versions) 
+        ch_versions = ch_versions
+            .mix(LIMMA_DIFFERENTIAL.out.versions)
 
     }
 
