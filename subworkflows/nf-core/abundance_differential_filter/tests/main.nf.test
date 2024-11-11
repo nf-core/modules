@@ -7,6 +7,9 @@ nextflow_workflow {
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "subworkflows/abundance_differential_filter"
+    tag "custom/filterdifferntialtable"
+    tag "limma/differential"
+    tag "deseq2/differential"
 
     test("deseq2 - mouse - contrasts - matrix") {
         config './deseq2_contrasts_matrix.config'
