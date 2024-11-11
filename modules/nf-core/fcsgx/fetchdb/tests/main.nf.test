@@ -1,0 +1,56 @@
+nextflow_process {
+
+    name "Test Process FCSGX_FETCHDB"
+    script "../main.nf"
+    process "FCSGX_FETCHDB"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fcsgx"
+    tag "fcsgx/fetchdb"
+
+    test("fcsgx-test-data - test-manifest") {
+        when {
+            process {
+                """
+                input[0] = file('https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/database/test-only/test-only.manifest', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                // Some output files are too large to calcualte MD5sums, so we just list the files in the output directory.
+                { assert snapshot(
+                        file(process.out.database.get(0)).list().sort(),
+                        process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("fcsgx-test-data - test-manifest - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = file('https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/database/test-only/test-only.manifest', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
