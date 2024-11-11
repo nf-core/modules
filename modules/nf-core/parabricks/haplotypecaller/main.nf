@@ -1,12 +1,15 @@
 process PARABRICKS_HAPLOTYPECALLER {
     tag "$meta.id"
     label 'process_high'
+    label 'process_gpu'
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.3.0-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.4.0-1"
 
     input:
-    tuple val(meta), path(input), path(input_index), path(interval_file)
-    tuple val(ref_meta), path(fasta)
+    tuple val(meta), path(input)
+    tuple val(meta2), path(input_index)
+    tuple val(meta3), path(interval_file)
+    tuple val(meta4), path(fasta)
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
@@ -26,6 +29,7 @@ process PARABRICKS_HAPLOTYPECALLER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def output_file = args =~ "gvcf" ? "${prefix}.g.vcf" : "${prefix}.vcf"
     def interval_file_command = interval_file ? interval_file.collect{"--interval-file $it"}.join(' ') : ""
+    def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
     """
 
     pbrun \\
@@ -34,7 +38,7 @@ process PARABRICKS_HAPLOTYPECALLER {
         --in-bam $input \\
         --out-variants $output_file \\
         $interval_file_command \\
-        --num-gpus $task.accelerator.request \\
+        $num_gpus \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

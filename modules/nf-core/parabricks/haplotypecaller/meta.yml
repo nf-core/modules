@@ -24,16 +24,26 @@ input:
         type: file
         description: bam file for sample to be variant called.
         pattern: "*.bam"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information.
+          [ id:'test']
     - input_index:
-        type: file
-        description: (Optional) bai index corresponding to input bam file. Only necessary
-          when using intervals.
-        pattern: "*.bai"
+      type: file
+      description: (Optional) bai index corresponding to input bam file. Only necessary
+        when using intervals.
+      pattern: "*.bai"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information.
+          [ id:'test']
     - interval_file:
         type: file
         description: file or files containing genomic intervals.
         pattern: "*.{bed,interval_list,picard,list,intervals}"
-  - - ref_meta:
+  - - meta4:
         type: map
         description: |
           Groovy Map containing reference information.
