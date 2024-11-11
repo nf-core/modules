@@ -33,6 +33,7 @@ nextflow_process {
                 input[0] = CHECKM_LINEAGEWF.out.checkm_output.join(CHECKM_LINEAGEWF.out.marker_file)
                              .map { v -> v + [file('NO_FILE')] }
                 input[1] = []
+                input[2] = false
                 """
             }
         }
@@ -72,6 +73,7 @@ nextflow_process {
                 input[0] = CHECKM_LINEAGEWF.out.checkm_output.join(CHECKM_LINEAGEWF.out.marker_file)
                              .map { v -> v + [file('NO_FILE')] }
                 input[1] = []
+                input[2] = false
                 """
             }
         }

@@ -10,21 +10,23 @@ process CHECKM_QA {
     input:
     tuple val(meta), path(analysis_dir), path(marker_file), path(coverage_file)
     path exclude_marker_file
+    val tsv_output
 
     output:
     tuple val(meta), path("${prefix}.txt")  , optional: true, emit: output
     tuple val(meta), path("${prefix}.fasta"), optional: true, emit: fasta
-    path "versions.yml" , emit: versions
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args     = task.ext.args ?: ''
-    prefix       = task.ext.prefix ?: "${meta.id}"
-    suffix       = task.ext.args?.matches(".*-o 9.*|.*--out_file 9.*") ? "fasta" : "txt"
-    def coverage = coverage_file.isFile()                              ? "--coverage_file ${coverage_file}"  : ""
-    def exclude  = exclude_marker_file && exclude_marker_file.isFile() ? "--exclude_markers ${exclude_marker_file}" : ""
+    def args       = task.ext.args ?: ''
+    prefix         = task.ext.prefix ?: "${meta.id}"
+    suffix         = task.ext.args?.matches(".*-o 9.*|.*--out_format 9.*") ? "fasta" : "txt"
+    def tsv_format = tsv_output                                            ? "--tab_table" : ""
+    def coverage   = coverage_file.isFile()                                ? "--coverage_file ${coverage_file}"  : ""
+    def exclude    = exclude_marker_file && exclude_marker_file.isFile()   ? "--exclude_markers ${exclude_marker_file}" : ""
     """
     checkm \\
         qa \\
@@ -33,6 +35,7 @@ process CHECKM_QA {
         ${marker_file} \\
         ${analysis_dir} \\
         ${coverage} \\
+        ${tsv_format} \\
         ${exclude} \\
         ${args}
 
