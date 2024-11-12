@@ -8,8 +8,7 @@ process GENMOD_MODELS {
         'biocontainers/genmod:3.9--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(input_vcf)
-    path (fam)
+    tuple val(meta), path(input_vcf), path (fam)
     path (reduced_penetrance)
 
     output:
