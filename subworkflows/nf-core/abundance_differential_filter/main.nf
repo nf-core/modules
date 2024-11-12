@@ -114,7 +114,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     results_genewise           = ch_results_genewise               // channel: [ val(meta), path(results) ]
     results_genewise_filtered  = CUSTOM_FILTERDIFFERENTIALTABLE.out.filtered // channel: [ val(meta), path(filtered_results) ]
     normalised_matrix          = ch_normalised_matrix              // channel: [ val(meta), path(normalised_matrix) ]
-    variance_stabilised_matrix = ch_variance_stabilised_matrix    // channel: [ val(meta), path(variance_stabilised_matrix) ] (Optional)
+    variance_stabilised_matrix = ch_variance_stabilised_matrix     // channel: [ val(meta), path(variance_stabilised_matrix) ] (Optional)
     model                      = ch_model                          // channel: [ val(meta), path(model) ]
     versions                   = ch_versions                       // channel: [ path(versions.yml) ]
 }
