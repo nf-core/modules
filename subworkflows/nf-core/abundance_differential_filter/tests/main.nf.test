@@ -84,7 +84,7 @@ nextflow_workflow {
                 process {
                     """
                     ch_samplesheet = Channel.of([
-                        [ id:'test' ],
+                        [ id:'test'],
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true)
                         ]
                     )
@@ -106,10 +106,7 @@ nextflow_workflow {
                 ]
 
                 // Define inputs
-                input[0] = Channel.of([
-                    [ id:'test' ], 
-                    AFFY_JUSTRMA.out.expression.map{ it[1] }.first()
-                ])
+                input[0] = AFFY_JUSTRMA.out.expression.map{ it[1] }.first()
                 input[1] = Channel.of([ [], [] ])
                 input[2] = Channel.of([ [], [] ])
                 input[3] = Channel.of([
