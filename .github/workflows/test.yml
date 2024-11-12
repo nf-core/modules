@@ -539,6 +539,10 @@ jobs:
           - profile: conda
             path: modules/nf-core/deepcell/mesmer
           - profile: conda
+            path: modules/nf-core/deepsomatic
+          - profile: singularity
+            path: modules/nf-core/deepsomatic
+          - profile: conda
             path: modules/nf-core/deepvariant
           - profile: conda
             path: modules/nf-core/deepvariant/callvariants
@@ -664,6 +668,15 @@ jobs:
             path: subworkflows/nf-core/fastq_align_bwa
           - profile: conda
             path: subworkflows/nf-core/fasta_newick_epang_gappa
+          - profile: conda
+            path: modules/nf-core/xeniumranger/relabel
+          - profile: conda
+            path: modules/nf-core/xeniumranger/rename
+          - profile: conda
+            path: modules/nf-core/xeniumranger/resegment
+          - profile: conda
+            path: modules/nf-core/xeniumranger/import-segmentation
+
     env:
       NXF_ANSI_LOG: false
       NFTEST_VER: "0.9.0"
