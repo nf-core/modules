@@ -26,7 +26,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.delta[0][1]).readLines()[2..-1],
-                    file(process.out.coords[0][1]).readLines()[2..-1])
+                    file(process.out.coords[0][1]).readLines()[2..-1],
+                    process.out.versions)
                     .match() }
             )
         }
