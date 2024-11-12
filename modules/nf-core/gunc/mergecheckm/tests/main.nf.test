@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process GUNC_MERGECHECKM"
     script "../main.nf"
     process "GUNC_MERGECHECKM"
+    config "./nextflow.config"
 
     tag "modules_nfcore"
     tag "modules"
@@ -13,7 +14,7 @@ nextflow_process {
     tag "checkm/lineagewf"
     tag "checkm/qa"
 
-    test("Test GUNC MergeCheckM") {
+    test("gunc - mergecheckm") {
 
         setup {
             run("CHECKM_LINEAGEWF") {
@@ -21,8 +22,11 @@ nextflow_process {
                 process {
                     """
                     input[0] = [
-                        [ id:'test', single_end:false ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+                        [id: 'test'], // meta map
+                        file(
+                            params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta',
+                            checkIfExists: true
+                        )
                     ]
                     input[1] = 'fasta'
                     input[2] = [] // Download CheckM database
@@ -31,15 +35,15 @@ nextflow_process {
             }
 
             run("CHECKM_QA") {
-              script "../../../checkm/qa/main.nf"
-              process {
-                  """
-                  input[0] =  CHECKM_LINEAGEWF.out.checkm_output
+                script "../../../checkm/qa/main.nf"
+                process {
+                    """
+                    input[0] =  CHECKM_LINEAGEWF.out.checkm_output
                                 .join(CHECKM_LINEAGEWF.out.marker_file)
                                 .map { v -> v + [file('NO_FILE')] }
-                  input[1] = []
-                  """
-              }
+                    input[1] = []
+                    """
+                }
             }
 
             run("GUNC_DOWNLOADDB") {
