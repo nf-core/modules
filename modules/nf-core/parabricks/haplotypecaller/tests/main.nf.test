@@ -16,7 +16,7 @@ nextflow_process {
                 """
                 input[0] = [
                             [ id:'test' ],
-                            [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/test2_paired_end_recalibrated_sorted_bam', checkIfExists: true) ]
+                            [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true) ]
                 ]
                 input[1] = [
                             [ id:'index' ],
@@ -54,15 +54,15 @@ nextflow_process {
                 """
                 input[0] = [
                             [ id:'test' ],
-                            [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test2_paired_end_recalibrated_sorted_bam', checkIfExists: true) ]
+                            [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true) ]
                 ]
                 input[1] = [
                             [ id:'index' ],
-                            [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test2_paired_end_recalibrated_sorted_bam_bai', checkIfExists: true) ]
+                            [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true) ]
                 ]
                 input[2] = [
                             [ id:'intervals' ],
-                            [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_21_multi_interval_bed', checkIfExists: true) ]
+                            [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true) ]
                 ]
                 input[3] = [
                             [ id:'reference' ],
@@ -86,25 +86,21 @@ nextflow_process {
     }
 
     test("homo_sapiens - bam - gvcf") {
-
-        params {
-            ext.args = "--gvcf"
-        }
-
+        config "./nextflow.config"
         when {
             process {
                 """
                 input[0] = [
                             [ id:'test' ],
-                            [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test2_paired_end_recalibrated_sorted_bam', checkIfExists: true) ]
+                            [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true) ]
                 ]
                 input[1] = [
                             [ id:'index' ],
-                            [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test2_paired_end_recalibrated_sorted_bam_bai', checkIfExists: true) ]
+                            [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true) ]
                 ]
                 input[2] = [
                             [ id:'intervals' ],
-                            [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_21_multi_interval_bed', checkIfExists: true) ]
+                            [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true) ]
                 ]
                 input[3] = [
                             [ id:'reference' ],
@@ -136,15 +132,15 @@ nextflow_process {
                 """
                 input[0] = [
                             [ id:'test' ],
-                            [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test2_paired_end_recalibrated_sorted_bam', checkIfExists: true) ]
+                            [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true) ]
                 ]
                 input[1] = [
                             [ id:'index' ],
-                            [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test2_paired_end_recalibrated_sorted_bam_bai', checkIfExists: true) ]
+                            [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true) ]
                 ]
                 input[2] = [
                             [ id:'intervals' ],
-                            [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_21_multi_interval_bed', checkIfExists: true) ]
+                            [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true) ]
                 ]
                 input[3] = [
                             [ id:'reference' ],
@@ -164,27 +160,23 @@ nextflow_process {
     }
 
     test("homo_sapiens - bam - gvcf - stub") {
-
+        config "./nextflow.config"
         options "-stub"
-
-        params {
-            ext.args = "--gvcf"
-        }
         
         when {
             process {
                 """
                 input[0] = [
                             [ id:'test' ],
-                            [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test2_paired_end_recalibrated_sorted_bam', checkIfExists: true) ]
+                            [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true) ]
                 ]
                 input[1] = [
                             [ id:'index' ],
-                            [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test2_paired_end_recalibrated_sorted_bam_bai', checkIfExists: true) ]
+                            [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true) ]
                 ]
                 input[2] = [
                             [ id:'intervals' ],
-                            [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_21_multi_interval_bed', checkIfExists: true) ]
+                            [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true) ]
                 ]
                 input[3] = [
                             [ id:'reference' ],
