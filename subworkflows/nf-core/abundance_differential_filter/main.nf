@@ -16,7 +16,6 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     ch_samplesheet        // [ meta_exp, samplesheet ]
     ch_contrasts          // [ meta_contrast, contrast_variable, reference, target ]
     differential_method   // limma, deseq2, propd
-    deseq2_vs_method      // rlog, vst
     FC_threshold          // float
     padj_threshold        // float
 
@@ -58,13 +57,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         )
 
         ch_normalised_matrix = DESEQ2_NORM.out.normalised_counts
-
-        if (deseq2_vs_method == 'rlog' ){
-            ch_variance_stabilised_matrix = DESEQ2_NORM.out.rlog_counts
-        }
-        if (deseq2_vs_method == 'vst' ){
-            ch_variance_stabilised_matrix = DESEQ2_NORM.out.vst_counts
-        }
+        ch_variance_stabilised_matrix = DESEQ2_NORM.out.rlog_counts.concat(DESEQ2_NORM.out.vst_counts)
 
         // Run the DESeq differential module
 
