@@ -26,14 +26,30 @@ process BISCUIT_ALIGN {
     def biscuit_cpus = (int) Math.max(Math.floor(task.cpus*0.9),1)
     def samtools_cpus = task.cpus-biscuit_cpus
     """
-    INDEX=`find -L ./ -name "*.bis.amb" | sed 's/\\.bis.amb\$//'`
+    ln -sf \$(readlink $fasta) $index/$fasta
 
     biscuit align \\
         $args \\
         -@ $biscuit_cpus \\
-        \$INDEX \\
+        $index/$fasta \\
         $reads \\
         | samtools sort $args2 --threads $samtools_cpus --write-index -o ${prefix}.bam##idx##${prefix}.bam.bai -
+
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        biscuit: \$( biscuit version |& sed '1!d; s/^.*BISCUIT Version: //' )
+        samtools: \$( samtools --version |& sed '1!d; s/^.*samtools //' )
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bam
+    touch ${prefix}.bam.bai
 
 
     cat <<-END_VERSIONS > versions.yml
