@@ -2,7 +2,7 @@ process PARABRICKS_GENOTYPEGVCF {
     tag "$meta.id"
     label 'process_high'
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.3.0-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.4.0-1"
 
     input:
     tuple val(meta), path(input)
@@ -16,7 +16,6 @@ process PARABRICKS_GENOTYPEGVCF {
     task.ext.when == null || task.ext.when
 
     script:
-
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         exit 1, "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
@@ -26,7 +25,6 @@ process PARABRICKS_GENOTYPEGVCF {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def output_file = "${prefix}.vcf"
     """
-
     pbrun \\
         genotypegvcf \\
         --ref $fasta \\
