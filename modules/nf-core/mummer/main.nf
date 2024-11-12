@@ -50,7 +50,7 @@ process MUMMER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '3.23' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    touch ${prefx}.coords
+    touch ${prefix}.coords
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
