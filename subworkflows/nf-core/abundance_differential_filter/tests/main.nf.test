@@ -10,6 +10,8 @@ nextflow_workflow {
     tag "custom/filterdifferentialtable"
     tag "limma/differential"
     tag "deseq2/differential"
+    tag "affy/justrma"
+    tag "untar"
 
     test("deseq2 - mouse - basic") {
         config './deseq2_basic.config'
@@ -27,7 +29,7 @@ nextflow_workflow {
 
                 // Define inputs
                 input[0] = Channel.of([
-                    [ id:'test', method: 'salmon' ], 
+                    [ id:'test' ], 
                     file(testData.expression_test_data_dir + testData.abundance_file)
                 ])
                 input[1] = Channel.of([ [], [] ])
@@ -105,7 +107,7 @@ nextflow_workflow {
 
                 // Define inputs
                 input[0] = Channel.of([
-                    [ id:'test', method: 'microarray' ], 
+                    [ id:'test' ], 
                     AFFY_JUSTRMA.out.expression.map{ it[1] }.first()
                 ])
                 input[1] = Channel.of([ [], [] ])
@@ -154,7 +156,7 @@ nextflow_workflow {
 
                 // Define inputs
                 input[0] = Channel.of([
-                    [ id:'test', method: 'salmon' ], 
+                    [ id:'test' ], 
                     file(testData.expression_test_data_dir + testData.abundance_file)
                 ])
                 input[1] = Channel.of([ [], [] ])
@@ -204,7 +206,7 @@ nextflow_workflow {
 
                 // Define inputs
                 input[0] = Channel.of([
-                    [ id:'test', method: 'salmon' ], 
+                    [ id:'test' ], 
                     file(testData.expression_test_data_dir + testData.abundance_file)
                 ])
                 input[1] = Channel.of([
@@ -260,7 +262,7 @@ nextflow_workflow {
 
                 // Define inputs
                 input[0] = Channel.of([
-                    [ id:'test', method: 'salmon' ], 
+                    [ id:'test' ], 
                     file(testData.expression_test_data_dir + testData.abundance_file)
                 ])
                 input[1] = Channel.of([ [], [] ])
