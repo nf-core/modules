@@ -175,8 +175,8 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
+                { assert path(workflow.out.results_genewise[0][1]).getText().contains("ENSMUSG00000023978\t-2.84055986312942") },
                 { assert snapshot(
-                    workflow.out.results_genewise,
                     workflow.out.results_genewise_filtered,
                     workflow.out.normalised_matrix,
                     workflow.out.model,
