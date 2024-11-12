@@ -782,7 +782,7 @@ jobs:
         include:
           - path: modules/nf-core/parabricks/applybqsr
           - path: modules/nf-core/parabricks/fq2bam
-          - path: modules/nf-core/parabricks/fq2bammeth
+          # - path: modules/nf-core/parabricks/fq2bammeth excluded - tackle in different PR
         exclude:
           - profile: conda
             path: modules/nf-core/parabricks/fq2bam
