@@ -1,6 +1,7 @@
 process PARABRICKS_MUTECTCALLER {
     tag "$meta.id"
     label 'process_high'
+    label 'process_gpu'
 
     container "nvcr.io/nvidia/clara/clara-parabricks:4.3.0-1"
 
@@ -30,6 +31,7 @@ process PARABRICKS_MUTECTCALLER {
     def interval_file_command = interval_file ? interval_file.collect{"--interval-file $it"}.join(' ') : ""
     def prepon_command = panel_of_normals ? "cp -L $panel_of_normals_index `readlink -f $panel_of_normals`.tbi && pbrun prepon --in-pon-file $panel_of_normals" : ""
     def postpon_command = panel_of_normals ? "pbrun postpon --in-vcf ${prefix}.vcf.gz --in-pon-file $panel_of_normals --out-vcf ${prefix}_annotated.vcf.gz" : ""
+    def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
     """
 
     # if panel of normals specified, run prepon
@@ -42,7 +44,7 @@ process PARABRICKS_MUTECTCALLER {
         --tumor-name ${meta.tumor_id} \\
         --out-vcf ${prefix}.vcf.gz \\
         $interval_file_command \\
-        --num-gpus $task.accelerator.request \\
+        $num_gpus \\
         $args
 
     # if panel of normals specified, run postpon
