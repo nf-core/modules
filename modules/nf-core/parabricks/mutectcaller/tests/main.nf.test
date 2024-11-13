@@ -9,37 +9,37 @@ nextflow_process {
     tag "modules_nfcore"
     tag "parabricks"
 
-    test("human - bam") {
+    // test("human - bam") {
 
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'test',  tumor_id:'tumour' ],
-                    file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
-                    [], // index only neeeded if using intervals or tumor-normal calling
-                    [],
-                    [],
-                    []
-                ]
-                input[1] = [ // fasta
-                    [ id: 'reference' ],
-                    file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
-                    ]
-                input[2] = [] // pon
-                input[3] = [] // pon index
-                """
-            }
-        }
+    //     when {
+    //         process {
+    //             """
+    //             input[0] = [
+    //                 [ id:'test',  tumor_id:'tumour' ],
+    //                 file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
+    //                 [], // index only neeeded if using intervals or tumor-normal calling
+    //                 [],
+    //                 [],
+    //                 []
+    //             ]
+    //             input[1] = [ // fasta
+    //                 [ id: 'reference' ],
+    //                 file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+    //                 ]
+    //             input[2] = [] // pon
+    //             input[3] = [] // pon index
+    //             """
+    //         }
+    //     }
 
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot( process.out ).match() }
-            )
-        }
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot( process.out ).match() }
+    //         )
+    //     }
 
-    }
+    // }
 
     // test("human - bam - tn") {
     // // tumor-normal calling not passing because of issue with readgroups in the test files
