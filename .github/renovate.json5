@@ -4,5 +4,11 @@
         "github>nf-core/ops//.github/renovate/default.json5",
         "github>nf-core/ops//.github/renovate/process_updaters.json5"
     ],
-    "prHeader": "## WARNING\n - [ ] I have made sure to update the singularity and conda images"
+    "prHeader": "## WARNING\n - [ ] I have made sure to update the singularity and conda images",
+    "packageRules": [
+        {
+            "matchManagers": ["conda", "pypi", "docker"],
+            "automerge": false
+        }
+    ]
 }
