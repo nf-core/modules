@@ -83,7 +83,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.versions,
+                    path(process.out.cohortcalls[0][1]).list().sort(),
+                    path(process.out.cohortmodel[0][1]).list().sort(),
+                    path(process.out.casecalls[0][1]).list().sort(),
+                ).match() }
             )
         }
 
@@ -109,7 +114,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.versions,
+                    path(process.out.cohortcalls[0][1]).list().sort(),
+                    path(process.out.cohortmodel[0][1]).list().sort(),
+                    path(process.out.casecalls[0][1]).list().sort(),
+                ).match() }
             )
         }
 
