@@ -11,6 +11,8 @@ nextflow_process {
 
     test("human - bam") {
 
+        config "./lowmem.config"
+
         when {
             process {
                 """
