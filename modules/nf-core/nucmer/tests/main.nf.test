@@ -1,0 +1,61 @@
+nextflow_process {
+
+    name "Test Process NUCMER"
+    script "../main.nf"
+    process "NUCMER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "nucmer"
+
+    test("sarscov2 - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.delta[0][1]).readLines()[2..-1],
+                    file(process.out.coords[0][1]).readLines()[2..-1],
+                    process.out.versions)
+                    .match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
