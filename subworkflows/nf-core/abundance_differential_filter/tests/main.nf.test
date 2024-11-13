@@ -106,7 +106,7 @@ nextflow_workflow {
                 ]
 
                 // Define inputs
-                input[0] = AFFY_JUSTRMA.out.expression.map{ it[1] }.first()
+                input[0] = AFFY_JUSTRMA.out.expression
                 input[1] = Channel.of([ [], [] ])
                 input[2] = Channel.of([ [], [] ])
                 input[3] = Channel.of([
