@@ -3,7 +3,7 @@ process PARABRICKS_MUTECTCALLER {
     label 'process_high'
     label 'process_gpu'
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.3.0-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.4.0-1"
 
     input:
     tuple val(meta), path(tumor_bam), path(tumor_bam_index),  path(normal_bam), path(normal_bam_index), path(interval_file)
