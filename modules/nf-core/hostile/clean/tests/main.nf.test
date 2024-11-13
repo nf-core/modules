@@ -47,9 +47,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        process.out.cleaned_reads,
+                        process.out.fastqs,
                         process.out.versions,
-                        process.out.log[0][1].readLines().contains('"reads_removed": 200')
+                        process.out.json[0][1].readLines().contains('"reads_removed": 200')
                     ).match() }
             )
         }
@@ -81,9 +81,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        process.out.cleaned_reads,
+                        process.out.fastqs,
                         process.out.versions,
-                        process.out.log[0][1].readLines().contains('"reads_removed": 200')
+                        process.out.json[0][1].readLines().contains('"reads_removed": 200')
                     ).match() }
             )
         }

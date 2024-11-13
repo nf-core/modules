@@ -1,61 +1,76 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "hostile_clean"
-## TODO nf-core: Add a description of the module and list keywords
 description: write your description here
 keywords:
-  - sort
-  - example
-  - genomics
+  - hostile
+  - decontamination
+  - human removal
+  - download
+  - host removal
+  - clean
 tools:
   - "hostile":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Hostile: accurate host decontamination"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      homepage: "https://github.com/bede/hostile"
+      documentation: "https://github.com/bede/hostile"
+      tool_dev_url: "https://github.com/bede/hostile"
+      doi: "10.1093/bioinformatics/btad728"
       licence: ["MIT"]
       identifier: biotools:hostile
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
 
-    ## TODO nf-core: Delete / customise this example input
-    - bam:
+    - reads:
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
+        description: Paired or single end FASTQ files
+        pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_25722"
-          - edam: "http://edamontology.org/format_2573"
-          - edam: "http://edamontology.org/format_3462"
+          - edam: "http://edamontology.org/format_1930"
+  - - reference_dir:
+        type: directory
+        description: |
+          Directory containing index file(s) corresponding to the preferred aligner (bowtie2 short reads or minimap for long reads).
+          Note that single end data is assumed to be long reads. If you have single-end short read you must supply both the BowTie2
+          indices AND explicitly specify `--aligner bowtie2`
+        ontologies:
+          - edam: "http://edamontology.org/data_1049"
+  - - reference_name:
+        type: string
+        description: |
+          Name of the reference to align against and thus remove mapped reads to.
+          Typically corresponds
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  - bam:
-      #Only when we have meta
+  - fastq:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      ## TODO nf-core: Delete / customise this example output
-      - "*.bam":
+      - "cleaned_reads/*.":
           type: file
-          description: Sorted BAM/CRAM/SAM file
-          pattern: "*.{bam,cram,sam}"
+          description: Paired or single end FASTQ files with reads aligned against the reference genome removed
+          pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
           ontologies:
-            - edam: "http://edamontology.org/format_25722"
-            - edam: "http://edamontology.org/format_2573"
-            - edam: "http://edamontology.org/format_3462"
-
+            - edam: "http://edamontology.org/format_1930"
+  - json:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.json.":
+          type: file
+          description: Log file with statistics on number of input and output reads post removal in JSON format
+          pattern: "*.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464"
   - versions:
       - "versions.yml":
           type: file

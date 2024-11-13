@@ -13,8 +13,8 @@ process HOSTILE_CLEAN {
     val(reference_name)
 
     output:
-    tuple val(meta), path("cleaned_reads/*.fastq.gz"), emit: cleaned_reads
-    tuple val(meta), path("*.log")                   , emit: log
+    tuple val(meta), path("cleaned_reads/*.fastq.gz"), emit: fastq
+    tuple val(meta), path("*.json")                  , emit: json
     path "versions.yml"                              , emit: versions
 
     when:
@@ -39,7 +39,7 @@ process HOSTILE_CLEAN {
         --out-dir cleaned_reads/ \\
         --reorder \\
         --offline \\
-        |tee > ${prefix}.log
+        |tee > ${prefix}.json
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -57,7 +57,7 @@ process HOSTILE_CLEAN {
     mkdir cleaned_reads/
     echo "" | gzip -c > cleaned_reads/${prefix}.clean_1.fastq.gz
     $reads_cmd
-    touch ${prefix}.log
+    touch ${prefix}.json
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
