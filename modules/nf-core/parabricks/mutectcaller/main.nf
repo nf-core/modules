@@ -59,9 +59,9 @@ process PARABRICKS_MUTECTCALLER {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def postpon_command = panel_of_normals ? "touch ${prefix}_annotated.vcf.gz" : ""
+    def postpon_command = panel_of_normals ? "echo '' | gzip > ${prefix}_annotated.vcf.gz" : ""
     """
-    touch ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.stats
     $postpon_command
 
