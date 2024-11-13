@@ -28,7 +28,7 @@ process HAPPY_SOMPY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def regions = regions_bed ? "-f ${regions_bed}" : ""
+    def regions = regions_bed ? "-R ${regions_bed}" : ""
     def targets = targets_bed ? "-T ${targets_bed}" : ""
     def false_positives = false_positives_bed ? "--false-positives ${false_positives_bed}" : ""
     def ambiguous = ambiguous_beds ? "--ambiguous ${ambiguous_beds}" : ""
