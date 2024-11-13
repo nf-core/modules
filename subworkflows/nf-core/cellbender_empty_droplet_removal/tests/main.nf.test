@@ -1,0 +1,33 @@
+nextflow_workflow {
+
+    name "Test Subworkflow CELLBENDER_EMPTY_DROPLET_REMOVAL"
+    script "../main.nf"
+    workflow "CELLBENDER_EMPTY_DROPLET_REMOVAL"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/cellbender_empty_droplet_removal"
+    tag "cellbender/removebackground"
+    tag "anndata/barcodes"
+
+    test("scdownstream - h5ad") {
+
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_raw_matrix_5k.h5ad", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
+}

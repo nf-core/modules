@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "cellbender_empty_droplet_removal"
+description: Remove empty droplet Cellbender features including background noise removal and empty droplet detection
+keywords:
+  - scdownstream
+  - cellbender
+  - anndata
+components:
+  - cellbender/removebackground
+  - anndata/barcodes
+input: 
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - h5ad:
+        type: file
+        description: AnnData file containing unfiltered data (with empty droplets)
+        pattern: "*.h5ad"
+output:
+  - h5ad:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+          pattern: "*.h5ad"
+      - "*.h5ad":
+          type: file
+          description: |
+            AnnData file containing all cells with barcodes that match those in the input barcodes csv file
+          pattern: "*.h5ad"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@nictru"
+  - "@chaochaowong"        
+maintainers:
+  - "@nictru"
