@@ -4,15 +4,15 @@ process BISCUIT_INDEX {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/biscuit:1.1.0.20220707--he272189_1':
-        'biocontainers/biscuit:1.1.0.20220707--he272189_1' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5b/5b542bbe1f99afd494ef07423ea8b52f2b8a081b85f92db2726c283c78da3cf0/data':
+        'community.wave.seqera.io/library/biscuit_samtools:84373c8a97fa63b8' }"
 
     input:
-    path fasta, stageAs: "BiscuitIndex/*"
+    tuple val(meta), path(fasta, name:"BiscuitIndex/")
 
     output:
-    path "BiscuitIndex/*.fa*", emit: index, includeInputs: true
-    path "versions.yml"      , emit: versions
+    tuple val(meta), path("BiscuitIndex"), emit: index
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,7 +34,6 @@ process BISCUIT_INDEX {
     stub:
     def args = task.ext.args ?: ''
     """
-
     touch ${fasta}.bis.amb
     touch ${fasta}.bis.ann
     touch ${fasta}.bis.pac
