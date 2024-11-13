@@ -45,4 +45,16 @@ process NUCMER {
         nucmer: \$( nucmer --version 2>&1  | grep "version" | sed -e "s/NUCmer (NUCleotide MUMmer) version //g; s/nucmer//g;" )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.delta
+    touch ${prefix}.coords
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        nucmer: \$( nucmer --version 2>&1  | grep "version" | sed -e "s/NUCmer (NUCleotide MUMmer) version //g; s/nucmer//g;" )
+    END_VERSIONS
+    """
 }
