@@ -57,6 +57,7 @@ process HOSTILE_CLEAN {
     mkdir cleaned_reads/
     echo "" | gzip -c > cleaned_reads/${prefix}.clean_1.fastq.gz
     $reads_cmd
+    touch ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
