@@ -15,7 +15,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test',  tumor_id:'tumor' ],
+                    [ id:'test',  tumor_id:'tumour' ],
                     file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
                     [], // index only neeeded if using intervals or tumor-normal calling
                     [],
@@ -187,7 +187,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test',  tumor_id:'tumor' ],
+                    [ id:'test',  tumor_id:'tumour' ],
                     file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
                     [], // index only neeeded if using intervals or tumor-normal calling
                     [],

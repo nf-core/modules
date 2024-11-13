@@ -31,7 +31,7 @@ process PARABRICKS_MUTECTCALLER {
     def interval_file_command = interval_file ? interval_file.collect{"--interval-file $it"}.join(' ') : ""
     def prepon_command = panel_of_normals ? "cp -L $panel_of_normals_index `readlink -f $panel_of_normals`.tbi && pbrun prepon --in-pon-file $panel_of_normals" : ""
     def postpon_command = panel_of_normals ? "pbrun postpon --in-vcf ${prefix}.vcf.gz --in-pon-file $panel_of_normals --out-vcf ${prefix}_annotated.vcf.gz" : ""
-    def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
+    def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ""
     """
 
     # if panel of normals specified, run prepon
