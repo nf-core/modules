@@ -16,11 +16,10 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                                [ id: 'test' ], // meta map
-                                file(params.modules_testdata_base_path + 'delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true)
-                            ]
+                    [ id: 'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true)
+                ]
 				input[1] = file(params.modules_testdata_base_path + 'delete_me/hmmer/bac.16S_rRNA.hmm.gz', checkIfExists: true)
-
                 """
             }
         }
@@ -40,11 +39,10 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                                [ id: 'test' ], // meta map
-                                file(params.modules_testdata_base_path + 'delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true)
-                            ]
+                    [ id: 'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true)
+                ]
 				input[1] = file(params.modules_testdata_base_path + 'delete_me/hmmer/bac.16S_rRNA.hmm.gz', checkIfExists: true)
-
                 """
             }
         }

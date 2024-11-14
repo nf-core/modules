@@ -16,5 +16,5 @@ workflow test_hmmer_rfmask {
 
     HMMER_HMMALIGN ( input, hmm )
 
-    RFMASK ( HMMER_HMMALIGN.out.sto, [] )
+    RFMASK ( HMMER_HMMALIGN.out.sthlm, [] )
 }

@@ -12,14 +12,14 @@ process HMMER_ESLALIMASK {
     path  maskfile
 
     output:
-    tuple val(meta), path("*.masked.sto.gz"), emit: maskedaln
-    path  "*.fmask-rf.gz"                   , emit: fmask_rf , optional: true
-    path  "*.fmask-all.gz"                  , emit: fmask_all, optional: true
-    path  "*.gmask-rf.gz"                   , emit: gmask_rf , optional: true
-    path  "*.gmask-all.gz"                  , emit: gmask_all, optional: true
-    path  "*.pmask-rf.gz"                   , emit: pmask_rf , optional: true
-    path  "*.pmask-all.gz"                  , emit: pmask_all, optional: true
-    path "versions.yml"                     , emit: versions
+    tuple val(meta), path("*.masked.sthlm.gz"), emit: maskedaln
+    path  "*.fmask-rf.gz"                     , emit: fmask_rf , optional: true
+    path  "*.fmask-all.gz"                    , emit: fmask_all, optional: true
+    path  "*.gmask-rf.gz"                     , emit: gmask_rf , optional: true
+    path  "*.gmask-all.gz"                    , emit: gmask_all, optional: true
+    path  "*.pmask-rf.gz"                     , emit: pmask_rf , optional: true
+    path  "*.pmask-all.gz"                    , emit: pmask_all, optional: true
+    path "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,7 +42,7 @@ process HMMER_ESLALIMASK {
         $gmask_allarg \\
         $pmask_rfarg \\
         $pmask_allarg \\
-        -o ${prefix}.masked.sto \\
+        -o ${prefix}.masked.sthlm \\
         $unmaskedaln \\
         $maskfile
 

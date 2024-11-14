@@ -18,7 +18,7 @@ workflow test_hmmer_eslreformat_afa {
 
     HMMER_HMMALIGN ( input, hmm )
 
-    HMMER_ESLREFORMAT_AFA ( HMMER_HMMALIGN.out.sto )
+    HMMER_ESLREFORMAT_AFA ( HMMER_HMMALIGN.out.sthlm )
 }
 
 workflow test_hmmer_eslreformat_phylip {
@@ -32,7 +32,7 @@ workflow test_hmmer_eslreformat_phylip {
 
     HMMER_HMMALIGN ( input, hmm )
 
-    HMMER_ESLREFORMAT_PHYLIP ( HMMER_HMMALIGN.out.sto )
+    HMMER_ESLREFORMAT_PHYLIP ( HMMER_HMMALIGN.out.sthlm )
 }
 
 workflow test_hmmer_eslreformat_unalign {
@@ -46,5 +46,5 @@ workflow test_hmmer_eslreformat_unalign {
 
     HMMER_HMMALIGN ( input, hmm )
 
-    HMMER_ESLREFORMAT_UNALIGN ( HMMER_HMMALIGN.out.sto )
+    HMMER_ESLREFORMAT_UNALIGN ( HMMER_HMMALIGN.out.sthlm )
 }
