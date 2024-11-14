@@ -84,7 +84,7 @@ nextflow_process {
             process {
                 """
                 input[0] = GATK4_COLLECTREADCOUNTS.out.tsv
-                    .map({ meta, tsv -> [[:], tsv ] })
+                    .map({ meta, tsv -> [[id:'test'], tsv ] })
                     .groupTuple()
                 """
             }
