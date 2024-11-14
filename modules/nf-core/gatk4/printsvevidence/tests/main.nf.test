@@ -84,7 +84,7 @@ nextflow_process {
                 input_svevidence = files
                     .combine(indices, by:0)
                     .map({ meta, file, index ->
-                        [[], file, index ]
+                        [[id:'test'], file, index ]
                     })
                     .groupTuple()
 
