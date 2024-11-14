@@ -1,0 +1,62 @@
+nextflow_process {
+
+    name 'Test Process ANNDATA_BARCODES'
+    script '../main.nf'
+    process 'ANNDATA_BARCODES'
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "anndata/barcodes"
+    tag "anndata"
+
+    test("scdownstream - h5ad - csv") {
+        when {
+            process {
+                """
+                input[0] = Channel.from([
+                    [
+                        [ id:'test', single_end:false ], // meta map
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_raw_matrix_5k.h5ad", checkIfExists: true)
+                    
+                    ]
+                ]).combine(Channel.from('TGGTTAGCAGAGCCAA', 'GGGAGATAGACTGTAA', 'GAGGTGACAGGTCTCG').collectFile(newLine: true))
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("scdownstream - h5ad - csv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.from([
+                    [
+                        [ id:'test', single_end:false ], // meta map
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_raw_matrix_5k.h5ad", checkIfExists: true)
+                    
+                    ]
+                ]).combine(Channel.from('TGGTTAGCAGAGCCAA', 'GGGAGATAGACTGTAA', 'GAGGTGACAGGTCTCG').collectFile(newLine: true))
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+}

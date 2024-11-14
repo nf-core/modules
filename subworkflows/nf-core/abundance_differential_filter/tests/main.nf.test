@@ -1,0 +1,289 @@
+nextflow_workflow {
+
+    name "Test Workflow ABUNDANCE_DIFFERENTIAL_FILTER"
+    script "../main.nf"
+    workflow "ABUNDANCE_DIFFERENTIAL_FILTER"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/abundance_differential_filter"
+    tag "custom/filterdifferentialtable"
+    tag "limma/differential"
+    tag "deseq2/differential"
+    tag "affy/justrma"
+    tag "untar"
+
+    test("deseq2 - mouse - basic") {
+        config './deseq2_basic.config'
+        
+        when {
+            workflow {
+                """
+                // Define test data
+                def testData = [
+                    expression_test_data_dir: params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/',
+                    contrasts_file: 'SRP254919.contrasts.csv',
+                    abundance_file: 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv',
+                    samplesheet_file: 'SRP254919.samplesheet.csv'
+                ]
+
+                // Define inputs
+                input[0] = Channel.of([
+                    [ id:'test' ], 
+                    file(testData.expression_test_data_dir + testData.abundance_file)
+                ])
+                input[1] = Channel.of([ [], [] ])
+                input[2] = Channel.of([ [], [] ])
+                input[3] = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.samplesheet_file)
+                ])
+                input[4] = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                input[5] = 'deseq2'
+                input[6] = 1.5
+                input[7] = 0.05
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.results_genewise,
+                    workflow.out.results_genewise_filtered,
+                    workflow.out.normalised_matrix,
+                    workflow.out.variance_stabilised_matrix,
+                    workflow.out.model,
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("limma - basic - microarray") {
+        config './limma_basic_microarray.config'
+        
+        setup {
+            run("UNTAR") {
+                script "../../../../modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: 'test'],
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751_RAW.tar", checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+            run("AFFY_JUSTRMA") {
+                script "../../../../modules/nf-core/affy/justrma/main.nf"
+                process {
+                    """
+                    ch_samplesheet = Channel.of([
+                        [ id:'test'],
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true)
+                        ]
+                    )
+                    input[0] = ch_samplesheet.join(UNTAR.out.untar)
+                    input[1] = [[],[]]
+                    """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                // Define test data
+                def testData = [
+                    expression_test_data_dir: params.modules_testdata_base_path + 'genomics/homo_sapiens/array_expression/',
+                    contrasts_file: 'GSE38751.contrasts.csv',
+                    samplesheet_file: 'GSE38751.csv'
+                ]
+
+                // Define inputs
+                input[0] = AFFY_JUSTRMA.out.expression
+                input[1] = Channel.of([ [], [] ])
+                input[2] = Channel.of([ [], [] ])
+                input[3] = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.samplesheet_file)
+                ])
+                input[4] = Channel.of(['id': 'diagnosis_normal_uremia', 'variable': 'diagnosis', 'reference': 'normal', 'target': 'uremia'])
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                input[5] = 'limma'
+                input[6] = 1.5
+                input[7] = 0.05
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.results_genewise,
+                    workflow.out.results_genewise_filtered,
+                    workflow.out.normalised_matrix,
+                    workflow.out.model,
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("limma - voom") {
+        config './limma_voom.config'
+        
+        when {
+            workflow {
+                """
+                // Define test data
+                def testData = [
+                    expression_test_data_dir: params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/',
+                    contrasts_file: 'SRP254919.contrasts.csv',
+                    abundance_file: 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv',
+                    samplesheet_file: 'SRP254919.samplesheet.csv'
+                ]
+
+                // Define inputs
+                input[0] = Channel.of([
+                    [ id:'test' ], 
+                    file(testData.expression_test_data_dir + testData.abundance_file)
+                ])
+                input[1] = Channel.of([ [], [] ])
+                input[2] = Channel.of([ [], [] ])
+                input[3] = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.samplesheet_file)
+                ])
+                input[4] = Channel.of(['id': 'test', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                input[5] = 'limma'
+                input[6] = 1.5
+                input[7] = 0.05
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert path(workflow.out.results_genewise[0][1]).getText().contains("ENSMUSG00000023978\t-2.84055986312942") },
+                { assert snapshot(
+                    workflow.out.results_genewise_filtered,
+                    workflow.out.normalised_matrix,
+                    workflow.out.model,
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("deseq2 - with transcript lengths") {
+        config './deseq2_basic.config'
+        
+        when {
+            workflow {
+                """
+                // Define test data
+                def testData = [
+                    expression_test_data_dir: params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/',
+                    contrasts_file: 'SRP254919.contrasts.csv',
+                    abundance_file: 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv',
+                    samplesheet_file: 'SRP254919.samplesheet.csv',
+                    lengths_file: 'SRP254919.spoofed_lengths.tsv'
+                ]
+
+                // Define inputs
+                input[0] = Channel.of([
+                    [ id:'test' ], 
+                    file(testData.expression_test_data_dir + testData.abundance_file)
+                ])
+                input[1] = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.lengths_file)
+                ])
+                input[2] = Channel.of([ [], [] ])
+                input[3] = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.samplesheet_file)
+                ])
+                input[4] = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                input[5] = 'deseq2'
+                input[6] = 1.5
+                input[7] = 0.05
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.results_genewise,
+                    workflow.out.results_genewise_filtered,
+                    workflow.out.normalised_matrix,
+                    workflow.out.variance_stabilised_matrix,
+                    workflow.out.model,
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("stub") {
+        config './deseq2_basic.config'
+        
+        options "-stub"
+        
+        when {
+            workflow {
+                """
+                // Define test data
+                def testData = [
+                    expression_test_data_dir: params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/',
+                    contrasts_file: 'SRP254919.contrasts.csv',
+                    abundance_file: 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv',
+                    samplesheet_file: 'SRP254919.samplesheet.csv'
+                ]
+
+                // Define inputs
+                input[0] = Channel.of([
+                    [ id:'test' ], 
+                    file(testData.expression_test_data_dir + testData.abundance_file)
+                ])
+                input[1] = Channel.of([ [], [] ])
+                input[2] = Channel.of([ [], [] ])
+                input[3] = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.samplesheet_file)
+                ])
+                input[4] = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                input[5] = 'deseq2'
+                input[6] = 1.5
+                input[7] = 0.05
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+}
