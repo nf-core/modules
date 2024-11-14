@@ -111,8 +111,8 @@ jobs:
             return '${{ matrix.files }}'.replace('modules/nf-core/', '').replace('/Dockerfile', '').replace('/', '_');
 
       - name: Build ${{ matrix.profile }} container
-        # FIXME Hack while iron out the CI
-        continue-on-error: true
+        # NOTE If you're changing a Dockerfile and this is running, try to update the Dockerfile to build with wave
+        continue-on-error: false
         env:
           PROFILE: ${{ (contains(matrix.profile, 'singularity') && '--singularity') || '' }}
         run: |
