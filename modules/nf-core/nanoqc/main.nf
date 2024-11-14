@@ -21,12 +21,12 @@ process NANOQC {
     script:
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    
+
     """
     nanoQC \\
         $fastq \\
         $args
-    
+
     mv *.html ${prefix}.html
     mv *.log ${prefix}.log
 
@@ -39,7 +39,7 @@ process NANOQC {
     stub:
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    
+
     """
     touch ${prefix}.html
     touch ${prefix}.log
