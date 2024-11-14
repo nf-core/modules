@@ -263,10 +263,9 @@ jobs:
         with:
           distribution: "temurin"
           java-version: "17"
-      - name: Setup Nextflow ${{ matrix.NXF_VER }}
+
+      - name: Setup Nextflow
         uses: nf-core/setup-nextflow@v2
-        with:
-          version: "${{ matrix.NXF_VER }}"
 
       - name: Setup apptainer
         if: matrix.profile == 'singularity'
