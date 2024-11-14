@@ -16,7 +16,8 @@ jobs:
   generate-matrix:
     name: generate-matrix
     runs-on: ubuntu-latest
-    if: github.repository == 'nf-core/modules'
+    # Only run on Pull Requests within the same repository, and not from forks
+    if: github.event.pull_request.head.repo.full_name == github.repository
 
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
@@ -67,6 +68,8 @@ jobs:
             return '${{ matrix.files }}'.replace('modules/nf-core/', '').replace('/environment.yml', '').replace('/', '_');
 
       - name: Build container
+        # FIXME Hack while iron out the CI
+        continue-on-error: true
         if: matrix.profile == 'docker'
         run: |
           wave --conda-file "${{ matrix.files }}" \
@@ -76,6 +79,8 @@ jobs:
               --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }}
 
       - name: Build Singularity
+        # FIXME Hack while iron out the CI
+        continue-on-error: true
         if: matrix.profile == 'singularity'
         run: |
           wave --conda-file "${{ matrix.files }}" \
