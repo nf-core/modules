@@ -47,7 +47,7 @@ jobs:
     # if: github.repository == 'nf-core/modules'
     if: "${{ fromJson(needs.generate-matrix.outputs.conda-matrix) }}"
     needs: generate-matrix
-    name: Build Conda-based Container
+    name: Build Conda-based ${{ matrix.profile }} Container
     runs-on: ubuntu-latest
     timeout-minutes: 60
     strategy:
@@ -83,7 +83,7 @@ jobs:
     # if: github.repository == 'nf-core/modules'
     if: "${{ fromJson(needs.generate-matrix.outputs.docker-matrix) }}"
     needs: generate-matrix
-    name: Build Dockerfile-based Container
+    name: Build Dockerfile-based ${{ matrix.profile }} Container
     runs-on: ubuntu-latest
     timeout-minutes: 60
     strategy:
