@@ -24,18 +24,18 @@ nextflow_workflow {
                 """
                 input[0] = [
                     [:],
-                    file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Bowtie2_Index.tar.gz', checkIfExists: true)
+                    file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Hisat2_Index.tar.gz', checkIfExists: true)
                 ]
                 """
             }
         }
     }
 
-    test("Params: bismark | default") {
+    test("Params: bismark_hisat | default") {
 
         when {
             params {
-                aligner            = "bismark"
+                aligner            = "bismark_hisat"
                 cytosine_report    = false
                 skip_deduplication = false
             }
@@ -76,11 +76,11 @@ nextflow_workflow {
         }
     }
 
-    test("Params: bismark | skip_deduplication") {
+    test("Params: bismark_hisat | skip_deduplication") {
 
         when {
             params {
-                aligner            = "bismark"
+                aligner            = "bismark_hisat"
                 skip_deduplication = true
             }
 
@@ -120,12 +120,12 @@ nextflow_workflow {
         }
     }
 
-    test("Params: bismark | cytosine_report") {
+    test("Params: bismark_hisat | cytosine_report") {
 
         when {
             params {
-                aligner         = "bismark"
-                cytosine_report = true
+                aligner            = "bismark_hisat"
+                cytosine_report    = true
             }
 
             workflow {
