@@ -48,8 +48,8 @@ nextflow_process {
                 input[1] = GUNZIP.out.gunzip
                 input[2] = SAMTOOLS_FAIDX.out.fai
                 input[3] = Channel.of('chr22\t18890357\t18890451\tID=TEST;MOTIFS=AT;STRUC=(AT)n')
-                                .collectFile(name : 'repeats.bed', newLine: false)
-                                .map { file -> [ [ id : 'chr22' ], file ] }
+                            .collectFile(name : 'repeats.bed', newLine: false)
+                            .map { file -> [ [ id : 'chr22' ], file ] }
                 """
             }
         }
@@ -77,8 +77,8 @@ nextflow_process {
                 input[1] = GUNZIP.out.gunzip
                 input[2] = SAMTOOLS_FAIDX.out.fai
                 input[3] = Channel.of('chr22\t18890357\t18890451\tID=TEST;MOTIFS=AT;STRUC=(AT)n')
-                                .collectFile(name : 'repeats.bed', newLine: false)
-                                .map { file -> [ [ id : 'chr22' ], file ] }
+                            .collectFile(name : 'repeats.bed', newLine: false)
+                            .map { file -> [ [ id : 'chr22' ], file ] }
                 """
             }
         }
@@ -136,8 +136,8 @@ nextflow_process {
                 input[1] = GUNZIP.out.gunzip
                 input[2] = SAMTOOLS_FAIDX.out.fai
                 input[3] = Channel.of('chr22\t18890357\t18890451\tID=TEST;MOTIFS=AT;STRUC=(AT)n')
-                                .collectFile(name : 'repeats.bed', newLine: false)
-                                .map { file -> [ [ id : 'chr22' ], file ] }
+                            .collectFile(name : 'repeats.bed', newLine: false)
+                            .map { file -> [ [ id : 'chr22' ], file ] }
                 """
             }
         }
