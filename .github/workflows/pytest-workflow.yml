@@ -280,7 +280,7 @@ jobs:
         with:
           miniconda-version: "latest"
           channels: conda-forge,bioconda
-          python-version: ${{ matrix.python-version }}
+          python-version: "3.11"
 
       - name: Conda setup
         run: |
