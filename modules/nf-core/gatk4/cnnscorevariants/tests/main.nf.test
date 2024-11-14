@@ -15,14 +15,14 @@ nextflow_process {
                 """
                 input_vcf = [
                     [ id:'test' ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true),
+                    file("${params.test_data_base}/data/genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz", checkIfExists: true),
+                    file("${params.test_data_base}/data/genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz.tbi", checkIfExists: true),
                     [],
                     []
                 ]
-                fasta  = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-                fai    = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-                dict   = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+                fasta  = file("${params.test_data_base}/data/genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true)
+                fai    = file("${params.test_data_base}/data/genomics/homo_sapiens/genome/genome.fasta.fai", checkIfExists: true)
+                dict   = file("${params.test_data_base}/data/genomics/homo_sapiens/genome/genome.dict", checkIfExists: true)
 
                 input = [input_vcf, fasta, fai, dict, [], []]
                 """
@@ -51,14 +51,14 @@ nextflow_process {
                 """
                 input_vcf = [
                     [ id:'test' ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true),
+                    file("${params.test_data_base}/data/genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz", checkIfExists: true),
+                    file("${params.test_data_base}/data/genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz.tbi", checkIfExists: true),
                     [],
                     []
                 ]
-                fasta  = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-                fai    = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-                dict   = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+                fasta  = file("${params.test_data_base}/data/genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true)
+                fai    = file("${params.test_data_base}/data/genomics/homo_sapiens/genome/genome.fasta.fai", checkIfExists: true)
+                dict   = file("${params.test_data_base}/data/genomics/homo_sapiens/genome/genome.dict", checkIfExists: true)
 
                 input = [input_vcf, fasta, fai, dict, [], []]
                 """

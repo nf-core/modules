@@ -16,22 +16,22 @@ nextflow_process {
             script "../../collectreadcounts/main.nf"
             process {
                 """
-                bed = Channel.of(file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true))
+                bed = Channel.of(file("${params.test_data_base}/data/genomics/homo_sapiens/genome/genome.bed", checkIfExists: true))
 
                 ch_input = Channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
+                    file("${params.test_data_base}/data/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam", checkIfExists: true),
+                    file("${params.test_data_base}/data/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai", checkIfExists: true)
                 ],
                 [
                     [ id:'test2', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam_bai'], checkIfExists: true)
+                    file("${params.test_data_base}/data/genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam", checkIfExists: true),
+                    file("${params.test_data_base}/data/genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam.bai", checkIfExists: true)
                 ]).combine(bed)
 
-                ch_fasta = Channel.of([ [ id:'test' ], file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)]).collect()
-                ch_fai   = Channel.of([ [ id:'test' ], file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)]).collect()
-                ch_dict  = Channel.of([ [ id:'test' ], file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)]).collect()
+                ch_fasta = Channel.of([ [ id:'test' ], file("${params.test_data_base}/data/genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true)]).collect()
+                ch_fai   = Channel.of([ [ id:'test' ], file("${params.test_data_base}/data/genomics/homo_sapiens/genome/genome.fasta.fai", checkIfExists: true)]).collect()
+                ch_dict  = Channel.of([ [ id:'test' ], file("${params.test_data_base}/data/genomics/homo_sapiens/genome/genome.dict", checkIfExists: true)]).collect()
 
                 input = [ch_input, ch_fasta, ch_fai, ch_dict]
                 """
@@ -44,8 +44,8 @@ nextflow_process {
         when {
             process {
                 """
-                contig_ploidy_table = file(params.test_data['homo_sapiens']['illumina']['contig_ploidy_priors_table'], checkIfExists: true)
-                bed = Channel.of(file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true))
+                contig_ploidy_table = file("${params.test_data_base}/data/genomics/homo_sapiens/illumina/gatk/contig_ploidy_priors_table.tsv", checkIfExists: true)
+                bed = Channel.of(file("${params.test_data_base}/data/genomics/homo_sapiens/genome/genome.bed", checkIfExists: true))
                     .map({bed -> return bed.text.replaceFirst("0","10001") })
                     .collectFile( name: "genome_exclude.bed" )
 
@@ -76,8 +76,8 @@ nextflow_process {
         when {
             process {
                 """
-                contig_ploidy_table = file(params.test_data['homo_sapiens']['illumina']['contig_ploidy_priors_table'], checkIfExists: true)
-                bed = Channel.of(file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true))
+                contig_ploidy_table = file("${params.test_data_base}/data/genomics/homo_sapiens/illumina/gatk/contig_ploidy_priors_table.tsv", checkIfExists: true)
+                bed = Channel.of(file("${params.test_data_base}/data/genomics/homo_sapiens/genome/genome.bed", checkIfExists: true))
                     .map({bed -> return bed.text.replaceFirst("0","10001") })
                     .collectFile( name: "genome_exclude.bed" )
 

@@ -19,8 +19,8 @@ nextflow_process {
             script "../../bedtointervallist/main.nf"
             process {
                 """
-                intervals = [[ id:'test' ], file(params.test_data['homo_sapiens']['genome']['genome_multi_interval_bed'], checkIfExists: true)]
-                dict = [ [ id:'test' ], file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)]
+                intervals = [[ id:'test' ], file("${params.test_data_base}/data/genomics/homo_sapiens/genome/genome.multi_intervals.bed", checkIfExists: true)]
+                dict = [ [ id:'test' ], file("${params.test_data_base}/data/genomics/homo_sapiens/genome/genome.dict", checkIfExists: true)]
 
                 input = [intervals, dict]
                 """
@@ -32,20 +32,20 @@ nextflow_process {
                 """
                 input_bam = Channel.of([
                 [ id:'test', single_end:false ], // meta map
-                file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
-                file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
-                file(params.test_data['homo_sapiens']['genome']['genome_multi_interval_bed'], checkIfExists: true),
+                file("${params.test_data_base}/data/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam", checkIfExists: true),
+                file("${params.test_data_base}/data/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai", checkIfExists: true),
+                file("${params.test_data_base}/data/genomics/homo_sapiens/genome/genome.multi_intervals.bed", checkIfExists: true),
                 ],
                 [
                 [ id:'test2', single_end:false ], // meta map
-                file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam'], checkIfExists: true),
-                file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam_bai'], checkIfExists: true),
-                file(params.test_data['homo_sapiens']['genome']['genome_multi_interval_bed'], checkIfExists: true)
+                file("${params.test_data_base}/data/genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam", checkIfExists: true),
+                file("${params.test_data_base}/data/genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam.bai", checkIfExists: true),
+                file("${params.test_data_base}/data/genomics/homo_sapiens/genome/genome.multi_intervals.bed", checkIfExists: true)
                 ])
 
-                fasta = Channel.of([ [ id:'test' ], file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)]).collect()
-                fai   = Channel.of([ [ id:'test' ], file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)]).collect()
-                dict  = Channel.of([ [ id:'test' ], file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)]).collect()
+                fasta = Channel.of([ [ id:'test' ], file("${params.test_data_base}/data/genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true)]).collect()
+                fai   = Channel.of([ [ id:'test' ], file("${params.test_data_base}/data/genomics/homo_sapiens/genome/genome.fasta.fai", checkIfExists: true)]).collect()
+                dict  = Channel.of([ [ id:'test' ], file("${params.test_data_base}/data/genomics/homo_sapiens/genome/genome.dict", checkIfExists: true)]).collect()
 
                 input = [input_bam, fasta, fai, dict]
                 """
@@ -55,7 +55,7 @@ nextflow_process {
             script "../../determinegermlinecontigploidy/main.nf"
             process {
                 """
-                bed = Channel.value(file(params.test_data['homo_sapiens']['genome']['genome_multi_interval_bed'], checkIfExists: true))
+                bed = Channel.value(file("${params.test_data_base}/data/genomics/homo_sapiens/genome/genome.multi_intervals.bed", checkIfExists: true))
                 input = [
                     GATK4_COLLECTREADCOUNTS.out.tsv
                         .map({ meta, tsv -> [[id:'test'], tsv ] })
@@ -63,7 +63,7 @@ nextflow_process {
                         .combine(bed)
                         .map({ meta, counts, bed -> [ meta, counts, bed, [] ]}),
                     [[],[]],
-                    file(params.test_data['homo_sapiens']['illumina']['contig_ploidy_priors_table'], checkIfExists: true)
+                    file("${params.test_data_base}/data/genomics/homo_sapiens/illumina/gatk/contig_ploidy_priors_table.tsv", checkIfExists: true)
                 ]
                 """
             }
