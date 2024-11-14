@@ -33,26 +33,27 @@ env:
   NXF_VER: "24.04.4"
 
 jobs:
-  get-number-of-shards:
-    runs-on: ubuntu-latest
-    outputs:
-      # Needs to be a json array
-      shards: ${{ steps.shards.outputs.shards }}
-      total_shards: ${{ steps.shards.outputs.total_shards }}
-    steps:
-      - name: Install nf-test
-        uses: nf-core/setup-nf-test@v1
-        with:
-          version: ${{ env.NFT_VER }}
+  # TODO
+  # get-number-of-shards:
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     # Needs to be a json array
+  #     shards: ${{ steps.shards.outputs.shards }}
+  #     total_shards: ${{ steps.shards.outputs.total_shards }}
+  #   steps:
+  #     - name: Install nf-test
+  #       uses: nf-core/setup-nf-test@v1
+  #       with:
+  #         version: ${{ env.NFT_VER }}
 
-      - id: shards
-        run: |
-          nftest_output=$(nf-test test --dry-run --changed-since HEAD^ --filter process --follow-dependencies)
-          number_of_shards=$(echo $nftest_output | grep -o 'Found [0-9]* related test' | tail -1 | awk '{print $2}')
-          three_tests_per_shard=$(echo $(($number_of_shards / 3)) | awk '{print int($1+0.5)}')
-          shards_array=$(for shard in $(seq 1 $number_of_shards); do echo $shard; done | tr ' ' '\n' | jq -R . | jq -s .)
-          echo "shards=${shards_array}" >> $GITHUB_OUTPUT
-          echo "total_shards=${number_of_shards}" >> $GITHUB_OUTPUT
+  #     - id: shards
+  #       run: |
+  #         nftest_output=$(nf-test test --dry-run --changed-since HEAD^ --filter process --follow-dependencies)
+  #         number_of_shards=$(echo $nftest_output | grep -o 'Found [0-9]* related test' | tail -1 | awk '{print $2}')
+  #         three_tests_per_shard=$(echo $(($number_of_shards / 3)) | awk '{print int($1+0.5)}')
+  #         shards_array=$(for shard in $(seq 1 $number_of_shards); do echo $shard; done | tr ' ' '\n' | jq -R . | jq -s .)
+  #         echo "shards=${shards_array}" >> $GITHUB_OUTPUT
+  #         echo "total_shards=${number_of_shards}" >> $GITHUB_OUTPUT
 
   nf-test:
     runs-on: ${{ github.event.inputs.runners || 'self-hosted' }}
@@ -64,16 +65,19 @@ jobs:
     # ...
     # workflow | singularity | 3
     name: "${{ matrix.filter }} | ${{ matrix.profile }} | ${{ matrix.shard }}"
-    needs: get-number-of-shards
-    if: ${{ fromJSON(needs.get-number-of-shards.outputs.shards) != fromJSON('["1", "0"]') }}
+    # TODO
+    # needs: get-number-of-shards
+    # if: ${{ fromJSON(needs.get-number-of-shards.outputs.shards) != fromJSON('["1", "0"]') }}
     strategy:
       fail-fast: false
       matrix:
-        filter: [process, workflow]
+        # NOTE We could split these, but there's probably going to be more process tests than workflow tests, so we're just going to combine them all and bump up the shards for now
+        # filter: [process, workflow]
         profile: [conda, docker_self_hosted, singularity]
-        shard: ${{ fromJSON(needs.get-number-of-shards.outputs.shards) }}
+        shard: [1, 2, 3, 4, 5]
     env:
-      TOTAL_SHARDS: ${{ needs.get-number-of-shards.outputs.total_shards }}
+      # FIXME Bumping them up to make the transition smooth, then we can throttle them back
+      TOTAL_SHARDS: 5
       SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
       SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
 
@@ -173,7 +177,7 @@ jobs:
             --verbose \
             --changed-since HEAD^ \
             --shard ${{ matrix.shard }}/${{ env.TOTAL_SHARDS }} \
-            --filter ${{ matrix.filter }} \
+            --filter process,workflow \
             --follow-dependencies
 
       # TODO If matrix == conda create a conda-fail.yml and commit it
