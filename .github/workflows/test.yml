@@ -1,5 +1,9 @@
 name: Run tests
 on:
+  push:
+    branches:
+      # https://docs.renovatebot.com/key-concepts/automerge/#branch-vs-pr-automerging
+      - "renovate/**" # branches Renovate creates
   pull_request:
     branches: [master]
   merge_group:
@@ -538,6 +542,10 @@ jobs:
             path: modules/nf-core/custom/dumpsoftwareversions
           - profile: conda
             path: modules/nf-core/deepcell/mesmer
+          - profile: conda
+            path: modules/nf-core/deepsomatic
+          - profile: singularity
+            path: modules/nf-core/deepsomatic
           - profile: conda
             path: modules/nf-core/deepvariant
           - profile: conda
