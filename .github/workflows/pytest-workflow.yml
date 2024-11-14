@@ -71,7 +71,6 @@ jobs:
         tags: ["${{ fromJson(needs.pytest-changes.outputs.tags) }}"]
         profile: [conda, docker, singularity]
         exclude:
- exclude:
           - tags: nf-test
           - profile: conda
             tags: backsub
@@ -239,8 +238,7 @@ jobs:
             tags: vt/decompose
     env:
       NXF_ANSI_LOG: false
-
-   steps:
+    steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - name: Set up Python
