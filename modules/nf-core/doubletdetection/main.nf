@@ -2,6 +2,7 @@ process DOUBLETDETECTION {
     tag "$meta.id"
     label 'process_medium'
 
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'oras://community.wave.seqera.io/library/anndata_louvain_pip_doubletdetection:42d2326cc250350b':
         'community.wave.seqera.io/library/anndata_louvain_pip_doubletdetection:cbe92394c10372fa' }"
@@ -18,18 +19,10 @@ process DOUBLETDETECTION {
     task.ext.when == null || task.ext.when
 
     script:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "DOUBLETDETECTION module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
     prefix = task.ext.prefix ?: "${meta.id}"
     template 'doubletdetection.py'
 
     stub:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "DOUBLETDETECTION module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     export MPLCONFIGDIR=./tmp
