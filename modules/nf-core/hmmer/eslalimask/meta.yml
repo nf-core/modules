@@ -53,10 +53,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.masked.sthlm.gz":
+      - "*.masked.sto.gz":
           type: file
           description: Masked alignment in gzipped Stockholm format
-          pattern: "*.sthlm.gz"
+          pattern: "*.sto.gz"
   - fmask_rf:
       - "*.fmask-rf.gz":
           type: file
