@@ -16,7 +16,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [id:'test'],
+                    [id:'test_0'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 """
@@ -24,7 +24,7 @@ nextflow_process {
         }
     }
 
-    test("sarscov2 - single end") {
+    test("sarscov2 - single end test") {
 
         when {
             process {
@@ -47,7 +47,7 @@ nextflow_process {
         }
     }
 
-test("sarscov2 - paired end") {
+    test("sarscov2 - paired end") {
 
         when {
             process {
@@ -96,7 +96,5 @@ test("sarscov2 - paired end") {
             )
         }
     }
-
-
 
 }
