@@ -17,16 +17,18 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
     cytosine_report      // boolean: whether the run coverage2cytosine
 
     main:
-    ch_versions                = Channel.empty()
-    ch_cytosine_report_summary = Channel.empty()
-    ch_methylation_bedgraph    = Channel.empty()
-    ch_methylation_calls       = Channel.empty()
-    ch_methylation_coverage    = Channel.empty()
-    ch_methylation_report      = Channel.empty()
-    ch_methylation_mbias       = Channel.empty()
-    ch_bismark_report          = Channel.empty()
-    ch_bismark_summary         = Channel.empty()
-    ch_multiqc_files           = Channel.empty()
+    ch_versions                   = Channel.empty()
+    ch_coverage2cytosine_coverage = Channel.empty()
+    ch_coverage2cytosine_report   = Channel.empty()
+    ch_coverage2cytosine_summary  = Channel.empty()
+    ch_methylation_bedgraph       = Channel.empty()
+    ch_methylation_calls          = Channel.empty()
+    ch_methylation_coverage       = Channel.empty()
+    ch_methylation_report         = Channel.empty()
+    ch_methylation_mbias          = Channel.empty()
+    ch_bismark_report             = Channel.empty()
+    ch_bismark_summary            = Channel.empty()
+    ch_multiqc_files              = Channel.empty()
 
     /*
      * Align with bismark
@@ -76,9 +78,10 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
             ch_fasta,
             ch_bismark_index
         )
-        ch_cytosine_report_summary = BISMARK_COVERAGE2CYTOSINE.out.report.collect{ it[1] }
-                                        .mix(BISMARK_COVERAGE2CYTOSINE.out.summary.collect{ it[1] })
-        ch_versions                = ch_versions.mix(BISMARK_COVERAGE2CYTOSINE.out.versions)
+        ch_coverage2cytosine_coverage = BISMARK_COVERAGE2CYTOSINE.out.coverage.collect{ it[1] }
+        ch_coverage2cytosine_report   = BISMARK_COVERAGE2CYTOSINE.out.report.collect{ it[1] }
+        ch_coverage2cytosine_summary  = BISMARK_COVERAGE2CYTOSINE.out.summary.collect{ it[1] }
+        ch_versions                   = ch_versions.mix(BISMARK_COVERAGE2CYTOSINE.out.versions)
     }
 
     /*
@@ -131,16 +134,18 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
                         .mix(BISMARK_REPORT.out.report.collect{ it[1] })
 
     emit:
-    dedup                = SAMTOOLS_SORT_DEDUPLICATED.out.bam // channel: [ val(meta), [ bam ] ] ## sorted, possibly deduplicated BAM
-    cytosine_report      = ch_cytosine_report_summary         // channel: [ val(meta), [ report summary ] ] ## bismark cytosine report and summary
-    methylation_bedgraph = ch_methylation_bedgraph            // channel: [ val(meta), [] ]
-    methylation_calls    = ch_methylation_calls               // channel: [ val(meta), [] ]
-    methylation_coverage = ch_methylation_coverage            // channel: [ val(meta), [] ]
-    methylation_report   = ch_methylation_report              // channel: [ val(meta), [] ]
-    methylation_mbias    = ch_methylation_mbias               // channel: [ val(meta), [] ]
-    bismark_report       = ch_bismark_report                  // channel: [ val(meta), [] ]
-    bismark_summary      = ch_bismark_summary                 // channel: [ val(meta), [] ]
-    multiqc              = ch_multiqc_files                   // path: *{html,txt}
-    versions             = ch_versions                        // path: *.version.txt
+    dedup_bam                  = SAMTOOLS_SORT_DEDUPLICATED.out.bam // channel: [ val(meta), [ bam ] ] ## sorted, possibly deduplicated BAM
+    coverage2cytosine_coverage = ch_coverage2cytosine_coverage      // channel: [ val(meta), [ coverage ] ] ## optional
+    coverage2cytosine_report   = ch_coverage2cytosine_report        // channel: [ val(meta), [ report ] ]
+    coverage2cytosine_summary  = ch_coverage2cytosine_summary       // channel: [ val(meta), [ summary ] ]
+    methylation_bedgraph       = ch_methylation_bedgraph            // channel: [ val(meta), [ bedgraph ] ]
+    methylation_calls          = ch_methylation_calls               // channel: [ val(meta), [ methylation_calls ] ]
+    methylation_coverage       = ch_methylation_coverage            // channel: [ val(meta), [ coverage ] ]
+    methylation_report         = ch_methylation_report              // channel: [ val(meta), [ report ] ]
+    methylation_mbias          = ch_methylation_mbias               // channel: [ val(meta), [ mbias ] ]
+    bismark_report             = ch_bismark_report                  // channel: [ val(meta), [ report ] ]
+    bismark_summary            = ch_bismark_summary                 // channel: [ val(meta), [ summary ] ]
+    multiqc                    = ch_multiqc_files                   // path: *{html,txt}
+    versions                   = ch_versions                        // path: *.version.txt
 }
 

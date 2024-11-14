@@ -62,7 +62,9 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                     workflow.out.dedup.collect { bam(it[1]).getReadsMD5() },
-                    workflow.out.cytosine_report,
+                    workflow.out.coverage2cytosine_coverage,
+                    workflow.out.coverage2cytosine_report,
+                    workflow.out.coverage2cytosine_summary,
                     workflow.out.methylation_bedgraph,
                     workflow.out.methylation_calls,
                     workflow.out.methylation_coverage,
@@ -106,7 +108,9 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                     workflow.out.dedup.collect { bam(it[1]).getReadsMD5() },
-                    workflow.out.cytosine_report,
+                    workflow.out.coverage2cytosine_coverage,
+                    workflow.out.coverage2cytosine_report,
+                    workflow.out.coverage2cytosine_summary,
                     workflow.out.methylation_bedgraph,
                     workflow.out.methylation_calls,
                     workflow.out.methylation_coverage,
@@ -150,7 +154,9 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                     workflow.out.dedup.collect { bam(it[1]).getReadsMD5() },
-                    workflow.out.cytosine_report,
+                    workflow.out.coverage2cytosine_coverage,
+                    workflow.out.coverage2cytosine_report,
+                    workflow.out.coverage2cytosine_summary,
                     workflow.out.methylation_bedgraph,
                     workflow.out.methylation_calls,
                     workflow.out.methylation_coverage,
