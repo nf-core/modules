@@ -23,7 +23,8 @@ process CLIPKIT {
     """
     clipkit \\
         $args \\
-        $aln
+        $aln \\
+        -o ${prefix}.clipkit
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
