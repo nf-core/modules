@@ -27,7 +27,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+                input[0] = file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/fasta/", checkIfExists: true)
                 input[1] = []
                 input[2] = UNZIP.out.unzipped_archive.map { it[1] }
                 """
@@ -65,7 +65,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+                input[0] = file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/fasta/", checkIfExists: true)
                 input[1] = []
                 input[2] = UNZIP.out.unzipped_archive.map { it[1] }
                 """

@@ -4,11 +4,11 @@ process MALT_BUILD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/malt:0.61--hdfd78af_0' :
-        'biocontainers/malt:0.61--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/malt:0.62--hdfd78af_0' :
+        'biocontainers/malt:0.62--hdfd78af_0' }"
 
     input:
-    path fastas
+    path fastas_dir
     path gff
     path mapping_db
 
@@ -27,7 +27,7 @@ process MALT_BUILD {
     """
     malt-build \\
         -v \\
-        --input ${fastas.join(' ')} \\
+        --input $fastas_dir \\
         $igff \\
         -d 'malt_index/' \\
         -t $task.cpus \\
