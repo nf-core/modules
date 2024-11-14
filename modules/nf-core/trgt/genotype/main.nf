@@ -1,4 +1,4 @@
-process TRGT {
+process TRGT_GENOTYPE {
     tag "$meta.id"
     label 'process_medium'
 
