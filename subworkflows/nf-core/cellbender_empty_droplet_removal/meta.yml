@@ -8,7 +8,7 @@ keywords:
 components:
   - cellbender/removebackground
   - anndata/barcodes
-input: 
+input:
   - - meta:
         type: map
         description: |
@@ -16,8 +16,8 @@ input:
           e.g. [ id:'test' ]
     - h5ad:
         type: file
-        description: AnnData file containing unfiltered data (with empty droplets)
-        pattern: "*.h5ad"
+        description: AnnData file of unfiltered data 
+        pattern: "*.h5ad"  
 output:
   - h5ad:
       - meta:

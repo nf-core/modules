@@ -1,5 +1,8 @@
-include { CELLBENDER_REMOVEBACKGROUND } from '../../modules/nf-core/cellbender/removebackground'
-include { ANNDATA_BARCODES            } from '../../modules/nf-core/anndata/barcodes'
+//
+// cellbender remove background and empty droplet detection and removal
+//
+include { CELLBENDER_REMOVEBACKGROUND } from '../../../modules/nf-core/cellbender/removebackground'
+include { ANNDATA_BARCODES            } from '../../../modules/nf-core/anndata/barcodes'
 
 workflow CELLBENDER_EMPTY_DROPLET_REMOVAL {
 
