@@ -64,7 +64,7 @@ jobs:
     # process | docker_self_hosted | 1
     # ...
     # workflow | singularity | 3
-    name: "${{ matrix.filter }} | ${{ matrix.profile }} | ${{ matrix.shard }}"
+    name: "${{ matrix.profile }} | ${{ matrix.shard }}"
     # TODO
     # needs: get-number-of-shards
     # if: ${{ fromJSON(needs.get-number-of-shards.outputs.shards) != fromJSON('["1", "0"]') }}
@@ -72,6 +72,7 @@ jobs:
       fail-fast: false
       matrix:
         # NOTE We could split these, but there's probably going to be more process tests than workflow tests, so we're just going to combine them all and bump up the shards for now
+        # NOTE The name of the test would be name: "${{ matrix.filter }} | ${{ matrix.profile }} | ${{ matrix.shard }}"
         # filter: [process, workflow]
         profile: [conda, docker_self_hosted, singularity]
         shard: [1, 2, 3, 4, 5]
