@@ -11,6 +11,8 @@ nextflow_process {
 
     test("human - vcf") {
 
+        config './copy.config'
+
         when {
             process {
                 """
@@ -27,8 +29,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
-
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    process.out.versions
+                    ).match() 
+                }
             )
         }
 
