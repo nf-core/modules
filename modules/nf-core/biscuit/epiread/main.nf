@@ -25,8 +25,8 @@ process BISCUIT_EPIREAD {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def biscuit_cpus = (int) Math.max(Math.floor(task.cpus*0.9),1)
-    def samtools_cpus = task.cpus-biscuit_cpus
+    def biscuit_cpus = [(task.cpus * 0.9) as int, 1].max()
+    def samtools_cpus = (task.cpus - biscuit_cpus < 1) ? biscuit_cpus : (task.cpus - biscuit_cpus)
     // As of 2/25/22, epiread does not support reading a gzipped SNP BED file.
     // This is a bit hacky but allows the user to supply a gzipped OR uncompressed bed file
     def unzip_snp_bed = snp_bed && (snp_bed.toString() =~ /\.gz$/) ? "bgzip -d ${snp_bed}" : ""

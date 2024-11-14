@@ -25,8 +25,8 @@ process BISCUIT_BLASTER {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def args3 = task.ext.args3 ?: ''
-    def biscuit_cpus = (int) Math.max(Math.floor(task.cpus*0.95),1)
-    def samtools_cpus = { task.cpus - biscuit_cpus }
+    def biscuit_cpus = [(task.cpus * 0.9) as int, 1].max()
+    def samtools_cpus = (task.cpus - biscuit_cpus < 1) ? biscuit_cpus : (task.cpus - biscuit_cpus)
     """
     ln -sf \$(readlink $fasta) $index/$fasta
 
