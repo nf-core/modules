@@ -43,7 +43,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.bam.collect{bam(it[1]).getReads(10)},
-                    process.out.bam.collect{bam(it[1]).getStatistics(include:["readCount"])}
+                    process.out.bam.collect{bam(it[1]).getStatistics(include:["readCount"])},
+                    process.out
                     ).match() }
             )
         }
@@ -69,7 +70,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bam.collect{bam(it[1]).getReads(2)}).match() }
+                { assert snapshot(
+                    process.out.bam.collect{bam(it[1]).getReads(2)},
+                    process.out
+                    ).match() }
             )
         }
     }
@@ -94,7 +98,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bam.collect{bam(it[1]).getReads(1)}).match() }
+                { assert snapshot(
+                    process.out.bam.collect{bam(it[1]).getReads(1)},
+                    process.out
+                    ).match() }
             )
         }
     }
