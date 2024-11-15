@@ -443,6 +443,7 @@ jobs:
           miniconda-version: "latest"
           channels: conda-forge,bioconda
           python-version: ${{ matrix.python-version }}
+          conda-remove-defaults: true
 
       - name: Conda setup
         run: |

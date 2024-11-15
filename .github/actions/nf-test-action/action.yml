@@ -49,6 +49,7 @@ runs:
       with:
         auto-update-conda: true
         conda-solver: libmamba
+        conda-remove-defaults: true
 
     # Set up secrets
     - name: Set up nextflow secrets
