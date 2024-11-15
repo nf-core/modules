@@ -1,5 +1,6 @@
 name: "bbmap_sendsketch"
-description: Compares query sketches to reference sketches hosted on a remote server via the Internet.
+description: Compares query sketches to reference sketches hosted on a remote server
+  via the Internet.
 keywords:
   - taxonomy
   - classification
@@ -9,34 +10,40 @@ keywords:
   - fasta
 tools:
   - "bbmap":
-      description: "BBMap is a short read aligner, as well as various other bioinformatic tools."
+      description: "BBMap is a short read aligner, as well as various other bioinformatic
+        tools."
       homepage: "https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/"
       documentation: "https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/"
-      licence: "['UC-LBL license (see package)']"
+      licence: ["UC-LBL license (see package)"]
+      identifier: biotools:bbmap
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - file:
-      type: file
-      description: file with nucleotide sequences
-      pattern: "*.{fna, fa, fasta, fa.gz, fasta.gz, fna.gz, fastq.gz, fastq, fq.gz, fq}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - file:
+        type: file
+        description: file with nucleotide sequences
+        pattern: "*.{fna, fa, fasta, fa.gz, fasta.gz, fna.gz, fastq.gz, fastq, fq.gz,
+          fq}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - hits:
-      type: txt
-      description: .txt file containing hits from a query seuqnce to various reference sequences output
-      pattern: "*.{txt}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt":
+          type: file
+          description: .txt file containing hits from a query seuqnce to various reference
+            sequences output
+          pattern: "*.{txt}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@phanhung2"
 maintainers:

@@ -4,8 +4,8 @@ process BCFTOOLS_PLUGINSCATTER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bcftools:1.18--h8b25389_0':
-        'biocontainers/bcftools:1.18--h8b25389_0' }"
+        'https://depot.galaxyproject.org/singularity/bcftools:1.20--h8b25389_0':
+        'biocontainers/bcftools:1.20--h8b25389_0' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
@@ -17,6 +17,8 @@ process BCFTOOLS_PLUGINSCATTER {
 
     output:
     tuple val(meta), path("*{vcf,vcf.gz,bcf,bcf.gz}")   , emit: scatter
+    tuple val(meta), path("*.tbi")                      , emit: tbi, optional: true
+    tuple val(meta), path("*.csi")                      , emit: csi, optional: true
     path "versions.yml"                                 , emit: versions
 
     when:
@@ -57,11 +59,23 @@ process BCFTOOLS_PLUGINSCATTER {
                 args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
                 args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
                 "vcf"
+    def index = args.contains("--write-index=tbi") || args.contains("-W=tbi") ? "tbi" :
+                args.contains("--write-index=csi") || args.contains("-W=csi") ? "csi" :
+                args.contains("--write-index") || args.contains("-W") ? "csi" :
+                ""
+    def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
+    def create_index_1 = extension.endsWith(".gz") && index.matches("csi|tbi") ? "touch ${prefix}0.${extension}.${index}" : ""
+    def create_index_2 = extension.endsWith(".gz") && index.matches("csi|tbi") ? "touch ${prefix}1.${extension}.${index}" : ""
+    def create_index_3 = extension.endsWith(".gz") && index.matches("csi|tbi") ? "touch ${prefix}2.${extension}.${index}" : ""
 
     """
-    touch ${prefix}1.${extension}
-    touch ${prefix}2.${extension}
-    touch ${prefix}3.${extension}
+    ${create_cmd} ${prefix}0.${extension}
+    ${create_cmd} ${prefix}1.${extension}
+    ${create_cmd} ${prefix}2.${extension}
+
+    ${create_index_1}
+    ${create_index_2}
+    ${create_index_3}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

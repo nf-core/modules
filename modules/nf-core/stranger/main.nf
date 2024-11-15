@@ -4,8 +4,8 @@ process STRANGER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/stranger:0.8.1--pyh5e36f6f_0':
-        'biocontainers/stranger:0.8.1--pyh5e36f6f_0' }"
+        'https://depot.galaxyproject.org/singularity/stranger:0.9.2--pyh7e72e81_0':
+        'biocontainers/stranger:0.9.2--pyh7e72e81_0' }"
 
     input:
     tuple val(meta), path(vcf)
@@ -37,7 +37,7 @@ process STRANGER {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

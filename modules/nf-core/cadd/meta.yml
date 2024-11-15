@@ -1,5 +1,6 @@
 name: "cadd"
-description: CADD is a tool for scoring the deleteriousness of single nucleotide variants as well as insertion/deletions variants in the human genome.
+description: CADD is a tool for scoring the deleteriousness of single nucleotide variants
+  as well as insertion/deletions variants in the human genome.
 keywords:
   - cadd
   - annotate
@@ -13,36 +14,39 @@ tools:
       doi: "10.1093/nar/gky1016"
       licence:
         - Restricted. Free for non-commercial users.
+      identifier: biotools:cadd_phred
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: Input file for annotation in vcf or vcf.gz format
-      pattern: "*.{vcf,vcf.gz}"
-  - annotation_dir:
-      type: file
-      description: |
-        Path to folder containing the vcf files with precomputed CADD scores.
-        This folder contains the uncompressed files that would otherwise be in data/annotation folder as described in https://github.com/kircherlab/CADD-scripts/#manual-installation.
-      pattern: "*.{vcf,vcf.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: Input file for annotation in vcf or vcf.gz format
+        pattern: "*.{vcf,vcf.gz}"
+  - - annotation_dir:
+        type: file
+        description: |
+          Path to folder containing the vcf files with precomputed CADD scores.
+          This folder contains the uncompressed files that would otherwise be in data/annotation folder as described in https://github.com/kircherlab/CADD-scripts/#manual-installation.
+        pattern: "*.{vcf,vcf.gz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - tsv:
-      type: file
-      description: Annotated tsv file
-      pattern: "*.{tsv,tsv.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv.gz":
+          type: file
+          description: Annotated tsv file
+          pattern: "*.{tsv,tsv.gz}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@ramprasadn"
 maintainers:

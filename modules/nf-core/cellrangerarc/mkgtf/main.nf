@@ -33,4 +33,15 @@ process CELLRANGERARC_MKGTF {
         cellrangerarc: \$(echo \$( cellranger-arc --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    """
+    touch ${gtf.baseName}.filtered.gtf
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        cellrangerarc: \$(echo \$( cellranger-arc --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
+    END_VERSIONS
+    """
 }

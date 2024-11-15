@@ -8,13 +8,14 @@ nextflow_process {
     tag "modules_nfcore"
     tag "blast"
     tag "blast/blastp"
+    tag "blast/makeblastdb"
 
     setup {
         run("BLAST_MAKEBLASTDB") {
             script "../../makeblastdb/main.nf"
             process {
                 """
-                input[0] = [ [id:'test2'], file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
+                input[0] = [ [id:'test2'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
                 """
             }
         }
@@ -28,7 +29,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
                 input[1] = BLAST_MAKEBLASTDB.out.db
                 input[2] = ''
                 """
@@ -38,8 +39,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.tsv).match("tsv") },
-                { assert process.out.versions }
+                { assert snapshot(process.out.tsv).match("tsv_default") },
+                { assert snapshot(process.out.versions).match("versions_tsv_default") }
             )
         }
 
@@ -53,7 +54,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['proteome_fasta_gz'], checkIfExists: true) ]
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta.gz', checkIfExists: true) ]
                 input[1] = BLAST_MAKEBLASTDB.out.db
                 input[2] = ''
                 """
@@ -63,8 +64,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.tsv).match("gz_tsv") },
-                { assert process.out.versions }
+                { assert snapshot(process.out.tsv).match("gz_tsv_default") },
+                { assert snapshot(process.out.versions).match("versions_gz_tsv_default") }
             )
         }
 
@@ -78,7 +79,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
                 input[1] = BLAST_MAKEBLASTDB.out.db
                 input[2] = 'xml'
                 """
@@ -89,7 +90,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.xml).match("xml") },
-                { assert process.out.versions }
+                { assert snapshot(process.out.versions).match("versions_xml") }
             )
         }
 
@@ -103,7 +104,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
                 input[1] = BLAST_MAKEBLASTDB.out.db
                 input[2] = 'tsv'
                 """
@@ -113,8 +114,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.tsv.get(0).get(1)).md5 == "dd58eb09f38e6f951aa00c133a18ef5b" },
-                { assert process.out.versions }
+                { assert snapshot(process.out.tsv).match("tsv") },
+                { assert snapshot(process.out.versions).match("versions_tsv") }
             )
         }
 
@@ -128,7 +129,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
                 input[1] = BLAST_MAKEBLASTDB.out.db
                 input[2] = 'csv'
                 """
@@ -138,8 +139,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.csv.get(0).get(1)).md5 == "19214c68e1a208705dd4d6f0c5dea78b" },
-                { assert process.out.versions }
+                { assert snapshot(process.out.csv).match("csv") },
+                { assert snapshot(process.out.versions).match("versions_csv") }
             )
         }
 

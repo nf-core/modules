@@ -1,0 +1,90 @@
+name: modkit_pileup
+description: A bioinformatics tool for working with modified bases
+keywords:
+  - methylation
+  - ont
+  - long-read
+tools:
+  - "modkit":
+      description: A bioinformatics tool for working with modified bases in Oxford Nanopore
+        sequencing data
+      homepage: https://github.com/nanoporetech/modkit
+      documentation: https://github.com/nanoporetech/modkit
+      tool_dev_url: https://github.com/nanoporetech/modkit
+      licence: ["Oxford Nanopore Technologies PLC. Public License Version 1.0"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM file
+        pattern: "*.{bam,cram}"
+    - bai:
+        type: file
+        description: Associated index file for BAM
+        pattern: "*.bai"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'hg38' ]`
+    - fasta:
+        type: file
+        description: Reference sequence in FASTA format. Required for motif (e.g. CpG)
+          filtering
+        pattern: "*.fasta"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing BED file information
+          e.g. `[ id:'regions' ]`
+    - bed:
+        type: file
+        description: BED file that will restrict threshold estimation and pileup results
+          to positions overlapping intervals in the file
+        pattern: "*.bed"
+output:
+  - bed:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.bed":
+          type: file
+          description: bedMethyl output file(s)
+          pattern: "*.bed"
+  - bedgraph:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.bedgraph":
+          type: file
+          description: bedgraph output files
+          pattern: "*.bedgraph"
+  - log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.log":
+          type: file
+          description: File for debug logs to be written to
+          pattern: "*.log"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@Michal-Babins"
+  - "@fellen31"
+maintainers:
+  - "@fellen31"

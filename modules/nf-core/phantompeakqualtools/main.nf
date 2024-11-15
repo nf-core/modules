@@ -5,8 +5,8 @@ process PHANTOMPEAKQUALTOOLS {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/phantompeakqualtools:1.2.2--0' :
-        'biocontainers/phantompeakqualtools:1.2.2--0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4a/4a1cddfad5b503ee347cc5de17d172e1876c547fca00aa844559c9e764fb400f/data' :
+        'community.wave.seqera.io/library/phantompeakqualtools:1.2.2--f8026fe2526a5e18' }"
 
     input:
     tuple val(meta), path(bam)
@@ -28,6 +28,20 @@ process PHANTOMPEAKQUALTOOLS {
     """
     RUN_SPP=`which run_spp.R`
     Rscript $args -e "library(caTools); source(\\"\$RUN_SPP\\")" -c="$bam" -savp="${prefix}.spp.pdf" -savd="${prefix}.spp.Rdata" -out="${prefix}.spp.out" $args2
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        phantompeakqualtools: $VERSION
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.2.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    touch ${prefix}.spp.pdf
+    touch ${prefix}.spp.Rdata
+    touch ${prefix}.spp.out
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
