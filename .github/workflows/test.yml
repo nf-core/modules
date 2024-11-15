@@ -351,7 +351,7 @@ jobs:
           - profile: conda
             tags: parabricks/genotypegvcf
           - profile: conda
-            tags: parabricks/haplotypecaller
+            tags: parabricks/fq2bam
           - profile: conda
             tags: parabricks/indexgvcf
           - profile: conda
@@ -539,10 +539,6 @@ jobs:
           - profile: conda
             path: modules/nf-core/deepcell/mesmer
           - profile: conda
-            path: modules/nf-core/deepsomatic
-          - profile: singularity
-            path: modules/nf-core/deepsomatic
-          - profile: conda
             path: modules/nf-core/deepvariant
           - profile: conda
             path: modules/nf-core/deepvariant/callvariants
@@ -656,6 +652,7 @@ jobs:
             path: subworkflows/nf-core/fastq_align_bwa
           - profile: conda
             path: subworkflows/nf-core/fasta_newick_epang_gappa
+          - path: modules/nf-core/parabricks/haplotypecaller
           - path: modules/nf-core/parabricks/fq2bammeth
           - path: modules/nf-core/parabricks/fq2bam
           - path: modules/nf-core/parabricks/applybqsr
@@ -786,7 +783,7 @@ jobs:
         include:
           - path: modules/nf-core/parabricks/applybqsr
           - path: modules/nf-core/parabricks/fq2bam
-          # - path: modules/nf-core/parabricks/fq2bammeth excluded - tackle in different PR
+          - path: modules/nf-core/parabricks/fq2bammeth
         exclude:
           - profile: conda
             path: modules/nf-core/parabricks/fq2bam
