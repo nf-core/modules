@@ -698,13 +698,7 @@ jobs:
           - path: modules/nf-core/parabricks/fq2bammeth
             profile: [docker_self_hosted, singularity]
         exclude:
-          - path: modules/nf-core/nf-test
-          - path: modules/nf-core/parabricks/fq2bam
-            profile: conda
-          - path: modules/nf-core/parabricks/fq2bammeth
-            profile: conda
-          - path: modules/nf-core/parabricks/applybqsr
-            profile: conda
+          - path: modules/nf-core
     env:
       NXF_ANSI_LOG: false
 
