@@ -23,11 +23,6 @@ process MUSE_SUMP {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '2.1.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    cp $ref_vcf_tbi /tmp/
-    rm $ref_vcf_tbi
-    cp /tmp/$ref_vcf_tbi .
-    rm /tmp/$ref_vcf_tbi
-
     MuSE \\
         sump \\
         $args \\
