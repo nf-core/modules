@@ -688,16 +688,19 @@ jobs:
         profile: [conda, docker_self_hosted, singularity]
         include:
           - path: modules/nf-core/parabricks/applybqsr
+            profile: [docker_self_hosted, singularity]
           - path: modules/nf-core/parabricks/fq2bam
+            profile: [docker_self_hosted, singularity]
           - path: modules/nf-core/parabricks/fq2bammeth
+            profile: [docker_self_hosted, singularity]
         exclude:
           - path: modules/nf-core/nf-test
-          - profile: conda
-            path: modules/nf-core/parabricks/fq2bam
-          - profile: conda
-            path: modules/nf-core/parabricks/fq2bammeth
-          - profile: conda
-            path: modules/nf-core/parabricks/applybqsr
+          - path: modules/nf-core/parabricks/fq2bam
+            profile: conda
+          - path: modules/nf-core/parabricks/fq2bammeth
+            profile: conda
+          - path: modules/nf-core/parabricks/applybqsr
+            profile: conda
     env:
       NXF_ANSI_LOG: false
 
