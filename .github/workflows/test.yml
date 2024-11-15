@@ -1,5 +1,9 @@
 name: Run tests
 on:
+  push:
+    branches:
+      # https://docs.renovatebot.com/key-concepts/automerge/#branch-vs-pr-automerging
+      - "renovate/**" # branches Renovate creates
   pull_request:
     branches: [master]
   merge_group:
@@ -136,7 +140,7 @@ jobs:
           echo ${{ steps.outputs.outputs.subworkflows }}
 
   nf-core-lint-modules:
-    runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
+    runs-on: ${{ github.event.inputs.runners  || 'ubuntu-latest' }}
     name: nf-core-lint-modules
     needs: [pytest-changes, nf-test-changes]
     if: ${{ (needs.pytest-changes.outputs.modules != '[]') || ( needs.nf-test-changes.outputs.modules != '[]') }}
@@ -220,7 +224,7 @@ jobs:
         run: nf-core subworkflows lint ${{ matrix.tags }}
 
   pytest:
-    runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
+    runs-on: ${{ github.event.inputs.runners  || 'ubuntu-latest' }}
     name: pytest
     needs: [pytest-changes]
     if: needs.pytest-changes.outputs.tags != '[]'
@@ -540,6 +544,10 @@ jobs:
           - profile: conda
             path: modules/nf-core/deepcell/mesmer
           - profile: conda
+            path: modules/nf-core/deepsomatic
+          - profile: singularity
+            path: modules/nf-core/deepsomatic
+          - profile: conda
             path: modules/nf-core/deepvariant
           - profile: conda
             path: modules/nf-core/deepvariant/callvariants
@@ -665,6 +673,15 @@ jobs:
             path: subworkflows/nf-core/fastq_align_bwa
           - profile: conda
             path: subworkflows/nf-core/fasta_newick_epang_gappa
+          - profile: conda
+            path: modules/nf-core/xeniumranger/relabel
+          - profile: conda
+            path: modules/nf-core/xeniumranger/rename
+          - profile: conda
+            path: modules/nf-core/xeniumranger/resegment
+          - profile: conda
+            path: modules/nf-core/xeniumranger/import-segmentation
+
     env:
       NXF_ANSI_LOG: false
 
