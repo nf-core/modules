@@ -46,7 +46,7 @@ process TRGT_GENOTYPE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.spanning.bam
-    touch ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
