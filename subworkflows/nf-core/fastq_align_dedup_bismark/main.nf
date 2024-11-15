@@ -78,9 +78,9 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
             ch_fasta,
             ch_bismark_index
         )
-        ch_coverage2cytosine_coverage = BISMARK_COVERAGE2CYTOSINE.out.coverage.collect{ it[1] }
-        ch_coverage2cytosine_report   = BISMARK_COVERAGE2CYTOSINE.out.report.collect{ it[1] }
-        ch_coverage2cytosine_summary  = BISMARK_COVERAGE2CYTOSINE.out.summary.collect{ it[1] }
+        ch_coverage2cytosine_coverage = BISMARK_COVERAGE2CYTOSINE.out.coverage
+        ch_coverage2cytosine_report   = BISMARK_COVERAGE2CYTOSINE.out.report
+        ch_coverage2cytosine_summary  = BISMARK_COVERAGE2CYTOSINE.out.summary
         ch_versions                   = ch_versions.mix(BISMARK_COVERAGE2CYTOSINE.out.versions)
     }
 
@@ -89,8 +89,8 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
      */
     BISMARK_REPORT (
         alignment_reports
-            .join(BISMARK_METHYLATIONEXTRACTOR.out.report)
-            .join(BISMARK_METHYLATIONEXTRACTOR.out.mbias)
+            .join(ch_methylation_report)
+            .join(ch_methylation_mbias)
     )
     ch_bismark_report = BISMARK_REPORT.out.report
     ch_versions       = ch_versions.mix(BISMARK_REPORT.out.versions)
@@ -99,11 +99,11 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
      * Generate bismark summary report
      */
     BISMARK_SUMMARY (
-        BISMARK_ALIGN.out.bam.collect{ it[1].name }.ifEmpty([]),
-        alignment_reports.collect{ it[1] }.ifEmpty([]),
-        alignment_reports.collect{ it[2] }.ifEmpty([]),
-        BISMARK_METHYLATIONEXTRACTOR.out.report.collect{ it[1] }.ifEmpty([]),
-        BISMARK_METHYLATIONEXTRACTOR.out.mbias.collect{ it[1] }.ifEmpty([])
+        BISMARK_ALIGN.out.bam.collect{ meta, bam -> bam.name },
+        alignment_reports.collect{ meta, align_report, dedup_report -> align_report },
+        alignment_reports.collect{ meta, align_report, dedup_report -> dedup_report }.ifEmpty([]),
+        BISMARK_METHYLATIONEXTRACTOR.out.report.collect{ meta, report -> report },
+        BISMARK_METHYLATIONEXTRACTOR.out.mbias.collect{ meta, mbias -> mbias }
     )
     ch_bismark_summary = BISMARK_SUMMARY.out.summary
     ch_versions        = ch_versions.mix(BISMARK_SUMMARY.out.versions)
@@ -113,7 +113,7 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
      */
     SAMTOOLS_SORT_DEDUPLICATED (
         alignments,
-        [[:],[]] // Empty map and list as is optional input but required for nextflow
+        [[:],[]] // [ [meta], [fasta]]
     )
     ch_versions = ch_versions.mix(SAMTOOLS_SORT_DEDUPLICATED.out.versions)
 
@@ -129,11 +129,11 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
      * Collect MultiQC inputs
      */
     ch_multiqc_files = BISMARK_SUMMARY.out.summary
-                        .mix(alignment_reports.collect{ it[1] })
-                        .mix(alignment_reports.collect{ it[2] })
-                        .mix(BISMARK_METHYLATIONEXTRACTOR.out.report.collect{ it[1] })
-                        .mix(BISMARK_METHYLATIONEXTRACTOR.out.mbias.collect{ it[1] })
-                        .mix(BISMARK_REPORT.out.report.collect{ it[1] })
+                        .mix(alignment_reports.collect{ meta, align_report, dedup_report -> align_report })
+                        .mix(alignment_reports.collect{ meta, align_report, dedup_report -> dedup_report })
+                        .mix(BISMARK_METHYLATIONEXTRACTOR.out.report.collect{ meta, report -> report })
+                        .mix(BISMARK_METHYLATIONEXTRACTOR.out.mbias.collect{ meta, mbias -> mbias })
+                        .mix(BISMARK_REPORT.out.report.collect{ meta, report -> report })
 
     emit:
     dedup_bam                  = SAMTOOLS_SORT_DEDUPLICATED.out.bam  // channel: [ val(meta), [ bam ] ]
