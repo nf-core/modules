@@ -1,0 +1,148 @@
+nextflow_process {
+
+    name "Test Process RTN_TNI"
+    script "../main.nf"
+    process "RTN_TNI"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "rtn"
+    tag "rtn/tni"
+
+    test("musmusculus tni expression matrix") {
+        when {
+            process {
+                """
+                input[0] = [
+                  [id:'test'],
+                  file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/salmon.merged.gene_counts_length_scaled.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.tni[0][1]).exists() },
+                { assert file(process.out.tni_perm[0][1]).exists() },
+                { assert file(process.out.tni_bootstrap[0][1]).exists() },
+                { assert file(process.out.tni_filtered[0][1]).exists() },
+                { assert file(process.out.versions[0]).exists() },
+                { assert process.stdout.contains('Nb permutations          : 10') } // the default value is 10
+            )
+        }
+
+    }
+
+    test("musmusculus tni expression matrix with --n_permutations 5") {
+        when {
+        config "./nextflow.config"
+            process {
+                """
+                input[0] = [
+                  [id:'test'],
+                  file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/salmon.merged.gene_counts_length_scaled.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.tni[0][1]).exists() },
+                { assert file(process.out.tni_perm[0][1]).exists() },
+                { assert file(process.out.tni_bootstrap[0][1]).exists() },
+                { assert file(process.out.tni_filtered[0][1]).exists() },
+                { assert file(process.out.versions[0]).exists() },
+                { assert process.stdout.contains('Nb permutations          : 5') }
+            )
+        }
+
+    }
+
+    test("musmusculus tni expression matrix with --tfs ENSG00000125798,ENSG00000125816") {
+        when {
+        config "./nextflow.config2"
+            process {
+                """
+                input[0] = [
+                  [id:'test'],
+                  file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/salmon.merged.gene_counts_length_scaled.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.tni[0][1]).exists() },
+                { assert file(process.out.tni_perm[0][1]).exists() },
+                { assert file(process.out.tni_bootstrap[0][1]).exists() },
+                { assert file(process.out.tni_filtered[0][1]).exists() },
+                { assert file(process.out.versions[0]).exists() },
+                { assert process.stdout.contains('TFs                      : ENSG00000125798,ENSG00000125816') }
+            )
+        }
+
+    }
+
+    test("musmusculus tni expression matrix with --n_permutations 12 and --tfs ENSG00000125798,ENSG00000125816") {
+        when {
+        config "./nextflow.config3"
+            process {
+                """
+                input[0] = [
+                  [id:'test'],
+                  file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/salmon.merged.gene_counts_length_scaled.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.tni[0][1]).exists() },
+                { assert file(process.out.tni_perm[0][1]).exists() },
+                { assert file(process.out.tni_bootstrap[0][1]).exists() },
+                { assert file(process.out.tni_filtered[0][1]).exists() },
+                { assert file(process.out.versions[0]).exists() },
+                { assert process.stdout.contains('Nb permutations          : 12') },
+                { assert process.stdout.contains('TFs                      : ENSG00000125798,ENSG00000125816') }
+            )
+        }
+
+    }
+
+    test("musmusculus tni expression matrix - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                  [id:'test'],
+                  file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/salmon.merged.gene_counts_length_scaled.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.tni[0][1]).exists() },
+                { assert file(process.out.tni_perm[0][1]).exists() },
+                { assert file(process.out.tni_bootstrap[0][1]).exists() },
+                { assert file(process.out.tni_filtered[0][1]).exists() },
+                { assert file(process.out.versions[0]).exists() }
+            )
+        }
+
+    }
+
+}

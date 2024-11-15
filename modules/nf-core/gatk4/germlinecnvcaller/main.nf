@@ -38,8 +38,10 @@ process GATK4_GERMLINECNVCALLER {
     }
     """
     export THEANO_FLAGS="base_compiledir=\$PWD"
+    export OMP_NUM_THREADS=${task.cpus}
+    export MKL_NUM_THREADS=${task.cpus}
 
-    gatk --java-options "-Xmx${avail_mem}g -XX:-UsePerfData" \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         GermlineCNVCaller \\
         $input_list \\
         $ploidy_command \\

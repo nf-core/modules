@@ -1,5 +1,6 @@
 name: arriba_download
-description: Arriba is a command-line tool for the detection of gene fusions from RNA-Seq data.
+description: Arriba is a command-line tool for the detection of gene fusions from
+  RNA-Seq data.
 keywords:
   - fusion
   - arriba
@@ -12,16 +13,40 @@ tools:
       tool_dev_url: https://github.com/suhrig/arriba
       doi: "10.1101/gr.257246.119"
       licence: ["MIT"]
+      identifier: biotools:Arriba
 
+input:
+  - - genome:
+        type: string
+        description: hg38, hg19, GRCh38, GRCh37 for humans are accepted
 output:
+  - blacklist:
+      - blacklist*${genome}*.tsv.gz:
+          type: string
+          description: The blacklist removes recurrent alignment artifacts and transcripts
+            which are present in healthy tissue
+          pattern: ".tsv.gz"
+  - cytobands:
+      - cytobands*${genome}*.tsv:
+          type: file
+          description: Coordinates of the Giemsa staining bands. This information is used
+            to draw ideograms
+          pattern: ".tsv"
+  - protein_domains:
+      - protein_domains*${genome}*.gff3:
+          type: file
+          description: Protein domain annotations
+          patter: "*.gff3"
+  - known_fusions:
+      - known_fusions*${genome}*.tsv.gz:
+          type: file
+          description: Arriba is more sensitive to those fusions to improve the detection
+            rate of expected or highly relevant events, such as recurrent fusions
+          patter: "*.tsv.gz"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - reference:
-      type: directory
-      description: Folder with arriba references
-      pattern: "*"
-
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@peterpru"

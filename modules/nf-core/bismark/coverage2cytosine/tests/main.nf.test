@@ -3,19 +3,25 @@ nextflow_process {
     name "Test Process BISMARK_COVERAGE2CYTOSINE"
     script "../main.nf"
     process "BISMARK_COVERAGE2CYTOSINE"
-    tag "bismark"
-    tag "bismark/coverage2cytosine"
+
     tag "modules"
     tag "modules_nfcore"
+    tag "bismark"
+    tag "bismark/coverage2cytosine"
+    tag "bismark/methylationextractor"
+    tag "bismark/genomepreparation"
 
-    test("Should run bismark/coverage2cytosine without failures") {
+    test("sarscov2 genome [fasta] | sarscov2 paired-end methylated [bam]") {
 
         setup {
             run("BISMARK_GENOMEPREPARATION") {
                 script "../../genomepreparation/main.nf"
                 process {
                     """
-                    input[0] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    input[0] = Channel.of([
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ])
                     """
                 }
             }
@@ -24,10 +30,10 @@ nextflow_process {
                 script "../../methylationextractor/main.nf"
                 process {
                     """
-                    input[0] = [
+                    input[0] = Channel.of([
                                 [ id:'test', single_end:false ],
-                                file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_bam'], checkIfExists: true)
-                               ]
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.bam', checkIfExists: true)
+                    ])
                     input[1] = BISMARK_GENOMEPREPARATION.out.index
                     """
                 }
@@ -35,13 +41,11 @@ nextflow_process {
         }
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = BISMARK_METHYLATIONEXTRACTOR.out.coverage
-                input[1] = BISMARK_GENOMEPREPARATION.out.index
+                input[1] = input[1] = Channel.of([ [ id:'sarscov2'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ])
+                input[2] = BISMARK_GENOMEPREPARATION.out.index
                 """
             }
         }

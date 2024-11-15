@@ -20,34 +20,37 @@ tools:
       tool_dev_url: https://www.ncbi.nlm.nih.gov/books/NBK25498/
       doi: 10.1016/S0076-6879(96)66012-1
       licence: ["PUBLIC DOMAIN"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - database:
-      type: value
-      description: Value must be a valid Entrez database name.
-  - term:
-      type: value
-      description: |
-        Entrez text query. All special characters must be URL encoded.
-        Spaces may be replaced by '+' signs.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - term:
+        type: string
+        description: |
+          Entrez text query. All special characters must be URL encoded.
+          Spaces may be replaced by '+' signs.
+  - - database:
+        type: string
+        description: Value must be a valid Entrez database name.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
+  - xml:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.xml":
+          type: file
+          description: XML file containing search results
+          pattern: "*.xml"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - result_xml:
-      type: file
-      description: Query result text in XML format
-      pattern: "*.xml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@alxndrdiaz"
 maintainers:

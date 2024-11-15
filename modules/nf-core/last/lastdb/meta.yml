@@ -1,4 +1,5 @@
-name: last_lastdb
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "last_lastdb"
 description: Prepare sequences for subsequent alignment with lastal.
 keywords:
   - LAST
@@ -6,33 +7,40 @@ keywords:
   - fasta
   - fastq
 tools:
-  - last:
-      description: LAST finds & aligns related regions of sequences.
-      homepage: https://gitlab.com/mcfrith/last
-      documentation: https://gitlab.com/mcfrith/last/-/blob/main/doc/lastdb.rst
-      tool_dev_url: https://gitlab.com/mcfrith/last
-      licence: ["GPL-3.0-or-later"]
+  - "last":
+      description: "LAST finds & aligns related regions of sequences."
+      homepage: "https://gitlab.com/mcfrith/last"
+      documentation: "https://gitlab.com/mcfrith/last/-/blob/main/doc/lastdb.rst"
+      tool_dev_url: "https://gitlab.com/mcfrith/last"
+      licence: ["GPL v3-or-later"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fastx:
-      type: file
-      description: >
-        Sequence file in FASTA or FASTQ format. May be compressed with gzip.
-
-      pattern: "*.{fasta,fasta.gz,fastq,fastq.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fastx:
+        type: file
+        description: >
+          Sequence file in FASTA or FASTQ format. May be compressed with gzip.
+        pattern: "*.{fasta,fasta.gz,fastq,fastq.gz}"
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - index:
-      type: directory
-      description: directory containing the files of the LAST index
-      pattern: "lastdb/"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - lastdb:
+          type: directory
+          description: directory containing the files of the LAST index
+          pattern: "lastdb/"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@charles-plessy"
 maintainers:

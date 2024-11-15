@@ -1,0 +1,161 @@
+import groovy.io.FileType
+
+nextflow_process {
+
+    name "Test Process ORTHOFINDER"
+    script "../main.nf"
+    process "ORTHOFINDER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "orthofinder"
+    tag "untar"
+
+    test("sarscov2 - candidatus_portiera_aleyrodidarum - proteome") {
+
+        when {
+            process {
+                """
+                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
+                    .copyTo("${workDir}/sarscov2.fasta")
+
+                file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
+                    .copyTo("${workDir}/candidatus_portiera_aleyrodidarum.fasta")
+
+                def file_a = file("${workDir}/sarscov2.fasta", checkIfExists:true)
+                def file_b = file("${workDir}/candidatus_portiera_aleyrodidarum.fasta", checkIfExists:true)
+
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    [ file_a, file_b ]
+                ]
+                input[1] = [
+                    [],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            def all_files = []
+
+            file(process.out.orthofinder[0][1]).eachFileRecurse (FileType.FILES) { file ->
+                all_files << file
+            }
+
+            def stable_file_names = [
+                'Statistics_PerSpecies.tsv',
+                'SpeciesTree_Gene_Duplications_0.5_Support.txt',
+                'SpeciesTree_rooted.txt'
+            ]
+
+            def stable_files = all_files.findAll { it.name in stable_file_names }
+
+            assert snapshot(
+                stable_files.toSorted(),
+                process.out.versions[0]
+            ).match()
+        }
+
+    }
+
+
+    test("sarscov2 - candidatus_portiera_aleyrodidarum - proteome - resume") {
+
+
+        setup {
+            run("UNTAR") {
+                script "../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id:'test1' ], // meta map
+                        file(params.modules_testdata_base_path + 'delete_me/orthofinder/WorkingDirectory.tar.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
+                    .copyTo("${workDir}/sarscov2.fasta")
+
+                def file_a = file("https://raw.githubusercontent.com/nf-core/test-datasets/proteinfold/testdata/sequences/H1065.fasta")
+                def file_c = UNTAR.out.untar
+                input[0] = [
+                    [ id:'test_2', single_end:false ],
+                    [ file_a ]
+                ]
+                input[1] = UNTAR.out.untar
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            def all_files = []
+
+            file(process.out.orthofinder[0][1]).eachFileRecurse (FileType.FILES) { file ->
+                all_files << file
+            }
+
+            def stable_file_names = [
+                'Statistics_PerSpecies.tsv',
+                'OrthologuesStats_Totals.tsv',
+                'Duplications_per_Species_Tree_Node.tsv'
+            ]
+
+            def stable_files = all_files.findAll { it.name in stable_file_names }
+
+            assert snapshot(
+                stable_files.toSorted(),
+                process.out.versions[0]
+            ).match()
+        }
+
+    }
+
+    test("sarscov2 - candidatus_portiera_aleyrodidarum - proteome - stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
+                    .copyTo("${workDir}/sarscov2.fasta")
+
+                file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
+                    .copyTo("${workDir}/candidatus_portiera_aleyrodidarum.fasta")
+
+                def file_a = file("${workDir}/sarscov2.fasta", checkIfExists:true)
+                def file_b = file("${workDir}/candidatus_portiera_aleyrodidarum.fasta", checkIfExists:true)
+
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    [ file_a, file_b ]
+                ]
+                input[1] = [
+                    [],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

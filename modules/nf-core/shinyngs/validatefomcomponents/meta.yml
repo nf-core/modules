@@ -1,5 +1,6 @@
 name: "shinyngs_validatefomcomponents"
-description: validate consistency of feature and sample annotations with matrices and contrasts
+description: validate consistency of feature and sample annotations with matrices
+  and contrasts
 keywords:
   - expression
   - features
@@ -7,75 +8,92 @@ keywords:
   - validation
 tools:
   - "shinyngs":
-      description: "Provides Shiny applications for various array and NGS applications. Currently very RNA-seq centric, with plans for expansion."
+      description: "Provides Shiny applications for various array and NGS applications.
+        Currently very RNA-seq centric, with plans for expansion."
       homepage: "https://github.com/pinin4fjords/shinyngs"
       documentation: "https://rawgit.com/pinin4fjords/shinyngs/master/vignettes/shinyngs.html"
       tool_dev_url: "https://github.com/pinin4fjords/shinyngs"
       licence: ["AGPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing information on experiment, at a minimum an id.
-        e.g. [ id:'test' ]
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing information on features.
-        e.g. [ id:'test' ]
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing information on contrasts.
-        e.g. [ id:'test' ]
-  - meta4:
-      type: map
-      description: |
-        Groovy Map containing information on experiment, at a minimum an id. To match meta.
-        e.g. [ id:'test' ]
-  - sample:
-      type: file
-      description: |
-        CSV-format sample sheet with sample metadata
-  - feature_meta:
-      type: file
-      description: |
-        TSV-format feature (e.g. gene) metadata
-  - assay_files:
-      type: file
-      description: |
-        List of TSV-format matrix files representing different measures for the same samples (e.g. raw and normalised).
-  - contrasts:
-      type: file
-      description: |
-        CSV-format file with four columns identifying the sample sheet variable, reference level, treatment level, and optionally a comma-separated list of covariates used as blocking factors.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing information on experiment, at a minimum an id.
+          e.g. [ id:'test' ]
+    - sample:
+        type: file
+        description: |
+          CSV-format sample sheet with sample metadata
+    - assay_files:
+        type: file
+        description: |
+          List of TSV-format matrix files representing different measures for the same samples (e.g. raw and normalised).
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing information on features.
+          e.g. [ id:'test' ]
+    - feature_meta:
+        type: file
+        description: |
+          TSV-format feature (e.g. gene) metadata
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing information on contrasts.
+          e.g. [ id:'test' ]
+    - contrasts:
+        type: file
+        description: |
+          CSV-format file with four columns identifying the sample sheet variable, reference level, treatment level, and optionally a comma-separated list of covariates used as blocking factors.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing information on experiment.
-        e.g. [ id:'test' ]
   - sample_meta:
-      type: file
-      description: File containing validated sample metadata
-      pattern: "/*.sample_metadata.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing information on experiment.
+            e.g. [ id:'test' ]
+      - "*/*.sample_metadata.tsv":
+          type: file
+          description: File containing validated sample metadata
+          pattern: "/*.sample_metadata.tsv"
   - feature_meta:
-      type: file
-      description: File containing validated feature metadata
-      pattern: "/*.feature_metadata.tsv"
-      optional: true
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing information on experiment.
+            e.g. [ id:'test' ]
+      - "*/*.feature_metadata.tsv":
+          type: file
+          description: File containing validated feature metadata
+          pattern: "/*.feature_metadata.tsv"
+          optional: true
   - assays:
-      type: file
-      description: Files containing validated matrices
-      pattern: "/*.assay.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing information on experiment.
+            e.g. [ id:'test' ]
+      - "*/*.assay.tsv":
+          type: file
+          description: Files containing validated matrices
+          pattern: "/*.assay.tsv"
   - contrasts:
-      type: file
-      description: Files containing validated matrices
-      pattern: "/*.contrasts_file.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing information on experiment.
+            e.g. [ id:'test' ]
+      - "*/*.contrasts_file.tsv":
+          type: file
+          description: Files containing validated matrices
+          pattern: "/*.contrasts_file.tsv"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@pinin4fjords"
 maintainers:

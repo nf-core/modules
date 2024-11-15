@@ -5,14 +5,14 @@ process SOMALIER_EXTRACT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/somalier:0.2.15--h37c5b7d_0':
-        'biocontainers/somalier:0.2.15--h37c5b7d_0' }"
+        'https://depot.galaxyproject.org/singularity/somalier:0.2.19--h0c29559_0':
+        'biocontainers/somalier:0.2.19--h0c29559_0' }"
 
     input:
     tuple val(meta), path(input), path(input_index)
-    path(fasta)
-    path(fai)
-    path(sites)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
+    tuple val(meta4), path(sites)
 
     output:
     tuple val(meta), path("*.somalier") , emit: extract

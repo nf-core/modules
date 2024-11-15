@@ -1,6 +1,6 @@
 process MERYL_COUNT {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_high'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -12,8 +12,8 @@ process MERYL_COUNT {
     val kvalue
 
     output:
-    tuple val(meta), path("*.meryldb"), emit: meryl_db
-    path "versions.yml"               , emit: versions
+    tuple val(meta), path("*.meryl")    , emit: meryl_db
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,9 +26,10 @@ process MERYL_COUNT {
         meryl count \\
             k=$kvalue \\
             threads=$task.cpus \\
+            memory=${task.memory.toGiga()} \\
             $args \\
             $reads \\
-            output read.\${READ%.f*}.meryldb
+            output read.\${READ%.f*}.meryl
     done
 
     cat <<-END_VERSIONS > versions.yml
@@ -42,7 +43,7 @@ process MERYL_COUNT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     for READ in $reads; do
-        touch read.\${READ%.f*}.meryldb
+        touch read.\${READ%.f*}.meryl
     done
 
     cat <<-END_VERSIONS > versions.yml

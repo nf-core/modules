@@ -1,0 +1,64 @@
+name: "openms_idmassaccuracy"
+description: Calculates a distribution of the mass error from given mass spectra and
+  IDs.
+keywords:
+  - mass_error
+  - openms
+  - proteomics
+tools:
+  - "openms":
+      description: "OpenMS is an open-source software C++ library for LC-MS data management
+        and analyses"
+      homepage: "https://openms.de"
+      documentation: "https://openms.readthedocs.io/en/latest/index.html"
+      tool_dev_url: "https://github.com/OpenMS/OpenMS"
+      doi: "10.1038/s41592-024-02197-7"
+      licence: ["BSD"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - mzmls:
+        type: file
+        description: |
+          List containing one or more mzML files
+          e.g. `[ 'file1.mzML', 'file2.mzML' ]`
+        pattern: "*.{mzML}"
+    - idxmls:
+        type: file
+        description: |
+          List containing one or more idXML files
+          e.g. `[ 'file1.idXML', 'file2.idXML' ]`
+        pattern: "*.{idXML}"
+output:
+  - frag_err:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*frag_mass_err.tsv":
+          type: file
+          description: TSV file containing the fragment mass errors
+          pattern: "*frag_mass_err.{tsv}"
+  - prec_err:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*prec_mass_err.tsv":
+          type: file
+          description: Optional TSV file containing the precursor mass errors
+          pattern: "*prec_mass_err.{tsv}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@jonasscheid"

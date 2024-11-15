@@ -13,7 +13,7 @@ process SRATOOLS_PREFETCH {
     path certificate
 
     output:
-    tuple val(meta), path(id), emit: sra
+    tuple val(meta), path(id, type: 'dir'), emit: sra
     path 'versions.yml'      , emit: versions
 
     when:
@@ -32,4 +32,16 @@ process SRATOOLS_PREFETCH {
     }
 
     template 'retry_with_backoff.sh'
+
+    stub:
+    """
+    mkdir $id
+    touch $id/${id}.sra
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        sratools: \$(prefetch --version 2>&1 | grep -Eo '[0-9.]+')
+        curl: \$(curl --version | head -n 1 | sed 's/^curl //; s/ .*\$//')
+    END_VERSIONS
+    """
 }

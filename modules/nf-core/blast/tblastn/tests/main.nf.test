@@ -15,7 +15,7 @@ nextflow_process {
             script "../../makeblastdb/main.nf"
             process {
                 """
-                input[0] = [ [id:'test2'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+                input[0] = [ [id:'test2'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
                 """
             }
         }
@@ -29,7 +29,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
                 input[1] = BLAST_MAKEBLASTDB.out.db
                 """
             }
@@ -39,7 +39,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.txt).match("txt") },
-                { assert process.out.versions }
+                { assert snapshot(process.out.versions).match("versions_txt") }
             )
         }
 
@@ -53,7 +53,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['proteome_fasta_gz'], checkIfExists: true) ]
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta.gz', checkIfExists: true) ]
                 input[1] = BLAST_MAKEBLASTDB.out.db
                 """
             }
@@ -63,7 +63,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.txt).match("gz_txt") },
-                { assert process.out.versions }
+                { assert snapshot(process.out.versions).match("versions_gz_txt") }
             )
         }
 

@@ -1,0 +1,10 @@
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python=3.8
+  - numpy=1.26
+  - pip
+  - pip: # FIXME https://github.com/nf-core/modules/issues/5814
+      - checkqc==4.0.3
+      - interop==1.3.2

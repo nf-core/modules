@@ -20,63 +20,108 @@ tools:
       documentation: https://github.com/friend1ws/nanomonsv#commands
       tool_dev_url: https://github.com/friend1ws/nanomonsv
       doi: "10.1101/2020.07.22.214262 "
-      licence: "['GPL v3']"
+      licence: ["GPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: Aligned BAM file
-      pattern: "*.{bam}"
-  - bai:
-      type: file
-      description: BAM index file
-      pattern: "*.{bai}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: Aligned BAM file
+        pattern: "*.{bam}"
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.{bai}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - insertions:
-      type: file
-      description: Gzipped BED file containing reads supporting insertions
-      pattern: "*.{bed.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.insertion.sorted.bed.gz:
+          type: file
+          description: Gzipped BED file containing reads supporting insertions
+          pattern: "*.{bed.gz}"
   - insertions_index:
-      type: file
-      description: Index for gzipped BED file containing reads supporting insertions
-      pattern: "*.{bed.gz.tbi}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.insertion.sorted.bed.gz.tbi:
+          type: file
+          description: Index for gzipped BED file containing reads supporting insertions
+          pattern: "*.{bed.gz.tbi}"
   - deletions:
-      type: file
-      description: Gzipped BED file containing reads supporting deletions
-      pattern: "*.{bed.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.deletion.sorted.bed.gz:
+          type: file
+          description: Gzipped BED file containing reads supporting deletions
+          pattern: "*.{bed.gz}"
   - deletions_index:
-      type: file
-      description: Index for gzipped BED file containing reads supporting deletions
-      pattern: "*.{bed.gz.tbi}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.deletion.sorted.bed.gz.tbi:
+          type: file
+          description: Index for gzipped BED file containing reads supporting deletions
+          pattern: "*.{bed.gz.tbi}"
   - rearrangements:
-      type: file
-      description: Gzipped BED file containing reads supporting rearrangements
-      pattern: "*.{bed.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.rearrangement.sorted.bedpe.gz:
+          type: file
+          description: Gzipped BED file containing reads supporting rearrangements
+          pattern: "*.{bed.gz}"
   - rearrangements_index:
-      type: file
-      description: Index for gzipped BED file containing reads supporting rearrangements
-      pattern: "*.{bed.gz.tbi}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.rearrangement.sorted.bedpe.gz.tbi:
+          type: file
+          description: Index for gzipped BED file containing reads supporting rearrangements
+          pattern: "*.{bed.gz.tbi}"
   - bp_info:
-      type: file
-      description: Gzipped BED file containing breakpoint info
-      pattern: "*.{bed.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.bp_info.sorted.bed.gz:
+          type: file
+          description: Gzipped BED file containing breakpoint info
+          pattern: "*.{bed.gz}"
   - bp_info_index:
-      type: file
-      description: Index for gzipped BED file containing breakpoint info
-      pattern: "*.{bed.gz.tbi}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.bp_info.sorted.bed.gz.tbi:
+          type: file
+          description: Index for gzipped BED file containing breakpoint info
+          pattern: "*.{bed.gz.tbi}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@awgymer"
 maintainers:
