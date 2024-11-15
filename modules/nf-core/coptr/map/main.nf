@@ -55,8 +55,7 @@ process COPTR_MAP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        "${task.process}":
-            coptr: \$(coptr |& sed -E '11!d ; s/CoPTR.*?\\(v(.*?)\\).*/\\1/')
+        coptr: \$(coptr |& sed -E '11!d ; s/CoPTR.*?\\(v(.*?)\\).*/\\1/')
     END_VERSIONS
     """
 }
