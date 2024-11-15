@@ -688,8 +688,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        path: ["${{ fromJson(needs.nf-test-changes.outputs.paths) }}"]
-        profile: [conda, docker_self_hosted, singularity]
         include:
           - path: modules/nf-core/parabricks/applybqsr
             profile: [docker_self_hosted, singularity]
@@ -697,8 +695,6 @@ jobs:
             profile: [docker_self_hosted, singularity]
           - path: modules/nf-core/parabricks/fq2bammeth
             profile: [docker_self_hosted, singularity]
-        exclude:
-          - path: modules/nf-core
     env:
       NXF_ANSI_LOG: false
 
