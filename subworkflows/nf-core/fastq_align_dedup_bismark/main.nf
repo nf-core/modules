@@ -38,21 +38,21 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
         ch_fasta,
         ch_bismark_index
     )
-
     ch_versions = ch_versions.mix(BISMARK_ALIGN.out.versions)
 
     if (skip_deduplication) {
-        alignments        = BISMARK_ALIGN.out.bam
-        alignment_reports = BISMARK_ALIGN.out.report.map{ meta, report -> [ meta, report, [] ] }
+    alignments        = BISMARK_ALIGN.out.bam
+    alignment_reports = BISMARK_ALIGN.out.report.map{ meta, report -> [ meta, report, [] ] }
     } else {
-        /*
-        * Run deduplicate_bismark
-        */
-        BISMARK_DEDUPLICATE(BISMARK_ALIGN.out.bam)
-
-        alignments        = BISMARK_DEDUPLICATE.out.bam
-        alignment_reports = BISMARK_ALIGN.out.report.join(BISMARK_DEDUPLICATE.out.report)
-        ch_versions       = ch_versions.mix(BISMARK_DEDUPLICATE.out.versions)
+    /*
+    * Run deduplicate_bismark
+    */
+    BISMARK_DEDUPLICATE (
+        BISMARK_ALIGN.out.bam
+    )
+    alignments        = BISMARK_DEDUPLICATE.out.bam
+    alignment_reports = BISMARK_ALIGN.out.report.join(BISMARK_DEDUPLICATE.out.report)
+    ch_versions       = ch_versions.mix(BISMARK_DEDUPLICATE.out.versions)
     }
 
     /*
@@ -73,15 +73,15 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
      * Run coverage2cytosine
      */
     if (cytosine_report) {
-        BISMARK_COVERAGE2CYTOSINE (
-            BISMARK_METHYLATIONEXTRACTOR.out.coverage,
-            ch_fasta,
-            ch_bismark_index
-        )
-        ch_coverage2cytosine_coverage = BISMARK_COVERAGE2CYTOSINE.out.coverage.collect{ it[1] }
-        ch_coverage2cytosine_report   = BISMARK_COVERAGE2CYTOSINE.out.report.collect{ it[1] }
-        ch_coverage2cytosine_summary  = BISMARK_COVERAGE2CYTOSINE.out.summary.collect{ it[1] }
-        ch_versions                   = ch_versions.mix(BISMARK_COVERAGE2CYTOSINE.out.versions)
+    BISMARK_COVERAGE2CYTOSINE (
+        BISMARK_METHYLATIONEXTRACTOR.out.coverage,
+        ch_fasta,
+        ch_bismark_index
+    )
+    ch_coverage2cytosine_coverage = BISMARK_COVERAGE2CYTOSINE.out.coverage.collect{ it[1] }
+    ch_coverage2cytosine_report   = BISMARK_COVERAGE2CYTOSINE.out.report.collect{ it[1] }
+    ch_coverage2cytosine_summary  = BISMARK_COVERAGE2CYTOSINE.out.summary.collect{ it[1] }
+    ch_versions                   = ch_versions.mix(BISMARK_COVERAGE2CYTOSINE.out.versions)
     }
 
     /*
@@ -120,7 +120,9 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
     /*
      * MODULE: Run samtools index on dedup bam
      */
-    SAMTOOLS_INDEX_DEDUPLICATED(SAMTOOLS_SORT_DEDUPLICATED.out.bam)
+    SAMTOOLS_INDEX_DEDUPLICATED (
+        SAMTOOLS_SORT_DEDUPLICATED.out.bam
+    )
     ch_versions = ch_versions.mix(SAMTOOLS_INDEX_DEDUPLICATED.out.versions)
 
     /*
@@ -134,18 +136,19 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
                         .mix(BISMARK_REPORT.out.report.collect{ it[1] })
 
     emit:
-    dedup_bam                  = SAMTOOLS_SORT_DEDUPLICATED.out.bam // channel: [ val(meta), [ bam ] ] ## sorted, possibly deduplicated BAM
-    coverage2cytosine_coverage = ch_coverage2cytosine_coverage      // channel: [ val(meta), [ coverage ] ] ## optional
-    coverage2cytosine_report   = ch_coverage2cytosine_report        // channel: [ val(meta), [ report ] ]
-    coverage2cytosine_summary  = ch_coverage2cytosine_summary       // channel: [ val(meta), [ summary ] ]
-    methylation_bedgraph       = ch_methylation_bedgraph            // channel: [ val(meta), [ bedgraph ] ]
-    methylation_calls          = ch_methylation_calls               // channel: [ val(meta), [ methylation_calls ] ]
-    methylation_coverage       = ch_methylation_coverage            // channel: [ val(meta), [ coverage ] ]
-    methylation_report         = ch_methylation_report              // channel: [ val(meta), [ report ] ]
-    methylation_mbias          = ch_methylation_mbias               // channel: [ val(meta), [ mbias ] ]
-    bismark_report             = ch_bismark_report                  // channel: [ val(meta), [ report ] ]
-    bismark_summary            = ch_bismark_summary                 // channel: [ val(meta), [ summary ] ]
-    multiqc                    = ch_multiqc_files                   // path: *{html,txt}
-    versions                   = ch_versions                        // path: *.version.txt
+    dedup_bam                  = SAMTOOLS_SORT_DEDUPLICATED.out.bam  // channel: [ val(meta), [ bam ] ]
+    dedup_bam_index            = SAMTOOLS_INDEX_DEDUPLICATED.out.bai // channel: [ val(meta), [ bai ] ]
+    coverage2cytosine_coverage = ch_coverage2cytosine_coverage       // channel: [ val(meta), [ coverage ] ]
+    coverage2cytosine_report   = ch_coverage2cytosine_report         // channel: [ val(meta), [ report ] ]
+    coverage2cytosine_summary  = ch_coverage2cytosine_summary        // channel: [ val(meta), [ summary ] ]
+    methylation_bedgraph       = ch_methylation_bedgraph             // channel: [ val(meta), [ bedgraph ] ]
+    methylation_calls          = ch_methylation_calls                // channel: [ val(meta), [ methylation_calls ] ]
+    methylation_coverage       = ch_methylation_coverage             // channel: [ val(meta), [ coverage ] ]
+    methylation_report         = ch_methylation_report               // channel: [ val(meta), [ report ] ]
+    methylation_mbias          = ch_methylation_mbias                // channel: [ val(meta), [ mbias ] ]
+    bismark_report             = ch_bismark_report                   // channel: [ val(meta), [ report ] ]
+    bismark_summary            = ch_bismark_summary                  // channel: [ val(meta), [ summary ] ]
+    multiqc                    = ch_multiqc_files                    // path: *{html,txt}
+    versions                   = ch_versions                         // path: *.version.txt
 }
 
