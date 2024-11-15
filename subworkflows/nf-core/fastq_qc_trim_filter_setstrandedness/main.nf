@@ -124,6 +124,7 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
             ch_fastq_lint.map{ meta, fastqs -> [meta, fastqs.flatten()] }
         )
         ch_versions = ch_versions.mix(FQ_LINT.out.versions.first())
+        ch_lint_log = FQ_LINT.out.lint
     }
 
     ch_reads
@@ -324,6 +325,7 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
 
     emit:
 
+    lint_log        = ch_lint_log
     reads           = ch_strand_inferred_fastq
     trim_read_count = ch_trim_read_count
 
