@@ -32,11 +32,6 @@ runs:
         version: "0.9.2"
         install-pdiff: true
 
-    - name: Set up Python
-      uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
-      with:
-        python-version: "3.11"
-
     - name: Setup apptainer
       if: contains(inputs.profile, 'singularity')
       uses: eWaterCycle/setup-apptainer@main
