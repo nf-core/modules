@@ -41,18 +41,18 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
     ch_versions = ch_versions.mix(BISMARK_ALIGN.out.versions)
 
     if (skip_deduplication) {
-    alignments        = BISMARK_ALIGN.out.bam
-    alignment_reports = BISMARK_ALIGN.out.report.map{ meta, report -> [ meta, report, [] ] }
+        alignments        = BISMARK_ALIGN.out.bam
+        alignment_reports = BISMARK_ALIGN.out.report.map{ meta, report -> [ meta, report, [] ] }
     } else {
-    /*
-    * Run deduplicate_bismark
-    */
-    BISMARK_DEDUPLICATE (
-        BISMARK_ALIGN.out.bam
-    )
-    alignments        = BISMARK_DEDUPLICATE.out.bam
-    alignment_reports = BISMARK_ALIGN.out.report.join(BISMARK_DEDUPLICATE.out.report)
-    ch_versions       = ch_versions.mix(BISMARK_DEDUPLICATE.out.versions)
+        /*
+        * Run deduplicate_bismark
+        */
+        BISMARK_DEDUPLICATE (
+            BISMARK_ALIGN.out.bam
+        )
+        alignments        = BISMARK_DEDUPLICATE.out.bam
+        alignment_reports = BISMARK_ALIGN.out.report.join(BISMARK_DEDUPLICATE.out.report)
+        ch_versions       = ch_versions.mix(BISMARK_DEDUPLICATE.out.versions)
     }
 
     /*
@@ -73,15 +73,15 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
      * Run coverage2cytosine
      */
     if (cytosine_report) {
-    BISMARK_COVERAGE2CYTOSINE (
-        BISMARK_METHYLATIONEXTRACTOR.out.coverage,
-        ch_fasta,
-        ch_bismark_index
-    )
-    ch_coverage2cytosine_coverage = BISMARK_COVERAGE2CYTOSINE.out.coverage.collect{ it[1] }
-    ch_coverage2cytosine_report   = BISMARK_COVERAGE2CYTOSINE.out.report.collect{ it[1] }
-    ch_coverage2cytosine_summary  = BISMARK_COVERAGE2CYTOSINE.out.summary.collect{ it[1] }
-    ch_versions                   = ch_versions.mix(BISMARK_COVERAGE2CYTOSINE.out.versions)
+        BISMARK_COVERAGE2CYTOSINE (
+            BISMARK_METHYLATIONEXTRACTOR.out.coverage,
+            ch_fasta,
+            ch_bismark_index
+        )
+        ch_coverage2cytosine_coverage = BISMARK_COVERAGE2CYTOSINE.out.coverage.collect{ it[1] }
+        ch_coverage2cytosine_report   = BISMARK_COVERAGE2CYTOSINE.out.report.collect{ it[1] }
+        ch_coverage2cytosine_summary  = BISMARK_COVERAGE2CYTOSINE.out.summary.collect{ it[1] }
+        ch_versions                   = ch_versions.mix(BISMARK_COVERAGE2CYTOSINE.out.versions)
     }
 
     /*
@@ -128,7 +128,7 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
     /*
      * Collect MultiQC inputs
      */
-    ch_multiqc_files = BISMARK_SUMMARY.out.summary.ifEmpty([])
+    ch_multiqc_files = BISMARK_SUMMARY.out.summary
                         .mix(alignment_reports.collect{ it[1] })
                         .mix(alignment_reports.collect{ it[2] })
                         .mix(BISMARK_METHYLATIONEXTRACTOR.out.report.collect{ it[1] })
