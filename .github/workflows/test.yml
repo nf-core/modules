@@ -136,6 +136,7 @@ jobs:
 
       - name: debug
         run: |
+          echo ${{ steps.filter.outputs.components }}
           echo ${{ steps.outputs.outputs.modules }}
           echo ${{ steps.outputs.outputs.subworkflows }}
 
@@ -684,7 +685,7 @@ jobs:
     runs-on: "gpu"
     name: nf-test-gpu
     needs: [nf-test-changes]
-    if: ( needs.nf-test-changes.outputs.paths != '[]' )
+    if: ( needs.nf-test-changes.outputs.paths != '[]' && contains(needs.nf-test-changes.outputs.paths, 'modules/nf-core/parabricks') )
     strategy:
       fail-fast: false
       matrix:
