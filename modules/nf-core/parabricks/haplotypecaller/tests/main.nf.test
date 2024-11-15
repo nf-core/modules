@@ -38,8 +38,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.vcf).getReadsMD5(),
-                    file(process.out.vcf).name,
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
                     process.out.versions
                 ).match() }
             )
@@ -76,8 +75,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.vcf).getReadsMD5(),
-                    file(process.out.vcf).name,
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
                     process.out.versions
                 ).match() }
             )
@@ -114,8 +112,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.vcf).getReadsMD5(),
-                    file(process.out.vcf).name,
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
                     process.out.versions
                 ).match() }
             )
