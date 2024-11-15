@@ -4,8 +4,8 @@ process MUSE_SUMP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/muse_sump:6020175d1ed543c4':
-        'community.wave.seqera.io/library/muse_sump:3847abd544ae3eb6' }"
+        'oras://community.wave.seqera.io/library/muse:2.1.2--f6ec9e78771509ff':
+        'community.wave.seqera.io/library/muse:2.1.2--e8279641c6ef8c63' }"
 
     input:
     tuple val(meta), path(muse_call_txt)
