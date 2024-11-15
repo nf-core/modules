@@ -8,7 +8,7 @@ process MALT_BUILD {
         'biocontainers/malt:0.62--hdfd78af_0' }"
 
     input:
-    path fastas_dir
+    path(fastas, stageAs: 'fa_folder/')
     path gff
     path mapping_db
 
@@ -27,7 +27,7 @@ process MALT_BUILD {
     """
     malt-build \\
         -v \\
-        --input $fastas_dir \\
+        --input fa_folder \\
         $igff \\
         -d 'malt_index/' \\
         -t $task.cpus \\
