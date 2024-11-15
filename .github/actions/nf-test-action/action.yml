@@ -7,10 +7,6 @@ inputs:
   profile:
     description: "Profile to use"
     required: true
-  runners:
-    description: "Runners to use"
-    required: false
-    default: "self-hosted"
 
 runs:
   using: "composite"
@@ -37,11 +33,11 @@ runs:
         python-version: "3.11"
 
     - name: Setup apptainer
-      if: ${{ inputs.profile == 'singularity' }}
+      if: contains(inputs.profile, 'singularity')
       uses: eWaterCycle/setup-apptainer@main
 
     - name: Set up Singularity
-      if: ${{ inputs.profile == 'singularity' }}
+      if: contains(inputs.profile, 'singularity')
       shell: bash
       run: |
         mkdir -p $NXF_SINGULARITY_CACHEDIR
@@ -50,42 +46,30 @@ runs:
     - name: Conda setup
       if: ${{inputs.profile == 'conda'}}
       uses: conda-incubator/setup-miniconda@d2e6a045a86077fb6cad6f5adf368e9076ddaa8d # v3
-      shell: bash
       with:
         miniconda-version: "23.5.1"
         auto-update-conda: true
         conda-solvers: libmamba
-      run: |
-        echo $(realpath $CONDA)/condabin >> $GITHUB_PATH
-        echo $(realpath python) >> $GITHUB_PATH
 
     # Set up secrets
     - name: Set up nextflow secrets
-      # TODO Only run if the tag includes `sentieon`
-      if: ${{ secrets.SENTIEON_ENCRYPTION_KEY }} != null && ${{ secrets.SENTIEON_LICENSE_MESSAGE }} != null
+      if: env.SENTIEON_ENCRYPTION_KEY != '' && env.SENTIEON_LICENSE_MESSAGE != ''
       shell: bash
       run: |
-        nextflow secrets set SENTIEON_AUTH_DATA $(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "${{ secrets.SENTIEON_ENCRYPTION_KEY }}" --message "${{ secrets.SENTIEON_LICENSE_MESSAGE }}")
+        nextflow secrets set SENTIEON_AUTH_DATA $(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "$SENTIEON_ENCRYPTION_KEY" --message "$SENTIEON_LICENSE_MESSAGE")
 
     - name: Run nf-test
       shell: bash
       env:
-        SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
+        SENTIEON_LICSRVR_IP: ${{ env.SENTIEON_LICSRVR_IP }}
         SENTIEON_AUTH_MECH: "GitHub Actions - token"
       run: |
-        if [ "${{ inputs.profile }}" == "docker" ]; then
-          PROFILE="docker_self_hosted"
-        else
-          PROFILE=${{ inputs.profile }}
-        fi
-
         NFT_WORKDIR=~ \
         nf-test test \
           --profile=${{ inputs.profile }} \
           --tap=test.tap \
           --verbose \
           ${{ inputs.path }}
-
     - uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
       if: ${{ inputs.path != '' }}
       with:
