@@ -81,10 +81,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.bam":
+      - "*.spanning.bam":
           type: file
           description: BAM file with pieces of reads aligning to repeats
-          pattern: "*.bam"
+          pattern: "*.spanning.bam"
   - versions:
       - "versions.yml":
           type: file

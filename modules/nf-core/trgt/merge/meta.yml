@@ -64,9 +64,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.{bcf,vcf}{,.gz}":
+      - "*.{vcf,vcf.gz,bcf,bcf.gz}":
           type: file
           description: "Merged output file"
+          pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
   - versions:
       - versions.yml:
           type: file
