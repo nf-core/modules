@@ -1,0 +1,47 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fastq_align_dedup_bwameth"
+description: Sort SAM/BAM/CRAM file
+keywords:
+  - sort
+  - bam
+  - sam
+  - cram
+components:
+  - samtools/sort
+  - samtools/index
+input:
+  - ch_bam:
+      type: file
+      description: |
+        The input channel containing the BAM/CRAM/SAM files
+        Structure: [ val(meta), path(bam) ]
+      pattern: "*.{bam/cram/sam}"
+output:
+  - bam:
+      type: file
+      description: |
+        Channel containing BAM files
+        Structure: [ val(meta), path(bam) ]
+      pattern: "*.bam"
+  - bai:
+      type: file
+      description: |
+        Channel containing indexed BAM (BAI) files
+        Structure: [ val(meta), path(bai) ]
+      pattern: "*.bai"
+  - csi:
+      type: file
+      description: |
+        Channel containing CSI files
+        Structure: [ val(meta), path(csi) ]
+      pattern: "*.csi"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@sateeshperi"
+maintainers:
+  - "@sateeshperi"
