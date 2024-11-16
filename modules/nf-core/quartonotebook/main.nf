@@ -4,13 +4,17 @@ include {
 } from "./parametrize"
 
 // NB: You'll likely want to override this with a container containing all
-// required dependencies for your analyses. You'll at least need Quarto
-// itself, Papermill and whatever language you are running your analyses on;
-// you can see an example in this module's Dockerfile.
+// required dependencies for your analyses. Or use wave to build the container
+// for you from the environment.yml You'll at least need Quarto itself,
+// Papermill and whatever language you are running your analyses on; you can see
+// an example in this module's Dockerfile.
 process QUARTONOTEBOOK {
     tag "${meta.id}"
     label 'process_low'
-    container "docker.io/erikfas/quartonotebook"
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/25/25d0a9decefd5d369b8f9b8c934640bd61493df2c95c39b0c580e765e0d2a644/data'
+        : 'community.wave.seqera.io/library/quarto_jupyter_matplotlib_papermill_r-rmarkdown:95c6620495eabcd1'}"
 
     input:
     tuple val(meta), path(notebook)
@@ -30,12 +34,16 @@ process QUARTONOTEBOOK {
     task.ext.when == null || task.ext.when
 
     script:
-    // Exit if running this module with -profile conda / -profile mamba
+    // FIXME https://github.com/nf-core/modules/issues/7006
+    // Exit if running this module with -profile conda / -profile mamba on ARM64
     // This is because of issues with getting a homogenous environment across
     // both AMD64 and ARM64 architectures; please find more information at
     // https://github.com/nf-core/modules/pull/4876#discussion_r1483541037.
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit(1, "The QUARTONOTEBOOK module does not support Conda/Mamba, please use Docker / Singularity / Podman instead.")
+        arch = System.getProperty("os.arch")
+        if (arch == "arm64" || arch == "aarch64") {
+            exit(1, "The QUARTONOTEBOOK module does not support Conda/Mamba on ARM64. Please use Docker / Singularity / Podman instead.")
+        }
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
