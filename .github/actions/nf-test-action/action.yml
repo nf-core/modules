@@ -1,0 +1,83 @@
+name: "nf-test Action"
+description: "Runs nf-test with common setup steps"
+inputs:
+  path:
+    description: "Path to test"
+    required: true
+  profile:
+    description: "Profile to use"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-java@v4
+      with:
+        distribution: "temurin"
+        java-version: "17"
+
+    - name: Setup Nextflow
+      uses: nf-core/setup-nextflow@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
+      with:
+        python-version: "3.11"
+
+    - name: Install nf-test
+      uses: nf-core/setup-nf-test@v1
+      with:
+        version: "0.9.2"
+        install-pdiff: true
+
+    - name: Setup apptainer
+      if: contains(inputs.profile, 'singularity')
+      uses: eWaterCycle/setup-apptainer@main
+
+    - name: Set up Singularity
+      if: contains(inputs.profile, 'singularity')
+      shell: bash
+      run: |
+        mkdir -p $NXF_SINGULARITY_CACHEDIR
+        mkdir -p $NXF_SINGULARITY_LIBRARYDIR
+
+    - name: Conda setup
+      if: ${{inputs.profile == 'conda'}}
+      uses: conda-incubator/setup-miniconda@d2e6a045a86077fb6cad6f5adf368e9076ddaa8d # v3
+      with:
+        auto-update-conda: true
+        conda-solver: libmamba
+        conda-remove-defaults: true
+
+    # Set up secrets
+    - name: Set up nextflow secrets
+      if: env.SENTIEON_ENCRYPTION_KEY != '' && env.SENTIEON_LICENSE_MESSAGE != ''
+      shell: bash
+      run: |
+        nextflow secrets set SENTIEON_AUTH_DATA $(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "$SENTIEON_ENCRYPTION_KEY" --message "$SENTIEON_LICENSE_MESSAGE")
+
+    - name: Run nf-test
+      shell: bash
+      env:
+        SENTIEON_LICSRVR_IP: ${{ env.SENTIEON_LICSRVR_IP }}
+        SENTIEON_AUTH_MECH: "GitHub Actions - token"
+      run: |
+        NFT_WORKDIR=~ \
+        nf-test test \
+          --profile=${{ inputs.profile }} \
+          --tap=test.tap \
+          --verbose \
+          ${{ inputs.path }}
+    - uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
+      if: ${{ inputs.path != '' }}
+      with:
+        path: >-
+          test.tap
+
+    - name: Clean up
+      if: always()
+      shell: bash
+      run: |
+        sudo rm -rf /home/ubuntu/tests/
