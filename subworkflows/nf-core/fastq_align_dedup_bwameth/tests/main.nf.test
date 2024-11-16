@@ -4,6 +4,7 @@ nextflow_workflow {
     script "../main.nf"
     workflow "FASTQ_ALIGN_DEDUP_BWAMETH"
     config "./nextflow.config"
+    options "-dump-channels"
 
     tag "subworkflows"
     tag "subworkflows_nfcore"
@@ -18,6 +19,7 @@ nextflow_workflow {
     tag "samtools/index"
     tag "methyldackel/extract"
     tag "methyldackel/mbias"
+    tag "untar"
 
     setup {
         run("UNTAR") {

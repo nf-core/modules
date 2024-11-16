@@ -66,14 +66,14 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
         ch_alignment,
         [[:],[]] // [ [meta], [fasta]]
     )
-    ch_alignment_sorted = SAMTOOLS_SORT.out.bam
-    ch_versions         = ch_versions.mix(SAMTOOLS_SORT.out.versions)
+    ch_alignment = SAMTOOLS_SORT.out.bam
+    ch_versions  = ch_versions.mix(SAMTOOLS_SORT.out.versions)
 
     /*
      * Run samtools index on alignment
      */
     SAMTOOLS_INDEX_ALIGNMENTS (
-        ch_alignment_sorted
+        SAMTOOLS_SORT.out.bam
     )
     ch_alignment_index = SAMTOOLS_INDEX_ALIGNMENTS.out.bai
     ch_versions        = ch_versions.mix(SAMTOOLS_INDEX_ALIGNMENTS.out.versions)
@@ -82,7 +82,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
      * Run samtools flagstat
      */
     SAMTOOLS_FLAGSTAT (
-        ch_alignment.join(SAMTOOLS_INDEX_ALIGNMENTS.out.bai)
+        ch_alignment.join(ch_alignment_index)
     )
     ch_samtools_flagstat = SAMTOOLS_FLAGSTAT.out.flagstat
     ch_versions          = ch_versions.mix(SAMTOOLS_FLAGSTAT.out.versions)
@@ -91,7 +91,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
      * Run samtools stats
      */
     SAMTOOLS_STATS (
-        ch_alignment.join(SAMTOOLS_INDEX_ALIGNMENTS.out.bai),
+        ch_alignment.join(ch_alignment_index),
         [[:],[]] // [ [meta], [fasta]]
     )
     ch_samtools_stats = SAMTOOLS_STATS.out.stats
@@ -102,7 +102,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
         * Run Picard MarkDuplicates
         */
         PICARD_MARKDUPLICATES (
-            ch_alignment_sorted,
+            SAMTOOLS_SORT.out.bam,
             ch_fasta,
             ch_fasta_index.map{ index -> [[:], index] }
         )
