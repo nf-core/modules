@@ -1,4 +1,5 @@
-FROM condaforge/mambaforge:24.9.2-0@sha256:e4edd160d0a10c6f577b127021d853b460e7e8c1bf1850c9aa4a52c4b8d9c8ee
+FROM condaforge/mambaforge:24.9.2-0
+#@sha256:e4edd160d0a10c6f577b127021d853b460e7e8c1bf1850c9aa4a52c4b8d9c8ee
 ARG QUARTO_VERSION=1.3.433
 ARG TARGETARCH
 
