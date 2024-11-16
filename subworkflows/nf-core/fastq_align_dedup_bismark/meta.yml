@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fastq_align_dedup_bismark"
-description: Align BS-Seq reads to a reference genome using bismark, sort then deduplicate
+description: Align BS-Seq reads to a reference genome using bismark, deduplicate and sort
 keywords:
   - bismark
   - 3-letter genome
@@ -30,12 +30,11 @@ input:
   - ch_fasta:
       type: file
       description: |
-        Optional reference fasta file. This only needs to be given if val_sort_bam = true.
         Structure: [ val(meta), path(fasta) ]
       pattern: "*.{fa,fa.gz}"
   - ch_index:
       description: |
-        BWA genome index files
+        Bismark genome index files
         Structure: [ val(meta), path(index) ]
       pattern: "BismarkIndex"
   - skip_deduplication:

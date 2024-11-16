@@ -1,11 +1,11 @@
 include { BISMARK_ALIGN                                 } from '../../../modules/nf-core/bismark/align/main'
-include { SAMTOOLS_SORT as SAMTOOLS_SORT_DEDUPLICATED   } from '../../../modules/nf-core/samtools/sort/main'
-include { SAMTOOLS_INDEX as SAMTOOLS_INDEX_DEDUPLICATED } from '../../../modules/nf-core/samtools/index/main'
 include { BISMARK_DEDUPLICATE                           } from '../../../modules/nf-core/bismark/deduplicate/main'
 include { BISMARK_METHYLATIONEXTRACTOR                  } from '../../../modules/nf-core/bismark/methylationextractor/main'
 include { BISMARK_COVERAGE2CYTOSINE                     } from '../../../modules/nf-core/bismark/coverage2cytosine/main'
 include { BISMARK_REPORT                                } from '../../../modules/nf-core/bismark/report/main'
 include { BISMARK_SUMMARY                               } from '../../../modules/nf-core/bismark/summary/main'
+include { SAMTOOLS_SORT as SAMTOOLS_SORT_DEDUPLICATED   } from '../../../modules/nf-core/samtools/sort/main'
+include { SAMTOOLS_INDEX as SAMTOOLS_INDEX_DEDUPLICATED } from '../../../modules/nf-core/samtools/index/main'
 
 workflow FASTQ_ALIGN_DEDUP_BISMARK {
 
@@ -70,7 +70,7 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
     ch_versions             = ch_versions.mix(BISMARK_METHYLATIONEXTRACTOR.out.versions)
 
     /*
-     * Run coverage2cytosine
+     * Run bismark coverage2cytosine
      */
     if (cytosine_report) {
         BISMARK_COVERAGE2CYTOSINE (
@@ -151,4 +151,3 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
     multiqc                    = ch_multiqc_files                    // path: *{html,txt}
     versions                   = ch_versions                         // path: *.version.txt
 }
-
