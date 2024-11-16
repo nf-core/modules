@@ -74,8 +74,8 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.dedup.collect { bam(it[1]).getReadsMD5() },
-                    workflow.out.dedup_bam_index.collect { meta, bai -> file(bai).name },
+                    workflow.out.bam.collect { bam(it[1]).getReadsMD5() },
+                    workflow.out.bai.collect { meta, bai -> file(bai).name },
                     workflow.out.coverage2cytosine_coverage,
                     workflow.out.coverage2cytosine_report,
                     workflow.out.coverage2cytosine_summary,
@@ -122,8 +122,8 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.dedup.collect { bam(it[1]).getReadsMD5() },
-                    workflow.out.dedup_bam_index.collect { meta, bai -> file(bai).name },
+                    workflow.out.bam.collect { bam(it[1]).getReadsMD5() },
+                    workflow.out.bai.collect { meta, bai -> file(bai).name },
                     workflow.out.coverage2cytosine_coverage,
                     workflow.out.coverage2cytosine_report,
                     workflow.out.coverage2cytosine_summary,
@@ -170,8 +170,8 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.dedup.collect { bam(it[1]).getReadsMD5() },
-                    workflow.out.dedup_bam_index.collect { meta, bai -> file(bai).name },
+                    workflow.out.bam.collect { bam(it[1]).getReadsMD5() },
+                    workflow.out.bai.collect { meta, bai -> file(bai).name },
                     workflow.out.coverage2cytosine_coverage,
                     workflow.out.coverage2cytosine_report,
                     workflow.out.coverage2cytosine_summary,
@@ -219,8 +219,8 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.dedup.collect { bam(it[1]).getReadsMD5() },
-                    workflow.out.dedup_bam_index.collect { meta, bai -> file(bai).name },
+                    workflow.out.bam.collect { bam(it[1]).getReadsMD5() },
+                    workflow.out.bai.collect { meta, bai -> file(bai).name },
                     workflow.out.coverage2cytosine_coverage,
                     workflow.out.coverage2cytosine_report,
                     workflow.out.coverage2cytosine_summary,
@@ -267,8 +267,8 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.dedup.collect { bam(it[1]).getReadsMD5() },
-                    workflow.out.dedup_bam_index.collect { meta, bai -> file(bai).name },
+                    workflow.out.bam.collect { bam(it[1]).getReadsMD5() },
+                    workflow.out.bai.collect { meta, bai -> file(bai).name },
                     workflow.out.coverage2cytosine_coverage,
                     workflow.out.coverage2cytosine_report,
                     workflow.out.coverage2cytosine_summary,
@@ -315,8 +315,8 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.dedup.collect { bam(it[1]).getReadsMD5() },
-                    workflow.out.dedup_bam_index.collect { meta, bai -> file(bai).name },
+                    workflow.out.bam.collect { bam(it[1]).getReadsMD5() },
+                    workflow.out.bai.collect { meta, bai -> file(bai).name },
                     workflow.out.coverage2cytosine_coverage,
                     workflow.out.coverage2cytosine_report,
                     workflow.out.coverage2cytosine_summary,
