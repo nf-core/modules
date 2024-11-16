@@ -21,7 +21,7 @@ jobs:
     if: github.event.pull_request.head.repo.full_name == github.repository
     outputs:
       conda-matrix: ${{ steps.conda-diff.outputs.all_changed_files }}
-      docker-matrix: ${{ steps.docker-diff.outputs.all_changed_files }}
+      dockerfile-matrix: ${{ steps.docker-diff.outputs.all_changed_files }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
@@ -48,7 +48,7 @@ jobs:
     # if: github.repository == 'nf-core/modules'
     if: ${{ needs.generate-matrix.outputs.conda-matrix != '[]' }}
     needs: generate-matrix
-    name: Build Conda-based ${{ matrix.profile }} Container
+    name: Build ${{ matrix.profile }} ${{ matrix.platform }} Container
     runs-on: ubuntu-latest
     timeout-minutes: 60
     strategy:
@@ -81,20 +81,21 @@ jobs:
               --tower-token ${{ secrets.TOWER_ACCESS_TOKEN }} \
               --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }}
 
-  docker-wave:
+  dockerfile-wave:
     # NOTE This should get skipped because generate-matrix won't run
     # if: github.repository == 'nf-core/modules'
-    if: ${{ needs.generate-matrix.outputs.docker-matrix != '[]' }}
+    if: ${{ needs.generate-matrix.outputs.dockerfile-matrix != '[]' }}
     needs: generate-matrix
-    name: Build Dockerfile-based ${{ matrix.profile }} Container
+    name: Build ${{ matrix.profile }} ${{ matrix.platform }} Container
     runs-on: ubuntu-latest
     timeout-minutes: 60
     strategy:
       fail-fast: false
       max-parallel: 4
       matrix:
-        files: "${{ fromJson(needs.generate-matrix.outputs.docker-matrix) }}"
+        files: "${{ fromJson(needs.generate-matrix.outputs.dockerfile-matrix) }}"
         profile: [docker, singularity]
+        platform: ["linux/amd64", "linux/arm64"]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
@@ -122,8 +123,9 @@ jobs:
               $PROFILE \
               --freeze \
               --await \
+              --platform ${{ matrix.platform }} \
               --build-repo quay.io/nf-core/modules/${{steps.registry-name.outputs.result}} \
-              --cache-repository quay.io/nf-core/wave-cache \
+              --cache-repository quay.io/nf-core/wave-cache/${{ matrix.profile }}/${{ matrix.platform }} \
               --tower-token ${{ secrets.TOWER_ACCESS_TOKEN }} \
               --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }}
 
