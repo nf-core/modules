@@ -94,7 +94,9 @@ jobs:
       max-parallel: 4
       matrix:
         files: "${{ fromJson(needs.generate-matrix.outputs.dockerfile-matrix) }}"
-        profile: [docker, singularity]
+        # NOTE singularity build requires a Singularity definition file in place of Dockerfile
+        # https://nextflow.slack.com/archives/C0477AS31T5/p1731755350230149?thread_ts=1731697852.661849&cid=C0477AS31T5
+        profile: [docker]
         platform: ["linux/amd64", "linux/arm64"]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
@@ -116,11 +118,8 @@ jobs:
       - name: Build ${{ matrix.profile }} container
         # NOTE If you're changing a Dockerfile and this is running, try to update the Dockerfile to build with wave
         continue-on-error: false
-        env:
-          PROFILE: ${{ (contains(matrix.profile, 'singularity') && '--singularity') || '' }}
         run: |
           wave -f "${{ matrix.files }}" \
-              $PROFILE \
               --freeze \
               --await \
               --platform ${{ matrix.platform }} \
