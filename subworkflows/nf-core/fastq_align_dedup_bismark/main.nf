@@ -129,12 +129,12 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
     /*
      * Collect MultiQC inputs
      */
-    ch_multiqc_files = BISMARK_SUMMARY.out.summary
-                        .mix(ch_alignment_reports.collect{ meta, align_report, dedup_report -> align_report })
-                        .mix(ch_alignment_reports.collect{ meta, align_report, dedup_report -> dedup_report })
-                        .mix(ch_methylation_report.collect{ meta, report -> report })
-                        .mix(ch_methylation_mbias.collect{ meta, mbias -> mbias })
-                        .mix(ch_bismark_report.collect{ meta, report -> report })
+    ch_multiqc_files = ch_bismark_summary
+                            .mix(ch_alignment_reports.collect{ meta, align_report, dedup_report -> align_report })
+                            .mix(ch_alignment_reports.collect{ meta, align_report, dedup_report -> dedup_report })
+                            .mix(ch_methylation_report.collect{ meta, report -> report })
+                            .mix(ch_methylation_mbias.collect{ meta, mbias -> mbias })
+                            .mix(ch_bismark_report.collect{ meta, report -> report })
 
     emit:
     bam                        = SAMTOOLS_SORT.out.bam         // channel: [ val(meta), [ bam ] ]
