@@ -53,11 +53,13 @@ output:
       description: |
         Bismark genome index files
         Structure: [ val(meta), path(bismark_index) ]
+        pattern: "BismarkIndex"
   - bwameth_index:
       type: file
       description: |
         Bwameth genome index files
         Structure: [ val(meta), path(bwameth_index) ]
+        pattern: "index"
   - versions:
       type: file
       description: |

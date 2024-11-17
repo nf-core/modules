@@ -20,7 +20,7 @@ workflow FASTA_CREATE_INDEX_BISMARK_BWAMETH {
     ch_bwameth_index = Channel.empty()
     ch_versions      = Channel.empty()
 
-    if (fasta.endsWith('.gz')) {
+    if (fasta.toString().endsWith('.gz')) {
         GUNZIP (
             [ [:], file(fasta, checkIfExists: true) ]
         )
@@ -36,7 +36,7 @@ workflow FASTA_CREATE_INDEX_BISMARK_BWAMETH {
          * Generate bismark index if not supplied
          */
         if (bismark_index) {
-            if (bismark_index.endsWith('.gz')) {
+            if (bismark_index.toString().endsWith('.gz')) {
                 UNTAR (
                     [ [:], file(bismark_index, checkIfExists: true) ]
                 )
@@ -60,7 +60,7 @@ workflow FASTA_CREATE_INDEX_BISMARK_BWAMETH {
          * Generate bwameth index if not supplied
          */
         if (bwameth_index) {
-            if (bwameth_index.endsWith('.gz')) {
+            if (bwameth_index.toString().endsWith('.gz')) {
                 UNTAR (
                     [ [:], file(bwameth_index, checkIfExists: true) ]
                 )
