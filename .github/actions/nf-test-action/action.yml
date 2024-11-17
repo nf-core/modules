@@ -62,6 +62,7 @@ runs:
       if: env.SENTIEON_ENCRYPTION_KEY != '' && env.SENTIEON_LICENSE_MESSAGE != ''
       shell: bash
       run: |
+        python -m pip install cryptography
         nextflow secrets set SENTIEON_AUTH_DATA $(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "$SENTIEON_ENCRYPTION_KEY" --message "$SENTIEON_LICENSE_MESSAGE")
 
       # TODO If conda-fail.yml exists and matrix = conda skip
@@ -69,8 +70,6 @@ runs:
     - name: Run nf-test
       shell: bash
       env:
-        NFT_DIFF: "pdiff"
-        NFT_DIFF_ARGS: "--line-numbers --width 120 --expand-tabs=2"
         SENTIEON_LICSRVR_IP: ${{ env.SENTIEON_LICSRVR_IP }}
         SENTIEON_AUTH_MECH: "GitHub Actions - token"
       run: |
