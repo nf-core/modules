@@ -7,9 +7,8 @@ on:
   pull_request:
     branches: [master]
     paths:
-      - "modules/nf-core/parabricks/applybqsr/**"
-      - "modules/nf-core/parabricks/fq2bam/**"
-      - "modules/nf-core/parabricks/fq2bammeth/**"
+      - ".github/workflows/gpu-tests.yml"
+      - "modules/nf-core/parabricks/**"
   merge_group:
     types: [checks_requested]
     branches: [master]
@@ -44,6 +43,7 @@ jobs:
       fail-fast: false
       matrix:
         shard: [1, 2]
+        # TODO Pass these in from GitHub PR trigger events
         include:
           - path: modules/nf-core/parabricks/applybqsr
             profile: [docker_self_hosted, singularity]
