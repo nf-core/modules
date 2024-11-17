@@ -698,6 +698,8 @@ jobs:
             profile: [docker_self_hosted, singularity]
           - path: modules/nf-core/parabricks/fq2bammeth
             profile: [docker_self_hosted, singularity]
+          - path: subworkflows/nf-core/fastq_align_dedup_bwameth
+            profile: [docker_self_hosted, singularity]
     env:
       NXF_ANSI_LOG: false
 
