@@ -687,7 +687,7 @@ jobs:
     runs-on: "gpu"
     name: nf-test-gpu
     needs: [nf-test-changes]
-    if: ( needs.nf-test-changes.outputs.paths != '[]' && contains(needs.nf-test-changes.outputs.paths, 'modules/nf-core/parabricks') )
+    if: ( needs.nf-test-changes.outputs.paths != '[]' && contains(needs.nf-test-changes.outputs.paths, 'modules/nf-core/parabricks', 'subworkflows/nf-core/fastq_align_dedup_bwameth') )
     strategy:
       fail-fast: false
       matrix:
