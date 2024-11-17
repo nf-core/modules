@@ -1,0 +1,133 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTA_CREATE_INDEX_BISMARK_BWAMETH"
+    script "../main.nf"
+    workflow "FASTA_CREATE_INDEX_BISMARK_BWAMETH"
+    config "./nextflow.config"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fasta_create_index_bismark_bwameth"
+    tag "untar"
+    tag "gunzip"
+    tag "bismark/genomepreparation"
+    tag "bwameth/index"
+    tag "samtools/faidx"
+
+    test("Params: bismark | download bismark index") {
+
+        when {
+            params {
+                aligner = "bismark"
+            }
+            workflow {
+                """
+                input[0] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.gz', checkIfExists: true)
+                input[1] = [] // fasta_index
+                input[2] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Bowtie2_Index.tar.gz', checkIfExists: true)
+                input[3] = [] // bwameth_index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.fasta,
+                    workflow.out.fasta_index,
+                    workflow.out.bismark_index,
+                    workflow.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+    test("Params: bismark | generate bowtie2 index") {
+
+        when {
+            params {
+                aligner = "bismark"
+            }
+            workflow {
+                """
+                input[0] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.gz', checkIfExists: true)
+                input[1] = [] // fasta_index
+                input[2] = [] // bismark_index
+                input[3] = [] // bwameth_index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.fasta,
+                    workflow.out.fasta_index,
+                    workflow.out.bismark_index,
+                    workflow.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+    test("Params: bismark_hisat | generate hisat2 index") {
+
+        when {
+            params {
+                aligner = "bismark_hisat"
+            }
+            workflow {
+                """
+                input[0] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.gz', checkIfExists: true)
+                input[1] = [] // fasta_index
+                input[2] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Hisat2_Index.tar.gz', checkIfExists: true)
+                input[3] = [] // bwameth_index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.fasta,
+                    workflow.out.fasta_index,
+                    workflow.out.bismark_index,
+                    workflow.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+    test("Params: bwameth | generate bwameth index") {
+
+        when {
+            params {
+                aligner = "bwameth"
+            }
+            workflow {
+                """
+                input[0] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.gz', checkIfExists: true)
+                input[1] = [] // fasta_index
+                input[2] = [] // bismark index
+                input[3] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Bwameth_Index.tar.gz', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.fasta,
+                    workflow.out.fasta_index,
+                    workflow.out.bismark_index,
+                    workflow.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+}
