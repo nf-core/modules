@@ -82,8 +82,7 @@ runs:
           --changed-since HEAD^ \
           --shard ${{ inputs.shard }}/${{ inputs.total_shards }} \
           --filter process,workflow \
-          --follow-dependencies \
-          ${{ inputs.path }}
+          --follow-dependencies
 
       # TODO If matrix == conda create a conda-fail.yml and commit it
 
