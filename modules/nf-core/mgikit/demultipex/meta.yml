@@ -31,40 +31,94 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
   - fastq:
-      type: file
-      description: Demultiplexed sample FASTQ files
-      pattern: "*.fastq.gz"
+      - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+      - "*.fastq.gz":
+        type: file
+        description: Demultiplexed sample FASTQ files
+        pattern: "*.fastq.gz"
   - undetermined:
-      type: file
-      description: Optional undetermined sample FASTQ files
-      pattern: "Undetermined*.fastq.gz"
+      - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+      - "Undetermined*.fastq.gz":
+        type: file
+        description: Optional undetermined sample FASTQ files
+        pattern: "Undetermined*.fastq.gz"
   - ambiguous:
-      type: file
-      description: Optional ambiguous sample FASTQ files
-      pattern: "Ambiguous*.fastq.gz"
+      - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+      - "Ambiguous*.fastq.gz":
+        type: file
+        description: Optional ambiguous sample FASTQ files
+        pattern: "Ambiguous*.fastq.gz"
   - undetermined_reports:
-      type: file
-      description: Optional undetermined barcodes (complete and top 20 frequent barcodes).
-      pattern: "*mgikit.undetermined_barcode*"
+      - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+      - "*mgikit.undetermined_barcode*":
+        type: file
+        description: Optional undetermined barcodes (complete and top 20 frequent barcodes).
+        pattern: "*mgikit.undetermined_barcode*"
   - ambiguous_reports:
-      type: file
-      description: Optional ambiguous barcodes (complete and top 20 frequent barcodes).
-      pattern: "*mgikit.ambiguous_barcode*"
+      - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+      - "*mgikit.ambiguous_barcode*":
+        type: file
+        description: Optional ambiguous barcodes (complete and top 20 frequent barcodes).
+        pattern: "*mgikit.ambiguous_barcode*"
   - general_info_reports:
-      type: file
-      description: information on reads count and quality per sample.
-      pattern: "*mgikit.general"
+      - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+      - "*mgikit.general":
+        type: file
+        description: information on reads count and quality per sample.
+        pattern: "*mgikit.general"
   - index_reports:
-      type: file
-      description: Index information per sample.
-      pattern: "*mgikit.info"
+      - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+      - "*mgikit.info":
+        type: file
+        description: Index information per sample.
+        pattern: "*mgikit.info"
   - sample_stat_reports:
-      type: file
-      description: Sample stats containing information on reads count and quality per sample.
-      pattern: "*mgikit.sample_stats"
+      - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+      - "*mgikit.sample_stats":
+        type: file
+        description: Sample stats containing information on reads count and quality per sample.
+        pattern: "*mgikit.sample_stats"
   - qc_reports:
-      type: file
-      description: Demultiplexing Quality Reports
-      pattern: "mgikit.{info,general,ambiguous_barcode,undetermined_barcode}"
+      - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+      - "mgikit.{info,general,ambiguous_barcode,undetermined_barcode}":
+        type: file
+        description: Demultiplexing Quality Reports
+        pattern: "mgikit.{info,general,ambiguous_barcode,undetermined_barcode}"
 authors:
   - "@ziadbkh"
