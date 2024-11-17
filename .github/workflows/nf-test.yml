@@ -89,36 +89,3 @@ jobs:
           profile: ${{ matrix.profile }}
           shard: ${{ matrix.shard }}
           total_shards: ${{ env.TOTAL_SHARDS }}
-
-  # TODO Reintegrate this somehow
-  # nf-test-gpu:
-  #   runs-on: "gpu"
-  #   name: nf-test-gpu
-  #   needs: [nf-test-changes]
-  #   if: ( needs.nf-test-changes.outputs.paths != '[]' && contains(needs.nf-test-changes.outputs.paths, 'modules/nf-core/parabricks') )
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       include:
-  #         - path: modules/nf-core/parabricks/applybqsr
-  #           profile: [docker_self_hosted, singularity]
-  #         - path: modules/nf-core/parabricks/fq2bam
-  #           profile: [docker_self_hosted, singularity]
-  #         - path: modules/nf-core/parabricks/fq2bammeth
-  #           profile: [docker_self_hosted, singularity]
-  #   env:
-  #     NXF_ANSI_LOG: false
-
-  #   steps:
-  #     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-  #     - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
-  #     - name: Run nf-test Action
-  #       uses: ./.github/actions/nf-test-action
-  #       env:
-  #         SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
-  #         SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
-  #         SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
-  #         SENTIEON_AUTH_MECH: "GitHub Actions - token"
-  #       with:
-  #         path: ${{ matrix.path }}
-  #         profile: ${{ matrix.profile }},gpu

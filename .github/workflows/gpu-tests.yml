@@ -1,0 +1,73 @@
+name: Run GPU nf-tests
+on:
+  push:
+    branches:
+      # https://docs.renovatebot.com/key-concepts/automerge/#branch-vs-pr-automerging
+      - "renovate/**" # branches Renovate creates
+  pull_request:
+    branches: [master]
+    paths:
+      - "modules/nf-core/parabricks/applybqsr/**"
+      - "modules/nf-core/parabricks/fq2bam/**"
+      - "modules/nf-core/parabricks/fq2bammeth/**"
+  merge_group:
+    types: [checks_requested]
+    branches: [master]
+  workflow_dispatch:
+    inputs:
+      runners:
+        description: "Runners to test on"
+        type: choice
+        options:
+          - "ubuntu-latest"
+          - "self-hosted"
+        default: "self-hosted"
+
+# Cancel if a newer run is started
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  NFT_VER: "0.9.2"
+  NXF_ANSI_LOG: false
+  NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
+  NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
+  NXF_VER: "24.04.4"
+
+jobs:
+  nf-test-gpu:
+    runs-on: "gpu"
+    name: "GPU | ${{ matrix.profile }} | ${{ matrix.shard }}"
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2]
+        include:
+          - path: modules/nf-core/parabricks/applybqsr
+            profile: [docker_self_hosted, singularity]
+          - path: modules/nf-core/parabricks/fq2bam
+            profile: [docker_self_hosted, singularity]
+          - path: modules/nf-core/parabricks/fq2bammeth
+            profile: [docker_self_hosted, singularity]
+    env:
+      NXF_ANSI_LOG: false
+      TOTAL_SHARDS: 2
+
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
+      - name: Run nf-test Action
+        uses: ./.github/actions/nf-test-action
+        env:
+          SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
+          SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
+          SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
+          SENTIEON_AUTH_MECH: "GitHub Actions - token"
+        with:
+          path: ${{ matrix.path }}
+          profile: ${{ matrix.profile }},gpu
+          shard: ${{ matrix.shard }}
+          total_shards: ${{ env.TOTAL_SHARDS }}
+          # TODO Pass a "gpu" tag in case there's cpu only tests

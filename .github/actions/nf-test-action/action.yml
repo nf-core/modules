@@ -1,6 +1,9 @@
 name: "nf-test Action"
 description: "Runs nf-test with common setup steps"
 inputs:
+  path:
+    description: "Path to test"
+    required: false
   profile:
     description: "Profile to use"
     required: true
@@ -80,7 +83,8 @@ runs:
           --changed-since HEAD^ \
           --shard ${{ inputs.shard }}/${{ inputs.total_shards }} \
           --filter process,workflow \
-          --follow-dependencies
+          --follow-dependencies \
+          ${{ inputs.path }}
 
       # TODO If matrix == conda create a conda-fail.yml and commit it
 
