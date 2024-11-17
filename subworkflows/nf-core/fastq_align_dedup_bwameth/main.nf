@@ -56,7 +56,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
             ch_bwameth_index
         )
         ch_alignment = BWAMETH_ALIGN.out.bam
-        ch_versions  = ch_versions.mix(BWAMETH_ALIGN.out.versions)
+        ch_versions  = BWAMETH_ALIGN.out.versions
     }
 
     /*
@@ -104,7 +104,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
         PICARD_MARKDUPLICATES (
             SAMTOOLS_SORT.out.bam,
             ch_fasta,
-            ch_fasta_index.map{ index -> [[:], index] }
+            ch_fasta_index
         )
         /*
          * Run samtools index on deduplicated alignment
@@ -112,11 +112,11 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
         SAMTOOLS_INDEX_DEDUPLICATED (
             PICARD_MARKDUPLICATES.out.bam
         )
-
         ch_alignment       = PICARD_MARKDUPLICATES.out.bam
         ch_alignment_index = SAMTOOLS_INDEX_DEDUPLICATED.out.bai
         ch_picard_metrics  = PICARD_MARKDUPLICATES.out.metrics
         ch_versions        = ch_versions.mix(PICARD_MARKDUPLICATES.out.versions)
+        ch_versions        = ch_versions.mix(SAMTOOLS_INDEX_DEDUPLICATED.out.versions)
     }
 
     /*
@@ -125,8 +125,8 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
 
     METHYLDACKEL_EXTRACT (
         ch_alignment.join(ch_alignment_index),
-        ch_fasta.map{ meta, fasta_file -> [fasta_file]},
-        ch_fasta_index
+        ch_fasta.map{ meta, fasta_file -> fasta_file },
+        ch_fasta_index.map{ meta, fasta_index -> fasta_index }
     )
     ch_methydackel_extract_bedgraph  = METHYLDACKEL_EXTRACT.out.bedgraph
     ch_methydackel_extract_methylkit = METHYLDACKEL_EXTRACT.out.methylkit
@@ -134,8 +134,8 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
 
     METHYLDACKEL_MBIAS (
         ch_alignment.join(ch_alignment_index),
-        ch_fasta.map{ meta, fasta_file -> [fasta_file]},
-        ch_fasta_index
+        ch_fasta.map{ meta, fasta_file -> fasta_file },
+        ch_fasta_index.map{ meta, fasta_index -> fasta_index }
     )
     ch_methydackel_mbias = METHYLDACKEL_MBIAS.out.txt
     ch_versions          = ch_versions.mix(METHYLDACKEL_MBIAS.out.versions)

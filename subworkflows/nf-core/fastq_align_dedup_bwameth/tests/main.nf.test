@@ -36,7 +36,7 @@ nextflow_workflow {
     }
 
 
-    test("Params: bwameth | default") {
+    test("Params: bwameth single-end | default") {
 
         when {
             params {
@@ -75,11 +75,108 @@ nextflow_workflow {
                     workflow.out.methydackel_extract_bedgraph,
                     workflow.out.methydackel_extract_methylkit,
                     workflow.out.methydackel_mbias,
-                    workflow.out.picard_metrics,
+                    workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
                     workflow.out.versions
                     ).match() }
             )
         }
     }
+
+    test("Params: bwameth paired-end | default") {
+
+        when {
+            params {
+                skip_deduplication = false
+                use_gpu            = false
+            }
+
+            workflow {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:true ],
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
+                            [:],
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                ])
+                input[2] = Channel.of([
+                            [:],
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
+                ])
+                input[3] = UNTAR.out.untar
+                input[4] = params.skip_deduplication
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.bam.collect { bam(it[1]).getReadsMD5() },
+                    workflow.out.bai.collect { meta, bai -> file(bai).name },
+                    workflow.out.samtools_flagstat,
+                    workflow.out.samtools_stats,
+                    workflow.out.methydackel_extract_bedgraph,
+                    workflow.out.methydackel_extract_methylkit,
+                    workflow.out.methydackel_mbias,
+                    workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
+                    workflow.out.multiqc.flatten().collect { path -> file(path).name },
+                    workflow.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+    test("Params: bwameth paired-end | skip_deduplication") {
+
+        when {
+            params {
+                skip_deduplication = true
+                use_gpu            = false
+            }
+
+            workflow {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:true ],
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
+                            [:],
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                ])
+                input[2] = Channel.of([
+                            [:],
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
+                ])
+                input[3] = UNTAR.out.untar
+                input[4] = params.skip_deduplication
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.bam.collect { bam(it[1]).getReadsMD5() },
+                    workflow.out.bai.collect { meta, bai -> file(bai).name },
+                    workflow.out.samtools_flagstat,
+                    workflow.out.samtools_stats,
+                    workflow.out.methydackel_extract_bedgraph,
+                    workflow.out.methydackel_extract_methylkit,
+                    workflow.out.methydackel_mbias,
+                    workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
+                    workflow.out.multiqc.flatten().collect { path -> file(path).name },
+                    workflow.out.versions
+                    ).match() }
+            )
+        }
+    }
+
 }
