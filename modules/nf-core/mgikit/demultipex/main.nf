@@ -6,7 +6,7 @@ process MGIKIT_DEMULTIPLEX {
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mgikit:0.1.6--h4c94732_0' :
-        'quay.io/biocontainers/mgikit:0.1.6--h4c94732_0' }"
+        'biocontainers/mgikit:0.1.6--h4c94732_0' }"
 
     input:
     tuple val(meta), path(samplesheet), path(run_dir)
