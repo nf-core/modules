@@ -54,7 +54,6 @@ jobs:
   #         shards_array=$(for shard in $(seq 1 $number_of_shards); do echo $shard; done | tr ' ' '\n' | jq -R . | jq -s .)
   #         echo "shards=${shards_array}" >> $GITHUB_OUTPUT
   #         echo "total_shards=${number_of_shards}" >> $GITHUB_OUTPUT
-
   nf-test:
     runs-on: ${{ github.event.inputs.runners || 'self-hosted' }}
     # NOTE I think this is the cleanest way to get them organized
@@ -81,113 +80,45 @@ jobs:
       TOTAL_SHARDS: 5
       SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
       SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
-
     steps:
-      # TODO If conda-fail.yml exists and matrix = conda skip
-      # https://github.com/askimed/nf-test/issues/260
-
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
+      - name: Run nf-test Action
+        uses: ./.github/actions/nf-test-action
         with:
-          fetch-depth: 0
+          profile: ${{ matrix.profile }}
+          shard: ${{ matrix.shard }}
+          total_shards: ${{ env.TOTAL_SHARDS }}
 
-      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
-        with:
-          distribution: "temurin"
-          java-version: "17"
+  # TODO Reintegrate this somehow
+  # nf-test-gpu:
+  #   runs-on: "gpu"
+  #   name: nf-test-gpu
+  #   needs: [nf-test-changes]
+  #   if: ( needs.nf-test-changes.outputs.paths != '[]' && contains(needs.nf-test-changes.outputs.paths, 'modules/nf-core/parabricks') )
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       include:
+  #         - path: modules/nf-core/parabricks/applybqsr
+  #           profile: [docker_self_hosted, singularity]
+  #         - path: modules/nf-core/parabricks/fq2bam
+  #           profile: [docker_self_hosted, singularity]
+  #         - path: modules/nf-core/parabricks/fq2bammeth
+  #           profile: [docker_self_hosted, singularity]
+  #   env:
+  #     NXF_ANSI_LOG: false
 
-      - name: Setup Nextflow
-        uses: nf-core/setup-nextflow@v2
-
-      - name: Install nf-test
-        uses: nf-core/setup-nf-test@v1
-        with:
-          version: ${{ env.NFT_VER }}
-
-      - name: Setup apptainer
-        if: matrix.profile == 'singularity'
-        uses: eWaterCycle/setup-apptainer@main
-
-      - name: Set up Singularity
-        if: matrix.profile == 'singularity'
-        run: |
-          mkdir -p $NXF_SINGULARITY_CACHEDIR
-          mkdir -p $NXF_SINGULARITY_LIBRARYDIR
-
-      - name: Set up Python
-        uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5
-        with:
-          python-version: "3.11"
-
-      - uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4
-        id: cache-pip-pdiff
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-pdiff
-          restore-keys: |
-            ${{ runner.os }}-pip-pdiff
-
-      - name: Install Python dependencies
-        run: python -m pip install --upgrade pip pdiff cryptography
-
-      - name: Set up miniconda
-        if: matrix.profile == 'conda'
-        uses: conda-incubator/setup-miniconda@a4260408e20b96e80095f42ff7f1a15b27dd94ca # v3
-        with:
-          miniconda-version: "latest"
-          auto-update-conda: true
-          channels: conda-forge,bioconda,defaults
-
-      - name: Conda setup
-        if: matrix.profile == 'conda'
-        run: |
-          conda clean -a
-          conda install -n base conda-libmamba-solver
-          conda config --set solver libmamba
-          echo $(realpath $CONDA)/condabin >> $GITHUB_PATH
-          echo $(realpath python) >> $GITHUB_PATH
-
-      # Set up secrets
-      - name: Set up nextflow secrets
-        # TODO Only run if the tag includes `sentieon`
-        if: env.SENTIEON_ENCRYPTION_KEY != null && env.SENTIEON_LICENSE_MESSAGE != null
-        run: |
-          nextflow secrets set SENTIEON_AUTH_DATA $(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "${{ secrets.SENTIEON_ENCRYPTION_KEY }}" --message "${{ secrets.SENTIEON_LICENSE_MESSAGE }}")
-
-      # Test the module
-      - name: Run Tests (Shard ${{ matrix.shard }}/${{ env.TOTAL_SHARDS }})
-        env:
-          NFT_DIFF: "pdiff"
-          NFT_DIFF_ARGS: "--line-numbers --width 120 --expand-tabs=2"
-          SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
-          SENTIEON_AUTH_MECH: "GitHub Actions - token"
-        run: |
-          # use "docker_self_hosted" if it runs on self-hosted runner and matrix.profile=docker
-          if [ "${{ matrix.profile }}" == "docker" ]; then
-            PROFILE="docker_self_hosted"
-          else
-            PROFILE=${{ matrix.profile }}
-          fi
-
-          NFT_WORKDIR=~ \
-          nf-test test \
-            --profile=${{ matrix.profile }} \
-            --tap=test.tap \
-            --ci \
-            --verbose \
-            --changed-since HEAD^ \
-            --shard ${{ matrix.shard }}/${{ env.TOTAL_SHARDS }} \
-            --filter process,workflow \
-            --follow-dependencies
-
-      # TODO If matrix == conda create a conda-fail.yml and commit it
-
-      # TODO If no test.tap, then make one to spoof?
-      # - uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
-      #   with:
-      #     path: >-
-      #       test.tap
-
-      - name: Clean up
-        if: always()
-        run: |
-          sudo rm -rf /home/ubuntu/tests/
+  #   steps:
+  #     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+  #     - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
+  #     - name: Run nf-test Action
+  #       uses: ./.github/actions/nf-test-action
+  #       env:
+  #         SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
+  #         SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
+  #         SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
+  #         SENTIEON_AUTH_MECH: "GitHub Actions - token"
+  #       with:
+  #         path: ${{ matrix.path }}
+  #         profile: ${{ matrix.profile }},gpu
