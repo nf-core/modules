@@ -32,7 +32,7 @@ input:
       description: |
         Structure: [ val(meta), path(fasta) ]
       pattern: "*.{fa,fa.gz}"
-  - ch_index:
+  - ch_bismark_index:
       description: |
         Bismark genome index files
         Structure: [ val(meta), path(index) ]
@@ -46,16 +46,16 @@ input:
       description: |
         Produce coverage2cytosine reports that relates methylation calls back to genomic cytosine contexts
 output:
-  - dedup_bam:
+  - bam:
       type: file
       description: |
-        Channel containing deduplicated BAM files.
+        Channel containing aligned or deduplicated BAM files.
         Structure: [ val(meta), path(bam) ]
       pattern: "*.bam"
-  - dedup_bam_index:
+  - bai:
       type: file
       description: |
-        Channel containing deduplicated BAM index files.
+        Channel containing aligned or deduplicated BAM index files.
         Structure: [ val(meta), path(bam.bai) ]
       pattern: "*.bai"
   - coverage2cytosine_coverage:
