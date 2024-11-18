@@ -45,11 +45,11 @@ jobs:
         shard: [1, 2]
         # TODO Pass these in from GitHub PR trigger events
         include:
-          - path: modules/nf-core/parabricks/applybqsr
+          - tags: parabricks/applybqsr
             profile: [docker_self_hosted, singularity]
-          - path: modules/nf-core/parabricks/fq2bam
+          - tags: parabricks/fq2bam
             profile: [docker_self_hosted, singularity]
-          - path: modules/nf-core/parabricks/fq2bammeth
+          - tags: parabricks/fq2bammeth
             profile: [docker_self_hosted, singularity]
     env:
       NXF_ANSI_LOG: false
@@ -67,8 +67,7 @@ jobs:
           SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
           SENTIEON_AUTH_MECH: "GitHub Actions - token"
         with:
-          path: ${{ matrix.path }}
           profile: ${{ matrix.profile }},gpu
           shard: ${{ matrix.shard }}
           total_shards: ${{ env.TOTAL_SHARDS }}
-          # TODO Pass a "gpu" tag in case there's cpu only tests
+          tags: ${{matrix.tags}},gpu
