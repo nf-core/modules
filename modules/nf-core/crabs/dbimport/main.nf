@@ -4,8 +4,8 @@ process CRABS_DBIMPORT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e0/e0007b6b35c9783203b7fde287c383ac38168ecfee79639393e3cb1cd4afdaef/data':
-        'community.wave.seqera.io/library/crabs:1.0.4--1de4f5571e3e4ab0' }"
+        'oras://community.wave.seqera.io/library/crabs:1.0.6--a95c7815a4a67eb2':
+        'community.wave.seqera.io/library/crabs:1.0.6--462aa28d85ee454e' }"
 
     input:
     tuple val(meta), path(fasta)
