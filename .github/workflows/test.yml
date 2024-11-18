@@ -662,6 +662,7 @@ jobs:
           - path: modules/nf-core/parabricks/fq2bammeth
           - path: modules/nf-core/parabricks/fq2bam
           - path: modules/nf-core/parabricks/applybqsr
+          - path: modules/nf-core/parabricks/mutectcaller
           - profile: conda
             path: modules/nf-core/xeniumranger/relabel
           - profile: conda
@@ -697,6 +698,8 @@ jobs:
           - path: modules/nf-core/parabricks/fq2bam
             profile: [docker_self_hosted, singularity]
           - path: modules/nf-core/parabricks/fq2bammeth
+            profile: [docker_self_hosted, singularity]
+          - path: modules/nf-core/parabricks/mutectcaller
             profile: [docker_self_hosted, singularity]
     env:
       NXF_ANSI_LOG: false
