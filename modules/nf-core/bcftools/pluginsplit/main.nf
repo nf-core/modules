@@ -43,17 +43,19 @@ process BCFTOOLS_PLUGINSPLIT {
         ${targets_arg} \\
         --output ${prefix}
 
-    for file in ${prefix}/*; do
-        # Extract the basename
-        base_name=\$(basename "\$file")
-        # Extract the part of the basename before the first dot
-        name_before_dot="\${base_name%%.*}"
-        # Extract the extension
-        extension="\${base_name#\${name_before_dot}}"
-        # Construct the new name
-        new_name="\${name_before_dot}${suffix}\${extension}"
-        mv "\$file" "${prefix}/\$new_name"
-    done
+    if [ -n "${suffix}" ]; then
+        for file in ${prefix}/*; do
+            # Extract the basename
+            base_name=\$(basename "\$file")
+            # Extract the part of the basename before the first dot
+            name_before_dot="\${base_name%%.*}"
+            # Extract the extension
+            extension="\${base_name#\${name_before_dot}}"
+            # Construct the new name
+            new_name="\${name_before_dot}${suffix}\${extension}"
+            mv "\$file" "${prefix}/\$new_name"
+        done
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -89,17 +91,19 @@ process BCFTOOLS_PLUGINSPLIT {
     fi;
     done < files.txt
 
-    for file in ${prefix}/*; do
-        # Extract the basename
-        base_name=\$(basename "\$file")
-        # Extract the part of the basename before the first dot
-        name_before_dot="\${base_name%%.*}"
-        # Extract the extension
-        extension="\${base_name#\${name_before_dot}}"
-        # Construct the new name
-        new_name="\${name_before_dot}${suffix}\${extension}"
-        mv "\$file" "${prefix}/\$new_name"
-    done
+    if [ -n "${suffix}" ]; then
+        for file in ${prefix}/*; do
+            # Extract the basename
+            base_name=\$(basename "\$file")
+            # Extract the part of the basename before the first dot
+            name_before_dot="\${base_name%%.*}"
+            # Extract the extension
+            extension="\${base_name#\${name_before_dot}}"
+            # Construct the new name
+            new_name="\${name_before_dot}${suffix}\${extension}"
+            mv "\$file" "${prefix}/\$new_name"
+        done
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

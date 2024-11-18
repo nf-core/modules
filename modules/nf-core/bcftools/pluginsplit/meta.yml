@@ -61,7 +61,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.{vcf,vcf.gz,bcf,bcf.gz}":
+      - "/*.{vcf,vcf.gz,bcf,bcf.gz}":
           type: file
           description: The resulting VCF files from the split
           pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
@@ -71,7 +71,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.tbi":
+      - "/*.tbi":
           type: file
           description: TBI file
           pattern: "*.tbi"
@@ -81,7 +81,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.csi":
+      - "/*.csi":
           type: file
           description: CSI file
           pattern: "*.csi"
