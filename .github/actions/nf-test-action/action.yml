@@ -24,6 +24,8 @@ runs:
 
     - name: Setup Nextflow
       uses: nf-core/setup-nextflow@v2
+      with:
+        version: "${{ env.NXF_VERSION }}"
 
     - name: Set up Python
       uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
@@ -33,7 +35,7 @@ runs:
     - name: Install nf-test
       uses: nf-core/setup-nf-test@v1
       with:
-        version: "0.9.2"
+        version: "${{ env.NFTEST_VERSION }}"
         install-pdiff: true
 
     - name: Setup apptainer
