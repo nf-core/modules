@@ -671,7 +671,7 @@ jobs:
           - profile: conda
             path: modules/nf-core/xeniumranger/import-segmentation
           - profile: [conda, docker_self_hosted, singularity]
-            path: subworkflows/nf-core/fastq_align_dedup_bwameth/fq2bammeth.nf.test
+            path: subworkflows/nf-core/fastq_align_dedup_bwameth/gpu.nf.test
 
     env:
       NXF_ANSI_LOG: false
@@ -700,7 +700,7 @@ jobs:
             profile: [docker_self_hosted, singularity]
           - path: modules/nf-core/parabricks/fq2bammeth
             profile: [docker_self_hosted, singularity]
-          - path: subworkflows/nf-core/fastq_align_dedup_bwameth/fq2bammeth.nf.test
+          - path: subworkflows/nf-core/fastq_align_dedup_bwameth/gpu.nf.test
             profile: [docker_self_hosted, singularity]
     env:
       NXF_ANSI_LOG: false
