@@ -5,7 +5,6 @@ nextflow_process {
     script "../main.nf"
     process "TRGT_MERGE"
     config "./nextflow.config"
-    options "-dump-channels"
 
     tag "modules"
     tag "modules_nfcore"
