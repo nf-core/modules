@@ -26,7 +26,7 @@ nextflow_process {
                     [ id : 'chr22' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22_chr22_KI270734v1_random/sequence/genome.fa.gz', checkIfExists: true)
                 ]
-            """
+                """
             }
         }
         run("SAMTOOLS_FAIDX"){
