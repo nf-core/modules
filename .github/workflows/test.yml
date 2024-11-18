@@ -345,8 +345,6 @@ jobs:
           - profile: conda
             tags: ncbitools/vecscreen
           - profile: conda
-            tags: parabricks/applybqsr
-          - profile: conda
             tags: parabricks/dbsnp
           - profile: conda
             tags: parabricks/deepvariant
@@ -649,24 +647,15 @@ jobs:
           - profile: conda
             path: subworkflows/nf-core/deepvariant
           - profile: conda
-            path: modules/nf-core/parabricks/fq2bammeth
-          - profile: docker_self_hosted
-            path: modules/nf-core/parabricks/fq2bammeth
-          - profile: singularity
-            path: modules/nf-core/parabricks/fq2bammeth
-          - profile: conda
-            path: modules/nf-core/parabricks/fq2bam
-          - profile: docker_self_hosted
-            path: modules/nf-core/parabricks/fq2bam
-          - profile: singularity
-            path: modules/nf-core/parabricks/fq2bam
-          - profile: conda
             path: subworkflows/nf-core/fastq_align_bamcmp_bwa
           - profile: conda
             path: subworkflows/nf-core/fastq_align_bwa
           - profile: conda
             path: subworkflows/nf-core/fasta_newick_epang_gappa
           - path: modules/nf-core/parabricks/haplotypecaller
+          - path: modules/nf-core/parabricks/fq2bammeth
+          - path: modules/nf-core/parabricks/fq2bam
+          - path: modules/nf-core/parabricks/applybqsr
           - profile: conda
             path: modules/nf-core/xeniumranger/relabel
           - profile: conda
