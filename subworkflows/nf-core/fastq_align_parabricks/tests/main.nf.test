@@ -3,7 +3,7 @@ nextflow_workflow {
     name "Test Subworkflow FASTQ_ALIGN_PARABRICKS"
     script "../main.nf"
     workflow "FASTQ_ALIGN_PARABRICKS"
-    config "./lowmem.config"
+    config "./nextflow.config"
 
     tag "subworkflows"
     tag "subworkflows_nfcore"
