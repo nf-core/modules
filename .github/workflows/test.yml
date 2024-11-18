@@ -1,5 +1,9 @@
 name: Run tests
 on:
+  push:
+    branches:
+      # https://docs.renovatebot.com/key-concepts/automerge/#branch-vs-pr-automerging
+      - "renovate/**" # branches Renovate creates
   pull_request:
     branches: [master]
   merge_group:
@@ -31,6 +35,8 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
+        with:
+          python-version: "3.11"
       - uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
         # FIXME Flip this off once we get to less than a couple hundred. Adding
         # this so it will only run against changed files. It'll make it much
@@ -82,8 +88,7 @@ jobs:
         with:
           fetch-depth: 2 # To retrieve the preceding commit.
 
-      # TODO: change back to using dorny/paths-filter when https://github.com/dorny/paths-filter/pull/133 is implemented
-      - uses: mirpedrol/paths-filter@main
+      - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3
         id: filter
         with:
           filters: "tests/config/pytest_modules.yml"
@@ -131,11 +136,12 @@ jobs:
 
       - name: debug
         run: |
+          echo ${{ steps.filter.outputs.components }}
           echo ${{ steps.outputs.outputs.modules }}
           echo ${{ steps.outputs.outputs.subworkflows }}
 
   nf-core-lint-modules:
-    runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
+    runs-on: ${{ github.event.inputs.runners  || 'ubuntu-latest' }}
     name: nf-core-lint-modules
     needs: [pytest-changes, nf-test-changes]
     if: ${{ (needs.pytest-changes.outputs.modules != '[]') || ( needs.nf-test-changes.outputs.modules != '[]') }}
@@ -219,7 +225,7 @@ jobs:
         run: nf-core subworkflows lint ${{ matrix.tags }}
 
   pytest:
-    runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
+    runs-on: ${{ github.event.inputs.runners  || 'ubuntu-latest' }}
     name: pytest
     needs: [pytest-changes]
     if: needs.pytest-changes.outputs.tags != '[]'
@@ -341,13 +347,9 @@ jobs:
           - profile: conda
             tags: ncbitools/vecscreen
           - profile: conda
-            tags: parabricks/applybqsr
-          - profile: conda
             tags: parabricks/dbsnp
           - profile: conda
             tags: parabricks/deepvariant
-          - profile: conda
-            tags: parabricks/fq2bam
           - profile: conda
             tags: parabricks/genotypegvcf
           - profile: conda
@@ -441,6 +443,7 @@ jobs:
           miniconda-version: "latest"
           channels: conda-forge,bioconda
           python-version: ${{ matrix.python-version }}
+          conda-remove-defaults: true
 
       - name: Conda setup
         run: |
@@ -485,7 +488,7 @@ jobs:
             !${{ github.workspace }}/.singularity
 
   nf-test:
-    runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
+    runs-on: ${{ github.event.inputs.runners || 'self-hosted' }}
     name: nf-test
     needs: [nf-test-changes]
     if: ( needs.nf-test-changes.outputs.paths != '[]' )
@@ -645,18 +648,6 @@ jobs:
           - profile: conda
             path: modules/nf-core/scimap/mcmicro
           - profile: conda
-            path: modules/nf-core/parabricks/fq2bammeth
-          - profile: docker_self_hosted
-            path: modules/nf-core/parabricks/fq2bammeth
-          - profile: singularity
-            path: modules/nf-core/parabricks/fq2bammeth
-          - profile: conda
-            path: modules/nf-core/parabricks/fq2bam
-          - profile: docker_self_hosted
-            path: modules/nf-core/parabricks/fq2bam
-          - profile: singularity
-            path: modules/nf-core/parabricks/fq2bam
-          - profile: conda
             path: subworkflows/nf-core/vcf_annotate_ensemblvep
           - profile: conda
             path: subworkflows/nf-core/bcl_demultiplex
@@ -668,6 +659,9 @@ jobs:
             path: subworkflows/nf-core/fastq_align_bwa
           - profile: conda
             path: subworkflows/nf-core/fasta_newick_epang_gappa
+          - path: modules/nf-core/parabricks/fq2bammeth
+          - path: modules/nf-core/parabricks/fq2bam
+          - path: modules/nf-core/parabricks/applybqsr
           - profile: conda
             path: modules/nf-core/xeniumranger/relabel
           - profile: conda
@@ -679,108 +673,47 @@ jobs:
 
     env:
       NXF_ANSI_LOG: false
-      NFTEST_VER: "0.9.0"
-      SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
-      SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
 
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-
-      - uses: actions/setup-java@8df1039502a15bceb9433410b1a100fbe190c53b # v4
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
+      - name: Run nf-test Action
+        uses: ./.github/actions/nf-test-action
         with:
-          distribution: "temurin"
-          java-version: "17"
-      - name: Setup Nextflow
-        uses: nf-core/setup-nextflow@v2
+          path: ${{ matrix.path }}
+          profile: ${{ matrix.profile }}
 
-      - name: Install nf-test
-        uses: nf-core/setup-nf-test@v1
-        with:
-          version: ${{ env.NFTEST_VER }}
+  nf-test-gpu:
+    runs-on: "gpu"
+    name: nf-test-gpu
+    needs: [nf-test-changes]
+    if: ( needs.nf-test-changes.outputs.paths != '[]' && contains(needs.nf-test-changes.outputs.paths, 'modules/nf-core/parabricks') )
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - path: modules/nf-core/parabricks/applybqsr
+            profile: [docker_self_hosted, singularity]
+          - path: modules/nf-core/parabricks/fq2bam
+            profile: [docker_self_hosted, singularity]
+          - path: modules/nf-core/parabricks/fq2bammeth
+            profile: [docker_self_hosted, singularity]
+    env:
+      NXF_ANSI_LOG: false
 
-      - name: Setup apptainer
-        if: matrix.profile == 'singularity'
-        uses: eWaterCycle/setup-apptainer@main
-
-      - name: Set up Singularity
-        if: matrix.profile == 'singularity'
-        run: |
-          mkdir -p $NXF_SINGULARITY_CACHEDIR
-          mkdir -p $NXF_SINGULARITY_LIBRARYDIR
-
-      - name: Set up Python
-        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
-        with:
-          python-version: "3.11"
-
-      - uses: actions/cache@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4
-        id: cache-pip-pdiff
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-pdiff
-          restore-keys: |
-            ${{ runner.os }}-pip-pdiff
-
-      - name: Install Python dependencies
-        run: python -m pip install --upgrade pip pdiff cryptography
-
-      - name: Set up miniconda
-        if: matrix.profile == 'conda'
-        uses: conda-incubator/setup-miniconda@d2e6a045a86077fb6cad6f5adf368e9076ddaa8d # v3
-        with:
-          miniconda-version: "latest"
-          auto-update-conda: true
-          channels: conda-forge,bioconda
-
-      - name: Conda setup
-        if: matrix.profile == 'conda'
-        run: |
-          conda clean -a
-          conda install -n base conda-libmamba-solver
-          conda config --set solver libmamba
-          echo $(realpath $CONDA)/condabin >> $GITHUB_PATH
-          echo $(realpath python) >> $GITHUB_PATH
-
-      # Set up secrets
-      - name: Set up nextflow secrets
-        # TODO Only run if the tag includes `sentieon`
-        if: env.SENTIEON_ENCRYPTION_KEY != null && env.SENTIEON_LICENSE_MESSAGE != null
-        run: |
-          nextflow secrets set SENTIEON_AUTH_DATA $(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "${{ secrets.SENTIEON_ENCRYPTION_KEY }}" --message "${{ secrets.SENTIEON_LICENSE_MESSAGE }}")
-
-      # Test the module
-      - name: Run nf-test
-        if: ${{ matrix.path != '' }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
+      - name: Run nf-test Action
+        uses: ./.github/actions/nf-test-action
         env:
-          NFT_DIFF: "pdiff"
-          NFT_DIFF_ARGS: "--line-numbers --width 120 --expand-tabs=2"
+          SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
+          SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
           SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
           SENTIEON_AUTH_MECH: "GitHub Actions - token"
-        run: |
-          # use "docker_self_hosted" if it runs on self-hosted runner and matrix.profile=docker
-          if [ "${{ matrix.profile }}" == "docker" ]; then
-            PROFILE="docker_self_hosted"
-          else
-            PROFILE=${{ matrix.profile }}
-          fi
-
-          NFT_WORKDIR=~ \
-          nf-test test \
-            --profile=${{ matrix.profile }} \
-            --tap=test.tap \
-            --verbose \
-            ${{ matrix.path }}
-
-      - uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
-        if: ${{ matrix.path != '' }}
         with:
-          path: >-
-            test.tap
-
-      - name: Clean up
-        if: always()
-        run: |
-          sudo rm -rf /home/ubuntu/tests/
+          path: ${{ matrix.path }}
+          profile: ${{ matrix.profile }},gpu
 
   confirm-pass:
     runs-on: ubuntu-latest
@@ -794,6 +727,7 @@ jobs:
         pytest,
         nf-test-changes,
         nf-test,
+        nf-test-gpu,
       ]
     if: always()
     steps:
