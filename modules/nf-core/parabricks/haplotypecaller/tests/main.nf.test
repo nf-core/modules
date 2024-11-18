@@ -10,7 +10,7 @@ nextflow_process {
     tag "parabricks/haplotypecaller"
 
     test("sarscov2 - bam - no_intervals") {
-
+        config "./cp-nextflow.config"
         when {
             process {
                 """
@@ -47,7 +47,7 @@ nextflow_process {
     }
 
     test("sarscov2 - bam - intervals") {
-
+        config "./cp-nextflow.config"
         when {
             process {
                 """
@@ -121,7 +121,7 @@ nextflow_process {
     }
 
     test("sarscov2 - bam - stub") {
-
+        config "./cp-nextflow.config"
         options "-stub"
 
         when {
@@ -159,7 +159,7 @@ nextflow_process {
     test("sarscov2 - bam - gvcf - stub") {
         config "./nextflow.config"
         options "-stub"
-        
+
         when {
             process {
                 """
