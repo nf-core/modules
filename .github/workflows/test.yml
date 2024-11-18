@@ -88,7 +88,7 @@ jobs:
         with:
           fetch-depth: 2 # To retrieve the preceding commit.
 
-      - uses: dorny/paths-filter@v3
+      - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3
         id: filter
         with:
           filters: "tests/config/pytest_modules.yml"
