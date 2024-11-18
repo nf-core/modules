@@ -99,8 +99,8 @@ nextflow_process {
 
     }
 
-    test("homo_sapiens - [ vcf, tbi ], [], [], [], [], - tbi with suffix") {
-        config "./nextflow_suffix.config"
+    test("homo_sapiens - [ vcf, tbi ], [], [], [], [], - tbi with prefix") {
+        config "./nextflow_prefix.config"
 
         when {
             process {
@@ -244,9 +244,9 @@ nextflow_process {
 
     }
 
-    test("homo_sapiens - [ vcf, tbi ], [], groups, regions, targets - tbi with suffix -stub") {
+    test("homo_sapiens - [ vcf, tbi ], [], groups, regions, targets - tbi with prefix -stub") {
 
-        config "./nextflow_suffix.config"
+        config "./nextflow_prefix.config"
         options "-stub"
 
         when {
