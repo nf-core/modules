@@ -33,27 +33,6 @@ env:
   NXF_VER: "24.04.4"
 
 jobs:
-  # TODO
-  # get-number-of-shards:
-  #   runs-on: ubuntu-latest
-  #   outputs:
-  #     # Needs to be a json array
-  #     shards: ${{ steps.shards.outputs.shards }}
-  #     total_shards: ${{ steps.shards.outputs.total_shards }}
-  #   steps:
-  #     - name: Install nf-test
-  #       uses: nf-core/setup-nf-test@v1
-  #       with:
-  #         version: ${{ env.NFT_VER }}
-
-  #     - id: shards
-  #       run: |
-  #         nftest_output=$(nf-test test --dry-run --changed-since HEAD^ --filter process --follow-dependencies)
-  #         number_of_shards=$(echo $nftest_output | grep -o 'Found [0-9]* related test' | tail -1 | awk '{print $2}')
-  #         three_tests_per_shard=$(echo $(($number_of_shards / 3)) | awk '{print int($1+0.5)}')
-  #         shards_array=$(for shard in $(seq 1 $number_of_shards); do echo $shard; done | tr ' ' '\n' | jq -R . | jq -s .)
-  #         echo "shards=${shards_array}" >> $GITHUB_OUTPUT
-  #         echo "total_shards=${number_of_shards}" >> $GITHUB_OUTPUT
   nf-test:
     runs-on: ${{ github.event.inputs.runners || 'self-hosted' }}
     # NOTE I think this is the cleanest way to get them organized
