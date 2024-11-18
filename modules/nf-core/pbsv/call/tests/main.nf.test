@@ -1,0 +1,68 @@
+nextflow_process {
+    name "Test Process PBSV_CALL"
+    script "../main.nf"
+    process "PBSV_CALL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pbsv"
+    tag "pbsv/call"
+
+    test("pbsv-call - [svsig] [fasta]") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path +  'genomics/homo_sapiens/pacbio/svsig/NA03697B2_new.pbmm2.repeats.svsig.gz', checkIfExists: true)
+                ]
+
+                input[1] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            def vcfFile = path(process.out.vcf[0][1]).vcf
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.vcf[0][1]).name,
+                    process.out.versions,
+                    vcfFile.variantsMD5).match() },
+                { assert vcfFile.chromosomes == ['chr19:45760000-45770300'] as Set}
+            )
+        }
+    }
+
+    test("pbsv-call - [svsig] [fasta] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path +  'genomics/homo_sapiens/pacbio/svsig/NA03697B2_new.pbmm2.repeats.svsig.gz', checkIfExists: true)
+                ]
+
+                input[1] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

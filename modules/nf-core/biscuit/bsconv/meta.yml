@@ -27,15 +27,32 @@ input:
     - bam:
         type: file
         description: BAM file contained mapped reads
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
     - bai:
         type: file
         description: BAM file index
-  - - index:
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Input genome fasta file
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - index:
         type: directory
-        description: Biscuit genome index directory (generated with 'biscuit index')
-        pattern: "BiscuitIndex"
+        description: Directory containing biscuit genome index
 output:
-  - bsconv_bam:
+  - bam:
       - meta:
           type: map
           description: |
@@ -54,3 +71,4 @@ authors:
   - "@njspix"
 maintainers:
   - "@njspix"
+  - "@sateeshperi"

@@ -1,0 +1,229 @@
+nextflow_process {
+
+    name "Test Process HifiAsm"
+    script "../main.nf"
+    process "HIFIASM"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hifiasm"
+
+    test("homo_sapiens pacbio hifi [fastq, [,], [,] ]") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id : 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [],
+                    [],
+                    []
+                ]
+                input[2] = [
+                    [],
+                    [],
+                    []
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.corrected_reads.get(0).get(1)).exists() },
+                { assert file(process.out.source_overlaps.get(0).get(1)).exists() },
+                { assert file(process.out.reverse_overlaps.get(0).get(1)).exists() },
+                { assert file(process.out.log.get(0).get(1)).exists() },
+                { assert snapshot(
+                    process.out.raw_unitigs,
+                    process.out.processed_contigs,
+                    process.out.processed_unitigs,
+                    process.out.paternal_contigs,
+                    process.out.maternal_contigs,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens pacbio hifi [fastq, [yak, yak], [,] ]") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id : 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id : 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/yak/test.yak', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/yak/test2.yak', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id : 'test' ],
+                    [],
+                    []
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.corrected_reads.get(0).get(1)).exists() },
+                { assert file(process.out.source_overlaps.get(0).get(1)).exists() },
+                { assert file(process.out.reverse_overlaps.get(0).get(1)).exists() },
+                { assert file(process.out.log.get(0).get(1)).exists() },
+                { assert file(process.out.maternal_contigs.get(0).get(1)).length() == 0},
+                { assert snapshot(
+                    process.out.raw_unitigs,
+                    process.out.processed_unitigs,
+                    process.out.paternal_contigs,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens pacbio hifi [fastq, [,], [fastq, fastq] ]") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id : 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id : 'test' ],
+                    [],
+                    []
+                ]
+                input[2] = [
+                    [ id : 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.corrected_reads.get(0).get(1)).exists() },
+                { assert file(process.out.source_overlaps.get(0).get(1)).exists() },
+                { assert file(process.out.reverse_overlaps.get(0).get(1)).exists() },
+                { assert file(process.out.log.get(0).get(1)).exists() },
+                { assert file(process.out.maternal_contigs.get(0).get(1)).length() == 0},
+                { assert snapshot(
+                    process.out.raw_unitigs,
+                    process.out.processed_unitigs,
+                    process.out.paternal_contigs,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens pacbio hifi [fastq, [yak, yak], [fastq, fastq] ]") {
+        when {
+                """
+                input[0] = [
+                    [ id : 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id : 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/yak/test.yak', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/yak/test2.yak', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id : 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz, checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz, checkIfExists: true)
+                ]
+                """
+        }
+        then {
+            assertAll(
+                { assert !process.success}
+            )
+        }
+    }
+
+    test("homo_sapiens pacbio hifi [fastq, [yak, ], [,] ]") {
+        when {
+                """
+                input[0] = [
+                    [ id : 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id : 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/yak/test.yak', checkIfExists: true),
+                    []
+                ]
+                input[2] = []
+                """
+        }
+        then {
+            assertAll(
+                { assert !process.success}
+            )
+        }
+    }
+
+    test("homo_sapiens pacbio hifi [fastq, [,], [, fastq] ]") {
+        when {
+                """
+                input[0] = [
+                    [ id : 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = []
+                input[2] = [
+                    [ id : 'test'],
+                    [],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                ]
+                """
+        }
+        then {
+            assertAll(
+                { assert !process.success}
+            )
+        }
+    }
+
+    test("homo_sapiens pacbio hifi [fastq, [,], [,] ] - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id : 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [],
+                    [],
+                    []
+                ]
+                input[2] = [
+                    [],
+                    [],
+                    []
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match()}
+            )
+        }
+    }
+}
