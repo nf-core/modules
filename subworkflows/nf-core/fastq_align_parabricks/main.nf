@@ -25,21 +25,24 @@ workflow FASTQ_ALIGN_PARABRICKS {
     PARABRICKS_FQ2BAM(ch_reads, ch_fasta, ch_index, ch_interval_file, ch_known_sites)
 
     // Collecting FQ2BAM outputs
-    ch_bam = ch_bam.mix(PARABRICKS_FQ2BAM.out.bam)
-    ch_bai = ch_bai.mix(PARABRICKS_FQ2BAM.out.bai)
-    ch_bqsr_table = ch_bqsr_table.mix(PARABRICKS_FQ2BAM.out.bqsr_table)
     ch_qc_metrics = ch_qc_metrics.mix(PARABRICKS_FQ2BAM.out.qc_metrics)
     ch_duplicate_metrics = ch_duplicate_metrics.mix(PARABRICKS_FQ2BAM.out.duplicate_metrics)
 
     // Apply BQSR
-    // PARABRICKS_APPLYBQSR(ch_bam, ch_bai, ch_bqsr_table, ch_interval_file, ch_fasta)
+    PARABRICKS_APPLYBQSR(
+        PARABRICKS_FQ2BAM.out.bam, 
+        PARABRICKS_FQ2BAM.out.bai,
+        PARABRICKS_FQ2BAM.out.bqsr_table,
+        ch_interval_file, 
+        ch_fasta
+        )
 
     ch_versions = ch_versions.mix(PARABRICKS_FQ2BAM.out.versions)
-    //ch_versions = ch_versions.mix(PARABRICKS_APPLYBQSR.out.versions)
+    ch_versions = ch_versions.mix(PARABRICKS_APPLYBQSR.out.versions)
 
     emit:
-    bam = ch_bam //PARABRICKS_APPLYBQSR.out.bam      // channel: [ [meta], bam ]
-    bai = ch_bai //PARABRICKS_APPLYBQSR.out.bai      // channel: [ [meta], bai ]
+    bam = PARABRICKS_APPLYBQSR.out.bam      // channel: [ [meta], bam ]
+    bai = PARABRICKS_APPLYBQSR.out.bai      // channel: [ [meta], bai ]
     versions = ch_versions                  // channel: [ versions.yml ]
 
 }
