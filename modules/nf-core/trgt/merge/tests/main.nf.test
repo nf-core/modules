@@ -143,8 +143,10 @@ nextflow_process {
         }
     }
     test("homo sapiens - 1 VCF - --force-single") {
-        config "./force_single.config"
         when {
+            params {
+                trgt_merge_args = "--force-single"
+            }
             process {
                 """
                 input[0] = BCFTOOLS_SORT.out.vcf
