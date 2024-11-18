@@ -38,11 +38,6 @@ input:
         description: |
           Target region, usually a full chromosome (e.g. chr20:1000000-2000000 or chr20).
           For chrX, please treat PAR and non-PAR regions as different choromosome in order to avoid mixing ploidy.
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing genomic map information
-          e.g. [ map:'GRCh38' ]
     - map:
         type: file
         description: File containing the genetic map.
