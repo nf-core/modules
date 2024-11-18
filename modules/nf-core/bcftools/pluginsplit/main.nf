@@ -25,6 +25,8 @@ process BCFTOOLS_PLUGINSPLIT {
 
     script:
     def args = task.ext.args ?: ''
+    // Here the default prefix is an empty string as the filename is created by the plugin
+    // and the prefix is instead added to the output files in the script
     def prefix = task.ext.prefix ?: ""
 
     def samples_arg = samples ? "--samples-file ${samples}" : ""
@@ -74,11 +76,11 @@ process BCFTOOLS_PLUGINSPLIT {
 
     cut -f 3 ${determination_file} | sed -e 's/\$/.${extension}/' > files.txt
     while IFS= read -r filename;
-    do ${create_cmd} "outputDir/\$filename";
-    if [ -n "${index}" ]; then
-        index_file=\$(sed -e 's/\$/.${index}/' <<< \$filename);
-        touch outputDir/\$index_file;
-    fi;
+        do ${create_cmd} "outputDir/\$filename";
+        if [ -n "${index}" ]; then
+            index_file=\$(sed -e 's/\$/.${index}/' <<< \$filename);
+            touch outputDir/\$index_file;
+        fi;
     done < files.txt
 
     if [ -n "${prefix}" ]; then
