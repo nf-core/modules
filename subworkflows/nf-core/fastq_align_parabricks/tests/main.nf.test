@@ -13,6 +13,8 @@ nextflow_workflow {
     tag "bwa"
     tag "bwa/index"
 
+    config "./lowmem.config"
+
     setup {
         run("BWA_INDEX") {
             script "../../../../modules/nf-core/bwa/index/main.nf"
