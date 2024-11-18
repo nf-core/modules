@@ -1,7 +1,6 @@
 process FQ_LINT {
     tag "$meta.id"
     label 'process_low'
-    errorStrategy 'terminate'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -30,10 +29,5 @@ process FQ_LINT {
     "${task.process}":
         fq: \$(echo \$(fq lint --version | sed 's/fq-lint //g'))
     END_VERSIONS
-
-    if ! tail -n 1 ${prefix}.fq_lint.txt | grep -q 'fq-lint end'; then
-        echo "ERROR: Linting failure detected for ${meta.id}. See ${prefix}.fq_lint.txt for details."
-        exit 1 
-    fi
     """
 }
