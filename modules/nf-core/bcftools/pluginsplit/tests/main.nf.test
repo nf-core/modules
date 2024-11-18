@@ -100,6 +100,7 @@ nextflow_process {
     }
 
     test("homo_sapiens - [ vcf, tbi ], [], [], [], [], - tbi with prefix") {
+
         config "./nextflow_prefix.config"
 
         when {
@@ -129,7 +130,7 @@ nextflow_process {
 
     test("homo_sapiens - [ vcf, tbi ], [], [], [], [], - error no sample") {
 
-        config "./nextflow_suffix.config"
+        config "./nextflow_prefix.config"
 
         when {
             process {
@@ -246,6 +247,7 @@ nextflow_process {
 
     test("homo_sapiens - [ vcf, tbi ], [], groups, regions, targets - tbi with prefix -stub") {
 
+        tag "test"
         config "./nextflow_prefix.config"
         options "-stub"
 

@@ -44,7 +44,7 @@ process BCFTOOLS_PLUGINSPLIT {
 
     if [ -n "${prefix}" ]; then
         for file in outputDir/*; do
-            mv \$file outputDir/${prefix}\$file
+            mv \$file outputDir/${prefix}\${file##*/}
         done
     fi
 
@@ -83,7 +83,7 @@ process BCFTOOLS_PLUGINSPLIT {
 
     if [ -n "${prefix}" ]; then
         for file in outputDir/*; do
-            mv \$file outputDir/${prefix}\$file
+            mv \$file outputDir/${prefix}\${file##*/}
         done
     fi
 
