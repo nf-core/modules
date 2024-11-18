@@ -47,12 +47,15 @@ process BCFTOOLS_PLUGINSPLIT {
         for file in ${prefix}/*; do
             # Extract the basename
             base_name=\$(basename "\$file")
-            # Extract the part of the basename before the first dot
-            name_before_dot="\${base_name%%.*}"
             # Extract the extension
-            extension="\${base_name#\${name_before_dot}}"
+            extension=""
+            # Remove the extension if it exists
+            if [[ "\$base_name" =~ \\.(vcf|bcf)(\\.gz)?(\\.tbi|\\.csi)?\$ ]]; then
+                extension="\${BASH_REMATCH[0]}"
+                base_name="\${base_name%\$extension}"
+            fi
             # Construct the new name
-            new_name="\${name_before_dot}${suffix}\${extension}"
+            new_name="\${base_name}${suffix}\${extension}"
             mv "\$file" "${prefix}/\$new_name"
         done
     fi
@@ -95,12 +98,15 @@ process BCFTOOLS_PLUGINSPLIT {
         for file in ${prefix}/*; do
             # Extract the basename
             base_name=\$(basename "\$file")
-            # Extract the part of the basename before the first dot
-            name_before_dot="\${base_name%%.*}"
             # Extract the extension
-            extension="\${base_name#\${name_before_dot}}"
+            extension=""
+            # Remove the extension if it exists
+            if [[ "\$base_name" =~ \\.(vcf|bcf)(\\.gz)?(\\.tbi|\\.csi)?\$ ]]; then
+                extension="\${BASH_REMATCH[0]}"
+                base_name="\${base_name%\$extension}"
+            fi
             # Construct the new name
-            new_name="\${name_before_dot}${suffix}\${extension}"
+            new_name="\${base_name}${suffix}\${extension}"
             mv "\$file" "${prefix}/\$new_name"
         done
     fi
