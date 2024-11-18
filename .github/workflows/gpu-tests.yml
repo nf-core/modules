@@ -1,0 +1,71 @@
+name: Run GPU nf-tests
+on:
+  push:
+    branches:
+      # https://docs.renovatebot.com/key-concepts/automerge/#branch-vs-pr-automerging
+      - "renovate/**" # branches Renovate creates
+  pull_request:
+    branches: [master]
+    paths:
+      - ".github/workflows/gpu-tests.yml"
+      - "modules/nf-core/parabricks/**"
+  merge_group:
+    types: [checks_requested]
+    branches: [master]
+  workflow_dispatch:
+    inputs:
+      runners:
+        description: "Runners to test on"
+        type: choice
+        options:
+          - "ubuntu-latest"
+          - "self-hosted"
+        default: "self-hosted"
+
+# Cancel if a newer run is started
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  NFT_VER: "0.9.2"
+  NXF_ANSI_LOG: false
+  NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
+  NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
+  NXF_VER: "24.04.4"
+
+jobs:
+  nf-test-gpu:
+    runs-on: "gpu"
+    name: "GPU | ${{ matrix.tags}} | ${{ matrix.profile }} | ${{ matrix.shard }}"
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2]
+        profile: [docker_self_hosted, singularity] # conda?
+        # TODO Pass these in from GitHub PR trigger events
+        tags:
+          - parabricks/applybqsr
+          - parabricks/fq2bam
+          - parabricks/fq2bammeth
+    env:
+      NXF_ANSI_LOG: false
+      TOTAL_SHARDS: 2
+
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          fetch-depth: 0
+      - name: Run nf-test Action
+        uses: ./.github/actions/nf-test-action
+        env:
+          SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
+          SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
+          SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
+          SENTIEON_AUTH_MECH: "GitHub Actions - token"
+        with:
+          profile: ${{ matrix.profile }},gpu
+          shard: ${{ matrix.shard }}
+          total_shards: ${{ env.TOTAL_SHARDS }}
+          tags: ${{matrix.tags}},gpu
