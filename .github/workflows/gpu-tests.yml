@@ -43,14 +43,12 @@ jobs:
       fail-fast: false
       matrix:
         shard: [1, 2]
+        profile: [docker_self_hosted, singularity] # conda?
         # TODO Pass these in from GitHub PR trigger events
-        include:
-          - tags: parabricks/applybqsr
-            profile: [docker_self_hosted, singularity]
-          - tags: parabricks/fq2bam
-            profile: [docker_self_hosted, singularity]
-          - tags: parabricks/fq2bammeth
-            profile: [docker_self_hosted, singularity]
+        tags:
+          - parabricks/applybqsr
+          - parabricks/fq2bam
+          - parabricks/fq2bammeth
     env:
       NXF_ANSI_LOG: false
       TOTAL_SHARDS: 2
