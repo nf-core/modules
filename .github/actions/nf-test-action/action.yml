@@ -77,7 +77,7 @@ runs:
           --tap=test.tap \
           --verbose \
           --ci \
-          --changed-since HEAD^ \
+          # FIXME this doesn't work with a path? --changed-since HEAD^ \
           --shard ${{ inputs.shard }}/${{ inputs.total_shards }} \
           --filter process,workflow \
           --follow-dependencies \
