@@ -1,7 +1,7 @@
 process PRESEQ_LCEXTRAP {
     tag "$meta.id"
     label 'process_single'
-    label 'error_retry'
+    label 'error_ignore'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
