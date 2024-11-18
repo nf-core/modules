@@ -28,6 +28,8 @@ env:
   NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
   NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # renovate: datasource=github-releases depName=nextflow-io/nextflow versioning=semver
+  NXF_VERSION: "24.10.1"
 
 jobs:
   pytest-changes:
@@ -263,6 +265,8 @@ jobs:
 
       - name: Setup Nextflow
         uses: nf-core/setup-nextflow@v2
+        with:
+          version: ${{ env.NXF_VERSION }}
 
       - name: Setup apptainer
         if: matrix.profile == 'singularity'
