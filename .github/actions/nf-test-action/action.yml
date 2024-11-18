@@ -63,8 +63,8 @@ runs:
         python -m pip install cryptography
         nextflow secrets set SENTIEON_AUTH_DATA $(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "$SENTIEON_ENCRYPTION_KEY" --message "$SENTIEON_LICENSE_MESSAGE")
 
-      # TODO If conda-fail.yml exists and matrix = conda skip
-      # Really we need in-verse tag selection https://github.com/askimed/nf-test/issues/260
+      # TODO Skip failing conda tests and document their failures
+      # https://github.com/nf-core/modules/issues/7017
     - name: Run nf-test
       shell: bash
       env:
@@ -82,8 +82,6 @@ runs:
           --filter process,workflow \
           --follow-dependencies \
           ${{ inputs.path }}
-
-      # TODO If matrix == conda create a conda-fail.yml and commit it
 
       # TODO If no test.tap, then make one to spoof?
     - uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
