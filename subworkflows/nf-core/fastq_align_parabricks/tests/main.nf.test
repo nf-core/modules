@@ -3,6 +3,7 @@ nextflow_workflow {
     name "Test Subworkflow FASTQ_ALIGN_PARABRICKS"
     script "../main.nf"
     workflow "FASTQ_ALIGN_PARABRICKS"
+    config "./lowmem.config"
 
     tag "subworkflows"
     tag "subworkflows_nfcore"
@@ -12,8 +13,6 @@ nextflow_workflow {
     tag "parabricks/applybqsr"
     tag "bwa"
     tag "bwa/index"
-
-    config "./lowmem.config"
 
     setup {
         run("BWA_INDEX") {
@@ -29,7 +28,7 @@ nextflow_workflow {
         }
     }
 
-    test("sarscov2 - fastq.gz - single end") {
+    test("sarscov2 single-end [fastq_gz]") {
 
         when {
             workflow {
@@ -37,16 +36,16 @@ nextflow_workflow {
                 input[0] = Channel.of([
                         [ id:'test', single_end:true ],
                         [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
-                        ])
+                ])
                 input[1] = Channel.value([
                         [id: 'reference'],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                        ])
+                ])
                 input[2] = BWA_INDEX.out.index
                 input[3] = Channel.value([
                         [id: 'intervals'],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/baits.interval_list', checkIfExists: true)
-                        ])
+                ])
                 input[4] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
                 """
             }
@@ -56,35 +55,36 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(
-                    bam(workflow.out.bam[0][1]).getReadsMD5(),
-                    file(workflow.out.bai[0][1]).name,
+                    workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
+                    workflow.out.bai.collect { meta, bai -> file(bai).name },
                     workflow.out.versions
-                    ).match() 
+                    ).match()
                 }
             )
         }
     }
 
-    test("sarscov2 - fastq.gz - paired end") {
+    test("sarscov2 paired-end [fastq_gz]") {
 
         when {
             workflow {
                 """
-                input[0] = Channel.of([[ id:'test', single_end:false ],
+                input[0] = Channel.of([
+                        [ id:'test', single_end:false ],
                         [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                         ]
-                        ])
+                ])
                 input[1] = Channel.value([
                         [id: 'reference'],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                        ])
+                ])
                 input[2] = BWA_INDEX.out.index
                 input[3] = Channel.value([
                         [id: 'intervals'],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/baits.interval_list', checkIfExists: true)
-                        ])
+                ])
                 input[4] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
                 """
             }
@@ -94,10 +94,10 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(
-                    bam(workflow.out.bam[0][1]).getReadsMD5(),
-                    file(workflow.out.bai[0][1]).name,
+                    workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
+                    workflow.out.bai.collect { meta, bai -> file(bai).name },
                     workflow.out.versions
-                    ).match() 
+                    ).match()
                 }
             )
         }

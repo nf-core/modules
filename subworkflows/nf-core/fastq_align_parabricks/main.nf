@@ -1,7 +1,6 @@
 //
 // Alignment and BQSR with Nvidia CLARA Parabricks
 //
-
 include { PARABRICKS_FQ2BAM    } from '../../../modules/nf-core/parabricks/fq2bam/main'
 include { PARABRICKS_APPLYBQSR } from '../../../modules/nf-core/parabricks/applybqsr/main'
 
@@ -15,34 +14,41 @@ workflow FASTQ_ALIGN_PARABRICKS {
     ch_known_sites // channel [optional for parabricks] known_sites_indels
 
     main:
-    ch_versions = Channel.empty()
-    ch_bam = Channel.empty()
-    ch_bai = Channel.empty()
-    ch_bqsr_table = Channel.empty()
-    ch_qc_metrics = Channel.empty()
+    ch_versions          = Channel.empty()
+    ch_bam               = Channel.empty()
+    ch_bai               = Channel.empty()
+    ch_bqsr_table        = Channel.empty()
+    ch_qc_metrics        = Channel.empty()
     ch_duplicate_metrics = Channel.empty()
 
-    PARABRICKS_FQ2BAM(ch_reads, ch_fasta, ch_index, ch_interval_file, ch_known_sites)
+    PARABRICKS_FQ2BAM(
+        ch_reads,
+        ch_fasta,
+        ch_index,
+        ch_interval_file,
+        ch_known_sites
+    )
 
     // Collecting FQ2BAM outputs
-    ch_qc_metrics = ch_qc_metrics.mix(PARABRICKS_FQ2BAM.out.qc_metrics)
-    ch_duplicate_metrics = ch_duplicate_metrics.mix(PARABRICKS_FQ2BAM.out.duplicate_metrics)
+    ch_bam               = PARABRICKS_FQ2BAM.out.bam
+    ch_bai               = PARABRICKS_FQ2BAM.out.bai
+    ch_qc_metrics        = PARABRICKS_FQ2BAM.out.qc_metrics
+    ch_bqsr_table        = PARABRICKS_FQ2BAM.out.bqsr_table
+    ch_duplicate_metrics = PARABRICKS_FQ2BAM.out.duplicate_metrics
+    ch_versions          = ch_versions.mix(PARABRICKS_FQ2BAM.out.versions)
 
     // Apply BQSR
     PARABRICKS_APPLYBQSR(
-        PARABRICKS_FQ2BAM.out.bam, 
-        PARABRICKS_FQ2BAM.out.bai,
-        PARABRICKS_FQ2BAM.out.bqsr_table,
-        ch_interval_file, 
+        ch_bam,
+        ch_bai,
+        ch_bqsr_table.ifEmpty([]),
+        ch_interval_file,
         ch_fasta
-        )
-
-    ch_versions = ch_versions.mix(PARABRICKS_FQ2BAM.out.versions)
+    )
     ch_versions = ch_versions.mix(PARABRICKS_APPLYBQSR.out.versions)
 
     emit:
-    bam = PARABRICKS_APPLYBQSR.out.bam      // channel: [ [meta], bam ]
-    bai = PARABRICKS_APPLYBQSR.out.bai      // channel: [ [meta], bai ]
+    bam      = PARABRICKS_APPLYBQSR.out.bam // channel: [ [meta], bam ]
+    bai      = PARABRICKS_APPLYBQSR.out.bai // channel: [ [meta], bai ]
     versions = ch_versions                  // channel: [ versions.yml ]
-
 }
