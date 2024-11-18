@@ -38,7 +38,7 @@ env:
 jobs:
   nf-test-gpu:
     runs-on: "gpu"
-    name: "GPU | ${{ matrix.profile }} | ${{ matrix.shard }}"
+    name: "GPU | ${{ matrix.tags}} | ${{ matrix.profile }} | ${{ matrix.shard }}"
     strategy:
       fail-fast: false
       matrix:
