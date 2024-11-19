@@ -34,6 +34,8 @@ nextflow_process {
     test("sarscov2 - fasta - stub") {
 
         options "-stub"
+        tag "version"
+        tag "stub"
 
         when {
             process {
@@ -48,7 +50,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out).match() },
+                { assert snapshot(path(process.out.versions.get(0)).yaml).match("versions") },
             )
         }
 

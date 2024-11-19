@@ -82,10 +82,10 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     ch_versions = ch_versions.mix(HMMER_HMMALIGNQUERY.out.versions)
 
     // 1.d Mask the alignments (Add '--rf-is-mask' ext.args in config for the process.)
-    HMMER_MASKREF ( HMMER_HMMALIGNREF.out.sthlm.map { [ it[0], it[1], [], [], [], [], [], [] ] }, [] )
+    HMMER_MASKREF ( HMMER_HMMALIGNREF.out.sto.map { [ it[0], it[1], [], [], [], [], [], [] ] }, [] )
     ch_versions = ch_versions.mix(HMMER_MASKREF.out.versions)
 
-    HMMER_MASKQUERY ( HMMER_HMMALIGNQUERY.out.sthlm.map { [ it[0], it[1], [], [], [], [], [], [] ] }, [] )
+    HMMER_MASKQUERY ( HMMER_HMMALIGNQUERY.out.sto.map { [ it[0], it[1], [], [], [], [], [], [] ] }, [] )
     ch_versions = ch_versions.mix(HMMER_MASKQUERY.out.versions)
 
     // 1.e Reformat alignments to "afa" (aligned fasta)
