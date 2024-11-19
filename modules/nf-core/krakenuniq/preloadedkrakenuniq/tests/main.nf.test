@@ -50,7 +50,7 @@ nextflow_process {
 
         then {
             def reports = process.out.report.get(0).get(1).collect { report -> file(report).name }
-            def expected = ['sample_1.krakenuniq.report.txt', 'sample.2.krakenuniq.report.txt']
+            def expected = ['sample_1.se.krakenuniq.report.txt', 'sample.2.se.krakenuniq.report.txt']
 
             assertAll (
                 { assert process.success },
@@ -94,7 +94,7 @@ nextflow_process {
 
         then {
             def reports = process.out.report.get(0).get(1).collect { report -> file(report).name }
-            def expected = ['sample_1.krakenuniq.report.txt', 'sample.2.krakenuniq.report.txt']
+            def expected = ['sample_1.se.krakenuniq.report.txt', 'sample.2.se.krakenuniq.report.txt']
 
             assertAll (
                 { assert process.success },
@@ -140,7 +140,7 @@ nextflow_process {
 
         then {
             def reports = process.out.report.get(0).get(1).collect { report -> file(report).name }
-            def expected = ['sample_1.krakenuniq.report.txt', 'sample.2.krakenuniq.report.txt']
+            def expected = ['sample_1.pe.krakenuniq.report.txt', 'sample.2.pe.krakenuniq.report.txt']
 
             assertAll (
                 { assert process.success },
@@ -186,7 +186,7 @@ nextflow_process {
 
         then {
             def reports = process.out.report.get(0).get(1).collect { report -> file(report).name }
-            def expected = ['sample_1.krakenuniq.report.txt', 'sample.2.krakenuniq.report.txt']
+            def expected = ['sample_1.se.krakenuniq.report.txt', 'sample.2.se.krakenuniq.report.txt']
 
             assertAll (
                 { assert process.success },
@@ -232,7 +232,7 @@ nextflow_process {
 
         then {
             def reports = process.out.report.get(0).get(1).collect { report -> file(report).name }
-            def expected = ['sample_1.krakenuniq.report.txt', 'sample.2.krakenuniq.report.txt']
+            def expected = ['sample_1.se.krakenuniq.report.txt', 'sample.2.se.krakenuniq.report.txt']
 
             assertAll (
                 { assert process.success },
@@ -280,7 +280,7 @@ nextflow_process {
 
         then {
             def reports = process.out.report.get(0).get(1).collect { report -> file(report).name }
-            def expected = ['sample_1.krakenuniq.report.txt', 'sample.2.krakenuniq.report.txt']
+            def expected = ['sample_1.pe.krakenuniq.report.txt', 'sample.2.pe.krakenuniq.report.txt']
 
             assertAll (
                 { assert process.success },
