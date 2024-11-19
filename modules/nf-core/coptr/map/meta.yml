@@ -1,7 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "coptr_map"
-description: write your description here
+description: Maps the reads to the reference database
 keywords:
   - coptr
   - mapping
@@ -48,7 +48,7 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.bam":
           type: file
-          description: BAM file
+          description: Alignment (BAM) file of reads mapped to the reference database
           pattern: "*.{bam}"
           ontologies:
             - edam: "http://edamontology.org/format_2572"
