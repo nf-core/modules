@@ -20,10 +20,6 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     task.ext.when == null || task.ext.when
 
     script:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "GATK4_POSTPROCESSGERMLINECNVCALLS module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def calls_command  = calls   ? calls.collect{"--calls-shard-path $it"}.join(' ')  : ""
@@ -57,10 +53,6 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     """
 
     stub:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "GATK4_POSTPROCESSGERMLINECNVCALLS module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_genotyped_intervals.vcf.gz

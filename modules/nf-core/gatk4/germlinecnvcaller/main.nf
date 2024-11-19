@@ -20,10 +20,6 @@ process GATK4_GERMLINECNVCALLER {
     task.ext.when == null || task.ext.when
 
     script:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "GATK4_GERMLINECNVCALLER module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def intervals_command = intervals ? "--intervals ${intervals}"         : ""
@@ -61,10 +57,6 @@ process GATK4_GERMLINECNVCALLER {
     """
 
     stub:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "GATK4_GERMLINECNVCALLER module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}-cnv-calls/${prefix}-calls
