@@ -29,7 +29,7 @@ output:
       - "*.h5ad":
           type: file
           description: |
-            AnnData file containing all cells with barcodes that match those in the input barcodes csv file
+            AnnData file containing cells with barcodes exceeding 0.5 posterior cell probability determined by cellbender remove-backgroud
           pattern: "*.h5ad"
   - versions:
       - versions.yml:
