@@ -1,0 +1,63 @@
+// nf-core modules test regtools/junctionsextract
+nextflow_process {
+
+    name "Test Process REGTOOLS_JUNCTIONSEXTRACT"
+    script "../main.nf"
+    process "REGTOOLS_JUNCTIONSEXTRACT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "regtools"
+    tag "regtools/junctionsextract"
+
+    test("homo_sapiens - bam-bai") {
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test_rna_paired_end_sorted_chr6_bam'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_rna_paired_end_sorted_chr6_bam_bai'], checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.junc).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - bam-bai - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test_rna_paired_end_sorted_chr6_bam'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_rna_paired_end_sorted_chr6_bam_bai'], checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.junc).match() }
+            )
+        }
+
+    }
+
+}
