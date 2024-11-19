@@ -1,6 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "cellbender_empty_droplet_removal"
-description: Remove empty droplet Cellbender features including background noise removal and empty droplet detection
+description: Use features of Cellbender to remove background noise and empty droplet
 keywords:
   - scdownstream
   - cellbender
@@ -9,35 +8,28 @@ components:
   - cellbender/removebackground
   - anndata/barcodes
 input:
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test' ]
-    - h5ad:
-        type: file
-        description: AnnData file of unfiltered data 
-        pattern: "*.h5ad"  
+  - ch_unfiltered:
+      type: file
+      description: |
+        The input channel containing the unfiltered AnnData file to process
+        and remove background noise and empty droplets
+        Structure: [ val(meta), path(h5ad) ]
+      pattern: "*.h5ad"
 output:
   - h5ad:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test' ]
-          pattern: "*.h5ad"
-      - "*.h5ad":
-          type: file
-          description: |
-            AnnData file containing cells with barcodes exceeding 0.5 posterior cell probability determined by cellbender remove-backgroud
-          pattern: "*.h5ad"
+      description: |
+        Background and empty droplet removed AnnData file containing cells with
+        barcodes exceeding 0.5 posterior cell probability determined by the
+        cellbender's remove-background
+        Structure: [ val(meta), path(h5ad) ]
+      pattern: "*.h5ad"
   - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+      type: file
+      description: |
+        File containing software versions
+      pattern: "versions.yml"
 authors:
   - "@nictru"
-  - "@chaochaowong"        
+  - "@chaochaowong"
 maintainers:
   - "@nictru"
