@@ -30,12 +30,12 @@ concurrency:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # renovate: datasource=github-releases depName=askimed/nf-test versioning=semver
-  NFTEST_VERSION: "0.9.2"
+  NFT_VER: "0.9.2"
   NXF_ANSI_LOG: false
   NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
   NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
   # renovate: datasource=github-releases depName=nextflow-io/nextflow versioning=semver
-  NXF_VERSION: "24.10.1"
+  NXF_VER: "24.10.1"
 
 jobs:
   nf-test-gpu:
