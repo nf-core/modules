@@ -61,12 +61,6 @@ jobs:
           n_parents: 2
           tags: "gpu"
 
-      - name: Exit early if no changes
-        if: ${{ fromJSON(steps.list.outputs.components) == '[]' }}
-        run: |
-          echo "No GPU test changes detected - skipping tests"
-          exit 0
-
       - name: Separate modules and subworkflows
         id: outputs
         run: |
@@ -81,7 +75,7 @@ jobs:
   nf-test-gpu:
     runs-on: "gpu"
     needs: nf-test-changes
-    if: ${{ fromJSON(needs.nf-test-changes.outputs.modules) != '[]' || fromJSON(needs.nf-test-changes.outputs.subworkflows) != '[]' }}
+    if: ${{ fromJSON(needs.nf-test-changes.outputs.paths) != '[]' || needs.nf-test-changes.outputs.paths != '' }}
     name: "GPU | ${{ matrix.tags}} | ${{ matrix.profile }} | ${{ matrix.shard }}"
     strategy:
       fail-fast: false
