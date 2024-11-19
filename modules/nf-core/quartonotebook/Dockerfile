@@ -1,7 +1,7 @@
 #
 # First stage: Quarto installation
 #
-FROM ubuntu:20.04 as quarto
+FROM ubuntu:24.04 as quarto
 ARG QUARTO_VERSION=1.3.433
 ARG TARGETARCH
 RUN apt-get update \
