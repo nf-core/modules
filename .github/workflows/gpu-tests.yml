@@ -42,50 +42,39 @@ jobs:
     name: nf-test-changes
     runs-on: ubuntu-latest
     outputs:
-      # Expose detected tags as 'modules' and 'workflows' output variables
-      paths: ${{ steps.list.outputs.components }}
-      modules: ${{ steps.outputs.outputs.modules }}
-      subworkflows: ${{ steps.outputs.outputs.subworkflows}}
-      # Prod for version bumping
+      shards: ${{ steps.get-shards.outputs.shards }}
+      total_shards: ${{ steps.get-shards.outputs.total_shards }}
+      tags: ${{ steps.get-shards.outputs.tags }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           fetch-depth: 0
 
-      - name: List nf-test files
-        id: list
-        uses: adamrtalbot/detect-nf-test-changes@e114e734c3bfa4599151087dcbc457ff38e5bf2c
-        with:
-          head: ${{ github.sha }}
-          base: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
-          n_parents: 2
-          tags: "gpu"
+      - name: get number of shards
+        id: get-shards
+        uses: ./.github/actions/number-of-shards
+        env:
+          NFT_VER: ${{ env.NFT_VER }}
 
-      - name: Separate modules and subworkflows
-        id: outputs
+      - name: list changes
         run: |
-          echo modules=$(echo '${{ steps.list.outputs.components }}' | jq -c '. | map(select(contains("modules"))) | map(gsub("modules/nf-core/"; ""))') >> $GITHUB_OUTPUT
-          echo subworkflows=$(echo '${{ steps.list.outputs.components }}' | jq '. | map(select(contains("subworkflows"))) | map(gsub("subworkflows/nf-core/"; ""))') >> $GITHUB_OUTPUT
-      - name: debug
-        run: |
-          echo ${{ steps.filter.outputs.components }}
-          echo ${{ steps.outputs.outputs.modules }}
-          echo ${{ steps.outputs.outputs.subworkflows }}
+          echo shards = ${{ steps.get-shards.outputs.shards }}
+          echo num_shards = ${{ steps.get-shards.outputs.total_shards }}
 
   nf-test-gpu:
     runs-on: "gpu"
     needs: nf-test-changes
-    if: ${{ fromJSON(needs.nf-test-changes.outputs.paths) != '[]' || needs.nf-test-changes.outputs.paths != '' }}
+    if: ${{ fromJSON(needs.nf-test-changes.outputs.total_shards) > 0 }}
     name: "GPU | ${{ matrix.tags}} | ${{ matrix.profile }} | ${{ matrix.shard }}"
     strategy:
       fail-fast: false
       matrix:
-        shard: [1, 2]
+        shard: ${{ needs.nf-test-changes.outputs.shards }}
         profile: [docker_self_hosted, singularity] # conda?
-        tags: ${{ fromJSON(needs.nf-test-changes.outputs.modules) && fromJSON(needs.nf-test-changes.outputs.subworkflows) }}
+        tags: ${{ needs.nf-test-changes.outputs.tags }}
     env:
       NXF_ANSI_LOG: false
-      TOTAL_SHARDS: 2
+      TOTAL_SHARDS: ${{ needs.nf-test-changes.outputs.total_shards }}
 
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
