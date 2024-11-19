@@ -45,7 +45,7 @@ jobs:
       fail-fast: false
       matrix:
         shard: [1, 2]
-        profile: [docker_self_hosted, singularity] # conda?
+        profile: [docker_self_hosted, singularity] # TODO conda https://github.com/nf-core/modules/issues/7018#issuecomment-2486119169
         # TODO Pass these in from GitHub PR trigger events
         tags:
           - parabricks/applybqsr

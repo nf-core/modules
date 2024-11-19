@@ -54,7 +54,8 @@ jobs:
         # NOTE We could split these, but there's probably going to be more process tests than workflow tests, so we're just going to combine them all and bump up the shards for now
         # NOTE The name of the test would be name: "${{ matrix.filter }} | ${{ matrix.profile }} | ${{ matrix.shard }}"
         # filter: [process, workflow]
-        profile: [conda, docker_self_hosted, singularity]
+        # TODO Add conda https://github.com/nf-core/modules/issues/7018#issuecomment-2486119169
+        profile: [docker_self_hosted, singularity]
         shard: [1, 2, 3, 4, 5]
     env:
       # FIXME Bumping them up to make the transition smooth, then we can throttle them back
