@@ -38,19 +38,50 @@ env:
   NXF_VERSION: "24.10.1"
 
 jobs:
+  nf-test-changes:
+    name: nf-test-changes
+    runs-on: ubuntu-latest
+    outputs:
+      # Expose detected tags as 'modules' and 'workflows' output variables
+      paths: ${{ steps.list.outputs.components }}
+      modules: ${{ steps.outputs.outputs.modules }}
+      subworkflows: ${{ steps.outputs.outputs.subworkflows}}
+      # Prod for version bumping
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          fetch-depth: 0
+
+      - name: List nf-test files
+        id: list
+        uses: adamrtalbot/detect-nf-test-changes@e114e734c3bfa4599151087dcbc457ff38e5bf2c
+        with:
+          head: ${{ github.sha }}
+          base: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
+          n_parents: 2
+          tags: "gpu"
+
+      - name: Separate modules and subworkflows
+        id: outputs
+        run: |
+          echo modules=$(echo '${{ steps.list.outputs.components }}' | jq -c '. | map(select(contains("modules"))) | map(gsub("modules/nf-core/"; ""))') >> $GITHUB_OUTPUT
+          echo subworkflows=$(echo '${{ steps.list.outputs.components }}' | jq '. | map(select(contains("subworkflows"))) | map(gsub("subworkflows/nf-core/"; ""))') >> $GITHUB_OUTPUT
+      - name: debug
+        run: |
+          echo ${{ steps.filter.outputs.components }}
+          echo ${{ steps.outputs.outputs.modules }}
+          echo ${{ steps.outputs.outputs.subworkflows }}
+
   nf-test-gpu:
     runs-on: "gpu"
+    needs: nf-test-changes
     name: "GPU | ${{ matrix.tags}} | ${{ matrix.profile }} | ${{ matrix.shard }}"
     strategy:
       fail-fast: false
       matrix:
         shard: [1, 2]
         profile: [docker_self_hosted, singularity] # conda?
-        # TODO Pass these in from GitHub PR trigger events
-        tags:
-          - parabricks/applybqsr
-          - parabricks/fq2bam
-          - parabricks/fq2bammeth
+        tags: ${{ fromJSON(needs.nf-test-changes.outputs.modules) && fromJSON(needs.nf-test-changes.outputs.subworkflows) }}
     env:
       NXF_ANSI_LOG: false
       TOTAL_SHARDS: 2
