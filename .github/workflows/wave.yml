@@ -10,8 +10,12 @@ on:
 # TODO Skip testing CI if any changes to environment.yml
 
 env:
-  WAVE_VER: "1.5.0"
-  NFTEST_VER: "0.9.1"
+  # renovate: datasource=github-releases depName=seqeralabs/wave-cli versioning=semver
+  WAVE_VERSION: "1.5.0"
+  # renovate: datasource=github-releases depName=askimed/nf-test versioning=semver
+  NFTEST_VERSION: "0.9.1"
+  # renovate: datasource=github-releases depName=nextflow/nextflow versioning=semver
+  NXF_VERSION: "24.10.1"
 
 jobs:
   generate-matrix:
@@ -62,8 +66,8 @@ jobs:
 
       - name: Install wave-cli
         run: |
-          wget -q https://github.com/seqeralabs/wave-cli/releases/download/v${WAVE_VER}/wave-${WAVE_VER}-linux-x86_64
-          sudo mv wave-${WAVE_VER}-linux-x86_64 /usr/local/bin/wave
+          wget -q https://github.com/seqeralabs/wave-cli/releases/download/v${WAVE_VERSION}/wave-${WAVE_VERSION}-linux-x86_64
+          sudo mv wave-${WAVE_VERSION}-linux-x86_64 /usr/local/bin/wave
           chmod +x /usr/local/bin/wave
 
       - name: Build ${{ matrix.profile }} container
@@ -98,8 +102,8 @@ jobs:
 
       - name: Install wave-cli
         run: |
-          wget -q https://github.com/seqeralabs/wave-cli/releases/download/v${WAVE_VER}/wave-${WAVE_VER}-linux-x86_64
-          sudo mv wave-${WAVE_VER}-linux-x86_64 /usr/local/bin/wave
+          wget -q https://github.com/seqeralabs/wave-cli/releases/download/v${WAVE_VERSION}/wave-${WAVE_VERSION}-linux-x86_64
+          sudo mv wave-${WAVE_VERSION}-linux-x86_64 /usr/local/bin/wave
           chmod +x /usr/local/bin/wave
 
       - name: Create a registry name
@@ -139,7 +143,7 @@ jobs:
 
   #     - uses: nf-core/setup-nf-test@v1
   #       with:
-  #         version: ${{ env.NFTEST_VER }}
+  #         version: ${{ env.NFTEST_VERSION }}
 
   #     - name: Bump Snapshot Versions
   #       env:
