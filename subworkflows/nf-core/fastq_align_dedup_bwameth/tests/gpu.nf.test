@@ -5,6 +5,7 @@ nextflow_workflow {
     workflow "FASTQ_ALIGN_DEDUP_BWAMETH"
     config "./nextflow.config"
 
+    tag "gpu"
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "subworkflows/fastq_align_dedup_bwameth"
