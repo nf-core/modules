@@ -10,15 +10,15 @@ nextflow_workflow {
     tag "cellbender/removebackground"
     tag "anndata/barcodes"
 
-    test("scdownstream - h5ad") {
+    test("test_cellbender_empty_droplet_removal") {
 
         when {
             workflow {
                 """
-                input[0] = [
+                input[0] = Channel.of([
                     [ id:'test' ], // meta map
                     file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_raw_matrix_5k.h5ad", checkIfExists: true)
-                ]
+                ])
                 """
             }
         }
