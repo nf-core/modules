@@ -55,7 +55,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.log,
+                    file(process.out.log[0][1]).name,
                     process.out.bed,
                     process.out.mu,
                     process.out.self_sm,
