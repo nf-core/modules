@@ -12,7 +12,7 @@ process REGTOOLS_JUNCTIONSEXTRACT {
 
     output:
     tuple val(meta), path("*.junc"), emit: junc
-    path "versions.yml"           , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,7 +33,6 @@ process REGTOOLS_JUNCTIONSEXTRACT {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.junc
