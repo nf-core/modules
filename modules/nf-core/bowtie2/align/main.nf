@@ -11,8 +11,8 @@ process BOWTIE2_ALIGN {
     tuple val(meta) , path(reads)
     tuple val(meta2), path(index)
     tuple val(meta3), path(fasta)
-    val   save_unaligned
-    val   sort_bam
+    val save_unaligned
+    val sort_bam
 
     output:
     tuple val(meta), path("*.sam")      , emit: sam     , optional:true
@@ -28,27 +28,26 @@ process BOWTIE2_ALIGN {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ""
-    def args2 = task.ext.args2 ?: ""
+    def args   = task.ext.args ?: ""
+    def args2  = task.ext.args2 ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def unaligned = ""
+    def unaligned  = ""
     def reads_args = ""
     if (meta.single_end) {
-        unaligned = save_unaligned ? "--un-gz ${prefix}.unmapped.fastq.gz" : ""
+        unaligned  = save_unaligned ? "--un-gz ${prefix}.unmapped.fastq.gz" : ""
         reads_args = "-U ${reads}"
     } else {
-        unaligned = save_unaligned ? "--un-conc-gz ${prefix}.unmapped.fastq.gz" : ""
+        unaligned  = save_unaligned ? "--un-conc-gz ${prefix}.unmapped.fastq.gz" : ""
         reads_args = "-1 ${reads[0]} -2 ${reads[1]}"
     }
 
-    def samtools_command = sort_bam ? 'sort' : 'view'
+    def samtools_command  = sort_bam ? 'sort' : 'view'
     def extension_pattern = /(--output-fmt|-O)+\s+(\S+)/
-    def extension_matcher =  (args2 =~ extension_pattern)
-    def extension = extension_matcher.getCount() > 0 ? extension_matcher[0][2].toLowerCase() : "bam"
-    def reference = fasta && extension=="cram"  ? "--reference ${fasta}" : ""
+    def extension_matcher = (args2 =~ extension_pattern)
+    def extension         = extension_matcher.getCount() > 0 ? extension_matcher[0][2].toLowerCase() : "bam"
+    def reference         = fasta && extension == "cram"  ? "--reference ${fasta}" : ""
     if (!fasta && extension=="cram") error "Fasta reference is required for CRAM output"
-
     """
     INDEX=`find -L ./ -name "*.rev.1.bt2" | sed "s/\\.rev.1.bt2\$//"`
     [ -z "\$INDEX" ] && INDEX=`find -L ./ -name "*.rev.1.bt2l" | sed "s/\\.rev.1.bt2l\$//"`
@@ -84,27 +83,9 @@ process BOWTIE2_ALIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def extension_pattern = /(--output-fmt|-O)+\s+(\S+)/
     def extension = (args2 ==~ extension_pattern) ? (args2 =~ extension_pattern)[0][2].toLowerCase() : "bam"
-    def create_unmapped = ""
-    if (meta.single_end) {
-        create_unmapped = save_unaligned ? "touch ${prefix}.unmapped.fastq.gz" : ""
-    } else {
-        create_unmapped = save_unaligned ? "touch ${prefix}.unmapped_1.fastq.gz && touch ${prefix}.unmapped_2.fastq.gz" : ""
-    }
-    def reference = fasta && extension=="cram"  ? "--reference ${fasta}" : ""
-    if (!fasta && extension=="cram") error "Fasta reference is required for CRAM output"
-
-    def create_index = ""
-    if (extension == "cram") {
-        create_index = "touch ${prefix}.crai"
-    } else if (extension == "bam") {
-        create_index = "touch ${prefix}.csi"
-    }
-
     """
     touch ${prefix}.${extension}
-    ${create_index}
     touch ${prefix}.bowtie2.log
-    ${create_unmapped}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

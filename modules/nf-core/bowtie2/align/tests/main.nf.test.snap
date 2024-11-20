@@ -1,7 +1,191 @@
 {
-    "sarscov2 - [fastq1, fastq2], large_index, fasta, false, false - bam": {
+    "sarscov2 | illumina | single-end [fastq] | [sam]-2": {
         "content": [
-            "test.bam",
+            [
+                [
+                    "ERR5069949.2151832\t16\tMT192765.1\t17453\t42\t150M\t*\t0\t0\tACGCACATTGCTAACTAAGGGCACACTAGAACCAGAATATTTCAATTCAGTGTGTAGACTTATGAAAACTATAGGTCCAGACATGTTCCTCGGAACTTGTCGGCGTTGTCCTGCTGAAATTGTTGACACTGTGAGTGCTTTGGTTTATGA\tAAAA<EEEEEEAEEEAEAAAAEEEEEEEEEAAAEE<EEEEEAAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEAAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAAAAAA\tAS:i:0\tXN:i:0\tXM:i:0\tXO:i:0\tXG:i:0\tNM:i:0\tMD:Z:150\tYT:Z:UU",
+                    "ERR5069949.576388\t16\tMT192765.1\t5798\t42\t77M\t*\t0\t0\tGCATAGACGGTGCTTTACTTACAAAGTCCTCAGAATACAAAGGTCCTATTACGGATGTTTTCTACAAAGAAAACAGT\tEA/AEEE/<EEEEEEEEEEEAA<EEEEEEEEEEEEEEEEEEEEEAEEEEEAEEEAEE6/EEEAEEEEEEEEEA6AAA\tAS:i:0\tXN:i:0\tXM:i:0\tXO:i:0\tXG:i:0\tNM:i:0\tMD:Z:77\tYT:Z:UU",
+                    "ERR5069949.501486\t16\tMT192765.1\t5423\t42\t146M\t*\t0\t0\tTAGGTGAGTTAGGTGATGTTAGAGAAACAATGAGTTACTTGTTTCAACATGCCAATTTAGATTCTTGCAAAAGAGTCTTGAACGTGGTGTGTAAAACTTGTGGACAACAGCAGACAACCCTTAAGGGTGTAGAAGCTGTTATGTAC\tEAAAAEAEEEE6E<AEEEEEEEE<EEEEEEAAEE/EEEEEE/<EEEEEEAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEEEEEEEAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAAAAA\tAS:i:0\tXN:i:0\tXM:i:0\tXO:i:0\tXG:i:0\tNM:i:0\tMD:Z:146\tYT:Z:UU",
+                    "ERR5069949.1331889\t0\tMT192765.1\t13010\t42\t132M\t*\t0\t0\tGTCTACAAGCTGGTAATGCAACAGAAGTGCCTGCCAATTCAACTGTATTATCTTTCTGTGCTTTTGCTGTAGATGCTGCTAAAGCTTACAAAGATTATCTAGCTAGTGGGGGACAACCAATCACTAATTGTG\tA/AAAEEEEEEEEEEEEEEEEEEEAEEEEAEEEEEEEEEEEAEEEEEEEEEEEEEEE/EEEEE<AEAEEEEE/EAEAEEE/AEEEEEEEEEEEEEEEEEEEEAE/EEEEEEEEEEEEEEEEEEEEEEEA<EE\tAS:i:0\tXN:i:0\tXM:i:0\tXO:i:0\tXG:i:0\tNM:i:0\tMD:Z:132\tYT:Z:UU",
+                    "ERR5069949.2161340\t0\tMT192765.1\t17482\t42\t80M\t*\t0\t0\tAACCAGAATATTTCAATTCAGTGTGTAGACTTATGAAAACTATAGGTCCAGACATGTTCCTCGGAACTTGTCGGCGTTGT\tA/AA//EEAEA/E/AEEEE6EE/EEEA/6AEEEEEEEEE6EEEAEAEE//A/EEEEEE//E/E/A//E/E/<<EE</E/E\tAS:i:0\tXN:i:0\tXM:i:0\tXO:i:0\tXG:i:0\tNM:i:0\tMD:Z:80\tYT:Z:UU"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.bowtie2.log:md5,7b8a9e61b7646da1089b041333c41a87"
+                ]
+            ],
+            [
+                
+            ],
+            [
+                "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.1"
+        },
+        "timestamp": "2024-11-20T10:52:43.518636718"
+    },
+    "sarscov2 | illumina | single-end [fastq] | save_unaligned | [bam]": {
+        "content": [
+            [
+                "798439cbd7fd81cbcc5078022dc5479d"
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.bowtie2.log:md5,7b8a9e61b7646da1089b041333c41a87"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.unmapped.fastq.gz:md5,d17d9a4ff728b6a6afa6203a746b7a01"
+                ]
+            ],
+            [
+                "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.1"
+        },
+        "timestamp": "2024-11-20T10:52:55.18488887"
+    },
+    "sarscov2 | illumina | single-end [fastq] | [sam]": {
+        "content": [
+            [
+                [
+                    "ERR5069949.2151832\t16\tMT192765.1\t17453\t42\t150M\t*\t0\t0\tACGCACATTGCTAACTAAGGGCACACTAGAACCAGAATATTTCAATTCAGTGTGTAGACTTATGAAAACTATAGGTCCAGACATGTTCCTCGGAACTTGTCGGCGTTGTCCTGCTGAAATTGTTGACACTGTGAGTGCTTTGGTTTATGA\tAAAA<EEEEEEAEEEAEAAAAEEEEEEEEEAAAEE<EEEEEAAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEAAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAAAAAA\tAS:i:0\tXN:i:0\tXM:i:0\tXO:i:0\tXG:i:0\tNM:i:0\tMD:Z:150\tYT:Z:UU",
+                    "ERR5069949.576388\t16\tMT192765.1\t5798\t42\t77M\t*\t0\t0\tGCATAGACGGTGCTTTACTTACAAAGTCCTCAGAATACAAAGGTCCTATTACGGATGTTTTCTACAAAGAAAACAGT\tEA/AEEE/<EEEEEEEEEEEAA<EEEEEEEEEEEEEEEEEEEEEAEEEEEAEEEAEE6/EEEAEEEEEEEEEA6AAA\tAS:i:0\tXN:i:0\tXM:i:0\tXO:i:0\tXG:i:0\tNM:i:0\tMD:Z:77\tYT:Z:UU",
+                    "ERR5069949.501486\t16\tMT192765.1\t5423\t42\t146M\t*\t0\t0\tTAGGTGAGTTAGGTGATGTTAGAGAAACAATGAGTTACTTGTTTCAACATGCCAATTTAGATTCTTGCAAAAGAGTCTTGAACGTGGTGTGTAAAACTTGTGGACAACAGCAGACAACCCTTAAGGGTGTAGAAGCTGTTATGTAC\tEAAAAEAEEEE6E<AEEEEEEEE<EEEEEEAAEE/EEEEEE/<EEEEEEAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEEEEEEEAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAAAAA\tAS:i:0\tXN:i:0\tXM:i:0\tXO:i:0\tXG:i:0\tNM:i:0\tMD:Z:146\tYT:Z:UU",
+                    "ERR5069949.1331889\t0\tMT192765.1\t13010\t42\t132M\t*\t0\t0\tGTCTACAAGCTGGTAATGCAACAGAAGTGCCTGCCAATTCAACTGTATTATCTTTCTGTGCTTTTGCTGTAGATGCTGCTAAAGCTTACAAAGATTATCTAGCTAGTGGGGGACAACCAATCACTAATTGTG\tA/AAAEEEEEEEEEEEEEEEEEEEAEEEEAEEEEEEEEEEEAEEEEEEEEEEEEEEE/EEEEE<AEAEEEEE/EAEAEEE/AEEEEEEEEEEEEEEEEEEEEAE/EEEEEEEEEEEEEEEEEEEEEEEA<EE\tAS:i:0\tXN:i:0\tXM:i:0\tXO:i:0\tXG:i:0\tNM:i:0\tMD:Z:132\tYT:Z:UU",
+                    "ERR5069949.2161340\t0\tMT192765.1\t17482\t42\t80M\t*\t0\t0\tAACCAGAATATTTCAATTCAGTGTGTAGACTTATGAAAACTATAGGTCCAGACATGTTCCTCGGAACTTGTCGGCGTTGT\tA/AA//EEAEA/E/AEEEE6EE/EEEA/6AEEEEEEEEE6EEEAEAEE//A/EEEEEE//E/E/A//E/E/<<EE</E/E\tAS:i:0\tXN:i:0\tXM:i:0\tXO:i:0\tXG:i:0\tNM:i:0\tMD:Z:80\tYT:Z:UU"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.bowtie2.log:md5,7b8a9e61b7646da1089b041333c41a87"
+                ]
+            ],
+            [
+                
+            ],
+            [
+                "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.1"
+        },
+        "timestamp": "2024-11-20T10:52:32.45716929"
+    },
+    "sarscov2 | illumina | single-end [fastq] | [bam] - stub": {
+        "content": [
+            {
+                "0": [
+                    
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    
+                ],
+                "3": [
+                    
+                ],
+                "4": [
+                    
+                ],
+                "5": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bowtie2.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "6": [
+                    
+                ],
+                "7": [
+                    "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "crai": [
+                    
+                ],
+                "cram": [
+                    
+                ],
+                "csi": [
+                    
+                ],
+                "fastq": [
+                    
+                ],
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bowtie2.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "sam": [
+                    
+                ],
+                "versions": [
+                    "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.1"
+        },
+        "timestamp": "2024-11-20T10:53:43.154452014"
+    },
+    "sarscov2 | illumina | paired-end [fastq] | large index | sort | [bam]": {
+        "content": [
+            [
+                "68f2c53239ee7c9ba9e751cc112d4283"
+            ],
             [
                 [
                     {
@@ -19,19 +203,170 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.1"
         },
-        "timestamp": "2024-03-18T13:19:25.337323"
+        "timestamp": "2024-11-20T10:54:56.270083499"
     },
-    "sarscov2 - fastq, index, fasta, false, false - sam2": {
+    "sarscov2 | illumina | single-end [fastq] | save_unaligned | sort | [cram]": {
         "content": [
             [
-                "ERR5069949.2151832\t16\tMT192765.1\t17453\t42\t150M\t*\t0\t0\tACGCACATTGCTAACTAAGGGCACACTAGAACCAGAATATTTCAATTCAGTGTGTAGACTTATGAAAACTATAGGTCCAGACATGTTCCTCGGAACTTGTCGGCGTTGTCCTGCTGAAATTGTTGACACTGTGAGTGCTTTGGTTTATGA\tAAAA<EEEEEEAEEEAEAAAAEEEEEEEEEAAAEE<EEEEEAAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEAAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAAAAAA\tAS:i:0\tXN:i:0\tXM:i:0\tXO:i:0\tXG:i:0\tNM:i:0\tMD:Z:150\tYT:Z:UU",
-                "ERR5069949.576388\t16\tMT192765.1\t5798\t42\t77M\t*\t0\t0\tGCATAGACGGTGCTTTACTTACAAAGTCCTCAGAATACAAAGGTCCTATTACGGATGTTTTCTACAAAGAAAACAGT\tEA/AEEE/<EEEEEEEEEEEAA<EEEEEEEEEEEEEEEEEEEEEAEEEEEAEEEAEE6/EEEAEEEEEEEEEA6AAA\tAS:i:0\tXN:i:0\tXM:i:0\tXO:i:0\tXG:i:0\tNM:i:0\tMD:Z:77\tYT:Z:UU",
-                "ERR5069949.501486\t16\tMT192765.1\t5423\t42\t146M\t*\t0\t0\tTAGGTGAGTTAGGTGATGTTAGAGAAACAATGAGTTACTTGTTTCAACATGCCAATTTAGATTCTTGCAAAAGAGTCTTGAACGTGGTGTGTAAAACTTGTGGACAACAGCAGACAACCCTTAAGGGTGTAGAAGCTGTTATGTAC\tEAAAAEAEEEE6E<AEEEEEEEE<EEEEEEAAEE/EEEEEE/<EEEEEEAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEEEEEEEAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAAAAA\tAS:i:0\tXN:i:0\tXM:i:0\tXO:i:0\tXG:i:0\tNM:i:0\tMD:Z:146\tYT:Z:UU",
-                "ERR5069949.1331889\t0\tMT192765.1\t13010\t42\t132M\t*\t0\t0\tGTCTACAAGCTGGTAATGCAACAGAAGTGCCTGCCAATTCAACTGTATTATCTTTCTGTGCTTTTGCTGTAGATGCTGCTAAAGCTTACAAAGATTATCTAGCTAGTGGGGGACAACCAATCACTAATTGTG\tA/AAAEEEEEEEEEEEEEEEEEEEAEEEEAEEEEEEEEEEEAEEEEEEEEEEEEEEE/EEEEE<AEAEEEEE/EAEAEEE/AEEEEEEEEEEEEEEEEEEEEAE/EEEEEEEEEEEEEEEEEEEEEEEA<EE\tAS:i:0\tXN:i:0\tXM:i:0\tXO:i:0\tXG:i:0\tNM:i:0\tMD:Z:132\tYT:Z:UU",
-                "ERR5069949.2161340\t0\tMT192765.1\t17482\t42\t80M\t*\t0\t0\tAACCAGAATATTTCAATTCAGTGTGTAGACTTATGAAAACTATAGGTCCAGACATGTTCCTCGGAACTTGTCGGCGTTGT\tA/AA//EEAEA/E/AEEEE6EE/EEEA/6AEEEEEEEEE6EEEAEAEE//A/EEEEEE//E/E/A//E/E/<<EE</E/E\tAS:i:0\tXN:i:0\tXM:i:0\tXO:i:0\tXG:i:0\tNM:i:0\tMD:Z:80\tYT:Z:UU"
+                "test.cram"
+            ],
+            [
+                "test.cram.crai"
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.bowtie2.log:md5,7b8a9e61b7646da1089b041333c41a87"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.unmapped.fastq.gz:md5,d17d9a4ff728b6a6afa6203a746b7a01"
+                ]
+            ],
+            [
+                "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.1"
+        },
+        "timestamp": "2024-11-20T10:53:30.589283376"
+    },
+    "sarscov2 | illumina | paired-end [fastq] | [bam] - stub": {
+        "content": [
+            {
+                "0": [
+                    
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    
+                ],
+                "3": [
+                    
+                ],
+                "4": [
+                    
+                ],
+                "5": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bowtie2.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "6": [
+                    
+                ],
+                "7": [
+                    "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "crai": [
+                    
+                ],
+                "cram": [
+                    
+                ],
+                "csi": [
+                    
+                ],
+                "fastq": [
+                    
+                ],
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bowtie2.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "sam": [
+                    
+                ],
+                "versions": [
+                    "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.1"
+        },
+        "timestamp": "2024-11-20T10:54:08.182182038"
+    },
+    "sarscov2 | illumina | paired-end [fastq] | save_unaligned | [bam]": {
+        "content": [
+            [
+                "d7d929926bd03a799e4a42bc4c8dcdae"
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.bowtie2.log:md5,bd89ce1b28c93bf822bae391ffcedd19"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    [
+                        "test.unmapped_1.fastq.gz:md5,84b4ab15e6ffc9f29d0a3f1b79003744",
+                        "test.unmapped_2.fastq.gz:md5,40bbe14edd48a98cca6f53574b2198fd"
+                    ]
+                ]
+            ],
+            [
+                "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.1"
+        },
+        "timestamp": "2024-11-20T10:54:32.748193912"
+    },
+    "sarscov2 | illumina | single-end [fastq] | sort | [bam]": {
+        "content": [
+            [
+                "f571f4ff5b2007b74cc9a509dd990910"
             ],
             [
                 [
@@ -50,25 +385,16 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.1"
         },
-        "timestamp": "2024-03-18T12:31:40.337129939"
+        "timestamp": "2024-11-20T10:53:06.760068039"
     },
-    "sarscov2 - [fastq1, fastq2], index, fasta, true, true - cram": {
+    "sarscov2 | illumina | single-end [fastq] | large index | [bam]": {
         "content": [
-            "test.cram",
-            "test.cram.crai"
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-03-19T08:46:08.033126014"
-    },
-    "sarscov2 - fastq, index, fasta, false, false - bam": {
-        "content": [
-            "test.bam",
+            [
+                "798439cbd7fd81cbcc5078022dc5479d"
+            ],
             [
                 [
                     {
@@ -86,107 +412,16 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.1"
         },
-        "timestamp": "2024-03-18T12:58:55.482166476"
+        "timestamp": "2024-11-20T10:53:18.27179276"
     },
-    "sarscov2 - fastq, index, fasta, true, false - bam": {
+    "sarscov2 | illumina | paired-end [fastq] | sort | [bam]": {
         "content": [
-            "test.bam",
             [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true
-                    },
-                    "test.bowtie2.log:md5,7b8a9e61b7646da1089b041333c41a87"
-                ]
+                "68f2c53239ee7c9ba9e751cc112d4283"
             ],
-            [
-                
-            ],
-            [
-                "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-03-18T13:19:55.741244"
-    },
-    "sarscov2 - fastq, large_index, fasta, false, false - bam": {
-        "content": [
-            "test.bam",
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true
-                    },
-                    "test.bowtie2.log:md5,7b8a9e61b7646da1089b041333c41a87"
-                ]
-            ],
-            [
-                
-            ],
-            [
-                "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-03-18T13:19:09.604979"
-    },
-    "sarscov2 - fastq, index, fasta, false, true - bam": {
-        "content": [
-            "test.bam",
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true
-                    },
-                    "test.bowtie2.log:md5,7b8a9e61b7646da1089b041333c41a87"
-                ]
-            ],
-            [
-                
-            ],
-            [
-                "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-03-18T13:18:22.547322"
-    },
-    "sarscov2 - fastq, index, fasta, true, false - stub": {
-        "content": [
-            "test.bam",
-            "test.csi",
-            "test.bowtie2.log",
-            [
-                
-            ],
-            [
-                "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-03-18T13:02:09.557518106"
-    },
-    "sarscov2 - [fastq1, fastq2], index, fasta, false, false - bam": {
-        "content": [
-            "test.bam",
             [
                 [
                     {
@@ -204,37 +439,15 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.1"
         },
-        "timestamp": "2024-03-18T13:18:38.78064"
+        "timestamp": "2024-11-20T10:54:20.950236346"
     },
-    "sarscov2 - [fastq1, fastq2], index, fasta, false, false - stub": {
-        "content": [
-            "test.bam",
-            "test.csi",
-            "test.bowtie2.log",
-            [
-                
-            ],
-            [
-                "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-03-18T13:20:26.047111"
-    },
-    "sarscov2 - fastq, index, fasta, false, false - sam": {
+    "sarscov2 | illumina | single-end [fastq] | [bam]": {
         "content": [
             [
-                "ERR5069949.2151832\t16\tMT192765.1\t17453\t42\t150M\t*\t0\t0\tACGCACATTGCTAACTAAGGGCACACTAGAACCAGAATATTTCAATTCAGTGTGTAGACTTATGAAAACTATAGGTCCAGACATGTTCCTCGGAACTTGTCGGCGTTGTCCTGCTGAAATTGTTGACACTGTGAGTGCTTTGGTTTATGA\tAAAA<EEEEEEAEEEAEAAAAEEEEEEEEEAAAEE<EEEEEAAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEAAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAAAAAA\tAS:i:0\tXN:i:0\tXM:i:0\tXO:i:0\tXG:i:0\tNM:i:0\tMD:Z:150\tYT:Z:UU",
-                "ERR5069949.576388\t16\tMT192765.1\t5798\t42\t77M\t*\t0\t0\tGCATAGACGGTGCTTTACTTACAAAGTCCTCAGAATACAAAGGTCCTATTACGGATGTTTTCTACAAAGAAAACAGT\tEA/AEEE/<EEEEEEEEEEEAA<EEEEEEEEEEEEEEEEEEEEEAEEEEEAEEEAEE6/EEEAEEEEEEEEEA6AAA\tAS:i:0\tXN:i:0\tXM:i:0\tXO:i:0\tXG:i:0\tNM:i:0\tMD:Z:77\tYT:Z:UU",
-                "ERR5069949.501486\t16\tMT192765.1\t5423\t42\t146M\t*\t0\t0\tTAGGTGAGTTAGGTGATGTTAGAGAAACAATGAGTTACTTGTTTCAACATGCCAATTTAGATTCTTGCAAAAGAGTCTTGAACGTGGTGTGTAAAACTTGTGGACAACAGCAGACAACCCTTAAGGGTGTAGAAGCTGTTATGTAC\tEAAAAEAEEEE6E<AEEEEEEEE<EEEEEEAAEE/EEEEEE/<EEEEEEAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEEEEEEEAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAAAAA\tAS:i:0\tXN:i:0\tXM:i:0\tXO:i:0\tXG:i:0\tNM:i:0\tMD:Z:146\tYT:Z:UU",
-                "ERR5069949.1331889\t0\tMT192765.1\t13010\t42\t132M\t*\t0\t0\tGTCTACAAGCTGGTAATGCAACAGAAGTGCCTGCCAATTCAACTGTATTATCTTTCTGTGCTTTTGCTGTAGATGCTGCTAAAGCTTACAAAGATTATCTAGCTAGTGGGGGACAACCAATCACTAATTGTG\tA/AAAEEEEEEEEEEEEEEEEEEEAEEEEAEEEEEEEEEEEAEEEEEEEEEEEEEEE/EEEEE<AEAEEEEE/EAEAEEE/AEEEEEEEEEEEEEEEEEEEEAE/EEEEEEEEEEEEEEEEEEEEEEEA<EE\tAS:i:0\tXN:i:0\tXM:i:0\tXO:i:0\tXG:i:0\tNM:i:0\tMD:Z:132\tYT:Z:UU",
-                "ERR5069949.2161340\t0\tMT192765.1\t17482\t42\t80M\t*\t0\t0\tAACCAGAATATTTCAATTCAGTGTGTAGACTTATGAAAACTATAGGTCCAGACATGTTCCTCGGAACTTGTCGGCGTTGT\tA/AA//EEAEA/E/AEEEE6EE/EEEA/6AEEEEEEEEE6EEEAEAEE//A/EEEEEE//E/E/A//E/E/<<EE</E/E\tAS:i:0\tXN:i:0\tXM:i:0\tXO:i:0\tXG:i:0\tNM:i:0\tMD:Z:80\tYT:Z:UU"
+                "798439cbd7fd81cbcc5078022dc5479d"
             ],
             [
                 [
@@ -253,14 +466,16 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.1"
         },
-        "timestamp": "2024-03-18T12:31:26.668053751"
+        "timestamp": "2024-11-20T10:52:21.004164627"
     },
-    "sarscov2 - [fastq1, fastq2], index, fasta, true, false - bam": {
+    "sarscov2 | illumina | paired-end [fastq] | [bam]": {
         "content": [
-            "test.bam",
+            [
+                "da2ddb895c55d6d517337bf81b9f81a3"
+            ],
             [
                 [
                     {
@@ -278,14 +493,19 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.1"
         },
-        "timestamp": "2024-03-18T13:19:40.606135"
+        "timestamp": "2024-11-20T10:53:57.492129768"
     },
-    "sarscov2 - [fastq1, fastq2], index, fasta, false, true - bam": {
+    "sarscov2 | illumina | paired-end [fastq] | save_unaligned | sort | [cram]": {
         "content": [
-            "test.bam",
+            [
+                "test.cram"
+            ],
+            [
+                "test.cram.crai"
+            ],
             [
                 [
                     {
@@ -296,16 +516,25 @@
                 ]
             ],
             [
-                
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    [
+                        "test.unmapped_1.fastq.gz:md5,84b4ab15e6ffc9f29d0a3f1b79003744",
+                        "test.unmapped_2.fastq.gz:md5,40bbe14edd48a98cca6f53574b2198fd"
+                    ]
+                ]
             ],
             [
                 "versions.yml:md5,01d18ab035146ea790e9a0f70adb758f"
             ]
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.1"
         },
-        "timestamp": "2024-03-18T13:18:54.194648"
+        "timestamp": "2024-11-20T10:54:44.136901958"
     }
 }
