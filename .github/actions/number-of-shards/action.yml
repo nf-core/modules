@@ -23,14 +23,16 @@ runs:
       shell: bash
       run: |
         nftest_output=$(nf-test test --dry-run --changed-since HEAD^ --filter process --follow-dependencies)
-        if $nftest_output | grep -q 'No tests found'; then
-          shards = []
+        if echo "$nftest_output" | grep -q 'No tests found'; then
+          shards="[]"
           total_shards=0
+          tags=""
+        else
+          number_of_shards=$(echo "$nftest_output" | grep -o 'Found [0-9]* related test' | tail -1 | awk '{print $2}')
+          shards_array=$(seq 1 "$number_of_shards" | jq -R . | jq -s .)
+          tags=$(echo "$nftest_output" | grep -o 'tag [^ ]*' | tail -1 | awk '{print $2}')
+          total_shards="$number_of_shards"
         fi
-        number_of_shards=$(echo $nftest_output | grep -o 'Found [0-9]* related test' | tail -1 | awk '{print $2}')
-        three_tests_per_shard=$(echo $(($number_of_shards / 3)) | awk '{print int($1+0.5)}')
-        shards_array=$(for shard in $(seq 1 $number_of_shards); do echo $shard; done | tr ' ' '\n' | jq -R . | jq -s .)
-        tags = $(echo $nftest_output | grep -o 'tag [^ ]*' | tail -1 | awk '{print $2}')
         echo "shards=${shards_array}" >> $GITHUB_OUTPUT
-        echo "total_shards=${number_of_shards}" >> $GITHUB_OUTPUT
+        echo "total_shards=${total_shards}" >> $GITHUB_OUTPUT
         echo "tags=${tags}" >> $GITHUB_OUTPUT
