@@ -28,7 +28,7 @@ process REGTOOLS_JUNCTIONSEXTRACT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        regtools: \$(regtools --version 2>&1 | sed 's/^.*regtools //; s/ .*\$//')
+        regtools: \$(regtools --version 2>&1 | grep "Version:" | sed 's/Version:\t//')
     END_VERSIONS
     """
 
@@ -39,7 +39,7 @@ process REGTOOLS_JUNCTIONSEXTRACT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        regtools: \$(regtools --version 2>&1 | sed 's/^.*regtools //; s/ .*\$//')
+        regtools: \$(regtools --version 2>&1 | grep "Version:" | sed 's/Version:\t//')
     END_VERSIONS
     """
 }
