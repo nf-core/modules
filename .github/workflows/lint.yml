@@ -72,15 +72,21 @@ jobs:
           list-files: "json"
 
       - name: Fetch module tags
-        id: tags
+        id: module-tags
+        if: steps.filter.outputs.modules == 'true'
         run: |
           echo "modules=${{ steps.filter.outputs.modules }}" >> $GITHUB_OUTPUT
+
+      - name: Fetch subworkflows tags
+        id: subworkflow-tags
+        if: steps.filter.outputs.subworkflows == 'true'
+        run: |
           echo "subworkflows=${{ steps.filter.outputs.subworkflows }}" >> $GITHUB_OUTPUT
 
       - name: debug
         run: |
-          echo ${{ steps.tags.outputs.modules }}
-          echo ${{ steps.tags.outputs.subworkflows }}
+          echo ${{ steps.module-tags.outputs.modules }}
+          echo ${{ steps.subworkflow-tags.outputs.subworkflows }}
 
   nf-core-lint-modules:
     runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
