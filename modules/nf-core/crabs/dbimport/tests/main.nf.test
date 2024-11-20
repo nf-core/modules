@@ -13,6 +13,9 @@ nextflow_process {
     test("sarscov2 - fasta") {
 
         when {
+            params {
+                module_args = "--seq_header species --delim ' ' --import-format embl \\"
+            }
             process {
                 """
                 input[0] = [
