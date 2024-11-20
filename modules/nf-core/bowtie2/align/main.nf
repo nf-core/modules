@@ -4,8 +4,8 @@ process BOWTIE2_ALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-ac74a7f02cebcfcc07d8e8d1d750af9c83b4d45a:f70b31a2db15c023d641c32f433fb02cd04df5a6-0' :
-        'biocontainers/mulled-v2-ac74a7f02cebcfcc07d8e8d1d750af9c83b4d45a:f70b31a2db15c023d641c32f433fb02cd04df5a6-0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b5/b58f531621b86f7295d8ffdf98d651fd69229e4bdb9cf0936d2e298ed68e1c75/data' :
+        'community.wave.seqera.io/library/bowtie2_samtools_pigz:1dad1aad7789e4aa' }"
 
     input:
     tuple val(meta) , path(reads)
@@ -28,8 +28,8 @@ process BOWTIE2_ALIGN {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ""
-    def args2  = task.ext.args2 ?: ""
+    def args   = task.ext.args   ?: ""
+    def args2  = task.ext.args2  ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def unaligned  = ""
@@ -47,7 +47,7 @@ process BOWTIE2_ALIGN {
     def extension_matcher = (args2 =~ extension_pattern)
     def extension         = extension_matcher.getCount() > 0 ? extension_matcher[0][2].toLowerCase() : "bam"
     def reference         = fasta && extension == "cram"  ? "--reference ${fasta}" : ""
-    if (!fasta && extension=="cram") error "Fasta reference is required for CRAM output"
+    if (!fasta && extension == "cram") error "Fasta reference is required for CRAM output"
     """
     INDEX=`find -L ./ -name "*.rev.1.bt2" | sed "s/\\.rev.1.bt2\$//"`
     [ -z "\$INDEX" ] && INDEX=`find -L ./ -name "*.rev.1.bt2l" | sed "s/\\.rev.1.bt2l\$//"`

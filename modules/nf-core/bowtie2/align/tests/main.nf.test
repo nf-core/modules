@@ -76,87 +76,6 @@ nextflow_process {
                 ).match() }
             )
         }
-
-    }
-
-    test("sarscov2 | illumina | single-end [fastq] | [sam]") {
-
-        when {
-            params {
-                bowtie2_args   = ''
-                bowtie2_args2  = '--output-fmt SAM'
-                save_unaligned = false
-                sort           = false
-            }
-            process {
-                """
-                input[0] = Channel.of([
-                            [ id:'test', single_end:true ], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
-                ])
-                input[1] = BOWTIE2_BUILD.out.index
-                input[2] = Channel.of([
-                            [ id:'test'],
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                ])
-                input[3] = params.save_unaligned
-                input[4] = params.sort
-                """
-            }
-        }
-
-        then {
-            assertAll (
-                { assert process.success },
-                { assert snapshot(
-                    process.out.sam.collect { meta, sam -> file(sam).readLines()[0..4] },
-                    process.out.log,
-                    process.out.fastq,
-                    process.out.versions
-                ).match() }
-            )
-        }
-
-    }
-
-    test("sarscov2 | illumina | single-end [fastq] | [sam]-2") {
-
-        when {
-            params {
-                bowtie2_args   = ''
-                bowtie2_args2  = '-O SAM'
-                save_unaligned = false
-                sort           = false
-            }
-            process {
-                """
-                input[0] = Channel.of([
-                            [ id:'test', single_end:true ], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
-                ])
-                input[1] = BOWTIE2_BUILD.out.index
-                input[2] = Channel.of([
-                            [ id:'test'],
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                ])
-                input[3] = params.save_unaligned
-                input[4] = params.sort
-                """
-            }
-        }
-
-        then {
-            assertAll (
-                { assert process.success },
-                { assert snapshot(
-                    process.out.sam.collect { meta, sam -> file(sam).readLines()[0..4] },
-                    process.out.log,
-                    process.out.fastq,
-                    process.out.versions
-                ).match() }
-            )
-        }
-
     }
 
     test("sarscov2 | illumina | single-end [fastq] | save_unaligned | [bam]") {
@@ -197,7 +116,6 @@ nextflow_process {
 
             )
         }
-
     }
 
     test("sarscov2 | illumina | single-end [fastq] | sort | [bam]") {
@@ -237,7 +155,6 @@ nextflow_process {
                 ).match() }
             )
         }
-
     }
 
     test("sarscov2 | illumina | single-end [fastq] | large index | [bam]") {
@@ -277,7 +194,45 @@ nextflow_process {
                 ).match() }
             )
         }
+    }
 
+    test("sarscov2 | illumina | single-end [fastq] | [sam]") {
+
+        when {
+            params {
+                bowtie2_args   = ''
+                bowtie2_args2  = '--output-fmt SAM'
+                save_unaligned = false
+                sort           = false
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:true ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = BOWTIE2_BUILD.out.index
+                input[2] = Channel.of([
+                            [ id:'test'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[3] = params.save_unaligned
+                input[4] = params.sort
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(
+                    process.out.sam.collect { meta, sam -> file(sam).readLines()[0..4] },
+                    process.out.log,
+                    process.out.fastq,
+                    process.out.versions
+                ).match() }
+            )
+        }
     }
 
     test("sarscov2 | illumina | single-end [fastq] | save_unaligned | sort | [cram]") {
@@ -318,44 +273,6 @@ nextflow_process {
                 ).match() }
             )
         }
-
-    }
-
-    test("sarscov2 | illumina | single-end [fastq] | [bam] - stub") {
-
-        options "-stub"
-
-        when {
-            params {
-                bowtie2_args   = ''
-                bowtie2_args2  = ''
-                save_unaligned = true
-                sort           = false
-            }
-            process {
-                """
-                input[0] = Channel.of([
-                            [ id:'test', single_end:true ], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
-                ])
-                input[1] = BOWTIE2_BUILD.out.index
-                input[2] = Channel.of([
-                            [ id:'test'],
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                ])
-                input[3] = params.save_unaligned
-                input[4] = params.sort
-                """
-            }
-        }
-
-        then {
-            assertAll (
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
-
     }
 
     // PAIRED-END TESTS
@@ -400,87 +317,6 @@ nextflow_process {
                 ).match() }
             )
         }
-
-    }
-
-    test("sarscov2 | illumina | paired-end [fastq] | [bam] - stub") {
-
-        options "-stub"
-
-        when {
-            params {
-                bowtie2_args   = ''
-                bowtie2_args2  = ''
-                save_unaligned = false
-                sort           = false
-            }
-            process {
-                """
-                input[0] = Channel.of([
-                            [ id:'test', single_end:true ], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
-                ])
-                input[1] = BOWTIE2_BUILD.out.index
-                input[2] = Channel.of([
-                            [ id:'test'],
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                ])
-                input[3] = params.save_unaligned
-                input[4] = params.sort
-                """
-            }
-        }
-
-        then {
-            assertAll (
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
-
-    }
-
-    test("sarscov2 | illumina | paired-end [fastq] | sort | [bam]") {
-
-        when {
-            params {
-                bowtie2_args   = ''
-                bowtie2_args2  = ''
-                save_unaligned = false
-                sort           = true
-            }
-            process {
-                """
-                input[0] = Channel.of([
-                            [ id:'test', single_end:false ], // meta map
-                            [
-                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
-                            ]
-                ])
-                input[1] = BOWTIE2_BUILD.out.index
-                input[2] = Channel.of([
-                            [ id:'test'],
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                ])
-                input[3] = params.save_unaligned
-                input[4] = params.sort
-                """
-            }
-        }
-
-        then {
-            assertAll (
-                { assert process.success },
-                { assert snapshot(
-                    process.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
-                    process.out.log,
-                    process.out.fastq,
-                    process.out.versions
-                ).match() }
-            )
-        }
-
     }
 
     test("sarscov2 | illumina | paired-end [fastq] | save_unaligned | [bam]") {
@@ -523,7 +359,90 @@ nextflow_process {
                 ).match() }
             )
         }
+    }
 
+    test("sarscov2 | illumina | paired-end [fastq] | sort | [bam]") {
+
+        when {
+            params {
+                bowtie2_args   = ''
+                bowtie2_args2  = ''
+                save_unaligned = false
+                sort           = true
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:false ], // meta map
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                            ]
+                ])
+                input[1] = BOWTIE2_BUILD.out.index
+                input[2] = Channel.of([
+                            [ id:'test'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[3] = params.save_unaligned
+                input[4] = params.sort
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(
+                    process.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
+                    process.out.log,
+                    process.out.fastq,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 | illumina | paired-end [fastq] | large index | sort | [bam]") {
+
+        when {
+            params {
+                bowtie2_args   = ''
+                bowtie2_args2  = ''
+                save_unaligned = false
+                sort           = true
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:false ], // meta map
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                            ]
+                ])
+                input[1] = BOWTIE2_BUILD_LARGE.out.index
+                input[2] = Channel.of([
+                            [ id:'test'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[3] = params.save_unaligned
+                input[4] = params.sort
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(
+                    process.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
+                    process.out.log,
+                    process.out.fastq,
+                    process.out.versions
+                ).match() }
+            )
+        }
     }
 
     test("sarscov2 | illumina | paired-end [fastq] | save_unaligned | sort | [cram]") {
@@ -567,28 +486,28 @@ nextflow_process {
                 ).match() }
             )
         }
-
     }
 
-    test("sarscov2 | illumina | paired-end [fastq] | large index | sort | [bam]") {
+    // STUB Tests
+
+    test("sarscov2 | illumina | single-end [fastq] | [bam] - stub") {
+
+        options "-stub"
 
         when {
             params {
                 bowtie2_args   = ''
                 bowtie2_args2  = ''
-                save_unaligned = false
-                sort           = true
+                save_unaligned = true
+                sort           = false
             }
             process {
                 """
                 input[0] = Channel.of([
-                            [ id:'test', single_end:false ], // meta map
-                            [
-                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
-                            ]
+                            [ id:'test', single_end:true ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ])
-                input[1] = BOWTIE2_BUILD_LARGE.out.index
+                input[1] = BOWTIE2_BUILD.out.index
                 input[2] = Channel.of([
                             [ id:'test'],
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
@@ -602,15 +521,44 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(
-                    process.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
-                    process.out.log,
-                    process.out.fastq,
-                    process.out.versions
-                ).match() }
+                { assert snapshot(process.out).match() }
             )
         }
-
     }
 
+    test("sarscov2 | illumina | paired-end [fastq] | [bam] - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                bowtie2_args   = ''
+                bowtie2_args2  = ''
+                save_unaligned = false
+                sort           = false
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:true ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = BOWTIE2_BUILD.out.index
+                input[2] = Channel.of([
+                            [ id:'test'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[3] = params.save_unaligned
+                input[4] = params.sort
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
 }
