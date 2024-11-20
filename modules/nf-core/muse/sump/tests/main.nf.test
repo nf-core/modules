@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process MUSE_SUMP"
     script "../main.nf"
     process "MUSE_SUMP"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -11,9 +12,10 @@ nextflow_process {
 
     test("human - txt") {
 
-        config "./wes.config"
-
         when {
+            params {
+                module_args = '-E'
+            }
             process {
                 """
                 input[0] = [
