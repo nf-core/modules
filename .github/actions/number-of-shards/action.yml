@@ -24,7 +24,7 @@ runs:
       run: |
         nftest_output=$(nf-test test --dry-run --changed-since HEAD^ --filter process --follow-dependencies)
         echo "nftest_output: $nftest_output"
-        if echo "$nftest_output" | grep -q 'No tests found'; then
+        if echo "$nftest_output" | grep -q 'Found 0 related test(s)'; then
           shards="[]"
           total_shards=0
           tags="[]"
