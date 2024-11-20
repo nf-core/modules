@@ -4,7 +4,7 @@ process REGTOOLS_JUNCTIONSEXTRACT {
 
     conda "bioconda::regtools=0.5.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/regtools:0.5.0--he941832_0' :
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b6/b6c0653189b95b22e16038f61ade205a865857f54eeae9ba0184490a1834f7c9/data' :
         'biocontainers/regtools:0.5.0--he941832_0' }"
 
     input:
