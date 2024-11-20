@@ -35,7 +35,7 @@ runs:
     - name: Install nf-test
       uses: nf-core/setup-nf-test@v1
       with:
-        version: "${{ env.NFTEST_VERSION }}"
+        version: "${{ env.NFT_VER }}"
         install-pdiff: true
 
     - name: Setup apptainer
