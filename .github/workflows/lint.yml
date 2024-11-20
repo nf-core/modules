@@ -50,9 +50,11 @@ jobs:
     name: nf-core-changes
     runs-on: ubuntu-latest
     outputs:
-      tags: ${{ steps.filter.outputs.changes }}
-      modules: ${{ steps.tags.outputs.modules }}
-      subworkflows: ${{ steps.tags.outputs.subworkflows }}
+      # https://github.com/dorny/paths-filter?tab=readme-ov-file#custom-processing-of-changed-files
+      modules: ${{ steps.filter.outputs.modules }}
+      modules_files: ${{ steps.filter.outputs.modules_files }}
+      subworkflows: ${{ steps.filter.outputs.subworkflows}}
+      subworkflows_files: ${{ steps.filter.outputs.subworkflows_files }}
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
@@ -71,32 +73,20 @@ jobs:
           token: ""
           list-files: "json"
 
-      - name: Fetch module tags
-        id: module-tags
-        if: steps.filter.outputs.modules == 'true'
-        run: |
-          echo "modules=${{ steps.filter.outputs.modules }}" >> $GITHUB_OUTPUT
-
-      - name: Fetch subworkflows tags
-        id: subworkflow-tags
-        if: steps.filter.outputs.subworkflows == 'true'
-        run: |
-          echo "subworkflows=${{ steps.filter.outputs.subworkflows }}" >> $GITHUB_OUTPUT
-
       - name: debug
         run: |
-          echo ${{ steps.module-tags.outputs.modules }}
-          echo ${{ steps.subworkflow-tags.outputs.subworkflows }}
+          echo ${{ steps.filter.outputs.modules_files }}
+          echo ${{ steps.filter.outputs.subworkflows_files }}
 
   nf-core-lint-modules:
     runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
     name: nf-core lint modules
     needs: nf-core-changes
-    if: ${{ (needs.nf-core-changes.outputs.modules != '[]') }}
+    if: ${{ (needs.nf-core-changes.outputs.modules == 'true') }}
     strategy:
       fail-fast: false
       matrix:
-        tags: "${{ fromJson(needs.nf-core-changes.outputs.modules) }}"
+        tags: "${{ fromJson(needs.nf-core-changes.outputs.modules_files) }}"
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
@@ -134,11 +124,11 @@ jobs:
     runs-on: ubuntu-latest
     name: nf-core lint subworkflows
     needs: nf-core-changes
-    if: ${{ (needs.nf-core-changes.outputs.subworkflows != '[]') }}
+    if: ${{ (needs.nf-core-changes.outputs.subworkflows == 'true') }}
     strategy:
       fail-fast: false
       matrix:
-        tags: "${{ fromJson(needs.nf-core-changes.outputs.subworkflows) }}"
+        tags: "${{ fromJson(needs.nf-core-changes.outputs.subworkflows_files) }}"
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
