@@ -31,6 +31,47 @@ nextflow_process {
         }
 
     }
+
+    test("seatoxin - compressed") {
+
+        setup {
+
+            run("TAR") {
+                script "../../../tar/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id:'test' ],
+                             file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                               ]
+                    input[1] = ".gz"
+                    """
+                }
+            }
+
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                                [ id:'test' ], // meta map
+                                TAR.out.tree.collect{ meta, compressed -> compressed }.map{ compressed -> [[ id: 'test'], compressed]},
+                                file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
+                            ]
+                """
+            }
+
+        }
+
+        then {
+        assertAll(
+            { assert process.success },
+            { assert snapshot(process.out).match() }
+        )
+        }
+
+    }
+
     test("seatoxin - stub") {
         options "-stub"
 
