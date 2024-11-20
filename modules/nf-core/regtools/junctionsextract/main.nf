@@ -39,7 +39,7 @@ process REGTOOLS_JUNCTIONSEXTRACT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        regtools: \$(samtools --version |& sed '1!d ; s/samtools //')
+        regtools: \$(regtools --version 2>&1 | sed 's/^.*regtools //; s/ .*\$//')
     END_VERSIONS
     """
 }
