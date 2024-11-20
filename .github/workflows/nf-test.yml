@@ -63,7 +63,11 @@ jobs:
       SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
     steps:
       - name: Clean Workspace # Purge the workspace in case it's running on a self-hosted runner
-        run: ./.github/scriptscleanup-selfhosted-runner.bash
+        run: |
+          ls -la ./
+          rm -rf ./* || true
+          rm -rf ./.??* || true
+          ls -la ./
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           fetch-depth: 0
@@ -73,5 +77,3 @@ jobs:
           profile: ${{ matrix.profile }}
           shard: ${{ matrix.shard }}
           total_shards: ${{ env.TOTAL_SHARDS }}
-      - name: Clean Workspace # Purge the workspace in case it's running on a self-hosted runner
-        run: ./.github/scriptscleanup-selfhosted-runner.bash
