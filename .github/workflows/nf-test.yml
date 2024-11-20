@@ -62,6 +62,8 @@ jobs:
       SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
       SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
     steps:
+      - name: Clean Workspace # Purge the workspace in case it's running on a self-hosted runner
+        uses: AutoModality/action-clean@v1.1.0
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           fetch-depth: 0
