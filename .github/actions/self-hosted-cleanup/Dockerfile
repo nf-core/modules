@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM quay.io/nf-core/ubuntu
 
 # Copies your code file from your action repository to the filesystem path `/` of the container
 COPY entrypoint.sh /entrypoint.sh
