@@ -61,14 +61,20 @@ jobs:
       - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3
         id: filter
         with:
-          filters: "tests/config/pytest_modules.yml"
+          filters: |
+            modules:
+              - 'modules/nf-core/**'
+              - 'tests/modules/nf-core/**'
+            subworkflows:
+              - 'subworkflows/nf-core/**'
+              - 'tests/subworkflows/nf-core/**'
           token: ""
 
       - name: Fetch module tags
         id: tags
         run: |
-          echo modules=$(echo '${{ steps.filter.outputs.changes }}' | jq -c '. | map(select(contains("modules"))) | map(gsub("modules/"; ""))') >> $GITHUB_OUTPUT
-          echo subworkflows=$(echo '${{ steps.filter.outputs.changes }}' | jq '. | map(select(contains("subworkflow"))) | map(gsub("subworkflows/"; ""))') >> $GITHUB_OUTPUT
+          echo "modules=${{ steps.filter.outputs.modules }}" >> $GITHUB_OUTPUT
+          echo "subworkflows=${{ steps.filter.outputs.subworkflows }}" >> $GITHUB_OUTPUT
 
       - name: debug
         run: |
