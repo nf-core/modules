@@ -23,22 +23,23 @@ runs:
       shell: bash
       run: |
         nftest_output=$(nf-test test --dry-run --changed-since HEAD^ --filter process --follow-dependencies)
+        echo "nftest_output: $nftest_output"
         if echo "$nftest_output" | grep -q 'No tests found'; then
           shards="[]"
           total_shards=0
           tags="[]"
         else
           number_of_shards=$(echo "$nftest_output" | grep -o 'Found [0-9]* related test' | tail -1 | awk '{print $2}')
-          shards_array=$(seq 1 "$number_of_shards" | jq -R . | jq -s .)
+          shards=$(seq 1 "$number_of_shards" | jq -R . | jq -s .)
           tags=$(echo "$nftest_output" | grep -o 'tag [^ ]*' | tail -1 | awk '{print $2}')
           total_shards="$number_of_shards"
         fi
-        echo "shards=${shards_array}" >> $GITHUB_OUTPUT
+        echo "shards=${shards}" >> $GITHUB_OUTPUT
         echo "total_shards=${total_shards}" >> $GITHUB_OUTPUT
         echo "tags=${tags}" >> $GITHUB_OUTPUT
 
         # Debugging output
         echo "nftest_output: $nftest_output"
-        echo "shards: $shards_array"
+        echo "shards: $shards"
         echo "total_shards: $total_shards"
         echo "tags: $tags"
