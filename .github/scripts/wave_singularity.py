@@ -4,6 +4,7 @@
 # dependencies = [
 #     "requests",
 #     "rich",
+#     "rich_click"
 # ]
 # ///
 
