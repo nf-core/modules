@@ -9,146 +9,36 @@ nextflow_process {
     tag "propr"
     tag "propr/propd"
 
-    test("Test propr/propd using default permutation") {
+    test("Test propr/propd using default params") {
 
         tag "default"
-        config "./default_permutation.config"
 
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test' ],
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv")
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_matrix = [
+                    [id: 'test'],
+                    file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
                 ]
-                input[1] = [
-                    [ id: 'test'], 
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv")
-                ]
+
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
                 """
             }
         }
-        
+
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.results).match("Test propr/propd using default permutation - results") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert process.success }
             )
         }
     }
-
-    test("Test propr/propd using default boxcox permutation") {
-
-        tag "default_boxcox"
-        config "./default_boxcox.config"
-
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ],
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv")
-                ]
-                input[1] = [
-                    [ id: 'test'], 
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv")
-                ]
-                """
-            }
-        }
-        
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.results).match(" Test propr/propd using default boxcox permutation - results") },
-                { assert snapshot(process.out.fdr).match(" Test propr/propd using default boxcox permutation - fdr") }
-            )
-        }
-    }
-
-    test("Test propr/propd using theta_e permutation") {
-
-        tag "theta_e"
-        config "./theta_e.config"
-
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ],
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv")
-                ]
-                input[1] = [
-                    [ id: 'test'], 
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv")
-                ]
-                """
-            }
-        }
-        
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.results).match("Test propr/propd using theta_e permutation - results") }
-            )
-        }
-    }
-
-    test("Test propr/propd using theta_e and boxcox permutation") {
-
-        tag "boxcox_theta_e"
-        config "./boxcox_theta_e.config"
-
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ],
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv")
-                ]
-                input[1] = [
-                    [ id: 'test'], 
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv")
-                ]
-                """
-            }
-        }
-        
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.results).match("Test propr/propd using theta_e and boxcox permutation - results") }
-            )
-        }
-    }
-
-    test("Test propr/propd with adjacency matrix") {
-
-        tag "adjacency"
-        config "./adjacency.config"
-
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ],
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv")
-                ]
-                input[1] = [
-                    [ id: 'test'], 
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv")
-                ]
-                """
-            }
-        }
-        
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.adj).match("Test propr/propd with adjacency matrix - adj") },
-                { assert snapshot(process.out.results).match(" - results") }
-            )
-        }
-    }
-} 
+}

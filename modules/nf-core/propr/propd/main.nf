@@ -4,21 +4,24 @@ process PROPR_PROPD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-propr:5.0.3':
-        'biocontainers/r-propr:5.0.3' }"
+        'oras://community.wave.seqera.io/library/bioconductor-limma_r-ggplot2_r-propr:209490acb0e524e3' :
+        'community.wave.seqera.io/library/bioconductor-limma_r-ggplot2_r-propr:17abd3f137436739' }"
 
     input:
-    tuple val(meta), path(count)
-    tuple val(meta2), path(samplesheet)
+    tuple val(meta), val(contrast_variable), val(reference), val(target)
+    tuple val(meta2), path(samplesheet), path(counts)
 
     output:
-    tuple val(meta), path("*.propd.rds"), emit: propd
-    tuple val(meta), path("*.propd.tsv"), emit: results
-    tuple val(meta), path("*.fdr.tsv")  , emit: fdr         , optional:true
-    tuple val(meta), path("*.adj.csv"),   emit: adj         , optional:true
-    path "*.warnings.log",                emit: warnings
-    path "*.R_sessionInfo.log"          , emit: session_info
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.propd.rds")                  , emit: propd
+    tuple val(meta), path("*.propd.pairwise.tsv")         , emit: results_pairwise
+    tuple val(meta), path("*.propd.pairwise_filtered.tsv"), emit: results_pairwise_filtered, optional:true
+    tuple val(meta), path("*.propd.genewise.tsv")         , emit: results_genewise         , optional:true
+    tuple val(meta), path("*.propd.adjacency.csv")        , emit: adjacency                , optional:true
+    tuple val(meta), path("*.propd.fdr.tsv")              , emit: fdr                      , optional:true
+    tuple val(meta), path("*.propd.genewise.png")         , emit: genewise_plot            , optional:true
+    path "*.warnings.log"                                 , emit: warnings
+    path "*.R_sessionInfo.log"                            , emit: session_info
+    path "versions.yml"                                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
