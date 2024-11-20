@@ -35,6 +35,29 @@ env:
   NXF_VER: "24.10.1"
 
 jobs:
+  nf-test-changes:
+    name: nf-test-changes
+    runs-on: ubuntu-latest
+    outputs:
+      shards: ${{ steps.get-shards.outputs.shards }}
+      total_shards: ${{ steps.get-shards.outputs.total_shards }}
+      tags: ${{ steps.get-shards.outputs.tags }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          fetch-depth: 0
+
+      - name: get number of shards
+        id: get-shards
+        uses: ./.github/actions/number-of-shards
+        env:
+          NFT_VER: ${{ env.NFT_VER }}
+
+      - name: list changes
+        run: |
+          echo shards = ${{ steps.get-shards.outputs.shards }}
+          echo num_shards = ${{ steps.get-shards.outputs.total_shards }}
+
   nf-test:
     runs-on: ${{ github.event.inputs.runners || 'self-hosted' }}
     # NOTE I think this is the cleanest way to get them organized
@@ -45,9 +68,8 @@ jobs:
     # ...
     # workflow | singularity | 3
     name: "${{ matrix.profile }} | ${{ matrix.shard }}"
-    # TODO
-    # needs: get-number-of-shards
-    # if: ${{ fromJSON(needs.get-number-of-shards.outputs.shards) != fromJSON('["1", "0"]') }}
+    needs: nf-test-changes
+    if: ${{ fromJSON(needs.nf-test-changes.outputs.total_shards) > 0 }}
     strategy:
       fail-fast: false
       matrix:
@@ -55,10 +77,10 @@ jobs:
         # NOTE The name of the test would be name: "${{ matrix.filter }} | ${{ matrix.profile }} | ${{ matrix.shard }}"
         # filter: [process, workflow]
         profile: [conda, docker_self_hosted, singularity]
-        shard: [1, 2, 3, 4, 5]
+        shard: ${{ needs.nf-test-changes.outputs.shards }}
     env:
       # FIXME Bumping them up to make the transition smooth, then we can throttle them back
-      TOTAL_SHARDS: 5
+      TOTAL_SHARDS: ${{ needs.nf-test-changes.outputs.total_shards }}
       SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
       SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
     steps:
@@ -70,4 +92,5 @@ jobs:
         with:
           profile: ${{ matrix.profile }}
           shard: ${{ matrix.shard }}
-          total_shards: ${{ env.TOTAL_SHARDS }}
+          total_shards: ${{ needs.nf-test-changes.outputs.total_shards }}
+          tags: ${{ needs.nf-test-changes.outputs.tags }}
