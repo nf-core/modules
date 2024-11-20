@@ -9,7 +9,7 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
 
-    test("homo sapiens illumina [bcl]") {
+    test("homo_sapiens illumina [bcl]") {
         when {
             process {
                 //TODO use new test dataset when available, see https://github.com/nf-core/test-datasets/issues/996
@@ -29,7 +29,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.fastq,
                     process.out.fastq_idx,
-                    process.out.undetermined,
+                    process.out.undetermined.collect { meta, fastq -> file(fastq).name },
                     process.out.undetermined_idx,
                     process.out.reports,
                     process.out.logs.collect { meta, logs -> file(logs).list().sort() },
@@ -38,15 +38,13 @@ nextflow_process {
                                                 file(interopfile).name != "IndexMetricsOut.bin" } },
                     process.out.versions
                 ).match() },
-                { assert process.out.undetermined.collect { meta, fastq ->
-                                                            file(fastq).name ==~ ".*/Undetermined_S0_L001_R1_001.fastq.gz"} },
                 { assert process.out.interop.collect { meta, interop ->
                                                         interop.find { interopfile -> file(interopfile).name == "IndexMetricsOut.bin" } } }
             )
         }
     }
 
-    test("homo sapiens illumina [bcl] - stub") {
+    test("homo_sapiens illumina [bcl] - stub") {
         options "-stub"
 
         when {
