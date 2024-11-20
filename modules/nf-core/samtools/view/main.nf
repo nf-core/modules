@@ -31,10 +31,15 @@ process SAMTOOLS_VIEW {
     def args2 = task.ext.args2 ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def reference = fasta ? "--reference ${fasta}" : ""
-    file_type = args.contains("--output-fmt sam") ? "sam" :
-                args.contains("--output-fmt bam") ? "bam" :
-                args.contains("--output-fmt cram") ? "cram" :
-                input.getExtension()
+    
+    def file_type = args.contains("--output-fmt sam") ? "sam" :
+                    args.contains("--output-fmt bam") ? "bam" :
+                    args.contains("--output-fmt cram") ? "cram" :
+                    input.getExtension()
+    // --write-index has special syntax to determine index type, see https://github.com/samtools/samtools/issues/1196
+    def index_type = task.ext.index_type ?: 'csi'
+    def output_name = args.contains("--write-index") ?  "${prefix}.${file_type}##idx##${prefix}.${file_type}.${index_type}" :
+                    "${prefix}.${file_type}"                
     readnames = qname ? "--qname-file ${qname} --output-unselected ${prefix}.unselected.${file_type}": ""
     if ("$input" == "${prefix}.${file_type}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
@@ -44,7 +49,7 @@ process SAMTOOLS_VIEW {
         ${reference} \\
         ${readnames} \\
         $args \\
-        -o ${prefix}.${file_type} \\
+        -o ${output_name}\\
         $input \\
         $args2
 
@@ -56,14 +61,15 @@ process SAMTOOLS_VIEW {
 
     stub:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
-    file_type = args.contains("--output-fmt sam") ? "sam" :
-                args.contains("--output-fmt bam") ? "bam" :
-                args.contains("--output-fmt cram") ? "cram" :
-                input.getExtension()
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def file_type = args.contains("--output-fmt sam") ? "sam" :
+                    args.contains("--output-fmt bam") ? "bam" :
+                    args.contains("--output-fmt cram") ? "cram" :
+                    input.getExtension()
+    def index_type = task.ext.index_type ?: 'csi'
     if ("$input" == "${prefix}.${file_type}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
 
-    def index = args.contains("--write-index") ? "touch ${prefix}.${file_type}.csi" : ""
+    def index = args.contains("--write-index") ? "touch ${prefix}.${index_type}" : ""
 
     """
     touch ${prefix}.${file_type}
