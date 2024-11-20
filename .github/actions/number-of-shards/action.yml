@@ -20,6 +20,7 @@ runs:
         version: ${{ env.NFT_VER }}
 
     - name: Get number of shards
+      id: shards
       shell: bash
       run: |
         nftest_output=$(nf-test test --dry-run --changed-since HEAD^ --filter process --follow-dependencies)
