@@ -49,7 +49,7 @@ jobs:
       # Prod for version bumping
     steps:
       - name: Clean Workspace # Purge the workspace in case it's running on a self-hosted runner
-        uses: ./.github/actions/self-hosted-cleanup
+        run: ./.github/scriptscleanup-selfhosted-runner.bash
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           fetch-depth: 0
