@@ -4,7 +4,7 @@ include { BISMARK_GENOMEPREPARATION } from '../../../modules/nf-core/bismark/gen
 include { BWAMETH_INDEX             } from '../../../modules/nf-core/bwameth/index/main'
 include { SAMTOOLS_FAIDX            } from '../../../modules/nf-core/samtools/faidx/main'
 
-workflow FASTA_CREATE_INDEX_BISMARK_BWAMETH {
+workflow FASTA_INDEX_BISMARK_BWAMETH {
 
     take:
     fasta         // channel: [ val(meta), [ fasta ] ]
