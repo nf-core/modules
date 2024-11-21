@@ -120,7 +120,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.failed },
-                { assert process.errorReport.contains("No samples to split: 1/dbsnp_146.hg38.vcf.gz") }
+                { assert process.errorReport.contains("No samples to split: input/dbsnp_146.hg38.vcf.gz") }
             )
         }
 
