@@ -80,8 +80,8 @@ jobs:
           script: |
             return [...new Set(${{ steps.filter.outputs.modules_files }}
               .map(path => path.replace('modules/nf-core/', '')
-              .filter(path => !path.includes('/tests/'))
               .split('/')
+              .filter(x => !x.includes('tests'))
               .slice(0, 2)
               .filter(x => x !== 'main.nf')
               .join('/')))];
@@ -93,8 +93,8 @@ jobs:
           script: |
             return [...new Set(${{ steps.filter.outputs.subworkflows_files }}
               .map(path => path.replace('subworkflows/nf-core/', '')
-              .filter(path => !path.includes('/tests/'))
               .split('/')
+              .filter(x => !x.includes('tests'))
               .slice(0,2)
               .filter(x => x !== 'main.nf')
               .join('/')))];
