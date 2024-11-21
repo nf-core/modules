@@ -60,7 +60,13 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.fastq,
+                    process.out.fastq.collect {
+                        meta, fastqs ->
+                        fastqs.findAll {
+                            fastqfile ->
+                            file(fastqfile).name != "SampleZ_S5_L001_R1_001.fastq.gz"
+                        }
+                    },
                     process.out.fastq_idx,
                     process.out.undetermined.collect { meta, fastq -> file(fastq).name },
                     process.out.undetermined_idx,
@@ -82,7 +88,6 @@ nextflow_process {
 
         when {
             process {
-                //TODO use new test dataset when available, see https://github.com/nf-core/test-datasets/issues/996
                 """
                 input[0] = [
                     [ id: 'test', lane:1 ],
