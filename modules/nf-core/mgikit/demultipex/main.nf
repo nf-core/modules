@@ -32,9 +32,15 @@ process MGIKIT_DEMULTIPLEX {
     prefix = task.ext.prefix ?: "out-${run_id}"
 
     """
+    out_dir_name="${run_dir}"
+    if [[ "$run_dir" == *.zip ]]; then
+        out_dir_name=\$(basename "$run_dir" .zip)
+        unzip "$run_dir" -d "\$out_dir_name"
+    fi
+
     mgikit \\
     demultiplex \\
-    -i "${run_dir}" \\
+    -i "\$out_dir_name" \\
     -s "${samplesheet}" \\
     ${args} \\
     -o "${prefix}"
