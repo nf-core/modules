@@ -1,0 +1,79 @@
+name: Run nf-test
+on:
+  push:
+    branches:
+      # https://docs.renovatebot.com/key-concepts/automerge/#branch-vs-pr-automerging
+      - "renovate/**" # branches Renovate creates
+  pull_request:
+    branches: [master]
+  merge_group:
+    types: [checks_requested]
+    branches: [master]
+  workflow_dispatch:
+    inputs:
+      runners:
+        description: "Runners to test on"
+        type: choice
+        options:
+          - "ubuntu-latest"
+          - "self-hosted"
+        default: "self-hosted"
+
+# Cancel if a newer run is started
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # renovate: datasource=github-releases depName=askimed/nf-test versioning=semver
+  NFT_VER: "0.9.2"
+  NXF_ANSI_LOG: false
+  NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
+  NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
+  # renovate: datasource=github-releases depName=nextflow/nextflow versioning=semver
+  NXF_VER: "24.10.1"
+
+jobs:
+  nf-test:
+    runs-on: ${{ github.event.inputs.runners || 'self-hosted' }}
+    # NOTE I think this is the cleanest way to get them organized
+    # process | conda | 1
+    # process | conda | 2
+    # process | conda | 3
+    # process | docker_self_hosted | 1
+    # ...
+    # workflow | singularity | 3
+    name: "${{ matrix.profile }} | ${{ matrix.shard }}"
+    # TODO
+    # needs: get-number-of-shards
+    # if: ${{ fromJSON(needs.get-number-of-shards.outputs.shards) != fromJSON('["1", "0"]') }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # NOTE We could split these, but there's probably going to be more process tests than workflow tests, so we're just going to combine them all and bump up the shards for now
+        # NOTE The name of the test would be name: "${{ matrix.filter }} | ${{ matrix.profile }} | ${{ matrix.shard }}"
+        # filter: [process, workflow]
+        profile: [conda, docker_self_hosted, singularity]
+        shard: [1, 2, 3, 4, 5]
+    env:
+      # FIXME Bumping them up to make the transition smooth, then we can throttle them back
+      TOTAL_SHARDS: 5
+      SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
+      SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
+    steps:
+      - name: Clean Workspace # Purge the workspace in case it's running on a self-hosted runner
+        run: |
+          ls -la ./
+          rm -rf ./* || true
+          rm -rf ./.??* || true
+          ls -la ./
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          fetch-depth: 0
+      - name: Run nf-test Action
+        uses: ./.github/actions/nf-test-action
+        with:
+          profile: ${{ matrix.profile }}
+          shard: ${{ matrix.shard }}
+          total_shards: ${{ env.TOTAL_SHARDS }}
