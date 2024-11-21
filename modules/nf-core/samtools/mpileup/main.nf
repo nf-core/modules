@@ -20,7 +20,7 @@ process SAMTOOLS_MPILEUP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def intervals = intervals ? "-l ${intervals}" : ""
+    intervals = intervals ? "-l ${intervals}" : ""
     """
     samtools mpileup \\
         --fasta-ref $fasta \\
