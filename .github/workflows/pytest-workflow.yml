@@ -29,7 +29,7 @@ env:
   NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # renovate: datasource=github-releases depName=nextflow-io/nextflow versioning=semver
-  NXF_VERSION: "24.10.1"
+  NXF_VER: "24.10.1"
 
 jobs:
   pytest-changes:
@@ -40,7 +40,7 @@ jobs:
       modules: ${{ steps.tags.outputs.modules }}
       subworkflows: ${{ steps.tags.outputs.subworkflows }}
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           fetch-depth: 2 # To retrieve the preceding commit.
 
@@ -266,7 +266,7 @@ jobs:
       - name: Setup Nextflow
         uses: nf-core/setup-nextflow@v2
         with:
-          version: ${{ env.NXF_VERSION }}
+          version: ${{ env.NXF_VER }}
 
       - name: Setup apptainer
         if: matrix.profile == 'singularity'
