@@ -8,10 +8,10 @@ nextflow_process {
     tag "bedtools"
     tag "bedtools/closest"
 
-    test("homo_sapiens") {
+    test("homo sapiens") {
         when {
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true),
@@ -37,7 +37,7 @@ nextflow_process {
     test("homo_sapiens - fai") {
         when {
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true),
@@ -60,7 +60,7 @@ nextflow_process {
     test("homo_sapiens - vcf") {
         when {
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true),
