@@ -25,14 +25,6 @@ process TCOFFEE_ALNCOMPARE {
     def values = meta.values().join(",")
 
     """
-
-    # check whether it is compressed
-    if [[ "${msa}" == *.gz ]]; then
-        unpigz -c ${msa} > uncompressed_msa.fa
-    else
-        ln ${msa} uncompressed_msa.fa
-    fi
-
     export TEMP='./'
     t_coffee -other_pg aln_compare \
         -al1 ${ref_msa} \

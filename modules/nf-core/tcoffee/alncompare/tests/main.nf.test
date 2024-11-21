@@ -7,6 +7,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "tcoffee"
     tag "tcoffee/alncompare"
+    tag "tar"
 
     test("seatoxin") {
 
@@ -43,7 +44,7 @@ nextflow_process {
                     input[0] = [ [ id:'test' ],
                              file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
                                ]
-                    input[1] = ".gz"
+                    input[1] = '.gz'
                     """
                 }
             }
@@ -55,7 +56,7 @@ nextflow_process {
                 """
                 input[0] = [
                                 [ id:'test' ], // meta map
-                                TAR.out.tree.collect{ meta, compressed -> compressed }.map{ compressed -> [[ id: 'test'], compressed]},
+                                TAR.out.archive.collect{ meta, archive -> archive }.map{ archive -> archive },
                                 file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
                             ]
                 """
