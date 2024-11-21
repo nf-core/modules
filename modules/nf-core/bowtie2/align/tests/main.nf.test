@@ -69,7 +69,8 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
+                    // NOTE: Since sort is off reads aren't going to be deterministic
+                    process.out.bam.collect { meta, bamfile -> bam(bamfile).getHeaderMD5() },
                     process.out.log,
                     process.out.fastq,
                     process.out.versions
