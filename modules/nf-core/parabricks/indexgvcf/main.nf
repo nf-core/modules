@@ -11,7 +11,7 @@ process PARABRICKS_INDEXGVCF {
     output:
     // This tool outputs g.vcf.idx if input is uncompressed, g.vcf.gz.tbi if input is compressed
     tuple val(meta), path("*") , emit: gvcf_index
-    path "versions.yml"            , emit: versions
+    path "versions.yml"        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
