@@ -52,9 +52,9 @@ jobs:
     outputs:
       # https://github.com/dorny/paths-filter?tab=readme-ov-file#custom-processing-of-changed-files
       modules: ${{ steps.filter.outputs.modules }}
-      modules_files: ${{ steps.module-names.outputs.results }}
+      modules_files: ${{ steps.module_names.outputs.results }}
       subworkflows: ${{ steps.filter.outputs.subworkflows }}
-      subworkflows_files: ${{ steps.subworkflow-names.outputs.results }}
+      subworkflows_files: ${{ steps.subworkflow_names.outputs.results }}
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
@@ -75,24 +75,24 @@ jobs:
 
       - name: Get module name
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
-        id: modules-names
+        id: modules_names
         with:
           script: |
-            return [...new Set('${{ steps.filter.outputs.modules_files }}'.split(',').map(path => path.replace('modules/nf-core/', '').split('/')[0]))].join(',');
+            return JSON.stringify([...new Set('${{ steps.filter.outputs.modules_files }}'.split(',').map(path => path.replace('modules/nf-core/', '').split('/').slice(0, 2).join('/')))]);
 
       - name: Get subworkflow name
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
-        id: subworkflow-names
+        id: subworkflow_names
         with:
           script: |
-            return [...new Set('${{ steps.filter.outputs.subworkflow_files }}'.split(',').map(path => path.replace('subworkflows/nf-core/', '').split('/')[0]))].join(',');
+            return JSON.stringify([...new Set('${{ steps.filter.outputs.subworkflows_files }}'.split(',').map(path => path.replace('modules/nf-core/', '').split('/').slice(0, 2).join('/')))]);
 
       - name: debug
         run: |
           echo ${{ steps.filter.outputs.modules_files }}
           echo ${{ steps.filter.outputs.subworkflows_files }}
-          echo ${{ steps.module-names.outputs.results }}
-          echo ${{ steps.subworkflow-names.outputs.results }}
+          echo ${{ steps.module_names.outputs.results }}
+          echo ${{ steps.subworkflow_names.outputs.results }}
 
   nf-core-lint-modules:
     runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
@@ -133,8 +133,8 @@ jobs:
       - name: Install nf-core tools development version
         run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
 
-      - name: Lint module ${{steps.name.outputs.result}}
-        run: nf-core modules lint ${{steps.name.outputs.result}}
+      - name: Lint module ${{needs.nf-core-changes.outputs.modules_files}}
+        run: nf-core modules lint ${{needs.nf-core-changes.outputs.modules_files}}
 
   nf-core-lint-subworkflows:
     runs-on: ubuntu-latest
@@ -167,8 +167,8 @@ jobs:
       - name: Install nf-core tools development version
         run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
 
-      - name: Lint subworkflow ${{steps.name.outputs.result}}
-        run: nf-core subworkflows lint ${{steps.name.outputs.result}}
+      - name: Lint subworkflow ${{needs.nf-core-changes.outputs.subworkflows_files}}
+        run: nf-core subworkflows lint ${{needs.nf-core-changes.outputs.subworkflows_files}}
 
   confirm-pass:
     runs-on: ubuntu-latest
