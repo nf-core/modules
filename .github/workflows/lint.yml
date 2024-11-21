@@ -52,9 +52,9 @@ jobs:
     outputs:
       # https://github.com/dorny/paths-filter?tab=readme-ov-file#custom-processing-of-changed-files
       modules: ${{ steps.filter.outputs.modules }}
-      modules_files: ${{ steps.module_names.outputs.results }}
+      modules_files: ${{ steps.module_names.outputs.result }}
       subworkflows: ${{ steps.filter.outputs.subworkflows }}
-      subworkflows_files: ${{ steps.subworkflow_names.outputs.results }}
+      subworkflows_files: ${{ steps.subworkflow_names.outputs.result }}
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
@@ -91,8 +91,8 @@ jobs:
         run: |
           echo ${{ steps.filter.outputs.modules_files }}
           echo ${{ steps.filter.outputs.subworkflows_files }}
-          echo ${{ steps.module_names.outputs.results }}
-          echo ${{ steps.subworkflow_names.outputs.results }}
+          echo ${{ steps.module_names.outputs.result }}
+          echo ${{ steps.subworkflow_names.outputs.result }}
 
   nf-core-lint-modules:
     runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
