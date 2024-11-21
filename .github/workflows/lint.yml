@@ -79,11 +79,10 @@ jobs:
         with:
           script: |
             return [...new Set(${{ steps.filter.outputs.modules_files }}
-              .filter(path => !path.includes('/tests/'))
               .map(path => path.replace('modules/nf-core/', '')
               .split('/')
               .slice(0, 2)
-              .filter(x => x !== 'main.nf')
+              .filter(x => x !== 'main.nf' && x !== 'tests')
               .join('/')))];
 
       - name: Get subworkflow name
@@ -92,11 +91,10 @@ jobs:
         with:
           script: |
             return [...new Set(${{ steps.filter.outputs.subworkflows_files }}
-              .filter(path => !path.includes('/tests/'))
               .map(path => path.replace('subworkflows/nf-core/', '')
               .split('/')
               .slice(0,2)
-              .filter(x => x !== 'main.nf')
+              .filter(x => x !== 'main.nf' && x !== 'tests')
               .join('/')))];
 
       - name: debug
