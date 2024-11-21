@@ -78,14 +78,14 @@ jobs:
         id: modules_names
         with:
           script: |
-            return JSON.stringify([...new Set('${{ steps.filter.outputs.modules_files }}'.split(',').map(path => path.replace('modules/nf-core/', '').split('/').slice(0, 2).join('/')))]);
+            return ${{ steps.filter.outputs.modules_files }}.map(path => path.replace('modules/nf-core/', '').split('/').slice(0,2).filter(x => x !== 'main.nf').join('/'));
 
       - name: Get subworkflow name
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
         id: subworkflow_names
         with:
           script: |
-            return JSON.stringify([...new Set('${{ steps.filter.outputs.subworkflows_files }}'.split(',').map(path => path.replace('modules/nf-core/', '').split('/').slice(0, 2).join('/')))]);
+            return ${{ steps.filter.outputs.subworkflows_files }}.map(path => path.replace('modules/nf-core/', '').split('/').slice(0,2).filter(x => x !== 'main.nf').join('/'));
 
       - name: debug
         run: |
