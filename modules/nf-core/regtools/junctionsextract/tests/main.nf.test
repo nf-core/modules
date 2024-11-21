@@ -1,0 +1,63 @@
+nextflow_process {
+
+    name "Test Process REGTOOLS_JUNCTIONSEXTRACT"
+    script "../main.nf"
+    process "REGTOOLS_JUNCTIONSEXTRACT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "regtools"
+    tag "regtools/junctionsextract"
+
+    test("homo_sapiens - bam-bai") {
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam.bai", checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - bam-bai - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam.bai", checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert snapshot(path(process.out.versions.get(0)).yaml).match("versions") }
+            )
+        }
+
+    }
+
+}
