@@ -8,7 +8,7 @@ process SKA_FASTA {
         'biocontainers/ska:1.0--he860b03_0' }"
 
     input:
-    tuple val(meta), path(fastas), path(fastalist)
+    tuple val(meta), path(fastas), path(fasta_list)
 
     output:
     tuple val(meta), path("*.skf"), emit: skf
