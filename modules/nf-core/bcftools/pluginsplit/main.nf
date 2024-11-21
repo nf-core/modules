@@ -8,7 +8,7 @@ process BCFTOOLS_PLUGINSPLIT {
         'biocontainers/bcftools:1.20--h8b25389_0' }"
 
     input:
-    tuple val(meta), path(vcf, stageAs: "?/*"), path(tbi, stageAs: "?/*")
+    tuple val(meta), path(vcf, stageAs: "input/*"), path(tbi, stageAs: "input/*")
     path(samples)
     path(groups)
     path(regions)
