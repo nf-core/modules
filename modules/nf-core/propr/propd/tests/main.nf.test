@@ -23,6 +23,7 @@ nextflow_process {
                     .map{
                         tuple(it, it.variable, it.reference, it.target)
                     }
+                    .first()
                 ch_matrix = [
                     [id: 'test'],
                     file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
@@ -37,7 +38,53 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success }
+                { assert process.success },
+                { assert snapshot(
+                    process.out.results_genewise,
+                    process.out.versions,
+                    file(process.out.genewise_plot[0][1]).name
+                ).match()}
+            )
+        }
+    }
+
+    test("Test propr/propd when using permutation tests") {
+
+        tag "permutation"
+        config "./permutation.config"
+
+        when {
+            process {
+                """
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                    .first()
+                ch_matrix = [
+                    [id: 'test'],
+                    file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.results_genewise,
+                    process.out.fdr,
+                    process.out.versions,
+                    file(process.out.genewise_plot[0][1]).name
+                ).match()}
             )
         }
     }

@@ -19,7 +19,6 @@ process PROPR_PROPD {
     tuple val(meta), path("*.propd.pairwise_filtered.tsv"), emit: results_pairwise_filtered, optional:true
     tuple val(meta), path("*.propd.adjacency.csv")        , emit: adjacency                , optional:true
     tuple val(meta), path("*.propd.fdr.tsv")              , emit: fdr                      , optional:true
-    path "*.warnings.log"                                 , emit: warnings
     path "*.R_sessionInfo.log"                            , emit: session_info
     path "versions.yml"                                   , emit: versions
 

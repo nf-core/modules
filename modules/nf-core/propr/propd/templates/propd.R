@@ -134,7 +134,7 @@ get_genewise_information <- function(results) {
 plot_genewise_information <- function(results, output) {
 
     # create figure
-    png(output, width=1600, height=800)  # Adjust width to accommodate two plots side by side
+    png(output, width=1200, height=600)  # Adjust width to accommodate two plots side by side
     par(mfrow = c(1, 2))
 
     # plot scatter plot with normal y-axis
@@ -188,7 +188,7 @@ opt <- list(
     # parameters for getting the significant differentially proportional pairs
     fdr               = 0.05,                 # FDR threshold
     permutation       = 0,                    # if permutation > 0, use permutation test to compute FDR
-    number_of_cutoffs = 1000,                 # number of cutoffs for permutation test
+    number_of_cutoffs = 100,                  # number of cutoffs for permutation test
 
     # saving options
     save_pairwise     = FALSE,                # pairwise results are storage heavy, so only save when required
@@ -338,6 +338,8 @@ if (length(unique(group)) != 2) stop('Only two groups are allowed for contrast')
 ################################################
 ################################################
 
+# calculate the differential proportionality theta values
+
 pd <- propd(
     counts,
     group    = group,
@@ -354,6 +356,7 @@ if (opt\$permutation == 0) {
     warning('FDR-adjusted p-values are used to get significant pairs.')
 
     # update FDR-adjusted p-values
+    # these are p-values adjusted through the Benjamini-Hochberg procedure
 
     pd <- updateF(
         pd,
@@ -394,7 +397,7 @@ if (opt\$permutation == 0) {
             fdr_adjusted = TRUE
         )
 
-        # get genewise information
+        # parse genewise information from pairwise results
 
         results_genewise <- get_genewise_information(results_pairwise)
 
@@ -422,13 +425,22 @@ if (opt\$permutation == 0) {
     # as far as it does not find a meaningful theta value
     # and does not reach the maximum number of iterations.
 
+    fdr_table <- data.frame(
+        'cutoff' = numeric(0),
+        'randcounts' = numeric(0),
+        'truecounts' = numeric(0),
+        'FDR' = numeric(0)
+    )
     theta_cutoff <- FALSE
     max_cutoff <- 1
     ntry <- 0
     while (!theta_cutoff & max_cutoff > 0 & ntry < 10) {
         ntry <- ntry + 1
 
-        # get theta cutoffs to test the FDR
+        # get a list of theta values served as cutoff to calculate the FDR values
+        # Given a theta value as cutoff, the FDR is defined as the proportion of
+        # false positives obtained from the null distribution vs the total number
+        # of positives obtained from the real data.
 
         if (ntry > 1) {
             part <- pd@fdr[which(pd@fdr\$truecounts > 0),]
@@ -451,8 +463,13 @@ if (opt\$permutation == 0) {
             custom_cutoffs = cutoffs,
             ncores = opt\$ncores
         )
+        fdr_table <- rbind(pd@fdr, fdr_table)
 
-        # check if any theta value has FDR below desired threshold
+        # get theta value for which FDR is below desired threshold
+        # theta_cutoff is FALSE when no theta value has FDR below desired threshold
+        # otherwise it is the theta value for which FDR is below desired threshold
+        # Only when there is a meaningful theta, we can compute the next steps
+        # that involve extracting the significant pairs.
 
         theta_cutoff <- getCutoffFDR(
             pd,
@@ -466,6 +483,8 @@ if (opt\$permutation == 0) {
         warning('Significant theta value found: ', theta_cutoff)
 
         # get adjacency matrix
+        # this matrix will have 1s for significant pairs and 0s for the rest
+        # diagonals are set to 0
 
         adj <- getAdjacencyFDR(
             pd,
@@ -481,7 +500,7 @@ if (opt\$permutation == 0) {
             window_size = 1
         )
 
-        # get genewise information
+        # parse genewise information from pairwise results
 
         results_genewise <- get_genewise_information(results_pairwise)
 
@@ -500,14 +519,30 @@ if (opt\$permutation == 0) {
 }
 
 # deal with the situation when no significant thetas are found
-# For the moment, we just print a warning and set adj, hub_genes and results to NULL
-# TODO take top n pairs when no cutoff has FDR below desired threshold
+# For the moment, we just create empty tables with the same data structure
 
 if (!theta_cutoff) {
     warning('No theta value has FDR below desired threshold.')
-    adj <- NULL
-    results_pairwise <- NULL
-    results_genewise <- NULL
+
+    # create empty adjacency matrix
+
+    adj <- matrix(0, nrow=ncol(counts), ncol=ncol(counts))
+    colnames(adj) <- rownames(adj) <- colnames(counts)
+
+    # create empty pairwise results table
+
+    results_pairwise <- getResults(pd)[0,]
+
+    # create empty genewise results table
+
+    results_genewise <- data.frame(
+        'features_id_col' = character(0),
+        lfc = numeric(0),
+        lfc_error = numeric(0),
+        connectivity = numeric(0),
+        weighted_connectivity = numeric(0)
+    )
+    colnames(results_genewise) <- c(opt\$features_id_col, 'lfc', 'lfc_error', 'connectivity', 'weighted_connectivity')
 }
 
 ################################################
@@ -518,6 +553,18 @@ if (!theta_cutoff) {
 
 # TODO given the size of the rds and full pairwise results
 # we may want to only save them in specific cases
+
+# save FDR values, if permutation tests were run
+
+if (opt\$permutation > 0) {
+    write.table(
+        fdr_table,
+        file      = paste0(opt\$prefix, '.propd.fdr.tsv'),
+        col.names = TRUE,
+        sep       = '\\t',
+        quote     = FALSE
+    )
+}
 
 # save main results - genewise
 
@@ -530,10 +577,20 @@ write.table(
     quote     = FALSE
 )
 
-plot_genewise_information(
-    results_genewise,
-    paste0(opt\$prefix, '.propd.genewise.png')
-)
+# save plot of genewise information
+# save empty plot if no DE genes were found
+
+if (nrow(results_genewise) > 0) {
+    plot_genewise_information(
+        results_genewise,
+        paste0(opt\$prefix, '.propd.genewise.png')
+    )
+} else {
+    warning('No genewise information to plot.')
+    png(paste0(opt\$prefix, '.propd.genewise.png'))
+    plot.new()
+    dev.off()
+}
 
 # save rdata, if required
 
@@ -574,28 +631,6 @@ if (opt\$save_pairwise) {
         quote     = FALSE
     )
 }
-
-# save FDR values, if permutation tests were run
-
-if (opt\$permutation > 0) {
-    write.table(
-        pd@fdr,
-        file      = paste0(opt\$prefix, '.propd.fdr.tsv'),
-        col.names = TRUE,
-        sep       = '\\t',
-        quote     = FALSE
-    )
-}
-
-################################################
-################################################
-## WARNINGS                                   ##
-################################################
-################################################
-
-sink(paste0(opt\$prefix, ".warnings.log"))
-print(warnings())
-sink()
 
 ################################################
 ################################################
