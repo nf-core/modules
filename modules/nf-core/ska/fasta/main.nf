@@ -20,7 +20,7 @@ process SKA_FASTA {
     script:
     def args    = task.ext.args ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def listarg = fastalist ? "-f ${fastalist}" : ''
+    def arg_list = fasta_list ? "-f ${fasta_list}" : ''
     """
     ska fasta \\
         ${args} \\
