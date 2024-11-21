@@ -12,12 +12,45 @@ nextflow_process {
     test("homo_sapiens illumina [bcl]") {
         when {
             process {
-                //TODO use new test dataset when available, see https://github.com/nf-core/test-datasets/issues/996
                 """
                 input[0] = [
                     [ id: 'test', lane:1 ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.csv', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell.tar.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fastq,
+                    process.out.fastq_idx,
+                    process.out.undetermined.collect { meta, fastq -> file(fastq).name },
+                    process.out.undetermined_idx,
+                    process.out.reports,
+                    process.out.logs.collect { meta, logs -> file(logs).list().sort() },
+                    process.out.interop.collect { meta, interop ->
+                                                interop.findAll { interopfile ->
+                                                file(interopfile).name != "IndexMetricsOut.bin" } },
+                    process.out.versions
+                ).match() },
+                { assert process.out.interop.collect { meta, interop ->
+                                                        interop.find { interopfile -> file(interopfile).name == "IndexMetricsOut.bin" } } }
+            )
+        }
+    }
+
+    test("sars_cov2 illumina [bcl]") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test', tile:'s_1_2101' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bcl/SampleSheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bcl/200624_A00834_0183_BHMTFYDRXX.tar.gz', checkIfExists: true)
                 ]
                 """
             }
