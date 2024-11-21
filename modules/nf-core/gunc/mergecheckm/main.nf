@@ -33,4 +33,14 @@ process GUNC_MERGECHECKM {
         gunc: \$( gunc --version )
     END_VERSIONS
     """
+
+    stub:
+    """
+    touch gunc_merge_checkm.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gunc: \$( gunc --version )
+    END_VERSIONS 
+    """
 }
