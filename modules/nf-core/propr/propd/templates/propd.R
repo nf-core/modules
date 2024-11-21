@@ -51,7 +51,6 @@ read_delim_flexible <- function(file, header = TRUE, row.names = 1, check.names 
     )
 }
 
-
 #' Get genewise table with logfold changes and connectivity information
 #'
 #' This function calculates the logfold changes of genes with respect to the reference set,
@@ -70,18 +69,28 @@ read_delim_flexible <- function(file, header = TRUE, row.names = 1, check.names 
 #'      vs within group variance).
 get_genewise_information <- function(results) {
 
-    warning("Genewise information is computed based on pairwise ratios.")
+    message("Alert: Genewise information is computed based on pairwise ratios.")
 
     # get unique genes
+
     genes <- unique(c(results\$Pair, results\$Partner))
     n_genes <- length(genes)
 
     # create empty matrix
-    mat <- matrix(0, nrow=n_genes, ncol=4)
-    colnames(mat) = c('lfc', 'lfc_error', 'connectivity', 'weighted_connectivity')
-    rownames(mat) = genes
 
+    mat <- data.frame(
+        'features_id_col' = character(n_genes),
+        lfc = numeric(n_genes),
+        lfc_error = numeric(n_genes),
+        connectivity = numeric(n_genes),
+        weighted_connectivity = numeric(n_genes)
+    )
+   colnames(mat) <- c(opt\$features_id_col, 'lfc', 'lfc_error', 'connectivity', 'weighted_connectivity')
+   mat[, 1] <- genes
+
+    i <- 0
     for (gene in genes){
+        i <- i + 1
 
         # get rows with this gene involved
         # NOTE that gene can be a partner or a pair and we have to consider both cases.
@@ -103,34 +112,52 @@ get_genewise_information <- function(results) {
 
         # fill in matrix values
 
-        mat[gene, 'lfc'] <- median(logfoldchanges)
-        mat[gene, 'lfc_error'] <- mad(logfoldchanges)
-        mat[gene, 'connectivity'] <- length(reference_idx)
-        mat[gene, 'weighted_connectivity'] <- sum(1 - results[reference_idx, 'theta'])
+        mat[i, 'lfc'] <- median(logfoldchanges)
+        mat[i, 'lfc_error'] <- mad(logfoldchanges)
+        mat[i, 'connectivity'] <- length(reference_idx)
+        mat[i, 'weighted_connectivity'] <- sum(1 - results[reference_idx, 'theta'])
     }
-
-    # convert to data frame
-    mat <- as.data.frame(mat)
 
     return(mat)
 }
 
+#' Plot genewise information
+#'
+#' This function plots the genewise information, which is a scatter plot of the logfold changes
+#' of the genes with respect to the reference set (x-axis) and the accumulated between group variance
+#' of the genes (y-axis). The accumulated between group variance is calculated as the sum of 1 - theta
+#' values of the genes that are significantly proportional to the target gene. This can be interpreted
+#' as the weighted connectivity of the gene in the network.
+#'
+#' @param results Data frame with genewise information
+#' @param output Output png file name
 plot_genewise_information <- function(results, output) {
 
-    # create png
-    png(output, width=800, height=800)
+    # create figure
+    png(output, width=1600, height=800)  # Adjust width to accommodate two plots side by side
+    par(mfrow = c(1, 2))
 
-    # plot scatter plot
+    # plot scatter plot with normal y-axis
     plot(
         results\$lfc,
         results\$weighted_connectivity,
         xlab = 'Logfold change',
-        ylab = 'Accumulated between group variance'
+        ylab = 'Accumulated between group variance',
+        main = 'Normal Y-axis'
+    )
+
+    # plot scatter plot with log10 y-axis
+    plot(
+        results\$lfc,
+        results\$weighted_connectivity,
+        xlab = 'Logfold change',
+        ylab = 'Accumulated between group variance',
+        log = 'y',
+        main = 'Log10 Y-axis'
     )
 
     dev.off()
 }
-
 
 ################################################
 ################################################
@@ -163,6 +190,10 @@ opt <- list(
     permutation       = 0,                    # if permutation > 0, use permutation test to compute FDR
     number_of_cutoffs = 1000,                 # number of cutoffs for permutation test
 
+    # saving options
+    save_pairwise     = FALSE,                # pairwise results are storage heavy, so only save when required
+    save_rdata        = FALSE,                # same with rdata, only save when required
+
     # other parameters
     seed              = NA,                   # seed for reproducibility
     ncores            = as.integer('$task.cpus')
@@ -182,6 +213,8 @@ opt_types <- list(
     fdr               = 'numeric',
     permutation       = 'numeric',
     number_of_cutoffs = 'numeric',
+    save_pairwise     = 'logical',
+    save_rdata        = 'logical',
     seed              = 'numeric',
     ncores            = 'numeric'
 )
@@ -241,7 +274,7 @@ library(propr)
 
 ################################################
 ################################################
-## Perform differential proportionality       ##
+## Load data                                  ##
 ################################################
 ################################################
 
@@ -299,7 +332,11 @@ group <- as.vector(samplesheet[,opt\$contrast_variable])
 if (length(group) != nrow(counts)) stop('Error when parsing group')
 if (length(unique(group)) != 2) stop('Only two groups are allowed for contrast')
 
-# compute differential proportionality
+################################################
+################################################
+## Perform differential proportionality       ##
+################################################
+################################################
 
 pd <- propd(
     counts,
@@ -482,29 +519,43 @@ if (!theta_cutoff) {
 # TODO given the size of the rds and full pairwise results
 # we may want to only save them in specific cases
 
-saveRDS(
-    pd,
-    file = paste0(opt\$prefix, '.propd.rds')
-)
+# save main results - genewise
 
 write.table(
-    getResults(pd),
-    file      = paste0(opt\$prefix, '.propd.pairwise.tsv'),
+    results_genewise,
+    file      = paste0(opt\$prefix, '.propd.genewise.tsv'),
     col.names = TRUE,
     row.names = FALSE,
     sep       = '\\t',
     quote     = FALSE
 )
 
-if (theta_cutoff) {
+plot_genewise_information(
+    results_genewise,
+    paste0(opt\$prefix, '.propd.genewise.png')
+)
+
+# save rdata, if required
+
+if (opt\$save_rdata) {
+    saveRDS(
+        pd,
+        file = paste0(opt\$prefix, '.propd.rds')
+    )
+}
+
+# save pairwise results, if required
+
+if (opt\$save_pairwise) {
     write.table(
-        adj,
-        file      = paste0(opt\$prefix, '.propd.adjacency.csv'),
+        getResults(pd),
+        file      = paste0(opt\$prefix, '.propd.pairwise.tsv'),
         col.names = TRUE,
-        row.names = TRUE,
-        sep       = ',',
+        row.names = FALSE,
+        sep       = '\\t',
         quote     = FALSE
     )
+
     write.table(
         results_pairwise,
         file      = paste0(opt\$prefix, '.propd.pairwise_filtered.tsv'),
@@ -513,19 +564,18 @@ if (theta_cutoff) {
         sep       = '\\t',
         quote     = FALSE
     )
+
     write.table(
-        results_genewise,
-        file      = paste0(opt\$prefix, '.propd.genewise.tsv'),
+        adj,
+        file      = paste0(opt\$prefix, '.propd.adjacency.csv'),
         col.names = TRUE,
-        row.names = FALSE,
-        sep       = '\\t',
+        row.names = TRUE,
+        sep       = ',',
         quote     = FALSE
     )
-    plot_genewise_information(
-        results_genewise,
-        paste0(opt\$prefix, '.propd.genewise.png')
-    )
 }
+
+# save FDR values, if permutation tests were run
 
 if (opt\$permutation > 0) {
     write.table(
