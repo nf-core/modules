@@ -75,7 +75,7 @@ jobs:
 
       - name: Get module name
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
-        id: modules_names
+        id: module_names
         with:
           script: |
             return ${{ steps.filter.outputs.modules_files }}.map(path => path.replace('modules/nf-core/', '').split('/').slice(0,2).filter(x => x !== 'main.nf').join('/'));
