@@ -102,7 +102,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        files: "${{ fromJson(needs.nf-core-changes.outputs.modules_files) }}"
+        module: "${{ fromJson(needs.nf-core-changes.outputs.modules_files) }}"
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
@@ -133,8 +133,8 @@ jobs:
       - name: Install nf-core tools development version
         run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
 
-      - name: Lint module ${{needs.nf-core-changes.outputs.modules_files}}
-        run: nf-core modules lint ${{needs.nf-core-changes.outputs.modules_files}}
+      - name: Lint module ${{ matrix.module }}
+        run: nf-core modules lint ${{ matrix.module }}
 
   nf-core-lint-subworkflows:
     runs-on: ubuntu-latest
@@ -144,7 +144,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        files: "${{ fromJson(needs.nf-core-changes.outputs.subworkflows_files) }}"
+        subworkflow: "${{ fromJson(needs.nf-core-changes.outputs.subworkflows_files) }}"
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
@@ -167,8 +167,8 @@ jobs:
       - name: Install nf-core tools development version
         run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
 
-      - name: Lint subworkflow ${{needs.nf-core-changes.outputs.subworkflows_files}}
-        run: nf-core subworkflows lint ${{needs.nf-core-changes.outputs.subworkflows_files}}
+      - name: Lint subworkflow ${{ matrix.subworkflow }}
+        run: nf-core subworkflows lint ${{ matrix.subworkflow }}
 
   confirm-pass:
     runs-on: ubuntu-latest
