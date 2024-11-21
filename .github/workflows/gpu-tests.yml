@@ -43,13 +43,17 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       # Expose detected tags as 'modules' and 'workflows' output variables
-      paths: ${{ steps.list.outputs.components }}
+      paths: ${{ steps.outputs.outputs.components }}
       modules: ${{ steps.outputs.outputs.modules }}
       subworkflows: ${{ steps.outputs.outputs.subworkflows}}
       # Prod for version bumping
     steps:
       - name: Clean Workspace # Purge the workspace in case it's running on a self-hosted runner
-        uses: AutoModality/action-clean@v1.1.0
+        run: |
+          ls -la ./
+          rm -rf ./* || true
+          rm -rf ./.??* || true
+          ls -la ./
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           fetch-depth: 0
@@ -70,7 +74,7 @@ jobs:
           echo subworkflows=$(echo '${{ steps.list.outputs.components }}' | jq '. | map(select(contains("subworkflows"))) | map(gsub("subworkflows/nf-core/"; ""))') >> $GITHUB_OUTPUT
       - name: debug
         run: |
-          echo ${{ steps.filter.outputs.components }}
+          echo ${{ steps.outputs.outputs.components }}
           echo ${{ steps.outputs.outputs.modules }}
           echo ${{ steps.outputs.outputs.subworkflows }}
 
