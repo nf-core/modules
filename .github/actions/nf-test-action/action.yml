@@ -35,7 +35,7 @@ runs:
     - name: Install nf-test
       uses: nf-core/setup-nf-test@v1
       with:
-        version: "${{ env.NFTEST_VERSION }}"
+        version: "${{ env.NFT_VER }}"
         install-pdiff: true
 
     - name: Setup apptainer
@@ -73,8 +73,8 @@ runs:
         SENTIEON_LICSRVR_IP: ${{ env.SENTIEON_LICSRVR_IP }}
         SENTIEON_AUTH_MECH: "GitHub Actions - token"
         TAGS: ${{ inputs.tags && format('--tag {0}', inputs.tags) || '' }}
-        NFT_WORKDIR: "~"
       run: |
+        NFT_WORKDIR=~ \
         nf-test test \
           --profile=${{ inputs.profile }} \
           --tap=test.tap \
