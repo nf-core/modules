@@ -11,9 +11,12 @@ nextflow_process {
 
     test("human - bam") {
 
-        config "./lowmem.config"
+        config "./nextflow.config"
 
         when {
+            params {
+                module_args = "--mutect-low-memory"
+            }
             process {
                 """
                 input[0] = [
@@ -51,9 +54,12 @@ nextflow_process {
     // // tumor-normal calling not passing because of issue with readgroups in the test files
     // // [PB Error][src/readers.cpp:1314] ID simulation01 maps to tm_simulation01, but PU is nm_simulation01 (different platform), exiting.
 
-    //     config "./tn.config"
+    //     config "./nextflow.config"
 
     //     when {
+    //         params {
+    //             module_args = "--in-normal-bam $normal_bam --normal-name $meta.normal_id --mutect-low-memory"
+    //         }
     //         process {
     //             """
     //             input[0] = [
@@ -90,9 +96,12 @@ nextflow_process {
 
     // test("human - bam - intervals") {
 
-    //     config "./lowmem.config"
+    //     config "./nextflow.config"
 
     //     when {
+    //         params {
+    //             module_args = "--mutect-low-memory"
+    //         }
     //         process {
     //             """
     //             input[0] = [
@@ -124,13 +133,16 @@ nextflow_process {
     //         )
     //     }
 
-    // }
+    }
 
     // test("human - bam - tn - intervals") {
 
-    //     config "./tn.config"
+    //     config "./nextflow.config"
 
     //     when {
+    //         params {
+    //             module_args = "--in-normal-bam $normal_bam --normal-name $meta.normal_id --mutect-low-memory"
+    //         }
     //         process {
     //             """
     //             input[0] = [
@@ -150,13 +162,19 @@ nextflow_process {
     //             """
     //         }
     //     }
+
+    // }
+
     // test("human - bam - tn - intervals") {
     // // tumor-normal calling not passing because of issue with readgroups in the test files
     // // [PB Error][src/readers.cpp:1314] ID simulation01 maps to tm_simulation01, but PU is nm_simulation01 (different platform), exiting.
 
-    //     config "./tn.config"
+    //     config "./nextflow.config"
 
     //     when {
+    //         params {
+    //             module_args = "--in-normal-bam $normal_bam --normal-name $meta.normal_id --mutect-low-memory"
+    //         }
     //         process {
     //             """
     //             input[0] = [
@@ -194,9 +212,12 @@ nextflow_process {
     // // PON test not passing because the tool expects all chromosomes in the PON file to
     // // be present in the reference genome.
 
-    //     config "./pon.config"
+    //     config "./nextflow.config"
 
     //     when {
+    //         params {
+    //             module_args = "--pon $panel_of_normals --mutect-low-memory"
+    //         }
     //         process {
     //             """
     //             input[0] = [
@@ -221,10 +242,10 @@ nextflow_process {
     //         assertAll(
     //             { assert process.success },
     //             { assert snapshot(
-                    // path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    // process.out.stats,
-                    // process.out.versions
-                    // ).match() }
+    //                 path(process.out.vcf[0][1]).vcf.variantsMD5,
+    //                 process.out.stats,
+    //                 process.out.versions
+    //                 ).match() }
     //         )
     //     }
 
@@ -266,10 +287,13 @@ nextflow_process {
 
     test("human - bam - pon - stub") {
 
-        config "./pon.config"
+        config "./nextflow.config"
         options '-stub'
 
         when {
+            params {
+                module_args = "--pon $panel_of_normals --mutect-low-memory"
+            }
             process {
                 """
                 input[0] = [
