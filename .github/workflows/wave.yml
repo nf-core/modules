@@ -10,8 +10,12 @@ on:
 # TODO Skip testing CI if any changes to environment.yml
 
 env:
-  WAVE_VER: "1.5.0"
-  NFTEST_VER: "0.9.1"
+  # renovate: datasource=github-releases depName=seqeralabs/wave-cli versioning=semver
+  WAVE_VERSION: "1.5.0"
+  # renovate: datasource=github-releases depName=askimed/nf-test versioning=semver
+  NFT_VER: "0.9.2"
+  # renovate: datasource=github-releases depName=nextflow/nextflow versioning=semver
+  NXF_VER: "24.10.1"
 
 jobs:
   generate-matrix:
@@ -63,8 +67,8 @@ jobs:
 
       - name: Install wave-cli
         run: |
-          wget -q https://github.com/seqeralabs/wave-cli/releases/download/v${WAVE_VER}/wave-${WAVE_VER}-linux-x86_64
-          sudo mv wave-${WAVE_VER}-linux-x86_64 /usr/local/bin/wave
+          wget -q https://github.com/seqeralabs/wave-cli/releases/download/v${WAVE_VERSION}/wave-${WAVE_VERSION}-linux-x86_64
+          sudo mv wave-${WAVE_VERSION}-linux-x86_64 /usr/local/bin/wave
           chmod +x /usr/local/bin/wave
 
       - name: Build ${{ matrix.profile }} container
@@ -86,7 +90,7 @@ jobs:
     # if: github.repository == 'nf-core/modules'
     if: ${{ needs.generate-matrix.outputs.dockerfile-matrix != '[]' }}
     needs: generate-matrix
-    name: Build ${{ matrix.profile }} ${{ matrix.platform }} Container
+    name: Build Dockerfile-based ${{ matrix.platform }} Container
     runs-on: ubuntu-latest
     timeout-minutes: 60
     strategy:
@@ -96,15 +100,15 @@ jobs:
         files: "${{ fromJson(needs.generate-matrix.outputs.dockerfile-matrix) }}"
         # NOTE singularity build requires a Singularity definition file in place of Dockerfile
         # https://nextflow.slack.com/archives/C0477AS31T5/p1731755350230149?thread_ts=1731697852.661849&cid=C0477AS31T5
-        profile: [docker]
+        # profile: [docker]
         platform: ["linux/amd64", "linux/arm64"]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - name: Install wave-cli
         run: |
-          wget -q https://github.com/seqeralabs/wave-cli/releases/download/v${WAVE_VER}/wave-${WAVE_VER}-linux-x86_64
-          sudo mv wave-${WAVE_VER}-linux-x86_64 /usr/local/bin/wave
+          wget -q https://github.com/seqeralabs/wave-cli/releases/download/v${WAVE_VERSION}/wave-${WAVE_VERSION}-linux-x86_64
+          sudo mv wave-${WAVE_VERSION}-linux-x86_64 /usr/local/bin/wave
           chmod +x /usr/local/bin/wave
 
       - name: Create a registry name
@@ -115,7 +119,7 @@ jobs:
           script: |
             return '${{ matrix.files }}'.replace('modules/nf-core/', '').replace('/Dockerfile', '').replace('/', '_');
 
-      - name: Build ${{ matrix.profile }} container
+      - name: Build ${{ matrix.platform }} container
         # NOTE If you're changing a Dockerfile and this is running, try to update the Dockerfile to build with wave
         continue-on-error: false
         run: |
@@ -124,7 +128,7 @@ jobs:
               --await \
               --platform ${{ matrix.platform }} \
               --build-repo quay.io/nf-core/modules/${{steps.registry-name.outputs.result}} \
-              --cache-repository quay.io/nf-core/wave-cache/${{ matrix.profile }}/${{ matrix.platform }} \
+              --cache-repository quay.io/nf-core/wave-cache/docker/${{ matrix.platform }} \
               --tower-token ${{ secrets.TOWER_ACCESS_TOKEN }} \
               --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }}
 
@@ -142,7 +146,7 @@ jobs:
 
   #     - uses: nf-core/setup-nf-test@v1
   #       with:
-  #         version: ${{ env.NFTEST_VER }}
+  #         version: ${{ env.NFT_VER }}
 
   #     - name: Bump Snapshot Versions
   #       env:
