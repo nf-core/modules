@@ -30,9 +30,11 @@ output:
           type: map
           description: |
             Groovy Map containing output information
-      - "*.g.vcf*":
-          type: file
-          description: Indexed gvcf file
+          pattern: "*.g.vcf"
+      - "*":
+          type: map
+          description: |
+            Groovy Map containing output information
           pattern: "*.g.vcf"
   - versions:
       - versions.yml:
