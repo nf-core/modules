@@ -80,7 +80,7 @@ jobs:
           script: |
             return '${{ steps.filter.outputs.modules_files }}'.replace('modules/nf-core/', '').replace('/main.nf', '').replace('/environment.yml', '').replace('/meta.yml', '').replace('/README.md', '').replace('/tests/tags.yml', '').replace('/tests/main.nf.test', '').replace('/tests/main.nf.test.snap', '');
 
-      - name: Get module name
+      - name: Get subworkflow name
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
         id: subworkflow-names
         with:
@@ -91,6 +91,8 @@ jobs:
         run: |
           echo ${{ steps.filter.outputs.modules_files }}
           echo ${{ steps.filter.outputs.subworkflows_files }}
+          echo ${{ steps.module-names.outputs.results }}
+          echo ${{ steps.subworkflow-names.outputs.results }}
 
   nf-core-lint-modules:
     runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
