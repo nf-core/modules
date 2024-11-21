@@ -1,79 +1,30 @@
 {
-    $schema: "https://docs.renovatebot.com/renovate-schema.json",
-    extends: ["config:best-practices"],
-    vulnerabilityAlerts: {
-        labels: ["security"],
-        schedule: "at any time",
-    },
-    prHourlyLimit: 3,
-    platform: "github",
-    onboarding: false,
-    dependencyDashboard: true,
-    dependencyDashboardTitle: "Renovate Dashboard 🤖",
-    suppressNotifications: ["prIgnoreNotification"],
-    rebaseWhen: "conflicted",
-    reviewers: ["team:modules"],
-    assigneesFromCodeOwners: true,
-    gitAuthor: "nf-core-bot <renovate@nf-co.re>",
-    prHeader: "## WARNING\n - [ ] I have made sure to update the singularity and conda images",
-    "pre-commit": {
-        enabled: true,
-    },
-    customManagers: [
-    // TODO waiting on https://github.com/nf-core/modules/pull/4080
-        // {
-        //     customType: "regex",
-        //     description: "Process Containers dependencies",
-        //     fileMatch: ["(^|/)main\\.nf$"],
-        //     matchStrings: [
-        //         "\\s+'(?<depName>\\S+):(?<currentValue>.*\\-.*)' }\"\n",
-        //     ],
-        //     datasourceTemplate: "docker",
-        // },
-        // {
-        //     customType: "regex",
-        //     description: "Upgrade conda dependencies",
-        //     fileMatch: ["(^|/)environment(.*).ya?ml$"],
-        //     matchStrings: [
-        //         '#\\s*renovate\\s+datasource=conda\\s+depName=(?<depName>.*?)\\s+-\\s*[\\w-]+\\s*==?\\s*"?(?<currentValue>.*)"?',
-        //         '# renovate: datasource=conda depName=(?<depName>.*?)\\s+-\\s*[\\w-]+\\s*==?\\s*"?(?<currentValue>.*)"?',
-        //     ],
-        //     datasourceTemplate: "conda",
-        // },
-        // {
-        //     customType: "regex",
-        //     description: "Upgrade pypi dependencies inside conda environment files",
-        //     fileMatch: ["(^|/)environment(.*).ya?ml$"],
-        //     matchStrings: [
-        //         "# renovate datasource=pypi\\s+-\\s*(?<depName>[\\w-]+)\\s*(\\[[\\w,\\s]+\\])?\\s*==?\\s*(?<currentValue>.*)",
-        //         "# renovate: datasource=pypi\\s+-\\s*(?<depName>[\\w-]+)\\s*(\\[[\\w,\\s]+\\])?\\s*==?\\s*(?<currentValue>.*)",
-        //     ],
-        //     datasourceTemplate: "pypi",
-        // },
-        ],
-    packageRules: [
-        {
-            matchDatasources: ["docker"],
-            registryUrls: ["quay.io"],
-        },
-        {
-            matchManagers: ["github-actions"],
-            automerge: true,
-            pinDigest: {
-                enabled: false,
-            },
-            matchPackageNames: ["/^nf-core//", "/^seqera/"],
-        },
-        {
-            matchManagers: ["github-actions"],
-            groupName: "GitHub Actions",
-            automerge: true,
-            schedule: ["before 9am"],
-        },
-        {
-            automerge: true,
-            schedule: ["before 9am on Monday"],
-            matchPackageNames: ["/renovate-config-validator/"],
-        },
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+        "github>nf-core/ops//.github/renovate/default.json5",
+        "github>nf-core/ops//.github/renovate/process_updaters.json5"
     ],
+    "prHeader": "## WARNING\n - [ ] I have made sure to update the singularity and conda images",
+    "packageRules": [
+        {
+            "matchDatasources": [
+                "conda",
+                "pypi",
+                "docker"
+            ],
+            "automerge": false
+        }
+    ],
+        "customManagers": [
+            {
+                "customType": "regex",
+                "fileMatch": [
+                    "(^|/)(workflow-templates|\\.(?:github|gitea|forgejo)/(?:workflows|actions))/.+\\.ya?ml$",
+                    "(^|/)action\\.ya?ml$"
+                ],
+                "matchStrings": [
+                    "# renovate: datasource=(?<datasource>[a-z-.]+?) depName=(?<depName>[^\\s]+?)(?: (?:lookupName|packageName)=(?<packageName>[^\\s]+?))?(?: versioning=(?<versioning>[^\\s]+?))?(?: extractVersion=(?<extractVersion>[^\\s]+?))?\\s+[A-Za-z0-9_]+?_VER(SION)?\\s*:\\s*[\"']?(?<currentValue>.+?)[\"']?\\s"
+                ]
+            }
+        ]
 }

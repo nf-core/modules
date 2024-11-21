@@ -1,0 +1,126 @@
+nextflow_process {
+
+    name "Test Process GATK4_GERMLINECNVCALLER"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "GATK4_GERMLINECNVCALLER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gatk4"
+    tag "gatk4/collectreadcounts"
+    tag "gatk4/determinegermlinecontigploidy"
+    tag "gatk4/bedtointervallist"
+    tag "gatk4/germlinecnvcaller"
+
+    setup {
+        run("GATK4_COLLECTREADCOUNTS") {
+            script "../../collectreadcounts/main.nf"
+            process {
+            """
+            input[0] = Channel.of(
+            [
+                [ id:'test', single_end:false ],
+                file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam", checkIfExists: true),
+                file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai", checkIfExists: true),
+                file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.multi_intervals.bed", checkIfExists: true)
+            ],
+            [
+                [ id:'test2', single_end:false ], // meta map
+                file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam", checkIfExists: true),
+                file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam.bai", checkIfExists: true),
+                file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.multi_intervals.bed", checkIfExists: true)
+            ])
+            input[1] = Channel.value([ [ id:'test' ], file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true)])
+            input[2] = Channel.value([ [ id:'test' ], file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta.fai", checkIfExists:true)])
+            input[3] = Channel.value([ [ id:'test' ], file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.dict", checkIfExists: true)])
+
+            """
+            }
+        }
+        run("GATK4_DETERMINEGERMLINECONTIGPLOIDY") {
+            script "../../determinegermlinecontigploidy/main.nf"
+            process {
+            """
+            bed = Channel.value(file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.multi_intervals.bed", checkIfExists: true))
+            contig_ploidy_table = file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gatk/contig_ploidy_priors_table.tsv", checkIfExists:true)
+
+            input[0] = GATK4_COLLECTREADCOUNTS.out.tsv
+                    .map({ meta, tsv -> [[id:'test'], tsv ] })
+                    .groupTuple()
+                    .combine(bed)
+                    .map({ meta, counts, bed -> [ meta, counts, bed, [] ]})
+            input[1] = [[],[]]
+            input[2] = contig_ploidy_table
+            """
+            }
+        }
+        run("GATK4_BEDTOINTERVALLIST") {
+            script "../../bedtointervallist/main.nf"
+            process {
+            """
+            input[0] = Channel.of([[ id:'test' ], file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.multi_intervals.bed", checkIfExists: true)])
+            input[1] = Channel.value([ [ id:'test' ], file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.dict", checkIfExists: true)])
+            """
+            }
+        }
+    }
+
+    test("homo sapiens - bam") {
+        when {
+            process {
+                """
+                input[0] = GATK4_COLLECTREADCOUNTS.out.tsv
+                    .map({ meta, tsv -> [[id:'test'], tsv ] })
+                    .groupTuple()
+                    .combine(GATK4_DETERMINEGERMLINECONTIGPLOIDY.out.calls)
+                    .combine(GATK4_BEDTOINTERVALLIST.out.interval_list)
+                    .map{ meta, counts, meta2, calls, meta3, bed -> [ meta, counts, bed, calls, [] ]}
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    file(process.out.cohortcalls[0][1]).list().sort().collect { path -> file(path).name },
+                    file(process.out.cohortmodel[0][1]).list().sort().collect { path -> file(path).name },
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo sapiens - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = GATK4_COLLECTREADCOUNTS.out.tsv
+                    .map({ meta, tsv -> [[id:'test'], tsv ] })
+                    .groupTuple()
+                    .combine(GATK4_DETERMINEGERMLINECONTIGPLOIDY.out.calls)
+                    .combine(GATK4_BEDTOINTERVALLIST.out.interval_list)
+                    .map{ meta, counts, meta2, calls, meta3, bed -> [ meta, counts, bed, calls, [] ]}
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    file(process.out.cohortcalls[0][1]).list().sort().collect { path -> file(path).name },
+                    file(process.out.cohortmodel[0][1]).list().sort().collect { path -> file(path).name },
+                ).match() }
+            )
+        }
+
+    }
+
+}

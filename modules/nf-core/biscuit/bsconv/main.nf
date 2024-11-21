@@ -2,18 +2,19 @@ process BISCUIT_BSCONV {
     tag "$meta.id"
     label 'process_long'
 
-
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/biscuit:1.1.0.20220707--he272189_1':
-        'biocontainers/biscuit:1.1.0.20220707--he272189_1' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/33/33a9ca30b4154f11253c8d91a75382065dcb8282ba99b74dbee59ed8faceabd7/data':
+        'community.wave.seqera.io/library/biscuit:1.5.0.20240506--ca92d9d0a37b5fa8' }"
 
     input:
-    tuple val(meta), path(bam), path(bai)
-    path(index)
+    tuple val(meta), path(bam)
+    tuple val(meta2), path(bai)
+    tuple val(meta3), path(fasta)
+    tuple val(meta4), path(index)
 
     output:
-    tuple val(meta), path("*.bam"), emit: bsconv_bam
+    tuple val(meta), path("*.bam"), emit: bam
     path "versions.yml"           , emit: versions
 
     when:
@@ -24,11 +25,11 @@ process BISCUIT_BSCONV {
     def prefix = task.ext.prefix ?: "${meta.id}"
     if ("$bam" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
-    INDEX=`find -L ./ -name "*.bis.amb" | sed 's/\\.bis.amb\$//'`
+    ln -sf \$(readlink $fasta) $index/$fasta
 
     biscuit bsconv \\
         $args \\
-        \$INDEX \\
+        $index/$fasta \\
         $bam \\
         ${prefix}.bam
 
@@ -41,8 +42,6 @@ process BISCUIT_BSCONV {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
-
     """
     touch ${prefix}.bam
 
