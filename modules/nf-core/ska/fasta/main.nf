@@ -25,7 +25,7 @@ process SKA_FASTA {
     ska fasta \\
         ${args} \\
         ${fastas} \\
-        ${fastalist} \\
+        ${fasta_list} \\
         -o ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
