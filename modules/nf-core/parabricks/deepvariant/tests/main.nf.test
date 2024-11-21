@@ -42,7 +42,7 @@ nextflow_process {
 
     test("human - bam - intervals") {
 
-        config './copy.config'
+        config './nextflow.config'
 
         when {
             process {
@@ -75,9 +75,12 @@ nextflow_process {
 
     test("human - bam - intervals - gvcf") {
 
-        config './gvcf.config'
+        config './nextflow.config'
 
         when {
+            params {
+                 module_args = '--gvcf'
+            }
             process {
                 """
                 input[0] = [
@@ -139,10 +142,13 @@ nextflow_process {
 
     test("human - bam - intervals - gvcf - stub") {
 
-        config './gvcf.config'
+        config './nextflow.config'
         options "-stub"
 
         when {
+            params {
+                 module_args = '--gvcf'
+            }
             process {
                 """
                 input[0] = [
