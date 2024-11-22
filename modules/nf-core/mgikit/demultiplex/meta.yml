@@ -31,7 +31,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}/*.fastq.gz":
+      - "${prefix}/.fastq.gz":
           type: file
           description: Demultiplexed sample FASTQ files
           pattern: "*.fastq.gz"
@@ -41,7 +41,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}_undetermined/*.fastq.gz":
+      - "${prefix}_undetermined/.fastq.gz":
           type: file
           description: Optional undetermined sample FASTQ files
           pattern: "Undetermined*.fastq.gz"
@@ -61,7 +61,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}/*mgikit.undetermined_barcode*":
+      - "${prefix}/mgikit.undetermined_barcode":
           type: file
           description: Optional undetermined barcodes (complete and top 20 frequent barcodes).
           pattern: "*mgikit.undetermined_barcode*"
@@ -71,7 +71,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}/*mgikit.ambiguous_barcode*":
+      - "${prefix}/mgikit.ambiguous_barcode":
           type: file
           description: Optional ambiguous barcodes (complete and top 20 frequent barcodes).
           pattern: "*mgikit.ambiguous_barcode*"
@@ -111,7 +111,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}/mgikit.{info,general,ambiguous_barcode,undetermined_barcode}":
+      - "${prefix}/*mgikit.{info,general,ambiguous_barcode,undetermined_barcode}":
           type: file
           description: Demultiplexing Quality Reports
           pattern: "mgikit.{info,general,ambiguous_barcode,undetermined_barcode}"
