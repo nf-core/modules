@@ -2,7 +2,7 @@ process REGTOOLS_JUNCTIONSEXTRACT {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::regtools=1.0.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'community.wave.seqera.io/library/regtools:1.0.0--452281951f764f78' :
         'community.wave.seqera.io/library/regtools:1.0.0--461ddf16709a70cf' }"
