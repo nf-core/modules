@@ -94,10 +94,10 @@ runs:
           --filter process,workflow \
           ${{ inputs.paths }}
 
-    - uses: actions/upload-artifact@v4
-      if: success() || failure()
+    - uses: actions/upload-artifact@v4 # upload test results
+      if: success() || failure() # run this step even if previous step failed
       with:
-        name: test-results
+        name: test-results-${{ inputs.profile }}-${{ inputs.shard }}-${{ inputs.total_shards }}
         path: nf-test-${{ inputs.profile }}-${{ inputs.shard }}-${{ inputs.total_shards }}-junit.xml
 
     - name: Clean up
