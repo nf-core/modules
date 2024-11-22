@@ -1,0 +1,105 @@
+nextflow_process {
+
+    name "Test Process SHAPEIT5_PHASECOMMON"
+    script "../main.nf"
+    process "SHAPEIT5_PHASECOMMON"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "shapeit5"
+    tag "shapeit5/phasecommon"
+
+    test("homo sapiens - bcf, [], [], []") {
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'input', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true),
+                    [],
+                    "chr21"
+                ])
+
+                input[1] = Channel.of([[],[],[]])
+                input[2] = Channel.of([[],[],[]])
+                input[3] = Channel.of([[],[]])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.phased_variant.collect{ meta, vcf -> [meta, file(vcf).name]},
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo sapiens - bcf, [], [], map") {
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'input', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true),
+                    [],
+                    "chr21"
+                ])
+
+                input[1] = Channel.of([[],[],[]])
+                input[2] = Channel.of([[],[],[]])
+                input[3] = Channel.of([
+                    [ id:'map', single_end:false ],
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/chr21.b38.gmap.gz", checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.phased_variant.collect{ meta, vcf -> [meta, file(vcf).name]},
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo sapiens - bcf, [], [], [] - stub") {
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'input', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true),
+                    [],
+                    "chr21"
+                ])
+
+                input[1] = Channel.of([[],[],[]])
+                input[2] = Channel.of([[],[],[]])
+                input[3] = Channel.of([[],[]])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
