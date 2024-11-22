@@ -37,7 +37,7 @@ process SAM2LCA_ANALYZE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sam2lca: \$(echo \$(sam2lca --version 2>&1) | sed 's/^sam2lca, version //' ))
+        sam2lca: \$(sam2lca --version 2>&1) | sed 's/^sam2lca, version //' )
     END_VERSIONS
     """
 
@@ -50,7 +50,7 @@ process SAM2LCA_ANALYZE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sam2lca: \$(sam2lca --version 2>&1) | sed 's/^sam2lca, version //' ))
+        sam2lca: \$(sam2lca --version 2>&1) | sed 's/^sam2lca, version //' )
     END_VERSIONS
     """
 }
