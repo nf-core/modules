@@ -82,7 +82,7 @@ jobs:
               .map(path => path.replace('modules/nf-core/', '')
               .split('/')
               .slice(0, 2)
-              .filter(x => x !== 'main.nf' && x !== 'tests')
+              .filter(x => x !== 'main.nf' && x !== 'tests' && x !== 'meta.yml' && x !== 'environment.yml')
               .join('/')))];
 
       - name: Get subworkflow name
@@ -94,7 +94,7 @@ jobs:
               .map(path => path.replace('subworkflows/nf-core/', '')
               .split('/')
               .slice(0,2)
-              .filter(x => x !== 'main.nf' && x !== 'tests')
+              .filter(x => x !== 'main.nf' && x !== 'tests' && x !== 'meta.yml' && x !== 'environment.yml')
               .join('/')))];
 
       - name: debug
