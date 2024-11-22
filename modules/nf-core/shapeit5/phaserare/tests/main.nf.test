@@ -8,6 +8,8 @@ nextflow_process {
     tag "modules_nfcore"
     tag "shapeit5"
     tag "shapeit5/phaserare"
+    tag "shapeit5/phasecommon"
+    tag "bcftools/index"
 
     test("homo sapiens - vcf, scaffold, []") {
         config "./nextflow.config"
