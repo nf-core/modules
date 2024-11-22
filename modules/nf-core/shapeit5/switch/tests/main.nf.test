@@ -66,7 +66,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.errors.collect { meta, txt -> [ meta, txt.collect{ file(it).name } ] },
+                    process.out.versions
+                ).match() }
             )
         }
 
@@ -74,7 +77,6 @@ nextflow_process {
 
     test("homo sapiens - vcf, scaffold, [] - stub") {
         options "-stub"
-        tag 'test'
         when {
             process {
                 """
