@@ -3,7 +3,7 @@ process DECOUPLER {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container = "ghcr.io/saezlab/publish-packages/decoupler:sha-5838309"
+    container "ghcr.io/saezlab/publish-packages/decoupler:sha-5838309"
 
     input:
     tuple val(meta), path(mat)
