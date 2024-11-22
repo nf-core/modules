@@ -75,6 +75,7 @@ nextflow_process {
     }
 
     test("homo sapiens - bcf, [], [], [] - stub") {
+        options '-stub'
         when {
             process {
                 """
