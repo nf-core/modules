@@ -1,0 +1,46 @@
+name: "Get number of shards"
+description: "Get the number of nf-test shards for the current CI job"
+outputs:
+  shards:
+    description: "Array of shard numbers"
+    value: ${{ steps.shards.outputs.shards }}
+  total_shards:
+    description: "Total number of shards"
+    value: ${{ steps.shards.outputs.total_shards }}
+  tags:
+    description: "Tags to test (`<tags>[,<tags>...]`)"
+    value: ${{ steps.shards.outputs.tags }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install nf-test
+      uses: nf-core/setup-nf-test@v1
+      with:
+        version: ${{ env.NFT_VER }}
+
+    - name: Get number of shards
+      id: shards
+      shell: bash
+      run: |
+        nftest_output=$(nf-test test --dry-run --changed-since HEAD^ --filter process --follow-dependencies)
+        echo "nftest_output: $nftest_output"
+        if echo "$nftest_output" | grep -q 'Found 0 related test(s)'; then
+          shards="[]"
+          total_shards=0
+          tags="[]"
+        else
+          number_of_shards=$(echo "$nftest_output" | grep -o 'Found [0-9]* related test' | tail -1 | awk '{print $2}')
+          shards=$(seq 1 "$number_of_shards" | jq -R . | jq -s .)
+          tags=$(echo "$nftest_output" | grep -o 'tag [^ ]*' | tail -1 | awk '{print $2}')
+          total_shards="$number_of_shards"
+        fi
+        echo "shards=${shards}" >> $GITHUB_OUTPUT
+        echo "total_shards=${total_shards}" >> $GITHUB_OUTPUT
+        echo "tags=${tags}" >> $GITHUB_OUTPUT
+
+        # Debugging output
+        echo "nftest_output: $nftest_output"
+        echo "shards: $shards"
+        echo "total_shards: $total_shards"
+        echo "tags: $tags"
