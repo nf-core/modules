@@ -9,9 +9,8 @@ nextflow_process {
     tag "shapeit5"
     tag "shapeit5/ligate"
 
-    config "./nextflow.config"
-
-    test("homo sapiens - [vcf], [tbi]") {
+    test("homo sapiens - map, [vcf], [tbi]") {
+            config "./nextflow.config"
         setup {
             run("BCFTOOLS_VIEW", alias: "BCFTOOLS_VIEW_1") {
                 script "../../../bcftools/view"
@@ -59,6 +58,32 @@ nextflow_process {
                     .map { meta, vcf, csi -> [ [id : "NA12878"], vcf, csi ] }
                     .groupTuple()
                     .view()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.merged_variants.collect {meta, vcf -> [ meta, path(vcf).vcf.summary ]},
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("homo sapiens - map, [vcf], [tbi] - stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: 'NA12878' ],
+                    [file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz", checkIfExists: true)],
+                    [file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz.csi", checkIfExists: true)]
+                ]
                 """
             }
         }
