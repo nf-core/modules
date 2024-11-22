@@ -2,7 +2,7 @@ process DECOUPLER {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "conda-forge::decoupler-py=1.6.0"
+    conda "${moduleDir}/environment.yml"
     container = "ghcr.io/saezlab/publish-packages/decoupler:sha-5838309"
 
     input:
