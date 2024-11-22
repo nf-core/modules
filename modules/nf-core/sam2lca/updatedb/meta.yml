@@ -1,0 +1,80 @@
+name: "sam2lca_updatedb"
+description: Build sam2lca database for calling lowest common ancestors from multi-mapped reads in SAM/BAM/CRAM
+  files
+keywords:
+  - LCA
+  - alignment
+  - bam
+  - metagenomics
+  - Ancestor
+  - multimapper
+  - build
+  - database
+tools:
+  - "sam2lca":
+      description: "Lowest Common Ancestor on SAM/BAM/CRAM alignment files"
+      homepage: "https://github.com/maxibor/sam2lca"
+      documentation: "https://sam2lca.readthedocs.io"
+      doi: "10.21105/joss.04360"
+      licence: ["GPL v3"]
+      identifier: ""
+
+input:
+  -  - acc2tax_name:
+        type: string
+        description: Name of accession2taxid type to use
+  -  - acc2tax_name:
+        type: string
+        description: Name of taxonomy dabase type to use
+  -  - taxo_nodes:
+        type: file
+        description: "NCBI taxonomy nodes file"
+        pattern: "*.dmp"
+        ontologies:
+          - edam: http://edamontology.org/format_2330
+  -  - taxo_names:
+        type: file
+        description: NCBI taxonomy names file
+        pattern: "*.dmp"
+        ontologies:
+          - edam: http://edamontology.org/format_2330
+  -  - taxo_merged:
+        type: file
+        description: NCBI taxonomy merged file
+        pattern: "*.dmp"
+        ontologies:
+          - edam: http://edamontology.org/format_2330
+  -  - acc2tax_json:
+        type: file
+        description: JSON file listing accession2taxid mapping files. Only required if using a custom database
+        pattern: "*.json"
+        ontologies:
+          - edam: "http://edamontology.org/format_3464"
+  -  - acc2tax:
+        type: string
+        description: accession2taxid mapping file compressed with gzip. Only required if using a custom database
+        pattern: "*.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989
+  -  - acc2tax_md5:
+        type: file
+        description: MD5 checksum of the accession2taxid mapping file. Only required if using a custom database
+        pattern: "*.md5"
+        ontologies:
+          - edam: http://edamontology.org/format_2330
+
+output:
+  - sam2lca_db:
+    - sam2lca_db:
+        type: directory
+        description: "sam2lca database"
+  - versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@maxibor"
+maintainers:
+  - "@maxibor"

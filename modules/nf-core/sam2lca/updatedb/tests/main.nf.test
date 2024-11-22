@@ -1,0 +1,37 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test sam2lca/updatedb
+nextflow_process {
+
+    name "Test Process SAM2LCA_UPDATEDB"
+    script "../main.nf"
+    process "SAM2LCA_UPDATEDB"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "sam2lca"
+    tag "sam2lca/updatedb"
+
+    test("test-sam2lca-updatedb - test dataset") {
+        when {
+            process {
+                """
+                input[0] = 'test'
+                input[1] = 'test'
+                input[2] = []
+                input[3] = []
+                input[4] = []
+                input[5] = []
+                input[6] = []
+                input[7] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success }
+            )
+        }
+    }
+
+}
