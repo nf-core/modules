@@ -22,7 +22,7 @@ process ABACAS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    abacas.pl \\
+    abacas.pl  \\
         -r $fasta \\
         -q $scaffold \\
         $args \\
