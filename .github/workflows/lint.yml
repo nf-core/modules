@@ -103,6 +103,7 @@ jobs:
           echo ${{ steps.filter.outputs.subworkflows_files }}
           echo ${{ steps.module_names.outputs.result }}
           echo ${{ steps.subworkflow_names.outputs.result }}
+          echo ${{ steps.filter.outputs.modules }}
 
   nf-core-lint-modules:
     runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
@@ -112,7 +113,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        module: "${{ fromJson(needs.nf-core-changes.outputs.modules_files) }}"
+        module: "${{ fromJson(needs.nf-core-changes.outputs.modules) }}"
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
