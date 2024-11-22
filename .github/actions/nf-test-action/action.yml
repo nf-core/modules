@@ -87,46 +87,18 @@ runs:
 
         nf-test test \
           --profile=${{ inputs.profile }} \
-          --tap=test.tap \
+          --junitxml nf-test-${{ inputs.profile }}-${{ inputs.shard }}-${{ inputs.total_shards }}-junit.xml
           --verbose \
           --ci \
           --shard ${{ inputs.shard }}/${{ inputs.total_shards }} \
           --filter process,workflow \
           ${{ inputs.paths }}
 
-          # Save the absolute path of the test.tap file to the output
-          echo "tap_file_path=$(realpath test.tap)" >> $GITHUB_OUTPUT
-
-    - name: Generate test summary
-      if: always()
-      shell: bash
-      run: |
-        # Add header if it doesn't exist (using a token file to track this)
-        if [ ! -f ".summary_header" ]; then
-          echo "# 🚀 nf-test Results" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Status | Test Name | Profile | Shard |" >> $GITHUB_STEP_SUMMARY
-          echo "|:------:|-----------|---------|-------|" >> $GITHUB_STEP_SUMMARY
-          touch .summary_header
-        fi
-
-        if [ -f test.tap ]; then
-          while IFS= read -r line; do
-            if [[ $line =~ ^ok ]]; then
-              test_name="${line#ok }"
-              # Remove the test number from the beginning
-              test_name="${test_name#* }"
-              echo "| ✅ | ${test_name} | ${{ inputs.profile }} | ${{ inputs.shard }}/${{ inputs.total_shards }} |" >> $GITHUB_STEP_SUMMARY
-            elif [[ $line =~ ^not\ ok ]]; then
-              test_name="${line#not ok }"
-              # Remove the test number from the beginning
-              test_name="${test_name#* }"
-              echo "| ❌ | ${test_name} | ${{ inputs.profile }} | ${{ inputs.shard }}/${{ inputs.total_shards }} |" >> $GITHUB_STEP_SUMMARY
-            fi
-          done < test.tap
-        else
-          echo "| ⚠️ | No test results found | ${{ inputs.profile }} | ${{ inputs.shard }}/${{ inputs.total_shards }} |" >> $GITHUB_STEP_SUMMARY
-        fi
+    - uses: actions/upload-artifact@v4
+      if: success() || failure()
+      with:
+        name: test-results
+        path: nf-test-${{ inputs.profile }}-${{ inputs.shard }}-${{ inputs.total_shards }}-junit.xml
 
     - name: Clean up
       if: always()
