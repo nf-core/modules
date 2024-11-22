@@ -4,8 +4,8 @@ process SHAPEIT5_LIGATE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/shapeit5:1.0.0--h0c8ee15_0':
-        'biocontainers/shapeit5:1.0.0--h0c8ee15_0'}"
+        'https://depot.galaxyproject.org/singularity/shapeit5:5.1.1--hb60d31d_0 ':
+        'biocontainers/shapeit5:5.1.1--hb60d31d_0'}"
 
     input:
     tuple val(meta), path(input_list), path(input_list_index)
