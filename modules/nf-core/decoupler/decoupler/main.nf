@@ -2,7 +2,9 @@ process DECOUPLER {
     tag "${meta.id}"
     label 'process_medium'
     conda "${moduleDir}/environment.yml"
-    container "ghcr.io/saezlab/publish-packages/decoupler:sha-5838309"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cf/cf3578c5f4a5ad40d10b535d496daa29f47e908fbbbc789f85e3341b8f9341ba/data'
+        : 'community.wave.seqera.io/library/decoupler-py:1.8.0--b139c6574c0ac2a6'}"
 
     input:
     tuple val(meta), path(mat)
