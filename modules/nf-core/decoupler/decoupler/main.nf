@@ -1,18 +1,17 @@
 process DECOUPLER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
-
     conda "${moduleDir}/environment.yml"
     container "ghcr.io/saezlab/publish-packages/decoupler:sha-5838309"
 
     input:
     tuple val(meta), path(mat)
-    path(net)
+    path net
 
     output:
     tuple val(meta), path("*estimate__decoupler.tsv"), emit: dc_estimate
     tuple val(meta), path("*pvals__decoupler.tsv"), emit: dc_pvals
-    path("versions.yml"), emit: versions
+    path ("versions.yml"), emit: versions
 
     when:
     task.ext.when == null || task.ext.when
