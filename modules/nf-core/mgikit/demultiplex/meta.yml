@@ -9,6 +9,7 @@ tools:
       description: "Demultiplex MGI fastq files"
       homepage: "https://sagc-bioinformatics.github.io/mgikit/"
       documentation: "https://sagc-bioinformatics.github.io/mgikit/"
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -31,9 +32,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}/.fastq.gz":
-          type: file
-          description: Demultiplexed sample FASTQ files
+          pattern: "*.fastq.gz"
+      - ${prefix}/*.fastq.gz:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*.fastq.gz"
   - undetermined:
       - meta:
@@ -41,9 +45,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}_undetermined/.fastq.gz":
-          type: file
-          description: Optional undetermined sample FASTQ files
+          pattern: "Undetermined*.fastq.gz"
+      - ${prefix}_undetermined/*.fastq.gz:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "Undetermined*.fastq.gz"
   - ambiguous:
       - meta:
@@ -51,9 +58,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}_ambiguous/*.fastq.gz":
-          type: file
-          description: Optional ambiguous sample FASTQ files
+          pattern: "Ambiguous*.fastq.gz"
+      - ${prefix}_ambiguous/*.fastq.gz:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "Ambiguous*.fastq.gz"
   - undetermined_reports:
       - meta:
@@ -61,9 +71,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}/mgikit.undetermined_barcode":
-          type: file
-          description: Optional undetermined barcodes (complete and top 20 frequent barcodes).
+          pattern: "*mgikit.undetermined_barcode*"
+      - ${prefix}/*mgikit.undetermined_barcode*:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*mgikit.undetermined_barcode*"
   - ambiguous_reports:
       - meta:
@@ -71,9 +84,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}/mgikit.ambiguous_barcode":
-          type: file
-          description: Optional ambiguous barcodes (complete and top 20 frequent barcodes).
+          pattern: "*mgikit.ambiguous_barcode*"
+      - ${prefix}/*mgikit.ambiguous_barcode*:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*mgikit.ambiguous_barcode*"
   - general_info_reports:
       - meta:
@@ -81,9 +97,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}/*mgikit.general":
-          type: file
-          description: information on reads count and quality per sample.
+          pattern: "*mgikit.general"
+      - ${prefix}/*mgikit.general:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*mgikit.general"
   - index_reports:
       - meta:
@@ -91,9 +110,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}/*mgikit.info":
-          type: file
-          description: Index information per sample.
+          pattern: "*mgikit.info"
+      - ${prefix}/*mgikit.info:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*mgikit.info"
   - sample_stat_reports:
       - meta:
@@ -101,9 +123,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}/*mgikit.sample_stats":
-          type: file
-          description: Sample stats containing information on reads count and quality per sample.
+          pattern: "*mgikit.sample_stats"
+      - ${prefix}/*mgikit.sample_stats:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*mgikit.sample_stats"
   - qc_reports:
       - meta:
@@ -111,9 +136,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}/*mgikit.{info,general,ambiguous_barcode,undetermined_barcode}":
-          type: file
-          description: Demultiplexing Quality Reports
+          pattern: "mgikit.{info,general,ambiguous_barcode,undetermined_barcode}"
+      - ${prefix}/*mgikit.{info,general,ambiguous_barcode,undetermined_barcode}:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "mgikit.{info,general,ambiguous_barcode,undetermined_barcode}"
   - versions:
       - versions.yml:
