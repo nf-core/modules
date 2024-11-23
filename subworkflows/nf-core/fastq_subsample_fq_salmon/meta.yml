@@ -10,11 +10,6 @@ components:
   - salmon/quant
   - salmon/index
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - ch_reads:
       type: file
       description: |
@@ -62,6 +57,8 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
+  - lib_format_counts:
+      description: ""
 authors:
   - "@robsyme"
   - "@drpatelh"

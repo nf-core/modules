@@ -13,11 +13,6 @@ components:
   - kraken2/kraken2
   - krakentools/extractkrakenreads
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - ch_reads:
       type: file
       description: |
@@ -28,29 +23,18 @@ input:
       description: Kraken2 database
   - val_taxid:
       type: string
-      description: A string of one or more of taxonomic IDs (e.g. from NCBI Taxonomy) separated by spaces
+      description: A string of one or more of taxonomic IDs (e.g. from NCBI Taxonomy)
+        separated by spaces
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - report:
-      type: file
-      description: |
-        Kraken2 report containing stats about classified
-        and not classified reads.
   - extracted_kraken2_reads:
       type: file
       description: |
         FASTQ or FASTA file of just reads assigned to the requested taxonomic IDs.
       pattern: "*.{fastq,fasta}"
-  - versions:
-      type: file
-      description: |
-        File containing software versions
-        Structure: [ path(versions.yml) ]
-      pattern: "versions.yml"
+  - kraken2_report:
+      description: ""
+  - multiqc_files:
+      description: ""
 authors:
   - "@MarieLataretu"
 maintainers:

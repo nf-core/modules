@@ -17,11 +17,6 @@ components:
   - samtools/flagstat
   - bam_sort_stats_samtools
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - reads:
       type: file
       description: |
@@ -35,16 +30,9 @@ input:
       type: file
       description: Splices sites in gtf file
       pattern: "*.{txt}"
-  - fasta:
-      type: file
-      description: Reference genome fasta file
-      pattern: "*.{fasta,fa}"
+  - ch_fasta:
+      description: ""
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - bam:
       type: file
       description: Output BAM file containing read alignments
@@ -65,10 +53,6 @@ output:
       type: file
       description: BAM/CRAM/SAM index file
       pattern: "*.{bai,crai,sai}"
-  - crai:
-      type: file
-      description: BAM/CRAM/SAM index file
-      pattern: "*.{bai,crai,sai}"
   - stats:
       type: file
       description: File containing samtools stats output
@@ -85,6 +69,10 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
+  - orig_bam:
+      description: ""
+  - csi:
+      description: ""
 authors:
   - "@priyanka-surana"
 maintainers:

@@ -1,6 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fastq_align_chromap"
-description: Align high throughput chromatin profiles using Chromap then sort with samtools
+description: Align high throughput chromatin profiles using Chromap then sort with
+  samtools
 keywords:
   - align
   - fasta
@@ -19,22 +20,12 @@ components:
   - samtools/flagstat
   - bam_sort_stats_samtools
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - ch_reads:
       type: file
       description: |
         Structure: [val(meta), path(reads)]
         List of input FastQ files of size 1 and 2 for single-end and paired-end data,
         respectively.
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test' ]
   - ch_index:
       type: file
       description: |
@@ -68,11 +59,6 @@ input:
         Structure: [path(pairs_chr_order)]
         Natural chromosome order for pairs flipping
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - bam:
       type: file
       description: BAM file

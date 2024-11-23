@@ -19,11 +19,6 @@ components:
   - fastq_fastqc_umitools_trimgalore
   - fastq_fastqc_umitools_fastp
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - ch_reads:
       type: file
       description: |
@@ -120,12 +115,6 @@ output:
   - trim_read_count:
       type: integer
       description: Number of reads remaining after trimming for all input samples
-  - versions:
-      type: file
-      description: |
-        File containing software versions
-        Structure: [ path(versions.yml) ]
-      pattern: "versions.yml"
 authors:
   - "@pinin4fjords"
 maintainers:

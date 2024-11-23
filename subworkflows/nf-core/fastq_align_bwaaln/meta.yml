@@ -1,6 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fastq_align_bwaaln"
-description: Align FASTQ files against reference genome with the bwa aln short-read aligner producing a sorted and indexed BAM files
+description: Align FASTQ files against reference genome with the bwa aln short-read
+  aligner producing a sorted and indexed BAM files
 keywords:
   - bwa
   - aln
@@ -46,6 +47,10 @@ output:
       description: |
         Files containing software versions
         Structure: [ path(versions.yml) ]
+  - //:
+      description: ""
+  - //:
+      description: ""
 authors:
   - "@jfy133"
 maintainers:

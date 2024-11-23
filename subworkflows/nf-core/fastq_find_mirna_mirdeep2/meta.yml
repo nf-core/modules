@@ -32,6 +32,8 @@ input:
         The input channel containing the mature and hairpin miRNA sequences for miRNA identification.
         Structure: [ val(meta), path(mature_fasta), path(hairpin_fasta) ]
       pattern: "*.fa"
+  - ch_bowtie_index:
+      description: ""
 output:
   - outputs:
       type: file
