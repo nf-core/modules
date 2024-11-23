@@ -30,7 +30,6 @@ process MGIKIT_DEMULTIPLEX {
     def args = task.ext.args ?: ''
     run_id = meta.lane ? "${meta.id}-${meta.lane}" : "${meta.id}"
     prefix = task.ext.prefix ?: "out-${run_id}"
-
     """
     out_dir_name="${run_dir}"
     if [[ "$run_dir" == *.zip ]]; then
