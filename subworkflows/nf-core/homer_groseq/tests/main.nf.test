@@ -1,0 +1,79 @@
+nextflow_workflow {
+
+    name "Test Workflow HOMER_GROSEQ"
+    script "../../../../../subworkflows/nf-core/homer/groseq/main.nf"
+    workflow "HOMER_GROSEQ"
+
+    test("Should run HOMER_GROSEQ with BAM input") {
+
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'])
+                ]
+                input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() },
+                { assert path("${workflow.launchDir}/output/homer/test.bed").md5 == "8d40034dfe22c5cf973071aa1e8d3617" },
+                { assert path("${workflow.launchDir}/output/homer/test.bedGraph.gz").md5 == "de2b2f8ab90a909b8bfbe755bdaba407" },
+                { assert path("${workflow.launchDir}/output/homer/test.peaks.txt").md5 == "8d40034dfe22c5cf973071aa1e8d3617" },
+                { assert path("${workflow.launchDir}/output/homer/versions.yml").md5 == "c85dee03f1afabe406a87743a4c5506d" }
+            )
+        }
+    }
+
+    test("Should run HOMER_GROSEQ with BED input") {
+
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.test_data['sarscov2']['genome']['test_bed'])
+                ]
+                input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() },
+                { assert path("${workflow.launchDir}/output/homer/test.bed").md5 == "25e8b64946012d1c4567a04062e90fae" },
+                { assert path("${workflow.launchDir}/output/homer/test.bedGraph.gz").md5 == "2d2d1c2d3242ff74c7a922695accb9d2" },
+                { assert path("${workflow.launchDir}/output/homer/test.peaks.txt").md5 == "25e8b64946012d1c4567a04062e90fae" },
+                { assert path("${workflow.launchDir}/output/homer/versions.yml").md5 == "c9b5f1248d28c216b000cba8da738455" }
+            )
+        }
+    }
+
+    test("Should use correct parameters for HOMER_MAKETAGDIRECTORY") {
+
+        when {
+            process("HOMER_GROSEQ:HOMER_MAKETAGDIRECTORY") {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.test_data['sarscov2']['genome']['test_bed'])
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.ext.args == "-checkGC -format bed" }
+            )
+        }
+    }
+}
