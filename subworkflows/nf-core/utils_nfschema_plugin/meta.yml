@@ -1,6 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "utils_nfschema_plugin"
-description: Run nf-schema to validate parameters and create a summary of changed parameters
+description: Run nf-schema to validate parameters and create a summary of changed
+  parameters
 keywords:
   - validation
   - JSON schema
@@ -25,6 +26,14 @@ input:
         option. When this input is empty it will automatically use the configured schema or
         "${projectDir}/nextflow_schema.json" as default. The schema should not be given in this way
         for meta pipelines.
+  - //:
+      description: ""
+  - //:
+      description: ""
+  - //:
+      description: ""
+  - //:
+      description: ""
 output:
   - dummy_emit:
       type: boolean
