@@ -10,6 +10,7 @@ process HOMER_FINDPEAKS {
 
     input:
     tuple val(meta), path(tagDir)
+    path uniqmap // optional
 
     output:
     tuple val(meta), path("*.peaks.txt"), emit: txt
@@ -20,14 +21,16 @@ process HOMER_FINDPEAKS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: uniqmap ? "${meta.id}-${uniqmap.baseName}" : "${meta.id}"
+    def uniqmap_flag = uniqmap ? "-uniqmap $uniqmap" : ""
     def VERSION = '4.11' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
 
     findPeaks \\
         $tagDir \\
         $args \\
-        -o ${prefix}.peaks.txt
+        -o ${prefix}.peaks.txt \\
+        $uniqmap_flag
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
