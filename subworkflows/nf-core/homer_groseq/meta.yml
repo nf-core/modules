@@ -1,10 +1,12 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: homer_groseq
-description: Perform variant calling on a set of normal samples using mutect2 panel of normals mode. Group them into a genomicsdbworkspace using genomicsdbimport, then use this to create a panel of normals using createsomaticpanelofnormals.
+description: Basic process of trying to analyze GRO-Seq data with HOMER. From the [GRO-Seq Analysis Tutorial](http://homer.ucsd.edu/homer/ngs/groseq/groseq.html).
 keywords:
   - homer
   - groseq
   - nascent
 components:
+  - unzip
   - homer/maketagdirectory
   - homer/makeucscfile
   - homer/findpeaks
@@ -25,7 +27,7 @@ input:
       pattern: "*.fasta"
   - uniqmap:
       type: file
-      description: HOMER uniqmap
+      description: Optional HOMER uniqmap
       pattern: "*.zip"
 output:
   - tagdir:
