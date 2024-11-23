@@ -11,18 +11,14 @@ components:
   - samtools/view
   - gawk
 input:
-  - ch_bam:
-      type: file
-      description: |
-        The input channel containing the BAM/CRAM/SAM files and their indexes and the depth at which to subsample them.
-        Structure: [ val(meta), path(bam), path(bai), val(depth) ]
-      pattern: "*.{bam,cram,sam}"
   - ch_fasta:
       type: file
       description: |
         The reference genome channel containing the fasta files and its index
         Structure: [ val(meta), path(fasta), path(fai) ]
       pattern: "*.{fa(sta)?}"
+  - ch_bam_bai_depth:
+      description: ""
 output:
   - bam_subsampled:
       type: file
