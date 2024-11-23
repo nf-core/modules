@@ -25,11 +25,6 @@ input:
         BAM and associated index files file representing reads mapped against each
         contig in ch_fasta. Meta must be identical between ch_fasta and ch_bam entries.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - coverage_table:
       type: file
       description: |
@@ -60,16 +55,12 @@ output:
       description: |
         Structure: [ val(meta), path(csv) ]
         CSV file containing final cluster assignments of original input contigs
-  - bin:
-      type: file
-      description: |
-        Structure: [ val(meta), path(fasta) ]
-        FASTA files containing CONCOCT predicted bin clusters, named numerically
-        by CONCOCT cluster ID
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
+  - bins:
+      description: ""
 authors:
   - "@jfy133"
 maintainers:
