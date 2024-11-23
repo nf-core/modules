@@ -11,27 +11,12 @@ components:
   - bcl2fastq
   - bclconvert
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'string', lane: int ]
-  - samplesheet:
-      type: file
-      description: |
-        CSV file containing information about samples to be demultiplexed in Illumina SampleSheet format
-  - flowcell:
-      type: file
-      description: Directory or tar archive containing Illumina BCL data, sequencer output directory
   - demultiplexer:
       type: string
       description: Which demultiplexer to use, bcl2fastq or bclconvert
+  - ch_flowcell:
+      description: ""
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - fastq:
       type: file
       description: Demultiplexed fastq files
@@ -52,6 +37,8 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
+  - empty_fastq:
+      description: ""
 authors:
   - "@matthdsm"
 maintainers:

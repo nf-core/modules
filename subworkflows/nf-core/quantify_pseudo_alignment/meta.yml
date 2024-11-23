@@ -1,6 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "quantify_pseudo_alignment"
-description: Perform quantification with Salmon or Kallisto to produce count tables and SummarizedExperiment objects
+description: Perform quantification with Salmon or Kallisto to produce count tables
+  and SummarizedExperiment objects
 keywords:
   - rnaseq
   - quantification
@@ -13,11 +14,6 @@ components:
   - summarizedexperiment/summarizedexperiment
   - tximeta/tximport
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing study-level sample sheet information. e.g. [
-          id:'SRP1234' ].
   - samplesheet:
       type: file
       description: |
@@ -67,12 +63,9 @@ input:
         Estimated standard error for fragment length required by Kallisto in
         single-end mode.
 
+  - transcript_fasta:
+      description: ""
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing study-level sample sheet information. e.g. [
-          id:'SRP1234' ].
   - results:
       type: file
       description: |
