@@ -38,4 +38,24 @@ process HOMER_MAKETAGDIRECTORY {
         samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '4.11' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+
+    """
+    mkdir ${prefix}_tagdir/
+
+    touch ${prefix}_tagdir/${fasta.baseName}.1.tags.tsv
+    touch ${prefix}_tagdir/tagAutocorrelation.txt
+    touch ${prefix}_tagdir/tagCountDistribution.txt
+    touch ${prefix}_tagdir/tagInfo.txt
+    touch ${prefix}_tagdir/tagLengthDistribution.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        homer: $VERSION
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+    END_VERSIONS
+    """
 }
