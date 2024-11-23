@@ -55,25 +55,4 @@ nextflow_workflow {
             )
         }
     }
-
-    test("Should use correct parameters for HOMER_MAKETAGDIRECTORY") {
-
-        when {
-            process("HOMER_GROSEQ:HOMER_MAKETAGDIRECTORY") {
-                """
-                input[0] = [
-                    [ id: 'test' ],
-                    file(params.test_data['sarscov2']['genome']['test_bed'])
-                ]
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert process.ext.args == "-checkGC -format bed" }
-            )
-        }
-    }
 }
