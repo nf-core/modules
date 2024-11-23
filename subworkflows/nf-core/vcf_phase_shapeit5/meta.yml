@@ -13,11 +13,6 @@ components:
   - shapeit5/ligate
   - bcftools/index
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - ch_vcf:
       type: file
       description: |
@@ -44,11 +39,6 @@ input:
       description: File containing the genetic map.
       Structure: [val(meta), path(map)]
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - bed:
       type: file
       description: BED file containing the windows
