@@ -1,8 +1,14 @@
 nextflow_workflow {
 
     name "Test Workflow HOMER_GROSEQ"
-    script "../../../../../subworkflows/nf-core/homer/groseq/main.nf"
+    script "../main.nf"
     workflow "HOMER_GROSEQ"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/homer_groseq"
+    tag "homer"
+    tag "homer/findpeaks"
 
     test("Should run HOMER_GROSEQ with BAM input") {
 
