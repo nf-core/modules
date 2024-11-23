@@ -29,11 +29,6 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(workflow.out).match() },
-                { assert path(workflow.out.tagdir.get(0).get(1)).md5 == "8d40034dfe22c5cf973071aa1e8d3617" },
-                { assert path(workflow.out.bed_graph.get(0).get(1)).md5 == "de2b2f8ab90a909b8bfbe755bdaba407" },
-                { assert path(workflow.out.peaks.get(0).get(1)).md5 == "8d40034dfe22c5cf973071aa1e8d3617" },
-                // TODO bed
-                { assert path(workflow.out.versions.get(0).get(1)).md5 == "c85dee03f1afabe406a87743a4c5506d" }
             )
         }
     }
@@ -58,13 +53,10 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(workflow.out).match() },
-                { assert path(workflow.out.tagdir.get(0).get(1)).md5 == "25e8b64946012d1c4567a04062e90fae" },
-                { assert path(workflow.out.bed_graph.get(0).get(1)).md5 == "2d2d1c2d3242ff74c7a922695accb9d2" },
-                { assert path(workflow.out.peaks.get(0).get(1)).md5 == "25e8b64946012d1c4567a04062e90fae" },
-                // TODO bed
-                { assert path(workflow.out.versions.get(0).get(1)).md5 == "c9b5f1248d28c216b000cba8da738455" }
             )
         }
     }
+    // TODO Test files from tutorial
     // TODO Test uniqmap
+    // TODO Stub test
 }
