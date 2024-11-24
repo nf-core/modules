@@ -65,6 +65,7 @@ workflow FASTA_GXF_BUSCO_PLOT {
     ch_assembly_batch_summary                   = BUSCO_ASSEMBLY.out.batch_summary
     ch_assembly_short_summaries_txt             = BUSCO_ASSEMBLY.out.short_summaries_txt
     ch_assembly_short_summaries_json            = BUSCO_ASSEMBLY.out.short_summaries_json
+    ch_assembly_full_table                      = BUSCO_ASSEMBLY.out.full_table
     ch_versions                                 = ch_versions.mix(BUSCO_ASSEMBLY.out.versions.first())
 
     // MODULE: BUSCO_GENERATEPLOT as PLOT_ASSEMBLY
