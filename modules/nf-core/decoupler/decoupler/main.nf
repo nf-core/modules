@@ -11,9 +11,9 @@ process DECOUPLER {
     path net
 
     output:
-    tuple val(meta), path("*estimate__decoupler.tsv"), emit: dc_estimate
-    tuple val(meta), path("*pvals__decoupler.tsv"), emit: dc_pvals
-    path ("versions.yml"), emit: versions
+    tuple val(meta), path("*estimate__decoupler.tsv")   , emit: dc_estimate
+    tuple val(meta), path("*pvals__decoupler.tsv")      , emit: dc_pvals
+    path("versions.yml")                                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -63,6 +63,25 @@ process DECOUPLER {
 
     for result in results:
         results[result].to_csv(result + "__decoupler.tsv", sep="\t")
+
+    ## VERSIONS FILE
+    with open('versions.yml', 'a') as version_file:
+        version_file.write('"${task.process}":' + "\\n")
+        version_file.write(f"    decoupler-py: {dc.__version__}\\n")
+    """
+
+    stub:
+    """
+    #!/usr/bin/env python3
+    import decoupler as dc
+
+    ## dc_estimate
+    with open('consensus_estimate__decoupler.tsv', 'a') as tsv_file:
+        tsv_file.write('')
+
+    ## dc_pvals
+    with open('consensus_pvals__decoupler.tsv', 'a') as tsv_file:
+        tsv_file.write('')
 
     ## VERSIONS FILE
     with open('versions.yml', 'a') as version_file:
