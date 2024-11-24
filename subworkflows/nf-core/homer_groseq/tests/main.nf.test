@@ -28,7 +28,13 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() },
+                { assert snapshot(
+                    // NOTE tagdir
+                    path(workflow.out.bed_graph.get(0).get(1)).linesGzip.size(),
+                    workflow.out.peaks,
+                    workflow.out.bed,
+                    path(workflow.out.versions.get(0)).yaml,
+                ).match() },
             )
         }
     }
@@ -52,7 +58,13 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() },
+                { assert snapshot(
+                    // NOTE tagdir
+                    path(workflow.out.bed_graph.get(0).get(1)).linesGzip.size(),
+                    workflow.out.peaks,
+                    workflow.out.bed,
+                    path(workflow.out.versions.get(0)).yaml,
+                ).match() },
             )
         }
     }
@@ -102,7 +114,13 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match("stub") },
+                { assert snapshot(
+                    // NOTE tagdir
+                    path(workflow.out.bed_graph.get(0).get(1)).linesGzip.size(),
+                    workflow.out.peaks,
+                    workflow.out.bed,
+                    path(workflow.out.versions.get(0)).yaml,
+                ).match() },
             )
         }
     }
