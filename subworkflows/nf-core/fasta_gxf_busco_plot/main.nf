@@ -160,6 +160,7 @@ workflow FASTA_GXF_BUSCO_PLOT {
     assembly_short_summaries_txt                = ch_assembly_short_summaries_txt       // channel: [ meta3, txt ]
     assembly_short_summaries_json               = ch_assembly_short_summaries_json      // channel: [ meta3, json ]
     assembly_plot_summary_txt                   = ch_assembly_plot_summary              // channel: [ text ]
+    assembly_full_table                                  = ch_assembly_full_table                      // channel: [ meta3, tsv ]
     assembly_png                                = ch_assembly_png                       // channel: [ png ]
     annotation_batch_summary                    = ch_annotation_batch_summary           // channel: [ meta3, txt ]
     annotation_short_summaries_txt              = ch_annotation_short_summaries_txt     // channel: [ meta3, txt ]
