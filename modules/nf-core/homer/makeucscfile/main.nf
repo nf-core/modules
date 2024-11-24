@@ -39,7 +39,7 @@ process HOMER_MAKEUCSCFILE {
     def VERSION = '4.11' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
-    touch ${prefix}.bedGraph.gz
+    echo '' | gzip > ${prefix}.bedGraph.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
