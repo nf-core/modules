@@ -166,6 +166,7 @@ workflow FASTA_GXF_BUSCO_PLOT {
     annotation_short_summaries_txt              = ch_annotation_short_summaries_txt     // channel: [ meta3, txt ]
     annotation_short_summaries_json             = ch_annotation_short_summaries_json    // channel: [ meta3, json ]
     annotation_plot_summary_txt                 = ch_annotation_plot_summary            // channel: [ txt ]
+    annotation_full_table                               = ch_annotation_full_table                     // channel: [ meta3, tsv ]
     annotation_png                              = ch_annotation_png                     // channel: [ png ]
     versions                                    = ch_versions                           // channel: [ versions.yml ]
 }
