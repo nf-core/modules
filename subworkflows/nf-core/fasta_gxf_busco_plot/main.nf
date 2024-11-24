@@ -135,6 +135,7 @@ workflow FASTA_GXF_BUSCO_PLOT {
     ch_annotation_batch_summary                 = BUSCO_ANNOTATION.out.batch_summary
     ch_annotation_short_summaries_txt           = BUSCO_ANNOTATION.out.short_summaries_txt
     ch_annotation_short_summaries_json          = BUSCO_ANNOTATION.out.short_summaries_json
+    ch_annotation_full_table                                = BUSCO_ANNOTATION.out.full_table
     ch_versions                                 = ch_versions.mix(BUSCO_ANNOTATION.out.versions.first())
 
     // MODULE: BUSCO_GENERATEPLOT as PLOT_ANNOTATION
