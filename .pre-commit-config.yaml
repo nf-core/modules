@@ -9,12 +9,12 @@ repos:
     rev: 0.29.4
     hooks:
       - id: check-jsonschema
-        # match meta.ymls in one of the subdirectories of modules/nf-core
+        name: "Match meta.ymls in one of the subdirectories of modules/nf-core"
         files: ^modules/nf-core/.*/meta\.yml$
         types: [yaml]
         args: ["--schemafile", "modules/yaml-schema.json"]
       - id: check-jsonschema
-        # match meta.ymls in one of the subdirectories of subworkflows/nf-core
+        name: "Match meta.ymls in one of the subdirectories of subworkflows/nf-core"
         files: ^subworkflows/nf-core/.*/meta\.yml$
         types: [yaml]
         args: ["--schemafile", "subworkflows/yaml-schema.json"]
