@@ -25,6 +25,9 @@ nextflow_process {
     test("sarscov2 - fastq") {
 
         when {
+            params {
+                module_args = '-J-Xmx6G --sequenceType DNA'
+            }
             process {
                 """
                 def genome_1 = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/fasta/sarscov2.fasta', checkIfExists: true )
