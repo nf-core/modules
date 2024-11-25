@@ -3,6 +3,9 @@ nextflow_process {
     name "Test Process SYLPH_SKETCH"
     script "../main.nf"
     process "SYLPH_SKETCH"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "sylph"
 
     test("Should run without failures with single-end data") {
         when {
