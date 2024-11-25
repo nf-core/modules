@@ -10,6 +10,9 @@ inputs:
   total_shards:
     description: "Total number of test shards(NOT the total number of matrix jobs)"
     required: true
+  paths:
+    description: "Paths to test (`<path>[,<path>...]`)"
+    required: false
   tags:
     description: "Tags to test (`<tags>[,<tags>...]`)"
     required: false
@@ -85,6 +88,7 @@ runs:
           --filter process,workflow \
           --follow-dependencies \
           ${{ env.TAGS }}
+          ${{ inputs.paths }}
 
       # TODO If no test.tap, then make one to spoof?
     - uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1

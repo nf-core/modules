@@ -117,3 +117,4 @@ jobs:
           shard: ${{ matrix.shard }}
           total_shards: ${{ env.TOTAL_SHARDS }}
           tags: ${{matrix.tags}},gpu
+          paths: ${{ fromJSON(needs.nf-test-changes.outputs.paths) }}
