@@ -16,6 +16,11 @@ nextflow_workflow {
     test("candidatus_portiera_aleyrodidarum - bacteroides_fragilis - genome") {
 
         when {
+
+            params {
+                extract_proteins_args = '-y'
+            }
+
             workflow {
                 """
                 input[0] = Channel.of(
@@ -68,6 +73,11 @@ nextflow_workflow {
         options '-stub'
 
         when {
+
+            params {
+                extract_proteins_args = '-y'
+            }
+
             workflow {
                 """
                 input[0] = Channel.of(
