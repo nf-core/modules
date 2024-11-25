@@ -5,8 +5,8 @@ process SAM2LCA_ANALYZE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sam2lca:1.1.2--pyhdfd78af_1':
-        'biocontainers/sam2lca:1.1.2--pyhdfd78af_1' }"
+        'https://depot.galaxyproject.org/singularity/sam2lca:1.1.4--pyhdfd78af_0':
+        'biocontainers/sam2lca:1.1.4--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -37,7 +37,7 @@ process SAM2LCA_ANALYZE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sam2lca: \$(echo \$(sam2lca --version 2>&1) | sed 's/^sam2lca, version //' ))
+        sam2lca: \$(echo \$(sam2lca --version 2>&1) | sed 's/^sam2lca, version //' )
     END_VERSIONS
     """
 
@@ -50,7 +50,7 @@ process SAM2LCA_ANALYZE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sam2lca: \$(sam2lca --version 2>&1) | sed 's/^sam2lca, version //' ))
+        sam2lca: \$(echo \$(sam2lca --version 2>&1) | sed 's/^sam2lca, version //' )
     END_VERSIONS
     """
 }
