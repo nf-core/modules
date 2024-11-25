@@ -14,9 +14,9 @@ process TCOFFEE_CONSENSUS {
     val(compress)
 
     output:
-    tuple val(meta), path("*.{aln,aln.gz}")    , emit: alignment
-    tuple val(meta), path("*.{html,sp_ascii}") , emit: eval, optional: true
-    path "versions.yml"                        , emit: versions
+    tuple val(meta), path("*.{aln,aln.gz}")          , emit: alignment
+    tuple val(meta), path("*.{score_html,sp_ascii}") , emit: eval, optional: true
+    path "versions.yml"                              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
