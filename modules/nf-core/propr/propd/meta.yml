@@ -57,6 +57,7 @@ output:
   - results_genewise:
       - meta:
           type: map
+          description: groovy map
       - "*.results_genewise.tsv":
           type: file
           description: |
@@ -66,6 +67,7 @@ output:
   - genewise_plot:
       - meta:
           type: map
+          description: groovy map
       - "*.propd.genewise.png":
           type: file
           description: |
@@ -76,6 +78,7 @@ output:
   - rdata:
       - meta:
           type: map
+          description: groovy map
       - "*.propd.rds":
           type: file
           description: |
@@ -84,6 +87,7 @@ output:
   - results_pairwise:
       - meta:
           type: map
+          description: groovy map
       - "*.results_pairwise.tsv":
           type: file
           description: |
@@ -94,6 +98,7 @@ output:
   - results_pairwise_filtered:
       - meta:
           type: map
+          description: groovy map
       - "*.results_pairwise_filtered.tsv":
           type: file
           description: |
@@ -104,6 +109,7 @@ output:
   - adjacency:
       - meta:
           type: map
+          description: groovy map
       - "*.adj.csv":
           type: file
           description: |
@@ -114,6 +120,7 @@ output:
   - fdr:
       - meta:
           type: map
+          description: groovy map
       - "*.fdr.tsv":
           type: file
           description: |
@@ -125,6 +132,7 @@ output:
   - session_info:
       - meta:
           type: map
+          description: groovy map
       - "*.R_sessionInfo.log":
           type: file
           description: dump of R SessionInfo
