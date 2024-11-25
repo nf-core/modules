@@ -25,11 +25,15 @@ repos:
         args: ["--schemafile", "subworkflows/yaml-schema.json"]
       - id: check-github-workflows
       - id: check-github-actions
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+  - repo: local
     hooks:
-      - id: sort-simple-yaml
-        files: ^modules/nf-core/.*/environment\.yml$
+      - id: conda-env-sorter
+        name: Sort dependencies in conda environment files.
+        entry: ./.github/scripts/conda_env_sorter.py
+        language: python
+        files: environment
+        types: [yaml]
+        additional_dependencies: ["ruamel.yaml"]
   # use ruff for python files
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.7.3
