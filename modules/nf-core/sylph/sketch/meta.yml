@@ -14,22 +14,19 @@ tools:
       doi: 10.1038/s41587-024-02412-y
       licence: ['MIT']
       identifier: biotools:sylph
-
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: Input fastq files
-      pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
-  - reference:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - reads:
+        type: file
+        description: Input fastq files
+        pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
+  - - reference:
       type: file
       description: Reference genome file in FASTA format
-      pattern: "*.{fa,fasta}"
-
 output:
   - sketch_fastq_genome:
     - meta:
@@ -49,7 +46,6 @@ output:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
-
 authors:
   - "@jiahang1234"
   - "@sofstam"
