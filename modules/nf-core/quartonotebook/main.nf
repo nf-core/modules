@@ -1,7 +1,4 @@
-include {
-    dumpParamsYaml ;
-    indentCodeBlock
-} from "./parametrize"
+include { dumpParamsYaml ; indentCodeBlock } from "./parametrize"
 
 // NB: You'll likely want to override this with a container containing all
 // required dependencies for your analyses. Or use wave to build the container
