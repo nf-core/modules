@@ -87,8 +87,16 @@ jobs:
       fail-fast: false
       matrix:
         shard: [1, 2]
-        profile: [docker_self_hosted, singularity] # conda?
+        profile: [conda, docker_self_hosted, singularity]
         tags: ${{ fromJSON(needs.nf-test-changes.outputs.modules) && fromJSON(needs.nf-test-changes.outputs.subworkflows) }}
+        exclude:
+          - path: parabricks/applybqsr
+            profile: conda
+          - path: parabricks/fq2bam
+            profile: conda
+          - path: parabricks/fq2bammeth
+            profile: conda
+
     env:
       NXF_ANSI_LOG: false
       TOTAL_SHARDS: 2
