@@ -261,7 +261,8 @@ def attachMultiqcReport(multiqc_report) {
             }
         }
     }
-    catch (Exception all) {
+    catch (Exception msg) {
+        log.debug(msg)
         if (multiqc_report) {
             log.warn("[${workflow.manifest.name}] Could not attach MultiQC report to summary email")
         }
@@ -358,7 +359,9 @@ new org.codehaus.groovy.GroovyException('Send plaintext e-mail, not HTML')      
             ['sendmail', '-t'].execute() << sendmail_html
             log.info("-${colors.purple}[${workflow.manifest.name}]${colors.green} Sent summary e-mail to ${email_address} (sendmail)-")
         }
-        catch (Exception all) {
+        catch (Exception msg) {
+            log.debug(msg)
+            log.debug("Trying with mail instead of sendmail")
             // Catch failures and try with plaintext
             def mail_cmd = ['mail', '-s', subject, '--content-type=text/html', email_address]
             mail_cmd.execute() << email_html

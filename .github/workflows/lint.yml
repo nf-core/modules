@@ -79,11 +79,15 @@ jobs:
         with:
           script: |
             return [...new Set(${{ steps.filter.outputs.modules_files }}
-              .map(path => path.replace('modules/nf-core/', '')
-              .split('/')
-              .slice(0, 2)
-              .filter(x => x !== 'main.nf' && x !== 'tests')
-              .join('/')))];
+              .map(path => path
+                .replace('tests/', '')
+                .replace('modules/nf-core/', '')
+                .split('/')
+                .slice(0, 2)
+                .filter(x => x !== 'main.nf' && x !== 'tests' && x !== 'meta.yml' && x !== 'environment.yml')
+                .join('/'))
+              )
+            ];
 
       - name: Get subworkflow name
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
@@ -91,11 +95,15 @@ jobs:
         with:
           script: |
             return [...new Set(${{ steps.filter.outputs.subworkflows_files }}
-              .map(path => path.replace('subworkflows/nf-core/', '')
-              .split('/')
-              .slice(0,2)
-              .filter(x => x !== 'main.nf' && x !== 'tests')
-              .join('/')))];
+              .map(path => path
+                .replace('tests/', '')
+                .replace('subworkflows/nf-core/', '')
+                .split('/')
+                .slice(0, 2)
+                .filter(x => x !== 'main.nf' && x !== 'tests' && x !== 'meta.yml' && x !== 'environment.yml')
+                .join('/'))
+              )
+            ];
 
       - name: debug
         run: |
