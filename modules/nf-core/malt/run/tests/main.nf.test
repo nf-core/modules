@@ -17,12 +17,17 @@ nextflow_process {
             script "../../../unzip/main.nf"
             process {
                 """
-                input[0] = [[], file("s3://ngi-igenomes/test-data/createtaxdb/taxonomy/megan-nucl-Feb2022.db.zip", checkIfExists: true)]
+                input[0] = [[], file("https://ngi-igenomes.s3.eu-west-1.amazonaws.com/test-data/createtaxdb/taxonomy/megan-nucl-Feb2022.db.zip", checkIfExists: true)]
                 """
             }
         }
         run("MALT_BUILD") {
             script "../../../malt/build/main.nf"
+            when {
+                params {
+                    module_args = '-J-Xmx6G --sequenceType DNA'
+                }
+            }
             process {
                 """
                 input[0] = file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
