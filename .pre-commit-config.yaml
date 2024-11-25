@@ -17,6 +17,11 @@ repos:
         files: ^subworkflows/nf-core/.*/meta\.yml$
         args: ["--schemafile", "subworkflows/yaml-schema.json"]
       - id: check-github-workflows
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: sort-simple-yaml
+        files: ^modules/nf-core/.*/environment\.yml$
   # use ruff for python files
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.7.3
@@ -30,8 +35,3 @@ repos:
     hooks:
       - id: editorconfig-checker
         alias: ec
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
-    hooks:
-      - id: sort-simple-yaml
-        files: ^.*/environment\.yml
