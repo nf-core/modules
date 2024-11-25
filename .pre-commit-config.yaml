@@ -42,3 +42,8 @@ repos:
     rev: pre-commit
     hooks:
       - id: lint-subworkflows
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: sort-simple-yaml
+        files: ^.*/environment\.yml
