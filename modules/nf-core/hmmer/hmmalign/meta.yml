@@ -30,16 +30,16 @@ input:
         description: A gzipped HMM file
         pattern: "*.hmm.gz"
 output:
-  - sthlm:
+  - sto:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.sthlm.gz":
+      - "*.sto.gz":
           type: file
           description: Multiple alignment in gzipped Stockholm format
-          pattern: "*.sthlm.gz"
+          pattern: "*.sto.gz"
   - versions:
       - versions.yml:
           type: file
@@ -51,3 +51,4 @@ authors:
 maintainers:
   - "@erikrikarddaniel"
   - "@jfy133"
+  - "@vagkaratzas"
