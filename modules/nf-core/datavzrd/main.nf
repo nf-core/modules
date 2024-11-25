@@ -4,8 +4,8 @@ process DATAVZRD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/datavzrd:2.36.12--bb93c8c988b7a9af':
-        'community.wave.seqera.io/library/datavzrd:2.36.12--593eb75e566b7f2a' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c4/c44b3faa30ec68edb0ca92766fb49bd8f526d56c1a034d1acdb0d1448b42adec/data':
+        'community.wave.seqera.io/library/datavzrd:2.36.12--dcdc5d4c72e652e2' }"
 
     input:
     tuple val(meta), file(config_file), file(table)
