@@ -24,8 +24,10 @@ ENV PATH="$MAMBA_ROOT_PREFIX/bin:$PATH"
 # https://docs.docker.com/reference/dockerfile/#add---checksum
 ADD --checksum=sha256:$SPACERANGER_SHA256 \
     $SPACERANGER_URL \
-    /opt/spaceranger-$SPACERANGER_VER
+    /opt/spaceranger-$SPACERANGER_VER.tar.gz
 
 # Install spaceranger
+RUN tar -xzf /opt/spaceranger-$SPACERANGER_VER.tar.gz -C /opt/ \
+    && rm /opt/spaceranger-$SPACERANGER_VER.tar.gz \
+    && ln -s /opt/spaceranger-$SPACERANGER_VER/spaceranger /usr/bin/spaceranger
 ENV PATH="/opt/spaceranger-$SPACERANGER_VER:$PATH"
-RUN ln -s /opt/spaceranger-$SPACERANGER_VER/spaceranger /usr/bin/spaceranger
