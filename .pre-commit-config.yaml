@@ -14,6 +14,11 @@ repos:
         types: [yaml]
         args: ["--schemafile", "modules/yaml-schema.json"]
       - id: check-jsonschema
+        name: "Validate environment.ymls against schema"
+        files: ^.*/environment\.yml$
+        types: [yaml]
+        args: ["--schemafile", "modules/environment-schema.json"]
+      - id: check-jsonschema
         name: "Match meta.ymls in one of the subdirectories of subworkflows/nf-core"
         files: ^subworkflows/nf-core/.*/meta\.yml$
         types: [yaml]
