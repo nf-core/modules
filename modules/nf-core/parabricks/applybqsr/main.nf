@@ -1,5 +1,6 @@
 process PARABRICKS_APPLYBQSR {
     tag "$meta.id"
+    tag "gpu"
     label 'process_high'
     label 'process_gpu'
     stageInMode 'copy'
