@@ -16,18 +16,19 @@ tools:
       identifier: biotools:sylph
 
 input:
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'test', single_end:false ]`
-    - reads:
-        type: file
-        description: Input fastq files
-        pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
-  - - reference:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: Input fastq files
+      pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
+  - reference:
       type: file
       description: Reference genome file in FASTA format
+      pattern: "*.{fa,fasta}"
 
 output:
   - sketch_fastq_genome:
