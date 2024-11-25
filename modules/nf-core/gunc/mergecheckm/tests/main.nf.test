@@ -36,11 +36,14 @@ nextflow_process {
 
             run("CHECKM_QA") {
                 script "../../../checkm/qa/main.nf"
+                params {
+                    module_args = "--tab_table"
+                }
                 process {
                     """
                     input[0] =  CHECKM_LINEAGEWF.out.checkm_output
                                 .join(CHECKM_LINEAGEWF.out.marker_file)
-                                .map { v -> v + [file('NO_FILE')] }
+                                .map { sample_data -> sample_data + [file('NO_FILE')] }
                     input[1] = []
                     """
                 }
