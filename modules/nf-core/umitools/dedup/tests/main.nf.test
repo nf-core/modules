@@ -61,7 +61,7 @@ nextflow_process {
                 { assert process.success },
                 { assert path("${process.out.log[0][1]}").exists() },
                 { assert snapshot(
-                    process.out.bam,
+                    bam(process.out.bam[0][1]).getSamLinesMD5(),
                     process.out.versions).match() }
             )
         }
@@ -90,7 +90,7 @@ nextflow_process {
                 { assert process.success },
                 { assert path("${process.out.log[0][1]}").exists() },
                 { assert snapshot(
-                    process.out.bam,
+                    bam(process.out.bam[0][1]).getSamLinesMD5(),
                     process.out.tsv_edit_distance,
                     process.out.tsv_per_umi,
                     process.out.tsv_umi_per_position,

@@ -7,10 +7,6 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "umicollapse"
-    tag "umitools/extract"
-    tag "samtools/index"
-    tag "bwa/index"
-    tag "bwa/mem"
 
     test("umicollapse single end test") {
 
@@ -32,7 +28,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bam,
+                    bam(process.out.bam[0][1]).getSamLinesMD5(),
                     process.out.versions).match() }
             )
         }
@@ -59,7 +55,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bam,
+                    bam(process.out.bam[0][1]).getSamLinesMD5(),
                     process.out.versions).match() }
             )
         }
