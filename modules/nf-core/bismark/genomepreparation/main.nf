@@ -21,10 +21,8 @@ process BISMARK_GENOMEPREPARATION {
     def args = task.ext.args ?: ''
     """
     bismark_genome_preparation \\
-        $args \\
+        ${args} \\
         BismarkIndex
-
-    rm $fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

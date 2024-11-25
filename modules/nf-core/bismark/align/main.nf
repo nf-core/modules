@@ -9,7 +9,7 @@ process BISMARK_ALIGN {
 
     input:
     tuple val(meta), path(reads)
-    tuple val(meta2), path(fasta)
+    tuple val(meta2), path(fasta, stageAs: 'tmp/*')
     tuple val(meta3), path(index)
 
     output:
@@ -56,13 +56,11 @@ process BISMARK_ALIGN {
         }
     }
     """
-    ln -sf \$(readlink $fasta) $index/$fasta
-
     bismark \\
-        $fastq \\
-        --genome $index \\
+        ${fastq} \\
+        --genome ${index} \\
         --bam \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
