@@ -199,6 +199,7 @@ opt <- list(
 
     # other parameters
     seed               = NA,                   # seed for reproducibility
+    round_digits       = NA,                   # number of digits to round results
     ncores             = as.integer('$task.cpus')
 )
 
@@ -223,6 +224,7 @@ opt_types <- list(
     save_adjacency     = 'logical',
     save_rdata         = 'logical',
     seed               = 'numeric',
+    round_digits       = 'numeric',
     ncores             = 'numeric'
 )
 
@@ -553,23 +555,6 @@ if (!theta_cutoff) {
 ################################################
 ################################################
 
-# save main results - genewise
-
-results_genewise <- results_genewise[order(
-    results_genewise\$weighted_connectivity,
-    abs(results_genewise\$lfc),
-    decreasing = TRUE
-),]
-
-write.table(
-    results_genewise,
-    file      = paste0(opt\$prefix, '.propd.genewise.tsv'),
-    col.names = TRUE,
-    row.names = FALSE,
-    sep       = '\\t',
-    quote     = FALSE
-)
-
 # save plot of genewise information
 # save empty plot if no DE genes were found
 
@@ -584,6 +569,30 @@ if (nrow(results_genewise) > 0) {
     plot.new()
     dev.off()
 }
+
+# save main results - genewise
+
+results_genewise <- results_genewise[order(
+    results_genewise\$weighted_connectivity,
+    abs(results_genewise\$lfc),
+    decreasing = TRUE
+),]
+
+if (!is.na(opt\$round_digits)) {
+    resutls_genewise <- round(
+        results_genewise, 
+        digits = opt\$round_digits
+    )
+}
+
+write.table(
+    results_genewise,
+    file      = paste0(opt\$prefix, '.propd.genewise.tsv'),
+    col.names = TRUE,
+    row.names = FALSE,
+    sep       = '\\t',
+    quote     = FALSE
+)
 
 # save rdata, if required
 
@@ -608,6 +617,13 @@ if (opt\$save_pairwise) {
             results\$FDR
         ), c('Pair', 'Partner', 'theta', 'Fstat', 'Pval', 'FDR')]
 
+        if (!is.na(opt\$round_digits)) {
+            results <- round(
+                results,
+                digits = opt\$round_digits
+            )
+        }
+
         write.table(
             results,
             file      = paste0(opt\$prefix, '.propd.pairwise.tsv'),
@@ -624,6 +640,13 @@ if (opt\$save_pairwise) {
         results_pairwise\$theta,
         results_pairwise\$FDR
     ), c('Pair', 'Partner', 'theta', 'Fstat', 'Pval', 'FDR')]
+
+    if (!is.na(opt\$round_digits)) {
+        results_pairwise <- round(
+            results_pairwise,
+            digits = opt\$round_digits
+        )
+    }
 
     write.table(
         results_pairwise,
@@ -652,6 +675,14 @@ if (opt\$save_adjacency) {
 
 if (opt\$permutation > 0) {
     fdr_table <- fdr_table[order(fdr_table\$cutoff),]
+
+    if (!is.na(opt\$round_digits)) {
+        fdr_table <- round(
+            fdr_table,
+            digits = opt\$round_digits
+        )
+    }
+    
     write.table(
         fdr_table,
         file      = paste0(opt\$prefix, '.propd.fdr.tsv'),

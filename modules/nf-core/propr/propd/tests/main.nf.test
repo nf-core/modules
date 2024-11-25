@@ -12,6 +12,7 @@ nextflow_process {
     test("Test propr/propd using default params") {
 
         tag "default"
+        config "default.config"
 
         when {
             process {
@@ -48,7 +49,7 @@ nextflow_process {
         }
     }
 
-    test("Test propr/propd using default params - save all outputs") {
+    test("Test propr/propd when saving all outputs") {
 
         tag "save_all"
         config "./save_all.config"
@@ -92,7 +93,7 @@ nextflow_process {
         }
     }
 
-    test("Test propr/propd using default params - with Box-cox transformation") {
+    test("Test propr/propd when using Box-cox transformation") {
 
         tag "boxcox"
         config "./boxcox.config"
