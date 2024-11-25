@@ -11,10 +11,12 @@ repos:
       - id: check-jsonschema
         # match meta.ymls in one of the subdirectories of modules/nf-core
         files: ^modules/nf-core/.*/meta\.yml$
+        types: [yaml]
         args: ["--schemafile", "modules/yaml-schema.json"]
       - id: check-jsonschema
         # match meta.ymls in one of the subdirectories of subworkflows/nf-core
         files: ^subworkflows/nf-core/.*/meta\.yml$
+        types: [yaml]
         args: ["--schemafile", "subworkflows/yaml-schema.json"]
       - id: check-github-workflows
   # use ruff for python files
