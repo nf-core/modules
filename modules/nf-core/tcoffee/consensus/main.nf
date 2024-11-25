@@ -15,7 +15,7 @@ process TCOFFEE_CONSENSUS {
 
     output:
     tuple val(meta), path("*.{aln,aln.gz}")    , emit: alignment
-    tuple val(meta), path("*.{html,sp_ascii}") , emit: eval, optional: true
+    tuple val(meta), path("*.{score_html,sp_ascii}") , emit: eval, optional: true
     path "versions.yml"                        , emit: versions
 
     when:
