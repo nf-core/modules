@@ -191,7 +191,8 @@ opt <- list(
     number_of_cutoffs = 100,                  # number of cutoffs for permutation test
 
     # saving options
-    save_pairwise     = FALSE,                # pairwise results are storage heavy, so only save when required
+    save_pairwise     = TRUE,                 # pairwise results are storage heavy, so only save when required
+    save_adjacency    = FALSE,                # save adjacency matrix, only save when required
     save_rdata        = FALSE,                # same with rdata, only save when required
 
     # other parameters
@@ -214,6 +215,7 @@ opt_types <- list(
     permutation       = 'numeric',
     number_of_cutoffs = 'numeric',
     save_pairwise     = 'logical',
+    save_adjacency    = 'logical',
     save_rdata        = 'logical',
     seed              = 'numeric',
     ncores            = 'numeric'
@@ -329,6 +331,7 @@ idx <- which(samplesheet[,opt\$contrast_variable] %in% c(opt\$reference_group, o
 counts <- counts[idx,]
 samplesheet <- samplesheet[idx,]
 group <- as.vector(samplesheet[,opt\$contrast_variable])
+group <- as.character(group)
 if (length(group) != nrow(counts)) stop('Error when parsing group')
 if (length(unique(group)) != 2) stop('Only two groups are allowed for contrast')
 
@@ -348,21 +351,21 @@ pd <- propd(
     p        = opt\$permutation
 )
 
-# use F-stat FDR-adjusted p-values to get significant pairs, if permutation == 0
-# otherwise, get FDR values using permutation tests (more computationally expensive but likely more conservative FDRs)
+# calculate theta moderated, when required
+# and calculate F-stat
+
+pd <- updateF(
+    pd,
+    moderated = opt\$moderated
+)
+if (opt\$moderated) pd <- setActive(pd, what='theta_mod')
+
+# get significant results based on the FDR-adjusted F-stat p-values, if permutation == 0
+# otherwise get them based on the FDR obtained from permutation tests (more computationally expensive but likely more conservative FDRs)
 
 if (opt\$permutation == 0) {
 
     warning('FDR-adjusted p-values are used to get significant pairs.')
-
-    # update FDR-adjusted p-values
-    # these are p-values adjusted through the Benjamini-Hochberg procedure
-
-    pd <- updateF(
-        pd,
-        moderated = opt\$moderated
-    )
-    if (opt\$moderated) pd <- setActive(pd, what='theta_mod')
 
     # get theta value for which FDR is below desired threshold
     # theta_cutoff is FALSE when no theta value has FDR below desired threshold
@@ -383,11 +386,13 @@ if (opt\$permutation == 0) {
         # this matrix will have 1s for significant pairs and 0s for the rest
         # diagonals are set to 0
 
-        adj <- getAdjacencyFstat(
-            pd,
-            pval = opt\$fdr,
-            fdr_adjusted = TRUE
-        )
+        if (opt\$save_adjacency) {
+            adj <- getAdjacencyFstat(
+                pd,
+                pval = opt\$fdr,
+                fdr_adjusted = TRUE
+            )
+        }
 
         # get significant pairs
 
@@ -400,18 +405,6 @@ if (opt\$permutation == 0) {
         # parse genewise information from pairwise results
 
         results_genewise <- get_genewise_information(results_pairwise)
-
-        # sort results
-
-        results_pairwise <- results_pairwise[order(
-            results_pairwise\$theta,
-            results_pairwise\$FDR
-        ),]
-        results_genewise <- results_genewise[order(
-            abs(results_genewise\$lfc),
-            results_genewise\$weighted_connectivity,
-            decreasing = TRUE
-        ),]
     }
 
 } else {
@@ -442,15 +435,6 @@ if (opt\$permutation == 0) {
         # false positives obtained from the null distribution vs the total number
         # of positives obtained from the real data.
 
-        if (ntry > 1) {
-            part <- pd@fdr[which(pd@fdr\$truecounts > 0),]
-            if (nrow(part) > 1) {
-                max_cutoff <- min(part\$cutoff)
-            } else {
-                break
-            }
-        }
-
         cutoffs <- as.numeric(quantile(
             pd@results[pd@results\$theta < max_cutoff, 'theta'],
             seq(0, 1, length.out = opt\$number_of_cutoffs)
@@ -463,7 +447,10 @@ if (opt\$permutation == 0) {
             custom_cutoffs = cutoffs,
             ncores = opt\$ncores
         )
-        fdr_table <- rbind(pd@fdr, fdr_table)
+        fdr_table <- rbind(
+            pd@fdr[pd@fdr\$cutoff < max_cutoff,],
+            fdr_table
+        )
 
         # get theta value for which FDR is below desired threshold
         # theta_cutoff is FALSE when no theta value has FDR below desired threshold
@@ -476,6 +463,11 @@ if (opt\$permutation == 0) {
             fdr=opt\$fdr,
             window_size=1
         )
+
+        # update maximun theta value to test the FDR values for the next iteration
+
+        part <- pd@fdr[which(pd@fdr\$truecounts > 0),]
+        max_cutoff <- ifelse(nrow(part) > 1, min(part\$cutoff), 0)
     }
 
     if (theta_cutoff) {
@@ -486,35 +478,25 @@ if (opt\$permutation == 0) {
         # this matrix will have 1s for significant pairs and 0s for the rest
         # diagonals are set to 0
 
-        adj <- getAdjacencyFDR(
-            pd,
-            fdr=opt\$fdr,
-            window_size=1
-        )
+        if (opt\$save_adjacency) {
+            adj <- getAdjacencyFDR(
+                pd,
+                fdr=opt\$fdr,
+                window_size=1
+            )
+        }
 
         # get significant pairs
 
         results_pairwise <- getSignificantResultsFDR(
             pd,
-            pval = opt\$fdr,
+            fdr = opt\$fdr,
             window_size = 1
         )
 
         # parse genewise information from pairwise results
 
         results_genewise <- get_genewise_information(results_pairwise)
-
-        # sort results
-
-        results_pairwise <- results_pairwise[order(
-            results_pairwise\$theta,
-            results_pairwise\$FDR
-        ),]
-        results_genewise <- results_genewise[order(
-            abs(results_genewise\$lfc),
-            results_genewise\$weighted_connectivity,
-            decreasing = TRUE
-        ),]
     }
 }
 
@@ -526,12 +508,24 @@ if (!theta_cutoff) {
 
     # create empty adjacency matrix
 
-    adj <- matrix(0, nrow=ncol(counts), ncol=ncol(counts))
-    colnames(adj) <- rownames(adj) <- colnames(counts)
+    if (opt\$save_adjacency) {
+        adj <- matrix(0, nrow=ncol(counts), ncol=ncol(counts))
+        colnames(adj) <- rownames(adj) <- colnames(counts)
+    }
 
     # create empty pairwise results table
 
-    results_pairwise <- getResults(pd)[0,]
+    if (opt\$save_pairwise) {
+        results <- data.frame(
+            'Pair' = character(0),
+            'Partner' = character(0),
+            'theta' = numeric(0),
+            'Fstat' = numeric(0),
+            'Pval' = numeric(0),
+            'FDR' = numeric(0)
+        )
+        results_pairwise <- results
+    }
 
     # create empty genewise results table
 
@@ -543,7 +537,9 @@ if (!theta_cutoff) {
         weighted_connectivity = numeric(0)
     )
     colnames(results_genewise) <- c(opt\$features_id_col, 'lfc', 'lfc_error', 'connectivity', 'weighted_connectivity')
+
 }
+
 
 ################################################
 ################################################
@@ -551,22 +547,13 @@ if (!theta_cutoff) {
 ################################################
 ################################################
 
-# TODO given the size of the rds and full pairwise results
-# we may want to only save them in specific cases
-
-# save FDR values, if permutation tests were run
-
-if (opt\$permutation > 0) {
-    write.table(
-        fdr_table,
-        file      = paste0(opt\$prefix, '.propd.fdr.tsv'),
-        col.names = TRUE,
-        sep       = '\\t',
-        quote     = FALSE
-    )
-}
-
 # save main results - genewise
+
+results_genewise <- results_genewise[order(
+    results_genewise\$weighted_connectivity,
+    abs(results_genewise\$lfc),
+    decreasing = TRUE
+),]
 
 write.table(
     results_genewise,
@@ -604,14 +591,31 @@ if (opt\$save_rdata) {
 # save pairwise results, if required
 
 if (opt\$save_pairwise) {
+
+    # unfiltered pairwise results table
+
+    results <- getResults(pd)
+    rm(pd)
+    results <- results[order(
+        results\$theta,
+        results\$FDR
+    ), c('Pair', 'Partner', 'theta', 'Fstat', 'Pval', 'FDR')]
+
     write.table(
-        getResults(pd),
+        results,
         file      = paste0(opt\$prefix, '.propd.pairwise.tsv'),
         col.names = TRUE,
         row.names = FALSE,
         sep       = '\\t',
         quote     = FALSE
     )
+
+    # filtered pairwise results table
+
+    results_pairwise <- results_pairwise[order(
+        results_pairwise\$theta,
+        results_pairwise\$FDR
+    ), c('Pair', 'Partner', 'theta', 'Fstat', 'Pval', 'FDR')]
 
     write.table(
         results_pairwise,
@@ -621,13 +625,31 @@ if (opt\$save_pairwise) {
         sep       = '\\t',
         quote     = FALSE
     )
+}
 
+# save adjacency matrix, if required
+
+if (opt\$save_adjacency) {
+        write.table(
+            adj,
+            file      = paste0(opt\$prefix, '.propd.adjacency.csv'),
+            col.names = TRUE,
+            row.names = TRUE,
+            sep       = ',',
+            quote     = FALSE
+        )
+}
+
+# save FDR values, if permutation tests were run
+
+if (opt\$permutation > 0) {
+    fdr_table <- fdr_table[order(fdr_table\$cutoff),]
     write.table(
-        adj,
-        file      = paste0(opt\$prefix, '.propd.adjacency.csv'),
+        fdr_table,
+        file      = paste0(opt\$prefix, '.propd.fdr.tsv'),
         col.names = TRUE,
-        row.names = TRUE,
-        sep       = ',',
+        row.names = FALSE,
+        sep       = '\\t',
         quote     = FALSE
     )
 }

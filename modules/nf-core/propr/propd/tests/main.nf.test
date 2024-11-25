@@ -88,4 +88,125 @@ nextflow_process {
             )
         }
     }
+
+    test("Test propr/propd - pasilla data") {
+
+        tag "pasilla"
+
+        when {
+            process {
+                """
+                expression_test_data_dir = '/Users/sjin/myprojects/modules/pasilla/'
+
+                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'contrast.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                    .first()
+                ch_matrix = [
+                    [id: 'test'],
+                    file(expression_test_data_dir + 'samples.csv', checkIfExists: true),
+                    file(expression_test_data_dir + 'count.csv', checkIfExists: true)
+                ]
+
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.results_genewise,
+                    process.out.versions,
+                    file(process.out.genewise_plot[0][1]).name
+                ).match()}
+            )
+        }
+    }
+
+    test("Test propr/propd when using permutation tests - pasilla data") {
+
+        tag "permutation-pasilla"
+        config "./permutation.config"
+
+        when {
+            process {
+                """
+                expression_test_data_dir = '/Users/sjin/myprojects/modules/pasilla/'
+
+                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'contrast.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                    .first()
+                ch_matrix = [
+                    [id: 'test'],
+                    file(expression_test_data_dir + 'samples.csv', checkIfExists: true),
+                    file(expression_test_data_dir + 'count.csv', checkIfExists: true)
+                ]
+
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.results_genewise,
+                    process.out.fdr,
+                    process.out.versions,
+                    file(process.out.genewise_plot[0][1]).name
+                ).match()}
+            )
+        }
+    }
+    
+    test("Test propr/propd when using permutation tests - gtex data") {
+
+        tag "permutation-gtex"
+        config "./permutation.config"
+
+        when {
+            process {
+                """
+                expression_test_data_dir = '/Users/sjin/myprojects/modules/gtex_minimal_data/'
+
+                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'contrast.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                    .first()
+                ch_matrix = [
+                    [id: 'test'],
+                    file(expression_test_data_dir + 'samples.csv', checkIfExists: true),
+                    file(expression_test_data_dir + 'counts.csv', checkIfExists: true)
+                ]
+
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.results_genewise,
+                    process.out.fdr,
+                    process.out.versions,
+                    file(process.out.genewise_plot[0][1]).name
+                ).match()}
+            )
+        }
+    }
 }
