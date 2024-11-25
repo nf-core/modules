@@ -2,7 +2,7 @@ process SPACERANGER_COUNT {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/spaceranger:3.1.2"
+    container "nf-core/modules/spaceranger:0bacbfe2fca0f4d9"
 
     input:
     tuple val(meta), path(reads), path(image), path(cytaimage), path(darkimage), path(colorizedimage), path(alignment), path(slidefile)
