@@ -23,7 +23,25 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
     parser.add_argument("paths", nargs="*", type=Path)
     args = parser.parse_args(argv)
     for path in args.paths:
-        doc = yaml.load(path)
+        with path.open() as f:
+            lines = f.readlines()
+
+        # Define the schema lines to be added if missing
+        schema_lines = [
+            "---\n",
+            "# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json\n",
+        ]
+
+        # Check if the first two lines match the expected schema lines
+        if lines[:2] == schema_lines:
+            header = lines[:2]
+            content = lines[2:]
+        else:
+            # Add schema lines if they are missing
+            header = schema_lines
+            content = lines
+
+        doc = yaml.load("".join(content))
         dicts = []
         others = []
 
@@ -42,7 +60,9 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         doc["dependencies"].extend(others)
         doc["dependencies"].extend(dicts)
 
-        yaml.dump(doc, path)
+        with path.open("w") as f:
+            f.writelines(header)
+            yaml.dump(doc, f)
 
 
 if __name__ == "__main__":
