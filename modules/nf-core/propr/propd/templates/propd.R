@@ -682,7 +682,7 @@ if (opt\$permutation > 0) {
             digits = opt\$round_digits
         )
     }
-    
+
     write.table(
         fdr_table,
         file      = paste0(opt\$prefix, '.propd.fdr.tsv'),
