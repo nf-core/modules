@@ -53,11 +53,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test' ],
-                             PIGZ_COMPRESS.out.archive.map{ it -> it[1] }.collect(),
-                             file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
-
-                ]
+                reference_file = Channel.fromPath(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
+                input[0] = PIGZ_COMPRESS.out.archive.combine(reference_file)
                 """
             }
 
