@@ -44,7 +44,7 @@ process SYLPH_SKETCH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sylph: 0.7.0
+        sylph: \$(sylph -V|awk '{print \$2}')
     END_VERSIONS
     """
 }

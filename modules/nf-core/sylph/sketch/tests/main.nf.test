@@ -24,7 +24,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                         process.out.sketch_fastq_genome,
-                        process.out.versions
+                        process.out.versions,
                     ).match()
                 }
             )
@@ -49,7 +49,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                         process.out.sketch_fastq_genome,
-                        process.out.versions
+                        process.out.versions,
                     ).match()
                 }
             )
