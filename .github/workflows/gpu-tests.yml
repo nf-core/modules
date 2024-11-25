@@ -79,7 +79,7 @@ jobs:
           echo ${{ steps.outputs.outputs.subworkflows }}
 
   nf-test-gpu:
-    runs-on: "gpu"
+    runs-on: "ubuntu-latest"
     needs: nf-test-changes
     if: ${{ fromJSON(needs.nf-test-changes.outputs.paths) != '[]' || needs.nf-test-changes.outputs.paths != '' }}
     name: "GPU | ${{ matrix.tags}} | ${{ matrix.profile }} | ${{ matrix.shard }}"
