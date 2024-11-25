@@ -1,6 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fasta_clean_fcs"
-description: Foreign Contamination Screen (FCS) is a tool suite for identifying and removing contaminant sequences in genome assemblies
+description: Foreign Contamination Screen (FCS) is a tool suite for identifying and
+  removing contaminant sequences in genome assemblies
 keywords:
   - contamination screening
   - cleaning
@@ -10,21 +11,11 @@ components:
   - fcs/fcsadaptor
   - fcs/fcsgx
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - assembly:
-      type: file
-      description: assembly fasta file
-      pattern: "*.{fasta,fa}"
+  - ch_fasta:
+      description: ""
+  - database:
+      description: ""
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - versions:
       type: file
       description: File containing software versions
@@ -49,14 +40,12 @@ output:
       type: file
       description: Skipped trim information
       pattern: "*.{skipped_trims.jsonl}"
-  - fcs_gx_report:
-      type: file
-      description: Report containing the contig identifier and recommended action (EXCLUDE, TRIM, FIX, REVIEW)
-      pattern: "*.fcs_gx_report.txt"
   - fcsgx_taxonomy_report:
       type: file
       description: Report containing the contig identifier and mapped contaminant species
       pattern: "*.taxonomy.rpt"
+  - fcsgx_report:
+      description: ""
 authors:
   - "@scorreard"
 maintainers:

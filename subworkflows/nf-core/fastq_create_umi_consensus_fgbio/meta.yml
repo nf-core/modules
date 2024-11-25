@@ -28,11 +28,6 @@ components:
   - samtools/fastq
   - fgbio/zipperbams
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - reads:
       type: list
       description: list umi-tagged reads
@@ -41,14 +36,6 @@ input:
       type: file
       description: The reference fasta file
       pattern: "*.fasta"
-  - read_structure:
-      type: string
-      description: |
-        A read structure should always be provided for each of the fastq files.
-        If single end, the string will contain only one structure (i.e. "2M11S+T"), if paired-end the string
-        will contain two structures separated by a blank space (i.e. "2M11S+T 2M11S+T").
-        If the read does not contain any UMI, the structure will be +T (i.e. only template of any length).
-        https://github.com/fulcrumgenomics/fgbio/wiki/Read-Structures
   - groupreadsbyumi_strategy:
       type: string
       description: ""
@@ -58,6 +45,14 @@ input:
         - Edit
         - Adjacency
         - Paired
+  - bwa_index:
+      description: ""
+  - dict:
+      description: ""
+  - aligner:
+      description: ""
+  - duplex:
+      description: ""
 output:
   - versions:
       type: file
@@ -77,6 +72,8 @@ output:
         mapped bam file, where reads are created as consensus of those
         belonging to the same UMI group
       pattern: "*.bam"
+  - mappedconsensusbam:
+      description: ""
 authors:
   - "@lescai"
 maintainers:

@@ -16,34 +16,6 @@ components:
   - dragmap/align
   - snapaligner/align
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - reads:
-      type: file
-      description: |
-        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-        respectively.
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test' ]
-  - index:
-      type: file
-      description: Aligner genome index files
-      pattern: "Directory containing aligner index"
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'genome' ]
-  - fasta:
-      type: file
-      description: Reference genome in fasta format
-      pattern: "*.{fa, fasta, fna}"
   - aligner:
       type: string
       description: Aligner to use for alignment
@@ -53,15 +25,15 @@ input:
         - bwamem2
         - dragmap
         - snap
-  - sort_bam:
-      type: boolean
-      description: sort output
+  - ch_reads:
+      description: ""
+  - ch_aligner_index:
+      description: ""
+  - ch_fasta:
+      description: ""
+  - sort:
+      description: ""
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - bam:
       type: file
       description: BAM file
@@ -70,14 +42,12 @@ output:
       type: file
       description: BAM index (currently only for snapaligner)
       pattern: "*.{bai, csi}"
-  - report:
-      type: file
-      description: Alignment report (currently only for dragmap)
-      pattern: "*.txt"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
+  - reports:
+      description: ""
 authors:
   - "@matthdsm"
 maintainers:

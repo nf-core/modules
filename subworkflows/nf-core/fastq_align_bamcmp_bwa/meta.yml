@@ -1,6 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: fastq_align_bamcmp_bwa
-description: Align reads to two different reference genomes using bwa, then use bamcmp to keep only reads that align better to the first genome, then sort with samtools
+description: Align reads to two different reference genomes using bwa, then use bamcmp
+  to keep only reads that align better to the first genome, then sort with samtools
 keywords:
   - bam
   - cram
@@ -31,15 +32,8 @@ input:
       description: |
         BWA genome index files for the contamination species.
         Structure: [ val(meta3), path(contaminant_index) ]
-  - val_sort_bam:
-      type: boolean
-      description: If true sort resulting primary bam files.
-      pattern: "true|false"
-  - ch_primary_fasta:
-      type: file
-      description: |
-        Optional reference fasta file for the primary genome. This only needs to be given if val_sort_bam = true
-        Structure: [ path(fasta) ]
+  - ch_fasta:
+      description: ""
 output:
   - bam:
       description: |
@@ -85,6 +79,12 @@ output:
       description: |
         Files containing software versions
         Structure: [ path(versions.yml) ]
+  - unfiltered_bam:
+      description: ""
+  - unfiltered_bai:
+      description: ""
+  - unfiltered_csi:
+      description: ""
 authors:
   - "@sppearce"
 maintainers:

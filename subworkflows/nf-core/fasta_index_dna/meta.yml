@@ -18,25 +18,6 @@ components:
   - dragmap/hashtable
   - snapaligner/index
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test' ]
-  - fasta:
-      type: file
-      description: Reference genome fasta file
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing altliftover information
-        e.g. [ id:'test' ]
-  - altliftover:
-      type: file
-      description: |
-        Sam formatted liftover file for the reference genome alt contigs
-        See: https://github.com/lh3/bwa/blob/master/README-alt.md
-        Download from: https://sourceforge.net/projects/bio-bwa/files/bwakit
   - val_aligner:
       type: string
       description: Aligner to use for alignment
@@ -46,12 +27,11 @@ input:
         - bwamem2
         - dragmap
         - snap
+  - ch_fasta:
+      description: ""
+  - ch_altliftover:
+      description: ""
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - index:
       type: file
       description: aligner index

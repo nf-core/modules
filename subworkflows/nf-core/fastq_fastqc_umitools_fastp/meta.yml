@@ -14,11 +14,6 @@ components:
   - umitools/extract
   - fastp
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - reads:
       type: file
       description: |
@@ -61,29 +56,13 @@ input:
       description: |
         Inputs with fewer than this reads will be filtered out of the "reads" output channel
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - reads:
       type: file
       description: >
-        Extracted FASTQ files. | For single-end reads, pattern is \${prefix}.umi_extract.fastq.gz. |
+        Extracted FASTQ files. | For single-end reads, pattern is \${prefix}.umi_extract.fastq.gz.
+        |
         For paired-end reads, pattern is \${prefix}.umi_extract_{1,2}.fastq.gz.
       pattern: "*.{fastq.gz}"
-  - fastqc_html:
-      type: file
-      description: FastQC report
-      pattern: "*_{fastqc.html}"
-  - fastqc_zip:
-      type: file
-      description: FastQC report archive
-      pattern: "*_{fastqc.zip}"
-  - log:
-      type: file
-      description: Logfile for umi_tools
-      pattern: "*.{log}"
   - trim_json:
       type: file
       description: FastP Trimming report
@@ -92,10 +71,6 @@ output:
       type: file
       description: FastP Trimming report
       pattern: "*.{fastp.html}"
-  - log:
-      type: file
-      description: Logfile FastP
-      pattern: "*.{fastp.log}"
   - trim_reads_fail:
       type: file
       description: Trimmed fastq files failing QC
@@ -123,6 +98,14 @@ output:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
+  - fastqc_raw_html:
+      description: ""
+  - fastqc_raw_zip:
+      description: ""
+  - umi_log:
+      description: ""
+  - trim_log:
+      description: ""
 authors:
   - "@robsyme"
 maintainers:

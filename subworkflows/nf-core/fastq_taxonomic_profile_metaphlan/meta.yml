@@ -1,5 +1,6 @@
 name: "fastq_taxonomic_profile_metaphlan"
-description: Subworkflow to taxonomically classify metagenomic sequencing data using MetaPhlAn
+description: Subworkflow to taxonomically classify metagenomic sequencing data using
+  MetaPhlAn
 keywords:
   - metaphlan
   - metagenomics
@@ -13,11 +14,6 @@ components:
   - metaphlan/mergemetaphlantables
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:‘test’, single_end:false ]
   - ch_fastq:
       type: file
       description: |
@@ -26,24 +22,14 @@ input:
       pattern: "*.{fastq/fastq.gz}"
 
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:‘test’, single_end:false ]
   - versions:
       type: file
       description: |
         File containing software versions
         Structure: [ path(versions.yml) ]
       pattern: "versions.yml"
-  - txt:
-      type: file
-      description: |
-        Combined MetaPhlAn table
-        Structure: [ val(meta), path(txt) ]
-      pattern: "*.txt"
-
+  - merged_taxa:
+      description: ""
 authors:
   - "@LaurenGonsalves"
   - "@hhayden01"
