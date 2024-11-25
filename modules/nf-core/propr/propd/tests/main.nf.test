@@ -48,10 +48,10 @@ nextflow_process {
         }
     }
 
-    test("Test propr/propd when using permutation tests") {
+    test("Test propr/propd using default params - save all outputs") {
 
-        tag "permutation"
-        config "./permutation.config"
+        tag "save_all"
+        config "./save_all.config"
 
         when {
             process {
@@ -81,24 +81,28 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.results_genewise,
-                    process.out.fdr,
+                    process.out.results_pairwise,
+                    process.out.results_pairwise_filtered,
+                    process.out.results_adjacency,
                     process.out.versions,
-                    file(process.out.genewise_plot[0][1]).name
+                    file(process.out.genewise_plot[0][1]).name,
+                    file(process.out.rdata[0][1]).name
                 ).match()}
             )
         }
     }
 
-    test("Test propr/propd - pasilla data") {
+    test("Test propr/propd using default params - with Box-cox transformation") {
 
-        tag "pasilla"
+        tag "boxcox"
+        config "./boxcox.config"
 
         when {
             process {
                 """
-                expression_test_data_dir = '/Users/sjin/myprojects/modules/pasilla/'
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
 
-                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'contrast.csv', checkIfExists: true))
+                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
                     .splitCsv ( header:true, sep:',' )
                     .map{
                         tuple(it, it.variable, it.reference, it.target)
@@ -106,8 +110,8 @@ nextflow_process {
                     .first()
                 ch_matrix = [
                     [id: 'test'],
-                    file(expression_test_data_dir + 'samples.csv', checkIfExists: true),
-                    file(expression_test_data_dir + 'count.csv', checkIfExists: true)
+                    file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
                 ]
 
                 input[0] = ch_contrasts
@@ -128,17 +132,17 @@ nextflow_process {
         }
     }
 
-    test("Test propr/propd when using permutation tests - pasilla data") {
+    test("Test propr/propd when using permutation tests") {
 
-        tag "permutation-pasilla"
+        tag "permutation"
         config "./permutation.config"
 
         when {
             process {
                 """
-                expression_test_data_dir = '/Users/sjin/myprojects/modules/pasilla/'
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
 
-                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'contrast.csv', checkIfExists: true))
+                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
                     .splitCsv ( header:true, sep:',' )
                     .map{
                         tuple(it, it.variable, it.reference, it.target)
@@ -146,49 +150,8 @@ nextflow_process {
                     .first()
                 ch_matrix = [
                     [id: 'test'],
-                    file(expression_test_data_dir + 'samples.csv', checkIfExists: true),
-                    file(expression_test_data_dir + 'count.csv', checkIfExists: true)
-                ]
-
-                input[0] = ch_contrasts
-                input[1] = ch_matrix
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.results_genewise,
-                    process.out.fdr,
-                    process.out.versions,
-                    file(process.out.genewise_plot[0][1]).name
-                ).match()}
-            )
-        }
-    }
-    
-    test("Test propr/propd when using permutation tests - gtex data") {
-
-        tag "permutation-gtex"
-        config "./permutation.config"
-
-        when {
-            process {
-                """
-                expression_test_data_dir = '/Users/sjin/myprojects/modules/gtex_minimal_data/'
-
-                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'contrast.csv', checkIfExists: true))
-                    .splitCsv ( header:true, sep:',' )
-                    .map{
-                        tuple(it, it.variable, it.reference, it.target)
-                    }
-                    .first()
-                ch_matrix = [
-                    [id: 'test'],
-                    file(expression_test_data_dir + 'samples.csv', checkIfExists: true),
-                    file(expression_test_data_dir + 'counts.csv', checkIfExists: true)
+                    file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
                 ]
 
                 input[0] = ch_contrasts

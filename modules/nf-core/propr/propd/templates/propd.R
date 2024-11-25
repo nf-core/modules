@@ -168,57 +168,62 @@ plot_genewise_information <- function(results, output) {
 # Set defaults and classes
 
 opt <- list(
-    prefix            = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
+    prefix             = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
 
     # input count matrix
-    counts            = '$counts',
-    features_id_col   = 'gene_id',            # column name of feature ids
+    counts             = '$counts',
+    features_id_col    = 'gene_id',            # column name of feature ids
 
     # comparison groups
-    samplesheet       = '$samplesheet',
-    obs_id_col        = 'sample',             # column name of observation ids
-    contrast_variable = "$contrast_variable", # column name of contrast variable
-    reference_group   = "$reference",         # reference group for contrast variable
-    target_group      = "$target",            # target group for contrast variable
+    samplesheet        = '$samplesheet',
+    obs_id_col         = 'sample',             # column name of observation ids
+    contrast_variable  = "$contrast_variable", # column name of contrast variable
+    reference_group    = "$reference",         # reference group for contrast variable
+    target_group       = "$target",            # target group for contrast variable
 
     # parameters for computing differential proportionality
-    alpha             = NA,                   # alpha for boxcox transformation
-    moderated         = TRUE,                 # use moderated theta
+    alpha              = NA,                   # alpha for boxcox transformation
+    moderated          = TRUE,                 # use moderated theta
 
     # parameters for getting the significant differentially proportional pairs
-    fdr               = 0.05,                 # FDR threshold
-    permutation       = 0,                    # if permutation > 0, use permutation test to compute FDR
-    number_of_cutoffs = 100,                  # number of cutoffs for permutation test
+    fdr                = 0.05,                 # FDR threshold
+    permutation        = 0,                    # if permutation > 0, use permutation test to compute FDR
+    number_of_cutoffs  = 100,                  # number of cutoffs for permutation test
 
     # saving options
-    save_pairwise     = TRUE,                 # pairwise results are storage heavy, so only save when required
-    save_adjacency    = FALSE,                # save adjacency matrix, only save when required
-    save_rdata        = FALSE,                # same with rdata, only save when required
+    # note that pairwise outputs are very large, so it is recommended to save them only when needed
+    save_pairwise_full = FALSE,               # save full pairwise results
+    save_pairwise      = FALSE,                # save filtered pairwise results
+    save_adjacency     = FALSE,                # save adjacency matrix
+    save_rdata         = FALSE,                # save rdata
 
     # other parameters
-    seed              = NA,                   # seed for reproducibility
-    ncores            = as.integer('$task.cpus')
+    seed               = NA,                   # seed for reproducibility
+    ncores             = as.integer('$task.cpus')
 )
 
+print(opt)
+
 opt_types <- list(
-    prefix            = 'character',
-    counts            = 'character',
-    samplesheet       = 'character',
-    features_id_col   = 'character',
-    obs_id_col        = 'character',
-    contrast_variable = 'character',
-    reference_group   = 'character',
-    target_group      = 'character',
-    alpha             = 'numeric',
-    moderated         = 'logical',
-    fdr               = 'numeric',
-    permutation       = 'numeric',
-    number_of_cutoffs = 'numeric',
-    save_pairwise     = 'logical',
-    save_adjacency    = 'logical',
-    save_rdata        = 'logical',
-    seed              = 'numeric',
-    ncores            = 'numeric'
+    prefix             = 'character',
+    counts             = 'character',
+    samplesheet        = 'character',
+    features_id_col    = 'character',
+    obs_id_col         = 'character',
+    contrast_variable  = 'character',
+    reference_group    = 'character',
+    target_group       = 'character',
+    alpha              = 'numeric',
+    moderated          = 'logical',
+    fdr                = 'numeric',
+    permutation        = 'numeric',
+    number_of_cutoffs  = 'numeric',
+    save_pairwise_full = 'logical',
+    save_pairwise      = 'logical',
+    save_adjacency     = 'logical',
+    save_rdata         = 'logical',
+    seed               = 'numeric',
+    ncores             = 'numeric'
 )
 
 # Apply parameter overrides
@@ -265,6 +270,8 @@ for (file_input in c('counts','samplesheet')){
 if (opt\$permutation < 0) {
     stop('permutation should be a positive integer')
 }
+
+print(opt)
 
 ################################################
 ################################################
@@ -540,7 +547,6 @@ if (!theta_cutoff) {
 
 }
 
-
 ################################################
 ################################################
 ## Generate outputs                           ##
@@ -594,21 +600,23 @@ if (opt\$save_pairwise) {
 
     # unfiltered pairwise results table
 
-    results <- getResults(pd)
-    rm(pd)
-    results <- results[order(
-        results\$theta,
-        results\$FDR
-    ), c('Pair', 'Partner', 'theta', 'Fstat', 'Pval', 'FDR')]
+    if (opt\$save_pairwise_full) {
+        results <- getResults(pd)
+        rm(pd)
+        results <- results[order(
+            results\$theta,
+            results\$FDR
+        ), c('Pair', 'Partner', 'theta', 'Fstat', 'Pval', 'FDR')]
 
-    write.table(
-        results,
-        file      = paste0(opt\$prefix, '.propd.pairwise.tsv'),
-        col.names = TRUE,
-        row.names = FALSE,
-        sep       = '\\t',
-        quote     = FALSE
-    )
+        write.table(
+            results,
+            file      = paste0(opt\$prefix, '.propd.pairwise.tsv'),
+            col.names = TRUE,
+            row.names = FALSE,
+            sep       = '\\t',
+            quote     = FALSE
+        )
+    }
 
     # filtered pairwise results table
 
