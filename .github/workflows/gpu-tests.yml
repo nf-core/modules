@@ -91,11 +91,11 @@ jobs:
         profile: [conda, docker_self_hosted, singularity]
         tags: ${{ fromJSON(needs.nf-test-changes.outputs.modules) && fromJSON(needs.nf-test-changes.outputs.subworkflows) }}
         exclude:
-          - path: parabricks/applybqsr
+          - tags: parabricks/applybqsr
             profile: conda
-          - path: parabricks/fq2bam
+          - tags: parabricks/fq2bam
             profile: conda
-          - path: parabricks/fq2bammeth
+          - tags: parabricks/fq2bammeth
             profile: conda
 
     env:
