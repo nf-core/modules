@@ -21,7 +21,7 @@ def process_environment_file(file_path):
             channel = match.group("channel")
             package = match.group("package")
             version = match.group("version")
-            comment = f"# renovate: datasource=conda depName={channel}/{package}\n"
+            comment = f"  # renovate: datasource=conda depName={channel}/{package}\n"
 
             # Check if the comment is already present
             if comment not in updated_lines:
