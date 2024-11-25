@@ -15,6 +15,7 @@ from typing import Optional, Sequence
 import ruamel.yaml
 
 yaml = ruamel.yaml.YAML()
+yaml.indent(mapping=2, sequence=2, offset=2)  # Set indentation to 2 spaces
 
 
 def main(argv: Optional[Sequence[str]] = None) -> None:
