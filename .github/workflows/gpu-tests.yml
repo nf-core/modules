@@ -40,7 +40,7 @@ env:
 jobs:
   nf-test-changes:
     name: nf-test-changes
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     outputs:
       # Expose detected tags as 'modules' and 'workflows' output variables
       paths: ${{ steps.outputs.outputs.components }}
