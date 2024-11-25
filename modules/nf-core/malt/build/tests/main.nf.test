@@ -3,7 +3,6 @@ nextflow_process {
     name "Test Process MALT_BUILD"
     script "../main.nf"
     process "MALT_BUILD"
-    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -23,7 +22,7 @@ nextflow_process {
     }
 
     test("sarscov2 - fastq") {
-
+        config "./nextflow.config"
         when {
             params {
                 module_args = '-J-Xmx6G --sequenceType DNA'
@@ -65,7 +64,7 @@ nextflow_process {
     }
 
     test("sarscov2 - fastq - stub") {
-
+        config "./nextflow.config"
         options "-stub"
 
         when {
