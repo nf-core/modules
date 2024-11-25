@@ -1,64 +1,42 @@
 {
-    "Should run without failures with single-end data": {
+    "SYLPH_SKETCH: Should run without failures with single-end data": {
         "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.sylsp:md5,d41d8cd98f00b204e9800998ecf8427e",
-                        "database.syldb:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "sketch_fastq_genome": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.sylsp:md5,d41d8cd98f00b204e9800998ecf8427e",
-                        "database.syldb:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.sylsp:md5,4f9ba8a3613e74e0fd4213330abae522",
+                    "database.syldb:md5,c60e5450276385d81557a3f2b224762f"
                 ]
-            }
+            ],
+            null
         ],
         "meta": {
             "nf-test": "0.9.2",
             "nextflow": "24.10.1"
         },
-        "timestamp": "2024-11-25T11:37:36.277814"
+        "timestamp": "2024-11-25T14:43:07.503366"
     },
-    "Should run without failures with paired-end data": {
+    "SYLPH_SKETCH: Should run without failures with paired-end data": {
         "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.sylsp:md5,d41d8cd98f00b204e9800998ecf8427e",
-                        "database.syldb:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "sketch_fastq_genome": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.sylsp:md5,d41d8cd98f00b204e9800998ecf8427e",
-                        "database.syldb:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.paired.sylsp:md5,8ac5d34be025f7491c13ab6407e946fd",
+                    "database.syldb:md5,c60e5450276385d81557a3f2b224762f"
                 ]
-            }
+            ],
+            null
         ],
         "meta": {
             "nf-test": "0.9.2",
             "nextflow": "24.10.1"
         },
-        "timestamp": "2024-11-25T11:37:42.546288"
+        "timestamp": "2024-11-25T14:43:15.424444"
     }
 }

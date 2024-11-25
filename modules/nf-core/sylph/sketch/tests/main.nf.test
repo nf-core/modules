@@ -1,13 +1,13 @@
 nextflow_process {
 
-    name "Test Process SYLPH_SKETCH"
     script "../main.nf"
     process "SYLPH_SKETCH"
     tag "modules"
     tag "modules_nfcore"
     tag "sylph"
+    tag "sylph/sketch"
 
-    test("Should run without failures with single-end data") {
+    test("SYLPH_SKETCH: Should run without failures with single-end data") {
         when {
             process {
                 """
@@ -17,16 +17,21 @@ nextflow_process {
                 input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
                 """
             }
-            options "-stub"
         }
 
         then {
-            assert process.success
-            assert snapshot(process.out).match()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out.sketch_fastq_genome,
+                        process.out.versions
+                    ).match()
+                }
+            )
         }
     }
 
-    test("Should run without failures with paired-end data") {
+    test("SYLPH_SKETCH: Should run without failures with paired-end data") {
         when {
             process {
                 """
@@ -37,12 +42,17 @@ nextflow_process {
                 input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
                 """
             }
-            options "-stub"
         }
 
         then {
-            assert process.success
-            assert snapshot(process.out).match()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out.sketch_fastq_genome,
+                        process.out.versions
+                    ).match()
+                }
+            )
         }
     }
 }
