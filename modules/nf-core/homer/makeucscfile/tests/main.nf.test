@@ -1,15 +1,15 @@
 nextflow_process {
 
-    name "Test Process HOMER_FINDPEAKS"
+    name "Test Process HOMER_MAKEUCSCFILE"
     script "../main.nf"
-    process "HOMER_FINDPEAKS"
+    process "HOMER_MAKEUCSCFILE"
     config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "homer"
-    tag "homer/findpeaks"
     tag "homer/maketagdirectory"
+    tag "homer/makeucscfile"
 
     setup {
         run("HOMER_MAKETAGDIRECTORY") {
@@ -30,12 +30,10 @@ nextflow_process {
     }
 
     test("sarscov2 - tagdir") {
-
         when {
             process {
                 """
                 input[0] = HOMER_MAKETAGDIRECTORY.out.tagdir
-                input[1] = []
                 """
             }
         }
@@ -43,7 +41,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match("tagdir") }
+                { assert snapshot(
+                    path(process.out.bedGraph.get(0).get(1)).linesGzip.size(),
+                    path(process.out.versions.get(0)).yaml,
+                ).match() },
             )
         }
 
@@ -57,7 +58,6 @@ nextflow_process {
             process {
                 """
                 input[0] = HOMER_MAKETAGDIRECTORY.out.tagdir
-                input[1] = []
                 """
             }
         }
@@ -65,10 +65,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match("stub") }
+                { assert snapshot(process.out).match("stub") },
+                { assert snapshot(path(process.out.versions.get(0)).yaml).match("versions") },
             )
         }
     }
-    // TODO Test uniqmap. Might need to make a small uniqmap but that could take a day or two.
-    // See https://github.com/Functional-Genomics-Lab/homer-uniqmap-nf if you're feeling adventurous!
 }
