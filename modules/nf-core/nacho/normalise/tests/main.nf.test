@@ -1,0 +1,43 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test nacho/normalise
+nextflow_process {
+
+    name "Test Process NACHO_NORMALISE"
+    script "../main.nf"
+    process "NACHO_NORMALISE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "nacho"
+    tag "nacho/normalise"
+
+    test("Should run without failures") {
+
+        when {
+            params {
+                module_args = '--norm_method "GLM"'
+            }
+            process {
+                """
+                // RCC Files: Collect from sample sheet
+                input[0] = Channel.fromPath('https://raw.githubusercontent.com/nf-core/test-datasets/nanostring/samplesheets/samplesheet_test.csv', checkIfExists: true)
+                    .splitCsv(header: true)
+                    .map { row -> row.RCC_FILE } // Select first column: path to file
+                    .collect()
+
+                // Sample sheet
+                input[1] = file('https://raw.githubusercontent.com/nf-core/test-datasets/nanostring/samplesheets/samplesheet_test.csv', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}
