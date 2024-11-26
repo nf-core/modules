@@ -249,18 +249,7 @@ jobs:
             path: modules/nf-core/islandpath
           - profile: conda
             path: modules/nf-core/scimap/mcmicro
-          - profile: conda
-            path: modules/nf-core/parabricks/fq2bammeth
-          - profile: docker_self_hosted
-            path: modules/nf-core/parabricks/fq2bammeth
-          - profile: singularity
-            path: modules/nf-core/parabricks/fq2bammeth
-          - profile: conda
-            path: modules/nf-core/parabricks/fq2bam
-          - profile: docker_self_hosted
-            path: modules/nf-core/parabricks/fq2bam
-          - profile: singularity
-            path: modules/nf-core/parabricks/fq2bam
+          - path: modules/nf-core/parabricks
           - profile: conda
             path: subworkflows/nf-core/vcf_annotate_ensemblvep
           - profile: conda
@@ -303,4 +292,4 @@ jobs:
           profile: ${{ matrix.profile }}
           shard: ${{ matrix.shard }}
           total_shards: ${{ env.TOTAL_SHARDS }} # NOTE This is a hack to get the number of shards for the matrix
-          path: ${{ matrix.path }}
+          paths: ${{ matrix.path }}
