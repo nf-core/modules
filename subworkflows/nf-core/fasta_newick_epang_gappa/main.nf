@@ -9,7 +9,8 @@ include { HMMER_ESLREFORMAT as HMMER_AFAFORMATQUERY } from '../../../modules/nf-
 include { CLUSTALO_ALIGN                            } from '../../../modules/nf-core/clustalo/align/main'
 include { MAFFT                                     } from '../../../modules/nf-core/mafft/main'
 include { EPANG_PLACE                               } from '../../../modules/nf-core/epang/place/main'
-include { EPANG_SPLIT                               } from '../../../modules/nf-core/epang/split/main'
+include { EPANG_SPLIT as EPANG_SPLIT_CLUSTALO       } from '../../../modules/nf-core/epang/split/main'
+include { EPANG_SPLIT as EPANG_SPLIT_MAFFT          } from '../../../modules/nf-core/epang/split/main'
 include { GAPPA_EXAMINEGRAFT as GAPPA_GRAFT         } from '../../../modules/nf-core/gappa/examinegraft/main'
 include { GAPPA_EXAMINEASSIGN as GAPPA_ASSIGN       } from '../../../modules/nf-core/gappa/examineassign/main'
 include { GAPPA_EXAMINEHEATTREE as GAPPA_HEATTREE   } from '../../../modules/nf-core/gappa/examineheattree/main'
@@ -97,7 +98,26 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     HMMER_AFAFORMATQUERY ( HMMER_MASKQUERY.out.maskedaln )
     ch_versions = ch_versions.mix(HMMER_AFAFORMATQUERY.out.versions)
 
-    // 2.a MAFFT profile alignment of query sequences to reference alignment
+    // 2.a CLUSTALO_ALIGN profile alignment of query sequences to reference alignment
+    CLUSTALO_ALIGN (
+        ch_clustalo_data.map { [ it.meta, it.data.queryseqfile ] },
+        [ [:], []],
+        [ ],
+        [ ],
+        ch_clustalo_data.map { it.data.refseqfile },
+        [ ],
+        false
+    )
+    ch_versions = ch_versions.mix(CLUSTALO_ALIGN.out.versions)
+
+    // 2.b Split the profile alignment into reference and query parts
+    EPANG_SPLIT_CLUSTALO (
+        ch_clustalo_data.map { [ it.meta, it.data.refseqfile ] }
+            .join(CLUSTALO_ALIGN.out.alignment)
+    )
+    ch_versions = ch_versions.mix(EPANG_SPLIT_CLUSTALO.out.versions)
+
+    // 3.a MAFFT profile alignment of query sequences to reference alignment
     MAFFT (
         ch_mafft_data.map { [ it.meta, it.data.refseqfile ] },
         ch_mafft_data.map { [ it.meta, it.data.queryseqfile ] },
@@ -109,21 +129,29 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     )
     ch_versions = ch_versions.mix(MAFFT.out.versions)
 
-    // 2.b Split the profile alignment into reference and query parts
-    EPANG_SPLIT (
+    // 3.b Split the profile alignment into reference and query parts
+    EPANG_SPLIT_MAFFT (
         ch_mafft_data.map { [ it.meta, it.data.refseqfile ] }
             .join(MAFFT.out.fas)
     )
-    ch_versions = ch_versions.mix(EPANG_SPLIT.out.versions)
+    ch_versions = ch_versions.mix(EPANG_SPLIT_MAFFT.out.versions)
 
-    // 3. Do the placement
+    // 4. Do the placement
     ch_epang_query = ch_pp_data.map { [ it.meta, it.data.model, it.data.refphylogeny ] }
         .join ( HMMER_AFAFORMATQUERY.out.seqreformated )
         .join ( HMMER_AFAFORMATREF.out.seqreformated )
         .mix(
             ch_pp_data.map { [ it.meta, it.data.model, it.data.refphylogeny ] }
-                .join(EPANG_SPLIT.out.query.map { [ it[0], it[1] ] } )
-                .join(EPANG_SPLIT.out.reference.map { [ it[0], it[1] ] } )
+                .join(
+                    EPANG_SPLIT_CLUSTALO.out.query
+                        .mix(EPANG_SPLIT_MAFFT.out.query)
+                        .map { [ it[0], it[1] ] }
+                )
+                .join(
+                    EPANG_SPLIT_CLUSTALO.out.reference
+                        .mix(EPANG_SPLIT_MAFFT.out.reference)
+                        .map { [ it[0], it[1] ] }
+                )
         )
         .map { [ [ id:it[0].id, model:it[1] ], it[3], it[4], it[2] ] }
 
@@ -133,11 +161,11 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     )
     ch_versions = ch_versions.mix(EPANG_PLACE.out.versions)
 
-    // 7. Calculate a tree with the placed sequences
+    // 5. Calculate a tree with the placed sequences
     GAPPA_GRAFT ( EPANG_PLACE.out.jplace )
     ch_versions = ch_versions.mix(GAPPA_GRAFT.out.versions)
 
-    // 8. Classify
+    // 6. Classify
     GAPPA_ASSIGN (
         EPANG_PLACE.out.jplace
             .map { [ [ id:it[0].id ], it[1] ] }
@@ -145,7 +173,7 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     )
     ch_versions = ch_versions.mix(GAPPA_ASSIGN.out.versions)
 
-    // 9. Heat tree output
+    // 7. Heat tree output
     GAPPA_HEATTREE ( EPANG_PLACE.out.jplace )
     ch_versions = ch_versions.mix(GAPPA_HEATTREE.out.versions)
 
