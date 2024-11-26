@@ -18,7 +18,7 @@ nextflow_process {
 
         setup {
             run("CHECKM_LINEAGEWF") {
-              script "../../../checkm/lineagewf/main.nf"
+                script "../../../checkm/lineagewf/main.nf"
                 process {
                     """
                     input[0] = [
@@ -36,9 +36,6 @@ nextflow_process {
 
             run("CHECKM_QA") {
                 script "../../../checkm/qa/main.nf"
-                params {
-                    module_args = "--tab_table"
-                }
                 process {
                     """
                     input[0] =  CHECKM_LINEAGEWF.out.checkm_output
@@ -101,7 +98,7 @@ nextflow_process {
 
         setup {
             run("CHECKM_LINEAGEWF") {
-              script "../../../checkm/lineagewf/main.nf"
+                script "../../../checkm/lineagewf/main.nf"
                 process {
                     """
                     input[0] = [
