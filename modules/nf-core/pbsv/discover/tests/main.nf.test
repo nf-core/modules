@@ -1,0 +1,65 @@
+nextflow_process {
+
+    name "Test Process PBSV_DISCOVER"
+    script "../main.nf"
+    process "PBSV_DISCOVER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pbsv"
+    tag "pbsv/discover"
+
+    test("pbsv_bam") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path +  'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true)
+                ]
+
+                input[1] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+
+    }
+
+    test("pbsv_bam_stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path +  'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'test', single_end:false ], // meta map
+ 		            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true)
+ 		        ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

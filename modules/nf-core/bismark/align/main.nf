@@ -9,7 +9,7 @@ process BISMARK_ALIGN {
 
     input:
     tuple val(meta), path(reads)
-    tuple val(meta2), path(fasta)
+    tuple val(meta2), path(fasta, stageAs: 'tmp/*') // This change mounts as directory containing the FASTA file to prevent nested symlinks
     tuple val(meta3), path(index)
 
     output:
@@ -56,15 +56,11 @@ process BISMARK_ALIGN {
         }
     }
     """
-    if [ ! -f $index/$fasta ]; then
-        ln -s \$(readlink $fasta) $index/$fasta;
-    fi
-
     bismark \\
-        $fastq \\
-        --genome $index \\
+        ${fastq} \\
+        --genome ${index} \\
         --bam \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

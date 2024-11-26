@@ -1,0 +1,97 @@
+nextflow_process {
+
+    name "Test Process GLNEXUS"
+    script "../main.nf"
+    process "GLNEXUS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "glnexus"
+
+    test("vcfs, []") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test2.genome.vcf.gz', checkIfExists: true),
+                    ]
+                ])
+                input[1] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("vcfs, bed") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test2.genome.vcf.gz', checkIfExists: true),
+                    ]
+                ])
+                input[1] = [
+                    [ id:'region' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("vcfs, bed - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test2.genome.vcf.gz', checkIfExists: true),
+                    ]
+                ])
+                input[1] = [
+                    [ id:'region' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
