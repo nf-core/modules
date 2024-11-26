@@ -84,7 +84,7 @@ jobs:
   nf-test-gpu:
     runs-on: "gpu"
     needs: nf-test-changes
-    if: ${{ needs.nf-test-changes.outputs.changes }}
+    if: ${{ fromJSON(needs.nf-test-changes.outputs.changes) > 0 }}
     name: "GPU | ${{ matrix.tags}} | ${{ matrix.profile }} | ${{ matrix.shard }}"
     strategy:
       fail-fast: false
