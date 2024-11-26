@@ -230,6 +230,7 @@ opt_types <- list(
 
 args_ext <- ifelse('$task.ext.args' == 'null', '', '$task.ext.args')
 args_opt <- parse_args(args_ext)
+print(args_opt)
 for ( ao in names(args_opt)){
     if (! ao %in% names(opt)){
         stop(paste("Invalid option:", ao))
@@ -270,6 +271,8 @@ for (file_input in c('counts','samplesheet')){
 if (opt\$permutation < 0) {
     stop('permutation should be a positive integer')
 }
+
+print(opt)
 
 ################################################
 ################################################
