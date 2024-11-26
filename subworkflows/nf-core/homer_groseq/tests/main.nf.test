@@ -1,0 +1,139 @@
+nextflow_workflow {
+
+    name "Test Workflow HOMER_GROSEQ"
+    script "../main.nf"
+    workflow "HOMER_GROSEQ"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/homer_groseq"
+    tag "homer"
+    tag "unzip"
+    tag "homer/maketagdirectory"
+    tag "homer/makeucscfile"
+    tag "homer/findpeaks"
+    tag "homer/pos2bed"
+
+    test("Should run HOMER_GROSEQ with BAM input") {
+
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    // NOTE tagdir
+                    path(workflow.out.bed_graph.get(0).get(1)).linesGzip.size(),
+                    workflow.out.peaks,
+                    workflow.out.bed,
+                    path(workflow.out.versions.get(0)).yaml,
+                ).match() },
+            )
+        }
+    }
+
+    test("Should run HOMER_GROSEQ with BED input") {
+        config "./bed.config"
+
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true),
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    // NOTE tagdir
+                    path(workflow.out.bed_graph.get(0).get(1)).linesGzip.size(),
+                    workflow.out.peaks,
+                    workflow.out.bed,
+                    path(workflow.out.versions.get(0)).yaml,
+                ).match() },
+            )
+        }
+    }
+    test("Test files from tutorial") {
+        config "./bed.config"
+
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file('ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM340nnn/GSM340901/suppl/GSM340901_lib1_aligned.bed.gz', checkIfExists: true),
+                    file('ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM340nnn/GSM340902/suppl/GSM340902_lib2_aligned.bed.gz', checkIfExists: true),
+                ]
+                input[1] = file('https://hgdownload.soe.ucsc.edu/goldenPath/hg18/chromosomes/chr14.fa.gz', checkIfExists: true)
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    // NOTE tagdir
+                    path(workflow.out.bed_graph.get(0).get(1)).linesGzip.size(),
+                    workflow.out.peaks,
+                    workflow.out.bed,
+                    path(workflow.out.versions.get(0)).yaml,
+                ).match() },
+            )
+        }
+    }
+
+    // TODO Test uniqmap
+
+    test("sarscov2 - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    // NOTE tagdir
+                    path(workflow.out.bed_graph.get(0).get(1)).linesGzip.size(),
+                    workflow.out.peaks,
+                    workflow.out.bed,
+                    path(workflow.out.versions.get(0)).yaml,
+                ).match() },
+                { assert snapshot(path(workflow.out.versions.get(0)).yaml).match("versions") },
+            )
+        }
+    }
+}
