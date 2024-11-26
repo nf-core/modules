@@ -1,9 +1,9 @@
 name: mafft_guidetree
-description: Multiple sequence alignment using MAFFT
+description: Guide tree rendering using MAFFT
 keywords:
   - fasta
   - msa
-  - multiple sequence alignment
+  - guide tree
 tools:
   - "mafft":
       description: Multiple alignment program for amino acid or nucleotide sequences
@@ -33,7 +33,7 @@ output:
             e.g. [ id:'test']
       - "*.dnd":
           type: file
-          description: Aligned sequences in FASTA format. May be gzipped or uncompressed.
+          description: Guide tree in Newick format.
           pattern: "*.dnd"
   - versions:
       - versions.yml:
