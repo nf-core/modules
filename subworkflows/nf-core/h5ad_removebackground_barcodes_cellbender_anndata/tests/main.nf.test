@@ -1,17 +1,17 @@
 nextflow_workflow {
 
-    name "Test Subworkflow CELLBENDER_EMPTY_DROPLET_REMOVAL"
+    name "Test Subworkflow H5AD_REMOVEBACKGROUND_BARCODES_CELLBENDER_ANNDATA"
     script "../main.nf"
-    workflow "CELLBENDER_EMPTY_DROPLET_REMOVAL"
+    workflow "H5AD_REMOVEBACKGROUND_BARCODES_CELLBENDER_ANNDATA"
 
     tag "subworkflows"
     tag "subworkflows_nfcore"
-    tag "subworkflows/cellbender_empty_droplet_removal"
+    tag "subworkflows/h5ad_removebackground_barcodes_cellbender_anndata"
     tag "cellbender/removebackground"
     tag "anndata/barcodes"
 
-    test("test_cellbender_empty_droplet_removal") {
-
+    test("h5ad - h5ad_removebackground_barcodes_cellbender_anndata") {
+        config './epochs.config'
         when {
             workflow {
                 """

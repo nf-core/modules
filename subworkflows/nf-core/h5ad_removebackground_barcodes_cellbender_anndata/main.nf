@@ -1,10 +1,10 @@
 //
-// cellbender to background and empty droplet removal
+// Apply cellbender and anndata to h5ad for background and empty droplet removal
 //
 include { CELLBENDER_REMOVEBACKGROUND } from '../../../modules/nf-core/cellbender/removebackground'
 include { ANNDATA_BARCODES            } from '../../../modules/nf-core/anndata/barcodes'
 
-workflow CELLBENDER_EMPTY_DROPLET_REMOVAL {
+workflow H5AD_REMOVEBACKGROUND_BARCODES_CELLBENDER_ANNDATA {
 
     take:
     ch_unfiltered // channel: [mandatory] meta, h5ad
