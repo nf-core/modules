@@ -110,8 +110,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.alignment).match("profile alignment - profile1")},
-                { assert snapshot(process.out.versions).match("versions3") }
+                { assert snapshot(process.out).match() }
             )
         }
     }
