@@ -57,21 +57,6 @@ def checkProfileProvided(nextflow_cli_args) {
 }
 
 //
-// Citation string for pipeline
-//
-def workflowCitation() {
-    def temp_doi_ref = ""
-    def manifest_doi = workflow.manifest.doi.tokenize(",")
-    // Handling multiple DOIs
-    // Removing `https://doi.org/` to handle pipelines using DOIs vs DOI resolvers
-    // Removing ` ` since the manifest.doi is a string and not a proper list
-    manifest_doi.each { doi_ref ->
-        temp_doi_ref += "  https://doi.org/${doi_ref.replace('https://doi.org/', '').replace(' ', '')}\n"
-    }
-    return "If you use ${workflow.manifest.name} for your analysis please cite:\n\n" + "* The pipeline\n" + temp_doi_ref + "\n" + "* The nf-core framework\n" + "  https://doi.org/10.1038/s41587-020-0439-x\n\n" + "* Software dependencies\n" + "  https://github.com/${workflow.manifest.name}/blob/master/CITATIONS.md"
-}
-
-//
 // Generate workflow version string
 //
 def getWorkflowVersion() {
@@ -148,33 +133,6 @@ def paramsSummaryMultiqc(summary_params) {
     yaml_file_text     += "${summary_section}"
 
     return yaml_file_text
-}
-
-//
-// nf-core logo
-//
-def nfCoreLogo(monochrome_logs=true) {
-    def colors = logColours(monochrome_logs) as Map
-    String.format(
-        """\n
-        ${dashedLine(monochrome_logs)}
-                                                ${colors.green},--.${colors.black}/${colors.green},-.${colors.reset}
-        ${colors.blue}        ___     __   __   __   ___     ${colors.green}/,-._.--~\'${colors.reset}
-        ${colors.blue}  |\\ | |__  __ /  ` /  \\ |__) |__         ${colors.yellow}}  {${colors.reset}
-        ${colors.blue}  | \\| |       \\__, \\__/ |  \\ |___     ${colors.green}\\`-._,-`-,${colors.reset}
-                                                ${colors.green}`._,._,\'${colors.reset}
-        ${colors.purple}  ${workflow.manifest.name} ${getWorkflowVersion()}${colors.reset}
-        ${dashedLine(monochrome_logs)}
-        """.stripIndent()
-    )
-}
-
-//
-// Return dashed line
-//
-def dashedLine(monochrome_logs=true) {
-    def colors = logColours(monochrome_logs) as Map
-    return "-${colors.dim}----------------------------------------------------${colors.reset}-"
 }
 
 //
