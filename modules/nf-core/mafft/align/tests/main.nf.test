@@ -1,11 +1,11 @@
 nextflow_process {
 
-    name "Test Process MAFFT"
+    name "Test Process MAFFT_ALIGN"
     script "../main.nf"
-    process "MAFFT"
+    process "MAFFT_ALIGN"
     tag "modules"
     tag "modules_nfcore"
-    tag "mafft"
+    tag "mafft/align"
 
     test("SARS-CoV-2 scaffolds fasta - uncompressed") {
         when {

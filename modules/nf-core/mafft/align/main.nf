@@ -1,4 +1,4 @@
-process MAFFT {
+process MAFFT_ALIGN {
     tag "$meta.id"
     label 'process_high'
 
