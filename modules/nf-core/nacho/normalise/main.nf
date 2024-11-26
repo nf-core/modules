@@ -5,7 +5,7 @@ process NACHO_NORMALISE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container 'community.wave.seqera.io/library/r-dplyr_r-fs_r-ggplot2_r-nacho_pruned:2d777db141950c99'
+    container 'community.wave.seqera.io/library/r-dplyr_r-fs_r-ggplot2_r-nacho_pruned:033bc017f5f36b6d'
 
     input:
     path rcc_files, stageAs: "input/*"
