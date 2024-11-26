@@ -22,6 +22,7 @@ process CLUSTALO_ALIGN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def options_tree = tree ? "--guidetree-in=$tree" : ""
     def write_output = compress ? "--force -o >(pigz -cp ${task.cpus} > ${prefix}.aln.gz)" : "> ${prefix}.aln"
     // using >() is necessary to preserve the return value,
     // so nextflow knows to display an error when it failed
@@ -31,6 +32,7 @@ process CLUSTALO_ALIGN {
     """
     clustalo \
         -i ${fasta} \
+        $options_tree \
         --threads=${task.cpus} \
         $args \
         $write_output
