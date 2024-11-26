@@ -9,6 +9,7 @@ on:
     paths:
       - ".github/workflows/gpu-tests.yml"
       - "modules/nf-core/parabricks/**"
+      - "subworkflows/nf-core/fastq_align_dedup_bwameth/tests/gpu.nf.test"
   merge_group:
     types: [checks_requested]
     branches: [master]
