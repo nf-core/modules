@@ -43,17 +43,18 @@ if (is.null(opt$input_samplesheet)) {
 }
 
 # Validate that --norm_method is one of the allowed values
-if (!(opt$norm_method %in% norm_methods <- c("GLM", "GEO"))) {
+if (!(opt$norm_method %in% norm_methods)) {
     stop(paste("Error: The --norm_method parameter must be one of:", paste(norm_methods, collapse = " ")))
 }
 
-input_rcc_path <- opt$input_rcc_path
+input_rcc_path    <- opt$input_rcc_path
 input_samplesheet <- opt$input_samplesheet
-norm_method <- opt$norm_method
+norm_method       <- opt$norm_method
 
 #Create filelist for NachoQC
 
-list_of_rccs <- dir_ls(path = input_rcc_path, glob = "*.RCC", full.names = TRUE)
+list_of_rccs <- dir_ls(path = input_rcc_path, glob = "*.RCC")
+print(list_of_rccs)
 
 ####RealCode####
 nacho_data <- load_rcc(data_directory = input_rcc_path,
