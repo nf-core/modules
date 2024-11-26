@@ -56,29 +56,38 @@ input:
 output:
   - results_genewise:
       - meta:
-          type: map
-          description: groovy map
-      - "*.results_genewise.tsv":
           type: file
           description: |
             TSV-format table of genes associated with differential expression 
             information as compiled from the propd results
-          pattern: "*.results_genewise.tsv"
+          pattern: "*.propd.genewise.tsv"
+      - "*.propd.genewise.tsv":
+          type: file
+          description: |
+            TSV-format table of genes associated with differential expression 
+            information as compiled from the propd results
+          pattern: "*.propd.genewise.tsv"
   - genewise_plot:
       - meta:
-          type: map
-          description: groovy map
+          type: file
+          description: |
+            PNG-format plot of accumulated between group variance vs median log
+            fold change. Genes with high between group variance and high log fold
+            change are likely to be differentially expressed.
+          pattern: "*.propd.genewise.png"
       - "*.propd.genewise.png":
           type: file
           description: |
             PNG-format plot of accumulated between group variance vs median log
             fold change. Genes with high between group variance and high log fold
             change are likely to be differentially expressed.
-          pattern: "*.genewise_plot.pdf"
+          pattern: "*.propd.genewise.png"
   - rdata:
       - meta:
-          type: map
-          description: groovy map
+          type: file
+          description: |
+            (Optional) R data containing propd object
+          pattern: "*.propd.rds"
       - "*.propd.rds":
           type: file
           description: |
@@ -86,54 +95,71 @@ output:
           pattern: "*.propd.rds"
   - results_pairwise:
       - meta:
-          type: map
-          description: groovy map
-      - "*.results_pairwise.tsv":
           type: file
           description: |
             (Optional) TSV-format table of the native propd pairwise results. This 
             table contains the differential proportionality values associated to 
             each pair of genes.
-          pattern: "*.results_pairwise.tsv"
+          pattern: "*.propd.pairwise.tsv"
+      - "*.propd.pairwise.tsv":
+          type: file
+          description: |
+            (Optional) TSV-format table of the native propd pairwise results. This 
+            table contains the differential proportionality values associated to 
+            each pair of genes.
+          pattern: "*.propd.pairwise.tsv"
   - results_pairwise_filtered:
       - meta:
-          type: map
-          description: groovy map
-      - "*.results_pairwise_filtered.tsv":
           type: file
           description: |
             (Optional) TSV-format table of the filtered propd pairwise results. This
             table contains the pairs of genes with significant differential 
             proportionality values.
-          pattern: "*.results_pairwise_filtered.tsv"
+          pattern: "*.propd.pairwise_filtered.tsv"
+      - "*.propd.pairwise_filtered.tsv":
+          type: file
+          description: |
+            (Optional) TSV-format table of the filtered propd pairwise results. This
+            table contains the pairs of genes with significant differential 
+            proportionality values.
+          pattern: "*.propd.pairwise_filtered.tsv"
   - adjacency:
       - meta:
-          type: map
-          description: groovy map
-      - "*.adj.csv":
           type: file
           description: |
             (Optional) CSV-format table of the adjacency matrix defining a graph, with 
             edges (1) associated to pairs of genes that are significantly differentially
             proportional.
-          pattern: "*.adj.csv"
+          pattern: "*.propd.adjacency.csv"
+      - "*.propd.adjacency.csv":
+          type: file
+          description: |
+            (Optional) CSV-format table of the adjacency matrix defining a graph, with 
+            edges (1) associated to pairs of genes that are significantly differentially
+            proportional.
+          pattern: "*.propd.adjacency.csv"
   - fdr:
       - meta:
-          type: map
-          description: groovy map
-      - "*.fdr.tsv":
           type: file
           description: |
             (Optional) TSV-format table of FDR values. When permutation tests is performed,
             this table is generated with the FDR values calculated by the permutation tests.
             This is a more conservative test than the default BH method, but more
             computationally expensive.
-          pattern: "*.fdr.tsv"
+          pattern: "*.propd.fdr.tsv"
+      - "*.propd.fdr.tsv":
+          type: file
+          description: |
+            (Optional) TSV-format table of FDR values. When permutation tests is performed,
+            this table is generated with the FDR values calculated by the permutation tests.
+            This is a more conservative test than the default BH method, but more
+            computationally expensive.
+          pattern: "*.propd.fdr.tsv"
   - session_info:
       - "*.R_sessionInfo.log":
           type: file
           description: dump of R SessionInfo
-          pattern: "*.R_sessionInfo.log" 
+          pattern: "*.R_sessionInfo.log"
   - versions:
       - versions.yml:
           type: file
