@@ -230,7 +230,6 @@ opt_types <- list(
 
 args_ext <- ifelse('$task.ext.args' == 'null', '', '$task.ext.args')
 args_opt <- parse_args(args_ext)
-print(args_opt)
 for ( ao in names(args_opt)){
     if (! ao %in% names(opt)){
         stop(paste("Invalid option:", ao))
@@ -578,8 +577,9 @@ results_genewise <- results_genewise[order(
 ),]
 
 if (!is.na(opt\$round_digits)) {
-    resutls_genewise <- round(
-        results_genewise,
+    cols <- sapply(results_genewise, is.numeric)
+    results_genewise[,cols] <- round(
+        results_genewise[,cols],
         digits = opt\$round_digits
     )
 }
@@ -617,8 +617,9 @@ if (opt\$save_pairwise) {
         ), c('Pair', 'Partner', 'theta', 'Fstat', 'Pval', 'FDR')]
 
         if (!is.na(opt\$round_digits)) {
-            results <- round(
-                results,
+            cols <- sapply(results, is.numeric)
+            results[,cols] <- round(
+                results[,cols],
                 digits = opt\$round_digits
             )
         }
@@ -641,8 +642,9 @@ if (opt\$save_pairwise) {
     ), c('Pair', 'Partner', 'theta', 'Fstat', 'Pval', 'FDR')]
 
     if (!is.na(opt\$round_digits)) {
-        results_pairwise <- round(
-            results_pairwise,
+        cols <- sapply(results_pairwise, is.numeric)
+        results_pairwise[,cols] <- round(
+            results_pairwise[,cols],
             digits = opt\$round_digits
         )
     }
@@ -676,8 +678,8 @@ if (opt\$permutation > 0) {
     fdr_table <- fdr_table[order(fdr_table\$cutoff),]
 
     if (!is.na(opt\$round_digits)) {
-        fdr_table <- round(
-            fdr_table,
+        fdr_table\$FDR <- round(
+            fdr_table\$FDR,
             digits = opt\$round_digits
         )
     }
