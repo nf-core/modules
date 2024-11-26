@@ -22,13 +22,13 @@ process MAFFT_GUIDETREE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mafft \\
+        --thread ${task.cpus} \\
         --retree 0 \\
-        --treeout ${fasta} \\
-        $args \\
-        --thread ${task.cpus}
+        ${args} \\
+        --treeout ${fasta} > log.txt
 
     mv *.tree ${prefix}.dnd
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         mafft: \$(mafft --version 2>&1 | sed 's/^v//' | sed 's/ (.*)//')
