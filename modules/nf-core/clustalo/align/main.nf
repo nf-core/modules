@@ -26,11 +26,12 @@ process CLUSTALO_ALIGN {
     script:
     def args         = task.ext.args ?: ''
     def prefix       = task.ext.prefix ?: "${meta.id}"
+    def options_tree = tree ? "--guidetree-in=$tree" : ""
     def fhmm_in      = hmm_in    ? "--hmm-in=${hmm_in}"       : ""
     def fhmm_batch   = hmm_batch ? "--hmm-batch=${hmm_batch}" : ""
     def fprofile1    = profile1  ? "--profile1=${profile1}"   : ""
     def fprofile2    = profile2  ? "--profile2=${profile2}"   : ""
-    def write_output = compress  ? "--force -o >(pigz -cp ${task.cpus} > ${prefix}.aln.gz)" : "> ${prefix}.aln"
+    def write_output = compress ? "--force -o >(pigz -cp ${task.cpus} > ${prefix}.aln.gz)" : "> ${prefix}.aln"
     // using >() is necessary to preserve the return value,
     // so nextflow knows to display an error when it failed
     // the --force -o is necessary, as clustalo expands the commandline input,
@@ -39,6 +40,7 @@ process CLUSTALO_ALIGN {
     """
     clustalo \
         -i ${fasta} \
+        $options_tree \
         ${fhmm_in} \
         ${fhmm_batch} \
         ${fprofile1} \
