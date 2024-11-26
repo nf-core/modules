@@ -9,7 +9,7 @@ process BISMARK_COVERAGE2CYTOSINE {
 
     input:
     tuple val(meta), path(coverage_file)
-    tuple val(meta2), path(fasta, stageAs: 'tmp/*')
+    tuple val(meta2), path(fasta, stageAs: 'tmp/*') // This change mounts as directory containing the FASTA file to prevent nested symlinks
     tuple val(meta3), path(index)
 
     output:

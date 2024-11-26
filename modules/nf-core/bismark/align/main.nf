@@ -9,7 +9,7 @@ process BISMARK_ALIGN {
 
     input:
     tuple val(meta), path(reads)
-    tuple val(meta2), path(fasta, stageAs: 'tmp/*')
+    tuple val(meta2), path(fasta, stageAs: 'tmp/*') // This change mounts as directory containing the FASTA file to prevent nested symlinks
     tuple val(meta3), path(index)
 
     output:
