@@ -8,7 +8,7 @@ Space Ranger is a commercial tool by 10X Genomics. The container provided for th
 
 ```diff
 - ARG SPACERANGER_VER="3.1.2"
-+ ARG SPACERANGER_VER="4.0.0"
++ ARG SPACERANGER_VER="<New version>"
 - ARG SPACERANGER_URL="https://cf.10xgenomics.com/releases/spatial-exp/spaceranger-3.1.2.tar.gz?Expires=1732608367&Key-Pair-Id=APKAI7S6A5RYOXBWRPDA&Signature=S4jcGCs5H0wLFfREhSc~AfuPIOXE~PW96kX9o2EyxZnmn1goUecgfEWTj67fL1DnZJBIa06kFdUdNpsMn2ustiSWOfXEgjlYQnxIcNnQIiEBGoQTHWphvx3LEQ6wtZnkWS80P6IcE0HJkIsgy04t6Sohih5cxY4jgytYsrAfZDYr5G3KKFwTfCKmhzMaXqW635yPbyQ8xEcQHK0QwviAx8-EFq-PE8UzC4QgUKi2MW-ivcfZkSDSfF8C3s7SgwDXIGIWv52mzeszenxMjN4KrWQotZ7ZpktzI0Vfpz0dNC17dQeDQUHj4LuNYbdh3RqsPKtqu3wjCe2Q7KiyoWnmaw__" \"
 + ARG SPACERANGER_URL="<Your-unique-download-link-that-expires"
 - ARG SPACERANGER_SHA256="2566b24f29829b39f3add112a674990b1c54ae2fbe7ccb50a4c7dce9ccf152e6"
