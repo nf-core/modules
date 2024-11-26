@@ -57,7 +57,7 @@ jobs:
     timeout-minutes: 60
     strategy:
       fail-fast: false
-      max-parallel: 4
+      # max-parallel: 2
       matrix:
         files: "${{ fromJson(needs.generate-matrix.outputs.conda-matrix) }}"
         profile: [docker, singularity]
@@ -95,7 +95,7 @@ jobs:
     timeout-minutes: 60
     strategy:
       fail-fast: false
-      max-parallel: 4
+      # max-parallel: 2
       matrix:
         files: "${{ fromJson(needs.generate-matrix.outputs.dockerfile-matrix) }}"
         # NOTE singularity build requires a Singularity definition file in place of Dockerfile
