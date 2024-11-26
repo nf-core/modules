@@ -203,8 +203,6 @@ opt <- list(
     ncores             = as.integer('$task.cpus')
 )
 
-print(opt)
-
 opt_types <- list(
     prefix             = 'character',
     counts             = 'character',
@@ -272,8 +270,6 @@ for (file_input in c('counts','samplesheet')){
 if (opt\$permutation < 0) {
     stop('permutation should be a positive integer')
 }
-
-print(opt)
 
 ################################################
 ################################################
@@ -580,7 +576,7 @@ results_genewise <- results_genewise[order(
 
 if (!is.na(opt\$round_digits)) {
     resutls_genewise <- round(
-        results_genewise, 
+        results_genewise,
         digits = opt\$round_digits
     )
 }
