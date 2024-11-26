@@ -6,6 +6,7 @@ include { HMMER_ESLALIMASK as HMMER_MASKQUERY       } from '../../../modules/nf-
 include { HMMER_ESLREFORMAT as HMMER_UNALIGNREF     } from '../../../modules/nf-core/hmmer/eslreformat/main'
 include { HMMER_ESLREFORMAT as HMMER_AFAFORMATREF   } from '../../../modules/nf-core/hmmer/eslreformat/main'
 include { HMMER_ESLREFORMAT as HMMER_AFAFORMATQUERY } from '../../../modules/nf-core/hmmer/eslreformat/main'
+include { CLUSTALO_ALIGN                            } from '../../../modules/nf-core/clustalo/align/main'
 include { MAFFT                                     } from '../../../modules/nf-core/mafft/main'
 include { EPANG_PLACE                               } from '../../../modules/nf-core/epang/place/main'
 include { EPANG_SPLIT                               } from '../../../modules/nf-core/epang/split/main'
@@ -21,9 +22,10 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     main:
     ch_versions = Channel.empty()
 
-    // Divide the input channel into two: One for hmmer and one for mafft alignment
-    ch_hmmer_data = ch_pp_data.filter { it.data.alignmethod == 'hmmer' }
-    ch_mafft_data = ch_pp_data.filter { it.data.alignmethod == 'mafft' }
+    // Divide the input channel into three: One each for hmmer, clustalo and mafft alignment
+    ch_hmmer_data    = ch_pp_data.filter { it.data.alignmethod == 'hmmer'    }
+    ch_clustalo_data = ch_pp_data.filter { it.data.alignmethod == 'clustalo' }
+    ch_mafft_data    = ch_pp_data.filter { it.data.alignmethod == 'mafft'    }
 
     // 1.a.1 HMMER alignment: For entries that do not specify an hmm file, build one to use for alignment
     HMMER_HMMBUILD (
