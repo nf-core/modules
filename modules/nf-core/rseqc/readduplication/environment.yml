@@ -4,8 +4,7 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
+  # renovate: datasource=conda depName=bioconda/rseqc
   - bioconda::rseqc=5.0.3
+  # renovate: datasource=conda depName=conda-forge/r-base
   - conda-forge::r-base>=3.5
-
-# pipelines:
-#  - rnaseq

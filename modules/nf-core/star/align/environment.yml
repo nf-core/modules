@@ -3,12 +3,12 @@
 channels:
   - conda-forge
   - bioconda
-
 dependencies:
+  # renovate: datasource=conda depName=bioconda/htslib
   - bioconda::htslib=1.21
+  # renovate: datasource=conda depName=bioconda/samtools
   - bioconda::samtools=1.21
+  # renovate: datasource=conda depName=bioconda/star
   - bioconda::star=2.7.11b
+  # renovate: datasource=conda depName=conda-forge/gawk
   - conda-forge::gawk=5.1.0
-
-# pipelines:
-#  - rnaseq
