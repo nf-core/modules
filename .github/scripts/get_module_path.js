@@ -33,8 +33,8 @@ function run({ github, context }) {
         const files = JSON.parse(context.payload.inputs?.files || "[]");
         const result = get_module_names(files);
 
-        // Return stringified result for GitHub Actions output
-        return JSON.stringify(result);
+        // Return json result for GitHub Actions output
+        return result;
     } catch (error) {
         console.error("Error processing module paths:", error);
         throw error;
