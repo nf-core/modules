@@ -7,8 +7,7 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "epang"
-    tag "epang/align"
-    tag "epang/guidetree"
+    tag "epang/split"
 
     setup {
         run("MAFFT_ALIGN") {
@@ -19,7 +18,7 @@ nextflow_process {
                             file('https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.alnfaa', checkIfExists: true)
                         ]
                 input[1] = [[id:"test2"],
-                            file('https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_3_sequences.faa', checkIfExists: true
+                            file('https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_3_sequences.faa', checkIfExists: true)
                             ]
                 input[2] = [[:],[]]
                 input[3] = [[:],[]]
@@ -31,12 +30,13 @@ nextflow_process {
         }
     }
 
+
     test("PF14720") {
 
         when {
             process {
                 """
-                input[0] = MAFFT.out.fas.map {
+                input[0] =  MAFFT_ALIGN.out.fas.map {
                                 [
                                     [ id:'test'],
                                     file('https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.alnfaa', checkIfExists: true),
@@ -55,13 +55,13 @@ nextflow_process {
         }
     }
 
-    test("PF14720 - stub") {
 
+    test("PF14720 - stub") {
         options "-stub"
         when {
             process {
                 """
-                input[0] = MAFFT.out.fas.map {
+                input[0] =  MAFFT_ALIGN.out.fas.map {
                                 [
                                     [ id:'test'],
                                     file('https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.alnfaa', checkIfExists: true),
@@ -79,6 +79,4 @@ nextflow_process {
             )
         }
     }
-
-
 }
