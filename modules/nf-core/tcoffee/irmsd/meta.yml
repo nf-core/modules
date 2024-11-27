@@ -26,11 +26,20 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', ... ]
+    - msa:
+        type: file
+        description: File containing the multiple sequence alignment
   - - meta2:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
+    - template:
+        type: file
+        description: File containing the template structure
+    - structures:
+        type: file
+        description: File containing the structures
 output:
   - irmsd:
       - meta:
