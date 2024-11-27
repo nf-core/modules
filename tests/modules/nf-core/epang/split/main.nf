@@ -14,7 +14,12 @@ workflow test_epang_split {
 
     MAFFT (
         input,
-        file('https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_3_sequences.faa', checkIfExists: true)
+        [[id:"test2"], file('https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_3_sequences.faa', checkIfExists: true)],
+        [[:],],
+        [[:],],
+        [[:],],
+        [[:],],
+        false
     )
 
     EPANG_SPLIT (
