@@ -10,26 +10,26 @@ nextflow_process {
     tag "epang/align"
     tag "epang/guidetree"
 
-        setup {
-            run("MAFFT_ALIGN") {
-                script "../../../mafft/align/main.nf"
-                process {
-                    """
-                    input[0] = [ [ id:'test', single_end:false ], // meta map
-                                file('https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.alnfaa', checkIfExists: true)
+    setup {
+        run("MAFFT_ALIGN") {
+            script "../../../mafft/align/main.nf"
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                            file('https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_seed.alnfaa', checkIfExists: true)
+                        ]
+                input[1] = [[id:"test2"],
+                            file('https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_3_sequences.faa', checkIfExists: true
                             ]
-                    input[1] = [[id:"test2"],
-                                file('https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/PF14720_3_sequences.faa', checkIfExists: true
-                                ]
-                    input[2] = [[:],[]]
-                    input[3] = [[:],[]]
-                    input[4] = [[:],[]]
-                    input[5] = [[:],[]]
-                    input[6] = false
-                    """
-                }
+                input[2] = [[:],[]]
+                input[3] = [[:],[]]
+                input[4] = [[:],[]]
+                input[5] = [[:],[]]
+                input[6] = false
+                """
             }
         }
+    }
 
     test("PF14720") {
 
