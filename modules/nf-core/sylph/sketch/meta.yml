@@ -29,24 +29,24 @@ input:
         description: Reference genome file in FASTA format
 output:
   - sketch_fastq_genome:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - sylsp:
-        type: file
-        description: Sylph sketch file
-        pattern: "my_sketches/*.sylsp"
-    - syldb:
-        type: file
-        description: Sylph database file
-        pattern: "*.syldb"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - sylsp:
+          type: file
+          description: Sylph sketch file
+          pattern: "my_sketches/*.sylsp"
+      - syldb:
+          type: file
+          description: Sylph database file
+          pattern: "database.syldb"
   - versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jiahang1234"
   - "@sofstam"
