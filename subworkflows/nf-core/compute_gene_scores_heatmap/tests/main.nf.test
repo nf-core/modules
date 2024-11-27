@@ -3,6 +3,7 @@ nextflow_workflow {
     name "Test Subworkflow COMPUTE_GENE_SCORES_HEATMAP"
     script "../main.nf"
     workflow "COMPUTE_GENE_SCORES_HEATMAP"
+    config "./nextflow.config"
 
     test("test profile") {
         when {

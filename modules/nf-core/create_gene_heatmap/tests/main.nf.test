@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process CREATE_GENE_HEATMAP"
     script "../main.nf"
     process "CREATE_GENE_HEATMAP"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
