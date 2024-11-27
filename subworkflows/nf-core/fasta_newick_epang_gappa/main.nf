@@ -6,7 +6,7 @@ include { HMMER_ESLALIMASK as HMMER_MASKQUERY       } from '../../../modules/nf-
 include { HMMER_ESLREFORMAT as HMMER_UNALIGNREF     } from '../../../modules/nf-core/hmmer/eslreformat/main'
 include { HMMER_ESLREFORMAT as HMMER_AFAFORMATREF   } from '../../../modules/nf-core/hmmer/eslreformat/main'
 include { HMMER_ESLREFORMAT as HMMER_AFAFORMATQUERY } from '../../../modules/nf-core/hmmer/eslreformat/main'
-include { MAFFT                                     } from '../../../modules/nf-core/mafft/main'
+include { MAFFT                                     } from '../../../modules/nf-core/mafft/align/main'
 include { EPANG_PLACE                               } from '../../../modules/nf-core/epang/place/main'
 include { EPANG_SPLIT                               } from '../../../modules/nf-core/epang/split/main'
 include { GAPPA_EXAMINEGRAFT as GAPPA_GRAFT         } from '../../../modules/nf-core/gappa/examinegraft/main'
