@@ -137,7 +137,7 @@ nextflow_workflow {
                 { assert snapshot(file(workflow.out.taxonomy_profile.get(0).get(1)).name).match("clustalo.taxonomy.profile.tsv") },
                 { assert snapshot(workflow.out. taxonomy_profile.get(0).get(1)).md5().match("clustalo.taxonomy.profile.tsv_lines") },
                 { assert snapshot(file(workflow.out.taxonomy_per_query.get(0).get(1)).name).match("clustalo.taxonomy.per_query.tsv") },
-                { assert snapshot(workflow.out.grafted_phylogeny.get(0).get(1)).md5().match("clustalo.taxonomy.per_query.tsv_lines") },
+                { assert snapshot(workflow.out. taxonomy_per_query.get(0).get(1)).md5().match("clustalo.taxonomy.per_query.tsv_lines") },
                 { assert snapshot(file(workflow.out.versions.get(0)).name).match("clustalo.versions.yml") },
                 { assert snapshot(workflow.out.versions.get(0)).md5().match("clustalo.versions.yml_lines") },
             )
