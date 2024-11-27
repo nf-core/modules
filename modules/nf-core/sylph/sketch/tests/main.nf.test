@@ -7,7 +7,7 @@ nextflow_process {
     tag "sylph"
     tag "sylph/sketch"
 
-    test("SYLPH_SKETCH: Should run without failures with single-end data") {
+    test("sarscov2 illumina single-end [fastq_gz]") {
         when {
             process {
                 """
