@@ -1,5 +1,4 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: nacho_normalise
 description: |
   NACHO (NAnostring quality Control dasHbOard) is developed for NanoString nCounter data.
@@ -22,8 +21,8 @@ tools:
       homepage: https://github.com/mcanouil/NACHO
       documentation: https://cran.r-project.org/web/packages/NACHO/vignettes/NACHO.html
       doi: "doi:10.1093/bioinformatics/btz647"
-      licence: GPL-3.0 license
-      identifier: biotools:nacho
+      licence: [ "GPL-3.0" ]
+      identifier: ""
 
 input:
   - - rcc_files:
@@ -59,6 +58,6 @@ output:
         pattern: "versions.yml"
 
 authors:
-  - Mickaël Canouil, Gerard A. Bouland, Amélie Bonnefond, Philippe Froguel, Leen Hart, and Roderick Slieker.
+  - "@alanmobbs93"
 maintainers:
-  -
+  - "@alanmobbs93"
