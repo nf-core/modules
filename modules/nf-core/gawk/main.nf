@@ -31,7 +31,7 @@ process GAWK {
     output_cmd = suffix.endsWith("gz") ? "| gzip" : ""
 
     input.collect{
-        assert it != "${prefix}.${suffix}" : "Input and output names are the same, set prefix in module configuration to disambiguate!"
+        assert it.name != "${prefix}.${suffix}" : "Input and output names are the same, set prefix in module configuration to disambiguate!"
     }
 
     """

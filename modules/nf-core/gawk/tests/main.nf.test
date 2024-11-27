@@ -136,4 +136,30 @@ nextflow_process {
             )
         }
     }
+
+    test("Input and output files are similar") {
+        when {
+            params {
+                gawk_suffix = "txt"
+                gawk_args2  = ""
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'hello' ], // meta map
+                    [file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/txt/species_names.txt', checkIfExists: true)]
+                ]
+                input[1] = Channel.of('BEGIN {FS=" "}; {print \$1}').collectFile(name:"program.txt")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("Input and output names are the same, set prefix in module configuration to disambiguate!") }
+            )
+        }
+    }
 }
