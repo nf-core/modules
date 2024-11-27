@@ -4,7 +4,5 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - "bioconda::bioconductor-dupradar=1.32.0"
-
-# pipelines:
-#  - rnaseq
+  # renovate: datasource=conda depName=bioconda/bioconductor-dupradar
+  - bioconda::bioconductor-dupradar=1.32.0

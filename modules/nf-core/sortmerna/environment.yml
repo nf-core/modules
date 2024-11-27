@@ -1,8 +1,8 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
 dependencies:
+  # renovate: datasource=conda depName=bioconda/sortmerna
   - bioconda::sortmerna=4.3.6
-
-# pipelines:
-#  - rnaseq
