@@ -2,8 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { MAFFT       } from '../../../../../modules/nf-core/mafft/align/main.nf'
-include { EPANG_SPLIT } from '../../../../../modules/nf-core/epang/split/main.nf'
+include { MAFFT_ALIGN as MAFFT } from '../../../../../modules/nf-core/mafft/align/main.nf'
+include { EPANG_SPLIT          } from '../../../../../modules/nf-core/epang/split/main.nf'
 
 workflow test_epang_split {
 
