@@ -7,12 +7,13 @@ keywords:
   - indexing
 tools:
   - sylph:
-      description: Sylph quickly enables querying of genomes against even low-coverage shotgun metagenomes to find nearest neighbour ANI.
+      description: Sylph quickly enables querying of genomes against even low-coverage
+        shotgun metagenomes to find nearest neighbour ANI.
       homepage: https://github.com/bluenote-1577/sylph
       documentation: https://github.com/bluenote-1577/sylph
       tool_dev_url: https://github.com/bluenote-1577/sylph
       doi: 10.1038/s41587-024-02412-y
-      licence: ['MIT']
+      licence: ["MIT"]
       identifier: biotools:sylph
 input:
   - - meta:
@@ -34,14 +35,19 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "my_sketches/*.sylsp":
-          type: file
-          description: Sylph sketch file
           pattern: "my_sketches/*.sylsp"
-      - "database.sylsp":
-          type: file
-          description: Sylph database file
-          pattern: "database.syldb"
+      - my_sketches/*.sylsp:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "my_sketches/*.sylsp"
+      - database.syldb:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "my_sketches/*.sylsp"
   - versions:
       - versions.yml:
           type: file
