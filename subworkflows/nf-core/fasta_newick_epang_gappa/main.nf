@@ -7,7 +7,7 @@ include { HMMER_ESLREFORMAT as HMMER_UNALIGNREF     } from '../../../modules/nf-
 include { HMMER_ESLREFORMAT as HMMER_AFAFORMATREF   } from '../../../modules/nf-core/hmmer/eslreformat/main'
 include { HMMER_ESLREFORMAT as HMMER_AFAFORMATQUERY } from '../../../modules/nf-core/hmmer/eslreformat/main'
 include { CLUSTALO_ALIGN                            } from '../../../modules/nf-core/clustalo/align/main'
-include { MAFFT                                     } from '../../../modules/nf-core/mafft/main'
+include { MAFFT_ALIGN                               } from '../../../modules/nf-core/mafft/align/main'
 include { EPANG_PLACE                               } from '../../../modules/nf-core/epang/place/main'
 include { EPANG_SPLIT as EPANG_SPLIT_CLUSTALO       } from '../../../modules/nf-core/epang/split/main'
 include { EPANG_SPLIT as EPANG_SPLIT_MAFFT          } from '../../../modules/nf-core/epang/split/main'
@@ -118,7 +118,7 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     ch_versions = ch_versions.mix(EPANG_SPLIT_CLUSTALO.out.versions)
 
     // 3.a MAFFT profile alignment of query sequences to reference alignment
-    MAFFT (
+    MAFFT_ALIGN (
         ch_mafft_data.map { it -> [ it.meta, it.data.refseqfile ] },
         ch_mafft_data.map { it -> [ it.meta, it.data.queryseqfile ] },
         [ [], [] ],
@@ -127,12 +127,12 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
         [ [], [] ],
         false
     )
-    ch_versions = ch_versions.mix(MAFFT.out.versions)
+    ch_versions = ch_versions.mix(MAFFT_ALIGN.out.versions)
 
     // 3.b Split the profile alignment into reference and query parts
     EPANG_SPLIT_MAFFT (
         ch_mafft_data.map { it -> [ it.meta, it.data.refseqfile ] }
-            .join(MAFFT.out.fas)
+            .join(MAFFT_ALIGN.out.fas)
     )
     ch_versions = ch_versions.mix(EPANG_SPLIT_MAFFT.out.versions)
 

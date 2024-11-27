@@ -24,11 +24,11 @@ nextflow_workflow {
     tag "hmmer/hmmalign"
     tag "hmmer/eslalimask"
     tag "hmmer/eslreformat"
-    tag "mafft"
+    tag "mafft/align"
 
 
     test("test_fasta_newick_epang_gappa_hmmer") {
-        
+
         when {
             workflow {
                 """
@@ -64,7 +64,7 @@ nextflow_workflow {
     }
 
     test("test_fasta_newick_epang_gappa_mafft") {
-    
+
         when {
             params {
                 outdir = "$outputDir"
@@ -141,7 +141,7 @@ nextflow_workflow {
     }
 
     test("test_fasta_newick_epang_gappa_nucl_hmmer") {
-    
+
         when {
             workflow {
                 """
