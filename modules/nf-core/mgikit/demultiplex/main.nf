@@ -32,12 +32,11 @@ process MGIKIT_DEMULTIPLEX {
     prefix = task.ext.prefix ?: "out-${run_id}"
 
     """
-    mgikit \\
-    demultiplex \\
-    -i "${run_dir}" \\
-    -s "${samplesheet}" \\
-    ${args} \\
-    -o "${prefix}"
+    mgikit demultiplex \\
+        -i "${run_dir}" \\
+        -s "${samplesheet}" \\
+        -o "${prefix}" \\
+        ${args}
 
     if find ${prefix} -name 'Undetermined*.fastq.gz' -print -quit | grep -q .; then
         mkdir -p "${prefix}_undetermined"
