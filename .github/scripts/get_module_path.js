@@ -1,6 +1,7 @@
 // Test this locally with:
 // node .github/scripts/get_module_path.js
 
+// Core functionality that processes the file paths
 function get_module_names(filter_modules_files) {
     return [
         ...new Set(
@@ -25,44 +26,61 @@ function get_module_names(filter_modules_files) {
     ];
 }
 
-// https://github.com/nf-core/modules/pull/7075
-test_case_1 = [
-    "modules/nf-core/umicollapse/tests/main.nf.test",
-    "modules/nf-core/umicollapse/tests/main.nf.test.snap",
-    "modules/nf-core/umicollapse/tests/nextflow.config",
-    "modules/nf-core/umicollapse/tests/nextflow_PE.config",
-    "modules/nf-core/umicollapse/tests/nextflow_SE.config",
-    "modules/nf-core/umitools/dedup/tests/main.nf.test",
-    "modules/nf-core/umitools/dedup/tests/main.nf.test.snap",
-    "modules/nf-core/umitools/dedup/main.nf",
-];
-result_1 = ["umicollapse", "umitools/dedup"];
-console.assert(JSON.stringify(get_module_names(test_case_1)) === JSON.stringify(result_1), "%o", {
-    "Test Case 1": get_module_names(test_case_1),
-});
+// GitHub Actions entry point
+function run({ github, context }) {
+    try {
+        // Get the files from the context
+        const files = JSON.parse(context.payload.inputs?.files || "[]");
+        const result = get_module_names(files);
 
-// https://github.com/nf-core/modules/actions/runs/12047961816/job/33591591596?pr=7097
-test_case_2 = [
-    "modules/nf-core/mafft/align/environment.yml",
-    "modules/nf-core/mafft/align/main.nf",
-    "modules/nf-core/mafft/align/meta.yml",
-    "modules/nf-core/mafft/align/tests/main.nf.test",
-    "modules/nf-core/mafft/align/tests/main.nf.test.snap",
-    "modules/nf-core/mafft/guidetree/environment.yml",
-    "modules/nf-core/mafft/guidetree/main.nf",
-    "modules/nf-core/mafft/guidetree/meta.yml",
-    "modules/nf-core/mafft/guidetree/tests/main.nf.test",
-    "modules/nf-core/mafft/guidetree/tests/main.nf.test.snap",
-    "tests/modules/nf-core/epang/split/main.nf",
-];
-result_2 = ["mafft/align", "mafft/guidetree", "epang/split"];
+        // Return stringified result for GitHub Actions output
+        return JSON.stringify(result);
+    } catch (error) {
+        console.error("Error processing module paths:", error);
+        throw error;
+    }
+}
 
-console.assert(JSON.stringify(get_module_names(test_case_2)) === JSON.stringify(result_2), "%o", {
-    "Test Case 2": get_module_names(test_case_2),
-});
+// Test cases
+function runTests() {
+    const test_case_1 = [
+        "modules/nf-core/umicollapse/tests/main.nf.test",
+        "modules/nf-core/umicollapse/tests/main.nf.test.snap",
+        "modules/nf-core/umicollapse/tests/nextflow.config",
+        "modules/nf-core/umicollapse/tests/nextflow_PE.config",
+        "modules/nf-core/umicollapse/tests/nextflow_SE.config",
+        "modules/nf-core/umitools/dedup/tests/main.nf.test",
+        "modules/nf-core/umitools/dedup/tests/main.nf.test.snap",
+        "modules/nf-core/umitools/dedup/main.nf",
+    ];
+    const result_1 = ["umicollapse", "umitools/dedup"];
 
-console.log("All tests passed!");
+    const test_case_2 = [
+        "modules/nf-core/mafft/align/environment.yml",
+        "modules/nf-core/mafft/align/main.nf",
+        "modules/nf-core/mafft/align/meta.yml",
+        "modules/nf-core/mafft/align/tests/main.nf.test",
+        "modules/nf-core/mafft/align/tests/main.nf.test.snap",
+        "modules/nf-core/mafft/guidetree/environment.yml",
+        "modules/nf-core/mafft/guidetree/main.nf",
+        "modules/nf-core/mafft/guidetree/meta.yml",
+        "modules/nf-core/mafft/guidetree/tests/main.nf.test",
+        "modules/nf-core/mafft/guidetree/tests/main.nf.test.snap",
+        "tests/modules/nf-core/epang/split/main.nf",
+    ];
+    const result_2 = ["mafft/align", "mafft/guidetree", "epang/split"];
 
-module.exports = ({ github, context }) => {
-    return context.payload.client_payload.value;
-};
+    console.assert(JSON.stringify(get_module_names(test_case_1)) === JSON.stringify(result_1), "Test case 1 failed");
+    console.assert(JSON.stringify(get_module_names(test_case_2)) === JSON.stringify(result_2), "Test case 2 failed");
+
+    console.log("All tests passed!");
+}
+
+// Handle different execution contexts
+if (require.main === module) {
+    // Script was run directly (node get_module_path.js)
+    runTests();
+} else {
+    // Script was imported/required
+    module.exports = run;
+}
