@@ -29,16 +29,24 @@ function get_module_names(filter_modules_files) {
 // GitHub Actions entry point
 function run({ github, context }) {
     try {
-        // Get the files from the context
-        const files = JSON.parse(context.payload.inputs?.files || "[]");
+        // Get the files from the context and ensure it's a valid JSON string
+        let files;
+        if (typeof context.payload.inputs?.files === "string") {
+            files = JSON.parse(context.payload.inputs.files);
+        } else if (Array.isArray(context.payload.inputs?.files)) {
+            files = context.payload.inputs.files;
+        } else {
+            files = [];
+        }
+
         const result = get_module_names(files);
 
-        // Ensure we always return a valid JSON array
-        return result.length ? result : [];
+        // Return stringified result for GitHub Actions output
+        return JSON.stringify(result);
     } catch (error) {
         console.error("Error processing module paths:", error);
         // Return empty array instead of throwing
-        return [];
+        return "[]";
     }
 }
 
