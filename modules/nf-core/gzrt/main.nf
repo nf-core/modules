@@ -24,7 +24,10 @@ process GZRT {
 
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    gzrecover -o ${prefix}_recovered.fastq ${fastqgz} && gzip ${prefix}_recovered.fastq
+    mkfifo temp_recovered.fastq
+    gzrecover -o temp_recovered.fastq ${fastqgz} &
+    gzip < temp_recovered.fastq > ${prefix}_recovered.fastq.gz
+    rm temp_recovered.fastq
 
     soft_line="${task.process}"
     ver_line="gzrt: \$(gzrecover -V |& sed '1!d ; s/gzrecover //')"
