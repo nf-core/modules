@@ -7,7 +7,9 @@ function get_module_names(filter_modules_files) {
                     .replace("modules/nf-core/", "")
                     .split("/")
                     .slice(0, 2)
-                    .filter((x) => x !== "main.nf" && x !== "tests" && x !== "meta.yml" && x !== "environment.yml")
+                    .filter(
+                        (x) => !x.startsWith("main.nf") && x !== "tests" && x !== "meta.yml" && x !== "environment.yml"
+                    )
                     .join("/")
             )
         ),
