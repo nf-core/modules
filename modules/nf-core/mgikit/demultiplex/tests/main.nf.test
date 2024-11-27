@@ -7,17 +7,32 @@ nextflow_process {
     tag "mgikit/demultiplex"
     tag "modules"
     tag "modules_nfcore"
+    tag "unzip"
 
-    test("Should run without failures") {
+    setup {
+        run("UNZIP") {
+            script "modules/nf-core/unzip/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: 'fc01', lane:1 ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/mgi/fc01.zip', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("run mgikit demultiplex without errors") {
 
         when {
             process {
                 """
-                input[0] = [
+                input[0] = UNZIP.out.unzipped_archive.map{[
                     [ id: 'test', lane:1 ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/mgi/fc01_sample_sheet.csv', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/mgi/fc01.zip', checkIfExists: true)
-                ]
+                    it[1]
+                ]}
                 """
             }
         }
@@ -56,18 +71,18 @@ nextflow_process {
 
     }
 
-    test("Should work with stub run") {
+    test("run stub mode of mgikit demultiplex without errors") {
 
         options "-stub"
 
         when {
             process {
                 """
-                input[0] = [
+                input[0] = UNZIP.out.unzipped_archive.map{[
                     [ id: 'test', lane:1 ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/mgi/fc01_sample_sheet.csv', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/mgi/fc01.zip', checkIfExists: true)
-                ]
+                    it[1]
+                ]}
                 """
             }
         }
