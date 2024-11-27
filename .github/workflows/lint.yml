@@ -77,28 +77,11 @@ jobs:
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
         id: module_names
         with:
-          # TODO: Wire this up to the get_module_path.js script
           script: |
-            return [
-                ...new Set(
-                    ${{ steps.filter.outputs.modules_files }}.map((path) =>
-                        path
-                    .replace("tests/", "")
-                    .replace("modules/nf-core/", "")
-                    .split("/")
-                    .slice(0, 2)
-                    .filter(
-                        (x) =>
-                            !x.startsWith("main.nf") &&
-                            x !== "tests" &&
-                            x !== "meta.yml" &&
-                            x !== "environment.yml" &&
-                            !x.endsWith(".snap") &&
-                            !x.endsWith(".config")
-                    )
-                    .join("/")
-                )
-            ];
+            const script = require('./.github/scripts/get_module_path.js')
+            console.log(script({github, context}))
+            script({github, context})
+
       - name: debug
         run: |
           echo ${{ steps.filter.outputs.modules_files }}

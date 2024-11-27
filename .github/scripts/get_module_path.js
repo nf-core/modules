@@ -1,3 +1,6 @@
+// Test this locally with:
+// node .github/scripts/get_module_path.js
+
 function get_module_names(filter_modules_files) {
     return [
         ...new Set(
@@ -59,3 +62,7 @@ console.assert(JSON.stringify(get_module_names(test_case_2)) === JSON.stringify(
 });
 
 console.log("All tests passed!");
+
+module.exports = ({ github, context }) => {
+    return context.payload.client_payload.value;
+};
