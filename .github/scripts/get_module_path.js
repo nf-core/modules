@@ -31,6 +31,7 @@ test_case_1 = [
     "modules/nf-core/umicollapse/tests/nextflow_SE.config",
     "modules/nf-core/umitools/dedup/tests/main.nf.test",
     "modules/nf-core/umitools/dedup/tests/main.nf.test.snap",
+    "modules/nf-core/umitools/dedup/main.nf",
 ];
 result_1 = ["umicollapse", "umitools/dedup"];
 console.assert(JSON.stringify(get_module_names(test_case_1)) === JSON.stringify(result_1), "%o", {
