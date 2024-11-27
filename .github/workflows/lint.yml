@@ -64,6 +64,9 @@ jobs:
         id: filter
         with:
           filters: |
+            allChanges:
+              - added
+              - modified
             modules:
               - 'modules/nf-core/**'
               - 'tests/modules/nf-core/**'
