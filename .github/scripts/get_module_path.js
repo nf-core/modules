@@ -8,7 +8,13 @@ function get_module_names(filter_modules_files) {
                     .split("/")
                     .slice(0, 2)
                     .filter(
-                        (x) => !x.startsWith("main.nf") && x !== "tests" && x !== "meta.yml" && x !== "environment.yml"
+                        (x) =>
+                            !x.startsWith("main.nf") &&
+                            x !== "tests" &&
+                            x !== "meta.yml" &&
+                            x !== "environment.yml" &&
+                            !x.endsWith(".snap") &&
+                            !x.endsWith(".config")
                     )
                     .join("/")
             )
