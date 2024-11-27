@@ -34,11 +34,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - sylsp:
+      - my_sketches/*.sylsp:
           type: file
           description: Sylph sketch file
           pattern: "my_sketches/*.sylsp"
-      - syldb:
+      - database.sylsp:
           type: file
           description: Sylph database file
           pattern: "database.syldb"
