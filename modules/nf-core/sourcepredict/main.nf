@@ -28,6 +28,7 @@ process SOURCEPREDICT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def save_embedding = save_embedding ? "-e ${prefix}.embedding.sourcepredict.csv" : ""
     """
+
     export NUMBA_CACHE_DIR='./tmp'
     export HOME='./'
 
