@@ -65,11 +65,11 @@ jobs:
         with:
           filters: |
             modules:
-              - 'modules/nf-core/**'
-              - 'tests/modules/nf-core/**'
+              - added|modified: 'modules/nf-core/**'
+              - added|modified: 'tests/modules/nf-core/**'
             subworkflows:
-              - 'subworkflows/nf-core/**'
-              - 'tests/subworkflows/nf-core/**'
+              - added|modified: 'subworkflows/nf-core/**'
+              - added|modified: 'tests/subworkflows/nf-core/**'
           token: ""
           list-files: "json"
 
@@ -84,7 +84,7 @@ jobs:
                 .replace('modules/nf-core/', '')
                 .split('/')
                 .slice(0, 2)
-                .filter(x => x !== 'main.nf' && x !== 'tests' && x !== 'meta.yml' && x !== 'environment.yml')
+                .filter(x => !x.startsWith('main.nf') && x !== 'tests' && x !== 'meta.yml' && x !== 'environment.yml')
                 .join('/'))
               )
             ];
