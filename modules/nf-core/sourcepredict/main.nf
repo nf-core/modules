@@ -13,10 +13,12 @@ process SOURCEPREDICT {
     path labels
     path(taxa_sqlite, stageAs: '.etetoolkit/*')
     path(taxa_sqlite_traverse_pkl, stageAs: '.etetoolkit/*')
+    val save_embedding
 
     output:
-    tuple val(meta), path("*.sourcepredict.csv")    , emit: report
-    path "versions.yml"                             , emit: versions
+    tuple val(meta), path("*.embedding.sourcepredict.csv")  , optional:true, emit: embedding
+    tuple val(meta), path("*.report.sourcepredict.csv")     , emit: report
+    path "versions.yml"                                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,6 +26,7 @@ process SOURCEPREDICT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def save_embedding = save_embedding ? "-e ${prefix}.embedding.sourcepredict.csv" : ""
     """
     export NUMBA_CACHE_DIR='./tmp'
     export HOME='./'
@@ -32,8 +35,9 @@ process SOURCEPREDICT {
         -s $sources \\
         -l $labels \\
         $args \\
+        $save_embedding \\
         -t $task.cpus \\
-        -o ${prefix}.sourcepredict.csv \\
+        -o ${prefix}.report.sourcepredict.csv \\
         ${kraken_parse}
 
     cat <<-END_VERSIONS > versions.yml
@@ -46,7 +50,7 @@ process SOURCEPREDICT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.sourcepredict.csv
+    touch ${prefix}.report.sourcepredict.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

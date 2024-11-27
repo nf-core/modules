@@ -47,6 +47,11 @@ input:
         description: taxa.sqlite.traverse.pkl file downloaded with ete3 toolkit
         pattern: "taxa.sqlite.traverse.pkl"
 
+  - - save_embedding:
+        type: string
+        description: |
+          If true, an optional command is added to save a file reporting the embedding file
+
 output:
   - report:
       - meta:
@@ -54,10 +59,21 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.sourcepredict.csv":
+      - "*.report.sourcepredict.csv":
           type: file
           description: Table containing the predicted proportion of each source in each sample
-          pattern: "*.sourcepredict.csv"
+          pattern: "*.report.sourcepredict.csv"
+
+  - embedding:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.embedding.sourcepredict.csv":
+          type: file
+          description: Embedding file
+          pattern: "*.embedding.sourcepredict.csv"
 
   - versions:
       - "versions.yml":
