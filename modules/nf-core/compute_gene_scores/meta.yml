@@ -1,0 +1,53 @@
+name: compute_gene_scores
+description: calculate gene set enrichment scores using multiple methods.
+keywords:
+  - bioinformatics tools
+  - gene scores
+  - Singscore
+  - GSVA
+  - SSGSEA
+  - PLAGE
+  - Samsscore
+tools:
+  - compute_gene_scores:
+      description: |
+        Computes gene scores using various methods such as Singscore, GSVA, SSGSEA, PLAGE, and Samsscore.
+        It includes multiple gene set transformations and scoring techniques.
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - normalized_counts:
+        type: file
+        description: |
+          A tab-separated file containing normalized gene expression counts for all genes both Endogenous and Housekeeping genes, depending on the normalization method chosen (genes as rows and samples as columns).
+        pattern: "*normalized_counts.tsv"
+  - - gene_score_yaml:
+        type: file
+        description: |
+          Optional YAML file to be used for computing the gene scores. Needs both a name for each set of genes and respective genes to be selected.
+output:
+  - scores_for_mqc:
+      - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+      - "*.txt":
+        type: file
+        description: |
+          A file containing the calculated scores to be used to create the MultiQC report.
+        pattern: "*.txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@apeltzer"
+  - "@christopher-mohr"
+maintainers:
+  - "@nschcolnicov"

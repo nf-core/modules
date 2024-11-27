@@ -1,0 +1,61 @@
+name: compute_gene_scores_heatmap
+description: Compute gene set enrichment scores and generate a gene count heatmap for visualization.
+keywords:
+  - bioinformatics tools
+  - gene scores
+  - data visualization
+  - gene heatmap
+  - Singscore
+  - GSVA
+  - SSGSEA
+  - PLAGE
+  - Samsscore
+tools:
+  - compute_gene_scores_heatmap:
+      description: |
+        This subworkflow computes gene scores using methods such as Singscore, GSVA, SSGSEA, PLAGE, and Samsscore and generates a heatmap of gene counts based on annotated data using ComplexHeatmap R package.
+        It integrates results into a format suitable for inclusion in MultiQC reports.
+input:
+  - - normalized_counts:
+        type: file
+        description: |
+          A tab-separated file containing normalized gene expression counts for all genes both Endogenous and Housekeeping genes, depending on the normalization method chosen (genes as rows and samples as columns).
+        pattern: "*normalized_counts.tsv"
+  - - ch_gene_score_yaml:
+        type: file
+        description: |
+          Optional YAML file to be used for computing the gene scores. Needs both a name for each set of genes and respective genes to be selected.
+        pattern: "*.yaml"
+  - - annotated_endo_data:
+        type: file
+        description: |
+          A tab-separated file containing  normalized expression counts for the Endogenous genes (genes as columns and samples as rows).
+        pattern: "*.tsv"
+  - - ch_heatmap_genes_to_filter:
+        type: file
+        description: |
+          Path to YAML file (list, one item per line) to specify which genes should be used for the gene-count heatmap.
+        pattern: "*.yaml"
+output:
+  - multiqc_files:
+      - "*.txt":
+          type: file
+          description: |
+            Files containing calculated gene scores for inclusion in MultiQC reports.
+          pattern: "*.txt"
+      - "*gene_heatmap_mqc.png":
+          type: file
+          description: |
+            A PNG image of the gene heatmap, formatted for inclusion in MultiQC reports.
+          pattern: "*gene_heatmap_mqc.png"
+  - versions:
+      - versions.yml:
+          type: file
+          description: |
+            A file containing software version details for both modules in the subworkflow.
+          pattern: "versions.yml"
+authors:
+  - "@apeltzer"
+  - "@christopher-mohr"
+maintainers:
+  - "@nschcolnicov"

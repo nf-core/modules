@@ -1,0 +1,53 @@
+name: create_gene_heatmap
+description: Generate a gene count heatmap based on annotated and filtered gene counts data.
+keywords:
+  - bioinformatics tools
+  - data visualization
+  - gene heatmap
+tools:
+  - create_gene_heatmap:
+      description: |
+        The create_gene_heatmap module generates a heatmap of gene counts using ComplexHeatmap R package.
+        It supports gene selection via additional files and provides a log-transformed visualization of the data.
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - annotated_endo_data:
+        type: file
+        description: |
+          A tab-separated file containing  normalized expression counts for the Endogenous genes (genes as columns and samples as rows).
+        pattern: "*.tsv"
+    - normalized_counts:
+        type: file
+        description: |
+          A tab-separated file containing normalized gene expression counts for all genes both Endogenous and Housekeeping genes, depending on the normalization method chosen (genes as rows and samples as columns).
+        pattern: "*.tsv"
+  - - heatmap_genes_to_filter:
+        type: file
+        description: |
+          Optional Path to YAML file (list, one item per line) to specify which genes should be used for the gene-count heatmap.
+output:
+  - gene_heatmap:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*gene_heatmap_mqc.png":
+          type: file
+          description: |
+            A PNG image containing the gene count heatmap, suitable for inclusion in MultiQC reports.
+          pattern: "*gene_heatmap_mqc.png"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing the software versions.
+          pattern: "versions.yml"
+authors:
+  - "@apeltzer"
+  - "@christopher-mohr"
+maintainers:
+  - "@nschcolnicov"

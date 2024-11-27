@@ -1,0 +1,67 @@
+nextflow_workflow {
+
+    name "Test Subworkflow COMPUTE_GENE_SCORES_HEATMAP"
+    script "../main.nf"
+    workflow "COMPUTE_GENE_SCORES_HEATMAP"
+
+    test("test profile") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([[id:"test"], file('https://raw.githubusercontent.com/nf-core/test-datasets/nanostring/modules_test_data/test_profile/normalized_counts.tsv', checkIfExists: true )])
+                input[1] = Channel.of([[id:"test"], file('https://raw.githubusercontent.com/nf-core/test-datasets/nanostring/modules_test_data/test_profile/counts_Norm_GEX_ENDO.tsv', checkIfExists: true )])
+                input[2] = Channel.fromPath('https://raw.githubusercontent.com/nf-core/test-datasets/nanostring/gene_score_test.yaml', checkIfExists: true )
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+
+    test("test profile filter") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([[id:"test"], file('https://raw.githubusercontent.com/nf-core/test-datasets/nanostring/modules_test_data/test_profile/normalized_counts.tsv', checkIfExists: true )])
+                input[1] = Channel.of([[id:"test"], file('https://raw.githubusercontent.com/nf-core/test-datasets/nanostring/modules_test_data/test_profile/counts_Norm_GEX_ENDO.tsv', checkIfExists: true )])
+                input[2] = Channel.fromPath('https://raw.githubusercontent.com/nf-core/test-datasets/nanostring/gene_score_test.yaml', checkIfExists: true )
+                input[3] = Channel.fromPath('https://raw.githubusercontent.com/nf-core/test-datasets/nanostring/modules_test_data/test_profile/genes_to_filter.yml', checkIfExists: true )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+
+    test("stub") {
+        options '-stub'
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([[id:"test"], file('https://raw.githubusercontent.com/nf-core/test-datasets/nanostring/modules_test_data/test_profile/normalized_counts.tsv', checkIfExists: true )])
+                input[1] = Channel.of([[id:"test"], file('https://raw.githubusercontent.com/nf-core/test-datasets/nanostring/modules_test_data/test_profile/counts_Norm_GEX_ENDO.tsv', checkIfExists: true )])
+                input[2] = Channel.fromPath('https://raw.githubusercontent.com/nf-core/test-datasets/nanostring/gene_score_test.yaml', checkIfExists: true )
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+}

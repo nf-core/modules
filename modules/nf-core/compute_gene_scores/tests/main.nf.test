@@ -1,0 +1,46 @@
+nextflow_process {
+
+    name "Test Process COMPUTE_GENE_SCORES"
+    script "../main.nf"
+    process "COMPUTE_GENE_SCORES"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "compute_gene_scores"
+
+    test("test profile") {
+        when {
+            process {
+                """
+                input[0] = [[id:"test"], file('https://raw.githubusercontent.com/nf-core/test-datasets/nanostring/modules_test_data/test_profile/normalized_counts.tsv', checkIfExists: true )]
+                input[1] = file('https://raw.githubusercontent.com/nf-core/test-datasets/nanostring/gene_score_test.yaml', checkIfExists: true )
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+    }
+
+    test("stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [[id:"test"], file('https://raw.githubusercontent.com/nf-core/test-datasets/nanostring/modules_test_data/test_profile/normalized_counts.tsv', checkIfExists: true )]
+                input[1] = file('https://raw.githubusercontent.com/nf-core/test-datasets/nanostring/gene_score_test.yaml', checkIfExists: true )
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+    }
+}
