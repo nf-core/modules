@@ -20,36 +20,57 @@ tools:
         For more information `vignette("NACHO")` and `vignette("NACHO-analysis")`
       homepage: https://github.com/mcanouil/NACHO
       documentation: https://cran.r-project.org/web/packages/NACHO/vignettes/NACHO.html
-      doi: "doi:10.1093/bioinformatics/btz647"
+      doi: "10.1093/bioinformatics/btz647"
       licence: [ "GPL-3.0" ]
       identifier: ""
+      args_id: "$args"
 
 input:
-  - - rcc_files:
-      type: file
-      description: |
-        List of RCC files for all samples, which are direct outputs from NanoString runs
-      pattern: "*.RCC"
-  - - sample_sheet:
-      type: "file"
-      pattern: "*.csv"
-      description: |
-        Comma-separated file with 3 columns: RCC_FILE, RCC_FILE_NAME, and SAMPLE_ID
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - rcc_files:
+        type: file
+        description: |
+          List of RCC files for all samples, which are direct outputs from NanoString runs
+        pattern: "*.RCC"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing file information
+          e.g. [ id:'test_samplesheet' ]
+    - sample_sheet:
+        type: "file"
+        pattern: "*.csv"
+        description: |
+          Comma-separated file with 3 columns: RCC_FILE, RCC_FILE_NAME, and SAMPLE_ID
 
 output:
   - normalized_counts:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
     - "normalized_counts.tsv":
         type: file
         description: |
           Tab-separated file with gene normalized counts for the samples
-        pattern: "*normalized_counts.tsv"
+        pattern: "normalized_counts.tsv"
 
   - normalized_counts_wo_HK:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
     - "normalized_counts_wo_HKnorm.tsv":
         type: file
         description: |
           Tab-separated file with gene normalized counts for the samples, without housekeeping genes.
-        pattern: "*normalized_counts_wo_HKnorm.tsv"
+        pattern: "normalized_counts_wo_HKnorm.tsv"
   - versions:
     - "versions.yml":
         type: file
@@ -58,6 +79,6 @@ output:
         pattern: "versions.yml"
 
 authors:
-  - "@alanmobbs93"
+  - "@alanmmobbs93"
 maintainers:
-  - "@alanmobbs93"
+  - "@alanmmobbs93"
