@@ -1,15 +1,15 @@
 nextflow.enable.moduleBinaries = true
 
 process NACHO_NORMALISE {
-    tag "$sample_sheet"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container 'community.wave.seqera.io/library/r-dplyr_r-fs_r-ggplot2_r-nacho_pruned:033bc017f5f36b6d'
 
     input:
-    path rcc_files, stageAs: "input/*"
-    path sample_sheet
+    tuple val(meta) , path(rcc_files, stageAs: "input/*")
+    tuple val(meta2), path(sample_sheet)
 
     output:
     path "*normalized_counts.tsv"          , emit: normalized_counts
@@ -22,7 +22,10 @@ process NACHO_NORMALISE {
     script:
     def args = task.ext.args ?: ''
     """
-    nacho_norm.R --input_rcc_path input --input_samplesheet ${sample_sheet} $args
+    nacho_norm.R \\
+        --input_rcc_path input \\
+        $args \\
+        --input_samplesheet ${sample_sheet}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

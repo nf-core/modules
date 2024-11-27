@@ -51,12 +51,13 @@ input_rcc_path    <- opt$input_rcc_path
 input_samplesheet <- opt$input_samplesheet
 norm_method       <- opt$norm_method
 
-#Create filelist for NachoQC
+# Create filelist for NachoQC
 
 list_of_rccs <- dir_ls(path = input_rcc_path, glob = "*.RCC")
 print(list_of_rccs)
 
-####RealCode####
+# Core Code
+## Read data
 nacho_data <- load_rcc(data_directory = input_rcc_path,
                     ssheet_csv = input_samplesheet,
                     id_colname = "RCC_FILE_NAME",
@@ -75,16 +76,17 @@ get_counts <- function(
     tidyr::pivot_wider(names_from = "RCC_FILE_NAME", values_from = "Count_Norm")
 }
 
-#Write out normalized counts
+## Write out normalized counts
 norm_counts <- as.data.frame(get_counts(nacho_data))
 write_tsv(norm_counts, file = "normalized_counts.tsv")
 
-#Write out non-hk normalized counts too
+## Create non-hk normalized counts too
 nacho_data_no_hk <- load_rcc(data_directory = input_rcc_path,
     ssheet_csv = input_samplesheet,
     id_colname = "RCC_FILE_NAME",
     normalisation_method = norm_method,
     housekeeping_norm = FALSE)
 
+## Export non-hk tables
 norm_counts_without_hks <- as.data.frame(get_counts(nacho_data_no_hk))
 write_tsv(norm_counts_without_hks, file = "normalized_counts_wo_HKnorm.tsv")
