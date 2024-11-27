@@ -79,7 +79,7 @@ jobs:
         with:
           script: |
             const script = require('./.github/scripts/get_module_path.js')
-            const files = ${{ steps.filter.outputs.modules_files }}
+            const files = JSON.parse('${{ steps.filter.outputs.modules_files }}')
             const result = script({ github, context: { payload: { inputs: { files } } } })
             core.setOutput('result', result)
 
