@@ -27,8 +27,9 @@ test_case_1 = [
     "modules/nf-core/umitools/dedup/tests/main.nf.test.snap",
 ];
 result_1 = ["umicollapse", "umitools/dedup"];
-
-console.assert(get_module_names(test_case_1) === result_1, "%o", { "Test Case 1": get_module_names(test_case_1) });
+console.assert(JSON.stringify(get_module_names(test_case_1)) === JSON.stringify(result_1), "%o", {
+    "Test Case 1": get_module_names(test_case_1),
+});
 
 // https://github.com/nf-core/modules/actions/runs/12047961816/job/33591591596?pr=7097
 test_case_2 = [
@@ -45,3 +46,9 @@ test_case_2 = [
     "tests/modules/nf-core/epang/split/main.nf",
 ];
 result_2 = ["mafft/align", "mafft/guidetree", "epang/split"];
+
+console.assert(JSON.stringify(get_module_names(test_case_2)) === JSON.stringify(result_2), "%o", {
+    "Test Case 2": get_module_names(test_case_2),
+});
+
+console.log("All tests passed!");
