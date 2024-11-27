@@ -61,7 +61,7 @@ jobs:
 
       - name: List nf-test files
         id: list
-        uses: adamrtalbot/detect-nf-test-changes@6bf6fd9fe0fb63a0362fb0e09de5acb6d055a754 # v0.0.5
+        uses: GallVp/detect-nf-test-changes@f55389969163e3d51e12b5b76d1f9888e44328e0 # Custom GallVp fork
         with:
           head: ${{ github.sha }}
           base: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
