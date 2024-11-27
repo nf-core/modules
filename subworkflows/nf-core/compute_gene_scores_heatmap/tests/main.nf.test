@@ -5,6 +5,12 @@ nextflow_workflow {
     workflow "COMPUTE_GENE_SCORES_HEATMAP"
     config "./nextflow.config"
 
+    tag "subworkflows_nfcore"
+    tag "create_gene_heatmap"
+    tag "compute_gene_scores"
+    tag "subworkflows"
+    tag "subworkflows/compute_gene_scores_heatmap"
+
     test("test profile") {
         when {
             workflow {

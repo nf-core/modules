@@ -1,12 +1,5 @@
-//
-// Compute gene scores and plot heatmap
-//
-
-//
-// MODULES
-//
-include { COMPUTE_GENE_SCORES     } from '../../../modules/nf-core/compute_gene_scores'
-include { CREATE_GENE_HEATMAP     } from '../../../modules/nf-core/create_gene_heatmap'
+include { COMPUTE_GENE_SCORES } from '../../../modules/nf-core/compute_gene_scores'
+include { CREATE_GENE_HEATMAP } from '../../../modules/nf-core/create_gene_heatmap'
 
 workflow COMPUTE_GENE_SCORES_HEATMAP {
     take:

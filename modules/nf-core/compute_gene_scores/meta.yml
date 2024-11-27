@@ -13,6 +13,10 @@ tools:
       description: |
         Computes gene scores using various methods such as Singscore, GSVA, SSGSEA, PLAGE, and Samsscore.
         It includes multiple gene set transformations and scoring techniques.
+      homepage: "https://github.com/nf-core/nanostring"
+      documentation: "https://raw.githubusercontent.com/nf-core/nanostring/refs/heads/master/docs/usage.md"
+      licence: [""]
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -31,15 +35,15 @@ input:
 output:
   - scores_for_mqc:
       - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test' ]
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
       - "*.txt":
-        type: file
-        description: |
-          A file containing the calculated scores to be used to create the MultiQC report.
-        pattern: "*.txt"
+          type: file
+          description: |
+            A file containing the calculated scores to be used to create the MultiQC report.
+          pattern: "*.txt"
   - versions:
       - versions.yml:
           type: file
