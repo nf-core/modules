@@ -28,7 +28,7 @@ input:
     - fasta:
         type: file
         description: Input sequences in FASTA format
-        pattern: "*.{fa,fasta}"
+        pattern: "*.{fa,fasta,faa,fna}"
   - - meta2:
         type: map
         description: |
@@ -38,6 +38,22 @@ input:
         type: file
         description: Input guide tree in Newick format
         pattern: "*.{dnd}"
+  - - hmm_in:
+        type: file
+        description: HMM file for profile alignment
+        pattern: "*.hmm"
+  - - hmm_batch:
+        type: file
+        description: specify HMMs for individual sequences
+        pattern: "*"
+  - - profile1:
+        type: file
+        description: Pre-aligned multiple sequence file 1
+        pattern: "*.{alnfaa,faa,fa,fasta}"
+  - - profile2:
+        type: file
+        description: Pre-aligned multiple sequence file 2
+        pattern: "*.{alnfaa,faa,fa,fasta}"
   - - compress:
         type: boolean
         description: Flag representing whether the output MSA should be compressed.
