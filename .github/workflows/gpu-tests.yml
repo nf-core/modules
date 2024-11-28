@@ -59,11 +59,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Debug detect-nf-test-changes outputs
-        run: |
-          echo "Components: ${{ steps.list.outputs.components }}"
-          echo "Paths: ${{ steps.list.outputs.paths }}"
-
       - name: List nf-test files
         id: list
         uses: GallVp/detect-nf-test-changes@ee6251d1eef071180df9991bb4adfc2470e0aac2 # Custom GallVp fork
@@ -94,7 +89,7 @@ jobs:
   nf-test-gpu:
     runs-on: "gpu"
     needs: nf-test-changes
-    if: ${{ fromJSON(needs.nf-test-changes.outputs.paths) != '[]' || needs.nf-test-changes.outputs.paths != '' }}
+    if: ${{ needs.nf-test-changes.outputs.modules != '[]' || needs.nf-test-changes.outputs.subworkflows != '[]' }}
     name: "GPU | ${{ matrix.tags}} | ${{ matrix.profile }} | ${{ matrix.shard }}"
     strategy:
       fail-fast: false
