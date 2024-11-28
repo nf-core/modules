@@ -62,11 +62,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test']`
-          pattern: "*.{html, score_ascii}"
-      - "*.{html,sp_ascii}":
+          pattern: "*.{score_html, score_ascii}"
+      - "*.{score_html,sp_ascii}":
           type: file
           description: Consensus evaluation file.
-          pattern: "*.{html, score_ascii}"
+          pattern: "*.{score_html, score_ascii}"
   - versions:
       - versions.yml:
           type: file

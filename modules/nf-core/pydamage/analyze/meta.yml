@@ -42,7 +42,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - pydamage_results/pydamage_results.csv:
+      - pydamage_results/*_pydamage_results.csv:
           type: file
           description: PyDamage results as csv files
           pattern: "*.csv"

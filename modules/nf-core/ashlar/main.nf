@@ -49,4 +49,24 @@ process ASHLAR {
         ashlar: \$(ashlar --version | sed 's/^.*ashlar //' )
     END_VERSIONS
     """
+
+    stub:
+    def prefix        = task.ext.prefix         ?: "${meta.id}"
+    def num_files     = images instanceof List  ? images.size()    : 1
+    def opt_dfp_size  = opt_dfp instanceof List ? opt_dfp.size()   : 1
+    def opt_ffp_size  = opt_ffp instanceof List ? opt_ffp.size()   : 1
+    def dfp_validated = (opt_dfp_size == 0 || opt_dfp_size == 1 || opt_dfp_size == num_files) ? true : false
+    def ffp_validated = (opt_ffp_size == 0 || opt_ffp_size == 1 || opt_ffp_size == num_files) ? true : false
+
+    if ( !dfp_validated ) { error "Please input only zero, one, or N dfp files, where N is the number of input images" }
+    if ( !ffp_validated ) { error "Please input only zero, one, or N ffp files, where N is the number of input images" }
+
+    """
+    touch ${prefix}.ome.tif
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ashlar: \$(ashlar --version | sed 's/^.*ashlar //' )
+    END_VERSIONS
+    """
 }
