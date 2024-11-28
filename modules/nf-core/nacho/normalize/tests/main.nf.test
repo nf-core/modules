@@ -1,14 +1,14 @@
 nextflow_process {
 
-    name "Test Process NACHO_NORMALISE"
+    name "Test Process NACHO_NORMALIZE"
     script "../main.nf"
-    process "NACHO_NORMALISE"
+    process "NACHO_NORMALIZE"
     config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "nacho"
-    tag "nacho/normalise"
+    tag "nacho/normalize"
 
     test("Salmon - RCC files") {
 
