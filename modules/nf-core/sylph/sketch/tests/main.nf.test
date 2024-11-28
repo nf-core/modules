@@ -27,7 +27,31 @@ nextflow_process {
         }
     }
 
-    test("SYLPH_SKETCH: Should run without failures with paired-end data") {
+    test("sarscov2 illumina paired-end [fastq_gz]") {
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                             [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                               file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+                           ]
+                input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2 illumina paired-end [fastq_gz]-stub") {
+
+        options "-stub"
+
         when {
             process {
                 """
