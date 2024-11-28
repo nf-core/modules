@@ -12,8 +12,9 @@ process NACHO_QC {
     tuple val(meta2), path(sample_sheet)
 
     output:
-    tuple val(meta), path("*.html") , emit: nacho_qc_reports
-    tuple val(meta), path("*_mqc.*"), emit: nacho_qc_multiqc_metrics
+    tuple val(meta), path("*.html")   , emit: nacho_qc_reports
+    tuple val(meta), path("*_mqc.png"), emit: nacho_qc_png
+    tuple val(meta), path("*_mqc.txt"), emit: nacho_qc_txt
     path "versions.yml"             , emit: versions
 
     when:
