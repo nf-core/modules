@@ -1,5 +1,3 @@
-nextflow.enable.moduleBinaries = true
-
 process NACHO_NORMALIZE {
     tag "${meta.id}"
     label 'process_single'
