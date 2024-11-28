@@ -37,9 +37,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*tsv":
-          type: file
-          description: Output file from sylph/profile command
+          pattern: "*tsv"
+      - "*.tsv":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*tsv"
   - versions:
       - versions.yml:
