@@ -1,4 +1,4 @@
-process COMPUTE_GENE_SCORES {
+process COMPUTEGENESCORES {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"

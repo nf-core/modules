@@ -1,13 +1,13 @@
 nextflow_process {
 
-    name "Test Process COMPUTE_GENE_SCORES"
+    name "Test Process COMPUTEGENESCORES"
     script "../main.nf"
-    process "COMPUTE_GENE_SCORES"
+    process "COMPUTEGENESCORES"
     config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
-    tag "compute_gene_scores"
+    tag "computegenescores"
 
     test("test profile") {
         when {

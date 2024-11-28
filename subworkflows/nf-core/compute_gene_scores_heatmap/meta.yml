@@ -1,9 +1,9 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
-name: "compute_gene_scores_heatmap"
+name: "computegenescores_heatmap"
 description: Compute gene set enrichment scores and generate a gene count heatmap for visualization.
 keywords:
-  - compute_gene_scores
-  - create_gene_heatmap
+  - computegenescores
+  - creategeneheatmap
   - bioinformatics tools
   - gene scores
   - data visualization
@@ -14,8 +14,8 @@ keywords:
   - PLAGE
   - Samsscore
 components:
-  - compute_gene_scores
-  - create_gene_heatmap
+  - computegenescores
+  - creategeneheatmap
 input:
   - meta:
       type: map

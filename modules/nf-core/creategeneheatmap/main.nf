@@ -1,4 +1,4 @@
-process CREATE_GENE_HEATMAP {
+process CREATEGENEHEATMAP {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"

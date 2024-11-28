@@ -1,13 +1,13 @@
 nextflow_process {
 
-    name "Test Process CREATE_GENE_HEATMAP"
+    name "Test Process CREATEGENEHEATMAP"
     script "../main.nf"
-    process "CREATE_GENE_HEATMAP"
+    process "CREATEGENEHEATMAP"
     config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
-    tag "create_gene_heatmap"
+    tag "creategeneheatmap"
 
     test("test profile") {
         when {

@@ -1,13 +1,13 @@
 nextflow_workflow {
 
-    name "Test Subworkflow COMPUTE_GENE_SCORES_HEATMAP"
+    name "Test Subworkflow COMPUTEGENESCORES_HEATMAP"
     script "../main.nf"
-    workflow "COMPUTE_GENE_SCORES_HEATMAP"
+    workflow "COMPUTEGENESCORES_HEATMAP"
     config "./nextflow.config"
 
     tag "subworkflows_nfcore"
-    tag "create_gene_heatmap"
-    tag "compute_gene_scores"
+    tag "creategeneheatmap"
+    tag "computegenescores"
     tag "subworkflows"
     tag "subworkflows/compute_gene_scores_heatmap"
 
