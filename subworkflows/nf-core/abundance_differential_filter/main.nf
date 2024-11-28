@@ -10,65 +10,51 @@ include { CUSTOM_FILTERDIFFERENTIALTABLE      } from '../../../modules/nf-core/c
 
 workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     take:
-    ch_abundance             // [[ meta_exp, counts ]] with meta keys: method, args_diff
-    ch_contrasts             // [[ meta_contrast, contrast_variable, reference, target ]]
-    ch_analysis_method       // [[ 'limma|deseq2' ]]
+    // Workflow-wide things, we don't need to iterate
     ch_samplesheet           // [ meta_exp, samplesheet ]
     ch_transcript_lengths    // [ meta_exp, transcript_lengths]
     ch_control_features      // [meta_exp, control_features]
-    FC_threshold             // float
-    padj_threshold           // float
+    ch_contrasts             // [[ meta_contrast, contrast_variable, reference, target ]]
+    FC_threshold             // FC threshold (value)
+    padj_threshold           // padj threshold (value)
+
+    // Things we may need to iterate
+    ch_input                 // [[meta_input], counts, analysis method,]
 
     main:
 
-    // Combine and prepare data for differential analysis
-    // This operation creates all possible combinations of abundance data, contrasts, and analysis methods
-    // It also incorporates sample information and adds method details to each contrast
-
-    ch_combos = ch_samplesheet
-        .combine(ch_abundance)
-        .map{ samples_meta, samples, abundance_meta, abundance -> [ samples_meta + abundance_meta, samples, abundance ] }
-        .merge(ch_contrasts) { abundance, contrasts -> [abundance, contrasts] }
-        .merge(ch_analysis_method) { prev, methods -> [ prev[0], prev[1], methods ] }
-        .flatMap { samples_abundance, contrasts, methods ->
-            contrasts.collectMany { contrast ->
-                methods.collect { method ->
-                    [
-                        samples_abundance: samples_abundance,
-                        contrast: [
-                            contrast[0] + [method: method]  // Add method to the map in the first element
-                        ] + contrast.drop(1)  // Add all remaining elements of the contrast tuple
-                    ]
-                }
-            }
+    // We need to cross the things we're iterating
+    inputs = ch_input
+        .combine(ch_samplesheet)
+        .combine(ch_contrasts)
+        .multiMap { meta_input, abundance, analysis_method, meta_exp, samplesheet, contrast_meta, variable, reference, target ->
+            samples_and_matrix: [meta_input + [ 'method': analysis_method ], samplesheet, abundance]
+            contrasts: [ contrast_meta + [ 'method': analysis_method ], variable, reference, target]
         }
-
-    ch_samples_and_matrix = ch_combos.map{it.samples_abundance}
-    ch_contrasts = ch_combos.map{it.contrast}
 
     // Perform normalization and differential analysis
     DESEQ2_NORM(
-        ch_contrasts.filter { it[0].method == 'deseq2' }.first(),
-        ch_samples_and_matrix,
+        inputs.contrasts.filter{it[0].method == 'deseq2'}.first(),
+        inputs.samples_and_matrix.filter{it[0].method == 'deseq2'},
         ch_control_features,
         ch_transcript_lengths
     )
 
     LIMMA_NORM(
-        ch_contrasts.filter { it[0].method == 'limma' }.first(),
-        ch_samples_and_matrix
+        inputs.contrasts.filter{it[0].method == 'limma'}.first(),
+        inputs.samples_and_matrix.filter{it[0].method == 'limma'}
     )
 
     DESEQ2_DIFFERENTIAL(
-        ch_contrasts.filter { it[0].method == 'deseq2' }.first(),
-        ch_samples_and_matrix,
+        inputs.contrasts.filter{it[0].method == 'deseq2'},
+        inputs.samples_and_matrix.filter{it[0].method == 'deseq2'},
         ch_control_features,
         ch_transcript_lengths
     )
 
     LIMMA_DIFFERENTIAL(
-        ch_contrasts.filter { it[0].method == 'limma' }.first(),
-        ch_samples_and_matrix
+        inputs.contrasts.filter{it[0].method == 'limma'},
+        inputs.samples_and_matrix.filter { it[0].method == 'limma' }
     )
 
     // Combine results
@@ -88,9 +74,9 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     CUSTOM_FILTERDIFFERENTIALTABLE(
         ch_results,
         ch_columns.map { meta, columns -> columns[0] },  // logFC column
-        Channel.value(FC_threshold),
+        FC_threshold,
         ch_columns.map { meta, columns -> columns[1] },  // padj column
-        Channel.value(padj_threshold)
+        padj_threshold
     )
 
     emit:
