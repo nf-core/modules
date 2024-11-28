@@ -1,6 +1,6 @@
 process PYRODIGAL {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -28,6 +28,7 @@ process PYRODIGAL {
     pigz -cdf ${fasta} > pigz_fasta.fna
 
     pyrodigal \\
+        --jobs ${task.cpus} \\
         $args \\
         -i pigz_fasta.fna \\
         -f $output_format \\
