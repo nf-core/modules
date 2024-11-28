@@ -10,6 +10,9 @@ include { CUSTOM_FILTERDIFFERENTIALTABLE      } from '../../../modules/nf-core/c
 
 workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     take:
+    // Things we may need to iterate
+    ch_input                 // [[meta_input], counts, analysis method,]
+
     // Workflow-wide things, we don't need to iterate
     ch_samplesheet           // [ meta_exp, samplesheet ]
     ch_transcript_lengths    // [ meta_exp, transcript_lengths]
@@ -18,8 +21,6 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     FC_threshold             // FC threshold (value)
     padj_threshold           // padj threshold (value)
 
-    // Things we may need to iterate
-    ch_input                 // [[meta_input], counts, analysis method,]
 
     main:
 
