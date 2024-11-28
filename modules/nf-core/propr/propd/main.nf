@@ -4,7 +4,7 @@ process PROPR_PROPD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/bioconductor-limma_r-propr:b9f28a713aced4ae' :
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b6/b65f7192866fbd9a947df15b104808abb720e7a224bbe3ca8f7f8f680f52c97a/data' :
         'community.wave.seqera.io/library/bioconductor-limma_r-propr:f52f1d4fea746393' }"
 
     input:
