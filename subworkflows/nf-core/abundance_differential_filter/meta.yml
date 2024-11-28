@@ -12,36 +12,31 @@ components:
   - limma/differential
   - custom/filterdifferentialtable
 input:
-  - ch_abundance:
-      type: file
+  - ch_input:
+      type: tuple
       description: |
-        Channel with abundance data and metadata
-        Structure: [ val(meta_exp), path(counts) ]
-        meta keys: method, args_diff
+        Channel with input data for differential analysis
+        Structure: [ val(meta_input), path(counts), val(analysis_method) ]
+  - ch_samplesheet:
+      type: tuple
+      description: |
+        Channel with sample information
+        Structure: [ val(meta_exp), path(samplesheet) ]
   - ch_transcript_lengths:
-      type: file
+      type: tuple
       description: |
         Channel with transcript length information
         Structure: [ val(meta_exp), path(transcript_lengths) ]
   - ch_control_features:
-      type: file
+      type: tuple
       description: |
         Channel with control features information
         Structure: [ val(meta_exp), path(control_features) ]
-  - ch_samplesheet:
-      type: file
-      description: |
-        Channel with sample information
-        Structure: [ val(meta_exp), path(samplesheet) ]
   - ch_contrasts:
-      type: value
+      type: tuple
       description: |
         Channel with contrast information
         Structure: [ val(meta_contrast), val(contrast_variable), val(reference), val(target) ]
-  - differential_method:
-      type: string
-      description: |
-        Method to use for differential analysis. Options: 'limma', 'deseq2'
   - FC_threshold:
       type: float
       description: |
@@ -66,7 +61,7 @@ output:
       pattern: "*.{csv,tsv}"
   - variance_stabilised_matrix:
       type: file
-      description: Variance stabilised count matrix (optional, DESeq2 only)
+      description: Variance stabilised count matrix (DESeq2 only)
       pattern: "*.{csv,tsv}"
   - model:
       type: file
