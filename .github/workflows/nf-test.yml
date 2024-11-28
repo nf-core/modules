@@ -43,6 +43,7 @@ jobs:
       paths: ${{ steps.outputs.outputs.components }}
       modules: ${{ steps.outputs.outputs.modules }}
       subworkflows: ${{ steps.outputs.outputs.subworkflows}}
+      changes: ${{ steps.outputs.outputs.changes }}
       # Prod for version bumping
     steps:
       - name: Clean Workspace # Purge the workspace in case it's running on a self-hosted runner
@@ -70,6 +71,7 @@ jobs:
           echo components=$(echo '${{ steps.list.outputs.components }}' | jq -c '.') >> $GITHUB_OUTPUT
           echo modules=$(echo '${{ steps.list.outputs.components }}' | jq -c '. | map(select(contains("modules"))) | map(gsub("modules/nf-core/"; ""))') >> $GITHUB_OUTPUT
           echo subworkflows=$(echo '${{ steps.list.outputs.components }}' | jq '. | map(select(contains("subworkflows"))) | map(gsub("subworkflows/nf-core/"; ""))') >> $GITHUB_OUTPUT
+          echo changes=$(echo '${{ steps.list.outputs.components }}' | jq '. | length') >> $GITHUB_OUTPUT
 
       - name: debug
         run: |
@@ -90,7 +92,7 @@ jobs:
     # TODO
     # needs: get-number-of-shards
     # if: ${{ fromJSON(needs.get-number-of-shards.outputs.shards) != fromJSON('["1", "0"]') }}
-    if: ${{ needs.nf-test-changes.outputs.paths != '' }}
+    if: ${{ fromJSON(needs.nf-test-changes.outputs.changes) > 0 }}
     strategy:
       fail-fast: false
       matrix:
