@@ -59,6 +59,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Debug detect-nf-test-changes outputs
+        run: |
+          echo "Components: ${{ steps.list.outputs.components }}"
+          echo "Paths: ${{ steps.list.outputs.paths }}"
+
       - name: List nf-test files
         id: list
         uses: GallVp/detect-nf-test-changes@f55389969163e3d51e12b5b76d1f9888e44328e0 # Custom GallVp fork
@@ -74,6 +79,12 @@ jobs:
         run: |
           echo modules=$(echo '${{ steps.list.outputs.components }}' | jq -c '. | map(select(contains("modules"))) | map(gsub("modules/nf-core/"; ""))') >> $GITHUB_OUTPUT
           echo subworkflows=$(echo '${{ steps.list.outputs.components }}' | jq '. | map(select(contains("subworkflows"))) | map(gsub("subworkflows/nf-core/"; ""))') >> $GITHUB_OUTPUT
+
+      - name: Debug parsed outputs
+        run: |
+          echo "Modules: ${{ steps.outputs.outputs.modules }}"
+          echo "Subworkflows: ${{ steps.outputs.outputs.subworkflows }}"
+
       - name: debug
         run: |
           echo ${{ steps.outputs.outputs.components }}
