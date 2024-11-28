@@ -55,17 +55,28 @@ output:
         description: |
           HTML report
         pattern: "*.html"
-  - nacho_qc_multiqc_metrics:
+  - nacho_qc_png:
     - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test' ]
-    - "*_mqc.*":
+    - "*_mqc.png":
         type: file
         description: |
-          Plain text report
-        pattern: "*_mqc.*"
+          Output PNG files
+        pattern: "*_mqc.png"
+  - nacho_qc_txt:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - "*_mqc.txt":
+        type: file
+        description: |
+          Plain text reports
+        pattern: "*_mqc.txt"
   - versions:
     - "versions.yml":
         type: file
