@@ -15,18 +15,21 @@ nextflow_process {
             script "../../index/main.nf"
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
                 """
             }
         }
     }
 
-    test("homo_sapiens - test_paired_end_sorted_bam") {
+    test("homo_sapiens - paired-end [bam]") {
 
         when {
             process {
                 """
-                input[0] = [
+                input[0] = Channel.of([
                     [ id:'test' ], // meta map
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
@@ -38,9 +41,12 @@ nextflow_process {
                     ],
 	                [], // tumor bam
 	                [] // tumor bai
-                ]
-
-                input[1] = BISCUIT_INDEX.out.index
+                ])
+                input[1] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = BISCUIT_INDEX.out.index
                 """
             }
         }
@@ -58,7 +64,7 @@ nextflow_process {
 
     }
 
-    test("homo_sapiens - test_paired_end_sorted_bam - somatic") {
+    test("homo_sapiens - paired-end [bam] - somatic") {
 
         when {
             process {
@@ -70,8 +76,11 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam.bai', checkIfExists: true)
                 ]
-
-                input[1] = BISCUIT_INDEX.out.index
+                input[1] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = BISCUIT_INDEX.out.index
                 """
             }
         }
@@ -89,7 +98,7 @@ nextflow_process {
 
     }
 
-    test("homo_sapiens - test_paired_end_sorted_bam - somatic - stub") {
+    test("homo_sapiens - paired-end [bam] - somatic - stub") {
         options '-stub'
 
         when {
@@ -102,8 +111,11 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam.bai', checkIfExists: true)
                 ]
-
-                input[1] = BISCUIT_INDEX.out.index
+                input[1] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = BISCUIT_INDEX.out.index
                 """
             }
         }

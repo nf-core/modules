@@ -57,11 +57,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
                     process.out.artifacts,
                     process.out.params_yaml,
+                    path(process.out.versions.get(0)).yaml,
                 ).match() },
-                { assert path(process.out.html[0][1]).readLines().any { it.contains('Hello world') } }
+                { assert path(process.out.html[0][1]).readLines().any { it.contains('Hello world') } },
             )
         }
 
@@ -116,11 +116,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
                     process.out.artifacts,
                     process.out.params_yaml,
+                    path(process.out.versions.get(0)).yaml,
                 ).match() },
-                { assert path(process.out.html[0][1]).readLines().any { it.contains('Hello world') } }
+                { assert path(process.out.html[0][1]).readLines().any { it.contains('Hello world') } },
             )
         }
 
