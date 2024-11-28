@@ -44,7 +44,7 @@ jobs:
     # process | docker_self_hosted | 1
     # ...
     # workflow | singularity | 3
-    name: "${{ matrix.profile }} | ${{ matrix.shard }}"
+    name: "${{ matrix.profile }} | ${{ matrix.shard }}/5"
     # TODO
     # needs: get-number-of-shards
     # if: ${{ fromJSON(needs.get-number-of-shards.outputs.shards) != fromJSON('["1", "0"]') }}

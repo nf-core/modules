@@ -77,7 +77,7 @@ runs:
         NFT_WORKDIR=~ \
         nf-test test \
           --profile=${{ inputs.profile }} \
-          --tap=test.tap \
+          --junitxml nf-test-${{ inputs.profile }}-${{ inputs.shard }}-${{ inputs.total_shards }}-junit.xml
           --verbose \
           --ci \
           --changed-since HEAD^ \
@@ -86,12 +86,11 @@ runs:
           --follow-dependencies \
           ${{ env.TAGS }}
 
-      # TODO If no test.tap, then make one to spoof?
-    - uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
-      if: ${{ inputs.path != '' }}
+    - uses: actions/upload-artifact@v4 # upload test results
+      if: success() || failure() # run this step even if previous step failed
       with:
-        path: >-
-          test.tap
+        name: test-results-${{ inputs.profile }}-${{ inputs.shard }}-${{ inputs.total_shards }}
+        path: nf-test-${{ inputs.profile }}-${{ inputs.shard }}-${{ inputs.total_shards }}-junit.xml
 
     - name: Clean up
       if: always()

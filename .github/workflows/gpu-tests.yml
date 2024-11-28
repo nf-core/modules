@@ -82,7 +82,7 @@ jobs:
     runs-on: "gpu"
     needs: nf-test-changes
     if: ${{ fromJSON(needs.nf-test-changes.outputs.paths) != '[]' || needs.nf-test-changes.outputs.paths != '' }}
-    name: "GPU | ${{ matrix.tags}} | ${{ matrix.profile }} | ${{ matrix.shard }}"
+    name: "GPU | ${{ matrix.tags}} | ${{ matrix.profile }} | ${{ matrix.shard }}/2"
     strategy:
       fail-fast: false
       matrix:
