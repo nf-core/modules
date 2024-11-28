@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process NACHO_QC"
     script "../main.nf"
     process "NACHO_QC"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
