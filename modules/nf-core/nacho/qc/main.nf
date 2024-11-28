@@ -43,7 +43,25 @@ process NACHO_QC {
     stub:
     """
     touch qc.html
-    touch qc_mqc.txt
+    touch qc_with_outliers.html
+    touch AVG_vs_BD_mqc.png
+    touch AVG_vs_MED_mqc.png
+    touch BD_mqc.png
+    touch FOV_mqc.png
+    touch HKF_mqc.png
+    touch HK_mqc.png
+    touch LOD_mqc.png
+    touch Neg_mqc.png
+    touch PCA1_vs_PCA2_mqc.png
+    touch PCAi_mqc.png
+    touch PCA_mqc.png
+    touch plot_normf_mqc.png
+    touch Posctrl_linearity_mqc.png
+    touch POSF_vs_NEGF_mqc.png
+    touch Pos_mqc.png
+    touch Pos_vs_neg_mqc.png
+    touch normalized_qc_mqc.txt
+    touch hk_detected_mqc.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
