@@ -4,8 +4,8 @@ process MUSE_SUMP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9f/9f0ebb574ef5eed2a6e034f1b2feea6c252d1ab0c8bc5135a669059aa1f4d2ca/data':
-        'community.wave.seqera.io/library/muse:6637291dcbb0bdb8' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/35/3567f6162ff718c648175c5e7b5f848eaa27811d0cb3ad53def8f0a1c8893efa/data':
+        'community.wave.seqera.io/library/muse_tabix:df58ca78bd9447b7' }"
 
     input:
     tuple val(meta), path(muse_call_txt)
@@ -20,7 +20,7 @@ process MUSE_SUMP {
 
     script:
     def args   = task.ext.args   ?: '' // hands -G for WGS data and -E for WES data
-    def args2  = task.ext.args2  ?: '' // args for gzip
+    def args2  = task.ext.args2  ?: '' // args for bgzip
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     MuSE \\
@@ -29,11 +29,12 @@ process MUSE_SUMP {
         -I $muse_call_txt \\
         -n $task.cpus    \\
         -D $ref_vcf \\
-        | gzip $args2 --stdout > ${prefix}.vcf.gz
+        | bgzip $args2 --threads $task.cpus --stdout > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         MuSE: \$( MuSE --version | sed -e "s/MuSE, version //g" )
+        bgzip: \$( bgzip --version | sed -e "s/bgzip (htslib) //g" )
     END_VERSIONS
     """
 
@@ -45,6 +46,7 @@ process MUSE_SUMP {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         MuSE: \$( MuSE --version | sed -e "s/MuSE, version //g" )
+        bgzip: \$( bgzip --version | sed -e "s/bgzip (htslib) //g" )
     END_VERSIONS
     """
 }
