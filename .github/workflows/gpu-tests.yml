@@ -89,7 +89,6 @@ jobs:
       matrix:
         shard: [1, 2]
         profile: [docker_self_hosted, singularity] # conda?
-        paths: ["${{ fromJson(needs.nf-test-changes.outputs.paths) }}"]
     env:
       NXF_ANSI_LOG: false
       TOTAL_SHARDS: 2
@@ -109,4 +108,4 @@ jobs:
           profile: ${{ matrix.profile }},gpu
           shard: ${{ matrix.shard }}
           total_shards: ${{ env.TOTAL_SHARDS }}
-          paths: ${{matrix.paths }}
+          paths: "${{ join(fromJson(needs.nf-test-changes.outputs.paths), ' ') }}"
