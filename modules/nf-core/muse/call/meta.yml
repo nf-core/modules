@@ -29,10 +29,18 @@ input:
         type: file
         description: Sorted tumor BAM file
         pattern: "*.bam"
+    - tumor_bai:
+        type: file
+        description: Index file for the tumor BAM file
+        pattern: "*.bai"
     - normal_bam:
         type: file
         description: Sorted matched normal BAM file
         pattern: "*.bam"
+    - normal_bai:
+        type: file
+        description: Index file for the normal BAM file
+        pattern: "*.bai"
   - - meta2:
         type: map
         description: |
@@ -40,7 +48,7 @@ input:
           e.g. `[ id:'test' ]`
     - reference:
         type: file
-        description: faidx indexed reference genome file
+        description: reference genome file
         pattern: ".fasta"
 output:
   - txt:

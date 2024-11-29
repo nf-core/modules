@@ -8,7 +8,7 @@ process MUSE_CALL {
         'community.wave.seqera.io/library/muse:2.1.2--e8279641c6ef8c63' }"
 
     input:
-    tuple val(meta), path(tumor_bam), path(normal_bam)
+    tuple val(meta), path(tumor_bam), path(tumor_bai), path(normal_bam), path(normal_bai)
     tuple val(meta2), path(reference)
 
     output:
