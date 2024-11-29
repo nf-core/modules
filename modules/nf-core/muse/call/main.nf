@@ -4,8 +4,8 @@ process MUSE_CALL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/muse:2.1.2--f6ec9e78771509ff':
-        'community.wave.seqera.io/library/muse:2.1.2--e8279641c6ef8c63' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9f/9f0ebb574ef5eed2a6e034f1b2feea6c252d1ab0c8bc5135a669059aa1f4d2ca/data':
+        'community.wave.seqera.io/library/muse:6637291dcbb0bdb8' }"
 
     input:
     tuple val(meta), path(tumor_bam), path(tumor_bai), path(normal_bam), path(normal_bai)
@@ -21,7 +21,6 @@ process MUSE_CALL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '2.1.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     MuSE \\
         call \\
@@ -34,19 +33,18 @@ process MUSE_CALL {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        MuSE: ${VERSION}
+        MuSE: \$( MuSE --version | sed -e "s/MuSE, version //g" )
     END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '2.1.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.MuSE.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        MuSE: ${VERSION}
+        MuSE: \$( MuSE --version | sed -e "s/MuSE, version //g" )
     END_VERSIONS
     """
 }
