@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       # Expose detected tags as 'modules' and 'workflows' output variables
-      paths: ${{ steps.outputs.outputs.components }}
+      paths: ${{ steps.list.outputs.components }}
       modules: ${{ steps.outputs.outputs.modules }}
       subworkflows: ${{ steps.outputs.outputs.subworkflows}}
       # Prod for version bumping
@@ -61,7 +61,7 @@ jobs:
         with:
           head: ${{ github.sha }}
           base: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
-          n_parents: 2
+          n_parents: 0
           exclude_tags: "gpu"
           log_level: DEBUG
 
@@ -72,7 +72,7 @@ jobs:
           echo subworkflows=$(echo '${{ steps.list.outputs.components }}' | jq '. | map(select(contains("subworkflows"))) | map(gsub("subworkflows/nf-core/"; ""))') >> $GITHUB_OUTPUT
       - name: debug
         run: |
-          echo ${{ steps.outputs.outputs.components }}
+          echo ${{ steps.list.outputs.components }}
           echo ${{ steps.outputs.outputs.modules }}
           echo ${{ steps.outputs.outputs.subworkflows }}
   nf-test:
