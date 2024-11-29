@@ -9,7 +9,6 @@ on:
     paths:
       - ".github/workflows/gpu-tests.yml"
       - "modules/nf-core/parabricks/**"
-      - "subworkflows/nf-core/fastq_align_dedup_bwameth/tests/gpu.nf.test"
   merge_group:
     types: [checks_requested]
     branches: [master]
@@ -61,25 +60,18 @@ jobs:
 
       - name: List nf-test files
         id: list
-        uses: GallVp/detect-nf-test-changes@ee6251d1eef071180df9991bb4adfc2470e0aac2 # Custom GallVp fork
+        uses: adamrtalbot/detect-nf-test-changes@6bf6fd9fe0fb63a0362fb0e09de5acb6d055a754 # v0.0.5
         with:
           head: ${{ github.sha }}
           base: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
           n_parents: 2
           tags: "gpu"
-          log_level: DEBUG
 
       - name: Separate modules and subworkflows
         id: outputs
         run: |
           echo modules=$(echo '${{ steps.list.outputs.components }}' | jq -c '. | map(select(contains("modules"))) | map(gsub("modules/nf-core/"; ""))') >> $GITHUB_OUTPUT
           echo subworkflows=$(echo '${{ steps.list.outputs.components }}' | jq '. | map(select(contains("subworkflows"))) | map(gsub("subworkflows/nf-core/"; ""))') >> $GITHUB_OUTPUT
-
-      - name: Debug parsed outputs
-        run: |
-          echo "Modules: ${{ steps.outputs.outputs.modules }}"
-          echo "Subworkflows: ${{ steps.outputs.outputs.subworkflows }}"
-
       - name: debug
         run: |
           echo ${{ steps.outputs.outputs.components }}
@@ -89,7 +81,7 @@ jobs:
   nf-test-gpu:
     runs-on: "gpu"
     needs: nf-test-changes
-    if: ${{ needs.nf-test-changes.outputs.modules != '[]' || needs.nf-test-changes.outputs.subworkflows != '[]' }}
+    if: ${{ fromJSON(needs.nf-test-changes.outputs.paths) != '[]' || needs.nf-test-changes.outputs.paths != '' }}
     name: "GPU | ${{ matrix.tags}} | ${{ matrix.profile }} | ${{ matrix.shard }}"
     strategy:
       fail-fast: false
