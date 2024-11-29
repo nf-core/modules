@@ -42,8 +42,7 @@ input:
     - ref_vcf_tbi:
         type: file
         description: |
-          dbSNP vcf file that should be bgzip compressed, tabix indexed and
-          based on the same reference genome used in 'MuSE call'
+          Tabix index for the dbSNP vcf file
         pattern: ".vcf.gz.tbi"
 output:
   - vcf:
