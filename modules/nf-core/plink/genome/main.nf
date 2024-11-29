@@ -20,8 +20,6 @@ process PLINK_GENOME {
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if( "$bed" == "${prefix}.bed" ) error "Input and output names are the same, use \"task.ext.prefix\" in modules.config to disambiguate!"
-
     """
     plink \\
         --bed ${bed} \\
@@ -38,4 +36,15 @@ process PLINK_GENOME {
     END_VERSIONS
     """
 
+    stub:
+    def args   = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.genome
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        plink: \$(echo \$(plink --version 2>&1) | sed 's/^PLINK v//' | sed 's/..-bit.*//' )
+    END_VERSIONS
+    """
 }
