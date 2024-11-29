@@ -1,0 +1,84 @@
+---
+name: nacho_normalize
+description: |
+  NACHO (NAnostring quality Control dasHbOard) is developed for NanoString nCounter data.
+  NanoString nCounter data is a messenger-RNA/micro-RNA (mRNA/miRNA) expression assay and works with fluorescent barcodes.
+  Each barcode is assigned a mRNA/miRNA, which can be counted after bonding with its target.
+  As a result each count of a specific barcode represents the presence of its target mRNA/miRNA.
+keywords:
+  - nacho
+  - nanostring
+  - mRNA
+  - miRNA
+  - qc
+tools:
+  - NACHO:
+      description: |
+        R package that uses two main functions to summarize and visualize NanoString RCC files,
+        namely: `load_rcc()` and `visualise()`. It also includes a function `normalise()`, which (re)calculates
+        sample specific size factors and normalises the data.
+        For more information `vignette("NACHO")` and `vignette("NACHO-analysis")`
+      homepage: https://github.com/mcanouil/NACHO
+      documentation: https://cran.r-project.org/web/packages/NACHO/vignettes/NACHO.html
+      doi: "10.1093/bioinformatics/btz647"
+      licence: [ "GPL-3.0" ]
+      identifier: ""
+      args_id: "$args"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - rcc_files:
+        type: file
+        description: |
+          List of RCC files for all samples, which are direct outputs from NanoString runs
+        pattern: "*.RCC"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing file information
+          e.g. [ id:'test_samplesheet' ]
+    - sample_sheet:
+        type: "file"
+        pattern: "*.csv"
+        description: |
+          Comma-separated file with 3 columns: RCC_FILE, RCC_FILE_NAME, and SAMPLE_ID
+
+output:
+  - normalized_counts:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - "normalized_counts.tsv":
+        type: file
+        description: |
+          Tab-separated file with gene normalized counts for the samples
+        pattern: "normalized_counts.tsv"
+
+  - normalized_counts_wo_HK:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - "normalized_counts_wo_HKnorm.tsv":
+        type: file
+        description: |
+          Tab-separated file with gene normalized counts for the samples, without housekeeping genes.
+        pattern: "normalized_counts_wo_HKnorm.tsv"
+  - versions:
+    - "versions.yml":
+        type: file
+        description: |
+          File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@alanmmobbs93"
+maintainers:
+  - "@alanmmobbs93"
