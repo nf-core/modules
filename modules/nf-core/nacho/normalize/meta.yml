@@ -21,7 +21,7 @@ tools:
       homepage: https://github.com/mcanouil/NACHO
       documentation: https://cran.r-project.org/web/packages/NACHO/vignettes/NACHO.html
       doi: "10.1093/bioinformatics/btz647"
-      licence: [ "GPL-3.0" ]
+      licence: ["GPL-3.0"]
       identifier: ""
       args_id: "$args"
 
@@ -49,34 +49,34 @@ input:
 
 output:
   - normalized_counts:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test' ]
-    - "normalized_counts.tsv":
-        type: file
-        description: |
-          Tab-separated file with gene normalized counts for the samples
-        pattern: "normalized_counts.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "normalized_counts.tsv":
+          type: file
+          description: |
+            Tab-separated file with gene normalized counts for the samples
+          pattern: "normalized_counts.tsv"
 
   - normalized_counts_wo_HK:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test' ]
-    - "normalized_counts_wo_HKnorm.tsv":
-        type: file
-        description: |
-          Tab-separated file with gene normalized counts for the samples, without housekeeping genes.
-        pattern: "normalized_counts_wo_HKnorm.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "normalized_counts_wo_HKnorm.tsv":
+          type: file
+          description: |
+            Tab-separated file with gene normalized counts for the samples, without housekeeping genes.
+          pattern: "normalized_counts_wo_HKnorm.tsv"
   - versions:
-    - "versions.yml":
-        type: file
-        description: |
-          File containing software versions
-        pattern: "versions.yml"
+      - "versions.yml":
+          type: file
+          description: |
+            File containing software versions
+          pattern: "versions.yml"
 
 authors:
   - "@alanmmobbs93"
