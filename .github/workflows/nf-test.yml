@@ -63,6 +63,7 @@ jobs:
           base: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
           n_parents: 2
           exclude_tags: "gpu"
+          log_level: DEBUG
 
       - name: Separate modules and subworkflows
         id: outputs
@@ -87,7 +88,7 @@ jobs:
         tags: ${{ fromJSON(needs.nf-test-changes.outputs.modules) && fromJSON(needs.nf-test-changes.outputs.subworkflows) }}
     env:
       NXF_ANSI_LOG: false
-      TOTAL_SHARDS: 2
+      TOTAL_SHARDS: 5
 
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
