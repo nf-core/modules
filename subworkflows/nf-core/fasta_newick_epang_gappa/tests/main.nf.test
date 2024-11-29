@@ -129,15 +129,13 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                  file(workflow.out.jplace.get(0).get(1)).name),
-                  workflow.out.grafted_phylogeny.get(0).get(1)).md5(),
-                  file(workflow.out.taxonomy_profile.get(0).get(1)).name),
-                  file(workflow.out.taxonomy_per_query.get(0).get(1)).name),
-                  file(workflow.out.versions.get(0)).name),
-                  workflow.out.versions.get(0)).md5() 
-                )
-                },
+                { assert snapshot(file(workflow.out.jplace.get(0).get(1)).name).match("clustalo.epa_result.jplace.gz") },
+                { assert snapshot(file(workflow.out.grafted_phylogeny.get(0).get(1)).name).match("clustalo.graft.placement.epa_result.newick") },
+                { assert snapshot(workflow.out.grafted_phylogeny.get(0).get(1)).md5().match("clustalo.graft.placement.epa_result.newick_lines") },
+                { assert snapshot(file(workflow.out.taxonomy_profile.get(0).get(1)).name).match("clustalo.taxonomy.profile.tsv") },
+                { assert snapshot(file(workflow.out.taxonomy_per_query.get(0).get(1)).name).match("clustalo.taxonomy.per_query.tsv") },
+                { assert snapshot(file(workflow.out.versions.get(0)).name).match("clustalo.versions.yml") },
+                { assert snapshot(workflow.out.versions.get(0)).md5().match("clustalo.versions.yml_lines") },
             )
         }
     }
