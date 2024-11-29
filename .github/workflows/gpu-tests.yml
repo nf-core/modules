@@ -81,7 +81,7 @@ jobs:
 
   nf-test-gpu:
     runs-on: "gpu"
-    name: "GPU | ${{ matrix.tags}} | ${{ matrix.profile }} | ${{ matrix.shard }}"
+    name: "GPU | ${{ matrix.profile }} | ${{ matrix.shard }}"
     needs: nf-test-changes
     if: ${{ needs.nf-test-changes.outputs.modules != '[]' || needs.nf-test-changes.outputs.subworkflows != '[]' }}
     strategy:
@@ -89,7 +89,7 @@ jobs:
       matrix:
         shard: [1, 2]
         profile: [docker_self_hosted, singularity] # conda?
-        tags: ${{ fromJSON(needs.nf-test-changes.outputs.modules) && fromJSON(needs.nf-test-changes.outputs.subworkflows) }}
+        paths: ["${{ fromJson(needs.nf-test-changes.outputs.paths) }}"]
     env:
       NXF_ANSI_LOG: false
       TOTAL_SHARDS: 2
@@ -109,4 +109,4 @@ jobs:
           profile: ${{ matrix.profile }},gpu
           shard: ${{ matrix.shard }}
           total_shards: ${{ env.TOTAL_SHARDS }}
-          tags: ${{matrix.tags}},gpu
+          paths: ${{matrix.paths }}
