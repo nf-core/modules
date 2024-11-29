@@ -9,7 +9,6 @@ nextflow_process {
     tag "plink"
     tag "plink/genome"
 
-    
     test("plink - genome") {
         when {
             process {
@@ -33,7 +32,9 @@ nextflow_process {
 
     }
 
-    test("plink - genome-stub") {
+    test("plink - genome - stub") {
+        options "-stub"
+
         when {
             process {
                 """                

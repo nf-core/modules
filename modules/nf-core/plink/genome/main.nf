@@ -25,8 +25,8 @@ process PLINK_GENOME {
         --bed ${bed} \\
         --bim ${bim} \\
         --fam ${fam} \\
-        $args \\
         --genome \\
+        $args \\
         --threads $task.cpus \\
         --out ${prefix}
 
@@ -36,15 +36,15 @@ process PLINK_GENOME {
     END_VERSIONS
     """
 
-    stub:
-    def args   = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    """
-    touch ${prefix}.genome
+   stub:
+   def prefix = task.ext.prefix ?: "${meta.id}"
+   """
+   touch ${prefix}.genome
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plink: \$(echo \$(plink --version 2>&1) | sed 's/^PLINK v//' | sed 's/..-bit.*//' )
-    END_VERSIONS
-    """
+   cat <<-END_VERSIONS > versions.yml
+   "${task.process}":
+       plink: \$(echo \$(plink --version 2>&1) | sed 's/^PLINK v//' | sed 's/..-bit.*//' )
+   END_VERSIONS
+   """
+   
 }
