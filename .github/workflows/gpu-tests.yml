@@ -60,7 +60,7 @@ jobs:
 
       - name: List nf-test files
         id: list
-        uses: adamrtalbot/detect-nf-test-changes@6bf6fd9fe0fb63a0362fb0e09de5acb6d055a754 # v0.0.5
+        uses: GallVP/detect-nf-test-changes@9df97431beade261679a16c776ddff054339f569 # v0.0.5
         with:
           head: ${{ github.sha }}
           base: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
