@@ -24,7 +24,9 @@ process PLINK_GENOME {
 
     """
     plink \\
-        --bfile ${bed.baseName} \\
+        --bed ${bed} \\
+        --bim ${bim} \\
+        --fam ${fam} \\
         $args \\
         --genome \\
         --threads $task.cpus \\
