@@ -10,9 +10,9 @@ inputs:
   total_shards:
     description: "Total number of test shards(NOT the total number of matrix jobs)"
     required: true
-  tags:
-    description: "Tags to test (`<tags>[,<tags>...]`)"
-    required: false
+  paths:
+    description: "Test paths"
+    required: true
 
 runs:
   using: "composite"
@@ -72,7 +72,6 @@ runs:
       env:
         SENTIEON_LICSRVR_IP: ${{ env.SENTIEON_LICSRVR_IP }}
         SENTIEON_AUTH_MECH: "GitHub Actions - token"
-        TAGS: ${{ inputs.tags && format('--tag {0}', inputs.tags) || '' }}
       run: |
         NFT_WORKDIR=~ \
         nf-test test \
@@ -80,11 +79,9 @@ runs:
           --tap=test.tap \
           --verbose \
           --ci \
-          --changed-since HEAD^ \
           --shard ${{ inputs.shard }}/${{ inputs.total_shards }} \
           --filter process,workflow \
-          --follow-dependencies \
-          ${{ env.TAGS }}
+          ${{ inputs.paths }}
 
       # TODO If no test.tap, then make one to spoof?
     - uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
