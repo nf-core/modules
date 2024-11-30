@@ -102,7 +102,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
         * Run Picard MarkDuplicates
         */
         PICARD_MARKDUPLICATES (
-            SAMTOOLS_SORT.out.bam,
+            ch_alignment,
             ch_fasta,
             ch_fasta_index
         )
