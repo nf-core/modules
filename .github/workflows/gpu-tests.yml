@@ -6,9 +6,6 @@ on:
       - "renovate/**" # branches Renovate creates
   pull_request:
     branches: [master]
-    paths:
-      - ".github/workflows/gpu-tests.yml"
-      - "modules/nf-core/parabricks/**"
   merge_group:
     types: [checks_requested]
     branches: [master]
@@ -16,11 +13,8 @@ on:
     inputs:
       runners:
         description: "Runners to test on"
-        type: choice
-        options:
-          - "ubuntu-latest"
-          - "self-hosted"
-        default: "self-hosted"
+        type: string
+        default: "gpu"
 
 # Cancel if a newer run is started
 concurrency:
@@ -66,7 +60,6 @@ jobs:
           base: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
           n_parents: 0
           tags: "gpu"
-          log_level: DEBUG
 
       - name: Separate modules and subworkflows
         id: outputs
@@ -109,3 +102,21 @@ jobs:
           shard: ${{ matrix.shard }}
           total_shards: ${{ env.TOTAL_SHARDS }}
           paths: "${{ join(fromJson(needs.nf-test-changes.outputs.paths), ' ') }}"
+
+  confirm-gpu-pass:
+    runs-on: ubuntu-latest
+    needs: [nf-test-gpu]
+    if: always()
+    steps:
+      - name: All tests ok
+        if: ${{ success() || !contains(needs.*.result, 'failure') }}
+        run: exit 0
+      - name: One or more tests failed
+        if: ${{ contains(needs.*.result, 'failure') }}
+        run: exit 1
+
+      - name: debug-print
+        if: always()
+        run: |
+          echo "toJSON(needs) = ${{ toJSON(needs) }}"
+          echo "toJSON(needs.*.result) = ${{ toJSON(needs.*.result) }}"
