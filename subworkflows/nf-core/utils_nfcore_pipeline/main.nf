@@ -299,7 +299,7 @@ def completionEmail(summary_params, email, email_on_fail, plaintext_email, outdi
     def email_html    = html_template.toString()
 
     // Render the sendmail template
-    def max_multiqc_email_size = (params.containsKey('max_multiqc_email_size') ? params.max_multiqc_email_size : 0) as nextflow.util.MemoryUnit
+    def max_multiqc_email_size = (params.containsKey('max_multiqc_email_size') ? params.max_multiqc_email_size : 0) as MemoryUnit
     def smail_fields           = [email: email_address, subject: subject, email_txt: email_txt, email_html: email_html, projectDir: "${workflow.projectDir}", mqcFile: mqc_report, mqcMaxSize: max_multiqc_email_size.toBytes()]
     def sf                     = new File("${workflow.projectDir}/assets/sendmail_template.txt")
     def sendmail_template      = engine.createTemplate(sf).make(smail_fields)
