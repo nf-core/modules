@@ -27,7 +27,6 @@ nextflow_process {
 				    [ id:'sarscov2' ], // meta map
 				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
 				]
-
                 """
             }
         }
@@ -57,7 +56,6 @@ nextflow_process {
 				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
 				]
 				input[2] = [[id:'sarscov2'], []]
-
                 """
             }
         }
@@ -87,7 +85,6 @@ nextflow_process {
 				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
 				]
 				input[2] = [[id:'sarscov2'], []]
-
                 """
             }
         }
