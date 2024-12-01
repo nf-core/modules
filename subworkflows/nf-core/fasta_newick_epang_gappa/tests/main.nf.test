@@ -22,17 +22,17 @@ nextflow_workflow {
     tag "hmmer/hmmalign"
     tag "hmmer/eslalimask"
     tag "hmmer/eslreformat"
-    tag "mafft"
+    tag "mafft/align"
 
 
     test("test_fasta_newick_epang_gappa_hmmer") {
-        
+
         when {
             workflow {
                 """
                 input[0] = Channel.of(
                     [
-                        meta: [ id: "hmmer" ],
+                        meta: [ id: "hmmer", min_bitscore: 4 ],
                         data: [
                             alignmethod:  'hmmer',
                             queryseqfile: file("https://github.com/nf-core/test-datasets/raw/phyloplace/testdata/PF14720_3_sequences.faa", checkIfExists: true),
@@ -64,7 +64,7 @@ nextflow_workflow {
     }
 
     test("test_fasta_newick_epang_gappa_mafft") {
-    
+
         when {
             params {
                 outdir = "$outputDir"
@@ -104,7 +104,7 @@ nextflow_workflow {
         }
     }
     test("test_fasta_newick_epang_gappa_nucl_hmmer") {
-    
+
         when {
             workflow {
                 """

@@ -1,5 +1,6 @@
 name: hmmer_hmmalign
-description: hmmalign from the HMMER suite aligns a number of sequences to an HMM profile
+description: hmmalign from the HMMER suite aligns a number of sequences to an HMM
+  profile
 keywords:
   - alignment
   - HMMER
@@ -13,37 +14,41 @@ tools:
       documentation: http://hmmer.org/documentation.html
       doi: "10.1371/journal.pcbi.1002195"
       licence: ["BSD-3-Clause"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - fasta:
-      type: file
-      description: Amino acid or nucleotide gzipped compressed fasta file
-      pattern: "*.{fna.gz,faa.gz,fasta.gz,fa.gz}"
-  - hmm:
-      type: file
-      description: A gzipped HMM file
-      pattern: "*.hmm.gz"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: Amino acid or nucleotide gzipped compressed fasta file
+        pattern: "*.{fna.gz,faa.gz,fasta.gz,fa.gz}"
+  - - hmm:
+        type: file
+        description: A gzipped HMM file
+        pattern: "*.hmm.gz"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+  - sto:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.sto.gz":
+          type: file
+          description: Multiple alignment in gzipped Stockholm format
+          pattern: "*.sto.gz"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - sthlm:
-      type: file
-      description: Multiple alignment in gzipped Stockholm format
-      pattern: "*.sthlm.gz"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@erikrikarddaniel"
   - "@jfy133"
 maintainers:
   - "@erikrikarddaniel"
   - "@jfy133"
+  - "@vagkaratzas"

@@ -3,19 +3,16 @@ process MIRTOP_GFF {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-0c13ef770dd7cc5c76c2ce23ba6669234cf03385:63be019f50581cc5dfe4fc0f73ae50f2d4d661f7-0' :
-        'biocontainers/mulled-v2-0c13ef770dd7cc5c76c2ce23ba6669234cf03385:63be019f50581cc5dfe4fc0f73ae50f2d4d661f7-0' }"
+    container "community.wave.seqera.io/library/mirtop_pybedtools_pysam_samtools_pruned:60b8208f3dbb2910"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(bam, arity:'1..*')
     tuple val(meta2), path(hairpin)
     tuple val(meta3), path(gtf), val(species)
 
     output:
-    tuple val(meta), path("mirtop/${bam.baseName}.gff")  , emit: sample_gff
-    tuple val(meta), path("mirtop/mirtop.gff")           , emit: mirtop_gff
-    path "versions.yml"                                  , emit: versions
+    tuple val(meta), path("mirtop/*mirtop.gff")           , emit: gff
+    path "versions.yml"                                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,6 +30,8 @@ process MIRTOP_GFF {
         -o mirtop \\
         $bam
 
+    mv mirtop/mirtop.gff mirtop/${prefix}_mirtop.gff
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         mirtop: \$(echo \$(mirtop --version 2>&1) | sed 's/^.*mirtop //')
@@ -45,7 +44,6 @@ process MIRTOP_GFF {
     """
     mkdir mirtop
     touch mirtop/mirtop.gff
-    touch mirtop/sim_isomir_sort.gff
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

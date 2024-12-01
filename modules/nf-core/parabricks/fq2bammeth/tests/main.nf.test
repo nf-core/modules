@@ -1,0 +1,123 @@
+nextflow_process {
+
+    name "Test Process PARABRICKS_FQ2BAMMETH"
+    script "../main.nf"
+    process "PARABRICKS_FQ2BAMMETH"
+    config "./nextflow.config"
+
+    tag "bwameth/index"
+    tag "modules"
+    tag "parabricks"
+    tag "parabricks/fq2bammeth"
+    tag "modules_nfcore"
+    tag "gpu"
+
+    setup {
+        run("BWAMETH_INDEX") {
+            script "../../../bwameth/index/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                ])
+                """
+            }
+        }
+    }
+
+
+    test("SRR389222 - fastq - se") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+				    [ id:'test', single_end:true ], // meta map
+				    [
+				        file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz', checkIfExists: true)
+				    ]
+				])
+                input[1] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                ])
+				input[2] = BWAMETH_INDEX.out.index
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    process.out.bai,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("SRR389222 - fastq - se - stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+				    [ id:'test', single_end:true ], // meta map
+				    [
+				        file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz', checkIfExists: true)
+				    ]
+				])
+                input[1] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                ])
+				input[2] = BWAMETH_INDEX.out.index
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("E. coli - fastq - pe - stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+				    [ id:'test', single_end:false ], // meta map
+				    [
+				        file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
+                        file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true),
+				    ]
+				])
+                input[1] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                ])
+				input[2] = BWAMETH_INDEX.out.index
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

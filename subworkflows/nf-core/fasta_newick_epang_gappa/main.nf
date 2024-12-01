@@ -6,7 +6,7 @@ include { HMMER_ESLALIMASK as HMMER_MASKQUERY       } from '../../../modules/nf-
 include { HMMER_ESLREFORMAT as HMMER_UNALIGNREF     } from '../../../modules/nf-core/hmmer/eslreformat/main'
 include { HMMER_ESLREFORMAT as HMMER_AFAFORMATREF   } from '../../../modules/nf-core/hmmer/eslreformat/main'
 include { HMMER_ESLREFORMAT as HMMER_AFAFORMATQUERY } from '../../../modules/nf-core/hmmer/eslreformat/main'
-include { MAFFT                                     } from '../../../modules/nf-core/mafft/main'
+include { MAFFT_ALIGN as MAFFT                      } from '../../../modules/nf-core/mafft/align/main'
 include { EPANG_PLACE                               } from '../../../modules/nf-core/epang/place/main'
 include { EPANG_SPLIT                               } from '../../../modules/nf-core/epang/split/main'
 include { GAPPA_EXAMINEGRAFT as GAPPA_GRAFT         } from '../../../modules/nf-core/gappa/examinegraft/main'
@@ -82,10 +82,10 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     ch_versions = ch_versions.mix(HMMER_HMMALIGNQUERY.out.versions)
 
     // 1.d Mask the alignments (Add '--rf-is-mask' ext.args in config for the process.)
-    HMMER_MASKREF ( HMMER_HMMALIGNREF.out.sthlm.map { [ it[0], it[1], [], [], [], [], [], [] ] }, [] )
+    HMMER_MASKREF ( HMMER_HMMALIGNREF.out.sto.map { [ it[0], it[1], [], [], [], [], [], [] ] }, [] )
     ch_versions = ch_versions.mix(HMMER_MASKREF.out.versions)
 
-    HMMER_MASKQUERY ( HMMER_HMMALIGNQUERY.out.sthlm.map { [ it[0], it[1], [], [], [], [], [], [] ] }, [] )
+    HMMER_MASKQUERY ( HMMER_HMMALIGNQUERY.out.sto.map { [ it[0], it[1], [], [], [], [], [], [] ] }, [] )
     ch_versions = ch_versions.mix(HMMER_MASKQUERY.out.versions)
 
     // 1.e Reformat alignments to "afa" (aligned fasta)
@@ -139,7 +139,7 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     GAPPA_ASSIGN (
         EPANG_PLACE.out.jplace
             .map { [ [ id:it[0].id ], it[1] ] }
-            .join( ch_pp_data.map { [ it.meta, it.data.taxonomy ] } )
+            .join( ch_pp_data.map { [ [ id: it.meta.id ], it.data.taxonomy ] } )
     )
     ch_versions = ch_versions.mix(GAPPA_ASSIGN.out.versions)
 

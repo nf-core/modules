@@ -11,25 +11,39 @@ keywords:
   - fasta
 tools:
   - biscuit:
-      description: A utility for analyzing sodium bisulfite conversion-based DNA methylation/modification data
+      description: A utility for analyzing sodium bisulfite conversion-based DNA methylation/modification
+        data
       homepage: https://huishenlab.github.io/biscuit/
       documentation: https://huishenlab.github.io/biscuit/docs/alignment
       tool_dev_url: https://github.com/huishenlab/biscuit
       licence: ["MIT"]
+      identifier: biotools:biscuit
 input:
-  - fasta:
-      type: file
-      description: Input genome fasta file
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Input genome fasta file
 output:
   - index:
-      type: directory
-      description: Biscuit genome index directory
-      pattern: "BiscuitIndex"
+      - meta:
+          type: directory
+          description: Directory containing biscuit genome index
+          pattern: "index"
+      - BiscuitIndex:
+          type: directory
+          description: Directory containing biscuit genome index
+          pattern: "index"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@njspix"
 maintainers:
   - "@njspix"
+  - "@sateeshperi"
