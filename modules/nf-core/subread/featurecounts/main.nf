@@ -11,8 +11,8 @@ process SUBREAD_FEATURECOUNTS {
     tuple val(meta), path(bams), path(annotation)
 
     output:
-    tuple val(meta), path("*featureCounts.txt"), emit: counts
-    tuple val(meta), path("*featureCounts.txt.summary"), emit: summary
+    tuple val(meta), path("*featureCounts.tsv"), emit: counts
+    tuple val(meta), path("*featureCounts.tsv.summary"), emit: summary
     path "versions.yml", emit: versions
 
     when:
@@ -37,7 +37,7 @@ process SUBREAD_FEATURECOUNTS {
         -T ${task.cpus} \\
         -a ${annotation} \\
         -s ${strandedness} \\
-        -o ${prefix}.featureCounts.txt \\
+        -o ${prefix}.featureCounts.tsv \\
         ${bams.join(' ')}
 
     cat <<-END_VERSIONS > versions.yml
@@ -49,8 +49,8 @@ process SUBREAD_FEATURECOUNTS {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.featureCounts.txt
-    touch ${prefix}.featureCounts.txt.summary
+    touch ${prefix}.featureCounts.tsv
+    touch ${prefix}.featureCounts.tsv.summary
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
