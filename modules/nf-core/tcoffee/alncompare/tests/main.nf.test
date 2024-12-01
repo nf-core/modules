@@ -7,6 +7,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "tcoffee"
     tag "tcoffee/alncompare"
+    tag "pigz/compress"
 
     test("seatoxin") {
 
@@ -31,6 +32,43 @@ nextflow_process {
         }
 
     }
+
+    test("seatoxin - compressed") {
+
+        setup {
+
+            run("PIGZ_COMPRESS") {
+                script "../../../pigz/compress/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id:'test' ],
+                             file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                               ]
+                    """
+                }
+            }
+        }
+
+
+        when {
+            process {
+                """
+                reference_file = Channel.fromPath(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
+                input[0] = PIGZ_COMPRESS.out.archive.combine(reference_file)
+                """
+            }
+
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
     test("seatoxin - stub") {
         options "-stub"
 

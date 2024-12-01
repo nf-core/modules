@@ -1,0 +1,108 @@
+name: mafft_align
+description: Multiple sequence alignment using MAFFT
+keywords:
+  - fasta
+  - msa
+  - multiple sequence alignment
+tools:
+  - "mafft":
+      description: Multiple alignment program for amino acid or nucleotide sequences
+        based on fast Fourier transform
+      homepage: https://mafft.cbrc.jp/alignment/software/
+      documentation: https://mafft.cbrc.jp/alignment/software/manual/manual.html
+      tool_dev_url: https://mafft.cbrc.jp/alignment/software/source.html
+      doi: "10.1093/nar/gkf436"
+      licence: ["BSD"]
+      identifier: biotools:MAFFT
+  - "pigz":
+      description: "Parallel implementation of the gzip algorithm."
+      homepage: "https://zlib.net/pigz/"
+      documentation: "https://zlib.net/pigz/pigz.pdf"
+      identifier: biotools:MAFFT
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: FASTA file containing the sequences to align. May be gzipped or
+          uncompressed.
+        pattern: "*.{fa,fasta}{.gz,}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - add:
+        type: file
+        description: FASTA file containing sequences to align to the sequences in `fasta`
+          using `--add`. May be gzipped or uncompressed.
+        pattern: "*.{fa,fasta}{.gz,}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - addfragments:
+        type: file
+        description: FASTA file containing sequences to align to the sequences in `fasta`
+          using `--addfragments`. May be gzipped or uncompressed.
+        pattern: "*.{fa,fasta}{.gz,}"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - addfull:
+        type: file
+        description: FASTA file containing sequences to align to the sequences in `fasta`
+          using `--addfull`. May be gzipped or uncompressed.
+        pattern: "*.{fa,fasta}{.gz,}"
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - addprofile:
+        type: file
+        description: FASTA file containing sequences to align to the sequences in `fasta`
+          using `--addprofile`. May be gzipped or uncompressed.
+        pattern: "*.{fa,fasta}{.gz,}"
+  - - meta6:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - addlong:
+        type: file
+        description: FASTA file containing sequences to align to the sequences in `fasta`
+          using `--addlong`. May be gzipped or uncompressed.
+        pattern: "*.{fa,fasta}{.gz,}"
+  - - compress:
+        type: boolean
+        description: Flag representing whether the output MSA should be compressed.
+          Set to true to enable/false to disable compression. Compression is done using
+          pigz, and is multithreaded.
+output:
+  - fas:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fas{.gz,}":
+          type: file
+          description: Aligned sequences in FASTA format. May be gzipped or uncompressed.
+          pattern: "*.fas{.gz,}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@MillironX"
+maintainers:
+  - "@MillironX"
+  - "@Joon-Klaps"
