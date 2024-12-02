@@ -25,3 +25,12 @@ repos:
         files: \.py$
         args: [--fix, --exit-non-zero-on-fix, "--select", "I,E1,E4,E7,E9,F,UP,N"] # sort imports and fix (rules taken from nf-core/tools)
       - id: ruff-format # formatter
+  - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
+    rev: "3.0.3"
+    hooks:
+      - id: editorconfig-checker
+        alias: ec
+  - repo: https://github.com/nf-core/tools
+    rev: pre-commit
+    hooks:
+      - id: lint-subworkflows
