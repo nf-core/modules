@@ -29,7 +29,9 @@ process MUSE_SUMP {
         -I $muse_call_txt \\
         -n $task.cpus    \\
         -D $ref_vcf \\
-        | bgzip $args2 --threads $task.cpus --stdout > ${prefix}.vcf.gz
+        -O ${prefix}.vcf
+
+    bgzip $args2 --threads $task.cpus > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
