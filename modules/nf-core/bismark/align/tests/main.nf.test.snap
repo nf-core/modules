@@ -1,48 +1,12 @@
 {
-    "bowtie2 paired-end / sarscov2 genome [fasta]": {
-        "content": [
-            [
-                "936c0d5ce713130113e99e09a5b53afd"
-            ],
-            true,
-            [
-                
-            ],
-            [
-                "versions.yml:md5,50c4bb6313fda6a7c6212ceb5dd638f5"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-10-13T17:35:23.192447327"
-    },
-    "hisat2 paired-end / sarscov2 genome [fasta]": {
-        "content": [
-            [
-                "936c0d5ce713130113e99e09a5b53afd"
-            ],
-            true,
-            [
-                
-            ],
-            [
-                "versions.yml:md5,50c4bb6313fda6a7c6212ceb5dd638f5"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-10-13T17:36:10.145541495"
-    },
-    "minimap2 single-end / sarscov2 genome [fasta]": {
+    "minimap2 | single-end | sarscov2 genome [fasta]": {
         "content": [
             [
                 "d354e6c6d6a06e36630590de8f27031a"
             ],
-            true,
+            [
+                false
+            ],
             [
                 
             ],
@@ -51,17 +15,73 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.1"
         },
-        "timestamp": "2024-10-13T17:36:32.094369612"
+        "timestamp": "2024-11-20T07:06:10.385317868"
     },
-    "bowtie2 single-end / sarscov2 genome [fasta]": {
+    "hisat2 | paired-end | sarscov2 genome [fasta]": {
+        "content": [
+            [
+                [
+                    "936c0d5ce713130113e99e09a5b53afd",
+                    "5636a8adfbdd353026686e888996a47c"
+                ]
+            ],
+            [
+                [
+                    true,
+                    false
+                ]
+            ],
+            [
+                
+            ],
+            [
+                "versions.yml:md5,50c4bb6313fda6a7c6212ceb5dd638f5"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.1"
+        },
+        "timestamp": "2024-11-20T07:12:14.540260123"
+    },
+    "bowtie2 | paired-end | sarscov2 genome [fasta]": {
+        "content": [
+            [
+                [
+                    "936c0d5ce713130113e99e09a5b53afd",
+                    "5636a8adfbdd353026686e888996a47c"
+                ]
+            ],
+            [
+                [
+                    true,
+                    false
+                ]
+            ],
+            [
+                
+            ],
+            [
+                "versions.yml:md5,50c4bb6313fda6a7c6212ceb5dd638f5"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.1"
+        },
+        "timestamp": "2024-11-20T07:04:42.515898978"
+    },
+    "bowtie2 | single-end | sarscov2 genome [fasta]": {
         "content": [
             [
                 "936c0d5ce713130113e99e09a5b53afd"
             ],
-            true,
+            [
+                true
+            ],
             [
                 
             ],
@@ -70,17 +90,19 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.1"
         },
-        "timestamp": "2024-10-13T17:34:58.431003479"
+        "timestamp": "2024-11-20T06:50:16.487384391"
     },
-    "hisat2 single-end / sarscov2 genome [fasta]": {
+    "hisat2 | single-end | sarscov2 genome [fasta]": {
         "content": [
             [
                 "936c0d5ce713130113e99e09a5b53afd"
             ],
-            true,
+            [
+                true
+            ],
             [
                 
             ],
@@ -89,9 +111,95 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.1"
         },
-        "timestamp": "2024-10-13T17:35:45.557280528"
+        "timestamp": "2024-11-20T06:51:06.34107409"
+    },
+    "minimap2 | paired-end | sarscov2 genome [fasta]": {
+        "content": [
+            [
+                [
+                    "d354e6c6d6a06e36630590de8f27031a",
+                    "109762b26674693cd29fddb18da0d1fa"
+                ]
+            ],
+            [
+                [
+                    false,
+                    false
+                ]
+            ],
+            [
+                
+            ],
+            [
+                "versions.yml:md5,50c4bb6313fda6a7c6212ceb5dd638f5"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.1"
+        },
+        "timestamp": "2024-11-20T07:12:59.868431446"
+    },
+    "minimap2 | paired-end | sarscov2 genome [fasta] | stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.report.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    
+                ],
+                "3": [
+                    "versions.yml:md5,50c4bb6313fda6a7c6212ceb5dd638f5"
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "report": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.report.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "unmapped": [
+                    
+                ],
+                "versions": [
+                    "versions.yml:md5,50c4bb6313fda6a7c6212ceb5dd638f5"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.1"
+        },
+        "timestamp": "2024-11-20T07:16:21.454058443"
     }
 }

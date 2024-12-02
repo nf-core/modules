@@ -27,7 +27,6 @@ nextflow_process {
                 """
             }
         }
-
     }
 
     test("sarscov2 - tagdir") {
@@ -36,6 +35,7 @@ nextflow_process {
             process {
                 """
                 input[0] = HOMER_MAKETAGDIRECTORY.out.tagdir
+                input[1] = []
                 """
             }
         }
@@ -57,6 +57,7 @@ nextflow_process {
             process {
                 """
                 input[0] = HOMER_MAKETAGDIRECTORY.out.tagdir
+                input[1] = []
                 """
             }
         }
@@ -67,7 +68,7 @@ nextflow_process {
                 { assert snapshot(process.out).match("stub") }
             )
         }
-
     }
-
+    // TODO Test uniqmap. Might need to make a small uniqmap but that could take a day or two.
+    // See https://github.com/Functional-Genomics-Lab/homer-uniqmap-nf if you're feeling adventurous!
 }

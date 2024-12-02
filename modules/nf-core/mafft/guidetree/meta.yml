@@ -1,0 +1,46 @@
+name: mafft_guidetree
+description: Guide tree rendering using MAFFT
+keywords:
+  - fasta
+  - msa
+  - guide tree
+tools:
+  - "mafft":
+      description: Multiple alignment program for amino acid or nucleotide sequences
+        based on fast Fourier transform
+      homepage: https://mafft.cbrc.jp/alignment/software/
+      documentation: https://mafft.cbrc.jp/alignment/software/manual/manual.html
+      tool_dev_url: https://mafft.cbrc.jp/alignment/software/source.html
+      doi: "10.1093/nar/gkf436"
+      licence: ["BSD"]
+      identifier: biotools:MAFFT
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: FASTA file containing the sequences to be used to render the guidetree.
+        pattern: "*.{fa,fasta}"
+output:
+  - tree:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test']
+      - "*.dnd":
+          type: file
+          description: Guide tree in Newick format.
+          pattern: "*.dnd"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@luisas"
+maintainers:
+  - "@luisas"
