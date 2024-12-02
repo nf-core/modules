@@ -8,6 +8,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "parabricks"
     tag "parabricks/deepvariant"
+    tag "gpu"
 
     test("human - bam") {
 
@@ -100,10 +101,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot( 
+                { assert snapshot(
                     process.out.versions,
                     // file(process.out.vcf[0][1]).name // fails with groovy.lang.MissingMethodException: No signature of method: static com.askimed.nf.test.lang.extensions.GlobalMethods.file() is applicable for argument types: (ArrayList) values:
-                    ).match() 
+                    ).match()
                 }
             )
         }
