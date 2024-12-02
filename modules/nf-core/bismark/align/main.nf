@@ -45,7 +45,7 @@ process BISMARK_ALIGN {
 
         // Check that we have enough memory
         try {
-            def tmem = (task.memory as nextflow.util.MemoryUnit).toBytes()
+            def tmem = (task.memory as MemoryUnit).toBytes()
             def mcore = (tmem / mem_per_multicore) as int
             ccore = Math.min(ccore, mcore)
         } catch (all) {
