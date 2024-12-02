@@ -36,13 +36,13 @@ process BISMARK_METHYLATIONEXTRACTOR {
     def seqtype  = meta.single_end ? '-s' : '-p'
     """
     bismark_methylation_extractor \\
-        $bam \\
+        ${bam} \\
         --bedGraph \\
         --counts \\
         --gzip \\
         --report \\
-        $seqtype \\
-        $args
+        ${seqtype} \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
