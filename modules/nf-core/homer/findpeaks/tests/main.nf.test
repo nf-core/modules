@@ -27,6 +27,20 @@ nextflow_process {
                 """
             }
         }
+        run("UNZIP") {
+            script "../../../unzip/main.nf"
+            process {
+                """
+                url = 'https://raw.githubusercontent.com/nf-core/test-datasets/nascent/reference/uniqmap.GRCh38_chr21.50nt.zip'
+
+                input[0] = [
+                    [:],
+                    file(url, checkIfExists: true)
+                ]
+                """
+
+            }
+        }
     }
 
     test("sarscov2 - tagdir") {
@@ -69,6 +83,26 @@ nextflow_process {
             )
         }
     }
-    // TODO Test uniqmap. Might need to make a small uniqmap but that could take a day or two.
-    // See https://github.com/Functional-Genomics-Lab/homer-uniqmap-nf if you're feeling adventurous!
+
+    test("sarscov2 - tagdir - uniqmap") {
+
+        tag "uniqmap"
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = HOMER_MAKETAGDIRECTORY.out.tagdir
+                input[1] = UNZIP.out.unzipped_archive.map { it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
 }
