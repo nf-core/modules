@@ -101,7 +101,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out,
+                    // FIXME These are empty?
+                    path(process.out.txt.get(0).get(1)).readLines()[18],
+                    path(process.out.txt.get(0).get(1)).readLines()[20],
+                ).match()
+                }
             )
         }
     }
