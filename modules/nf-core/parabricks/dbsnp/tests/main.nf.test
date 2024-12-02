@@ -8,10 +8,11 @@ nextflow_process {
     tag "modules_nfcore"
     tag "parabricks"
     tag "parabricks/dbsnp"
+    tag "gpu"
 
     test("human - vcf") {
 
-        config './copy.config'
+        config './nextflow.config'
 
         when {
             process {
@@ -32,7 +33,7 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.vcf[0][1]).vcf.variantsMD5,
                     process.out.versions
-                    ).match() 
+                    ).match()
                 }
             )
         }
