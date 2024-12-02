@@ -19,7 +19,7 @@ process MUSE_SUMP {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: '' // hands -G for WGS data and -E for WES data
+    def args   = task.ext.args   ?: '' // -G for WGS data and -E for WES data
     def args2  = task.ext.args2  ?: '' // args for bgzip
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
@@ -31,7 +31,7 @@ process MUSE_SUMP {
         -D $ref_vcf \\
         -O ${prefix}.vcf
 
-    bgzip $args2 --threads $task.cpus > ${prefix}.vcf.gz
+    bgzip $args2 --threads $task.cpus ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

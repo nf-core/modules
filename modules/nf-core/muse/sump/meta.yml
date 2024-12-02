@@ -41,8 +41,7 @@ input:
         pattern: ".vcf.gz"
     - ref_vcf_tbi:
         type: file
-        description: |
-          Tabix index for the dbSNP vcf file
+        description: Tabix index for the dbSNP vcf file
         pattern: ".vcf.gz.tbi"
 output:
   - vcf:
@@ -51,9 +50,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.vcf":
-          type: file
-          description: Identified somatic variants with tiered rankings
+          pattern: "*.vcf"
+      - "*.vcf.gz":
+          type: map
+          description: bgzipped vcf file with called variants
           pattern: "*.vcf"
   - versions:
       - versions.yml:
