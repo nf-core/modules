@@ -294,7 +294,6 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
             .mix(SORTMERNA.out.log)
 
         ch_versions = ch_versions.mix(SORTMERNA.out.versions.first())
-        ch_filtered_reads.view{"FOOOO: $it"}
 
         if(!skip_linting) {
             FQ_LINT_AFTER_SORTMERNA (
