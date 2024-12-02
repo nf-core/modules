@@ -16,7 +16,7 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.2"
         },
-        "timestamp": "2024-11-29T18:44:44.78038183"
+        "timestamp": "2024-12-02T12:36:11.174197"
     },
     "trimgalore_test_pe_reads_2_lines": {
         "content": "eccf3e9e74589ff01c77fce7f4548e41",
@@ -24,7 +24,7 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.2"
         },
-        "timestamp": "2024-11-29T18:45:09.418164561"
+        "timestamp": "2024-12-02T12:36:35.422086"
     },
     "fastp_test_pe_reads_1_size": {
         "content": [
@@ -34,7 +34,7 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.2"
         },
-        "timestamp": "2024-11-29T18:44:44.707232846"
+        "timestamp": "2024-12-02T12:36:11.122822"
     },
     "trimgalore_test_pe_reads_1_size": {
         "content": [
@@ -44,7 +44,17 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.2"
         },
-        "timestamp": "2024-11-29T18:45:09.374097804"
+        "timestamp": "2024-12-02T12:36:35.388502"
+    },
+    "trimgalore_lint": {
+        "content": [
+            "\u001b[32m INFO\u001b[0m \u001b[2mfq::commands::lint\u001b[0m\u001b[2m:\u001b[0m fq-lint start\n\u001b[32m INFO\u001b[0m \u001b[2mfq::commands::lint\u001b[0m\u001b[2m:\u001b[0m validating paired end reads\n\u001b[32m INFO\u001b[0m \u001b[2mfq::validators\u001b[0m\u001b[2m:\u001b[0m disabled validators: []\n\u001b[32m INFO\u001b[0m \u001b[2mfq::validators\u001b[0m\u001b[2m:\u001b[0m enabled single read validators: [\"[S003] NameValidator\", \"[S004] CompleteValidator\", \"[S002] AlphabetValidator\", \"[S001] PlusLineValidator\", \"[S005] ConsistentSeqQualValidator\", \"[S006] QualityStringValidator\"]\n\u001b[32m INFO\u001b[0m \u001b[2mfq::validators\u001b[0m\u001b[2m:\u001b[0m enabled paired read validators: [\"[P001] NamesValidator\"]\n\u001b[32m INFO\u001b[0m \u001b[2mfq::commands::lint\u001b[0m\u001b[2m:\u001b[0m enabled special validators: [\"[S007] DuplicateNameValidator\"]\n\u001b[32m INFO\u001b[0m \u001b[2mfq::commands::lint\u001b[0m\u001b[2m:\u001b[0m starting validation (pass 1)\n\u001b[32m INFO\u001b[0m \u001b[2mfq::commands::lint\u001b[0m\u001b[2m:\u001b[0m read 1127 * 2 records\n\u001b[32m INFO\u001b[0m \u001b[2mfq::commands::lint\u001b[0m\u001b[2m:\u001b[0m starting validation (pass 2)\n\u001b[32m INFO\u001b[0m \u001b[2mfq::commands::lint\u001b[0m\u001b[2m:\u001b[0m read 1127 records\n\u001b[32m INFO\u001b[0m \u001b[2mfq::commands::lint\u001b[0m\u001b[2m:\u001b[0m fq-lint end"
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.2"
+        },
+        "timestamp": "2024-12-02T12:36:35.427512"
     },
     "trimgalore_test_pe_reads_1_lines": {
         "content": "3868fc1caf09367141d2bbf47e158823",
@@ -52,42 +62,17 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.2"
         },
-        "timestamp": "2024-11-29T18:45:09.369717815"
+        "timestamp": "2024-12-02T12:36:35.386178"
     },
-    "fastp_lint_log": {
+    "fastp_lint": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false,
-                        "strandedness": "auto"
-                    },
-                    "test.fq_lint.txt:md5,29b57176fa9c7f977eb49426ae7842f9"
-                ],
-                [
-                    {
-                        "id": "test",
-                        "single_end": false,
-                        "strandedness": "auto"
-                    },
-                    "test.sortmerna.fq_lint.txt:md5,d25f6cf9cdfe50941979280c65001dda"
-                ],
-                [
-                    {
-                        "id": "test",
-                        "single_end": false,
-                        "strandedness": "auto"
-                    },
-                    "test.trimmed.fq_lint.txt:md5,04ad4ec8f09d58997fcee62570546d9f"
-                ]
-            ]
+            "\u001b[32m INFO\u001b[0m \u001b[2mfq::commands::lint\u001b[0m\u001b[2m:\u001b[0m fq-lint start\n\u001b[32m INFO\u001b[0m \u001b[2mfq::commands::lint\u001b[0m\u001b[2m:\u001b[0m validating paired end reads\n\u001b[32m INFO\u001b[0m \u001b[2mfq::validators\u001b[0m\u001b[2m:\u001b[0m disabled validators: []\n\u001b[32m INFO\u001b[0m \u001b[2mfq::validators\u001b[0m\u001b[2m:\u001b[0m enabled single read validators: [\"[S003] NameValidator\", \"[S004] CompleteValidator\", \"[S002] AlphabetValidator\", \"[S001] PlusLineValidator\", \"[S005] ConsistentSeqQualValidator\", \"[S006] QualityStringValidator\"]\n\u001b[32m INFO\u001b[0m \u001b[2mfq::validators\u001b[0m\u001b[2m:\u001b[0m enabled paired read validators: [\"[P001] NamesValidator\"]\n\u001b[32m INFO\u001b[0m \u001b[2mfq::commands::lint\u001b[0m\u001b[2m:\u001b[0m enabled special validators: [\"[S007] DuplicateNameValidator\"]\n\u001b[32m INFO\u001b[0m \u001b[2mfq::commands::lint\u001b[0m\u001b[2m:\u001b[0m starting validation (pass 1)\n\u001b[32m INFO\u001b[0m \u001b[2mfq::commands::lint\u001b[0m\u001b[2m:\u001b[0m read 1127 * 2 records\n\u001b[32m INFO\u001b[0m \u001b[2mfq::commands::lint\u001b[0m\u001b[2m:\u001b[0m starting validation (pass 2)\n\u001b[32m INFO\u001b[0m \u001b[2mfq::commands::lint\u001b[0m\u001b[2m:\u001b[0m read 1127 records\n\u001b[32m INFO\u001b[0m \u001b[2mfq::commands::lint\u001b[0m\u001b[2m:\u001b[0m fq-lint end"
         ],
         "meta": {
             "nf-test": "0.9.2",
             "nextflow": "24.10.2"
         },
-        "timestamp": "2024-11-29T18:44:44.78233663"
+        "timestamp": "2024-12-02T12:36:11.175443"
     },
     "fastp_test_pe_reads_2_lines": {
         "content": "eccf3e9e74589ff01c77fce7f4548e41",
@@ -95,7 +80,7 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.2"
         },
-        "timestamp": "2024-11-29T18:44:44.777037711"
+        "timestamp": "2024-12-02T12:36:11.172278"
     },
     "fastp_test_pe_reads_2_size": {
         "content": [
@@ -105,7 +90,7 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.2"
         },
-        "timestamp": "2024-11-29T18:44:44.778739691"
+        "timestamp": "2024-12-02T12:36:11.17324"
     },
     "trimgalore_test_pe_reads_2_size": {
         "content": [
@@ -115,7 +100,7 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.2"
         },
-        "timestamp": "2024-11-29T18:45:09.42290797"
+        "timestamp": "2024-12-02T12:36:35.424228"
     },
     "fastp_test_pe_reads_1_lines": {
         "content": "3868fc1caf09367141d2bbf47e158823",
@@ -123,7 +108,7 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.2"
         },
-        "timestamp": "2024-11-29T18:44:44.704715707"
+        "timestamp": "2024-12-02T12:36:11.120959"
     },
     "trimgalore_read_count": {
         "content": [
@@ -142,41 +127,6 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.2"
         },
-        "timestamp": "2024-11-29T18:45:09.42747479"
-    },
-    "trimgalore_lint_log": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false,
-                        "strandedness": "auto"
-                    },
-                    "test.fq_lint.txt:md5,84200cb5ea0ba888448a55b48b087685"
-                ],
-                [
-                    {
-                        "id": "test",
-                        "single_end": false,
-                        "strandedness": "auto"
-                    },
-                    "test.sortmerna.fq_lint.txt:md5,9cad05927b97a6e0676c8b8fda66c20c"
-                ],
-                [
-                    {
-                        "id": "test",
-                        "single_end": false,
-                        "strandedness": "auto"
-                    },
-                    "test.trimmed.fq_lint.txt:md5,5c53c227ce276f3b5abf6abe8ccdefae"
-                ]
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.2"
-        },
-        "timestamp": "2024-11-29T18:45:09.431602769"
+        "timestamp": "2024-12-02T12:36:35.42586"
     }
 }
