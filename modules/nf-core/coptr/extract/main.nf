@@ -22,10 +22,10 @@ process COPTR_EXTRACT {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    coptr \
-        extract \
-        $args \
-        bamfolder/ \
+    coptr \\
+        extract \\
+        $args \\
+        bamfolder/ \\
         .
 
     cat <<-END_VERSIONS > versions.yml
