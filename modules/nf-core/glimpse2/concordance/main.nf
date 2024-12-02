@@ -31,14 +31,14 @@ process GLIMPSE2_CONCORDANCE {
     def bins_cmd       = bins                   ? "--bins ${bins}"                   : ""
     def ac_bins_cmd    = ac_bins                ? "--ac-bins ${ac_bins}"             : ""
     def ale_ct_cmd     = allele_counts          ? "--allele-counts ${allele_counts}" : ""
-    def min_val_gl_cmd = min-val-gl             ? "--min-val-gl ${min_val_gl}"       : ""
-    def min_val_dp_cmd = min-val-dp             ? "--min-val-dp ${min_val_dp}"       : ""
+    def min_val_gl_cmd = min_val_gl             ? "--min-val-gl ${min_val_gl}"       : ""
+    def min_val_dp_cmd = min_val_dp             ? "--min-val-dp ${min_val_dp}"       : ""
     def region_str     = region instanceof List ? region.join('\\n')                 : region
 
     if (((groups ? 1:0) + (bins ? 1:0) + (ac_bins ? 1:0) + (allele_counts ? 1:0)) != 1) error "One and only one argument should be selected between groups, bins, ac_bins, allele_counts"
 
     if (args.contains("--gt-val")) {
-        assert !(min-val-gl || min-val-dp) : "If --gt-val is set, --min-val-gl nor --min-val-dp must be set"
+        assert !(min_val_gl || min_val_dp) : "If --gt-val is set, --min-val-gl nor --min-val-dp must be set"
     }
 
     """
