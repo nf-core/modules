@@ -24,9 +24,9 @@ process BISMARK_DEDUPLICATE {
     def seqtype = meta.single_end ? '-s' : '-p'
     """
     deduplicate_bismark \\
-        $args \\
-        $seqtype \\
-        --bam $bam
+        ${args} \\
+        ${seqtype} \\
+        --bam ${bam}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

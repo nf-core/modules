@@ -1,0 +1,67 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "METAMDBG_ASM"
+description: Metagenome assembler for long-read sequences (HiFi and ONT).
+keywords:
+  - assembly
+  - long reads
+  - metagenome
+  - metagenome assembler
+tools:
+  - "metamdbg":
+      description: "MetaMDBG: a lightweight assembler for long and accurate metagenomics
+        reads."
+      homepage: "https://github.com/GaetanBenoitDev/metaMDBG"
+      documentation: "https://github.com/GaetanBenoitDev/metaMDBG"
+      tool_dev_url: "https://github.com/GaetanBenoitDev/metaMDBG"
+      doi: "10.1038/s41587-023-01983-6"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+
+    - reads:
+        type: file
+        description: Long read sequence data from ONT or HiFi in fasta format (can be
+          gzipped)
+        pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+
+  - - input_type:
+        type: string
+        description: Sequencing technology for reads - either "hifi" for PacBio HiFi
+          reads or "ont" for Oxford Nanopore reads.
+
+output:
+  - contigs:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.contigs.fasta.gz":
+          type: file
+          description: |
+            Gzipped fasta file containing the assembled contigs from the input
+            reads.
+  - log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.metaMDBG.log":
+          type: file
+          description: Log file describing the metaMDBG run.
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@prototaxites"
+maintainers:
+  - "@prototaxites"
