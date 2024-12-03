@@ -57,21 +57,6 @@ def checkProfileProvided(nextflow_cli_args) {
 }
 
 //
-// Citation string for pipeline
-//
-def workflowCitation() {
-    def temp_doi_ref = ""
-    def manifest_doi = workflow.manifest.doi.tokenize(",")
-    // Handling multiple DOIs
-    // Removing `https://doi.org/` to handle pipelines using DOIs vs DOI resolvers
-    // Removing ` ` since the manifest.doi is a string and not a proper list
-    manifest_doi.each { doi_ref ->
-        temp_doi_ref += "  https://doi.org/${doi_ref.replace('https://doi.org/', '').replace(' ', '')}\n"
-    }
-    return "If you use ${workflow.manifest.name} for your analysis please cite:\n\n" + "* The pipeline\n" + temp_doi_ref + "\n" + "* The nf-core framework\n" + "  https://doi.org/10.1038/s41587-020-0439-x\n\n" + "* Software dependencies\n" + "  https://github.com/${workflow.manifest.name}/blob/master/CITATIONS.md"
-}
-
-//
 // Generate workflow version string
 //
 def getWorkflowVersion() {
@@ -148,33 +133,6 @@ def paramsSummaryMultiqc(summary_params) {
     yaml_file_text     += "${summary_section}"
 
     return yaml_file_text
-}
-
-//
-// nf-core logo
-//
-def nfCoreLogo(monochrome_logs=true) {
-    def colors = logColours(monochrome_logs) as Map
-    String.format(
-        """\n
-        ${dashedLine(monochrome_logs)}
-                                                ${colors.green},--.${colors.black}/${colors.green},-.${colors.reset}
-        ${colors.blue}        ___     __   __   __   ___     ${colors.green}/,-._.--~\'${colors.reset}
-        ${colors.blue}  |\\ | |__  __ /  ` /  \\ |__) |__         ${colors.yellow}}  {${colors.reset}
-        ${colors.blue}  | \\| |       \\__, \\__/ |  \\ |___     ${colors.green}\\`-._,-`-,${colors.reset}
-                                                ${colors.green}`._,._,\'${colors.reset}
-        ${colors.purple}  ${workflow.manifest.name} ${getWorkflowVersion()}${colors.reset}
-        ${dashedLine(monochrome_logs)}
-        """.stripIndent()
-    )
-}
-
-//
-// Return dashed line
-//
-def dashedLine(monochrome_logs=true) {
-    def colors = logColours(monochrome_logs) as Map
-    return "-${colors.dim}----------------------------------------------------${colors.reset}-"
 }
 
 //
@@ -261,7 +219,8 @@ def attachMultiqcReport(multiqc_report) {
             }
         }
     }
-    catch (Exception all) {
+    catch (Exception msg) {
+        log.debug(msg)
         if (multiqc_report) {
             log.warn("[${workflow.manifest.name}] Could not attach MultiQC report to summary email")
         }
@@ -340,7 +299,7 @@ def completionEmail(summary_params, email, email_on_fail, plaintext_email, outdi
     def email_html    = html_template.toString()
 
     // Render the sendmail template
-    def max_multiqc_email_size = (params.containsKey('max_multiqc_email_size') ? params.max_multiqc_email_size : 0) as nextflow.util.MemoryUnit
+    def max_multiqc_email_size = (params.containsKey('max_multiqc_email_size') ? params.max_multiqc_email_size : 0) as MemoryUnit
     def smail_fields           = [email: email_address, subject: subject, email_txt: email_txt, email_html: email_html, projectDir: "${workflow.projectDir}", mqcFile: mqc_report, mqcMaxSize: max_multiqc_email_size.toBytes()]
     def sf                     = new File("${workflow.projectDir}/assets/sendmail_template.txt")
     def sendmail_template      = engine.createTemplate(sf).make(smail_fields)
@@ -358,7 +317,9 @@ new org.codehaus.groovy.GroovyException('Send plaintext e-mail, not HTML')      
             ['sendmail', '-t'].execute() << sendmail_html
             log.info("-${colors.purple}[${workflow.manifest.name}]${colors.green} Sent summary e-mail to ${email_address} (sendmail)-")
         }
-        catch (Exception all) {
+        catch (Exception msg) {
+            log.debug(msg)
+            log.debug("Trying with mail instead of sendmail")
             // Catch failures and try with plaintext
             def mail_cmd = ['mail', '-s', subject, '--content-type=text/html', email_address]
             mail_cmd.execute() << email_html
