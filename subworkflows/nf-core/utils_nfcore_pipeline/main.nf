@@ -203,29 +203,26 @@ def logColours(monochrome_logs=true) {
     return colorcodes
 }
 
+// Return a single report from an object that may be a Path or List
 //
-// Attach the multiqc report to email
-//
-def attachMultiqcReport(multiqc_report) {
-    def mqc_report = null
-    try {
-        if (workflow.success) {
-            mqc_report = multiqc_report.getVal()
-            if (mqc_report.getClass() == ArrayList && mqc_report.size() >= 1) {
-                if (mqc_report.size() > 1) {
+def getSingleReport(multiqc_reports) {
+    switch (multiqc_reports) {
+        case Path:
+            return multiqc_reports
+        case List:
+            switch (multiqc_reports.size()) {
+                case 0:
+                    log.warn("[${workflow.manifest.name}] No reports found from process 'MULTIQC'")
+                    return null
+                case 1:
+                    return multiqc_reports.first()
+                default:
                     log.warn("[${workflow.manifest.name}] Found multiple reports from process 'MULTIQC', will use only one")
-                }
-                mqc_report = mqc_report[0]
+                    return multiqc_reports.first()
             }
-        }
+        default:
+            return null
     }
-    catch (Exception msg) {
-        log.debug(msg)
-        if (multiqc_report) {
-            log.warn("[${workflow.manifest.name}] Could not attach MultiQC report to summary email")
-        }
-    }
-    return mqc_report
 }
 
 //
@@ -279,7 +276,7 @@ def completionEmail(summary_params, email, email_on_fail, plaintext_email, outdi
     email_fields['summary']      = summary << misc_fields
 
     // On success try attach the multiqc report
-    def mqc_report = attachMultiqcReport(multiqc_report)
+    def mqc_report = getSingleReport(multiqc_report)
 
     // Check if we are only sending emails on failure
     def email_address = email
@@ -310,7 +307,8 @@ def completionEmail(summary_params, email, email_on_fail, plaintext_email, outdi
     if (email_address) {
         try {
             if (plaintext_email) {
-new org.codehaus.groovy.GroovyException('Send plaintext e-mail, not HTML')            }
+                new org.codehaus.groovy.GroovyException('Send plaintext e-mail, not HTML')
+            }
             // Try to send HTML e-mail using sendmail
             def sendmail_tf = new File(workflow.launchDir.toString(), ".sendmail_tmp.html")
             sendmail_tf.withWriter { w -> w << sendmail_html }
