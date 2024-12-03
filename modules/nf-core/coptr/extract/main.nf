@@ -1,18 +1,18 @@
-process FQ_LINT {
+process COPTR_EXTRACT {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fq:0.12.0--h9ee0642_0':
-        'biocontainers/fq:0.12.0--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/coptr:1.1.4--pyhdfd78af_3':
+        'biocontainers/coptr:1.1.4--pyhdfd78af_3' }"
 
     input:
-    tuple val(meta), path(fastq)
+    tuple val(meta), path(bam, stageAs: "bamfolder/*")
 
     output:
-    tuple val(meta), path("*.fq_lint.txt"), emit: lint
-    path "versions.yml"                   , emit: versions
+    tuple val(meta), path("*.pkl"), emit: coverage
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,25 +20,29 @@ process FQ_LINT {
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+
     """
-    fq lint \\
+    coptr \\
+        extract \\
         $args \\
-        $fastq > ${prefix}.fq_lint.txt
+        bamfolder/ \\
+        .
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        fq: \$(echo \$(fq lint --version | sed 's/fq-lint //g'))
+        coptr: \$(coptr |& sed -E '11!d ; s/CoPTR.*?\\(v(.*?)\\).*/\\1/')
     END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.fq_lint.txt
+    touch ${prefix}.pkl
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        fq: \$(echo \$(fq lint --version | sed 's/fq-lint //g'))
+        "${task.process}":
+            coptr: \$(coptr |& sed -E '11!d ; s/CoPTR.*?\\(v(.*?)\\).*/\\1/')
     END_VERSIONS
     """
 }
