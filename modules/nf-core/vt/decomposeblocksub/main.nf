@@ -28,20 +28,16 @@ process VT_DECOMPOSEBLOCKSUB {
     }
 
     def bed = intervals ? "-i ${intervals}" : ""
-    def VERSION = "2015.11.10" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     """
     vt decompose_blocksub \\
-        -o ${prefix}.vcf \\
+        -o ${prefix}.vcf.gz \\
         ${bed} \\
         ${args} \\
         ${vcf}
 
-    bgzip ${args2} --threads ${task.cpus} ${prefix}.vcf
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vt: ${VERSION}
+        vt: \$(echo \$(vt decompose_blocksub 2>&1 | grep 'decompose_blocksub v' | sed -n 's/.*decompose_blocksub v\\([0-9]\\+\\.[0-9]\\+\\).*/\\1/p' ))
     END_VERSIONS
     """
 
@@ -52,14 +48,12 @@ process VT_DECOMPOSEBLOCKSUB {
         error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     }
 
-    def VERSION = "2015.11.10" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     """
     touch ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vt: ${VERSION}
+        vt: \$(echo \$(vt decompose_blocksub 2>&1 | grep 'decompose_blocksub v' | sed -n 's/.*decompose_blocksub v\\([0-9]\\+\\.[0-9]\\+\\).*/\\1/p' ))
     END_VERSIONS
     """
 }
