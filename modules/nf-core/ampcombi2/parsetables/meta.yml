@@ -56,6 +56,10 @@ input:
         type: string
         description: The name of the database to download and set up. This can either be 'DRAMP', 'APD' or 'UniRef100'.
         pattern: "'*'"
+  - - opt_amp_db_dir:
+        type: directory
+        description: The path to the folder containing the fasta and tsv database files.
+        pattern: "path/to/amp_*_database"
 output:
   - sample_dir:
       - meta:
