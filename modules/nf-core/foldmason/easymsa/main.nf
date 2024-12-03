@@ -3,10 +3,10 @@ process FOLDMASON_EASYMSA {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "community.wave.seqera.io/library/foldmason_pigz:54849036d93c89ed"
+    container "community.wave.seqera.io/library/foldmason:512dd7b3e2453a75"
 
     input:
-    tuple val(meta), path(pdbs)
+    tuple val(meta) , path(pdbs)
     tuple val(meta2), path(tree)
     val(compress)
 
@@ -27,8 +27,8 @@ process FOLDMASON_EASYMSA {
         ${pdbs} \\
         ${prefix} \\
         tmp \\
+        ${options_tree} \\
         $args \\
-        $options_tree \\
         --threads $task.cpus
 
     if ${compress}; then
