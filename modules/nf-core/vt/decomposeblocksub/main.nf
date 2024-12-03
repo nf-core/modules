@@ -9,7 +9,7 @@ process VT_DECOMPOSEBLOCKSUB {
         'biocontainers/vt:2015.11.10--h5ef6573_4' }"
 
     input:
-    tuple val(meta), path(vcf), path(intervals)
+    tuple val(meta), path(vcf), path(index), path(intervals)
 
     output:
     tuple val(meta), path("*.vcf.gz")   , emit: vcf

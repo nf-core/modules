@@ -25,10 +25,20 @@ input:
         type: file
         description: The VCF file to decompose
         pattern: "*.vcf(.gz)?"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+    - index:
+        type: file
+        description: The VCF file to decompose
+        pattern: "*.tbi"
+        ontologies:
+          - edam: "http://edamontology.org/format_3616"
     - intervals:
         type: file
         description: The intervals of the variants of decompose
         pattern: "*.bed"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
 output:
   - vcf:
       - meta:
@@ -40,6 +50,8 @@ output:
           type: file
           description: The decomposed VCF file
           pattern: "*.vcf.gz"
+          ontologies:
+          - edam: "http://edamontology.org/format_3016"
   - versions:
       - versions.yml:
           type: file
