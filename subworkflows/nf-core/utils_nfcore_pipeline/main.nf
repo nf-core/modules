@@ -219,9 +219,9 @@ def getSingleReport(multiqc_reports) {
                 default:
                     log.warn("[${workflow.manifest.name}] Found multiple reports from process 'MULTIQC', will use only one")
                     return multiqc_reports.first()
+            }
         default:
             return null
-        }
     }
 }
 
@@ -307,7 +307,7 @@ def completionEmail(summary_params, email, email_on_fail, plaintext_email, outdi
     if (email_address) {
         try {
             if (plaintext_email) {
-                new org.codehaus.groovy.GroovyException('Send plaintext e-mail, not HTML')            
+                new org.codehaus.groovy.GroovyException('Send plaintext e-mail, not HTML')
             }
             // Try to send HTML e-mail using sendmail
             def sendmail_tf = new File(workflow.launchDir.toString(), ".sendmail_tmp.html")
