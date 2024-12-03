@@ -37,7 +37,7 @@ process COPTR_EXTRACT {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}
+    touch ${prefix}.pkl
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
