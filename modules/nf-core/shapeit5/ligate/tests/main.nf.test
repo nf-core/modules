@@ -58,7 +58,6 @@ nextflow_process {
                     .mix(BCFTOOLS_VIEW_2.out.vcf.join(BCFTOOLS_VIEW_2.out.csi))
                     .map { meta, vcf, csi -> [ [id : "NA12878"], vcf, csi ] }
                     .groupTuple()
-                    .view()
                 """
             }
         }
