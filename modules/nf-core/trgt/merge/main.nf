@@ -46,9 +46,14 @@ process TRGT_MERGE {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
+    def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
+                    args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
+                    args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
+                    args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
+                    "vcf"
+    def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
     """
-    touch ${prefix}.vcf
+    $create_cmd ${prefix}.${extension}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
