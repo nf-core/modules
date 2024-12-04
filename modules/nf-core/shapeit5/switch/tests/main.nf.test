@@ -23,10 +23,10 @@ nextflow_process {
                     """
                     input[0] = Channel.of([
                         [ id:'scaffold', single_end:false ], // meta map
-                        file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
-                        file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists: true),
                         [],
-                        "chr21",
+                        "chr22",
                     ])
                     input[1] = Channel.of([[],[],[]])
                     input[2] = Channel.of([[],[],[]])
@@ -49,15 +49,15 @@ nextflow_process {
                 """
                 input[0] = SHAPEIT5_PHASECOMMON.out.phased_variant
                     .join(BCFTOOLS_INDEX.out.csi)
-                    .combine(Channel.of("chr21"))
+                    .combine(Channel.of("chr22"))
                     .combine(Channel.of([[]]))
                 input[1] = Channel.of([[ id:'truth_panel'],
-                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf",checkIfExists:true),
-                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi",checkIfExists:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi",checkIfExists:true)
                 ])
                 input[2] = Channel.of([[ id:'freq_file'],
-                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.sites.vcf.gz",checkIfExists:true),
-                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.sites.vcf.gz.csi",checkIfExists:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz.csi",checkIfExists:true)
                 ])
                 """
             }
@@ -80,9 +80,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([[ id:'truth_panel'],
-                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf",checkIfExists:true),
-                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi",checkIfExists:true),
+                input[0] = Channel.of([
+                    [id:'truth_panel'],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi",checkIfExists:true),
                     "chr21",
                     []
                 ])
