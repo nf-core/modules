@@ -12,7 +12,6 @@ nextflow_process {
     tag "bcftools/view"
 
     test("homo sapiens - map, [vcf], [tbi]") {
-            config "./nextflow.config"
         setup {
             run("BCFTOOLS_VIEW", alias: "BCFTOOLS_VIEW_1") {
                 script "../../../bcftools/view"
