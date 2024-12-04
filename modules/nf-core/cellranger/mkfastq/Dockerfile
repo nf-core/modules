@@ -17,7 +17,7 @@ RUN apt-get update --allow-releaseinfo-change \
 
 # Copy pre-downloaded bcl2fastq2 and cellranger file
 ENV BCL2FASTQ2_VER=v2-20-0-linux-x86-64 \
-    CELLRANGER_VER=8.0.0
+    CELLRANGER_VER=9.0.0
 COPY bcl2fastq2-$BCL2FASTQ2_VER.zip /tmp/bcl2fastq2-$BCL2FASTQ2_VER.zip
 COPY cellranger-$CELLRANGER_VER.tar.gz /opt/cellranger-$CELLRANGER_VER.tar.gz
 

@@ -16,7 +16,7 @@ RUN apt-get update --allow-releaseinfo-change \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
 # Copy pre-downloaded cellranger file
-ENV CELLRANGER_VER=8.0.0
+ENV CELLRANGER_VER=9.0.0
 COPY cellranger-$CELLRANGER_VER.tar.gz /opt/cellranger-$CELLRANGER_VER.tar.gz
 
 # Install cellranger

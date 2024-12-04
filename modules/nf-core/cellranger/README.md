@@ -16,7 +16,9 @@ ENV CELLRANGER_VER=<VERSION>
 docker build . -t quay.io/nf-core/cellranger:<VERSION>
 ```
 
-4. Access rights are needed to push the container to the Dockerhub nfcore organization, please ask a core team member to do so.
+4. Login to Quay.io `docker login quay.io`
+
+5. Access rights are needed to push the container to the Quay.io nfcore organization, please ask a core team member to do so.
 
 ```bash
 docker push quay.io/nf-core/cellranger:<VERSION>
