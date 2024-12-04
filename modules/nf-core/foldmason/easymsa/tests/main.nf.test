@@ -18,7 +18,7 @@ nextflow_process {
             script "../../../../../modules/nf-core/untar/main.nf"
                 process {
                     """
-                        archive = file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/structures/seatoxin-ref.tar.gz", checkIfExists: true)
+                        archive = file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/af2_structures/seatoxin-ref.tar.gz", checkIfExists: true)
                         input[0] = Channel.of(tuple([id:'test'], archive))
                     """
                 }

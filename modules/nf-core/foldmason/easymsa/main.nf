@@ -3,7 +3,7 @@ process FOLDMASON_EASYMSA {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "community.wave.seqera.io/library/foldmason:512dd7b3e2453a75"
+    container "community.wave.seqera.io/library/foldmason_pigz:54849036d93c89ed"
 
     input:
     tuple val(meta) , path(pdbs)
