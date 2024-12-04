@@ -21,15 +21,16 @@ process MERYL_COUNT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def reduced_mem = task.memory.multiply(0.9).toGiga()
     """
-    for READ in $reads; do
+    for READ in ${reads}; do
         meryl count \\
-            k=$kvalue \\
-            threads=$task.cpus \\
-            memory=${task.memory.toGiga()} \\
-            $args \\
+            k=${kvalue} \\
+            threads=${task.cpus} \\
+            memory=${reduced_mem} \\
+            ${args} \\
             \$READ \\
-            output read.\${READ%.f*}.meryl
+            output ${prefix}.\${READ%.f*}.meryl
     done
 
     cat <<-END_VERSIONS > versions.yml
@@ -39,11 +40,10 @@ process MERYL_COUNT {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    for READ in $reads; do
-        touch read.\${READ%.f*}.meryl
+    for READ in ${reads}; do
+        touch ${prefix}.\${READ%.f*}.meryl
     done
 
     cat <<-END_VERSIONS > versions.yml
