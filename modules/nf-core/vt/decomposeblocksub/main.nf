@@ -23,7 +23,7 @@ process VT_DECOMPOSEBLOCKSUB {
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    if ("$vcf" == "${prefix}.vcf" || "$vcf" == "${prefix}.vcf.gz") {
+    if ("$vcf" == "${prefix}.vcf.gz") {
         error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     }
 
