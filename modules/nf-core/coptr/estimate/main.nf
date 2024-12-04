@@ -1,4 +1,4 @@
-process COPTR_EXTRACT {
+process COPTR_ESTIMATE {
     tag "$meta.id"
     label 'process_low'
 
@@ -8,10 +8,10 @@ process COPTR_EXTRACT {
         'biocontainers/coptr:1.1.4--pyhdfd78af_3' }"
 
     input:
-    tuple val(meta), path(bam, stageAs: "bamfolder/*")
+    tuple val(meta), path(pkl, stageAs: "coverage_maps/*")
 
     output:
-    tuple val(meta), path("*.pkl"), emit: coverage
+    tuple val(meta), path("*.csv"), emit: ptr
     path "versions.yml"           , emit: versions
 
     when:
@@ -20,13 +20,12 @@ process COPTR_EXTRACT {
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     coptr \\
-        extract \\
+        estimate \\
         $args \\
-        bamfolder/ \\
-        .
+        coverage_maps/ \\
+        ptrs.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -35,9 +34,10 @@ process COPTR_EXTRACT {
     """
 
     stub:
+    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.pkl
+    touch ${prefix}.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
