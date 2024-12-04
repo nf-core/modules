@@ -34,7 +34,7 @@ process MERYL_COUNT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        meryl: \$( meryl --version |& sed 's/meryl //' )
+        meryl: \$( meryl --version |& sed -n 's/.* \\([a-f0-9]\\{40\\}\\))/\\1/p' )
     END_VERSIONS
     """
 
@@ -48,7 +48,7 @@ process MERYL_COUNT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        meryl: \$( meryl --version |& sed 's/meryl //' )
+        meryl: \$( meryl --version |& sed -n 's/.* \\([a-f0-9]\\{40\\}\\))/\\1/p' )
     END_VERSIONS
     """
 }
