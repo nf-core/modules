@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process SHAPEIT5_LIGATE"
     script "../main.nf"
     process "SHAPEIT5_LIGATE"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
