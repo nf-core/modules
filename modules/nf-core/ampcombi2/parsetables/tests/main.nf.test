@@ -48,14 +48,6 @@ nextflow_process {
                                     process.out.db_txt.collect { file(it[1]).readLines()[0] } +
                                     process.out.db_fasta.collect { file(it[1]).readLines()[0] } +
                                     process.out.db_mmseqs.collect { file(it[1]).getName() } +
-                                    process.out.db_mmseqs_binary.collect { file(it[1]).getName() } +
-                                    process.out.db_mmseqs_dbtype.collect { file(it[1]).getName() } +
-                                    process.out.db_mmseqs_h.collect { file(it[1]).getName() } +
-                                    process.out.db_mmseqs_hdbtype.collect { file(it[1]).getName() } +
-                                    process.out.db_mmseqs_hindex.collect { file(it[1]).getName() } +
-                                    process.out.db_mmseqs_index.collect { file(it[1]).getName() } +
-                                    process.out.db_mmseqs_lookup.collect { file(it[1]).getName() } +
-                                    process.out.db_mmseqs_source.collect { file(it[1]).getName() } +
                                     process.out.versions ).match() }
             )
         }

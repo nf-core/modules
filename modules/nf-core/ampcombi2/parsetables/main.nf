@@ -15,26 +15,18 @@ process AMPCOMBI2_PARSETABLES {
     path opt_amp_db_dir
 
     output:
-    tuple val(meta), path("${meta.id}/")                                       , emit: sample_dir
-    tuple val(meta), path("${meta.id}/contig_gbks/")                           , emit: contig_gbks
-    tuple val(meta), path("${meta.id}/${meta.id}_mmseqs_matches.tsv")          , emit: db_tsv
-    tuple val(meta), path("${meta.id}/${meta.id}_ampcombi.tsv")                , emit: tsv
-    tuple val(meta), path("${meta.id}/${meta.id}_amp.faa")                     , emit: faa
-    tuple val(meta), path("${meta.id}/${meta.id}_ampcombi.log")                , emit: sample_log        , optional:true
-    tuple val(meta), path("Ampcombi_parse_tables.log")                         , emit: full_log          , optional:true
-    tuple val(meta), path("amp_${opt_amp_db}_database/")                       , emit: db                , optional:true
-    tuple val(meta), path("amp_${opt_amp_db}_database/*.txt")                  , emit: db_txt            , optional:true
-    tuple val(meta), path("amp_${opt_amp_db}_database/*.fasta")                , emit: db_fasta          , optional:true
-    tuple val(meta), path("amp_${opt_amp_db}_database/mmseqs2/")               , emit: db_mmseqs         , optional:true
-    tuple val(meta), path("amp_${opt_amp_db}_database/mmseqs2/ref_DB")         , emit: db_mmseqs_binary  , optional:true
-    tuple val(meta), path("amp_${opt_amp_db}_database/mmseqs2/ref_DB.dbtype")  , emit: db_mmseqs_dbtype  , optional:true
-    tuple val(meta), path("amp_${opt_amp_db}_database/mmseqs2/ref_DB_h")       , emit: db_mmseqs_h       , optional:true
-    tuple val(meta), path("amp_${opt_amp_db}_database/mmseqs2/ref_DB_h.dbtype"), emit: db_mmseqs_hdbtype , optional:true
-    tuple val(meta), path("amp_${opt_amp_db}_database/mmseqs2/ref_DB_h.index") , emit: db_mmseqs_hindex  , optional:true
-    tuple val(meta), path("amp_${opt_amp_db}_database/mmseqs2/ref_DB.index")   , emit: db_mmseqs_index   , optional:true
-    tuple val(meta), path("amp_${opt_amp_db}_database/mmseqs2/ref_DB.lookup")  , emit: db_mmseqs_lookup  , optional:true
-    tuple val(meta), path("amp_${opt_amp_db}_database/mmseqs2/ref_DB.source")  , emit: db_mmseqs_source  , optional:true
-    path "versions.yml"                                                        , emit: versions
+    tuple val(meta), path("${meta.id}/")                                , emit: sample_dir
+    tuple val(meta), path("${meta.id}/contig_gbks/")                    , emit: contig_gbks
+    tuple val(meta), path("${meta.id}/${meta.id}_mmseqs_matches.tsv")   , emit: db_tsv
+    tuple val(meta), path("${meta.id}/${meta.id}_ampcombi.tsv")         , emit: tsv
+    tuple val(meta), path("${meta.id}/${meta.id}_amp.faa")              , emit: faa
+    tuple val(meta), path("${meta.id}/${meta.id}_ampcombi.log")         , emit: sample_log   , optional:true
+    tuple val(meta), path("Ampcombi_parse_tables.log")                  , emit: full_log     , optional:true
+    tuple val(meta), path("amp_${opt_amp_db}_database/")                , emit: db           , optional:true
+    tuple val(meta), path("amp_${opt_amp_db}_database/*.txt")           , emit: db_txt       , optional:true
+    tuple val(meta), path("amp_${opt_amp_db}_database/*.fasta")         , emit: db_fasta     , optional:true
+    tuple val(meta), path("amp_${opt_amp_db}_database/mmseqs2/")        , emit: db_mmseqs    , optional:true
+    path "versions.yml"                                                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
