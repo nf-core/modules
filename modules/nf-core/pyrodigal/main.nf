@@ -28,7 +28,7 @@ process PYRODIGAL {
     pigz -cdf ${fasta} > pigz_fasta.fna
 
     pyrodigal \\
-        --jobs ${task.cpus} \\
+        -j ${task.cpus} \\
         $args \\
         -i pigz_fasta.fna \\
         -f $output_format \\
