@@ -61,19 +61,20 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-          pattern: "*.{hist}"
       - "*.hist":
+          type: file
+          description: |
+            The generated 0-centered k* histogram for sequences in <fasta_assembly.fasta>.
+            Positive k* values are expected collapsed copies. Negative k* values are expected
+            expanded  copies. Closer to 0 means the expected and found k-mers are well
+            balenced, 1:1.
+          pattern: "*.{hist}"
+  - log_stderr:
+      - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-          pattern: "*.{hist}"
-  - log_stderr:
-      - meta:
-          type: file
-          description: Log (stderr) of hist tool execution. The QV and QV* metrics are
-            reported at the end.
-          pattern: "*.{hist.stderr.log}"
       - "*.hist.stderr.log":
           type: file
           description: Log (stderr) of hist tool execution. The QV and QV* metrics are
