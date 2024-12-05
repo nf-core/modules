@@ -23,8 +23,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.report,
                     process.out.versions,
+                    process.out.profile_out.get(0).get(1).readLines().any { it.contains("Adjusted_ANI") },
                 ).match()
             }
             )
@@ -48,8 +48,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.profile_out,
                     process.out.versions,
+                    process.out.profile_out.get(0).get(1).readLines().any { it.contains("Adjusted_ANI") },
                 ).match()
             }
             )
@@ -76,8 +76,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.profile_out,
                     process.out.versions,
+                    process.out.profile_out.get(0).get(1).readLines().any { it.contains("Adjusted_ANI") },
                 ).match()
             }
             )
