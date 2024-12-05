@@ -23,12 +23,12 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - input_plain:
+    - input:
         type: file
         description: |
           Genotypes to be phased in plain VCF/BCF format.
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-    - input_plain_index:
+    - input_index:
         type: file
         description: Index file of the input_plain VCF/BCF file containing genotype
           likelihoods.
