@@ -1,0 +1,136 @@
+nextflow_process {
+
+    name "Test Process DASTOOL_DASTOOL"
+    script "../main.nf"
+    process "DASTOOL_DASTOOL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "dastool"
+    tag "dastool/dastool"
+    tag "dastool/fastatocontig2bin"
+    tag "metabat2/metabat2"
+    tag "metabat2/jgibamsummarizebamcontigdepths"
+    tag "prodigal"
+
+    setup {
+        run("METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS") {
+            script "../../../metabat2/jgisummarizebamcontigdepths/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/illumina/bam/test1.sorted.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/illumina/bam/test1.sorted.bam.bai", checkIfExists: true),
+                    ]
+                """
+            }
+        }
+        run("METABAT2_METABAT2") {
+            script "../../../metabat2/metabat2/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz", checkIfExists: true)
+                ]).join(METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS.out.depth)
+                """
+            }
+        }
+        run("DASTOOL_FASTATOCONTIG2BIN") {
+            script "../../fastatocontig2bin/main.nf"
+            process {
+                """
+                input[0] = METABAT2_METABAT2.out.fasta.collect()
+                input[1] = "fa"
+                """
+            }
+        }
+        run("PRODIGAL") {
+            script "../../../prodigal/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz", checkIfExists: true)
+                ])
+                input[1] = "gff"
+                """
+            }
+        }
+    }
+
+    test("dastool dastool - bacteroides fragilis - noproteins") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz", checkIfExists: true)
+                ]).join(DASTOOL_FASTATOCONTIG2BIN.out.fastatocontig2bin)
+                .map { meta, contigs, c2b -> [ meta, contigs, [], c2b ]}
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.summary,
+                    process.out.contig2bin,
+                    process.out.eval,
+                    process.out.bins,
+                    process.out.pdfs,
+                    process.out.fasta_proteins,
+                    process.out.candidates_faa,
+                    process.out.fasta_archaea_scg,
+                    process.out.fasta_bacteria_scg,
+                    process.out.b6,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("dastool dastool - bacteroides fragilis - proteins") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz", checkIfExists: true)
+                ])
+                .join(PRODIGAL.out.amino_acid_fasta)
+                .join(DASTOOL_FASTATOCONTIG2BIN.out.fastatocontig2bin)
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.summary,
+                    process.out.contig2bin,
+                    process.out.eval,
+                    process.out.bins,
+                    process.out.pdfs,
+                    process.out.fasta_proteins,
+                    process.out.candidates_faa,
+                    process.out.fasta_archaea_scg,
+                    process.out.fasta_bacteria_scg,
+                    process.out.b6,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+}
+

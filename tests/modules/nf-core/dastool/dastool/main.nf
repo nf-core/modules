@@ -26,8 +26,9 @@ workflow test_dastool_dastool {
     Channel.of([ [ id:'test', single_end:false ], // meta map
                       file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)])
         .join( DASTOOL_FASTATOCONTIG2BIN.out.fastatocontig2bin )
+        .map { meta, contigs, contig2bin -> [ meta, contigs, [], contig2bin ]}
         .set {input_dastool}
 
 
-    DASTOOL_DASTOOL ( input_dastool, [], [] )
+    DASTOOL_DASTOOL ( input_dastool, [] )
 }
