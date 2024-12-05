@@ -31,14 +31,14 @@ input:
         type: file
         description: fasta file
         pattern: "*.{fa.gz,fas.gz,fasta.gz}"
+    - proteins:
+        type: file
+        description: Predicted proteins in prodigal fasta format (>scaffoldID_geneNo)
+        pattern: "*.{fa.gz,fas.gz,fasta.gz}"
     - bins:
         type: file
         description: "FastaToContig2Bin tabular file generated with dastool/fastatocontig2bin"
         pattern: "*.tsv"
-  - - proteins:
-        type: file
-        description: Predicted proteins in prodigal fasta format (>scaffoldID_geneNo)
-        pattern: "*.{fa.gz,fas.gz,fasta.gz}"
   - - db_directory:
         type: file
         description: (optional) Directory of single copy gene database.
@@ -110,20 +110,20 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.candidates.faa":
+      - "*proteins.faa":
           type: file
           description: Output from prodigal if not already supplied
-          pattern: "*.proteins.faa"
+          pattern: "*proteins.faa"
   - candidates_faa:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.faa":
+      - "*.candidates.faa":
           type: file
           description: FAA file
-          pattern: "*.faa"
+          pattern: "*.candidates.faa"
   - fasta_archaea_scg:
       - meta:
           type: map

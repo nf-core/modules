@@ -19,7 +19,7 @@ process DASTOOL_DASTOOL {
     tuple val(meta), path("*_DASTool_bins/*.fa")        , optional: true, emit: bins
     tuple val(meta), path("*.pdf")                      , optional: true, emit: pdfs
     tuple val(meta), path("*.candidates.faa")           , optional: true, emit: candidates_faa
-    tuple val(meta), path("*.proteins.faa")             , optional: true, emit: fasta_proteins
+    tuple val(meta), path("*proteins.faa")              , optional: true, emit: fasta_proteins
     tuple val(meta), path("*.archaea.scg")              , optional: true, emit: fasta_archaea_scg
     tuple val(meta), path("*.bacteria.scg")             , optional: true, emit: fasta_bacteria_scg
     tuple val(meta), path("*.b6")                       , optional: true, emit: b6
