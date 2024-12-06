@@ -4,7 +4,7 @@ process DEEPVARIANT_CALLVARIANTS {
     label 'process_high'
 
     //Conda is not supported at the moment
-    container "nf-core/deepvariant:1.6.1"
+    container "nf-core/deepvariant:1.8.0"
 
     input:
     tuple val(meta), path(make_examples_tfrecords)
