@@ -39,12 +39,12 @@ nextflow_workflow {
                     .map{
                         tuple(it, it.variable, it.reference, it.target)
                     }
-                FC_threshold = 1.5
-                padj_threshold = 0.05
                 ch_input = Channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.abundance_file),
-                    'deseq2'
+                    'deseq2',  // analysis method
+                    1.5,       // FC threshold
+                    0.05       // padj threshold
                 ])
 
                 input[0] = ch_input
@@ -52,8 +52,6 @@ nextflow_workflow {
                 input[2] = ch_transcript_lengths
                 input[3] = ch_control_features
                 input[4] = ch_contrasts
-                input[5] = FC_threshold
-                input[6] = padj_threshold
                 """
             }
         }
@@ -124,19 +122,19 @@ nextflow_workflow {
                     .map{
                         tuple(it, it.variable, it.reference, it.target)
                     }
-                FC_threshold = 1.5
-                padj_threshold = 0.05
-                ch_input = AFFY_JUSTRMA.out.expression.map{ meta, file ->
-                    [meta, file, 'limma']
-                }
+                ch_input = AFFY_JUSTRMA.out.expression.map{ meta, file -> [
+                    meta,
+                    file,
+                    'limma',
+                    1.5,       // FC threshold
+                    0.05       // padj threshold
+                ]}
 
                 input[0] = ch_input
                 input[1] = ch_samplesheet
                 input[2] = ch_transcript_lengths
                 input[3] = ch_control_features
                 input[4] = ch_contrasts
-                input[5] = FC_threshold
-                input[6] = padj_threshold
                 """
             }
         }
@@ -180,12 +178,12 @@ nextflow_workflow {
                     .map{
                         tuple(it, it.variable, it.reference, it.target)
                     }
-                FC_threshold = 1.5
-                padj_threshold = 0.05
                 ch_input = Channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.abundance_file),
-                    'limma'
+                    'limma',
+                    1.5,       // FC threshold
+                    0.05       // padj threshold
                 ])
 
                 input[0] = ch_input
@@ -193,8 +191,6 @@ nextflow_workflow {
                 input[2] = ch_transcript_lengths
                 input[3] = ch_control_features
                 input[4] = ch_contrasts
-                input[5] = FC_threshold
-                input[6] = padj_threshold
                 """
             }
         }
@@ -242,12 +238,12 @@ nextflow_workflow {
                     .map{
                         tuple(it, it.variable, it.reference, it.target)
                     }
-                FC_threshold = 1.5
-                padj_threshold = 0.05
                 ch_input = Channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.abundance_file),
-                    'deseq2'
+                    'deseq2',
+                    1.5,       // FC threshold
+                    0.05       // padj threshold
                 ])
 
                 input[0] = ch_input
@@ -255,8 +251,6 @@ nextflow_workflow {
                 input[2] = ch_transcript_lengths
                 input[3] = ch_control_features
                 input[4] = ch_contrasts
-                input[5] = FC_threshold
-                input[6] = padj_threshold
                 """
             }
         }
@@ -301,11 +295,21 @@ nextflow_workflow {
                     .map{
                         tuple(it, it.variable, it.reference, it.target)
                     }
-                FC_threshold = 1.5
-                padj_threshold = 0.05
                 ch_input = Channel.of(
-                    [[ id:'test' ], file(testData.expression_test_data_dir + testData.abundance_file), 'limma'],
-                    [[ id:'test' ], file(testData.expression_test_data_dir + testData.abundance_file), 'deseq2']
+                    [
+                        [ id:'test' ],
+                        file(testData.expression_test_data_dir + testData.abundance_file),
+                        'limma',
+                        1.5,       // FC threshold
+                        0.05       // padj threshold
+                    ],
+                    [
+                        [ id:'test' ],
+                        file(testData.expression_test_data_dir + testData.abundance_file),
+                        'deseq2',
+                        1.5,       // FC threshold
+                        0.05       // padj threshold
+                    ]
                 )
 
                 input[0] = ch_input
@@ -313,8 +317,6 @@ nextflow_workflow {
                 input[2] = ch_transcript_lengths
                 input[3] = ch_control_features
                 input[4] = ch_contrasts
-                input[5] = FC_threshold
-                input[6] = padj_threshold
                 """
             }
         }
@@ -361,12 +363,12 @@ nextflow_workflow {
                     .map{
                         tuple(it, it.variable, it.reference, it.target)
                     }
-                FC_threshold = 1.5
-                padj_threshold = 0.05
                 ch_input = Channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.abundance_file),
-                    'deseq2'
+                    'deseq2',
+                    1.5,       // FC threshold
+                    0.05       // padj threshold
                 ])
 
                 input[0] = ch_input
@@ -374,8 +376,6 @@ nextflow_workflow {
                 input[2] = ch_transcript_lengths
                 input[3] = ch_control_features
                 input[4] = ch_contrasts
-                input[5] = FC_threshold
-                input[6] = padj_threshold
                 """
             }
         }

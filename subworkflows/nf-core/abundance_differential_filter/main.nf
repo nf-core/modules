@@ -11,16 +11,13 @@ include { CUSTOM_FILTERDIFFERENTIALTABLE      } from '../../../modules/nf-core/c
 workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     take:
     // Things we may need to iterate
-    ch_input                 // [[meta_input], counts, analysis method,]
+    ch_input                 // [[meta_input], counts, analysis method, fc_threshold, padj_threshold]
 
     // Workflow-wide things, we don't need to iterate
     ch_samplesheet           // [ meta_exp, samplesheet ]
     ch_transcript_lengths    // [ meta_exp, transcript_lengths]
     ch_control_features      // [meta_exp, control_features]
     ch_contrasts             // [[ meta_contrast, contrast_variable, reference, target ]]
-    FC_threshold             // FC threshold (value)
-    padj_threshold           // padj threshold (value)
-
 
     main:
 
@@ -28,9 +25,14 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     inputs = ch_input
         .combine(ch_samplesheet)
         .combine(ch_contrasts)
-        .multiMap { meta_input, abundance, analysis_method, meta_exp, samplesheet, contrast_meta, variable, reference, target ->
-            samples_and_matrix: [meta_input + [ 'method': analysis_method ], samplesheet, abundance]
-            contrasts: [ contrast_meta + [ 'method': analysis_method ], variable, reference, target]
+        .multiMap { meta_input, abundance, analysis_method, fc_threshold, padj_threshold, meta_exp, samplesheet, contrast_meta, variable, reference, target ->
+            samples_and_matrix:
+                meta_map = meta_input + [ 'method': analysis_method, 'fc': fc_threshold, 'padj': padj_threshold ]
+                [meta_map, samplesheet, abundance]
+            contrasts:
+                meta_map = contrast_meta + [ 'method': analysis_method ]
+                [ meta_map, variable, reference, target]
+
         }
 
     // Perform normalization and differential analysis
@@ -65,23 +67,25 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     ch_versions = DESEQ2_DIFFERENTIAL.out.versions
         .mix(LIMMA_DIFFERENTIAL.out.versions)
 
-    // Define logFC and padj columns based on method in ch_results
-    ch_columns = ch_results.map { meta, results ->
-        def columns = meta.method == 'deseq2' ? ["log2FoldChange", "padj"] : ["logFC", "adj.P.Val"]
-        [meta, columns]
+    // Extract the fc and pval filters from the metamap we stashed them in
+    ch_diff_filter_params = ch_results.multiMap { meta, results ->
+        fc_column: meta.method == 'deseq2' ? 'log2FoldChange' : 'logFC'
+        padj_column: meta.method == 'deseq2' ? 'padj' : 'adj.P.Val'
+        fc_threshold: meta.fc
+        padj_threshold: meta.padj
     }
 
     // Filter differential results
     CUSTOM_FILTERDIFFERENTIALTABLE(
         ch_results,
-        ch_columns.map { meta, columns -> columns[0] },  // logFC column
-        FC_threshold,
-        ch_columns.map { meta, columns -> columns[1] },  // padj column
-        padj_threshold
+        ch_diff_filter_params.fc_column,
+        ch_diff_filter_params.fc_threshold,
+        ch_diff_filter_params.padj_column,
+        ch_diff_filter_params.padj_threshold
     )
 
     emit:
-    results_genewise           = ch_results
+    results_genewise           = ch_results.map{meta, results -> [meta, results] }
     results_genewise_filtered  = CUSTOM_FILTERDIFFERENTIALTABLE.out.filtered
     normalised_matrix          = ch_normalised_matrix
     variance_stabilised_matrix = DESEQ2_NORM.out.rlog_counts.mix(DESEQ2_NORM.out.vst_counts)
