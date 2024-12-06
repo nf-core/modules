@@ -4,8 +4,8 @@ process TRIMGALORE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/trim-galore%3A0.6.10--hdfd78af_1' :
-        'biocontainers/trim-galore:0.6.10--hdfd78af_1' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9b/9becad054093ad4083a961d12733f2a742e11728fe9aa815d678b882b3ede520/data' :
+        'community.wave.seqera.io/library/cutadapt_trim-galore_pigz:a98edd405b34582d' }"
 
     input:
     tuple val(meta), path(reads)
@@ -24,7 +24,7 @@ process TRIMGALORE {
     script:
     def args = task.ext.args ?: ''
     // Calculate number of --cores for TrimGalore based on value of task.cpus
-    // See: https://github.com/FelixKrueger/TrimGalore/blob/master/Changelog.md#version-060-release-on-1-mar-2019
+    // See: https://github.com/FelixKrueger/TrimGalore/blob/master/CHANGELOG.md#version-060-release-on-1-mar-2019
     // See: https://github.com/nf-core/atacseq/pull/65
     def cores = 1
     if (task.cpus) {
