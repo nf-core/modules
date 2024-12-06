@@ -12,24 +12,22 @@ process LIMMA_DIFFERENTIAL {
     tuple val(meta2), path(samplesheet), path(intensities)
 
     output:
-    tuple val(out_meta), path("*.limma.results.tsv")          , emit: results
-    tuple val(out_meta), path("*.limma.mean_difference.png")  , emit: md_plot
-    tuple val(out_meta), path("*.MArrayLM.limma.rds")         , emit: rdata
-    tuple val(out_meta), path("*.limma.model.txt")            , emit: model
-    tuple val(out_meta), path("*.R_sessionInfo.log")          , emit: session_info
-    tuple val(out_meta), path("*.normalised_counts.tsv")      , emit: normalised_counts, optional: true
+    tuple val(meta), path("*.limma.results.tsv")          , emit: results
+    tuple val(meta), path("*.limma.mean_difference.png")  , emit: md_plot
+    tuple val(meta), path("*.MArrayLM.limma.rds")         , emit: rdata
+    tuple val(meta), path("*.limma.model.txt")            , emit: model
+    tuple val(meta), path("*.R_sessionInfo.log")          , emit: session_info
+    tuple val(meta), path("*.normalised_counts.tsv")      , emit: normalised_counts, optional: true
     path "versions.yml"                                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    out_meta = meta + meta2
     template 'limma_de.R'
 
     stub:
-    out_meta = meta + meta2
-    prefix   = task.ext.prefix   ?: "${meta.id}"
+    prefix              = task.ext.prefix   ?: "${meta.id}"
     """
     #!/usr/bin/env Rscript
     library(limma)

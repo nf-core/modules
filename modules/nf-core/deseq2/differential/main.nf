@@ -14,26 +14,24 @@ process DESEQ2_DIFFERENTIAL {
     tuple val(meta4), path(transcript_lengths_file)
 
     output:
-    tuple val(out_meta), path("*.deseq2.results.tsv")              , emit: results
-    tuple val(out_meta), path("*.deseq2.dispersion.png")           , emit: dispersion_plot
-    tuple val(out_meta), path("*.dds.rld.rds")                     , emit: rdata
-    tuple val(out_meta), path("*.deseq2.sizefactors.tsv")          , emit: size_factors
-    tuple val(out_meta), path("*.normalised_counts.tsv")           , emit: normalised_counts
-    tuple val(out_meta), path("*.rlog.tsv")                        , optional: true, emit: rlog_counts
-    tuple val(out_meta), path("*.vst.tsv")                         , optional: true, emit: vst_counts
-    tuple val(out_meta), path("*.deseq2.model.txt")                , emit: model
-    tuple val(out_meta), path("*.R_sessionInfo.log")               , emit: session_info
+    tuple val(meta), path("*.deseq2.results.tsv")              , emit: results
+    tuple val(meta), path("*.deseq2.dispersion.png")           , emit: dispersion_plot
+    tuple val(meta), path("*.dds.rld.rds")                     , emit: rdata
+    tuple val(meta), path("*.deseq2.sizefactors.tsv")          , emit: size_factors
+    tuple val(meta), path("*.normalised_counts.tsv")           , emit: normalised_counts
+    tuple val(meta), path("*.rlog.tsv")                        , optional: true, emit: rlog_counts
+    tuple val(meta), path("*.vst.tsv")                         , optional: true, emit: vst_counts
+    tuple val(meta), path("*.deseq2.model.txt")                , emit: model
+    tuple val(meta), path("*.R_sessionInfo.log")               , emit: session_info
     path "versions.yml"                                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    out_meta = meta + meta2
     template 'deseq_de.R'
 
     stub:
-    out_meta = meta + meta2
     """
     touch ${meta.id}.deseq2.results.tsv
     touch ${meta.id}.deseq2.dispersion.png
