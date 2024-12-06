@@ -51,6 +51,7 @@ process TRIMGALORE {
         "${task.process}":
             trimgalore: \$(echo \$(trim_galore --version 2>&1) | sed 's/^.*version //; s/Last.*\$//')
             cutadapt: \$(cutadapt --version)
+            pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
         END_VERSIONS
         """
     } else {
@@ -69,6 +70,7 @@ process TRIMGALORE {
         "${task.process}":
             trimgalore: \$(echo \$(trim_galore --version 2>&1) | sed 's/^.*version //; s/Last.*\$//')
             cutadapt: \$(cutadapt --version)
+            pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
         END_VERSIONS
         """
     }
@@ -91,6 +93,7 @@ process TRIMGALORE {
     "${task.process}":
         trimgalore: \$(echo \$(trim_galore --version 2>&1) | sed 's/^.*version //; s/Last.*\$//')
         cutadapt: \$(cutadapt --version)
+        pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
     END_VERSIONS
     """
 }
