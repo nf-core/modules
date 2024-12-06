@@ -50,12 +50,12 @@ process TRIMMOMATIC {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     if (meta.single_end) {
-        output_command = "echo '' | gzip > ${prefix}.SE.paired.trim.fastq.gz"
+        output_command = "echo '' | gzip > ${prefix}.SE.paired.trim.fastq.gz\n"
     } else {
-        output_command  = "echo '' | gzip > ${prefix}.paired.trim_1.fastq.gz"
-        output_command  = "echo '' | gzip > ${prefix}.paired.trim_2.fastq.gz"
-        output_command += "echo '' | gzip > ${prefix}.unpaired.trim_1.fastq.gz"
-        output_command += "echo '' | gzip > ${prefix}.unpaired.trim_2.fastq.gz"
+        output_command  = "echo '' | gzip > ${prefix}.paired.trim_1.fastq.gz\n"
+        output_command += "echo '' | gzip > ${prefix}.paired.trim_2.fastq.gz\n"
+        output_command += "echo '' | gzip > ${prefix}.unpaired.trim_1.fastq.gz\n"
+        output_command += "echo '' | gzip > ${prefix}.unpaired.trim_2.fastq.gz\n"
     }
 
     """
