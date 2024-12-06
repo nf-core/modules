@@ -1,7 +1,8 @@
 process TRIMGALORE {
     tag "${meta.id}"
     label 'process_high'
-    resourceLimits [cpus: 15]
+    // ~3GB per actual core used (15 cores * 3GB + 3GB buffer)
+    resourceLimits [memory: 48.GB, cpus: 15]
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
