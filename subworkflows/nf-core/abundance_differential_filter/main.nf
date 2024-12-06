@@ -8,6 +8,13 @@ include { DESEQ2_DIFFERENTIAL                 } from '../../../modules/nf-core/d
 include { DESEQ2_DIFFERENTIAL as DESEQ2_NORM  } from '../../../modules/nf-core/deseq2/differential/main'
 include { CUSTOM_FILTERDIFFERENTIALTABLE      } from '../../../modules/nf-core/custom/filterdifferentialtable/main'
 
+// Combine meta maps, including merging non-identical values of shared keys (e.g. 'id')
+def mergeMaps(meta, meta2){
+    (meta + meta2).collectEntries { k, v ->
+        meta[k] && meta[k] != v ? [k, "${meta[k]}_${v}"] : [k, v]
+    }
+}
+
 workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     take:
     // Things we may need to iterate
@@ -25,14 +32,16 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     inputs = ch_input
         .combine(ch_samplesheet)
         .combine(ch_contrasts)
-        .multiMap { meta_input, abundance, analysis_method, fc_threshold, padj_threshold, meta_exp, samplesheet, contrast_meta, variable, reference, target ->
+        .multiMap { meta_input, abundance, analysis_method, fc_threshold, padj_threshold, meta_exp, samplesheet, meta_contrasts, variable, reference, target ->
             samples_and_matrix:
-                meta_map = meta_input + [ 'method': analysis_method, 'fc': fc_threshold, 'padj': padj_threshold ]
+                meta_map = meta_input + [ 'method': analysis_method ]
                 [meta_map, samplesheet, abundance]
             contrasts:
-                meta_map = contrast_meta + [ 'method': analysis_method ]
-                [ meta_map, variable, reference, target]
-
+                meta_map = mergeMaps(meta_contrasts, meta_input) + [ 'method': analysis_method ]
+                [ meta_map, variable, reference, target ]
+            filter_params:
+                meta_map = mergeMaps(meta_contrasts, meta_input) + [ 'method': analysis_method ]
+                [meta_map, [ 'fc_threshold': fc_threshold, 'padj_threshold': padj_threshold ]]
         }
 
     // Perform normalization and differential analysis
@@ -68,16 +77,19 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         .mix(LIMMA_DIFFERENTIAL.out.versions)
 
     // Extract the fc and pval filters from the metamap we stashed them in
-    ch_diff_filter_params = ch_results.multiMap { meta, results ->
-        fc_column: meta.method == 'deseq2' ? 'log2FoldChange' : 'logFC'
-        padj_column: meta.method == 'deseq2' ? 'padj' : 'adj.P.Val'
-        fc_threshold: meta.fc
-        padj_threshold: meta.padj
-    }
+    ch_diff_filter_params = ch_results
+        .join(inputs.filter_params)
+        .multiMap { meta, results, filter_meta ->
+            filter_input: [meta + filter_meta, results]
+            fc_column: meta.method == 'deseq2' ? 'log2FoldChange' : 'logFC'
+            padj_column: meta.method == 'deseq2' ? 'padj' : 'adj.P.Val'
+            fc_threshold: filter_meta.fc_threshold
+            padj_threshold: filter_meta.padj_threshold
+        }
 
     // Filter differential results
     CUSTOM_FILTERDIFFERENTIALTABLE(
-        ch_results,
+        ch_diff_filter_params.filter_input,
         ch_diff_filter_params.fc_column,
         ch_diff_filter_params.fc_threshold,
         ch_diff_filter_params.padj_column,
