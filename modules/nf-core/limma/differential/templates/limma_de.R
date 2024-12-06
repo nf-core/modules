@@ -500,7 +500,7 @@ dev.off()
 
 # R object for other processes to use
 
-#saveRDS(fit2, file = paste(opt\$output_prefix, 'MArrayLM.limma.rds', sep = '.'))
+saveRDS(fit2, file = paste(opt\$output_prefix, 'MArrayLM.limma.rds', sep = '.'))
 
 # Save model to file
 
