@@ -54,7 +54,7 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.2"
         },
-        "timestamp": "2024-12-06T13:19:46.143963"
+        "timestamp": "2024-12-06T13:39:04.919826456"
     },
     "deseq2 and limma - mouse - basic": {
         "content": [
@@ -83,7 +83,7 @@
                         "fc": 1.5,
                         "padj": 0.05
                     },
-                    "treatment_mCherry_hND6__limma.limma.results.tsv:md5,9e071c4201af600509dd04172a80c809"
+                    "treatment_mCherry_hND6__limma.limma.results.tsv:md5,ff36827b7869a8a3c3c905efedcafc93"
                 ],
                 [
                     {
@@ -96,7 +96,7 @@
                         "fc": 1.5,
                         "padj": 0.05
                     },
-                    "treatment_mCherry_hND6_sample_number_limma.limma.results.tsv:md5,9e071c4201af600509dd04172a80c809"
+                    "treatment_mCherry_hND6_sample_number_limma.limma.results.tsv:md5,ff36827b7869a8a3c3c905efedcafc93"
                 ]
             ],
             [
@@ -247,28 +247,104 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.2"
         },
-        "timestamp": "2024-12-06T13:21:34.577647"
+        "timestamp": "2024-12-06T13:42:04.92894866"
     },
     "limma - voom": {
         "content": [
             [
-                
+                [
+                    {
+                        "id": "test",
+                        "variable": "treatment",
+                        "reference": "mCherry",
+                        "target": "hND6",
+                        "blocking": "",
+                        "method": "limma",
+                        "fc": 1.5,
+                        "padj": 0.05
+                    },
+                    "test_filtered.tsv:md5,0bfc9215edc6aad064c3ce6abc81bfce"
+                ],
+                [
+                    {
+                        "id": "test",
+                        "variable": "treatment",
+                        "reference": "mCherry",
+                        "target": "hND6",
+                        "blocking": "sample_number",
+                        "method": "limma",
+                        "fc": 1.5,
+                        "padj": 0.05
+                    },
+                    "test_filtered.tsv:md5,0bfc9215edc6aad064c3ce6abc81bfce"
+                ]
             ],
             [
-                
+                [
+                    {
+                        "id": "test",
+                        "variable": "treatment",
+                        "reference": "mCherry",
+                        "target": "hND6",
+                        "blocking": "",
+                        "method": "limma",
+                        "fc": 1.5,
+                        "padj": 0.05
+                    },
+                    "treatment_mCherry_hND6__limma_norm.normalised_counts.tsv:md5,2aa4880ba5ae246a728b25f4316ca2ca"
+                ],
+                [
+                    {
+                        "id": "test",
+                        "variable": "treatment",
+                        "reference": "mCherry",
+                        "target": "hND6",
+                        "blocking": "",
+                        "method": "limma",
+                        "fc": 1.5,
+                        "padj": 0.05
+                    },
+                    "treatment_mCherry_hND6__limma_norm.normalised_counts.tsv:md5,2aa4880ba5ae246a728b25f4316ca2ca"
+                ]
             ],
             [
-                
+                [
+                    {
+                        "id": "test",
+                        "variable": "treatment",
+                        "reference": "mCherry",
+                        "target": "hND6",
+                        "blocking": "",
+                        "method": "limma",
+                        "fc": 1.5,
+                        "padj": 0.05
+                    },
+                    "treatment_mCherry_hND6_.limma.model.txt:md5,d2113d82b76046c319e6602da2ad74d6"
+                ],
+                [
+                    {
+                        "id": "test",
+                        "variable": "treatment",
+                        "reference": "mCherry",
+                        "target": "hND6",
+                        "blocking": "sample_number",
+                        "method": "limma",
+                        "fc": 1.5,
+                        "padj": 0.05
+                    },
+                    "treatment_mCherry_hND6_sample_number.limma.model.txt:md5,d2113d82b76046c319e6602da2ad74d6"
+                ]
             ],
             [
-                
+                "versions.yml:md5,1ddaab440e2528c688c05a02dd066f12",
+                "versions.yml:md5,1ddaab440e2528c688c05a02dd066f12"
             ]
         ],
         "meta": {
             "nf-test": "0.9.2",
             "nextflow": "24.10.2"
         },
-        "timestamp": "2024-12-06T13:19:55.475921"
+        "timestamp": "2024-12-06T13:39:43.011608683"
     },
     "stub": {
         "content": [
@@ -435,7 +511,7 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.2"
         },
-        "timestamp": "2024-12-06T13:21:51.772302"
+        "timestamp": "2024-12-06T13:42:46.13934189"
     },
     "deseq2 - mouse - basic": {
         "content": [
@@ -522,7 +598,7 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.2"
         },
-        "timestamp": "2024-12-06T13:18:33.837223"
+        "timestamp": "2024-12-06T13:37:56.704639103"
     },
     "deseq2 - with transcript lengths": {
         "content": [
@@ -609,6 +685,6 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.2"
         },
-        "timestamp": "2024-12-06T13:20:20.508491"
+        "timestamp": "2024-12-06T13:40:47.367175397"
     }
 }
