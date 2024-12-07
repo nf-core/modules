@@ -67,7 +67,7 @@ process BCL2FASTQ {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bcl2fastq: \$(bcl2fastq -V 2>&1 | grep -m 1 bcl2fastq | sed 's/^.*bcl2fastq v//')
+        bcl2fastq: \$(bcl2fastq --version 2>&1 | grep -m 1 bcl2fastq | sed 's/^.*bcl2fastq v//')
     END_VERSIONS
     """
 }
