@@ -15,8 +15,6 @@ def mergeMaps(meta, meta2){
     }
 }
 
-
-
 workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     take:
     // Things we may need to iterate
