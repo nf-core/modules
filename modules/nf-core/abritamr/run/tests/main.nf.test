@@ -14,21 +14,57 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [                                                                                                                                         
-                            [ id:'test', single_end:false ], // meta map                                                                                                  
-                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.fna.gz', checkIfExists: true)                                              
-                ] 
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.fna.gz', checkIfExists: true)
+                ]
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.matches,
+                    process.out.partials,
+                    process.out.virulence,
+                    process.out.out,
+                    process.out.txt,
+                    path(process.out.versions[0]).yaml
+                ).match() },
             )
         }
 
+    }
+
+    test("haemophilus_influenzae genome [fna_gz] - STUB") {
+        options "-stub-run"
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.fna.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.matches,
+                    process.out.partials,
+                    process.out.virulence,
+                    process.out.out,
+                    process.out.txt,
+                    path(process.out.versions[0]).yaml
+                ).match() },
+            )
+        }
     }
 
 }
