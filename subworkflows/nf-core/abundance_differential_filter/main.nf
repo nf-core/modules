@@ -15,6 +15,8 @@ def mergeMaps(meta, meta2){
     }
 }
 
+
+
 workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     take:
     // Things we may need to iterate
@@ -28,33 +30,45 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
 
     main:
 
-    // We need to cross the things we're iterating
+    // Set up how the channels crossed below will be used to generate channels for processing
+    def criteria = multiMapCriteria { meta_input, abundance, analysis_method, fc_threshold, padj_threshold, meta_exp, samplesheet, meta_contrasts, variable, reference, target ->
+        samples_and_matrix:
+            meta_map = meta_input + [ 'method': analysis_method ]
+            [meta_map, samplesheet, abundance]
+        contrasts:
+            meta_map = mergeMaps(meta_contrasts, meta_input) + [ 'method': analysis_method ]
+            [ meta_map, variable, reference, target ]
+        filter_params:
+            meta_map = mergeMaps(meta_contrasts, meta_input) + [ 'method': analysis_method ]
+            [meta_map, [ 'fc_threshold': fc_threshold, 'padj_threshold': padj_threshold ]]
+    }
+
+    // For differential we need to cross the things we're iterating so we run
+    // differential analysis for every combination of matrix and contrast
     inputs = ch_input
         .combine(ch_samplesheet)
         .combine(ch_contrasts)
-        .multiMap { meta_input, abundance, analysis_method, fc_threshold, padj_threshold, meta_exp, samplesheet, meta_contrasts, variable, reference, target ->
-            samples_and_matrix:
-                meta_map = meta_input + [ 'method': analysis_method ]
-                [meta_map, samplesheet, abundance]
-            contrasts:
-                meta_map = mergeMaps(meta_contrasts, meta_input) + [ 'method': analysis_method ]
-                [ meta_map, variable, reference, target ]
-            filter_params:
-                meta_map = mergeMaps(meta_contrasts, meta_input) + [ 'method': analysis_method ]
-                [meta_map, [ 'fc_threshold': fc_threshold, 'padj_threshold': padj_threshold ]]
-        }
+        .multiMap(criteria)
+
+    // We only need a normalised matrix from one contrast. The reason we don't
+    //just use the output from the first differential is that the methods can
+    // subset matrices
+    norm_inputs = ch_input
+        .combine(ch_samplesheet)
+        .combine(ch_contrasts.first()) // Just taking the first contrast
+        .multiMap(criteria)
 
     // Perform normalization and differential analysis
     DESEQ2_NORM(
-        inputs.contrasts.filter{it[0].method == 'deseq2'}.first(),
-        inputs.samples_and_matrix.filter{it[0].method == 'deseq2'},
+        norm_inputs.contrasts.filter{it[0].method == 'deseq2'}.first(),
+        norm_inputs.samples_and_matrix.filter{it[0].method == 'deseq2'},
         ch_control_features,
         ch_transcript_lengths
     )
 
     LIMMA_NORM(
-        inputs.contrasts.filter{it[0].method == 'limma'}.first(),
-        inputs.samples_and_matrix.filter{it[0].method == 'limma'}
+        norm_inputs.contrasts.filter{it[0].method == 'limma'}.first(),
+        norm_inputs.samples_and_matrix.filter{it[0].method == 'limma'}
     )
 
     DESEQ2_DIFFERENTIAL(
