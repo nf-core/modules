@@ -1,23 +1,9 @@
 name: Run nf-test
 on:
-  push:
-    branches:
-      # https://docs.renovatebot.com/key-concepts/automerge/#branch-vs-pr-automerging
-      - "renovate/**" # branches Renovate creates
   pull_request:
-    branches: [master]
   merge_group:
     types: [checks_requested]
     branches: [master]
-  workflow_dispatch:
-    inputs:
-      runners:
-        description: "Runners to test on"
-        type: choice
-        options:
-          - "ubuntu-latest"
-          - "self-hosted"
-        default: "self-hosted"
 
 # Cancel if a newer run is started
 concurrency:
