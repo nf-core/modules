@@ -16,9 +16,11 @@ LABEL org.opencontainers.image.license="https://emea.support.illumina.com/conten
 
 # 'ps' command is need by some nextflow executions to collect system stats
 # Install procps and clean up
-RUN apk --no-cache del \
+RUN apk --no-cache add \
     bash \
     procps
 
 # Link hostname cmd to fix hardcoded path
 RUN ln -s /bin/hostname /usr/bin/hostname
+
+# ENTRYPOINT ["/bin/bash"]
