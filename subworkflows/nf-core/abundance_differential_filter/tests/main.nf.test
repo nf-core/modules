@@ -288,8 +288,8 @@ nextflow_workflow {
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.samplesheet_file)
                 ])
-                ch_transcript_lengths = Channel.of([ [], [] ])
-                ch_control_features = Channel.of([ [], [] ])
+                ch_transcript_lengths = Channel.value([ [], [] ])
+                ch_control_features = Channel.value([ [], [] ])
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{

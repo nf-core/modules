@@ -60,8 +60,8 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     DESEQ2_NORM(
         norm_inputs.contrasts.filter{it[0].method == 'deseq2'}.first(),
         norm_inputs.samples_and_matrix.filter{it[0].method == 'deseq2'},
-        ch_control_features,
-        ch_transcript_lengths
+        ch_control_features.first(),
+        ch_transcript_lengths.first()
     )
 
     LIMMA_NORM(
@@ -72,8 +72,8 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     DESEQ2_DIFFERENTIAL(
         inputs.contrasts.filter{it[0].method == 'deseq2'},
         inputs.samples_and_matrix.filter{it[0].method == 'deseq2'},
-        ch_control_features,
-        ch_transcript_lengths
+        ch_control_features.first(),
+        ch_transcript_lengths.first()
     )
 
     LIMMA_DIFFERENTIAL(
