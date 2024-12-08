@@ -12,7 +12,7 @@ workflow test_parabricks_mutectcaller {
     input = [
         [ id:'test',  tumor_id:'tumour' ],
         file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
-        [], // index only neeeded if using intervals or tumor-normal calling
+        [], // index only needed if using intervals or tumor-normal calling
         [],
         [],
         []
