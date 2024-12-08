@@ -72,38 +72,8 @@ nextflow_workflow {
             )
         }
     }
-    test("Test files from tutorial") {
-        config "./bed.config"
 
-        when {
-            workflow {
-                """
-                input[0] = [
-                    [ id: 'test' ],
-                    [file('ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM340nnn/GSM340901/suppl/GSM340901_lib1_aligned.bed.gz', checkIfExists: true),
-                    file('ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM340nnn/GSM340902/suppl/GSM340902_lib2_aligned.bed.gz', checkIfExists: true)],
-                ]
-                input[1] = file('https://hgdownload.soe.ucsc.edu/goldenPath/hg18/chromosomes/chr14.fa.gz', checkIfExists: true)
-                input[2] = []
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert workflow.success },
-                { assert snapshot(
-                    // NOTE tagdir
-                    path(workflow.out.bed_graph.get(0).get(1)).linesGzip.size(),
-                    workflow.out.peaks,
-                    workflow.out.bed,
-                    path(workflow.out.versions.get(0)).yaml,
-                ).match() },
-            )
-        }
-    }
-
-    test("uniqmap") {
+    test("Test files from GROseq tutorial with uniqmap") {
 
         tag "uniqmap"
 
