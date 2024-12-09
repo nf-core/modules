@@ -43,7 +43,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - results/*.csv:
           type: file
-          description: Optional CSV formated result file of resistance and strain type
+          description: Optional CSV formatted result file of resistance and strain type
           pattern: "*.csv"
   - json:
       - meta:
@@ -53,7 +53,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - results/*.json:
           type: file
-          description: JSON formated result file of resistance and strain type
+          description: JSON formatted result file of resistance and strain type
           pattern: "*.json"
   - txt:
       - meta:
@@ -73,7 +73,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - vcf/*.vcf.gz:
           type: file
-          description: VCF with variant info again refernce genomes
+          description: VCF with variant info again reference genomes
           pattern: "*.vcf"
   - versions:
       - versions.yml:
