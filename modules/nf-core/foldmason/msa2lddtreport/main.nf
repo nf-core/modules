@@ -3,8 +3,9 @@ process FOLDMASON_MSA2LDDTREPORT {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "community.wave.seqera.io/library/foldmason:512dd7b3e2453a75"
-
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+            'oras://community.wave.seqera.io/library/foldmason_pigz:d8dfffbc768abe03':
+            'community.wave.seqera.io/library/foldmason:2.7bd21ed--e7f739473ad6578d' }"
     input:
     tuple val(meta)  , path(msa)
     tuple val(meta2) , path(db)
