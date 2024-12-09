@@ -5,7 +5,7 @@ process FOLDMASON_EASYMSA {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
             'oras://community.wave.seqera.io/library/foldmason_pigz:d8dfffbc768abe03':
-            'community.wave.seqera.io/library/foldmason:2.7bd21ed--e7f739473ad6578d' }"
+            'community.wave.seqera.io/library/foldmason_pigz:88809eb5649534b0' }"
 
 
     input:
