@@ -3,7 +3,9 @@ process FOLDMASON_CREATEDB {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "community.wave.seqera.io/library/foldmason:2.7bd21ed--e7f739473ad6578d"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+            'oras://community.wave.seqera.io/library/foldmason:2.7bd21ed--a45f76ed12b391e6':
+            'community.wave.seqera.io/library/foldmason:2.7bd21ed--e7f739473ad6578d' }"
 
     input:
     tuple val(meta) , path(pdbs)
