@@ -3,7 +3,7 @@ process FOLDMASON_CREATEDB {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "community.wave.seqera.io/library/foldmason:512dd7b3e2453a75"
+    container "community.wave.seqera.io/library/foldmason:2.7bd21ed--e7f739473ad6578d"
 
     input:
     tuple val(meta) , path(pdbs)
