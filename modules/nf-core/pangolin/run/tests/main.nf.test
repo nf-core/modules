@@ -1,11 +1,12 @@
 nextflow_process {
 
-    name "Test Process PANGOLIN"
+    name "Test Process PANGOLIN_RUN"
     script "../main.nf"
-    process "PANGOLIN"
+    process "PANGOLIN_RUN"
 
     tag "modules"
     tag "modules_nfcore"
+    tag "pangolin/run"
     tag "pangolin"
 
     test("sarscov2 genome [fasta]") {
@@ -17,6 +18,7 @@ nextflow_process {
                             [ id:'test' ], // meta map
                             [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
                 ]
+                input[1] = []
                 """
             }
         }
@@ -28,6 +30,42 @@ nextflow_process {
             )
         }
 
+    }
+
+    test("sarscov2 genome [fasta] - update data") {
+        setup{
+            run("PANGOLIN_UPDATEDATA") {
+                script "../../updatedata/main.nf"
+                process {
+                    """
+                    input[0] = 'testdb'
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test' ], // meta map
+                            [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+                ]
+                input[1] = PANGOLIN_UPDATEDATA.out.db
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.report[0][1]).name,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
     }
 
     test("sarscov2 genome [fasta] - stub") {
@@ -41,6 +79,7 @@ nextflow_process {
                             [ id:'test' ], // meta map
                             [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
                 ]
+                input[1] = []
                 """
             }
         }
@@ -53,5 +92,6 @@ nextflow_process {
         }
 
     }
+
 
 }
