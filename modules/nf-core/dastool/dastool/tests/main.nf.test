@@ -78,13 +78,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert path(process.out.fasta_proteins.get(0).get(1)).text.contains("MKIGIITICKVNNYGAELQAFATQKKLEQMGHNAEIINYLYYKDWHFKDTPLSQPFVPLD") },
                 { assert snapshot(
                     process.out.summary,
                     process.out.contig2bin,
                     process.out.eval,
                     process.out.bins,
                     process.out.pdfs,
-                    process.out.fasta_proteins,
                     process.out.candidates_faa,
                     process.out.fasta_archaea_scg,
                     process.out.fasta_bacteria_scg,
