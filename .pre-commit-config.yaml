@@ -30,3 +30,7 @@ repos:
     hooks:
       - id: editorconfig-checker
         alias: ec
+  - repo: https://github.com/nf-core/tools
+    rev: pre-commit
+    hooks:
+      - id: lint-subworkflows
