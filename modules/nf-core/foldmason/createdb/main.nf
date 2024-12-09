@@ -4,7 +4,7 @@ process FOLDMASON_CREATEDB {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-            'oras://community.wave.seqera.io/library/foldmason:2.7bd21ed--a45f76ed12b391e6':
+            'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a8/a88d162c3f39a1518d48c3faec235e6fcde750586da868b62fc5f0a08a89aa9d/data' :
             'community.wave.seqera.io/library/foldmason:2.7bd21ed--e7f739473ad6578d' }"
 
     input:
