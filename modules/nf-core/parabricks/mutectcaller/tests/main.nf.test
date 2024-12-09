@@ -134,36 +134,6 @@ nextflow_process {
     //         )
     //     }
 
-    }
-
-    // test("human - bam - tn - intervals") {
-
-    //     config "./nextflow.config"
-
-    //     when {
-    //         params {
-    //             module_args = "--in-normal-bam $normal_bam --normal-name $meta.normal_id --mutect-low-memory"
-    //         }
-    //         process {
-    //             """
-    //             input[0] = [
-    //                 [ id:'test',  tumor_id:'tumor', normal_id:'normal'],
-    //                 file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
-    //                 file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true),
-    //                 file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
-    //                 file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true),
-    //                 file(params.test_data['homo_sapiens']['genome']['genome_21_multi_interval_bed'], checkIfExists: true)
-    //             ]
-    //             input[1] = [ // fasta
-    //                 [ id: 'reference' ],
-    //                 file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
-    //                 ]
-    //             input[2] = [] // pon
-    //             input[3] = [] // pon index
-    //             """
-    //         }
-    //     }
-
     // }
 
     // test("human - bam - tn - intervals") {
