@@ -1,0 +1,38 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "hostile_fetch"
+description: Downloads required reference genomes for Hostile
+keywords:
+  - hostile
+  - decontamination
+  - human removal
+  - download
+tools:
+  - "hostile":
+      description: "Hostile: accurate host decontamination"
+      homepage: "https://github.com/bede/hostile"
+      documentation: "https://github.com/bede/hostile"
+      tool_dev_url: "https://github.com/bede/hostile"
+      doi: "10.1093/bioinformatics/btad728"
+      licence: ["MIT"]
+      identifier: biotools:hostile
+
+output:
+  - reference:
+      - "reference/":
+          type: directory
+          description: Directory containing required reference genome files
+            for hostile clean
+          pattern: "reference/"
+          ontologies:
+            - edam: "http://edamontology.org/data_1049"
+
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@jfy133"
+maintainers:
+  - "@jfy133"

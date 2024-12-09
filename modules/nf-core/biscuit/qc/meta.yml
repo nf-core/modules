@@ -27,11 +27,24 @@ input:
     - bam:
         type: file
         description: BAM file produced using Biscuit
-  - - index:
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
         type: file
-        description: index file
+        description: Input genome fasta file
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - index:
+        type: directory
+        description: Directory containing biscuit genome index
 output:
-  - biscuit_qc_reports:
+  - reports:
       - meta:
           type: file
           description: |
@@ -65,3 +78,4 @@ authors:
   - "@njspix"
 maintainers:
   - "@njspix"
+  - "@sateeshperi"

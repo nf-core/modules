@@ -1,6 +1,7 @@
 process PARABRICKS_FQ2BAM {
     tag "$meta.id"
     label 'process_high'
+    label 'process_gpu'
 
     container "nvcr.io/nvidia/clara/clara-parabricks:4.3.2-1"
 
