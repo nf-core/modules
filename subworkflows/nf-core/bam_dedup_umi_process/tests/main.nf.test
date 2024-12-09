@@ -1,0 +1,90 @@
+nextflow_workflow {
+
+    name "Test Workflow BAM_DEDUP_UMI_PROCESS"
+    script "../main.nf"
+    workflow "BAM_DEDUP_UMI_PROCESS"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/bam_dedup_umi_process"
+
+    test("Should run with UMItools on genome and transcriptome BAM") {
+
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam.bai', checkIfExists: true)
+                ]
+                input[2] = file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                input[3] = 'umitools'
+                input[4] = true
+                input[5] = false
+                input[6] = true
+                input[7] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887.Aligned.toTranscriptome.out.bam', checkIfExists: true)
+                ]
+                input[8] = file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() },
+                { assert path(workflow.out.genome_bam.get(0).get(1)).exists() },
+                { assert path(workflow.out.genome_bam_index.get(0).get(1)).exists() },
+                { assert path(workflow.out.transcriptome_bam.get(0).get(1)).exists() },
+                { assert workflow.out.versions },
+                { assert workflow.out.multiqc_files }
+            )
+        }
+
+    }
+
+    test("Should run with UMIcollapse on genome BAM only") {
+
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam.bai', checkIfExists: true)
+                ]
+                input[2] = file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                input[3] = 'umicollapse'
+                input[4] = false
+                input[5] = true
+                input[6] = false
+                input[7] = []
+                input[8] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() },
+                { assert path(workflow.out.genome_bam.get(0).get(1)).exists() },
+                { assert path(workflow.out.genome_bam_index.get(0).get(1)).exists() },
+                { assert workflow.out.transcriptome_bam.isEmpty() },
+                { assert workflow.out.versions },
+                { assert workflow.out.multiqc_files }
+            )
+        }
+
+    }
+
+}
