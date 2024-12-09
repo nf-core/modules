@@ -11,7 +11,7 @@ process TCOFFEE_EXTRACTFROMPDB {
     tuple val(meta), path(pdb)
 
     output:
-    tuple val(meta), path("${prefix}.pdb"), emit: formatted_file
+    tuple val(meta), path("${prefix}.pdb"), emit: formatted_pdb
     path "versions.yml" , emit: versions
 
 
