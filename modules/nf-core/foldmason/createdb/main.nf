@@ -8,7 +8,7 @@ process FOLDMASON_CREATEDB {
             'community.wave.seqera.io/library/foldmason:2.7bd21ed--e7f739473ad6578d' }"
 
     input:
-    tuple val(meta) , path(pdbs)
+    tuple val(meta) , path(structures)
 
     output:
     tuple val(meta), path("${prefix}*"), emit: db
