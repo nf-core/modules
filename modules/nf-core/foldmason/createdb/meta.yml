@@ -21,9 +21,9 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-    - pdbs:
+    - structures:
         type: file
-        description: Input protein structures in PDB format.
+        description: Input protein structures in `PDB` or `mmCIF` format.
         pattern: "*.{pdb,mmcif}"
 
 output:
