@@ -1,4 +1,4 @@
-name: "foldmason_easymsa"
+name: "foldmason_createdb"
 description: Creates a database for Foldmason.
 keywords:
   - alignment
@@ -33,8 +33,8 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "${prefix}":
-          type: files
+      - "${prefix}*":
+          type: file
           description: All database files created by Foldmason
           pattern: "*"
   - versions:
