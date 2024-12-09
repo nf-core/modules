@@ -1,4 +1,4 @@
-process PANGOLIN_UPDATEDATASET {
+process PANGOLIN_UPDATEDATA {
     tag "$dbname"
     label 'process_single'
 
@@ -11,8 +11,8 @@ process PANGOLIN_UPDATEDATASET {
     val(dbname)
 
     output:
-    tuple val(dbname), path("${prefix}"), emit: db
-    path "versions.yml"               , emit: versions
+    path("${prefix}")   , emit: db
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,7 +37,6 @@ process PANGOLIN_UPDATEDATASET {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${dbname}"
     """
     mkdir -p ${prefix}
