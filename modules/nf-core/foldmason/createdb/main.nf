@@ -22,7 +22,7 @@ process FOLDMASON_CREATEDB {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     foldmason createdb \\
-        ${pdbs} \\
+        ${structures} \\
         ${prefix} \\
         $args \\
         --threads $task.cpus
