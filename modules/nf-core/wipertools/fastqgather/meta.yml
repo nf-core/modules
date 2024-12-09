@@ -1,0 +1,58 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "wipertools_fastqgather"
+description: A tool of the wipertools suite that merges FASTQ chunks produced by wipertools_fastqscatter
+keywords:
+  - fastq
+  - merge
+  - union
+tools:
+  - "fastqgather":
+      description:
+        "A tool of the wipertools suite that merges FASTQ chunks produced\
+        \ by wipertools_fastqscatter."
+      homepage: "https://github.com/mazzalab/fastqwiper"
+      documentation: "https://github.com/mazzalab/fastqwiper"
+      tool_dev_url: "https://github.com/mazzalab/fastqwiper"
+      doi: "no DOI available"
+      licence: ["GPL v2-or-later"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fastq_folder_in:
+        type: file
+        description: Directory containing FASTQ chunks to be merged
+        pattern: "*.{fastq,fastq.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1930"
+          - edam: "http://edamontology.org/format_3989"
+output:
+  - fastq_out:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fastq.gz":
+          type: file
+          description: The resulting FASTQ file
+          pattern: "*.fastq.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_1930"
+            - edam: "http://edamontology.org/format_3989"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+authors:
+  - "@tm4zza"
+maintainers:
+  - "@mazzalab"
+  - "@tm4zza"

@@ -1,0 +1,66 @@
+nextflow_process {
+
+    name "Test Process WIPERTOOLS_FASTQGATHER"
+    script "../main.nf"
+    process "WIPERTOOLS_FASTQGATHER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "wipertools"
+    tag "wipertools/fastqgather"
+    tag "untar"
+
+    test("merge two gzipped fastq - fastq.gz") {
+
+        config "./base.config"
+
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                    [id: 'fastq_chunks'],
+                    [file('https://raw.githubusercontent.com/nf-core/test-datasets/fastqrepair/testdata/pp_1-of-2_ss.fastq.gz', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/fastqrepair/testdata/pp_2-of-2_ss.fastq.gz', checkIfExists: true)]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.fastq_out, process.out.versions).match() }
+            )
+        }
+
+    }
+
+    test("merge two gzipped fastq - fastq.gz - stub") {
+
+        options "-stub"
+        config "./base.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: 'fastq_chunks'],
+                    [file('https://raw.githubusercontent.com/nf-core/test-datasets/fastqrepair/testdata/pp_1-of-2_ss.fastq.gz', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/fastqrepair/testdata/pp_2-of-2_ss.fastq.gz', checkIfExists: true)]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.fastq_out, process.out.versions).match() }
+            )
+        }
+    }
+
+}

@@ -1,0 +1,63 @@
+nextflow_process {
+
+    name "Test Process WIPERTOOLS_REPORTGATHER"
+    script "../main.nf"
+    process "WIPERTOOLS_REPORTGATHER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "wipertools"
+    tag "wipertools/reportgather"
+    tag "untar"
+
+    test("merge two tar-gzipped reports - .tar.gz") {
+
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [
+                    [id: 'report_chunks'],
+                    [file('https://raw.githubusercontent.com/nf-core/test-datasets/fastqrepair/testdata/report_chunk1.report', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/fastqrepair/testdata/report_chunk2.report', checkIfExists: true)]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.report_out, process.out.versions).match() }
+            )
+        }
+
+    }
+
+    test("merge two tar-gzipped reports - .tar.gz - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: 'report_chunks'],
+                    [file('https://raw.githubusercontent.com/nf-core/test-datasets/fastqrepair/testdata/report_chunk1.report', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/fastqrepair/testdata/report_chunk2.report', checkIfExists: true)]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.report_out, process.out.versions).match() }
+            )
+        }
+    }
+
+}
