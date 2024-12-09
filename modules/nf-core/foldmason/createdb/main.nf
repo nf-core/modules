@@ -10,7 +10,7 @@ process FOLDMASON_CREATEDB {
 
     output:
     tuple val(meta), path("${prefix}*"), emit: db
-    path "versions.yml"               , emit: versions
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
