@@ -31,14 +31,15 @@ input:
         type: file
         description: fasta file
         pattern: "*.{fa.gz,fas.gz,fasta.gz}"
-    - proteins:
-        type: file
-        description: Predicted proteins in prodigal fasta format (>scaffoldID_geneNo)
-        pattern: "*.{fa.gz,fas.gz,fasta.gz}"
+
     - bins:
         type: file
         description: "FastaToContig2Bin tabular file generated with dastool/fastatocontig2bin"
         pattern: "*.tsv"
+    - proteins:
+        type: file
+        description: Predicted proteins in prodigal fasta format (>scaffoldID_geneNo)
+        pattern: "*.{fa.gz,fas.gz,fasta.gz}"
   - - db_directory:
         type: file
         description: (optional) Directory of single copy gene database.

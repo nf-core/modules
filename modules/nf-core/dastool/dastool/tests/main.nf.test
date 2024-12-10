@@ -64,6 +64,9 @@ nextflow_process {
     test("dastool dastool - bacteroides fragilis - noproteins") {
 
         when {
+            params {
+                module_args = '--write_bins --write_bin_evals'
+            }
             process {
                 """
                 input[0] = Channel.of([
@@ -102,6 +105,9 @@ nextflow_process {
     test("dastool dastool - bacteroides fragilis - proteins") {
 
         when {
+            params {
+                module_args = '--write_bins --write_bin_evals'
+            }
             process {
                 """
                 input[0] = Channel.of([
