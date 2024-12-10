@@ -11,13 +11,16 @@ nextflow_process {
 
     test("30 paired-end reads - fastq") {
 
-        config "./base.config"
+        config "./nextflow.config"
 
         when {
+            params {
+                module_args = '-a ACGT'
+            }
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:true ],
+                    [ id:'test' ],
                     file('https://raw.githubusercontent.com/nf-core/test-datasets/fastqrepair/testdata/truncated_clean.fastq', checkIfExists: true),
                 ]
                 """
@@ -36,13 +39,16 @@ nextflow_process {
     test("30 paired-end reads - fastq - stub") {
 
         options "-stub"
-        config "./base.config"
+        config "./nextflow.config"
 
         when {
+            params {
+                module_args = '-a ACGT'
+            }
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:true ],
+                    [ id:'test' ],
                     file('https://raw.githubusercontent.com/nf-core/test-datasets/fastqrepair/testdata/truncated_clean.fastq', checkIfExists: true),
                 ]
                 """

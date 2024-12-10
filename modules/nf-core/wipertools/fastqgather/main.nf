@@ -21,7 +21,11 @@ process WIPERTOOLS_FASTQGATHER {
     def args      = task.ext.args ?: ''
     def prefix    = task.ext.prefix ?: "${meta.id}"
     """
-    wipertools fastqgather -i $fastq_in -o ${prefix}_gather.fastq.gz ${args}
+    wipertools \\
+        fastqgather \\
+        -i $fastq_in \\
+        -o ${prefix}_gather.fastq.gz \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -32,7 +36,7 @@ process WIPERTOOLS_FASTQGATHER {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo -e "@ERR001268.2 080821_HWI-EAS301_0002_30ALBAAXX:1:1:1090:1998/1" > ${prefix}_gather.fastq | gzip -c > ${prefix}_gather.fastq.gz
+    echo "" | gzip > ${prefix}_gather.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

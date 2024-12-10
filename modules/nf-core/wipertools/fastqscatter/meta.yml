@@ -14,6 +14,7 @@ tools:
       doi: "no DOI available"
       licence: ["GPL v2-or-later"]
       identifier: ""
+      args_id: "$args"
 
 input:
   - - meta:
@@ -38,7 +39,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "${out_folder}/*":
           type: file
           description: Chunk FASTQ files

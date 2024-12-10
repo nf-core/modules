@@ -16,13 +16,14 @@ tools:
       doi: "no DOI available"
       licence: ["GPL v2-or-later"]
       identifier: ""
+      args_id: "$args"
 
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test' ]
     - fastq_in:
         type: file
         description: List of FASTQ chunk files to be merged
@@ -36,7 +37,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*_gather.fastq.gz":
           type: file
           description: The resulting FASTQ file

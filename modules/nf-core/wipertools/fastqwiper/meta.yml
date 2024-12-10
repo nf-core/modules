@@ -14,13 +14,14 @@ tools:
       doi: "no DOI available"
       licence: ["GPL v2-or-later"]
       identifier: ""
+      args_id: "$args"
 
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test' ]
     - fastq_in:
         type: file
         description: FASTQ file to be cleaned
@@ -34,7 +35,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "${meta.id}*_wiped.fastq.gz":
           type: file
           description: Cleaned FASTQ file

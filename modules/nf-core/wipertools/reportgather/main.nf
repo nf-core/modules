@@ -21,7 +21,11 @@ process WIPERTOOLS_REPORTGATHER {
     def args      = task.ext.args ?: ''
     def prefix    = task.ext.prefix ?: "${meta.id}"
     """
-    wipertools reportgather -r $reports -f ${prefix}_gathered.report ${args}
+    wipertools \\
+        reportgather \\
+        -r $reports \\
+        -f ${prefix}_gathered.report \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -32,7 +36,7 @@ process WIPERTOOLS_REPORTGATHER {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo -e "GATHERED REPORT FROM MANY REPORTS" > ${prefix}_gathered.report
+    touch ${prefix}_gathered.report
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

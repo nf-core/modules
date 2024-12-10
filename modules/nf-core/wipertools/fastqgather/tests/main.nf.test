@@ -12,11 +12,11 @@ nextflow_process {
 
     test("merge two gzipped fastq - fastq.gz") {
 
-        config "./base.config"
+        config "./nextflow.config"
 
         when {
             params {
-                outdir   = "$outputDir"
+                module_args = '--prefix pp_'
             }
             process {
                 """
@@ -32,7 +32,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.fastq_out, process.out.versions).match() }
+                { assert snapshot(process.out).match() }
             )
         }
 
@@ -41,9 +41,12 @@ nextflow_process {
     test("merge two gzipped fastq - fastq.gz - stub") {
 
         options "-stub"
-        config "./base.config"
+        config "./nextflow.config"
 
         when {
+            params {
+                module_args = '--prefix pp_'
+            }
             process {
                 """
                 input[0] = [
@@ -58,7 +61,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.fastq_out, process.out.versions).match() }
+                { assert snapshot(process.out).match() }
             )
         }
     }

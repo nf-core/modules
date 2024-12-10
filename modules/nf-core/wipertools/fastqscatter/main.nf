@@ -23,9 +23,13 @@ process WIPERTOOLS_FASTQSCATTER {
     def prefix      = task.ext.prefix ?: "${meta.id}"
     def args_list   = args.tokenize()
     out_folder      = (args_list.contains('--out_folder') ? args_list[args_list.indexOf('--out_folder')+1] : (args_list.contains('-o') ? args_list[args_list.indexOf('-o')+1] : 'chunks'))
-
     """
-    wipertools fastqscatter -f ${fastq} -n ${num_splits} -p ${prefix} ${args}
+    wipertools \\
+        fastqscatter \\
+        -f ${fastq} \\
+        -n ${num_splits} \\
+        -p ${prefix} \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -40,8 +44,8 @@ process WIPERTOOLS_FASTQSCATTER {
     out_folder      = (args_list.contains('--out_folder') ? args_list[args_list.indexOf('--out_folder')+1] : (args_list.contains('-o') ? args_list[args_list.indexOf('-o')+1] : 'chunks'))
     """
     mkdir ${out_folder}
-    echo -e "@ERR001268.1 080821_HWI-EAS301_0002_30ALBAAXX:1:1:1090:1998/1" > ${out_folder}/prefix_1-of-2_suffix.fastq
-    echo -e "@ERR001268.2 080821_HWI-EAS301_0002_30ALBAAXX:1:1:1090:1998/2" > ${out_folder}/prefix_2-of-2_suffix.fastq
+    echo -e "@ERR001268.1 080821_HWI-EAS301_0002_30ALBAAXX:1:1:1090:1998/1" > ${out_folder}/${prefix}_1-of-2_suffix.fastq
+    echo -e "@ERR001268.2 080821_HWI-EAS301_0002_30ALBAAXX:1:1:1090:1998/2" > ${out_folder}/${prefix}_2-of-2_suffix.fastq
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
