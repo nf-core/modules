@@ -12,6 +12,7 @@ components:
   - hmmer/hmmalign
   - hmmer/eslalimask
   - hmmer/eslreformat
+  - clustalo/align
   - mafft/align
   - epang/place
   - epang/split
@@ -59,7 +60,7 @@ input:
       description: Phylogenetic model to use in placement, e.g. 'LG+F' or 'GTR+I+F'
   - alignmethod:
       type: string
-      description: Method used for alignment, 'hmmer' or 'mafft'
+      description: Method used for alignment, 'hmmer', 'clustalo' or 'mafft'
 output:
   - meta:
       type: map
