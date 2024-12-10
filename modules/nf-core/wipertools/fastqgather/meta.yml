@@ -23,9 +23,9 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - fastq_folder_in:
+    - fastq_in:
         type: file
-        description: Directory containing FASTQ chunks to be merged
+        description: List of FASTQ chunk files to be merged
         pattern: "*.{fastq,fastq.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_1930"
@@ -37,7 +37,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.fastq.gz":
+      - "*_gather.fastq.gz":
           type: file
           description: The resulting FASTQ file
           pattern: "*.fastq.gz"
