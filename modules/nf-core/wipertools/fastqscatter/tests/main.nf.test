@@ -1,0 +1,63 @@
+nextflow_process {
+
+    name "Test Process WIPERTOOLS_FASTQSCATTER"
+    script "../main.nf"
+    process "WIPERTOOLS_FASTQSCATTER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "wipertools"
+    tag "wipertools/fastqscatter"
+
+    test("3 reads, one truncated - fastq") {
+
+        config "./base.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/fastqrepair/testdata/truncated_clean.fastq', checkIfExists: true),
+                ]
+                input[1] = 2  // splits num
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.chunks, process.out.versions).match() }
+            )
+        }
+
+    }
+
+    test("3 reads, one truncated - fastq - stub") {
+
+        options "-stub"
+        config "./base.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/fastqrepair/testdata/truncated_clean.fastq', checkIfExists: true),
+                ]
+                input[1] = 2  // splits num
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.chunks, process.out.versions).match() }
+            )
+        }
+
+    }
+
+}
