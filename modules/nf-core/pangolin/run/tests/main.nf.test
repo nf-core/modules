@@ -60,6 +60,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert path(process.out.report[0][1]).readLines().first().contains("taxon,lineage,conflict,ambiguity_score,scorpio_call,scorpio_support,scorpio_conflict,scorpio_notes,version,pangolin_version,scorpio_version,constellation_version,is_designated,qc_status,qc_notes,note") },
                 { assert snapshot(
                     file(process.out.report[0][1]).name,
                     process.out.versions
