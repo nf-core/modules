@@ -1,0 +1,56 @@
+nextflow_process {
+
+    name "Test Process COOLTOOLS_INSULATION"
+    script "../main.nf"
+    process "COOLTOOLS_INSULATION"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cooltools"
+    tag "cooltools/insulation"
+
+    test("sarscov2 - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                       file("https://github.com/open2c/cooltools/raw/master/tests/data/CN.mm9.1000kb.cool", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                       file("https://github.com/open2c/cooltools/raw/master/tests/data/CN.mm9.1000kb.cool", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

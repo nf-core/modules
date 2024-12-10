@@ -1,0 +1,41 @@
+name: "cooltools_insulation"
+description: Calculate the diamond insulation scores and call insulating boundaries
+keywords:
+  - cool
+  - insulation
+  - Hi-C
+tools:
+  - "cooltools":
+      description: "Analysis tools for genomic interaction data stored in .cool format"
+      homepage: "https://cooltools.readthedocs.io"
+      documentation: "https://cooltools.readthedocs.io"
+      tool_dev_url: "https://github.com/open2c/cooltools/"
+      doi: "10.5281/zenodo.5214125"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - cool:
+      type: file
+      description: cool file
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - bigwig:
+      type: file
+      description: bigwig file for different window sizes
+      pattern: "*.bw"
+  - tsv:
+      type: file
+      description: tsv file with insulation score and boundaries for several window sizes
+      pattern: "*.tsv"
+
+authors:
+  - "@nservant"
