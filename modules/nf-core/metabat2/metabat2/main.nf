@@ -45,4 +45,16 @@ process METABAT2_METABAT2 {
         metabat2: \$( metabat2 --help 2>&1 | head -n 2 | tail -n 1| sed 's/.*\\:\\([0-9]*\\.[0-9]*\\).*/\\1/' )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.1.fa.gz
+    touch ${prefix}.tsv.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        metabat2: \$( metabat2 --help 2>&1 | head -n 2 | tail -n 1| sed 's/.*\\:\\([0-9]*\\.[0-9]*\\).*/\\1/' )
+    END_VERSIONS
+    """
 }

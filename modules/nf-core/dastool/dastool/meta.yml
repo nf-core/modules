@@ -110,10 +110,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*proteins.faa":
+      - "*_proteins.faa":
           type: file
           description: Output from prodigal if not already supplied
-          pattern: "*proteins.faa"
+          pattern: "*_proteins.faa"
   - candidates_faa:
       - meta:
           type: map

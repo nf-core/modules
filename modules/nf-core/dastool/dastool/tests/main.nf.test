@@ -2,6 +2,7 @@ nextflow_process {
 
     name "Test Process DASTOOL_DASTOOL"
     script "../main.nf"
+    config "./nextflow.config"
     process "DASTOOL_DASTOOL"
 
     tag "modules"
@@ -69,7 +70,7 @@ nextflow_process {
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz", checkIfExists: true)
                 ]).join(DASTOOL_FASTATOCONTIG2BIN.out.fastatocontig2bin)
-                .map { meta, contigs, c2b -> [ meta, contigs, [], c2b ]}
+                .map { meta, contigs, c2b -> [ meta, contigs, c2b, [] ]}
                 input[1] = []
                 """
             }
@@ -78,6 +79,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert path(process.out.log.get(0).get(1)).text.contains("Dereplicating, aggregating, and scoring bins") },
                 { assert path(process.out.fasta_proteins.get(0).get(1)).text.contains("MKIGIITICKVNNYGAELQAFATQKKLEQMGHNAEIINYLYYKDWHFKDTPLSQPFVPLD") },
                 { assert snapshot(
                     process.out.summary,
@@ -89,6 +91,7 @@ nextflow_process {
                     process.out.fasta_archaea_scg,
                     process.out.fasta_bacteria_scg,
                     process.out.b6,
+                    process.out.seqlength,
                     process.out.versions
                 ).match() }
             )
@@ -105,8 +108,8 @@ nextflow_process {
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz", checkIfExists: true)
                 ])
-                .join(PRODIGAL.out.amino_acid_fasta)
                 .join(DASTOOL_FASTATOCONTIG2BIN.out.fastatocontig2bin)
+                .join(PRODIGAL.out.amino_acid_fasta)
                 input[1] = []
                 """
             }
@@ -115,6 +118,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert path(process.out.log.get(0).get(1)).text.contains("Dereplicating, aggregating, and scoring bins") },
                 { assert snapshot(
                     process.out.summary,
                     process.out.contig2bin,
@@ -126,8 +130,36 @@ nextflow_process {
                     process.out.fasta_archaea_scg,
                     process.out.fasta_bacteria_scg,
                     process.out.b6,
+                    process.out.seqlength,
                     process.out.versions
                 ).match() }
+            )
+        }
+
+    }
+
+    test("dastool dastool - bacteroides fragilis - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz", checkIfExists: true)
+                ])
+                .join(DASTOOL_FASTATOCONTIG2BIN.out.fastatocontig2bin)
+                .join(PRODIGAL.out.amino_acid_fasta)
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
             )
         }
 
