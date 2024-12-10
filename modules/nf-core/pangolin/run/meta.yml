@@ -4,6 +4,7 @@ keywords:
   - covid
   - pangolin
   - lineage
+  - run
 tools:
   - pangolin:
       description: |
@@ -21,6 +22,11 @@ input:
         type: file
         description: |
           The genome assembly to be evaluated
+  - - db:
+      type: directory
+      description: |
+        Directory containing the Pangolin database
+
 output:
   - report:
       - meta:
