@@ -35,20 +35,24 @@ nextflow_process {
             }
         }
 
-        run("FOLDMASON_CREATEDB") {
-            script "../../../../../modules/nf-core/foldmason/createdb/main.nf"
-            process {
-                """
-                input[0] = [ [ id:'test_tree' ], // meta map
-                            file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
-                            ]
-                """
+        setup{
+            run("FOLDMASON_CREATEDB") {
+                script "../../../../../modules/nf-core/foldmason/createdb/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id:'test_tree' ], // meta map
+                                UNTAR.out.untar.map { meta,dir -> [meta, file(dir).listFiles().collect()]}
+                                ]
+                    """
+                }
             }
         }
 
     }
 
     test("seatoxin") {
+
+
         when {
             process {
                 """
