@@ -1,17 +1,17 @@
 nextflow_process {
- 
+
     name "Test Process PROPR_GREA"
     script "../main.nf"
     process "PROPR_GREA"
-    
+
     tag "modules"
     tag "modules_nfcore"
     tag "propr"
     tag "propr/grea"
     tag "mygene"
     tag "propr/propr"
- 
-    test("grea chained to propr using default options") {  
+
+    test("grea chained to propr using default options") {
 
         tag "default"
         config "./grea_test.config"
@@ -49,7 +49,7 @@ nextflow_process {
                 """
             }
         }
- 
+
         then {
             assertAll(
                 { assert process.success },

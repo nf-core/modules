@@ -7,20 +7,24 @@ keywords:
   - metagenomics
 tools:
   - metaphlan:
-      description: Identify clades (phyla to species) present in the metagenome obtained from a microbiome sample and their relative abundance
+      description: Identify clades (phyla to species) present in the metagenome obtained
+        from a microbiome sample and their relative abundance
       homepage: https://huttenhower.sph.harvard.edu/metaphlan/
       documentation: https://github.com/biobakery/MetaPhlAn
       doi: "10.7554/eLife.65088"
       licence: ["MIT License"]
+      identifier: biotools:metaphlan
 output:
   - db:
-      type: directory
-      description: Output directory containing the indexed METAPHLAN database
-      pattern: "*/"
+      - metaphlan_db_latest:
+          type: directory
+          description: Output directory containing the indexed METAPHLAN database
+          pattern: "*/"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@LilyAnderssonLee"
 maintainers:

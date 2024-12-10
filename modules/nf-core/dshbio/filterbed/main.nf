@@ -32,4 +32,16 @@ process DSHBIO_FILTERBED {
         dshbio: \$(dsh-bio --version 2>&1 | grep -o 'dsh-bio-tools .*' | cut -f2 -d ' ')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo | gzip > ${prefix}.bed.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        dshbio: \$(dsh-bio --version 2>&1 | grep -o 'dsh-bio-tools .*' | cut -f2 -d ' ')
+    END_VERSIONS
+    """
 }

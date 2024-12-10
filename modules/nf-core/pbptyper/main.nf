@@ -35,4 +35,19 @@ process PBPTYPER {
         pbptyper: \$(echo \$(pbptyper --version 2>&1) | sed 's/^.*pbptyper, version //;' )
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.tsv
+    touch ${prefix}-1A.tblastn.tsv
+    touch ${prefix}-2B.tblastn.tsv
+    touch ${prefix}-2X.tblastn.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        pbptyper: \$(echo \$(pbptyper --version 2>&1) | sed 's/^.*pbptyper, version //;' )
+    END_VERSIONS
+    """
 }

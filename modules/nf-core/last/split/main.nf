@@ -4,8 +4,8 @@ process LAST_SPLIT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/last:1542--h43eeafb_1' :
-        'biocontainers/last:1542--h43eeafb_1' }"
+        'https://depot.galaxyproject.org/singularity/last:1571--h43eeafb_0' :
+        'biocontainers/last:1571--h43eeafb_0' }"
 
     input:
     tuple val(meta), path(maf)

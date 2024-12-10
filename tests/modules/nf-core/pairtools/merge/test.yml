@@ -1,8 +1,0 @@
-- name: pairtools merge test_pairtools_merge
-  command: nextflow run ./tests/modules/nf-core/pairtools/merge -entry test_pairtools_merge -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/pairtools/merge/nextflow.config
-  tags:
-    - pairtools
-    - pairtools/merge
-  files:
-    - path: "output/pairtools/test_merged.pairs.gz"
-    - path: "output/pairtools/versions.yml"

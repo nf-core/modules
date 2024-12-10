@@ -1,5 +1,6 @@
 name: cellranger_mkfastq
-description: Module to create FASTQs needed by the 10x Genomics Cell Ranger tool. Uses the cellranger mkfastq command.
+description: Module to create FASTQs needed by the 10x Genomics Cell Ranger tool.
+  Uses the cellranger mkfastq command.
 keywords:
   - reference
   - mkfastq
@@ -8,29 +9,83 @@ keywords:
   - bcl2fastq
 tools:
   - cellranger:
-      description: Cell Ranger by 10x Genomics is a set of analysis pipelines that process Chromium single-cell data to align reads, generate feature-barcode matrices, perform clustering and other secondary analysis, and more.
+      description: Cell Ranger by 10x Genomics is a set of analysis pipelines that process
+        Chromium single-cell data to align reads, generate feature-barcode matrices,
+        perform clustering and other secondary analysis, and more.
       homepage: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger
       documentation: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
       tool_dev_url: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
       licence: [10X Genomics EULA]
+      identifier: ""
 input:
-  - bcl:
-      type: file
-      description: Base call files
-      pattern: "*.bcl.bgzf"
-  - csv:
-      type: file
-      description: Sample sheet
-      pattern: "*.csv"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - csv:
+        type: file
+        description: Sample sheet
+        pattern: "*.csv"
+    - bcl:
+        type: file
+        description: Base call files
+        pattern: "*.bcl.bgzf"
 output:
   - fastq:
-      type: file
-      description: Unaligned FastQ files
-      pattern: "*.fastq.gz"
+      - meta:
+          type: file
+          description: Unaligned FastQ files
+          pattern: "*.fastq.gz"
+      - "*_outs/outs/fastq_path/**/*.fastq.gz":
+          type: file
+          description: Unaligned FastQ files
+          pattern: "*.fastq.gz"
+  - undetermined_fastq:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_outs/outs/fastq_path/Undetermined*.fastq.gz":
+          type: file
+          description: Undetermined FastQ files
+          pattern: "Undetermined*.fastq.gz"
+  - reports:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_outs/outs/fastq_path/Reports":
+          type: directory
+          description: Reports
+          pattern: "Reports"
+  - stats:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_outs/outs/fastq_path/Stats":
+          type: directory
+          description: Stats
+          pattern: "Stats"
+  - interop:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_outs/outs/interop_path/*.bin":
+          type: file
+          description: InterOp files
+          pattern: "*.bin"
   - versions:
-      type: file
-      description: File containing software version
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software version
+          pattern: "versions.yml"
 authors:
   - "@ggabernet"
   - "@edmundmiller"

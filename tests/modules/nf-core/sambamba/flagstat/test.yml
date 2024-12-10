@@ -1,9 +1,0 @@
-- name: sambamba flagstat test_sambamba_flagstat
-  command: nextflow run ./tests/modules/nf-core/sambamba/flagstat -entry test_sambamba_flagstat -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sambamba/flagstat/nextflow.config
-  tags:
-    - sambamba
-    - sambamba/flagstat
-  files:
-    - path: output/sambamba/test.stats
-      md5sum: 94d82761e4446e1edb6e5168e4e37f26
-    - path: output/sambamba/versions.yml

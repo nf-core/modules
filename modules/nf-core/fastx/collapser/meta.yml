@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "fastx_collapser"
-description: Collapses identical sequences in a FASTQ/A file into a single sequence (while maintaining reads counts)
+description: Collapses identical sequences in a FASTQ/A file into a single sequence
+  (while maintaining reads counts)
 keywords:
   - collapse
   - genomics
@@ -9,42 +9,41 @@ keywords:
   - fastq
 tools:
   - "fastx":
-      description: "A collection of command line tools for Short-Reads FASTA/FASTQ files preprocessing"
+      description: "A collection of command line tools for Short-Reads FASTA/FASTQ files
+        preprocessing"
       homepage: "http://hannonlab.cshl.edu/fastx_toolkit/"
       documentation: "http://hannonlab.cshl.edu/fastx_toolkit/commandline.html"
       tool_dev_url: "https://github.com/agordon/fastx_toolkit"
       licence: ["AGPL"]
+      identifier: ""
 
 input:
   # Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-
-  - fastx:
-      type: file
-      description: Decompressed FASTA/FASTQ input file
-      pattern: "*.{fastq,fasta}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fastx:
+        type: file
+        description: Decompressed FASTA/FASTQ input file
+        pattern: "*.{fastq,fasta}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
   - fasta:
-      type: file
-      description: Collapsed FASTA file
-      pattern: "*.fasta"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}.fasta:
+          type: file
+          description: Collapsed FASTA file
+          pattern: "*.fasta"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jvfe"
 maintainers:

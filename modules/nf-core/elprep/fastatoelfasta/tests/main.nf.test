@@ -1,0 +1,66 @@
+nextflow_process {
+
+    name "Test Process ELPREP_FASTATOELFASTA"
+    script "../main.nf"
+    process "ELPREP_FASTATOELFASTA"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "elprep"
+    tag "elprep/fastatoelfasta"
+
+    test("sarscov2 - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.elfasta,
+                    process.out.log.collect { [it[0], file(it[1]).exists()] },
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.elfasta,
+                    process.out.log.collect { [it[0], file(it[1]).exists()] },
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+}

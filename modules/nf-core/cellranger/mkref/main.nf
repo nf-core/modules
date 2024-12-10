@@ -22,6 +22,9 @@ process CELLRANGER_MKREF {
         error "CELLRANGER_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
+    // --localcores is passed to the martian runtime and specifies the number of allocated jobs
+    // --nthreads is passed to the STAR index generation.
+    // see also https://github.com/nf-core/scrnaseq/issues/329
     """
     cellranger \\
         mkref \\
@@ -30,6 +33,7 @@ process CELLRANGER_MKREF {
         --genes=$gtf \\
         --localcores=${task.cpus} \\
         --localmem=${task.memory.toGiga()} \\
+        --nthreads=${task.cpus} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

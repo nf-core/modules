@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 import argparse
-import mygene
 import shlex
 
+import mygene
 
 """
 This python script uses the mygene module to query the MyGene.info API and
@@ -311,7 +311,7 @@ def load_list(filename: str, columname: str) -> list:
         sep = ","
     else:
         raise ValueError("The input file extension should be either tsv or csv.")
-    with open(filename, "r") as f:
+    with open(filename) as f:
         idx = f.readline().strip().split(sep).index(columname)
         return [line.strip().split(sep)[idx] for line in f]
 

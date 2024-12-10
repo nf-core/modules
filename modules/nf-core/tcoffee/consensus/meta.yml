@@ -1,0 +1,78 @@
+name: tcoffee_consensus
+description: Computes a consensus alignment using T_COFFEE
+keywords:
+  - alignment
+  - MSA
+  - genomics
+tools:
+  - tcoffee:
+      description: "A collection of tools for Computing, Evaluating and Manipulating
+        Multiple Alignments of DNA, RNA, Protein Sequences and Structures."
+      homepage: "http://www.tcoffee.org/Projects/tcoffee/"
+      documentation: "https://tcoffee.readthedocs.io/en/latest/tcoffee_main_documentation.html"
+      tool_dev_url: "https://github.com/cbcrg/tcoffee"
+      doi: "10.1006/jmbi.2000.4042"
+      licence: ["GPL v3"]
+      identifier: ""
+  - pigz:
+      description: "Parallel implementation of the gzip algorithm."
+      homepage: "https://zlib.net/pigz/"
+      documentation: "https://zlib.net/pigz/pigz.pdf"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - aln:
+        type: file
+        description: List of multiple sequence alignments in FASTA format to be used
+          to compute the consensus
+        pattern: "*.{fa,fasta}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing tree information
+          e.g. `[ id:'test_tree']`
+    - tree:
+        type: file
+        description: Input guide tree in Newick format
+        pattern: "*.{dnd}"
+  - - compress:
+        type: boolean
+        description: Flag representing whether the output MSA should be compressed.
+          Set to true to enable/false to disable compression. Compression is done using
+          pigz, and is multithreaded.
+output:
+  - alignment:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+          pattern: "*.{fa,fasta,aln}"
+      - "*.{aln,aln.gz}":
+          type: file
+          description: Alignment file in FASTA format. May be gzipped.
+          pattern: "*.aln{.gz,}"
+  - eval:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test']`
+          pattern: "*.{score_html, score_ascii}"
+      - "*.{score_html,sp_ascii}":
+          type: file
+          description: Consensus evaluation file.
+          pattern: "*.{score_html, score_ascii}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@luisas"
+maintainers:
+  - "@luisas"

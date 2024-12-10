@@ -1,7 +1,6 @@
-name: fgbio_sortbam
 channels:
   - conda-forge
   - bioconda
-  - defaults
 dependencies:
-  - bioconda::fgbio=2.2.1
+  # renovate: datasource=conda depName=bioconda/fgbio
+  - bioconda::fgbio=2.4.0

@@ -4,8 +4,8 @@ process CHROMAP_INDEX {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/chromap:0.2.5--hd03093a_0' :
-        'biocontainers/chromap:0.2.5--hd03093a_0' }"
+        'https://depot.galaxyproject.org/singularity/chromap:0.2.6--hdcf5f25_0' :
+        'biocontainers/chromap:0.2.6--hdcf5f25_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -19,7 +19,7 @@ process CHROMAP_INDEX {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = fasta.baseName
+    def prefix = task.ext.prefix ?: "${fasta.baseName}"
     """
     chromap \\
         -i \\
@@ -35,7 +35,7 @@ process CHROMAP_INDEX {
     """
 
     stub:
-    def prefix = fasta.baseName
+    def prefix = task.ext.prefix ?: "${fasta.baseName}"
     """
     touch ${prefix}.index
 
