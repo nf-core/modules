@@ -9,7 +9,7 @@ process BISMARK_COVERAGE2CYTOSINE {
 
     input:
     tuple val(meta), path(coverage_file)
-    tuple val(meta2), path(fasta)
+    tuple val(meta2), path(fasta, stageAs: 'tmp/*') // This change mounts as directory containing the FASTA file to prevent nested symlinks
     tuple val(meta3), path(index)
 
     output:
@@ -25,14 +25,12 @@ process BISMARK_COVERAGE2CYTOSINE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mv $fasta $index/
-
     coverage2cytosine \\
-        $coverage_file \\
-        --genome $index \\
+        ${coverage_file} \\
+        --genome ${index} \\
         --output ${prefix} \\
         --gzip \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

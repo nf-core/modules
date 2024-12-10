@@ -18,7 +18,6 @@ tools:
       description: "Parallel implementation of the gzip algorithm."
       homepage: "https://zlib.net/pigz/"
       documentation: "https://zlib.net/pigz/pigz.pdf"
-
       identifier: ""
 input:
   - - meta:
@@ -52,10 +51,22 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
+          pattern: "*.{fa,fasta,aln}"
       - "*.{aln,aln.gz}":
           type: file
-          description: Consensus alignment in FASTA format
-          pattern: "*.{fa,fasta,aln}"
+          description: Alignment file in FASTA format. May be gzipped.
+          pattern: "*.aln{.gz,}"
+  - eval:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test']`
+          pattern: "*.{score_html, score_ascii}"
+      - "*.{score_html,sp_ascii}":
+          type: file
+          description: Consensus evaluation file.
+          pattern: "*.{score_html, score_ascii}"
   - versions:
       - versions.yml:
           type: file

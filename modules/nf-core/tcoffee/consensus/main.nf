@@ -14,8 +14,9 @@ process TCOFFEE_CONSENSUS {
     val(compress)
 
     output:
-    tuple val(meta), path("*.{aln,aln.gz}"), emit: alignment
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), path("*.{aln,aln.gz}")          , emit: alignment
+    tuple val(meta), path("*.{score_html,sp_ascii}") , emit: eval, optional: true
+    path "versions.yml"                              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,11 +35,6 @@ process TCOFFEE_CONSENSUS {
         -thread ${task.cpus} \
         -outfile $outfile \
         $write_output
-
-    if [ -f stdout ] && [ "$compress" = true ]; then
-        pigz -cp ${task.cpus} < stdout > ${prefix}.aln.gz
-        rm stdout
-    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

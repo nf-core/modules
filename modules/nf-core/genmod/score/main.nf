@@ -4,17 +4,16 @@ process GENMOD_SCORE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/genmod:3.8.3--pyhdfd78af_0':
-        'biocontainers/genmod:3.8.3--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/genmod:3.9--pyhdfd78af_0':
+        'biocontainers/genmod:3.9--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(input_vcf)
-    path (fam)
+    tuple val(meta), path(input_vcf), path (fam)
     path (score_config)
 
     output:
     tuple val(meta), path("*_score.vcf"), emit: vcf
-    path "versions.yml"           , emit: versions
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

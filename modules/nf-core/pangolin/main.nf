@@ -4,8 +4,8 @@ process PANGOLIN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pangolin:4.2--pyhdfd78af_1' :
-        'biocontainers/pangolin:4.2--pyhdfd78af_1' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bb/bb7bac48e43a9cd6274e1f99c761a5785b74f6d8a55313ee634aaffbe87c1869/data' :
+        'community.wave.seqera.io/library/pangolin-data_pangolin_snakemake:5bbc297f7502ff33' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -21,6 +21,8 @@ process PANGOLIN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    export XDG_CACHE_HOME=/tmp/.cache
+
     pangolin \\
         $fasta\\
         --outfile ${prefix}.pangolin.csv \\

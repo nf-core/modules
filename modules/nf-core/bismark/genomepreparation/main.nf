@@ -8,7 +8,7 @@ process BISMARK_GENOMEPREPARATION {
         'biocontainers/bismark:0.24.2--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(fasta)
+    tuple val(meta), path(fasta, name:"BismarkIndex/")
 
     output:
     tuple val(meta), path("BismarkIndex"), emit: index
@@ -20,14 +20,9 @@ process BISMARK_GENOMEPREPARATION {
     script:
     def args = task.ext.args ?: ''
     """
-    mkdir BismarkIndex
-    mv $fasta BismarkIndex/
-
     bismark_genome_preparation \\
-        $args \\
+        ${args} \\
         BismarkIndex
-
-    rm BismarkIndex/$fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -38,8 +33,25 @@ process BISMARK_GENOMEPREPARATION {
     stub:
     def args = task.ext.args ?: ''
     """
-    mkdir BismarkIndex
-    touch BismarkIndex/$fasta
+    rm $fasta
+
+    mkdir -p BismarkIndex/Bisulfite_Genome/CT_conversion
+    touch BismarkIndex/Bisulfite_Genome/CT_conversion/BS_CT.1.bt2
+    touch BismarkIndex/Bisulfite_Genome/CT_conversion/BS_CT.2.bt2
+    touch BismarkIndex/Bisulfite_Genome/CT_conversion/BS_CT.3.bt2
+    touch BismarkIndex/Bisulfite_Genome/CT_conversion/BS_CT.4.bt2
+    touch BismarkIndex/Bisulfite_Genome/CT_conversion/BS_CT.rev.1.bt2
+    touch BismarkIndex/Bisulfite_Genome/CT_conversion/BS_CT.rev.2.bt2
+    touch BismarkIndex/Bisulfite_Genome/CT_conversion/genome_mfa.CT_conversion.fa
+
+    mkdir -p BismarkIndex/Bisulfite_Genome/GA_conversion
+    touch BismarkIndex/Bisulfite_Genome/GA_conversion/BS_GA.1.bt2
+    touch BismarkIndex/Bisulfite_Genome/GA_conversion/BS_GA.2.bt2
+    touch BismarkIndex/Bisulfite_Genome/GA_conversion/BS_GA.3.bt2
+    touch BismarkIndex/Bisulfite_Genome/GA_conversion/BS_GA.4.bt2
+    touch BismarkIndex/Bisulfite_Genome/GA_conversion/BS_GA.rev.1.bt2
+    touch BismarkIndex/Bisulfite_Genome/GA_conversion/BS_GA.rev.2.bt2
+    touch BismarkIndex/Bisulfite_Genome/GA_conversion/genome_mfa.GA_conversion.fa
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -33,7 +33,20 @@ input:
         description: |
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
-  - - index:
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Input genome fasta file
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - index:
         type: directory
         description: Directory containing bwameth genome index
 output:

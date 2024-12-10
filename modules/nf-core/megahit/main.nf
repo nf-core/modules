@@ -3,7 +3,7 @@ process MEGAHIT {
     label 'process_high'
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/megahit_pigz:657d77006ae5f222' :
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f2/f2cb827988dca7067ff8096c37cb20bc841c878013da52ad47a50865d54efe83/data' :
         'community.wave.seqera.io/library/megahit_pigz:87a590163e594224' }"
 
     input:
