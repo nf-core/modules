@@ -8,6 +8,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "foldmason"
     tag "foldmason/msa2lddtreport"
+    tag "foldmason/createdb"
     tag "untar"
     tag "famsa/guidetree"
 
@@ -35,7 +36,7 @@ nextflow_process {
         }
 
         run("FOLDMASON_CREATEDB") {
-            script "../../../../../modules/nf-core/famsa/guidetree/main.nf"
+            script "../../../../../modules/nf-core/foldmason/createdb/main.nf"
             process {
                 """
                 input[0] = [ [ id:'test_tree' ], // meta map
@@ -56,7 +57,7 @@ nextflow_process {
                             ]
                 input[1] = FOLDMASON_CREATEDB.out.db.collect{ meta, db -> db }.map{ db -> [[ id: 'test'], db]}
                 input[2] = UNTAR.out.untar.map { meta,dir -> [meta, file(dir).listFiles().collect()]}
-                intut[3] = FAMSA_GUIDETREE.out.tree.collect{ meta, tree -> tree }.map{ tree -> [[ id: 'test_tree'], tree]}
+                input[3] = FAMSA_GUIDETREE.out.tree.collect{ meta, tree -> tree }.map{ tree -> [[ id: 'test_tree'], tree]}
                 """
             }
         }
@@ -82,7 +83,7 @@ nextflow_process {
                             ]
                 input[1] = FOLDMASON_CREATEDB.out.db.collect{ meta, db -> db }.map{ db -> [[ id: 'test'], db]}
                 input[2] = UNTAR.out.untar.map { meta,dir -> [meta, file(dir).listFiles().collect()]}
-                intut[3] = FAMSA_GUIDETREE.out.tree.collect{ meta, tree -> tree }.map{ tree -> [[ id: 'test_tree'], tree]}
+                input[3] = FAMSA_GUIDETREE.out.tree.collect{ meta, tree -> tree }.map{ tree -> [[ id: 'test_tree'], tree]}
                 """
             }
         }
