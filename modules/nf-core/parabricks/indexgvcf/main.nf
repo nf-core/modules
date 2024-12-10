@@ -2,6 +2,7 @@ process PARABRICKS_INDEXGVCF {
     tag "$meta.id"
     label 'process_high'
     label 'process_gpu'
+    stageInMode 'copy'
 
     container "nvcr.io/nvidia/clara/clara-parabricks:4.4.0-1"
 
@@ -9,9 +10,8 @@ process PARABRICKS_INDEXGVCF {
     tuple val(meta), path(gvcf)
 
     output:
-    // This tool outputs g.vcf.idx if input is uncompressed, g.vcf.gz.tbi if input is compressed
-    tuple val(meta), path("*") , emit: gvcf_index
-    path "versions.yml"        , emit: versions
+    tuple val(meta), path("*.{idx,tbi}") , emit: gvcf_index
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,7 +41,7 @@ process PARABRICKS_INDEXGVCF {
         error "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def output_cmd = gvcf.collect{ it.getExtension().endsWith("gz") } ? "touch ${prefix}.g.vcf.gz.tbi" : "touch ${prefix}.g.vcf.idx"
+    def output_cmd = gvcf.any{ it.name.endsWith(".gz") } ? "touch ${prefix}.g.vcf.gz.tbi" : "touch ${prefix}.g.vcf.idx"
     """
     $output_cmd
 
