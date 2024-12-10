@@ -7,10 +7,10 @@ process FOLDMASON_MSA2LDDTREPORT {
             'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a8/a88d162c3f39a1518d48c3faec235e6fcde750586da868b62fc5f0a08a89aa9d/data' :
             'community.wave.seqera.io/library/foldmason:2.7bd21ed--e7f739473ad6578d' }"
     input:
-    tuple val(meta)  , path(msa)
-    tuple val(meta2) , path(db)
-    tuple val(meta3) , path(pdbs)
-    tuple val(meta4) , path(tree)
+    tuple val(meta) , path(msa)
+    tuple val(meta2), path(db)
+    tuple val(meta3), path(pdbs)
+    tuple val(meta4), path(tree)
 
     output:
     tuple val(meta), path("${prefix}.html"), emit: html
