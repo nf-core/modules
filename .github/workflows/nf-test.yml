@@ -32,7 +32,7 @@ env:
   NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
   NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
   # renovate: datasource=github-releases depName=nextflow/nextflow versioning=semver
-  NXF_VER: "24.10.1"
+  NXF_VER: "24.10.2"
 
 jobs:
   nf-test-changes:
@@ -110,12 +110,17 @@ jobs:
     needs: [nf-test]
     if: always()
     steps:
-      - name: All tests ok
-        if: ${{ success() || !contains(needs.*.result, 'failure') }}
-        run: exit 0
       - name: One or more tests failed
         if: ${{ contains(needs.*.result, 'failure') }}
         run: exit 1
+
+      - name: One or more tests cancelled
+        if: ${{ contains(needs.*.result, 'cancelled') }}
+        run: exit 1
+
+      - name: All tests ok
+        if: ${{ contains(needs.*.result, 'success') }}
+        run: exit 0
 
       - name: debug-print
         if: always()
