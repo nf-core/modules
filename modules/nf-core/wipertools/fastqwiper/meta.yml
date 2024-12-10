@@ -36,7 +36,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "${meta.id}*_wiped.fastq.gz":
+      - "*_wiped.fastq.gz":
           type: file
           description: Cleaned FASTQ file
           pattern: "*.{fastq,fastq.gz}"
