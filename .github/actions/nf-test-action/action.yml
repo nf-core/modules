@@ -1,18 +1,22 @@
 name: "nf-test Action"
 description: "Runs nf-test with common setup steps"
 inputs:
-  path:
-    description: "Path to test"
-    required: true
   profile:
     description: "Profile to use"
+    required: true
+  shard:
+    description: "Shard number for this CI job"
+    required: true
+  total_shards:
+    description: "Total number of test shards(NOT the total number of matrix jobs)"
+    required: true
+  paths:
+    description: "Test paths"
     required: true
 
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-
     - uses: actions/setup-java@8df1039502a15bceb9433410b1a100fbe190c53b # v4
       with:
         distribution: "temurin"
@@ -20,6 +24,8 @@ runs:
 
     - name: Setup Nextflow
       uses: nf-core/setup-nextflow@v2
+      with:
+        version: "${{ env.NXF_VERSION }}"
 
     - name: Set up Python
       uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
@@ -29,7 +35,7 @@ runs:
     - name: Install nf-test
       uses: nf-core/setup-nf-test@v1
       with:
-        version: "0.9.2"
+        version: "${{ env.NFT_VER }}"
         install-pdiff: true
 
     - name: Setup apptainer
@@ -56,8 +62,11 @@ runs:
       if: env.SENTIEON_ENCRYPTION_KEY != '' && env.SENTIEON_LICENSE_MESSAGE != ''
       shell: bash
       run: |
+        python -m pip install cryptography
         nextflow secrets set SENTIEON_AUTH_DATA $(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "$SENTIEON_ENCRYPTION_KEY" --message "$SENTIEON_LICENSE_MESSAGE")
 
+      # TODO Skip failing conda tests and document their failures
+      # https://github.com/nf-core/modules/issues/7017
     - name: Run nf-test
       shell: bash
       env:
@@ -69,7 +78,12 @@ runs:
           --profile=${{ inputs.profile }} \
           --tap=test.tap \
           --verbose \
-          ${{ inputs.path }}
+          --ci \
+          --shard ${{ inputs.shard }}/${{ inputs.total_shards }} \
+          --filter process,workflow \
+          ${{ inputs.paths }}
+
+      # TODO If no test.tap, then make one to spoof?
     - uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
       if: ${{ inputs.path != '' }}
       with:

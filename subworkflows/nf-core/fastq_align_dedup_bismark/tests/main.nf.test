@@ -44,7 +44,7 @@ nextflow_workflow {
         }
     }
 
-    test("Params: bismark | default") {
+    test("Params: bismark single-end | default") {
 
         when {
             params {
@@ -74,8 +74,8 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.dedup.collect { bam(it[1]).getReadsMD5() },
-                    workflow.out.dedup_bam_index.collect { meta, bai -> file(bai).name },
+                    workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
+                    workflow.out.bai.collect { meta, bai -> file(bai).name },
                     workflow.out.coverage2cytosine_coverage,
                     workflow.out.coverage2cytosine_report,
                     workflow.out.coverage2cytosine_summary,
@@ -93,19 +93,21 @@ nextflow_workflow {
         }
     }
 
-    test("Params: bismark | skip_deduplication") {
+    test("Params: bismark paired-end | default") {
 
         when {
             params {
                 aligner            = "bismark"
-                skip_deduplication = true
+                cytosine_report    = false
+                skip_deduplication = false
             }
 
             workflow {
                 """
                 input[0] = Channel.of([
                             [ id:'test', single_end:true ],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz', checkIfExists: true)
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
                 ])
                 input[1] = Channel.of([
                             [:],
@@ -122,8 +124,8 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.dedup.collect { bam(it[1]).getReadsMD5() },
-                    workflow.out.dedup_bam_index.collect { meta, bai -> file(bai).name },
+                    workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
+                    workflow.out.bai.collect { meta, bai -> file(bai).name },
                     workflow.out.coverage2cytosine_coverage,
                     workflow.out.coverage2cytosine_report,
                     workflow.out.coverage2cytosine_summary,
@@ -141,7 +143,56 @@ nextflow_workflow {
         }
     }
 
-    test("Params: bismark | cytosine_report") {
+    test("Params: bismark paired-end | skip_deduplication") {
+
+        when {
+            params {
+                aligner            = "bismark"
+                skip_deduplication = true
+            }
+
+            workflow {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:true ],
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
+                            [:],
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                ])
+                input[2] = BOWTIE2.out.untar
+                input[3] = params.skip_deduplication
+                input[4] = params.cytosine_report
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
+                    workflow.out.bai.collect { meta, bai -> file(bai).name },
+                    workflow.out.coverage2cytosine_coverage,
+                    workflow.out.coverage2cytosine_report,
+                    workflow.out.coverage2cytosine_summary,
+                    workflow.out.methylation_bedgraph,
+                    workflow.out.methylation_calls,
+                    workflow.out.methylation_coverage,
+                    workflow.out.methylation_report,
+                    workflow.out.methylation_mbias,
+                    workflow.out.bismark_report.collect { meta, report -> file(report).name },
+                    workflow.out.bismark_summary[0][1],
+                    workflow.out.multiqc.flatten().collect { path -> file(path).name },
+                    workflow.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+    test("Params: bismark paired-end | cytosine_report") {
 
         when {
             params {
@@ -153,7 +204,8 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                             [ id:'test', single_end:true ],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz', checkIfExists: true)
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
                 ])
                 input[1] = Channel.of([
                             [:],
@@ -170,8 +222,8 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.dedup.collect { bam(it[1]).getReadsMD5() },
-                    workflow.out.dedup_bam_index.collect { meta, bai -> file(bai).name },
+                    workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
+                    workflow.out.bai.collect { meta, bai -> file(bai).name },
                     workflow.out.coverage2cytosine_coverage,
                     workflow.out.coverage2cytosine_report,
                     workflow.out.coverage2cytosine_summary,
@@ -189,7 +241,7 @@ nextflow_workflow {
         }
     }
 
-    test("Params: bismark_hisat | default") {
+    test("Params: bismark_hisat single-end | default") {
 
         when {
             params {
@@ -219,8 +271,8 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.dedup.collect { bam(it[1]).getReadsMD5() },
-                    workflow.out.dedup_bam_index.collect { meta, bai -> file(bai).name },
+                    workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
+                    workflow.out.bai.collect { meta, bai -> file(bai).name },
                     workflow.out.coverage2cytosine_coverage,
                     workflow.out.coverage2cytosine_report,
                     workflow.out.coverage2cytosine_summary,
@@ -238,7 +290,57 @@ nextflow_workflow {
         }
     }
 
-    test("Params: bismark_hisat | skip_deduplication") {
+    test("Params: bismark_hisat paired-end | default") {
+
+        when {
+            params {
+                aligner            = "bismark_hisat"
+                cytosine_report    = false
+                skip_deduplication = false
+            }
+
+            workflow {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:true ],
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
+                            [:],
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                ])
+                input[2] = HISAT2.out.untar
+                input[3] = params.skip_deduplication
+                input[4] = params.cytosine_report
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
+                    workflow.out.bai.collect { meta, bai -> file(bai).name },
+                    workflow.out.coverage2cytosine_coverage,
+                    workflow.out.coverage2cytosine_report,
+                    workflow.out.coverage2cytosine_summary,
+                    workflow.out.methylation_bedgraph,
+                    workflow.out.methylation_calls,
+                    workflow.out.methylation_coverage,
+                    workflow.out.methylation_report,
+                    workflow.out.methylation_mbias,
+                    workflow.out.bismark_report.collect { meta, report -> file(report).name },
+                    workflow.out.bismark_summary[0][1],
+                    workflow.out.multiqc.flatten().collect { path -> file(path).name },
+                    workflow.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+    test("Params: bismark_hisat paired-end | skip_deduplication") {
 
         when {
             params {
@@ -250,7 +352,8 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                             [ id:'test', single_end:true ],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz', checkIfExists: true)
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
                 ])
                 input[1] = Channel.of([
                             [:],
@@ -267,8 +370,8 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.dedup.collect { bam(it[1]).getReadsMD5() },
-                    workflow.out.dedup_bam_index.collect { meta, bai -> file(bai).name },
+                    workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
+                    workflow.out.bai.collect { meta, bai -> file(bai).name },
                     workflow.out.coverage2cytosine_coverage,
                     workflow.out.coverage2cytosine_report,
                     workflow.out.coverage2cytosine_summary,
@@ -286,7 +389,7 @@ nextflow_workflow {
         }
     }
 
-    test("Params: bismark_hisat | cytosine_report") {
+    test("Params: bismark_hisat paired-end | cytosine_report") {
 
         when {
             params {
@@ -298,7 +401,8 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                             [ id:'test', single_end:true ],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz', checkIfExists: true)
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
                 ])
                 input[1] = Channel.of([
                             [:],
@@ -315,8 +419,8 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.dedup.collect { bam(it[1]).getReadsMD5() },
-                    workflow.out.dedup_bam_index.collect { meta, bai -> file(bai).name },
+                    workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
+                    workflow.out.bai.collect { meta, bai -> file(bai).name },
                     workflow.out.coverage2cytosine_coverage,
                     workflow.out.coverage2cytosine_report,
                     workflow.out.coverage2cytosine_summary,
