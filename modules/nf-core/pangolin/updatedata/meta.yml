@@ -1,6 +1,6 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: pangolin
+name: pangolin_updatedata
 description: Phylogenetic Assignment of Named Global Outbreak LINeages
 keywords:
   - covid
@@ -22,9 +22,9 @@ input:
         type: string
         description: Name of directory to store the most recent pangolin dataset.
 output:
-  - output:
-      - ${prefix}/:
-          type: directory
+  - db:
+      - "${prefix}":
+          type: file
           description: Directory containing downloaded data with directory naming being
             the user provided dbname or prefix.
   - versions:
