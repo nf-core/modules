@@ -5,12 +5,12 @@ nextflow_process {
     process "PARABRICKS_FQ2BAMMETH"
     config "./nextflow.config"
 
+    tag "gpu"
     tag "bwameth/index"
     tag "modules"
     tag "parabricks"
     tag "parabricks/fq2bammeth"
     tag "modules_nfcore"
-    tag "gpu"
 
     setup {
         run("BWAMETH_INDEX") {
@@ -26,8 +26,7 @@ nextflow_process {
         }
     }
 
-
-    test("SRR389222 - fastq - se") {
+    test("SRR389222 single-end [fastq]") {
 
         when {
             process {
@@ -60,7 +59,7 @@ nextflow_process {
         }
     }
 
-    test("SRR389222 - fastq - se - stub") {
+    test("SRR389222 single-end [fastq] - stub") {
         options '-stub'
 
         when {
@@ -90,7 +89,7 @@ nextflow_process {
         }
     }
 
-    test("E. coli - fastq - pe - stub") {
+    test("E.coli paired-end [fastq] - stub") {
         options '-stub'
 
         when {

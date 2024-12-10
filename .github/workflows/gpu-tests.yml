@@ -108,12 +108,17 @@ jobs:
     needs: [nf-test-gpu]
     if: always()
     steps:
-      - name: All tests ok
-        if: ${{ success() || !contains(needs.*.result, 'failure') }}
-        run: exit 0
       - name: One or more tests failed
         if: ${{ contains(needs.*.result, 'failure') }}
         run: exit 1
+
+      - name: One or more tests cancelled
+        if: ${{ contains(needs.*.result, 'cancelled') }}
+        run: exit 1
+
+      - name: All tests ok
+        if: ${{ contains(needs.*.result, 'success') }}
+        run: exit 0
 
       - name: debug-print
         if: always()
