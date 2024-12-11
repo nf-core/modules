@@ -4,8 +4,8 @@ process BUSCO_BUSCO {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/busco:5.7.1--pyhdfd78af_0':
-        'biocontainers/busco:5.7.1--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/busco:5.8.2--pyhdfd78af_0':
+        'biocontainers/busco:5.8.2--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta, stageAs:'tmp_input/*')
@@ -35,8 +35,10 @@ process BUSCO_BUSCO {
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}-${lineage}"
-    def busco_config = config_file ? "--config $config_file" : ''
-    def busco_lineage = lineage.equals('auto') ? '--auto-lineage' : "--lineage_dataset ${lineage}"
+    def busco_config = config_file ? "--config ${config_file}" : ''
+    def busco_lineage = lineage in [ 'auto', 'auto_prok', 'auto_euk']
+        ? lineage.replaceFirst('auto', '--auto-lineage').replaceAll('_', '-')
+        : "--lineage_dataset ${lineage}"
     def busco_lineage_dir = busco_lineages_path ? "--download_path ${busco_lineages_path}" : ''
     """
     # Nextflow changes the container --entrypoint to /bin/bash (container default entrypoint: /usr/local/env-execute)
