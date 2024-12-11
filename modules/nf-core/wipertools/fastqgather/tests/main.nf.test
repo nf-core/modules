@@ -1,0 +1,91 @@
+nextflow_process {
+
+    name "Test Process WIPERTOOLS_FASTQGATHER"
+    script "../main.nf"
+    process "WIPERTOOLS_FASTQGATHER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "wipertools"
+    tag "wipertools/fastqgather"
+    tag "wipertools/fastqscatter"
+
+    test("merge two gzipped fastq - fastq.gz") {
+
+        config "./nextflow.config"
+
+        setup {
+            run("WIPERTOOLS_FASTQSCATTER") {
+                script "../../fastqscatter/main.nf"
+                process {
+                    """
+                    input[0] = [
+                    [ id:'pp_' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true)
+                    ]
+                    input[1] = 2  // number of splits
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = '--prefix pp_'
+            }
+            process {
+                """
+                input[0] = WIPERTOOLS_FASTQSCATTER.out.chunks.map { tuple( [id: 'fastq_chunks'], it[1] ) }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("merge two gzipped fastq - fastq.gz - stub") {
+
+        options "-stub"
+        config "./nextflow.config"
+
+        setup {
+            run("WIPERTOOLS_FASTQSCATTER") {
+                script "../../fastqscatter/main.nf"
+                process {
+                    """
+                    input[0] = [
+                    [ id:'pp_' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true)
+                    ]
+                    input[1] = 2  // number of splits
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = '--prefix pp_'
+            }
+            process {
+                """
+                input[0] = WIPERTOOLS_FASTQSCATTER.out.chunks.map { tuple( [id: 'fastq_chunks'], it[1] ) }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}
