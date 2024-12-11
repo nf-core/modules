@@ -23,18 +23,33 @@ input:
         type: file
         description: BAM file
         pattern: "*.bam"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information.
+          e.g. [ id:'test' ]
     - bam_index:
         type: file
         description: BAM index file
         pattern: "*.bai"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information.
+          e.g. [ id:'test' ]
     - bqsr_table:
         type: file
         description: Table from calculating BQSR. Output from parabricks/fq2bam or gatk4/baserecalibrator.
         pattern: "*.table"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information.
+          e.g. [ id:'test' ]
     - intervals:
         type: file
         description: intervals
-  - - meta2:
+  - - meta5:
         type: map
         description: |
           Groovy Map containing sample information

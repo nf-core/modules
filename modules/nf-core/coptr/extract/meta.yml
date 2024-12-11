@@ -1,0 +1,56 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "coptr_extract"
+description: Computes the coverage map along the reference genome
+keywords:
+  - coptr
+  - mapping
+  - ptr
+tools:
+  - "coptr":
+      description: "Accurate and robust inference of microbial growth dynamics from
+        metagenomic sequencing reads."
+      homepage: "https://github.com/tyjo/coptr"
+      documentation: "https://coptr.readthedocs.io/"
+      tool_dev_url: "https://github.com/tyjo/coptr"
+      doi: "10.1101/gr.275533.121"
+      licence: ["GPL v3"]
+      identifier: biotools:coptr
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: bam file with the mapping of the reads on the reference genome
+        pattern: "*.{.bam}"
+        ontologies:
+            - edam: "http://edamontology.org/format_2572"
+
+output:
+  - coverage:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.pkl":
+          type: file
+          description: Python pickle (pkl) file containing coverage along the reference genome
+          pattern: "*.{pkl}"
+          ontologies:
+            - edam: "http://edamontology.org/format_4002"
+
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@ramirobarrantes"
+maintainers:
+  - "@ramirobarrantes"

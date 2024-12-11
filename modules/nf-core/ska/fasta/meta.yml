@@ -1,0 +1,56 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "ska_fasta"
+description: Create genome sketch using split k-mers
+keywords:
+  - genomics
+  - metagenomics
+  - kmer
+  - split_kmers
+  - sketch
+tools:
+  - "ska":
+      description: "SKA (Split Kmer Analysis)"
+      homepage: "https://github.com/simonrharris/SKA"
+      documentation: "https://github.com/simonrharris/SKA/wiki"
+      tool_dev_url: "https://github.com/simonrharris/SKA"
+      doi: "10.1101/453142"
+      licence: ['MIT']
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fastas:
+        type: file
+        description: FASTA files with contigs/reads
+        pattern: "*.fa(sta)"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+    - fasta_list:
+        type: file
+        description: List of FASTA files with contigs/reads
+        pattern: "*.txt"
+output:
+  - skf:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1']`
+    - "*.skf":
+        type: file
+        description: File containing genome sketch
+        pattern: "*.skf"
+  - versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@itrujnara"
+maintainers:
+  - "@itrujnara"

@@ -1,0 +1,83 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "hiphase"
+description: pacbio structural variant calling tool
+keywords:
+  - sort
+  - example
+  - genomics
+tools:
+  - "hiphase":
+      description: "Small and structural variant phasing tool for PacBio HiFi reads"
+      homepage: "https://github.com/PacificBiosciences/HiPhase"
+      documentation: "https://github.com/PacificBiosciences/HiPhase"
+      tool_dev_url: "https://github.com/PacificBiosciences/HiPhase"
+      licence: ["Pacific Biosciences Software License Agreement"]
+      identifier: biotools:hiphase
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - vcf:
+        type: file
+        description: VCF File
+        pattern: "*.{vcf}"
+    - csi:
+        type: file
+        description: CSI File associated with VCF
+        pattern: "*.{csi}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM/SAM file
+        pattern: "*.{bam}"
+    - bai:
+        type: file
+        description: Index File BAI associated with BAM file
+        pattern: "*.{bai}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fasta:
+        type: file
+        description: FASTA File (used for the alignment of the BAM file)
+        pattern: "*.{fasta}"
+output:
+  - vcf:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.vcf":
+          type: file
+          description: Phased VCF file
+          pattern: "*.vcf"
+  - csv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.csv":
+          type: file
+          description: stats associated with the phasing
+          pattern: "*.csv"
+
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@tanyasarkjain"
+maintainers:
+  - "@tanyasarkjain"

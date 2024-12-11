@@ -1,0 +1,346 @@
+name: Run pytest-workflow
+on:
+  push:
+    branches:
+      # https://docs.renovatebot.com/key-concepts/automerge/#branch-vs-pr-automerging
+      - "renovate/**" # branches Renovate creates
+  pull_request:
+    branches: [master]
+  merge_group:
+    types: [checks_requested]
+    branches: [master]
+  workflow_dispatch:
+    inputs:
+      runners:
+        description: "Runners to test on"
+        type: choice
+        options:
+          - "ubuntu-latest"
+          - "self-hosted"
+        default: "self-hosted"
+
+# Cancel if a newer run is started
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
+  NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # renovate: datasource=github-releases depName=nextflow-io/nextflow versioning=semver
+  NXF_VER: "24.10.1"
+
+jobs:
+  pytest-changes:
+    name: pytest-changes
+    runs-on: ubuntu-latest
+    outputs:
+      tags: ${{ steps.filter.outputs.changes }}
+      modules: ${{ steps.tags.outputs.modules }}
+      subworkflows: ${{ steps.tags.outputs.subworkflows }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          fetch-depth: 2 # To retrieve the preceding commit.
+
+      - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3
+        id: filter
+        with:
+          filters: "tests/config/pytest_modules.yml"
+          token: ""
+
+      - name: Fetch module tags
+        id: tags
+        run: |
+          echo modules=$(echo '${{ steps.filter.outputs.changes }}' | jq -c '. | map(select(contains("modules"))) | map(gsub("modules/"; ""))') >> $GITHUB_OUTPUT
+          echo subworkflows=$(echo '${{ steps.filter.outputs.changes }}' | jq '. | map(select(contains("subworkflow"))) | map(gsub("subworkflows/"; ""))') >> $GITHUB_OUTPUT
+
+      - name: debug
+        run: |
+          echo ${{ steps.tags.outputs.modules }}
+          echo ${{ steps.tags.outputs.subworkflows }}
+
+  pytest:
+    runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
+    name: pytest
+    needs: [pytest-changes]
+    if: needs.pytest-changes.outputs.tags != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        tags: ["${{ fromJson(needs.pytest-changes.outputs.tags) }}"]
+        profile: [conda, docker, singularity]
+        exclude:
+          - tags: nf-test
+          - profile: conda
+            tags: backsub
+          - profile: conda
+            tags: bases2fastq
+          - profile: singularity
+            tags: bases2fastq
+          - profile: conda
+            tags: basicpy
+          - profile: conda
+            tags: bcl2fastq
+          - profile: conda
+            tags: bclconvert
+          - profile: conda
+            tags: bwa/aln
+          - profile: conda
+            tags: bwa/index
+          - profile: conda
+            tags: bwa/mem
+          - profile: conda
+            tags: bwa/sampe
+          - profile: conda
+            tags: bwa/samse
+          - profile: conda
+            tags: cellpose
+          - profile: conda
+            tags: cellrangerarc/count
+          - profile: conda
+            tags: cellrangerarc/mkfastq
+          - profile: conda
+            tags: cellrangerarc/mkref
+          - profile: conda
+            tags: cellrangeratac/count
+          - profile: conda
+            tags: cellrangeratac/mkfastq
+          - profile: conda
+            tags: cellrangeratac/mkref
+          - profile: conda
+            tags: checkm2/databasedownload
+          - profile: conda
+            tags: checkm2/predict
+          - profile: conda
+            tags: controlfreec/makegraph2
+          - profile: conda
+            tags: coreograph
+          - profile: conda
+            tags: deepcell/mesmer
+          - profile: conda
+            tags: deepvariant
+          - profile: conda
+            tags: fastani
+          - profile: conda
+            tags: fastk/fastk
+          - profile: conda
+            tags: fastk/histex
+          - profile: conda
+            tags: fastk/merge
+          - profile: conda
+            tags: fcs/fcsadaptor
+          - profile: conda
+            tags: fcs/fcsgx
+          - profile: conda
+            tags: gatk4/cnnscorevariants
+          - profile: conda
+            tags: gatk4/determinegermlinecontigploidy
+          - profile: singularity
+            tags: gatk4/determinegermlinecontigploidy
+          - profile: conda
+            tags: gatk4/germlinecnvcaller
+          - profile: conda
+            tags: gatk4/postprocessgermlinecnvcalls
+          - profile: conda
+            tags: genescopefk
+          - profile: conda
+            tags: happy/sompy
+          - profile: conda
+            tags: hlala/preparegraph
+          - profile: conda
+            tags: ilastik/multicut
+          - profile: conda
+            tags: ilastik/pixelclassification
+          - profile: conda
+            tags: imputeme/vcftoprs
+          - profile: conda
+            tags: islandpath
+          - profile: conda
+            tags: manta/convertinversion
+          - profile: conda
+            tags: mcstaging/imc2mc
+          - profile: conda
+            tags: mcquant
+          - profile: conda
+            tags: medaka
+          - profile: conda
+            tags: merquryfk/katcomp
+          - profile: conda
+            tags: merquryfk/katgc
+          - profile: conda
+            tags: merquryfk/merquryfk
+          - profile: conda
+            tags: merquryfk/ploidyplot
+          - profile: conda
+            tags: minimap2/align
+          - profile: conda
+            tags: mitohifi/findmitoreference
+          - profile: conda
+            tags: mitohifi/mitohifi
+          - profile: conda
+            tags: nanoplot
+          - profile: conda
+            tags: ncbitools/vecscreen
+          - profile: conda
+            tags: parabricks/applybqsr
+          - profile: conda
+            tags: parabricks/dbsnp
+          - profile: conda
+            tags: parabricks/deepvariant
+          - profile: conda
+            tags: parabricks/fq2bam
+          - profile: conda
+            tags: parabricks/genotypegvcf
+          - profile: conda
+            tags: parabricks/haplotypecaller
+          - profile: conda
+            tags: parabricks/indexgvcf
+          - profile: conda
+            tags: parabricks/mutectcaller
+          - profile: conda
+            tags: picard/collecthsmetrics
+          - profile: conda
+            tags: picard/collectwgsmetrics
+          - profile: conda
+            tags: sentieon/applyvarcal
+          - profile: conda
+            tags: sentieon/datametrics
+          - profile: conda
+            tags: sentieon/dnamodelapply
+          - profile: conda
+            tags: sentieon/dnascope
+          - profile: conda
+            tags: sentieon/readwriter
+          - profile: conda
+            tags: sentieon/tnfilter
+          - profile: conda
+            tags: sentieon/tnhaplotyper2
+          - profile: conda
+            tags: sentieon/tnscope
+          - profile: conda
+            tags: sentieon/varcal
+          - profile: conda
+            tags: sentieon/wgsmetrics
+          - profile: conda
+            tags: subworkflows/bam_qc_picard
+          - profile: conda
+            tags: subworkflows/bcl_demultiplex
+          - profile: conda
+            tags: subworkflows/fasta_clean_fcs
+          - profile: conda
+            tags: svanalyzer/svbenchmark
+          - profile: conda
+            tags: universc
+          - profile: singularity
+            tags: universc
+          - profile: conda
+            tags: vt/decompose
+    env:
+      NXF_ANSI_LOG: false
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: Set up Python
+        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
+        with:
+          python-version: "3.11"
+
+      - uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4
+        id: cache-pip-pytest
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-pytest
+          restore-keys: |
+            ${{ runner.os }}-pip-pytest
+
+      - name: Install Python dependencies
+        run: python -m pip install --upgrade pip pytest-workflow cryptography
+
+      - uses: actions/setup-java@8df1039502a15bceb9433410b1a100fbe190c53b # v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: Setup Nextflow
+        uses: nf-core/setup-nextflow@v2
+        with:
+          version: ${{ env.NXF_VER }}
+
+      - name: Setup apptainer
+        if: matrix.profile == 'singularity'
+        uses: eWaterCycle/setup-apptainer@main
+
+      - name: Set up Singularity
+        if: matrix.profile == 'singularity'
+        run: |
+          mkdir -p $NXF_SINGULARITY_CACHEDIR
+          mkdir -p $NXF_SINGULARITY_LIBRARYDIR
+
+      - name: Set up miniconda
+        uses: conda-incubator/setup-miniconda@d2e6a045a86077fb6cad6f5adf368e9076ddaa8d # v3
+        with:
+          miniconda-version: "latest"
+          channels: conda-forge,bioconda
+          python-version: "3.11"
+
+      - name: Conda setup
+        run: |
+          conda clean -a
+          conda install -n base conda-libmamba-solver
+          conda config --set solver libmamba
+          echo $(realpath $CONDA)/condabin >> $GITHUB_PATH
+          echo $(realpath python) >> $GITHUB_PATH
+
+      # Test the module
+      - name: Run pytest-workflow
+        # only use one thread for pytest-workflow to avoid race condition on conda cache.
+        run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
+
+      - name: Output log on failure
+        if: failure()
+        run: |
+          sudo apt-get update > /dev/null
+          sudo apt-get install bat > /dev/null
+          batcat --decorations=always --color=always /home/ubuntu/pytest_workflow_*/*/log.{out,err}
+
+      - name: Setting global variables
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
+        id: parsed
+        with:
+          script: |
+            return '${{ matrix.tags }}'.toLowerCase().replaceAll(/\//g, '-').trim('-').trim('"')
+          result-encoding: string
+
+      - name: Upload logs on failure
+        if: failure()
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        with:
+          name: logs-${{ matrix.profile }}-${{ steps.parsed.outputs.result }}
+          path: |
+            /home/ubuntu/pytest_workflow_*/*/.nextflow.log
+            /home/ubuntu/pytest_workflow_*/*/log.out
+            /home/ubuntu/pytest_workflow_*/*/log.err
+            /home/ubuntu/pytest_workflow_*/*/work
+            !/home/ubuntu/pytest_workflow_*/*/work/conda
+            !/home/ubuntu/pytest_workflow_*/*/work/singularity
+            !${{ github.workspace }}/.singularity
+
+  confirm-pass:
+    runs-on: ubuntu-latest
+    needs: [pytest-changes, pytest]
+    if: always()
+    steps:
+      - name: All tests ok
+        if: ${{ success() || !contains(needs.*.result, 'failure') }}
+        run: exit 0
+      - name: One or more tests failed
+        if: ${{ contains(needs.*.result, 'failure') }}
+        run: exit 1
+
+      - name: debug-print
+        if: always()
+        run: |
+          echo "toJSON(needs) = ${{ toJSON(needs) }}"
+          echo "toJSON(needs.*.result) = ${{ toJSON(needs.*.result) }}"

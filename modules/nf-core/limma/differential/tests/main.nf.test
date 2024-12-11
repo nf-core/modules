@@ -257,6 +257,35 @@ nextflow_process {
 
     }
 
+    test("test_limma_differential - voom_mixed") {
+
+        config "./nextflow.voom_mixed.config"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of(['id': 'test', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
+                        .map{tuple(it, it.variable, it.reference, it.target)}
+                input[1] = Channel.of([[id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.model, process.out.versions).match() },
+                { assert path(process.out.results[0][1]).getText().contains("ENSMUSG00000023978\t-2.8363444336503") },
+                { assert path(process.out.results[0][1]).getText().contains("ENSMUSG00000059991\t0.736009837885068") },
+                { assert path(process.out.normalised_counts[0][1]).getText().contains("ENSMUSG00000023978\t6.11247620232167") },
+                { assert path(process.out.normalised_counts[0][1]).getText().contains("ENSMUSG00000059991\t4.52751370160052") }
+            )
+        }
+
+    }
+
     test("test_limma_differential - stub") {
 
         options "-stub"

@@ -15,24 +15,36 @@ nextflow_process {
             script "../../index/main.nf"
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
                 """
             }
         }
     }
 
-    test("sarscov2 - test_paired_end_methylated_sorted_bam") {
+    test("sarscov2 paired-end [bam]") {
 
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true),
-                    [] //SNP BED file
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true)
                 ]
-                input[1] = BISCUIT_INDEX.out.index
+                input[1] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'test' ], [] //SNP BED file
+                ]
+                input[3] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[4] = BISCUIT_INDEX.out.index
                 """
             }
         }
@@ -46,18 +58,28 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - test_paired_end_methylated_sorted_bam - snp") {
+    test("sarscov2 paired-end [bam] [snp]") {
 
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true),
-                    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/biscuit/test-snp.bed')
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true)
                 ]
-                input[1] = BISCUIT_INDEX.out.index
+                input[1] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'test' ],
+                    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/biscuit/test-snp.bed', checkIfExists: true)
+                ]
+                input[3] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[4] = BISCUIT_INDEX.out.index
                 """
             }
         }
@@ -71,18 +93,28 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - test_paired_end_methylated_sorted_bam - snp - gz") {
+    test("sarscov2 paired-end [bam] [snp_gz]") {
 
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true),
-                    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/biscuit/test-snp.bed.gz')
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true)
                 ]
-                input[1] = BISCUIT_INDEX.out.index
+                input[1] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'test' ],
+                    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/biscuit/test-snp.bed.gz', checkIfExists: true)
+                ]
+                input[3] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[4] = BISCUIT_INDEX.out.index
                 """
             }
         }
@@ -96,19 +128,29 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - test_paired_end_methylated_sorted_bam - snp - gz - stub") {
+    test("sarscov2 paired-end [bam] [snp_gz] - stub") {
         options '-stub'
 
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true),
-                    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/biscuit/test-snp.bed.gz')
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true)
                 ]
-                input[1] = BISCUIT_INDEX.out.index
+                input[1] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'test' ],
+                    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/biscuit/test-snp.bed.gz', checkIfExists: true)
+                ]
+                input[3] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[4] = BISCUIT_INDEX.out.index
                 """
             }
         }
