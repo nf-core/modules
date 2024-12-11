@@ -47,10 +47,16 @@ process METABAT2_METABAT2 {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args             = task.ext.args   ?: ''
+    def prefix           = task.ext.prefix ?: "${meta.id}"
+    def decompress_depth = depth           ? "gzip -d -f $depth"    : ""
+    def depth_file       = depth           ? "-a ${depth.baseName}" : ""
     """
-    touch ${prefix}.1.fa.gz
-    touch ${prefix}.tsv.gz
+    echo "" | gzip -c > ${prefix}.1.fa.gz
+    echo "" | gzip -c > ${prefix}.1.tooShort.fa.gz
+    echo "" | gzip -c > ${prefix}.1.lowDepth.fa.gz
+    echo "" | gzip -c > ${prefix}.1.unbinned.fa.gz
+    echo "" | gzip -c > ${prefix}.tsv.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
