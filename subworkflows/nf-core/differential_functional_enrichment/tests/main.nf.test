@@ -1,0 +1,45 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core subworkflows test differential_functional_enrichment
+nextflow_workflow {
+
+    name "Test Subworkflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT"
+    script "../main.nf"
+    workflow "DIFFERENTIAL_FUNCTIONAL_ENRICHMENT"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/differential_functional_enrichment"
+    // TODO nf-core: Add tags for all modules used within this subworkflow. Example:
+    tag "samtools"
+    tag "samtools/sort"
+    tag "samtools/index"
+
+
+    // TODO nf-core: Change the test name preferably indicating the test-data and file-format used
+    test("sarscov2 - bam - single_end") {
+
+        when {
+            workflow {
+                """
+                // TODO nf-core: define inputs of the workflow here. Example:
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+                //TODO nf-core: Add all required assertions to verify the test output.
+            )
+        }
+    }
+}
