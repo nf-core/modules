@@ -1,0 +1,67 @@
+nextflow_process {
+
+    name "Test Process PARABRICKS_DBSNP"
+    script "../main.nf"
+    process "PARABRICKS_DBSNP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "parabricks"
+    tag "parabricks/dbsnp"
+    tag "gpu"
+
+    test("human - vcf") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                        [ id:'test', single_end:false ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.rnaseq.vcf', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz.tbi', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("human - vcf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                        [ id:'test', single_end:false ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.rnaseq.vcf', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz.tbi', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
