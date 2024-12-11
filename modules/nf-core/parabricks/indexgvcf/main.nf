@@ -2,7 +2,7 @@ process PARABRICKS_INDEXGVCF {
     tag "$meta.id"
     label 'process_high'
     label 'process_gpu'
-    stageInMode 'copy'
+    stageInMode 'copy' // needed by the module to work properly - might be removed when this is fixed upstream
 
     container "nvcr.io/nvidia/clara/clara-parabricks:4.4.0-1"
 
