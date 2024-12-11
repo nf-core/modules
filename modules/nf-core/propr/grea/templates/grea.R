@@ -176,8 +176,6 @@ if (opt\$permutation < 0) {
     stop('permutation should be a positive integer')
 }
 
-print(opt)
-
 ################################################
 ################################################
 ## Finish loading libraries                   ##
