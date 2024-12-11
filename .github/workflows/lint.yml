@@ -65,11 +65,11 @@ jobs:
         with:
           filters: |
             modules:
-              - 'modules/nf-core/**'
-              - 'tests/modules/nf-core/**'
+              - added|modified: 'modules/nf-core/**'
+              - added|modified: 'tests/modules/nf-core/**'
             subworkflows:
-              - 'subworkflows/nf-core/**'
-              - 'tests/subworkflows/nf-core/**'
+              - added|modified: 'subworkflows/nf-core/**'
+              - added|modified: 'tests/subworkflows/nf-core/**'
           token: ""
           list-files: "json"
 
@@ -80,11 +80,10 @@ jobs:
           script: |
             return [...new Set(${{ steps.filter.outputs.modules_files }}
               .map(path => path
-                .replace('tests/', '')
                 .replace('modules/nf-core/', '')
                 .split('/')
                 .slice(0, 2)
-                .filter(x => x !== 'main.nf' && x !== 'tests' && x !== 'meta.yml' && x !== 'environment.yml')
+                .filter(x => !x.startsWith('main.nf') && x !== 'tests' && x !== 'meta.yml' && x !== 'environment.yml')
                 .join('/'))
               )
             ];
@@ -110,7 +109,7 @@ jobs:
         with:
           python-version: "3.11"
 
-      - uses: actions/cache@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4
+      - uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4
         id: cache-pip
         with:
           path: ~/.cache/pip
