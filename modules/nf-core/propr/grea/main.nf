@@ -8,13 +8,13 @@ process PROPR_GREA {
         'community.wave.seqera.io/library/bioconductor-limma_r-propr:f52f1d4fea746393' }"
 
     input:
-    tuple val(meta), path(adj)
+    tuple val(meta), path(adjacency)
     tuple val(meta2), path(gmt)
 
     output:
-    tuple val(meta), path("*.grea.tsv"),  emit: results
-    path "versions.yml",                  emit: versions
-    path "*.R_sessionInfo.log",           emit: session_info
+    tuple val(meta), path("*.grea.tsv"), emit: results
+    path "versions.yml",                 emit: versions
+    path "*.R_sessionInfo.log",          emit: session_info
 
     when:
     task.ext.when == null || task.ext.when

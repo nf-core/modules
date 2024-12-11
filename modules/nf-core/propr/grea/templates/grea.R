@@ -103,7 +103,7 @@ opt <- list(
     prefix           = ifelse('$task.ext.prefix' == 'null', '$meta.id',  '$task.ext.prefix'),
 
     # input data
-    adj              = '$adj',          # adjacency matrix
+    adj              = '$adjacency',    # adjacency matrix
     gmt              = '$gmt',          # knowledge database .gmt file
 
     # parameters for gene sets
@@ -202,6 +202,8 @@ if (!is.na(opt\$seed)) {
 # load adjacency matrix
 # this matrix should have gene x gene dimensions
 
+message("Loading input data")
+
 adj <- as.matrix(read_delim_flexible(
     opt\$adj,
     header = TRUE,
@@ -226,12 +228,17 @@ gmt <- load_gmt(
 # gene sets with less than set_min or more than set_max genes are removed
 
 idx <- which(colSums(gmt\$db) > opt\$set_min & colSums(gmt\$db) < opt\$set_max)
+if (length(idx) == 0){
+    stop("No gene set pass the filter of set_min=", opt\$set_min, " and set_max=", opt\$set_max)
+}
 gmt\$db <- gmt\$db[, idx]
 gmt\$description <- gmt\$description[idx]
 
 # run GREA
 # Basically, it calculates the odds ratio of the graph being enriched in each concept,
 # and the FDR of the odds ratio through permutation tests
+
+message("Running GREA")
 
 odds <- runGraflex(
     adj,
@@ -262,7 +269,6 @@ write.table(
     row.names = FALSE,
     sep       = '\\t',
     quote     = FALSE
-
 )
 
 ################################################

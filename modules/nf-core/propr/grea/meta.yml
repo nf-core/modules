@@ -2,12 +2,12 @@
 name: "propr_grea"
 description: Perform Gene Ratio Enrichment Analysis
 keywords:
-  - logratio
-  - differential
   - propr
   - grea
-  - enrichment
-  - expression
+  - logratio
+  - differential expression
+  - functional enrichment
+  - functional analysis
 tools:
   - "grea":
       description: "Gene Ratio Enrichment Analysis"
@@ -21,10 +21,10 @@ input:
   - - meta:
         type: map
         description: |
-          Groovy Map containing sample information.
+          Groovy Map containing data information.
           This can be used at the workflow level to pass optional parameters to the module.
           [id: 'test', ...]
-    - adj:
+    - adjacency:
         type: file
         description: adjacency matrix for gene ratio proportionality/differential proportionality
         pattern: "*.{csv,tsv}"
