@@ -26,8 +26,9 @@ input:
           [id: 'test', ...]
     - adjacency:
         type: file
-        description: adjacency matrix representing the graph connections (ie. 1 for edges, 0 otherwise).
-        This can be the adjacency matrix output from gene ratio approaches like propr/propd.
+        description: |
+          Adjacency matrix representing the graph connections (ie. 1 for edges, 0 otherwise).
+          This can be the adjacency matrix output from gene ratio approaches like propr/propd.
         pattern: "*.{csv,tsv}"
   - - meta2:
         type: map
@@ -37,9 +38,10 @@ input:
           [id: 'test', ...]
     - gmt:
         type: file
-        description: A tab delimited file format that describes gene sets. The first column is the
-        concept id (eg. GO term, pathway, etc), the second column is the concept description, and the
-        rest are nodes (eg. genes) that is associated to the given concept.
+        description: |
+          A tab delimited file format that describes gene sets. The first column is the
+          concept id (eg. GO term, pathway, etc), the second column is the concept description, and the
+          rest are nodes (eg. genes) that is associated to the given concept.
         pattern: "*.{gmt}"
 output:
   - results:
@@ -51,8 +53,9 @@ output:
             [id: 'test', ...]
       - "*.grea.tsv":
           type: file
-          description: Output file containing the information about the tested concepts (ie. gene sets)
-          and enrichment statistics.
+          description: |
+            Output file containing the information about the tested concepts (ie. gene sets)
+            and enrichment statistics.
           pattern: "*.{tsv}"
   - versions:
       - versions.yml:
