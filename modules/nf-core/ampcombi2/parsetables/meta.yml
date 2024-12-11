@@ -17,6 +17,7 @@ keywords:
   - amptransformer
   - DRAMP
   - MMseqs2
+  - InterProScan
 tools:
   - ampcombi2/parsetables:
       description: "A parsing tool to convert and summarise the outputs from multiple
@@ -60,6 +61,10 @@ input:
         type: directory
         description: The path to the folder containing the fasta and tsv database files.
         pattern: "path/to/amp_*_database"
+  - - opt_interproscan:
+        type: directory
+        description:  The path to the file corresponding to the respective tsv files containing the protein classifications of the annotated CDSs. The file must be the raw output from InterProScan and have an extension of '.tsv'.
+        pattern: "*.faa.tsv"
 output:
   - sample_dir:
       - meta:

@@ -13,6 +13,7 @@ process AMPCOMBI2_PARSETABLES {
     path gbk_input
     val opt_amp_db
     path opt_amp_db_dir
+    path opt_interproscan
 
     output:
     tuple val(meta), path("${meta.id}/")                                , emit: sample_dir
@@ -34,6 +35,9 @@ process AMPCOMBI2_PARSETABLES {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def db_dir = opt_amp_db_dir? "--amp_database_dir $opt_amp_db_dir": ""
+    def interpro = opt_interproscan? "--interproscan_output $opt_interproscan": ""
+
     """
     ampcombi parse_tables \\
     --path_list '${amp_input.collect { "${it}" }.join("' '")}' \\
@@ -41,7 +45,8 @@ process AMPCOMBI2_PARSETABLES {
     --gbk ${gbk_input} \\
     --sample_list ${prefix} \\
     --amp_database ${opt_amp_db} \\
-    --amp_database_dir ${opt_amp_db_dir} \\
+    ${db_dir} \\
+    ${interpro} \\
     ${args} \\
     --threads ${task.cpus}
 
@@ -54,6 +59,9 @@ process AMPCOMBI2_PARSETABLES {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def db_dir = opt_amp_db_dir? "--amp_database_dir $opt_amp_db_dir": ""
+    def interpro = opt_interproscan? "--interproscan_output $opt_interproscan": ""
+
     """
     mkdir -p ${prefix}
     mkdir -p ${prefix}/contig_gbks
