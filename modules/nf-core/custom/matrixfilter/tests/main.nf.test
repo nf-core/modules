@@ -25,7 +25,9 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(process.out.filtered).match("filtered") },
+                { assert snapshot(process.out.tests).match("tests") },
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
     }
@@ -46,7 +48,9 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(process.out.filtered).match("filtered_stub") },
+                { assert snapshot(process.out.tests).match("tests_stub") },
+                { assert snapshot(process.out.versions).match("versions_stub") }
             )
         }
     }

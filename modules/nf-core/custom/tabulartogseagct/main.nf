@@ -3,9 +3,7 @@ process CUSTOM_TABULARTOGSEAGCT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ubuntu:20.04' :
-        'nf-core/ubuntu:20.04' }"
+    container "community.wave.seqera.io/library/coreutils:8.30--b947da103164f84b"
 
     input:
     tuple val(meta), path(tabular)

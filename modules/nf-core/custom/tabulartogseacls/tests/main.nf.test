@@ -24,7 +24,8 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(process.out.cls).match("cls") }
+                //not asserting versions - bash version differs between conda and container
             )
         }
     }
@@ -44,7 +45,8 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(process.out.cls).match("cls_stub") }
+                //not asserting versions - bash version differs between conda and container
             )
         }
     }
