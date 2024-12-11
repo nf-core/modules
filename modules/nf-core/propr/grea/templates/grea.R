@@ -113,8 +113,9 @@ opt <- list(
     # parameters for permutation test
     permutation      = 100,             # number of permutations to perform
 
-    # other options
-    seed             = NA,
+    # other parameters
+    seed             = NA,              # seed for reproducibility
+    round_digits     = NA,              # number of digits to round results
     ncores           = as.integer('$task.cpus')
 )
 
@@ -126,6 +127,7 @@ opt_types <- list(
     set_max          = 'numeric',
     permutation      = 'numeric',
     seed             = 'numeric',
+    round_digits     = 'numeric',
     ncores           = 'numeric'
 )
 
@@ -246,6 +248,12 @@ odds\$Description <- sapply(odds\$Concept, function(concept)
 ## Generate outputs                           ##
 ################################################
 ################################################
+
+if (!is.na(opt\$round_digits)) {
+    for (col in c('Odds', 'LogOR', 'FDR.under', 'FDR.over')){
+        odds[,col] <- round(odds[,col], opt\$round_digits)
+    }
+}
 
 write.table(
     odds,
