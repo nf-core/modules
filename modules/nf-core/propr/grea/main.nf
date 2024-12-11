@@ -1,6 +1,6 @@
 process PROPR_GREA {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_high'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -12,9 +12,9 @@ process PROPR_GREA {
     tuple val(meta2), path(gmt)
 
     output:
-    tuple val(meta), path("*.go.tsv"),  emit: enrichedGO
-    path "versions.yml",                emit: versions
-    path "*.R_sessionInfo.log",         emit: session_info
+    tuple val(meta), path("*.grea.tsv"),  emit: results
+    path "versions.yml",                  emit: versions
+    path "*.R_sessionInfo.log",           emit: session_info
 
     when:
     task.ext.when == null || task.ext.when
