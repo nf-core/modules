@@ -16,12 +16,14 @@ keywords:
   - ampgram
   - amptransformer
   - DRAMP
+  - MMseqs2
+  - InterProScan
 tools:
   - ampcombi2/parsetables:
       description: "A parsing tool to convert and summarise the outputs from multiple
         AMP detection tools in a standardized format."
       homepage: "https://github.com/Darcy220606/AMPcombi"
-      documentation: "https://github.com/Darcy220606/AMPcombi"
+      documentation: "https://ampcombi.readthedocs.io/en/main/"
       tool_dev_url: "https://github.com/Darcy220606/AMPcombi/tree/dev"
       licence: ["MIT"]
       identifier: ""
@@ -52,9 +54,17 @@ input:
           name.
         pattern: "*.gbk"
   - - opt_amp_db:
+        type: string
+        description: The name of the database to download and set up. This can either be 'DRAMP', 'APD' or 'UniRef100'.
+        pattern: "DRAMP|APD|UniRef100"
+  - - opt_amp_db_dir:
         type: directory
         description: The path to the folder containing the fasta and tsv database files.
-        pattern: "*/"
+        pattern: "path/to/amp_*_database"
+  - - opt_interproscan:
+        type: directory
+        description: A path to a file corresponding to the respective tsv files containing protein classifications of the annotated CDSs. The file must be the raw output from InterProScan.
+        pattern: "*.tsv"
 output:
   - sample_dir:
       - meta:
@@ -78,17 +88,17 @@ output:
           description: The output subdirectory that contains the gbk files containing
             the AMP hits for each sample.
           pattern: "/*/contig_gbks"
-  - txt:
+  - db_tsv:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${meta.id}/${meta.id}_diamond_matches.txt:
+      - ${meta.id}/${meta.id}_mmseqs_matches.tsv:
           type: file
-          description: An alignment file containing the results from the DIAMOND alignment
+          description: An alignment file containing the results from the MMseqs2 alignment
             step done on all AMP hits.
-          pattern: "/*/*_diamond_matches.txt"
+          pattern: "/*/*_mmseqs_matches.tsv"
   - tsv:
       - meta:
           type: map
@@ -134,50 +144,51 @@ output:
           description: A log file that captures the standard output for the entire process
             in a log file. Can be activated by `--log`.
           pattern: "Ampcombi_parse_tables.log"
-  - results_db:
+  - db:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - amp_ref_database/:
+      - amp_${opt_amp_db}_database/:
           type: directory
-          description: If the AMP reference database is not provided by the user using
+          description: If the AMP reference database ID is not provided by the user using
             the flag `--amp_database', by default the DRAMP database will be downloaded,
             filtered and stored in this folder.
-          pattern: "/amp_ref_database"
-  - results_db_dmnd:
+          pattern: "/amp_*_database"
+  - db_txt:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - amp_ref_database/*.dmnd:
-          type: file
-          description: AMP reference database converted to DIAMOND database format.
-          pattern: "/amp_ref_database/*.dmnd"
-  - results_db_fasta:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - amp_ref_database/*.clean.fasta:
-          type: file
-          description: AMP reference database fasta file, cleaned of diamond-uncompatible
-            characters.
-          pattern: "/amp_ref_database/*.clean.fasta"
-  - results_db_tsv:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - amp_ref_database/*.tsv:
+      - amp_${opt_amp_db}_database/*.txt:
           type: file
           description: AMP reference database in tsv-format with two columns containing
             header and sequence.
-          pattern: "/amp_ref_database/*.tsv"
+          pattern: "/amp_*_database/*.txt"
+  - db_fasta:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - amp_${opt_amp_db}_database/*.fasta:
+          type: file
+          description: AMP reference database fasta file in clean format.
+            characters.
+          pattern: "/amp_*_database/*.fasta"
+  - db_mmseqs:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - amp_${opt_amp_db}_database/mmseqs2/:
+          type: directory
+          description: As alignment to the reference database is carried out by MMseqs2, this directory
+            contains all the files generated by MMseqs2 on the fasta file of the database.
+          pattern: "/amp_*_database/mmseqs2"
   - versions:
       - versions.yml:
           type: file
