@@ -6,6 +6,8 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "custom_tabulartogseagct"
+    tag "custom"
+    tag "custom/tabulartogseagct"
 
     test("test_custom_tabulartogseagct") {
 
@@ -14,7 +16,7 @@ nextflow_process {
                 """
                 input[0] = [ [id:'treatment_mCherry_hND6_', variable:'treatment', reference:'mCherry', target:'hND6', blocking:''], file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/differentialabundance/modules_testdata/all.normalised_counts.tsv",checkIfExists: true) ]
                 """
-                
+
             }
         }
 
