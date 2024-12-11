@@ -10,7 +10,7 @@ process TCOFFEE_ALIGN {
     input:
     tuple val(meta) ,  path(fasta)
     tuple val(meta2),  path(tree)
-    tuple val(meta3),  path(template), path(accessory_informations)
+    tuple val(meta3),  path(template), path(accessory_information)
     val(compress)
 
     output:

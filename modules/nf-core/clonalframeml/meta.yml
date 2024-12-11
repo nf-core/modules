@@ -21,11 +21,11 @@ input:
           e.g. [ id:'test', single_end:false ]
     - newick:
         type: file
-        description: A Newick formated tree based on multiple sequence alignment
+        description: A Newick formatted tree based on multiple sequence alignment
         pattern: "*.{newick,treefile,dnd}"
     - msa:
         type: file
-        description: A multiple seqeunce alignmnet in FASTA format
+        description: A multiple sequence alignment in FASTA format
         pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
 output:
   - emsim:
