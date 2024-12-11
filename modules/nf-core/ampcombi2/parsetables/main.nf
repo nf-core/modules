@@ -3,9 +3,9 @@ process AMPCOMBI2_PARSETABLES {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/ampcombi:2.0.1--pyhdfd78af_0'
-        : 'biocontainers/ampcombi:2.0.1--pyhdfd78af_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/ampcombi:2.0.1--pyhdfd78af_0':
+        'biocontainers/ampcombi:2.0.1--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(amp_input)
