@@ -40,15 +40,15 @@ process AMPCOMBI2_PARSETABLES {
 
     """
     ampcombi parse_tables \\
-     --path_list '${amp_input.collect { "${it}" }.join("' '")}' \\
-     --faa ${faa_input} \\
-     --gbk ${gbk_input} \\
-     --sample_list ${prefix} \\
-     --amp_database ${opt_amp_db} \\
-     ${db_dir} \\
-     ${interpro} \\
-     ${args} \\
-     --threads ${task.cpus}
+        --path_list '${amp_input.collect { "${it}" }.join("' '")}' \\
+        --faa ${faa_input} \\
+        --gbk ${gbk_input} \\
+        --sample_list ${prefix} \\
+        --amp_database ${opt_amp_db} \\
+        ${db_dir} \\
+        ${interpro} \\
+        ${args} \\
+        --threads ${task.cpus}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
