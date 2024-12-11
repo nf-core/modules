@@ -39,7 +39,7 @@ nextflow_process {
                     { assert path(process.out.log.get(0).get(1)).getText().contains(report1_line) }
                     }
                 },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(path(process.out.versions.get(0)).yaml).match() },
             )
         }
     }
@@ -61,7 +61,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions.get(0)).yaml
+                ).match() },
             )
         }
     }
@@ -118,7 +121,7 @@ nextflow_process {
                     { assert path(process.out.log.get(0).get(1).get(1)).getText().contains(report2_line) }
                     }
                 },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(path(process.out.versions.get(0)).yaml).match() },
             )
         }
     }
@@ -143,7 +146,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out).match() },
+                { assert snapshot(path(process.out.versions.get(0)).yaml).match("versions") },
             )
         }
     }
