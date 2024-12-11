@@ -37,4 +37,13 @@ process CUSTOM_TABULARTOGSEAGCT {
         bash: \$(echo \$(bash --version | grep -Eo 'version [[:alnum:].]+' | sed 's/version //'))
     END_VERSIONS
     """
+
+    stub:
+    """
+    touch mock.gct
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bash: \$(echo \$(bash --version | grep -Eo 'version [[:alnum:].]+' | sed 's/version //'))
+    END_VERSIONS
+    """
 }

@@ -2,9 +2,7 @@ process CUSTOM_MATRIXFILTER {
     tag "$meta"
     label 'process_single'
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-base:4.2.1' :
-        'biocontainers/r-base:4.2.1' }"
+    container "community.wave.seqera.io/library/r-base:4.2.1--b0b5476e2e7a0872"
 
     input:
     tuple val(meta), path(abundance)
@@ -27,4 +25,12 @@ process CUSTOM_MATRIXFILTER {
     // (new variables defined here don't seem to be available in templates, so
     // we have to access $task directly)
     template 'matrixfilter.R'
+    
+    stub:
+    """
+    touch mock.filtered.tsv
+    touch mock.tests.tsv
+    touch R_sessionInfo.log
+    touch versions.yml
+    """
 }
