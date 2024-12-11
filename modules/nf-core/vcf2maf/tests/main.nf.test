@@ -8,8 +8,99 @@ nextflow_process {
     tag "vcf2maf"
     tag "untar"
 
+    setup {
+        run("UNTAR") {
+            script "../../../../modules/nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test_genome_vep' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/vep.tar.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+        run("ENSEMBLVEP_DOWNLOAD") {
+            script "../../../../modules/nf-core/ensemblvep/download/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test_genome_vep' ],
+                    'GRCh38',
+                    'homo_sapiens',
+                    '113'
+                ]
+                """
+            }
+        }
+    }
+
     test("Run without VEP") {
+
         config "./nextflow.config"
+
+        when {
+            params {
+                module_args = '--ncbi-build GRCh38 --species homo_sapiens --inhibit-vep'
+                module_setup_args = ""
+            }
+            process {
+                """
+                input[0] = [
+                                [ id:'test'], // meta map
+                                file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gvcf/test.genome.vcf", checkIfExists: true)
+                            ]
+                input[1] = file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true)
+                input[2] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.maf[0][1]).readLines()[5..131],
+                    process.out.versions,
+                    path(process.out.versions[0]).readLines()
+                ).match() },
+            )
+        }
+    }
+
+    test("Run with VEP"){
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                module_args = "--ncbi-build GRCh38 --species homo_sapiens"
+                module_setup_args = '--AUTO c --CONVERT --NO_BIOPERL --NO_HTSLIB --NO_TEST --NO_UPDATE'
+            }
+            process {
+                """
+                input[0] = [
+                                [ id:'test'], // meta map
+                                file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gvcf/test.genome.vcf", checkIfExists: true)
+                            ]
+                input[1] = [ file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true) ]
+                input[2] = ENSEMBLVEP_DOWNLOAD.out.cache.map { it[1] }
+                """
+            } //UNTAR.out.untar.map { it[1] }
+        }
+
+        then{
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.maf[0][1]).readLines().size() == 2 }, // no variants, only header lines
+                { assert snapshot(process.out.versions, path(process.out.versions[0]).readLines()).match() }
+            )
+        }
+    }
+
+    test("Run without VEP - stub") {
+
+        options "-stub"
+
         when {
             process {
                 """
@@ -26,31 +117,17 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    path(process.out.maf[0][1]).readLines()[5..131],
-                    process.out.versions
-                ).match() },
-                { assert path(process.out.versions[0]).readLines() == ['"VCF2MAF":', '    vcf2maf: 1.6.21', '    ensemblvep: 106.1'] }
+                    process.out,
+                    path(process.out.versions[0]).readLines()
+                    ).match()
+                },
             )
         }
     }
 
-    test("Run with VEP"){
-        tag "vcf2maf-withVEP"
-        config "./nextflow.withVEP.config"
+    test("Run with VEP - stub"){
 
-        setup {
-            run("UNTAR") {
-                script "../../../../modules/nf-core/untar/main.nf"
-                process {
-                """
-                input[0] = [ 
-                    [ id:'test_genome_vep' ], 
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/vep.tar.gz", checkIfExists: true) 
-                ]
-                """
-            }
-        }
-        }
+        options "-stub"
 
         when {
             process {
@@ -68,9 +145,13 @@ nextflow_process {
         then{
             assertAll(
                 { assert process.success },
-                { assert path(process.out.maf[0][1]).readLines().size() == 2 }, // no variants, only header lines
-                { assert path(process.out.versions[0]).readLines() == ['"VCF2MAF":', '    vcf2maf: 1.6.21', '    ensemblvep: 106.1'] }
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).readLines()
+                    ).match()
+                },
             )
         }
     }
+
 }
