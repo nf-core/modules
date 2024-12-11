@@ -1,4 +1,4 @@
-process PANGOLIN {
+process PANGOLIN_RUN {
     tag "$meta.id"
     label 'process_medium'
 
@@ -9,6 +9,7 @@ process PANGOLIN {
 
     input:
     tuple val(meta), path(fasta)
+    path(db)
 
     output:
     tuple val(meta), path('*.csv'), emit: report
@@ -20,14 +21,29 @@ process PANGOLIN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def db_command = db ? "--datadir ${db}" : ''
     """
     export XDG_CACHE_HOME=/tmp/.cache
 
     pangolin \\
         $fasta\\
+        $db_command \\
         --outfile ${prefix}.pangolin.csv \\
         --threads $task.cpus \\
         $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        pangolin: \$(pangolin --version | sed "s/pangolin //g")
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    export XDG_CACHE_HOME=/tmp/.cache
+
+    touch ${prefix}.pangolin.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -45,4 +45,23 @@ process METABAT2_METABAT2 {
         metabat2: \$( metabat2 --help 2>&1 | head -n 2 | tail -n 1| sed 's/.*\\:\\([0-9]*\\.[0-9]*\\).*/\\1/' )
     END_VERSIONS
     """
+
+    stub:
+    def args             = task.ext.args   ?: ''
+    def prefix           = task.ext.prefix ?: "${meta.id}"
+    def decompress_depth = depth           ? "gzip -d -f $depth"    : ""
+    def depth_file       = depth           ? "-a ${depth.baseName}" : ""
+
+    """
+    echo "" | gzip -c > ${prefix}.1.fa.gz
+    echo "" | gzip -c > ${prefix}.1.tooShort.fa.gz
+    echo "" | gzip -c > ${prefix}.1.lowDepth.fa.gz
+    echo "" | gzip -c > ${prefix}.1.unbinned.fa.gz
+    echo "" | gzip -c > ${prefix}.tsv.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        metabat2: \$( metabat2 --help 2>&1 | head -n 2 | tail -n 1| sed 's/.*\\:\\([0-9]*\\.[0-9]*\\).*/\\1/' )
+    END_VERSIONS
+    """
 }
