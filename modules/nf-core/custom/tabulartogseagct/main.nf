@@ -3,9 +3,7 @@ process CUSTOM_TABULARTOGSEAGCT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ubuntu:20.04' :
-        'nf-core/ubuntu:20.04' }"
+    container "community.wave.seqera.io/library/coreutils:8.30--b947da103164f84b"
 
     input:
     tuple val(meta), path(tabular)
@@ -32,6 +30,15 @@ process CUSTOM_TABULARTOGSEAGCT {
     echo -e "NAME\\tDESCRIPTION\\t\$(head -n 1 $tabular | cut -f1 -d\$'$separator' --complement | awk -F'$separator' 'BEGIN { OFS = "\\t"}; {\$1=\$1}1' )" >> \$gct_file
     cat $tabular | tail -n +2 | awk -F'$separator' 'BEGIN { OFS = "\\t"} {\$1=\$1"\\tNA"}1' >> \$gct_file
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bash: \$(echo \$(bash --version | grep -Eo 'version [[:alnum:].]+' | sed 's/version //'))
+    END_VERSIONS
+    """
+
+    stub:
+    """
+    touch mock.gct
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         bash: \$(echo \$(bash --version | grep -Eo 'version [[:alnum:].]+' | sed 's/version //'))

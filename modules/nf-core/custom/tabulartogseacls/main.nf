@@ -3,9 +3,7 @@ process CUSTOM_TABULARTOGSEACLS {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ubuntu:20.04' :
-        'nf-core/ubuntu:20.04' }"
+    container "community.wave.seqera.io/library/coreutils:8.30--b947da103164f84b"
 
     input:
     tuple val(meta), path(samples)
@@ -41,4 +39,14 @@ process CUSTOM_TABULARTOGSEACLS {
         bash: \$(echo \$(bash --version | grep -Eo 'version [[:alnum:].]+' | sed 's/version //'))
     END_VERSIONS
     """
+
+    stub:
+    """
+    touch mock.cls
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bash: \$(echo \$(bash --version | grep -Eo 'version [[:alnum:].]+' | sed 's/version //'))
+    END_VERSIONS
+    """
+
 }
