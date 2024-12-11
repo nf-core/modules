@@ -53,11 +53,11 @@ process METABAT2_METABAT2 {
     def depth_file       = depth           ? "-a ${depth.baseName}" : ""
 
     """
-    echo "" | gzip -c > test.1.fa.gz
-    echo "" | gzip -c > test.1.tooShort.fa.gz
-    echo "" | gzip -c > test.1.lowDepth.fa.gz
-    echo "" | gzip -c > test.1.unbinned.fa.gz
-    echo "" | gzip -c > test.tsv.gz
+    echo "" | gzip -c > ${prefix}.1.fa.gz
+    echo "" | gzip -c > ${prefix}.1.tooShort.fa.gz
+    echo "" | gzip -c > ${prefix}.1.lowDepth.fa.gz
+    echo "" | gzip -c > ${prefix}.1.unbinned.fa.gz
+    echo "" | gzip -c > ${prefix}.tsv.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
