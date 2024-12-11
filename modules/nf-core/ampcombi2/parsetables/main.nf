@@ -35,8 +35,8 @@ process AMPCOMBI2_PARSETABLES {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def db_dir = opt_amp_db_dir? "--amp_database_dir $opt_amp_db_dir": ""
-    def interpro = opt_interproscan? "--interproscan_output $opt_interproscan": ""
+    def db_dir = opt_amp_db_dir ? "--amp_database_dir ${opt_amp_db_dir}" : ""
+    def interpro = opt_interproscan ? "--interproscan_output ${opt_interproscan}" : ""
 
     """
     ampcombi parse_tables \\
@@ -59,8 +59,8 @@ process AMPCOMBI2_PARSETABLES {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def db_dir = opt_amp_db_dir? "--amp_database_dir $opt_amp_db_dir": ""
-    def interpro = opt_interproscan? "--interproscan_output $opt_interproscan": ""
+    def db_dir = opt_amp_db_dir ? "--amp_database_dir ${opt_amp_db_dir}" : ""
+    def interpro = opt_interproscan ? "--interproscan_output ${opt_interproscan}" : ""
 
     """
     mkdir -p ${prefix}
