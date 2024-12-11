@@ -1,0 +1,101 @@
+nextflow_process {
+
+    name "Test Process FOLDMASON_MSA2LDDTREPORT"
+    script "../main.nf"
+    process "FOLDMASON_MSA2LDDTREPORT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "foldmason"
+    tag "foldmason/msa2lddtreport"
+    tag "foldmason/createdb"
+    tag "untar"
+    tag "famsa/guidetree"
+
+
+    setup{
+        run("UNTAR") {
+            script "../../../../../modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    archive = file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/af2_structures/seatoxin-ref.tar.gz", checkIfExists: true)
+                    input[0] = Channel.of(tuple([id:'test'], archive))
+                    """
+                }
+        }
+
+        run("FAMSA_GUIDETREE") {
+            script "../../../../../modules/nf-core/famsa/guidetree/main.nf"
+            process {
+                """
+                input[0] = [ [ id:'test_tree' ], // meta map
+                            file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        run("FOLDMASON_CREATEDB") {
+            script "../../../../../modules/nf-core/foldmason/createdb/main.nf"
+            process {
+                """
+                input[0] = UNTAR.out.untar.map { meta,dir -> [meta, file(dir).listFiles().collect()]}
+                """
+            }
+        }
+
+
+    }
+
+    test("seatoxin") {
+
+
+        when {
+            process {
+                """
+                input[0] =[ [ id:'test' ], // meta map
+                            file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
+                            ]
+                input[1] = FOLDMASON_CREATEDB.out.db.collect{ meta, db -> db }.map{ db -> [[ id: 'test'], db]}
+                input[2] = UNTAR.out.untar.map { meta,dir -> [meta, file(dir).listFiles().collect()]}
+                input[3] = FAMSA_GUIDETREE.out.tree.collect{ meta, tree -> tree }.map{ tree -> [[ id: 'test_tree'], tree]}
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("seatixin - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] =[ [ id:'test_tree' ], // meta map
+                            file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
+                            ]
+                input[1] = FOLDMASON_CREATEDB.out.db.collect{ meta, db -> db }.map{ db -> [[ id: 'test'], db]}
+                input[2] = UNTAR.out.untar.map { meta,dir -> [meta, file(dir).listFiles().collect()]}
+                input[3] = FAMSA_GUIDETREE.out.tree.collect{ meta, tree -> tree }.map{ tree -> [[ id: 'test_tree'], tree]}
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
