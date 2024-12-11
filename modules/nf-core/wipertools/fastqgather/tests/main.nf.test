@@ -8,11 +8,25 @@ nextflow_process {
     tag "modules_nfcore"
     tag "wipertools"
     tag "wipertools/fastqgather"
-    tag "untar"
 
     test("merge two gzipped fastq - fastq.gz") {
 
         config "./nextflow.config"
+
+        setup {
+            run("WIPERTOOLS_FASTQSCATTER") {
+                script "../../fastqscatter/main.nf"
+                process {
+                    """
+                    input[0] = [
+                    [ id:'pp_' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true)
+                    ]
+                    input[1] = 2  // number of splits
+                    """
+                }
+            }
+        }
 
         when {
             params {
@@ -20,11 +34,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [
-                    [id: 'fastq_chunks'],
-                    [file('https://raw.githubusercontent.com/nf-core/test-datasets/fastqrepair/testdata/pp_1-of-2_ss.fastq.gz', checkIfExists: true),
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/fastqrepair/testdata/pp_2-of-2_ss.fastq.gz', checkIfExists: true)]
-                ]
+                input[0] = WIPERTOOLS_FASTQSCATTER.out.chunks.map { tuple( [id: 'fastq_chunks'], it[1] ) }
                 """
             }
         }
@@ -43,17 +53,28 @@ nextflow_process {
         options "-stub"
         config "./nextflow.config"
 
+        setup {
+            run("WIPERTOOLS_FASTQSCATTER") {
+                script "../../fastqscatter/main.nf"
+                process {
+                    """
+                    input[0] = [
+                    [ id:'pp_' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true)
+                    ]
+                    input[1] = 2  // number of splits
+                    """
+                }
+            }
+        }
+
         when {
             params {
                 module_args = '--prefix pp_'
             }
             process {
                 """
-                input[0] = [
-                    [id: 'fastq_chunks'],
-                    [file('https://raw.githubusercontent.com/nf-core/test-datasets/fastqrepair/testdata/pp_1-of-2_ss.fastq.gz', checkIfExists: true),
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/fastqrepair/testdata/pp_2-of-2_ss.fastq.gz', checkIfExists: true)]
-                ]
+                input[0] = WIPERTOOLS_FASTQSCATTER.out.chunks.map { tuple( [id: 'fastq_chunks'], it[1] ) }
                 """
             }
         }
