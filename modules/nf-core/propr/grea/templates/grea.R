@@ -54,11 +54,13 @@ read_delim_flexible <- function(file, header = TRUE, row.names = 1, check.names 
 #' Loads the .gmt file  and converts it into a knowledge database
 #'
 #' @param filename path of the .gmt file
-#' @param genes vector of gene names. Note that this set should be as complete as possible.
-#' So it should not only contain the target genes but also the background genes.
-#' @return output a list with: `db` A knowledge database where each row is a graph node (eg. gene)
-#' and each column is a concept (eg. GO term, pathway, etc) and `description` A list of descriptions
-#' for each concept
+#' @param nodes vector of node (eg. gene) names. Note that this set should be as
+#' complete as possible. So it should not only contain the target genes but also
+#' the background genes.
+#' @return a list with:
+#'     `db` A knowledge database (matrix) where each row is a graph node (eg. gene)
+#'      and each column is a concept (eg. GO term, pathway, etc).
+#'     `description` A list of descriptions for each concept.
 load_gmt <- function(filename, nodes) {
 
     # read gmt file
@@ -109,7 +111,7 @@ opt <- list(
     set_max          = 500,             # maximum number of genes in a set
 
     # parameters for permutation test
-    permutation      = 100,
+    permutation      = 100,             # number of permutations to perform
 
     # other options
     seed             = NA,
@@ -129,7 +131,8 @@ opt_types <- list(
 
 # Apply parameter overrides
 
-args_opt <- parse_args('$task.ext.args')
+args_ext <- ifelse('$task.ext.args' == 'null', '', '$task.ext.args')
+args_opt <- parse_args(args_ext)
 for ( ao in names(args_opt)){
     if (! ao %in% names(opt)){
         stop(paste("Invalid option:", ao))
@@ -155,6 +158,7 @@ if (length(missing) > 0){
 }
 
 # Check file inputs are valid
+
 for (file_input in c('adj', 'gmt')){
     if (is.null(opt[[file_input]])) {
         stop(paste("Please provide", file_input), call. = FALSE)
@@ -164,7 +168,12 @@ for (file_input in c('adj', 'gmt')){
     }
 }
 
-# TODO maybe add a function to pretty print the arguments?
+# check parameters are valid
+
+if (opt\$permutation < 0) {
+    stop('permutation should be a positive integer')
+}
+
 print(opt)
 
 ################################################
@@ -195,10 +204,10 @@ adj <- as.matrix(read_delim_flexible(
     opt\$adj,
     header = TRUE,
     row.names = 1,
-    check.names = TRUE
+    check.names = FALSE
 ))
 if (nrow(adj) != ncol(adj)) {
-    stop('Adjacency matrix is not square')
+    stop('Adjacency matrix should be a squared matrix that reflects the connections between all the nodes')
 }
 if (!all(rownames(adj) == colnames(adj))) {
     stop('Adjacency matrix row names are not equal to column names')
@@ -208,7 +217,7 @@ if (!all(rownames(adj) == colnames(adj))) {
 
 gmt <- load_gmt(
     opt\$gmt,
-    rownames(adj)
+    rownames(adj)  # adj should contain all the nodes (target and background)
 )
 
 # filter gene sets
