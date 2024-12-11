@@ -78,4 +78,3 @@ workflow BAM_VARIANT_DEMIX_BOOT_FREYJA {
     lineages_meta  = ch_lineages_meta              // channel: [ path(lineages_meta) ]
     versions       = ch_versions                   // channel: [ path(versions.yml) ]
     }
-

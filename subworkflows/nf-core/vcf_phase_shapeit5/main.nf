@@ -93,4 +93,3 @@ workflow VCF_PHASE_SHAPEIT5 {
     variants_index      = VCF_INDEX2.out.csi                     // channel: [ val(meta), csi ]
     versions            = ch_versions                            // channel: [ versions.yml ]
 }
-

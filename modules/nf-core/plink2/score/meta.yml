@@ -13,42 +13,45 @@ tools:
       documentation: http://www.cog-genomics.org/plink/2.0/general_usage
       doi: "10.1186/s13742-015-0047-8"
       licence: ["GPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - pgen:
-      type: file
-      description: PLINK 2 binary genotype table
-      pattern: "*.{pgen}"
-  - psam:
-      type: file
-      description: PLINK 2 sample information file
-      pattern: "*.{psam}"
-  - pvar:
-      type: file
-      description: PLINK 2 variant information file
-      pattern: "*.{pvar}"
-  - scorefile:
-      type: file
-      description: A text file containing variant identifiers and weights
-      pattern: "*.{scores,txt,scorefile}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - pgen:
+        type: file
+        description: PLINK 2 binary genotype table
+        pattern: "*.{pgen}"
+    - psam:
+        type: file
+        description: PLINK 2 sample information file
+        pattern: "*.{psam}"
+    - pvar:
+        type: file
+        description: PLINK 2 variant information file
+        pattern: "*.{pvar}"
+  - - scorefile:
+        type: file
+        description: A text file containing variant identifiers and weights
+        pattern: "*.{scores,txt,scorefile}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - score:
-      type: file
-      description: A text file containing sample scores, in plink 2 .sscore format
-      pattern: "*.{sscore}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.sscore":
+          type: file
+          description: A text file containing sample scores, in plink 2 .sscore format
+          pattern: "*.{sscore}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nebfield"
 maintainers:

@@ -37,7 +37,7 @@ process GFATOOLS_GFA2FA {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.fasta.gz
+    echo | gzip > ${prefix}.fasta.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

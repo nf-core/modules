@@ -1,5 +1,6 @@
 name: deeparg_predict
-description: A deep learning based approach to predict Antibiotic Resistance Genes (ARGs) from metagenomes
+description: A deep learning based approach to predict Antibiotic Resistance Genes
+  (ARGs) from metagenomes
 keywords:
   - deeparg
   - antimicrobial resistance
@@ -11,56 +12,81 @@ keywords:
   - metagenomes
 tools:
   - deeparg:
-      description: A deep learning based approach to predict Antibiotic Resistance Genes (ARGs) from metagenomes
+      description: A deep learning based approach to predict Antibiotic Resistance Genes
+        (ARGs) from metagenomes
       homepage: https://github.com/gaarangoa/deeparg
       documentation: https://github.com/gaarangoa/deeparg
       tool_dev_url: https://github.com/gaarangoa/deeparg
       doi: "10.1186/s40168-018-0401-z"
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - fasta:
-      type: file
-      description: FASTA file containing gene-like sequences
-      pattern: "*.{fasta,fa,fna}"
-  - model:
-      type: string
-      description: Which model to use, depending on input data. Either 'LS' or 'SS' for long or short sequences respectively
-      pattern: "LS|LS"
-  - db:
-      type: directory
-      description: Path to a directory containing the deepARG pre-built models
-      pattern: "*/"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: FASTA file containing gene-like sequences
+        pattern: "*.{fasta,fa,fna}"
+    - model:
+        type: string
+        description: Which model to use, depending on input data. Either 'LS' or 'SS'
+          for long or short sequences respectively
+        pattern: "LS|LS"
+  - - db:
+        type: directory
+        description: Path to a directory containing the deepARG pre-built models
+        pattern: "*/"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - daa:
-      type: file
-      description: Sequences of ARG-like sequences from DIAMOND alignment
-      pattern: "*.align.daa"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.align.daa":
+          type: file
+          description: Sequences of ARG-like sequences from DIAMOND alignment
+          pattern: "*.align.daa"
   - daa_tsv:
-      type: file
-      description: Alignments scores against ARG-like sequences from DIAMOND alignment
-      pattern: "*.align.daa.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.align.daa.tsv":
+          type: file
+          description: Alignments scores against ARG-like sequences from DIAMOND alignment
+          pattern: "*.align.daa.tsv"
   - arg:
-      type: file
-      description: Table containing sequences with an ARG-like probability of more than specified thresholds
-      pattern: "*.mapping.ARG"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.mapping.ARG":
+          type: file
+          description: Table containing sequences with an ARG-like probability of more
+            than specified thresholds
+          pattern: "*.mapping.ARG"
   - potential_arg:
-      type: file
-      description: Table containing sequences with an ARG-like probability of less than specified thresholds, and requires manual inspection
-      pattern: "*.mapping.potential.ARG"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.mapping.potential.ARG":
+          type: file
+          description: Table containing sequences with an ARG-like probability of less
+            than specified thresholds, and requires manual inspection
+          pattern: "*.mapping.potential.ARG"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jfy133"
 maintainers:

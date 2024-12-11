@@ -11,31 +11,32 @@ tools:
       homepage: https://github.com/ncbi/ncbi-cxx-toolkit-public
       documentation: https://ncbi.github.io/cxx-toolkit/
       licence: ["MIT"]
+      identifier: biotools:windowmasker
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - ref:
-      type: file
-      description: An input nucleotide fasta file.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - ref:
+        type: file
+        description: An input nucleotide fasta file.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - intervals:
-      type: file
-      description: |
-        An output file containing genomic locations of low
-        complexity and highly repetitive regions
-      pattern: "${prefix}.txt"
+  - counts:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt":
+          type: file
+          description: A file containing frequency counts of repetitive units.
+          pattern: "*.txt"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@DLBPointon"
 maintainers:

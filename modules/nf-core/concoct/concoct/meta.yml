@@ -1,5 +1,6 @@
 name: "concoct_concoct"
-description: Unsupervised binning of metagenomic contigs by using nucleotide composition - kmer frequencies - and coverage data for multiple samples
+description: Unsupervised binning of metagenomic contigs by using nucleotide composition
+  - kmer frequencies - and coverage data for multiple samples
 keywords:
   - contigs
   - fragment
@@ -17,55 +18,89 @@ tools:
       documentation: "https://concoct.readthedocs.io/en/latest/index.html"
       tool_dev_url: "https://github.com/BinPro/CONCOCT"
       doi: "10.1038/nmeth.3103"
-      licence: "['FreeBSD']"
+      licence: ["FreeBSD"]
+      identifier: biotools:concoct
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - coverage:
-      type: file
-      description: Subcontig coverage TSV table (typically generated with concoct_coverage_table.py)
-      pattern: "*.tsv"
-  - fasta:
-      type: file
-      description: FASTA file containing subcontigs (typically generated with cutup_fasta.py)
-      pattern: "*.fasta"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - coverage_file:
+        type: file
+        description: Subcontig coverage TSV table (typically generated with concoct_coverage_table.py)
+        pattern: "*.tsv"
+    - fasta:
+        type: file
+        description: FASTA file containing subcontigs (typically generated with cutup_fasta.py)
+        pattern: "*.fasta"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - args_txt:
-      type: file
-      description: File containing execution parameters
-      pattern: "*_args.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_args.txt":
+          type: file
+          description: File containing execution parameters
+          pattern: "*_args.txt"
   - clustering_csv:
-      type: file
-      description: CSV containing information which subcontig is assigned to which cluster
-      pattern: "*_clustering_gt1000.csv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_clustering_gt1000.csv":
+          type: file
+          description: CSV containing information which subcontig is assigned to which
+            cluster
+          pattern: "*_clustering_gt1000.csv"
   - log_txt:
-      type: file
-      description: Log file of tool execution
-      pattern: "*_log.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_log.txt":
+          type: file
+          description: Log file of tool execution
+          pattern: "*_log.txt"
   - original_data_csv:
-      type: file
-      description: Original CONCOCT GT1000 output
-      pattern: "*_original_data_gt1000.csv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_original_data_gt1000.csv":
+          type: file
+          description: Original CONCOCT GT1000 output
+          pattern: "*_original_data_gt1000.csv"
   - pca_components_csv:
-      type: file
-      description: Untransformed PCA component values
-      pattern: "*_PCA_components_data_gt1000.csv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_PCA_components_data_gt1000.csv":
+          type: file
+          description: Untransformed PCA component values
+          pattern: "*_PCA_components_data_gt1000.csv"
   - pca_transformed_csv:
-      type: file
-      description: Transformed PCA compontent values
-      pattern: "*_PCA_transformed_data_gt1000.csv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_PCA_transformed_data_gt1000.csv":
+          type: file
+          description: Transformed PCA compontent values
+          pattern: "*_PCA_transformed_data_gt1000.csv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jfy133"
 maintainers:

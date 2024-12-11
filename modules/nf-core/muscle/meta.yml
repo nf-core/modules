@@ -1,57 +1,108 @@
 name: muscle
-description: MUSCLE is a program for creating multiple alignments of amino acid or nucleotide sequences. A range of options are provided that give you the choice of optimizing accuracy, speed, or some compromise between the two
+description: MUSCLE is a program for creating multiple alignments of amino acid or
+  nucleotide sequences. A range of options are provided that give you the choice of
+  optimizing accuracy, speed, or some compromise between the two
 keywords:
   - msa
   - multiple sequence alignment
+  - phylogeny
 tools:
   - muscle:
-      description: MUSCLE is a multiple sequence alignment tool with high accuracy and throughput
+      description: MUSCLE is a multiple sequence alignment tool with high accuracy and
+        throughput
       homepage: https://www.drive5.com/muscle
       documentation: http://www.drive5.com/muscle/muscle.html#_Toc81224840
       doi: "10.1093/nar/gkh340"
       licence: ["http://www.drive5.com/muscle/manual/license.html"]
+      identifier: biotools:muscle
 input:
-  - fasta:
-      type: file
-      description: Input sequences for alignment must be in FASTA format
-      pattern: "*.{fasta,fa,fna}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fasta:
+        type: file
+        description: Input sequences for alignment must be in FASTA format
+        pattern: "*.{fasta,fa,fna}"
 output:
   - aligned_fasta:
-      type: file
-      description: Multiple sequence alignment produced in FASTA format
-      pattern: "*.{afa}"
-  - msf:
-      type: file
-      description: GCG Multiple Sequence File (MSF) alignment format (similar to CLUSTALW)
-      pattern: "*.{msf}"
-  - clustalw:
-      type: file
-      description: Multiple sequence alignment produced in ClustalW format without base/residue numbering
-      pattern: "*.{clw}"
+      - meta:
+          type: file
+          description: Multiple sequence alignment produced in FASTA format
+          pattern: "*.{afa}"
+      - "*.afa":
+          type: file
+          description: Multiple sequence alignment produced in FASTA format
+          pattern: "*.{afa}"
   - phyi:
-      type: file
-      description: Multiple sequence alignment produced in PHYLIP interleaved format
-      pattern: "*.{phyi}"
+      - meta:
+          type: file
+          description: Multiple sequence alignment produced in PHYLIP interleaved format
+          pattern: "*.{phyi}"
+      - "*.phyi":
+          type: file
+          description: Multiple sequence alignment produced in PHYLIP interleaved format
+          pattern: "*.{phyi}"
   - phys:
-      type: file
-      description: Multiple sequence alignment produced in PHYLIP sequential format
-      pattern: "*.{phys}"
+      - meta:
+          type: file
+          description: Multiple sequence alignment produced in PHYLIP sequential format
+          pattern: "*.{phys}"
+      - "*.phys":
+          type: file
+          description: Multiple sequence alignment produced in PHYLIP sequential format
+          pattern: "*.{phys}"
+  - clustalw:
+      - meta:
+          type: file
+          description: Multiple sequence alignment produced in ClustalW format without
+            base/residue numbering
+          pattern: "*.{clw}"
+      - "*.clw":
+          type: file
+          description: Multiple sequence alignment produced in ClustalW format without
+            base/residue numbering
+          pattern: "*.{clw}"
   - html:
-      type: file
-      description: Multiple sequence alignment produced in HTML format
-      pattern: "*.{html}"
+      - meta:
+          type: file
+          description: Multiple sequence alignment produced in HTML format
+          pattern: "*.{html}"
+      - "*.html":
+          type: file
+          description: Multiple sequence alignment produced in HTML format
+          pattern: "*.{html}"
+  - msf:
+      - meta:
+          type: file
+          description: GCG Multiple Sequence File (MSF) alignment format (similar to CLUSTALW)
+          pattern: "*.{msf}"
+      - "*.msf":
+          type: file
+          description: GCG Multiple Sequence File (MSF) alignment format (similar to CLUSTALW)
+          pattern: "*.{msf}"
   - tree:
-      type: file
-      description: NJ or UPGMA tree in Newick format produced from a multiple sequence alignment
-      pattern: "*.{tree}"
+      - meta:
+          type: file
+          description: NJ or UPGMA tree in Newick format produced from a multiple sequence
+            alignment
+          pattern: "*.{tree}"
+      - "*.tree":
+          type: file
+          description: NJ or UPGMA tree in Newick format produced from a multiple sequence
+            alignment
+          pattern: "*.{tree}"
   - log:
-      type: file
-      description: Log file of MUSCLE run
-      pattern: "*{.log}"
+      - "*.log":
+          type: file
+          description: Log file of MUSCLE run
+          pattern: "*{.log}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@MGordon"
 maintainers:

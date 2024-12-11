@@ -27,6 +27,13 @@ body:
         - label: I have searched for existing issues
           required: true
 
+  - type: textarea
+    attributes:
+      label: Further Information
+      description: Is there a website, github repo or conda package? If yes enter the link here.
+    validations:
+      required: false
+
   - type: checkboxes
     attributes:
       label: Are you going to work on this?

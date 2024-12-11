@@ -1,0 +1,64 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "evigene_tr2aacds"
+description: Uses evigene/scripts/prot/tr2aacds.pl to filter a transcript assembly
+keywords:
+  - genomics
+  - transcript
+  - assembly
+  - clean
+  - polish
+  - filter
+  - redundant
+  - duplicate
+tools:
+  - "evigene":
+      description: |
+        EvidentialGene is a genome informatics project for "Evidence Directed Gene Construction
+        for Eukaryotes", for constructing high quality, accurate gene sets for animals and
+        plants (any eukaryotes), being developed by Don Gilbert at Indiana University, gilbertd at indiana edu.
+      homepage: "http://arthropods.eugenes.org/EvidentialGene/evigene/"
+      documentation: "http://arthropods.eugenes.org/EvidentialGene/evigene/"
+      tool_dev_url: "http://arthropods.eugenes.org/EvidentialGene/evigene/"
+      doi: "10.7490/f1000research.1112594.1 "
+      licence: ["Don Gilbert, gilbertd At indiana edu, 2018"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Transcript assembly in fasta format
+        pattern: "*.{fsa,fa,fasta,fsa.gz,fa.gz,fasta.gz}"
+output:
+  - dropset:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - dropset:
+          type: directory
+          description: Directory containing dropped transcripts and associated files
+          pattern: "dropset"
+  - okayset:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - okayset:
+          type: directory
+          description: Directory containing included transcripts and associated files
+          pattern: "okayset"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@GallVp"
+maintainers:
+  - "@GallVp"

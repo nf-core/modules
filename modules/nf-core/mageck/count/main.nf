@@ -4,8 +4,8 @@ process MAGECK_COUNT {
 
     conda "bioconda::mageck=0.5.9"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mageck:0.5.9--py37h6bb024c_0':
-        'biocontainers/mageck:0.5.9--py37h6bb024c_0' }"
+        'https://depot.galaxyproject.org/singularity/mageck:0.5.9.5--py39h1f90b4d_3':
+        'biocontainers/mageck:0.5.9.5--py39h1f90b4d_3' }"
 
     input:
     tuple val(meta), path(inputfile)
@@ -43,6 +43,19 @@ process MAGECK_COUNT {
         $input
 
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        mageck: \$(mageck -v)
+    END_VERSIONS
+    """
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def input_file = ("$inputfile".endsWith(".fastq.gz")) ? "--fastq ${inputfile}" : "-k ${inputfile}"
+    def sample_label = ("$inputfile".endsWith(".fastq.gz") || "$inputfile".endsWith(".fq.gz")) ? "--sample-label ${meta.id}" : ''
+    """
+    touch ${prefix}.count.txt
+    touch ${prefix}.count_normalized.txt
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         mageck: \$(mageck -v)

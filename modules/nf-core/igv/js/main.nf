@@ -5,8 +5,8 @@ process IGV_JS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ubuntu:20.04' :
-        'nf-core/ubuntu:20.04' }"
+        'https://depot.galaxyproject.org/singularity/ubuntu:22.04' :
+        'nf-core/ubuntu:22.04' }"
 
     input:
     tuple val(meta), path(alignment), path(index)
@@ -57,6 +57,17 @@ process IGV_JS {
         </body>
     </html>
     IGV
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        cat: \$(echo \$(cat --version 2>&1) | sed 's/^.*coreutils) //; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}_genome-browser.html
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

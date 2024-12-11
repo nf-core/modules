@@ -11,72 +11,154 @@ tools:
         Our software improves upon BWA, STAR, Minimap2, GATK, HaplotypeCaller, Mutect, and Mutect2 based pipelines and is deployable on any generic-CPU-based computing system.
       homepage: https://www.sentieon.com/
       documentation: https://www.sentieon.com/
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-  - bai:
-      type: file
-      description: Index of th sorted BAM/CRAM/SAM file
-      pattern: "*.{bai,crai,sai}"
-  - fasta:
-      type: file
-      description: Genome fasta file
-      pattern: "*.{fa,fasta}"
-  - fai:
-      type: file
-      description: Index of the genome fasta file
-      pattern: "*.fai"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+    - bai:
+        type: file
+        description: Index of th sorted BAM/CRAM/SAM file
+        pattern: "*.{bai,crai,sai}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - fasta:
+        type: file
+        description: Genome fasta file
+        pattern: "*.{fa,fasta}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - fai:
+        type: file
+        description: Index of the genome fasta file
+        pattern: "*.fai"
+  - - plot_results:
+        type: boolean
+        description: Boolean to determine whether plots should be generated
+        pattern: "true or false"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - mq_metrics:
-      type: file
-      description: File containing the information about mean base quality score for each sequencing cycle
-      pattern: "*.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*mq_metrics.txt":
+          type: file
+          description: File containing the information about mean base quality score for
+            each sequencing cycle
+          pattern: "*.txt"
   - qd_metrics:
-      type: file
-      description: File containing the information about number of bases with a specific base quality score
-      pattern: "*.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*qd_metrics.txt":
+          type: file
+          description: File containing the information about number of bases with a specific
+            base quality score
+          pattern: "*.txt"
   - gc_summary:
-      type: file
-      description: File containing the information about GC bias in the reference and the sample
-      pattern: "*.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*gc_summary.txt":
+          type: file
+          description: File containing the information about GC bias in the reference
+            and the sample
+          pattern: "*.txt"
   - gc_metrics:
-      type: file
-      description: File containing the information about GC bias in the reference and the sample
-      pattern: "*.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*gc_metrics.txt":
+          type: file
+          description: File containing the information about GC bias in the reference
+            and the sample
+          pattern: "*.txt"
   - aln_metrics:
-      type: file
-      description: File containing the statistics about the alignment of the reads
-      pattern: "*.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*aln_metrics.txt":
+          type: file
+          description: File containing the statistics about the alignment of the reads
+          pattern: "*.txt"
   - is_metrics:
-      type: file
-      description: File containing the information about statistical distribution of insert sizes
-      pattern: "*.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*is_metrics.txt":
+          type: file
+          description: File containing the information about statistical distribution
+            of insert sizes
+          pattern: "*.txt"
+  - mq_plot:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*mq_metrics.pdf":
+          type: file
+          description: "PDF containting plot of mean base quality scores"
+          pattern: "*.pdf"
+  - qd_plot:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*qd_metrics.pdf":
+          type: file
+          description: "PDF containting plot of specific base quality score"
+          pattern: "*.pdf"
+  - is_plot:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*is_metrics.pdf":
+          type: file
+          description: "PDF containting plot of insert sizes"
+          pattern: "*.pdf"
+  - gc_plot:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*gc_metrics.pdf":
+          type: file
+          description: "PDF containting plot of GC bias"
+          pattern: "*.pdf"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@ramprasadn"
 maintainers:

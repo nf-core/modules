@@ -14,6 +14,11 @@ nextflow_process {
         setup {
             run("CHECKM2_DATABASEDOWNLOAD") {
                 script "../../databasedownload/main.nf"
+                process {
+                    """
+                    input[0] = []
+                    """
+                }
             }
         }
 
@@ -23,7 +28,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [id: 'test'], [file(params.test_data['sarscov2']['illumina']['contigs_fasta'])] ]
+                input[0] = [ [id: 'test'], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)] ]
                 input[1] = CHECKM2_DATABASEDOWNLOAD.out.database
                 """
             }

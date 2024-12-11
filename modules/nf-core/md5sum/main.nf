@@ -8,7 +8,8 @@ process MD5SUM {
         'nf-core/ubuntu:20.04' }"
 
     input:
-    tuple val(meta), path(file)
+    tuple val(meta), path(files)
+    val as_separate_files
 
     output:
     tuple val(meta), path("*.md5"), emit: checksum
@@ -19,29 +20,54 @@ process MD5SUM {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}" // will only use when as_separate_files = false
+    if ( as_separate_files ) {
+        """
+        find -L * -maxdepth 0 -type f \\
+            ! -name '*.md5' \\
+            -exec sh -c 'md5sum $args "\$1" > "\$1.md5"' _ "{}" \\;
 
-    """
-    md5sum \\
-        $args \\
-        ${file} \\
-        > ${file}.md5
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            md5sum: \$( md5sum --version | sed '1!d; s/.* //' )
+        END_VERSIONS
+        """
+    } else {
+        """
+        find -L * -type f \\
+            ! -name '*.md5' \\
+            -exec md5sum $args "{}" + \\
+            > ${prefix}.md5
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        md5sum: \$(echo \$(md5sum --version 2>&1 | head -n 1| sed 's/^.*) //;' ))
-    END_VERSIONS
-    """
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            md5sum: \$( md5sum --version | sed '1!d; s/.* //' )
+        END_VERSIONS
+        """
+    }
 
     stub:
-    def args = task.ext.args ?: ''
-    """
-    touch ${file}.md5
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if ( as_separate_files ) {
+        """
+        find -L * -type f \\
+            ! -name '*.md5' \\
+            -exec sh -c 'touch "\$1.md5"' _ "{}" \\;
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        md5sum: \$(echo \$(md5sum --version 2>&1 | head -n 1| sed 's/^.*) //;' ))
-    END_VERSIONS
-    """
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            md5sum: \$( md5sum --version | sed '1!d; s/.* //' )
+        END_VERSIONS
+        """
+    } else {
+        """
+        touch ${prefix}.md5
+
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            md5sum: \$( md5sum --version | sed '1!d; s/.* //' )
+        END_VERSIONS
+        """
+    }
 
 }

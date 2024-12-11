@@ -9,6 +9,7 @@ process SOURMASH_INDEX {
 
     input:
     tuple val(meta), path(signatures)
+    val(ksize)
 
     output:
     tuple val(meta), path("*.sbt.zip"), emit: signature_index
@@ -18,14 +19,25 @@ process SOURMASH_INDEX {
     task.ext.when == null || task.ext.when
 
     script:
-    // --ksize needs to be specified with the desired k-mer size to be selected in ext.args
     def args = task.ext.args ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     sourmash index \\
+        --ksize ${ksize} \\
         $args \\
         '${prefix}.sbt.zip' \\
         $signatures
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        sourmash: \$(echo \$(sourmash --version 2>&1) | sed 's/^sourmash //' )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch "${prefix}.sbt.zip"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

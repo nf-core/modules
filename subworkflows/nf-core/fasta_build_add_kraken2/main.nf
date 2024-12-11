@@ -24,4 +24,3 @@ workflow FASTA_BUILD_ADD_KRAKEN2 {
     db = KRAKEN2_BUILD.out.db // channel: [ val(meta), [ db ] ]
     versions = ch_versions    // channel: [ versions.yml ]
 }
-

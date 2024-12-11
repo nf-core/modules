@@ -1,0 +1,76 @@
+nextflow_process {
+    name "Test vcf2maf"
+    process "VCF2MAF"
+    script "../main.nf"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "vcf2maf"
+    tag "untar"
+
+    test("Run without VEP") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                input[0] = [
+                                [ id:'test'], // meta map
+                                file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gvcf/test.genome.vcf", checkIfExists: true)
+                            ]
+                input[1] = [ file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true) ]
+                input[2] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.maf[0][1]).readLines()[5..131],
+                    process.out.versions
+                ).match() },
+                { assert path(process.out.versions[0]).readLines() == ['"VCF2MAF":', '    vcf2maf: 1.6.21', '    ensemblvep: 106.1'] }
+            )
+        }
+    }
+
+    test("Run with VEP"){
+        tag "vcf2maf-withVEP"
+        config "./nextflow.withVEP.config"
+
+        setup {
+            run("UNTAR") {
+                script "../../../../modules/nf-core/untar/main.nf"
+                process {
+                """
+                input[0] = [ 
+                    [ id:'test_genome_vep' ], 
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/vep.tar.gz", checkIfExists: true) 
+                ]
+                """
+            }
+        }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                                [ id:'test'], // meta map
+                                file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gvcf/test.genome.vcf", checkIfExists: true)
+                            ]
+                input[1] = [ file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true) ]
+                input[2] = UNTAR.out.untar.map { it[1] }
+                """
+            }
+        }
+
+        then{
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.maf[0][1]).readLines().size() == 2 }, // no variants, only header lines
+                { assert path(process.out.versions[0]).readLines() == ['"VCF2MAF":', '    vcf2maf: 1.6.21', '    ensemblvep: 106.1'] }
+            )
+        }
+    }
+}

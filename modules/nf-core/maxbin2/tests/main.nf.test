@@ -1,0 +1,47 @@
+
+nextflow_process {
+
+    name "Test Process MAXBIN2"
+    script "../main.nf"
+    process "MAXBIN2"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "maxbin2"
+
+    test("test-maxbin2") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test1', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz', checkIfExists: true),
+				    []
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					process.out.binned_fastas,
+					process.out.summary,
+					file(process.out.log[0][1]).name,
+					process.out.marker_counts,
+					file(process.out.unbinned_fasta[0][1]).name, // empty
+					process.out.tooshort_fasta,
+					file(process.out.marker_bins[0][1]).name, // unstable
+					process.out.marker_genes,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}
