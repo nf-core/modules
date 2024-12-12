@@ -1,178 +1,81 @@
-name: "bam_dedup_umi"
-description: BAM deduplication with UMI processing for both genome and transcriptome alignments
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "abundance_differential_filter"
+description: Perform differential analysis and filtering on abundance data
 keywords:
-  - deduplication
-  - UMI
-  - BAM
-  - genome
-  - transcriptome
-  - umicollapse
-  - umitools
+  - differential expression
+  - RNA-seq
+  - DESeq2
+  - limma
+  - filtering
 components:
-  - bam_dedup_stats_samtools_umicollapse
-  - bam_dedup_stats_samtools_umitools
-  - bam_sort_stats_samtools
-  - umitools/prepareforrsem
-  - samtools/sort
-
+  - deseq2/differential
+  - limma/differential
+  - custom/filterdifferentialtable
 input:
-  - ch_genome_bam:
-      description: Channel with genome BAM files
-      structure:
-        - meta:
-            type: map
-            description: Metadata map
-        - bam:
-            type: file
-            description: BAM file
-            pattern: "*.bam"
-        - bai:
-            type: file
-            description: BAM index file
-            pattern: "*.bai"
-  - ch_fasta:
-      description: Channel with genome FASTA file
-      structure:
-        - meta:
-            type: map
-            description: Metadata map
-        - fasta:
-            type: file
-            description: Genome FASTA file
-            pattern: "*.{fa,fasta}"
-  - umi_dedup_tool:
-      description: UMI deduplication tool to use
-      structure:
-        - value:
-            type: string
-            description: Either 'umicollapse' or 'umitools'
-  - umitools_dedup_stats:
-      description: Whether to generate UMI-tools deduplication stats
-      structure:
-        - value:
-            type: boolean
-            description: True or False
-  - bam_csi_index:
-      description: Whether to generate CSI index
-      structure:
-        - value:
-            type: boolean
-            description: True or False
-  - ch_transcriptome_bam:
-      description: Channel with transcriptome BAM files
-      structure:
-        - meta:
-            type: map
-            description: Metadata map
-        - bam:
-            type: file
-            description: BAM file
-            pattern: "*.bam"
-  - ch_transcript_fasta:
-      description: Channel with transcript FASTA file
-      structure:
-        - meta:
-            type: map
-            description: Metadata map
-        - fasta:
-            type: file
-            description: Transcript FASTA file
-            pattern: "*.{fa,fasta}"
+  - ch_abundance:
+      type: file
+      description: |
+        Channel with abundance data and metadata
+        Structure: [ val(meta_exp), path(counts) ]
+        meta keys: method, args_diff
+  - ch_transcript_lengths:
+      type: file
+      description: |
+        Channel with transcript length information
+        Structure: [ val(meta_exp), path(transcript_lengths) ]
+  - ch_control_features:
+      type: file
+      description: |
+        Channel with control features information
+        Structure: [ val(meta_exp), path(control_features) ]
+  - ch_samplesheet:
+      type: file
+      description: |
+        Channel with sample information
+        Structure: [ val(meta_exp), path(samplesheet) ]
+  - ch_contrasts:
+      type: value
+      description: |
+        Channel with contrast information
+        Structure: [ val(meta_contrast), val(contrast_variable), val(reference), val(target) ]
+  - differential_method:
+      type: string
+      description: |
+        Method to use for differential analysis. Options: 'limma', 'deseq2'
+  - FC_threshold:
+      type: float
+      description: |
+        Fold change threshold for filtering differential results
+  - padj_threshold:
+      type: float
+      description: |
+        Adjusted p-value threshold for filtering differential results
 
 output:
-  - bam:
-      description: Channel containing deduplicated genome BAM files
-      structure:
-        - meta:
-            type: map
-            description: Metadata map
-        - bam:
-            type: file
-            description: Deduplicated BAM file
-            pattern: "*.bam"
-  - bai:
-      description: Channel containing indexed BAM (BAI) files
-      structure:
-        - meta:
-            type: map
-            description: Metadata map
-        - bai:
-            type: file
-            description: BAM index file
-            pattern: "*.bai"
-  - csi:
-      description: Channel containing CSI files (if bam_csi_index is true)
-      structure:
-        - meta:
-            type: map
-            description: Metadata map
-        - csi:
-            type: file
-            description: CSI index file
-            pattern: "*.csi"
-  - dedup_log:
-      description: Channel containing deduplication log files
-      structure:
-        - meta:
-            type: map
-            description: Metadata map
-        - log:
-            type: file
-            description: Deduplication log file
-            pattern: "*.log"
-  - stats:
-      description: Channel containing BAM statistics files
-      structure:
-        - meta:
-            type: map
-            description: Metadata map
-        - stats:
-            type: file
-            description: BAM statistics file
-            pattern: "*.stats"
-  - flagstat:
-      description: Channel containing flagstat files
-      structure:
-        - meta:
-            type: map
-            description: Metadata map
-        - flagstat:
-            type: file
-            description: Flagstat file
-            pattern: "*.flagstat"
-  - idxstats:
-      description: Channel containing idxstats files
-      structure:
-        - meta:
-            type: map
-            description: Metadata map
-        - idxstats:
-            type: file
-            description: Idxstats file
-            pattern: "*.idxstats"
-  - multiqc_files:
-      description: Channel containing files for MultiQC
-      structure:
-        - file:
-            type: file
-            description: File for MultiQC
-  - transcriptome_bam:
-      description: Channel containing deduplicated transcriptome BAM files
-      structure:
-        - meta:
-            type: map
-            description: Metadata map
-        - bam:
-            type: file
-            description: Deduplicated transcriptome BAM file
-            pattern: "*.bam"
+  - results_genewise:
+      type: file
+      description: Unfiltered differential analysis results
+      pattern: "*.{csv,tsv}"
+  - results_genewise_filtered:
+      type: file
+      description: Filtered differential analysis results
+      pattern: "*.{csv,tsv}"
+  - normalised_matrix:
+      type: file
+      description: Normalised count matrix
+      pattern: "*.{csv,tsv}"
+  - variance_stabilised_matrix:
+      type: file
+      description: Variance stabilised count matrix (optional, DESeq2 only)
+      pattern: "*.{csv,tsv}"
+  - model:
+      type: file
+      description: Statistical model object from differential analysis
+      pattern: "*.rds"
   - versions:
-      description: Channel containing software versions file
-      structure:
-        - versions:
-            type: file
-            description: File containing versions of the software used
-            pattern: "versions.yml"
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 
 authors:
   - "@pinin4fjords"
