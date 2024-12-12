@@ -23,7 +23,7 @@ process CUSTOM_FILTERDIFFERENTIALTABLE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: input_file.toString().split("\\.").init().join(".")
     """
     #!/usr/bin/env python
 
@@ -62,7 +62,7 @@ process CUSTOM_FILTERDIFFERENTIALTABLE {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: input_file.toString().split("\\.").init().join(".")
     """
     touch ${prefix}_filtered.tsv
     echo '"${task.process}":\\n    pandas: 1.5.2' > versions.yml
