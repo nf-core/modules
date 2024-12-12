@@ -1,0 +1,59 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "baysor"
+description: Bayesian segmentation of spatial transcriptomics data.
+keywords:
+    - segmentation
+    - spatial transcriptomics
+    - cell clustering
+    - imaging
+tools:
+  - "baysor":
+    description: "Baysor is a tool that segments cells using spatial gene expression maps. Optionally, segmentation masks can be given as additional input."
+    homepage: "https://kharchenkolab.github.io/Baysor/dev/"
+    documentation: "https://kharchenkolab.github.io/Baysor/dev/"
+    tool_dev_url: "https://github.com/kharchenkolab/Baysor"
+    doi: "https://doi.org/10.1038/s41587-021-01044-w"
+    licence: ["MIT license"]
+    identifier:
+
+## Baysor requires only a transcript map of the data
+input:
+  -  - meta:
+        type: map
+        description: |
+          Groovy Map containing information about
+          keyword arguments
+          e. g. `[x: x_location, gene-column: csv_gene_column]`
+
+  - - csv
+        type: file
+        description: CSV file
+        pattern: "*.csv"
+
+## segmentation results
+output:
+  - meta:
+    type: map
+    description: |
+      Groovy Map containing information about
+      keyword arguments
+      e. g. `[x: x_location, gene-column: csv_gene_column]`
+
+  - segmentation:
+    type: file
+    description: results of segmentation
+    pattern: "segmentation.csv"
+
+  -
+
+  - versions:
+    type: file
+    description: File containing software versions
+    pattern: "versions.yml"
+
+
+authors:
+  - "@sebgoti8"
+maintainers:
+  - "@sebgoti8"
