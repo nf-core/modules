@@ -32,7 +32,7 @@ process CUSTOM_TABULARTOGSEAGCT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bash: \$(echo \$(bash --version | grep -Eo 'version [[:alnum:].]+' | sed 's/version //'))
+        awk: " \$(awk --version | head -n 1 | awk '{print  \$2}')"
     END_VERSIONS
     """
 
@@ -41,7 +41,7 @@ process CUSTOM_TABULARTOGSEAGCT {
     touch mock.gct
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bash: \$(echo \$(bash --version | grep -Eo 'version [[:alnum:].]+' | sed 's/version //'))
+        awk: " \$(awk --version | head -n 1 | awk '{print  \$2}')"
     END_VERSIONS
     """
 }
