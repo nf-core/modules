@@ -2,13 +2,14 @@
 // BAM deduplication with UMI processing
 //
 
-include { BAM_DEDUP_STATS_SAMTOOLS_UMICOLLAPSE as BAM_DEDUP_STATS_SAMTOOLS_UMICOLLAPSE_TRANSCRIPTOME } from '../../../subworkflows/nf-core/bam_dedup_stats_samtools_umicollapse'
-include { BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS as BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS_TRANSCRIPTOME       } from '../../../subworkflows/nf-core/bam_dedup_stats_samtools_umitools'
-include { BAM_DEDUP_STATS_SAMTOOLS_UMICOLLAPSE as BAM_DEDUP_STATS_SAMTOOLS_UMICOLLAPSE_GENOME        } from '../../../subworkflows/nf-core/bam_dedup_stats_samtools_umicollapse'
-include { BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS as BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS_GENOME              } from '../../../subworkflows/nf-core/bam_dedup_stats_samtools_umitools'
-include { BAM_SORT_STATS_SAMTOOLS                            } from '../../../subworkflows/nf-core/bam_sort_stats_samtools'
-include { UMITOOLS_PREPAREFORRSEM                            } from '../../../modules/nf-core/umitools/prepareforrsem'
-include { SAMTOOLS_SORT                                      } from '../../../modules/nf-core/samtools/sort/main'
+include { BAM_DEDUP_STATS_SAMTOOLS_UMICOLLAPSE as BAM_DEDUP_STATS_SAMTOOLS_UMICOLLAPSE_TRANSCRIPTOME } from '../bam_dedup_stats_samtools_umicollapse'
+include { BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS as BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS_TRANSCRIPTOME       } from '../bam_dedup_stats_samtools_umitools'
+include { BAM_DEDUP_STATS_SAMTOOLS_UMICOLLAPSE as BAM_DEDUP_STATS_SAMTOOLS_UMICOLLAPSE_GENOME        } from '../bam_dedup_stats_samtools_umicollapse'
+include { BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS as BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS_GENOME              } from '../bam_dedup_stats_samtools_umitools'
+include { BAM_SORT_STATS_SAMTOOLS                                                                    } from '../bam_sort_stats_samtools'
+
+include { UMITOOLS_PREPAREFORRSEM  } from '../../../modules/nf-core/umitools/prepareforrsem'
+include { SAMTOOLS_SORT            } from '../../../modules/nf-core/samtools/sort/main'
 
 workflow BAM_DEDUP_UMI {
     take:
