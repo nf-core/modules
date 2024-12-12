@@ -8,12 +8,13 @@ keywords:
   - transcriptome
   - umicollapse
   - umitools
+
 components:
+  - umitools/prepareforrsem
+  - samtools/sort
   - bam_dedup_stats_samtools_umicollapse
   - bam_dedup_stats_samtools_umitools
   - bam_sort_stats_samtools
-  - umitools/prepareforrsem
-  - samtools/sort
 
 input:
   - ch_genome_bam:
