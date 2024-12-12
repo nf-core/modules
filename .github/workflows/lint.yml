@@ -84,7 +84,7 @@ jobs:
             console.log('Parsed files:', files)
             const result = script({ github, context: { payload: { inputs: { files } } } })
             console.log('Result:', result)
-            core.setOutput('result', result)
+            return result
 
       - name: debug
         run: |
