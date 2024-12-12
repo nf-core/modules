@@ -8,113 +8,111 @@ include { DESEQ2_DIFFERENTIAL                 } from '../../../modules/nf-core/d
 include { DESEQ2_DIFFERENTIAL as DESEQ2_NORM  } from '../../../modules/nf-core/deseq2/differential/main'
 include { CUSTOM_FILTERDIFFERENTIALTABLE      } from '../../../modules/nf-core/custom/filterdifferentialtable/main'
 
+// Combine meta maps, including merging non-identical values of shared keys (e.g. 'id')
+def mergeMaps(meta, meta2){
+    (meta + meta2).collectEntries { k, v ->
+        meta[k] && meta[k] != v ? [k, "${meta[k]}_${v}"] : [k, v]
+    }
+}
+
 workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     take:
-    ch_abundance          // [ meta_exp, counts ] with meta keys: method, args_diff
-    ch_transcript_lengths // [ meta_exp, transcript_lengths]
-    ch_control_features   // [ meta_exp, control_features]
-    ch_samplesheet        // [ meta_exp, samplesheet ]
-    ch_contrasts          // [ meta_contrast, contrast_variable, reference, target ]
-    differential_method   // limma, deseq2, propd
-    FC_threshold          // float
-    padj_threshold        // float
+    // Things we may need to iterate
+    ch_input                 // [[meta_input], counts, analysis method, fc_threshold, padj_threshold]
+
+    // Workflow-wide things, we don't need to iterate
+    ch_samplesheet           // [ meta_exp, samplesheet ]
+    ch_transcript_lengths    // [ meta_exp, transcript_lengths]
+    ch_control_features      // [meta_exp, control_features]
+    ch_contrasts             // [[ meta_contrast, contrast_variable, reference, target ]]
 
     main:
 
-    // initialize empty results channels
-    ch_normalised_matrix           = Channel.empty()
-    ch_variance_stabilised_matrix  = Channel.empty()
-    ch_model                       = Channel.empty()
-
-    ch_results_genewise            = Channel.empty()
-    ch_results_genewise_filtered   = Channel.empty()
-    ch_versions                    = Channel.empty()
-
-    // Derive some commonly used derived channels
-    ch_samples_and_matrix = ch_samplesheet.join(ch_abundance).first()
-
-    logFC_column = null
-    padj_column = null
-
-    // ----------------------------------------------------
-    // Perform differential analysis with DESeq2
-    // ----------------------------------------------------
-
-    if (differential_method == 'deseq2') {
-
-        logFC_column = "log2FoldChange"
-        padj_column  = "padj"
-
-        // Run the module once to generate a normalised matrix. We can't just
-        // use e.g. the first run of DESEQ_DIFFERENTIAL, because it may remove
-        // some samples
-
-        DESEQ2_NORM (
-            ch_contrasts.first(),
-            ch_samples_and_matrix,
-            ch_control_features,
-            ch_transcript_lengths
-        )
-
-        ch_normalised_matrix = DESEQ2_NORM.out.normalised_counts
-        ch_variance_stabilised_matrix = DESEQ2_NORM.out.rlog_counts.concat(DESEQ2_NORM.out.vst_counts)
-
-        // Run the DESeq differential module
-
-        DESEQ2_DIFFERENTIAL (
-            ch_contrasts,
-            ch_samples_and_matrix,
-            ch_control_features,
-            ch_transcript_lengths
-        )
-
-        ch_results_genewise = DESEQ2_DIFFERENTIAL.out.results
-        ch_model = DESEQ2_DIFFERENTIAL.out.model
-
-        ch_versions = ch_versions
-            .mix(DESEQ2_DIFFERENTIAL.out.versions)
-
-    } else if (differential_method == 'limma'){
-
-        logFC_column = "logFC"
-        padj_column  = "adj.P.Val"
-
-        // Run the module once to generate a normalised matrix. We can't just
-        // use e.g. the first run of LIMMA_DIFFERENTIAL, because it may remove
-        // some samples
-
-        LIMMA_NORM (
-            ch_contrasts.first(),
-            ch_samples_and_matrix
-        )
-
-        ch_normalised_matrix = LIMMA_NORM.out.normalised_counts
-
-        LIMMA_DIFFERENTIAL (
-            ch_contrasts,
-            ch_samples_and_matrix
-        )
-        ch_results_genewise = LIMMA_DIFFERENTIAL.out.results
-        ch_model = LIMMA_DIFFERENTIAL.out.model
-
-        ch_versions = ch_versions
-            .mix(LIMMA_DIFFERENTIAL.out.versions)
-
+    // Set up how the channels crossed below will be used to generate channels for processing
+    def criteria = multiMapCriteria { meta_input, abundance, analysis_method, fc_threshold, padj_threshold, meta_exp, samplesheet, meta_contrasts, variable, reference, target ->
+        samples_and_matrix:
+            meta_map = meta_input + [ 'method': analysis_method ]
+            [meta_map, samplesheet, abundance]
+        contrasts:
+            meta_map = mergeMaps(meta_contrasts, meta_input) + [ 'method': analysis_method ]
+            [ meta_map, variable, reference, target ]
+        filter_params:
+            meta_map = mergeMaps(meta_contrasts, meta_input) + [ 'method': analysis_method ]
+            [meta_map, [ 'fc_threshold': fc_threshold, 'padj_threshold': padj_threshold ]]
     }
 
+    // For differential we need to cross the things we're iterating so we run
+    // differential analysis for every combination of matrix and contrast
+    inputs = ch_input
+        .combine(ch_samplesheet)
+        .combine(ch_contrasts)
+        .multiMap(criteria)
+
+    // We only need a normalised matrix from one contrast. The reason we don't
+    //just use the output from the first differential is that the methods can
+    // subset matrices
+    norm_inputs = ch_input
+        .combine(ch_samplesheet)
+        .combine(ch_contrasts.first()) // Just taking the first contrast
+        .multiMap(criteria)
+
+    // Perform normalization and differential analysis
+    DESEQ2_NORM(
+        norm_inputs.contrasts.filter{it[0].method == 'deseq2'}.first(),
+        norm_inputs.samples_and_matrix.filter{it[0].method == 'deseq2'},
+        ch_control_features.first(),
+        ch_transcript_lengths.first()
+    )
+
+    LIMMA_NORM(
+        norm_inputs.contrasts.filter{it[0].method == 'limma'}.first(),
+        norm_inputs.samples_and_matrix.filter{it[0].method == 'limma'}
+    )
+
+    DESEQ2_DIFFERENTIAL(
+        inputs.contrasts.filter{it[0].method == 'deseq2'},
+        inputs.samples_and_matrix.filter{it[0].method == 'deseq2'},
+        ch_control_features.first(),
+        ch_transcript_lengths.first()
+    )
+
+    LIMMA_DIFFERENTIAL(
+        inputs.contrasts.filter{it[0].method == 'limma'},
+        inputs.samples_and_matrix.filter { it[0].method == 'limma' }
+    )
+
+    // Combine results
+    ch_results = DESEQ2_DIFFERENTIAL.out.results.mix(LIMMA_DIFFERENTIAL.out.results)
+    ch_normalised_matrix = DESEQ2_NORM.out.normalised_counts.mix(LIMMA_NORM.out.normalised_counts)
+    ch_model = DESEQ2_DIFFERENTIAL.out.model.mix(LIMMA_DIFFERENTIAL.out.model)
+    ch_versions = DESEQ2_DIFFERENTIAL.out.versions
+        .mix(LIMMA_DIFFERENTIAL.out.versions)
+
+    // Extract the fc and pval filters from the metamap we stashed them in
+    ch_diff_filter_params = ch_results
+        .join(inputs.filter_params)
+        .multiMap { meta, results, filter_meta ->
+            filter_input: [meta + filter_meta, results]
+            fc_column: meta.method == 'deseq2' ? 'log2FoldChange' : 'logFC'
+            padj_column: meta.method == 'deseq2' ? 'padj' : 'adj.P.Val'
+            fc_threshold: filter_meta.fc_threshold
+            padj_threshold: filter_meta.padj_threshold
+        }
+
+    // Filter differential results
     CUSTOM_FILTERDIFFERENTIALTABLE(
-        ch_results_genewise,
-        logFC_column,
-        FC_threshold,
-        padj_column,
-        padj_threshold
+        ch_diff_filter_params.filter_input,
+        ch_diff_filter_params.fc_column,
+        ch_diff_filter_params.fc_threshold,
+        ch_diff_filter_params.padj_column,
+        ch_diff_filter_params.padj_threshold
     )
 
     emit:
-    results_genewise           = ch_results_genewise               // channel: [ val(meta), path(results) ]
-    results_genewise_filtered  = CUSTOM_FILTERDIFFERENTIALTABLE.out.filtered // channel: [ val(meta), path(filtered_results) ]
-    normalised_matrix          = ch_normalised_matrix              // channel: [ val(meta), path(normalised_matrix) ]
-    variance_stabilised_matrix = ch_variance_stabilised_matrix     // channel: [ val(meta), path(variance_stabilised_matrix) ] (Optional)
-    model                      = ch_model                          // channel: [ val(meta), path(model) ]
-    versions                   = ch_versions                       // channel: [ path(versions.yml) ]
+    results_genewise           = ch_results.map{meta, results -> [meta, results] }
+    results_genewise_filtered  = CUSTOM_FILTERDIFFERENTIALTABLE.out.filtered
+    normalised_matrix          = ch_normalised_matrix
+    variance_stabilised_matrix = DESEQ2_NORM.out.rlog_counts.mix(DESEQ2_NORM.out.vst_counts)
+    model                      = ch_model
+    versions                   = ch_versions
 }

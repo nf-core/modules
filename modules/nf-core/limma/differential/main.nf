@@ -5,7 +5,7 @@ process LIMMA_DIFFERENTIAL {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/af/afd9579a0ff62890ff451d82b360d85e82a0d61a3da40736ee0eee4e45926269/data' :
-        'community.wave.seqera.io/library/bioconductor-limma_bioconductor-edger:54dd09078d5db3b3' }"
+        'community.wave.seqera.io/library/bioconductor-edger_bioconductor-limma:176c202c82450990' }"
 
     input:
     tuple val(meta), val(contrast_variable), val(reference), val(target)
