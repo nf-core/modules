@@ -132,6 +132,16 @@ output:
           type: directory
           description: BUSCO lineage specific output
           pattern: "*-busco"
+  - busco_downloads_dir:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*busco_downloads":
+          type: directory
+          description: BUSCO downloads directory
+          pattern: "busco_downloads"
   - versions:
       - versions.yml:
           type: file
