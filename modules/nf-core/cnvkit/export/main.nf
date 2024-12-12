@@ -8,7 +8,7 @@ process CNVKIT_EXPORT {
         'biocontainers/cnvkit:0.9.10--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta) , path(cns)
+    tuple val(meta), path(cns)
 
     output:
     tuple val(meta), path("${prefix}.${suffix}"), emit: output
@@ -19,13 +19,25 @@ process CNVKIT_EXPORT {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
-    suffix = task.ext.args.tokenize(" ")[0]
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def suffix = task.ext.args.tokenize(" ")[0]
     """
     cnvkit.py export \\
         $args \\
         $cns \\
         -o ${prefix}.${suffix}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        cnvkit: \$(cnvkit.py version | sed -e 's/cnvkit v//g')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def suffix = task.ext.args.tokenize(" ")[0]
+    """
+    touch ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
