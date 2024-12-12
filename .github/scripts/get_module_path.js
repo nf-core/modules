@@ -50,8 +50,10 @@ function run({ github, context }) {
         const result = get_module_names(files);
         console.log('Processed result:', result);
 
-        // Return stringified result for GitHub Actions output
-        return JSON.stringify(result);
+        // Ensure we're returning a properly formatted JSON string
+        const jsonResult = JSON.stringify(result);
+        console.log('Final JSON output:', jsonResult);
+        return jsonResult;
     } catch (error) {
         console.error("Error processing module paths:", error);
         console.error("Error details:", {
@@ -59,7 +61,6 @@ function run({ github, context }) {
             errorMessage: error.message,
             errorStack: error.stack
         });
-        // Return empty array instead of throwing
         return "[]";
     }
 }
