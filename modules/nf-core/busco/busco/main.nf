@@ -21,7 +21,7 @@ process BUSCO_BUSCO {
     tuple val(meta), path("*-busco/*/run_*/full_table.tsv")           , emit: full_table            , optional: true
     tuple val(meta), path("*-busco/*/run_*/missing_busco_list.tsv")   , emit: missing_busco_list    , optional: true
     tuple val(meta), path("*-busco/*/run_*/single_copy_proteins.faa") , emit: single_copy_proteins  , optional: true
-    tuple val(meta), path("*-busco/*/run_*/busco_sequences")          , emit: seq_dir
+    tuple val(meta), path("*-busco/*/run_*/busco_sequences")          , emit: seq_dir               , optional: true
     tuple val(meta), path("*-busco/*/translated_proteins")            , emit: translated_dir        , optional: true
     tuple val(meta), path("*-busco")                                  , emit: busco_dir
     path "versions.yml"                                               , emit: versions
