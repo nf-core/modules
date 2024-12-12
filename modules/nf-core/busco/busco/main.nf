@@ -24,7 +24,8 @@ process BUSCO_BUSCO {
     tuple val(meta), path("*-busco/*/run_*/busco_sequences")          , emit: seq_dir               , optional: true
     tuple val(meta), path("*-busco/*/translated_proteins")            , emit: translated_dir        , optional: true
     tuple val(meta), path("*-busco")                                  , emit: busco_dir
-    tuple val(meta), path("busco_downloads")                          , emit: busco_downloads_dir   , optional: true
+    tuple val(meta), path("busco_downloads/lineages/*")               , emit: downloaded_lineages   , optional: true
+
     path "versions.yml"                                               , emit: versions
 
     when:
