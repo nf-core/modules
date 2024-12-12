@@ -88,8 +88,8 @@ jobs:
 
       - name: debug
         run: |
-          echo ${{ steps.filter.outputs.modules_files }}
-          echo ${{ steps.module_names.outputs.result }}
+          echo "Modules files: ${{ steps.filter.outputs.modules_files }}"
+          echo "Module names: ${{ steps.module_names.outputs.result }}"
 
   nf-core-lint-modules:
     runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
