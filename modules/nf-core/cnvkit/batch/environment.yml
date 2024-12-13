@@ -1,8 +1,16 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
 
 dependencies:
-  - bioconda::cnvkit=0.9.10
-  - bioconda::htslib=1.17 # Matched with the container
-  - bioconda::samtools=1.17 # Matched with the container
+  # renovate: datasource=conda depName=bioconda/cnvkit
+  - bioconda::cnvkit=0.9.12
+  # renovate: datasource=conda depName=bioconda/htslib
+  - bioconda::htslib=1.17
+  # renovate: datasource=conda depName=bioconda/samtools
+  - bioconda::samtools=1.17
+
+# pipelines:
+#  - sarek

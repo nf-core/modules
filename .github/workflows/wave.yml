@@ -52,16 +52,16 @@ jobs:
     # if: github.repository == 'nf-core/modules'
     if: ${{ needs.generate-matrix.outputs.conda-matrix != '[]' }}
     needs: generate-matrix
-    name: Build ${{ matrix.profile }} ${{ matrix.platform }} Container
+    name: 🌊 ${{ matrix.files }} ${{ matrix.profile }} ${{ matrix.platform }}
     runs-on: ubuntu-latest
     timeout-minutes: 60
     strategy:
       fail-fast: false
-      max-parallel: 4
+      # max-parallel: 2
       matrix:
         files: "${{ fromJson(needs.generate-matrix.outputs.conda-matrix) }}"
         profile: [docker, singularity]
-        platform: ["linux/amd64", "linux/arm64"]
+        platform: ["linux/arm64"]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
@@ -72,10 +72,9 @@ jobs:
           chmod +x /usr/local/bin/wave
 
       - name: Build ${{ matrix.profile }} container
-        # FIXME Hack while iron out the CI
-        continue-on-error: true
         env:
           PROFILE: ${{ (contains(matrix.profile, 'singularity') && '--singularity') || '' }}
+        continue-on-error: false
         run: |
           wave --conda-file "${{ matrix.files }}" \
               $PROFILE \
@@ -90,12 +89,12 @@ jobs:
     # if: github.repository == 'nf-core/modules'
     if: ${{ needs.generate-matrix.outputs.dockerfile-matrix != '[]' }}
     needs: generate-matrix
-    name: Build Dockerfile-based ${{ matrix.platform }} Container
+    name: 🌊 Dockerfile ${{ matrix.platform }} Container
     runs-on: ubuntu-latest
     timeout-minutes: 60
     strategy:
       fail-fast: false
-      max-parallel: 4
+      # max-parallel: 2
       matrix:
         files: "${{ fromJson(needs.generate-matrix.outputs.dockerfile-matrix) }}"
         # NOTE singularity build requires a Singularity definition file in place of Dockerfile
