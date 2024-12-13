@@ -279,7 +279,7 @@ jobs:
           mkdir -p $NXF_SINGULARITY_LIBRARYDIR
 
       - name: Conda setup
-        if: ${{matrix.profile == 'conda'}}
+        if: matrix.profile == 'conda'
         uses: conda-incubator/setup-miniconda@d2e6a045a86077fb6cad6f5adf368e9076ddaa8d # v3
         with:
           auto-update-conda: true
