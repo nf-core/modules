@@ -780,5 +780,94 @@
             "nextflow": "24.10.2"
         },
         "timestamp": "2024-12-07T16:34:05.584119298"
+    },
+    "propd - mouse - basic": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "treatment_mCherry_hND6__test",
+                        "variable": "treatment",
+                        "reference": "mCherry",
+                        "target": "hND6",
+                        "blocking": "",
+                        "method": "propd"
+                    },
+                    "treatment_mCherry_hND6__test.propd.genewise.tsv:md5,bdc19a4b7430f248cd332287b630c872"
+                ],
+                [
+                    {
+                        "id": "treatment_mCherry_hND6_sample_number_test",
+                        "variable": "treatment",
+                        "reference": "mCherry",
+                        "target": "hND6",
+                        "blocking": "sample_number",
+                        "method": "propd"
+                    },
+                    "treatment_mCherry_hND6_sample_number_test.propd.genewise.tsv:md5,bdc19a4b7430f248cd332287b630c872"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "treatment_mCherry_hND6__test",
+                        "variable": "treatment",
+                        "reference": "mCherry",
+                        "target": "hND6",
+                        "blocking": "",
+                        "method": "propd",
+                        "fc_threshold": 1.5,
+                        "padj_threshold": 50
+                    },
+                    "treatment_mCherry_hND6__test_filtered.tsv:md5,67dd007d63858e49591c3de6fc77ccd6"
+                ],
+                [
+                    {
+                        "id": "treatment_mCherry_hND6_sample_number_test",
+                        "variable": "treatment",
+                        "reference": "mCherry",
+                        "target": "hND6",
+                        "blocking": "sample_number",
+                        "method": "propd",
+                        "fc_threshold": 1.5,
+                        "padj_threshold": 50
+                    },
+                    "treatment_mCherry_hND6_sample_number_test_filtered.tsv:md5,67dd007d63858e49591c3de6fc77ccd6"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "treatment_mCherry_hND6__test",
+                        "variable": "treatment",
+                        "reference": "mCherry",
+                        "target": "hND6",
+                        "blocking": "",
+                        "method": "propd"
+                    },
+                    "treatment_mCherry_hND6__test.propd.adjacency.csv:md5,3a947ffd8172990c6207aa7561a41cb8"
+                ],
+                [
+                    {
+                        "id": "treatment_mCherry_hND6_sample_number_test",
+                        "variable": "treatment",
+                        "reference": "mCherry",
+                        "target": "hND6",
+                        "blocking": "sample_number",
+                        "method": "propd"
+                    },
+                    "treatment_mCherry_hND6_sample_number_test.propd.adjacency.csv:md5,3a947ffd8172990c6207aa7561a41cb8"
+                ]
+            ],
+            [
+                "versions.yml:md5,da1c8ede6b02429770a53b2556e20622",
+                "versions.yml:md5,da1c8ede6b02429770a53b2556e20622"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.2"
+        },
+        "timestamp": "2024-12-13T15:02:45.903371649"
     }
 }

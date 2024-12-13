@@ -126,7 +126,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
             def method_params = [
                 'deseq2': [fc_column: 'log2FoldChange', padj_column: 'padj'],
                 'limma': [fc_column: 'logFC', padj_column: 'adj.P.Val'],
-                'proda': [fc_column: 'lfc', padj_column: 'weighted_connectivity']
+                'propd': [fc_column: 'lfc', padj_column: 'weighted_connectivity']
             ]
             filter_input: [meta + filter_meta, results]
             fc_column: method_params[meta.method].fc_column
