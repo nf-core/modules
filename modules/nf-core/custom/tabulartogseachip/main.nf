@@ -1,4 +1,4 @@
-process TABULAR_TO_GSEA_CHIP {
+process CUSTOM_TABULARTOGSEACHIP {
 
     label 'process_single'
 
