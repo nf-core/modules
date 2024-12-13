@@ -1,5 +1,3 @@
-// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
-// nf-core subworkflows test differential_functional_enrichment
 nextflow_workflow {
 
     name "Test Subworkflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT"
@@ -9,27 +7,76 @@ nextflow_workflow {
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "subworkflows/differential_functional_enrichment"
-    // TODO nf-core: Add tags for all modules used within this subworkflow. Example:
-    tag "samtools"
-    tag "samtools/sort"
-    tag "samtools/index"
+    tag "subworkflows/abundance_differential_filter"
+    tag "gprofiler2"
+    tag "gprofiler2/gost"
+    tag "gsea"
+    tag "gsea/gsea"
+    tag "propr"
+    tag "propr/grea"
 
+    test("deseq2 + gprofiler2 - mouse - basic") {
 
-    // TODO nf-core: Change the test name preferably indicating the test-data and file-format used
-    test("sarscov2 - bam - single_end") {
+        tag "deseq2+gprofiler2"
+        config "./deseq2_gprofiler2.config"
+
+        setup {
+            run("ABUNDANCE_DIFFERENTIAL_FILTER") {
+                script "../../abundance_differential_filter/main.nf"
+                workflow {
+                """
+                // Define test data
+                def testData = [
+                    expression_test_data_dir: params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/',
+                    contrasts_file: 'SRP254919.contrasts.csv',
+                    abundance_file: 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv',
+                    samplesheet_file: 'SRP254919.samplesheet.csv'
+                ]
+
+                // Define inputs
+                ch_samplesheet = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.samplesheet_file)
+                ])
+                ch_transcript_lengths = Channel.of([ [], [] ])
+                ch_control_features = Channel.of([ [], [] ])
+                ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_input = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.abundance_file),
+                    'deseq2',  // analysis method
+                    1.5,       // FC threshold
+                    0.05       // padj threshold
+                ])
+
+                input[0] = ch_input
+                input[1] = ch_samplesheet
+                input[2] = ch_transcript_lengths
+                input[3] = ch_control_features
+                input[4] = ch_contrasts
+                """
+                }
+            }
+        }
 
         when {
             workflow {
                 """
-                // TODO nf-core: define inputs of the workflow here. Example:
-                input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                ]
-                input[1] = [
-                    [ id:'genome' ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                ]
+                ch_input = ABUNDANCE_DIFFERENTIAL_FILTER.out.results_genewise_filtered
+                    .combine('gprofiler2')
+                ch_gene_sets = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt')
+                ])
+                ch_background = []
+
+                input[0] = ch_input
+                input[1] = ch_gene_sets
+                input[2] = ch_background
                 """
             }
         }
@@ -38,7 +85,6 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(workflow.out).match()}
-                //TODO nf-core: Add all required assertions to verify the test output.
             )
         }
     }
