@@ -13,7 +13,7 @@ nextflow_process {
 
    test("AMPlify predict (with Prodigal) - sarscov2 - contigs.fasta") {
 
-        setup {
+        setup { 
             run("PRODIGAL") {
                 script "../../../prodigal/main.nf"
                 process {
@@ -31,7 +31,7 @@ nextflow_process {
                 process {
                     """
                     input[0] =  PRODIGAL.out.amino_acid_fasta
-
+                    
                     """
                 }
             }
@@ -55,7 +55,7 @@ nextflow_process {
 
     }
 
-    test("AMPlify predict (with Prodigal) - sarscov2 - contigs.fasta - stub") {
+    test("AMPlify predict - stub") {
 
         options "-stub"
 
