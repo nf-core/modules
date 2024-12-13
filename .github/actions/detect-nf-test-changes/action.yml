@@ -1,0 +1,62 @@
+# Make sure to change the action name here (must be unique).
+# Update the rest as needed.
+name: 'detect-nf-test-changes'
+description: 'Identify changed files within Nextflow repo between two branches and return them as output.'
+branding:
+  icon: "play"
+  color: "purple"
+inputs:
+  root:
+    description: 'Root directory of the Nextflow repository.'
+    required: false
+    default: '.'
+  head:  
+    description: 'Head reference branch (Source branch for a PR).'
+    required: true
+  base:
+    description: 'Base reference branch (Target branch for a PR).'
+    required: true
+  ignored:
+    description: 'List of files or file substrings to ignore. Default: [".git/*", ".gitpod.yml", ".prettierignore", ".prettierrc.yml", "*.md", "*.png", "modules.json", "pyproject.toml", "tower.yml"]'
+    required: false
+    default: '.git/* .gitpod.yml .prettierignore .prettierrc.yml *.md *.png modules.json pyproject.toml tower.yml'
+  include:
+    description: 'Path to an include file containing a YAML of key value pairs to include in changed files. I.e., return the current directory if an important file is changed.'
+    required: false
+  types:
+    description: 'List of Nextflow component types to include in the output as a comma separated list. Default: "function,process,workflow,pipeline".'
+    required: false
+    default: 'function,process,workflow,pipeline'
+  n_parents:
+    description: 'Number of parents of changed files to return. Default is 0, the changed file. 1 to return the parent directory, 2 to return the parent of that directory etc.'
+    required: false
+    default: '0'
+  tags:
+    description: 'List of tags to include in the output as a comma separated list. Default: "".'
+    required: false
+    default: ''
+  exclude_tags:
+    description: 'List of tags to exclude in the output as a comma separated list. Default: "".'
+    required: false
+    default: ''
+  log_level:
+    description: 'Log level for the action. Default: "INFO".'
+    required: false
+    default: 'INFO'
+outputs:
+  components:
+    description: 'List of Nextflow components that require testing based on the branch differences.'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    ROOT: ${{ inputs.root }}
+    HEAD: ${{ inputs.head }}
+    BASE: ${{ inputs.base }}
+    IGNORED: ${{ inputs.ignored }}
+    INCLUDE: ${{ inputs.include }}
+    LOG_LEVEL: ${{ inputs.log_level }}
+    TYPES: ${{ inputs.types }}
+    N_PARENTS: ${{ inputs.n_parents }}
+    TAGS: ${{ inputs.tags }}
+    EXCLUDE_TAGS: ${{ inputs.exclude_tags }}

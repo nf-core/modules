@@ -1,0 +1,10 @@
+nextflow_process {
+
+    name "Test process C"
+    script "../main.nf"
+    config "nextflow.config"
+    process "PROCESS_C"
+
+    test("mytest") {
+    }
+}
