@@ -24,8 +24,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.chip).match() },
-                { assert file(process.out.versions[0]).text.contains('bash') }
+                { assert snapshot(
+                    process.out.chip,
+                    process.out.versions
+                ).match() }
             )
         }
 

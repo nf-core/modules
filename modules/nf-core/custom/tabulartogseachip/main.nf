@@ -38,7 +38,7 @@ process CUSTOM_TABULARTOGSEACHIP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bash: \$(echo \$(bash --version | grep -Eo 'version [[:alnum:].]+' | sed 's/version //'))
+        version: \$(echo $VERSION)
     END_VERSIONS
     """
 }
