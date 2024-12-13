@@ -1,5 +1,5 @@
 process PARABRICKS_APPLYBQSR {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
     label 'process_gpu'
     stageInMode 'copy'
@@ -26,21 +26,21 @@ process PARABRICKS_APPLYBQSR {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args             = task.ext.args ?: ''
+    def prefix           = task.ext.prefix ?: "${meta.id}"
     def interval_command = intervals ? intervals.collect{"--interval-file $it"}.join(' ') : ""
-    def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
+    def num_gpus         = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
     """
     pbrun \\
         applybqsr \\
-        --ref $fasta \\
-        --in-bam $bam \\
-        --in-recal-file $bqsr_table \\
-        $interval_command \\
+        --ref ${fasta} \\
+        --in-bam ${bam} \\
+        --in-recal-file ${bqsr_table} \\
+        ${interval_command} \\
         --out-bam ${prefix}.bam \\
-        --num-threads $task.cpus \\
-        $num_gpus \\
-        $args
+        --num-threads ${task.cpus} \\
+        ${num_gpus} \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
