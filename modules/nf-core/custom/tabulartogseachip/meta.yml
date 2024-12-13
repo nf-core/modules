@@ -1,4 +1,4 @@
-name: "custom_tabulartogseacls"
+name: "custom_tabulartogseachip"
 description: Make a GSEA class file (.chip) from tabular inputs
 keywords:
   - gsea
@@ -11,21 +11,17 @@ tools:
       tool_dev_url: "https://github.com/nf-core/modules/blob/master/modules/nf-core/custom/tabulartogseachip/main.nf"
       identifier: ""
 input:
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing input metadata information
-          e.g. [ id:'test' ]
-    - tabular:
+  - - tabular:
         type: file
-        description: Tabular (NOTE that for the moment it only works for TSV file) containing a column with the
-        features ids, and another column with the features symbols.
+        description: |
+          Tabular (NOTE that for the moment it only works for TSV file) containing a column with the
+          features ids, and another column with the features symbols.
         pattern: "*.{tsv}"
   - - id:
-        type: str
+        type: string
         description: The name of the column containing feature ids
     - symbol:
-        type: str
+        type: string
         description: The name of the column containing feature symbols
 output:
   - chip:
