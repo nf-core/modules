@@ -28,12 +28,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*/"
-      - ${prefix}:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+      - $prefix:
+          type: directory
+          description: Directory containing contents of archive
           pattern: "*/"
   - versions:
       - versions.yml:
