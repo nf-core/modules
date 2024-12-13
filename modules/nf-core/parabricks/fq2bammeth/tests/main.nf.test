@@ -19,7 +19,7 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [ id:'test' ], // meta map
-                    file('https://github.com/nf-core/test-datasets/blob/modules/data/genomics/prokaryotes/escherichia_coli/genome/genome.fa', checkIfExists: true)
+                    file('params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/genome/genome.fa', checkIfExists: true)
                 ])
                 """
             }
@@ -34,12 +34,12 @@ nextflow_process {
                 input[0] = Channel.of([
 				    [ id:'test', single_end:true ], // meta map
 				    [
-				        file('https://github.com/nf-core/test-datasets/blob/modules/data/genomics/prokaryotes/escherichia_coli/illumina/SRR389222_sub1.fastq.gz', checkIfExists: true)
+				        file('params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/illumina/SRR389222_sub1.fastq.gz', checkIfExists: true)
 				    ]
 				])
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
-                    file('https://github.com/nf-core/test-datasets/blob/modules/data/genomics/prokaryotes/escherichia_coli/genome/genome.fa', checkIfExists: true)
+                    file('params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/genome/genome.fa', checkIfExists: true)
                 ])
 				input[2] = BWAMETH_INDEX.out.index
                 input[3] = []
@@ -68,12 +68,12 @@ nextflow_process {
                 input[0] = Channel.of([
 				    [ id:'test', single_end:true ], // meta map
 				    [
-				        file('https://github.com/nf-core/test-datasets/blob/modules/data/genomics/prokaryotes/escherichia_coli/illumina/SRR389222_sub1.fastq.gz', checkIfExists: true)
+				        file(params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/illumina/SRR389222_sub1.fastq.gz', checkIfExists: true)
 				    ]
 				])
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
-                    file('https://github.com/nf-core/test-datasets/blob/modules/data/genomics/prokaryotes/escherichia_coli/genome/genome.fa', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/genome/genome.fa', checkIfExists: true)
                 ])
 				input[2] = BWAMETH_INDEX.out.index
                 input[3] = []
@@ -98,13 +98,13 @@ nextflow_process {
                 input[0] = Channel.of([
 				    [ id:'test', single_end:false ], // meta map
 				    [
-				        file('https://github.com/nf-core/test-datasets/blob/modules/data/genomics/prokaryotes/escherichia_coli/illumina/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
-                        file('https://github.com/nf-core/test-datasets/blob/modules/data/genomics/prokaryotes/escherichia_coli/illumina/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/illumina/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/illumina/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true),
 				    ]
 				])
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
-                    file('https://github.com/nf-core/test-datasets/blob/modules/data/genomics/prokaryotes/escherichia_coli/genome/genome.fa', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/genome/genome.fa', checkIfExists: true)
                 ])
 				input[2] = BWAMETH_INDEX.out.index
                 input[3] = []
