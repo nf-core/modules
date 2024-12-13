@@ -7,7 +7,6 @@ nextflow_workflow {
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "subworkflows/differential_functional_enrichment"
-    tag "subworkflows/abundance_differential_filter"
     tag "gprofiler2"
     tag "gprofiler2/gost"
     tag "gsea"
@@ -49,6 +48,86 @@ nextflow_workflow {
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.abundance_file),
                     'deseq2',  // analysis method
+                    1.5,       // FC threshold
+                    0.05       // padj threshold
+                ])
+
+                input[0] = ch_input
+                input[1] = ch_samplesheet
+                input[2] = ch_transcript_lengths
+                input[3] = ch_control_features
+                input[4] = ch_contrasts
+                """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                ch_input = ABUNDANCE_DIFFERENTIAL_FILTER.out.results_genewise_filtered
+                    .map { meta, results ->
+                        meta['method_de'] = meta['method']
+                        [meta, results, 'gprofiler2']
+                    }
+                ch_gene_sets = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt')
+                ])
+                ch_background = []
+
+                input[0] = ch_input
+                input[1] = ch_gene_sets
+                input[2] = ch_background
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.all_enrich
+                ).match()},
+                { assert path(workflow.out.versions[0]).readLines()[3].contains('r-gprofiler2: 0.2.2')}
+            )
+        }
+    }
+
+    test("limmavoom + gprofiler2 - mouse - basic") {
+
+        tag "limmavoom+gprofiler2"
+        config "./limmavoom_gprofiler2.config"
+
+        setup {
+            run("ABUNDANCE_DIFFERENTIAL_FILTER") {
+                script "../../abundance_differential_filter/main.nf"
+                workflow {
+                """
+                // Define test data
+                def testData = [
+                    expression_test_data_dir: params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/',
+                    contrasts_file: 'SRP254919.contrasts.csv',
+                    abundance_file: 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv',
+                    samplesheet_file: 'SRP254919.samplesheet.csv'
+                ]
+
+                // Define inputs
+                ch_samplesheet = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.samplesheet_file)
+                ])
+                ch_transcript_lengths = Channel.of([ [], [] ])
+                ch_control_features = Channel.of([ [], [] ])
+                ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_input = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.abundance_file),
+                    'limma',   // analysis method
                     1.5,       // FC threshold
                     0.05       // padj threshold
                 ])
