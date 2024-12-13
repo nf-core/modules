@@ -87,6 +87,16 @@ output:
             type: file
             description: Filtered differential analysis results file
             pattern: "*.{csv,tsv}"
+  - adjacency:
+      description: Channel containing the adjacency matrix suited for downstream graph-based functional analysis
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - adjacency_matrix:
+            type: file
+            description: Adjacency matrix file
+            pattern: "*.{csv,tsv}"
   - normalised_matrix:
       description: Channel containing normalised count matrix
       structure:
@@ -122,5 +132,8 @@ authors:
   - "@bjlang"
   - "@araiz2001"
   - "@suzannejin"
+  - "@roskamsh"
+  - "@syangaskhan"
+  - "@WackerO"
 maintainers:
   - "@pinin4fjords"
