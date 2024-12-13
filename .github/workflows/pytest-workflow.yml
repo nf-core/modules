@@ -278,22 +278,15 @@ jobs:
           mkdir -p $NXF_SINGULARITY_CACHEDIR
           mkdir -p $NXF_SINGULARITY_LIBRARYDIR
 
-      - name: Set up miniconda
+      - name: Conda setup
+        if: ${{inputs.profile == 'conda'}}
         uses: conda-incubator/setup-miniconda@d2e6a045a86077fb6cad6f5adf368e9076ddaa8d # v3
         with:
-          miniconda-version: "latest"
-          channels: conda-forge,bioconda
-          python-version: "3.11"
+            auto-update-conda: true
+            conda-solver: libmamba
+            conda-remove-defaults: true
 
-      - name: Conda setup
-        run: |
-          conda clean -a
-          conda install -n base conda-libmamba-solver
-          conda config --set solver libmamba
-          echo $(realpath $CONDA)/condabin >> $GITHUB_PATH
-          echo $(realpath python) >> $GITHUB_PATH
-
-      # Test the module
+    # Test the module
       - name: Run pytest-workflow
         # only use one thread for pytest-workflow to avoid race condition on conda cache.
         run: TMPDIR=~ PROFILE=${{ matrix.profile }} pytest --tag ${{ matrix.tags }} --symlink --kwdof --git-aware --color=yes
