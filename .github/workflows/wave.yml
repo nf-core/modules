@@ -1,5 +1,18 @@
 name: Wave
-# When environment.yml is changed
+# This workflow is triggered when environment.yml or Dockerfile files are changed in a PR
+# It builds containers using Wave and coordinates with nf-test.yml workflow:
+#
+# 1. When environment.yml or Dockerfile changes are detected:
+#    - This workflow builds new containers using Wave
+#    - The containers are pushed to quay.io registry
+#
+# 2. Integration with nf-test.yml:
+#    - nf-test.yml is triggered automatically on PRs and will use the containers
+#      built by this workflow when testing modules
+#    - The containers are referenced via their Wave-generated URLs in the tests
+#
+# Note: Currently the version bumping is commented out but would update
+# test snapshots after container builds
 on:
   pull_request:
     paths:
