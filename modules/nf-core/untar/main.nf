@@ -26,7 +26,7 @@ process UNTAR {
     mkdir $prefix
 
     ## Ensures --strip-components only applied when top level of tar contents is a directory
-    ## If just files or multiple directories, place all in prefix
+    ## If just files or multiple directories, place all in prefix DUMMY IGNOREDUMMY IGNOREDUMMY IGNOREDUMMY IGNOREDUMMY IGNOREDUMMY IGNOREDUMMY IGNORE
     if [[ \$(tar -taf ${archive} | grep -o -P "^.*?\\/" | uniq | wc -l) -eq 1 ]]; then
         tar \\
             -C $prefix --strip-components 1 \\
