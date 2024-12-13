@@ -41,8 +41,9 @@ process CUSTOM_TABULARTOGSEACLS {
     """
 
     stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch mock.cls
+    touch ${prefix}.cls
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         awk: \$(mawk -W version | head -n 1 | awk '{print  \$2}')

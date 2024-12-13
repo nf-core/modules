@@ -11,7 +11,7 @@ process CUSTOM_MATRIXFILTER {
     output:
     tuple val(meta), path("*.filtered.tsv")             , emit: filtered
     tuple val(meta), path("*.tests.tsv")                , emit: tests
-    tuple val(meta), path("R_sessionInfo.log")          , emit: session_info
+    tuple val(meta), path("*R_sessionInfo.log")          , emit: session_info
     path "versions.yml"                                 , emit: versions
 
     when:
@@ -25,12 +25,17 @@ process CUSTOM_MATRIXFILTER {
     // (new variables defined here don't seem to be available in templates, so
     // we have to access $task directly)
     template 'matrixfilter.R'
-    
+
     stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch mock.filtered.tsv
-    touch mock.tests.tsv
-    touch R_sessionInfo.log
-    touch versions.yml
+    touch ${prefix}.filtered.tsv
+    touch ${prefix}.tests.tsv
+    touch ${prefix}.R_sessionInfo.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        r-base: \$(echo \$(R --version 2>&1) | sed 's/^.*R version //; s/ .*\$//')
+    END_VERSIONS
     """
 }

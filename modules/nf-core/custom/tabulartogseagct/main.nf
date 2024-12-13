@@ -37,8 +37,9 @@ process CUSTOM_TABULARTOGSEAGCT {
     """
 
     stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch mock.gct
+    touch ${prefix}.gct
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         awk: \$(mawk -W version | head -n 1 | awk '{print  \$2}')
