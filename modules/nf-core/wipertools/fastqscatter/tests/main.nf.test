@@ -21,7 +21,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/fastqrepair/testdata/truncated_clean.fastq', checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true)
                 ]
                 input[1] = 2  // splits num
                 """
@@ -50,7 +50,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/fastqrepair/testdata/truncated_clean.fastq', checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true)
                 ]
                 input[1] = 2  // splits num
                 """

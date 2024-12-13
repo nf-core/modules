@@ -10,24 +10,23 @@ nextflow_process {
     tag "wipertools/fastqgather"
     tag "wipertools/fastqscatter"
 
-    test("merge two gzipped fastq - fastq.gz") {
-
-        config "./nextflow.config"
-
-        setup {
-            run("WIPERTOOLS_FASTQSCATTER") {
-                script "../../fastqscatter/main.nf"
-                process {
-                    """
-                    input[0] = [
-                    [ id:'pp_' ], // meta map
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true)
-                    ]
-                    input[1] = 2  // number of splits
-                    """
-                }
+    setup {
+        run("WIPERTOOLS_FASTQSCATTER") {
+            script "../../fastqscatter/main.nf"
+            process {
+                """
+                input[0] = [
+                [ id:'pp_' ], // meta map
+                file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true)
+                ]
+                input[1] = 2  // number of splits
+                """
             }
         }
+    }
+
+    test("merge two gzipped fastq - fastq.gz") {
+        config "./nextflow.config"
 
         when {
             params {
@@ -39,7 +38,6 @@ nextflow_process {
                 """
             }
         }
-
         then {
             assertAll(
                 { assert process.success },
@@ -50,24 +48,8 @@ nextflow_process {
     }
 
     test("merge two gzipped fastq - fastq.gz - stub") {
-
         options "-stub"
         config "./nextflow.config"
-
-        setup {
-            run("WIPERTOOLS_FASTQSCATTER") {
-                script "../../fastqscatter/main.nf"
-                process {
-                    """
-                    input[0] = [
-                    [ id:'pp_' ], // meta map
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true)
-                    ]
-                    input[1] = 2  // number of splits
-                    """
-                }
-            }
-        }
 
         when {
             params {
