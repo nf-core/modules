@@ -67,7 +67,10 @@ nextflow_workflow {
             workflow {
                 """
                 ch_input = ABUNDANCE_DIFFERENTIAL_FILTER.out.results_genewise_filtered
-                    .combine('gprofiler2')
+                    .map { meta, results ->
+                        meta['method_de'] = meta['method']
+                        [meta, results, 'gprofiler2']
+                    }
                 ch_gene_sets = Channel.of([
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt')
@@ -84,7 +87,10 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert snapshot(
+                    workflow.out.all_enrich
+                ).match()},
+                { assert path(workflow.out.versions[0]).readLines()[3].contains('r-gprofiler2: 0.2.2')}
             )
         }
     }

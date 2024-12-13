@@ -9,16 +9,16 @@ include { PROPR_GREA              } from "../../../modules/nf-core/propr/grea/ma
 // include { CUSTOM_TABULARTOGSEACLS } from '../../../modules/nf-core/custom/tabulartogseacls/main.nf'
 // include { TABULAR_TO_GSEA_CHIP    } from '../../../modules/local/tabular_to_gsea_chip'
 
-workflow ENRICHMENT {
+workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     take:
     // input data for functional analysis
     // They can be the results from differential expression analysis or abundance matrix
     // The functional analysis method to run should be explicitly provided
-    ch_input                            // [meta_input, input file, method to run]
+    ch_input                            // [meta_input, input file, method to run ]
 
     // gene sets and background
-    ch_gene_sets                        // [ meta, gmt file]
-    ch_background                       // [ meta, background file]
+    ch_gene_sets                        // [ meta, gmt file ]
+    ch_background                       // [ meta, background file ]
 
     main:
 
@@ -38,16 +38,16 @@ workflow ENRICHMENT {
     // ----------------------------------------------------
 
     GPROFILER2_GOST(
-        ch_input.filter{ it[0].method == 'gprofiler2' }, 
-        ch_gene_sets.map { meta, gmt -> gmt }, 
-        ch_background
+        ch_input.filter{ it[0].method == 'gprofiler2' },
+        ch_gene_sets.map { meta, gmt -> gmt }.collect(),
+        ch_background.collect()
     )
 
     // ----------------------------------------------------
     // Perform enrichment analysis with GREA
     // ----------------------------------------------------
 
-    GREA(
+    PROPR_GREA(
         ch_input.filter{ it[0].method == 'grea' },
         ch_gene_sets.collect()
     )
@@ -117,7 +117,7 @@ workflow ENRICHMENT {
 
     ch_all_enrich =
         GPROFILER2_GOST.out.all_enrich
-        .mix(GREA.out.results)
+        .mix(PROPR_GREA.out.results)
 
     ch_sub_enrich =
         GPROFILER2_GOST.out.sub_enrich
@@ -130,7 +130,7 @@ workflow ENRICHMENT {
     // recollect versions
 
     ch_versions = GPROFILER2_GOST.out.versions
-        .mix(GREA.out.versions)
+        .mix(PROPR_GREA.out.versions)
 
     ch_all_enrich.view()
 
