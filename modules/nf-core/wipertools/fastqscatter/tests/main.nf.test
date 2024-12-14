@@ -1,5 +1,4 @@
 nextflow_process {
-
     name "Test Process WIPERTOOLS_FASTQSCATTER"
     script "../main.nf"
     process "WIPERTOOLS_FASTQSCATTER"
@@ -10,7 +9,6 @@ nextflow_process {
     tag "wipertools/fastqscatter"
 
     test("3 reads, one truncated - fastq") {
-
         config "./nextflow.config"
 
         when {
@@ -34,11 +32,9 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
 
     test("3 reads, one truncated - fastq - stub") {
-
         options "-stub"
         config "./nextflow.config"
 
@@ -63,7 +59,5 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
-
 }

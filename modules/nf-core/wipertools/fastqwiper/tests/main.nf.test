@@ -1,5 +1,4 @@
 nextflow_process {
-
     name "Test Process WIPERTOOLS_FASTQWIPER"
     script "../main.nf"
     process "WIPERTOOLS_FASTQWIPER"
@@ -9,8 +8,7 @@ nextflow_process {
     tag "wipertools"
     tag "wipertools/fastqwiper"
 
-    test("30 paired-end reads - fastq") {
-
+    test("Quality mismatch - fastq") {
         config "./nextflow.config"
 
         when {
@@ -21,7 +19,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/fastqrepair/testdata/truncated_clean.fastq', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_quality_mismatch.fastq', checkIfExists: true)
                 ]
                 """
             }
@@ -30,14 +28,26 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert path(process.out.fastq_out.get(0).get(1)).linesGzip.size() == 8},
+                {
+                    def read_final_qual = path(process.out.fastq_out.get(0).get(1)).linesGzip[7]
+                    assert read_final_qual.equals('CCCCCGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG')
+                },
+                { assert path(process.out.report.get(0)).readLines().size() == 11},
+                {
+                    def report_header = path(process.out.report.get(0)).readLines()[0]
+                    assert report_header.equals('FASTQWIPER REPORT:')
+                },
+                {
+                    def qual_check = path(process.out.report.get(0)).readLines()[9]
+                    assert qual_check.equals('Reads discarded because len(SEQ) neq len(QUAL): 1')
+                },
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
 
-    test("30 paired-end reads - fastq - stub") {
-
+    test("Quality mismatch - fastq - stub") {
         options "-stub"
         config "./nextflow.config"
 
@@ -49,7 +59,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/fastqrepair/testdata/truncated_clean.fastq', checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/fastq/test_quality_mismatch.fastq", checkIfExists: true)
                 ]
                 """
             }
@@ -62,5 +72,4 @@ nextflow_process {
             )
         }
     }
-
 }
