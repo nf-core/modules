@@ -23,14 +23,19 @@ process TCOFFEE_ALNCOMPARE {
     def metric_name = args.split('compare_mode ')[1].split(' ')[0]
     def header = meta.keySet().join(",")
     def values = meta.values().join(",")
-    def read_msa = msa.getName().endsWith(".gz") ? "<(unpigz -cdf ${msa})" : msa
-    def read_ref = ref_msa.getName().endsWith(".gz") ? "<(unpigz -cdf ${ref_msa})" : ref_msa
 
     """
+    # check whether it is compressed
+    if [[ "${msa}" == *.gz ]]; then
+        unpigz -c ${msa} > uncompressed_msa.fa
+    else
+        ln ${msa} uncompressed_msa.fa
+    fi
+
     export TEMP='./'
     t_coffee -other_pg aln_compare \
-        -al1 ${read_ref} \
-        -al2 ${read_msa} \
+        -al1 ${ref_msa} \
+        -al2 uncompressed_msa.fa \
         ${args} \
         | grep -v "seq1" | grep -v '*' | \
         awk '{ print \$4}' ORS="\t" \

@@ -63,7 +63,7 @@ process SAMTOOLS_VIEW {
                 input.getExtension()
     if ("$input" == "${prefix}.${file_type}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
 
-    def index = args.contains("--write-index") ? "touch ${prefix}.${file_type}.csi" : ""
+    index = args.contains("--write-index") ? "touch ${prefix}.${file_type}.csi" : ""
 
     """
     touch ${prefix}.${file_type}

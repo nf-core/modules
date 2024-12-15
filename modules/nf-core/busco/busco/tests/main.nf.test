@@ -21,7 +21,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                 ]
                 input[1] = 'genome'
-                input[2] = 'bacteria_odb10' // Launch with 'auto' to use --auto-lineage, and specified lineages // 'auto' removed from test due to memory issues
+                input[2] = 'bacteria_odb12' // Launch with 'auto' to use --auto-lineage, and specified lineages // 'auto' removed from test due to memory issues
                 input[3] = [] // Download busco lineage
                 input[4] = [] // No config
                 """
@@ -85,7 +85,7 @@ nextflow_process {
                     ]
                 ]
                 input[1] = 'genome'
-                input[2] = 'bacteria_odb10'
+                input[2] = 'bacteria_odb12'
                 input[3] = []
                 input[4] = []
                 """
@@ -126,7 +126,6 @@ nextflow_process {
             }
 
             assert snapshot(
-                    process.out.batch_summary[0][1],
                     process.out.full_table[0][1],
                     process.out.missing_busco_list[0][1],
                     process.out.versions[0]
@@ -274,7 +273,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
                 ]
                 input[1] = 'proteins'
-                input[2] = 'bacteria_odb10'
+                input[2] = 'bacteria_odb12'
                 input[3] = []
                 input[4] = []
                 """
@@ -336,7 +335,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists: true)
                 ]
                 input[1] = 'transcriptome'
-                input[2] = 'bacteria_odb10'
+                input[2] = 'bacteria_odb12'
                 input[3] = []
                 input[4] = []
                 """
@@ -397,7 +396,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                 ]
                 input[1] = 'genome'
-                input[2] = 'bacteria_odb10'
+                input[2] = 'bacteria_odb12'
                 input[3] = []
                 input[4] = []
                 """

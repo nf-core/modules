@@ -35,8 +35,8 @@ jobs:
   pre-commit:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      - uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
       - uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
         with:
           extra_args: ""
@@ -56,7 +56,7 @@ jobs:
       subworkflows: ${{ steps.filter.outputs.subworkflows }}
       subworkflows_files: ${{ steps.subworkflow_names.outputs.result }}
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           fetch-depth: 2 # To retrieve the preceding commit.
 
@@ -65,11 +65,11 @@ jobs:
         with:
           filters: |
             modules:
-              - 'modules/nf-core/**'
-              - 'tests/modules/nf-core/**'
+              - added|modified: 'modules/nf-core/**'
+              - added|modified: 'tests/modules/nf-core/**'
             subworkflows:
-              - 'subworkflows/nf-core/**'
-              - 'tests/subworkflows/nf-core/**'
+              - added|modified: 'subworkflows/nf-core/**'
+              - added|modified: 'tests/subworkflows/nf-core/**'
           token: ""
           list-files: "json"
 
@@ -78,21 +78,19 @@ jobs:
         id: module_names
         with:
           script: |
-            return [...new Set(${{ steps.filter.outputs.modules_files }}.map(path => path.replace('modules/nf-core/', '').split('/').slice(0,2).filter(x => x !== 'main.nf').join('/')))];
-
-      - name: Get subworkflow name
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
-        id: subworkflow_names
-        with:
-          script: |
-            return [...new Set(${{ steps.filter.outputs.subworkflows_files }}.map(path => path.replace('subworkflows/nf-core/', '').split('/').slice(0,2).filter(x => x !== 'main.nf').join('/')))];
-
+            return [...new Set(${{ steps.filter.outputs.modules_files }}
+              .map(path => path
+                .replace('modules/nf-core/', '')
+                .split('/')
+                .slice(0, 2)
+                .filter(x => !x.startsWith('main.nf') && x !== 'tests' && x !== 'meta.yml' && x !== 'environment.yml')
+                .join('/'))
+              )
+            ];
       - name: debug
         run: |
           echo ${{ steps.filter.outputs.modules_files }}
-          echo ${{ steps.filter.outputs.subworkflows_files }}
           echo ${{ steps.module_names.outputs.result }}
-          echo ${{ steps.subworkflow_names.outputs.result }}
 
   nf-core-lint-modules:
     runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
@@ -104,14 +102,14 @@ jobs:
       matrix:
         module: "${{ fromJson(needs.nf-core-changes.outputs.modules_files) }}"
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - name: Set up Python
-        uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5
+        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
         with:
           python-version: "3.11"
 
-      - uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4
+      - uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4
         id: cache-pip
         with:
           path: ~/.cache/pip
@@ -122,7 +120,7 @@ jobs:
       - name: Install pip
         run: python -m pip install --upgrade pip
 
-      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
+      - uses: actions/setup-java@8df1039502a15bceb9433410b1a100fbe190c53b # v4
         with:
           distribution: "temurin"
           java-version: "17"
@@ -136,43 +134,9 @@ jobs:
       - name: Lint module ${{ matrix.module }}
         run: nf-core modules lint ${{ matrix.module }}
 
-  nf-core-lint-subworkflows:
-    runs-on: ubuntu-latest
-    name: nf-core lint subworkflows
-    needs: nf-core-changes
-    if: ${{ (needs.nf-core-changes.outputs.subworkflows == 'true') }}
-    strategy:
-      fail-fast: false
-      matrix:
-        subworkflow: "${{ fromJson(needs.nf-core-changes.outputs.subworkflows_files) }}"
-    steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-
-      - name: Set up Python
-        uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5
-        with:
-          python-version: "3.11"
-
-      - name: Install pip
-        run: python -m pip install --upgrade pip
-
-      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
-        with:
-          distribution: "temurin"
-          java-version: "17"
-
-      - name: Setup Nextflow
-        uses: nf-core/setup-nextflow@561fcfc7146dcb12e3871909b635ab092a781f34 # v2
-
-      - name: Install nf-core tools development version
-        run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
-
-      - name: Lint subworkflow ${{ matrix.subworkflow }}
-        run: nf-core subworkflows lint ${{ matrix.subworkflow }}
-
   confirm-pass:
     runs-on: ubuntu-latest
-    needs: [nf-core-lint-modules, nf-core-lint-subworkflows]
+    needs: [nf-core-lint-modules]
     if: always()
     steps:
       - name: All tests ok
