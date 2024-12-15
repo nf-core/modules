@@ -11,20 +11,21 @@ process WIPERTOOLS_FASTQGATHER {
     tuple val(meta), path(fastq_in)
 
     output:
-    tuple val(meta), path("*_gather.fastq.gz") , emit: fastq_out
-    path "versions.yml"                        , emit: versions
+    tuple val(meta), path("${prefix}.fastq.gz") , emit: fastq_out
+    path "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args      = task.ext.args ?: ''
-    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def args    = task.ext.args ?: ''
+    prefix      = task.ext.prefix ?: "${meta.id}"
+    prefix      = prefix + "_gather"
     """
     wipertools \\
         fastqgather \\
         -i $fastq_in \\
-        -o ${prefix}_gather.fastq.gz \\
+        -o ${prefix}.fastq.gz \\
         ${args}
 
     cat <<-END_VERSIONS > versions.yml
@@ -34,9 +35,10 @@ process WIPERTOOLS_FASTQGATHER {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = prefix + "_gather"
     """
-    echo "" | gzip > ${prefix}_gather.fastq.gz
+    echo "" | gzip > ${prefix}.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

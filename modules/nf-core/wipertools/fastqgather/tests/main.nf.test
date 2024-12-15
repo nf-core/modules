@@ -15,7 +15,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                [ id:'pp_' ], // meta map
+                [ id:'fastq_chunks' ], // meta map
                 file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true)
                 ]
                 input[1] = 2  // number of splits
@@ -29,11 +29,11 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--prefix pp_'
+                module_args = '--prefix fastq_chunks'
             }
             process {
                 """
-                input[0] = WIPERTOOLS_FASTQSCATTER.out.chunks.map { tuple( [id: 'fastq_chunks'], it[1] ) }
+                input[0] = WIPERTOOLS_FASTQSCATTER.out.chunks
                 """
             }
         }

@@ -11,20 +11,21 @@ process WIPERTOOLS_REPORTGATHER {
     tuple val(meta), path(reports)
 
     output:
-    tuple val(meta), path("*_gathered.report") , emit: report_out
-    path "versions.yml"                        , emit: versions
+    tuple val(meta), path("${prefix}.report"), emit: report_out
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args      = task.ext.args ?: ''
-    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
+    prefix   = prefix+"_gathered"
     """
     wipertools \\
         reportgather \\
         -r $reports \\
-        -f ${prefix}_gathered.report \\
+        -f ${prefix}.report \\
         ${args}
 
     cat <<-END_VERSIONS > versions.yml
@@ -34,9 +35,10 @@ process WIPERTOOLS_REPORTGATHER {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix   = prefix+"_gathered"
     """
-    touch ${prefix}_gathered.report
+    touch ${prefix}.report
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

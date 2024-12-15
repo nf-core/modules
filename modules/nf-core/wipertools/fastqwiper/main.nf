@@ -11,41 +11,41 @@ process WIPERTOOLS_FASTQWIPER {
     tuple val(meta), path(fastq_in)
 
     output:
-    tuple val(meta), path("*_wiped.fastq.gz") , emit: fastq_out
-    path("*.report")                          , emit: report
-    path "versions.yml"                       , emit: versions
+    tuple val(meta), path("${prefix}.fastq.gz") , emit: fastq_out
+    path("*.report")                            , emit: report
+    path "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args        = task.ext.args ?: ''
-    def prefix      = task.ext.prefix ?: "${meta.id}"
-    def fastq_out   = prefix.endsWith('.fastq.gz') ? prefix.replaceAll(/\.fastq.gz$/, '_wiped.fastq.gz') : (prefix.endsWith('.fastq') ? prefix.replaceAll(/\.fastq$/, '_wiped.fastq.gz') : prefix + "_wiped.fastq.gz")
-    def report_file = prefix + ".report"
+    def args    = task.ext.args ?: ''
+    prefix      = task.ext.prefix ?: "${meta.id}"
+    prefix      = prefix + "_wiped"
     """
     wipertools \\
         fastqwiper \\
         -i ${fastq_in} \\
-        -o ${fastq_out} \\
-        -r ${report_file} \\
+        -o ${prefix}.fastq.gz \\
+        -r ${prefix}.report \\
         ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        wipertools wiper: \$(wipertools fastqwiper --version)
+        wipertools fastqwiper: \$(wipertools fastqwiper --version)
     END_VERSIONS
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix          = prefix + "_wiped"
     """
-    echo "" | gzip > ${prefix}_wiped.fastq.gz
+    echo "" | gzip > ${prefix}.fastq.gz
     touch ${prefix}.report
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        wipertools wiper: \$(wipertools fastqwiper --version)
+        wipertools fastqwiper: \$(wipertools fastqwiper --version)
     END_VERSIONS
     """
 }
