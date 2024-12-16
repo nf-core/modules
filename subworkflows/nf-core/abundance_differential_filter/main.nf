@@ -51,7 +51,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
 
     // We only need a normalised matrix from one contrast. The reason we don't
     // simply use the first output from DIFFERENTIAL modules is that depending
-    // on the contrast setting etc, these mjodules may subset matrices, hence
+    // on the contrast setting etc, these modules may subset matrices, hence
     // not returning the full normalized matrix as NORM modules would do.
     norm_inputs = ch_input
         .combine(ch_samplesheet)
