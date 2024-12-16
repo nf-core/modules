@@ -19,8 +19,8 @@ process CNVKIT_EXPORT {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.args.tokenize(" ")[0]
+    prefix = task.ext.prefix ?: "${meta.id}"
+    suffix = task.ext.args.tokenize(" ")[0]
     """
     cnvkit.py export \\
         $args \\
@@ -34,8 +34,8 @@ process CNVKIT_EXPORT {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.args.tokenize(" ")[0]
+    prefix = task.ext.prefix ?: "${meta.id}"
+    suffix = task.ext.args.tokenize(" ")[0]
     """
     touch ${prefix}.${suffix}
 
