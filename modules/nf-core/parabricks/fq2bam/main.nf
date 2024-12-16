@@ -18,7 +18,7 @@ process PARABRICKS_FQ2BAM {
     tuple val(meta), path("*.bai")  , emit: bai
     tuple val(meta), path("*.table"), emit: bqsr_table         , optional:true
     path("versions.yml")            , emit: versions
-    path("qc_metrics")             , emit: qc_metrics          , optional:true
+    path("qc_metrics")              , emit: qc_metrics          , optional:true
     path("duplicate-metrics.txt")   , emit: duplicate_metrics  , optional:true
 
     when:
