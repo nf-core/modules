@@ -1,25 +1,43 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fastq_align_parabricks"
-## TODO nf-core: Add a description of the subworkflow and list keywords
-description: Sort SAM/BAM/CRAM file
+description: Align a fastq file using GPU-based acceleration
 keywords:
-  - sort
-  - bam
-  - sam
-  - cram
-## TODO nf-core: Add a list of the modules and/or subworkflows used in the subworkflow
+  - fastq
+  - align
+  - parabricks
+  - gpu
+  - preprocessing
 components:
   - parabricks/fq2bam
   - parabricks/applybqsr
-## TODO nf-core: List all of the channels used as input with a description and their structure
 input:
-  - ch_bam:
+  - ch_reads:
       type: file
       description: |
-        The input channel containing the BAM/CRAM/SAM files
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.{bam/cram/sam}"
-## TODO nf-core: List all of the channels used as output with a descriptions and their structure
+        Channel containing reads (either one file for se or two files for pe)
+        Structure: [ val(meta), path(fastq1), path(fastq2) ]
+  - ch_fasta:
+      type: file
+      description: |
+        Channel containing reference fasta file
+        Structure: [ val(meta), path(fasta) ]
+  - ch_index:
+      type: file
+      description: |
+        Channel containing reference BWA index
+        Structure: [ val(meta), path(.{amb,ann,bwt,pac,sa}) ]
+  - ch_interval_file:
+      type: file
+      description: |
+        (optional) file(s) containing genomic intervals for use in base
+        quality score recalibration (BQSR)
+        Structure: [ val(meta), path(.{bed,interval_list,picard,list,intervals}) ]
+  - ch_known_sites:
+      type: file
+      description: |
+        (optional) known sites file(s) for calculating BQSR. markdups must
+        be true to perform BQSR.
+        Structure [ path(vcf) ]
 output:
   - bam:
       type: file
@@ -33,12 +51,6 @@ output:
         Channel containing indexed BAM (BAI) files
         Structure: [ val(meta), path(bai) ]
       pattern: "*.bai"
-  - csi:
-      type: file
-      description: |
-        Channel containing CSI files
-        Structure: [ val(meta), path(csi) ]
-      pattern: "*.csi"
   - versions:
       type: file
       description: |
