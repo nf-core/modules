@@ -58,13 +58,13 @@ output:
       - meta:
           type: file
           description: |
-            TSV-format table of genes associated with differential expression
+            TSV-format table of genes associated with differential expression 
             information as compiled from the propd results
           pattern: "*.propd.genewise.tsv"
       - "*.propd.genewise.tsv":
           type: file
           description: |
-            TSV-format table of genes associated with differential expression
+            TSV-format table of genes associated with differential expression 
             information as compiled from the propd results
           pattern: "*.propd.genewise.tsv"
   - genewise_plot:
@@ -97,15 +97,15 @@ output:
       - meta:
           type: file
           description: |
-            (Optional) TSV-format table of the native propd pairwise results. This
-            table contains the differential proportionality values associated to
+            (Optional) TSV-format table of the native propd pairwise results. This 
+            table contains the differential proportionality values associated to 
             each pair of genes.
           pattern: "*.propd.pairwise.tsv"
       - "*.propd.pairwise.tsv":
           type: file
           description: |
-            (Optional) TSV-format table of the native propd pairwise results. This
-            table contains the differential proportionality values associated to
+            (Optional) TSV-format table of the native propd pairwise results. This 
+            table contains the differential proportionality values associated to 
             each pair of genes.
           pattern: "*.propd.pairwise.tsv"
   - results_pairwise_filtered:
@@ -113,28 +113,28 @@ output:
           type: file
           description: |
             (Optional) TSV-format table of the filtered propd pairwise results. This
-            table contains the pairs of genes with significant differential
+            table contains the pairs of genes with significant differential 
             proportionality values.
           pattern: "*.propd.pairwise_filtered.tsv"
       - "*.propd.pairwise_filtered.tsv":
           type: file
           description: |
             (Optional) TSV-format table of the filtered propd pairwise results. This
-            table contains the pairs of genes with significant differential
+            table contains the pairs of genes with significant differential 
             proportionality values.
           pattern: "*.propd.pairwise_filtered.tsv"
   - adjacency:
       - meta:
           type: file
           description: |
-            (Optional) CSV-format table of the adjacency matrix defining a graph, with
+            (Optional) CSV-format table of the adjacency matrix defining a graph, with 
             edges (1) associated to pairs of genes that are significantly differentially
             proportional.
           pattern: "*.propd.adjacency.csv"
       - "*.propd.adjacency.csv":
           type: file
           description: |
-            (Optional) CSV-format table of the adjacency matrix defining a graph, with
+            (Optional) CSV-format table of the adjacency matrix defining a graph, with 
             edges (1) associated to pairs of genes that are significantly differentially
             proportional.
           pattern: "*.propd.adjacency.csv"
