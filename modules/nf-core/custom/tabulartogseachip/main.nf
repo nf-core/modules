@@ -9,11 +9,11 @@ process CUSTOM_TABULARTOGSEACHIP {
 
     input:
     tuple val(meta), path(tabular)
-    tuple val(id), val(symbol)
+    tuple val(id)  , val(symbol)
 
     output:
-    path "*.chip"       , emit: chip
-    path "versions.yml" , emit: versions
+    tuple val(meta), path("*.chip"), emit: chip
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

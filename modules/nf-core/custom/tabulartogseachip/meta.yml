@@ -31,6 +31,9 @@ input:
         description: The name of the column containing feature symbols
 output:
   - chip:
+      - meta:
+          type: map
+          description: Groovy Map containing metadata e.g. [ id:'test', ... ]
       - "*.chip":
           type: file
           description: |
