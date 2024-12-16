@@ -8,7 +8,7 @@ process CUSTOM_TABULARTOGSEACHIP {
         'biocontainers/gawk:5.1.0' }"
 
     input:
-    path tabular
+    tuple val(meta), path(tabular)
     tuple val(id), val(symbol)
 
     output:
