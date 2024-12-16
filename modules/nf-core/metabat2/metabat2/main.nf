@@ -24,15 +24,16 @@ process METABAT2_METABAT2 {
     script:
     def args             = task.ext.args   ?: ''
     def prefix           = task.ext.prefix ?: "${meta.id}"
-    def decompress_depth = depth           ? "gzip -d -f $depth"    : ""
-    def depth_file       = depth           ? "-a ${depth.baseName}" : ""
+    def clean_depth      = depth.toString() - ".gz"
+    def decompress_depth = (depth && depth.toString() != clean_depth) ? "gzip -d -f $depth" : ""
+    def depth_input      = depth ? "-a ${clean_depth}" : ""
     """
     $decompress_depth
 
     metabat2 \\
-        $args \\
+        ${args} \\
         -i $fasta \\
-        $depth_file \\
+        ${depth_input} \\
         -t $task.cpus \\
         --saveCls \\
         -o ${prefix}
