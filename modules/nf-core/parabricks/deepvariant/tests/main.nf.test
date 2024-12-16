@@ -34,7 +34,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    process.out.versions
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
                     ).match() }
             )
         }
@@ -42,8 +43,6 @@ nextflow_process {
     }
 
     test("human - bam - intervals") {
-
-        config './nextflow.config'
 
         when {
             process {
@@ -67,8 +66,47 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    process.out.versions
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
                     ).match() }
+            )
+        }
+
+    }
+
+    test("human - bam - gvcf") {
+
+        config './nextflow.config'
+
+        when {
+            params {
+                 module_args = '--gvcf'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                    [], // bam.bai not needed unless using intervals
+                    []
+                ]
+                input[1] = [
+                    [ id:'ref'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.gvcf[0][1]).vcf.variantsMD5,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match()
+                }
             )
         }
 
@@ -102,8 +140,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
+                    path(process.out.gvcf[0][1]).vcf.variantsMD5,
                     process.out.versions,
-                    // file(process.out.vcf[0][1]).name // fails with groovy.lang.MissingMethodException: No signature of method: static com.askimed.nf.test.lang.extensions.GlobalMethods.file() is applicable for argument types: (ArrayList) values:
+                    path(process.out.versions[0]).yaml
                     ).match()
                 }
             )
@@ -135,7 +174,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
             )
         }
 
@@ -169,7 +211,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot( process.out ).match() }
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
             )
         }
 
