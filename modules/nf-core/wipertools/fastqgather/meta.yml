@@ -38,7 +38,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*_gather.fastq.gz":
+      - "${prefix}.fastq.gz":
           type: file
           description: The resulting FASTQ file
           pattern: "*.fastq.gz"

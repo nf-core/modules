@@ -42,11 +42,14 @@ process WIPERTOOLS_FASTQSCATTER {
     def args        = task.ext.args ?: ''
     def prefix      = task.ext.prefix ?: "${meta.id}"
     def args_list   = args.tokenize()
-    out_folder      = (args_list.contains('--out_folder') ? args_list[args_list.indexOf('--out_folder')+1] : (args_list.contains('-o') ? args_list[args_list.indexOf('-o')+1] : 'chunks'))
+    out_folder      = (args_list.contains('--out_folder') ? args_list[args_list.indexOf('--out_folder')+1] :
+                        (args_list.contains('-o') ? args_list[args_list.indexOf('-o')+1] : 'chunks'))
     """
     mkdir ${out_folder}
-    echo "" | gzip > ${out_folder}/${prefix}_1-of-2_suffix.fastq.gz
-    echo "" | gzip > ${out_folder}/${prefix}_2-of-2_suffix.fastq.gz
+    for i in {1..${num_splits}}
+    do
+        echo "" | gzip > ${out_folder}/${prefix}_\$i-of-${num_splits}_suffix.fastq.gz
+    done
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

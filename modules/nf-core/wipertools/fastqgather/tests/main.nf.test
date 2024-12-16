@@ -52,11 +52,11 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--prefix pp_'
+                module_args = '--prefix fastq_chunks'
             }
             process {
                 """
-                input[0] = WIPERTOOLS_FASTQSCATTER.out.chunks.map { tuple( [id: 'fastq_chunks'], it[1] ) }
+                input[0] = WIPERTOOLS_FASTQSCATTER.out.chunks
                 """
             }
         }
