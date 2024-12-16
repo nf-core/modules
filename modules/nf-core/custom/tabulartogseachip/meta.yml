@@ -11,7 +11,13 @@ tools:
       tool_dev_url: "https://github.com/nf-core/modules/blob/master/modules/nf-core/custom/tabulartogseachip/main.nf"
       identifier: ""
 input:
-  - - tabular:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing data information.
+          This can be used at the workflow level to pass optional parameters to the module.
+          [id: 'test', ...]
+    - tabular:
         type: file
         description: |
           Tabular (NOTE that for the moment it only works for TSV file) containing a column with the
