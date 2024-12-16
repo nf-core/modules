@@ -1,97 +1,110 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "poolsnp"
-description: PoolSNP is a heuristic SNP caller, which uses an MPILEUP file and a reference genome in FASTA format as inputs.
+description: PoolSNP is a heuristic SNP caller, which uses an MPILEUP file and a reference
+  genome in FASTA format as inputs.
 keywords:
   - poolseq
   - mpileup
   - variant-calling
 tools:
   - "poolsnp":
-      description: "PoolSNP is a heuristic SNP caller, which uses an MPILEUP file and a reference genome in FASTA format as inputs."
+      description: "PoolSNP is a heuristic SNP caller, which uses an MPILEUP file and
+        a reference genome in FASTA format as inputs."
       homepage: "https://github.com/capoony/PoolSNP"
       documentation: "https://github.com/capoony/PoolSNP/blob/master/README.md"
       licence: ["Apache-2.0"]
       args_id: "$args"
 
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information.
-        e.g. `[ id:'sample1', single_end:false ]`
-
-  - mpileup:
-      type: file
-      description: |
-        MPILEUP file. This file contains the base calls and alignment information
-        for each position in the reference genome.
-        It is used as input for variant calling and other downstream analyses.
-      pattern: "*.mpileup"
-
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing sample information.
-        e.g. `[ id:'sample1' ]`
-
-  - reference:
-      type: file
-      description: |
-        Reference genome in FASTA format.
-        May NOT contain any special characters such as "/|,:"
-      pattern: "*.{fasta,fa}"
-
-  - max_cov:
-      type: float
-      description: |
-        Maximum coverage is calculated for every library and chromosomal arm
-        as the percentile of a coverage distribution,
-        e.g. max-cov=0.98 will only consider positions within the 98% coverage percentile
-        for a given sample and chromosomal arm.
-        Note: Provide `max_cov` or `max_cov_file` but not both.
-        Read more: https://github.com/capoony/PoolSNP
-
-  - max_cov_file:
-      type: file
-      description: |
-        File containing the maximum coverage thresholds for all chromosomal arms and libraries.
-        This file needs to be tab-delimited with two columns:
-        1. Chromosomal name
-        2. Comma-separated list of coverage thresholds for each sample in the mpileup file.
-        e.g. `2L 100,100,100,200,200` would mean a threshold of 100 for the first three samples
-        and 200 for the last two samples on chromosomal arm 2L.
-        Note: Provide `max_cov` or `max_cov_file` but not both.
-        Read more: https://github.com/capoony/PoolSNP
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information.
+          e.g. `[ id:'sample1', single_end:false ]`
+    - mpileup:
+        type: file
+        description: |
+          MPILEUP file. This file contains the base calls and alignment information
+          for each position in the reference genome.
+          It is used as input for variant calling and other downstream analyses.
+        pattern: "*.mpileup"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information.
+          e.g. `[ id:'sample1' ]`
+    - reference:
+        type: file
+        description: |
+          Reference genome in FASTA format.
+          May NOT contain any special characters such as "/|,:"
+        pattern: "*.{fasta,fa}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information.
+          e.g. `[ id:'sample1', single_end:false ]`
+    - max_cov:
+        type: float
+        description: |
+          Maximum coverage is calculated for every library and chromosomal arm
+          as the percentile of a coverage distribution,
+          e.g. max-cov=0.98 will only consider positions within the 98% coverage percentile
+          for a given sample and chromosomal arm.
+          Note: Provide `max_cov` or `max_cov_file` but not both.
+          Read more: https://github.com/capoony/PoolSNP
+    - max_cov_file:
+        type: file
+        description: |
+          File containing the maximum coverage thresholds for all chromosomal arms and libraries.
+          This file needs to be tab-delimited with two columns:
+          1. Chromosomal name
+          2. Comma-separated list of coverage thresholds for each sample in the mpileup file.
+          e.g. `2L 100,100,100,200,200` would mean a threshold of 100 for the first three samples
+          and 200 for the last two samples on chromosomal arm 2L.
+          Note: Provide `max_cov` or `max_cov_file` but not both.
+          Read more: https://github.com/capoony/PoolSNP
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-
   - vcf:
-      type: file
-      description: Gzipped VCF file containing allele counts and frequencies for every position and library
-      pattern: "*.vcf.gz"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.vcf.gz":
+          type: file
+          description: Gzipped VCF file containing allele counts and frequencies for every
+            position and library
+          pattern: "*.vcf.gz"
   - max_cov:
-      type: file
-      description: File containing the maximum coverage thresholds for all chromosomal arms and libraries
-      pattern: "*cov-*.txt"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*cov-*.txt":
+          type: file
+          description: File containing the maximum coverage thresholds for all chromosomal
+            arms and libraries
+          pattern: "*cov-*.txt"
   - bad_sites:
-      type: file
-      description: File containing a list of sites (variable and invariable) that did not pass the SNP calling criteria
-      pattern: "*BS.txt.gz"
-      optional: true
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*BS.txt.gz":
+          type: file
+          description: File containing a list of sites (variable and invariable) that
+            did not pass the SNP calling criteria
+          pattern: "*BS.txt.gz"
+          optional: true
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@abhilesh"
 maintainers:

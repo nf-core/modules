@@ -1,0 +1,51 @@
+name: scvitools_scar
+description: Module to use scAR to remove ambient RNA from single-cell RNA-seq data
+keywords:
+  - single-cell
+  - scRNA-seq
+  - ambient RNA removal
+tools:
+  - scvitools:
+      description: scvi-tools (single-cell variational inference tools) is a package for end-to-end analysis of single-cell omics data
+      documentation: https://docs.scvi-tools.org/en/stable/
+      tool_dev_url: https://github.com/scverse/scvi-tools
+      licence: ["BSD-3-clause"]
+  - scar:
+      description: scAR (single-cell Ambient Remover) is a deep learning model for removal of the ambient signals in droplet-based single cell omics.
+      documentation: https://docs.scvi-tools.org/en/stable/user_guide/models/scar.html
+      tool_dev_url: https://github.com/Novartis/scar
+      licence: ["Novartis Terms of License"]
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - filtered:
+        type: file
+        description: AnnData file containing filtered data (without empty droplets)
+        pattern: "*.h5ad"
+    - unfiltered:
+        type: file
+        description: AnnData file containing unfiltered data (with empty droplets)
+        pattern: "*.h5ad"
+output:
+  - h5ad:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.h5ad":
+          type: file
+          description: AnnData file containing decontaminated counts as `adata.X`
+          pattern: "*.h5ad"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software version
+          pattern: "versions.yml"
+authors:
+  - "@nictru"
+maintainers:
+  - "@nictru"

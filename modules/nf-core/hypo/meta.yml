@@ -13,47 +13,51 @@ tools:
       tool_dev_url: "https://github.com/kensung-lab/hypo"
       doi: "10.1101/2019.12.19.882506"
       licence: ["GPL v3"]
+      identifier: biotools:hypo
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: Short reads file(s). In fastq or fasta, compressed or uncompressed
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - sr_bam:
-      type: file
-      description: Aligned short-read BAM/SAM file. Must have CIGAR information.
-      pattern: "*.{bam,sam}"
-  - draft:
-      type: file
-      description: Input (fasta) file containing draft contig assembly
-  - genome_size:
-      type: string
-      description: Estimated size of the genome. Number or nts or use suffixes k/m/g, e.g. 5m, 3.2g
-  - reads_coverage:
-      type: integer
-      description: Appprimate depth of coverage of short reads.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - sr_bam:
+        type: file
+        description: Aligned short-read BAM/SAM file. Must have CIGAR information.
+        pattern: "*.{bam,sam}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: Short reads file(s). In fastq or fasta, compressed or uncompressed
+  - - draft:
+        type: file
+        description: Input (fasta) file containing draft contig assembly
+  - - genome_size:
+        type: string
+        description: Estimated size of the genome. Number or nts or use suffixes k/m/g,
+          e.g. 5m, 3.2g
+  - - reads_coverage:
+        type: integer
+        description: Appprimate depth of coverage of short reads.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - fasta:
-      type: file
-      description: Polished assembly fasta file
-      pattern: "*.fasta"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fasta":
+          type: file
+          description: Polished assembly fasta file
+          pattern: "*.fasta"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@remiolsen"
 maintainers:

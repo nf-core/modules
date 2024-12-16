@@ -18,13 +18,13 @@ process GLIMPSE2_PHASE {
         'biocontainers/glimpse-bio:2.0.1--h46b9e50_1' }"
 
     input:
-        tuple val(meta) , path(input, arity: '1..*'), path(input_index), path(samples_file), val(input_region), val(output_region), path(reference), path(reference_index), path(map)
+        tuple val(meta) , path(input, arity: '1..*'), path(input_index), path(bamlist), path(samples_file), val(input_region), val(output_region), path(reference), path(reference_index), path(map)
         tuple val(meta2), path(fasta_reference), path(fasta_reference_index)
 
     output:
         tuple val(meta), path("*.{vcf,vcf.gz,bcf,bgen}"), emit: phased_variants
-        tuple val(meta), path("*.txt.gz")        , emit: stats_coverage, optional: true
-        path "versions.yml"                      , emit: versions
+        tuple val(meta), path("*.txt.gz")               , emit: stats_coverage, optional: true
+        path "versions.yml"                             , emit: versions
 
     when:
         task.ext.when == null || task.ext.when
@@ -45,7 +45,7 @@ process GLIMPSE2_PHASE {
         it.toString().endsWithAny("cram", "bam") ? "bam" :
         it.toString().endsWithAny("vcf", "bcf", "vcf.gz") ? "gl" :
         it.getExtension()
-        }.unique()
+    }.unique()
 
     if (input_type.size() > 1 | !(input_type.contains("gl") | input_type.contains("bam"))) {
         error "Input files must be of the same type and either .bam/.cram or .vcf/.vcf.gz/.bcf format. Found: ${input_type}"
@@ -58,7 +58,10 @@ process GLIMPSE2_PHASE {
     def input_list = input.size() > 1
 
     """
-    if $input_list ;
+    if [ -n "$bamlist" ] ;
+    then
+        input_command="--bam-list $bamlist"
+    elif $input_list ;
     then
         ls -1 | grep '\\.cram\$\\|\\.bam\$' > all_bam.txt
         input_command="--bam-list all_bam.txt"

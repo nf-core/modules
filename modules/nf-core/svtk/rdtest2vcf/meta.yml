@@ -8,48 +8,59 @@ keywords:
   - vcf
 tools:
   - "svtk":
-      description: "Utilities for consolidating, filtering, resolving, and annotating structural variants."
+      description: "Utilities for consolidating, filtering, resolving, and annotating
+        structural variants."
       homepage: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
       documentation: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
       tool_dev_url: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
       doi: "10.1038/s41586-020-2287-8"
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bed:
-      type: file
-      description: An RdTest-formatted bed
-      pattern: "*.bed"
-  - samples:
-      type: file
-      description: A text file containing the names of all samples that need to be added to the VCF
-      pattern: "*.txt"
-  - fasta_fai:
-      type: file
-      description: The reference file of a FASTA file containing the contigs
-      pattern: "*.fai"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bed:
+        type: file
+        description: An RdTest-formatted bed
+        pattern: "*.bed"
+    - samples:
+        type: file
+        description: A text file containing the names of all samples that need to be
+          added to the VCF
+        pattern: "*.txt"
+  - - fasta_fai:
+        type: file
+        description: The reference file of a FASTA file containing the contigs
+        pattern: "*.fai"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - vcf:
-      type: file
-      description: The converted VCF
-      pattern: "*.vcf.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf.gz":
+          type: file
+          description: The converted VCF
+          pattern: "*.vcf.gz"
   - tbi:
-      type: file
-      description: The index of the converted VCF
-      pattern: "*.vcf.gz.tbi"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf.gz.tbi":
+          type: file
+          description: The index of the converted VCF
+          pattern: "*.vcf.gz.tbi"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

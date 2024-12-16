@@ -8,36 +8,40 @@ keywords:
   - fasta
 tools:
   - "openms":
-      description: "OpenMS is an open-source software C++ library for LC-MS data management and analyses"
+      description: "OpenMS is an open-source software C++ library for LC-MS data management
+        and analyses"
       homepage: "https://openms.de"
       documentation: "https://openms.readthedocs.io/en/latest/index.html"
       tool_dev_url: "https://github.com/OpenMS/OpenMS"
       doi: "10.1038/s41592-024-02197-7"
       licence: ["BSD"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - fasta:
-      type: file
-      description: Fasta file containing protein sequences
-      pattern: "*.{fasta}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - fasta:
+        type: file
+        description: Fasta file containing protein sequences
+        pattern: "*.{fasta}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - decoy_fasta:
-      type: file
-      description: Fasta file containing proteins and decoy proteins
-      pattern: "*.{fasta}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.fasta":
+          type: file
+          description: Fasta file containing proteins and decoy proteins
+          pattern: "*.{fasta}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jonasscheid"
 maintainers:

@@ -1,5 +1,6 @@
 name: gatk4_createsomaticpanelofnormals
-description: Create a panel of normals contraining germline and artifactual sites for use with mutect2.
+description: Create a panel of normals contraining germline and artifactual sites
+  for use with mutect2.
 keywords:
   - createsomaticpanelofnormals
   - gatk4
@@ -13,56 +14,67 @@ tools:
       homepage: https://gatk.broadinstitute.org/hc/en-us
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
       doi: 10.1158/1538-7445.AM2017-3590
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test']
-  - genoomicsdb:
-      type: directory
-      description: genomicsDB workspace that contains the samples to create the somatic panel of normals with.
-      pattern: "*_genomicsDBworkspace"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test']
-  - fasta:
-      type: file
-      description: The reference fasta file
-      pattern: "*.fasta"
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test']
-  - fai:
-      type: file
-      description: Index of reference fasta file
-      pattern: "*.fasta.fai"
-  - meta4:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test']
-  - dict:
-      type: file
-      description: GATK sequence dictionary
-      pattern: "*.dict"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test']
+    - genomicsdb:
+        type: file
+        description: GenomicsDB database
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test']
+    - fasta:
+        type: file
+        description: The reference fasta file
+        pattern: "*.fasta"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test']
+    - fai:
+        type: file
+        description: Index of reference fasta file
+        pattern: "*.fasta.fai"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test']
+    - dict:
+        type: file
+        description: GATK sequence dictionary
+        pattern: "*.dict"
 output:
   - vcf:
-      type: file
-      description: panel of normal as compressed vcf file
-      pattern: "*.vcf.gz"
+      - meta:
+          type: file
+          description: panel of normal as compressed vcf file
+          pattern: "*.vcf.gz"
+      - "*.vcf.gz":
+          type: file
+          description: panel of normal as compressed vcf file
+          pattern: "*.vcf.gz"
   - tbi:
-      type: file
-      description: Tabix index of vcf file
-      pattern: "*vcf.gz.tbi"
+      - meta:
+          type: file
+          description: Tabix index of vcf file
+          pattern: "*vcf.gz.tbi"
+      - "*.tbi":
+          type: file
+          description: Tabix index of vcf file
+          pattern: "*vcf.gz.tbi"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@GCJMackenzie"
 maintainers:

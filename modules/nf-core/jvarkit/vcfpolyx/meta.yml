@@ -1,14 +1,11 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "jvarkit_vcfpolyx"
 description: annotate VCF files for poly repeats
 keywords:
   - vcf
   - bcf
-  - variant
   - annotation
   - repeats
-  - polyx
 tools:
   - "jvarkit":
       description: "Java utilities for Bioinformatics."
@@ -17,7 +14,7 @@ tools:
       tool_dev_url: "https://github.com/lindenb/jvarkit"
       doi: "10.6084/m9.figshare.1425030"
       licence: ["MIT License"]
-      args_id: "$args2"
+      identifier: ""
 
   - "bcftools":
       description: |
@@ -26,75 +23,79 @@ tools:
       documentation: "http://www.htslib.org/doc/bcftools.html"
       doi: "10.1093/bioinformatics/btp352"
       licence: ["MIT"]
-      args_id: ["$args1", "$args3"]
-input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing VCF information
-        e.g. [ id:'test_reference' ]
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing fasta information
-        e.g. [ id:'test_reference' ]
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing fasta.fai information
-        e.g. [ id:'test_reference' ]
-  - meta4:
-      type: map
-      description: |
-        Groovy Map containing fasta.dict information
-        e.g. [ id:'test_reference' ]
-  - vcf:
-      type: file
-      description: Groovy Map containing reference genome information for vcf
-      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-  - tbi:
-      type: file
-      description: Optional VCF/BCF index file
-      pattern: "*.{tbi,csi}"
-  - regions_file:
-      type: file
-      description: Optional. Restrict to regions listed in a file
-      pattern: "*.{bed,bed.gz,txt,tsv}"
-  - fasta:
-      type: file
-      description: Groovy Map containing reference genome information for fai reference fasta file
-      pattern: "*.fasta"
-  - fai:
-      type: file
-      description: Groovy Map containing reference genome information for fai
-      pattern: "*.fasta.fai"
-  - dict:
-      type: file
-      description: Groovy Map containing reference genome information for GATK sequence dictionary
-      pattern: "*.dict"
-output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing VCF information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: VCF filtered output file
-      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-  - csi:
-      type: file
-      description: Default VCF file index
-      pattern: "*.csi"
-  - tbi:
-      type: file
-      description: Alternative VCF file index
-      pattern: "*.tbi"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      identifier: ""
 
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing VCF information
+    - vcf:
+        type: file
+        description: Groovy Map containing reference genome information for vcf
+        pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing fasta information
+    - fasta:
+        type: file
+        description: Groovy Map containing reference genome information for fai reference
+          fasta file
+        pattern: "*.fasta"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing fasta.fai information
+    - fai:
+        type: file
+        description: Groovy Map containing reference genome information for fai
+        pattern: "*.fasta.fai"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing fasta.dict information
+    - dict:
+        type: file
+        description: Groovy Map containing reference genome information for GATK sequence
+          dictionary
+        pattern: "*.dict"
+output:
+  - vcf:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing VCF information
+            e.g. [ id:'test', single_end:false ]
+      - "*.${extension}":
+          type: file
+          description: VCF filtered output file
+          pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+  - tbi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing VCF information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tbi":
+          type: file
+          description: Alternative VCF file index
+          pattern: "*.tbi"
+  - csi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing VCF information
+            e.g. [ id:'test', single_end:false ]
+      - "*.csi":
+          type: file
+          description: Default VCF file index
+          pattern: "*.csi"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@lindenb"
 maintainers:

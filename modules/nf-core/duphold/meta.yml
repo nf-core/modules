@@ -1,5 +1,9 @@
 name: "duphold"
-description: SV callers like lumpy look at split-reads and pair distances to find structural variants. This tool is a fast way to add depth information to those calls. This can be used as additional information for filtering variants; for example we will be skeptical of deletion calls that do not have lower than average coverage compared to regions with similar gc-content.
+description: SV callers like lumpy look at split-reads and pair distances to find
+  structural variants. This tool is a fast way to add depth information to those calls.
+  This can be used as additional information for filtering variants; for example we
+  will be skeptical of deletion calls that do not have lower than average coverage
+  compared to regions with similar gc-content.
 keywords:
   - sort
   - duphold
@@ -7,52 +11,62 @@ keywords:
   - depth information
 tools:
   - "duphold":
-      description: "SV callers like lumpy look at split-reads and pair distances to find structural variants. This tool is a fast way to add depth information to those calls."
+      description: "SV callers like lumpy look at split-reads and pair distances to
+        find structural variants. This tool is a fast way to add depth information to
+        those calls."
       homepage: "https://github.com/brentp/duphold"
       documentation: "https://github.com/brentp/duphold"
       tool_dev_url: "https://github.com/brentp/duphold"
       doi: "10.1093/gigascience/giz040"
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - aligment_file:
-      type: file
-      description: BAM/CRAM file
-      pattern: "*.{bam,cram}"
-  - aligment_file_index:
-      type: file
-      description: Index of the BAM/CRAM file
-      pattern: "*.{bai,crai}"
-  - sv_variants:
-      type: file
-      description: A variants file containing structural variants
-      pattern: "*.{vcf,bcf}(.gz)?"
-  - snp_variants:
-      type: file
-      description: A variants file containing SNPs
-      pattern: "*.{vcf,bcf}(.gz)?"
-  - snp_variants:
-      type: file
-      description: The index of the variants file containing SNPs
-      pattern: "*.tbi"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - alignment_file:
+        type: file
+        description: file containing alignments
+    - alignement_index:
+        type: file
+        description: index of alignment file
+    - sv_variants:
+        type: file
+        description: A variants file containing structural variants
+        pattern: "*.{vcf,bcf}(.gz)?"
+    - snp_variants:
+        type: file
+        description: A variants file containing SNPs
+        pattern: "*.{vcf,bcf}(.gz)?"
+    - snp_variants_index:
+        type: file
+        description: index of snp variants file
+  - - fasta:
+        type: file
+        description: fasta file
+        pattern: "*.{fa,fasta,fna}"
+  - - fasta_fai:
+        type: file
+        description: Index of fasta file
+        pattern: "*.fai"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - vcf:
-      type: file
-      description: The output VCF
-      pattern: "*.vcf.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf.gz":
+          type: file
+          description: The output VCF
+          pattern: "*.vcf.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

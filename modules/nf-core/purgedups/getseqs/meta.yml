@@ -7,44 +7,54 @@ keywords:
   - assembly curation
 tools:
   - "purgedups":
-      description: "Purge_dups is a package used to purge haplotigs and overlaps in an assembly based on read depth"
+      description: "Purge_dups is a package used to purge haplotigs and overlaps in
+        an assembly based on read depth"
       homepage: "https://github.com/dfguan/purge_dups"
       documentation: "https://github.com/dfguan/purge_dups"
       tool_dev_url: "https://github.com/dfguan/purge_dups"
       doi: "10.1093/bioinformatics/btaa025"
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - assembly:
-      type: file
-      description: Draft assembly in fasta format
-      pattern: "*.fasta"
-  - bed:
-      type: file
-      description: Bed file listing duplicated sequences, produced by PURGEDUPS_PURGEDUPS
-      pattern: "*.bed"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - assembly:
+        type: file
+        description: Draft assembly in fasta format
+        pattern: "*.fasta"
+    - bed:
+        type: file
+        description: Bed file listing duplicated sequences, produced by PURGEDUPS_PURGEDUPS
+        pattern: "*.bed"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - haplotigs:
-      type: file
-      description: Fasta file containing purged haplotigs
-      pattern: "*.hap.fa"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.hap.fa":
+          type: file
+          description: Fasta file containing purged haplotigs
+          pattern: "*.hap.fa"
   - purged:
-      type: file
-      description: Fasta file purged of duplicated haplotigs
-      pattern: "*.purged.fa"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.purged.fa":
+          type: file
+          description: Fasta file purged of duplicated haplotigs
+          pattern: "*.purged.fa"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@mahesh-panchal"
 maintainers:

@@ -10,54 +10,94 @@ tools:
       homepage: "https://github.com/thegenemyers/GENESCOPE.FK"
       tool_dev_url: "https://github.com/thegenemyers/GENESCOPE.FK"
       licence: ["https://github.com/thegenemyers/GENESCOPE.FK/blob/main/LICENSE"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fastk_histex_histogram:
-      type: file
-      description: A histogram formatted for GeneScope using the -G parameter from Fastk Histex
-      pattern: "*.hist"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fastk_histex_histogram:
+        type: file
+        description: A histogram formatted for GeneScope using the -G parameter from
+          Fastk Histex
+        pattern: "*.hist"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - linear_plot:
-      type: file
-      description: A GeneScope linear plot in PNG format
-      pattern: "*_linear_plot.png"
-  - transformed_linear_plot:
-      type: file
-      description: A GeneScope transformed linear plot in PNG format
-      pattern: "*_transformed_linear_plot.png"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_linear_plot.png":
+          type: file
+          description: A GeneScope linear plot in PNG format
+          pattern: "*_linear_plot.png"
   - log_plot:
-      type: file
-      description: A GeneScope log plot in PNG format
-      pattern: "*_log_plot.png"
-  - transformed_log_plot:
-      type: file
-      description: A GeneScope transformed log plot in PNG format
-      pattern: "*_transformed_log_plot.png"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_log_plot.png":
+          type: file
+          description: A GeneScope log plot in PNG format
+          pattern: "*_log_plot.png"
   - model:
-      type: file
-      description: GeneScope model fit summary
-      pattern: "*_model.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_model.txt":
+          type: file
+          description: GeneScope model fit summary
+          pattern: "*_model.txt"
   - summary:
-      type: file
-      description: GeneScope histogram summary
-      pattern: "*_summary.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_summary.txt":
+          type: file
+          description: GeneScope histogram summary
+          pattern: "*_summary.txt"
+  - transformed_linear_plot:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_transformed_linear_plot.png":
+          type: file
+          description: A GeneScope transformed linear plot in PNG format
+          pattern: "*_transformed_linear_plot.png"
+  - transformed_log_plot:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_transformed_log_plot.png":
+          type: file
+          description: A GeneScope transformed log plot in PNG format
+          pattern: "*_transformed_log_plot.png"
   - kmer_cov:
-      type: float
-      description: Average kmer coverage value extracted from summary file
-      pattern: "[0-9.]+"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - KMERCOV:
+          type: float
+          description: Average kmer coverage value extracted from summary file
+          pattern: "[0-9.]+"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@mahesh-panchal"
 maintainers:

@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "metaeuk_easypredict"
 description: Annotation of eukaryotic metagenomes using MetaEuk
@@ -8,51 +7,75 @@ keywords:
   - fasta
 tools:
   - "metaeuk":
-      description: "MetaEuk - sensitive, high-throughput gene discovery and annotation for large-scale eukaryotic metagenomics"
+      description: "MetaEuk - sensitive, high-throughput gene discovery and annotation
+        for large-scale eukaryotic metagenomics"
       homepage: https://github.com/soedinglab/metaeuk
       documentation: https://github.com/soedinglab/metaeuk
       tool_dev_url: https://github.com/soedinglab/metaeuk
       doi: "10.1186/s40168-020-00808-x"
       licence: ["GPL v3"]
+      identifier: biotools:MetaEuk
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: Nucleotide FASTA file for annotation
-      pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
-  - database:
-      type: file
-      description: Either a fasta file containing protein sequences, or a directory containing an mmseqs2-formatted protein database
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Nucleotide FASTA file for annotation
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+  - - database:
+        type: file
+        description: Either a fasta file containing protein sequences, or a directory
+          containing an mmseqs2-formatted protein database
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - faa:
-      type: file
-      description: Protein FASTA file containing the exons from the input FASTA file
-      pattern: "*.{fas}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.fas:
+          type: file
+          description: Protein FASTA file containing the exons from the input FASTA file
+          pattern: "*.{fas}"
   - codon:
-      type: file
-      description: Nucleotide FASTA file of protein-coding sequences
-      pattern: "*.{codon.fas}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.codon.fas:
+          type: file
+          description: Nucleotide FASTA file of protein-coding sequences
+          pattern: "*.{codon.fas}"
   - tsv:
-      type: file
-      description: TSV file containing locations of each protein coding sequence in the input fasta
-      pattern: "*.headersMap.{tsv}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: TSV file containing locations of each protein coding sequence in
+            the input fasta
+          pattern: "*.headersMap.{tsv}"
   - gff:
-      type: file
-      description: Annotation file in GFF format
-      pattern: "*.{gff}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.gff":
+          type: file
+          description: Annotation file in GFF format
+          pattern: "*.{gff}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@prototaxites"
 maintainers:

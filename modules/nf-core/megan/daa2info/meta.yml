@@ -14,37 +14,46 @@ tools:
       tool_dev_url: "https://github.com/husonlab/megan-ce"
       doi: "10.1371/journal.pcbi.1004957"
       licence: ["GPL >=3"]
+      identifier: biotools:megan
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - daa:
-      type: file
-      description: DAA file from DIAMOND
-      pattern: "*.daa"
-  - megan_summary:
-      type: boolean
-      description: Specify whether to generate a MEGAN summary file
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - daa:
+        type: file
+        description: DAA file from DIAMOND
+        pattern: "*.daa"
+  - - megan_summary:
+        type: boolean
+        description: Specify whether to generate a MEGAN summary file
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - txt_gz:
-      type: file
-      description: Compressed text file
-      pattern: "*.txt.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt.gz":
+          type: file
+          description: Compressed text file
+          pattern: "*.txt.gz"
   - megan:
-      type: file
-      description: Optionally generated MEGAN summary file
-      pattern: "*.megan"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.megan":
+          type: file
+          description: Optionally generated MEGAN summary file
+          pattern: "*.megan"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jfy133"
 maintainers:

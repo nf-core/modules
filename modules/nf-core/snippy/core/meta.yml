@@ -12,54 +12,84 @@ tools:
       documentation: "https://github.com/tseemann/snippy"
       tool_dev_url: "https://github.com/tseemann/snippy"
       licence: ["GPL v2"]
+      identifier: biotools:snippy
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: Annotated variants in VCF format
-      pattern: "*.vcf.gz"
-  - aligned_fa:
-      type: file
-      description: A version of the reference but with - at position with depth=0 and N for 0 < depth < --mincov (does not have variants)
-      pattern: "*.aligned.fa.gz"
-  - reference:
-      type: file
-      description: Reference genome in GenBank (preferred) or FASTA format
-      pattern: "*.{gbk,gbk.gz,gbff,gbff.gz,fa,fa.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: Annotated variants in VCF format
+        pattern: "*.vcf.gz"
+    - aligned_fa:
+        type: file
+        description: A version of the reference but with - at position with depth=0
+          and N for 0 < depth < --mincov (does not have variants)
+        pattern: "*.aligned.fa.gz"
+  - - reference:
+        type: file
+        description: Reference genome in GenBank (preferred) or FASTA format
+        pattern: "*.{gbk,gbk.gz,gbff,gbff.gz,fa,fa.gz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - aln:
-      type: file
-      description: A core SNP alignment in FASTA format
-      pattern: "*.aln"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.aln:
+          type: file
+          description: A core SNP alignment in FASTA format
+          pattern: "*.aln"
   - full_aln:
-      type: file
-      description: A whole genome SNP alignment (includes invariant sites)
-      pattern: "*.full.aln"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.full.aln:
+          type: file
+          description: A whole genome SNP alignment (includes invariant sites)
+          pattern: "*.full.aln"
   - tab:
-      type: file
-      description: Tab-separated columnar list of core SNP sites with alleles but NO annotations
-      pattern: "*.tab"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.tab:
+          type: file
+          description: Tab-separated columnar list of core SNP sites with alleles but
+            NO annotations
+          pattern: "*.tab"
   - vcf:
-      type: file
-      description: Multi-sample VCF file with genotype GT tags for all discovered alleles
-      pattern: "*.vcf"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.vcf:
+          type: file
+          description: Multi-sample VCF file with genotype GT tags for all discovered
+            alleles
+          pattern: "*.vcf"
   - txt:
-      type: file
-      description: Tab-separated columnar list of alignment/core-size statistics
-      pattern: "*.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.txt:
+          type: file
+          description: Tab-separated columnar list of alignment/core-size statistics
+          pattern: "*.txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@rpetit3"
 maintainers:

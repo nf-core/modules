@@ -1,4 +1,3 @@
----
 name: "vt_normalize"
 description: normalizes variants in a VCF file
 keywords:
@@ -13,60 +12,70 @@ tools:
       documentation: "https://genome.sph.umich.edu/wiki/Vt"
       tool_dev_url: "https://github.com/atks/vt"
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - vcf:
-      type: file
-      description: The VCF file to normalize
-      pattern: "*.vcf(.gz)?"
-  - tbi:
-      type: file
-      description: The tabix index of the VCF file when bgzipped
-      pattern: "*.tbi"
-  - intervals:
-      type: file
-      description: The intervals of the variants of normalize
-      pattern: "*.bed"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. `[ id:'test', single_end:false ]`
-  - fasta:
-      type: file
-      description: The reference fasta file
-      pattern: "*.{fasta,fn,fna,fa}"
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing reference index information
-        e.g. `[ id:'test', single_end:false ]`
-  - fai:
-      type: file
-      description: The index of the reference fasta file (OPTIONAL)
-      pattern: "*.fai"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - vcf:
+        type: file
+        description: The VCF file to normalize
+        pattern: "*.vcf(.gz)?"
+    - tbi:
+        type: file
+        description: The tabix index of the VCF file when bgzipped
+        pattern: "*.tbi"
+    - intervals:
+        type: file
+        description: The intervals of the variants of normalize
+        pattern: "*.bed"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'test', single_end:false ]`
+    - fasta:
+        type: file
+        description: The reference fasta file
+        pattern: "*.{fasta,fn,fna,fa}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference index information
+          e.g. `[ id:'test', single_end:false ]`
+    - fai:
+        type: file
+        description: The index of the reference fasta file (OPTIONAL)
+        pattern: "*.fai"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - vcf:
-      type: file
-      description: The normalized VCF file
-      pattern: "*.vcf.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.vcf.gz":
+          type: file
+          description: The normalized VCF file
+          pattern: "*.vcf.gz"
   - fai:
-      type: file
-      description: The created index of the reference fasta file (only when the fai wasn't supplied)
-      pattern: "*.fai"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - ${fasta}.fai:
+          type: file
+          description: The created index of the reference fasta file (only when the fai
+            wasn't supplied)
+          pattern: "*.fai"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

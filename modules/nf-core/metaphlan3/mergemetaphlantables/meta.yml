@@ -8,35 +8,39 @@ keywords:
   - profiles
 tools:
   - metaphlan3:
-      description: Identify clades (phyla to species) present in the metagenome obtained from a microbiome sample and their relative abundance
+      description: Identify clades (phyla to species) present in the metagenome obtained
+        from a microbiome sample and their relative abundance
       homepage: https://huttenhower.sph.harvard.edu/metaphlan/
       documentation: https://github.com/biobakery/MetaPhlAn
       doi: "10.7554/eLife.65088"
       licence: ["MIT License"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - profiles:
-      type: file
-      description: List of per-sample MetaPhlAn3 taxonomic abundance tables
-      pattern: "*"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - profiles:
+        type: file
+        description: List of per-sample MetaPhlAn3 taxonomic abundance tables
+        pattern: "*"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - txt:
-      type: file
-      description: Combined MetaPhlAn3 table
-      pattern: "*.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.txt:
+          type: file
+          description: Combined MetaPhlAn3 table
+          pattern: "*.txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jfy133"
 maintainers:

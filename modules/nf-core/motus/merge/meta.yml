@@ -16,37 +16,54 @@ tools:
       tool_dev_url: "https://github.com/motu-tool/mOTUs"
       doi: "10.1186/s40168-022-01410-z"
       licence: ["GPL v3"]
+      identifier: ""
 input:
-  - input:
-      type: file
-      description: |
-        List of output files (more than one) from motus profile,
-        or a single directory containing motus output files.
-  - db:
-      type: directory
-      description: |
-        mOTUs database downloaded by `motus downloadDB`
-        pattern: "db_mOTU/"
-  - profile_version_yml:
-      type: file
-      description: |
-        A single versions.yml file output from motus/profile. motus/merge cannot reconstruct
-        this itself without having the motus database present and configured with the tool
-        so here we take it from what is already reported by the upstream module.
-      pattern: "versions.yml"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - input:
+        type: file
+        description: |
+          List of output files (more than one) from motus profile,
+          or a single directory containing motus output files.
+  - - db:
+        type: directory
+        description: |
+          mOTUs database downloaded by `motus downloadDB`
+          pattern: "db_mOTU/"
+  - - profile_version_yml:
+        type: file
+        description: |
+          A single versions.yml file output from motus/profile. motus/merge cannot reconstruct
+          this itself without having the motus database present and configured with the tool
+          so here we take it from what is already reported by the upstream module.
+        pattern: "versions.yml"
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - txt:
-      type: file
-      description: OTU table in txt format, if BIOM format not requested
-      pattern: "*.txt"
+      - meta:
+          type: file
+          description: OTU table in txt format, if BIOM format not requested
+          pattern: "*.txt"
+      - "*.txt":
+          type: file
+          description: OTU table in txt format, if BIOM format not requested
+          pattern: "*.txt"
   - biom:
-      type: file
-      description: OTU table in biom format, if BIOM format requested
-      pattern: "*.biom"
+      - meta:
+          type: file
+          description: OTU table in biom format, if BIOM format requested
+          pattern: "*.biom"
+      - "*.biom":
+          type: file
+          description: OTU table in biom format, if BIOM format requested
+          pattern: "*.biom"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jfy133"
 maintainers:

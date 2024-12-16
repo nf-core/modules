@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "mirtop_counts"
-description: mirtop counts generates a file with the minimal information about each sequence and the count data in columns for each samples.
+description: mirtop counts generates a file with the minimal information about each
+  sequence and the count data in columns for each samples.
 keywords:
   - mirna
   - isomir
@@ -13,44 +13,55 @@ tools:
       documentation: "https://mirtop.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/miRTop/mirtop"
       licence: ["MIT License"]
+      identifier: biotools:miRTop
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - mirtop_gff:
-      type: file
-      description: GFF file
-      pattern: "*.{gff}"
-  - hairpin:
-      type: file
-      description: Hairpin file
-      pattern: "*.{fa,fasta}"
-  - gtf:
-      type: file
-      description: GTF file
-      pattern: "*.{gtf}"
-  - species:
-      type: string
-      description: Species name of the GTF file
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - mirtop_gff:
+        type: file
+        description: GFF file
+        pattern: "*.{gff}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - hairpin:
+        type: file
+        description: Hairpin file
+        pattern: "*.{fa,fasta}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - gtf:
+        type: file
+        description: GTF file
+        pattern: "*.{gtf}"
+    - species:
+        type: string
+        description: Species name of the GTF file
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - tsv:
-      type: file
-      description: TSV file
-      pattern: "*.{tsv}"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - counts/*.tsv:
+          type: file
+          description: TSV file
+          pattern: "*.{tsv}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@atrigila"
 maintainers:

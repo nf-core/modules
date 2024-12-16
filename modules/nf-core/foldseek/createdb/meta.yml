@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "foldseek_createdb"
 description: Create a database from protein structures
@@ -14,29 +13,33 @@ tools:
       tool_dev_url: "https://github.com/steineggerlab/foldseek"
       doi: "10.1038/s41587-023-01773-0"
       licence: ["GPL v3"]
+      identifier: biotools:foldseek
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - pdb:
-      type: file
-      description: Protein structure(s) in PDB, mmCIF or mmJSON format (also works with folder input)
-      pattern: "*.{pdb,mmcif,mmjson}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - pdb:
+        type: file
+        description: Protein structure(s) in PDB, mmCIF or mmJSON format (also works
+          with folder input)
+        pattern: "*.{pdb,mmcif,mmjson}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
   - db:
-      type: directory
-      description: Directory containing pdb database files
-      pattern: "*"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - ${meta.id}:
+          type: directory
+          description: Directory containing pdb database files
+          pattern: "*"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@vagkaratzas"

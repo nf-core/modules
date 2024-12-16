@@ -13,6 +13,7 @@ process MAXBIN2 {
     output:
     tuple val(meta), path("*.fasta.gz")   , emit: binned_fastas
     tuple val(meta), path("*.summary")    , emit: summary
+    tuple val(meta), path("*.abundance")  , emit: abundance   , optional: true
     tuple val(meta), path("*.log.gz")     , emit: log
     tuple val(meta), path("*.marker.gz")  , emit: marker_counts
     tuple val(meta), path("*.noclass.gz") , emit: unbinned_fasta
@@ -27,7 +28,16 @@ process MAXBIN2 {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def associate_files = reads ? "-reads $reads" : "-abund $abund"
+    if (reads && abund) { error("ERROR: MaxBin2 can only accept one of `reads` or `abund`, no both. Check input.") }
+    def associate_files = ""
+    if ( reads ) {
+        associate_files = "-reads $reads"
+    } else if ( abund instanceof List ) {
+        associate_files = "-abund ${abund[0]}"
+        for (i in 2..abund.size()) { associate_files += " -abund$i ${abund[i-1]}" }
+    } else {
+        associate_files = "-abund $abund"
+    }
     """
     mkdir input/ && mv $contigs input/
     run_MaxBin.pl \\

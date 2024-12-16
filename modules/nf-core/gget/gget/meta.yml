@@ -1,5 +1,8 @@
 name: "gget_gget"
-description: gget is a free, open-source command-line tool and Python package that enables efficient querying of genomic databases. gget consists of a collection of separate but interoperable modules, each designed to facilitate one type of database querying in a single line of code.
+description: gget is a free, open-source command-line tool and Python package that
+  enables efficient querying of genomic databases. gget consists of a collection of
+  separate but interoperable modules, each designed to facilitate one type of database
+  querying in a single line of code.
 keywords:
   - gget
   - reference
@@ -14,34 +17,42 @@ tools:
       tool_dev_url: "https://github.com/pachterlab/gget"
       doi: "10.1093/bioinformatics/btac836"
       licence: ["BSD-2-clause"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - files:
-      type: file
-      description: |
-        Optional input files which can be specified for certain tools. This is mostly used to supply a FASTA file for gget muscle.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - files:
+        type: file
+        description: |
+          Optional input files which can be specified for certain tools. This is mostly used to supply a FASTA file for gget muscle.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  - files:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*[!versions.yml][!${prefix}.${extension}]*":
+          type: file
+          description: File containing output of gget command.
   - output:
-      type: file
-      description: File containing output of gget command (-o for most gget tools).
-      pattern: "*.{json,csv}"
-  - file:
-      type: file
-      description: Path to any file downloaded by gget
-      pattern: "*"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.${extension}:
+          type: file
+          description: File containing output of gget command (-o for most gget tools).
+          pattern: "*.{json,csv}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@adamrtalbot"
 maintainers:

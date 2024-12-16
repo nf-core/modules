@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "toulligqc"
 description: "A post sequencing QC tool for Oxford Nanopore sequencers"
@@ -13,45 +12,64 @@ tools:
       documentation: https://github.com/GenomiqueENS/toulligQC
       tool_dev_url: https://github.com/GenomiqueENS/toulligQC
       licence: ["CECILL-2.1"]
+      identifier: biotools:ToulligQC
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - ontfile:
-      type: file
-      description: Input ONT file
-      pattern: "*.{fastq,fastq.gz,fq,fq.gz,txt,txt.gz,bam}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - ontfile:
+        type: file
+        description: Input ONT file
+        pattern: "*.{fastq,fastq.gz,fq,fq.gz,txt,txt.gz,bam}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - report_data:
-      type: file
-      description: Report data emitted from toulligqc
-      pattern: "*.data"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*/*.data":
+          type: file
+          description: Report data emitted from toulligqc
+          pattern: "*.data"
   - report_html:
-      type: file
-      description: Report data in html format
-      pattern: "*.html"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*/*.html":
+          type: file
+          description: Report data in html format
+          pattern: "*.html"
   - plots_html:
-      type: file
-      description: Plots emitted in html format
-      pattern: "*.html"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*/images/*.html":
+          type: file
+          description: Plots emitted in html format
+          pattern: "*.html"
   - plotly_js:
-      type: file
-      description: Plots emitted from toulligqc
-      pattern: "plotly.min.js"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*/images/plotly.min.js":
+          type: file
+          description: Plots emitted from toulligqc
+          pattern: "plotly.min.js"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@Salome-Brunon"
 maintainers:
