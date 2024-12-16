@@ -74,14 +74,14 @@ jobs:
 
   nf-test-gpu:
     runs-on: "gpu"
-    name: "GPU | ${{ matrix.profile }} | ${{ matrix.shard }}"
+    name: "GPU Test | ${{ matrix.profile }} | ${{ matrix.shard }}"
     needs: nf-test-changes
     if: ${{ needs.nf-test-changes.outputs.modules != '[]' || needs.nf-test-changes.outputs.subworkflows != '[]' }}
     strategy:
       fail-fast: false
       matrix:
         shard: [1, 2]
-        profile: [docker_self_hosted, singularity] # conda?
+        profile: [docker_self_hosted, singularity]
     env:
       NXF_ANSI_LOG: false
       TOTAL_SHARDS: 2
