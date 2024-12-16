@@ -1,0 +1,142 @@
+// nf-core modules test trgt/plot
+nextflow_process {
+
+    name "Test Process TRGT_PLOT"
+    script "../main.nf"
+    process "TRGT_PLOT"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "trgt"
+    tag "trgt/plot"
+    tag "trgt/genotype"
+    tag "samtools/faidx"
+    tag "samtools/sort"
+    tag "samtools/index"
+    tag "bcftools/sort"
+    tag "gunzip"
+
+    setup {
+        run("GUNZIP"){
+            script "../../../gunzip/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id : 'chr22' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22_chr22_KI270734v1_random/sequence/genome.fa.gz', checkIfExists: true)
+                ]
+            """
+            }
+        }
+        run("SAMTOOLS_FAIDX"){
+            script "../../../samtools/faidx/main.nf"
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = [[],[]]
+                """
+            }
+        }
+        run("TRGT_GENOTYPE"){
+            script "../../genotype/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true),
+                    'XX'
+                ]
+                input[1] = GUNZIP.out.gunzip
+                input[2] = SAMTOOLS_FAIDX.out.fai
+                input[3] = Channel.of('chr22\t18890357\t18890451\tID=TEST;MOTIFS=AT;STRUC=(AT)n')
+                            .collectFile(name : 'repeats.bed', newLine: false)
+                            .map { file -> [ [ id : 'chr22' ], file ] }
+                """
+            }
+        }
+        run("SAMTOOLS_SORT"){
+            script "../../../samtools/sort/main.nf"
+            process {
+                """
+                input[0] = TRGT_GENOTYPE.out.bam
+                input[1] = [[],[]]
+                """
+            }
+        }
+        run("SAMTOOLS_INDEX"){
+            script "../../../samtools/index/main.nf"
+            process {
+                """
+                input[0] = SAMTOOLS_SORT.out.bam
+                """
+            }
+        }
+        run("BCFTOOLS_SORT"){
+            script "../../../bcftools/sort/main.nf"
+            process {
+                """
+                input[0] = TRGT_GENOTYPE.out.vcf
+                """
+            }
+        }
+    }
+
+    test("homo sapiens - [bam, bai, vcf, TEST], fasta, fai, bed") {
+        when {
+            process {
+                """
+                input[0] = SAMTOOLS_SORT.out.bam
+                            .join(SAMTOOLS_INDEX.out.bai)
+                            .join(BCFTOOLS_SORT.out.vcf)
+                            .join(BCFTOOLS_SORT.out.tbi)
+                            .map { tuple -> tuple + 'TEST' }
+                input[1] = GUNZIP.out.gunzip
+                input[2] = SAMTOOLS_FAIDX.out.fai
+                input[3] = Channel.of('chr22\t18890357\t18890451\tID=TEST;MOTIFS=AT;STRUC=(AT)n')
+                            .collectFile(name : 'repeats.bed', newLine: false)
+                            .map { file -> [ [ id : 'chr22' ], file ] }
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.plot.get(0).get(1)).name, //unstable
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("homo sapiens - [bam, bai, vcf, TEST], fasta, fai, bed - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = SAMTOOLS_SORT.out.bam
+                            .join(SAMTOOLS_INDEX.out.bai)
+                            .join(BCFTOOLS_SORT.out.vcf)
+                            .join(BCFTOOLS_SORT.out.tbi)
+                            .map { tuple -> tuple + 'TEST' }
+                input[1] = GUNZIP.out.gunzip
+                input[2] = SAMTOOLS_FAIDX.out.fai
+                input[3] = Channel.of('chr22\t18890357\t18890451\tID=TEST;MOTIFS=AT;STRUC=(AT)n')
+                            .collectFile(name : 'repeats.bed', newLine: false)
+                            .map { file -> [ [ id : 'chr22' ], file ] }
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.plot.get(0).get(1)).name, //unstable
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+}

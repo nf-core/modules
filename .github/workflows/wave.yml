@@ -4,13 +4,18 @@ on:
   pull_request:
     paths:
       - "**/environment.yml"
+      - "**/Dockerfile"
 
 # TODO On complete call testing CI
 # TODO Skip testing CI if any changes to environment.yml
 
 env:
-  WAVE_VER: "1.5.0"
-  NFTEST_VER: "0.9.1"
+  # renovate: datasource=github-releases depName=seqeralabs/wave-cli versioning=semver
+  WAVE_VERSION: "1.5.0"
+  # renovate: datasource=github-releases depName=askimed/nf-test versioning=semver
+  NFT_VER: "0.9.2"
+  # renovate: datasource=github-releases depName=nextflow/nextflow versioning=semver
+  NXF_VER: "24.10.1"
 
 jobs:
   generate-matrix:
@@ -18,45 +23,92 @@ jobs:
     runs-on: ubuntu-latest
     # Only run on Pull Requests within the same repository, and not from forks
     if: github.event.pull_request.head.repo.full_name == github.repository
-
+    outputs:
+      conda-matrix: ${{ steps.conda-diff.outputs.all_changed_files }}
+      dockerfile-matrix: ${{ steps.docker-diff.outputs.all_changed_files }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
-      - name: Calculate file differences
-        id: diff
-        uses: tj-actions/changed-files@4edd678ac3f81e2dc578756871e4d00c19191daf # v45
+      - name: Find conda differences
+        id: conda-diff
+        uses: tj-actions/changed-files@bab30c2299617f6615ec02a68b9a40d10bd21366 # v45
         with:
           json: true
-          quotepath: false
-          # TODO Add Dockerfiles
+          escape_json: false
           files: |
             modules/**/environment.yml
-      - name: Debug
-        run: echo ${{ steps.diff.outputs.all_changed_files }}
-      - id: set-matrix
-        run: echo "matrix={\"profile\":[\"docker\", \"singularity\"],\"files\":${{ steps.diff.outputs.all_changed_files }} }" >> "$GITHUB_OUTPUT"
 
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      - name: Find Dockerfile differences
+        id: docker-diff
+        uses: tj-actions/changed-files@bab30c2299617f6615ec02a68b9a40d10bd21366 # v45
+        with:
+          json: true
+          escape_json: false
+          files: |
+            modules/**/Dockerfile
 
-  build:
+  conda-wave:
     # NOTE This should get skipped because generate-matrix won't run
     # if: github.repository == 'nf-core/modules'
-    if: "${{ fromJson(needs.generate-matrix.outputs.matrix) }}"
+    if: ${{ needs.generate-matrix.outputs.conda-matrix != '[]' }}
     needs: generate-matrix
-    name: build
+    name: Build ${{ matrix.profile }} ${{ matrix.platform }} Container
     runs-on: ubuntu-latest
     timeout-minutes: 60
     strategy:
       fail-fast: false
-      matrix: "${{ fromJson(needs.generate-matrix.outputs.matrix) }}"
+      max-parallel: 4
+      matrix:
+        files: "${{ fromJson(needs.generate-matrix.outputs.conda-matrix) }}"
+        profile: [docker, singularity]
+        platform: ["linux/amd64", "linux/arm64"]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - name: Install wave-cli
         run: |
-          wget -q https://github.com/seqeralabs/wave-cli/releases/download/v${WAVE_VER}/wave-${WAVE_VER}-linux-x86_64
-          sudo mv wave-${WAVE_VER}-linux-x86_64 /usr/local/bin/wave
+          wget -q https://github.com/seqeralabs/wave-cli/releases/download/v${WAVE_VERSION}/wave-${WAVE_VERSION}-linux-x86_64
+          sudo mv wave-${WAVE_VERSION}-linux-x86_64 /usr/local/bin/wave
+          chmod +x /usr/local/bin/wave
+
+      - name: Build ${{ matrix.profile }} container
+        # FIXME Hack while iron out the CI
+        continue-on-error: true
+        env:
+          PROFILE: ${{ (contains(matrix.profile, 'singularity') && '--singularity') || '' }}
+        run: |
+          wave --conda-file "${{ matrix.files }}" \
+              $PROFILE \
+              --freeze \
+              --await \
+              --platform ${{ matrix.platform }} \
+              --tower-token ${{ secrets.TOWER_ACCESS_TOKEN }} \
+              --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }}
+
+  dockerfile-wave:
+    # NOTE This should get skipped because generate-matrix won't run
+    # if: github.repository == 'nf-core/modules'
+    if: ${{ needs.generate-matrix.outputs.dockerfile-matrix != '[]' }}
+    needs: generate-matrix
+    name: Build Dockerfile-based ${{ matrix.platform }} Container
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        files: "${{ fromJson(needs.generate-matrix.outputs.dockerfile-matrix) }}"
+        # NOTE singularity build requires a Singularity definition file in place of Dockerfile
+        # https://nextflow.slack.com/archives/C0477AS31T5/p1731755350230149?thread_ts=1731697852.661849&cid=C0477AS31T5
+        # profile: [docker]
+        platform: ["linux/amd64", "linux/arm64"]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: Install wave-cli
+        run: |
+          wget -q https://github.com/seqeralabs/wave-cli/releases/download/v${WAVE_VERSION}/wave-${WAVE_VERSION}-linux-x86_64
+          sudo mv wave-${WAVE_VERSION}-linux-x86_64 /usr/local/bin/wave
           chmod +x /usr/local/bin/wave
 
       - name: Create a registry name
@@ -65,32 +117,20 @@ jobs:
         with:
           result-encoding: string
           script: |
-            return '${{ matrix.files }}'.replace('modules/nf-core/', '').replace('/environment.yml', '').replace('/', '_');
+            return '${{ matrix.files }}'.replace('modules/nf-core/', '').replace('/Dockerfile', '').replace('/', '_');
 
-      - name: Build container
-        # FIXME Hack while iron out the CI
-        continue-on-error: true
-        if: matrix.profile == 'docker'
+      - name: Build ${{ matrix.platform }} container
+        # NOTE If you're changing a Dockerfile and this is running, try to update the Dockerfile to build with wave
+        continue-on-error: false
         run: |
-          wave --conda-file "${{ matrix.files }}" \
+          wave -f "${{ matrix.files }}" \
               --freeze \
               --await \
+              --platform ${{ matrix.platform }} \
+              --build-repo quay.io/nf-core/modules/${{steps.registry-name.outputs.result}} \
+              --cache-repository quay.io/nf-core/wave-cache/docker/${{ matrix.platform }} \
               --tower-token ${{ secrets.TOWER_ACCESS_TOKEN }} \
               --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }}
-
-      - name: Build Singularity
-        # FIXME Hack while iron out the CI
-        continue-on-error: true
-        if: matrix.profile == 'singularity'
-        run: |
-          wave --conda-file "${{ matrix.files }}" \
-              --freeze \
-              --await \
-              --tower-token ${{ secrets.TOWER_ACCESS_TOKEN }} \
-              --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }} \
-              --singularity
-
-    # TODO Build from Dockerfiles
 
   # bump-versions:
   #   needs: generate-matrix
@@ -106,7 +146,7 @@ jobs:
 
   #     - uses: nf-core/setup-nf-test@v1
   #       with:
-  #         version: ${{ env.NFTEST_VER }}
+  #         version: ${{ env.NFT_VER }}
 
   #     - name: Bump Snapshot Versions
   #       env:
