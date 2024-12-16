@@ -29,7 +29,7 @@ env:
   NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # renovate: datasource=github-releases depName=nextflow-io/nextflow versioning=semver
-  NXF_VER: "24.10.1"
+  NXF_VER: "24.10.2"
 
 jobs:
   pytest-changes:
@@ -278,20 +278,13 @@ jobs:
           mkdir -p $NXF_SINGULARITY_CACHEDIR
           mkdir -p $NXF_SINGULARITY_LIBRARYDIR
 
-      - name: Set up miniconda
+      - name: Conda setup
+        if: matrix.profile == 'conda'
         uses: conda-incubator/setup-miniconda@d2e6a045a86077fb6cad6f5adf368e9076ddaa8d # v3
         with:
-          miniconda-version: "latest"
-          channels: conda-forge,bioconda
-          python-version: "3.11"
-
-      - name: Conda setup
-        run: |
-          conda clean -a
-          conda install -n base conda-libmamba-solver
-          conda config --set solver libmamba
-          echo $(realpath $CONDA)/condabin >> $GITHUB_PATH
-          echo $(realpath python) >> $GITHUB_PATH
+          auto-update-conda: true
+          conda-solver: libmamba
+          conda-remove-defaults: true
 
       # Test the module
       - name: Run pytest-workflow
