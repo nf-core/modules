@@ -4,8 +4,8 @@ process DOUBLETDETECTION {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b7/b7a5183db20eee4e6eed6b2ec6db7202023b484debd48abcd273cb4658cdc80c/data' :
-        'community.wave.seqera.io/library/anndata_louvain_pip_doubletdetection:cbe92394c10372fa' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/87/878a0582c1de0ad7370ad1fbdebd7e786c77d29b064e10a7c09c35a9df3bfb97/data' :
+        'community.wave.seqera.io/library/anndata_louvain_numpy_pip_pruned:9ff7bfd3c5201947' }"
 
     input:
     tuple val(meta), path(h5ad)

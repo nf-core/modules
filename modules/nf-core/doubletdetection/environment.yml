@@ -1,13 +1,13 @@
 channels:
-  - conda-forge
-  - bioconda
+- conda-forge
+- bioconda
 dependencies:
-  # renovate: datasource=conda depName=bioconda/anndata
-  - conda-forge::anndata=0.10.7
-  # renovate: datasource=conda depName=bioconda/louvain
-  - conda-forge::louvain=0.8.2
-  - pip
-  - pip: # FIXME https://github.com/nf-core/modules/issues/5814
-      # NOTE This module does not support conda, as the bioconda doubletdetection build is not working properly.
-      # renovate: datasource=pypi depName=doubletdetection
-      - doubletdetection==4.2
+- conda-forge::anndata=0.10.7
+- conda-forge::louvain=0.8.2
+- conda-forge::numpy=1.26.4
+- conda-forge::pip=24.0
+- conda-forge::python=3.12.3
+- conda-forge::scipy=1.13.1
+- pip
+- pip:
+  - doubletdetection==4.2
