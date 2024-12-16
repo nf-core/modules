@@ -6,7 +6,7 @@ include { LIMMA_DIFFERENTIAL                  } from '../../../modules/nf-core/l
 include { LIMMA_DIFFERENTIAL as LIMMA_NORM    } from '../../../modules/nf-core/limma/differential/main'
 include { DESEQ2_DIFFERENTIAL                 } from '../../../modules/nf-core/deseq2/differential/main'
 include { DESEQ2_DIFFERENTIAL as DESEQ2_NORM  } from '../../../modules/nf-core/deseq2/differential/main'
-include { PROPR_PROPD                         } from '../../../modules/nf-core/propr/propd/main'
+include { PROPR_PROPD as PROPD_DIFFERENTIAL   } from '../../../modules/nf-core/propr/propd/main'
 include { CUSTOM_FILTERDIFFERENTIALTABLE      } from '../../../modules/nf-core/custom/filterdifferentialtable/main'
 
 // Combine meta maps, including merging non-identical values of shared keys (e.g. 'id')
@@ -42,34 +42,37 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
             [meta_map, [ 'fc_threshold': fc_threshold, 'padj_threshold': padj_threshold ]]
     }
 
-    // For differential we need to cross the things we're iterating so we run
-    // differential analysis for every combination of matrix and contrast
+    // For DIFFERENTIAL modules we need to cross the things we're iterating so we
+    // run differential analysis for every combination of matrix and contrast
     inputs = ch_input
         .combine(ch_samplesheet)
         .combine(ch_contrasts)
         .multiMap(criteria)
 
     // We only need a normalised matrix from one contrast. The reason we don't
-    //just use the output from the first differential is that the methods can
-    // subset matrices
+    // simply use the first output from DIFFERENTIAL modules is that depending
+    // on the contrast setting etc, these mjodules may subset matrices, hence
+    // not returning the full normalized matrix as NORM modules would do.
     norm_inputs = ch_input
         .combine(ch_samplesheet)
         .combine(ch_contrasts.first()) // Just taking the first contrast
         .multiMap(criteria)
 
     // ----------------------------------------------------
-    // Run Limma just once to generate a normalised matrix, configure so 
-    // that we don't pass subsetting arguments anddisregard differential 
-    // outputs 
+    // Run Limma
     // ----------------------------------------------------
+
+    // NOTE that we run LIMMA_NORM just once to generate a normalised matrix.
+    // As explained above, this is done to avoid obtaining a subset matrix
+    // from LIMMA_DIFFERENTIAL.
+
+    // Also NOTE that LIMMA_DIFFERENTIAL don't use the normalized matrix from
+    // LIMMA_NORM directly. It internally runs normalization + DE analysis.
 
     LIMMA_NORM(
         norm_inputs.contrasts.filter{it[0].method == 'limma'}.first(),
         norm_inputs.samples_and_matrix.filter{it[0].method == 'limma'}
     )
-//
-// Perform differential analysis with limma
-//
 
     LIMMA_DIFFERENTIAL(
         inputs.contrasts.filter{it[0].method == 'limma'},
@@ -77,10 +80,15 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     )
 
     // ----------------------------------------------------
-    // Run DESeq2 just once to generate a normalised matrix, configure so 
-    // that we don't pass subsetting arguments and disregard differential 
-    // outputs 
+    // Run DESeq2
     // ----------------------------------------------------
+
+    // NOTE that we run DESEQ2_NORM just once to generate a normalised matrix.
+    // As explained above, this is done to avoid obtaining a subset matrix
+    // from DESEQ2_DIFFERENTIAL.
+
+    // Also NOTE that DESEQ2_DIFFERENTIAL don't use the normalized matrix from
+    // DESEQ2_NORM directly. It internally runs normalization + DE analysis.
 
     DESEQ2_NORM(
         norm_inputs.contrasts.filter{it[0].method == 'deseq2'}.first(),
@@ -97,8 +105,11 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     )
 
     // ----------------------------------------------------
-    // Perform differential analysis with propd
+    // Run propd
     // ----------------------------------------------------
+
+    // NOTE that this method don't rely on normalization, hence it does
+    // not produce a normalized matrix.
 
     PROPR_PROPD(
         inputs.contrasts.filter{it[0].method == 'propd'},
@@ -132,8 +143,8 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         .multiMap { meta, results, filter_meta ->
             def method_params = [
                 'deseq2': [fc_column: 'log2FoldChange', padj_column: 'padj'],
-                'limma': [fc_column: 'logFC', padj_column: 'adj.P.Val'],
-                'propd': [fc_column: 'lfc', padj_column: 'weighted_connectivity']
+                'limma' : [fc_column: 'logFC', padj_column: 'adj.P.Val'],
+                'propd' : [fc_column: 'lfc', padj_column: 'weighted_connectivity']
             ]
             filter_input: [meta + filter_meta, results]
             fc_column: method_params[meta.method].fc_column
