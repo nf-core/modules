@@ -24,10 +24,8 @@ process GZRT {
 
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkfifo temp_recovered.fastq
-    gzrecover -o temp_recovered.fastq ${fastqgz} &
-    gzip < temp_recovered.fastq > ${prefix}_recovered.fastq.gz
-    rm temp_recovered.fastq
+    gzrecover -o ${prefix}_recovered.fastq ${fastqgz}
+    gzip ${prefix}_recovered.fastq
 
     soft_line="${task.process}"
     ver_line="gzrt: \$(gzrecover -V |& sed '1!d ; s/gzrecover //')"
@@ -40,7 +38,7 @@ process GZRT {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo "gzrt module" > ${prefix}_recovered.fastq && gzip ${prefix}_recovered.fastq
+    echo "" | gzip > ${prefix}_recovered.fastq.gz
 
     soft_line="${task.process}"
     ver_line="gzrt: \$(gzrecover -V |& sed '1!d ; s/gzrecover //')"
