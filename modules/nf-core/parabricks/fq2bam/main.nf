@@ -2,8 +2,9 @@ process PARABRICKS_FQ2BAM {
     tag "$meta.id"
     label 'process_high'
     label 'process_gpu'
+    stageInMode 'copy'
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.3.2-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.4.0-1"
 
     input:
     tuple val(meta), path(reads)
@@ -15,10 +16,10 @@ process PARABRICKS_FQ2BAM {
     output:
     tuple val(meta), path("*.bam")  , emit: bam
     tuple val(meta), path("*.bai")  , emit: bai
-    tuple val(meta), path("*.table"), emit: bqsr_table          , optional:true
-    path "versions.yml"             , emit: versions
-    path "qc_metrics"               , emit: qc_metrics          , optional:true
-    path("duplicate-metrics.txt")   , emit: duplicate_metrics   , optional:true
+    tuple val(meta), path("*.table"), emit: bqsr_table         , optional:true
+    path("versions.yml")            , emit: versions
+    path("qc_metrics")             , emit: qc_metrics          , optional:true
+    path("duplicate-metrics.txt")   , emit: duplicate_metrics  , optional:true
 
     when:
     task.ext.when == null || task.ext.when
@@ -61,7 +62,6 @@ process PARABRICKS_FQ2BAM {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bam
