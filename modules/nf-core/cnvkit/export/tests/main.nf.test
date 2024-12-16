@@ -37,6 +37,131 @@ nextflow_process {
 
     }
 
+    test("test_cnvkit_export_vcf") {
+
+        when {
+            params {
+                cnvkit_export_args = "vcf -i test"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file("https://raw.githubusercontent.com/etal/cnvkit/v0.9.9/test/formats/amplicon.cns", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("test_cnvkit_export_cdt") {
+
+        when {
+            params {
+                cnvkit_export_args = "cdt"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file("https://raw.githubusercontent.com/etal/cnvkit/v0.9.9/test/formats/amplicon.cns", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("test_cnvkit_export_jtv") {
+
+        when {
+            params {
+                cnvkit_export_args = "jtv"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file("https://raw.githubusercontent.com/etal/cnvkit/v0.9.9/test/formats/amplicon.cns", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("test_cnvkit_export_seg") {
+
+        when {
+            params {
+                cnvkit_export_args = "seg"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file("https://raw.githubusercontent.com/etal/cnvkit/v0.9.9/test/formats/amplicon.cns", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+        test("test_cnvkit_export_theta") {
+
+        when {
+            params {
+                cnvkit_export_args = "theta"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file("https://raw.githubusercontent.com/etal/cnvkit/v0.9.9/test/formats/amplicon.cns", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
     test("test_cnvkit_export_bed - stub") {
         options "-stub"
 
