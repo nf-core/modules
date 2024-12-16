@@ -58,13 +58,18 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         .multiMap(criteria)
 
     // ----------------------------------------------------
-    // Perform differential analysis with limma
+    // Run Limma just once to generate a normalised matrix, configure so 
+    // that we don't pass subsetting arguments anddisregard differential 
+    // outputs 
     // ----------------------------------------------------
 
     LIMMA_NORM(
         norm_inputs.contrasts.filter{it[0].method == 'limma'}.first(),
         norm_inputs.samples_and_matrix.filter{it[0].method == 'limma'}
     )
+//
+// Perform differential analysis with limma
+//
 
     LIMMA_DIFFERENTIAL(
         inputs.contrasts.filter{it[0].method == 'limma'},
@@ -72,7 +77,9 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     )
 
     // ----------------------------------------------------
-    // Perform differential analysis with deseq2
+    // Run DESeq2 just once to generate a normalised matrix, configure so 
+    // that we don't pass subsetting arguments and disregard differential 
+    // outputs 
     // ----------------------------------------------------
 
     DESEQ2_NORM(
@@ -99,7 +106,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     )
 
     // ----------------------------------------------------
-    // Recollect results
+    // Collect results
     // ----------------------------------------------------
 
     ch_results = DESEQ2_DIFFERENTIAL.out.results
