@@ -19,7 +19,6 @@ process CUSTOM_TABULARTOGSEACHIP {
     task.ext.when == null || task.ext.when
 
     script:
-    def VERSION = '9.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     function find_column_number {
         file=\$1
@@ -35,6 +34,17 @@ process CUSTOM_TABULARTOGSEACHIP {
     echo -e "Probe Set ID\\tGene Symbol\\tGene Title" > \${outfile}.tmp
     tail -n +2 $tabular | awk -F'\\t' -v id=\$id_col -v symbol=\$symbol_col '{print \$id"\\t"\$symbol"\\tNA"}' >> \${outfile}.tmp
     mv \${outfile}.tmp \${outfile}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gawk: \$(echo \$(gawk --version 2>&1) | sed 's/^.*GNU Awk //; s/, .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    """
+    outfile=\$(echo $tabular | sed 's/\\(.*\\)\\..*/\\1/').chip
+    touch \$outfile
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

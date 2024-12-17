@@ -10,6 +10,35 @@ nextflow_process {
     tag "custom/tabulartogseachip"
 
     test("test tsv to chip") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+                input[1] = Channel.of(['gene_id', 'gene_name'])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.chip,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("test tsv to chip - stub") {
+
+        options "-stub"
+
         when {
             process {
                 """
