@@ -35,8 +35,8 @@ process WIPERTOOLS_REPORTGATHER {
     """
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
-    prefix   = prefix+"_gathered"
+    prefix = task.ext.prefix ?: "${meta.id}_gathered"
+    if ("${reports}" == "${prefix}.report") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     touch ${prefix}.report
 

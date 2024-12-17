@@ -37,8 +37,8 @@ process WIPERTOOLS_FASTQWIPER {
     """
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
-    prefix          = prefix + "_wiped"
+    prefix = task.ext.prefix ?: "${meta.id}_wiped"
+    if ("${fastq_in}" == "${prefix}.fastq.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     echo "" | gzip > ${prefix}.fastq.gz
     touch ${prefix}.report

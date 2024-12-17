@@ -19,8 +19,8 @@ process WIPERTOOLS_FASTQGATHER {
 
     script:
     def args    = task.ext.args ?: ''
-    prefix      = task.ext.prefix ?: "${meta.id}"
-    prefix      = prefix + "_gather"
+    prefix      = task.ext.prefix ?: "${meta.id}_gather"
+    if ("${fastq_in}" == "${prefix}.fastq.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     wipertools \\
         fastqgather \\
