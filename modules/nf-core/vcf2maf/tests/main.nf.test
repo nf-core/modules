@@ -29,7 +29,6 @@ nextflow_process {
         when {
             params {
                 module_args = '--ncbi-build GRCh38 --species homo_sapiens --inhibit-vep'
-                module_setup_args = ""
             }
             process {
                 """
