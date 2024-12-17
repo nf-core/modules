@@ -6,9 +6,6 @@ on:
       - "renovate/**" # branches Renovate creates
   pull_request:
     branches: [master]
-    paths:
-      - ".github/workflows/gpu-tests.yml"
-      - "modules/nf-core/parabricks/**"
   merge_group:
     types: [checks_requested]
     branches: [master]
@@ -16,11 +13,8 @@ on:
     inputs:
       runners:
         description: "Runners to test on"
-        type: choice
-        options:
-          - "ubuntu-latest"
-          - "self-hosted"
-        default: "self-hosted"
+        type: string
+        default: "gpu"
 
 # Cancel if a newer run is started
 concurrency:
@@ -35,7 +29,7 @@ env:
   NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
   NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
   # renovate: datasource=github-releases depName=nextflow-io/nextflow versioning=semver
-  NXF_VER: "24.10.1"
+  NXF_VER: "24.10.2"
 
 jobs:
   nf-test-changes:
@@ -43,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       # Expose detected tags as 'modules' and 'workflows' output variables
-      paths: ${{ steps.outputs.outputs.components }}
+      paths: ${{ steps.list.outputs.components }}
       modules: ${{ steps.outputs.outputs.modules }}
       subworkflows: ${{ steps.outputs.outputs.subworkflows}}
       # Prod for version bumping
@@ -60,11 +54,11 @@ jobs:
 
       - name: List nf-test files
         id: list
-        uses: adamrtalbot/detect-nf-test-changes@6bf6fd9fe0fb63a0362fb0e09de5acb6d055a754 # v0.0.5
+        uses: adamrtalbot/detect-nf-test-changes@de3c3c8e113031b4f15a3c1104b5f135e8346997 # v0.0.6
         with:
           head: ${{ github.sha }}
           base: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
-          n_parents: 2
+          n_parents: 0
           tags: "gpu"
 
       - name: Separate modules and subworkflows
@@ -74,21 +68,20 @@ jobs:
           echo subworkflows=$(echo '${{ steps.list.outputs.components }}' | jq '. | map(select(contains("subworkflows"))) | map(gsub("subworkflows/nf-core/"; ""))') >> $GITHUB_OUTPUT
       - name: debug
         run: |
-          echo ${{ steps.outputs.outputs.components }}
+          echo ${{ steps.list.outputs.components }}
           echo ${{ steps.outputs.outputs.modules }}
           echo ${{ steps.outputs.outputs.subworkflows }}
 
   nf-test-gpu:
     runs-on: "gpu"
+    name: "GPU Test | ${{ matrix.profile }} | ${{ matrix.shard }}"
     needs: nf-test-changes
-    if: ${{ fromJSON(needs.nf-test-changes.outputs.paths) != '[]' || needs.nf-test-changes.outputs.paths != '' }}
-    name: "GPU | ${{ matrix.tags}} | ${{ matrix.profile }} | ${{ matrix.shard }}"
+    if: ${{ needs.nf-test-changes.outputs.modules != '[]' || needs.nf-test-changes.outputs.subworkflows != '[]' }}
     strategy:
       fail-fast: false
       matrix:
         shard: [1, 2]
-        profile: [docker_self_hosted, singularity] # conda?
-        tags: ${{ fromJSON(needs.nf-test-changes.outputs.modules) && fromJSON(needs.nf-test-changes.outputs.subworkflows) }}
+        profile: [docker_self_hosted, singularity]
     env:
       NXF_ANSI_LOG: false
       TOTAL_SHARDS: 2
@@ -108,4 +101,27 @@ jobs:
           profile: ${{ matrix.profile }},gpu
           shard: ${{ matrix.shard }}
           total_shards: ${{ env.TOTAL_SHARDS }}
-          tags: ${{matrix.tags}},gpu
+          paths: "${{ join(fromJson(needs.nf-test-changes.outputs.paths), ' ') }}"
+
+  confirm-pass:
+    runs-on: ubuntu-latest
+    needs: [nf-test-gpu]
+    if: always()
+    steps:
+      - name: One or more tests failed
+        if: ${{ contains(needs.*.result, 'failure') }}
+        run: exit 1
+
+      - name: One or more tests cancelled
+        if: ${{ contains(needs.*.result, 'cancelled') }}
+        run: exit 1
+
+      - name: All tests ok
+        if: ${{ contains(needs.*.result, 'success') }}
+        run: exit 0
+
+      - name: debug-print
+        if: always()
+        run: |
+          echo "toJSON(needs) = ${{ toJSON(needs) }}"
+          echo "toJSON(needs.*.result) = ${{ toJSON(needs.*.result) }}"
