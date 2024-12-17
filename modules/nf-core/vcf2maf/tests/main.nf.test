@@ -1,5 +1,6 @@
 nextflow_process {
-    name "Test vcf2maf"
+    name "Test Process VCF2MAF"
+
     process "VCF2MAF"
     script "../main.nf"
 
@@ -43,9 +44,9 @@ nextflow_process {
                 script "../../../../modules/nf-core/untar/main.nf"
                 process {
                 """
-                input[0] = [ 
-                    [ id:'test_genome_vep' ], 
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/vep.tar.gz", checkIfExists: true) 
+                input[0] = [
+                    [ id:'test_genome_vep' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/vep.tar.gz", checkIfExists: true)
                 ]
                 """
             }
