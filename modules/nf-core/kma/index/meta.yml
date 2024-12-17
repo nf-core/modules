@@ -36,7 +36,7 @@ output:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'reference' ]`
-    - db:
+    - '${meta.id}.kmaindex.*':
         type: file
         description: KMA index files
         pattern: "*.{comp.b,length.b,name,seq.b}"
