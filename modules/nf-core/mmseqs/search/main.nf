@@ -1,4 +1,3 @@
-
 process MMSEQS_SEARCH {
     tag "$meta.id"
     label 'process_high'
@@ -13,7 +12,7 @@ process MMSEQS_SEARCH {
     tuple val(meta2), path(db_target)
 
     output:
-    tuple val(meta), path("${prefix}"), emit: db_search
+    tuple val(meta), path("${prefix}/"), emit: db_search
     path "versions.yml"               , emit: versions
 
     when:
@@ -51,8 +50,7 @@ process MMSEQS_SEARCH {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     if ("$db_query" == "${prefix}" || "$db_target" == "${prefix}"  ) error "Input and output names of databases are the same, set prefix in module configuration to disambiguate!"
     """
     mkdir -p $prefix
