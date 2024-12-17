@@ -36,14 +36,15 @@ output:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'reference' ]`
-    - "*.{comp.b,length.b,name,seq.b}":
+    - db:
         type: files
         description: KMA index files
         pattern: "*.{comp.b,length.b,name,seq.b}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
 authors:
   - "@krannich479"
