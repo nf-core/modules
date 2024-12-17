@@ -6,7 +6,7 @@ include { LIMMA_DIFFERENTIAL                  } from '../../../modules/nf-core/l
 include { LIMMA_DIFFERENTIAL as LIMMA_NORM    } from '../../../modules/nf-core/limma/differential/main'
 include { DESEQ2_DIFFERENTIAL                 } from '../../../modules/nf-core/deseq2/differential/main'
 include { DESEQ2_DIFFERENTIAL as DESEQ2_NORM  } from '../../../modules/nf-core/deseq2/differential/main'
-include { PROPR_PROPD as PROPD_DIFFERENTIAL   } from '../../../modules/nf-core/propr/propd/main'
+include { PROPR_PROPD                         } from '../../../modules/nf-core/propr/propd/main'
 include { CUSTOM_FILTERDIFFERENTIALTABLE      } from '../../../modules/nf-core/custom/filterdifferentialtable/main'
 
 // Combine meta maps, including merging non-identical values of shared keys (e.g. 'id')
@@ -111,7 +111,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // NOTE that this method don't rely on normalization, hence it does
     // not produce a normalized matrix.
 
-    PROPD_DIFFERENTIAL(
+    PROPR_PROPD(
         inputs.contrasts.filter{it[0].method == 'propd'},
         inputs.samples_and_matrix.filter { it[0].method == 'propd' }
     )
@@ -122,7 +122,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
 
     ch_results = DESEQ2_DIFFERENTIAL.out.results
         .mix(LIMMA_DIFFERENTIAL.out.results)
-        .mix(PROPD_DIFFERENTIAL.out.results_genewise)
+        .mix(PROPR_PROPD.out.results_genewise)
 
     ch_normalised_matrix = DESEQ2_NORM.out.normalised_counts
         .mix(LIMMA_NORM.out.normalised_counts)
@@ -132,7 +132,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
 
     ch_versions = DESEQ2_DIFFERENTIAL.out.versions
         .mix(LIMMA_DIFFERENTIAL.out.versions)
-        .mix(PROPD_DIFFERENTIAL.out.versions)
+        .mix(PROPR_PROPD.out.versions)
 
     // ----------------------------------------------------
     // Filter DE results
@@ -168,7 +168,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     results_genewise_filtered  = CUSTOM_FILTERDIFFERENTIALTABLE.out.filtered
 
     // pairwise results
-    adjacency                  = PROPD_DIFFERENTIAL.out.adjacency
+    adjacency                  = PROPR_PROPD.out.adjacency
 
     // other
     normalised_matrix          = ch_normalised_matrix
