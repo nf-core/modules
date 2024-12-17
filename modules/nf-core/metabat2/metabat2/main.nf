@@ -24,7 +24,7 @@ process METABAT2_METABAT2 {
     script:
     def args             = task.ext.args   ?: ''
     def prefix           = task.ext.prefix ?: "${meta.id}"
-    def clean_depth      = depth.toString() - ".gz"
+    def clean_depth      = depth.toString() - ~/\.gz$/
     def decompress_depth = (depth && depth.toString() != clean_depth) ? "gzip -d -f $depth" : ""
     def depth_input      = depth ? "-a ${clean_depth}" : ""
     """
