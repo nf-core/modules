@@ -11,17 +11,17 @@ process WIPERTOOLS_FASTQWIPER {
     tuple val(meta), path(fastq_in)
 
     output:
-    tuple val(meta), path("${prefix}.fastq.gz") , emit: fastq_out
-    path("*.report")                            , emit: report
-    path "versions.yml"                         , emit: versions
+    tuple val(meta), path("${prefix}.fastq.gz"), emit: fastq_out
+    path("*.report")                           , emit: report
+    path "versions.yml"                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args    = task.ext.args ?: ''
-    prefix      = task.ext.prefix ?: "${meta.id}"
-    prefix      = prefix + "_wiped"
+    prefix = task.ext.prefix ?: "${meta.id}_wiped"
+    if ("${fastq_in}" == "${prefix}.fastq.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     wipertools \\
         fastqwiper \\

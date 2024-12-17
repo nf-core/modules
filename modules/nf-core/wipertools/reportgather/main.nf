@@ -19,8 +19,8 @@ process WIPERTOOLS_REPORTGATHER {
 
     script:
     def args = task.ext.args ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
-    prefix   = prefix+"_gathered"
+    prefix = task.ext.prefix ?: "${meta.id}_gather"
+    if ("${reports}" == "${prefix}.report") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     wipertools \\
         reportgather \\
@@ -35,7 +35,7 @@ process WIPERTOOLS_REPORTGATHER {
     """
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}_gathered"
+    prefix = task.ext.prefix ?: "${meta.id}_gather"
     if ("${reports}" == "${prefix}.report") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     touch ${prefix}.report
