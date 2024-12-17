@@ -38,7 +38,7 @@ process CUSTOM_TABULARTOGSEACHIP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        version: \$(echo $VERSION)
+        gawk: \$(echo \$(gawk --version 2>&1) | sed 's/^.*GNU Awk //; s/, .*\$//')
     END_VERSIONS
     """
 }
