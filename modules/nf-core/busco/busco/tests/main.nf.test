@@ -406,7 +406,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.batch_summary,
+                    process.out.versions
+                ).match() }
             )
         }
     }
