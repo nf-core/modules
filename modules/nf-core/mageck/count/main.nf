@@ -2,7 +2,7 @@ process MAGECK_COUNT {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::mageck=0.5.9"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mageck:0.5.9.5--py39h1f90b4d_3':
         'biocontainers/mageck:0.5.9.5--py39h1f90b4d_3' }"
@@ -15,7 +15,6 @@ process MAGECK_COUNT {
     tuple val(meta), path("*count.txt"),             emit: count
     tuple val(meta), path("*.count_normalized.txt"), emit: norm
     tuple val(meta), path("*.countsummary.txt"),     emit: summary
-    tuple val(meta), path("*.count_normalized.txt"), emit: normalized
     tuple val(meta), path("*.log"),                  emit: logs
     path "versions.yml",                             emit: versions
 
@@ -39,6 +38,7 @@ process MAGECK_COUNT {
         $args \\
         -l $library \\
         -n $prefix \\
+        --threads $task.cpus \\
         $sample_label \\
         $input
 
