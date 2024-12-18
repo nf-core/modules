@@ -16,13 +16,13 @@ nextflow_process {
 
         when {
             params {
-                cnvkit_export_args = "bed -i test"
+                cnvkit_export_args = "bed -i test --show all"
             }
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cnr/test2.paired_end.sorted.cns', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cnr/test2.paired_end.sorted.cnr', checkIfExists: true)
                 ]
                 """
             }
