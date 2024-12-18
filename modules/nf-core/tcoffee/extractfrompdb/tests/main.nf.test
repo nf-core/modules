@@ -10,22 +10,20 @@ nextflow_process {
     tag "tcoffee/extractfrompdb"
     tag "untar"
 
-    setup {
+    test("seatoxin") {
 
-        run("UNTAR") {
-            script "../../../untar/main.nf"
-            process {
-                """
-                input[0] = [ [ id:'test' ],
-                                file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/structures/seatoxin-ref.tar.gz", checkIfExists: true)
-                            ]
-
-                """
+        setup {
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id:'test' ],
+                                    file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/structures/seatoxin-ref.tar.gz", checkIfExists: true)
+                                ]
+                    """
+                }
             }
         }
-    }
-
-    test("seatoxin ") {
 
         when {
             process {
@@ -41,12 +39,24 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
 
-    test("seatoxin -stub ") {
+    test("seatoxin - stub") {
 
         options "-stub"
+
+        setup {
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id:'test' ],
+                                    file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/structures/seatoxin-ref.tar.gz", checkIfExists: true)
+                                ]
+                    """
+                }
+            }
+        }
 
         when {
             process {
@@ -62,8 +72,5 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
-
-
 }
