@@ -20,7 +20,12 @@ process WIPERTOOLS_FASTQGATHER {
     script:
     def args    = task.ext.args ?: ''
     prefix      = task.ext.prefix ?: "${meta.id}_gather"
-    if ("${fastq_in}" == "${prefix}.fastq.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+
+    // Check if the output file name is in the list of input files
+    if (fastq_in.any { it.name == "${prefix}.fastq.gz" }) {
+        error 'Output file name "${prefix}.fastq.gz}" matches one of the input files. Please choose a different output prefix to avoid overwriting input data.'
+    }
+
     """
     wipertools \\
         fastqgather \\
@@ -35,8 +40,12 @@ process WIPERTOOLS_FASTQGATHER {
     """
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}_gather"
-    if ("${fastq_in}" == "${prefix}.fastq.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    prefix      = task.ext.prefix ?: "${meta.id}_gather"
+
+    // Check if the output file name is in the list of input files
+    if (fastq_in.any { it.name == "${prefix}.fastq.gz" }) {
+        error 'Output file name "${prefix}.fastq.gz}" matches one of the input files. Please choose a different output prefix to avoid overwriting input data.'
+    }
     """
     echo "" | gzip > ${prefix}.fastq.gz
 

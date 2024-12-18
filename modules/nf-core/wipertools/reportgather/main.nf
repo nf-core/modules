@@ -20,7 +20,12 @@ process WIPERTOOLS_REPORTGATHER {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}_gather"
-    if ("${reports}" == "${prefix}.report") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+
+    // Check if the output file name is in the list of input files
+    if (reports.any { it.name == "${prefix}.report" }) {
+        error 'Output file name "${prefix}.report}" matches one of the input files. Please choose a different output prefix to avoid overwriting input data.'
+    }
+
     """
     wipertools \\
         reportgather \\
@@ -36,7 +41,12 @@ process WIPERTOOLS_REPORTGATHER {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}_gather"
-    if ("${reports}" == "${prefix}.report") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+
+    // Check if the output file name is in the list of input files
+    if (reports.any { it.name == "${prefix}.report" }) {
+        error 'Output file name "${prefix}.report}" matches one of the input files. Please choose a different output prefix to avoid overwriting input data.'
+    }
+
     """
     touch ${prefix}.report
 
