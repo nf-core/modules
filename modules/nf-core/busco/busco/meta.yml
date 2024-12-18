@@ -32,7 +32,8 @@ input:
         pattern: "{genome,proteins,transcriptome}"
   - - lineage:
         type: string
-        description: The BUSCO lineage to use, or "auto" to automatically select lineage
+        description: The BUSCO lineage to use, or "auto", "auto_prok" or "auto_euk"
+          to automatically select lineage
   - - busco_lineages_path:
         type: directory
         description: Path to local BUSCO lineages directory.
@@ -45,7 +46,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*-busco.batch_summary.txt":
           type: file
           description: Summary of all sequence files analyzed
@@ -55,7 +56,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - short_summary.*.txt:
           type: file
           description: Short Busco summary in plain text format
@@ -65,7 +66,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - short_summary.*.json:
           type: file
           description: Short Busco summary in JSON format
@@ -75,7 +76,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*-busco/*/run_*/full_table.tsv":
           type: file
           description: Full BUSCO results table
@@ -85,7 +86,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*-busco/*/run_*/missing_busco_list.tsv":
           type: file
           description: List of missing BUSCOs
@@ -95,7 +96,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*-busco/*/run_*/single_copy_proteins.faa":
           type: file
           description: Fasta file of single copy proteins (transcriptome mode)
@@ -105,7 +106,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*-busco/*/run_*/busco_sequences":
           type: directory
           description: BUSCO sequence directory
@@ -115,7 +116,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*-busco/*/translated_proteins":
           type: directory
           description: Six frame translations of each transcript made by the transcriptome
@@ -126,11 +127,21 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*-busco":
           type: directory
           description: BUSCO lineage specific output
           pattern: "*-busco"
+  - downloaded_lineages:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "busco_downloads/lineages/*":
+          type: directory
+          description: Lineages downloaded by BUSCO when running the analysis, for example bacteria_odb12
+          pattern: "busco_downloads/lineages/*"
   - versions:
       - versions.yml:
           type: file

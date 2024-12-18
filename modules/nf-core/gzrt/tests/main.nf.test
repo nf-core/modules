@@ -15,7 +15,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/fastqrepair/testdata/test_30reads_R1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_corrupted_30reads_R1.fastq.gz', checkIfExists: true)
                 ]
                 """
             }
@@ -38,7 +38,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/fastqrepair/testdata/test_30reads_R1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_corrupted_30reads_R1.fastq.gz', checkIfExists: true)
                 ]
                 """
             }
