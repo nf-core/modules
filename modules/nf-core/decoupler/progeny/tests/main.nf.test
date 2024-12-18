@@ -1,0 +1,37 @@
+nextflow_process {
+
+    name "Test Process DECOUPLER_PROGENY"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "DECOUPLER_PROGENY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "decoupler"
+    tag "decoupler/progeny"
+
+    test("decoupler_progeny_test") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file("https://raw.githubusercontent.com/chanzuckerberg/cellxgene/main/example-dataset/pbmc3k.h5ad", checkIfExists: true)
+                ]
+                input[1] = Channel.value("human")
+                input[2] = Channel.value("1000")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
