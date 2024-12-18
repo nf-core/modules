@@ -34,4 +34,32 @@ nextflow_process {
         }
     }
 
+    test("test-sam2lca-updatedb stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = 'test'
+                input[1] = 'test'
+                input[2] = []
+                input[3] = []
+                input[4] = []
+                input[5] = []
+                input[6] = []
+                input[7] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert process.out.sam2lca_db.size() == 1 },
+            { assert process.out.sam2lca_db.get(0) ==~ ".*/sam2lca_db"}
+            )
+        }
+    }
+
 }

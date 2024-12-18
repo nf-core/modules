@@ -51,13 +51,14 @@ process SAM2LCA_UPDATEDB {
     """
 
     stub:
-        """
-        mkdir -p $prefix
-        touch ${prefix}/test.pkl
+    prefix = 'sam2lca_db'
+    """
+    mkdir -p $prefix
+    touch ${prefix}/test.pkl
 
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            sam2lca: \$(echo \$(sam2lca --version 2>&1) | sed 's/^sam2lca, version //' )
-        END_VERSIONS
-        """
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        sam2lca: \$(echo \$(sam2lca --version 2>&1) | sed 's/^sam2lca, version //' )
+    END_VERSIONS
+    """
 }
