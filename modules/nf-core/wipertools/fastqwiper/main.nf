@@ -21,7 +21,7 @@ process WIPERTOOLS_FASTQWIPER {
     script:
     def args    = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}_wiped"
-    if ("${fastq_in}" == "${prefix}.fastq.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${fastq_in}" == "${prefix}.fastq.gz") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!."
     """
     wipertools \\
         fastqwiper \\
@@ -38,7 +38,7 @@ process WIPERTOOLS_FASTQWIPER {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}_wiped"
-    if ("${fastq_in}" == "${prefix}.fastq.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${fastq_in}" == "${prefix}.fastq.gz") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!."
     """
     echo "" | gzip > ${prefix}.fastq.gz
     touch ${prefix}.report

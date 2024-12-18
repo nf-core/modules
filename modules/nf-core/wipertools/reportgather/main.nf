@@ -23,7 +23,7 @@ process WIPERTOOLS_REPORTGATHER {
 
     // Check if the output file name is in the list of input files
     if (reports.any { it.name == "${prefix}.report" }) {
-        error 'Output file name "${prefix}.report}" matches one of the input files. Please choose a different output prefix to avoid overwriting input data.'
+        error 'Output file name "${prefix}.report}" matches one of the input files. Use \"task.ext.prefix\" to disambiguate!.'
     }
 
     """
@@ -44,7 +44,7 @@ process WIPERTOOLS_REPORTGATHER {
 
     // Check if the output file name is in the list of input files
     if (reports.any { it.name == "${prefix}.report" }) {
-        error 'Output file name "${prefix}.report}" matches one of the input files. Please choose a different output prefix to avoid overwriting input data.'
+        error 'Output file name "${prefix}.report}" matches one of the input files. Use \"task.ext.prefix\" to disambiguate!.'
     }
 
     """
