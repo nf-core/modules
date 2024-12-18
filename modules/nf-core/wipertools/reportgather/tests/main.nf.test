@@ -1,0 +1,88 @@
+nextflow_process {
+
+    name "Test Process WIPERTOOLS_REPORTGATHER"
+    script "../main.nf"
+    process "WIPERTOOLS_REPORTGATHER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "wipertools"
+    tag "wipertools/reportgather"
+    tag "wipertools/fastqwiper"
+
+    setup {
+        run("WIPERTOOLS_FASTQWIPER", alias: "FQW1") {
+            script "../../fastqwiper/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test1' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_quality_mismatch.fastq', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        run("WIPERTOOLS_FASTQWIPER", alias: "FQW2") {
+            script "../../fastqwiper/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test2' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_truncated_clean.fastq', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("merge two reports - .report") {
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                merged_reports = FQW1.out.report.merge(FQW2.out.report)
+                input[0] = merged_reports.map(it -> tuple ([id: 'reports'], it) )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.report_out.get(0).get(1)).readLines().size() == 11},
+                {
+                    def report_header = path(process.out.report_out.get(0).get(1)).readLines()[0]
+                    assert report_header.equals('FASTQWIPER REPORT:')
+                },
+                {
+                    def well_formed_lines = path(process.out.report_out.get(0).get(1)).readLines()[3]
+                    assert well_formed_lines.equals('Well-formed lines: 16 (72.73%)')
+                },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("merge two reports - .report - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                merged_reports = FQW1.out.report.merge(FQW2.out.report)
+                input[0] = merged_reports.map(it -> tuple ([id: 'reports'], it) )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
