@@ -23,7 +23,7 @@ process GZRT {
     }
 
     prefix = task.ext.prefix ?: "${meta.id}_recovered"
-    if ("${fastqgz}" == "${prefix}.fastq.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${fastqgz}" == "${prefix}.fastq.gz") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     gzrecover -p ${fastqgz} | gzip > ${prefix}.fastq.gz
 
@@ -37,7 +37,7 @@ process GZRT {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}_recovered"
-    if ("${fastqgz}" == "${prefix}.fastq.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${fastqgz}" == "${prefix}.fastq.gz") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     echo "" | gzip > ${prefix}.fastq.gz
 
