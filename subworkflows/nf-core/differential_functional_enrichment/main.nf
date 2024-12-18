@@ -2,23 +2,28 @@
 //
 // Perform enrichment analysis
 //
-include { GPROFILER2_GOST         } from "../../../modules/nf-core/gprofiler2/gost/main.nf"
-include { PROPR_GREA              } from "../../../modules/nf-core/propr/grea/main.nf"
-// include { GSEA_GSEA               } from '../../../modules/nf-core/gsea/gsea/main.nf'
-// include { CUSTOM_TABULARTOGSEAGCT } from '../../../modules/nf-core/custom/tabulartogseagct/main.nf'
-// include { CUSTOM_TABULARTOGSEACLS } from '../../../modules/nf-core/custom/tabulartogseacls/main.nf'
-// include { TABULAR_TO_GSEA_CHIP    } from '../../../modules/local/tabular_to_gsea_chip'
+include { GPROFILER2_GOST          } from "../../../modules/nf-core/gprofiler2/gost/main.nf"
+include { CUSTOM_TABULARTOGSEAGCT  } from '../../../modules/nf-core/custom/tabulartogseagct/main.nf'
+include { CUSTOM_TABULARTOGSEACLS  } from '../../../modules/nf-core/custom/tabulartogseacls/main.nf'
+include { CUSTOM_TABULARTOGSEACHIP } from '../../../modules/nf-core/custom/tabulartogseachip/main.nf'
+include { GSEA_GSEA                } from '../../../modules/nf-core/gsea/gsea/main.nf'
+include { PROPR_GREA               } from "../../../modules/nf-core/propr/grea/main.nf"
 
 workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     take:
     // input data for functional analysis
     // They can be the results from differential expression analysis or abundance matrix
     // The functional analysis method to run should be explicitly provided
-    ch_input                            // [meta_input, input file, method to run ]
+    ch_input                            // [ meta_input, input file, method to run ]
 
     // gene sets and background
     ch_gene_sets                        // [ meta, gmt file ]
-    ch_background                       // [ meta, background file ]
+    ch_background                       // [ background file ]
+
+    // other
+    ch_contrasts                        // [ meta_contrast, contrast_variable, reference, target ]
+    ch_samplesheet                      // [ meta, samples sheet ]
+    ch_featuresheet                     // [ meta, features sheet, features id, features symbol ]
 
     main:
 
@@ -37,42 +42,56 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     // Perform enrichment analysis with gprofiler2
     // ----------------------------------------------------
 
+    // TODO modify these modules to take input files with meta values
+
+    if (ch_gene_sets == null) {
+        ch_gene_sets_to_gprofiler2 = [[]]
+    } else {
+        ch_gene_sets_to_gprofiler2 = ch_gene_sets.map{ meta, gmt -> gmt }.collect()
+    }
+
+    if (ch_background == null) {
+        ch_background_to_gprofiler2 = []
+    } else {
+        ch_background_to_gprofiler2 = ch_background.map{ meta, background -> background }.collect()
+    }
+
     GPROFILER2_GOST(
         ch_input.filter{ it[0].method == 'gprofiler2' },
-        ch_gene_sets.map { meta, gmt -> gmt }.collect(),
-        ch_background.collect()
+        ch_gene_sets_to_gprofiler2,
+        ch_background_to_gprofiler2
     )
 
     // ----------------------------------------------------
-    // Perform enrichment analysis with GREA
+    // Perform enrichment analysis with GSEA
     // ----------------------------------------------------
 
-    PROPR_GREA(
-        ch_input.filter{ it[0].method == 'grea' },
-        ch_gene_sets.collect()
-    )
+    // For GSEA, we need to:
+    //  - Convert normalised counts to a GCT format for input
+    //  - Process the sample sheet to generate class definitions (CLS) for the variable used in each contrast
+    //  - Process features sheet to generate CHIP file format
 
-    // // ----------------------------------------------------
-    // // Perform enrichment analysis with GSEA
-    // // ----------------------------------------------------
+    // TODO: update CUSTOM_TABULARTOGSEACLS for value channel input per new
+    // guidlines (rather than meta usage employed here)
 
-    // // For GSEA, we need to convert normalised counts to a GCT format for
-    // // input, and process the sample sheet to generate class definitions
-    // // (CLS) for the variable used in each contrast
+    // CUSTOM_TABULARTOGSEAGCT( ch_input.filter{ it[0].method == 'grea' } )
 
-    // CUSTOM_TABULARTOGSEAGCT ( ch_counts )
-
-    // // TODO: update CUSTOM_TABULARTOGSEACLS for value channel input per new
-    // // guidlines (rather than meta usage employed here)
     // ch_contrasts_and_samples = ch_contrasts
-    //     .map{it[0]} // revert back to contrasts meta map
-    //     .combine( ch_samplesheet.map { it[1] } )
-
+    //     .map{ meta_contrast, contrast_variable, reference, target ->
+    //         meta_contrast['variable'] = contrast_variable  // make sure meta contains the contrast variable
+    //         return meta_contrast
+    //     }
+    //     .combine( ch_samplesheet.map { meta, samplesheet -> samplesheet } )
     // CUSTOM_TABULARTOGSEACLS(ch_contrasts_and_samples)
 
-    // TABULAR_TO_GSEA_CHIP(
-    //     ch_featuresheet.map{ it[1] },
-    //     [params.features_id_col, params.features_name_col]
+    // ch_features_to_chip = ch_featuresheet
+    //     .multiMap { meta, features, features_id_col, features_name_col ->
+    //         tabular: [meta, features]
+    //         cols: [features_id_col, features_name_col]
+    //     }
+    // CUSTOM_TABULARTOGSEACHIP(
+    //     ch_features_to_chip.tabular,
+    //     ch_features_to_chip.cols
     // )
 
     // // The normalised matrix does not always have a contrast meta, so we
@@ -84,59 +103,44 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     //     .map{ it.tail() }
     //     .combine(CUSTOM_TABULARTOGSEACLS.out.cls)
     //     .map{ tuple(it[1], it[0], it[2]) }
-    //     .combine( ch_gmt.map { meta, gmt -> gmt } )
+    //     .combine( ch_gene_sets.map{ meta, gmt -> gmt } )
 
-    // println("__"+TABULAR_TO_GSEA_CHIP.out.chip)
+    // println("__"+CUSTOM_TABULARTOGSEACHIP.out.chip)
     // GSEA_GSEA(
     //     ch_gsea_inputs,
     //     ch_gsea_inputs.map{ tuple(it[0].reference, it[0].target) }, // *
-    //     TABULAR_TO_GSEA_CHIP.out.chip.first()
+    //     CUSTOM_TABULARTOGSEACHIP.out.chip.first()
     // )
 
-    // // * Note: GSEA module currently uses a value channel for the mandatory
-    // // non-file arguments used to define contrasts, hence the indicated
-    // // usage of map to perform that transformation. An active subject of
-    // // debate
-    // GSEA_GSEA.out.report_tsvs_ref.view()
-    // ch_gsea_results = GSEA_GSEA.out.report_tsvs_ref
-    //     .join(GSEA_GSEA.out.report_tsvs_target)
-
-    // ch_enriched = ch_enriched.combine(ch_gsea_results)
-
-
-    // // Record GSEA versions
-    // ch_versions = ch_versions
-    //     .mix(TABULAR_TO_GSEA_CHIP.out.versions)
-    //     .mix(GSEA_GSEA.out.versions)
-
     // ----------------------------------------------------
-    // Recollect results
+    // Perform enrichment analysis with GREA
     // ----------------------------------------------------
 
-    // recollect enrichment main results from all tools
+    if (ch_gene_sets == null) {
+        ch_gene_sets_to_grea = [[], []]
+    } else {
+        ch_gene_sets_to_grea = ch_gene_sets.collect()
+    }
 
-    ch_all_enrich =
-        GPROFILER2_GOST.out.all_enrich
-        .mix(PROPR_GREA.out.results)
-
-    ch_sub_enrich =
-        GPROFILER2_GOST.out.sub_enrich
-
-    // recollect plots needed for report
-
-    ch_plot_html =
-        GPROFILER2_GOST.out.plot_html
-
-    // recollect versions
-
-    ch_versions = GPROFILER2_GOST.out.versions
-        .mix(PROPR_GREA.out.versions)
-
-    ch_all_enrich.view()
+    PROPR_GREA(
+        ch_input.filter{ it[0].method == 'grea' },
+        ch_gene_sets_to_grea
+    )
 
     emit:
-    all_enrich = ch_all_enrich
-    sub_enrich = ch_sub_enrich
-    plot_html  = ch_plot_html
-    versions   = ch_versions
+    // tool specific reports
+    report_gprofiler2 = GPROFILER2_GOST.out.plot_html.map{it[1]}.flatMap().toList()
+                            .combine(GPROFILER2_GOST.out.all_enrich.map{it[1]}.flatMap().toList())
+                            .combine(GPROFILER2_GOST.out.sub_enrich.map{it[1]}.flatMap().toList())
+    // report_gsea       = GSEA_GSEA.out.report_tsvs_ref
+    //                         .join(GSEA_GSEA.out.report_tsvs_target)
+    report_grea       = PROPR_GREA.out.results
+
+    // tool versions
+    versions          = GPROFILER2_GOST.out.versions
+                            // .mix(CUSTOM_TABULARTOGSEAGCT.out.versions)
+                            // .mix(CUSTOM_TABULARTOGSEACLS.out.versions)
+                            // .mix(CUSTOM_TABULARTOGSEACHIP.out.versions)
+                            // .mix(GSEA_GSEA.out.versions)
+                            .mix(PROPR_GREA.out.versions)
 }

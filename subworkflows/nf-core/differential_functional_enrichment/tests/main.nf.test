@@ -74,11 +74,13 @@ nextflow_workflow {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt')
                 ])
-                ch_background = []
 
                 input[0] = ch_input
                 input[1] = ch_gene_sets
-                input[2] = ch_background
+                input[2] = null
+                input[3] = null
+                input[4] = null
+                input[5] = null
                 """
             }
         }
@@ -87,7 +89,7 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(
-                    workflow.out.all_enrich
+                    workflow.out.report_gprofiler2
                 ).match()},
                 { assert path(workflow.out.versions[0]).readLines()[3].contains('r-gprofiler2: 0.2.2')}
             )
@@ -154,11 +156,13 @@ nextflow_workflow {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt')
                 ])
-                ch_background = []
 
                 input[0] = ch_input
                 input[1] = ch_gene_sets
-                input[2] = ch_background
+                input[2] = null
+                input[3] = null
+                input[4] = null
+                input[5] = null
                 """
             }
         }
