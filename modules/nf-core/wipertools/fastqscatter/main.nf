@@ -39,10 +39,10 @@ process WIPERTOOLS_FASTQSCATTER {
     """
 
     stub:
-    def args        = task.ext.args ?: ''
-    def prefix      = task.ext.prefix ?: "${meta.id}"
-    def args_list   = args.tokenize()
-    out_folder      = (args_list.contains('--out_folder') ? args_list[args_list.indexOf('--out_folder')+1] :
+    def args      = task.ext.args ?: ''
+    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def args_list = args.tokenize()
+    out_folder    = (args_list.contains('--out_folder') ? args_list[args_list.indexOf('--out_folder')+1] :
                         (args_list.contains('-o') ? args_list[args_list.indexOf('-o')+1] : 'chunks'))
     """
     mkdir ${out_folder}
