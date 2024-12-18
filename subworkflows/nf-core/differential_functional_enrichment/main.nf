@@ -66,51 +66,72 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     // Perform enrichment analysis with GSEA
     // ----------------------------------------------------
 
-    // For GSEA, we need to:
-    //  - Convert normalised counts to a GCT format for input
-    //  - Process the sample sheet to generate class definitions (CLS) for the variable used in each contrast
-    //  - Process features sheet to generate CHIP file format
+    ch_report_gsea = Channel.empty()
+    ch_versions_gsea = Channel.empty()
 
-    // TODO: update CUSTOM_TABULARTOGSEACLS for value channel input per new
-    // guidlines (rather than meta usage employed here)
+    // count elements that need to run through gsea
+    // if zero, skip
+    def count_gsea = 0
+    ch_input.filter{ it[0].method == 'gsea' }
+        .view { item ->
+            count_gsea++
+            return null  // Don't print anything
+        }
 
-    // CUSTOM_TABULARTOGSEAGCT( ch_input.filter{ it[0].method == 'grea' } )
+    if (count_gsea > 0) {
 
-    // ch_contrasts_and_samples = ch_contrasts
-    //     .map{ meta_contrast, contrast_variable, reference, target ->
-    //         meta_contrast['variable'] = contrast_variable  // make sure meta contains the contrast variable
-    //         return meta_contrast
-    //     }
-    //     .combine( ch_samplesheet.map { meta, samplesheet -> samplesheet } )
-    // CUSTOM_TABULARTOGSEACLS(ch_contrasts_and_samples)
+        // For GSEA, we need to:
+        //  - Convert normalised counts to a GCT format for input
+        //  - Process the sample sheet to generate class definitions (CLS) for the variable used in each contrast
+        //  - Process features sheet to generate CHIP file format
 
-    // ch_features_to_chip = ch_featuresheet
-    //     .multiMap { meta, features, features_id_col, features_name_col ->
-    //         tabular: [meta, features]
-    //         cols: [features_id_col, features_name_col]
-    //     }
-    // CUSTOM_TABULARTOGSEACHIP(
-    //     ch_features_to_chip.tabular,
-    //     ch_features_to_chip.cols
-    // )
+        // TODO: update CUSTOM_TABULARTOGSEACLS for value channel input per new
+        // guidlines (rather than meta usage employed here)
 
-    // // The normalised matrix does not always have a contrast meta, so we
-    // // need a combine rather than a join here
-    // // Also add file name to metamap for easy access from modules.config
-    // // TODO combine the input channel with the ch_tools
+        CUSTOM_TABULARTOGSEAGCT( ch_input.filter{ it[0].method == 'grea' } )
 
-    // ch_gsea_inputs = CUSTOM_TABULARTOGSEAGCT.out.gct
-    //     .map{ it.tail() }
-    //     .combine(CUSTOM_TABULARTOGSEACLS.out.cls)
-    //     .map{ tuple(it[1], it[0], it[2]) }
-    //     .combine( ch_gene_sets.map{ meta, gmt -> gmt } )
+        ch_contrasts_and_samples = ch_contrasts
+            .map{ meta_contrast, contrast_variable, reference, target ->
+                meta_contrast['variable'] = contrast_variable  // make sure meta contains the contrast variable
+                return meta_contrast
+            }
+            .combine( ch_samplesheet.map { meta, samplesheet -> samplesheet } )
+        CUSTOM_TABULARTOGSEACLS(ch_contrasts_and_samples)
 
-    // println("__"+CUSTOM_TABULARTOGSEACHIP.out.chip)
-    // GSEA_GSEA(
-    //     ch_gsea_inputs,
-    //     ch_gsea_inputs.map{ tuple(it[0].reference, it[0].target) }, // *
-    //     CUSTOM_TABULARTOGSEACHIP.out.chip.first()
-    // )
+        ch_features_to_chip = ch_featuresheet
+            .multiMap { meta, features, features_id_col, features_name_col ->
+                tabular: [meta, features]
+                cols: [features_id_col, features_name_col]
+            }
+        CUSTOM_TABULARTOGSEACHIP(
+            ch_features_to_chip.tabular,
+            ch_features_to_chip.cols
+        )
+
+        // The normalised matrix does not always have a contrast meta, so we
+        // need a combine rather than a join here
+        // Also add file name to metamap for easy access from modules.config
+
+        ch_gsea_inputs = CUSTOM_TABULARTOGSEAGCT.out.gct
+            .map{ it.tail() }
+            .combine(CUSTOM_TABULARTOGSEACLS.out.cls)
+            .map{ tuple(it[1], it[0], it[2]) }
+            .combine( ch_gene_sets.map{ meta, gmt -> gmt } )
+
+        println("__"+CUSTOM_TABULARTOGSEACHIP.out.chip)
+        GSEA_GSEA(
+            ch_gsea_inputs,
+            ch_gsea_inputs.map{ tuple(it[0].reference, it[0].target) }, // *
+            CUSTOM_TABULARTOGSEACHIP.out.chip.first()
+        )
+
+        ch_report_gsea = GSEA_GSEA.out.report_tsvs_ref
+                            .join(GSEA_GSEA.out.report_tsvs_target)
+        ch_versions_gsea = CUSTOM_TABULARTOGSEAGCT.out.versions
+                            .mix(CUSTOM_TABULARTOGSEACLS.out.versions)
+                            .mix(CUSTOM_TABULARTOGSEACHIP.out.versions)
+                            .mix(GSEA_GSEA.out.versions)
+    }
 
     // ----------------------------------------------------
     // Perform enrichment analysis with GREA
@@ -132,15 +153,11 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     report_gprofiler2 = GPROFILER2_GOST.out.plot_html.map{it[1]}.flatMap().toList()
                             .combine(GPROFILER2_GOST.out.all_enrich.map{it[1]}.flatMap().toList())
                             .combine(GPROFILER2_GOST.out.sub_enrich.map{it[1]}.flatMap().toList())
-    // report_gsea       = GSEA_GSEA.out.report_tsvs_ref
-    //                         .join(GSEA_GSEA.out.report_tsvs_target)
+    // report_gsea       = ch_report_gsea
     report_grea       = PROPR_GREA.out.results
 
     // tool versions
     versions          = GPROFILER2_GOST.out.versions
-                            // .mix(CUSTOM_TABULARTOGSEAGCT.out.versions)
-                            // .mix(CUSTOM_TABULARTOGSEACLS.out.versions)
-                            // .mix(CUSTOM_TABULARTOGSEACHIP.out.versions)
-                            // .mix(GSEA_GSEA.out.versions)
+                            // .mix(ch_versions_gsea)
                             .mix(PROPR_GREA.out.versions)
 }
