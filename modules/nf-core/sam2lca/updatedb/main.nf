@@ -22,7 +22,7 @@ process SAM2LCA_UPDATEDB {
     path "versions.yml" , emit: versions
 
     when:
-        task.ext.when == null || task.ext.when
+    task.ext.when == null || task.ext.when
 
     script:
     prefix      = task.ext.prefix ?: 'sam2lca_db'
