@@ -11,8 +11,8 @@ process WIPERTOOLS_FASTQGATHER {
     tuple val(meta), path(fastq_in)
 
     output:
-    tuple val(meta), path("${prefix}.fastq.gz") , emit: fastq_out
-    path "versions.yml"                         , emit: versions
+    tuple val(meta), path("${prefix}.fastq.gz"), emit: fastq_out
+    path "versions.yml"                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
