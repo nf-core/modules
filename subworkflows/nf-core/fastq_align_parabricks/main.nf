@@ -10,8 +10,8 @@ workflow FASTQ_ALIGN_PARABRICKS {
     ch_reads // channel: [mandatory] meta, reads
     ch_fasta // channel: [mandatory] meta, fasta
     ch_index // channel: [mandatory] meta, index
-    ch_interval_file // channel: [optional for parabricks] meta, intervals_bed_combined
-    ch_known_sites // channel [optional for parabricks] known_sites_indels
+    ch_interval_file // channel: [optional] meta, intervals_bed_combined
+    ch_known_sites // channel [optional] known_sites_indels
 
     main:
     ch_versions          = Channel.empty()

@@ -15,7 +15,7 @@ input:
       type: file
       description: |
         Channel containing reads (either one file for se or two files for pe)
-        Structure: [ val(meta), path(fastq1), path(fastq2) ]
+        Structure: [ val(meta), [ path(fastq1), path(fastq2) ] ]
   - ch_fasta:
       type: file
       description: |
