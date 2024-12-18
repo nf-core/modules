@@ -19,6 +19,7 @@ process CUSTOM_TABULARTOGSEACHIP {
     task.ext.when == null || task.ext.when
 
     script:
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     function find_column_number {
         file=\$1
@@ -29,7 +30,7 @@ process CUSTOM_TABULARTOGSEACHIP {
 
     id_col=\$(find_column_number $tabular $id)
     symbol_col=\$(find_column_number $tabular $symbol)
-    outfile=\$(echo $tabular | sed 's/\\(.*\\)\\..*/\\1/').chip
+    outfile=${prefix}.chip
 
     echo -e "Probe Set ID\\tGene Symbol\\tGene Title" > \${outfile}.tmp
     tail -n +2 $tabular | awk -F'\\t' -v id=\$id_col -v symbol=\$symbol_col '{print \$id"\\t"\$symbol"\\tNA"}' >> \${outfile}.tmp
@@ -42,8 +43,9 @@ process CUSTOM_TABULARTOGSEACHIP {
     """
 
     stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    outfile=\$(echo $tabular | sed 's/\\(.*\\)\\..*/\\1/').chip
+    outfile=${prefix}.chip
     touch \$outfile
 
     cat <<-END_VERSIONS > versions.yml
