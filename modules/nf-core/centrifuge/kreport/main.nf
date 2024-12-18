@@ -12,7 +12,7 @@ process CENTRIFUGE_KREPORT {
     path db
 
     output:
-    tuple val(meta), path('*.txt'), emit: kreport
+    tuple val(meta), path("*.txt"), emit: kreport
     path "versions.yml"           , emit: versions
 
     when:

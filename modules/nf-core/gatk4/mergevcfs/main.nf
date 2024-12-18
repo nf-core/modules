@@ -12,7 +12,7 @@ process GATK4_MERGEVCFS {
     tuple val(meta2), path(dict)
 
     output:
-    tuple val(meta), path('*.vcf.gz'), emit: vcf
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val(meta), path("*.tbi")   , emit: tbi
     path  "versions.yml"             , emit: versions
 

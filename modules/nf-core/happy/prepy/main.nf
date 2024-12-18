@@ -14,7 +14,7 @@ process HAPPY_PREPY {
     tuple val(meta3), path(fasta_fai)
 
     output:
-    tuple val(meta), path('*.vcf.gz')  , emit: preprocessed_vcf
+    tuple val(meta), path("*.vcf.gz")  , emit: preprocessed_vcf
     path "versions.yml"                , emit: versions
 
     when:

@@ -13,7 +13,7 @@ process PYPGX_PREPAREDEPTHOFCOVERAGE {
     val(assembly_version)
 
     output:
-    tuple val(meta), path('*.zip'), emit: coverage
+    tuple val(meta), path("*.zip"), emit: coverage
     path("versions.yml"), emit: versions
 
     when:

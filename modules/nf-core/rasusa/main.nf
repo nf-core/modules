@@ -12,7 +12,7 @@ process RASUSA {
     val   depth_cutoff
 
     output:
-    tuple val(meta), path('*.fastq.gz'), emit: reads
+    tuple val(meta), path("*.fastq.gz"), emit: reads
     path "versions.yml"                , emit: versions
 
     when:

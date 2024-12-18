@@ -12,7 +12,7 @@ process MIRDEEP2_MAPPER {
     tuple val(meta2), path(index, stageAs: '*')
 
     output:
-    tuple val(meta), path('*.fa'), path('*.arf'), emit: outputs
+    tuple val(meta), path("*.fa"), path("*.arf"), emit: outputs
     path "versions.yml"                         , emit: versions
 
     when:

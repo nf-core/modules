@@ -12,7 +12,7 @@ process BLAST_BLASTN {
     tuple val(meta2), path(db)
 
     output:
-    tuple val(meta), path('*.txt'), emit: txt
+    tuple val(meta), path("*.txt"), emit: txt
     path "versions.yml"           , emit: versions
 
     when:

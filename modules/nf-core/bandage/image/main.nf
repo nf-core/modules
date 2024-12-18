@@ -11,8 +11,8 @@ process BANDAGE_IMAGE {
     tuple val(meta), path(gfa)
 
     output:
-    tuple val(meta), path('*.png'), emit: png
-    tuple val(meta), path('*.svg'), emit: svg
+    tuple val(meta), path("*.png"), emit: png
+    tuple val(meta), path("*.svg"), emit: svg
     path  "versions.yml"          , emit: versions
 
     when:

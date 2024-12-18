@@ -11,7 +11,7 @@ process CUSTOM_SRATOOLSNCBISETTINGS {
     val ids
 
     output:
-    path('*.mkfg')     , emit: ncbi_settings
+    path("*.mkfg")     , emit: ncbi_settings
     path 'versions.yml', emit: versions
 
     when:

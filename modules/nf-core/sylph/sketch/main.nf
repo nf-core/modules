@@ -12,7 +12,7 @@ process SYLPH_SKETCH {
     path(reference)
 
     output:
-    tuple val(meta), path('my_sketches/*.sylsp'), path('database.syldb'), emit: sketch_fastq_genome
+    tuple val(meta), path("my_sketches/*.sylsp"), path("database.syldb"), emit: sketch_fastq_genome
     path "versions.yml"                                                 , emit: versions
 
     when:

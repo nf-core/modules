@@ -13,11 +13,11 @@ process MERQURY_HAPMERS {
     path(paternal_meryl, stageAs: 'pat.meryl')
 
     output:
-    tuple val(meta), path('*_mat.hapmer.meryl')         , emit: mat_hapmer_meryl
-    tuple val(meta), path('*_pat.hapmer.meryl')         , emit: pat_hapmer_meryl
-    tuple val(meta), path('*_inherited_hapmers.fl.png') , emit: inherited_hapmers_fl_png
-    tuple val(meta), path('*_inherited_hapmers.ln.png') , emit: inherited_hapmers_ln_png
-    tuple val(meta), path('*_inherited_hapmers.st.png') , emit: inherited_hapmers_st_png
+    tuple val(meta), path("*_mat.hapmer.meryl")         , emit: mat_hapmer_meryl
+    tuple val(meta), path("*_pat.hapmer.meryl")         , emit: pat_hapmer_meryl
+    tuple val(meta), path("*_inherited_hapmers.fl.png") , emit: inherited_hapmers_fl_png
+    tuple val(meta), path("*_inherited_hapmers.ln.png") , emit: inherited_hapmers_ln_png
+    tuple val(meta), path("*_inherited_hapmers.st.png") , emit: inherited_hapmers_st_png
     path "versions.yml"                                 , emit: versions
 
     when:

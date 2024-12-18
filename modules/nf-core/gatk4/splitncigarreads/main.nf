@@ -14,7 +14,7 @@ process GATK4_SPLITNCIGARREADS {
     tuple val(meta4), path(dict)
 
     output:
-    tuple val(meta), path('*.bam'), emit: bam
+    tuple val(meta), path("*.bam"), emit: bam
     path  "versions.yml"          , emit: versions
 
     when:

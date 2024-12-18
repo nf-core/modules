@@ -8,13 +8,13 @@ process BASES2FASTQ {
     tuple val(meta), path(run_manifest), path(run_dir)
 
     output:
-    tuple val(meta), path('output/Samples/**/*_R*.fastq.gz'), emit: sample_fastq
-    tuple val(meta), path('output/Samples/**/*_stats.json') , emit: sample_json
-    tuple val(meta), path('output/*.html')                  , emit: qc_report
-    tuple val(meta), path('output/RunStats.json')           , emit: run_stats
-    tuple val(meta), path('output/RunManifest.json')        , emit: generated_run_manifest
-    tuple val(meta), path('output/Metrics.csv')             , emit: metrics
-    tuple val(meta), path('output/UnassignedSequences.csv') , emit: unassigned
+    tuple val(meta), path("output/Samples/**/*_R*.fastq.gz"), emit: sample_fastq
+    tuple val(meta), path("output/Samples/**/*_stats.json") , emit: sample_json
+    tuple val(meta), path("output/*.html")                  , emit: qc_report
+    tuple val(meta), path("output/RunStats.json")           , emit: run_stats
+    tuple val(meta), path("output/RunManifest.json")        , emit: generated_run_manifest
+    tuple val(meta), path("output/Metrics.csv")             , emit: metrics
+    tuple val(meta), path("output/UnassignedSequences.csv") , emit: unassigned
     path "versions.yml"                                     , emit: versions
 
     when:

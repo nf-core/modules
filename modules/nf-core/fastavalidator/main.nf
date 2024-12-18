@@ -11,8 +11,8 @@ process FASTAVALIDATOR {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path('*.success.log')  , emit: success_log , optional: true
-    tuple val(meta), path('*.error.log')    , emit: error_log   , optional: true
+    tuple val(meta), path("*.success.log")  , emit: success_log , optional: true
+    tuple val(meta), path("*.error.log")    , emit: error_log   , optional: true
     path "versions.yml"                     , emit: versions
 
     when:

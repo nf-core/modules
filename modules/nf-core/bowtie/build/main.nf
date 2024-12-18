@@ -11,7 +11,7 @@ process BOWTIE_BUILD {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path('bowtie') , emit: index
+    tuple val(meta), path("bowtie") , emit: index
     path "versions.yml"             , emit: versions
 
     when:

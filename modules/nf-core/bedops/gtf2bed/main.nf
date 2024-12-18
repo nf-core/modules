@@ -11,7 +11,7 @@ process BEDOPS_GTF2BED {
     tuple val(meta), path(gtf)
 
     output:
-    tuple val(meta), path('*.bed'), emit: bed
+    tuple val(meta), path("*.bed"), emit: bed
     path "versions.yml"           , emit: versions
 
     when:

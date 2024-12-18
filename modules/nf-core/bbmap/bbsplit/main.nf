@@ -17,10 +17,10 @@ process BBMAP_BBSPLIT {
 
     output:
     path "bbsplit"                            , optional:true, emit: index
-    tuple val(meta), path('*primary*fastq.gz'), optional:true, emit: primary_fastq
-    tuple val(meta), path('*fastq.gz')        , optional:true, emit: all_fastq
-    tuple val(meta), path('*txt')             , optional:true, emit: stats
-    tuple val(meta), path('*.log')            , optional:true, emit: log
+    tuple val(meta), path("*primary*fastq.gz"), optional:true, emit: primary_fastq
+    tuple val(meta), path("*fastq.gz")        , optional:true, emit: all_fastq
+    tuple val(meta), path("*txt")             , optional:true, emit: stats
+    tuple val(meta), path("*.log")            , optional:true, emit: log
     path "versions.yml"                       , emit: versions
 
     when:

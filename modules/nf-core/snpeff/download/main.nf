@@ -11,7 +11,7 @@ process SNPEFF_DOWNLOAD {
     tuple val(meta), val(snpeff_db)
 
     output:
-    tuple val(meta), path('snpeff_cache'), emit: cache
+    tuple val(meta), path("snpeff_cache"), emit: cache
     path "versions.yml"                  , emit: versions
 
     when:

@@ -11,13 +11,13 @@ process FAQCS {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path('*.trimmed.fastq.gz')           , emit: reads         , optional: true
-    tuple val(meta), path('*.stats.txt')                  , emit: stats         , optional: true
-    tuple val(meta), path('./debug')                      , emit: debug         , optional: true
-    tuple val(meta), path('*_qc_report.pdf')              , emit: statspdf      , optional: true
-    tuple val(meta), path('*.discard.fastq.gz')           , emit: reads_fail    , optional: true
-    tuple val(meta), path('*.trimmed.unpaired.fastq.gz')  , emit: reads_unpaired, optional: true
-    tuple val(meta), path('*.log')                        , emit: log
+    tuple val(meta), path("*.trimmed.fastq.gz")           , emit: reads         , optional: true
+    tuple val(meta), path("*.stats.txt")                  , emit: stats         , optional: true
+    tuple val(meta), path("./debug")                      , emit: debug         , optional: true
+    tuple val(meta), path("*_qc_report.pdf")              , emit: statspdf      , optional: true
+    tuple val(meta), path("*.discard.fastq.gz")           , emit: reads_fail    , optional: true
+    tuple val(meta), path("*.trimmed.unpaired.fastq.gz")  , emit: reads_unpaired, optional: true
+    tuple val(meta), path("*.log")                        , emit: log
     path "versions.yml"                                   , emit: versions
 
     when:

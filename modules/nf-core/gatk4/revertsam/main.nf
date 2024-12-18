@@ -11,7 +11,7 @@ process GATK4_REVERTSAM {
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path('*.bam'), emit: bam
+    tuple val(meta), path("*.bam"), emit: bam
     path  "versions.yml"          , emit: versions
 
     when:

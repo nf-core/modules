@@ -17,9 +17,9 @@ process HAPPY_SOMPY {
     tuple val(meta6), path(bams)
 
     output:
-    tuple val(meta), path('*.features.csv')           , emit: features, optional: true
-    tuple val(meta), path('*.metrics.json')           , emit: metrics
-    tuple val(meta), path('*.stats.csv')              , emit: stats
+    tuple val(meta), path("*.features.csv")           , emit: features, optional: true
+    tuple val(meta), path("*.metrics.json")           , emit: metrics
+    tuple val(meta), path("*.stats.csv")              , emit: stats
     path "versions.yml"                               , emit: versions
 
     when:

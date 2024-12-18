@@ -15,12 +15,12 @@ process FASTP {
     val   save_merged
 
     output:
-    tuple val(meta), path('*.fastp.fastq.gz') , optional:true, emit: reads
-    tuple val(meta), path('*.json')           , emit: json
-    tuple val(meta), path('*.html')           , emit: html
-    tuple val(meta), path('*.log')            , emit: log
-    tuple val(meta), path('*.fail.fastq.gz')  , optional:true, emit: reads_fail
-    tuple val(meta), path('*.merged.fastq.gz'), optional:true, emit: reads_merged
+    tuple val(meta), path("*.fastp.fastq.gz") , optional:true, emit: reads
+    tuple val(meta), path("*.json")           , emit: json
+    tuple val(meta), path("*.html")           , emit: html
+    tuple val(meta), path("*.log")            , emit: log
+    tuple val(meta), path("*.fail.fastq.gz")  , optional:true, emit: reads_fail
+    tuple val(meta), path("*.merged.fastq.gz"), optional:true, emit: reads_merged
     path "versions.yml"                       , emit: versions
 
     when:

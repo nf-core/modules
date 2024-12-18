@@ -15,7 +15,7 @@ process BBMAP_FILTERBYNAME {
 
     output:
     tuple val(meta), path("*.${output_format}"), emit: reads
-    tuple val(meta), path('*.log')             , emit: log
+    tuple val(meta), path("*.log")             , emit: log
     path "versions.yml"                        , emit: versions
 
     when:

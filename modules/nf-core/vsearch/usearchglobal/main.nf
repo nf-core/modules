@@ -15,15 +15,15 @@ process VSEARCH_USEARCHGLOBAL {
     val user_columns
 
     output:
-    tuple val(meta), path('*.aln')    , optional: true, emit: aln
-    tuple val(meta), path('*.biom')   , optional: true, emit: biom
-    tuple val(meta), path('*.lca')    , optional: true, emit: lca
-    tuple val(meta), path('*.mothur') , optional: true, emit: mothur
-    tuple val(meta), path('*.otu')    , optional: true, emit: otu
-    tuple val(meta), path('*.sam')    , optional: true, emit: sam
-    tuple val(meta), path('*.tsv')    , optional: true, emit: tsv
-    tuple val(meta), path('*.txt')    , optional: true, emit: txt
-    tuple val(meta), path('*.uc')     , optional: true, emit: uc
+    tuple val(meta), path("*.aln")    , optional: true, emit: aln
+    tuple val(meta), path("*.biom")   , optional: true, emit: biom
+    tuple val(meta), path("*.lca")    , optional: true, emit: lca
+    tuple val(meta), path("*.mothur") , optional: true, emit: mothur
+    tuple val(meta), path("*.otu")    , optional: true, emit: otu
+    tuple val(meta), path("*.sam")    , optional: true, emit: sam
+    tuple val(meta), path("*.tsv")    , optional: true, emit: tsv
+    tuple val(meta), path("*.txt")    , optional: true, emit: txt
+    tuple val(meta), path("*.uc")     , optional: true, emit: uc
     path "versions.yml"                               , emit: versions
 
     when:

@@ -12,7 +12,7 @@ process VSEARCH_SINTAX {
     path db
 
     output:
-    tuple val(meta), path('*.tsv')   , optional: true, emit: tsv
+    tuple val(meta), path("*.tsv")   , optional: true, emit: tsv
     path "versions.yml"              , emit: versions
 
     when:

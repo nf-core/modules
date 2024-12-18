@@ -13,7 +13,7 @@ process PYPGX_COMPUTECONTROLSTATISTICS {
     val(assembly_version)
 
     output:
-    tuple val(meta), path('*.zip'), emit: control_stats
+    tuple val(meta), path("*.zip"), emit: control_stats
     path("versions.yml"), emit: versions
 
     when:

@@ -11,7 +11,7 @@ process GATK4_SAMTOFASTQ {
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path('*.fastq.gz'), emit: fastq
+    tuple val(meta), path("*.fastq.gz"), emit: fastq
     path  "versions.yml"               , emit: versions
 
     when:

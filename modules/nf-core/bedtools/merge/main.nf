@@ -11,7 +11,7 @@ process BEDTOOLS_MERGE {
     tuple val(meta), path(bed)
 
     output:
-    tuple val(meta), path('*.bed'), emit: bed
+    tuple val(meta), path("*.bed"), emit: bed
     path  "versions.yml"          , emit: versions
 
     when:

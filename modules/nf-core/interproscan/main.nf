@@ -13,10 +13,10 @@ process INTERPROSCAN {
     path(interproscan_database, stageAs: 'data')
 
     output:
-    tuple val(meta), path('*.tsv') , optional: true, emit: tsv
-    tuple val(meta), path('*.xml') , optional: true, emit: xml
-    tuple val(meta), path('*.gff3'), optional: true, emit: gff3
-    tuple val(meta), path('*.json'), optional: true, emit: json
+    tuple val(meta), path("*.tsv") , optional: true, emit: tsv
+    tuple val(meta), path("*.xml") , optional: true, emit: xml
+    tuple val(meta), path("*.gff3"), optional: true, emit: gff3
+    tuple val(meta), path("*.json"), optional: true, emit: json
     path "versions.yml"            , emit: versions
 
     when:

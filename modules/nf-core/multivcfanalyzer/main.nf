@@ -21,17 +21,17 @@ process MULTIVCFANALYZER {
 
 
     output:
-    tuple val(meta), path('fullAlignment.fasta.gz')                       , emit: full_alignment
-    tuple val(meta), path('info.txt')                                     , emit: info_txt
-    tuple val(meta), path('snpAlignment.fasta.gz')                        , emit: snp_alignment
-    tuple val(meta), path('snpAlignmentIncludingRefGenome.fasta.gz')      , emit: snp_genome_alignment
-    tuple val(meta), path('snpStatistics.tsv')                            , emit: snpstatistics
-    tuple val(meta), path('snpTable.tsv')                                 , emit: snptable
-    tuple val(meta), path('snpTableForSnpEff.tsv')                        , emit: snptable_snpeff
-    tuple val(meta), path('snpTableWithUncertaintyCalls.tsv')             , emit: snptable_uncertainty
-    tuple val(meta), path('structureGenotypes.tsv')                       , emit: structure_genotypes
-    tuple val(meta), path('structureGenotypes_noMissingData-Columns.tsv') , emit: structure_genotypes_nomissing
-    tuple val(meta), path('MultiVCFAnalyzer.json')                        , emit: json
+    tuple val(meta), path("fullAlignment.fasta.gz")                       , emit: full_alignment
+    tuple val(meta), path("info.txt")                                     , emit: info_txt
+    tuple val(meta), path("snpAlignment.fasta.gz")                        , emit: snp_alignment
+    tuple val(meta), path("snpAlignmentIncludingRefGenome.fasta.gz")      , emit: snp_genome_alignment
+    tuple val(meta), path("snpStatistics.tsv")                            , emit: snpstatistics
+    tuple val(meta), path("snpTable.tsv")                                 , emit: snptable
+    tuple val(meta), path("snpTableForSnpEff.tsv")                        , emit: snptable_snpeff
+    tuple val(meta), path("snpTableWithUncertaintyCalls.tsv")             , emit: snptable_uncertainty
+    tuple val(meta), path("structureGenotypes.tsv")                       , emit: structure_genotypes
+    tuple val(meta), path("structureGenotypes_noMissingData-Columns.tsv") , emit: structure_genotypes_nomissing
+    tuple val(meta), path("MultiVCFAnalyzer.json")                        , emit: json
     path "versions.yml"                                  , emit: versions
 
     when:

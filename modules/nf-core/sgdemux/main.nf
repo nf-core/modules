@@ -12,12 +12,12 @@ process SGDEMUX {
     tuple val(meta), path(sample_sheet), path(fastqs_dir)
 
     output:
-    tuple val(meta), path('output/*_R*.fastq.gz')                   , emit: sample_fastq
-    tuple val(meta), path('output/metrics.tsv')                     , emit: metrics
-    tuple val(meta), path('output/most_frequent_unmatched.tsv')     , emit: most_frequent_unmatched
-    tuple val(meta), path('output/per_project_metrics.tsv')         , emit: per_project_metrics
-    tuple val(meta), path('output/per_sample_metrics.tsv')          , emit: per_sample_metrics
-    tuple val(meta), path('output/sample_barcode_hop_metrics.tsv')  , emit: sample_barcode_hop_metrics
+    tuple val(meta), path("output/*_R*.fastq.gz")                   , emit: sample_fastq
+    tuple val(meta), path("output/metrics.tsv")                     , emit: metrics
+    tuple val(meta), path("output/most_frequent_unmatched.tsv")     , emit: most_frequent_unmatched
+    tuple val(meta), path("output/per_project_metrics.tsv")         , emit: per_project_metrics
+    tuple val(meta), path("output/per_sample_metrics.tsv")          , emit: per_sample_metrics
+    tuple val(meta), path("output/sample_barcode_hop_metrics.tsv")  , emit: sample_barcode_hop_metrics
     path "versions.yml"                                             , emit: versions
 
     when:
