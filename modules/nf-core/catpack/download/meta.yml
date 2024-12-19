@@ -1,7 +1,6 @@
 ---
 name: "catpack_download"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Downloads the required files for either Nr or GTDB for building into a CAT database
 keywords:
   - taxonomic classification
   - classification
@@ -39,7 +38,7 @@ output:
           description: Directory containing all the required NCBI Nr or GTDB database files required for building into a CAT database
           pattern: "${db}/"
           ontologies:
-            - edam: "http://edamontology.org/format_1049"
+            - edam: "http://edamontology.org/data_1049"
   - versions:
       - "versions.yml":
           type: file
