@@ -4,15 +4,15 @@ process GZRT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gzrt:0.8--he4a0461_0':
-        'biocontainers/gzrt:0.8--he4a0461_0' }"
+        'https://depot.galaxyproject.org/singularity/gzrt:0.9.1--h577a1d6_1':
+        'biocontainers/gzrt:0.9.1--h577a1d6_1' }"
 
     input:
     tuple val(meta), path(fastqgz)
 
     output:
-    tuple val(meta), path("*_recovered.fastq.gz"), emit: fastqrecovered
-    path "versions.yml"                          , emit: versions
+    tuple val(meta), path("${prefix}.fastq.gz"), emit: recovered
+    path "versions.yml"                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,10 +22,10 @@ process GZRT {
         error "GZRT works with .gz files only."
     }
 
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}_recovered"
+    if ("${fastqgz}" == "${prefix}.fastq.gz") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
-    gzrecover -o ${prefix}_recovered.fastq ${fastqgz}
-    gzip ${prefix}_recovered.fastq
+    gzrecover -p ${fastqgz} | gzip > ${prefix}.fastq.gz
 
     soft_line="${task.process}"
     ver_line="gzrt: \$(gzrecover -V |& sed '1!d ; s/gzrecover //')"
@@ -36,13 +36,13 @@ process GZRT {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}_recovered"
+    if ("${fastqgz}" == "${prefix}.fastq.gz") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
-    echo "" | gzip > ${prefix}_recovered.fastq.gz
+    echo "" | gzip > ${prefix}.fastq.gz
 
     soft_line="${task.process}"
     ver_line="gzrt: \$(gzrecover -V |& sed '1!d ; s/gzrecover //')"
-
     cat <<-END_VERSIONS > versions.yml
     "\${soft_line}":
         \${ver_line}
