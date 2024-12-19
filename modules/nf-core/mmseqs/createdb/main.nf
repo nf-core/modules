@@ -33,8 +33,7 @@ process MMSEQS_CREATEDB {
         createdb \\
         ${sequence_name} \\
         ${prefix}/${prefix} \\
-        $args \\
-        --compressed 1
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
