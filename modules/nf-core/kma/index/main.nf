@@ -11,20 +11,21 @@ process KMA_INDEX {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("${meta.id}.kmaindex.*"),   emit: db
-    path "versions.yml",                        emit: versions
+    tuple val(meta), path("kmaindex"),  emit: index
+    path "versions.yml",                emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+    def prefix  = task.ext.prefix ?: "${fasta.baseName}"
     def args    = task.ext.args ?: ''
-    def prefix  = task.ext.prefix ?: "${meta.id}.kmaindex"
     """
+    mkdir kmaindex
     kma \\
         index \\
         -i ${fasta} \\
-        -o ${prefix} \\
+        -o kmaindex/${prefix} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
@@ -34,12 +35,14 @@ process KMA_INDEX {
     """
 
     stub:
-    def prefix  = task.ext.prefix ?: "${meta.id}.kmaindex"
+    def prefix  = task.ext.prefix ?: "${fasta.baseName}"
     """
-    touch ${prefix}.comp.b
-    touch ${prefix}.length.b
-    touch ${prefix}.name
-    touch ${prefix}.seq.b
+    mkdir kmaindex
+
+    touch kmaindex/${prefix}.comp.b
+    touch kmaindex/${prefix}.length.b
+    touch kmaindex/${prefix}.name
+    touch kmaindex/${prefix}.seq.b
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

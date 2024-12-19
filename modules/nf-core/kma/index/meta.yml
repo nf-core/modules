@@ -30,15 +30,15 @@ input:
         pattern: "*.{fa,fasta}"
 
 output:
-  - db:
+  - index:
     - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'reference' ]`
-    - '${meta.id}.kmaindex.*':
-        type: file
-        description: KMA index files
+    - 'kmaindex':
+        type: directory
+        description: Directory of KMA index files
         pattern: "*.{comp.b,length.b,name,seq.b}"
   - versions:
     - versions.yml:
