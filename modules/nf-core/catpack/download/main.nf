@@ -24,7 +24,7 @@ process CATPACK_DOWNLOAD {
     CAT_pack \\
         download \\
         ${args} \\
-        -db ${db}
+        --db ${db}
         -o ${prefix}/
 
     cat <<-END_VERSIONS > versions.yml
