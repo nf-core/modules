@@ -43,7 +43,6 @@ process GZRT {
 
     soft_line="${task.process}"
     ver_line="gzrt: \$(gzrecover -V |& sed '1!d ; s/gzrecover //')"
-
     cat <<-END_VERSIONS > versions.yml
     "\${soft_line}":
         \${ver_line}
