@@ -60,7 +60,7 @@ process MMSEQS_SEARCH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mmseqs: \$(mmseqs | grep 'Version' | sed 's/MMseqs2 Version: /')
+        mmseqs: \$(mmseqs | grep 'Version' | sed 's/MMseqs2 Version: //')
     END_VERSIONS
     """
 }

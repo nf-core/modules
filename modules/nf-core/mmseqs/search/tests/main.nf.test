@@ -10,24 +10,26 @@ nextflow_process {
     tag "mmseqs/search"
     tag "mmseqs/createdb"
 
+    config "./nextflow.config"
+
     setup {
         run("MMSEQS_CREATEDB", alias: "MMSEQS_CREATEDB_QUERY") {
             script "../../../mmseqs/createdb/main.nf"
             process {
                 """
                 input[0] = [ [ id:'test_query', single_end:true ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true)
+                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
                 ]
                 """
             }
         }
 
         run("MMSEQS_CREATEDB", alias: "MMSEQS_CREATEDB_TARGET") {
-            script ".../../../mmseqs/createdb/main.nf"
+            script "../../../mmseqs/createdb/main.nf"
             process {
                 """
                 input[0] = [ [ id:'test_target', single_end:true ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['scaffolds_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/scaffolds.fasta', checkIfExists: true)
                 ]
                 """
             }
@@ -66,6 +68,10 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args   = '--remove-tmp-files 1 --search-type 2'
+                module_prefix = 'test_output_search'
+            }
             process {
                 """
                 input[0] = MMSEQS_CREATEDB_QUERY.out.db
