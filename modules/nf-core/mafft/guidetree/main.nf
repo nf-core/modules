@@ -29,7 +29,7 @@ process MAFFT_GUIDETREE {
 
     mv *.tree ${prefix}.dnd.tmp
 
-    # remove all prefices added by mafft which make the output incompatible with other tools
+    # remove all prefixes added by mafft which make the output incompatible with other tools
     awk '{gsub(/[0-9]+_/, ""); print}' ${prefix}.dnd.tmp > ${prefix}.dnd
 
     cat <<-END_VERSIONS > versions.yml
