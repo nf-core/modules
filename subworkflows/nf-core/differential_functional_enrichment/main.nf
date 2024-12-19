@@ -34,7 +34,7 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
 
     main:
 
-    // add the method information into the meta map
+    // Add method information into meta map
     // This information is used later to determine which method to run for each input
 
     ch_input = ch_input.map {
@@ -43,23 +43,57 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
         [ meta_new, file ]
     }
 
+    // Convert into channels, if empty list are given
+    // So that they can be manipulated (eg. combine, join)
+
+    if (ch_contrasts == [[], [], [], []]) { ch_contrasts = Channel.of([[], [], [], []]) }
+    if (ch_samplesheet == [[], []]) { ch_samplesheet = Channel.of([[], []]) }
+    if (ch_featuresheet == [[], [], [], []]) { ch_featuresheet = Channel.of([[], [], [], []]) }
+
+    // In the case of GSEA, it needs additional files coming from other channels that other methods don't use
+    // here we define the input channel for the GSEA section
+
+    def criteria = multiMapCriteria { meta_input, input, analysis_method, meta_exp, samplesheet, featuresheet, features_id, features_symbol, meta_contrasts, variable, reference, target ->
+        input:
+            meta_map = meta_input + [ 'method': analysis_method ]
+            [ meta_map, input ]
+        contrasts:
+            meta_map = mergeMaps(meta_contrasts, meta_input) + [ 'method': analysis_method ]
+            [ meta_map, variable, reference, target ]
+        contrasts_and_samples:
+            meta_map = mergeMaps(meta_contrasts, meta_exp) + [ 'method': analysis_method ]
+            [ meta_map, samplesheet ]
+        features:
+            meta_map = meta_exp + [ 'method': analysis_method ]
+            [ meta_map, featuresheet ]
+        features_cols:
+            [ features_id, features_symbol ]
+    }
+    ch_preinput_for_gsea = ch_input
+        .filter { it[2] == 'gsea' }
+        .combine(ch_samplesheet.join(ch_featuresheet))
+        .combine(ch_contrasts)
+        .multiMap(criteria)
+
     // ----------------------------------------------------
     // Perform enrichment analysis with gprofiler2
     // ----------------------------------------------------
 
     // deal with situations when some channels are empty
-    if (ch_gene_sets == null) {
+    // TODO modify the GPROFILER2_GOST module to take input files with meta values
+    // maybe after the modification, we don't need to hardcode when empty channels are provided
+    // and by then we can uniformly set them at the top data manipulation section, instead of tool-specific
+    if (ch_gene_sets == [[], []]) {
         ch_gene_sets_to_gprofiler2 = []
     } else {
         ch_gene_sets_to_gprofiler2 = ch_gene_sets.map{ meta, gmt -> gmt }.collect()
     }
-    if (ch_background == null) {
+    if (ch_background == [[], []]) {
         ch_background_to_gprofiler2 = []
     } else {
         ch_background_to_gprofiler2 = ch_background.map{ meta, background -> background }.collect()
     }
 
-    // TODO modify the module to take input files with meta values
     GPROFILER2_GOST(
         ch_input.filter{ it[0].method == 'gprofiler2' },
         ch_gene_sets_to_gprofiler2,
@@ -70,80 +104,47 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     // Perform enrichment analysis with GSEA
     // ----------------------------------------------------
 
-    ch_report_gsea = Channel.empty()
-    ch_versions_gsea = Channel.empty()
+    // TODO: update CUSTOM_TABULARTOGSEACLS for value channel input per new
+    // guidlines (rather than meta usage employed here)
+    CUSTOM_TABULARTOGSEAGCT(ch_preinput_for_gsea.input)
 
-    if (ch_contrasts != null && ch_samplesheet != null && ch_featuresheet != null) {
+    CUSTOM_TABULARTOGSEACLS(ch_preinput_for_gsea.contrasts_and_samples)
 
-        def criteria = multiMapCriteria { meta_input, input, analysis_method, meta_exp, samplesheet, featuresheet, features_id, features_symbol, meta_contrasts, variable, reference, target ->
-            input:
-                meta_map = meta_input + [ 'method': analysis_method ]
-                [ meta_map, input ]
-            contrasts:
-                meta_map = mergeMaps(meta_contrasts, meta_input) + [ 'method': analysis_method ]
-                [ meta_map, variable, reference, target ]
-            contrasts_and_samples:
-                meta_map = mergeMaps(meta_contrasts, meta_exp) + [ 'method': analysis_method ]
-                [ meta_map, samplesheet ]
-            features:
-                meta_map = meta_exp + [ 'method': analysis_method ]
-                [ meta_map, featuresheet ]
-            features_cols:
-                [ features_id, features_symbol ]
-        }
+    CUSTOM_TABULARTOGSEACHIP(
+        ch_preinput_for_gsea.features,
+        ch_preinput_for_gsea.features_cols
+    )
 
-        ch_preinput_for_gsea = ch_input
-            .filter { it[2] == 'gsea' }
-            .combine(ch_samplesheet.join(ch_featuresheet))
-            .combine(ch_contrasts)
-            .multiMap(criteria)
-
-        // TODO: update CUSTOM_TABULARTOGSEACLS for value channel input per new
-        // guidlines (rather than meta usage employed here)
-        CUSTOM_TABULARTOGSEAGCT(ch_preinput_for_gsea.input)
-
-        CUSTOM_TABULARTOGSEACLS(ch_preinput_for_gsea.contrasts_and_samples)
-
-        CUSTOM_TABULARTOGSEACHIP(
-            ch_preinput_for_gsea.features,
-            ch_preinput_for_gsea.features_cols
-        )
-
-        if (ch_gene_sets == null) {
-            ch_gene_sets_to_gsea = []
-        } else {
-            ch_gene_sets_to_gsea = ch_gene_sets.map{ meta, gmt -> gmt }
-        }
-
-        ch_input_for_gsea = CUSTOM_TABULARTOGSEAGCT.out.gct
-            .map{ it.tail() }
-            .combine(CUSTOM_TABULARTOGSEACLS.out.cls)
-            .map{ tuple(it[1], it[0], it[2]) }
-            .combine( ch_gene_sets_to_gsea )
-
-        GSEA_GSEA(
-            ch_input_for_gsea,
-            ch_input_for_gsea.map{ tuple(it[0].reference, it[0].target) },
-            CUSTOM_TABULARTOGSEACHIP.out.chip.first()
-        )
-
-        ch_report_gsea = GSEA_GSEA.out.report_tsvs_ref
-                            .join(GSEA_GSEA.out.report_tsvs_target)
-        ch_versions_gsea = CUSTOM_TABULARTOGSEAGCT.out.versions
-                            .mix(CUSTOM_TABULARTOGSEACLS.out.versions)
-                            .mix(CUSTOM_TABULARTOGSEACHIP.out.versions)
-                            .mix(GSEA_GSEA.out.versions)
+    if (ch_gene_sets == [[], []]) {
+        ch_gene_sets_to_gsea = []
+    } else {
+        ch_gene_sets_to_gsea = ch_gene_sets.map{ meta, gmt -> gmt }
     }
+
+    ch_input_for_gsea = CUSTOM_TABULARTOGSEAGCT.out.gct
+        .map{ it.tail() }
+        .combine(CUSTOM_TABULARTOGSEACLS.out.cls)
+        .map{ tuple(it[1], it[0], it[2]) }
+        .combine( ch_gene_sets_to_gsea )
+
+    GSEA_GSEA(
+        ch_input_for_gsea,
+        ch_input_for_gsea.map{ tuple(it[0].reference, it[0].target) },
+        CUSTOM_TABULARTOGSEACHIP.out.chip.first()
+    )
+
+    ch_report_gsea = GSEA_GSEA.out.report_tsvs_ref
+                        .join(GSEA_GSEA.out.report_tsvs_target)
+    ch_versions_gsea = CUSTOM_TABULARTOGSEAGCT.out.versions
+                        .mix(CUSTOM_TABULARTOGSEACLS.out.versions)
+                        .mix(CUSTOM_TABULARTOGSEACHIP.out.versions)
+                        .mix(GSEA_GSEA.out.versions)
 
     // ----------------------------------------------------
     // Perform enrichment analysis with GREA
     // ----------------------------------------------------
 
-    if (ch_gene_sets == null) {
-        ch_gene_sets_to_grea = [[], []]
-    } else {
-        ch_gene_sets_to_grea = ch_gene_sets.collect()
-    }
+    if (ch_gene_sets != [[], []]) { ch_gene_sets_to_grea = ch_gene_sets.collect() }
 
     PROPR_GREA(
         ch_input.filter{ it[0].method == 'grea' },
