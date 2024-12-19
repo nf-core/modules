@@ -1,0 +1,118 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "KMA"
+description: Aligning reads to a DB via KMA alignment
+keywords:
+  - fastq
+  - reads
+  - alignment
+  - kma
+tools:
+  - "kma":
+      description: "Rapid and precise alignment of raw reads against redundant databases with KMA"
+      homepage: "https://bitbucket.org/genomicepidemiology/kma/src/master/"
+      documentation: "https://bitbucket.org/genomicepidemiology/kma/src/master/"
+      tool_dev_url: "https://bitbucket.org/genomicepidemiology/kma/src/master/"
+      doi: "10.1186/s12859-018-2336-6"
+      licence:
+        ["http://www.apache.org/licenses/LICENSE-2.0"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample' ]
+    - reads:
+        type: file
+        description: FASTQ files
+        pattern: "*.{fastq,fq}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference index information
+          e.g. [ id:'reference' ]
+    - index:
+        type: file
+        description: kma database file generated via kma_index
+        pattern: "*.{comp.b,length.b,name,seq.b}"
+  - - interleaved:
+        type: boolean
+        description: use one interleaved fastq file (true) or two paired fastq files (false)
+        pattern: "true or false"
+  - - mat_format:
+        type: boolean
+        description: generate additional matrix file (true) or not (false)
+        pattern: "true or false"
+
+output:
+  - res:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'reference' ]
+    - '*.res':
+        type: file
+        description: A result overview giving the most common statistics for each mapped template.
+        pattern: "*.{res}"
+  - fsa:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'reference' ]
+    - '*.fsa':
+        type: file
+        description: The consensus sequences drawn from the alignments.
+        pattern: "*.{fsa}"
+  - aln:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'reference' ]
+    - '*.aln':
+        type: file
+        description: The consensus alignment of the reads against their template.
+        pattern: "*.{aln}"
+  - frag:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'reference' ]
+    - '*.frag.gz':
+        type: file
+        description: Mapping information on each mapped read, where the columns are read, number of equally well mapping templates, mapping score, start position, end position (w.r.t. template), the choosen template.
+        pattern: "*.{frag.gz}"
+  - mat:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'reference' ]
+    - '*.mat.gz':
+        type: file
+        description: Base counts on each position in each template, (only if -matrix is enabled).
+        pattern: "*.{mat.gz}"
+  - spa:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'reference' ]
+    - '*.spa':
+        type: file
+        description: Text file containing the top scoring references.
+        pattern: "*.{spa}"
+  - versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@Krannich479"
+maintainers:
+  - "@Krannich479"
