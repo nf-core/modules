@@ -13,6 +13,9 @@ nextflow_process {
     test("test_custom_tabulartogseacls") {
 
         when {
+            params {
+                module_args = [ "separator": "\t", "variable": "treatment" ]
+            }
             process {
                 """
                 input[0] = [ [id:'treatment_mCherry_hND6_sample_number', variable:'treatment', reference:'mCherry', target:'hND6', blocking:'sample_number'], file("https://github.com/nf-core/test-datasets/raw/refs/heads/differentialabundance/modules_testdata/SRP254919.samplesheet.sample_metadata.tsv",checkIfExists: true) ]
@@ -34,6 +37,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = { [ "separator": "\t", "variable": "treatment" ] }
+            }
             process {
                 """
                 input[0] = [ [id:'treatment_mCherry_hND6_sample_number', variable:'treatment', reference:'mCherry', target:'hND6', blocking:'sample_number'], file("https://github.com/nf-core/test-datasets/raw/refs/heads/differentialabundance/modules_testdata/SRP254919.samplesheet.sample_metadata.tsv",checkIfExists: true) ]
