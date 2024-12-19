@@ -4,8 +4,8 @@ process KMA_INDEX {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/kma:1.4.15--he4a0461_0' :
-        'biocontainers/kma:1.4.15--he4a0461_0' }"
+        'https://depot.galaxyproject.org/singularity/kma:1.4.15--h577a1d6_1' :
+        'biocontainers/kma:1.4.15--h577a1d6_1' }"
 
     input:
     tuple val(meta), path(fasta)
