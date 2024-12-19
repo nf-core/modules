@@ -4,8 +4,8 @@ process SCDS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bioconductor-scds:1.18.0--r43hdfd78af_0':
-        'biocontainers/bioconductor-scds:1.18.0--r43hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0f34b3007ea36d52c6cb43692226ab05e79e837b8400693e665214c8f4e2708c/data' :
+        'community.wave.seqera.io/library/bioconductor-scds_xgboost:ededce7b92e37374' }"
 
     input:
     tuple val(meta), path(rds)
@@ -27,10 +27,12 @@ process SCDS {
     """
     touch ${prefix}.rds
     touch ${prefix}.csv
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        scds: \$(Rscript -e "library(scds); cat(as.character(packageVersion('scds')))")
+        r: \$(R --version | grep -oP "\\d+\\.\\d+\\.\\d+")
+        scds: \$(Rscript -e "library(scds); cat(as.character(packageVersion('scds')), '\\n', sep='')")
+        singlecellexperiment: \$(Rscript -e "library(SingleCellExperiment); cat(as.character(packageVersion('SingleCellExperiment')), '\\n', sep='')")
     END_VERSIONS
     """
 }
