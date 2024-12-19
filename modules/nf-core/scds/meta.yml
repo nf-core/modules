@@ -1,0 +1,58 @@
+name: scds
+description: Module to use scds for doublet scoring
+keywords:
+  - doublet
+  - single-cell
+  - transcriptomics
+tools:
+  - scds:
+      description: scds is an in-silico doublet annotation tool for single cell RNA sequencing data
+      homepage: https://www.bioconductor.org/packages/release/bioc/html/scds.html
+      documentation: https://www.bioconductor.org/packages/release/bioc/vignettes/scds/inst/doc/scds.html
+      tool_dev_url: https://github.com/kostkalab/scds
+      doi: 10.1093/bioinformatics/btz698
+      licence: ["MIT"]
+      identifier: biotools:scds
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - rds:
+        type: file
+        description: RDS file containing filtered data (without empty droplets) in SingleCellExperiment format
+        pattern: "*.rds"
+
+output:
+  - rds:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.rds":
+          type: file
+          description: RDS file containing doublet scores in SingleCellExperiment format
+          pattern: "*.rds"
+  - predictions:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.csv":
+          type: file
+          description: CSV file containing doublet scores
+          pattern: "*.csv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software version
+          pattern: "versions.yml"
+
+authors:
+  - "@cakirb"
+maintainers:
+  - "@cakirb"
