@@ -3,8 +3,8 @@ process BBMAP_REPAIR {
     label 'process_single'
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bbmap:39.10--h92535d8_0':
-        'biocontainers/bbmap:39.10--h92535d8_0' }"
+        'https://depot.galaxyproject.org/singularity/bbmap:39.13--he5f24ec_1':
+        'biocontainers/bbmap:39.13--he5f24ec_1' }"
 
     input:
     tuple val(meta), path(reads)
@@ -21,10 +21,10 @@ process BBMAP_REPAIR {
 
     script:
     def args   = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def in_reads  = ( interleave )  ? "in=${reads[0]}" : "in=${reads[0]} in2=${reads[1]}"
-    def out_reads = ( interleave )  ? "out=${prefix}_repaired.fastq.gz outs=${prefix}_singleton.fastq.gz"
-                                    : "out=${prefix}_1_repaired.fastq.gz out2=${prefix}_2_repaired.fastq.gz outs=${prefix}_singleton.fastq.gz"
+    prefix = task.ext.prefix ?: "${meta.id}"
+    in_reads  = ( interleave )  ? "in=${reads[0]}" : "in=${reads[0]} in2=${reads[1]}"
+    out_reads = ( interleave )  ? "out=${prefix}_repaired.fastq.gz outs=${prefix}_singleton.fastq.gz"
+                                : "out=${prefix}_1_repaired.fastq.gz out2=${prefix}_2_repaired.fastq.gz outs=${prefix}_singleton.fastq.gz"
     """
     maxmem=\$(echo \"$task.memory\"| sed 's/ GB/g/g')
     repair.sh \\
@@ -42,11 +42,7 @@ process BBMAP_REPAIR {
     """
 
     stub:
-    def args   = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def in_reads  = ( args.interleave ) ? "in=${reads[0]}" : "in=${reads[0]} in2=${reads[1]}"
-    def out_reads = ( args.interleave ) ? "out=${prefix}_repaired.fastq.gz outs=${prefix}_singleton.fastq.gz"
-                                        : "out=${prefix}_1_repaired.fastq.gz out2=${prefix}_2_repaired.fastq.gz outs=${prefix}_singleton.fastq.gz"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}_1_repaired.fastq.gz
     echo "" | gzip > ${prefix}_2_repaired.fastq.gz
