@@ -43,7 +43,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = MMSEQS_CREATEDB_QUERY.out.db,
+                input[0] = MMSEQS_CREATEDB_QUERY.out.db
                 input[1] = MMSEQS_CREATEDB_TARGET.out.db
                 """
             }
@@ -68,7 +68,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = MMSEQS_CREATEDB_QUERY.out.db,
+                input[0] = MMSEQS_CREATEDB_QUERY.out.db
                 input[1] = MMSEQS_CREATEDB_TARGET.out.db
                 """
             }
