@@ -15,7 +15,7 @@ process NARFMAP_ALIGN {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    tuple val(meta), path('*.log'), emit: log
+    tuple val(meta), path("*.log"), emit: log
     path "versions.yml"           , emit: versions
 
     when:

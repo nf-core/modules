@@ -11,7 +11,7 @@ process BCFTOOLS_CONSENSUS {
     tuple val(meta), path(vcf), path(tbi), path(fasta), path(mask)
 
     output:
-    tuple val(meta), path('*.fa'), emit: fasta
+    tuple val(meta), path("*.fa"), emit: fasta
     path  "versions.yml"         , emit: versions
 
     when:

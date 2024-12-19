@@ -11,7 +11,7 @@ process PRETEXTSNAPSHOT {
     tuple val(meta), path(pretext_map)
 
     output:
-    tuple val(meta), path('*.{jpeg,png,bmp}'), emit: image
+    tuple val(meta), path("*.{jpeg,png,bmp}"), emit: image
     path "versions.yml" , emit: versions
 
     when:

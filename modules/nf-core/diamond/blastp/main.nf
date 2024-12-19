@@ -14,13 +14,13 @@ process DIAMOND_BLASTP {
     val blast_columns
 
     output:
-    tuple val(meta), path('*.blast'), optional: true, emit: blast
-    tuple val(meta), path('*.xml')  , optional: true, emit: xml
-    tuple val(meta), path('*.txt')  , optional: true, emit: txt
-    tuple val(meta), path('*.daa')  , optional: true, emit: daa
-    tuple val(meta), path('*.sam')  , optional: true, emit: sam
-    tuple val(meta), path('*.tsv')  , optional: true, emit: tsv
-    tuple val(meta), path('*.paf')  , optional: true, emit: paf
+    tuple val(meta), path("*.blast"), optional: true, emit: blast
+    tuple val(meta), path("*.xml")  , optional: true, emit: xml
+    tuple val(meta), path("*.txt")  , optional: true, emit: txt
+    tuple val(meta), path("*.daa")  , optional: true, emit: daa
+    tuple val(meta), path("*.sam")  , optional: true, emit: sam
+    tuple val(meta), path("*.tsv")  , optional: true, emit: tsv
+    tuple val(meta), path("*.paf")  , optional: true, emit: paf
     path "versions.yml"             , emit: versions
 
     when:

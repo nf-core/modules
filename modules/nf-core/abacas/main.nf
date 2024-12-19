@@ -12,7 +12,7 @@ process ABACAS {
     path  fasta
 
     output:
-    tuple val(meta), path('*.abacas*'), emit: results
+    tuple val(meta), path("*.abacas*"), emit: results
     path "versions.yml"               , emit: versions
 
     when:

@@ -13,7 +13,7 @@ process GATK4_MERGEBAMALIGNMENT {
     tuple val(meta3), path(dict)
 
     output:
-    tuple val(meta), path('*.bam'), emit: bam
+    tuple val(meta), path("*.bam"), emit: bam
     path  "versions.yml"          , emit: versions
 
     when:

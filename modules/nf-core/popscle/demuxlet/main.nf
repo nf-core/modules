@@ -11,7 +11,7 @@ process POPSCLE_DEMUXLET {
     tuple val(meta), val(plp_prefix), path(bam), path(donor_genotype)
 
     output:
-    tuple val(meta), path('*.best'), emit: demuxlet_result
+    tuple val(meta), path("*.best"), emit: demuxlet_result
     path 'versions.yml'            , emit: versions
 
     when:

@@ -10,10 +10,10 @@ process VIREO {
     input:
     tuple val(meta), path(cell_data), val(n_donor), path(donor_file), path(vartrix_data)
     output:
-    tuple val(meta), path('*_summary.tsv')        , emit: summary
-    tuple val(meta), path('*_donor_ids.tsv')      , emit: donor_ids
-    tuple val(meta), path('*_prob_singlet.tsv.gz'), emit: prob_singlets
-    tuple val(meta), path('*_prob_doublet.tsv.gz'), emit: prob_doublets
+    tuple val(meta), path("*_summary.tsv")        , emit: summary
+    tuple val(meta), path("*_donor_ids.tsv")      , emit: donor_ids
+    tuple val(meta), path("*_prob_singlet.tsv.gz"), emit: prob_singlets
+    tuple val(meta), path("*_prob_doublet.tsv.gz"), emit: prob_doublets
     path 'versions.yml'                           , emit: versions
 
     when:

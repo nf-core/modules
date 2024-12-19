@@ -9,7 +9,7 @@ process STAGE_FASTQ_DIR {
     tuple val(meta), path(fastq_file)
 
     output:
-    tuple val(meta), path('fastq'), emit: fastq_dir
+    tuple val(meta), path("fastq"), emit: fastq_dir
 
     script:
     """

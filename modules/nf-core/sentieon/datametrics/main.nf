@@ -15,16 +15,16 @@ process SENTIEON_DATAMETRICS {
     val plot_results
 
     output:
-    tuple val(meta), path('*mq_metrics.txt') , emit: mq_metrics
-    tuple val(meta), path('*qd_metrics.txt') , emit: qd_metrics
-    tuple val(meta), path('*gc_summary.txt') , emit: gc_summary
-    tuple val(meta), path('*gc_metrics.txt') , emit: gc_metrics
-    tuple val(meta), path('*aln_metrics.txt'), emit: aln_metrics
-    tuple val(meta), path('*is_metrics.txt') , emit: is_metrics
-    tuple val(meta), path('*mq_metrics.pdf') , emit: mq_plot, optional: true
-    tuple val(meta), path('*qd_metrics.pdf') , emit: qd_plot, optional: true
-    tuple val(meta), path('*is_metrics.pdf') , emit: is_plot, optional: true
-    tuple val(meta), path('*gc_metrics.pdf') , emit: gc_plot, optional: true
+    tuple val(meta), path("*mq_metrics.txt") , emit: mq_metrics
+    tuple val(meta), path("*qd_metrics.txt") , emit: qd_metrics
+    tuple val(meta), path("*gc_summary.txt") , emit: gc_summary
+    tuple val(meta), path("*gc_metrics.txt") , emit: gc_metrics
+    tuple val(meta), path("*aln_metrics.txt"), emit: aln_metrics
+    tuple val(meta), path("*is_metrics.txt") , emit: is_metrics
+    tuple val(meta), path("*mq_metrics.pdf") , emit: mq_plot, optional: true
+    tuple val(meta), path("*qd_metrics.pdf") , emit: qd_plot, optional: true
+    tuple val(meta), path("*is_metrics.pdf") , emit: is_plot, optional: true
+    tuple val(meta), path("*gc_metrics.pdf") , emit: gc_plot, optional: true
     path  "versions.yml"                     , emit: versions
 
     when:

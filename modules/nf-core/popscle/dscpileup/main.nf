@@ -11,10 +11,10 @@ process POPSCLE_DSCPILEUP {
     tuple val(meta), path(bam), path(vcf)
 
     output:
-    tuple val(meta), path('*.cel.gz'), emit: cel
-    tuple val(meta), path('*.plp.gz'), emit: plp
-    tuple val(meta), path('*.var.gz'), emit: var
-    tuple val(meta), path('*.umi.gz'), emit: umi
+    tuple val(meta), path("*.cel.gz"), emit: cel
+    tuple val(meta), path("*.plp.gz"), emit: plp
+    tuple val(meta), path("*.var.gz"), emit: var
+    tuple val(meta), path("*.umi.gz"), emit: umi
     path 'versions.yml'              , emit: versions
 
     when:

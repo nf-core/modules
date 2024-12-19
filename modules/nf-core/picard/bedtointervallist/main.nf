@@ -13,7 +13,7 @@ process PICARD_BEDTOINTERVALLIST {
     file  arguments_file
 
     output:
-    tuple val(meta), path('*.interval_list'), emit: interval_list
+    tuple val(meta), path("*.interval_list"), emit: interval_list
     path  "versions.yml"                    , emit: versions
 
     when:

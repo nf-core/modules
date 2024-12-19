@@ -20,9 +20,9 @@ process PLATYPUS {
     path skipregions_file
 
     output:
-    tuple val(meta), path('*.vcf.gz')            , emit: vcf
-    tuple val(meta), path('*.vcf.gz.tbi')        , emit: tbi
-    tuple val(meta), path('*.log')               , emit: log
+    tuple val(meta), path("*.vcf.gz")            , emit: vcf
+    tuple val(meta), path("*.vcf.gz.tbi")        , emit: tbi
+    tuple val(meta), path("*.log")               , emit: log
     path  "versions.yml"                         , emit: version
 
     when:

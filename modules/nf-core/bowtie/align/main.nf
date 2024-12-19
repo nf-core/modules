@@ -13,9 +13,9 @@ process BOWTIE_ALIGN {
     val (save_unaligned)
 
     output:
-    tuple val(meta), path('*.bam')     , emit: bam
-    tuple val(meta), path('*.out')     , emit: log
-    tuple val(meta), path('*fastq.gz') , emit: fastq, optional : true
+    tuple val(meta), path("*.bam")     , emit: bam
+    tuple val(meta), path("*.out")     , emit: log
+    tuple val(meta), path("*fastq.gz") , emit: fastq, optional : true
     path  "versions.yml"               , emit: versions
 
     when:

@@ -11,12 +11,12 @@ process CELLSNP_MODEA {
     tuple val(meta), path(bam), path(bai), path(region_vcf), path(barcode)
 
     output:
-    tuple val(meta), path('*.base.vcf.gz') , emit: base
-    tuple val(meta), path('*.cells.vcf.gz'), emit: cell          , optional: true
-    tuple val(meta), path('*.samples.tsv') , emit: sample
-    tuple val(meta), path('*.tag.AD.mtx')  , emit: allele_depth
-    tuple val(meta), path('*.tag.DP.mtx')  , emit: depth_coverage
-    tuple val(meta), path('*.tag.OTH.mtx') , emit: depth_other
+    tuple val(meta), path("*.base.vcf.gz") , emit: base
+    tuple val(meta), path("*.cells.vcf.gz"), emit: cell          , optional: true
+    tuple val(meta), path("*.samples.tsv") , emit: sample
+    tuple val(meta), path("*.tag.AD.mtx")  , emit: allele_depth
+    tuple val(meta), path("*.tag.DP.mtx")  , emit: depth_coverage
+    tuple val(meta), path("*.tag.OTH.mtx") , emit: depth_other
     path 'versions.yml'                    , emit: versions
 
     when:

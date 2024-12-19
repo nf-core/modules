@@ -11,8 +11,8 @@ process GATK4_CALCULATECONTAMINATION {
     tuple val(meta), path(pileup), path(matched)
 
     output:
-    tuple val(meta), path('*.contamination.table'), emit: contamination
-    tuple val(meta), path('*.segmentation.table') , emit: segmentation, optional:true
+    tuple val(meta), path("*.contamination.table"), emit: contamination
+    tuple val(meta), path("*.segmentation.table") , emit: segmentation, optional:true
     path "versions.yml"                           , emit: versions
 
     when:

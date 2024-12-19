@@ -11,8 +11,8 @@ process VSEARCH_DEREPLICATE {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path('*.derep.fasta')   , emit: fasta
-    tuple val(meta), path('*.derep.uc')      , emit: clustering
+    tuple val(meta), path("*.derep.fasta")   , emit: fasta
+    tuple val(meta), path("*.derep.uc")      , emit: clustering
     path "*.derep.log"                       , emit: log
     path "versions.yml"                      , emit: versions
 

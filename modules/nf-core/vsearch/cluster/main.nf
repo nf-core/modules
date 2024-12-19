@@ -11,18 +11,18 @@ process VSEARCH_CLUSTER {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path('*.aln.gz')                , optional: true, emit: aln
-    tuple val(meta), path('*.biom.gz')               , optional: true, emit: biom
-    tuple val(meta), path('*.mothur.tsv.gz')         , optional: true, emit: mothur
-    tuple val(meta), path('*.otu.tsv.gz')            , optional: true, emit: otu
-    tuple val(meta), path('*.bam')                   , optional: true, emit: bam
-    tuple val(meta), path('*.out.tsv.gz')            , optional: true, emit: out
-    tuple val(meta), path('*.blast.tsv.gz')          , optional: true, emit: blast
-    tuple val(meta), path('*.uc.tsv.gz')             , optional: true, emit: uc
-    tuple val(meta), path('*.centroids.fasta.gz')    , optional: true, emit: centroids
-    tuple val(meta), path('*.clusters.fasta*.gz')    , optional: true, emit: clusters
-    tuple val(meta), path('*.profile.txt.gz')        , optional: true, emit: profile
-    tuple val(meta), path('*.msa.fasta.gz')          , optional: true, emit: msa
+    tuple val(meta), path("*.aln.gz")                , optional: true, emit: aln
+    tuple val(meta), path("*.biom.gz")               , optional: true, emit: biom
+    tuple val(meta), path("*.mothur.tsv.gz")         , optional: true, emit: mothur
+    tuple val(meta), path("*.otu.tsv.gz")            , optional: true, emit: otu
+    tuple val(meta), path("*.bam")                   , optional: true, emit: bam
+    tuple val(meta), path("*.out.tsv.gz")            , optional: true, emit: out
+    tuple val(meta), path("*.blast.tsv.gz")          , optional: true, emit: blast
+    tuple val(meta), path("*.uc.tsv.gz")             , optional: true, emit: uc
+    tuple val(meta), path("*.centroids.fasta.gz")    , optional: true, emit: centroids
+    tuple val(meta), path("*.clusters.fasta*.gz")    , optional: true, emit: clusters
+    tuple val(meta), path("*.profile.txt.gz")        , optional: true, emit: profile
+    tuple val(meta), path("*.msa.fasta.gz")          , optional: true, emit: msa
     path "versions.yml"                              , emit: versions
 
     when:

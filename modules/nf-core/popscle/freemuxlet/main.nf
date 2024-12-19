@@ -11,11 +11,11 @@ process POPSCLE_FREEMUXLET {
     tuple val(meta), path(plp), val(n_sample)
 
     output:
-    tuple val(meta), path('*.clust1.samples.gz')  , emit: result
-    tuple val(meta), path('*.clust1.vcf.gz')      , emit: vcf
-    tuple val(meta), path('*.lmix')               , emit: lmix
-    tuple val(meta), path('*.clust0.samples.gz')  , emit: singlet_result   , optional: true
-    tuple val(meta), path('*.clust0.vcf.gz')      , emit: singlet_vcf      , optional: true
+    tuple val(meta), path("*.clust1.samples.gz")  , emit: result
+    tuple val(meta), path("*.clust1.vcf.gz")      , emit: vcf
+    tuple val(meta), path("*.lmix")               , emit: lmix
+    tuple val(meta), path("*.clust0.samples.gz")  , emit: singlet_result   , optional: true
+    tuple val(meta), path("*.clust0.vcf.gz")      , emit: singlet_vcf      , optional: true
     path 'versions.yml'                           , emit: versions
 
     when:

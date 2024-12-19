@@ -17,17 +17,17 @@ process HAPPY_HAPPY {
     tuple val(meta6), path(stratification_beds)
 
     output:
-    tuple val(meta), path('*.summary.csv')                      , emit: summary_csv
-    tuple val(meta), path('*.roc.all.csv.gz')                   , emit: roc_all_csv
-    tuple val(meta), path('*.roc.Locations.INDEL.csv.gz')       , emit: roc_indel_locations_csv
-    tuple val(meta), path('*.roc.Locations.INDEL.PASS.csv.gz')  , emit: roc_indel_locations_pass_csv
-    tuple val(meta), path('*.roc.Locations.SNP.csv.gz')         , emit: roc_snp_locations_csv
-    tuple val(meta), path('*.roc.Locations.SNP.PASS.csv.gz')    , emit: roc_snp_locations_pass_csv
-    tuple val(meta), path('*.extended.csv')                     , emit: extended_csv
-    tuple val(meta), path('*.runinfo.json')                     , emit: runinfo
-    tuple val(meta), path('*.metrics.json.gz')                  , emit: metrics_json
-    tuple val(meta), path('*.vcf.gz')                           , emit: vcf, optional:true
-    tuple val(meta), path('*.tbi')                              , emit: tbi, optional:true
+    tuple val(meta), path("*.summary.csv")                      , emit: summary_csv
+    tuple val(meta), path("*.roc.all.csv.gz")                   , emit: roc_all_csv
+    tuple val(meta), path("*.roc.Locations.INDEL.csv.gz")       , emit: roc_indel_locations_csv
+    tuple val(meta), path("*.roc.Locations.INDEL.PASS.csv.gz")  , emit: roc_indel_locations_pass_csv
+    tuple val(meta), path("*.roc.Locations.SNP.csv.gz")         , emit: roc_snp_locations_csv
+    tuple val(meta), path("*.roc.Locations.SNP.PASS.csv.gz")    , emit: roc_snp_locations_pass_csv
+    tuple val(meta), path("*.extended.csv")                     , emit: extended_csv
+    tuple val(meta), path("*.runinfo.json")                     , emit: runinfo
+    tuple val(meta), path("*.metrics.json.gz")                  , emit: metrics_json
+    tuple val(meta), path("*.vcf.gz")                           , emit: vcf, optional:true
+    tuple val(meta), path("*.tbi")                              , emit: tbi, optional:true
     path "versions.yml"                                         , emit: versions
 
     when:

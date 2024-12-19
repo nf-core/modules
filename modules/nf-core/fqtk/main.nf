@@ -14,9 +14,9 @@ process FQTK {
 
     output:
     // Demultiplexed file name changes depending on the arg '--output-types'
-    tuple val(meta), path('output/*.fq.gz')                         , emit: sample_fastq
-    tuple val(meta), path('output/demux-metrics.txt')               , emit: metrics
-    tuple val(meta), path('output/unmatched*.fq.gz')                , emit: most_frequent_unmatched
+    tuple val(meta), path("output/*.fq.gz")                         , emit: sample_fastq
+    tuple val(meta), path("output/demux-metrics.txt")               , emit: metrics
+    tuple val(meta), path("output/unmatched*.fq.gz")                , emit: most_frequent_unmatched
     path "versions.yml"                                             , emit: versions
 
 

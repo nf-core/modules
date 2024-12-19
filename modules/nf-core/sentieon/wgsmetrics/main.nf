@@ -15,7 +15,7 @@ process SENTIEON_WGSMETRICS {
     tuple val(meta4), path(intervals_list)
 
     output:
-    tuple val(meta), path('*.txt'), emit: wgs_metrics
+    tuple val(meta), path("*.txt"), emit: wgs_metrics
     path  "versions.yml"          , emit: versions
 
     when:

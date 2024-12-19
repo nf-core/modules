@@ -12,7 +12,7 @@ process PANGOLIN_RUN {
     path(db)
 
     output:
-    tuple val(meta), path('*.csv'), emit: report
+    tuple val(meta), path("*.csv"), emit: report
     path  "versions.yml"          , emit: versions
 
     when:

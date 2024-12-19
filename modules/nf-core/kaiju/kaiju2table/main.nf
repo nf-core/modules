@@ -13,7 +13,7 @@ process KAIJU_KAIJU2TABLE {
     val taxon_rank
 
     output:
-    tuple val(meta), path('*.txt'), emit: summary
+    tuple val(meta), path("*.txt"), emit: summary
     path "versions.yml"           , emit: versions
 
     when:

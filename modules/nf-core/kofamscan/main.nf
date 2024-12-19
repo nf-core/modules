@@ -13,8 +13,8 @@ process KOFAMSCAN {
     path ko_list
 
     output:
-    tuple val(meta), path('*.txt'), optional: true, emit: txt
-    tuple val(meta), path('*.tsv'), optional: true, emit: tsv
+    tuple val(meta), path("*.txt"), optional: true, emit: txt
+    tuple val(meta), path("*.tsv"), optional: true, emit: tsv
     path "versions.yml"           , emit: versions
 
     when:

@@ -12,8 +12,8 @@ process BBMAP_CLUMPIFY {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path('*.fastq.gz'), emit: reads
-    tuple val(meta), path('*.log')     , emit: log
+    tuple val(meta), path("*.fastq.gz"), emit: reads
+    tuple val(meta), path("*.log")     , emit: log
     path "versions.yml"                , emit: versions
 
     when:

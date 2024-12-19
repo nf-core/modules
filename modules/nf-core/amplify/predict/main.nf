@@ -13,7 +13,7 @@ process AMPLIFY_PREDICT {
     path(model_dir)
 
     output:
-    tuple val(meta), path('*.tsv'), emit: tsv
+    tuple val(meta), path("*.tsv"), emit: tsv
     path "versions.yml"           , emit: versions
 
     when:
