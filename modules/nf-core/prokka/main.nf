@@ -1,11 +1,11 @@
 process PROKKA {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/prokka:1.14.6--pl5321hdfd78af_4' :
-        'biocontainers/prokka:1.14.6--pl5321hdfd78af_4' }"
+        'https://depot.galaxyproject.org/singularity/prokka:1.14.6--pl5321hdfd78af_5' :
+        'biocontainers/prokka:1.14.6--pl5321hdfd78af_5' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -31,18 +31,26 @@ process PROKKA {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args   ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
-    def proteins_opt = proteins ? "--proteins ${proteins[0]}" : ""
-    def prodigal_tf = prodigal_tf ? "--prodigaltf ${prodigal_tf[0]}" : ""
+    def args             = task.ext.args   ?: ''
+    prefix               = task.ext.prefix ?: "${meta.id}"
+    def fasta_compressed = fasta.getExtension() == "gz" ? true : false
+    def input            = fasta_compressed ? fasta.toString() - ~/\.gz$/ : fasta
+    def decompress       = fasta_compressed ? "gunzip -c ${fasta} > ${input}" : ""
+    def cleanup          = fasta_compressed ? "rm ${input}" : ""
+    def proteins_opt     = proteins ? "--proteins ${proteins}" : ""
+    def prodigal_tf_in   = prodigal_tf ? "--prodigaltf ${prodigal_tf}" : ""
     """
+    ${decompress}
+
     prokka \\
-        $args \\
-        --cpus $task.cpus \\
-        --prefix $prefix \\
-        $proteins_opt \\
-        $prodigal_tf \\
-        $fasta
+        ${args} \\
+        --cpus ${task.cpus} \\
+        --prefix ${prefix} \\
+        ${proteins_opt} \\
+        ${prodigal_tf_in} \\
+        ${input}
+
+    ${cleanup}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
