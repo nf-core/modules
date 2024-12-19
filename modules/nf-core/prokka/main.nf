@@ -4,8 +4,8 @@ process PROKKA {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/prokka:1.14.6--pl5321hdfd78af_5' :
-        'biocontainers/prokka:1.14.6--pl5321hdfd78af_5' }"
+        'https://depot.galaxyproject.org/singularity/prokka:1.14.6--pl5321hdfd78af_4' :
+        'biocontainers/prokka:1.14.6--pl5321hdfd78af_4' }"
 
     input:
     tuple val(meta), path(fasta)
