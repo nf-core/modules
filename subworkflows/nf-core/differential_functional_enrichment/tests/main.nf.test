@@ -176,7 +176,9 @@ nextflow_workflow {
                 ])
                 ch_featuresheet = Channel.of([
                     [ id:'test' ],
-                    file(testData.abundance_file)
+                    file(testData.abundance_file),
+                    'gene_id',
+                    'gene_name'
                 ])
 
                 input[0] = ch_input

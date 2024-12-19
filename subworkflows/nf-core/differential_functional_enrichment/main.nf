@@ -34,7 +34,7 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
 
     main:
 
-    // Add method information into meta map
+    // Add method information into meta map of ch_input
     // This information is used later to determine which method to run for each input
 
     ch_input = ch_input.map {
@@ -43,8 +43,8 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
         [ meta_new, file ]
     }
 
-    // Convert into channels, if empty list are given
-    // So that they can be manipulated (eg. combine, join)
+    // Convert empty lists into channels
+    // so that they can be manipulated (eg. combine, join)
 
     if (ch_contrasts == [[], [], [], []]) { ch_contrasts = Channel.of([[], [], [], []]) }
     if (ch_samplesheet == [[], []]) { ch_samplesheet = Channel.of([[], []]) }
@@ -53,15 +53,13 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     // In the case of GSEA, it needs additional files coming from other channels that other methods don't use
     // here we define the input channel for the GSEA section
 
-    def criteria = multiMapCriteria { meta_input, input, analysis_method, meta_exp, samplesheet, featuresheet, features_id, features_symbol, meta_contrasts, variable, reference, target ->
+    def criteria = multiMapCriteria { meta_input, input, meta_exp, samplesheet, featuresheet, features_id, features_symbol, meta_contrasts, variable, reference, target ->
+        def analysis_method = meta_input.method
         input:
             meta_map = meta_input + [ 'method': analysis_method ]
             [ meta_map, input ]
-        contrasts:
-            meta_map = mergeMaps(meta_contrasts, meta_input) + [ 'method': analysis_method ]
-            [ meta_map, variable, reference, target ]
         contrasts_and_samples:
-            meta_map = mergeMaps(meta_contrasts, meta_exp) + [ 'method': analysis_method ]
+            meta_map = mergeMaps(meta_contrasts, meta_exp) + [ 'method': analysis_method, 'variable': variable ]  // make sure variable is in the meta
             [ meta_map, samplesheet ]
         features:
             meta_map = meta_exp + [ 'method': analysis_method ]
@@ -70,10 +68,15 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
             [ features_id, features_symbol ]
     }
     ch_preinput_for_gsea = ch_input
-        .filter { it[2] == 'gsea' }
+        .filter { it[0].method == 'gsea' }
         .combine(ch_samplesheet.join(ch_featuresheet))
         .combine(ch_contrasts)
         .multiMap(criteria)
+
+    ch_preinput_for_gsea.input.view()
+    ch_preinput_for_gsea.contrasts_and_samples.view()
+    ch_preinput_for_gsea.features.view()
+
 
     // ----------------------------------------------------
     // Perform enrichment analysis with gprofiler2
@@ -83,6 +86,11 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     // TODO modify the GPROFILER2_GOST module to take input files with meta values
     // maybe after the modification, we don't need to hardcode when empty channels are provided
     // and by then we can uniformly set them at the top data manipulation section, instead of tool-specific
+    // To understand why this is a problem, check example:
+    //      a = Channel.of([[], []])
+    //      b = Channel.of([])
+    //      a.collect().view()
+    //      b.collect().view()
     if (ch_gene_sets == [[], []]) {
         ch_gene_sets_to_gprofiler2 = []
     } else {
