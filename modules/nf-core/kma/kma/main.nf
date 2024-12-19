@@ -14,13 +14,13 @@ process KMA {
     val mat_format
 
     output:
-    tuple val(meta), path("*.res"),     optional: true, emit: res
-    tuple val(meta), path("*.fsa"),     optional: true, emit: fsa
-    tuple val(meta), path("*.aln"),     optional: true, emit: aln
-    tuple val(meta), path("*.frag.gz"), optional: true, emit: frag
-    tuple val(meta), path("*.mat.gz"),  optional: true, emit: mat   // if mat_format == true
-    tuple val(meta), path("*.spa"),     optional: true, emit: spa   // if ext.args contains '-Sparse' (only output in this case)
-    path "versions.yml"               , emit: versions
+    tuple val(meta), path("*.res")      , optional: true, emit: res
+    tuple val(meta), path("*.fsa")      , optional: true, emit: fsa
+    tuple val(meta), path("*.aln")      , optional: true, emit: aln
+    tuple val(meta), path("*.frag.gz")  , optional: true, emit: frag
+    tuple val(meta), path("*.mat.gz")   , optional: true, emit: mat   // if mat_format == true
+    tuple val(meta), path("*.spa")      , optional: true, emit: spa   // if ext.args contains '-Sparse' (only output in this case)
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
