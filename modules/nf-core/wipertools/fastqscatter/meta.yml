@@ -1,0 +1,61 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "wipertools_fastqscatter"
+description: A tool of the wipertools suite that splits FASTQ files into chunks
+keywords:
+  - fastq
+  - split
+  - partitioning
+tools:
+  - "fastqscatter":
+      description: "A tool of the wipertools suite that splits FASTQ files into chunks."
+      homepage: "https://github.com/mazzalab/fastqwiper"
+      documentation: "https://github.com/mazzalab/fastqwiper"
+      tool_dev_url: "https://github.com/mazzalab/fastqwiper"
+      doi: "no DOI available"
+      licence: ["GPL v2-or-later"]
+      identifier: ""
+      args_id: "$args"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - fastq:
+        type: file
+        description: FASTQ file
+        pattern: "*.{fastq,fastq.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1930"
+  - - num_splits:
+        type: integer
+        description: Number of desired chunks
+        pattern: "[1-9][0-9]*"
+
+output:
+  - chunks:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "${out_folder}/*":
+          type: file
+          description: Chunk FASTQ files
+          pattern: "*.{fastq,fastq.gz}"
+          ontologies:
+            - edam: "http://edamontology.org/format_1930"
+            - edam: "http://edamontology.org/format_3989"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/format_3750"
+authors:
+  - "@tm4zza"
+maintainers:
+  - "@mazzalab"
+  - "@tm4zza"

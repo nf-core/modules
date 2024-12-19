@@ -1,0 +1,186 @@
+name: Wave
+# When environment.yml is changed
+on:
+  pull_request:
+    paths:
+      - "**/environment.yml"
+      - "**/Dockerfile"
+
+# TODO On complete call testing CI
+# TODO Skip testing CI if any changes to environment.yml
+
+env:
+  # renovate: datasource=github-releases depName=seqeralabs/wave-cli versioning=semver
+  WAVE_VERSION: "1.5.0"
+  # renovate: datasource=github-releases depName=askimed/nf-test versioning=semver
+  NFT_VER: "0.9.2"
+  # renovate: datasource=github-releases depName=nextflow/nextflow versioning=semver
+  NXF_VER: "24.10.1"
+
+jobs:
+  generate-matrix:
+    name: generate-matrix
+    runs-on: ubuntu-latest
+    # Only run on Pull Requests within the same repository, and not from forks
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    outputs:
+      conda-matrix: ${{ steps.conda-diff.outputs.all_changed_files }}
+      dockerfile-matrix: ${{ steps.docker-diff.outputs.all_changed_files }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: Find conda differences
+        id: conda-diff
+        uses: tj-actions/changed-files@bab30c2299617f6615ec02a68b9a40d10bd21366 # v45
+        with:
+          json: true
+          escape_json: false
+          files: |
+            modules/**/environment.yml
+
+      - name: Find Dockerfile differences
+        id: docker-diff
+        uses: tj-actions/changed-files@bab30c2299617f6615ec02a68b9a40d10bd21366 # v45
+        with:
+          json: true
+          escape_json: false
+          files: |
+            modules/**/Dockerfile
+
+  conda-wave:
+    # NOTE This should get skipped because generate-matrix won't run
+    # if: github.repository == 'nf-core/modules'
+    if: ${{ needs.generate-matrix.outputs.conda-matrix != '[]' }}
+    needs: generate-matrix
+    name: Build ${{ matrix.profile }} ${{ matrix.platform }} Container
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        files: "${{ fromJson(needs.generate-matrix.outputs.conda-matrix) }}"
+        profile: [docker, singularity]
+        platform: ["linux/amd64", "linux/arm64"]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: Install wave-cli
+        run: |
+          wget -q https://github.com/seqeralabs/wave-cli/releases/download/v${WAVE_VERSION}/wave-${WAVE_VERSION}-linux-x86_64
+          sudo mv wave-${WAVE_VERSION}-linux-x86_64 /usr/local/bin/wave
+          chmod +x /usr/local/bin/wave
+
+      - name: Build ${{ matrix.profile }} container
+        # FIXME Hack while iron out the CI
+        continue-on-error: true
+        env:
+          PROFILE: ${{ (contains(matrix.profile, 'singularity') && '--singularity') || '' }}
+        run: |
+          wave --conda-file "${{ matrix.files }}" \
+              $PROFILE \
+              --freeze \
+              --await \
+              --platform ${{ matrix.platform }} \
+              --tower-token ${{ secrets.TOWER_ACCESS_TOKEN }} \
+              --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }}
+
+  dockerfile-wave:
+    # NOTE This should get skipped because generate-matrix won't run
+    # if: github.repository == 'nf-core/modules'
+    if: ${{ needs.generate-matrix.outputs.dockerfile-matrix != '[]' }}
+    needs: generate-matrix
+    name: Build Dockerfile-based ${{ matrix.platform }} Container
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        files: "${{ fromJson(needs.generate-matrix.outputs.dockerfile-matrix) }}"
+        # NOTE singularity build requires a Singularity definition file in place of Dockerfile
+        # https://nextflow.slack.com/archives/C0477AS31T5/p1731755350230149?thread_ts=1731697852.661849&cid=C0477AS31T5
+        # profile: [docker]
+        platform: ["linux/amd64", "linux/arm64"]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: Install wave-cli
+        run: |
+          wget -q https://github.com/seqeralabs/wave-cli/releases/download/v${WAVE_VERSION}/wave-${WAVE_VERSION}-linux-x86_64
+          sudo mv wave-${WAVE_VERSION}-linux-x86_64 /usr/local/bin/wave
+          chmod +x /usr/local/bin/wave
+
+      - name: Create a registry name
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
+        id: registry-name
+        with:
+          result-encoding: string
+          script: |
+            return '${{ matrix.files }}'.replace('modules/nf-core/', '').replace('/Dockerfile', '').replace('/', '_');
+
+      - name: Build ${{ matrix.platform }} container
+        # NOTE If you're changing a Dockerfile and this is running, try to update the Dockerfile to build with wave
+        continue-on-error: false
+        run: |
+          wave -f "${{ matrix.files }}" \
+              --freeze \
+              --await \
+              --platform ${{ matrix.platform }} \
+              --build-repo quay.io/nf-core/modules/${{steps.registry-name.outputs.result}} \
+              --cache-repository quay.io/nf-core/wave-cache/docker/${{ matrix.platform }} \
+              --tower-token ${{ secrets.TOWER_ACCESS_TOKEN }} \
+              --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }}
+
+  # bump-versions:
+  #   needs: generate-matrix
+  #   name: bump-versions
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/setup-java@8df1039502a15bceb9433410b1a100fbe190c53b # v4
+  #       with:
+  #         distribution: "temurin"
+  #         java-version: "17"
+
+  #     - uses: nf-core/setup-nextflow@v2
+
+  #     - uses: nf-core/setup-nf-test@v1
+  #       with:
+  #         version: ${{ env.NFT_VER }}
+
+  #     - name: Bump Snapshot Versions
+  #       env:
+  #         # NFT_DIFF: "pdiff"
+  #         # NFT_DIFF_ARGS: "--line-numbers --width 120 --expand-tabs=2"
+  #         SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
+  #         SENTIEON_AUTH_MECH: "GitHub Actions - token"
+  #       run: |
+  #         # use "docker_self_hosted" if it runs on self-hosted runner and matrix.profile=docker
+  #         if [ "${{ matrix.profile }}" == "docker" ]; then
+  #           PROFILE="docker_self_hosted"
+  #         else
+  #           PROFILE=${{ matrix.profile }}
+  #         fi
+
+  #         NFT_WORKDIR=~ \
+  #         nf-test test \
+  #           --profile=${{ matrix.profile }} \
+  #           --tap=test.tap \
+  #           # --ci \
+  #           --verbose \
+  #           --only-changed \
+  #           # --shard ${{ matrix.shard }}/${{ env.TOTAL_SHARDS }} \
+  #           # --filter ${{ matrix.filter }} \
+  #           --follow-dependencies \
+  #           --tag version \
+  #           --update-snapshot
+
+  #     - name: Commit & push version bumps
+  #       run: |
+  #         git config user.email "core@nf-co.re"
+  #         git config user.name "nf-core-bot"
+  #         git config push.default upstream
+  #         git add .
+  #         git status
+  #         git commit -m "[automated] Bump versions snapshot"
+  #         git push

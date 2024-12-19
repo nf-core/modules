@@ -1,6 +1,6 @@
 process SVDB_MERGE {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_single'
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-375a758a4ca8c128fb9d38047a68a9f4322d2acd:b3615e06ef17566f2988a215ce9e10808c1d08bf-0':
