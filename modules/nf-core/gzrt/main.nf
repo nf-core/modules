@@ -4,8 +4,8 @@ process GZRT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gzrt:0.9.1--h577a1d6_1':
-        'biocontainers/gzrt:0.9.1--h577a1d6_1' }"
+        'https://depot.galaxyproject.org/singularity/gzrt:0.8--h577a1d6_1':
+        'biocontainers/gzrt:0.8--h577a1d6_1' }"
 
     input:
     tuple val(meta), path(fastqgz)
