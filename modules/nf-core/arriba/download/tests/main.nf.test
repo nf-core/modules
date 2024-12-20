@@ -4,7 +4,6 @@ nextflow_process {
     name "Test Process ARRIBA_DOWNLOAD"
     script "../main.nf"
     process "ARRIBA_DOWNLOAD"
-    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -12,6 +11,7 @@ nextflow_process {
     tag "arriba/download"
 
     test("test-arriba-download") {
+        config "./nextflow.config"
         when {
             process {
                 """
@@ -30,6 +30,7 @@ nextflow_process {
     }
 
     test("download - stub") {
+        config "./nextflow.config"
 
         options "-stub"
 
