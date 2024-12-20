@@ -59,7 +59,7 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
             meta_map = meta_input + [ 'method': analysis_method ]
             [ meta_map, input ]
         contrasts_and_samples:
-            meta_map = mergeMaps(meta_contrasts, meta_exp) + [ 'method': analysis_method, 'variable': variable ]  // make sure variable is in the meta
+            meta_map = mergeMaps(meta_contrasts, meta_exp) + [ 'method': analysis_method, 'variable': variable, 'reference': reference, 'target': target ]  // make sure variable, reference, target are in the meta
             [ meta_map, samplesheet ]
         features:
             meta_map = meta_exp + [ 'method': analysis_method ]
@@ -72,11 +72,6 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
         .combine(ch_samplesheet.join(ch_featuresheet))
         .combine(ch_contrasts)
         .multiMap(criteria)
-
-    ch_preinput_for_gsea.input.view()
-    ch_preinput_for_gsea.contrasts_and_samples.view()
-    ch_preinput_for_gsea.features.view()
-
 
     // ----------------------------------------------------
     // Perform enrichment analysis with gprofiler2
@@ -114,13 +109,13 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
 
     // TODO: update CUSTOM_TABULARTOGSEACLS for value channel input per new
     // guidlines (rather than meta usage employed here)
-    CUSTOM_TABULARTOGSEAGCT(ch_preinput_for_gsea.input)
+    CUSTOM_TABULARTOGSEAGCT(ch_preinput_for_gsea.input.unique())
 
-    CUSTOM_TABULARTOGSEACLS(ch_preinput_for_gsea.contrasts_and_samples)
+    CUSTOM_TABULARTOGSEACLS(ch_preinput_for_gsea.contrasts_and_samples.unique())
 
     CUSTOM_TABULARTOGSEACHIP(
-        ch_preinput_for_gsea.features,
-        ch_preinput_for_gsea.features_cols
+        ch_preinput_for_gsea.features.unique(),
+        ch_preinput_for_gsea.features_cols.unique()
     )
 
     if (ch_gene_sets == [[], []]) {
@@ -130,23 +125,19 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     }
 
     ch_input_for_gsea = CUSTOM_TABULARTOGSEAGCT.out.gct
-        .map{ it.tail() }
         .combine(CUSTOM_TABULARTOGSEACLS.out.cls)
-        .map{ tuple(it[1], it[0], it[2]) }
+        .map { meta_gct, gct, meta_cls, cls ->
+            [meta_cls, gct, cls]   // keep meta_cls, which is the one containing contrast info, etc
+        }
         .combine( ch_gene_sets_to_gsea )
+
+    ch_input_for_gsea.view()
 
     GSEA_GSEA(
         ch_input_for_gsea,
         ch_input_for_gsea.map{ tuple(it[0].reference, it[0].target) },
-        CUSTOM_TABULARTOGSEACHIP.out.chip.first()
+        CUSTOM_TABULARTOGSEACHIP.out.chip.map{meta, chip -> chip}.first()
     )
-
-    ch_report_gsea = GSEA_GSEA.out.report_tsvs_ref
-                        .join(GSEA_GSEA.out.report_tsvs_target)
-    ch_versions_gsea = CUSTOM_TABULARTOGSEAGCT.out.versions
-                        .mix(CUSTOM_TABULARTOGSEACLS.out.versions)
-                        .mix(CUSTOM_TABULARTOGSEACHIP.out.versions)
-                        .mix(GSEA_GSEA.out.versions)
 
     // ----------------------------------------------------
     // Perform enrichment analysis with GREA
@@ -164,11 +155,15 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     report_gprofiler2 = GPROFILER2_GOST.out.plot_html.map{it[1]}.flatMap().toList()
                             .combine(GPROFILER2_GOST.out.all_enrich.map{it[1]}.flatMap().toList())
                             .combine(GPROFILER2_GOST.out.sub_enrich.map{it[1]}.flatMap().toList())
-    report_gsea       = ch_report_gsea
+    report_gsea       = GSEA_GSEA.out.report_tsvs_ref
+                            .join(GSEA_GSEA.out.report_tsvs_target)
     report_grea       = PROPR_GREA.out.results
 
     // tool versions
     versions          = GPROFILER2_GOST.out.versions
-                            .mix(ch_versions_gsea)
+                            .mix(CUSTOM_TABULARTOGSEAGCT.out.versions)
+                            .mix(CUSTOM_TABULARTOGSEACLS.out.versions)
+                            .mix(CUSTOM_TABULARTOGSEACHIP.out.versions)
+                            .mix(GSEA_GSEA.out.versions)
                             .mix(PROPR_GREA.out.versions)
 }
