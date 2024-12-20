@@ -16,6 +16,7 @@ nextflow_workflow {
 
     test("deseq2 - mouse - basic") {
         config './deseq2_basic.config'
+        tag "deseq2"
 
         when {
             workflow {
@@ -73,6 +74,7 @@ nextflow_workflow {
 
     test("limma - basic - microarray") {
         config './limma_basic_microarray.config'
+        tag "limma"
 
         setup {
             run("UNTAR") {
@@ -155,6 +157,7 @@ nextflow_workflow {
 
     test("limma - voom") {
         config './limma_voom.config'
+        tag "limma_voom"
 
         when {
             workflow {
@@ -211,6 +214,7 @@ nextflow_workflow {
 
     test("deseq2 - with transcript lengths") {
         config './deseq2_basic.config'
+        tag "deseq2_with_lengths"
 
         when {
             workflow {
@@ -302,7 +306,7 @@ nextflow_workflow {
                     file(testData.expression_test_data_dir + testData.abundance_file),
                     'propd',  // analysis method
                     1.5,      // FC threshold
-                    50        // weighted connectivity threshold
+                    100       // weighted connectivity threshold
                 ])
 
                 input[0] = ch_input
@@ -328,6 +332,7 @@ nextflow_workflow {
 
     test("deseq2 and limma - mouse - basic") {
         config './deseq2_limmavoom_basic.config'
+        tag "deseq2+limmavoom"
 
         when {
             workflow {
@@ -439,7 +444,7 @@ nextflow_workflow {
                         file(testData.expression_test_data_dir + testData.abundance_file),
                         'propd',
                         1.5,       // FC threshold
-                        50         // weighted connectivity threshold
+                        100        // weighted connectivity threshold
                     ]
                 )
 
@@ -469,6 +474,7 @@ nextflow_workflow {
 
     test("stub") {
         config './deseq2_basic.config'
+        tag "stub"
 
         options "-stub"
 
