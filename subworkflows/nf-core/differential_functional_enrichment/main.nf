@@ -45,6 +45,9 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
 
     // Convert empty lists into channels
     // so that they can be manipulated (eg. combine, join)
+    // TODO need to fix the modules that don't have meta as input,
+    // once they are fixed, we don't have to deal with the empty input situation for those modules,
+    // then we can uniformly provide empty list channels, and remove this part
 
     if (ch_contrasts == [[], [], [], []]) { ch_contrasts = Channel.of([[], [], [], []]) }
     if (ch_samplesheet == [[], []]) { ch_samplesheet = Channel.of([[], []]) }
@@ -107,6 +110,10 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     // Perform enrichment analysis with GSEA
     // ----------------------------------------------------
 
+    // NOTE that GCT input can be more than 1, if they come from different tools (eg. limma, deseq2)
+    // CLS input can be as many as combinations of input x contrasts
+    // Whereas features can be only one file.
+
     // TODO: update CUSTOM_TABULARTOGSEACLS for value channel input per new
     // guidlines (rather than meta usage employed here)
     CUSTOM_TABULARTOGSEAGCT(ch_preinput_for_gsea.input.unique())
@@ -124,6 +131,8 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
         ch_gene_sets_to_gsea = ch_gene_sets.map{ meta, gmt -> gmt }
     }
 
+    // NOTE here we combine gct with cls directly. But for the future when contrasts channel are more complex,
+    // and contain information about model/method/etc, we might need combining based on certain criteria.
     ch_input_for_gsea = CUSTOM_TABULARTOGSEAGCT.out.gct
         .combine(CUSTOM_TABULARTOGSEACLS.out.cls)
         .map { meta_gct, gct, meta_cls, cls ->
