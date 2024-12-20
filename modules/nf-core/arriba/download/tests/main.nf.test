@@ -4,6 +4,7 @@ nextflow_process {
     name "Test Process ARRIBA_DOWNLOAD"
     script "../main.nf"
     process "ARRIBA_DOWNLOAD"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
