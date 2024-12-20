@@ -104,7 +104,7 @@ output:
           e.g. [ id:'reference' ]
     - '*.spa':
         type: file
-        description: Text file containing the top scoring references.
+        description: Text file containing the top scoring references. Note that kma (v1.4.15) can only use spare alignment if the kma index was also build with the sparse option.
         pattern: "*.{spa}"
   - versions:
     - versions.yml:

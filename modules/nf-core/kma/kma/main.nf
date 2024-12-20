@@ -4,8 +4,8 @@ process KMA {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/kma:1.4.15--he4a0461_0' :
-        'biocontainers/kma:1.4.15--he4a0461_0' }"
+        'https://depot.galaxyproject.org/singularity/kma:1.4.15--h577a1d6_1' :
+        'biocontainers/kma:1.4.15--h577a1d6_1' }"
 
     input:
     tuple val(meta) , path(reads)
@@ -27,7 +27,7 @@ process KMA {
 
     script:
     def args            = task.ext.args ?: ''
-    def prefix          = task.ext.prefix ?: "${meta.id}.${meta2.id}.kma"
+    def prefix          = task.ext.prefix ?: "${meta.id}.${meta2.id}"
     def input_style     = interleaved ? "-int ${reads}" : "-ipe ${reads}"
     def create_mat      = mat_format ? "-matrix" : ''
     """
@@ -47,17 +47,27 @@ process KMA {
     """
 
     stub:
-    def prefix      = task.ext.prefix ?: "${meta.id}.${meta2.id}.kma"
-    def create_mat  = mat_format ? "touch ${prefix}.mat.gz" : ''
-    def create_spa  = task.ext.args.contains('-Sparse') ? "touch ${prefix}.spa" : ''
-    """
-    touch ${prefix}.res \\
-    touch ${prefix}.fsa \\
-    touch ${prefix}.aln \\
-    touch ${prefix}.frag.gz \\
-    ${create_mat} \\
-    ${create_spa}
+    def prefix      = task.ext.prefix ?: "${meta.id}.${meta2.id}"
+    def create_spa  = task.ext.args.contains('-Sparse')
 
+    if ( create_spa )
+        """
+        touch ${prefix}.spa
+        """
+    else
+        """
+        touch ${prefix}.res \\
+        touch ${prefix}.fsa \\
+        touch ${prefix}.aln \\
+        touch ${prefix}.frag.gz
+        """
+
+    if ( mat_format )
+        """
+        touch ${prefix}.mat.gz
+        """
+
+    """
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         kma: \$(echo \$(kma -v 2>&1) | sed 's/^KMA-\$//')
