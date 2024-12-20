@@ -43,12 +43,27 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
         [ meta_new, file ]
     }
 
-    // Convert empty lists into channels
-    // so that they can be manipulated (eg. combine, join)
-    // TODO need to fix the modules that don't have meta as input,
-    // once they are fixed, we don't have to deal with the empty input situation for those modules,
-    // then we can uniformly provide empty list channels, and remove this part
+    // Deal with empty optional inputs
+    // TODO we can remove this part after fixing the modules that don't have meta as input
+    // To understand why this is needed now, check example:
+    //      a = Channel.of([[], []])
+    //      b = Channel.of([])
+    //      a.collect().view()
+    //      b.collect().view()
 
+    if (ch_gene_sets == [[], []]) {
+        ch_gene_sets_without_meta = []
+    } else {
+        ch_gene_sets = ch_gene_sets.collect()
+        ch_gene_sets_without_meta = ch_gene_sets.map{ meta, gmt -> gmt }.collect()
+    }
+    if (ch_background == [[], []]) {
+        ch_background_without_meta = []
+    } else {
+        ch_background = ch_background.collect()
+        ch_background_without_meta = ch_background.map{ meta, background -> background }.collect()
+    }
+    // convert into channels, so that they can be manipulated (eg.combine, join)
     if (ch_contrasts == [[], [], [], []]) { ch_contrasts = Channel.of([[], [], [], []]) }
     if (ch_samplesheet == [[], []]) { ch_samplesheet = Channel.of([[], []]) }
     if (ch_featuresheet == [[], [], [], []]) { ch_featuresheet = Channel.of([[], [], [], []]) }
@@ -80,30 +95,10 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     // Perform enrichment analysis with gprofiler2
     // ----------------------------------------------------
 
-    // deal with situations when some channels are empty
-    // TODO modify the GPROFILER2_GOST module to take input files with meta values
-    // maybe after the modification, we don't need to hardcode when empty channels are provided
-    // and by then we can uniformly set them at the top data manipulation section, instead of tool-specific
-    // To understand why this is a problem, check example:
-    //      a = Channel.of([[], []])
-    //      b = Channel.of([])
-    //      a.collect().view()
-    //      b.collect().view()
-    if (ch_gene_sets == [[], []]) {
-        ch_gene_sets_to_gprofiler2 = []
-    } else {
-        ch_gene_sets_to_gprofiler2 = ch_gene_sets.map{ meta, gmt -> gmt }.collect()
-    }
-    if (ch_background == [[], []]) {
-        ch_background_to_gprofiler2 = []
-    } else {
-        ch_background_to_gprofiler2 = ch_background.map{ meta, background -> background }.collect()
-    }
-
     GPROFILER2_GOST(
         ch_input.filter{ it[0].method == 'gprofiler2' },
-        ch_gene_sets_to_gprofiler2,
-        ch_background_to_gprofiler2
+        ch_gene_sets_without_meta,
+        ch_background_without_meta
     )
 
     // ----------------------------------------------------
@@ -125,22 +120,14 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
         ch_preinput_for_gsea.features_cols.unique()
     )
 
-    if (ch_gene_sets == [[], []]) {
-        ch_gene_sets_to_gsea = []
-    } else {
-        ch_gene_sets_to_gsea = ch_gene_sets.map{ meta, gmt -> gmt }
-    }
-
-    // NOTE here we combine gct with cls directly. But for the future when contrasts channel are more complex,
-    // and contain information about model/method/etc, we might need combining based on certain criteria.
+    // NOTE here we combine gct with cls directly. But in the future when contrasts channel are more complex
+    // and contain information about model/method/etc, we might need to combine based on certain criteria.
     ch_input_for_gsea = CUSTOM_TABULARTOGSEAGCT.out.gct
         .combine(CUSTOM_TABULARTOGSEACLS.out.cls)
         .map { meta_gct, gct, meta_cls, cls ->
             [meta_cls, gct, cls]   // keep meta_cls, which is the one containing contrast info, etc
         }
-        .combine( ch_gene_sets_to_gsea )
-
-    ch_input_for_gsea.view()
+        .combine( ch_gene_sets_without_meta )
 
     GSEA_GSEA(
         ch_input_for_gsea,
@@ -152,11 +139,9 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     // Perform enrichment analysis with GREA
     // ----------------------------------------------------
 
-    if (ch_gene_sets != [[], []]) { ch_gene_sets_to_grea = ch_gene_sets.collect() }
-
     PROPR_GREA(
         ch_input.filter{ it[0].method == 'grea' },
-        ch_gene_sets_to_grea
+        ch_gene_sets
     )
 
     emit:
