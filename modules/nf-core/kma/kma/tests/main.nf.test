@@ -4,15 +4,21 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "kma"
+    tag "kma/index"
     tag "kma/kma"
 
     script "../main.nf"
     process "KMA_KMA"
+    config "./nextflow.config"
+
 
     setup {
         run("KMA_INDEX") {
             script "../../index/main.nf"
-            config "nextflow.config"
+
+            params {
+                module_args = '-Sparse'
+            }
 
             process {
                 """
@@ -25,10 +31,15 @@ nextflow_process {
         }
     }
 
-/*
-    test("sarscov2 - fasta") {
+
+    test("sarscov2 - fasta - sparse") {
 
         when {
+
+            params{
+                module_args = '-Sparse'
+            }
+
             process {
                 """
                 input[0] = [
@@ -37,7 +48,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
-                input[1] = KMA_INDEX.out.db
+                input[1] = KMA_INDEX.out.index
                 input[2] = false
                 input[3] = false
                 ]
@@ -53,7 +64,8 @@ nextflow_process {
         }
 
     }
-*/
+
+}
 
 /*
     test("sarscov2 - fasta - stub") {
@@ -80,5 +92,3 @@ nextflow_process {
 
     }
 */
-
-}
