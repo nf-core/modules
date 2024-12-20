@@ -1,55 +1,158 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "differential_functional_enrichment"
-## TODO nf-core: Add a description of the subworkflow and list keywords
-description: Sort SAM/BAM/CRAM file
+description: Run functional analysis on differential abundance analysis output
 keywords:
-  - sort
-  - bam
-  - sam
-  - cram
-## TODO nf-core: Add a list of the modules and/or subworkflows used in the subworkflow
+  - functional analysis
+  - functional enrichment
+  - differential
+  - over-representation analysis
 components:
-  - samtools/sort
-  - samtools/index
-## TODO nf-core: List all of the channels used as input with a description and their structure
+  - gprofiler2/gost
+  - gsea/gsea
+  - propr/grea
 input:
-  - ch_bam:
-      type: file
+  - ch_input:
       description: |
-        The input channel containing the BAM/CRAM/SAM files
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.{bam/cram/sam}"
-## TODO nf-core: List all of the channels used as output with a descriptions and their structure
+        Channel with the input data for functional analysis.
+        Note that the input file can be the results from differential abundance analysis,
+        or normalized abundance.
+      structure:
+        - meta_input:
+            type: map
+            description: Metadata map
+        - input:
+            type: file
+            description: Input file
+        - analysis_method:
+            type: value
+            description: Analysis method (gprofiler2, gsea, or grea)
+  - ch_gene_sets:
+      description: |
+        Channel with the gene sets file.
+        If only gprofiler2 is required to run, and no gene sets file is available,
+        one can provide this as a empty list [[], []], then gprofiler2 will automatically
+        parse a gene sets database based on organism/token information.
+      structure:
+        - meta_gmt:
+            type: map
+            description: Metadata map
+        - gmt:
+            type: file
+            description: Gene sets File
+            pattern: "*.gmt"
+  - ch_background:
+      description: |
+        Channel with the file specifying the background genes.
+        This is only needed to run gprofiler2. If not, empty list [[],[]] can be provided instead.
+      structure:
+        - meta_background:
+            type: map
+            description: Metadata map
+        - background:
+            type: file
+            description: Background genes file
+  - ch_contrasts:
+      description: Channel with contrast information
+      structure:
+        - meta_contrast:
+            type: map
+            description: Contrast metadata map
+        - contrast_variable:
+            type: value
+            description: Contrast variable
+        - reference:
+            type: value
+            description: Reference level
+        - target:
+            type: value
+            description: Target level
+  - ch_samplesheet:
+      description: Channel with sample information
+      structure:
+        - meta_exp:
+            type: map
+            description: Experiment metadata map
+        - samplesheet:
+            type: file
+            description: Sample information file
+  - ch_featuresheet:
+      description: Channel with features information
+      structure:
+        - meta_exp:
+            type: map
+            description: Experiment metadata map
+        - features:
+            type: file
+            description: Features information file
+        - features_id:
+            type: value
+            description: Features id column
+        - features_symbol:
+            type: value
+            description: Features symbol column
+
 output:
-  - bam:
-      type: file
-      description: |
-        Channel containing BAM files
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.bam"
-  - bai:
-      type: file
-      description: |
-        Channel containing indexed BAM (BAI) files
-        Structure: [ val(meta), path(bai) ]
-      pattern: "*.bai"
-  - csi:
-      type: file
-      description: |
-        Channel containing CSI files
-        Structure: [ val(meta), path(csi) ]
-      pattern: "*.csi"
   - versions:
       type: file
       description: |
         File containing software versions
         Structure: [ path(versions.yml) ]
       pattern: "versions.yml"
+  - report_gprofiler2:
+      description: |
+        Channel containing all the output from gprofiler2 needed
+        for further reporting.
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - plot_html:
+            type: file
+            description: Channel containing HTML file; interactive Manhattan plot of all enriched pathways
+            pattern: "*gprofiler2.*gostplot.html"
+        - all_enrich:
+            type: file
+            description: |
+              TSV file; table listing all enriched pathways that were found.
+              This table will always be created (empty if no enrichment was found),
+              the other output files are only created if enriched pathways were found.
+            pattern: "*gprofiler2.*all_enriched_pathways.tsv"
+        - sub_enrich:
+            type: file
+            description: |
+              TSV file; table listing enriched pathways that were found from one particular source
+            pattern: "*gprofiler2.*sub_enriched_pathways.tsv"
+  - report_gsea:
+      description: |
+          Channel containing all the output from gsea needed
+          for further reporting.
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - reports_ref:
+            type: file
+            description: Main TSV results report file for the reference group.
+            pattern: "gsea_report_for_reference*.tsv"
+        - reports_target:
+            type: file
+            description: Main TSV results report file for the target group.
+            pattern: "gsea_report_for_target*.tsv"
+  - report_grea:
+      description: |
+          Channel containing all the output from grea needed
+          for further reporting.
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - results:
+            type: file
+            description: Main TSV results file.
+            pattern: "*.grea.tsv"
 authors:
   - "@suzannejin"
   - "@bjlang"
   - "@araiz2001"
-  - "@pinin4fjords"
 maintainers:
   - "@suzannejin"
   - "@pinin4fjords"
