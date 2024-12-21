@@ -1,5 +1,3 @@
-import groovy.json.JsonSlurper
-
 process CHECKM2_DATABASEDOWNLOAD {
     label 'process_single'
 
@@ -21,7 +19,7 @@ process CHECKM2_DATABASEDOWNLOAD {
     script:
     def args        = task.ext.args ?: ''
     zenodo_id       = db_zenodo_id ?: 5571251  // Default to latest version if no ID provided
-    api_data        = (new JsonSlurper()).parseText(file("https://zenodo.org/api/records/${zenodo_id}").text)
+    api_data        = (new groovy.json.JsonSlurper()).parseText(file("https://zenodo.org/api/records/${zenodo_id}").text)
     db_version      = api_data.metadata.version
     checksum        = api_data.files[0].checksum.replaceFirst(/^md5:/, "md5=")
     meta            = [id: 'checkm2_db', version: db_version]
