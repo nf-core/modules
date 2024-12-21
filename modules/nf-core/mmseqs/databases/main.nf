@@ -28,7 +28,6 @@ process MMSEQS_DATABASES {
         ${prefix}/database \\
         tmp/ \\
         --threads ${task.cpus} \\
-        --compressed 1 \\
         ${args}
 
     cat <<-END_VERSIONS > versions.yml
