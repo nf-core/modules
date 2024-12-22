@@ -28,6 +28,7 @@ process GZRT {
     gzrecover -p ${fastqgz} | gzip > ${prefix}.fastq.gz
     if [ -e "${prefix}.fastq.gz" ] && [ ! -s "${prefix}.fastq.gz" ]; then
         echo "" | gzip > ${prefix}.fastq.gz
+    fi
 
     soft_line="${task.process}"
     ver_line="gzrt: \$(gzrecover -V |& sed '1!d ; s/gzrecover //')"
