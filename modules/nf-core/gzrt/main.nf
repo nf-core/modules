@@ -4,8 +4,8 @@ process GZRT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gzrt:0.8--h577a1d6_1':
-        'biocontainers/gzrt:0.8--h577a1d6_1' }"
+        'https://depot.galaxyproject.org/singularity/gzrt:0.9.1--h577a1d6_1':
+        'biocontainers/gzrt:0.9.1--h577a1d6_1' }"
 
     input:
     tuple val(meta), path(fastqgz)
@@ -26,6 +26,8 @@ process GZRT {
     if ("${fastqgz}" == "${prefix}.fastq.gz") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     gzrecover -p ${fastqgz} | gzip > ${prefix}.fastq.gz
+    if [ -e "${prefix}.fastq.gz" ] && [ ! -s "${prefix}.fastq.gz" ]; then
+        echo "" | gzip > ${prefix}.fastq.gz
 
     soft_line="${task.process}"
     ver_line="gzrt: \$(gzrecover -V |& sed '1!d ; s/gzrecover //')"

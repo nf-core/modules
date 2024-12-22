@@ -8,14 +8,15 @@ nextflow_process {
     tag "modules_nfcore"
     tag "gzrt"
 
-    test("Run gzrt on 30 paired-end reads - fastq.gz") {
+    test("Run gzrt on test2_1_corrupted - fastq.gz") {
 
         when {
             process {
+                // file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_1_corrupted_10kb.fastq.gz', checkIfExists: true)
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_corrupted_30reads_R1.fastq.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_1.fastq.gz', checkIfExists: true)
                 ]
                 """
             }
@@ -30,7 +31,7 @@ nextflow_process {
 
     }
 
-    test("Run gzrt on 30 paired-end reads - fastq.gz - stub") {
+    test("Run gzrt on test2_1_corrupted - fastq.gz - stub") {
         options "-stub"
 
         when {
@@ -38,7 +39,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_corrupted_30reads_R1.fastq.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_1.fastq.gz', checkIfExists: true)
                 ]
                 """
             }
