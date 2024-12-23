@@ -8,27 +8,49 @@ nextflow_process {
     tag "modules_nfcore"
     tag "gzrt"
 
-    test("Run gzrt on test2_1_corrupted - fastq.gz") {
-
+    test("Run gzrt on test2_1_corrupted single-end - fastq.gz") {
         when {
             process {
                 // file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_1_corrupted_10kb.fastq.gz', checkIfExists: true)
                 """
-                input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                input[0] =
+                [
+                    [ id:'test-single', single_end:true ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_1.fastq.gz', checkIfExists: true)
                 ]
                 """
             }
         }
-
         then {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
+    }
 
+    test("Run gzrt on test2_1_corrupted paired-end - fastq.gz") {
+        when {
+            process {
+                // file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_1_corrupted_10kb.fastq.gz', checkIfExists: true)
+                """
+                input[0] =
+                [
+                    [ id:'test-paired', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
     }
 
     test("Run gzrt on test2_1_corrupted - fastq.gz - stub") {
