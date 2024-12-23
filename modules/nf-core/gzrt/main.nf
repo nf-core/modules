@@ -11,14 +11,15 @@ process GZRT {
     tuple val(meta), path(fastqgz)
 
     output:
-    tuple val(meta), path("${prefix}(?:_1|_2)?.fastq.gz"), emit: recovered
-    path "versions.yml"                                  , emit: versions
+    tuple val(meta), path("${prefix}*.fastq.gz"), emit: recovered
+    path "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    prefix = task.ext.prefix ?: "${meta.id}_recovered"
+    def args = task.ext.args ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}_recovered"
     fastqgz.each { file ->
         if (file.extension != "gz") {
             error "GZRT works with .gz files only. Offending file: ${file}"
@@ -32,14 +33,14 @@ process GZRT {
 
     """
     if [ "$meta.single_end" == true ]; then
-        gzrecover -p ${fastqgz} | gzip > ${prefix}.fastq.gz
+        gzrecover ${args} -p ${fastqgz} | gzip > ${prefix}.fastq.gz
 
         if [ -e "${prefix}.fastq.gz" ] && [ ! -s "${prefix}.fastq.gz" ]; then
             echo "" | gzip > ${prefix}.fastq.gz
         fi
     else
-        gzrecover -p ${fastqgz[0]} | gzip > ${prefix}_1.fastq.gz
-        gzrecover -p ${fastqgz[1]} | gzip > ${prefix}_2.fastq.gz
+        gzrecover ${args} -p ${fastqgz[0]} | gzip > ${prefix}_1.fastq.gz
+        gzrecover ${args} -p ${fastqgz[1]} | gzip > ${prefix}_2.fastq.gz
 
         if [ -e "${prefix}_1.fastq.gz" ] && [ ! -s "${prefix}_1.fastq.gz" ]; then
             echo "" | gzip > ${prefix}_1.fastq.gz
