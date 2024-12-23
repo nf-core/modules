@@ -10,6 +10,7 @@ nextflow_process {
     tag "pints"
     tag "pints/caller"
 
+    // Should fail if more than 1 bam is provided
     test("groHMM data - [bam, bam], chr") {
 
         when {
@@ -30,17 +31,41 @@ nextflow_process {
 
         then {
             assertAll(
+                { assert process.failed },
+                { assert process.exitStatus == 1 },
+            )
+        }
+    }
+
+    test("groHMM data - [bam], chr") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file("https://raw.githubusercontent.com/Kraus-Lab/groHMM/master/inst/extdata/S40mR1.bam", checkIfExists: true)
+                    ],
+                    "chr7",
+                ]
+                input[1] = "GROseq"
+                """
+            }
+        }
+
+        then {
+            assertAll(
                 { assert process.success },
                 { assert snapshot(
                     process.out.divergent_TREs,
                     process.out.bidirectional_TREs,
-                    file(process.out.unidirectional_TREs.get(0).get(1).get(0)).name,
+                    file(process.out.unidirectional_TREs.get(0).get(1)).name,
                     path(process.out.versions.get(0)).yaml,
                 ).match("bams")
                 },
             )
         }
-
     }
 
     test("groHMM data - [bam], no chr") {

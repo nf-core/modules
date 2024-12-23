@@ -9,13 +9,13 @@ process PINTS_CALLER {
         'community.wave.seqera.io/library/pybedtools_bedtools_htslib_pip_pypints:39699b96998ec5f6' }"
 
     input:
-    tuple val(meta), path(bams), val(chr_name)
+    tuple val(meta), path(bam, arity: '1'), val(chr_name)
     val assay_type
 
     output:
-    tuple val(meta), path("*_divergent_peaks.bed")     , optional:true, emit: divergent_TREs
-    tuple val(meta), path("*_bidirectional_peaks.bed") , optional:true, emit: bidirectional_TREs
-    tuple val(meta), path("*_unidirectional_peaks.bed"), optional:true, emit: unidirectional_TREs
+    tuple val(meta), path("*_1_divergent_peaks.bed")     , optional:true, emit: divergent_TREs
+    tuple val(meta), path("*_1_bidirectional_peaks.bed") , optional:true, emit: bidirectional_TREs
+    tuple val(meta), path("*_1_unidirectional_peaks.bed"), optional:true, emit: unidirectional_TREs
     tuple val(meta), path("peakcalling_*.log")                        , emit: peakcalling_log
     path  "versions.yml"                                              , emit: versions
 
@@ -32,7 +32,7 @@ process PINTS_CALLER {
     def chr = chr_name ? "--chromosome-start-with $chr_name" : ''
     """
     pints_caller \\
-        --bam-file $bams \\
+        --bam-file $bam \\
         --save-to . \\
         --file-prefix $prefix \\
         --thread $task.cpus \\
