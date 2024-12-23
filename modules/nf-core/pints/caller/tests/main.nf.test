@@ -10,7 +10,7 @@ nextflow_process {
     tag "pints"
     tag "pints/caller"
 
-    test("groHMM data - [bam, bam], fasta") {
+    test("groHMM data - [bam, bam], chr") {
 
         when {
             process {
@@ -21,7 +21,7 @@ nextflow_process {
                         file("https://raw.githubusercontent.com/Kraus-Lab/groHMM/master/inst/extdata/S0mR1.bam", checkIfExists: true),
                         file("https://raw.githubusercontent.com/Kraus-Lab/groHMM/master/inst/extdata/S40mR1.bam", checkIfExists: true)
                     ],
-                    [],
+                    "chr7",
                 ]
                 input[1] = "GROseq"
                 """
@@ -43,14 +43,16 @@ nextflow_process {
 
     }
 
-    test("groHMM data - [bam], fasta") {
+    test("groHMM data - [bam], no chr") {
 
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file("https://raw.githubusercontent.com/Kraus-Lab/groHMM/master/inst/extdata/S0mR1.bam", checkIfExists: true),
+                    [
+                        file("https://raw.githubusercontent.com/Kraus-Lab/groHMM/master/inst/extdata/S0mR1.bam", checkIfExists: true)
+                    ],
                     [],
                 ]
                 input[1] = "GROseq"

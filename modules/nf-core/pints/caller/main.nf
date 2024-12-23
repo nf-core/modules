@@ -1,6 +1,6 @@
 process PINTS_CALLER {
-    tag "$meta.id"
-    label 'process_medium'
+    tag "$meta.id" + "${chr_name ? ' | ' + chr_name : ''}"
+    label 'process_high'
 
     conda "${moduleDir}/environment.yml"
     // NOTE Stopped publishing at 1.1.9 https://quay.io/repository/biocontainers/pypints?tab=tags
@@ -9,7 +9,7 @@ process PINTS_CALLER {
         'community.wave.seqera.io/library/pybedtools_bedtools_htslib_pip_pypints:39699b96998ec5f6' }"
 
     input:
-    tuple val(meta), path(bams), path(bais)
+    tuple val(meta), path(bams), val(chr_name)
     val assay_type
 
     output:
@@ -24,11 +24,12 @@ process PINTS_CALLER {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}" + (chr_name ? '_' + chr_name : '_all')
     // TODO handle bigwigs
     // def input_type  = ("${input[0]}".endsWith(".bam")) ? "--bam-file $input" :
     //                    ("$input".contains(".bw")) ? "--bw-pl ${input[0]} --bw-mn ${input[1]}" :
     //                    error "Please use bam or BigWig files"
+    def chr = chr_name ? "--chromosome-start-with $chr_name" : ''
     """
     pints_caller \\
         --bam-file $bams \\
@@ -37,6 +38,7 @@ process PINTS_CALLER {
         --thread $task.cpus \\
         --dont-check-updates \\
         --exp-type $assay_type \\
+        $chr \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
