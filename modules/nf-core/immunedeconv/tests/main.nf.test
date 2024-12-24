@@ -1,0 +1,87 @@
+nextflow_process {
+
+    name "Test Process IMMUNEDECONV"
+    script "../main.nf"
+    process "IMMUNEDECONV"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "immunedeconv"
+
+    test("test_immunedeconv_bulkmat") {
+
+        when {
+            process {
+                """
+                input[0] = [ [id:"immunedeconv"], file('https://raw.githubusercontent.com/omnideconv/immunedeconv/refs/heads/master/tests/testthat/bulk_mat.tsv', checkIfExists: true), "quantiseq", "deconvolute" ]
+                input[1] = "gene_symbol"
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+    }
+
+    test("test_immunedeconv_custom_data_mouse") {
+
+        when {
+            process {
+                """
+                input[0] = [ [id:"immunedeconv"], file('https://github.com/omnideconv/immunedeconv/raw/refs/heads/master/tests/testthat/bulk_mat_mouse.tsv', checkIfExists: true), "mmcp_counter", "deconvolute_mouse" ]
+                input[1] = "gene_symbol"                
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+    }
+
+    test("test_immunedeconv_bulkmat_mouse") {
+
+        when {
+            process {
+                """
+                input[0] = [ [id:"immunedeconv"], file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true), "mmcp_counter", "deconvolute_mouse" ]
+                input[1] = "gene_name"                
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+    }
+
+    test("test_immunedeconv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [id:"immunedeconv"], file('https://raw.githubusercontent.com/omnideconv/immunedeconv/refs/heads/master/tests/testthat/bulk_mat.tsv', checkIfExists: true), "quantiseq", "deconvolute" ]
+                input[1] = "gene_symbol"                
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+    }
+}
