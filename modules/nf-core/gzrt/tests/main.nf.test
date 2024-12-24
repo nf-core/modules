@@ -11,12 +11,11 @@ nextflow_process {
     test("Run gzrt on test2_1_corrupted single-end - fastq.gz") {
         when {
             process {
-                // file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_1_corrupted_10kb.fastq.gz', checkIfExists: true)
                 """
                 input[0] =
                 [
                     [ id:'test-single', single_end:true ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_1.fastq.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_1_corrupted_10kb.fastq.gz', checkIfExists: true)
                 ]
                 """
             }
@@ -29,16 +28,15 @@ nextflow_process {
         }
     }
 
-    test("Run gzrt on test2_1_corrupted paired-end - fastq.gz") {
+    test("Run gzrt on test2_1_corrupted and test2_2 paired-end - fastq.gz") {
         when {
             process {
-                // file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_1_corrupted_10kb.fastq.gz', checkIfExists: true)
                 """
                 input[0] =
                 [
                     [ id:'test-paired', single_end:false ], // meta map
                     [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_1_corrupted_10kb.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_2.fastq.gz', checkIfExists: true)
                     ]
                 ]
@@ -53,20 +51,44 @@ nextflow_process {
         }
     }
 
-    test("Run gzrt on test2_1_corrupted - fastq.gz - stub") {
+    test("Run gzrt on test2_1_corrupted single-end - fastq.gz - stub") {
         options "-stub"
 
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_1.fastq.gz', checkIfExists: true)
+                    [ id:'test-single-stub', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_1_corrupted_10kb.fastq.gz', checkIfExists: true)
                 ]
                 """
             }
         }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
 
+    test("Run gzrt on test2_1_corrupted and test2_2 paired-end - fastq.gz - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] =
+                [
+                    [ id:'test-paired-stub', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_1_corrupted_10kb.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
         then {
             assertAll(
                 { assert process.success },
