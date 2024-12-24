@@ -1,49 +1,67 @@
-name: untar #TODO update for module
-description: Extract files.
+name: immunedeconv
+description: Perform immune cell deconvolution using RNA-seq data and various computational methods.
 keywords:
-  - untar
-  - uncompress
-  - extract
+  - Immune Deconvolution
+  - RNA-seq
+  - Bioinformatics Tools
+  - Computational Immunology
 tools:
-  - untar:
+  - immunedeconv:
       description: |
-        Extract tar.gz files.
-      documentation: https://www.gnu.org/software/tar/manual/
-      licence: ["GPL-3.0-or-later"]
-      identifier: ""
+        The immunedeconv R package provides functions for immune cell deconvolution
+        from RNA-seq data. It supports multiple deconvolution methods and generates
+        results as well as visualizations.
+      homepage: https://github.com/icbi-lab/immunedeconv
+      documentation: https://icbi-lab.github.io/immunedeconv/
+      licence: ["GPL-2"]
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - archive:
+          e.g. `[ id:'sample1', single_end:false ]`
+    - input_file:
         type: file
-        description: File to be untar
-        pattern: "*.{tar}.{gz}"
+        description: Input matrix with genes in rows and samples in columns.
+        pattern: "*.tsv"
+    - method:
+        type: string
+        description: The deconvolution method to use (e.g., 'CIBERSORT', 'EPIC', 'xCell').
+    - function:
+        type: string
+        description: The specific function from immunedeconv to execute for analysis.
+  - - gene_symbol_col:
+        type: string
+        description: Column name for gene symbols in the matrix input file.
 output:
-  - untar:
+  - deconv_table:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - $prefix:
-          type: directory
-          description: Directory containing contents of archive
-          pattern: "*/"
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.deconvolution_results.tsv":
+          type: file
+          description: Results table containing deconvolution data.
+          pattern: "*.deconvolution_results.tsv"
+  - deconv_plots:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.png":
+          type: file
+          description: Visualization plots generated during deconvolution.
+          pattern: "*.png"
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
 authors:
-  - "@joseespinosa"
-  - "@drpatelh"
-  - "@matthdsm"
-  - "@jfy133"
+  - "@grst"
+  - "@nschcolnicov"
 maintainers:
-  - "@joseespinosa"
-  - "@drpatelh"
-  - "@matthdsm"
-  - "@jfy133"
+  - "@grst"
+  - "@nschcolnicov"
