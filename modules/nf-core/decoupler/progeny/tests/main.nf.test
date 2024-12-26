@@ -17,7 +17,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'test' ],
-                    file("https://raw.githubusercontent.com/chanzuckerberg/cellxgene/main/example-dataset/pbmc3k.h5ad", checkIfExists: true)
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/scrnaseq/h5ad/pbmc3k.h5ad", checkIfExists: true)
                 ]
                 input[1] = Channel.value("human")
                 input[2] = Channel.value("1000")
@@ -29,12 +29,12 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.dc_estimate,
-                    process.out.dc_pvals,
-                    process.out.dc_acts,
-                    process.out.dc_umap,
+                    file(process.out.dc_estimate[0][1]).name,
+                    file(process.out.dc_pvals[0][1]).name,
+                    file(process.out.dc_acts[0][1]).name,
+                    file(process.out.dc_umap[0][1]).name,
                     file(process.out.dc_violin[0][1]).name,
-                    process.out.dc_matrixplot,
+                    file(process.out.dc_matrixplot[0][1]).name,
                     process.out.versions
                 ).match() }
             )
