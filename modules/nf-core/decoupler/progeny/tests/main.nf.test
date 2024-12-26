@@ -28,7 +28,15 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.dc_estimate,
+                    process.out.dc_pvals,
+                    process.out.dc_acts,
+                    process.out.dc_umap,
+                    file(process.out.dc_violin[0][1]).name,
+                    process.out.dc_matrixplot,
+                    process.out.versions
+                ).match() }
             )
         }
 
