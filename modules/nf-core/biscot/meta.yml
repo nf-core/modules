@@ -1,0 +1,79 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "biscot"
+description: BiSCoT is a tool that aims to improve the contiguity of scaffolds and contigs generated after a Bionano scaffolding.
+keywords:
+  - assembly
+  - scaffolds
+  - contigs
+  - optical_maps
+tools:
+  - "biscot":
+      description: "Bionano SCaffolding Correction Tool"
+      homepage: "None"
+      documentation: "None"
+      tool_dev_url: "https://github.com/institut-de-genomique/biscot"
+      doi: "10.7717/peerj.10150"
+      licence: ['LGPL v2.1']
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1' ]`
+  - cmap_ref:
+      type: file
+      description: a CMAP file describing the positions of enzymatic labelling sites on the reference genome 
+      pattern: "*.cmap"
+  - cmap1:
+      type: file
+      description: a CMAP file describing the positions of enzymatic labelling sites on the contigs for enzyme 1 
+      pattern: "*.cmap"
+  - cmap2:
+      type: file
+      description: a CMAP file describing the positions of enzymatic labelling sites on the contigs for enzyme 2 
+      pattern: "*.cmap"
+  - xmap1:
+      type: file
+      description: a CMAP file describing the alignments of contig labels on the anchor for enzyme 1 
+      pattern: "*.xmap"
+  - xmap2:
+      type: file
+      description: a CMAP file describing the alignments of contig labels on the anchor for enzyme 2
+      pattern: "*.xmap"
+  - key:
+      type: file
+      description: a file describing the names of the contig maps related to their FASTA file header names
+      pattern: "*_key.txt"
+  - contigs:
+      type: file
+      description: a FASTA file with contigs used for scaffolding
+      pattern: "*.fasta"
+  - xmap_both:
+      type: file
+      description: a CMAP file describing the alignments of contig labels on the anchor for enzyme 2
+      pattern: "*.xmap"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - fasta:
+      type: file
+      description: a FASTA file containing output scaffolds
+      pattern: "*.fasta"
+  - agp:
+      type: file
+      description: a file containing the changes made to the contigs
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@itrujnara"
+maintainers:
+  - "@itrujnara"
