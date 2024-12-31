@@ -14,9 +14,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'], file("/workspace/differentialabundance/testing/run/work/2c/f6c7f62889590c3ae1b52db998728f/Condition_treatment_Control_Treated.gct", checkIfExists:true), file("/workspace/differentialabundance/testing/run/work/31/2fa7ada1c22b172fc41107b62316a0/Condition_genotype_WT_KO.cls", checkIfExists:true), file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt", checkIfExists:true)]
+                input[0] = [['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'], file("https://github.com/nf-core/test-datasets/raw/refs/heads/differentialabundance/modules_testdata/Condition_treatment_Control_Treated.gct", checkIfExists:true), file("https://github.com/nf-core/test-datasets/raw/refs/heads/differentialabundance/modules_testdata/Condition_genotype_WT_KO.cls", checkIfExists:true), file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt", checkIfExists:true)]
                 input[1] = ['WT', 'KO']
-                input[2] = file("/workspace/differentialabundance/testing/run/work/74/240694b8064e3ff37bf084b8df164c/study.chip", checkIfExists:true)
+                input[2] = file("https://github.com/nf-core/test-datasets/raw/refs/heads/differentialabundance/modules_testdata/Mus_musculus.anno.feature_metadata.chip", checkIfExists:true)
                 """
             }
         }
@@ -52,9 +52,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'], file("/workspace/differentialabundance/testing/run/work/2c/f6c7f62889590c3ae1b52db998728f/Condition_treatment_Control_Treated.gct", checkIfExists:true), file("/workspace/differentialabundance/testing/run/work/31/2fa7ada1c22b172fc41107b62316a0/Condition_genotype_WT_KO.cls", checkIfExists:true), file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt", checkIfExists:true)]
+                input[0] = [['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'], file("https://github.com/nf-core/test-datasets/raw/refs/heads/differentialabundance/modules_testdata/Condition_treatment_Control_Treated.gct", checkIfExists:true), file("https://github.com/nf-core/test-datasets/raw/refs/heads/differentialabundance/modules_testdata/Condition_genotype_WT_KO.cls", checkIfExists:true), file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt", checkIfExists:true)]
                 input[1] = ['WT', 'KO']
-                input[2] = file("/workspace/differentialabundance/testing/run/work/74/240694b8064e3ff37bf084b8df164c/study.chip", checkIfExists:true)
+                input[2] = file("https://github.com/nf-core/test-datasets/raw/refs/heads/differentialabundance/modules_testdata/Mus_musculus.anno.feature_metadata.chip", checkIfExists:true)
                 """
             }
         }
