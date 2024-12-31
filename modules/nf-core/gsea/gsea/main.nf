@@ -4,8 +4,8 @@ process GSEA_GSEA {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gsea:4.3.2--hdfd78af_0':
-        'biocontainers/gsea:4.3.2--hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0f4fe28961396eeeaa98484cb4f2db5c79abfdf117700df132312fe5c41bff81/data':
+        'community.wave.seqera.io/library/gsea:4.3.2--a7421d7504fd7c81' }"
 
     input:
     tuple val(meta), path(gct), path(cls), path(gene_sets)
@@ -13,42 +13,38 @@ process GSEA_GSEA {
     path(chip) // Optional identifier mapping file
 
     output:
-    tuple val(meta), path("*.rpt")                             , emit: rpt
-    tuple val(meta), path("*index.html")                       , emit: index_html
-    tuple val(meta), path("*heat_map_corr_plot.html")          , emit: heat_map_corr_plot
-    tuple val(meta), path("*gsea_report_for_${reference}.tsv") , emit: report_tsvs_ref
-    tuple val(meta), path("*gsea_report_for_${reference}.html"), emit: report_htmls_ref
-    tuple val(meta), path("*gsea_report_for_${target}.tsv")    , emit: report_tsvs_target
-    tuple val(meta), path("*gsea_report_for_${target}.html")   , emit: report_htmls_target
-    tuple val(meta), path("*ranked_gene_list*.tsv")            , emit: ranked_gene_list
-    tuple val(meta), path("*gene_set_sizes.tsv")               , emit: gene_set_sizes
-    tuple val(meta), path("*global_es_histogram.png")          , emit: histogram
-    tuple val(meta), path("*heat_map_1.png")                   , emit: heatmap
-    tuple val(meta), path("*pvalues_vs_nes_plot.png")          , emit: pvalues_vs_nes_plot
-    tuple val(meta), path("*ranked_list_corr_2.png")           , emit: ranked_list_corr
-    tuple val(meta), path("*butterfly_plot.png")               , emit: butterfly_plot, optional: true
-    tuple val(meta), path("*[!gene_set_size|gsea_report|ranked_gene_list]*.tsv"), emit: gene_set_tsv, optional: true
-    tuple val(meta), path("*[!gsea_report|heat_map_corr_plot|index|pos_snapshot|neg_snapshot]*.html"), emit: gene_set_html, optional: true
+    tuple val(meta), path("*.rpt")                                                                                                       , emit: rpt
+    tuple val(meta), path("*index.html")                                                                                                 , emit: index_html
+    tuple val(meta), path("*heat_map_corr_plot.html")                                                                                    , emit: heat_map_corr_plot
+    tuple val(meta), path("*gsea_report_for_${reference}.tsv")                                                                           , emit: report_tsvs_ref
+    tuple val(meta), path("*gsea_report_for_${reference}.html")                                                                          , emit: report_htmls_ref
+    tuple val(meta), path("*gsea_report_for_${target}.tsv")                                                                              , emit: report_tsvs_target
+    tuple val(meta), path("*gsea_report_for_${target}.html")                                                                             , emit: report_htmls_target
+    tuple val(meta), path("*ranked_gene_list*.tsv")                                                                                      , emit: ranked_gene_list
+    tuple val(meta), path("*gene_set_sizes.tsv")                                                                                         , emit: gene_set_sizes
+    tuple val(meta), path("*global_es_histogram.png")                                                                                    , emit: histogram
+    tuple val(meta), path("*heat_map_1.png")                                                                                             , emit: heatmap
+    tuple val(meta), path("*pvalues_vs_nes_plot.png")                                                                                    , emit: pvalues_vs_nes_plot
+    tuple val(meta), path("*ranked_list_corr_2.png")                                                                                     , emit: ranked_list_corr
+    tuple val(meta), path("*butterfly_plot.png")                                                                                         , emit: butterfly_plot, optional: true
+    tuple val(meta), path("*[!gene_set_size|gsea_report|ranked_gene_list]*.tsv")                                                         , emit: gene_set_tsv, optional: true
+    tuple val(meta), path("*[!gsea_report|heat_map_corr_plot|index|pos_snapshot|neg_snapshot]*.html")                                    , emit: gene_set_html, optional: true
     tuple val(meta), path("*[!butterfly|enplot|global_es_histogram|gset_rnd_es_dist|heat_map|pvalues_vs_nes_plot|ranked_list_corr]*.png"), emit: gene_set_heatmap, optional: true
-    tuple val(meta), path("*_snapshot*.html")                  , emit: snapshot, optional: true
-    tuple val(meta), path("*enplot*.png")                      , emit: gene_set_enplot, optional: true
-    tuple val(meta), path("*gset_rnd_es_dist*.png")            , emit: gene_set_dist, optional: true
-    tuple val(meta), path("*.zip")                             , emit: archive, optional: true
-    path "versions.yml"                                        , emit: versions
+    tuple val(meta), path("*_snapshot*.html")                                                                                            , emit: snapshot, optional: true
+    tuple val(meta), path("*enplot*.png")                                                                                                , emit: gene_set_enplot, optional: true
+    tuple val(meta), path("*gset_rnd_es_dist*.png")                                                                                      , emit: gene_set_dist, optional: true
+    tuple val(meta), path("*.zip")                                                                                                       , emit: archive, optional: true
+    path "versions.yml"                                                                                                                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def VERSION = '4.3.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
-    // Remove any trailing dots from prefix when passed as report label, so
-    // GSEA doesn't produce double-dotted top-level outputs
-    def rpt_label = prefix.replaceAll('\\.$', '')
-
+    def rpt_label = prefix.replaceAll('\\.$', '') // Remove any trailing dots from prefix when passed as report label, so GSEA doesn't produce double-dotted top-level outputs
     def chip_command = chip ? "-chip $chip -collapse true" : ''
+
     """
     # Run GSEA
 
@@ -78,9 +74,34 @@ process GSEA_GSEA {
         sed -i.bak "s/\$f/${prefix}\${f}/g" *.rpt *.html && rm *.bak
     done
 
+    #Version command uses both conda and micromamba so that it works with both wave containers and conda environments
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gsea: $VERSION
+        gsea: \$((eval "\$(micromamba shell hook --shell bash)" && micromamba activate && (conda list gsea 2>/dev/null || micromamba list 2>/dev/null | grep -i 'gsea')) | awk '\$1 == "gsea" {print \$2}')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.rpt
+    touch ${prefix}.index.html
+    touch ${prefix}.heat_map_corr_plot.html
+    touch ${prefix}.gsea_report_for_${reference}.tsv
+    touch ${prefix}.gsea_report_for_${reference}.html
+    touch ${prefix}.gsea_report_for_${target}.tsv
+    touch ${prefix}.gsea_report_for_${target}.html
+    touch ${prefix}.ranked_gene_list*.tsv
+    touch ${prefix}.gene_set_sizes.tsv
+    touch ${prefix}.global_es_histogram.png
+    touch ${prefix}.heat_map_1.png
+    touch ${prefix}.pvalues_vs_nes_plot.png
+    touch ${prefix}.ranked_list_corr_2.png
+
+    #Version command uses both conda and micromamba so that it works with both wave containers and conda environments
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gsea: \$((eval "\$(micromamba shell hook --shell bash)" && micromamba activate && (conda list gsea 2>/dev/null || micromamba list 2>/dev/null | grep -i 'gsea')) | awk '\$1 == "gsea" {print \$2}')
     END_VERSIONS
     """
 }
