@@ -33,7 +33,7 @@ process QUARTONOTEBOOK {
     script:
     // FIXME https://github.com/nf-core/modules/issues/7006
     // Exit if running this module with -profile conda / -profile mamba on ARM64
-    // This is because of issues with getting a homogenous environment across
+    // This is because of issues with getting a homogeneous environment across
     // both AMD64 and ARM64 architectures; please find more information at
     // https://github.com/nf-core/modules/pull/4876#discussion_r1483541037.
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
