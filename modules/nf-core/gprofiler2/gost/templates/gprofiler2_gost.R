@@ -449,7 +449,7 @@ gprofiler2.version <- as.character(packageVersion('gprofiler2'))
 ggplot2.version <- as.character(packageVersion('ggplot2'))
 writeLines(
     c(
-        '"\${task.process}":',
+        '"$task.process":',
         paste('    r-base:', r.version),
         paste('    r-ggplot2:', ggplot2.version),
         paste('    r-gprofiler2:', gprofiler2.version)
