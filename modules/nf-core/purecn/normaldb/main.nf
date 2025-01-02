@@ -4,8 +4,8 @@ process PURECN_NORMALDB {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/bioconductor-org.hs.eg.db_bioconductor-purecn_bioconductor-txdb.hsapiens.ucsc.hg19.knowngene_bioconductor-txdb.hsapiens.ucsc.hg38.knowngene_pruned:c04754ed02eb7cd3':
-        'community.wave.seqera.io/library/bioconductor-org.hs.eg.db_bioconductor-purecn_bioconductor-txdb.hsapiens.ucsc.hg19.knowngene_bioconductor-txdb.hsapiens.ucsc.hg38.knowngene_pruned:cd51f6d3c90eb24f' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/31/31bad5bbf2277cc9ea746c3c4fd440d1689dd7c8d32d0697b5077f08c084a03e/data':
+        'community.wave.seqera.io/library/bioconductor-org.hs.eg.db_bioconductor-purecn_bioconductor-txdb.hsapiens.ucsc.hg19.knowngene_bioconductor-txdb.hsapiens.ucsc.hg38.knowngene_pruned:bc942848b4c78040' }"
 
     input:
     tuple val(meta), path(coverage_files), path(normal_vcf), path(normal_vcf_tbi)
