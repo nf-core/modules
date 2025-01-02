@@ -44,6 +44,7 @@ process GSEA_GSEA {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def rpt_label = prefix.replaceAll('\\.$', '') // Remove any trailing dots from prefix when passed as report label, so GSEA doesn't produce double-dotted top-level outputs
     def chip_command = chip ? "-chip $chip -collapse true" : ''
+    def VERSION = '4.3.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     # Run GSEA
@@ -77,12 +78,13 @@ process GSEA_GSEA {
     #Version command uses both conda and micromamba so that it works with both wave containers and conda environments
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gsea: \$((eval "\$(micromamba shell hook --shell bash)" && micromamba activate && (conda list gsea 2>/dev/null || micromamba list 2>/dev/null | grep -i 'gsea')) | awk '\$1 == "gsea" {print \$2}')
+        gsea: $VERSION
     END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '4.3.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.rpt
     touch ${prefix}.index.html
@@ -101,7 +103,6 @@ process GSEA_GSEA {
     #Version command uses both conda and micromamba so that it works with both wave containers and conda environments
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gsea: \$((eval "\$(micromamba shell hook --shell bash)" && micromamba activate && (conda list gsea 2>/dev/null || micromamba list 2>/dev/null | grep -i 'gsea')) | awk '\$1 == "gsea" {print \$2}')
-    END_VERSIONS
+        gsea: $VERSION
     """
 }

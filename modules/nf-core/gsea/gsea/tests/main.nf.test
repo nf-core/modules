@@ -35,9 +35,9 @@ nextflow_process {
                     process.out.ranked_gene_list.collect{ meta,ranked_gene_list -> file(ranked_gene_list).name }, //assert unstable file
                     process.out.gene_set_sizes,
                     process.out.histogram.collect{ meta,histogram -> file(histogram).name }, //assert unstable file
-                    process.out.heatmap,
+                    process.out.heatmap.collect{ meta,heatmap -> file(heatmap).name }, //assert unstable file
                     process.out.pvalues_vs_nes_plot.collect{ meta,pvalues_vs_nes_plot -> file(pvalues_vs_nes_plot).name }, //assert unstable file
-                    process.out.ranked_list_corr,
+                    process.out.ranked_list_corr.collect{ meta,ranked_list_corr -> file(ranked_list_corr).name }, //assert unstable file
                     process.out.versions
                     ).match()
                 }
