@@ -54,6 +54,7 @@ process STAR_ALIGN {
         --genomeDir $index \\
         --readFilesIn ${reads1.join(",")} ${reads2.join(",")} \\
         --runThreadN $task.cpus \\
+        --outTmpDir /tmp/STAR \\
         --outFileNamePrefix $prefix. \\
         $out_sam_type \\
         $ignore_gtf \\
