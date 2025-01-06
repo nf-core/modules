@@ -33,10 +33,9 @@ process PROKKA {
     script:
     def args             = task.ext.args   ?: ''
     prefix               = task.ext.prefix ?: "${meta.id}"
-    def fasta_compressed = fasta.getExtension() == "gz" ? true : false
-    def input            = fasta_compressed ? fasta.toString() - ~/\.gz$/ : fasta
-    def decompress       = fasta_compressed ? "gunzip -c ${fasta} > ${input}" : ""
-    def cleanup          = fasta_compressed ? "rm ${input}" : ""
+    def input            = fasta.toString() - ~/\.gz$/
+    def decompress       = fasta.getExtension() == "gz" ? "gunzip -c ${fasta} > ${input}" : ""
+    def cleanup          = fasta.getExtension() == "gz" ? "rm ${input}" : ""
     def proteins_opt     = proteins ? "--proteins ${proteins}" : ""
     def prodigal_tf_in   = prodigal_tf ? "--prodigaltf ${prodigal_tf}" : ""
     """
@@ -51,6 +50,30 @@ process PROKKA {
         ${input}
 
     ${cleanup}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        prokka: \$(echo \$(prokka --version 2>&1) | sed 's/^.*prokka //')
+    END_VERSIONS
+    """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir ${prefix}
+    touch ${prefix}/${prefix}.gff
+    touch ${prefix}/${prefix}.gbk
+    touch ${prefix}/${prefix}.fna
+    touch ${prefix}/${prefix}.faa
+    touch ${prefix}/${prefix}.ffn
+    touch ${prefix}/${prefix}.sqn
+    touch ${prefix}/${prefix}.fsa
+    touch ${prefix}/${prefix}.tbl
+    touch ${prefix}/${prefix}.err
+    touch ${prefix}/${prefix}.log
+    touch ${prefix}/${prefix}.txt
+    touch ${prefix}/${prefix}.tsv
+    touch ${prefix}/${prefix}.gff
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
