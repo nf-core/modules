@@ -9,9 +9,7 @@ nextflow_process {
     script "modules/nf-core/checkm2/predict/main.nf"
     process "CHECKM2_PREDICT"
 
-    test("Test CheckM2 Predict") {
-
-        setup {
+    setup {
             run("CHECKM2_DATABASEDOWNLOAD") {
                 script "../../databasedownload/main.nf"
                 process {
@@ -21,6 +19,8 @@ nextflow_process {
                 }
             }
         }
+
+    test("Test CheckM2 Predict") {
 
         when {
             params {
@@ -43,16 +43,6 @@ nextflow_process {
     }
     test("Test CheckM2 Predict - stub") {
         options "-stub"
-        setup {
-            run("CHECKM2_DATABASEDOWNLOAD") {
-                script "../../databasedownload/main.nf"
-                process {
-                    """
-                    input[0] = []
-                    """
-                }
-            }
-        }
 
         when {
             params {
