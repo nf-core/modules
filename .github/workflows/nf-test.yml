@@ -107,12 +107,16 @@ jobs:
             # If no skip paths, use the original paths
             FILTERED=$(echo "$PATHS" | jq -c '.')
           else
+            # Ensure PATHS is a valid JSON array
+            PATHS_JSON=$(echo "$PATHS" | jq -c '.')
+
             # Convert SKIP_PATHS to a jq filter
             SKIP_FILTER=$(echo $SKIP_PATHS | jq -c -s '.')
 
             # Filter the paths based on the skip paths
-            FILTERED=$(echo "$PATHS" | jq -c "map(select(. as \$path | $SKIP_FILTER | index(\$path) | not))")
+            FILTERED=$(echo "$PATHS_JSON" | jq -c "map(select(. as \$path | $SKIP_FILTER | index(\$path) | not))")
           fi
+
 
           echo "filtered_paths=$FILTERED" >> $GITHUB_OUTPUT
 
