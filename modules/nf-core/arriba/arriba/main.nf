@@ -7,6 +7,7 @@ process ARRIBA_ARRIBA {
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fb/fbbd3ccedb1663939f2ca075a071e75b0d1c60f19a4cd46dd9ffe371f133105a/data' :
         'community.wave.seqera.io/library/arriba:2.4.0--9680480f3735ac7f' }"
 
+
     input:
     tuple val(meta),  path(bam)
     tuple val(meta2), path(fasta)

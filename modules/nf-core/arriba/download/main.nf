@@ -4,9 +4,8 @@ process ARRIBA_DOWNLOAD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fb/fbbd3ccedb1663939f2ca075a071e75b0d1c60f19a4cd46dd9ffe371f133105a/data' :
-        'community.wave.seqera.io/library/arriba:2.4.0--9680480f3735ac7f' }"
-
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ce/ce4125adda399137c39e919b7b49f06ce1c92cde9d248ced981d91f71b31b2a9/data' :
+        'community.wave.seqera.io/library/pip_wget:3a848e5c8c6b364e' }"
     input:
     val(genome)
 
@@ -30,7 +29,7 @@ process ARRIBA_DOWNLOAD {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        arriba_download: \$(arriba -h | grep 'Version:' 2>&1 |  sed 's/Version:\s//')
+        wget: \$(wget --version | head -1 | sed 's/GNU Wget //' | sed 's/ built on darwin21.3.0.//')
     END_VERSIONS
     """
 
@@ -43,7 +42,7 @@ process ARRIBA_DOWNLOAD {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        arriba_download: \$(arriba -h | grep 'Version:' 2>&1 |  sed 's/Version:\s//')
+        wget: \$(wget --version | head -1 | sed 's/GNU Wget //' | sed 's/ built on darwin21.3.0.//')
     END_VERSIONS
     """
 }
