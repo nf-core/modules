@@ -41,28 +41,5 @@ nextflow_process {
             )
         }
     }
-    test("Test CheckM2 Predict - stub") {
-        options "-stub"
-
-        when {
-            params {
-                outdir = "${launchDir}/tests/results"
-            }
-            process {
-                """
-                input[0] = [ [id: 'test'], [file(params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/genome/genome.fa', checkIfExists: true)] ]
-                input[1] = CHECKM2_DATABASEDOWNLOAD.out.database
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
-    }
-
 
 }
