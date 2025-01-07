@@ -4,8 +4,8 @@ process ARRIBA_ARRIBA {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/arriba:2.4.0--h0033a41_2' :
-        'biocontainers/arriba:2.4.0--h0033a41_2' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fb/fbbd3ccedb1663939f2ca075a071e75b0d1c60f19a4cd46dd9ffe371f133105a/data' :
+        'community.wave.seqera.io/library/arriba:2.4.0--9680480f3735ac7f' }"
 
     input:
     tuple val(meta),  path(bam)
