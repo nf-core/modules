@@ -3,10 +3,10 @@
 name: "baysor"
 description: Bayesian segmentation of spatial transcriptomics data.
 keywords:
-    - segmentation
-    - spatial transcriptomics
-    - cell clustering
-    - imaging
+  - segmentation
+  - spatial transcriptomics
+  - cell clustering
+  - imaging
 tools:
   - "baysor":
     description: "Baysor is a tool that segments cells using spatial gene expression maps. Optionally, segmentation masks can be given as additional input."
@@ -17,41 +17,72 @@ tools:
     licence: ["MIT license"]
     identifier:
 
-## Baysor requires only a transcript map of the data
+## Baysor requires a transcript map of the data and a configuration file with argument values
 input:
-  -  - meta:
+  - - meta:
         type: map
         description: |
           Groovy Map containing information about
           keyword arguments
           e. g. `[x: x_location, gene-column: csv_gene_column]`
-
-  - - csv
+    - transcripts_csv:
         type: file
         description: CSV file
         pattern: "*.csv"
 
+  - config_toml:
+    type: file
+    description: TOML file with config arguments
+    pattern: "*.toml"
+
 ## segmentation results
 output:
-  - meta:
-    type: map
-    description: |
-      Groovy Map containing information about
-      keyword arguments
-      e. g. `[x: x_location, gene-column: csv_gene_column]`
-
   - segmentation:
-    type: file
-    description: results of segmentation
-    pattern: "segmentation.csv"
+      - meta:
+        type: map
+        description: |
+          Groovy Map containing information about
+          keyword arguments
+          e. g. `[x: x_location, gene-column: csv_gene_column]`
+      - "*segmentation.csv":
+        type: file
+        description: results of segmentation
+        pattern: "*segmentation.csv"
 
-  -
+  - polygons:
+    type: file
+    description: |
+      File with outlines of segmentation
+    pattern: "*.json"
+
+  - params:
+    type: file
+    description: |
+      File with full list of parameters used for the model
+    pattern: "segmentation_params.dump.toml"
+
+  - log:
+    type: file
+    description: |
+      Output file with metadata of running the workflow
+    pattern: "segmentation_log.log"
+
+  - loom:
+    type: file
+    description: |
+      Loom file with metadata
+    pattern: "segmentation_counts.loom"
+
+  - stats:
+    type: file
+    description: |
+      Statistics of segmented cells
+    pattern: "segmentation_cell_stats.csv"
 
   - versions:
     type: file
     description: File containing software versions
     pattern: "versions.yml"
-
 
 authors:
   - "@sebgoti8"
