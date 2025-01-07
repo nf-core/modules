@@ -1,0 +1,57 @@
+nextflow_process {
+
+    name "Test Process BASICPY"
+    script "../main.nf"
+    process "BASICPY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "basicpy"
+
+    test("basicpy - OME-TIFF") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                                [ id:'test' ],
+                                file(params.modules_testdata_base_path + 'imaging/ome-tiff/cycif-tonsil-cycle1.ome.tif', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("basicpy - OME-TIFF - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                                [ id:'test' ],
+                                file(params.modules_testdata_base_path + 'imaging/ome-tiff/cycif-tonsil-cycle1.ome.tif', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
