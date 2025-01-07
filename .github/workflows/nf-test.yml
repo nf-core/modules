@@ -100,10 +100,10 @@ jobs:
           PATHS='${{ needs.nf-test-changes.outputs.paths }}'
 
           # Read skip paths for current profile
-          SKIP_PATHS=$(jq -r '.[] | select(.profile == env.PROFILE) | .path' .github/skip_nf_test.yml)
+          SKIP_PATHS=$(jq -r '.[] | select(.profile == env.PROFILE) | .path' .github/skip_nf_test.yml | jq -R -s '.')
 
           # Filter paths
-          FILTERED=$(echo "$PATHS" | jq -c "[.[] | select(. as \$path | !any($SKIP_PATHS | . as \$skip | \$path | contains(\$skip)))]")
+          FILTERED=$(echo "$PATHS" | jq -c "[.[] | select(. as \$path | !any($SKIP_PATHS[] | . as \$skip | contains(\$path)))]")
 
           echo "filtered_paths=$FILTERED" >> $GITHUB_OUTPUT
 
