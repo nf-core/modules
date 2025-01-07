@@ -92,6 +92,21 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           fetch-depth: 0
+
+      - name: Filter paths
+        id: filter
+        run: |
+          # Parse the input paths array
+          PATHS='${{ needs.nf-test-changes.outputs.paths }}'
+
+          # Get all paths for current profile from skip_nf_test.yml
+          ALLOWED=$(yq eval '.[] | select(.profile == strenv(PROFILE)) | .path' .github/skip_nf_test.yml)
+
+          # Filter input paths to only those allowed for profile
+          FILTERED=$(echo "$PATHS" | yq eval '. - [.[] | select(. as $path | any($path | test(load(".github/skip_nf_test.yml") | .[] | select(.profile == strenv(PROFILE)) | .path)))]' -)
+
+          echo "filtered_paths=$FILTERED" >> $GITHUB_OUTPUT
+
       - name: Run nf-test Action
         uses: ./.github/actions/nf-test-action
         env:
@@ -103,7 +118,7 @@ jobs:
           profile: ${{ matrix.profile }}
           shard: ${{ matrix.shard }}
           total_shards: ${{ env.TOTAL_SHARDS }}
-          paths: "${{ join(fromJson(needs.nf-test-changes.outputs.paths), ' ') }}"
+          paths: "${{ join(fromJson(steps.filter.outputs.filtered_paths), ' ') }}"
 
   confirm-pass:
     runs-on: ubuntu-latest
