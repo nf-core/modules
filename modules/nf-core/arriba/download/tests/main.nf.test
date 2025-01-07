@@ -15,7 +15,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = 'GRCh38'
+                input[0] = ['GRCh38']
                 """
             }
         }
