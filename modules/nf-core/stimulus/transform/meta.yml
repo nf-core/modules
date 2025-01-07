@@ -1,0 +1,51 @@
+name: "stimulus_transform"
+description: Use stimulus-py package to transform the data.
+keywords:
+  - machine learning
+  - neural network
+  - unit test
+tools:
+  - "stimulus":
+      description: "Stochastic Testing and Input Manipulation for Unbiased Learning Systems"
+      homepage: "https://github.com/mathysgrapotte/stimulus-py"
+      documentation: "https://github.com/mathysgrapotte/stimulus-py"
+      tool_dev_url: "https://github.com/mathysgrapotte/stimulus-py"
+      licence: ["MIT"]
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - transform_json:
+        type: file
+        description: |
+          Json file with the transformation instructions
+        pattern: ".json"
+  - - csv:
+        type: file
+        description: |
+          Csv file to be transformed
+        pattern: ".csv"
+output:
+  - csv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.csv":
+          type: file
+          description: |
+            Transformed CSV file
+          pattern: ".csv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: |
+            File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@luisas"
+maintainers:
+  - "@luisas"
