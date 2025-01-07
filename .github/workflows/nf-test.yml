@@ -99,11 +99,11 @@ jobs:
           # Parse the input paths array
           PATHS='${{ needs.nf-test-changes.outputs.paths }}'
 
-          # Read skip paths for current profile
-          SKIP_PATHS=$(jq -r '.[] | select(.profile == env.PROFILE) | .path' .github/skip_nf_test.yml | jq -R -s '.')
+          # Read skip paths for current profile from .github/skip_nf_test.json
+          SKIP_PATHS=$(cat .github/skip_nf_test.json | jq -r ".[] | select(.profile == \"${{ matrix.profile }}\") | .path")
 
-          # Filter paths
-          FILTERED=$(echo "$PATHS" | jq -c "[.[] | select(. as \$path | !any($SKIP_PATHS[] | . as \$skip | contains(\$path)))]")
+          # Filter the paths based on the skip paths
+          FILTERED=$(echo $PATHS | jq -c "map(select(. != $SKIP_PATHS))")
 
           echo "filtered_paths=$FILTERED" >> $GITHUB_OUTPUT
 
