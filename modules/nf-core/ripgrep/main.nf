@@ -23,6 +23,9 @@ process RIPGREP {
     def args         = task.ext.args ?: ''
     def prefix       = task.ext.prefix ?: "${meta.id}"
     def write_output = compress ? " | pigz -cp ${task.cpus} > ${prefix}.txt.gz" : "> ${prefix}.txt"
+    if (!compress && files.contains("${prefix}.txt") || compress && files.contains("${prefix}.txt.gz")) {
+        error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    }
     """
     rg \\
         $args \\
@@ -40,8 +43,9 @@ process RIPGREP {
     stub:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def write_output = compress ? "touch ${prefix}.txt.gz" : "touch ${prefix}.txt"
     """
-    touch ${prefix}.txt
+    $write_output
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
