@@ -17,9 +17,12 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    [ file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_hybrid.csv", checkIfExists: true),
-                      file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_long.csv", checkIfExists: true),
-                      file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_short.csv", checkIfExists: true) ]
+                    [
+                        file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_hybrid.csv", checkIfExists: true),
+                        file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_long.csv", checkIfExists: true),
+                        file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_short.csv", checkIfExists: true),
+                        file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_short.csv", checkIfExists: true)
+                    ]
                 ]
                 input[1] = "tsv"
                 input[2] = "csv"
@@ -45,9 +48,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    [ file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_hybrid.csv", checkIfExists: true),
-                      file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_long.csv", checkIfExists: true),
-                      file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_short.csv", checkIfExists: true) ]
+                    [
+                        file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_hybrid.csv", checkIfExists: true),
+                        file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_long.csv", checkIfExists: true),
+                        file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_short.csv", checkIfExists: true)
+                    ]
                 ]
                 input[1] = "tsv"
                 input[2] = "csv"
