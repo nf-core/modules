@@ -13,28 +13,28 @@ process GSEA_GSEA {
     path(chip) // Optional identifier mapping file
 
     output:
-    tuple val(meta), path("*.rpt")                                                                                                       , emit: rpt
-    tuple val(meta), path("*index.html")                                                                                                 , emit: index_html
-    tuple val(meta), path("*heat_map_corr_plot.html")                                                                                    , emit: heat_map_corr_plot
-    tuple val(meta), path("*gsea_report_for_${reference}.tsv")                                                                           , emit: report_tsvs_ref
-    tuple val(meta), path("*gsea_report_for_${reference}.html")                                                                          , emit: report_htmls_ref
-    tuple val(meta), path("*gsea_report_for_${target}.tsv")                                                                              , emit: report_tsvs_target
-    tuple val(meta), path("*gsea_report_for_${target}.html")                                                                             , emit: report_htmls_target
-    tuple val(meta), path("*ranked_gene_list*.tsv")                                                                                      , emit: ranked_gene_list
-    tuple val(meta), path("*gene_set_sizes.tsv")                                                                                         , emit: gene_set_sizes
-    tuple val(meta), path("*global_es_histogram.png")                                                                                    , emit: histogram
-    tuple val(meta), path("*heat_map_1.png")                                                                                             , emit: heatmap
-    tuple val(meta), path("*pvalues_vs_nes_plot.png")                                                                                    , emit: pvalues_vs_nes_plot
-    tuple val(meta), path("*ranked_list_corr_2.png")                                                                                     , emit: ranked_list_corr
-    tuple val(meta), path("*butterfly_plot.png")                                                                                         , emit: butterfly_plot, optional: true
-    tuple val(meta), path("*[!gene_set_size|gsea_report|ranked_gene_list]*.tsv")                                                         , emit: gene_set_tsv, optional: true
-    tuple val(meta), path("*[!gsea_report|heat_map_corr_plot|index|pos_snapshot|neg_snapshot]*.html")                                    , emit: gene_set_html, optional: true
-    tuple val(meta), path("*[!butterfly|enplot|global_es_histogram|gset_rnd_es_dist|heat_map|pvalues_vs_nes_plot|ranked_list_corr]*.png"), emit: gene_set_heatmap, optional: true
-    tuple val(meta), path("*_snapshot*.html")                                                                                            , emit: snapshot, optional: true
-    tuple val(meta), path("*enplot*.png")                                                                                                , emit: gene_set_enplot, optional: true
-    tuple val(meta), path("*gset_rnd_es_dist*.png")                                                                                      , emit: gene_set_dist, optional: true
-    tuple val(meta), path("*.zip")                                                                                                       , emit: archive, optional: true
-    path "versions.yml"                                                                                                                  , emit: versions
+    tuple val(meta), path("*.rpt")                             , emit: rpt
+    tuple val(meta), path("*index.html")                       , emit: index_html
+    tuple val(meta), path("*heat_map_corr_plot.html")          , emit: heat_map_corr_plot
+    tuple val(meta), path("*gsea_report_for_${reference}.tsv") , emit: report_tsvs_ref
+    tuple val(meta), path("*gsea_report_for_${reference}.html"), emit: report_htmls_ref
+    tuple val(meta), path("*gsea_report_for_${target}.tsv")    , emit: report_tsvs_target
+    tuple val(meta), path("*gsea_report_for_${target}.html")   , emit: report_htmls_target
+    tuple val(meta), path("*ranked_gene_list*.tsv")            , emit: ranked_gene_list
+    tuple val(meta), path("*gene_set_sizes.tsv")               , emit: gene_set_sizes
+    tuple val(meta), path("*global_es_histogram.png")          , emit: histogram
+    tuple val(meta), path("*heat_map_1.png")                   , emit: heatmap
+    tuple val(meta), path("*pvalues_vs_nes_plot.png")          , emit: pvalues_vs_nes_plot
+    tuple val(meta), path("*ranked_list_corr_2.png")           , emit: ranked_list_corr
+    tuple val(meta), path("*butterfly_plot.png")               , emit: butterfly_plot, optional: true
+    tuple val(meta), path("gene_sets_*.tsv")                   , emit: gene_set_tsv, optional: true
+    tuple val(meta), path("gene_sets_*.html")                  , emit: gene_set_html, optional: true
+    tuple val(meta), path("gene_sets_*.png")                   , emit: gene_set_heatmap, optional: true
+    tuple val(meta), path("*_snapshot*.html")                  , emit: snapshot, optional: true
+    tuple val(meta), path("*enplot*.png")                      , emit: gene_set_enplot, optional: true
+    tuple val(meta), path("*gset_rnd_es_dist*.png")            , emit: gene_set_dist, optional: true
+    tuple val(meta), path("*.zip")                             , emit: archive, optional: true
+    path "versions.yml"                                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -75,7 +75,45 @@ process GSEA_GSEA {
         sed -i.bak "s/\$f/${prefix}\${f}/g" *.rpt *.html && rm *.bak
     done
 
-    #Version command uses both conda and micromamba so that it works with both wave containers and conda environments
+    # Rename files so that they can be properly referenced by the output channels
+    # Function to rename files based on the given pattern
+    rename_files() {
+        local pattern=\$1
+        local exclude_patterns=\$2
+        local extension=\$3
+
+        # Find files matching the pattern but not matching the exclusion patterns
+        find . -type f -name "\$pattern" | while read -r file; do
+            # Exclude files based on the provided exclusion patterns
+            if ! echo "\$file" | grep -qE "\$exclude_patterns"; then
+                # Rename the file by adding the prefix "gene_sets_"
+                mv "\$file" "\$(dirname "\$file")/gene_sets_\$(basename "\$file")"
+            fi
+        done
+    }
+
+    # Pattern and exclusion for .tsv files
+    tsv_pattern="*.tsv"
+    tsv_exclude="gene_set_size|gsea_report|ranked_gene_list"
+
+    # Pattern and exclusion for .html files
+    html_pattern="*.html"
+    html_exclude="gsea_report|heat_map_corr_plot|index|pos_snapshot|neg_snapshot"
+
+    # Pattern and exclusion for .png files
+    png_pattern="*.png"
+    png_exclude="butterfly|enplot|global_es_histogram|gset_rnd_es_dist|heat_map|pvalues_vs_nes_plot|ranked_list_corr"
+
+    # Rename .tsv files
+    rename_files "\$tsv_pattern" "\$tsv_exclude" ".tsv"
+
+    # Rename .html files
+    rename_files "\$html_pattern" "\$html_exclude" ".html"
+
+    # Rename .png files
+    rename_files "\$png_pattern" "\$png_exclude" ".png"
+
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         gsea: $VERSION
@@ -100,7 +138,6 @@ process GSEA_GSEA {
     touch ${prefix}.pvalues_vs_nes_plot.png
     touch ${prefix}.ranked_list_corr_2.png
 
-    #Version command uses both conda and micromamba so that it works with both wave containers and conda environments
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         gsea: $VERSION

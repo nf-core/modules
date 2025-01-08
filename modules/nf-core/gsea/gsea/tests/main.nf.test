@@ -38,6 +38,14 @@ nextflow_process {
                     process.out.heatmap.collect{ meta,heatmap -> file(heatmap).name }, //assert unstable file
                     process.out.pvalues_vs_nes_plot.collect{ meta,pvalues_vs_nes_plot -> file(pvalues_vs_nes_plot).name }, //assert unstable file
                     process.out.ranked_list_corr.collect{ meta,ranked_list_corr -> file(ranked_list_corr).name }, //assert unstable file
+                    process.out.butterfly_plot.collect{ meta,butterfly_plot -> file(butterfly_plot).name }, //assert unstable file
+                    process.out.gene_set_tsv,
+                    process.out.gene_set_html[0][1].collect{ file(it).name }, //assert unstable file
+                    // process.out.gene_set_heatmap[0][1].collect{ file(it).name }, // unstable file and unstable name
+                    process.out.snapshot[0][1].collect{ file(it).name }, //assert unstable file
+                    // process.out.gene_set_enplot[0][1].collect{ file(it).name }, // unstable file and unstable name
+                    process.out.gene_set_dist[0][1].collect{ file(it).name }, //assert unstable file
+                    process.out.archive,
                     process.out.versions
                     ).match()
                 }
