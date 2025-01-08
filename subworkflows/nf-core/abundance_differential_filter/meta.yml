@@ -1,83 +1,137 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
-name: "abundance_differential_filter"
-description: Perform differential analysis and filtering on abundance data
-keywords:
-  - differential expression
-  - RNA-seq
-  - DESeq2
-  - limma
-  - filtering
-components:
-  - deseq2/differential
-  - limma/differential
-  - custom/filterdifferentialtable
 input:
-  - ch_abundance:
-      type: file
-      description: |
-        Channel with abundance data and metadata
-        Structure: [ val(meta_exp), path(counts) ]
-        meta keys: method, args_diff
-  - ch_transcript_lengths:
-      type: file
-      description: |
-        Channel with transcript length information
-        Structure: [ val(meta_exp), path(transcript_lengths) ]
-  - ch_control_features:
-      type: file
-      description: |
-        Channel with control features information
-        Structure: [ val(meta_exp), path(control_features) ]
+  - ch_input:
+      description: Channel with input data for differential analysis
+      structure:
+        - meta_input:
+            type: map
+            description: Metadata map
+        - counts:
+            type: file
+            description: Count matrix file
+        - analysis_method:
+            type: value
+            description: Analysis method (deseq2 or limma)
+        - fc_threshold:
+            type: value
+            description: Fold change threshold for filtering
+        - padj_threshold:
+            type: value
+            description: Adjusted p-value threshold for filtering
   - ch_samplesheet:
-      type: file
-      description: |
-        Channel with sample information
-        Structure: [ val(meta_exp), path(samplesheet) ]
+      description: Channel with sample information
+      structure:
+        - meta_exp:
+            type: map
+            description: Experiment metadata map
+        - samplesheet:
+            type: file
+            description: Sample information file
+  - ch_transcript_lengths:
+      description: Channel with transcript length information
+      structure:
+        - meta_exp:
+            type: map
+            description: Experiment metadata map
+        - transcript_lengths:
+            type: file
+            description: Transcript length information file
+  - ch_control_features:
+      description: Channel with control features information
+      structure:
+        - meta_exp:
+            type: map
+            description: Experiment metadata map
+        - control_features:
+            type: file
+            description: Control features information file
   - ch_contrasts:
-      type: value
-      description: |
-        Channel with contrast information
-        Structure: [ val(meta_contrast), val(contrast_variable), val(reference), val(target) ]
-  - differential_method:
-      type: string
-      description: |
-        Method to use for differential analysis. Options: 'limma', 'deseq2'
-  - FC_threshold:
-      type: float
-      description: |
-        Fold change threshold for filtering differential results
-  - padj_threshold:
-      type: float
-      description: |
-        Adjusted p-value threshold for filtering differential results
+      description: Channel with contrast information
+      structure:
+        - meta_contrast:
+            type: map
+            description: Contrast metadata map
+        - contrast_variable:
+            type: value
+            description: Contrast variable
+        - reference:
+            type: value
+            description: Reference level
+        - target:
+            type: value
+            description: Target level
 
 output:
-  - results_genewise:
-      type: file
-      description: Unfiltered differential analysis results
-      pattern: "*.{csv,tsv}"
-  - results_genewise_filtered:
-      type: file
-      description: Filtered differential analysis results
-      pattern: "*.{csv,tsv}"
-  - normalised_matrix:
-      type: file
-      description: Normalised count matrix
-      pattern: "*.{csv,tsv}"
-  - variance_stabilised_matrix:
-      type: file
-      description: Variance stabilised count matrix (optional, DESeq2 only)
-      pattern: "*.{csv,tsv}"
-  - model:
-      type: file
-      description: Statistical model object from differential analysis
-      pattern: "*.rds"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+      description: Channel containing software versions file
+      structure:
+        - versions.yml:
+            type: file
+            description: File containing versions of the software used
+  - results_genewise:
+      description: Channel containing unfiltered differential analysis results
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - results:
+            type: file
+            description: Unfiltered differential analysis results file
+            pattern: "*.{csv,tsv}"
+  - results_genewise_filtered:
+      description: Channel containing filtered differential analysis results
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - filtered_results:
+            type: file
+            description: Filtered differential analysis results file
+            pattern: "*.{csv,tsv}"
+  - adjacency:
+      description: Channel containing the adjacency matrix suited for downstream graph-based functional analysis
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - adjacency_matrix:
+            type: file
+            description: Adjacency matrix file
+            pattern: "*.{csv,tsv}"
+  - normalised_matrix:
+      description: Channel containing normalised count matrix
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - matrix:
+            type: file
+            description: Normalised count matrix file
+            pattern: "*.{csv,tsv}"
+  - variance_stabilised_matrix:
+      description: Channel containing variance stabilised count matrix (DESeq2 only)
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - matrix:
+            type: file
+            description: Variance stabilised count matrix file
+            pattern: "*.{csv,tsv}"
+  - model:
+      description: Channel containing statistical model object from differential analysis
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - model:
+            type: file
+            description: Statistical model object file
+            pattern: "*.rds"
 authors:
   - "@pinin4fjords"
+  - "@bjlang"
+  - "@araiz2001"
+  - "@suzannejin"
 maintainers:
   - "@pinin4fjords"
+  - "@suzannejin"
