@@ -6,7 +6,7 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
     container "docker.io/google/deepvariant:1.8.0"
 
     input:
-    tuple val(meta), path(variant_calls_tfrecord_files), path(gvcf_tfrecords)
+    tuple val(meta), path(variant_calls_tfrecord_files), path(gvcf_tfrecords), path(intervals)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(gzi)
@@ -30,6 +30,7 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
+    def regions = intervals ? "--regions ${intervals}" : ""
     def variant_calls_tfrecord_name = variant_calls_tfrecord_files[0].name.replaceFirst(/-\d{5}-of-\d{5}/, "")
 
     def gvcf_matcher = gvcf_tfrecords[0].baseName =~ /^(.+)-\d{5}-of-(\d{5})$/
@@ -49,6 +50,7 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
         --outfile "${prefix}.vcf.gz" \\
         --nonvariant_site_tfrecord_path "${gvcf_tfrecords_logical_name}" \\
         --gvcf_outfile "${prefix}.g.vcf.gz" \\
+        ${regions} \\
         --cpus $task.cpus
 
     cat <<-END_VERSIONS > versions.yml

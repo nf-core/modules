@@ -32,20 +32,7 @@ These module subcommands incorporate the individual steps of the DeepVariant pip
 ## makeexamples
 
 This process imports the data used for calling, and thus decides what information is available to the
-deep neural network. It's important to import the correct channels for the model you want to use.
-
-The script `run_deepvariant` (not used in the subworkflow) does this automatically. You can refer to
-the implementation in the DeepVariant repo:
-
-https://github.com/google/deepvariant/blob/bf9ed7e6de97cf6c8381694cb996317a740625ad/scripts/run_deepvariant.py#L367
-
-For WGS and WES models you need to enable the `insert_size` channel. Specify the following in the config:
-
-```
-withName: "DEEPVARIANT_MAKEEXAMPLES" {
-    ext.args = '--channels "insert_size"'
-}
-```
+deep neural network. It's important to use the correct settings for the model you want to use for each step. The script [`run_deepvariant.py`](https://github.com/google/deepvariant/blob/r1.8/scripts/run_deepvariant.py) does this automatically. To figure out the flags needed for each step you can run `run_deepvariant.py` while adding `dry_run=true`, to print out the command used for each step, as described [here](https://github.com/google/deepvariant/blob/r1.8/docs/deepvariant-pacbio-model-case-study.md).
 
 ## callvariants
 
