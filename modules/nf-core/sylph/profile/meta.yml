@@ -37,12 +37,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*tsv"
       - "*.tsv":
           type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+          description: Output file of species-level taxonomic profiling with abundances and ANIs.
           pattern: "*tsv"
   - versions:
       - versions.yml:
