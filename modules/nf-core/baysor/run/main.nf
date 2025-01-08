@@ -1,4 +1,4 @@
-process BAYSOR {
+process BAYSOR_RUN {
     tag '$meta.id'
     label 'process_high_memory'
     container "docker.io/segonzal/baysor:0.7.1"
@@ -20,12 +20,16 @@ process BAYSOR {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "BAYSOR_RUN module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
     def VERSION = "0.7.1"
 
     """
-    /app/bin/baysor run ${transcripts_csv} -c ${config_toml} $args
+    baysor run ${transcripts_csv} -c ${config_toml} $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -34,6 +38,10 @@ process BAYSOR {
     """
 
     stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "BAYSOR_RUN module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
     def VERSION = "0.7.1"

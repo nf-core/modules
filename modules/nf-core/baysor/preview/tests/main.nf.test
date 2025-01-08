@@ -1,14 +1,14 @@
 nextflow_process {
 
-    name "Test Process BAYSOR"
+    name "Test Process BAYSOR_PREVIEW"
     script "../main.nf"
-    process "BAYSOR"
+    process "BAYSOR_PREVIEW"
 
     tag "modules"
     tag "modules_nfcore"
     tag "baysor"
 
-    test("baysor - csv") {
+    test("baysor preview - html") {
 
         when {
             process {
@@ -33,7 +33,7 @@ nextflow_process {
 
     }
 
-    test("baysor - csv - stub") {
+    test("baysor preview - html - stub") {
 
         options "-stub"
 
