@@ -5,7 +5,7 @@ process NARFMAP_ALIGN {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a9/a9634de8646d72c54319cc5683949929af4b38e2245b4bc8d28a6666a1f702d6/data':
-        'community.wave.seqera.io/library/narfmap_align:517a1fed8e4e84c1' }"
+        'community.wave.seqera.io/library/narfmap_samtools_pigz:77d0682b7dae0251' }"
 
     input:
     tuple val(meta) , path(reads)
