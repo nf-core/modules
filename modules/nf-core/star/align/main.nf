@@ -41,12 +41,13 @@ process STAR_ALIGN {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def reads1 = [], reads2 = []
+    def reads1 = []
+    def reads2 = []
     meta.single_end ? [reads].flatten().each{reads1 << it} : reads.eachWithIndex{ v, ix -> ( ix & 1 ? reads2 : reads1) << v }
     def ignore_gtf      = star_ignore_sjdbgtf ? '' : "--sjdbGTFfile $gtf"
-    def seq_platform    = seq_platform ? "'PL:$seq_platform'" : ""
-    def seq_center      = seq_center ? "'CN:$seq_center'" : ""
-    attrRG          = args.contains("--outSAMattrRGline") ? "" : "--outSAMattrRGline 'ID:$prefix' $seq_center 'SM:$prefix' $seq_platform"
+    def seq_platform_arg  = seq_platform ? "'PL:$seq_platform'" : ""
+    def seq_center_arg    = seq_center ? "'CN:$seq_center'" : ""
+    attrRG          = args.contains("--outSAMattrRGline") ? "" : "--outSAMattrRGline 'ID:$prefix' $seq_center_arg 'SM:$prefix' $seq_platform_arg"
     def out_sam_type    = (args.contains('--outSAMtype')) ? '' : '--outSAMtype BAM Unsorted'
     mv_unsorted_bam = (args.contains('--outSAMtype BAM Unsorted SortedByCoordinate')) ? "mv ${prefix}.Aligned.out.bam ${prefix}.Aligned.unsort.out.bam" : ''
     """
