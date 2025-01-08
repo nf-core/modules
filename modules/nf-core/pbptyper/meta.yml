@@ -7,43 +7,53 @@ keywords:
   - assembly
 tools:
   - "pbptyper":
-      description: "In silico Penicillin Binding Protein (PBP) typer for Streptococcus pneumoniae assemblies"
+      description: "In silico Penicillin Binding Protein (PBP) typer for Streptococcus
+        pneumoniae assemblies"
       homepage: "https://github.com/rpetit3/pbptyper"
       documentation: "https://github.com/rpetit3/pbptyper"
       tool_dev_url: "https://github.com/rpetit3/pbptyper"
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: An assembly in FASTA format
-      pattern: "*.{fasta,fasta.gz,fna,fna.gz,fa,fa.gz}"
-  - db:
-      type: file
-      description: A reference PBP database (optional)
-      pattern: "*.{fasta,fna,fa}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: An assembly in FASTA format
+        pattern: "*.{fasta,fasta.gz,fna,fna.gz,fa,fa.gz}"
+  - - db:
+        type: file
+        description: A reference PBP database (optional)
+        pattern: "*.{fasta,fna,fa}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - tsv:
-      type: file
-      description: A tab-delimited file with the predicted PBP type
-      pattern: "*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.tsv:
+          type: file
+          description: A tab-delimited file with the predicted PBP type
+          pattern: "*.tsv"
   - blast:
-      type: file
-      description: A tab-delimited file of all blast hits
-      pattern: "*.tblastn.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tblastn.tsv":
+          type: file
+          description: A tab-delimited file of all blast hits
+          pattern: "*.tblastn.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@rpetit3"
 maintainers:

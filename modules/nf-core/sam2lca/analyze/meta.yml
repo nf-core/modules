@@ -1,5 +1,6 @@
 name: "sam2lca_analyze"
-description: Calling lowest common ancestors from multi-mapped reads in SAM/BAM/CRAM files
+description: Calling lowest common ancestors from multi-mapped reads in SAM/BAM/CRAM
+  files
 keywords:
   - LCA
   - alignment
@@ -14,46 +15,62 @@ tools:
       documentation: "https://sam2lca.readthedocs.io"
       doi: "10.21105/joss.04360"
       licence: ["GPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-  - bai:
-      type: file
-      description: BAM/CRAM/SAM index
-      pattern: "*.{bai,.crai}"
-  - database:
-      type: file
-      description: Directory containing the sam2lca database
-      pattern: "*"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+    - bai:
+        type: file
+        description: BAM/CRAM/SAM index
+        pattern: "*.{bai,.crai}"
+  - - database:
+        type: file
+        description: Directory containing the sam2lca database
+        pattern: "*"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - csv:
-      type: file
-      description: CSV file containing the sam2lca results
-      pattern: "*.csv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.csv":
+          type: file
+          description: CSV file containing the sam2lca results
+          pattern: "*.csv"
   - json:
-      type: file
-      description: JSON file containing the sam2lca results
-      pattern: "*.json"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.json":
+          type: file
+          description: JSON file containing the sam2lca results
+          pattern: "*.json"
   - bam:
-      type: file
-      description: Optional sorted BAM/CRAM/SAM file annotated with LCA taxonomic informations
-      pattern: "*.bam"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bam":
+          type: file
+          description: Optional sorted BAM/CRAM/SAM file annotated with LCA taxonomic
+            informations
+          pattern: "*.bam"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@maxibor"
 maintainers:

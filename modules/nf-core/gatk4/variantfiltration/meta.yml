@@ -15,60 +15,72 @@ tools:
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
       doi: 10.1158/1538-7445.AM2017-3590
       licence: ["Apache-2.0"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test']
-  - vcf:
-      type: list
-      description: List of VCF(.gz) files
-      pattern: "*.{vcf,vcf.gz}"
-  - vcf_tbi:
-      type: list
-      description: List of VCF file indexes
-      pattern: "*.{idx,tbi}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'genome' ]
-  - fasta:
-      type: file
-      description: Fasta file of reference genome
-      pattern: "*.fasta"
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'genome' ]
-  - fai:
-      type: file
-      description: Index of fasta file
-      pattern: "*.fasta.fai"
-  - meta4:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'genome' ]
-  - dict:
-      type: file
-      description: Sequence dictionary of fastea file
-      pattern: "*.dict"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test']
+    - vcf:
+        type: list
+        description: List of VCF(.gz) files
+        pattern: "*.{vcf,vcf.gz}"
+    - tbi:
+        type: list
+        description: List of VCF file indexes
+        pattern: "*.{tbi}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: Fasta file of reference genome
+        pattern: "*.fasta"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fai:
+        type: file
+        description: Index of fasta file
+        pattern: "*.fasta.fai"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - dict:
+        type: file
+        description: Sequence dictionary of fastea file
+        pattern: "*.dict"
 output:
   - vcf:
-      type: file
-      description: Compressed VCF file
-      pattern: "*.vcf.gz"
+      - meta:
+          type: file
+          description: Compressed VCF file
+          pattern: "*.vcf.gz"
+      - "*.vcf.gz":
+          type: file
+          description: Compressed VCF file
+          pattern: "*.vcf.gz"
   - tbi:
-      type: file
-      description: Index of VCF file
-      pattern: "*.vcf.gz.tbi"
+      - meta:
+          type: file
+          description: Index of VCF file
+          pattern: "*.vcf.gz.tbi"
+      - "*.tbi":
+          type: file
+          description: Index of VCF file
+          pattern: "*.vcf.gz.tbi"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@kevinmenden"
   - "@ramprasadn"

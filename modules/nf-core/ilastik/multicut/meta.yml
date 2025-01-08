@@ -1,58 +1,66 @@
 name: "ilastik_multicut"
-description: Ilastik is a tool that utilizes machine learning algorithms to classify pixels, segment, track and count cells in images. Ilastik contains a graphical user interface to interactively label pixels. However, this nextflow module will implement the --headless mode, to apply pixel classification using a pre-trained .ilp file on an input image.
+description: Ilastik is a tool that utilizes machine learning algorithms to classify
+  pixels, segment, track and count cells in images. Ilastik contains a graphical user
+  interface to interactively label pixels. However, this nextflow module will implement
+  the --headless mode, to apply pixel classification using a pre-trained .ilp file
+  on an input image.
 keywords:
   - multicut
   - segmentation
   - pixel classification
 tools:
   - "ilastik":
-      description: "Ilastik is a user friendly tool that enables pixel classification, segmentation and analysis."
+      description: "Ilastik is a user friendly tool that enables pixel classification,
+        segmentation and analysis."
       homepage: "https://www.ilastik.org/"
       documentation: "https://www.ilastik.org/documentation/"
       tool_dev_url: "https://github.com/ilastik/ilastik"
       license: ["GPL3"]
+      identifier: biotools:ilastik
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - h5:
-      type: file
-      description: h5 file containing image stack to classify file
-      pattern: "*.{h5,hdf5}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - ilp:
-      type: file
-      description: Trained ilastik .ilp project file
-      pattern: "*.{ilp}"
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - probs:
-      type: file
-      description: Probability map for boundary based segmentation
-      pattern: "*.{h5,,hdf5}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - h5:
+        type: file
+        description: h5 file containing image stack to classify file
+        pattern: "*.{h5,hdf5}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - ilp:
+        type: file
+        description: Trained ilastik .ilp project file
+        pattern: "*.{ilp}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - probs:
+        type: file
+        description: Probability map for boundary based segmentation
+        pattern: "*.{h5,,hdf5}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - out_tiff:
-      type: file
-      description: Multicut segmentation mask output.
-      pattern: "*.{tiff}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tiff":
+          type: file
+          description: Multicut segmentation mask output.
+          pattern: "*.{tiff}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@FloWuenne"
 maintainers:

@@ -11,34 +11,37 @@ tools:
       documentation: "https://cbio.mskcc.org/miRNA2003/miranda.html"
       doi: "10.1186/gb-2003-5-1-r1"
       licence: ["GNU Public License"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - query:
-      type: file
-      description: FASTA file containing the microRNA query sequences
-      pattern: "*.{fa,fasta}"
-  - mirbase:
-      type: file
-      description: FASTA file containing the sequence(s) to be scanned
-      pattern: "*.{fa,fasta}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - query:
+        type: file
+        description: FASTA file containing the microRNA query sequences
+        pattern: "*.{fa,fasta}"
+  - - mirbase:
+        type: file
+        description: FASTA file containing the sequence(s) to be scanned
+        pattern: "*.{fa,fasta}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - txt:
-      type: file
-      description: Reformatted TXT file containing microRNA targets
-      pattern: "*.{txt}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.txt":
+          type: file
+          description: Reformatted TXT file containing microRNA targets
+          pattern: "*.{txt}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@BarryDigby"
 maintainers:

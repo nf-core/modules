@@ -16,26 +16,29 @@ nextflow_process {
             script "../../../bwameth/index/main.nf"
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
                 """
             }
         }
     }
 
-    test("test-bwameth-align-single-end") {
+    test("sarscov2 methylated single_end [fastq]") {
 
         when {
             process {
                 """
-                input[0] = [
-				    [ id:'test', single_end:true ], // meta map
-				    [
-				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true)
-				    ]
-				]
-				input[1] = BWAMETH_INDEX.out.index
-
+                input[0] = Channel.of([
+                                [ id:'test', single_end:true ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true)
+				])
+                input[1] = Channel.of([
+                                [ id:'test' ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+				input[2] = BWAMETH_INDEX.out.index
                 """
             }
         }
@@ -52,20 +55,23 @@ nextflow_process {
         }
     }
 
-    test("test-bwameth-align-paired-end") {
+    test("sarscov2 methylated paired_end [fastq]") {
 
         when {
             process {
                 """
-                input[0] = [
-				    [ id:'test', single_end:false ], // meta map
-				    [
-				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
-				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true)
-				    ]
-				]
-				input[1] = BWAMETH_INDEX.out.index
-
+                input[0] = Channel.of([
+                                [ id:'test', single_end:false ], // meta map
+                                [
+                                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
+                                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true)
+                                ]
+				])
+				input[1] = Channel.of([
+                                [ id:'test' ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+				input[2] = BWAMETH_INDEX.out.index
                 """
             }
         }
@@ -82,21 +88,24 @@ nextflow_process {
         }
     }
 
-    test("test-bwameth-align-paired-end-stub") {
+    test("sarscov2 methylated paired_end [fastq] - stub") {
         options '-stub'
 
         when {
             process {
                 """
-                input[0] = [
-				    [ id:'test', single_end:false ], // meta map
-				    [
-				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
-				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true)
-				    ]
-				]
-				input[1] = BWAMETH_INDEX.out.index
-
+                input[0] = Channel.of([
+                                [ id:'test', single_end:false ], // meta map
+                                [
+                                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
+                                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true)
+                                ]
+				])
+				input[1] = Channel.of([
+                                [ id:'test' ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+				input[2] = BWAMETH_INDEX.out.index
                 """
             }
         }
@@ -108,5 +117,4 @@ nextflow_process {
             )
         }
     }
-
 }

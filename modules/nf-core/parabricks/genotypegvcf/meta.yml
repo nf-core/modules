@@ -1,5 +1,6 @@
 name: "parabricks_genotypegvcf"
-description: NVIDIA Clara Parabricks GPU-accelerated joint genotyping, replicating GATK GenotypeGVCFs
+description: NVIDIA Clara Parabricks GPU-accelerated joint genotyping, replicating
+  GATK GenotypeGVCFs
 keywords:
   - joint-genotyping
   - gvcf
@@ -12,42 +13,43 @@ tools:
       homepage: https://www.nvidia.com/en-us/clara/genomics/
       documentation: https://docs.nvidia.com/clara/parabricks/4.2.0/index.html
       licence: ["custom"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test' ]`
-  - ref_meta:
-      type: map
-      description: |
-        Groovy Map containing reference information.
-        [ id:'test']
-  - input:
-      type: file
-      description: gvcf file for samples to be jointly genotyped.
-      pattern: "*.{g.vcf,g.vcf.gz}"
-  - fasta:
-      type: file
-      description: reference fasta - must be unzipped.
-      pattern: "*.fasta"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - input:
+        type: file
+        description: gvcf file for samples to be jointly genotyped.
+        pattern: "*.{g.vcf,g.vcf.gz}"
+  - - ref_meta:
+        type: map
+        description: |
+          Groovy Map containing reference information.
+          [ id:'test']
+    - fasta:
+        type: file
+        description: reference fasta - must be unzipped.
+        pattern: "*.fasta"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test' ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - vcf:
-      type: file
-      description: vcf file after gvcf conversion.
-      pattern: "*.vcf"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.vcf":
+          type: file
+          description: vcf file after gvcf conversion.
+          pattern: "*.vcf"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@Furentsu"
   - "@bsiranosian"

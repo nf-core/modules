@@ -1,40 +1,50 @@
 name: hmmcopy_readcounter
-description: readCounter function from HMMcopy utilities, used to generate read in windows
+description: readCounter function from HMMcopy utilities, used to generate read in
+  windows
 keywords:
   - hmmcopy
   - readcounter
   - cnv
 tools:
   - hmmcopy:
-      description: C++ based programs for analyzing BAM files and preparing read counts -- used with bioconductor-hmmcopy
+      description: C++ based programs for analyzing BAM files and preparing read counts
+        -- used with bioconductor-hmmcopy
       homepage: https://github.com/shahcompbio/hmmcopy_utils
       documentation: https://github.com/shahcompbio/hmmcopy_utils
       tool_dev_url: https://github.com/shahcompbio/hmmcopy_utils
       licence: ["GPL v3"]
+      identifier: biotools:hmmcopy
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.{bai}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - wig:
-      type: file
-      description: A wig file with the number of reads lying within each window in each chromosome
-      pattern: "*.wig"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.wig":
+          type: file
+          description: A wig file with the number of reads lying within each window in
+            each chromosome
+          pattern: "*.wig"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@sppearce"
 maintainers:

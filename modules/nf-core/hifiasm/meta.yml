@@ -15,85 +15,160 @@ tools:
       tool_dev_url: https://github.com/chhylp123/hifiasm
       doi: "10.1038/s41592-020-01056-5"
       licence: ["MIT"]
+      identifier: biotools:hifiasm
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: FASTQ file with PacBio HiFi reads
-      pattern: "*.{fastq}"
-  - paternal_kmer_dump:
-      type: file
-      description: Yak kmer dump file for paternal reads (can be used for haplotype resolution). It can have an arbitrary extension.
-  - maternal_kmer_dump:
-      type: file
-      description: Yak kmer dump file for maternal reads (can be used for haplotype resolution). It can have an arbitrary extension.
-  - use_parental_kmers:
-      type: boolean
-      description: A flag (true or false) signalling if the module should use the paternal and maternal kmer dumps.
-  - hic_read1:
-      type: file
-      description: Hi-C data Forward reads.
-  - hic_read2:
-      type: file
-      description: Hi-C data Reverse reads.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: FASTQ file with PacBio HiFi reads
+        pattern: "*.{fastq}"
+  - - meta1:
+        type: map
+        description: |
+          Groovy Map containing information about parental kmers.
+    - paternal_kmer_dump:
+        type: file
+        description: Yak kmer dump file for paternal reads (can be used for haplotype
+          resolution). It can have an arbitrary extension.
+    - maternal_kmer_dump:
+        type: file
+        description: Yak kmer dump file for maternal reads (can be used for haplotype
+          resolution). It can have an arbitrary extension.
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing information about Hi-C reads
+    - hic_read1:
+        type: file
+        description: Hi-C data Forward reads.
+    - hic_read2:
+        type: file
+        description: Hi-C data Reverse reads.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - raw_unitigs:
-      type: file
-      description: Raw unitigs
-      pattern: "*.r_utg.gfa"
-  - processed_unitigs:
-      type: file
-      description: Processed unitigs
-      pattern: "*.p_utg.gfa"
-  - primary_contigs:
-      type: file
-      description: Primary contigs
-      pattern: "*.asm.p_ctg.gfa"
-  - alternate_contigs:
-      type: file
-      description: Alternative contigs
-      pattern: "*.asm.a_ctg.gfa"
-  - paternal_contigs:
-      type: file
-      description: Paternal contigs
-      pattern: "*.hap1.p_ctg.gfa"
-  - maternal_contigs:
-      type: file
-      description: Maternal contigs
-      pattern: "*.hap2.p_ctg.gfa"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.r_utg.gfa":
+          type: file
+          description: Raw unitigs
+          pattern: "*.r_utg.gfa"
   - corrected_reads:
-      type: file
-      description: Corrected reads
-      pattern: "*.ec.bin"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.ec.bin":
+          type: file
+          description: Corrected reads
+          pattern: "*.ec.bin"
   - source_overlaps:
-      type: file
-      description: Source overlaps
-      pattern: "*.ovlp.source.bin"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.ovlp.source.bin":
+          type: file
+          description: Source overlaps
+          pattern: "*.ovlp.source.bin"
   - reverse_overlaps:
-      type: file
-      description: Reverse overlaps
-      pattern: "*.ovlp.reverse.bin"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.ovlp.reverse.bin":
+          type: file
+          description: Reverse overlaps
+          pattern: "*.ovlp.reverse.bin"
+  - processed_contigs:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bp.p_ctg.gfa":
+          type: file
+          description: Processed contigs
+          pattern: "*.bp.p_ctg.gfa"
+  - processed_unitigs:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.p_utg.gfa":
+          type: file
+          description: Processed unitigs
+          pattern: "*.p_utg.gfa"
+  - primary_contigs:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.asm.p_ctg.gfa":
+          type: file
+          description: Primary contigs
+          pattern: "*.asm.p_ctg.gfa"
+  - alternate_contigs:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.asm.a_ctg.gfa":
+          type: file
+          description: Alternative contigs
+          pattern: "*.asm.a_ctg.gfa"
+  - paternal_contigs:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.hap1.p_ctg.gfa":
+          type: file
+          description: Paternal contigs
+          pattern: "*.hap1.p_ctg.gfa"
+  - maternal_contigs:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.hap2.p_ctg.gfa":
+          type: file
+          description: Maternal contigs
+          pattern: "*.hap2.p_ctg.gfa"
   - log:
-      type: file
-      description: Stderr log
-      pattern: "*.log"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: Stderr log
+          pattern: "*.log"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@sidorov-si"
   - "@scorreard"
   - "@mbeavitt"
+  - "@schmytzi"
 maintainers:
   - "@sidorov-si"
   - "@scorreard"

@@ -1,5 +1,6 @@
 name: "gridss_gridsssomaticfilter"
-description: GRIDSS is a module software suite containing tools useful for the detection of genomic rearrangements.
+description: GRIDSS is a module software suite containing tools useful for the detection
+  of genomic rearrangements.
 keywords:
   - gridss
   - structural variants
@@ -13,41 +14,51 @@ tools:
       doi: "10.1186/s13059-021-02423-x"
       licence: ["GPL v3"]
 
+      identifier: biotools:gridss
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test']
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing information for PONDIR
-        e.g. [ id:'test']
-  - vcf:
-      type: file
-      description: Input VCF file, must be generated with GRIDSS
-      pattern: "*.{vcf,vcf.gz}"
-  - pondir:
-      type: directory
-      description: Directory containing Panel Of Normal bed/bedpe used to filter FP somatic events. Use gridss.GeneratePonBedpe to generate the PON.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test']
+    - vcf:
+        type: file
+        description: Input VCF file, must be generated with GRIDSS
+        pattern: "*.{vcf,vcf.gz}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing information for PONDIR
+          e.g. [ id:'test']
+    - pondir:
+        type: directory
+        description: Directory containing Panel Of Normal bed/bedpe used to filter FP
+          somatic events. Use gridss.GeneratePonBedpe to generate the PON.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test']
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - high_conf_sv:
-      type: file
-      description: VCF file including high confidence somatic SVs
-      pattern: "*.vcf.bgz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test']
+      - "*.high_confidence_somatic.vcf.bgz":
+          type: file
+          description: VCF file including high confidence somatic SVs
+          pattern: "*.vcf.bgz"
   - all_sv:
-      type: file
-      description: VCF file including all somatic SVs
-      pattern: "*.vcf.bgz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test']
+      - "*.all_somatic.vcf.bgz":
+          type: file
+          description: VCF file including all somatic SVs
+          pattern: "*.vcf.bgz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@kubranarci"

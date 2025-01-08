@@ -11,41 +11,53 @@ tools:
       documentation: "https://github.com/dnil/rhocall"
       tool_dev_url: "https://github.com/dnil"
       licence: ["GPL v3"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - vcf:
-      type: file
-      description: VCF file
-      pattern: "*.{vcf}"
-  - roh:
-      type: file
-      description: Input RHO file produced from rhocall
-      pattern: "*.{roh}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - vcf:
+        type: file
+        description: VCF file
+        pattern: "*.{vcf}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - roh:
+        type: file
+        description: Input RHO file produced from rhocall
+        pattern: "*.{roh}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - bed:
-      type: file
-      description: Bed file containing roh calls
-      pattern: "*.{bed}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}/${prefix}.bed:
+          type: file
+          description: Bed file containing roh calls
+          pattern: "*.{bed}"
   - wig:
-      type: file
-      description: Wig file containing roh calls
-      pattern: "*.{wig}"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}/${prefix}.wig:
+          type: file
+          description: Wig file containing roh calls
+          pattern: "*.{wig}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@ramprasadn"
 maintainers:

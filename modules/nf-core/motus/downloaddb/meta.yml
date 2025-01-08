@@ -9,28 +9,29 @@ keywords:
   - download
 tools:
   - "motus":
-      description: "The mOTU profiler is a computational tool that estimates relative taxonomic abundance of known and currently unknown microbial community members using metagenomic shotgun sequencing data."
+      description: "The mOTU profiler is a computational tool that estimates relative
+        taxonomic abundance of known and currently unknown microbial community members
+        using metagenomic shotgun sequencing data."
       documentation: "https://github.com/motu-tool/mOTUs/wiki"
       tool_dev_url: "https://github.com/motu-tool/mOTUs"
       doi: "10.1186/s40168-022-01410-z"
       licence: ["GPL v3"]
+      identifier: ""
 input:
-  - motus_downloaddb:
-      type: directory
-      description: |
-        The mOTUs downloadDB script source file.
-        It is the source file installed or
-        remote source in github such as https://raw.githubusercontent.com/motu-tool/mOTUs/master/motus/downloadDB.py
-      pattern: "downloadDB.py"
+  - - motus_downloaddb_script:
+        type: file
+        description: The script to download the mOTUs database
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - db:
-      type: directory
-      description: The mOTUs database directory
-      pattern: "db_mOTU"
+      - db_mOTU/:
+          type: directory
+          description: The mOTUs database directory
+          pattern: "db_mOTU"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jianhong"
 maintainers:

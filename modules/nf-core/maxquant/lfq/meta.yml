@@ -1,47 +1,51 @@
 name: maxquant_lfq
-description: Run standard proteomics data analysis with MaxQuant, mostly dedicated to label-free. Paths to fasta and raw files needs to be marked by "PLACEHOLDER"
+description: Run standard proteomics data analysis with MaxQuant, mostly dedicated
+  to label-free. Paths to fasta and raw files needs to be marked by "PLACEHOLDER"
 keywords:
   - sort
   - proteomics
   - mass-spectroscopy
 tools:
   - maxquant:
-      description: MaxQuant is a quantitative proteomics software package designed for analyzing large mass-spectrometric data sets. License restricted.
+      description: MaxQuant is a quantitative proteomics software package designed for
+        analyzing large mass-spectrometric data sets. License restricted.
       homepage: https://www.maxquant.org/
       documentation: http://coxdocs.org/doku.php?id=maxquant:start
       licence: ["http://www.coxdocs.org/lib/exe/fetch.php?media=license_agreement.pdf"]
+      identifier: biotools:maxquant
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - raw:
-      type: file
-      description: raw files with mass spectra
-      pattern: "*.{raw,RAW,Raw}"
-  - fasta:
-      type: file
-      description: fasta file with protein sequences
-      pattern: "*.{fasta}"
-  - parfile:
-      type: file
-      description: MaxQuant parameter file (XML)
-      pattern: "*.{xml}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: fasta file with protein sequences
+        pattern: "*.{fasta}"
+    - paramfile:
+        type: file
+        description: MaxQuant parameter file
+  - - raw:
+        type: file
+        description: raw files with mass spectra
+        pattern: "*.{raw,RAW,Raw}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software version
-      pattern: "versions.yml"
   - maxquant_txt:
-      type: file
-      description: tables with peptides and protein information
-      pattern: "*.{txt}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt":
+          type: file
+          description: tables with peptides and protein information
+          pattern: "*.{txt}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software version
+          pattern: "versions.yml"
 authors:
   - "@veitveit"
 maintainers:

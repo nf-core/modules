@@ -1,5 +1,6 @@
 name: "glimpse2_concordance"
-description: Program to compute the genotyping error rate at the sample or marker level.
+description: Program to compute the genotyping error rate at the sample or marker
+  level.
 keywords:
   - concordance
   - low-coverage
@@ -7,103 +8,160 @@ keywords:
   - imputation
 tools:
   - "glimpse2":
-      description: "GLIMPSE2 is a phasing and imputation method for large-scale low-coverage sequencing studies."
+      description: "GLIMPSE2 is a phasing and imputation method for large-scale low-coverage
+        sequencing studies."
       homepage: "https://odelaneau.github.io/GLIMPSE"
       documentation: "https://odelaneau.github.io/GLIMPSE/commands.html"
       tool_dev_url: "https://github.com/odelaneau/GLIMPSE"
       doi: "10.1038/s41588-020-00756-0"
       licence: ["MIT"]
+      identifier: biotools:glimpse2
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - region:
-      type: string
-      description: Target region used for imputation, including left and right buffers (e.g. chr20:1000000-2000000). Can also be a list of such regions.
-      pattern: "chrXX:leftBufferPosition-rightBufferPosition"
-  - freq:
-      type: file
-      description: File containing allele frequencies at each site.
-      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-  - truth:
-      type: file
-      description: Validation dataset called at the same positions as the imputed file.
-      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-  - estimate:
-      type: file
-      description: Imputed dataset file obtain after phasing.
-      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-  - samples:
-      type: file
-      description: List of samples to process, one sample ID per line.
-      pattern: "*.{txt,tsv}"
-  - groups:
-      type: file
-      description: Alternative to frequency bins, group bins are user defined, provided in a file.
-      pattern: "*.{txt,tsv}"
-  - bins:
-      type: string
-      description: |
-        Allele frequency bins used for rsquared computations.
-        By default they should as MAF bins [0-0.5], while
-        they should take the full range [0-1] if --use-ref-alt is used.
-      pattern: "0 0.01 0.05 ... 0.5"
-  - ac_bins:
-      type: string
-      description: User-defined allele count bins used for rsquared computations.
-      pattern: "1 2 5 10 20 ... 100000"
-  - allele_counts:
-      type: string
-      description: |
-        Default allele count bins used for rsquared computations.
-        AN field must be defined in the frequency file.
-  - min_val_gl:
-      type: float
-      description: |
-        Minimum genotype likelihood probability P(G|R) in validation data.
-        Set to zero to have no filter of if using –gt-validation
-  - min_val_dp:
-      type: integer
-      description: |
-        Minimum coverage in validation data.
-        If FORMAT/DP is missing and –min_val_dp > 0, the program exits with an error.
-        Set to zero to have no filter of if using –gt-validation
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - estimate:
+        type: file
+        description: Imputed dataset file obtain after phasing.
+        pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+    - estimate_index:
+        type: file
+        description: Index file for the imputed dataset file.
+    - truth:
+        type: file
+        description: Validation dataset called at the same positions as the imputed
+          file.
+        pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+    - truth_index:
+        type: file
+        description: Index file for the truth file.
+    - freq:
+        type: file
+        description: File containing allele frequencies at each site.
+        pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+    - freq_index:
+        type: file
+        description: Index file for the allele frequencies file.
+    - samples:
+        type: file
+        description: List of samples to process, one sample ID per line.
+        pattern: "*.{txt,tsv}"
+    - region:
+        type: string
+        description: Target region used for imputation, including left and right buffers
+          (e.g. chr20:1000000-2000000). Can also be a list of such regions.
+        pattern: "chrXX:leftBufferPosition-rightBufferPosition"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - groups:
+        type: file
+        description: Alternative to frequency bins, group bins are user defined, provided
+          in a file.
+        pattern: "*.{txt,tsv}"
+    - bins:
+        type: string
+        description: |
+          Allele frequency bins used for rsquared computations.
+          By default they should as MAF bins [0-0.5], while
+          they should take the full range [0-1] if --use-ref-alt is used.
+        pattern: "0 0.01 0.05 ... 0.5"
+    - ac_bins:
+        type: string
+        description: User-defined allele count bins used for rsquared computations.
+        pattern: "1 2 5 10 20 ... 100000"
+    - allele_counts:
+        type: string
+        description: |
+          Default allele count bins used for rsquared computations.
+          AN field must be defined in the frequency file.
+    - min_val_gl:
+        type: float
+        description: |
+          Minimum genotype likelihood probability P(G|R) in validation data.
+          Set to zero to have no filter of if using –gt-validation
+    - min_val_dp:
+        type: integer
+        description: |
+          Minimum coverage in validation data.
+          If FORMAT/DP is missing and –min_val_dp > 0, the program exits with an error.
+          Set to zero to have no filter of if using –gt-validation
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions.
-      pattern: "versions.yml"
   - errors_cal:
-      type: file
-      description: Calibration correlation errors between imputed dosages (in MAF bins) and highly-confident genotype.
-      pattern: "*.errors.cal.txt.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.error.cal.txt.gz":
+          type: file
+          description: Calibration correlation errors between imputed dosages (in MAF
+            bins) and highly-confident genotype.
+          pattern: "*.errors.cal.txt.gz"
   - errors_grp:
-      type: file
-      description: Groups correlation errors between imputed dosages (in MAF bins) and highly-confident genotype.
-      pattern: "*.errors.grp.txt.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.error.grp.txt.gz":
+          type: file
+          description: Groups correlation errors between imputed dosages (in MAF bins)
+            and highly-confident genotype.
+          pattern: "*.errors.grp.txt.gz"
   - errors_spl:
-      type: file
-      description: Samples correlation errors between imputed dosages (in MAF bins) and highly-confident genotype.
-      pattern: "*.errors.spl.txt.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.error.spl.txt.gz":
+          type: file
+          description: Samples correlation errors between imputed dosages (in MAF bins)
+            and highly-confident genotype.
+          pattern: "*.errors.spl.txt.gz"
   - rsquare_grp:
-      type: file
-      description: Groups r-squared correlation between imputed dosages (in MAF bins) and highly-confident genotype.
-      pattern: "*.rsquare.grp.txt.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.rsquare.grp.txt.gz":
+          type: file
+          description: Groups r-squared correlation between imputed dosages (in MAF bins)
+            and highly-confident genotype.
+          pattern: "*.rsquare.grp.txt.gz"
   - rsquare_spl:
-      type: file
-      description: Samples r-squared correlation between imputed dosages (in MAF bins) and highly-confident genotype.
-      pattern: "*.rsquare.spl.txt.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.rsquare.spl.txt.gz":
+          type: file
+          description: Samples r-squared correlation between imputed dosages (in MAF bins)
+            and highly-confident genotype.
+          pattern: "*.rsquare.spl.txt.gz"
   - rsquare_per_site:
-      type: file
-      description: Variant r-squared correlation between imputed dosages (in MAF bins) and highly-confident genotype.
-      pattern: "_r2_sites.txt.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_r2_sites.txt.gz":
+          type: file
+          description: Variant r-squared correlation between imputed dosages (in MAF bins)
+            and highly-confident genotype.
+          pattern: "_r2_sites.txt.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions.
+          pattern: "versions.yml"
 authors:
   - "@louislenezet"
 maintainers:

@@ -8,60 +8,70 @@ keywords:
   - bustools
 tools:
   - kb:
-      description: kallisto and bustools are wrapped in an easy-to-use program called kb
+      description: kallisto and bustools are wrapped in an easy-to-use program called
+        kb
       homepage: https://www.kallistobus.tools/
       documentation: https://kb-python.readthedocs.io/en/latest/index.html
       tool_dev_url: https://github.com/pachterlab/kb_python
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: |
-        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-        respectively.
-  - index:
-      type: file
-      description: kb-ref index file (.idx)
-      pattern: "*.{idx}"
-  - t2g:
-      type: file
-      description: t2g file from kallisto
-      pattern: "*t2g.txt"
-  - t1c:
-      type: file
-      description: kb ref's c1 cdna_t2c file
-      pattern: "*.{cdna_t2c.txt}"
-  - t2c:
-      type: file
-      description: kb ref's c2 intron_t2c file
-      pattern: "*.{intron_t2c.txt}"
-  - workflow_mode:
-      type: string
-      description: String value defining workflow to use, can be one of "standard", "nac", "lamanno" (obsolete)
-      pattern: "{standard,lamanno,nac}"
-  - technology:
-      type: string
-      description: String value defining the sequencing technology used.
-      pattern: "{10XV1,10XV2,10XV3,CELSEQ,CELSEQ2,DROPSEQ,INDROPSV1,INDROPSV2,INDROPSV3,SCRUBSEQ,SURECELL,SMARTSEQ}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively.
+  - - index:
+        type: file
+        description: kb-ref index file (.idx)
+        pattern: "*.{idx}"
+  - - t2g:
+        type: file
+        description: t2g file from kallisto
+        pattern: "*t2g.txt"
+  - - t1c:
+        type: file
+        description: kb ref's c1 cdna_t2c file
+        pattern: "*.{cdna_t2c.txt}"
+  - - t2c:
+        type: file
+        description: kb ref's c2 intron_t2c file
+        pattern: "*.{intron_t2c.txt}"
+  - - technology:
+        type: string
+        description: String value defining the sequencing technology used.
+        pattern: "{10XV1,10XV2,10XV3,CELSEQ,CELSEQ2,DROPSEQ,INDROPSV1,INDROPSV2,INDROPSV3,SCRUBSEQ,SURECELL,SMARTSEQ}"
+  - - workflow_mode:
+        type: string
+        description: String value defining workflow to use, can be one of "standard",
+          "nac", "lamanno" (obsolete)
+        pattern: "{standard,lamanno,nac}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test']
   - count:
-      type: file
-      description: kb count output folder
-      pattern: "*.{count}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test']
+      - "*.count":
+          type: file
+          description: kb count output folder
+          pattern: "*.{count}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+  - matrix:
+      - "*.count/*/*.mtx":
+          type: file
+          description: file containing the count matrix
+          pattern: "*.mtx"
 authors:
   - "@flowuenne"
 maintainers:

@@ -17,55 +17,66 @@ tools:
       tool_dev_url: "https://github.com/vgl-hub/gfastats"
       doi: "10.1093/bioinformatics/btac460"
       licence: ["MIT"]
+      identifier: biotools:gfastats
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - assembly:
-      type: file
-      description: Draft assembly file
-      pattern: "*.{fasta,fastq,gfa}(.gz)?"
-  - out_fmt:
-      type: string
-      description: Output format (fasta, fastq, gfa)
-  - genome_size:
-      type: integer
-      description: estimated genome size (bp) for NG* statistics (optional).
-  - target:
-      type: string
-      description: target specific sequence by header, optionally with coordinates (optional).
-  - agpfile:
-      type: file
-      description: converts input agp to path and replaces existing paths.
-  - include_bed:
-      type: file
-      description: generates output on a subset list of headers or coordinates in 0-based bed format.
-  - exclude_bed:
-      type: file
-      description: opposite of --include-bed. They can be combined (no coordinates).
-  - instructions:
-      type: file
-      description: set of instructions provided as an ordered list.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - assembly:
+        type: file
+        description: Draft assembly file
+        pattern: "*.{fasta,fastq,gfa}(.gz)?"
+  - - out_fmt:
+        type: string
+        description: Output format (fasta, fastq, gfa)
+  - - genome_size:
+        type: integer
+        description: estimated genome size (bp) for NG* statistics (optional).
+  - - target:
+        type: string
+        description: target specific sequence by header, optionally with coordinates
+          (optional).
+  - - agpfile:
+        type: file
+        description: converts input agp to path and replaces existing paths.
+  - - include_bed:
+        type: file
+        description: generates output on a subset list of headers or coordinates in
+          0-based bed format.
+  - - exclude_bed:
+        type: file
+        description: opposite of --include-bed. They can be combined (no coordinates).
+  - - instructions:
+        type: file
+        description: set of instructions provided as an ordered list.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - assembly_summary:
-      type: file
-      description: Assembly summary statistics file
-      pattern: "*.assembly_summary"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.assembly_summary":
+          type: file
+          description: Assembly summary statistics file
+          pattern: "*.assembly_summary"
   - assembly:
-      type: file
-      description: The assembly as modified by gfastats
-      pattern: "*.{fasta,fastq,gfa}.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.${out_fmt}.gz":
+          type: file
+          description: The assembly as modified by gfastats
+          pattern: "*.{fasta,fastq,gfa}.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@mahesh-panchal"
 maintainers:

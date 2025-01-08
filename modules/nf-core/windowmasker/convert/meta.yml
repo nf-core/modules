@@ -6,35 +6,38 @@ keywords:
   - windowmasker
 tools:
   - windowmasker:
-      description: "A program to mask highly repetitive and low complexity DNA sequences within a genome."
+      description: "A program to mask highly repetitive and low complexity DNA sequences
+        within a genome."
       homepage: "https://blast.ncbi.nlm.nih.gov/Blast.cgi"
       documentation: "ftp://ftp.ncbi.nlm.nih.gov/pub/agarwala/windowmasker/README.windowmasker"
       doi: 10.1016/S0022-2836(05)80360-2
       licence: ["US-Government-Work"]
+      identifier: biotools:windowmasker
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - counts:
-      type: file
-      description: valid unit counts file
-      pattern: "*.{ascii,binary,oascii,obinary,txt}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - counts:
+        type: file
+        description: valid unit counts file
+        pattern: "*.{ascii,binary,oascii,obinary,txt}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - counts:
-      type: file
-      description: valid unit counts file
-      pattern: "*.{ascii,binary,oascii,obinary}"
+  - converted:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${output}:
+          type: file
+          description: converted file
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@alxndrdiaz"
 maintainers:
