@@ -4,8 +4,8 @@ process METAMDBG_ASM {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/metamdbg:1.0--hdcf5f25_1':
-        'biocontainers/metamdbg:1.0--hdcf5f25_1' }"
+        'https://depot.galaxyproject.org/singularity/metamdbg:1.1--h077b44d_1':
+        'biocontainers/metamdbg:1.1--h077b44d_1' }"
 
     input:
     tuple val(meta), path(reads)
