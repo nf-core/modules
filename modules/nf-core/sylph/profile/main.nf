@@ -21,7 +21,6 @@ process SYLPH_PROFILE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     sylph profile \\
           $args \\
