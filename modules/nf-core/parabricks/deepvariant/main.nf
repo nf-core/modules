@@ -2,7 +2,7 @@ process PARABRICKS_DEEPVARIANT {
     tag "$meta.id"
     label 'process_high'
     label 'process_gpu'
-    stageInMode 'copy' // needed by the module to work properly can be removed when fixed upstream
+    stageInMode 'copy' // needed by the module to work properly can be removed when fixed upstream - Issue #7226
 
     container "nvcr.io/nvidia/clara/clara-parabricks:4.4.0-1"
 
