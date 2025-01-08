@@ -15,7 +15,6 @@ process SYLPH_PROFILE {
     tuple val(meta), path('*.tsv'), emit: profile_out
     path "versions.yml"           , emit: versions
 
-
     when:
     task.ext.when == null || task.ext.when
 
