@@ -28,7 +28,7 @@ input:
           respectively. They are automatically sketched to .sylsp/.syldb
   - - pre_sketched_files:
         type: file
-        description: Pre-sketched *.syldb/*.sylsp files
+        description: Pre-sketched *.syldb/*.sylsp files. Raw single-end fastq/fasta are allowed and will be automatically sketched to .sylsp/.syldb.
         pattern: "*.{syldb,sylsp}"
 output:
   - profile_out:
