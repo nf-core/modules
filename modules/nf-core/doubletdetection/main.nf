@@ -2,9 +2,10 @@ process DOUBLETDETECTION {
     tag "$meta.id"
     label 'process_medium'
 
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/anndata_louvain_pip_doubletdetection:42d2326cc250350b':
-        'community.wave.seqera.io/library/anndata_louvain_pip_doubletdetection:cbe92394c10372fa' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/87/878a0582c1de0ad7370ad1fbdebd7e786c77d29b064e10a7c09c35a9df3bfb97/data' :
+        'community.wave.seqera.io/library/anndata_louvain_numpy_pip_pruned:9ff7bfd3c5201947' }"
 
     input:
     tuple val(meta), path(h5ad)
@@ -18,18 +19,10 @@ process DOUBLETDETECTION {
     task.ext.when == null || task.ext.when
 
     script:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "DOUBLETDETECTION module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
     prefix = task.ext.prefix ?: "${meta.id}"
     template 'doubletdetection.py'
 
     stub:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "DOUBLETDETECTION module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     export MPLCONFIGDIR=./tmp
