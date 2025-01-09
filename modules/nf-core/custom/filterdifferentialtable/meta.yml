@@ -29,15 +29,25 @@ input:
   - - logFC_column:
         type: string
         description: Name of the column containing log fold change values
-  - - FC_threshold:
+    - FC_threshold:
         type: float
         description: Fold change threshold for filtering
+    - FC_cardinality:
+        type: string
+        description: |
+          Operator to compare the FC values with the threshold.
+          Valid values are: ">=", "<=", ">", "<".
   - - padj_column:
         type: string
         description: Name of the column containing adjusted p-values
-  - - padj_threshold:
+    - padj_threshold:
         type: float
         description: Adjusted p-value threshold for filtering
+    - padj_cardinality:
+        type: string
+        description: |
+          Operator to compare the adjusted p-values with the threshold.
+          Valid values are: ">=", "<=", ">", "<".
 output:
   - filtered:
       - meta:
@@ -57,6 +67,7 @@ output:
 authors:
   - "@pinin4fjords"
   - "@WackerO"
+  - "@suzannejin"
 maintainers:
   - "@pinin4fjords"
   - "@WackerO"
