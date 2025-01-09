@@ -26,14 +26,14 @@ process GSEA_GSEA {
     tuple val(meta), path("*heat_map_1.png")                   , emit: heatmap
     tuple val(meta), path("*pvalues_vs_nes_plot.png")          , emit: pvalues_vs_nes_plot
     tuple val(meta), path("*ranked_list_corr_2.png")           , emit: ranked_list_corr
-    tuple val(meta), path("*butterfly_plot.png")               , emit: butterfly_plot, optional: true
-    tuple val(meta), path("gene_sets_*.tsv")                   , emit: gene_set_tsv, optional: true
-    tuple val(meta), path("gene_sets_*.html")                  , emit: gene_set_html, optional: true
+    tuple val(meta), path("*butterfly_plot.png")               , emit: butterfly_plot  , optional: true
+    tuple val(meta), path("gene_sets_*.tsv")                   , emit: gene_set_tsv    , optional: true
+    tuple val(meta), path("gene_sets_*.html")                  , emit: gene_set_html   , optional: true
     tuple val(meta), path("gene_sets_*.png")                   , emit: gene_set_heatmap, optional: true
-    tuple val(meta), path("*_snapshot*.html")                  , emit: snapshot, optional: true
-    tuple val(meta), path("*enplot*.png")                      , emit: gene_set_enplot, optional: true
-    tuple val(meta), path("*gset_rnd_es_dist*.png")            , emit: gene_set_dist, optional: true
-    tuple val(meta), path("*.zip")                             , emit: archive, optional: true
+    tuple val(meta), path("*_snapshot*.html")                  , emit: snapshot        , optional: true
+    tuple val(meta), path("*enplot*.png")                      , emit: gene_set_enplot , optional: true
+    tuple val(meta), path("*gset_rnd_es_dist*.png")            , emit: gene_set_dist   , optional: true
+    tuple val(meta), path("*.zip")                             , emit: archive         , optional: true
     path "versions.yml"                                        , emit: versions
 
     when:

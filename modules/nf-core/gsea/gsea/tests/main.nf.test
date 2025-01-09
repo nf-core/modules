@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process GSEA_GSEA"
     script "../main.nf"
     process "GSEA_GSEA"
+    config "./nextflow.config"
+
     tag "modules"
     tag "modules_nfcore"
     tag "gsea_gsea"
@@ -12,6 +14,9 @@ nextflow_process {
     test("test") {
 
         when {
+            params{
+                module_args = "-rnd_seed 10"
+            }
             process {
                 """
                 input[0] = [['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'], file("https://github.com/nf-core/test-datasets/raw/refs/heads/differentialabundance/modules_testdata/Condition_treatment_Control_Treated.gct", checkIfExists:true), file("https://github.com/nf-core/test-datasets/raw/refs/heads/differentialabundance/modules_testdata/Condition_genotype_WT_KO.cls", checkIfExists:true), file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt", checkIfExists:true)]
@@ -25,14 +30,14 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    process.out.rpt.collect{ meta,rpt -> file(rpt).name }, //assert unstable file,
+                    process.out.rpt.collect{ meta,rpt -> file(rpt).name }, //assert unstable file
                     process.out.index_html.collect{ meta,index_html -> file(index_html).name }, //assert unstable file
                     process.out.heat_map_corr_plot,
-                    process.out.report_tsvs_ref.collect{ meta,report_tsvs_ref -> file(report_tsvs_ref).name },
+                    process.out.report_tsvs_ref,
                     process.out.report_htmls_ref.collect{ meta,report_htmls_ref -> file(report_htmls_ref).name }, //assert unstable file
-                    process.out.report_tsvs_target.collect{ meta,report_tsvs_target -> file(report_tsvs_target).name }, //assert unstable file
+                    process.out.report_tsvs_target,
                     process.out.report_htmls_target.collect{ meta,report_htmls_target -> file(report_htmls_target).name }, //assert unstable file
-                    process.out.ranked_gene_list.collect{ meta,ranked_gene_list -> file(ranked_gene_list).name }, //assert unstable file
+                    process.out.ranked_gene_list,
                     process.out.gene_set_sizes,
                     process.out.histogram.collect{ meta,histogram -> file(histogram).name }, //assert unstable file
                     process.out.heatmap.collect{ meta,heatmap -> file(heatmap).name }, //assert unstable file
@@ -41,9 +46,9 @@ nextflow_process {
                     process.out.butterfly_plot.collect{ meta,butterfly_plot -> file(butterfly_plot).name }, //assert unstable file
                     process.out.gene_set_tsv,
                     process.out.gene_set_html[0][1].collect{ file(it).name }, //assert unstable file
-                    // process.out.gene_set_heatmap[0][1].collect{ file(it).name }, // unstable file and unstable name
+                    process.out.gene_set_heatmap[0][1].collect{ file(it).name }, // unstable file and unstable name
                     process.out.snapshot[0][1].collect{ file(it).name }, //assert unstable file
-                    // process.out.gene_set_enplot[0][1].collect{ file(it).name }, // unstable file and unstable name
+                    process.out.gene_set_enplot[0][1].collect{ file(it).name }, // unstable file and unstable name
                     process.out.gene_set_dist[0][1].collect{ file(it).name }, //assert unstable file
                     process.out.archive,
                     process.out.versions
@@ -58,6 +63,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params{
+                module_args = ""
+            }
             process {
                 """
                 input[0] = [['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'], file("https://github.com/nf-core/test-datasets/raw/refs/heads/differentialabundance/modules_testdata/Condition_treatment_Control_Treated.gct", checkIfExists:true), file("https://github.com/nf-core/test-datasets/raw/refs/heads/differentialabundance/modules_testdata/Condition_genotype_WT_KO.cls", checkIfExists:true), file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt", checkIfExists:true)]
