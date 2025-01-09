@@ -83,12 +83,14 @@ runs:
           --filter process,workflow \
           ${{ inputs.paths }}
 
+          # Save the absolute path of the test.tap file to the output
+          echo "tap_file_path=$(realpath test.tap)" >> $GITHUB_OUTPUT
+
       # TODO If no test.tap, then make one to spoof?
     - uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
       if: ${{ inputs.path != '' }}
       with:
-        path: >-
-          test.tap
+        path: ${{ steps.nf-test.outputs.tap_file_path }}
 
     - name: Clean up
       if: always()
