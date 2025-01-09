@@ -15,7 +15,7 @@ process CENTRIFUGE_BUILD {
     path size_table
 
     output:
-    tuple val(meta), path("*.cf") , emit: cf
+    tuple val(meta), path("${prefix}/") , emit: cf
     path "versions.yml"           , emit: versions
 
     when:
@@ -23,13 +23,15 @@ process CENTRIFUGE_BUILD {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def size_table_cmd = size_table ? "--size_table ${size_table}" : ""
     """
+    mkdir ${prefix}
+
     centrifuge-build \\
         -p $task.cpus \\
         $fasta \\
-        ${prefix} \\
+        ${prefix}/${prefix} \\
         --conversion-table $conversion_table \\
         --taxonomy-tree $taxonomy_tree \\
         --name-table $name_table \\
@@ -43,12 +45,13 @@ process CENTRIFUGE_BUILD {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.1.cf
-    touch ${prefix}.2.cf
-    touch ${prefix}.3.cf
-    touch ${prefix}.4.cf
+    mkdir -p ${prefix}/
+    touch ${prefix}/${prefix}.1.cf
+    touch ${prefix}/${prefix}.2.cf
+    touch ${prefix}/${prefix}.3.cf
+    touch ${prefix}/${prefix}.4.cf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

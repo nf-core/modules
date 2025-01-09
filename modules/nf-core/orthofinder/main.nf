@@ -9,31 +9,40 @@ process ORTHOFINDER {
 
     input:
     tuple val(meta), path(fastas, stageAs: 'input/')
+    tuple val(meta2), path(prior_run)
 
     output:
-    tuple val(meta), path("$prefix")    , emit: orthofinder
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("$prefix")                     , emit: orthofinder
+    tuple val(meta), path("$prefix/WorkingDirectory")    , emit: working
+    path "versions.yml"                                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args ?: ''
-    prefix      = task.ext.prefix ?: "${meta.id}"
+    def args   = task.ext.args   ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def include_command = prior_run   ? "-b $prior_run" : ''
+
     """
     mkdir temp_pickle
 
     orthofinder \\
-        $args \\
         -t $task.cpus \\
         -a $task.cpus \\
         -p temp_pickle \\
         -f input \\
-        -n $prefix
+        -n $prefix \\
+        $include_command \\
+        $args
 
-    mv \\
-        input/OrthoFinder/Results_$prefix \\
-        $prefix
+    if [ -e input/OrthoFinder/Results_$prefix ]; then
+        mv input/OrthoFinder/Results_$prefix $prefix
+    fi
+
+    if [ -e ${prior_run}/OrthoFinder/Results_$prefix ]; then
+        mv ${prior_run}/OrthoFinder/Results_$prefix $prefix
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -42,8 +51,10 @@ process ORTHOFINDER {
     """
 
     stub:
-    def args    = task.ext.args ?: ''
-    prefix      = task.ext.prefix ?: "${meta.id}"
+    def args   = task.ext.args   ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def include_command = prior_run   ? "-b $prior_run" : ''
+
     """
     mkdir -p    $prefix/Comparative_Genomics_Statistics
     mkdir       $prefix/Gene_Duplication_Events

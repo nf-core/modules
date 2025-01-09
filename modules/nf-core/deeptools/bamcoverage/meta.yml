@@ -1,57 +1,69 @@
 name: deeptools_bamcoverage
-description: This tool takes an alignment of reads or fragments as input (BAM file) and generates a coverage track (bigWig or bedGraph) as output.
+description: This tool takes an alignment of reads or fragments as input (BAM file)
+  and generates a coverage track (bigWig or bedGraph) as output.
 keywords:
   - coverage
   - depth
   - track
 tools:
   - deeptools:
-      description: A set of user-friendly tools for normalization and visualzation of deep-sequencing data
+      description: A set of user-friendly tools for normalization and visualzation of
+        deep-sequencing data
       homepage: https://deeptools.readthedocs.io/en/develop/content/tools/bamCoverage.html
       documentation: https://deeptools.readthedocs.io/en/develop/content/tools/bamCoverage.html
       tool_dev_url: https://github.com/deeptools/deepTools/
       doi: "10.1093/nar/gkw257"
       licence: ["GPL v3"]
+      identifier: biotools:deeptools
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - input:
-      type: file
-      description: BAM/CRAM file
-      pattern: "*.{bam,cram}"
-  - input_index:
-      type: file
-      description: BAM/CRAM index file
-      pattern: "*.{bai,crai}"
-  - fasta:
-      type: file
-      description: Reference file the CRAM file was created with (required with CRAM input)
-      pattern: "*.{fasta,fa}"
-  - fasta_fai:
-      type: file
-      description: Index of the reference file (optional, but recommended)
-      pattern: "*.{fai}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input:
+        type: file
+        description: BAM/CRAM file
+        pattern: "*.{bam,cram}"
+    - input_index:
+        type: file
+        description: BAM/CRAM index file
+        pattern: "*.{bai,crai}"
+  - - fasta:
+        type: file
+        description: Reference file the CRAM file was created with (required with CRAM
+          input)
+        pattern: "*.{fasta,fa}"
+  - - fasta_fai:
+        type: file
+        description: Index of the reference file (optional, but recommended)
+        pattern: "*.{fai}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - bigWig:
-      type: file
-      description: BigWig file
-      pattern: "*.bigWig"
+  - bigwig:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bigWig":
+          type: file
+          description: BigWig file
+          pattern: "*.bigWig"
   - bedgraph:
-      type: file
-      description: Bedgraph file
-      pattern: "*.bedgraph"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bedgraph":
+          type: file
+          description: Bedgraph file
+          pattern: "*.bedgraph"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@FriederikeHanssen"
   - "@SusiJo"

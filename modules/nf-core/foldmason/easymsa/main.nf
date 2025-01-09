@@ -3,10 +3,14 @@ process FOLDMASON_EASYMSA {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "community.wave.seqera.io/library/foldmason_pigz:97b3311addb0f4a7"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+            'oras://community.wave.seqera.io/library/foldmason_pigz:d8dfffbc768abe03':
+            'community.wave.seqera.io/library/foldmason_pigz:88809eb5649534b0' }"
+
 
     input:
-    tuple val(meta), path(pdbs)
+    tuple val(meta) , path(pdbs)
+    tuple val(meta2), path(tree)
     val(compress)
 
     output:
@@ -20,13 +24,15 @@ process FOLDMASON_EASYMSA {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def options_tree = tree ? "--guide-tree $tree" : ""
     """
     foldmason easy-msa \\
-        $args \\
-        --threads $task.cpus \\
         ${pdbs} \\
         ${prefix} \\
-        tmp
+        tmp \\
+        ${options_tree} \\
+        $args \\
+        --threads $task.cpus
 
     if ${compress}; then
         pigz -p ${task.cpus} ${prefix}_3di.fa

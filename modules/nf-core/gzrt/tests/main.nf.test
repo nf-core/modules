@@ -1,0 +1,55 @@
+nextflow_process {
+
+    name "Test Process GZRT"
+    script "../main.nf"
+    process "GZRT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gzrt"
+
+    test("Run gzrt on 30 paired-end reads - fastq.gz") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_corrupted_30reads_R1.fastq.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("Run gzrt on 30 paired-end reads - fastq.gz - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_corrupted_30reads_R1.fastq.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

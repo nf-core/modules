@@ -1,5 +1,7 @@
 name: "muscle5_super5"
-description: Muscle is a program for creating multiple alignments of amino acid or nucleotide sequences. This particular module uses the super5 algorithm for very big alignments. It can permutate the guide tree according to a set of flags.
+description: Muscle is a program for creating multiple alignments of amino acid or
+  nucleotide sequences. This particular module uses the super5 algorithm for very
+  big alignments. It can permutate the guide tree according to a set of flags.
 keywords:
   - align
   - msa
@@ -11,37 +13,44 @@ tools:
       documentation: "https://drive5.com/muscle5/manual/"
       doi: "10.1101/2021.06.20.449169"
       licence: ["Public Domain"]
+      identifier: ""
   - "pigz":
       description: "Parallel implementation of the gzip algorithm."
       homepage: "https://zlib.net/pigz/"
       documentation: "https://zlib.net/pigz/pigz.pdf"
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: Input sequences for alignment must be in FASTA format
-      pattern: "*.{fasta,fa,fna}"
-  - compress:
-      type: boolean
-      description: Flag representing whether the output MSA should be compressed. Set to true to enable/false to disable compression. Compression is done using pigz, and is multithreaded.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Input sequences for alignment must be in FASTA format
+        pattern: "*.{fasta,fa,fna}"
+  - - compress:
+        type: boolean
+        description: Flag representing whether the output MSA should be compressed.
+          Set to true to enable/false to disable compression. Compression is done using
+          pigz, and is multithreaded.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - alignment:
-      type: file
-      description: Multiple sequence alignment produced in gzipped FASTA format. If '-perm all' is passed in ext.args, this will be multiple files per input!
-      pattern: "*.{aln.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.aln{.gz,}":
+          type: file
+          description: Multiple sequence alignment produced in gzipped FASTA format. If
+            '-perm all' is passed in ext.args, this will be multiple files per input!
+          pattern: "*.{aln.gz}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@alessiovignoli"
   - "@JoseEspinosa"

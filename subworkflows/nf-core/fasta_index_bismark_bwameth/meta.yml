@@ -1,0 +1,72 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fasta_index_bismark_bwameth"
+description: Generate index files from reference fasta for bismark and bwameth
+keywords:
+  - bismark
+  - bwameth
+  - prepare genome
+  - index
+components:
+  - untar
+  - gunzip
+  - bismark/genomepreparation
+  - bwameth/index
+  - samtools/faidx
+input:
+  - fasta:
+      type: file
+      description: |
+        Reference genome
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.{fa/fa.gz}"
+  - fasta_index:
+      type: file
+      description: |
+        Reference genome index file
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.fai"
+  - bismark_index:
+      type: file
+      description: |
+        Bismark genome index files
+        Structure: [ val(meta), path(bismark_index) ]
+  - bwameth_index:
+      type: file
+      description: |
+        Bwameth genome index files
+        Structure: [ val(meta), path(bwameth_index) ]
+output:
+  - fasta:
+      type: file
+      description: |
+        Reference genome
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.fa"
+  - fasta_index:
+      type: file
+      description: |
+        Reference genome index file
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.fai"
+  - bismark_index:
+      type: file
+      description: |
+        Bismark genome index files
+        Structure: [ val(meta), path(bismark_index) ]
+        pattern: "BismarkIndex"
+  - bwameth_index:
+      type: file
+      description: |
+        Bwameth genome index files
+        Structure: [ val(meta), path(bwameth_index) ]
+        pattern: "index"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@sateeshperi"
+maintainers:
+  - "@sateeshperi"

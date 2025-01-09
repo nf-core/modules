@@ -1,5 +1,6 @@
 name: "gatk4_asereadcounter"
-description: Calculates the allele-specific read counts for alle-specific expression analysis of RNAseq data
+description: Calculates the allele-specific read counts for alle-specific expression
+  analysis of RNAseq data
 keywords:
   - allele-specific
   - asereadcounter
@@ -15,72 +16,71 @@ tools:
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
       doi: 10.1158/1538-7445.AM2017-3590
       licence: ["Apache-2.0"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - input:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-  - input_index:
-      type: file
-      description: index file for input file
-      pattern: "*.{bai,crai}"
-  - vcf:
-      type: file
-      description: VCF file
-      pattern: "*.{vcf.gz}"
-  - tbi:
-      type: file
-      description: index file for VCF file
-      pattern: "*.{vcf.gz.tbi}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. `[ id:'reference' ]`
-  - fasta:
-      type: file
-      description: fasta file
-      pattern: "*.{fasta,fa}"
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. `[ id:'reference' ]`
-  - fai:
-      type: file
-      description: fasta index file
-      pattern: "*.{fai}"
-  - meta4:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. `[ id:'reference' ]`
-  - dict:
-      type: file
-      description: dictionary file
-      pattern: "*.{dict}"
-  - intervals:
-      type: file
-      description: interval file
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM file
+        pattern: "*.{bam}"
+    - bai:
+        type: file
+        description: index file for BAM file
+        pattern: "*.{bai}"
+    - vcf:
+        type: file
+        description: VCF file
+        pattern: "*.{vcf.gz}"
+    - tbi:
+        type: file
+        description: index file for VCF file
+        pattern: "*.{vcf.gz.tbi}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'reference' ]`
+    - fasta:
+        type: file
+        description: fasta file
+        pattern: "*.{fasta,fa}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'reference' ]`
+    - fai:
+        type: file
+        description: fasta index file
+        pattern: "*.{fai}"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'reference' ]`
+    - dict:
+        type: file
+        description: dictionary file
+        pattern: "*.{dict}"
+  - - intervals:
+        type: file
+        description: interval file
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - csv:
-      type: file
-      description: output file
-      pattern: "*.{csv}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@Lucpen"
 maintainers:

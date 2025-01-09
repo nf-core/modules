@@ -1,0 +1,47 @@
+name: deepvariant_vcfstatsreport
+description: DeepVariant is an analysis pipeline that uses a deep neural network to
+  call genetic variants from next-generation DNA sequencing data
+keywords:
+  - variant calling
+  - machine learning
+  - neural network
+tools:
+  - deepvariant:
+      description: DeepVariant is an analysis pipeline that uses a deep neural network
+        to call genetic variants from next-generation DNA sequencing data
+      homepage: https://github.com/google/deepvariant
+      documentation: https://github.com/google/deepvariant
+      tool_dev_url: https://github.com/google/deepvariant
+      doi: "10.1038/nbt.4235"
+      licence: ["BSD-3-clause"]
+      identifier: biotools:deepvariant
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: VCF file
+        pattern: "{*.vcf,vcf.gz,bcf,bcf.gz}"
+output:
+  - report:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.visual_report.html:
+          type: file
+          description: Visual report in HTML format
+          pattern: "*.html"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@fellen31"
+maintainers:
+  - "@fellen31"

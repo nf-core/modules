@@ -1,40 +1,47 @@
 name: "mindagap_mindagap"
-description: Takes a single panorama image and fills the empty grid lines with neighbour-weighted values.
+description: Takes a single panorama image and fills the empty grid lines with neighbour-weighted
+  values.
 keywords:
   - imaging
   - resolve_bioscience
   - spatial_transcriptomics
 tools:
   - "mindagap":
-      description: "Mindagap is a collection of tools to process multiplexed FISH data, such as produced by Resolve Biosciences Molecular Cartography."
+      description: "Mindagap is a collection of tools to process multiplexed FISH data,
+        such as produced by Resolve Biosciences Molecular Cartography."
       homepage: "https://github.com/ViriatoII/MindaGap"
       documentation: "https://github.com/ViriatoII/MindaGap/blob/main/README.md"
       tool_dev_url: "https://github.com/ViriatoII/MindaGap"
       licence: ["BSD-3-Clause license"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - panorama:
-      type: file
-      description: A tiff file containing gridlines as produced by Molecular Cartography imaging.
-      pattern: "*.{tif,tiff}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - panorama:
+        type: file
+        description: A tiff file containing gridlines as produced by Molecular Cartography
+          imaging.
+        pattern: "*.{tif,tiff}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - tiff:
-      type: file
-      description: A tiff file with gridlines filled based on consecutive gaussian blurring.
-      pattern: "*.{tiff}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.{tif,tiff}":
+          type: file
+          description: A tiff file with gridlines filled based on consecutive gaussian
+            blurring.
+          pattern: "*.{tiff}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@ViriatoII"
   - "@flowuenne"

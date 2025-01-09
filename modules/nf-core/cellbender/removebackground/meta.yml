@@ -1,74 +1,135 @@
 name: cellbender_removebackground
-description: Module to use CellBender to estimate ambient RNA from single-cell RNA-seq data
+description: Module to use CellBender to estimate ambient RNA from single-cell RNA-seq
+  data
 keywords:
   - single-cell
   - scRNA-seq
   - ambient RNA removal
 tools:
   - cellbender:
-      description: CellBender is a software package for eliminating technical artifacts from high-throughput single-cell RNA sequencing (scRNA-seq) data.
+      description: CellBender is a software package for eliminating technical artifacts
+        from high-throughput single-cell RNA sequencing (scRNA-seq) data.
       documentation: https://cellbender.readthedocs.io/en/latest/
       tool_dev_url: https://github.com/broadinstitute/CellBender
       licence: ["BSD-3-Clause"]
+      identifier: biotools:CellBender
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - h5ad:
-      type: file
-      description: AnnData file containing unfiltered data (with empty droplets)
-      pattern: "*.h5ad"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - h5ad:
+        type: file
+        description: AnnData file containing unfiltered data (with empty droplets)
+        pattern: "*.h5ad"
 output:
   - h5:
-      type: file
-      description: Full count matrix as an h5 file, with background RNA removed. This file contains all the original droplet barcodes.
-      pattern: "*.h5"
+      - meta:
+          type: file
+          description: Full count matrix as an h5 file, with background RNA removed. This
+            file contains all the original droplet barcodes.
+          pattern: "*.h5"
+      - ${prefix}.h5:
+          type: file
+          description: Full count matrix as an h5 file, with background RNA removed. This
+            file contains all the original droplet barcodes.
+          pattern: "*.h5"
   - filtered_h5:
-      type: file
-      description: |
-        Full count matrix as an h5 file, with background RNA removed. This file contains only the droplet barcodes which were determined to have a > 50% posterior probability of containing cells.
-      pattern: "*.h5"
+      - meta:
+          type: file
+          description: |
+            Full count matrix as an h5 file, with background RNA removed. This file contains only the droplet barcodes which were determined to have a > 50% posterior probability of containing cells.
+          pattern: "*.h5"
+      - ${prefix}_filtered.h5:
+          type: file
+          description: |
+            Full count matrix as an h5 file, with background RNA removed. This file contains only the droplet barcodes which were determined to have a > 50% posterior probability of containing cells.
+          pattern: "*.h5"
   - posterior_h5:
-      type: file
-      description: |
-        The full posterior probability of noise counts. This is not normally used downstream.
-      pattern: "*.h5"
+      - meta:
+          type: file
+          description: |
+            The full posterior probability of noise counts. This is not normally used downstream.
+          pattern: "*.h5"
+      - ${prefix}_posterior.h5:
+          type: file
+          description: |
+            The full posterior probability of noise counts. This is not normally used downstream.
+          pattern: "*.h5"
   - barcodes:
-      type: file
-      description: |
-        CSV file containing all the droplet barcodes which were determined to have a > 50% posterior probability of containing cells. |
-        Barcodes are written in plain text. This information is also contained in each of the above outputs, |
-        but is included as a separate output for convenient use in certain downstream applications.
-      pattern: "*.csv"
+      - meta:
+          type: file
+          description: |
+            CSV file containing all the droplet barcodes which were determined to have a > 50% posterior probability of containing cells. |
+            Barcodes are written in plain text. This information is also contained in each of the above outputs, |
+            but is included as a separate output for convenient use in certain downstream applications.
+          pattern: "*.csv"
+      - ${prefix}_cell_barcodes.csv:
+          type: file
+          description: |
+            CSV file containing all the droplet barcodes which were determined to have a > 50% posterior probability of containing cells. |
+            Barcodes are written in plain text. This information is also contained in each of the above outputs, |
+            but is included as a separate output for convenient use in certain downstream applications.
+          pattern: "*.csv"
   - metrics:
-      type: file
-      description: |
-        Metrics describing the run, potentially to be used to flag problematic runs |
-        when using CellBender as part of a large-scale automated pipeline.
-      pattern: "*.csv"
+      - meta:
+          type: file
+          description: |
+            Metrics describing the run, potentially to be used to flag problematic runs |
+            when using CellBender as part of a large-scale automated pipeline.
+          pattern: "*.csv"
+      - ${prefix}_metrics.csv:
+          type: file
+          description: |
+            Metrics describing the run, potentially to be used to flag problematic runs |
+            when using CellBender as part of a large-scale automated pipeline.
+          pattern: "*.csv"
   - report:
-      type: file
-      description: |
-        HTML report including plots and commentary, along with any warnings or suggestions for improved parameter settings.
-      pattern: "*.html"
+      - meta:
+          type: file
+          description: |
+            HTML report including plots and commentary, along with any warnings or suggestions for improved parameter settings.
+          pattern: "*.html"
+      - ${prefix}_report.html:
+          type: file
+          description: |
+            HTML report including plots and commentary, along with any warnings or suggestions for improved parameter settings.
+          pattern: "*.html"
   - pdf:
-      type: file
-      description: PDF file that provides a standard graphical summary of the inference procedure.
-      pattern: "*.pdf"
+      - meta:
+          type: file
+          description: PDF file that provides a standard graphical summary of the inference
+            procedure.
+          pattern: "*.pdf"
+      - ${prefix}.pdf:
+          type: file
+          description: PDF file that provides a standard graphical summary of the inference
+            procedure.
+          pattern: "*.pdf"
   - log:
-      type: file
-      description: Log file produced by the cellbender remove-background run.
-      pattern: "*.log"
+      - meta:
+          type: file
+          description: Log file produced by the cellbender remove-background run.
+          pattern: "*.log"
+      - ${prefix}.log:
+          type: file
+          description: Log file produced by the cellbender remove-background run.
+          pattern: "*.log"
   - checkpoint:
-      type: file
-      description: Checkpoint file which contains the trained model and the full posterior.
-      pattern: "*.ckpt"
+      - meta:
+          type: file
+          description: Checkpoint file which contains the trained model and the full posterior.
+          pattern: "*.ckpt"
+      - ckpt.tar.gz:
+          type: file
+          description: Checkpoint file which contains the trained model and the full posterior.
+          pattern: "*.ckpt"
   - versions:
-      type: file
-      description: File containing software version
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software version
+          pattern: "versions.yml"
 authors:
   - "@nictru"
 maintainers:

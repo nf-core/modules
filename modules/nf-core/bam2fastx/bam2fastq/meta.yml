@@ -1,47 +1,50 @@
 name: "bam2fastx_bam2fastq"
-description: Conversion of PacBio BAM files into gzipped fastq files, including splitting of barcoded data
+description: Conversion of PacBio BAM files into gzipped fastq files, including splitting
+  of barcoded data
 keywords:
   - bam2fastx
   - bam2fastq
   - pacbio
 tools:
   - "bam2fastx":
-      description: "Converting and demultiplexing of PacBio BAM files into gzipped fasta and fastq files"
+      description: "Converting and demultiplexing of PacBio BAM files into gzipped fasta
+        and fastq files"
       homepage: "https://github.com/PacificBiosciences/bam2fastx"
       documentation: "https://github.com/PacificBiosciences/bam2fastx"
       tool_dev_url: "https://github.com/PacificBiosciences/bam2fastx"
       licence: ["BSD-3-clause-Clear"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: PacBio BAM file
-      pattern: "*.bam"
-  - index:
-      type: file
-      description: PacBio BAM file index (.pbi)
-      pattern: "*.pbi"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: PacBio BAM file
+        pattern: "*.bam"
+    - index:
+        type: file
+        description: PacBio BAM file index (.pbi)
+        pattern: "*.pbi"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - fastq:
-      type: file
-      description: Gzipped FASTQ file
-      pattern: "*.fastq.gz"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fastq.gz":
+          type: file
+          description: Gzipped FASTQ file
+          pattern: "*.fastq.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@priyanka-surana"
 maintainers:

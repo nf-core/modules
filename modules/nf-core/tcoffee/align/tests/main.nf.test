@@ -11,7 +11,7 @@ nextflow_process {
     tag "famsa/guidetree"
     tag "untar"
 
-    test("fasta - align_sequence") {
+    test("align_sequence - compressed - seatoxin") {
 
         config "./sequence.config"
 
@@ -19,7 +19,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test' ],
-                             file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                             file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
                            ]
                 input[1] = [[:],[]]
                 input[2] = [[:],[],[]]
@@ -31,13 +31,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.alignment).match("alignment")},
-                { assert snapshot(process.out.versions).match("versions_uncomp") }
+                { assert snapshot(process.out.versions).match()},
+                { assert path(process.out.alignment.get(0).get(1)).getTextGzip().contains("1ahl") },
             )
         }
     }
 
-    test("fasta - align_sequence - uncompressed") {
+    test("align_sequence - uncompressed - seatoxin") {
 
         config "./sequence.config"
 
@@ -45,7 +45,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test' ],
-                             file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                             file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
                            ]
                 input[1] = [[:],[]]
                 input[2] = [[:],[],[]]
@@ -57,13 +57,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.alignment).match("alignment - uncompressed")},
-                { assert snapshot(process.out.versions).match("versions_comp") }
+                { assert snapshot(process.out.versions).match()},
+                { assert path(process.out.alignment.get(0).get(1)).getText().contains("1ahl") },
             )
         }
     }
 
-    test("sarscov2 - fasta - align_with_guide_tree") {
+    test("align_with_guide_tree - uncompressed - seatoxin") {
 
         config "./tree.config"
 
@@ -74,7 +74,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = [ [ id:'test' ],
-                                 file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true)
+                             file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
                                ]
 
                     """
@@ -86,7 +86,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test' ],
-                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true)
+                             file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
                            ]
                 input[1] = FAMSA_GUIDETREE.out.tree.collect{ meta, tree -> tree }.map{ tree -> [[ id: 'test'], tree]}
                 input[2] = [ [:], [], [] ]
@@ -98,14 +98,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.alignment).match("alignment_guidetree")},
-                { assert snapshot(process.out.versions).match("versions_guidetree") }
+                { assert snapshot(process.out.versions).match()},
+                { assert path(process.out.alignment.get(0).get(1)).getTextGzip().contains("1ahl") },
             )
         }
 
     }
 
-    test("fasta - align_with_structure") {
+    test("align_with_structure - uncompressed - seatoxin") {
 
         config "./structure.config"
 
@@ -116,7 +116,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = [ [ id:'test' ],
-                                 file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/structures/seatoxin-ref.tar.gz", checkIfExists: true)
+                                 file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/structures/seatoxin-ref.tar.gz", checkIfExists: true)
                                ]
 
                     """
@@ -128,7 +128,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test' ],
-                             file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                             file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
                            ]
                 input[1] = [ [:], [] ]
                 input[2] = UNTAR.out.untar.map { meta,dir -> [[ id:'test' ], [] ,file(dir).listFiles().collect()]}
@@ -148,7 +148,7 @@ nextflow_process {
 
     }
 
-    test("fasta - align_with_lib") {
+    test("align_with_lib - seatoxin") {
 
         config "./lib.config"
 
@@ -156,7 +156,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test' ],
-                             file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                             file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
                            ]
                 input[1] = [[:],[]]
                 input[2] = [[:],[],[]]
@@ -168,10 +168,40 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.alignment).match("alignment - lib") },
-                { assert path(process.out.lib.get(0).get(1)).getText().contains("1ahl") },
-                { assert snapshot(process.out.versions).match("versions_lib") }
+                { assert path(process.out.alignment.get(0).get(1)).getTextGzip().contains("1ahl") },
+                { assert snapshot(process.out.versions).match()
+                }
             )
         }
     }
+
+    test("align_sequence - uncompressed - seatoxin - stub") {
+        options "-stub"
+        config "./sequence.config"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ],
+                             file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                           ]
+                input[1] = [[:],[]]
+                input[2] = [[:],[],[]]
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.alignment,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
 }

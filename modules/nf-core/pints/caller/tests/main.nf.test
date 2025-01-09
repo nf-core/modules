@@ -35,7 +35,7 @@ nextflow_process {
                     process.out.divergent_TREs,
                     process.out.bidirectional_TREs,
                     file(process.out.unidirectional_TREs.get(0).get(1).get(0)).name,
-                    process.out.versions,
+                    path(process.out.versions.get(0)).yaml,
                 ).match("bams")
                 },
             )
@@ -65,9 +65,10 @@ nextflow_process {
                     process.out.divergent_TREs,
                     process.out.bidirectional_TREs,
                     file(process.out.unidirectional_TREs[0][1]).name,
-                    process.out.versions,
+                    path(process.out.versions.get(0)).yaml,
                 ).match("single_bam")
                 },
+                { assert snapshot(path(process.out.versions.get(0)).yaml).match("versions") },
             )
         }
     }

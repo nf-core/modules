@@ -14,9 +14,9 @@ process GRIDSS_GENERATEPONBEDPE {
     tuple val(meta4), path(bwa_index)
 
     output:
-    tuple val(meta) , path("*.bedpe"), emit: bedpe
-    tuple val(meta2), path("*.bed")  , emit: bed
-    path "versions.yml"              , emit: versions
+    tuple val(meta), path("*.bedpe"), emit: bedpe
+    tuple val(meta), path("*.bed")  , emit: bed
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,17 +24,17 @@ process GRIDSS_GENERATEPONBEDPE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def vcf = vcf ? "INPUT=${vcf}" : ""
-    def bedpe = bedpe ? "INPUT_BEDPE=${bedpe}" : ""
-    def bed   = bed ? "INPUT_BED=${bed}" : ""
+    def vcf_command = vcf ? "INPUT=${vcf}" : ""
+    def bedpe_command = bedpe ? "INPUT_BEDPE=${bedpe}" : ""
+    def bed_command   = bed ? "INPUT_BED=${bed}" : ""
     def bwa = bwa_index ? "cp -s ${bwa_index}/* ." : ""
     def ref = bwa_index ? "REFERENCE_SEQUENCE=${fasta}" : ""
     """
     ${bwa}
     GeneratePonBedpe \\
-        ${vcf} \\
-        ${bedpe} \\
-        ${bed} \\
+        ${vcf_command} \\
+        ${bedpe_command} \\
+        ${bed_command} \\
         ${ref} \\
         OUTPUT_BEDPE=${prefix}.bedpe \\
         OUTPUT_BED=${prefix}.bed \\

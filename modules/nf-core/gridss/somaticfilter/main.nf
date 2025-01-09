@@ -22,12 +22,12 @@ process GRIDSS_SOMATICFILTER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def pondir = pondir ? "--pondir ${pondir}" : ""
+    def pondir_command = pondir ? "--pondir ${pondir}" : ""
     def VERSION = '2.13.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     gridss_somatic_filter \\
         --input $vcf \\
-        ${pondir} \\
+        ${pondir_command} \\
         --output ${prefix}.high_confidence_somatic.vcf \\
         --fulloutput ${prefix}.all_somatic.vcf \\
         $args

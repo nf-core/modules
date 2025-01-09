@@ -1,5 +1,7 @@
 name: malt_build
-description: MALT, an acronym for MEGAN alignment tool, is a sequence alignment and analysis tool designed for processing high-throughput sequencing data, especially in the context of metagenomics.
+description: MALT, an acronym for MEGAN alignment tool, is a sequence alignment and
+  analysis tool designed for processing high-throughput sequencing data, especially
+  in the context of metagenomics.
 keywords:
   - malt
   - alignment
@@ -17,33 +19,39 @@ tools:
       documentation: https://software-ab.cs.uni-tuebingen.de/download/malt/manual.pdf
       doi: "10.1038/s41559-017-0446-6"
       licence: ["GPL v3"]
+      identifier: ""
 input:
-  - fastas:
-      type: file
-      description: Directory of, or list of FASTA reference files for indexing
-      pattern: "*/|*.fasta"
-  - gff:
-      type: file
-      description: Directory of, or GFF3 files of input FASTA files
-      pattern: "*/|*.gff|*.gff3"
-  - mapping_db:
-      type: file
-      description: MEGAN .db file from https://software-ab.cs.uni-tuebingen.de/download/megan6/welcome.html
-      pattern: "*.db"
+  - - fastas:
+        type: file
+        description: Directory of, or list of FASTA reference files for indexing
+        pattern: "*/|*.fasta"
+  - - gff:
+        type: file
+        description: Directory of, or GFF3 files of input FASTA files
+        pattern: "*/|*.gff|*.gff3"
+  - - mapping_db:
+        type: file
+        description: MEGAN .db file from https://software-ab.cs.uni-tuebingen.de/download/megan6/welcome.html
+        pattern: "*.db"
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - index:
-      type: directory
-      description: Directory containing MALT database index directory
-      pattern: "malt_index/"
+      - malt_index/:
+          type: directory
+          description: Directory containing MALT database index directory
+          pattern: "malt_index/"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
   - log:
-      type: file
-      description: Log file from STD out of malt-build
-      pattern: "malt-build.log"
+      - malt-build.log:
+          type: file
+          description: Log file from STD out of malt-build
+          pattern: "malt-build.log"
 authors:
   - "@jfy133"
+  - "@LilyAnderssonLee"
 maintainers:
   - "@jfy133"
+  - "@LilyAnderssonLee"
