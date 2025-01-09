@@ -103,7 +103,7 @@ jobs:
           total_shards: ${{ env.TOTAL_SHARDS }}
           paths: "${{ join(fromJson(needs.nf-test-changes.outputs.paths), ' ') }}"
 
-  confirm-pass:
+  confirm-pass-gpu:
     runs-on: ubuntu-latest
     needs: [nf-test-gpu]
     if: always()

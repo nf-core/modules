@@ -21,7 +21,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                // Some output files are too large to calcualte MD5sums, so we just list the files in the output directory.
+                // Some output files are too large to calculate MD5sums, so we just list the files in the output directory.
                 { assert snapshot(
                         file(process.out.database.get(0)).list().sort(),
                         process.out.versions
