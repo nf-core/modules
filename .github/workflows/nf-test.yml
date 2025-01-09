@@ -107,20 +107,20 @@ jobs:
             get_skip_list as $skip_patterns |
 
             # Debug output
-            ($skip_patterns | "Skip patterns:\n" + (map("  - " + .) | join("\n"))) |
+            ("::debug::Skip patterns:\n" + ($skip_patterns | map("  - " + .) | join("\n"))) |
             debug |
 
-            # Do the actual filtering - simplified logic
+            # Do the actual filtering
             $input_paths | map(
               . as $path |
               select($skip_patterns | all(. as $pattern | ($path | startswith($pattern)) | not))
             ) as $result |
 
-            # Debug what was skipped
+            # Debug what was skipped with GitHub Actions format
             (if ($input_paths - $result) | length > 0 then
-              "Skipped:\n" + (($input_paths - $result) | map("  - " + .) | join("\n"))
+              "::debug::Skipped:\n" + (($input_paths - $result) | map("  - " + .) | join("\n"))
             else
-              "No paths skipped"
+              "::debug::No paths skipped"
             end) |
             debug |
 
