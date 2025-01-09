@@ -92,32 +92,31 @@ runs:
       if: always()
       shell: bash
       run: |
-        echo "# 🚀 nf-test Results" >> $GITHUB_STEP_SUMMARY
-        echo "## Configuration" >> $GITHUB_STEP_SUMMARY
-        echo "- **Profile**: ${{ inputs.profile }}" >> $GITHUB_STEP_SUMMARY
-        echo "- **Shard**: ${{ inputs.shard }}/${{ inputs.total_shards }}" >> $GITHUB_STEP_SUMMARY
+        # Add header if it doesn't exist (using a token file to track this)
+        if [ ! -f ".summary_header" ]; then
+          echo "# 🚀 nf-test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Status | Test Name | Profile | Shard |" >> $GITHUB_STEP_SUMMARY
+          echo "|:------:|-----------|---------|-------|" >> $GITHUB_STEP_SUMMARY
+          touch .summary_header
+        fi
 
         if [ -f test.tap ]; then
-
-          echo "## Test Results" >> $GITHUB_STEP_SUMMARY
           while IFS= read -r line; do
             if [[ $line =~ ^ok ]]; then
-              echo "✅ ${line#ok }" >> $GITHUB_STEP_SUMMARY
+              test_name="${line#ok }"
+              # Remove the test number from the beginning
+              test_name="${test_name#* }"
+              echo "| ✅ | ${test_name} | ${{ inputs.profile }} | ${{ inputs.shard }}/${{ inputs.total_shards }} |" >> $GITHUB_STEP_SUMMARY
             elif [[ $line =~ ^not\ ok ]]; then
-              echo "❌ ${line#not ok }" >> $GITHUB_STEP_SUMMARY
+              test_name="${line#not ok }"
+              # Remove the test number from the beginning
+              test_name="${test_name#* }"
+              echo "| ❌ | ${test_name} | ${{ inputs.profile }} | ${{ inputs.shard }}/${{ inputs.total_shards }} |" >> $GITHUB_STEP_SUMMARY
             fi
           done < test.tap
-
-          # Add raw TAP output for reference
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "<details><summary>Raw TAP Output</summary>" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo '```tap' >> $GITHUB_STEP_SUMMARY
-          cat test.tap >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          echo "</details>" >> $GITHUB_STEP_SUMMARY
         else
-          echo "⚠️ No test results found (test.tap not generated)" >> $GITHUB_STEP_SUMMARY
+          echo "| ⚠️ | No test results found | ${{ inputs.profile }} | ${{ inputs.shard }}/${{ inputs.total_shards }} |" >> $GITHUB_STEP_SUMMARY
         fi
 
     - name: Clean up
