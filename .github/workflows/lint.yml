@@ -77,30 +77,31 @@ jobs:
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
         id: module_names
         with:
+          result-encoding: string
           script: |
-            return [...new Set(${{ steps.filter.outputs.modules_files }}
-              .map(path => path
-                .replace('modules/nf-core/', '')
-                .split('/')
-                .slice(0, 2)
-                .filter(x => !x.startsWith('main.nf') && x !== 'tests' && x !== 'meta.yml' && x !== 'environment.yml')
-                .join('/'))
-              )
-            ];
+            const script = require('./.github/scripts/get_module_path.js')
+            console.log('Raw modules_files:', '${{ steps.filter.outputs.modules_files }}')
+            const files = JSON.parse('${{ steps.filter.outputs.modules_files }}')
+            console.log('Parsed files:', files)
+            const result = script({ github, context: { payload: { inputs: { files } } } })
+            console.log('Result:', result)
+            return result
+
       - name: debug
         run: |
-          echo ${{ steps.filter.outputs.modules_files }}
-          echo ${{ steps.module_names.outputs.result }}
+          echo "Modules files: ${{ steps.filter.outputs.modules_files }}"
+          echo "Module names: ${{ fromJson(steps.module_names.outputs.result) }}"
+          echo "Raw module names output: ${{ steps.module_names.outputs.result }}"
 
   nf-core-lint-modules:
     runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
     name: nf-core lint modules
     needs: nf-core-changes
-    if: ${{ (needs.nf-core-changes.outputs.modules == 'true') }}
+    if: ${{ needs.nf-core-changes.outputs.modules_files != '[]' && needs.nf-core-changes.outputs.modules_files != '' }}
     strategy:
       fail-fast: false
       matrix:
-        module: "${{ fromJson(needs.nf-core-changes.outputs.modules_files) }}"
+        module: ${{ fromJson(needs.nf-core-changes.outputs.modules_files || '[]') }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
