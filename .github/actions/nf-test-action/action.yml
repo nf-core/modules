@@ -88,12 +88,37 @@ runs:
           # inspect test.tap
           cat test.tap
 
-      # TODO If no test.tap, then make one to spoof?
-    - name: Add summary
-      uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
-      if: ${{ inputs.paths != '' }}
-      with:
-        path: ${{ steps.nf-test.outputs.tap_file_path }}
+    - name: Generate test summary
+      if: always()
+      shell: bash
+      run: |
+        echo "# 🚀 nf-test Results" >> $GITHUB_STEP_SUMMARY
+        echo "## Configuration" >> $GITHUB_STEP_SUMMARY
+        echo "- **Profile**: ${{ inputs.profile }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Shard**: ${{ inputs.shard }}/${{ inputs.total_shards }}" >> $GITHUB_STEP_SUMMARY
+
+        if [ -f test.tap ]; then
+
+          echo "## Test Results" >> $GITHUB_STEP_SUMMARY
+          while IFS= read -r line; do
+            if [[ $line =~ ^ok ]]; then
+              echo "✅ ${line#ok }" >> $GITHUB_STEP_SUMMARY
+            elif [[ $line =~ ^not\ ok ]]; then
+              echo "❌ ${line#not ok }" >> $GITHUB_STEP_SUMMARY
+            fi
+          done < test.tap
+
+          # Add raw TAP output for reference
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "<details><summary>Raw TAP Output</summary>" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo '```tap' >> $GITHUB_STEP_SUMMARY
+          cat test.tap >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "</details>" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "⚠️ No test results found (test.tap not generated)" >> $GITHUB_STEP_SUMMARY
+        fi
 
     - name: Clean up
       if: always()
