@@ -102,9 +102,17 @@ jobs:
             --argjson input_paths '${{ needs.nf-test-changes.outputs.paths }}' \
             '
             # First, get the list of paths to skip for current profile (conda/docker/etc)
-            # If no skip list exists for profile, use empty array
             def get_skip_list:
               inputs | .[$profile] // [];
+
+            # Get the skip list once to use for both filtering and debugging
+            . as $skip_list | get_skip_list |
+
+            # Print skipped paths for debugging
+            (
+              "Paths to skip for profile \($profile):" | debug |
+              . | map("  - " + .) | join("\n") | debug
+            ) |
 
             # Then, filter our input paths:
             $input_paths | map(
@@ -113,7 +121,7 @@ jobs:
 
               # Keep it only if its NOT in the skip list
               select(
-                get_skip_list | index($test_path) | not
+                $skip_list | index($test_path) | not
               )
             )
             ' .github/skip_nf_test.json)
