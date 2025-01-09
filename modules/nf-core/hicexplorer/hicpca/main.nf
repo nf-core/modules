@@ -37,8 +37,7 @@ process HICEXPLORER_HICPCA {
         args.remove(idx+1)
         args.remove(idx)
     }
-    outfilenames = eigenvectors.tokenize()
-        .collect{"${prefix}_pca${it}.${format}"}.join(' ')
+    outfilenames = eigenvectors.tokenize().collect{"${prefix}_pca${it}.${format}"}.join(' ')
     args = args.join(' ')
     """
     hicPCA \\
@@ -46,7 +45,7 @@ process HICEXPLORER_HICPCA {
         $args \\
         --format $format \\
         --whichEigenvectors $eigenvectors \\
-        --outputFileName $outfilenames
+        --outputFileName ${outfilenames}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -54,6 +53,7 @@ process HICEXPLORER_HICPCA {
     END_VERSIONS
     """
     stub:
+    def args = task.ext.args ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
     args     = args.tokenize()
     def idx  = args.findIndexOf{ it == '--format' | it == '-f' }
