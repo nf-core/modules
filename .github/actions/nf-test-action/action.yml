@@ -85,8 +85,6 @@ runs:
 
           # Save the absolute path of the test.tap file to the output
           echo "tap_file_path=$(realpath test.tap)" >> $GITHUB_OUTPUT
-          # inspect test.tap
-          cat test.tap
 
     - name: Generate test summary
       if: always()
