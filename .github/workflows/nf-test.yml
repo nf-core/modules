@@ -110,10 +110,10 @@ jobs:
             ($skip_patterns | "Skip patterns:\n" + (map("  - " + .) | join("\n"))) |
             debug |
 
-            # Do the actual filtering
+            # Do the actual filtering - simplified logic
             $input_paths | map(
               . as $path |
-              select($skip_patterns | map($path | startswith(.)) | any | not)
+              select($skip_patterns | all(. as $pattern | ($path | startswith($pattern)) | not))
             ) as $result |
 
             # Debug what was skipped
