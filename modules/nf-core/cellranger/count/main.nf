@@ -11,6 +11,8 @@ process CELLRANGER_COUNT {
     output:
     tuple val(meta), path("**/outs/**"), emit: outs
     path "versions.yml"                , emit: versions
+    // Test modification to trigger GitHub Actions path filtering
+    // This change is to verify the skip_nf_test.yml filtering mechanism
 
     when:
     task.ext.when == null || task.ext.when
