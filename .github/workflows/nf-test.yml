@@ -98,7 +98,7 @@ jobs:
         run: |
           FILTERED=$(jq -n -c \
             --arg profile "${{ matrix.profile }}" \
-            --argjson input_paths "${{ needs.nf-test-changes.outputs.paths }}" \
+            --argjson input_paths ''"${{ needs.nf-test-changes.outputs.paths }}"'' \
             '
             def get_skip_list: inputs | .[$profile] // [];
 
