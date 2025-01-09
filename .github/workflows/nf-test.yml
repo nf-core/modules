@@ -96,33 +96,33 @@ jobs:
       - name: Filter paths
         id: filter
         run: |
-          # Read and filter the test paths, excluding those that should be skipped
           FILTERED=$(jq -n -c \
             --arg profile "conda" \
             --argjson input_paths '["modules/nf-core/cellranger/count/tests/main.nf.test"]' \
             '
             def get_skip_list: inputs | .[$profile] // [];
 
-            # Get skip list and show for debugging
-            get_skip_list |
-            ("Skip patterns:" | debug) |
-            (map("  - " + .) | join("\n") | debug) |
-            . as $skip_patterns |
+            # Get skip list and filter
+            get_skip_list as $skip_patterns |
 
-            # Filter paths that dont start with any skip pattern
+            # Debug output
+            ($skip_patterns | "Skip patterns:\n" + (map("  - " + .) | join("\n"))) |
+            debug |
+
+            # Do the actual filtering
             $input_paths | map(
               . as $path |
               select($skip_patterns | map($path | startswith(.)) | any | not)
-            ) |
+            ) as $result |
 
-            # Show what was filtered
-            . as $result |
-            if ($input_paths - .) | length > 0 then
-              "Skipped:" as $msg | debug |
-              ($input_paths - .) | map("  - " + .) | join("\n") | debug
+            # Debug what was skipped
+            (if ($input_paths - $result) | length > 0 then
+              "Skipped:\n" + (($input_paths - $result) | map("  - " + .) | join("\n"))
             else
-              "No paths skipped" | debug
-            end |
+              "No paths skipped"
+            end) |
+            debug |
+
             $result
             ' .github/skip_nf_test.json)
 
