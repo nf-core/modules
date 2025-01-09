@@ -96,28 +96,30 @@ jobs:
       - name: Filter paths
         id: filter
         run: |
-          # Parse the input paths array
-          PATHS='${{ needs.nf-test-changes.outputs.paths }}'
+          # Read the paths and create filter using jq:
+          # - Load skip_nf_test.json and get skip list for current profile
+          # - Filter out any paths that match the skip list
+          # - Handle empty skip lists by keeping all paths
+          FILTERED=$(jq -n \
+            --arg profile "${{ matrix.profile }}" \
+            --argjson input_paths '${{ needs.nf-test-changes.outputs.paths }}' \
+            '
+            # Start with input paths array
+            $input_paths | map(
+              . as $current_path |
 
-          # Get skip paths for the current profile
-          SKIP_PATHS=$(cat .github/skip_nf_test.json | jq -r ".[\"${{ matrix.profile }}\"][]")
+              # Get skip list for current profile (or empty array if none)
+              (inputs | .[$profile] // []) |
 
-          # Filter the paths
-          if [ -z "$SKIP_PATHS" ]; then
-            # If no skip paths, use the original paths
-            FILTERED=$(echo "$PATHS" | jq -c '.')
-          else
-            # Ensure PATHS is a valid JSON array
-            PATHS_JSON=$(echo "$PATHS" | jq -c '.')
+              # Keep path if its NOT in the skip list
+              index($current_path) | not |
 
-            # Convert SKIP_PATHS to a jq filter
-            SKIP_FILTER=$(echo $SKIP_PATHS | jq -c -s '.')
+              # Only keep paths that returned true
+              select(.)
+            )
+            ' .github/skip_nf_test.json)
 
-            # Filter the paths based on the skip paths
-            FILTERED=$(echo "$PATHS_JSON" | jq -c "map(select(. as \$path | $SKIP_FILTER | index(\$path) | not))")
-          fi
-
-
+          # Output the filtered paths for next steps
           echo "filtered_paths=$FILTERED" >> $GITHUB_OUTPUT
 
       - name: Run nf-test Action
