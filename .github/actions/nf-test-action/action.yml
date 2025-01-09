@@ -89,7 +89,7 @@ runs:
       # TODO If no test.tap, then make one to spoof?
     - name: Add summary
       uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
-      if: ${{ inputs.path != '' }}
+      if: ${{ inputs.paths != '' }}
       with:
         path: ${{ steps.nf-test.outputs.tap_file_path }}
 
