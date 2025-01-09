@@ -102,31 +102,31 @@ jobs:
             --argjson input_paths "$PATHS" \
             '
             def get_skip_list: inputs | .[$profile] // [];
+
             # Get skip list and filter
             get_skip_list as $skip_patterns |
-            # Create formatted output as JSON array, then join with newlines
-            (["═══════════════════════════════════════",
-            "Skip Patterns:",
-            "═══════════════════════════════════════"] +
-            ($skip_patterns | map("  • " + .))) | join("\n") |
+
+            # Debug output
+            ($skip_patterns | "Skip patterns: " + (map("  - " + .) | join(","))) |
             debug |
+
             # Do the actual filtering
             $input_paths | map(
               . as $path |
               select($skip_patterns | all(. as $pattern | ($path | startswith($pattern)) | not))
             ) as $result |
-            # Format skipped paths same way
-            (["═══════════════════════════════════════",
-            "Skipped Paths:",
-            "═══════════════════════════════════════"] +
-            if ($input_paths - $result) | length > 0 then
-              ($input_paths - $result) | map("  • " + .)
+
+            # Debug what was skipped
+            (if ($input_paths - $result) | length > 0 then
+              "Skipped: " + (($input_paths - $result) | map("  - " + .) | join(","))
             else
-              ["  • No paths skipped"]
-            end) | join("\n") |
+              "No paths skipped"
+            end) |
             debug |
+
             $result
             ' .github/skip_nf_test.json)
+
           echo "filtered_paths=${FILTERED}" >> $GITHUB_OUTPUT
 
       - name: Run nf-test Action
