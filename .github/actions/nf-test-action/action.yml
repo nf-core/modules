@@ -87,7 +87,8 @@ runs:
           echo "tap_file_path=$(realpath test.tap)" >> $GITHUB_OUTPUT
 
       # TODO If no test.tap, then make one to spoof?
-    - uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
+    - name: Add summary
+      uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
       if: ${{ inputs.path != '' }}
       with:
         path: ${{ steps.nf-test.outputs.tap_file_path }}
