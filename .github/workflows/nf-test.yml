@@ -129,6 +129,10 @@ jobs:
           # Save the filtered list for next workflow steps
           echo "filtered_paths=${FILTERED}" >> $GITHUB_OUTPUT
 
+          # Print the filtered list for debugging
+          echo "Filtered paths:"
+          echo $FILTERED | jq -r '. | map("  - " + .) | join("\n")'
+
       - name: Run nf-test Action
         uses: ./.github/actions/nf-test-action
         env:
