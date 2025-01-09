@@ -4,8 +4,8 @@ process STAR_ALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b4/b425bc2a95806d878993f9a66dae3ae80ac2dafff4c208c5ae01b7a90a32fa91/data' :
-        'community.wave.seqera.io/library/star_samtools_htslib_gawk:10c6e8c834460019' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/10/101ea47973178f85ff66a34de6a7462aaf99d947d3924c27ce8a2d5a63009065/data' :
+        'community.wave.seqera.io/library/htslib_samtools_star_gawk:311d422a50e6d829' }"
 
     input:
     tuple val(meta), path(reads, stageAs: "input*/*")
@@ -41,12 +41,13 @@ process STAR_ALIGN {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def reads1 = [], reads2 = []
+    def reads1 = []
+    def reads2 = []
     meta.single_end ? [reads].flatten().each{reads1 << it} : reads.eachWithIndex{ v, ix -> ( ix & 1 ? reads2 : reads1) << v }
     def ignore_gtf      = star_ignore_sjdbgtf ? '' : "--sjdbGTFfile $gtf"
-    def seq_platform    = seq_platform ? "'PL:$seq_platform'" : ""
-    def seq_center      = seq_center ? "'CN:$seq_center'" : ""
-    attrRG          = args.contains("--outSAMattrRGline") ? "" : "--outSAMattrRGline 'ID:$prefix' $seq_center 'SM:$prefix' $seq_platform"
+    def seq_platform_arg  = seq_platform ? "'PL:$seq_platform'" : ""
+    def seq_center_arg    = seq_center ? "'CN:$seq_center'" : ""
+    attrRG          = args.contains("--outSAMattrRGline") ? "" : "--outSAMattrRGline 'ID:$prefix' $seq_center_arg 'SM:$prefix' $seq_platform_arg"
     def out_sam_type    = (args.contains('--outSAMtype')) ? '' : '--outSAMtype BAM Unsorted'
     mv_unsorted_bam = (args.contains('--outSAMtype BAM Unsorted SortedByCoordinate')) ? "mv ${prefix}.Aligned.out.bam ${prefix}.Aligned.unsort.out.bam" : ''
     """

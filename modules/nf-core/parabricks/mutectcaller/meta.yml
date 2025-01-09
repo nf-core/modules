@@ -55,11 +55,11 @@ input:
         pattern: "*.fasta"
   - - panel_of_normals:
         type: file
-        description: (Optional) pannel of normals file.
+        description: (Optional) panel of normals file.
         pattern: "*.vcf.gz"
   - - panel_of_normals_index:
         type: file
-        description: (Optional) tbi index corresponding to pannel of normals file.
+        description: (Optional) tbi index corresponding to panel of normals file.
         pattern: "*.tbi"
 output:
   - vcf:
@@ -70,7 +70,7 @@ output:
             e.g. [ id:'test' ]
       - "*.vcf.gz":
           type: file
-          description: Compressed variants file. Will include an annoted vcf file if pannel
+          description: Compressed variants file. Will include an annotated vcf file if panel
             of normals is used.
           pattern: "*.vcf.gz"
   - stats:
