@@ -8,6 +8,7 @@ include { CUSTOM_TABULARTOGSEACLS  } from '../../../modules/nf-core/custom/tabul
 include { CUSTOM_TABULARTOGSEACHIP } from '../../../modules/nf-core/custom/tabulartogseachip/main.nf'
 include { GSEA_GSEA                } from '../../../modules/nf-core/gsea/gsea/main.nf'
 include { PROPR_GREA               } from "../../../modules/nf-core/propr/grea/main.nf"
+include { ABRITAMR_RUN } from '../../../modules/nf-core/abritamr/run/main.nf'
 
 // Combine meta maps, including merging non-identical values of shared keys (e.g. 'id')
 def mergeMaps(meta, meta2){
@@ -146,6 +147,7 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
 
     emit:
     // tool specific reports
+    // TODO somehow they produce empty files, check if everything is correct. Also check why no plots/etc are generated.
     report_gprofiler2 = GPROFILER2_GOST.out.plot_html.map{it[1]}.flatMap().toList()
                             .combine(GPROFILER2_GOST.out.all_enrich.map{it[1]}.flatMap().toList())
                             .combine(GPROFILER2_GOST.out.sub_enrich.map{it[1]}.flatMap().toList())
