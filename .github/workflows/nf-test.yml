@@ -100,7 +100,7 @@ jobs:
           # - Load skip_nf_test.json and get skip list for current profile
           # - Filter out any paths that match the skip list
           # - Handle empty skip lists by keeping all paths
-          FILTERED=$(jq -n \
+          FILTERED=$(jq -n -c \
             --arg profile "${{ matrix.profile }}" \
             --argjson input_paths '${{ needs.nf-test-changes.outputs.paths }}' \
             '
