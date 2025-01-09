@@ -13,10 +13,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test' ],
+                input[0] = Channel.of([
+                    [ id:'segmentation' ],
                     file(params.modules_testdata_base_path + 'spatial_omics/xenium/homo_sapiens/spatial_gene_expression.csv', checkIfExists: true),
-                ]
+                ])
 
                 input[1] = [
                     file(params.modules_testdata_base_path + 'generic/config/config_baysor.toml', checkIfExists: true)

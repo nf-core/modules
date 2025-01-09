@@ -8,7 +8,7 @@ process BAYSOR_RUN {
     path(config_toml)
 
     output:
-    tuple val(meta), path("segmentation.csv"), emit: segmentation
+    tuple val(meta), path("*segmentation.csv"), emit: segmentation
     path("*.json"),           emit: polygons
     path("*.toml"),           emit: params
     path("*.log"),            emit: log
