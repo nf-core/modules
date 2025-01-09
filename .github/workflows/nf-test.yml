@@ -96,31 +96,30 @@ jobs:
       - name: Filter paths
         id: filter
         run: |
-          # Read the paths and create filter using jq:
-          # - Load skip_nf_test.json and get skip list for current profile
-          # - Filter out any paths that match the skip list
-          # - Handle empty skip lists by keeping all paths
+          # Read and filter the test paths, excluding those that should be skipped
           FILTERED=$(jq -n -c \
-            --arg profile "${{ matrix.profile }}" \
+            --arg profile "conda" \
             --argjson input_paths '${{ needs.nf-test-changes.outputs.paths }}' \
             '
-            # Start with input paths array
+            # First, get the list of paths to skip for current profile (conda/docker/etc)
+            # If no skip list exists for profile, use empty array
+            def get_skip_list:
+              inputs | .[$profile] // [];
+
+            # Then, filter our input paths:
             $input_paths | map(
-              . as $current_path |
+              # For each test path
+              . as $test_path |
 
-              # Get skip list for current profile (or empty array if none)
-              (inputs | .[$profile] // []) |
-
-              # Keep path if its NOT in the skip list
-              index($current_path) | not |
-
-              # Only keep paths that returned true
-              select(.)
+              # Keep it only if its NOT in the skip list
+              select(
+                get_skip_list | index($test_path) | not
+              )
             )
             ' .github/skip_nf_test.json)
 
-          # Output the filtered paths for next steps
-          echo "filtered_paths=$FILTERED" >> $GITHUB_OUTPUT
+          # Save the filtered list for next workflow steps
+          echo "filtered_paths=${FILTERED}" >> $GITHUB_OUTPUT
 
       - name: Run nf-test Action
         uses: ./.github/actions/nf-test-action
