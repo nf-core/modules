@@ -142,24 +142,28 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         .join(inputs.filter_params)
         .multiMap { meta, results, filter_meta ->
             def method_params = [
-                'deseq2': [fc_column: 'log2FoldChange', padj_column: 'padj'],
-                'limma' : [fc_column: 'logFC', padj_column: 'adj.P.Val'],
-                'propd' : [fc_column: 'lfc', padj_column: 'weighted_connectivity']
+                'deseq2': [fc_column: 'log2FoldChange', fc_cardinality: '>=', padj_column: 'padj', padj_cardinality: '<='],
+                'limma' : [fc_column: 'logFC', fc_cardinality: '>=', padj_column: 'adj.P.Val', padj_cardinality: '<='],
+                'propd' : [fc_column: 'lfc', fc_cardinality: '>=', padj_column: 'weighted_connectivity', padj_cardinality: '>=']
             ]
             filter_input: [meta + filter_meta, results]
-            fc_column: method_params[meta.method].fc_column
-            padj_column: method_params[meta.method].padj_column
-            fc_threshold: filter_meta.fc_threshold
-            padj_threshold: filter_meta.padj_threshold
+            fc_input: [
+                method_params[meta.method].fc_column,
+                filter_meta.fc_threshold,
+                method_params[meta.method].fc_cardinality
+            ]
+            padj_input: [
+                method_params[meta.method].padj_column,
+                filter_meta.padj_threshold,
+                method_params[meta.method].padj_cardinality
+            ]
         }
 
     // Filter differential results
     CUSTOM_FILTERDIFFERENTIALTABLE(
         ch_diff_filter_params.filter_input,
-        ch_diff_filter_params.fc_column,
-        ch_diff_filter_params.fc_threshold,
-        ch_diff_filter_params.padj_column,
-        ch_diff_filter_params.padj_threshold
+        ch_diff_filter_params.fc_input,
+        ch_diff_filter_params.padj_input
     )
 
     emit:

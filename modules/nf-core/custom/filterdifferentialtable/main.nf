@@ -9,10 +9,8 @@ process CUSTOM_FILTERDIFFERENTIALTABLE {
 
     input:
     tuple val(meta), path(input_file)
-    val(logFC_column)
-    val(FC_threshold)
-    val(padj_column)
-    val(padj_threshold)
+    tuple val(logFC_column), val(FC_threshold), val(FC_cardinality)
+    tuple val(padj_column), val(padj_threshold), val(padj_cardinality)
 
     output:
     tuple val(meta), path("*_filtered.tsv"), emit: filtered
@@ -22,10 +20,8 @@ process CUSTOM_FILTERDIFFERENTIALTABLE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: []
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def comparison1 = args.comparison1 ?: ">="
-    def comparison2 = args.comparison2 ?: "<="
     """
     #!/usr/bin/env python
 
@@ -46,20 +42,24 @@ process CUSTOM_FILTERDIFFERENTIALTABLE {
     logFC_threshold = log2(float("${FC_threshold}"))
 
     # define evaluation
-    def evaluate_condition(x, threshold, comparison):
-        if comparison == ">=":
+    def evaluate_condition(x, threshold, cardinality):
+        if cardinality == ">=":
             return x >= threshold
-        elif comparison == "<=":
+        elif cardinality == "<=":
             return x <= threshold
+        elif cardinality == ">":
+            return x > threshold
+        elif cardinality == "<":
+            return x < threshold
         else:
-            raise ValueError(f"Invalid comparison: {comparison}")
+            raise ValueError(f"Invalid cardinality: {cardinality}")
 
     # Apply filters
     mask = (
         table["${logFC_column}"].notna() &
         table["${padj_column}"].notna() &
-        table["${logFC_column}"].abs().apply(lambda x: evaluate_condition(x, logFC_threshold, "${comparison1}")) &
-        table["${padj_column}"].apply(lambda x: evaluate_condition(x, float("${padj_threshold}"), "${comparison2}"))
+        table["${logFC_column}"].abs().apply(lambda x: evaluate_condition(x, logFC_threshold, "${FC_cardinality}")) &
+        table["${padj_column}"].apply(lambda x: evaluate_condition(x, float("${padj_threshold}"), "${padj_cardinality}"))
     )
     filtered_table = table[mask]
 
