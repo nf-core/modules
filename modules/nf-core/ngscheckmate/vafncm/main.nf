@@ -28,7 +28,7 @@ process NGSCHECKMATE_VAFNCM {
     cp ${vafs[0]} zzzzzz.vaf
     vaf_ncm.py -I . -O . -N ${prefix} $args
 
-    # remove the existance of the dummy file
+    # remove the existence of the dummy file
     rm zzzzzz.vaf
     sed -i.bak "/zzzzzz/d" ${prefix}_all.txt
 
