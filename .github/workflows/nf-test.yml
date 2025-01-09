@@ -96,15 +96,41 @@ jobs:
       - name: Filter paths
         id: filter
         run: |
-          # Parse the input paths array
           PATHS='${{ needs.nf-test-changes.outputs.paths }}'
+          FILTERED=$(jq -n -c \
+            --arg profile "${{ matrix.profile }}" \
+            --argjson input_paths "$PATHS" \
+            '
+            def get_skip_list: inputs | .[$profile] // [];
 
-          # Filter input paths to only those allowed for profile
-          FILTERED=$(echo "$PATHS" | yq eval '. - [.[] | select(. as $path | any($path | test(load(".github/skip_nf_test.yml") | .[] | select(.profile == strenv(PROFILE)) | .path)))]' -)
+            # Get skip list and filter
+            get_skip_list as $skip_patterns |
 
-          echo "filtered_paths=$FILTERED" >> $GITHUB_OUTPUT
+            # Debug output
+            ($skip_patterns | "Skip patterns: " + (map("  - " + .) | join(","))) |
+            debug |
+
+            # Do the actual filtering
+            $input_paths | map(
+              . as $path |
+              select($skip_patterns | all(. as $pattern | ($path | startswith($pattern)) | not))
+            ) as $result |
+
+            # Debug what was skipped
+            (if ($input_paths - $result) | length > 0 then
+              "Skipped: " + (($input_paths - $result) | map("  - " + .) | join(","))
+            else
+              "No paths skipped"
+            end) |
+            debug |
+
+            $result
+            ' .github/skip_nf_test.json)
+
+          echo "filtered_paths=${FILTERED}" >> $GITHUB_OUTPUT
 
       - name: Run nf-test Action
+        if: ${{steps.filter.outputs.filtered_paths != '[]'}}
         uses: ./.github/actions/nf-test-action
         env:
           SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
