@@ -7,6 +7,10 @@ process FASTQC {
         'https://depot.galaxyproject.org/singularity/fastqc:0.12.1--hdfd78af_0' :
         'biocontainers/fastqc:0.12.1--hdfd78af_0' }"
 
+
+    // Test modification to trigger GitHub Actions path filtering
+    // This change is to verify the skip_nf_test.yml filtering mechanism
+
     input:
     tuple val(meta), path(reads)
 

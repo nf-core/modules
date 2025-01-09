@@ -96,9 +96,10 @@ jobs:
       - name: Filter paths
         id: filter
         run: |
+          PATHS='${{ needs.nf-test-changes.outputs.paths }}'
           FILTERED=$(jq -n -c \
             --arg profile "${{ matrix.profile }}" \
-            --argjson input_paths ''"${{ needs.nf-test-changes.outputs.paths }}"'' \
+            --argjson input_paths "$PATHS" \
             '
             def get_skip_list: inputs | .[$profile] // [];
 
