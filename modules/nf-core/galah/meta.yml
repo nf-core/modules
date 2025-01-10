@@ -57,7 +57,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-      - ${prefix}-dereplicated/*:
+      - ${prefix}/*:
           type: file
           description: The representative genomes following dereplication by galah.
           pattern: "*"
