@@ -32,7 +32,7 @@ env:
   NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
   NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
   # renovate: datasource=github-releases depName=nextflow/nextflow versioning=semver
-  NXF_VER: "24.10.1"
+  NXF_VER: "24.10.2"
 
 jobs:
   nf-test-changes:
@@ -76,7 +76,7 @@ jobs:
           echo ${{ steps.outputs.outputs.subworkflows }}
   nf-test:
     runs-on: ${{ github.event.inputs.runners || 'self-hosted' }}
-    name: "${{ matrix.profile }} | ${{ matrix.shard }}"
+    name: "Test | ${{ matrix.profile }} | ${{ matrix.shard }}"
     needs: nf-test-changes
     if: ${{ needs.nf-test-changes.outputs.modules != '[]' || needs.nf-test-changes.outputs.subworkflows != '[]' }}
     strategy:
@@ -92,7 +92,45 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           fetch-depth: 0
+
+      - name: Filter paths
+        id: filter
+        run: |
+          PATHS='${{ needs.nf-test-changes.outputs.paths }}'
+          FILTERED=$(jq -n -c \
+            --arg profile "${{ matrix.profile }}" \
+            --argjson input_paths "$PATHS" \
+            '
+            def get_skip_list: inputs | .[$profile] // [];
+
+            # Get skip list and filter
+            get_skip_list as $skip_patterns |
+
+            # Debug output
+            ($skip_patterns | "Skip patterns: " + (map("  - " + .) | join(","))) |
+            debug |
+
+            # Do the actual filtering
+            $input_paths | map(
+              . as $path |
+              select($skip_patterns | all(. as $pattern | ($path | startswith($pattern)) | not))
+            ) as $result |
+
+            # Debug what was skipped
+            (if ($input_paths - $result) | length > 0 then
+              "Skipped: " + (($input_paths - $result) | map("  - " + .) | join(","))
+            else
+              "No paths skipped"
+            end) |
+            debug |
+
+            $result
+            ' .github/skip_nf_test.json)
+
+          echo "filtered_paths=${FILTERED}" >> $GITHUB_OUTPUT
+
       - name: Run nf-test Action
+        if: ${{steps.filter.outputs.filtered_paths != '[]'}}
         uses: ./.github/actions/nf-test-action
         env:
           SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
@@ -103,19 +141,24 @@ jobs:
           profile: ${{ matrix.profile }}
           shard: ${{ matrix.shard }}
           total_shards: ${{ env.TOTAL_SHARDS }}
-          paths: "${{ join(fromJson(needs.nf-test-changes.outputs.paths), ' ') }}"
+          paths: "${{ join(fromJson(steps.filter.outputs.filtered_paths), ' ') }}"
 
   confirm-pass:
     runs-on: ubuntu-latest
     needs: [nf-test]
     if: always()
     steps:
-      - name: All tests ok
-        if: ${{ success() || !contains(needs.*.result, 'failure') }}
-        run: exit 0
       - name: One or more tests failed
         if: ${{ contains(needs.*.result, 'failure') }}
         run: exit 1
+
+      - name: One or more tests cancelled
+        if: ${{ contains(needs.*.result, 'cancelled') }}
+        run: exit 1
+
+      - name: All tests ok
+        if: ${{ contains(needs.*.result, 'success') }}
+        run: exit 0
 
       - name: debug-print
         if: always()

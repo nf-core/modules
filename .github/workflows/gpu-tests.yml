@@ -29,7 +29,7 @@ env:
   NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
   NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
   # renovate: datasource=github-releases depName=nextflow-io/nextflow versioning=semver
-  NXF_VER: "24.10.1"
+  NXF_VER: "24.10.2"
 
 jobs:
   nf-test-changes:
@@ -74,14 +74,14 @@ jobs:
 
   nf-test-gpu:
     runs-on: "gpu"
-    name: "GPU | ${{ matrix.profile }} | ${{ matrix.shard }}"
+    name: "GPU Test | ${{ matrix.profile }} | ${{ matrix.shard }}"
     needs: nf-test-changes
     if: ${{ needs.nf-test-changes.outputs.modules != '[]' || needs.nf-test-changes.outputs.subworkflows != '[]' }}
     strategy:
       fail-fast: false
       matrix:
         shard: [1, 2]
-        profile: [docker_self_hosted, singularity] # conda?
+        profile: [docker_self_hosted, singularity]
     env:
       NXF_ANSI_LOG: false
       TOTAL_SHARDS: 2
@@ -103,17 +103,22 @@ jobs:
           total_shards: ${{ env.TOTAL_SHARDS }}
           paths: "${{ join(fromJson(needs.nf-test-changes.outputs.paths), ' ') }}"
 
-  confirm-pass:
+  confirm-pass-gpu:
     runs-on: ubuntu-latest
     needs: [nf-test-gpu]
     if: always()
     steps:
-      - name: All tests ok
-        if: ${{ success() || !contains(needs.*.result, 'failure') }}
-        run: exit 0
       - name: One or more tests failed
         if: ${{ contains(needs.*.result, 'failure') }}
         run: exit 1
+
+      - name: One or more tests cancelled
+        if: ${{ contains(needs.*.result, 'cancelled') }}
+        run: exit 1
+
+      - name: All tests ok
+        if: ${{ contains(needs.*.result, 'success') }}
+        run: exit 0
 
       - name: debug-print
         if: always()

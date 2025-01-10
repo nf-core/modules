@@ -3,7 +3,10 @@ process FOLDMASON_EASYMSA {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "community.wave.seqera.io/library/foldmason_pigz:54849036d93c89ed"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+            'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/06/067e6389ab95497b753ba1deabaa6acbce25b99c8cfcf39c06d5c1af42fd7751/data':
+            'community.wave.seqera.io/library/foldmason_pigz:88809eb5649534b0' }"
+
 
     input:
     tuple val(meta) , path(pdbs)

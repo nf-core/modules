@@ -17,7 +17,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/setup-java@8df1039502a15bceb9433410b1a100fbe190c53b # v4
+    - uses: actions/setup-java@7a6d8a8234af8eb26422e24e3006232cccaa061b # v4
       with:
         distribution: "temurin"
         java-version: "17"
@@ -83,12 +83,39 @@ runs:
           --filter process,workflow \
           ${{ inputs.paths }}
 
-      # TODO If no test.tap, then make one to spoof?
-    - uses: pcolby/tap-summary@0959cbe1d4422e62afc65778cdaea6716c41d936 # v1
-      if: ${{ inputs.path != '' }}
-      with:
-        path: >-
-          test.tap
+          # Save the absolute path of the test.tap file to the output
+          echo "tap_file_path=$(realpath test.tap)" >> $GITHUB_OUTPUT
+
+    - name: Generate test summary
+      if: always()
+      shell: bash
+      run: |
+        # Add header if it doesn't exist (using a token file to track this)
+        if [ ! -f ".summary_header" ]; then
+          echo "# 🚀 nf-test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Status | Test Name | Profile | Shard |" >> $GITHUB_STEP_SUMMARY
+          echo "|:------:|-----------|---------|-------|" >> $GITHUB_STEP_SUMMARY
+          touch .summary_header
+        fi
+
+        if [ -f test.tap ]; then
+          while IFS= read -r line; do
+            if [[ $line =~ ^ok ]]; then
+              test_name="${line#ok }"
+              # Remove the test number from the beginning
+              test_name="${test_name#* }"
+              echo "| ✅ | ${test_name} | ${{ inputs.profile }} | ${{ inputs.shard }}/${{ inputs.total_shards }} |" >> $GITHUB_STEP_SUMMARY
+            elif [[ $line =~ ^not\ ok ]]; then
+              test_name="${line#not ok }"
+              # Remove the test number from the beginning
+              test_name="${test_name#* }"
+              echo "| ❌ | ${test_name} | ${{ inputs.profile }} | ${{ inputs.shard }}/${{ inputs.total_shards }} |" >> $GITHUB_STEP_SUMMARY
+            fi
+          done < test.tap
+        else
+          echo "| ⚠️ | No test results found | ${{ inputs.profile }} | ${{ inputs.shard }}/${{ inputs.total_shards }} |" >> $GITHUB_STEP_SUMMARY
+        fi
 
     - name: Clean up
       if: always()
