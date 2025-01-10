@@ -55,4 +55,65 @@ nextflow_process {
 
     }
 
+    test("two conditions with two replicates") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'treated_vs_control'], // meta map
+                    'treatment',
+                    'control',
+                    'treated'
+                    ]
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/samplesheet_two_replicates.csv"),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/salmon.merged.gene_counts_length_scaled_two_replicates.tsv")
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.session_info[0][1]).getText().contains('anota2seq_1.24.0') },
+                { assert path(process.out.session_info[0][1]).getText().contains('WARNING: anota2seq needs at least three replicates within each condition when there are only two conditions. Skipping anota2seq analysis.') }
+            )
+        }
+
+    }
+
+
+    test("three conditions with two replicates") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'treated2_vs_control'], // meta map
+                    'treatment',
+                    'control',
+                    'treated2'
+                    ]
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/samplesheet_two_replicates_three_conditions.csv"),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/salmon.merged.gene_counts_length_scaled.tsv")
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.session_info[0][1]).getText().contains('anota2seq_1.24.0') },
+                { assert path(process.out.session_info[0][1]).getText().contains('WARNING: Less than three replicates detected in at least one condition. Running anota2seq with onlyGroup = TRUE.') }
+            )
+        }
+
+    }
+
 }
