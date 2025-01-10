@@ -83,7 +83,7 @@ jobs:
                 .replace('modules/nf-core/', '')
                 .split('/')
                 .slice(0, 2)
-                .filter(x => !x.startsWith('main.nf') && x !== 'tests' && x !== 'meta.yml' && x !== 'environment.yml' && !/^README.*\.md$/i.test(x) && x !== 'templates')
+                .filter(x => !x.startsWith('main.nf') && x !== 'tests' && x !== 'templates' && x !== 'meta.yml' && x !== 'environment.yml' && !x.endsWith('.md'))
                 .join('/'))
               )
             ];
