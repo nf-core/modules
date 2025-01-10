@@ -30,8 +30,6 @@ process GALAH {
         qc_input = "--genome-info ${qc_table}"
     }
     """
-    mkdir -p ${prefix}-dereplicated
-
     galah cluster \\
         --threads ${task.cpus} \\
         --genome-fasta-files ${bins} \\
