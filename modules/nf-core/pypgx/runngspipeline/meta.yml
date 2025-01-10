@@ -33,14 +33,18 @@ input:
     - coverage:
         type: file
         description: ZIP compressed file with depth of coverage information. Output
-          of pypgx/preparedepthofcoverage.
+          of pypgx/preparedepthofcoverage. Coverage information is only required when
+          running the module on a pharmacogene with known structural variants.
         pattern: "*.{zip}"
     - control_stats:
         type: file
         description: ZIP compressed file with control statistics. Output of pypgx/computecontrolstatistics.
+          Control statistics are only required when running the module on a pharmacogene
+          with known structural variants.
     - pgx_gene:
         type: string
-        description: Pharmacogene to genotype/phenotype.
+        description: Pharmacogene to genotype/phenotype. A list of supported genes is
+          available in the pypgx documentation "https://pypgx.readthedocs.io/en/latest/genes.html"
   - - meta2:
         type: map
         description: |
@@ -53,19 +57,35 @@ input:
         type: string
         description: Genome assembly version to use.
 output:
-  - outdir:
+  - results:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - pgx_gene:
-          type: string
-          description: Pharmacogene used to genotype/phenotype
-      - "*pypgx_output":
-          type: directory
-          description: Directory containing all pipeline output files
-          pattern: "*pypgx_output*"
+      - "*pypgx_output/results.zip":
+          type: file
+          description: Main output file of the pipeline in ZIP format, containing a table
+            with star-alleles per sample and CNV calls where applicable.
+  - cnv_calls:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*pypgx_output/cnv-calls.zip":
+          type: file
+          description: Optional output file in ZIP format, containing CNV calls per sample.
+  - consolidated_variants:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*pypgx_output/consolidated-variants.zip":
+          type: file
+          description: Output file in ZIP format, containing a consolidated (and phased)
+            VCF file.
   - versions:
       - versions.yml:
           type: file

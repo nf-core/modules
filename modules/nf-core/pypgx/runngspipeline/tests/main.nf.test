@@ -86,9 +86,12 @@ nextflow_process {
                 """
             }
         }
+
         then {
-            def outDir = process.out.outdir[0][2]
-            def zipFile = path(outDir+"/results.zip").zip
+            def results = process.out.results[0][1]
+
+
+            def zipFile = path(results).zip
             def paths = zipFile.extractAll()
             def metaFile = paths.find { it.getFileName().toString() == 'metadata.txt' }
 
@@ -101,7 +104,6 @@ nextflow_process {
                     process.out.versions).match()}
             )
         }
-
     }
 
     test("stub") {
