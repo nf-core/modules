@@ -32,7 +32,7 @@ These module subcommands incorporate the individual steps of the DeepVariant pip
 ## makeexamples
 
 This process imports the data used for calling, and thus decides what information is available to the
-deep neural network. It's important to use the correct settings for the model you want to use for each step. The script [`run_deepvariant.py`](https://github.com/google/deepvariant/blob/r1.8/scripts/run_deepvariant.py) does this automatically. To figure out the flags needed for each step you can run `run_deepvariant.py` while adding `dry_run=true`, to print out the command used for each step, as described [here](https://github.com/google/deepvariant/blob/r1.8/docs/deepvariant-pacbio-model-case-study.md).
+deep neural network. It's important to use the correct settings for the model you want to use for each step. The script [`run_deepvariant.py`](https://github.com/google/deepvariant/blob/r1.8/scripts/run_deepvariant.py) does this automatically. To figure out the flags needed for each model, you can run `run_deepvariant.py` while adding `dry_run=true`, to print out the command used for each step, as described [here](https://github.com/google/deepvariant/blob/r1.8/docs/deepvariant-pacbio-model-case-study.md).
 
 ## callvariants
 
