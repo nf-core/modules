@@ -1,0 +1,127 @@
+nextflow_process {
+
+    name "Test Process GALAH"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "GALAH"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "galah"
+
+    test("genomes - no qc_table") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [file("https://github.com/nf-core/test-datasets/raw/refs/heads/magmap/testdata/GCA_002688505.1_ASM268850v1_genomic.fna.gz", checkIfExists: true),
+                    file("https://github.com/nf-core/test-datasets/raw/refs/heads/magmap/testdata/GCF_004296495.1_ASM429649v1_genomic.fna.gz", checkIfExists: true)],
+                    [],
+                    []
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match()
+                }
+            )
+        }
+
+    }
+
+    test("genomes - checkm2 qc_table") {
+
+        setup {
+            run("CHECKM2_DATABASEDOWNLOAD") {
+                script "../../checkm2/databasedownload/main.nf"
+                process {
+                    """
+                    input[0] = "5571251"
+                    """
+                }
+            }
+
+            run("CHECKM2_PREDICT") {
+                script "../../checkm2/predict/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ], // meta map
+                        [file("https://github.com/nf-core/test-datasets/raw/refs/heads/magmap/testdata/GCA_002688505.1_ASM268850v1_genomic.fna.gz", checkIfExists: true),
+                        file("https://github.com/nf-core/test-datasets/raw/refs/heads/magmap/testdata/GCF_004296495.1_ASM429649v1_genomic.fna.gz", checkIfExists: true)]
+                    ]
+                    input[1] = CHECKM2_DATABASEDOWNLOAD.out.database
+                    """
+                }
+            }
+
+            run("GAWK") {
+                script "../../gawk/main.nf"
+                process {
+                    """
+                    input[0] = CHECKM2_DATABASEDOWNLOAD.out.database
+                    input[1] = []
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    [file("https://github.com/nf-core/test-datasets/raw/refs/heads/magmap/testdata/GCA_002688505.1_ASM268850v1_genomic.fna.gz", checkIfExists: true),
+                    file("https://github.com/nf-core/test-datasets/raw/refs/heads/magmap/testdata/GCF_004296495.1_ASM429649v1_genomic.fna.gz", checkIfExists: true)]
+                ])
+                .combine(GAWK.out.output, by: 0)
+                .map { meta, bins, tsv -> [ meta, bins, tsv, "checkm2" ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match()
+                }
+            )
+        }
+
+    }
+
+    test("genomes - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [file("https://github.com/nf-core/test-datasets/raw/refs/heads/magmap/testdata/GCA_002688505.1_ASM268850v1_genomic.fna.gz", checkIfExists: true),
+                    file("https://github.com/nf-core/test-datasets/raw/refs/heads/magmap/testdata/GCF_004296495.1_ASM429649v1_genomic.fna.gz", checkIfExists: true)],
+                    [],
+                    "checkm2"
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match()
+                }
+            )
+        }
+
+    }
+
+}
