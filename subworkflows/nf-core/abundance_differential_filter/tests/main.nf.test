@@ -46,7 +46,7 @@ nextflow_workflow {
                     file(testData.expression_test_data_dir + testData.abundance_file),
                     'deseq2',  // analysis method
                     1.5,       // FC threshold
-                    0.05       // padj threshold
+                    0.05       // stat (adjusted p-value) threshold
                 ])
 
                 input[0] = ch_input
@@ -130,7 +130,7 @@ nextflow_workflow {
                     file,
                     'limma',
                     1.5,       // FC threshold
-                    0.05       // padj threshold
+                    0.05       // stat (adjusted p-value) threshold
                 ]}
 
                 input[0] = ch_input
@@ -187,7 +187,7 @@ nextflow_workflow {
                     file(testData.expression_test_data_dir + testData.abundance_file),
                     'limma',
                     1.5,       // FC threshold
-                    0.05       // padj threshold
+                    0.05       // stat (adjusted p-value) threshold
                 ])
 
                 input[0] = ch_input
@@ -248,7 +248,7 @@ nextflow_workflow {
                     file(testData.expression_test_data_dir + testData.abundance_file),
                     'deseq2',
                     1.5,       // FC threshold
-                    0.05       // padj threshold
+                    0.05       // stat (adjusted p-value) threshold
                 ])
 
                 input[0] = ch_input
@@ -306,7 +306,7 @@ nextflow_workflow {
                     file(testData.expression_test_data_dir + testData.abundance_file),
                     'propd',  // analysis method
                     1.5,      // FC threshold
-                    100       // weighted connectivity threshold
+                    100       // stat (weighted connectivity) threshold
                 ])
 
                 input[0] = ch_input
@@ -363,14 +363,14 @@ nextflow_workflow {
                         file(testData.expression_test_data_dir + testData.abundance_file),
                         'limma',
                         1.5,       // FC threshold
-                        0.05       // padj threshold
+                        0.05       // stat (adjusted p-value) threshold
                     ],
                     [
                         [ id:'test' ],
                         file(testData.expression_test_data_dir + testData.abundance_file),
                         'deseq2',
                         1.5,       // FC threshold
-                        0.05       // padj threshold
+                        0.05       // stat (adjusted p-value) threshold
                     ]
                 )
 
@@ -430,21 +430,21 @@ nextflow_workflow {
                         file(testData.expression_test_data_dir + testData.abundance_file),
                         'limma',
                         1.5,       // FC threshold
-                        0.05       // padj threshold
+                        0.05       // stat (adjusted p-value) threshold
                     ],
                     [
                         [ id:'test' ],
                         file(testData.expression_test_data_dir + testData.abundance_file),
                         'deseq2',
                         1.5,       // FC threshold
-                        0.05       // padj threshold
+                        0.05       // stat (adjusted p-value) threshold
                     ],
                     [
                         [ id:'test' ],
                         file(testData.expression_test_data_dir + testData.abundance_file),
                         'propd',
                         1.5,       // FC threshold
-                        100        // weighted connectivity threshold
+                        100        // stat (weighted connectivity) threshold
                     ]
                 )
 
@@ -506,7 +506,7 @@ nextflow_workflow {
                     file(testData.expression_test_data_dir + testData.abundance_file),
                     'deseq2',
                     1.5,       // FC threshold
-                    0.05       // padj threshold
+                    0.05       // stat (adjusted p-value) threshold
                 ])
 
                 input[0] = ch_input

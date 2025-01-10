@@ -19,7 +19,7 @@ def mergeMaps(meta, meta2){
 workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     take:
     // Things we may need to iterate
-    ch_input                 // [[meta_input], counts, analysis method, fc_threshold, padj_threshold]
+    ch_input                 // [[meta_input], counts, analysis method, fc_threshold, stat_threshold]
 
     // Workflow-wide things, we don't need to iterate
     ch_samplesheet           // [ meta_exp, samplesheet ]
@@ -30,7 +30,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     main:
 
     // Set up how the channels crossed below will be used to generate channels for processing
-    def criteria = multiMapCriteria { meta_input, abundance, analysis_method, fc_threshold, padj_threshold, meta_exp, samplesheet, meta_contrasts, variable, reference, target ->
+    def criteria = multiMapCriteria { meta_input, abundance, analysis_method, fc_threshold, stat_threshold, meta_exp, samplesheet, meta_contrasts, variable, reference, target ->
         samples_and_matrix:
             meta_map = meta_input + [ 'method': analysis_method ]
             [meta_map, samplesheet, abundance]
@@ -39,7 +39,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
             [ meta_map, variable, reference, target ]
         filter_params:
             meta_map = mergeMaps(meta_contrasts, meta_input) + [ 'method': analysis_method ]
-            [meta_map, [ 'fc_threshold': fc_threshold, 'padj_threshold': padj_threshold ]]
+            [meta_map, [ 'fc_threshold': fc_threshold, 'stat_threshold': stat_threshold ]]
     }
 
     // For DIFFERENTIAL modules we need to cross the things we're iterating so we
@@ -142,9 +142,18 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         .join(inputs.filter_params)
         .multiMap { meta, results, filter_meta ->
             def method_params = [
-                'deseq2': [fc_column: 'log2FoldChange', fc_cardinality: '>=', padj_column: 'padj', padj_cardinality: '<='],
-                'limma' : [fc_column: 'logFC', fc_cardinality: '>=', padj_column: 'adj.P.Val', padj_cardinality: '<='],
-                'propd' : [fc_column: 'lfc', fc_cardinality: '>=', padj_column: 'weighted_connectivity', padj_cardinality: '>=']
+                'deseq2': [
+                    fc_column: 'log2FoldChange', fc_cardinality: '>=',
+                    stat_column: 'padj', stat_cardinality: '<='
+                ],
+                'limma' : [
+                    fc_column: 'logFC', fc_cardinality: '>=',
+                    stat_column: 'adj.P.Val', stat_cardinality: '<='
+                ],
+                'propd' : [
+                    fc_column: 'lfc', fc_cardinality: '>=',
+                    stat_column: 'weighted_connectivity', stat_cardinality: '>='
+                ]
             ]
             filter_input: [meta + filter_meta, results]
             fc_input: [
@@ -152,10 +161,10 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
                 filter_meta.fc_threshold,
                 method_params[meta.method].fc_cardinality
             ]
-            padj_input: [
-                method_params[meta.method].padj_column,
-                filter_meta.padj_threshold,
-                method_params[meta.method].padj_cardinality
+            stat_input: [
+                method_params[meta.method].stat_column,
+                filter_meta.stat_threshold,
+                method_params[meta.method].stat_cardinality
             ]
         }
 
@@ -163,7 +172,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     CUSTOM_FILTERDIFFERENTIALTABLE(
         ch_diff_filter_params.filter_input,
         ch_diff_filter_params.fc_input,
-        ch_diff_filter_params.padj_input
+        ch_diff_filter_params.stat_input
     )
 
     emit:
