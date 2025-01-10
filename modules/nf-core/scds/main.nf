@@ -20,10 +20,12 @@ process SCDS {
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
+    if ("${rds}" == "${prefix}.rds") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     template 'scds.R'
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("${rds}" == "${prefix}.rds") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     touch ${prefix}.rds
     touch ${prefix}.csv
