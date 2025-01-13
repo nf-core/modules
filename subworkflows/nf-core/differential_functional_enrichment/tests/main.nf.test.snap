@@ -75,7 +75,14 @@
             [
                 "treatment_mCherry_hND6__test.gprofiler2.gostplot.html",
                 "treatment_mCherry_hND6_sample_number_test.gprofiler2.gostplot.html"
-            ]
+            ],
+            {
+                "DIFFERENTIAL_FUNCTIONAL_ENRICHMENT:GPROFILER2_GOST": {
+                    "r-base": "4.3.1",
+                    "r-ggplot2": "3.4.3",
+                    "r-gprofiler2": "0.2.2"
+                }
+            }
         ],
         "meta": {
             "nf-test": "0.9.2",
@@ -122,18 +129,15 @@
                 ]
             ],
             [
-                [
-                    {
-                        "id": "Condition_genotype_WT_KO",
-                        "variable": "Condition genotype",
-                        "reference": "WT",
-                        "target": "KO",
-                        "blocking": "batch",
-                        "method": "gprofiler2"
-                    },
-                    "Condition_genotype_WT_KO.gprofiler2.gostplot.html:md5,d1beb09c435f2f75115cb8216312f49f"
-                ]
-            ]
+                "Condition_genotype_WT_KO.gprofiler2.gostplot.html"
+            ],
+            {
+                "DIFFERENTIAL_FUNCTIONAL_ENRICHMENT:GPROFILER2_GOST": {
+                    "r-base": "4.3.1",
+                    "r-ggplot2": "3.4.3",
+                    "r-gprofiler2": "0.2.2"
+                }
+            }
         ],
         "meta": {
             "nf-test": "0.9.2",
@@ -168,12 +172,17 @@
                     "treatment_mCherry_hND6_sample_number_testgsea_report_for_mCherry.tsv:md5,ce8792382ae299749445767ff16aaecc",
                     "treatment_mCherry_hND6_sample_number_testgsea_report_for_hND6.tsv:md5,354a961c7e1417db2bf1f7e8d00c54f0"
                 ]
-            ]
+            ],
+            {
+                "DIFFERENTIAL_FUNCTIONAL_ENRICHMENT:GSEA_GSEA": {
+                    "gsea": "4.3.2"
+                }
+            }
         ],
         "meta": {
             "nf-test": "0.9.2",
             "nextflow": "24.10.3"
         },
-        "timestamp": "2025-01-13T13:18:40.737995097"
+        "timestamp": "2025-01-13T15:24:40.504558626"
     }
 }

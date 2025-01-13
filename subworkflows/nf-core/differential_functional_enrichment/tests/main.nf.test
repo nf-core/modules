@@ -48,9 +48,9 @@ nextflow_workflow {
                 { assert snapshot(
                     workflow.out.gprofiler2_all_enrich,
                     workflow.out.gprofiler2_sub_enrich,
-                    workflow.out.gprofiler2_plot_html
-                ).match()},
-                { assert path(workflow.out.versions[0]).readLines()[3].contains('r-gprofiler2: 0.2.2')}
+                    workflow.out.gprofiler2_plot_html.collect{ meta, html -> file(html).name }, //assert unstable file,
+                    path(workflow.out.versions.get(0)).yaml
+                ).match()}
             )
         }
     }
@@ -128,8 +128,8 @@ nextflow_workflow {
                     workflow.out.gprofiler2_all_enrich,
                     workflow.out.gprofiler2_sub_enrich,
                     workflow.out.gprofiler2_plot_html.collect{ meta, html -> file(html).name }, //assert unstable file
+                    path(workflow.out.versions.get(0)).yaml
                 ).match()},
-                { assert path(workflow.out.versions[0]).readLines()[3].contains('r-gprofiler2: 0.2.2')}
             )
         }
     }
