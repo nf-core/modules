@@ -19,7 +19,7 @@ nextflow_process {
                 target                          = "hND6"
                 differential_fc_column          = "log2FoldChange"
                 differential_qval_column        = "padj"
-                differential_feature_id_column  = "gene_id" 
+                differential_feature_id_column  = "gene_id"
                 differential_min_fold_change    = 2.0
                 differential_max_qval           = 0.05
                 differential_foldchanges_logged = true
@@ -39,8 +39,8 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [['id':'treatment_mCherry_hND6_', 'variable':'treatment', 'reference':'mCherry', 'target':'hND6', 'blocking':''], file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/differentialabundance/modules_testdata/treatment_mCherry_hND6_.deseq2.results.tsv", checkIfExists:true)]
-                input[1] = [['id':'SRP254919'], file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/differentialabundance/modules_testdata/SRP254919.samplesheet.sample_metadata.tsv", checkIfExists:true), file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/differentialabundance/modules_testdata/Mus_musculus.anno.tsv", checkIfExists:true), [file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/differentialabundance/modules_testdata/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv", checkIfExists:true), file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/differentialabundance/modules_testdata/all.normalised_counts.tsv", checkIfExists:true), file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/differentialabundance/modules_testdata/all.vst.tsv", checkIfExists:true)]]
+                input[0] = [['id':'treatment_mCherry_hND6_', 'variable':'treatment', 'reference':'mCherry', 'target':'hND6', 'blocking':''], file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/treatment_mCherry_hND6_.deseq2.results.tsv", checkIfExists:true)]
+                input[1] = [['id':'SRP254919'], file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.sample_metadata.tsv", checkIfExists:true), file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/Mus_musculus.anno.tsv", checkIfExists:true), [file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv", checkIfExists:true), file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/all.normalised_counts.tsv", checkIfExists:true), file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/all.vst.tsv", checkIfExists:true)]]
                 """
             }
         }
@@ -52,11 +52,11 @@ nextflow_process {
             )
         }
     }
-    
+
     test("stub") {
 
         options "-stub"
-        
+
         when {
             params{
                 features_id_col                 = "gene_id"
@@ -64,7 +64,7 @@ nextflow_process {
                 target                          = "hND6"
                 differential_fc_column          = "log2FoldChange"
                 differential_qval_column        = "padj"
-                differential_feature_id_column  = "gene_id" 
+                differential_feature_id_column  = "gene_id"
                 differential_min_fold_change    = 2.0
                 differential_max_qval           = 0.05
                 differential_foldchanges_logged = true
@@ -84,8 +84,8 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [['id':'treatment_mCherry_hND6_', 'variable':'treatment', 'reference':'mCherry', 'target':'hND6', 'blocking':''], file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/differentialabundance/modules_testdata/treatment_mCherry_hND6_.deseq2.results.tsv", checkIfExists:true)]
-                input[1] = [['id':'SRP254919'], file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/differentialabundance/modules_testdata/SRP254919.samplesheet.sample_metadata.tsv", checkIfExists:true), file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/differentialabundance/modules_testdata/Mus_musculus.anno.tsv", checkIfExists:true), [file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/differentialabundance/modules_testdata/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv", checkIfExists:true), file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/differentialabundance/modules_testdata/all.normalised_counts.tsv", checkIfExists:true), file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/differentialabundance/modules_testdata/all.vst.tsv", checkIfExists:true)]]
+                input[0] = [['id':'treatment_mCherry_hND6_', 'variable':'treatment', 'reference':'mCherry', 'target':'hND6', 'blocking':''], file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/treatment_mCherry_hND6_.deseq2.results.tsv", checkIfExists:true)]
+                input[1] = [['id':'SRP254919'], file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.sample_metadata.tsv", checkIfExists:true), file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/Mus_musculus.anno.tsv", checkIfExists:true), [file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv", checkIfExists:true), file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/all.normalised_counts.tsv", checkIfExists:true), file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/all.vst.tsv", checkIfExists:true)]]
                 """
             }
         }

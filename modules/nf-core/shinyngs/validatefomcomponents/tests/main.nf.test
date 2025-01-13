@@ -22,7 +22,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [['id':'SRP254919'], file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv", checkIfExists:true), file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv", checkIfExists:true)]
-                input[1] = [['id':'SRP254919'], file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/differentialabundance/modules_testdata/Mus_musculus.anno.tsv", checkIfExists:true)]
+                input[1] = [['id':'SRP254919'], file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/Mus_musculus.anno.tsv", checkIfExists:true)]
                 input[2] = [['id':'SRP254919'], file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.contrasts.csv", checkIfExists:true)]
                 """
             }
@@ -35,11 +35,11 @@ nextflow_process {
             )
         }
     }
-    
+
     test("stub") {
 
         options "-stub"
-        
+
         when {
             params{
                 observations_id_col = "sample"
@@ -50,7 +50,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [['id':'SRP254919'], file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv", checkIfExists:true), file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv", checkIfExists:true)]
-                input[1] = [['id':'SRP254919'], file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/differentialabundance/modules_testdata/Mus_musculus.anno.tsv", checkIfExists:true)]
+                input[1] = [['id':'SRP254919'], file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/Mus_musculus.anno.tsv", checkIfExists:true)]
                 input[2] = [['id':'SRP254919'], file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.contrasts.csv", checkIfExists:true)]
                 """
             }
