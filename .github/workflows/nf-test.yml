@@ -73,6 +73,7 @@ jobs:
 
       - name: get number of shards
         id: set-shards
+        if: ${{ steps.list.outputs.components != '[]' }}
         uses: ./.github/actions/get-shards
         env:
           NFT_VER: ${{ env.NFT_VER }}

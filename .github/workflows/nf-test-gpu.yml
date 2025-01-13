@@ -70,12 +70,14 @@ jobs:
 
       - name: get number of shards
         id: set-shards
+        if: ${{ steps.list.outputs.components != '[]' }}
         uses: ./.github/actions/get-shards
         env:
           NFT_VER: ${{ env.NFT_VER }}
         with:
           max_shards: 2
           paths: "${{ join(fromJson(steps.list.outputs.components), ' ') }}"
+          tags: "gpu"
       - name: debug
         run: |
           echo ${{ steps.list.outputs.components }}
