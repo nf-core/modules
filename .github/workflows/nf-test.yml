@@ -170,7 +170,7 @@ jobs:
           fetch-depth: 0
 
       - name: Run nf-test Action
-        if: ${{ fromJson(needs.filter-paths.outputs.profile_paths)[matrix.profile] != '[]' }}
+        if: ${{ fromJson(needs.filter-paths.outputs.profile_paths[matrix.profile]) != '[]' }}
         uses: ./.github/actions/nf-test-action
         env:
           SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
@@ -181,7 +181,7 @@ jobs:
           profile: ${{ matrix.profile }}
           shard: ${{ matrix.shard }}
           total_shards: ${{ env.TOTAL_SHARDS }}
-          paths: "${{ join(fromJson(needs.filter-paths.outputs.profile_paths)[matrix.profile], ' ') }}"
+          paths: "${{ join(fromJson(needs.filter-paths.outputs.profile_paths[matrix.profile]), ' ') }}"
 
   confirm-pass:
     runs-on: ubuntu-latest
