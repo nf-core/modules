@@ -43,7 +43,8 @@ jobs:
       paths: ${{ steps.list.outputs.components }}
       modules: ${{ steps.components.outputs.modules }}
       subworkflows: ${{ steps.components.outputs.subworkflows}}
-      # Prod for version bumping
+      shard: ${{ steps.set-shards.outputs.shard }}
+      total_shards: ${{ steps.set-shards.outputs.total_shards }}
     steps:
       - name: Clean Workspace # Purge the workspace in case it's running on a self-hosted runner
         run: |
