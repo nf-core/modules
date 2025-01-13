@@ -12,7 +12,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [id:"immunedeconv"], file('https://raw.githubusercontent.com/omnideconv/immunedeconv/refs/heads/master/tests/testthat/bulk_mat.tsv', checkIfExists: true), "quantiseq", "deconvolute" ]
+                input[0] = [ [id:"immunedeconv"], file('https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/bulk_mat.tsv', checkIfExists: true), "quantiseq", "deconvolute" ]
                 input[1] = "gene_symbol"
                 """
             }
@@ -31,8 +31,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [id:"immunedeconv"], file('https://github.com/omnideconv/immunedeconv/raw/refs/heads/master/tests/testthat/bulk_mat_mouse.tsv', checkIfExists: true), "mmcp_counter", "deconvolute_mouse" ]
-                input[1] = "gene_symbol"                
+                input[0] = [ [id:"immunedeconv"], file('https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/bulk_mat_mouse.tsv', checkIfExists: true), "mmcp_counter", "deconvolute_mouse" ]
+                input[1] = "gene_symbol"
                 """
             }
         }
@@ -51,7 +51,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [id:"immunedeconv"], file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true), "mmcp_counter", "deconvolute_mouse" ]
-                input[1] = "gene_name"                
+                input[1] = "gene_name"
                 """
             }
         }
@@ -71,8 +71,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [id:"immunedeconv"], file('https://raw.githubusercontent.com/omnideconv/immunedeconv/refs/heads/master/tests/testthat/bulk_mat.tsv', checkIfExists: true), "quantiseq", "deconvolute" ]
-                input[1] = "gene_symbol"                
+                input[0] = [ [id:"immunedeconv"], file('https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/bulk_mat.tsv', checkIfExists: true), "quantiseq", "deconvolute" ]
+                input[1] = "gene_symbol"
                 """
             }
         }
