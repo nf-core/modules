@@ -4,12 +4,12 @@ process BISMARK_METHYLATIONEXTRACTOR {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bismark:0.24.0--hdfd78af_0' :
-        'biocontainers/bismark:0.24.0--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/bismark:0.24.2--hdfd78af_0' :
+        'biocontainers/bismark:0.24.2--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam)
-    path index
+    tuple val(meta2), path(index)
 
     output:
     tuple val(meta), path("*.bedGraph.gz")         , emit: bedgraph
@@ -36,13 +36,29 @@ process BISMARK_METHYLATIONEXTRACTOR {
     def seqtype  = meta.single_end ? '-s' : '-p'
     """
     bismark_methylation_extractor \\
-        $bam \\
+        ${bam} \\
         --bedGraph \\
         --counts \\
         --gzip \\
         --report \\
-        $seqtype \\
-        $args
+        ${seqtype} \\
+        ${args}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bismark: \$(echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bedGraph.gz
+    touch ${prefix}.txt.gz
+    touch ${prefix}.cov.gz
+    touch ${prefix}_splitting_report.txt
+    touch ${prefix}.M-bias.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

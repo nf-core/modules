@@ -15,12 +15,34 @@ tools:
       licence: ["MIT"]
       identifier: biotools:Arriba
 
+input:
+  - - genome:
+        type: string
+        description: hg38, hg19, GRCh38, GRCh37 for humans are accepted
 output:
-  - reference:
-      - "*":
-          type: directory
-          description: Folder with arriba references
-          pattern: "*"
+  - blacklist:
+      - blacklist*${genome}*.tsv.gz:
+          type: string
+          description: The blacklist removes recurrent alignment artifacts and transcripts
+            which are present in healthy tissue
+          pattern: ".tsv.gz"
+  - cytobands:
+      - cytobands*${genome}*.tsv:
+          type: file
+          description: Coordinates of the Giemsa staining bands. This information is used
+            to draw ideograms
+          pattern: ".tsv"
+  - protein_domains:
+      - protein_domains*${genome}*.gff3:
+          type: file
+          description: Protein domain annotations
+          pattern: "*.gff3"
+  - known_fusions:
+      - known_fusions*${genome}*.tsv.gz:
+          type: file
+          description: Arriba is more sensitive to those fusions to improve the detection
+            rate of expected or highly relevant events, such as recurrent fusions
+          pattern: "*.tsv.gz"
   - versions:
       - versions.yml:
           type: file

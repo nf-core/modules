@@ -1,6 +1,6 @@
 name: iqtree
 description: Produces a Newick format phylogeny from a multiple sequence alignment
-  using the maxium likelihood algorithm. Capable of bacterial genome size alignments.
+  using the maximum likelihood algorithm. Capable of bacterial genome size alignments.
 keywords:
   - phylogeny
   - newick
@@ -316,13 +316,13 @@ output:
       - meta:
           type: file
           description: |
-            File containing site-specific subtitution
+            File containing site-specific substitution
             rates determined by maximum likelihood (--mlrate)
           pattern: "*.{mlrate}"
       - "*.mlrate":
           type: file
           description: |
-            File containing site-specific subtitution
+            File containing site-specific substitution
             rates determined by maximum likelihood (--mlrate)
           pattern: "*.{mlrate}"
   - exch_matrix:

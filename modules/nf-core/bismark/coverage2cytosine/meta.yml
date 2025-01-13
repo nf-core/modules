@@ -31,7 +31,21 @@ input:
         type: file
         description: |
           A file containing methylation calls per position, in the format produced by bismark_methylation_extractor.
-  - - index:
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: |
+          Reference genome FASTA file
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - index:
         type: directory
         description: Bismark genome index directory
         pattern: "BismarkIndex"
@@ -75,3 +89,4 @@ authors:
   - "@ewels"
 maintainers:
   - "@ewels"
+  - "@sateeshperi"

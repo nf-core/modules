@@ -23,11 +23,21 @@ tools:
       licence: ["GPL-3.0-or-later"]
       identifier: biotools:bismark
 input:
-  - - fasta:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
         type: file
         description: Input genome fasta file
 output:
   - index:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - BismarkIndex:
           type: directory
           description: Bismark genome index directory
@@ -41,3 +51,4 @@ authors:
   - "@phue"
 maintainers:
   - "@phue"
+  - "@sateeshperi"

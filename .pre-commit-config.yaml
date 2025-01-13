@@ -4,9 +4,9 @@ repos:
     hooks:
       - id: prettier
         additional_dependencies:
-          - prettier@3.2.5
+          - prettier@3.3.3
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.29.3
+    rev: 0.29.4
     hooks:
       - id: check-jsonschema
         # match meta.ymls in one of the subdirectories of modules/nf-core
@@ -17,15 +17,20 @@ repos:
         files: ^subworkflows/nf-core/.*/meta\.yml$
         args: ["--schemafile", "subworkflows/yaml-schema.json"]
       - id: check-github-workflows
-  - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 38.46.0
-    hooks:
-      - id: renovate-config-validator
   # use ruff for python files
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.6.6
+    rev: v0.7.3
     hooks:
       - id: ruff
         files: \.py$
         args: [--fix, --exit-non-zero-on-fix, "--select", "I,E1,E4,E7,E9,F,UP,N"] # sort imports and fix (rules taken from nf-core/tools)
       - id: ruff-format # formatter
+  - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
+    rev: "3.0.3"
+    hooks:
+      - id: editorconfig-checker
+        alias: ec
+  - repo: https://github.com/nf-core/tools
+    rev: pre-commit
+    hooks:
+      - id: lint-subworkflows
