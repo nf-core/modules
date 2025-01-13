@@ -73,9 +73,11 @@ runs:
         SENTIEON_LICSRVR_IP: ${{ env.SENTIEON_LICSRVR_IP }}
         SENTIEON_AUTH_MECH: "GitHub Actions - token"
       run: |
+        # combine profiles
+        profiles="--profile ${inputs.profile//,/ --profile +}"
         NFT_WORKDIR=~ \
         nf-test test \
-          --profile=${{ inputs.profile }} \
+          $profiles \
           --tap=test.tap \
           --verbose \
           --ci \
