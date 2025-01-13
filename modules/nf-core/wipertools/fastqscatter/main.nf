@@ -8,7 +8,7 @@ process WIPERTOOLS_FASTQSCATTER {
         'biocontainers/wipertools:1.1.5--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(fastq)    // channel: [ val(meta), [ .fastq|.fastq.gz ] ]
+    tuple val(meta), path(fastq)
     val(num_splits)
 
     output:
