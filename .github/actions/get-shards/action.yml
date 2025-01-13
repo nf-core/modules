@@ -34,7 +34,7 @@ runs:
 
         # Prepare tag parameter if tags are provided
         TAGS=$([ -n "${{ inputs.tags }}" ] && echo "--tag ${{ inputs.tags }}" || echo "")
-
+        echo "Paths: ${{ inputs.paths }}"
         # Run nf-test with dynamic tag parameter
         nftest_output=$(nf-test test \
           --dry-run \
