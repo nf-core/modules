@@ -88,9 +88,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: run nf-test-shard action
+      - name: get number of shards
         id: set-shards
-        uses: ./.github/actions/nf-test-shard
+        uses: ./.github/actions/get-shards
         env:
           NFT_VER: ${{ env.NFT_VER }}
         with:
@@ -102,6 +102,7 @@ jobs:
         run: |
           echo "shard=${{ steps.set-shards.outputs.shard }}" >> $GITHUB_ENV
           echo "total_shards=${{ steps.set-shards.outputs.total_shards }}" >> $GITHUB_ENV
+
   nf-test:
     runs-on: ${{ github.event.inputs.runners || 'self-hosted' }}
     name: "Test | ${{ matrix.profile }} | ${{ matrix.shard }}"
