@@ -17,10 +17,7 @@ nextflow_process {
                 """
                 input[0] = [['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'], file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/gene_set_analysis/Condition_treatment_Control_Treated.gct", checkIfExists:true), file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/gene_set_analysis/Condition_genotype_WT_KO.cls", checkIfExists:true), file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt", checkIfExists:true)]
                 input[1] = ['WT', 'KO']
-                input[2] = [
-                    ['id': 'test'],
-                    file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/gene_set_analysis/Mus_musculus.anno.feature_metadata.chip", checkIfExists:true)
-                ]
+                input[2] = file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/gene_set_analysis/Mus_musculus.anno.feature_metadata.chip", checkIfExists:true)
                 """
             }
         }
@@ -66,10 +63,7 @@ nextflow_process {
                 """
                 input[0] = [['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'], file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/gene_set_analysis/Condition_treatment_Control_Treated.gct", checkIfExists:true), file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/gene_set_analysis/Condition_genotype_WT_KO.cls", checkIfExists:true), file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt", checkIfExists:true)]
                 input[1] = ['WT', 'KO']
-                input[2] = [
-                    ['id': 'test'],
-                    file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/gene_set_analysis/Mus_musculus.anno.feature_metadata.chip", checkIfExists:true)
-                ]
+                input[2] = file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/gene_set_analysis/Mus_musculus.anno.feature_metadata.chip", checkIfExists:true)
                 """
             }
         }
