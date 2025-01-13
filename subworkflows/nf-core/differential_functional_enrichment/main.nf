@@ -145,20 +145,26 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     )
 
     emit:
-    // tool specific reports
-    // TODO somehow they produce empty files, check if everything is correct. Also check why no plots/etc are generated.
-    report_gprofiler2 = GPROFILER2_GOST.out.plot_html.map{it[1]}.flatMap().toList()
-                            .combine(GPROFILER2_GOST.out.all_enrich.map{it[1]}.flatMap().toList())
-                            .combine(GPROFILER2_GOST.out.sub_enrich.map{it[1]}.flatMap().toList())
-    report_gsea       = GSEA_GSEA.out.report_tsvs_ref
-                            .join(GSEA_GSEA.out.report_tsvs_target)
-    report_grea       = PROPR_GREA.out.results
+    // here we emit the outputs that will be useful afterwards in the
+    // nf-core/differentialabundance pipeline
+
+    // gprofiler2-specific outputs
+    gprofiler2_all_enrich = GPROFILER2_GOST.out.all_enrich
+    gprofiler2_sub_enrich = GPROFILER2_GOST.out.sub_enrich
+    gprofiler2_plot_html  = GPROFILER2_GOST.out.plot_html
+
+    // gsea-specific outputs
+    gsea_report           = GSEA_GSEA.out.report_tsvs_ref
+                                .join(GSEA_GSEA.out.report_tsvs_target)
+
+    // grea-specific outputs
+    grea_results          = PROPR_GREA.out.results
 
     // tool versions
-    versions          = GPROFILER2_GOST.out.versions
-                            .mix(CUSTOM_TABULARTOGSEAGCT.out.versions)
-                            .mix(CUSTOM_TABULARTOGSEACLS.out.versions)
-                            .mix(CUSTOM_TABULARTOGSEACHIP.out.versions)
-                            .mix(GSEA_GSEA.out.versions)
-                            .mix(PROPR_GREA.out.versions)
+    versions              = GPROFILER2_GOST.out.versions
+                                .mix(CUSTOM_TABULARTOGSEAGCT.out.versions)
+                                .mix(CUSTOM_TABULARTOGSEACLS.out.versions)
+                                .mix(CUSTOM_TABULARTOGSEACHIP.out.versions)
+                                .mix(GSEA_GSEA.out.versions)
+                                .mix(PROPR_GREA.out.versions)
 }

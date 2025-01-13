@@ -14,27 +14,27 @@ nextflow_workflow {
     tag "propr"
     tag "propr/grea"
 
-    test("test gprofiler2 - mouse - with gene sets and background") {
-
-        tag 'gprofiler2_basic1'
+    test("test gprofiler2 - mouse") {
+        tag 'gprofiler2_basic'
         config './gprofiler2.config'
+        // NOTE that this is same done performed in the module GPROFILER2_GOST
 
         when {
             workflow {
                 """
-                input[0] = Channel.of([
+                ch_input = Channel.of([
                     ['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'],
                     file("https://github.com/nf-core/test-datasets/raw/refs/heads/differentialabundance/modules_testdata/Condition_genotype_WT_KO.deseq2.results_filtered.tsv", checkIfExists: true),
                     'gprofiler2'
                 ])
-                input[1] = Channel.of([
-                    ['id': 'test'],
-                    file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt", checkIfExists: true)
-                ])
-                input[2] = Channel.of([
+                ch_background = Channel.of([
                     ['id': 'test'],
                     file("https://github.com/nf-core/test-datasets/raw/refs/heads/differentialabundance/modules_testdata/study.filtered.tsv", checkIfExists: true)
                 ])
+
+                input[0] = ch_input
+                input[1] = [[], []]
+                input[2] = ch_background
                 input[3] = [[], [], [], []]
                 input[4] = [[], []]
                 input[5] = [[], [], [], []]
@@ -46,51 +46,16 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(
-                    workflow.out.report_gprofiler2
+                    workflow.out.gprofiler2_all_enrich,
+                    workflow.out.gprofiler2_sub_enrich,
+                    workflow.out.gprofiler2_plot_html
                 ).match()},
                 { assert path(workflow.out.versions[0]).readLines()[3].contains('r-gprofiler2: 0.2.2')}
             )
         }
     }
 
-    test("test gprofiler2 - mouse - with gene sets") {
-
-        tag 'gprofiler2_basic2'
-        config './gprofiler2.config'
-
-        when {
-            workflow {
-                """
-                input[0] = Channel.of([
-                    ['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'],
-                    file("https://github.com/nf-core/test-datasets/raw/refs/heads/differentialabundance/modules_testdata/Condition_genotype_WT_KO.deseq2.results_filtered.tsv", checkIfExists: true),
-                    'gprofiler2'
-                ])
-                input[1] = Channel.of([
-                    ['id': 'test'],
-                    file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt", checkIfExists: true)
-                ])
-                input[2] = [[], []]
-                input[3] = [[], [], [], []]
-                input[4] = [[], []]
-                input[5] = [[], [], [], []]
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert workflow.success},
-                { assert snapshot(
-                    workflow.out.report_gprofiler2
-                ).match()},
-                { assert path(workflow.out.versions[0]).readLines()[3].contains('r-gprofiler2: 0.2.2')}
-            )
-        }
-    }
-
-    test("deseq2 + gprofiler2 - mouse - with gene sets") {
-
+    test("deseq2 + gprofiler2 - mouse") {
         tag "deseq2+gprofiler2"
         config "./deseq2_gprofiler2.config"
 
@@ -145,13 +110,9 @@ nextflow_workflow {
                         meta['method_de'] = meta['method']
                         [meta, results, 'gprofiler2']
                     }
-                ch_gene_sets = Channel.of([
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt')
-                ])
 
                 input[0] = ch_input
-                input[1] = ch_gene_sets
+                input[1] = [[], []]
                 input[2] = [[], []]
                 input[3] = [[], [], [], []]
                 input[4] = [[], []]
@@ -164,15 +125,16 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(
-                    workflow.out.report_gprofiler2
+                    workflow.out.gprofiler2_all_enrich,
+                    workflow.out.gprofiler2_sub_enrich,
+                    workflow.out.gprofiler2_plot_html
                 ).match()},
                 { assert path(workflow.out.versions[0]).readLines()[3].contains('r-gprofiler2: 0.2.2')}
             )
         }
     }
 
-    test("deseq2 + gsea - mouse - basic") {
-
+    test("deseq2 + gsea - mouse") {
         tag "deseq2+gsea"
         config "./deseq2_gsea.config"
 
