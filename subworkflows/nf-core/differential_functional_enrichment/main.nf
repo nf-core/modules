@@ -71,17 +71,20 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     // In the case of GSEA, it needs additional files coming from other channels that other methods don't use
     // here we define the input channel for the GSEA section
 
+    ch_input.filter{ it[0].method == 'gsea'}.view()
+    ch_contrasts.view()
+
     def criteria = multiMapCriteria { meta_input, input, meta_exp, samplesheet, featuresheet, features_id, features_symbol, meta_contrasts, variable, reference, target ->
         def analysis_method = meta_input.method
+        def meta_contrasts_new = meta_contrasts + [ 'variable': variable, 'reference': reference, 'target': target ]  // make sure variable, reference, target are in the meta
+        def meta_input_new = meta_input + meta_exp
+        def meta_all = mergeMaps(meta_contrasts_new, meta_input_new) + [ 'method': analysis_method ]
         input:
-            meta_map = meta_input + [ 'method': analysis_method ]
-            [ meta_map, input ]
+            [ meta_all, input ]
         contrasts_and_samples:
-            meta_map = mergeMaps(meta_contrasts, meta_exp) + [ 'method': analysis_method, 'variable': variable, 'reference': reference, 'target': target ]  // make sure variable, reference, target are in the meta
-            [ meta_map, samplesheet ]
+            [ meta_all, samplesheet ]
         features:
-            meta_map = meta_exp + [ 'method': analysis_method ]
-            [ meta_map, featuresheet ]
+            [ meta_exp, featuresheet ]
         features_cols:
             [ features_id, features_symbol ]
     }
@@ -113,22 +116,17 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
 
     // TODO: update CUSTOM_TABULARTOGSEACLS for value channel input per new
     // guidlines (rather than meta usage employed here)
-    CUSTOM_TABULARTOGSEAGCT(ch_preinput_for_gsea.input.unique())
+    CUSTOM_TABULARTOGSEAGCT(ch_preinput_for_gsea.input)
 
-    CUSTOM_TABULARTOGSEACLS(ch_preinput_for_gsea.contrasts_and_samples.unique())
+    CUSTOM_TABULARTOGSEACLS(ch_preinput_for_gsea.contrasts_and_samples)
 
     CUSTOM_TABULARTOGSEACHIP(
         ch_preinput_for_gsea.features.unique(),
         ch_preinput_for_gsea.features_cols.unique()
     )
 
-    // NOTE here we combine gct with cls directly. But in the future when contrasts channel are more complex
-    // and contain information about model/method/etc, we might need to combine based on certain criteria.
     ch_input_for_gsea = CUSTOM_TABULARTOGSEAGCT.out.gct
-        .combine(CUSTOM_TABULARTOGSEACLS.out.cls)
-        .map { meta_gct, gct, meta_cls, cls ->
-            [meta_cls, gct, cls]   // keep meta_cls, which is the one containing contrast info, etc
-        }
+        .join(CUSTOM_TABULARTOGSEACLS.out.cls)
         .combine( ch_gene_sets_without_meta )
 
     GSEA_GSEA(
