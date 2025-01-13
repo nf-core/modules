@@ -28,9 +28,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.fastq_out.get(0).get(1)).linesGzip.size() == 8},
+                { assert path(process.out.wiped_fastq.get(0).get(1)).linesGzip.size() == 8},
                 {
-                    def read_final_qual = path(process.out.fastq_out.get(0).get(1)).linesGzip[7]
+                    def read_final_qual = path(process.out.wiped_fastq.get(0).get(1)).linesGzip[7]
                     assert read_final_qual.equals('CCCCCGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG')
                 },
                 { assert path(process.out.report.get(0)).readLines().size() == 11},
