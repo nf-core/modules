@@ -34,8 +34,8 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [id:"test"], file("https://github.com/nf-core/test-datasets/raw/refs/heads/differentialabundance/modules_testdata/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv",checkIfExists: true) ]
-                input[1] = [ [id:"test"], file("https://github.com/nf-core/test-datasets/raw/refs/heads/differentialabundance/modules_testdata/SRP254919.samplesheet.sample_metadata.tsv",checkIfExists: true) ]
+                input[0] = [ [id:"test"], file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv",checkIfExists: true) ]
+                input[1] = [ [id:"test"], file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.sample_metadata.tsv",checkIfExists: true) ]
                 """
 
             }
@@ -76,8 +76,8 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [id:"test"], file("https://github.com/nf-core/test-datasets/raw/refs/heads/differentialabundance/modules_testdata/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv",checkIfExists: true) ]
-                input[1] = [ [id:"test"], file("https://github.com/nf-core/test-datasets/raw/refs/heads/differentialabundance/modules_testdata/SRP254919.samplesheet.sample_metadata.tsv",checkIfExists: true) ]
+                input[0] = [ [id:"test"], file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv",checkIfExists: true) ]
+                input[1] = [ [id:"test"], file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.sample_metadata.tsv",checkIfExists: true) ]
                 """
             }
         }

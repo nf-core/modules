@@ -14,7 +14,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [id:'treatment_mCherry_hND6_', variable:'treatment', reference:'mCherry', target:'hND6', blocking:''], file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/differentialabundance/modules_testdata/all.normalised_counts.tsv",checkIfExists: true) ]
+                input[0] = [ [id:'treatment_mCherry_hND6_', variable:'treatment', reference:'mCherry', target:'hND6', blocking:''], file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/all.normalised_counts.tsv",checkIfExists: true) ]
                 """
 
             }
@@ -35,7 +35,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [id:'treatment_mCherry_hND6_', variable:'treatment', reference:'mCherry', target:'hND6', blocking:''], file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/differentialabundance/modules_testdata/all.normalised_counts.tsv",checkIfExists: true) ]
+                input[0] = [ [id:'treatment_mCherry_hND6_', variable:'treatment', reference:'mCherry', target:'hND6', blocking:''], file("https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/all.normalised_counts.tsv",checkIfExists: true) ]
                 """
             }
         }
