@@ -8,28 +8,28 @@ process WIPERTOOLS_FASTQGATHER {
         'biocontainers/wipertools:1.1.3--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(fastq_in)
+    tuple val(meta), path(fastq)    // channel: [ val(meta), [ .fastq|.fastq.gz ] ]
 
     output:
-    tuple val(meta), path("${prefix}.fastq.gz"), emit: fastq_out
-    path "versions.yml"                        , emit: versions
+    tuple val(meta), path("${prefix}.fastq.gz"), emit: gathered_fastq   // channel: [ val(meta), *_gather.fastq | *_gather.fastq.gz ]
+    path "versions.yml"                        , emit: versions         // channel: [ versions.yml ]
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args ?: ''
-    prefix      = task.ext.prefix ?: "${meta.id}_gather"
+    def args = task.ext.args ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}_gather"
 
     // Check if the output file name is in the list of input files
-    if (fastq_in.any { it.name == "${prefix}.fastq.gz" }) {
+    if (fastq.any { it.name == "${prefix}.fastq.gz" }) {
         error 'Output file name "${prefix}.fastq.gz}" matches one of the input files. Use \"task.ext.prefix\" to disambiguate!.'
     }
 
     """
     wipertools \\
         fastqgather \\
-        -i $fastq_in \\
+        -i $fastq \\
         -o ${prefix}.fastq.gz \\
         ${args}
 
@@ -43,7 +43,7 @@ process WIPERTOOLS_FASTQGATHER {
     prefix      = task.ext.prefix ?: "${meta.id}_gather"
 
     // Check if the output file name is in the list of input files
-    if (fastq_in.any { it.name == "${prefix}.fastq.gz" }) {
+    if (fastq.any { it.name == "${prefix}.fastq.gz" }) {
         error 'Output file name "${prefix}.fastq.gz}" matches one of the input files. Use \"task.ext.prefix\" to disambiguate!.'
     }
     """

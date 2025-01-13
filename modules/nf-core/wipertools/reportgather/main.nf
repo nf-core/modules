@@ -8,11 +8,11 @@ process WIPERTOOLS_REPORTGATHER {
         'biocontainers/wipertools:1.1.3--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(reports)
+    tuple val(meta), path(report)   // channel: [ val(meta), [ *.report ] ]
 
     output:
-    tuple val(meta), path("${prefix}.report"), emit: report_out
-    path "versions.yml"                      , emit: versions
+    tuple val(meta), path("${prefix}.report"), emit: gathered_report    // channel: [ val(meta), *_gather.report ]
+    path "versions.yml"                      , emit: versions           // channel: [ versions.yml ]
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,14 +22,14 @@ process WIPERTOOLS_REPORTGATHER {
     prefix = task.ext.prefix ?: "${meta.id}_gather"
 
     // Check if the output file name is in the list of input files
-    if (reports.any { it.name == "${prefix}.report" }) {
+    if (report.any { it.name == "${prefix}.report" }) {
         error 'Output file name "${prefix}.report}" matches one of the input files. Use \"task.ext.prefix\" to disambiguate!.'
     }
 
     """
     wipertools \\
         reportgather \\
-        -r $reports \\
+        -r $report \\
         -f ${prefix}.report \\
         ${args}
 
@@ -43,7 +43,7 @@ process WIPERTOOLS_REPORTGATHER {
     prefix = task.ext.prefix ?: "${meta.id}_gather"
 
     // Check if the output file name is in the list of input files
-    if (reports.any { it.name == "${prefix}.report" }) {
+    if (report.any { it.name == "${prefix}.report" }) {
         error 'Output file name "${prefix}.report}" matches one of the input files. Use \"task.ext.prefix\" to disambiguate!.'
     }
 
