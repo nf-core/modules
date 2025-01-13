@@ -155,7 +155,7 @@ jobs:
     runs-on: ${{ github.event.inputs.runners || 'self-hosted' }}
     name: "Test | ${{ matrix.profile }} | ${{ matrix.shard }}"
     needs: [nf-test-changes, filter-paths]
-    if: ${{ needs.nf-test-changes.outputs.total_shards != '0' && fromJson(needs.filter-paths.outputs.profile_paths)[matrix.profile] != '[]' }}
+    if: ${{ needs.nf-test-changes.outputs.total_shards != '0' }}
     strategy:
       fail-fast: false
       matrix:
