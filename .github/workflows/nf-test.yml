@@ -41,8 +41,8 @@ jobs:
     outputs:
       # Expose detected tags as 'modules' and 'workflows' output variables
       paths: ${{ steps.list.outputs.components }}
-      modules: ${{ steps.outputs.outputs.modules }}
-      subworkflows: ${{ steps.outputs.outputs.subworkflows}}
+      modules: ${{ steps.components.outputs.modules }}
+      subworkflows: ${{ steps.components.outputs.subworkflows}}
       # Prod for version bumping
     steps:
       - name: Clean Workspace # Purge the workspace in case it's running on a self-hosted runner
@@ -65,15 +65,15 @@ jobs:
           exclude_tags: "gpu"
 
       - name: Separate modules and subworkflows
-        id: outputs
+        id: components
         run: |
           echo modules=$(echo '${{ steps.list.outputs.components }}' | jq -c '. | map(select(contains("modules"))) | map(gsub("modules/nf-core/"; ""))') >> $GITHUB_OUTPUT
           echo subworkflows=$(echo '${{ steps.list.outputs.components }}' | jq '. | map(select(contains("subworkflows"))) | map(gsub("subworkflows/nf-core/"; ""))') >> $GITHUB_OUTPUT
       - name: debug
         run: |
           echo ${{ steps.list.outputs.components }}
-          echo ${{ steps.outputs.outputs.modules }}
-          echo ${{ steps.outputs.outputs.subworkflows }}
+          echo ${{ steps.components.outputs.modules }}
+          echo ${{ steps.components.outputs.subworkflows }}
 
       - name: get number of shards
         id: set-shards
@@ -82,7 +82,7 @@ jobs:
           NFT_VER: ${{ env.NFT_VER }}
         with:
           max_shards: 15
-          paths: "${{ join(fromJson(needs.nf-test-changes.outputs.paths), ' ') }}"
+          paths: "${{ join(fromJson(steps.list.outputs.components ), ' ') }}"
 
   filter-paths:
     name: Filter paths
