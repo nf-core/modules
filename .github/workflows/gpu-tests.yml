@@ -72,19 +72,49 @@ jobs:
           echo ${{ steps.outputs.outputs.modules }}
           echo ${{ steps.outputs.outputs.subworkflows }}
 
+  get-shards:
+    runs-on: ubuntu-latest
+    needs: nf-test-changes
+    name: "Get Shards"
+    outputs:
+      shard: ${{ steps.set-shards.outputs.shard }}
+      total_shards: ${{ steps.set-shards.outputs.total_shards }}
+    steps:
+      - name: Check out pipeline code
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
+        with:
+          fetch-depth: 0
+
+      - name: get number of shards
+        id: set-shards
+        uses: ./.github/actions/get-shards
+        env:
+          NFT_VER: ${{ env.NFT_VER }}
+        with:
+          max_shards: 15
+          paths: ${{ needs.nf-test-changes.outputs.paths }}
+
+      - name: Set outputs
+        id: set-outputs
+        run: |
+          echo "shard=${{ steps.set-shards.outputs.shard }}" >> $GITHUB_OUTPUT
+          echo "total_shards=${{ steps.set-shards.outputs.total_shards }}" >> $GITHUB_OUTPUT
+
   nf-test-gpu:
     runs-on: "gpu"
     name: "GPU Test | ${{ matrix.profile }} | ${{ matrix.shard }}"
-    needs: nf-test-changes
+    needs:
+      - nf-test-changes
+      - get-shards
     if: ${{ needs.nf-test-changes.outputs.modules != '[]' || needs.nf-test-changes.outputs.subworkflows != '[]' }}
     strategy:
       fail-fast: false
       matrix:
-        shard: [1, 2]
+        shard: ${{ fromJson(needs.get-shards.outputs.shard) }}
         profile: [docker_self_hosted, singularity]
     env:
       NXF_ANSI_LOG: false
-      TOTAL_SHARDS: 2
+      TOTAL_SHARDS: ${{ needs.get-shards.outputs.total_shards }}
 
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
