@@ -96,7 +96,7 @@ jobs:
           NFT_VER: ${{ env.NFT_VER }}
         with:
           max_shards: 15
-          paths: "${{ steps.filter.outputs.paths }}"
+          paths: "${{ join(fromJson(needs.nf-test-changes.outputs.paths), ' ') }}"
 
       - name: Set outputs
         id: set-outputs

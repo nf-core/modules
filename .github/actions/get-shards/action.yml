@@ -50,7 +50,7 @@ runs:
         total_shards=0
 
         # Check if there are related tests
-        if echo "$nftest_output" | grep -q 'Nothing to do'; then
+        if echo "$nftest_output" | grep -q 'No tests to execute'; then
           echo "No related tests found."
         else
           # Extract the number of related tests
