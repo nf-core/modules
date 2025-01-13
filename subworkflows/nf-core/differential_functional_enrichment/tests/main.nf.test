@@ -17,7 +17,7 @@ nextflow_workflow {
     test("test gprofiler2 - mouse") {
         tag 'gprofiler2_basic'
         config './gprofiler2.config'
-        // NOTE that this is same done performed in the module GPROFILER2_GOST
+        // NOTE that this generates the same outputs as the module GPROFILER2_GOST
 
         when {
             workflow {
@@ -193,6 +193,7 @@ nextflow_workflow {
                     genesets_file: test_data_dir + 'gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt'
                 ]
 
+                // define input channels
                 ch_input = ABUNDANCE_DIFFERENTIAL_FILTER.out.normalised_matrix
                     .map { meta, matrix ->
                         meta['method_de'] = meta['method']
@@ -232,7 +233,7 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(
-                    workflow.out.report_gsea
+                    workflow.out.gsea_report
                 ).match()}
                 // { assert path(workflow.out.versions[0]).readLines().contains('gsea: 4.3.2')}
             )
