@@ -108,7 +108,7 @@ jobs:
     runs-on: ${{ github.event.inputs.runners || 'self-hosted' }}
     name: "Test | ${{ matrix.profile }} | ${{ matrix.shard }}"
     needs: nf-test-changes
-    if: ${{ needs.get-shards.outputs.total_shards > 0  }}
+    if: ${{ needs.get-shards.outputs.total_shards != '0' }}
     strategy:
       fail-fast: false
       matrix:
