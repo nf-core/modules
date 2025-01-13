@@ -146,16 +146,6 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
         ch_gene_sets
     )
 
-    ch_versions = ch_versions
-                    .mix(GPROFILER2_GOST.out.versions.first())
-                    .mix(CUSTOM_TABULARTOGSEAGCT.out.versions.first())
-                    .mix(CUSTOM_TABULARTOGSEACLS.out.versions.first())
-                    .mix(CUSTOM_TABULARTOGSEACHIP.out.versions.first())
-                    .mix(GSEA_GSEA.out.versions.first())
-                    .mix(PROPR_GREA.out.versions.first())
-
-    ch_versions.view()
-
     emit:
     // here we emit the outputs that will be useful afterwards in the
     // nf-core/differentialabundance pipeline
@@ -174,4 +164,10 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
 
     // tool versions
     versions              = ch_versions
+                                .mix(GPROFILER2_GOST.out.versions.first())
+                                .mix(CUSTOM_TABULARTOGSEAGCT.out.versions.first())
+                                .mix(CUSTOM_TABULARTOGSEACLS.out.versions.first())
+                                .mix(CUSTOM_TABULARTOGSEACHIP.out.versions.first())
+                                .mix(GSEA_GSEA.out.versions.first())
+                                .mix(PROPR_GREA.out.versions.first())
 }

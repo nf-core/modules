@@ -239,4 +239,86 @@ nextflow_workflow {
             )
         }
     }
+
+    test("propd + grea - mouse") {
+        tag "propd+grea"
+        config "./propd_grea.config"
+
+        setup {
+            run("ABUNDANCE_DIFFERENTIAL_FILTER") {
+                script "../../abundance_differential_filter/main.nf"
+                workflow {
+                """
+                // Define test data
+                def testData = [
+                    expression_test_data_dir: params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/',
+                    contrasts_file: 'SRP254919.contrasts.csv',
+                    abundance_file: 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv',
+                    samplesheet_file: 'SRP254919.samplesheet.csv'
+                ]
+
+                // Define inputs
+                ch_samplesheet = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.samplesheet_file)
+                ])
+                ch_transcript_lengths = Channel.of([ [], [] ])
+                ch_control_features = Channel.of([ [], [] ])
+                ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_input = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.abundance_file),
+                    'propd',   // analysis method
+                    1.5,       // FC threshold
+                    100        // stat threshold
+                ])
+
+                input[0] = ch_input
+                input[1] = ch_samplesheet
+                input[2] = ch_transcript_lengths
+                input[3] = ch_control_features
+                input[4] = ch_contrasts
+                """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                ch_input = ABUNDANCE_DIFFERENTIAL_FILTER.out.adjacency
+                    .map { meta, results ->
+                        meta['method_de'] = meta['method']
+                        [meta, results, 'grea']
+                    }
+                ch_gene_sets = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt')
+                ])
+
+                input[0] = ch_input
+                input[1] = ch_gene_sets
+                input[2] = [[], []]
+                input[3] = [[], [], [], []]
+                input[4] = [[], []]
+                input[5] = [[], [], [], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.grea_results,
+                    path(workflow.out.versions.get(0)).yaml
+                ).match()},
+            )
+        }
+    }
+
 }
