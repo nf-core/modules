@@ -8,11 +8,11 @@ process WIPERTOOLS_REPORTGATHER {
         'biocontainers/wipertools:1.1.3--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(report)   // channel: [ val(meta), [ *.report ] ]
+    tuple val(meta), path(report)
 
     output:
-    tuple val(meta), path("${prefix}.report"), emit: gathered_report    // channel: [ val(meta), *_gather.report ]
-    path "versions.yml"                      , emit: versions           // channel: [ versions.yml ]
+    tuple val(meta), path("${prefix}.report"), emit: gathered_report
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

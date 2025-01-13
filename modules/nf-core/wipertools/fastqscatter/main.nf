@@ -8,12 +8,12 @@ process WIPERTOOLS_FASTQSCATTER {
         'biocontainers/wipertools:1.1.3--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(fastq)    // channel: [ val(meta), [ .fastq|.fastq.gz ] ]
+    tuple val(meta), path(fastq)
     val(num_splits)
 
     output:
-    tuple val(meta), path("${out_folder}/*") , emit: fastq_chunks   // channel: [ val(meta), [ .fastq|.fastq.gz ] ]
-    path "versions.yml"                      , emit: versions       // channel: [ versions.yml ]
+    tuple val(meta), path("${out_folder}/*") , emit: fastq_chunks
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

@@ -8,11 +8,11 @@ process WIPERTOOLS_FASTQGATHER {
         'biocontainers/wipertools:1.1.3--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(fastq)    // channel: [ val(meta), [ .fastq|.fastq.gz ] ]
+    tuple val(meta), path(fastq)
 
     output:
-    tuple val(meta), path("${prefix}.fastq.gz"), emit: gathered_fastq   // channel: [ val(meta), *_gather.fastq | *_gather.fastq.gz ]
-    path "versions.yml"                        , emit: versions         // channel: [ versions.yml ]
+    tuple val(meta), path("${prefix}.fastq.gz"), emit: gathered_fastq
+    path "versions.yml"                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
