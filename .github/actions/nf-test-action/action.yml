@@ -74,7 +74,7 @@ runs:
         SENTIEON_AUTH_MECH: "GitHub Actions - token"
       run: |
         # combine profiles
-        profiles="--profile ${inputs.profile//,/ --profile +}"
+        profiles="--profile ${{ join(split(inputs.profile, ','), ' --profile ') }}"
         NFT_WORKDIR=~ \
         nf-test test \
           $profiles \
