@@ -40,7 +40,8 @@ jobs:
       paths: ${{ steps.list.outputs.components }}
       modules: ${{ steps.outputs.outputs.modules }}
       subworkflows: ${{ steps.outputs.outputs.subworkflows}}
-      # Prod for version bumping
+      shard: ${{ steps.set-shards.outputs.shard }}
+      total_shards: ${{ steps.set-shards.outputs.total_shards }}
     steps:
       - name: Clean Workspace # Purge the workspace in case it's running on a self-hosted runner
         run: |
@@ -66,25 +67,6 @@ jobs:
         run: |
           echo modules=$(echo '${{ steps.list.outputs.components }}' | jq -c '. | map(select(contains("modules"))) | map(gsub("modules/nf-core/"; ""))') >> $GITHUB_OUTPUT
           echo subworkflows=$(echo '${{ steps.list.outputs.components }}' | jq '. | map(select(contains("subworkflows"))) | map(gsub("subworkflows/nf-core/"; ""))') >> $GITHUB_OUTPUT
-      - name: debug
-        run: |
-          echo ${{ steps.list.outputs.components }}
-          echo ${{ steps.outputs.outputs.modules }}
-          echo ${{ steps.outputs.outputs.subworkflows }}
-
-  get-shards:
-    runs-on: ubuntu-latest
-    needs: nf-test-changes
-    name: "get shards"
-    if: ${{ needs.nf-test-changes.outputs.paths != '[]' }}
-    outputs:
-      shard: ${{ steps.set-shards.outputs.shard }}
-      total_shards: ${{ steps.set-shards.outputs.total_shards }}
-    steps:
-      - name: Check out pipeline code
-        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
-        with:
-          fetch-depth: 0
 
       - name: get number of shards
         id: set-shards
@@ -93,23 +75,29 @@ jobs:
           NFT_VER: ${{ env.NFT_VER }}
         with:
           max_shards: 2
-          paths: "${{ join(fromJson(needs.nf-test-changes.outputs.paths), ' ') }}"
+          paths: "${{ join(fromJson(steps.list.outputs.paths), ' ') }}"
+      - name: debug
+        run: |
+          echo ${{ steps.list.outputs.components }}
+          echo ${{ steps.outputs.outputs.modules }}
+          echo ${{ steps.outputs.outputs.subworkflows }}
+          echo ${{ steps.set-shards.outputs.shard }}
+          echo ${{ steps.set-shards.outputs.total_shards }}
 
   nf-test-gpu:
     runs-on: "gpu"
     name: "GPU Test | ${{ matrix.profile }} | ${{ matrix.shard }}"
     needs:
       - nf-test-changes
-      - get-shards
     if: ${{ needs.nf-test-changes.outputs.modules != '[]' || needs.nf-test-changes.outputs.subworkflows != '[]' }}
     strategy:
       fail-fast: false
       matrix:
-        shard: ${{ fromJson(needs.get-shards.outputs.shard) }}
+        shard: ${{ fromJson(needs.nf-test-changes.outputs.shard) }}
         profile: [docker_self_hosted, singularity]
     env:
       NXF_ANSI_LOG: false
-      TOTAL_SHARDS: ${{ needs.get-shards.outputs.total_shards }}
+      TOTAL_SHARDS: ${{ needs.nf-test-changes.outputs.total_shards }}
 
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4

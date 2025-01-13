@@ -145,8 +145,8 @@ jobs:
             ' .github/skip_nf_test.json)
 
           # Set outputs
-          echo "filtered_paths=$(echo $FILTERED | jq -r '.filtered_paths')" >> $GITHUB_OUTPUT
-          echo "profile_paths=$(echo $FILTERED | jq -r '.profile_paths')" >> $GITHUB_OUTPUT
+          echo "filtered_paths=$(echo $FILTERED | jq -c '.filtered_paths')" >> $GITHUB_OUTPUT
+          echo "profile_paths=$(echo $FILTERED | jq -c '.profile_paths')" >> $GITHUB_OUTPUT
 
   nf-test:
     runs-on: ${{ github.event.inputs.runners || 'self-hosted' }}
