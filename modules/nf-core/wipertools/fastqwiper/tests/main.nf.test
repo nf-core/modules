@@ -33,13 +33,13 @@ nextflow_process {
                     def read_final_qual = path(process.out.wiped_fastq.get(0).get(1)).linesGzip[7]
                     assert read_final_qual.equals('CCCCCGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG')
                 },
-                { assert path(process.out.report.get(0)).readLines().size() == 11},
+                { assert path(process.out.report.get(0).get(1)).readLines().size() == 11},
                 {
-                    def report_header = path(process.out.report.get(0)).readLines()[0]
+                    def report_header = path(process.out.report.get(0).get(1)).readLines()[0]
                     assert report_header.equals('FASTQWIPER REPORT:')
                 },
                 {
-                    def qual_check = path(process.out.report.get(0)).readLines()[9]
+                    def qual_check = path(process.out.report.get(0).get(1)).readLines()[9]
                     assert qual_check.equals('Reads discarded because len(SEQ) neq len(QUAL): 1')
                 },
                 { assert snapshot(process.out).match() }
