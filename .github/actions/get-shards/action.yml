@@ -32,7 +32,7 @@ runs:
       shell: bash
       run: |
         # Run nf-test to get the number of related tests
-        nftest_output=$(nf-test test --dry-run --changed-since HEAD^ --filter pipeline --tag ${{ inputs.tags }} ${{ inputs.paths}})
+        nftest_output=$(nf-test test --dry-run --profile docker --tag ${{ inputs.tags }} --filter process,workflow ${{ inputs.paths}})
         echo "nf-test dry-run output: $nftest_output"
 
         # Default values for shard and total_shards
