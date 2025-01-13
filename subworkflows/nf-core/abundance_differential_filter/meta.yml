@@ -10,13 +10,16 @@ input:
             description: Count matrix file
         - analysis_method:
             type: value
-            description: Analysis method (deseq2 or limma)
+            description: Analysis method (deseq2, limma, or propd)
         - fc_threshold:
             type: value
             description: Fold change threshold for filtering
-        - padj_threshold:
+        - stat_threshold:
             type: value
-            description: Adjusted p-value threshold for filtering
+            description: |
+              Threshold for filtering the significance statistics
+              (eg. adjusted p-values in the case of deseq2 or limma,
+              weighted connectivity in the case of propd)
   - ch_samplesheet:
       description: Channel with sample information
       structure:
