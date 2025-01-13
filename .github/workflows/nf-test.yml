@@ -93,7 +93,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: ${{ fromJson(needs.nf-test-changes.outputs.shard) }}
         profile: [conda, docker_self_hosted, singularity]
     outputs:
       filtered_paths: ${{ steps.filter.outputs.filtered_paths }}

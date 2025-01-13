@@ -75,7 +75,7 @@ jobs:
           NFT_VER: ${{ env.NFT_VER }}
         with:
           max_shards: 2
-          paths: "${{ join(fromJson(steps.list.outputs.paths), ' ') }}"
+          paths: "${{ join(fromJson(steps.list.outputs.components), ' ') }}"
       - name: debug
         run: |
           echo ${{ steps.list.outputs.components }}
