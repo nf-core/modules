@@ -75,20 +75,6 @@ jobs:
           echo ${{ steps.outputs.outputs.modules }}
           echo ${{ steps.outputs.outputs.subworkflows }}
 
-  get-shards:
-    runs-on: ubuntu-latest
-    needs: nf-test-changes
-    name: "get shards"
-    if: ${{ needs.nf-test-changes.outputs.paths != '[]' }}
-    outputs:
-      shard: ${{ steps.set-shards.outputs.shard }}
-      total_shards: ${{ steps.set-shards.outputs.total_shards }}
-    steps:
-      - name: Check out pipeline code
-        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
-        with:
-          fetch-depth: 0
-
       - name: get number of shards
         id: set-shards
         uses: ./.github/actions/get-shards
@@ -98,20 +84,19 @@ jobs:
           max_shards: 15
           paths: "${{ join(fromJson(needs.nf-test-changes.outputs.paths), ' ') }}"
 
-  nf-test:
-    runs-on: ${{ github.event.inputs.runners || 'self-hosted' }}
-    name: "Test | ${{ matrix.profile }} | ${{ matrix.shard }}"
-    needs: [get-shards, nf-test-changes]
-    if: ${{ needs.get-shards.outputs.total_shards != '0' }}
+  filter-paths:
+    name: Filter paths
+    runs-on: ubuntu-latest
+    needs: [nf-test-changes]
+    if: ${{ needs.nf-test-changes.outputs.total_shards != '0' }}
     strategy:
       fail-fast: false
       matrix:
-        shard: ${{ fromJson(needs.get-shards.outputs.shard) }}
+        shard: ${{ fromJson(needs.nf-test-changes.outputs.shard) }}
         profile: [conda, docker_self_hosted, singularity]
-    env:
-      NXF_ANSI_LOG: false
-      TOTAL_SHARDS: ${{ needs.get-shards.outputs.total_shards }}
-
+    outputs:
+      filtered_paths: ${{ steps.filter.outputs.filtered_paths }}
+      profile_paths: ${{ steps.filter.outputs.profile_paths }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
@@ -121,40 +106,67 @@ jobs:
         id: filter
         run: |
           PATHS='${{ needs.nf-test-changes.outputs.paths }}'
+          PROFILE='${{ matrix.profile }}'
+
+          # Create a JSON object to store filtered paths per profile
           FILTERED=$(jq -n -c \
-            --arg profile "${{ matrix.profile }}" \
+            --arg profile "$PROFILE" \
             --argjson input_paths "$PATHS" \
             '
             def get_skip_list: inputs | .[$profile] // [];
 
-            # Get skip list and filter
+            # Get skip list for current profile
             get_skip_list as $skip_patterns |
 
             # Debug output
-            ($skip_patterns | "Skip patterns: " + (map("  - " + .) | join(","))) |
+            ($skip_patterns | "Skip patterns for \($profile): " + (map(" - " + .) | join(","))) |
             debug |
 
-            # Do the actual filtering
+            # Filter paths
             $input_paths | map(
               . as $path |
               select($skip_patterns | all(. as $pattern | ($path | startswith($pattern)) | not))
-            ) as $result |
+            ) as $filtered_paths |
 
-            # Debug what was skipped
-            (if ($input_paths - $result) | length > 0 then
-              "Skipped: " + (($input_paths - $result) | map("  - " + .) | join(","))
+            # Debug skipped paths
+            (if ($input_paths - $filtered_paths) | length > 0 then
+              "Skipped for \($profile): " + (($input_paths - $filtered_paths) | map(" - " + .) | join(","))
             else
-              "No paths skipped"
+              "No paths skipped for \($profile)"
             end) |
             debug |
 
-            $result
+            # Return both filtered paths and profile-specific paths
+            {
+              "filtered_paths": $filtered_paths,
+              "profile_paths": { ($profile): $filtered_paths }
+            }
             ' .github/skip_nf_test.json)
 
-          echo "filtered_paths=${FILTERED}" >> $GITHUB_OUTPUT
+          # Set outputs
+          echo "filtered_paths=$(echo $FILTERED | jq -r '.filtered_paths')" >> $GITHUB_OUTPUT
+          echo "profile_paths=$(echo $FILTERED | jq -r '.profile_paths')" >> $GITHUB_OUTPUT
+
+  nf-test:
+    runs-on: ${{ github.event.inputs.runners || 'self-hosted' }}
+    name: "Test | ${{ matrix.profile }} | ${{ matrix.shard }}"
+    needs: [nf-test-changes, filter-paths]
+    if: ${{ needs.nf-test-changes.outputs.total_shards != '0' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ${{ fromJson(needs.nf-test-changes.outputs.shard) }}
+        profile: [conda, docker_self_hosted, singularity]
+    env:
+      NXF_ANSI_LOG: false
+      TOTAL_SHARDS: ${{ needs.nf-test-changes.outputs.total_shards }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          fetch-depth: 0
 
       - name: Run nf-test Action
-        if: ${{steps.filter.outputs.filtered_paths != '[]'}}
+        if: ${{ fromJson(needs.filter-paths.outputs.profile_paths)[matrix.profile] != '[]' }}
         uses: ./.github/actions/nf-test-action
         env:
           SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
@@ -165,7 +177,7 @@ jobs:
           profile: ${{ matrix.profile }}
           shard: ${{ matrix.shard }}
           total_shards: ${{ env.TOTAL_SHARDS }}
-          paths: "${{ join(fromJson(steps.filter.outputs.filtered_paths), ' ') }}"
+          paths: "${{ join(fromJson(needs.filter-paths.outputs.profile_paths)[matrix.profile], ' ') }}"
 
   confirm-pass:
     runs-on: ubuntu-latest
@@ -185,7 +197,7 @@ jobs:
         run: exit 0
 
       - name: If no tests run, but filtered_paths was not empty and no tests succeeded, fail
-        if: ${{ needs.nf-test.outputs.filtered_paths != '[]' && !contains(needs.*.result, 'success') }}
+        if: ${{ needs.filter-paths.outputs.filtered_paths != '[]' && !contains(needs.*.result, 'success') }}
         run: exit 1
 
       - name: debug-print
