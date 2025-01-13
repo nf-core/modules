@@ -93,13 +93,7 @@ jobs:
           NFT_VER: ${{ env.NFT_VER }}
         with:
           max_shards: 2
-          paths: ${{ needs.nf-test-changes.outputs.paths }}
-
-      - name: Set outputs
-        id: set-outputs
-        run: |
-          echo "shard=${{ steps.set-shards.outputs.shard }}" >> $GITHUB_OUTPUT
-          echo "total_shards=${{ steps.set-shards.outputs.total_shards }}" >> $GITHUB_OUTPUT
+          paths: "${{ join(fromJson(needs.nf-test-changes.outputs.paths), ' ') }}"
 
   nf-test-gpu:
     runs-on: "gpu"
