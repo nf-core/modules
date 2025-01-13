@@ -75,7 +75,8 @@ jobs:
   get-shards:
     runs-on: ubuntu-latest
     needs: nf-test-changes
-    name: "Get Shards"
+    name: "get shards"
+    if: ${{ needs.nf-test-changes.outputs.paths != '[]' }}
     outputs:
       shard: ${{ steps.set-shards.outputs.shard }}
       total_shards: ${{ steps.set-shards.outputs.total_shards }}
