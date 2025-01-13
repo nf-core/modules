@@ -4,11 +4,11 @@ process WIPERTOOLS_FASTQSCATTER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/wipertools:1.1.4--pyhdfd78af_0':
-        'biocontainers/wipertools:1.1.4--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/wipertools:1.1.5--pyhdfd78af_0':
+        'biocontainers/wipertools:1.1.5--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(fastq)
+    tuple val(meta), path(fastq)    // channel: [ val(meta), [ .fastq|.fastq.gz ] ]
     val(num_splits)
 
     output:
