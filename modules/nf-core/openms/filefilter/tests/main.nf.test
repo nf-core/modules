@@ -15,8 +15,6 @@ nextflow_process {
         when {
             process {
                 """
-                // TODO nf-core: define inputs of the process here. Example:
-
                 input[0] = [
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'proteomics/msspectra/peakpicker_tutorial_1.mzML', checkIfExists: true)
@@ -41,8 +39,6 @@ nextflow_process {
         when {
             process {
                 """
-                // TODO nf-core: define inputs of the process here. Example:
-
                 input[0] = [
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'proteomics/msspectra/peakpicker_tutorial_1.mzML', checkIfExists: true)
