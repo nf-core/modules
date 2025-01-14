@@ -121,8 +121,6 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         .mix(LIMMA_DIFFERENTIAL.out.versions)
         .mix(PROPR_PROPD.out.versions)
 
-    ch_normalised_matrix.view()
-
     // ----------------------------------------------------
     // Filter DE results
     // ----------------------------------------------------
