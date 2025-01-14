@@ -45,10 +45,10 @@ process TRANSDECODER_LONGORF {
     """
     mkdir -p $output_dir_name
 
-    touch $output_dir_name/longest_orfs.pep
-    touch $output_dir_name/longest_orfs.gff3
-    touch $output_dir_name/longest_orfs.cds
-    touch $output_dir_name/base_freqs.dat
+    touch ${output_dir_name}/longest_orfs.pep
+    touch ${output_dir_name}/longest_orfs.gff3
+    touch ${output_dir_name}/longest_orfs.cds
+    touch ${output_dir_name}/base_freqs.dat
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
