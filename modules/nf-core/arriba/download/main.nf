@@ -29,7 +29,7 @@ process ARRIBA_DOWNLOAD {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        wget: \$(wget --version | head -1 | sed 's/GNU Wget //' | sed 's/\(.*\) built on darwin.*/\1/')
+        wget: \$(wget --version | head -1 | sed 's/GNU Wget //' | sed -E 's/(.*) built on darwin.*/\1/')
     END_VERSIONS
     """
 
@@ -42,7 +42,7 @@ process ARRIBA_DOWNLOAD {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        wget: \$(wget --version | head -1 | sed 's/GNU Wget //' | sed 's/\(.*\) built on darwin.*/\1/')
+        wget: \$(wget --version | head -1 | sed 's/GNU Wget //' | sed -E 's/(.*) built on darwin.*/\1/')
     END_VERSIONS
     """
 }
