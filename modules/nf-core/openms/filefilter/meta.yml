@@ -1,8 +1,8 @@
-name: "openms_idfilter"
+name: "openms_filefilter"
 description: Filters peptide/protein identification results by different criteria.
 keywords:
   - filter
-  - idXML
+  - mzML
   - openms
   - proteomics
 tools:
@@ -34,7 +34,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - filtered_file:
+      - "*.{mzML,featureXML,consensusXML}":
           type: file
           description: Filtered spectrum-, feature-, or consensus-XML file.
           pattern: "*.{mzML,featureXML,consensusXML}"

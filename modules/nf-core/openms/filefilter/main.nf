@@ -14,6 +14,9 @@ process OPENMS_FILEFILTER {
     tuple val(meta), path("*.{mzML,featureXML,consensusXML}"), emit: filtered
     path "versions.yml"                                      , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
