@@ -45,31 +45,6 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
         [ meta_new, file ]
     }
 
-    // Deal with empty optional inputs
-    // TODO we can remove this part after fixing the modules that don't have meta as input
-    // To understand why this is needed now, check example:
-    //      a = Channel.of([[], []])
-    //      b = Channel.of([])
-    //      a.collect().view()
-    //      b.collect().view()
-
-    if (ch_gene_sets == [[], []]) {
-        ch_gene_sets_without_meta = []
-    } else {
-        ch_gene_sets = ch_gene_sets.collect()
-        ch_gene_sets_without_meta = ch_gene_sets.map{ meta, gmt -> gmt }.collect()
-    }
-    if (ch_background == [[], []]) {
-        ch_background_without_meta = []
-    } else {
-        ch_background = ch_background.collect()
-        ch_background_without_meta = ch_background.map{ meta, background -> background }.collect()
-    }
-    // convert into channels, so that they can be manipulated (eg.combine, join)
-    if (ch_contrasts == [[], [], [], []]) { ch_contrasts = Channel.of([[], [], [], []]) }
-    if (ch_samplesheet == [[], []]) { ch_samplesheet = Channel.of([[], []]) }
-    if (ch_featuresheet == [[], [], [], []]) { ch_featuresheet = Channel.of([[], [], [], []]) }
-
     // In the case of GSEA, it needs additional files coming from other channels that other methods don't use
     // here we define the input channel for the GSEA section
 
@@ -98,8 +73,8 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
 
     GPROFILER2_GOST(
         ch_input.filter{ it[0].method == 'gprofiler2' },
-        ch_gene_sets_without_meta,
-        ch_background_without_meta
+        ch_gene_sets.collect(),
+        ch_background.collect()
     )
 
     // ----------------------------------------------------
@@ -111,7 +86,8 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     // Whereas features can be only one file.
 
     // TODO here it is simply running gct and cls the same number of times and join based on meta.
-    // In the future we should avoid repeated computation of gct on the same input files.
+    // In the future we should avoid repeated computation of gct on the same input files, maybe by
+    // checking the common submap.
 
     // TODO: update CUSTOM_TABULARTOGSEACLS for value channel input per new
     // guidlines (rather than meta usage employed here)
@@ -120,18 +96,18 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     CUSTOM_TABULARTOGSEACLS(ch_preinput_for_gsea.contrasts_and_samples)
 
     CUSTOM_TABULARTOGSEACHIP(
-        ch_preinput_for_gsea.features.unique(),
-        ch_preinput_for_gsea.features_cols.unique()
+        ch_preinput_for_gsea.features.first(),
+        ch_preinput_for_gsea.features_cols.first()
     )
 
     ch_input_for_gsea = CUSTOM_TABULARTOGSEAGCT.out.gct
         .join(CUSTOM_TABULARTOGSEACLS.out.cls)
-        .combine( ch_gene_sets_without_meta )
+        .combine( ch_gene_sets.map{meta,gmt -> gmt}.collect() )
 
     GSEA_GSEA(
         ch_input_for_gsea,
         ch_input_for_gsea.map{ tuple(it[0].reference, it[0].target) },
-        CUSTOM_TABULARTOGSEACHIP.out.chip.map{meta, chip -> chip}.first()
+        CUSTOM_TABULARTOGSEACHIP.out.chip.first()
     )
 
     // ----------------------------------------------------
@@ -140,7 +116,7 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
 
     PROPR_GREA(
         ch_input.filter{ it[0].method == 'grea' },
-        ch_gene_sets
+        ch_gene_sets.collect()
     )
 
     emit:

@@ -33,11 +33,11 @@ nextflow_workflow {
                 ])
 
                 input[0] = ch_input
-                input[1] = [[], []]
+                input[1] = Channel.of([[], []])
                 input[2] = ch_background
-                input[3] = [[], [], [], []]
-                input[4] = [[], []]
-                input[5] = [[], [], [], []]
+                input[3] = Channel.of([[], [], [], []])
+                input[4] = Channel.of([[], []])
+                input[5] = Channel.of([[], [], [], []])
                 """
             }
         }
@@ -112,11 +112,11 @@ nextflow_workflow {
                     }
 
                 input[0] = ch_input
-                input[1] = [[], []]
-                input[2] = [[], []]
-                input[3] = [[], [], [], []]
-                input[4] = [[], []]
-                input[5] = [[], [], [], []]
+                input[1] = Channel.of([[], []])
+                input[2] = Channel.of([[], []])
+                input[3] = Channel.of([[], [], [], []])
+                input[4] = Channel.of([[], []])
+                input[5] = Channel.of([[], [], [], []])
                 """
             }
         }
@@ -221,7 +221,7 @@ nextflow_workflow {
 
                 input[0] = ch_input
                 input[1] = ch_gene_sets
-                input[2] = [[], []]
+                input[2] = Channel.of([[], []])
                 input[3] = ch_contrasts
                 input[4] = ch_samplesheet
                 input[5] = ch_featuresheet
@@ -302,10 +302,10 @@ nextflow_workflow {
 
                 input[0] = ch_input
                 input[1] = ch_gene_sets
-                input[2] = [[], []]
-                input[3] = [[], [], [], []]
-                input[4] = [[], []]
-                input[5] = [[], [], [], []]
+                input[2] = Channel.of([[], []])
+                input[3] = Channel.of([[], [], [], []])
+                input[4] = Channel.of([[], []])
+                input[5] = Channel.of([[], [], [], []])
                 """
             }
         }
@@ -441,7 +441,7 @@ nextflow_workflow {
 
                 input[0] = ch_input
                 input[1] = ch_gene_sets
-                input[2] = [[], []]
+                input[2] = Channel.of([[], []])
                 input[3] = ch_contrasts
                 input[4] = ch_samplesheet
                 input[5] = ch_featuresheet
