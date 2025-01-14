@@ -196,8 +196,8 @@ nextflow_workflow {
                 // define input channels
                 ch_input = ABUNDANCE_DIFFERENTIAL_FILTER.out.normalised_matrix
                     .map { meta, matrix ->
-                        def meta_new = [id:'test', method_de: meta['method']]
-                        [meta_new, matrix, 'gsea']
+                        meta['method_de'] = meta['method']
+                        [meta, matrix, 'gsea']
                     }
                 ch_gene_sets = Channel.of([
                     [ id:'test' ],

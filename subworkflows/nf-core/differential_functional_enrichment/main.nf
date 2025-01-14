@@ -71,14 +71,10 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     // In the case of GSEA, it needs additional files coming from other channels that other methods don't use
     // here we define the input channel for the GSEA section
 
-    ch_input.filter{ it[0].method == 'gsea'}.view()
-    ch_contrasts.view()
-
     def criteria = multiMapCriteria { meta_input, input, meta_exp, samplesheet, featuresheet, features_id, features_symbol, meta_contrasts, variable, reference, target ->
         def analysis_method = meta_input.method
         def meta_contrasts_new = meta_contrasts + [ 'variable': variable, 'reference': reference, 'target': target ]  // make sure variable, reference, target are in the meta
-        def meta_input_new = meta_input + meta_exp
-        def meta_all = mergeMaps(meta_contrasts_new, meta_input_new) + [ 'method': analysis_method ]
+        def meta_all = mergeMaps(meta_contrasts_new, meta_input) + [ 'method': analysis_method ]
         input:
             [ meta_all, input ]
         contrasts_and_samples:
