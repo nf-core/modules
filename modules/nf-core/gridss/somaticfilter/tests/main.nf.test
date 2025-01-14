@@ -26,9 +26,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
-                    path(process.out.high_conf_sv[0][1]).vcf.variantsMD5,
-                    path(process.out.all_sv.get(0).get(1)).vcf.variantsMD5
+                    process.out
+                    //path(process.out.high_conf_sv[0][1]).vcf.variantsMD5,
+                    //path(process.out.all_sv.get(0).get(1)).vcf.variantsMD5
                     ).match() }
             )
         }
