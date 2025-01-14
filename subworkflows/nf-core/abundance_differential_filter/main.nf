@@ -61,8 +61,8 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // depending on the contrast setting etc, these modules may subset matrices,
     // hence not returning the full normalized matrix as NORM modules would do.
     LIMMA_NORM(
-        inputs.contrasts_for_norm.filter{it[0].method == 'limma'}.first(),
-        inputs.samples_and_matrix.filter{it[0].method == 'limma'}
+        inputs.contrasts_for_norm.filter{it[0].method == 'limma'}.unique(),
+        inputs.samples_and_matrix.filter{it[0].method == 'limma'}.unique()
     )
 
     LIMMA_DIFFERENTIAL(
@@ -79,8 +79,8 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // depending on the contrast setting etc, these modules may subset matrices,
     // hence not returning the full normalized matrix as NORM modules would do.
     DESEQ2_NORM(
-        inputs.contrasts_for_norm.filter{it[0].method == 'deseq2'}.first(),
-        inputs.samples_and_matrix.filter{it[0].method == 'deseq2'},
+        inputs.contrasts_for_norm.filter{it[0].method == 'deseq2'}.unique(),
+        inputs.samples_and_matrix.filter{it[0].method == 'deseq2'}.unique(),
         ch_control_features.first(),
         ch_transcript_lengths.first()
     )
@@ -98,7 +98,6 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
 
     // NOTE that this method don't rely on normalization, hence it does
     // not produce a normalized matrix.
-
     PROPR_PROPD(
         inputs.contrasts.filter{it[0].method == 'propd'},
         inputs.samples_and_matrix.filter { it[0].method == 'propd' }
@@ -121,6 +120,8 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     ch_versions = DESEQ2_DIFFERENTIAL.out.versions
         .mix(LIMMA_DIFFERENTIAL.out.versions)
         .mix(PROPR_PROPD.out.versions)
+
+    ch_normalised_matrix.view()
 
     // ----------------------------------------------------
     // Filter DE results
