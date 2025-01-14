@@ -4,8 +4,8 @@ process ARRIBA_DOWNLOAD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ce/ce4125adda399137c39e919b7b49f06ce1c92cde9d248ced981d91f71b31b2a9/data' :
-        'community.wave.seqera.io/library/pip_wget:3a848e5c8c6b364e' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3b/3b54fa9135194c72a18d00db6b399c03248103f87e43ca75e4b50d61179994b3/data' :
+        'community.wave.seqera.io/library/wget:1.21.4--8b0fcde81c17be5e' }"
     input:
     val(genome)
 
