@@ -52,49 +52,42 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         .combine(ch_contrasts)
         .multiMap(criteria)
 
-    // We only need a normalised matrix from one contrast. The reason we don't
-    // simply use the first output from DIFFERENTIAL modules is that depending
-    // on the contrast setting etc, these modules may subset matrices, hence
-    // not returning the full normalized matrix as NORM modules would do.
-    norm_inputs = ch_input
-        .combine(ch_samplesheet)
-        .combine(ch_contrasts.first()) // Just taking the first contrast
-        .multiMap(criteria)
-
     // ----------------------------------------------------
     // Run Limma
     // ----------------------------------------------------
+
+    // NOTE that we only need a normalised matrix from one contrast. The reason
+    // we don't simply use the first output from DIFFERENTIAL modules is that
+    // depending on the contrast setting etc, these modules may subset matrices,
+    // hence not returning the full normalized matrix as NORM modules would do.
+    LIMMA_NORM(
+        inputs.contrasts_for_norm.filter{it[0].method == 'limma'}.unique(),
+        inputs.samples_and_matrix.filter{it[0].method == 'limma'}.unique()
+    )
 
     LIMMA_DIFFERENTIAL(
         inputs.contrasts.filter{it[0].method == 'limma'},
         inputs.samples_and_matrix.filter { it[0].method == 'limma' }
     )
 
-    // NOTE that we run LIMMA_NORM just once to generate a normalised matrix.
-    // As explained above, this is done to avoid obtaining a subset matrix
-    // from LIMMA_DIFFERENTIAL. Hence contrasts info is not used.
-    LIMMA_NORM(
-        norm_inputs.contrasts_for_norm.filter{it[0].method == 'limma'}.first(),
-        norm_inputs.samples_and_matrix.filter{it[0].method == 'limma'}
-    )
-
     // ----------------------------------------------------
     // Run DESeq2
     // ----------------------------------------------------
 
-    DESEQ2_DIFFERENTIAL(
-        inputs.contrasts.filter{it[0].method == 'deseq2'},
-        inputs.samples_and_matrix.filter{it[0].method == 'deseq2'},
+    // NOTE that we only need a normalised matrix from one contrast. The reason
+    // we don't simply use the first output from DIFFERENTIAL modules is that
+    // depending on the contrast setting etc, these modules may subset matrices,
+    // hence not returning the full normalized matrix as NORM modules would do.
+    DESEQ2_NORM(
+        inputs.contrasts_for_norm.filter{it[0].method == 'deseq2'}.unique(),
+        inputs.samples_and_matrix.filter{it[0].method == 'deseq2'}.unique(),
         ch_control_features.first(),
         ch_transcript_lengths.first()
     )
 
-    // NOTE that we run DESEQ2_NORM just once to generate a normalised matrix.
-    // As explained above, this is done to avoid obtaining a subset matrix
-    // from DESEQ2_DIFFERENTIAL. Hence contrasts info is not used.
-    DESEQ2_NORM(
-        norm_inputs.contrasts_for_norm.filter{it[0].method == 'deseq2'}.first(),
-        norm_inputs.samples_and_matrix.filter{it[0].method == 'deseq2'},
+    DESEQ2_DIFFERENTIAL(
+        inputs.contrasts.filter{it[0].method == 'deseq2'},
+        inputs.samples_and_matrix.filter{it[0].method == 'deseq2'},
         ch_control_features.first(),
         ch_transcript_lengths.first()
     )
@@ -105,7 +98,6 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
 
     // NOTE that this method don't rely on normalization, hence it does
     // not produce a normalized matrix.
-
     PROPR_PROPD(
         inputs.contrasts.filter{it[0].method == 'propd'},
         inputs.samples_and_matrix.filter { it[0].method == 'propd' }

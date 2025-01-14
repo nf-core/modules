@@ -34,6 +34,8 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
 
     main:
 
+    ch_versions = Channel.empty()
+
     // Add method information into meta map of ch_input
     // This information is used later to determine which method to run for each input
 
@@ -90,8 +92,6 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
         .combine(ch_contrasts)
         .multiMap(criteria)
 
-    ch_versions = Channel.empty()
-
     // ----------------------------------------------------
     // Perform enrichment analysis with gprofiler2
     // ----------------------------------------------------
@@ -106,9 +106,12 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     // Perform enrichment analysis with GSEA
     // ----------------------------------------------------
 
-    // NOTE that GCT input can be more than 1, if they come from different tools (eg. limma, deseq2)
+    // NOTE that GCT input can be more than 1, if they come from different tools (eg. limma, deseq2).
     // CLS input can be as many as combinations of input x contrasts
     // Whereas features can be only one file.
+
+    // TODO here it is simply running gct and cls the same number of times and join based on meta.
+    // In the future we should avoid repeated computation of gct on the same input files.
 
     // TODO: update CUSTOM_TABULARTOGSEACLS for value channel input per new
     // guidlines (rather than meta usage employed here)
