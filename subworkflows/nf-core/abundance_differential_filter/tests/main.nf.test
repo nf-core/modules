@@ -74,7 +74,7 @@ nextflow_workflow {
 
     test("limma - basic - microarray") {
         config './limma_basic_microarray.config'
-        tag "limma"
+        tag "limma_basic_microarray"
 
         setup {
             run("UNTAR") {
@@ -330,7 +330,7 @@ nextflow_workflow {
         }
     }
 
-    test("deseq2 and limma - mouse - basic") {
+    test("deseq2 and limmavoom - mouse - basic") {
         config './deseq2_limmavoom_basic.config'
         tag "deseq2+limmavoom"
 

@@ -93,7 +93,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // As explained above, this is done to avoid obtaining a subset matrix
     // from DESEQ2_DIFFERENTIAL. Hence contrasts info is not used.
     DESEQ2_NORM(
-        norm_inputs.contrasts.filter{it[0].method == 'deseq2'}.first(),
+        norm_inputs.contrasts_for_norm.filter{it[0].method == 'deseq2'}.first(),
         norm_inputs.samples_and_matrix.filter{it[0].method == 'deseq2'},
         ch_control_features.first(),
         ch_transcript_lengths.first()
@@ -118,9 +118,6 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     ch_results = DESEQ2_DIFFERENTIAL.out.results
         .mix(LIMMA_DIFFERENTIAL.out.results)
         .mix(PROPR_PROPD.out.results_genewise)
-
-    // in the case of normalized matrix, the meta is converted back,
-    // since it has not used the contrast information
 
     ch_normalised_matrix = DESEQ2_NORM.out.normalised_counts
         .mix(LIMMA_NORM.out.normalised_counts)
