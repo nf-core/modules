@@ -48,7 +48,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                    path(process.out.vcf.get(0).get(1)).vcf.summary, // no SVs exist in the test data
                     process.out.versions
                     ).match() }
             )
@@ -79,7 +79,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                    path(process.out.vcf.get(0).get(1)).vcf.summary, // no SVs exist in the test data
                     process.out.versions
                     ).match() }
             )
@@ -110,7 +110,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                    path(process.out.vcf.get(0).get(1)).vcf.summary, // no SVs exist in the test data
                     process.out.versions
                     ).match() }
             )

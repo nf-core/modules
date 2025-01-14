@@ -3,55 +3,20 @@ nextflow_process {
     name "Test Process GRIDSS_SOMATICFILTER"
     script "../main.nf"
     process "GRIDSS_SOMATICFILTER"
-    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "gridss"
     tag "gridss/somaticfilter"
-    tag "gridss/gridss"
-    tag "bwa/index"
-
-    setup {
-
-        run("BWA_INDEX") {
-            script "../../../bwa/index/main.nf"
-            process {
-                """
-                input[0] = [ [id:'fasta'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                    ]
-                """
-            }
-        }
-
-        run("GRIDSS_GRIDSS") {
-            script "../../../gridss/gridss/main.nf"
-            process {
-                """
-                input[0] = [ [ id:'test' ], // meta map
-                        file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true), //inputs
-                        [] //assembly
-                        ]
-                input[1] = [ [id:'fasta'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                        ]
-                input[2] = [ [id:'fasta_fai'],
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
-                ]
-                input[3] = BWA_INDEX.out.index
-                """
-            }
-        }
-
-    }
 
     test("human - vcf") {
 
         when {
             process {
                 """
-                input[0] = GRIDSS_GRIDSS.out.vcf
+                input[0] = [ [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/vcf/gridss.somatic.vcf', checkIfExists: true)
+                        ]
                 input[1] = [ [], [] ] // pondir
                 """
             }
@@ -62,13 +27,9 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.versions,
-                    // testing with nft-vcf leads to Error:
-                    // Unable to parse header with error: Invalid VCFSimpleHeaderLine: key=contig name=null
-                    // path(process.out.high_conf_sv[0][1]).vcf.variantsMD5,
-                    // path(process.out.all_sv.get(0).get(1)).vcf.variantsMD5
-                        ).match() },
-                { assert path(process.out.high_conf_sv.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2") },
-                { assert path(process.out.all_sv.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2") }
+                    path(process.out.high_conf_sv[0][1]).vcf.variantsMD5,
+                    path(process.out.all_sv.get(0).get(1)).vcf.variantsMD5
+                    ).match() }
             )
         }
 
@@ -81,7 +42,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = GRIDSS_GRIDSS.out.vcf
+                input[0] = [ [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/vcf/gridss.somatic.vcf', checkIfExists: true)
+                        ]
                 input[1] = [ [], [] ] // pondir
                 """
             }
