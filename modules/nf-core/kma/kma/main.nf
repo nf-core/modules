@@ -59,12 +59,12 @@ process KMA {
         touch ${prefix}.res \\
         touch ${prefix}.fsa \\
         touch ${prefix}.aln \\
-        touch ${prefix}.frag.gz
+        echo "" | gzip > ${prefix}.frag.gz
         """
 
     if ( mat_format )
         """
-        touch ${prefix}.mat.gz
+        echo "" | gzip > ${prefix}.mat.gz
         """
 
     """
