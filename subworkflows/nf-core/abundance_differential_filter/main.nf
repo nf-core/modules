@@ -34,7 +34,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         samples_and_matrix:
             meta_map = meta_input + [ 'method': analysis_method ]
             [meta_map, samplesheet, abundance]
-        contrasts:
+        contrasts_for_diff:
             meta_map = mergeMaps(meta_contrasts, meta_input) + [ 'method': analysis_method ]
             [ meta_map, variable, reference, target ]
         filter_params:
@@ -78,8 +78,8 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     )
 
     LIMMA_DIFFERENTIAL(
-        inputs.contrasts.filter{it[0].method == 'limma'},
-        inputs.samples_and_matrix.filter { it[0].method == 'limma' }
+        inputs.contrasts_for_diff.filter{ it[0].method == 'limma' },
+        inputs.samples_and_matrix.filter{ it[0].method == 'limma' }
     )
 
     // ----------------------------------------------------
@@ -101,7 +101,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     )
 
     DESEQ2_DIFFERENTIAL(
-        inputs.contrasts.filter{it[0].method == 'deseq2'},
+        inputs.contrasts_for_diff.filter{it[0].method == 'deseq2'},
         inputs.samples_and_matrix.filter{it[0].method == 'deseq2'},
         ch_control_features.first(),
         ch_transcript_lengths.first()
@@ -115,7 +115,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // not produce a normalized matrix.
 
     PROPR_PROPD(
-        inputs.contrasts.filter{it[0].method == 'propd'},
+        inputs.contrasts_for_diff.filter{it[0].method == 'propd'},
         inputs.samples_and_matrix.filter { it[0].method == 'propd' }
     )
 
