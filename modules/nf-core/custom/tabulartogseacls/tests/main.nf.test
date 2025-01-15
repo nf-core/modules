@@ -1,0 +1,63 @@
+nextflow_process {
+
+    name "Test Process CUSTOM_TABULARTOGSEACLS"
+    script "../main.nf"
+    process "CUSTOM_TABULARTOGSEACLS"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "custom_tabulartogseacls"
+    tag "custom"
+    tag "custom/tabulartogseacls"
+
+    test("test_custom_tabulartogseacls") {
+
+        when {
+            params {
+                module_args = [ "separator": "\t", "variable": "treatment" ]
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'treatment_mCherry_hND6_sample_number', variable:'treatment', reference:'mCherry', target:'hND6', blocking:'sample_number'],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.sample_metadata.tsv", checkIfExists: true)
+                ]
+                """
+
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test_custom_tabulartogseacls - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = { [ "separator": "\t", "variable": "treatment" ] }
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'treatment_mCherry_hND6_sample_number', variable:'treatment', reference:'mCherry', target:'hND6', blocking:'sample_number'],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.sample_metadata.tsv", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

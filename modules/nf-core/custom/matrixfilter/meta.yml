@@ -62,7 +62,7 @@ output:
           description: |
             Groovy Map containing information on experiment.
             e.g. [ id:'test' ]
-      - R_sessionInfo.log:
+      - "*R_sessionInfo.log":
           type: file
           description: Log file containing R session information
           pattern: "*.log"
