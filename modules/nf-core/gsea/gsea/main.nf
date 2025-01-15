@@ -10,7 +10,7 @@ process GSEA_GSEA {
     input:
     tuple val(meta), path(gct), path(cls), path(gene_sets)
     tuple val(reference), val(target)
-    path(chip) // Optional identifier mapping file
+    tuple val(meta2), path(chip) // Optional identifier mapping file
 
     output:
     tuple val(meta), path("*.rpt")                             , emit: rpt

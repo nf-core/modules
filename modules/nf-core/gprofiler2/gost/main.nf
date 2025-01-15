@@ -9,8 +9,8 @@ process GPROFILER2_GOST {
 
     input:
     tuple val(meta), path(de_file)
-    path(gmt_file)
-    path(background_file)
+    tuple val(meta2), path(gmt_file)
+    tuple val(meta3), path(background_file)
 
     output:
     tuple val(meta), path("*.gprofiler2.all_enriched_pathways.tsv")     , emit: all_enrich
