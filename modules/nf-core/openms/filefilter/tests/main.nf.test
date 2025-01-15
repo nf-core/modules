@@ -1,0 +1,59 @@
+nextflow_process {
+
+    name "Test Process OPENMS_FILEFILTER"
+    script "../main.nf"
+    process "OPENMS_FILEFILTER"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "openms"
+    tag "openms/filefilter"
+
+    test("filter - mzml") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'proteomics/msspectra/peakpicker_tutorial_1.mzML', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("filter - mzml - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'proteomics/msspectra/peakpicker_tutorial_1.mzML', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
