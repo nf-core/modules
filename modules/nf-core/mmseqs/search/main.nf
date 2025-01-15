@@ -3,17 +3,17 @@ process MMSEQS_SEARCH {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/mmseqs2:14.7e284--pl5321h6a68c12_2'
-        : 'biocontainers/mmseqs2:14.7e284--pl5321h6a68c12_2'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/mmseqs2:15.6f452--pl5321h6a68c12_0':
+        'biocontainers/mmseqs2:15.6f452--pl5321h6a68c12_0' }"
 
     input:
     tuple val(meta), path(db_query)
     tuple val(meta2), path(db_target)
 
     output:
-    tuple val(meta), path("${prefix}"), emit: db_search
-    path "versions.yml", emit: versions
+    tuple val(meta), path("${prefix}/"), emit: db_search
+    path "versions.yml"               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,7 +40,7 @@ process MMSEQS_SEARCH {
         \$DB_TARGET_PATH_NAME \\
         ${prefix}/${prefix} \\
         tmp1 \\
-        ${args} \\
+        $args \\
         --threads ${task.cpus}
 
     cat <<-END_VERSIONS > versions.yml
@@ -52,9 +52,7 @@ process MMSEQS_SEARCH {
     stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    if ("${db_query}" == "${prefix}" || "${db_target}" == "${prefix}") {
-        error("Input and output names of databases are the same, set prefix in module configuration to disambiguate!")
-    }
+    if ("$db_query" == "${prefix}" || "$db_target" == "${prefix}"  ) error "Input and output names of databases are the same, set prefix in module configuration to disambiguate!"
     """
     mkdir -p ${prefix}
     touch ${prefix}/${prefix}.{0..9}
@@ -63,7 +61,7 @@ process MMSEQS_SEARCH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mmseqs: \$(mmseqs | grep 'Version' | sed 's/MMseqs2 Version: /')
+        mmseqs: \$(mmseqs | grep 'Version' | sed 's/MMseqs2 Version: //')
     END_VERSIONS
     """
 }
