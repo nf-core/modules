@@ -39,8 +39,19 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [['id':'treatment_mCherry_hND6_', 'variable':'treatment', 'reference':'mCherry', 'target':'hND6', 'blocking':''], file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/treatment_mCherry_hND6_.deseq2.results.tsv", checkIfExists:true)]
-                input[1] = [['id':'SRP254919'], file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.sample_metadata.tsv", checkIfExists:true), file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/Mus_musculus.anno.tsv", checkIfExists:true), [file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv", checkIfExists:true), file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/all.normalised_counts.tsv", checkIfExists:true), file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/all.vst.tsv", checkIfExists:true)]]
+                input[0] = [
+                    ['id':'treatment_mCherry_hND6_', 'variable':'treatment', 'reference':'mCherry', 'target':'hND6', 'blocking':''],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/treatment_mCherry_hND6_.deseq2.results.tsv", checkIfExists:true)
+                ]
+                input[1] = [['id':'SRP254919'],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.sample_metadata.tsv", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/Mus_musculus.anno.tsv", checkIfExists:true),
+                    [
+                        file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/all.normalised_counts.tsv", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/all.vst.tsv", checkIfExists:true)
+                    ]
+                ]
                 """
             }
         }
@@ -84,8 +95,19 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [['id':'treatment_mCherry_hND6_', 'variable':'treatment', 'reference':'mCherry', 'target':'hND6', 'blocking':''], file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/treatment_mCherry_hND6_.deseq2.results.tsv", checkIfExists:true)]
-                input[1] = [['id':'SRP254919'], file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.sample_metadata.tsv", checkIfExists:true), file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/Mus_musculus.anno.tsv", checkIfExists:true), [file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv", checkIfExists:true), file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/all.normalised_counts.tsv", checkIfExists:true), file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/all.vst.tsv", checkIfExists:true)]]
+                input[0] = [
+                    ['id':'treatment_mCherry_hND6_', 'variable':'treatment', 'reference':'mCherry', 'target':'hND6', 'blocking':''],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/treatment_mCherry_hND6_.deseq2.results.tsv", checkIfExists:true)
+                ]
+                input[1] = [['id':'SRP254919'],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.sample_metadata.tsv", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/Mus_musculus.anno.tsv", checkIfExists:true),
+                    [
+                        file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/all.normalised_counts.tsv", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/all.vst.tsv", checkIfExists:true)
+                    ]
+                ]
                 """
             }
         }

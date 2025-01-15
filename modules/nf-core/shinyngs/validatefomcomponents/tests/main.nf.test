@@ -21,9 +21,16 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [['id':'SRP254919'], file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv", checkIfExists:true), file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv", checkIfExists:true)]
-                input[1] = [['id':'SRP254919'], file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/Mus_musculus.anno.tsv", checkIfExists:true)]
-                input[2] = [['id':'SRP254919'], file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.contrasts.csv", checkIfExists:true)]
+                input[0] = [['id':'SRP254919'],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv", checkIfExists:true)
+                ]
+                input[1] = [['id':'SRP254919'],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/Mus_musculus.anno.tsv", checkIfExists:true)
+                ]
+                input[2] = [['id':'SRP254919'],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.contrasts.csv", checkIfExists:true)
+                ]
                 """
             }
         }
@@ -49,9 +56,16 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [['id':'SRP254919'], file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv", checkIfExists:true), file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv", checkIfExists:true)]
-                input[1] = [['id':'SRP254919'], file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/Mus_musculus.anno.tsv", checkIfExists:true)]
-                input[2] = [['id':'SRP254919'], file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.contrasts.csv", checkIfExists:true)]
+                input[0] = [['id':'SRP254919'],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv", checkIfExists:true)
+                ]
+                input[1] = [['id':'SRP254919'],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/Mus_musculus.anno.tsv", checkIfExists:true)
+                ]
+                input[2] = [['id':'SRP254919'],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.contrasts.csv", checkIfExists:true)
+                ]
                 """
             }
         }
