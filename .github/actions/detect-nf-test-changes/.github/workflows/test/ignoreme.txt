@@ -1,0 +1,13 @@
+# Includes a bunch of import or setup statements to try and trigger a false positive
+include { SUBWORKFLOW_A } from './subworkflows/a/main.nf'
+include { SUBWORKFLOW_A } from '../subworkflows/a/main.nf'
+process "PROCESS_A"
+setup {
+    run("PROCESS_A") {
+        script "../../a/main.nf"
+        process {
+            """
+            """
+        }
+    }
+}
