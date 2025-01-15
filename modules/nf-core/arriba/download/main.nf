@@ -4,9 +4,8 @@ process ARRIBA_DOWNLOAD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/arriba:2.4.0--h0033a41_2' :
-        'biocontainers/arriba:2.4.0--h0033a41_2' }"
-
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3b/3b54fa9135194c72a18d00db6b399c03248103f87e43ca75e4b50d61179994b3/data' :
+        'community.wave.seqera.io/library/wget:1.21.4--8b0fcde81c17be5e' }"
     input:
     val(genome)
 
@@ -30,20 +29,20 @@ process ARRIBA_DOWNLOAD {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        arriba_download: \$(arriba -h | grep 'Version:' 2>&1 |  sed 's/Version:\s//')
+        wget: \$(wget --version | head -1 | sed 's/GNU Wget //' | sed -E 's/(.*) built on darwin.*/\1/')
     END_VERSIONS
     """
 
     stub:
     """
     touch blacklist_hg38_GRCh38_v2.4.0.tsv.gz
-    touch protein_domains_hg38_GRCh38_v2.4.0.gff3
     touch cytobands_hg38_GRCh38_v2.4.0.tsv
+    touch protein_domains_hg38_GRCh38_v2.4.0.gff3
     touch known_fusions_hg38_GRCh38_v2.4.0.tsv.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        arriba_download: \$(arriba -h | grep 'Version:' 2>&1 |  sed 's/Version:\s//')
+        wget: \$(wget --version | head -1 | sed 's/GNU Wget //' | sed -E 's/(.*) built on darwin.*/\1/')
     END_VERSIONS
     """
 }

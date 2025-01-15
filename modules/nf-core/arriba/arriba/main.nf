@@ -4,16 +4,17 @@ process ARRIBA_ARRIBA {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/arriba:2.4.0--h0033a41_2' :
-        'biocontainers/arriba:2.4.0--h0033a41_2' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fb/fbbd3ccedb1663939f2ca075a071e75b0d1c60f19a4cd46dd9ffe371f133105a/data' :
+        'community.wave.seqera.io/library/arriba:2.4.0--9680480f3735ac7f' }"
+
 
     input:
     tuple val(meta),  path(bam)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(gtf)
     path(blacklist)
-    path(known_fusions)
     path(cytobands)
+    path(known_fusions)
     path(protein_domains)
 
     output:
@@ -27,10 +28,10 @@ process ARRIBA_ARRIBA {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def blacklist = blacklist ? "-b $blacklist" : "-f blacklist"
-    def known_fusions = known_fusions ? "-k $known_fusions" : ""
-    def cytobands = cytobands ? "-d $cytobands" : ""
-    def protein_domains = protein_domains ? "-p $protein_domains" : ""
+    def arg_blacklist = blacklist ? "-b $blacklist" : "-f blacklist"
+    def arg_cytobands = cytobands ? "-d $cytobands" : ""
+    def arg_known_fusions = known_fusions ? "-k $known_fusions" : ""
+    def arg_protein_domains = protein_domains ? "-p $protein_domains" : ""
 
     """
     arriba \\
@@ -39,10 +40,10 @@ process ARRIBA_ARRIBA {
         -g $gtf \\
         -o ${prefix}.fusions.tsv \\
         -O ${prefix}.fusions.discarded.tsv \\
-        $blacklist \\
-        $known_fusions \\
-        $cytobands \\
-        $protein_domains \\
+        $arg_blacklist \\
+        $arg_cytobands \\
+        $arg_known_fusions \\
+        $arg_protein_domains \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
