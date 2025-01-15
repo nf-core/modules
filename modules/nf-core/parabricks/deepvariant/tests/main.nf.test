@@ -33,7 +33,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    path(process.out.vcf[0][1]).vcf.getVariantsAsStrings(100),
                     process.out.versions,
                     path(process.out.versions[0]).yaml
                     ).match() }
@@ -65,7 +65,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    path(process.out.vcf[0][1]).vcf.getVariantsAsStrings(100),
                     process.out.versions,
                     path(process.out.versions[0]).yaml
                     ).match() }
@@ -102,7 +102,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    path(process.out.gvcf[0][1]).vcf.variantsMD5,
+                    path(process.out.gvcf[0][1]).vcf.getVariantsAsStrings(100),
                     process.out.versions,
                     path(process.out.versions[0]).yaml
                     ).match()
@@ -140,7 +140,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    path(process.out.gvcf[0][1]).vcf.variantsMD5,
+                    path(process.out.gvcf[0][1]).vcf.getVariantsAsStrings(100),
                     process.out.versions,
                     path(process.out.versions[0]).yaml
                     ).match()
