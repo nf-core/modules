@@ -10,11 +10,13 @@ nextflow_workflow {
     tag "custom/filterdifferentialtable"
     tag "limma/differential"
     tag "deseq2/differential"
+    tag "propr/propd"
     tag "affy/justrma"
     tag "untar"
 
     test("deseq2 - mouse - basic") {
         config './deseq2_basic.config'
+        tag "deseq2"
 
         when {
             workflow {
@@ -44,7 +46,7 @@ nextflow_workflow {
                     file(testData.expression_test_data_dir + testData.abundance_file),
                     'deseq2',  // analysis method
                     1.5,       // FC threshold
-                    0.05       // padj threshold
+                    0.05       // stat (adjusted p-value) threshold
                 ])
 
                 input[0] = ch_input
@@ -72,6 +74,7 @@ nextflow_workflow {
 
     test("limma - basic - microarray") {
         config './limma_basic_microarray.config'
+        tag "limma"
 
         setup {
             run("UNTAR") {
@@ -127,7 +130,7 @@ nextflow_workflow {
                     file,
                     'limma',
                     1.5,       // FC threshold
-                    0.05       // padj threshold
+                    0.05       // stat (adjusted p-value) threshold
                 ]}
 
                 input[0] = ch_input
@@ -154,6 +157,7 @@ nextflow_workflow {
 
     test("limma - voom") {
         config './limma_voom.config'
+        tag "limma_voom"
 
         when {
             workflow {
@@ -183,7 +187,7 @@ nextflow_workflow {
                     file(testData.expression_test_data_dir + testData.abundance_file),
                     'limma',
                     1.5,       // FC threshold
-                    0.05       // padj threshold
+                    0.05       // stat (adjusted p-value) threshold
                 ])
 
                 input[0] = ch_input
@@ -210,6 +214,7 @@ nextflow_workflow {
 
     test("deseq2 - with transcript lengths") {
         config './deseq2_basic.config'
+        tag "deseq2_with_lengths"
 
         when {
             workflow {
@@ -243,7 +248,7 @@ nextflow_workflow {
                     file(testData.expression_test_data_dir + testData.abundance_file),
                     'deseq2',
                     1.5,       // FC threshold
-                    0.05       // padj threshold
+                    0.05       // stat (adjusted p-value) threshold
                 ])
 
                 input[0] = ch_input
@@ -269,8 +274,65 @@ nextflow_workflow {
         }
     }
 
+    test("propd - mouse - basic") {
+        tag 'propd'
+        config './propd_basic.config'
+
+        when {
+            workflow {
+                """
+                // Define test data
+                def testData = [
+                    expression_test_data_dir: params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/',
+                    contrasts_file: 'SRP254919.contrasts.csv',
+                    abundance_file: 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv',
+                    samplesheet_file: 'SRP254919.samplesheet.csv'
+                ]
+
+                // Define inputs
+                ch_samplesheet = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.samplesheet_file)
+                ])
+                ch_transcript_lengths = Channel.of([ [], [] ])
+                ch_control_features = Channel.of([ [], [] ])
+                ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_input = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.abundance_file),
+                    'propd',  // analysis method
+                    1.5,      // FC threshold
+                    100       // stat (weighted connectivity) threshold
+                ])
+
+                input[0] = ch_input
+                input[1] = ch_samplesheet
+                input[2] = ch_transcript_lengths
+                input[3] = ch_control_features
+                input[4] = ch_contrasts
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.results_genewise,
+                    workflow.out.results_genewise_filtered,
+                    workflow.out.adjacency,
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+
     test("deseq2 and limma - mouse - basic") {
         config './deseq2_limmavoom_basic.config'
+        tag "deseq2+limmavoom"
 
         when {
             workflow {
@@ -301,14 +363,14 @@ nextflow_workflow {
                         file(testData.expression_test_data_dir + testData.abundance_file),
                         'limma',
                         1.5,       // FC threshold
-                        0.05       // padj threshold
+                        0.05       // stat (adjusted p-value) threshold
                     ],
                     [
                         [ id:'test' ],
                         file(testData.expression_test_data_dir + testData.abundance_file),
                         'deseq2',
                         1.5,       // FC threshold
-                        0.05       // padj threshold
+                        0.05       // stat (adjusted p-value) threshold
                     ]
                 )
 
@@ -335,8 +397,84 @@ nextflow_workflow {
         }
     }
 
+    test("deseq2 + limma-voom + propd - mouse - basic") {
+        tag "deseq2+limmavoom+propd"
+        config './deseq2_limmavoom_propd_basic.config'
+
+        when {
+            workflow {
+                """
+                // Define test data
+                def testData = [
+                    expression_test_data_dir: params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/',
+                    contrasts_file: 'SRP254919.contrasts.csv',
+                    abundance_file: 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv',
+                    samplesheet_file: 'SRP254919.samplesheet.csv'
+                ]
+
+                // Define inputs
+                ch_samplesheet = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.samplesheet_file)
+                ])
+                ch_transcript_lengths = Channel.value([ [], [] ])
+                ch_control_features = Channel.value([ [], [] ])
+                ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_input = Channel.of(
+                    [
+                        [ id:'test' ],
+                        file(testData.expression_test_data_dir + testData.abundance_file),
+                        'limma',
+                        1.5,       // FC threshold
+                        0.05       // stat (adjusted p-value) threshold
+                    ],
+                    [
+                        [ id:'test' ],
+                        file(testData.expression_test_data_dir + testData.abundance_file),
+                        'deseq2',
+                        1.5,       // FC threshold
+                        0.05       // stat (adjusted p-value) threshold
+                    ],
+                    [
+                        [ id:'test' ],
+                        file(testData.expression_test_data_dir + testData.abundance_file),
+                        'propd',
+                        1.5,       // FC threshold
+                        100        // stat (weighted connectivity) threshold
+                    ]
+                )
+
+                input[0] = ch_input
+                input[1] = ch_samplesheet
+                input[2] = ch_transcript_lengths
+                input[3] = ch_control_features
+                input[4] = ch_contrasts
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.results_genewise,
+                    workflow.out.results_genewise_filtered,
+                    workflow.out.adjacency,
+                    workflow.out.normalised_matrix,
+                    workflow.out.variance_stabilised_matrix,
+                    workflow.out.model,
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+
     test("stub") {
         config './deseq2_basic.config'
+        tag "stub"
 
         options "-stub"
 
@@ -368,7 +506,7 @@ nextflow_workflow {
                     file(testData.expression_test_data_dir + testData.abundance_file),
                     'deseq2',
                     1.5,       // FC threshold
-                    0.05       // padj threshold
+                    0.05       // stat (adjusted p-value) threshold
                 ])
 
                 input[0] = ch_input

@@ -83,7 +83,7 @@ jobs:
                 .replace('modules/nf-core/', '')
                 .split('/')
                 .slice(0, 2)
-                .filter(x => !x.startsWith('main.nf') && x !== 'tests' && x !== 'meta.yml' && x !== 'environment.yml')
+                .filter(x => !x.startsWith('main.nf') && x !== 'tests' && x !== 'templates' && x !== 'meta.yml' && x !== 'environment.yml' && !x.endsWith('.md'))
                 .join('/'))
               )
             ];
@@ -120,7 +120,7 @@ jobs:
       - name: Install pip
         run: python -m pip install --upgrade pip
 
-      - uses: actions/setup-java@8df1039502a15bceb9433410b1a100fbe190c53b # v4
+      - uses: actions/setup-java@7a6d8a8234af8eb26422e24e3006232cccaa061b # v4
         with:
           distribution: "temurin"
           java-version: "17"
