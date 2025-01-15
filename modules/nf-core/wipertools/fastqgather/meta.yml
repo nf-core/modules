@@ -7,8 +7,7 @@ keywords:
   - union
 tools:
   - "fastqgather":
-      description:
-        "A tool of the wipertools suite that merges FASTQ chunks produced\
+      description: "A tool of the wipertools suite that merges FASTQ chunks produced\
         \ by wipertools_fastqscatter."
       homepage: "https://github.com/mazzalab/fastqwiper"
       documentation: "https://github.com/mazzalab/fastqwiper"
@@ -24,7 +23,7 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test' ]
-    - fastq_in:
+    - fastq:
         type: file
         description: List of FASTQ chunk files to be merged
         pattern: "*.{fastq,fastq.gz}"
@@ -32,7 +31,7 @@ input:
           - edam: "http://edamontology.org/format_1930"
           - edam: "http://edamontology.org/format_3989"
 output:
-  - fastq_out:
+  - gathered_fastq:
       - meta:
           type: map
           description: |
