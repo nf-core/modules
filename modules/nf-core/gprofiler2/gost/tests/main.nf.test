@@ -51,7 +51,10 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'], file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/Condition_genotype_WT_KO.deseq2.results_filtered.tsv", checkIfExists: true)]
+                input[0] = [
+                    ['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/Condition_genotype_WT_KO.deseq2.results_filtered.tsv", checkIfExists: true)
+                ]
                 input[1] = file(params.modules_testdata_base_path + "genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt", checkIfExists: true)
                 input[2] = file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/study.filtered.tsv", checkIfExists: true)
                 """
@@ -87,7 +90,10 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'], file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/Condition_genotype_WT_KO.deseq2.results_filtered.tsv", checkIfExists: true)]
+                input[0] = [
+                    ['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/Condition_genotype_WT_KO.deseq2.results_filtered.tsv", checkIfExists: true)
+                ]
                 input[1] = file(params.modules_testdata_base_path + "genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt", checkIfExists: true)
                 input[2] = file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/study.filtered.tsv", checkIfExists: true)
                 """
