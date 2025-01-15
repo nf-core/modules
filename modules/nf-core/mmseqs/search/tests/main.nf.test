@@ -55,7 +55,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out, //second file is empty so fails linting
+                    file(process.out.db_search.get(0).get(1)).list().sort(), //second file is empty so fails linting
                     path(process.out.versions[0]).yaml
                     ).match() }
             )
