@@ -19,7 +19,7 @@ process CATPACK_DOWNLOAD {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     CAT_pack \\
         download \\
@@ -35,7 +35,7 @@ process CATPACK_DOWNLOAD {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}/
 
