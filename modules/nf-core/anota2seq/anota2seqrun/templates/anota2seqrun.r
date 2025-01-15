@@ -49,10 +49,10 @@ parse_args <- function(x){
 
 read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.names = TRUE){
 
-    ext <- tolower(tail(strsplit(basename(file), split = "\\\\.")[[1]], 1))
+    ext <- tolower(tail(strsplit(basename(file), split = "\\.")[[1]], 1))
 
     if (ext == "tsv" || ext == "txt") {
-        separator <- "\\t"
+        separator <- "\t"
     } else if (ext == "csv") {
         separator <- ","
     } else {
@@ -90,7 +90,7 @@ round_dataframe_columns <- function(df, columns = NULL, digits = 8){
     # Convert columns back to numeric
 
     for (c in columns) {
-        df[[c]][grep("^ *NA\$", df[[c]])] <- NA
+        df[[c]][grep("^ *NA\\$", df[[c]])] <- NA
         df[[c]] <- as.numeric(df[[c]])
     }
     df
@@ -141,8 +141,14 @@ opt <- list(
 opt_types <- lapply(opt, class)
 
 # Apply parameter overrides
+# Assuming task.ext.args is passed as a command line argument
+args <- commandArgs(trailingOnly = TRUE)
+task_ext_args <- paste(args, collapse = " ")
 
-args_opt <- parse_args('$task.ext.args')
+# Parse the arguments
+args_opt <- parse_args(task_ext_args)
+#args_opt <- parse_args('$task.ext.args')
+print(args_opt)
 for ( ao in names(args_opt)){
     if (! ao %in% names(opt)){
         stop(paste("Invalid option:", ao))
@@ -193,32 +199,32 @@ library(anota2seq)
 
 count.table <-
     read_delim_flexible(
-        file = opt\$count_file,
+        file = opt$count_file,
         header = TRUE,
-        row.names = opt\$gene_id_col,
+        row.names = opt$gene_id_col,
         check.names = FALSE
     )
-sample.sheet <- read_delim_flexible(file = opt\$sample_file)
+sample.sheet <- read_delim_flexible(file = opt$sample_file)
 
 # Deal with spaces that may be in sample column
-opt\$sample_id_col <- make.names(opt\$sample_id_col)
+opt$sample_id_col <- make.names(opt$sample_id_col)
 
-if (! opt\$sample_id_col %in% colnames(sample.sheet)){
-    stop(paste0("Specified sample ID column '", opt\$sample_id_col, "' is not in the sample sheet"))
+if (! opt$sample_id_col %in% colnames(sample.sheet)){
+    stop(paste0("Specified sample ID column '", opt$sample_id_col, "' is not in the sample sheet"))
 }
 
 # Sample sheet can have duplicate rows for multiple sequencing runs, so uniqify
 # before assigning row names
 
-sample.sheet <- sample.sheet[! duplicated(sample.sheet[[opt\$sample_id_col]]), ]
-rownames(sample.sheet) <- sample.sheet[[opt\$sample_id_col]]
+sample.sheet <- sample.sheet[! duplicated(sample.sheet[[opt$sample_id_col]]), ]
+rownames(sample.sheet) <- sample.sheet[[opt$sample_id_col]]
 
 # Check that all samples specified in the input sheet are present in the counts
 # table. Assuming they are, subset and sort the count table to match the sample
 # sheet
 
 missing_samples <-
-    sample.sheet[!rownames(sample.sheet) %in% colnames(count.table), opt\$sample_id_col]
+    sample.sheet[!rownames(sample.sheet) %in% colnames(count.table), opt$sample_id_col]
 
 if (length(missing_samples) > 0) {
     stop(paste(
@@ -239,7 +245,7 @@ if (length(missing_samples) > 0) {
 ################################################
 ################################################
 
-sample_treatment_col <- make.names(opt\$sample_treatment_col)
+sample_treatment_col <- make.names(opt$sample_treatment_col)
 
 if (!sample_treatment_col %in% colnames(sample.sheet)) {
     stop(
@@ -249,7 +255,7 @@ if (!sample_treatment_col %in% colnames(sample.sheet)) {
         '\" not in sample sheet'
         )
     )
-} else if (any(!c(opt\$reflevel, opt\$treatlevel) %in% sample.sheet[[sample_treatment_col]])) {
+} else if (any(!c(opt$reflevel, opt$treatlevel) %in% sample.sheet[[sample_treatment_col]])) {
     stop(
         paste(
         'Please choose reference and treatment levels that are present in the',
@@ -261,9 +267,9 @@ if (!sample_treatment_col %in% colnames(sample.sheet)) {
 
 # Optionally, subset to only the samples involved in the contrast
 
-if (opt\$subset_to_contrast_samples){
-    sample_selector <- sample.sheet[[sample_treatment_col]] %in% c(opt\$target_level, opt\$reference_level)
-    selected_samples <- sample.sheet[sample_selector, opt\$sample_id_col]
+if (opt$subset_to_contrast_samples){
+    sample_selector <- sample.sheet[[sample_treatment_col]] %in% c(opt$target_level, opt$reference_level)
+    selected_samples <- sample.sheet[sample_selector, opt$sample_id_col]
     count.table <- count.table[, selected_samples]
     sample.sheet <- sample.sheet[selected_samples, ]
 }
@@ -271,135 +277,192 @@ if (opt\$subset_to_contrast_samples){
 # Optionally, remove samples with specified values in a given field (probably
 # don't use this as well as the above)
 
-if ((is_valid_string(opt\$exclude_samples_col)) && (is_valid_string(opt\$exclude_samples_values))){
-    exclude_values = unlist(strsplit(opt\$exclude_samples_values, split = ';'))
+if ((is_valid_string(opt$exclude_samples_col)) && (is_valid_string(opt$exclude_samples_values))){
+    exclude_values = unlist(strsplit(opt$exclude_samples_values, split = ';'))
 
-    if (! opt\$exclude_samples_col %in% colnames(sample.sheet)){
-        stop(paste(opt\$exclude_samples_col, ' specified to subset samples is not a valid sample sheet column'))
+    if (! opt$exclude_samples_col %in% colnames(sample.sheet)){
+        stop(paste(opt$exclude_samples_col, ' specified to subset samples is not a valid sample sheet column'))
     }
 
-    print(paste0('Excluding samples with values of ', opt\$exclude_samples_values, ' in ', opt\$exclude_samples_col))
-    sample_selector <- ! sample.sheet[[opt\$exclude_samples_col]] %in% exclude_values
+    print(paste0('Excluding samples with values of ', opt$exclude_samples_values, ' in ', opt$exclude_samples_col))
+    sample_selector <- ! sample.sheet[[opt$exclude_samples_col]] %in% exclude_values
 
-    selected_samples <- sample.sheet[sample_selector, opt\$sample_id_col]
+    selected_samples <- sample.sheet[sample_selector, opt$sample_id_col]
     count.table <- count.table[, selected_samples]
     sample.sheet <- sample.sheet[selected_samples, ]
 }
 
 ################################################
 ################################################
-## Run anota2seqRun()                         ##
+## CHECK CONDITIONS AND REPLICATES            ##
 ################################################
 ################################################
 
-# Separate matrix into riboseq and rnaseq data
+# Count the number of conditions and replicates
+condition_counts <- table(sample.sheet[[sample_treatment_col]][sample.sheet$type=="riboseq"]) # only count riboseq samples?
+num_conditions <- length(condition_counts)
+min_replicates <- min(condition_counts)
 
-riboseq_samples <- sample.sheet[[opt\$sample_id_col]][sample.sheet[['type']] == 'riboseq']
-rnaseq_samples <- sample.sheet[[opt\$sample_id_col]][sample.sheet[['type']] == 'rnaseq']
 
-if (! is.null(opt\$samples_pairing_col)){
-    riboseq_samples <- riboseq_samples[order(sample.sheet[riboseq_samples, opt\$samples_pairing_col])]
-    rnaseq_samples <- rnaseq_samples[order(sample.sheet[rnaseq_samples, opt\$samples_pairing_col])]
+# Check conditions and decide on analysis
+if (num_conditions >= 2 && min_replicates >= 3) {
+    # Proceed with analysis as normal
+    cat("Proceeding with full anota2seq analysis.\n")
+    proceed_with_analysis <- TRUE
+    multiple_contrasts <- FALSE # indicate whether to create a contrast matrix with multiple contrasts
+} else if (num_conditions == 2 && min_replicates < 3) {
+    # Skip analysis with warning
+    cat("WARNING: anota2seq needs at least three replicates within each condition when there are only two conditions. Skipping anota2seq analysis.\n")
+    proceed_with_analysis <- FALSE
+} else if (num_conditions > 2 && min_replicates < 3) {
+    # Run with onlyGroup = TRUE
+    cat("WARNING: Less than three replicates detected in at least one condition. Running anota2seq with onlyGroup = TRUE.\n")
+    opt$onlyGroup <- TRUE
+    proceed_with_analysis <- TRUE
+    multiple_contrasts <- TRUE
+} else {
+    # Unexpected case
+    cat("ERROR: Unexpected combination of conditions and replicates. Please check your input data.\n")
+    quit(status = 1)
 }
 
-riboseq_data <- count.table[,riboseq_samples]
-rnaseq_data <- count.table[,rnaseq_samples]
+# Proceed with analysis only if conditions are met
+if (proceed_with_analysis) {
+    
+    ################################################
+    ################################################
+    ## Run anota2seqRun()                         ##
+    ################################################
+    ################################################
 
-# Make the anota2seqDataSet
+    # Separate matrix into riboseq and rnaseq data
 
-anota2seqDataSetFromMatrix_args <- list(
-    dataP = riboseq_data,
-    dataT = rnaseq_data,
-    phenoVec = sample.sheet[rnaseq_samples, opt\$sample_treatment_col],
-    dataType = opt\$dataType,
-    normalize = opt\$normalize,
-    transformation = opt\$transformation,
-    filterZeroGenes = opt\$filterZeroGenes,
-    varCutOff = opt\$varCutOff
-)
+    riboseq_samples <- sample.sheet[[opt$sample_id_col]][sample.sheet[['type']] == 'riboseq']
+    rnaseq_samples <- sample.sheet[[opt$sample_id_col]][sample.sheet[['type']] == 'rnaseq']
 
-if (! is.null(opt\$samples_batch_col)){
-    anota2seqDataSetFromMatrix_args\$batchVec <- samples[rnaseq_samples, opt\$samples_batch_col]
-}
+    if (! is.null(opt$samples_pairing_col)){
+        riboseq_samples <- riboseq_samples[order(sample.sheet[riboseq_samples, opt$samples_pairing_col])]
+        rnaseq_samples <- rnaseq_samples[order(sample.sheet[rnaseq_samples, opt$samples_pairing_col])]
+    }
 
-ads <- do.call(anota2seqDataSetFromMatrix, anota2seqDataSetFromMatrix_args)
+    riboseq_data <- count.table[,riboseq_samples]
+    rnaseq_data <- count.table[,rnaseq_samples]
 
-# Run anota2seqRun
+    # Make the anota2seqDataSet
 
-contrast_matrix <- matrix(
-    nrow=2,
-    ncol=1,
-    dimnames=list(c(opt\$reference_level, opt\$target_level),c()),
-    c(-1,1)
-)
+    anota2seqDataSetFromMatrix_args <- list(
+        dataP = riboseq_data,
+        dataT = rnaseq_data,
+        phenoVec = sample.sheet[rnaseq_samples, opt$sample_treatment_col],
+        dataType = opt$dataType,
+        normalize = opt$normalize,
+        transformation = opt$transformation,
+        filterZeroGenes = opt$filterZeroGenes,
+        varCutOff = opt$varCutOff
+    )
 
-ads <- anota2seqRun(
-    ads,
-    contrasts = contrast_matrix,
-    performQC = opt\$performQC,
-    onlyGroup = opt\$onlyGroup,
-    performROT = opt\$performROT,
-    generateSingleGenePlots = opt\$generateSingleGenePlots,
-    analyzeBuffering = opt\$analyzeBuffering,
-    analyzemRNA = opt\$analyzemRNA,
-    useRVM = opt\$useRVM,
-    correctionMethod = opt\$correctionMethod,
-    useProgBar = FALSE
-)
+    if (! is.null(opt$samples_batch_col)){
+        anota2seqDataSetFromMatrix_args$batchVec <- samples[rnaseq_samples, opt$samples_batch_col]
+    }
 
-################################################
-################################################
-## Generate outputs                           ##
-################################################
-################################################
+    ads <- do.call(anota2seqDataSetFromMatrix, anota2seqDataSetFromMatrix_args)
 
-contrast.name <-
-    paste(opt\$target_level, opt\$reference_level, sep = "_vs_")
-cat("Saving results for ", contrast.name, " ...\n", sep = "")
+    # Run anota2seqRun
+    if(multiple_contrasts == TRUE){
+        # Create a contrast matrix with multiple contrasts
+        contrast_matrix <- matrix(
+            nrow=num_conditions,
+            ncol=num_conditions - 1,
+            dimnames=list(names(condition_counts),c()),
+            0
+        )
+        # set the reference level to -1
+        contrast_matrix[which(rownames(contrast_matrix)==opt$reference_level),] <- -1
+        # set each target level to 1
+        contrast_matrix[which(rownames(contrast_matrix)==opt$target_level),1] <- 1 # ganrantueed target_vs_reference to be the first contrast
+        other_conditions <- names(condition_counts)[!names(condition_counts) %in% c(opt$reference_level, opt$target_level)]
+        for (i in 1:length(other_conditions)){
+            contrast_matrix[which(rownames(contrast_matrix)==other_conditions[i]),i+1] <- 1
+        }
+    } else {
+        # Create a contrast matrix with a single contrast
+        contrast_matrix <- matrix(
+            nrow=2,
+            ncol=1,
+            dimnames=list(c(opt$reference_level, opt$target_level),c()),
+            c(-1,1)
+        )
+    }
 
-for (analysis in c("translated mRNA", "total mRNA", "translation", "buffering", "mRNA abundance")){
-
-    output <- anota2seqGetOutput(
+    ads <- anota2seqRun(
         ads,
-        analysis = analysis,
-        output = opt\$output,
-        getRVM = opt\$getRVM,
-        selContrast = 1
+        contrasts = contrast_matrix,
+        performQC = opt$performQC,
+        onlyGroup = opt$onlyGroup,
+        performROT = opt$performROT,
+        generateSingleGenePlots = opt$generateSingleGenePlots,
+        analyzeBuffering = opt$analyzeBuffering,
+        analyzemRNA = opt$analyzemRNA,
+        useRVM = opt$useRVM,
+        correctionMethod = opt$correctionMethod,
+        useProgBar = FALSE
     )
 
-    write.table(
-        output,
-        file = paste(opt\$output_prefix, sub(' ', '_', analysis), 'anota2seq.results.tsv', sep = '.'),
-        col.names = TRUE,
-        row.names = FALSE,
-        sep = '\t',
-        quote = FALSE
+    ################################################
+    ################################################
+    ## Generate outputs                           ##
+    ################################################
+    ################################################
+
+    contrast.name <-
+        paste(opt$target_level, opt$reference_level, sep = "_vs_")
+    cat("Saving results for ", contrast.name, " ...\n", sep = "")
+
+    for (analysis in c("translated mRNA", "total mRNA", "translation", "buffering", "mRNA abundance")){
+
+        output <- anota2seqGetOutput(
+            ads,
+            analysis = analysis,
+            output = opt$output,
+            getRVM = opt$getRVM,
+            selContrast = 1
+        )
+
+        write.table(
+            output,
+            file = paste(opt$output_prefix, sub(' ', '_', analysis), 'anota2seq.results.tsv', sep = '.'),
+            col.names = TRUE,
+            row.names = FALSE,
+            sep = '\t',
+            quote = FALSE
+        )
+    }
+
+    # Fold change plot
+
+    png(
+        file = paste(opt$output_prefix, 'fold_change.png', sep = '.'),
+        width = 720,
+        height = 720
     )
+    anota2seqPlotFC(
+        ads,
+        visualizeRegModes = "all",
+        selContrast = 1,
+        contrastName = contrast.name,
+        plotToFile = FALSE
+    )
+    dev.off()
+
+    # R object for other processes to use
+
+    saveRDS(ads, file = paste(opt$output_prefix, 'Anota2seqDataSet.rds', sep = '.'))
+
+    # Rename files files output by anota2seqPerformQC()
+
+    sapply(list.files(pattern = "^ANOTA2SEQ_"), function(f) file.rename(f, sub("^ANOTA2SEQ_", paste0(opt$output_prefix, '.'), f)))
+
 }
-
-# Fold change plot
-
-png(
-    file = paste(opt\$output_prefix, 'fold_change.png', sep = '.'),
-    width = 720,
-    height = 720
-)
-anota2seqPlotFC(
-    ads,
-    visualizeRegModes = "all",
-    selContrast = 1,
-    contrastName = contrast.name,
-    plotToFile = FALSE
-)
-dev.off()
-
-# R object for other processes to use
-
-saveRDS(ads, file = paste(opt\$output_prefix, 'Anota2seqDataSet.rds', sep = '.'))
-
-# Rename files files output by anota2seqPerformQC()
-
-sapply(list.files(pattern = "^ANOTA2SEQ_"), function(f) file.rename(f, sub("^ANOTA2SEQ_", paste0(opt\$output_prefix, '.'), f)))
 
 ################################################
 ################################################
@@ -407,7 +470,23 @@ sapply(list.files(pattern = "^ANOTA2SEQ_"), function(f) file.rename(f, sub("^ANO
 ################################################
 ################################################
 
-sink(paste(opt\$output_prefix, "R_sessionInfo.log", sep = '.'))
+sink(paste(opt$output_prefix, "R_sessionInfo.log", sep = '.'))
+# print warning messages dependent on conditions and replicates
+if (num_conditions >= 2 && min_replicates >= 3) {
+    # Proceed with analysis as normal
+    print("Given at least three replicates, full anota2seq analysis was performed.")
+} else if (num_conditions == 2 && min_replicates < 3) {
+    # Skip analysis with warning
+    print("WARNING: anota2seq needs at least three replicates within each condition when there are only two conditions. Skipping anota2seq analysis.")
+} else if (num_conditions > 2 && min_replicates < 3) {
+    # Run with onlyGroup = TRUE, this is suboptimal but worked
+    print("WARNING: Less than three replicates detected in at least one condition. Running anota2seq with onlyGroup = TRUE.")
+    print("In general, it is highly recommended by the authors of anota2seq to have at least three replicates in each condition.")
+    print("However, the analysis can still be performed if you have less than three replicates but more than two conditions.")
+    print("In this case, it is possible to suppress the omnibus interaction analysis and only perform the omnibus treatment analysis by setting onlyGroup = TRUE.")
+    print("Please be aware that this analysis can reduce statistical power and the results should be interpreted with caution.")
+    print("For any related questions, please refer to the anota2seq paper (https://doi.org/10.1093/nar/gkz223).")
+}
 print(sessionInfo())
 sink()
 
