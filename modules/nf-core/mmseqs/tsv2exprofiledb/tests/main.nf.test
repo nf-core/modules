@@ -1,0 +1,67 @@
+nextflow_process {
+
+    name "Test Process MMSEQS_TSV2EXPROFILEDB"
+    script "../main.nf"
+    process "MMSEQS_TSV2EXPROFILEDB"
+    config './nextflow.config'
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mmseqs"
+    tag "mmseqs/tsv2exprofiledb"
+    tag "untar"
+
+    setup {
+        run("UNTAR") {
+            script "../../../untar"
+            process {
+                """
+                input[0] = [ [:],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/mmseqs.tar.gz', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - db") {
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.map { it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - db - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.map { it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
