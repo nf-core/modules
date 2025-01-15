@@ -9,10 +9,8 @@ process CUSTOM_FILTERDIFFERENTIALTABLE {
 
     input:
     tuple val(meta), path(input_file)
-    val(logFC_column)
-    val(FC_threshold)
-    val(padj_column)
-    val(padj_threshold)
+    tuple val(logfc_column), val(fc_threshold), val(fc_cardinality)
+    tuple val(stat_column), val(stat_threshold), val(stat_cardinality)
 
     output:
     tuple val(meta), path("*_filtered.tsv"), emit: filtered
@@ -41,14 +39,27 @@ process CUSTOM_FILTERDIFFERENTIALTABLE {
     table = pd.read_csv("${input_file}", sep=sep)
 
     # Calculate log2 fold change threshold
-    logFC_threshold = log2(float("${FC_threshold}"))
+    logfc_threshold = log2(float("${fc_threshold}"))
+
+    # define evaluation
+    def evaluate_condition(x, threshold, cardinality):
+        if cardinality == ">=":
+            return x >= threshold
+        elif cardinality == "<=":
+            return x <= threshold
+        elif cardinality == ">":
+            return x > threshold
+        elif cardinality == "<":
+            return x < threshold
+        else:
+            raise ValueError(f"Invalid cardinality: {cardinality}")
 
     # Apply filters
     mask = (
-        table["${logFC_column}"].notna() &
-        table["${padj_column}"].notna() &
-        (table["${logFC_column}"].abs() >= logFC_threshold) &
-        (table["${padj_column}"] <= float("${padj_threshold}"))
+        table["${logfc_column}"].notna() &
+        table["${stat_column}"].notna() &
+        table["${logfc_column}"].abs().apply(lambda x: evaluate_condition(x, logfc_threshold, "${fc_cardinality}")) &
+        table["${stat_column}"].apply(lambda x: evaluate_condition(x, float("${stat_threshold}"), "${stat_cardinality}"))
     )
     filtered_table = table[mask]
 
