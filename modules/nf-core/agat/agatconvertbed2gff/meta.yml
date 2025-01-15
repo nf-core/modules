@@ -1,0 +1,49 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: agat_agatconvertbed2gff
+description: |
+  Takes a bed12 file and converts to a GFF3 file
+keywords:
+  - genome
+  - bed
+  - gff
+  - conversion
+tools:
+  - agat:
+      description: "AGAT is a toolkit for manipulation and getting information from
+        GFF/GTF files"
+      homepage: "https://github.com/NBISweden/AGAT"
+      documentation: "https://agat.readthedocs.io/"
+      tool_dev_url: "https://github.com/NBISweden/AGAT"
+      doi: "10.5281/zenodo.3552717"
+      licence: ["GPL v3"]
+      identifier: biotools:AGAT
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bed:
+        type: file
+        description: Input bed12 file
+        pattern: "*.bed"
+output:
+  - gff:
+      - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.gff":
+          type: file
+          description: Output GFF3 file
+          pattern: "*.{gff}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@GallVp"
+maintainers:
+  - "@GallVp"
