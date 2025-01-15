@@ -1,13 +1,13 @@
 nextflow_process {
 
-    name "Test Process AGAT_AGATCONVERTBED2GFF"
+    name "Test Process AGAT_CONVERTBED2GFF"
     script "../main.nf"
-    process "AGAT_AGATCONVERTBED2GFF"
+    process "AGAT_CONVERTBED2GFF"
 
     tag "modules"
     tag "modules_nfcore"
     tag "agat"
-    tag "agat/agatconvertbed2gff"
+    tag "agat/convertbed2gff"
 
     test("sarscov2 - bed12") {
 

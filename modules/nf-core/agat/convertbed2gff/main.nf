@@ -1,4 +1,4 @@
-process AGAT_AGATCONVERTBED2GFF {
+process AGAT_CONVERTBED2GFF {
     tag "$meta.id"
     label 'process_single'
 
