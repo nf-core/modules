@@ -28,7 +28,7 @@ input:
         description: Python pickle file containing coverage maps
         pattern: "*.pkl"
         ontologies:
-            - edam: "http://edamontology.org/format_4002"
+          - edam: "http://edamontology.org/format_4002"
 
 output:
   - ptr:
@@ -42,7 +42,7 @@ output:
           description: CSV table with rows as reference genomes, columns samples and entries as log2 PTR
           pattern: "*.csv"
           ontologies:
-              - edam: "http://edamontology.org/format_3752"
+            - edam: "http://edamontology.org/format_3752"
 
   - versions:
       - "versions.yml":

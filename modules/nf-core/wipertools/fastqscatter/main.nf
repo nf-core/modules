@@ -12,7 +12,7 @@ process WIPERTOOLS_FASTQSCATTER {
     val(num_splits)
 
     output:
-    tuple val(meta), path("${out_folder}/*") , emit: chunks
+    tuple val(meta), path("${out_folder}/*") , emit: fastq_chunks
     path "versions.yml"                      , emit: versions
 
     when:
@@ -24,6 +24,9 @@ process WIPERTOOLS_FASTQSCATTER {
     def args_list   = args.tokenize()
     out_folder      = (args_list.contains('--out_folder') ? args_list[args_list.indexOf('--out_folder')+1] :
                         (args_list.contains('-o') ? args_list[args_list.indexOf('-o')+1] : 'chunks'))
+    if(!args.contains('-o') && !args.contains('--out_folder')) {
+        args += " -o ${out_folder}"
+    }
     """
     wipertools \\
         fastqscatter \\
@@ -44,6 +47,9 @@ process WIPERTOOLS_FASTQSCATTER {
     def args_list = args.tokenize()
     out_folder    = (args_list.contains('--out_folder') ? args_list[args_list.indexOf('--out_folder')+1] :
                         (args_list.contains('-o') ? args_list[args_list.indexOf('-o')+1] : 'chunks'))
+    if(!args.contains('-o') && !args.contains('--out_folder')) {
+        args += " -o ${out_folder}"
+    }
     """
     mkdir ${out_folder}
     for i in {1..${num_splits}}
