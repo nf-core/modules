@@ -1,0 +1,54 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "taxonkit_lineage"
+description: Convert taxonids to taxon lineages
+keywords:
+  - taxonomy
+  - taxids
+  - taxon name
+  - conversion
+tools:
+  - "taxonkit":
+      description: "A Cross-platform and Efficient NCBI Taxonomy Toolkit"
+      homepage: "https://bioinf.shenwei.me/taxonkit/"
+      documentation: "https://bioinf.shenwei.me/taxonkit/usage/#name2taxid"
+      tool_dev_url: "https://github.com/shenwei356/taxonkit"
+      doi: "10.1016/j.jgg.2021.03.006"
+      licence: ["MIT"]
+      identifier: biotools:taxonkit
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - taxid:
+        type: string
+        description: Taxon id to look up (provide either this or taxidfile, not both)
+    - taxidfile:
+        type: file
+        description: File with taxon ids to look up, each on their own line (provide
+          either this or name, not both; the file can contain other information, see the tool's docs)
+  - - taxdb:
+        type: file
+        description: Taxonomy database unpacked from ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz
+output:
+  - tsv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.tsv":
+          type: file
+          description: TSV file with added taxon lineages
+          pattern: "*.tsv"
+  - versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"
