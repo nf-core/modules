@@ -4,8 +4,8 @@ process SHINYNGS_STATICDIFFERENTIAL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-shinyngs:2.0.0--r43hdfd78af_0' :
-        'biocontainers/r-shinyngs:2.0.0--r43hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2b/2b43cb5832431a3d581f3abdca0f5d45fa814b8a4b2c4e49f12296d2e07629fd/data' :
+        'community.wave.seqera.io/library/r-shinyngs:2.0.0--feeacac14bcf4bb0' }"
 
     input:
     tuple val(meta), path(differential_result)                              // Differential info: contrast and differential stats
@@ -30,6 +30,20 @@ process SHINYNGS_STATICDIFFERENTIAL {
         --feature_metadata "$feature_meta" \\
         --outdir "$prefix" \\
         $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        r-base: \$(echo \$(R --version 2>&1) | sed 's/^.*R version //; s/ .*\$//')
+        r-shinyngs: \$(Rscript -e "library(shinyngs); cat(as.character(packageVersion('shinyngs')))")
+    END_VERSIONS
+    """
+    
+    stub:
+    def prefix = task.ext.prefix ?: meta.id
+    """
+    mkdir -p $prefix/png && mkdir $prefix/html
+    touch $prefix/png/volcano.png
+    touch $prefix/html/volcano.html
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
