@@ -1,14 +1,14 @@
-process GRIDSS_GRIDSSGENERATEPONBEDPE {
+process GRIDSS_GENERATEPONBEDPE {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::gridss=2.13.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gridss:2.13.2--h270b39a_0':
         'biocontainers/gridss:2.13.2--h270b39a_0' }"
 
     input:
-    tuple val(meta),  path(vcf), path(bedpe), path(bed)
+    tuple val(meta) , path(vcf), path(bedpe), path(bed)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(bwa_index)
@@ -24,18 +24,17 @@ process GRIDSS_GRIDSSGENERATEPONBEDPE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def vcf = vcf ? "INPUT=${vcf}" : ""
-    def bedpe = bedpe ? "INPUT_BEDPE=${bedpe}" : ""
-    def bed   = bed ? "INPUT_BED=${bed}" : ""
+    def vcf_command = vcf ? "INPUT=${vcf}" : ""
+    def bedpe_command = bedpe ? "INPUT_BEDPE=${bedpe}" : ""
+    def bed_command   = bed ? "INPUT_BED=${bed}" : ""
     def bwa = bwa_index ? "cp -s ${bwa_index}/* ." : ""
     def ref = bwa_index ? "REFERENCE_SEQUENCE=${fasta}" : ""
-
     """
     ${bwa}
     GeneratePonBedpe \\
-        ${vcf} \\
-        ${bedpe} \\
-        ${bed} \\
+        ${vcf_command} \\
+        ${bedpe_command} \\
+        ${bed_command} \\
         ${ref} \\
         OUTPUT_BEDPE=${prefix}.bedpe \\
         OUTPUT_BED=${prefix}.bed \\
@@ -47,6 +46,7 @@ process GRIDSS_GRIDSSGENERATEPONBEDPE {
         GeneratePonBedpe: \$(echo \$(GeneratePonBedpe --version 2>&1))
     END_VERSIONS
     """
+
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
