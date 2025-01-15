@@ -49,7 +49,7 @@ process MMSEQS_EASYSEARCH {
     def args2 = task.ext.args2 ?: "*.dbtype"
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    ${prefix}.tsv
+    touch ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
