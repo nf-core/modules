@@ -4,8 +4,8 @@ process MMSEQS_SEARCH {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mmseqs2:14.7e284--pl5321h6a68c12_2':
-        'biocontainers/mmseqs2:14.7e284--pl5321h6a68c12_2' }"
+        'https://depot.galaxyproject.org/singularity/mmseqs2:15.6f452--pl5321h6a68c12_0':
+        'biocontainers/mmseqs2:15.6f452--pl5321h6a68c12_0' }"
 
     input:
     tuple val(meta), path(db_query)
@@ -39,9 +39,7 @@ process MMSEQS_SEARCH {
         ${prefix}/${prefix} \\
         tmp1 \\
         $args \\
-        --threads ${task.cpus} \\
-        --compressed 1
-
+        --threads ${task.cpus}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
