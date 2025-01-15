@@ -18,7 +18,10 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [id:'treatment_mCherry_hND6_sample_number', variable:'treatment', reference:'mCherry', target:'hND6', blocking:'sample_number'], file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.sample_metadata.tsv",checkIfExists: true) ]
+                input[0] = [
+                    [id:'treatment_mCherry_hND6_sample_number', variable:'treatment', reference:'mCherry', target:'hND6', blocking:'sample_number'],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.sample_metadata.tsv", checkIfExists: true)
+                ]
                 """
 
             }
@@ -42,7 +45,10 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [id:'treatment_mCherry_hND6_sample_number', variable:'treatment', reference:'mCherry', target:'hND6', blocking:'sample_number'], file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.sample_metadata.tsv",checkIfExists: true) ]
+                input[0] = [
+                    [id:'treatment_mCherry_hND6_sample_number', variable:'treatment', reference:'mCherry', target:'hND6', blocking:'sample_number'],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.sample_metadata.tsv", checkIfExists: true)
+                ]
                 """
             }
         }

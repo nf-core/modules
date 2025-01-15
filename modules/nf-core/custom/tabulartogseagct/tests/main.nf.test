@@ -14,7 +14,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [id:'treatment_mCherry_hND6_', variable:'treatment', reference:'mCherry', target:'hND6', blocking:''], file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/all.normalised_counts.tsv",checkIfExists: true) ]
+                input[0] = [
+                    [id:'treatment_mCherry_hND6_', variable:'treatment', reference:'mCherry', target:'hND6', blocking:''],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/all.normalised_counts.tsv",checkIfExists: true)
+                ]
                 """
 
             }
@@ -35,7 +38,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [id:'treatment_mCherry_hND6_', variable:'treatment', reference:'mCherry', target:'hND6', blocking:''], file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/all.normalised_counts.tsv",checkIfExists: true) ]
+                input[0] = [
+                    [id:'treatment_mCherry_hND6_', variable:'treatment', reference:'mCherry', target:'hND6', blocking:''],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/all.normalised_counts.tsv",checkIfExists: true)
+                ]
                 """
             }
         }
