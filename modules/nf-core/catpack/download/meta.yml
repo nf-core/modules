@@ -1,0 +1,51 @@
+---
+name: "catpack_download"
+description: Downloads the required files for either Nr or GTDB for building into a CAT database
+keywords:
+  - taxonomic classification
+  - classification
+  - database
+  - download
+tools:
+  - "catpack":
+      description: "CAT/BAT: tool for taxonomic classification of contigs and metagenome-assembled genomes (MAGs)"
+      homepage: "https://github.com/MGXlab/CAT_pack"
+      documentation: "https://github.com/MGXlab/CAT_pack"
+      tool_dev_url: "https://github.com/MGXlab/CAT_pack"
+      doi: "10.1186/s13059-019-1817-x"
+      licence: ["MIT"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - db:
+        type: string
+        description: Which database to download
+        pattern: "nr|gtdb"
+
+output:
+  - rawdb:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "${prefix}/":
+          type: directory
+          description: Directory containing all the required NCBI Nr or GTDB database files required for building into a CAT database
+          pattern: "${db}/"
+          ontologies:
+            - edam: "http://edamontology.org/data_1049"
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@jfy133"
+maintainers:
+  - "@jfy133"
