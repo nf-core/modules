@@ -29,36 +29,33 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.map { it[1] }
+                input[0] = UNTAR.out.untar.map { meta, untar -> untar }
                 """
             }
         }
 
         then {
+            // Many files are validly empty due to small test data, so just list names, and check a couple of expected files with contents
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        // Many files are validly empty due to small test data, so just list names, and check a couple of expected files with contents
-                        file(process.out.db_exprofile[0]).list().sort(),
-                        file(file(process.out.db_exprofile[0]).list().find { file(it).name == "mmseqs.tsv" }),
-                        // file(process.out.db_exprofile[0].find { file(it).name == "mmseqs_seq" }),
-                        // file(process.out.db_exprofile[0].find { file(it).name == "mmseqs" }),
-                        // file(process.out.db_exprofile[0].find { file(it).name == "mmseqs_seq.index" }),
-                    ).match()
-                }
+                    path(process.out.db_exprofile[0]).list().find { it.getFileName().toString() == "mmseqs.tsv" },
+                    path(process.out.db_exprofile[0]).list().find { it.getFileName().toString() == "mmseqs" },
+                    path(process.out.db_exprofile[0]).list().find { it.getFileName().toString() == "mmseqs_seq.index" },
+                    path(process.out.db_exprofile[0]).list().sort().collect { it.getFileName().toString() },
+                    process.out.versions
+                ).match() }
             )
         }
-
     }
 
     test("sarscov2 - db - stub") {
-
         options "-stub"
 
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.map { it[1] }
+                input[0] = UNTAR.out.untar.map { meta, untar -> untar }
                 """
             }
         }
