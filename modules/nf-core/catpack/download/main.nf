@@ -11,7 +11,7 @@ process CATPACK_DOWNLOAD {
     tuple val(meta), val(db)
 
     output:
-    tuple val(meta), path("${db}/"), emit: rawdb
+    tuple val(meta), path("${prefix}/"), emit: rawdb
     path "versions.yml", emit: versions
 
     when:
