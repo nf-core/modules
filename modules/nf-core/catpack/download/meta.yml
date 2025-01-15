@@ -33,7 +33,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "${db}/":
+      - "${prefix}/":
           type: directory
           description: Directory containing all the required NCBI Nr or GTDB database files required for building into a CAT database
           pattern: "${db}/"
