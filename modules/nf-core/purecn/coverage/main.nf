@@ -26,7 +26,6 @@ process PURECN_COVERAGE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '2.4.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     if (task.stageInMode != 'link') {
@@ -49,12 +48,11 @@ process PURECN_COVERAGE {
     """
 
     stub:
-
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def png = args.contains("--skip-gc-norm") ? "" : "touch ${prefix}.png"
+    def args         = task.ext.args                   ?: ''
+    def prefix       = task.ext.prefix                 ?: "${meta.id}"
+    def png          = args.contains("--skip-gc-norm") ? "" : "touch ${prefix}.png"
     def loess_qc_txt = args.contains("--skip-gc-norm") ? "" : "touch ${prefix}_loess_qc.txt"
-    def loess_txt = args.contains("--skip-gc-norm") ? "" : "touch ${prefix}_loess.txt.gz"
+    def loess_txt    = args.contains("--skip-gc-norm") ? "" : "echo | gzip > ${prefix}_loess.txt.gz"
     def VERSION = '2.4.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     if (task.stageInMode != 'link') {
@@ -62,7 +60,7 @@ process PURECN_COVERAGE {
     }
 
     """
-    touch ${prefix}.txt
+    echo | gzip > ${prefix}.txt.gz
     touch ${prefix}.bed
     ${png}
     ${loess_qc_txt}
