@@ -34,12 +34,15 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         samples_and_matrix:
             meta_map = meta_input + [ 'method': analysis_method ]
             [meta_map, samplesheet, abundance]
-        contrasts:
+        contrasts_for_diff:
             meta_map = mergeMaps(meta_contrasts, meta_input) + [ 'method': analysis_method ]
             [ meta_map, variable, reference, target ]
         filter_params:
             meta_map = mergeMaps(meta_contrasts, meta_input) + [ 'method': analysis_method ]
             [meta_map, [ 'fc_threshold': fc_threshold, 'stat_threshold': stat_threshold ]]
+        contrasts_for_norm:
+            meta_map = meta_input + [ 'method': analysis_method ]
+            [ meta_map, variable, reference, target ]
     }
 
     // For DIFFERENTIAL modules we need to cross the things we're iterating so we
@@ -70,13 +73,13 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // LIMMA_NORM directly. It internally runs normalization + DE analysis.
 
     LIMMA_NORM(
-        norm_inputs.contrasts.filter{it[0].method == 'limma'}.first(),
-        norm_inputs.samples_and_matrix.filter{it[0].method == 'limma'}
+        norm_inputs.contrasts_for_norm.filter{it[0].method == 'limma'}.unique(),
+        norm_inputs.samples_and_matrix.filter{it[0].method == 'limma'}.unique()
     )
 
     LIMMA_DIFFERENTIAL(
-        inputs.contrasts.filter{it[0].method == 'limma'},
-        inputs.samples_and_matrix.filter { it[0].method == 'limma' }
+        inputs.contrasts_for_diff.filter{ it[0].method == 'limma' },
+        inputs.samples_and_matrix.filter{ it[0].method == 'limma' }
     )
 
     // ----------------------------------------------------
@@ -91,14 +94,14 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // DESEQ2_NORM directly. It internally runs normalization + DE analysis.
 
     DESEQ2_NORM(
-        norm_inputs.contrasts.filter{it[0].method == 'deseq2'}.first(),
-        norm_inputs.samples_and_matrix.filter{it[0].method == 'deseq2'},
+        norm_inputs.contrasts_for_norm.filter{it[0].method == 'deseq2'}.unique(),
+        norm_inputs.samples_and_matrix.filter{it[0].method == 'deseq2'}.unique(),
         ch_control_features.first(),
         ch_transcript_lengths.first()
     )
 
     DESEQ2_DIFFERENTIAL(
-        inputs.contrasts.filter{it[0].method == 'deseq2'},
+        inputs.contrasts_for_diff.filter{it[0].method == 'deseq2'},
         inputs.samples_and_matrix.filter{it[0].method == 'deseq2'},
         ch_control_features.first(),
         ch_transcript_lengths.first()
@@ -112,7 +115,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // not produce a normalized matrix.
 
     PROPR_PROPD(
-        inputs.contrasts.filter{it[0].method == 'propd'},
+        inputs.contrasts_for_diff.filter{it[0].method == 'propd'},
         inputs.samples_and_matrix.filter { it[0].method == 'propd' }
     )
 
