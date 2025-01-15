@@ -43,15 +43,15 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'nfcore_testsample', single_end:false ],
-                    [
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        [ id:'nfcore_testsample', single_end:false ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        ]
                     ]
                 input[1] = KMA_INDEX.out.index
                 input[2] = false
                 input[3] = false
-                ]
                 """
             }
         }
