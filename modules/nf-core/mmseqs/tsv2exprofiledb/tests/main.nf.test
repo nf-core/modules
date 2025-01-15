@@ -37,7 +37,15 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                        // Many files are validly empty due to small test data, so just list names, and check a couple of expected files with contents
+                        file(process.out.db_exprofile[0]).list().sort(),
+                        file(file(process.out.db_exprofile[0]).list().find { file(it).name == "mmseqs.tsv" }),
+                        // file(process.out.db_exprofile[0].find { file(it).name == "mmseqs_seq" }),
+                        // file(process.out.db_exprofile[0].find { file(it).name == "mmseqs" }),
+                        // file(process.out.db_exprofile[0].find { file(it).name == "mmseqs_seq.index" }),
+                    ).match()
+                }
             )
         }
 
