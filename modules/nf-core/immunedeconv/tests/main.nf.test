@@ -21,7 +21,12 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(
+                    process.out.deconv_table,
+                    process.out.deconv_plots[0][1].collect{ file(it).name }, //assert unstable file
+                    process.out.versions
+                    ).match()
+                }
             )
         }
     }
@@ -40,7 +45,12 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(
+                    process.out.deconv_table,
+                    process.out.deconv_plots[0][1].collect{ file(it).name }, //assert unstable file
+                    process.out.versions
+                    ).match()
+                }
             )
         }
     }
@@ -59,7 +69,12 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(
+                    process.out.deconv_table,
+                    process.out.deconv_plots[0][1].collect{ file(it).name }, //assert unstable file
+                    process.out.versions
+                    ).match()
+                }
             )
         }
     }
@@ -80,7 +95,12 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(
+                    process.out.deconv_table,
+                    process.out.deconv_plots[0][1].collect{ file(it).name }, //assert unstable file
+                    process.out.versions
+                    ).match()
+                }
             )
         }
     }
