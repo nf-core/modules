@@ -50,29 +50,16 @@ process KMA_KMA {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}.${meta2.id}"
-    def create_spa = task.ext.args.contains('-Sparse')
-
-    if (create_spa) {
-        """
-        touch ${prefix}.spa
-        """
-    }
-    else {
-        """
-        touch ${prefix}.res \\
-        touch ${prefix}.fsa \\
-        touch ${prefix}.aln \\
-        echo "" | gzip > ${prefix}.frag.gz
-        """
-    }
-
-    if (mat_format) {
-        """
-        echo "" | gzip > ${prefix}.mat.gz
-        """
-    }
+    def create_spa = task.ext.args.contains('-Sparse') ?
+        "touch ${prefix}.spa" :
+        "touch ${prefix}.res; touch ${prefix}.fsa; touch ${prefix}.aln; echo \"\" | gzip > ${prefix}.frag.gz"
+    def create_mat = mat_format ?
+        "echo \"\" | gzip > ${prefix}.mat.gz " : ""
 
     """
+    ${create_spa}
+    ${create_mat}
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         kma: \$(echo \$(kma -v 2>&1) | sed 's/^KMA-\$//')
