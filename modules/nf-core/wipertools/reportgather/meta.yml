@@ -22,14 +22,14 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test' ]
-    - reports:
+    - report:
         type: file
         description: List of wiping reports to be merged
         pattern: "*.report"
         ontologies:
           - edam: "http://edamontology.org/format_2330"
 output:
-  - report_out:
+  - gathered_report:
       - meta:
           type: map
           description: |
