@@ -73,8 +73,8 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // LIMMA_NORM directly. It internally runs normalization + DE analysis.
 
     LIMMA_NORM(
-        norm_inputs.contrasts_for_norm.filter{it[0].method == 'limma'}.unique(),
-        norm_inputs.samples_and_matrix.filter{it[0].method == 'limma'}.unique()
+        norm_inputs.contrasts_for_norm.filter{it[0].method == 'limma'},
+        norm_inputs.samples_and_matrix.filter{it[0].method == 'limma'}
     )
 
     LIMMA_DIFFERENTIAL(
@@ -94,8 +94,8 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // DESEQ2_NORM directly. It internally runs normalization + DE analysis.
 
     DESEQ2_NORM(
-        norm_inputs.contrasts_for_norm.filter{it[0].method == 'deseq2'}.unique(),
-        norm_inputs.samples_and_matrix.filter{it[0].method == 'deseq2'}.unique(),
+        norm_inputs.contrasts_for_norm.filter{it[0].method == 'deseq2'},
+        norm_inputs.samples_and_matrix.filter{it[0].method == 'deseq2'},
         ch_control_features.first(),
         ch_transcript_lengths.first()
     )
