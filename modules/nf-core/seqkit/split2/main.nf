@@ -56,7 +56,7 @@ process SEQKIT_SPLIT2 {
     if (meta.single_end) {
         """
         mkdir -p ${prefix}
-        touch ${prefix}/${reads[0]}
+        echo "" | gzip > ${prefix}/${reads[0]}
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -66,7 +66,8 @@ process SEQKIT_SPLIT2 {
     } else {
         """
         mkdir -p ${prefix}
-        touch ${prefix}/${reads[0]}
+        echo "" | gzip > ${prefix}/${reads[0]}
+        echo "" | gzip > ${prefix}/${reads[1]}
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
