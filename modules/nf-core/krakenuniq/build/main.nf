@@ -12,14 +12,14 @@ process KRAKENUNIQ_BUILD {
 
     output:
     tuple val(meta), path("${prefix}/"), emit: db
-    path "versions.yml", emit: versions
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def args  = task.ext.args ?: ''
+    prefix    = task.ext.prefix ?: "${meta.id}"
     custom_db = custom_library_dir ? "mkdir ${prefix} && mv library taxonomy ${custom_seqid2taxid} ${prefix}" : ""
     """
     ${custom_db}
@@ -36,11 +36,16 @@ process KRAKENUNIQ_BUILD {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    custom_db = custom_library_dir ? "mkdir ${prefix} && mv library taxonomy ${custom_seqid2taxid} ${prefix}" : ""
     """
     mkdir ${prefix}/
+    touch ${prefix}/database-build.log
+    touch ${prefix}/database.idx
+    touch ${prefix}/database.jdb
+    touch ${prefix}/database.kdb
+    touch ${prefix}/database.kdb.counts
+    touch ${prefix}/database.kraken.tsv
+    touch ${prefix}/database.report.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
