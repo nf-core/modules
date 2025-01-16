@@ -4,8 +4,8 @@ process GFASTATS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gfastats:1.3.6--hdcf5f25_3':
-        'biocontainers/gfastats:1.3.6--hdcf5f25_3' }"
+        'https://depot.galaxyproject.org/singularity/gfastats:1.3.9--h077b44d_1':
+        'biocontainers/gfastats:1.3.9--h077b44d_1' }"
 
     input:
     tuple val(meta), path(assembly)   // input.[fasta|fastq|gfa][.gz]
@@ -28,7 +28,7 @@ process GFASTATS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def agp  = agpfile ? "--agp-to-path $agp" : ""
+    def agp  = agpfile ? "--agp-to-path $agpfile" : ""
     def ibed = include_bed ? "--include-bed $include_bed" : ""
     def ebed = exclude_bed ? "--exclude-bed $exclude_bed" : ""
     def sak  = instructions ? "--swiss-army-knife $instructions" : ""
