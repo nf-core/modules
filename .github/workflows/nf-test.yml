@@ -73,7 +73,7 @@ jobs:
 
       - name: get number of shards
         id: set-shards
-        if: ${{ steps.list.outputs.components != '[]' }}
+        if: ${{ steps.list.outputs.components != '' }}
         uses: ./.github/actions/get-shards
         env:
           NFT_VER: ${{ env.NFT_VER }}
@@ -147,7 +147,7 @@ jobs:
           echo "filtered_paths=${FILTERED}" >> $GITHUB_OUTPUT
 
       - name: Run nf-test Action
-        if: ${{steps.filter.outputs.filtered_paths != '[]'}}
+        if: ${{steps.filter.outputs.filtered_paths != ''}}
         uses: ./.github/actions/nf-test-action
         env:
           SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
@@ -178,7 +178,7 @@ jobs:
         run: exit 0
 
       - name: If no tests run, but filtered_paths was not empty and no tests succeeded, fail
-        if: ${{ needs.nf-test.outputs.filtered_paths != '[]' && !contains(needs.*.result, 'success') }}
+        if: ${{ needs.nf-test.outputs.filtered_paths != '' && !contains(needs.*.result, 'success') }}
         run: exit 1
 
       - name: debug-print
