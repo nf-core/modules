@@ -50,14 +50,26 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         .combine(ch_contrasts)
         .multiMap(criteria)
 
+    // We only need a normalised matrix from one contrast. The reason we don't
+    // simply use the first output from DIFFERENTIAL modules is that depending
+    // on the contrast setting etc, these modules may subset matrices, hence
+    // not returning the full normalized matrix as NORM modules would do.
+    norm_inputs = ch_input
+        .combine(ch_samplesheet)
+        .combine(ch_contrasts.first()) // Just taking the first contrast
+        .multiMap(criteria)
+
     // ----------------------------------------------------
     // Run Limma
     // ----------------------------------------------------
 
-    // NOTE that we only need a normalised matrix from one contrast. The reason
-    // we don't simply use the first output from DIFFERENTIAL modules is that
-    // depending on the contrast setting etc, these modules may subset matrices,
-    // hence not returning the full normalized matrix as NORM modules would do.
+    // NOTE that we run LIMMA_NORM just once to generate a normalised matrix.
+    // As explained above, this is done to avoid obtaining a subset matrix
+    // from LIMMA_DIFFERENTIAL.
+
+    // Also NOTE that LIMMA_DIFFERENTIAL don't use the normalized matrix from
+    // LIMMA_NORM directly. It internally runs normalization + DE analysis.
+
     LIMMA_NORM(
         norm_inputs.contrasts_for_norm.filter{it[0].method == 'limma'},
         norm_inputs.samples_and_matrix.filter{it[0].method == 'limma'}
@@ -72,10 +84,13 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // Run DESeq2
     // ----------------------------------------------------
 
-    // NOTE that we only need a normalised matrix from one contrast. The reason
-    // we don't simply use the first output from DIFFERENTIAL modules is that
-    // depending on the contrast setting etc, these modules may subset matrices,
-    // hence not returning the full normalized matrix as NORM modules would do.
+    // NOTE that we run DESEQ2_NORM just once to generate a normalised matrix.
+    // As explained above, this is done to avoid obtaining a subset matrix
+    // from DESEQ2_DIFFERENTIAL.
+
+    // Also NOTE that DESEQ2_DIFFERENTIAL don't use the normalized matrix from
+    // DESEQ2_NORM directly. It internally runs normalization + DE analysis.
+
     DESEQ2_NORM(
         norm_inputs.contrasts_for_norm.filter{it[0].method == 'deseq2'},
         norm_inputs.samples_and_matrix.filter{it[0].method == 'deseq2'},
@@ -96,6 +111,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
 
     // NOTE that this method don't rely on normalization, hence it does
     // not produce a normalized matrix.
+
     PROPR_PROPD(
         inputs.contrasts_for_diff.filter{it[0].method == 'propd'},
         inputs.samples_and_matrix.filter { it[0].method == 'propd' }
