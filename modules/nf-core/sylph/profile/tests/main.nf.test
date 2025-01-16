@@ -12,21 +12,22 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test', single_end:true ], // meta map
-                             [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
-                           ]
+                            [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
+                        ]
                 input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
                 """
             }
         }
 
         then {
+            def output_content = process.out.profile_out.get(0)
+
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    process.out.profile_out.collect { file(it[1]).readLines().contains("complete genome") },
-                ).match()
-            }
+                { assert snapshot(process.out.versions).match("versions_single") },
+                { assert output_content.size() > 1 },  // Ensure there's at least a header and one data line
+                { assert output_content[0] == "Sample_file\tGenome_file\tTaxonomic_abundance\tSequence_abundance\tAdjusted_ANI\tEff_cov\tANI_5-95_percentile\tEff_lambda\tLambda_5-95_percentile\tMedian_cov\tMean_cov_geq1\tContainment_ind\tNaive_ANI\tkmers_reassigned\tContig_name" },
+                { assert snapshot(output_content.take(5).join("\n")).match("profile_out_content_single") }  // Snapshot first 5 lines
             )
         }
     }
@@ -36,37 +37,37 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test', single_end:false ], // meta map
-                             [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                               file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
-                           ]
+                            [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+                        ]
                 input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
                 """
             }
         }
 
         then {
+            def output_content = process.out.profile_out.get(0)
+
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    process.out.profile_out.collect { file(it[1]).readLines().contains("complete genome") },
-                ).match()
-            }
+                { assert snapshot(process.out.versions).match("versions_single") },
+                { assert output_content.size() > 1 },
+                { assert output_content[0] == "Sample_file\tGenome_file\tTaxonomic_abundance\tSequence_abundance\tAdjusted_ANI\tEff_cov\tANI_5-95_percentile\tEff_lambda\tLambda_5-95_percentile\tMedian_cov\tMean_cov_geq1\tContainment_ind\tNaive_ANI\tkmers_reassigned\tContig_name" },
+                { assert snapshot(output_content.take(5).join("\n")).match("profile_out_content_single") }
             )
         }
     }
 
     test("sarscov2 illumina paired-end [fastq_gz]-stub") {
-
         options "-stub"
 
         when {
             process {
                 """
                 input[0] = [ [ id:'test', single_end:false ], // meta map
-                             [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                               file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
-                           ]
+                            [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+                        ]
                 input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
                 """
             }
@@ -75,7 +76,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out).match("stub_output") }
             )
         }
     }
