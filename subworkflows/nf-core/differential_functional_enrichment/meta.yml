@@ -29,8 +29,8 @@ input:
       description: |
         Channel with the gene sets file.
         If only gprofiler2 is required to run, and no gene sets file is available,
-        one can provide this as a empty list [[], []], then gprofiler2 will automatically
-        parse a gene sets database based on organism/token information.
+        one can provide this as a empty `Channel.of([[], []])`, then gprofiler2 will 
+        automatically parse a gene sets database based on organism/token information.
       structure:
         - meta_gmt:
             type: map
@@ -42,7 +42,8 @@ input:
   - ch_background:
       description: |
         Channel with the file specifying the background genes.
-        This is only needed to run gprofiler2. If not, empty list [[],[]] can be provided instead.
+        This is only needed to run gprofiler2. If not, a empty `Channel.of([[], []])`
+        can be provided instead.
       structure:
         - meta_background:
             type: map
@@ -74,6 +75,7 @@ input:
         - samplesheet:
             type: file
             description: Sample information file
+            pattern: "*.{csv,tsv}"
   - ch_featuresheet:
       description: Channel with features information
       structure:
@@ -83,6 +85,7 @@ input:
         - features:
             type: file
             description: Features information file
+            pattern: "*.{csv,tsv}"
         - features_id:
             type: value
             description: Features id column
@@ -97,34 +100,43 @@ output:
         File containing software versions
         Structure: [ path(versions.yml) ]
       pattern: "versions.yml"
-  - report_gprofiler2:
-      description: |
-        Channel containing all the output from gprofiler2 needed
-        for further reporting.
+  - gprofiler2_all_enrich:
+      description: Channel containing the main enrichment table output from gprofiler2
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - all_enrich:
+            type: file
+            description: table listing all enriched pathways that were found by gprofiler2.
+              It can be empty, if none is found.
+            pattern: "*.gprofiler2.all_enriched_pathways.tsv"
+  - gprofiler2_sub_enrich:
+      description: Channel containing the secondary enrichment table output from gprofiler.
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - sub_enrich:
+            type: file
+            description: |
+              table listing enriched pathways that were found from one particular source.
+              Note that it will only be created if any were found.
+            pattern: "*.gprofiler2.*.sub_enriched_pathways.tsv"
+  - gprofiler2_plot_html:
+      description: Channel containing the html report generated from gprofiler2.
       structure:
         - meta:
             type: map
             description: Metadata map
         - plot_html:
             type: file
-            description: Channel containing HTML file; interactive Manhattan plot of all enriched pathways
-            pattern: "*gprofiler2.*gostplot.html"
-        - all_enrich:
-            type: file
             description: |
-              TSV file; table listing all enriched pathways that were found.
-              This table will always be created (empty if no enrichment was found),
-              the other output files are only created if enriched pathways were found.
-            pattern: "*gprofiler2.*all_enriched_pathways.tsv"
-        - sub_enrich:
-            type: file
-            description: |
-              TSV file; table listing enriched pathways that were found from one particular source
-            pattern: "*gprofiler2.*sub_enriched_pathways.tsv"
-  - report_gsea:
-      description: |
-          Channel containing all the output from gsea needed
-          for further reporting.
+              Channel containing HTML file; interactive Manhattan plot of all enriched pathways.
+              Note that this file will only be generated if enriched pathways were found.
+            pattern: "*.gprofiler2.gostplot.html"
+  - gsea_report:
+      description: Channel containing all the output from GSEA needed for further reporting.
       structure:
         - meta:
             type: map
@@ -132,15 +144,14 @@ output:
         - reports_ref:
             type: file
             description: Main TSV results report file for the reference group.
-            pattern: "gsea_report_for_reference*.tsv"
+            pattern: "*gsea_report_for_${reference}.tsv"
         - reports_target:
             type: file
             description: Main TSV results report file for the target group.
-            pattern: "gsea_report_for_target*.tsv"
-  - report_grea:
+            pattern: "*gsea_report_for_${target}.tsv"
+  - grea_results:
       description: |
-          Channel containing all the output from grea needed
-          for further reporting.
+          Channel containing the output from GREA.
       structure:
         - meta:
             type: map
