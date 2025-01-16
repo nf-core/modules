@@ -93,7 +93,7 @@ jobs:
           echo ${{ steps.module_names.outputs.result }}
 
   nf-core-lint-modules:
-    runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
+    runs-on: ${{ github.event.inputs.runners  || 'ubuntu-latest' }}
     name: nf-core lint modules
     needs: nf-core-changes
     if: ${{ (needs.nf-core-changes.outputs.modules == 'true') }}
