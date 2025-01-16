@@ -1,0 +1,314 @@
+nextflow_process {
+
+    name "Test Process GFASTATS"
+    script "../main.nf"
+    process "GFASTATS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gfastats"
+
+    test("test_gfastats_fasta_gfa") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = 'gfa'   // GFA output format
+                input[2] = ''      // No genome size
+                input[3] = ''      // No target
+                input[4] = []      // No agp file
+                input[5] = []      // No include bed file
+                input[6] = []      // No exclude bed file
+                input[7] = []       // No swiss army knife instructions
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("test_gfastats_gfa_fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = 'fasta' // Fasta output format
+                input[2] = ''      // No genome size
+                input[3] = ''      // No target
+                input[4] = []      // No agp file
+                input[5] = []      // No include bed file
+                input[6] = []      // No exclude bed file
+                input[7] = []       // No swiss army knife instructions
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("test_gfastats_include_bed") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = 'fastq' // Fastq output format
+                input[2] = ''      // No genome size
+                input[3] = ''      // No target
+                input[4] = []      // No agp file
+                input[5] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
+                input[6] = []      // No exclude bed file
+                input[7] = []       // No swiss army knife instructions
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("test_gfastats_exclude_bed") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = 'fasta' // Fasta output format
+                input[2] = ''      // No genome size
+                input[3] = ''      // No target
+                input[4] = []      // No agp file
+                input[5] = []      // No include bed file
+                input[6] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
+                input[7] = []       // No swiss army knife instructions
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("test_gfastats_sak") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = 'fasta' // Fasta output format
+                input[2] = ''      // No genome size
+                input[3] = ''      // No target
+                input[4] = []      // No agp file
+                input[5] = []      // No include bed file
+                input[6] = []      // No exclude bed file
+                input[7] = Channel.of(
+                    'RVCP\tMT192765.1'
+                    ).collectFile(name:'assembly.sak')
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("test_gfastats_fasta_gfa - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = 'gfa'   // GFA output format
+                input[2] = ''      // No genome size
+                input[3] = ''      // No target
+                input[4] = []      // No agp file
+                input[5] = []      // No include bed file
+                input[6] = []      // No exclude bed file
+                input[7] = []       // No swiss army knife instructions
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("test_gfastats_gfa_fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = 'fasta' // Fasta output format
+                input[2] = ''      // No genome size
+                input[3] = ''      // No target
+                input[4] = []      // No agp file
+                input[5] = []      // No include bed file
+                input[6] = []      // No exclude bed file
+                input[7] = []       // No swiss army knife instructions
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("test_gfastats_include_bed - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = 'fastq' // Fastq output format
+                input[2] = ''      // No genome size
+                input[3] = ''      // No target
+                input[4] = []      // No agp file
+                input[5] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
+                input[6] = []      // No exclude bed file
+                input[7] = []       // No swiss army knife instructions
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("test_gfastats_exclude_bed - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = 'fasta' // Fasta output format
+                input[2] = ''      // No genome size
+                input[3] = ''      // No target
+                input[4] = []      // No agp file
+                input[5] = []      // No include bed file
+                input[6] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
+                input[7] = []       // No swiss army knife instructions
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("test_gfastats_sak - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = 'fasta' // Fasta output format
+                input[2] = ''      // No genome size
+                input[3] = ''      // No target
+                input[4] = []      // No agp file
+                input[5] = []      // No include bed file
+                input[6] = []      // No exclude bed file
+                input[7] = Channel.of(
+                    'RVCP\tMT192765.1'
+                    ).collectFile(name:'assembly.sak')
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+}

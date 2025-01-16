@@ -55,7 +55,7 @@ process GFASTATS {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.${out_fmt}.gz
+    echo | gzip > ${prefix}.${out_fmt}.gz
     touch ${prefix}.assembly_summary
 
     cat <<-END_VERSIONS > versions.yml
