@@ -187,4 +187,5 @@ jobs:
           echo "::group::DEBUG: `needs` Contents"
           echo "DEBUG: toJSON(needs) = ${{ toJSON(needs) }}"
           echo "DEBUG: toJSON(needs.*.result) = ${{ toJSON(needs.*.result) }}"
+          echo "DEBUG: toJSON(needs.nf-test.outputs.filtered_paths) = ${{ needs.nf-test.outputs.filtered_paths }}"
           echo "::endgroup::"
