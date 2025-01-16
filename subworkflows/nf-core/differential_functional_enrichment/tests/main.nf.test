@@ -108,6 +108,7 @@ nextflow_workflow {
                 ch_input = ABUNDANCE_DIFFERENTIAL_FILTER.out.results_genewise_filtered
                     .map { meta, results ->
                         meta['method_de'] = meta['method']
+                        meta = meta.remove('method')
                         [meta, results, 'gprofiler2']
                     }
 
@@ -197,6 +198,7 @@ nextflow_workflow {
                 ch_input = ABUNDANCE_DIFFERENTIAL_FILTER.out.normalised_matrix
                     .map { meta, matrix ->
                         meta['method_de'] = meta['method']
+                        meta = meta.remove('method')
                         [meta, matrix, 'gsea']
                     }
                 ch_gene_sets = Channel.of([
@@ -293,6 +295,7 @@ nextflow_workflow {
                 ch_input = ABUNDANCE_DIFFERENTIAL_FILTER.out.adjacency
                     .map { meta, results ->
                         meta['method_de'] = meta['method']
+                        meta = meta.remove('method')
                         [meta, results, 'grea']
                     }
                 ch_gene_sets = Channel.of([
@@ -400,16 +403,19 @@ nextflow_workflow {
                 ch_input_for_gprofiler2 = ABUNDANCE_DIFFERENTIAL_FILTER.out.results_genewise_filtered
                     .map { meta, results ->
                         meta['method_de'] = meta['method']
+                        meta = meta.remove('method')
                         [meta, results, 'gprofiler2']
                     }
                 ch_input_for_gsea = ABUNDANCE_DIFFERENTIAL_FILTER.out.normalised_matrix
                     .map { meta, results ->
-                        meta = ['method_de': meta['method']]
+                        meta['method_de'] = meta['method']
+                        meta = meta.remove('method')
                         [meta, results, 'gsea']
                     }
                 ch_input_for_grea = ABUNDANCE_DIFFERENTIAL_FILTER.out.adjacency
                     .map { meta, results ->
                         meta['method_de'] = meta['method']
+                        meta = meta.remove('method')
                         [meta, results, 'grea']
                     }
                 ch_input = ch_input_for_gprofiler2

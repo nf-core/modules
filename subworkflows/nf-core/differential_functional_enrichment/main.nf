@@ -114,7 +114,7 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     )
 
     ch_input.view{ it -> "ch_input is ${it}"}
-    ch_preinput_for_gsea.input.view { it -> "ch_preinputfor_gsea.input is ${it}"}
+    ch_preinput_for_gsea.input.view { it -> "ch_preinput_for_gsea.input is ${it}"}
     ch_preinput_for_gsea.contrasts_and_samples.view { it -> "ch_preinput_for_gsea.contrasts_and_samples is ${it}"}
     ch_preinput_for_gsea.features.view{ it -> "ch_preinput_for_gsea.features is ${it}"}
 
