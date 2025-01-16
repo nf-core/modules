@@ -8,14 +8,14 @@ process GFASTATS {
         'biocontainers/gfastats:1.3.9--h077b44d_1' }"
 
     input:
-    tuple val(meta), path(assembly)   // input.[fasta|fastq|gfa][.gz]
-    val out_fmt                       // output format (fasta/fastq/gfa)
-    val genome_size                   // estimated genome size for NG* statistics (optional).
-    val target                        // target specific sequence by header, optionally with coordinates (optional).
-    path agpfile                      // -a --agp-to-path <file> converts input agp to path and replaces existing paths.
-    path include_bed                  // -i --include-bed <file> generates output on a subset list of headers or coordinates in 0-based bed format.
-    path exclude_bed                  // -e --exclude-bed <file> opposite of --include-bed. They can be combined (no coordinates).
-    path instructions                 // -k --swiss-army-knife <file> set of instructions provided as an ordered list.
+    tuple val(meta), path(assembly)
+    val out_fmt
+    val genome_size
+    val target
+    path agpfile
+    path include_bed
+    path exclude_bed
+    path instructions
 
     output:
     tuple val(meta), path("*.assembly_summary"), emit: assembly_summary
