@@ -1,5 +1,5 @@
 process MMSEQS_SEARCH {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
@@ -24,13 +24,15 @@ process MMSEQS_SEARCH {
     def args3 = task.ext.args3 ?: "*.dbtype"
     prefix = task.ext.prefix ?: "${meta.id}"
 
-    if ("$db_query" == "${prefix}" || "$db_target" == "${prefix}"  ) error "Input and output names of databases are the same, set prefix in module configuration to disambiguate!"
+    if ("${db_query}" == "${prefix}" || "${db_target}" == "${prefix}") {
+        error("Input and output names of databases are the same, set prefix in module configuration to disambiguate!")
+    }
     """
     mkdir -p ${prefix}
 
     # Extract files with specified args based suffix | remove suffix | isolate longest common substring of files
-    DB_QUERY_PATH_NAME=\$(find -L "$db_query/" -maxdepth 1 -name "$args2" | sed 's/\\.[^.]*\$//' | sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
-    DB_TARGET_PATH_NAME=\$(find -L "$db_target/" -maxdepth 1 -name "$args3" | sed 's/\\.[^.]*\$//' | sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
+    DB_QUERY_PATH_NAME=\$(find -L "${db_query}/" -maxdepth 1 -name "${args2}" | sed 's/\\.[^.]*\$//' | sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
+    DB_TARGET_PATH_NAME=\$(find -L "${db_target}/" -maxdepth 1 -name "${args3}" | sed 's/\\.[^.]*\$//' | sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
 
     mmseqs \\
         search \\
@@ -48,10 +50,11 @@ process MMSEQS_SEARCH {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     if ("$db_query" == "${prefix}" || "$db_target" == "${prefix}"  ) error "Input and output names of databases are the same, set prefix in module configuration to disambiguate!"
     """
-    mkdir -p $prefix
+    mkdir -p ${prefix}
     touch ${prefix}/${prefix}.{0..9}
     touch ${prefix}/${prefix}.dbtype
     touch ${prefix}/${prefix}.index
