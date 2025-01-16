@@ -296,7 +296,7 @@ nextflow_workflow {
                     .map { meta, results ->
                         def meta_new = meta - ['method': meta.method]
                         meta_new.method_de = meta.method
-                        [meta, results, 'grea']
+                        [meta_new, results, 'grea']
                     }
                 ch_gene_sets = Channel.of([
                     [ id:'test' ],
@@ -404,19 +404,19 @@ nextflow_workflow {
                     .map { meta, results ->
                         def meta_new = meta - ['method': meta.method]
                         meta_new.method_de = meta.method
-                        [meta, results, 'gprofiler2']
+                        [meta_new, results, 'gprofiler2']
                     }
                 ch_input_for_gsea = ABUNDANCE_DIFFERENTIAL_FILTER.out.normalised_matrix
                     .map { meta, results ->
                         def meta_new = meta - ['method': meta.method]
                         meta_new.method_de = meta.method
-                        [meta, results, 'gsea']
+                        [meta_new, results, 'gsea']
                     }
                 ch_input_for_grea = ABUNDANCE_DIFFERENTIAL_FILTER.out.adjacency
                     .map { meta, results ->
                         def meta_new = meta - ['method': meta.method]
                         meta_new.method_de = meta.method
-                        [meta, results, 'grea']
+                        [meta_new, results, 'grea']
                     }
                 ch_input = ch_input_for_gprofiler2
                     .mix(ch_input_for_gsea)
