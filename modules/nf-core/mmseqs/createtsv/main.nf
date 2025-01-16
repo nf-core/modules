@@ -40,8 +40,7 @@ process MMSEQS_CREATETSV {
         \$DB_RESULT_PATH_NAME \\
         ${prefix}.tsv \\
         $args \\
-        --threads ${task.cpus} \\
-        --compressed 1
+        --threads ${task.cpus}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
