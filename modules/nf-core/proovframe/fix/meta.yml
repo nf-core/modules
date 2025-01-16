@@ -1,0 +1,61 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "proovframe_fix"
+description: frame-shift correction for long read (meta)genomics - fix frameshifts
+  in reads
+keywords:
+  - frame-shift correction
+  - long-read sequencing
+  - sequence analysis
+tools:
+  - "proovframe":
+      description: "frame-shift correction for long read (meta)genomics"
+      homepage: "https://github.com/thackl/proovframe"
+      documentation: "https://github.com/thackl/proovframe"
+      tool_dev_url: "https://github.com/thackl/proovframe"
+      doi: "10.1101/2021.08.23.457338"
+      licence: ["MIT"]
+      identifier: biotools:proovframe
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fa:
+        type: file
+        description: "A FASTA file containing a database of guide protein sequences"
+        pattern: "*.{faa,fasta,fa}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test' ]
+    - tsv:
+        type: file
+        description: "Output TSV file from proovframe/map with the frameshift-aware protein to read alignments\
+          \ from proovframe/map"
+        pattern: "*.{tsv}"
+
+output:
+  - out_fa:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.fa":
+          type: file
+          description: "Result FASTA with fixed frameshift reads"
+          pattern: "*.{fa}"
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@mcarbajo"
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"

@@ -3,263 +3,313 @@ nextflow_process {
     name "Test Process BISMARK_ALIGN"
     script "../main.nf"
     process "BISMARK_ALIGN"
+    config './nextflow.config'
+
     tag "modules"
     tag "modules_nfcore"
     tag "bismark"
     tag "bismark/align"
     tag "bismark/genomepreparation"
 
-    test("Should run bismark/align (bowtie2 single end) without failures") {
-        config './nextflow_bowtie2.config'
-
-        setup {
-            run("BISMARK_GENOMEPREPARATION") {
-                script "../../genomepreparation/main.nf"
-                process {
-                    """
-                    input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                    """
-                }
+    setup {
+        run("BISMARK_GENOMEPREPARATION") {
+            script "../../genomepreparation/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test' ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                """
             }
         }
+    }
+
+    test("bowtie2 | single-end | sarscov2 genome [fasta]") {
 
         when {
             params {
-                outdir = "$outputDir"
+                bismark_args = '--bowtie2'
             }
             process {
                 """
-                input[0] = [
+                input[0] = Channel.of([
                             [ id:'test', single_end:true ],
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true)
-                           ]
-                input[1] = BISMARK_GENOMEPREPARATION.out.index
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = BISMARK_GENOMEPREPARATION.out.index
                 """
             }
         }
 
         then {
             assertAll(
-            { assert process.success },
-            {
-                with(process.out.report) {
-                    with(get(0)) {
-                        assert get(1).endsWith("bt2_SE_report.txt")
-                        assert path(get(1)).readLines().last().contains("Bismark completed in")
-                    }
+                { assert process.success },
+                { assert snapshot(
+                    process.out.bam.collect { meta, bamfile ->
+                                                bam(bamfile).getReadsMD5()
+                                            },
+                    process.out.report.collect { meta, report ->
+                                                    file(report).readLines().contains("Number of alignments with a unique best hit from the different alignments:\t5009")
+                                                },
+                    process.out.unmapped,
+                    process.out.versions
+                    ).match()
                 }
-            },
-            { assert snapshot(
-                process.out.bam.collect { bam(it[1]).getReadsMD5() },
-                process.out.unmapped,
-                process.out.versions
-                ).match()
-            }
             )
         }
     }
 
-    test("Should run bismark/align (bowtie2 paired end) without failures") {
-        config './nextflow_bowtie2.config'
+    test("bowtie2 | paired-end | sarscov2 genome [fasta]") {
 
-        setup {
-            run("BISMARK_GENOMEPREPARATION") {
-                script "../../genomepreparation/main.nf"
-                process {
-                    """
-                    input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                    """
-                }
-            }
-        }
         when {
             params {
-                outdir = "$outputDir"
+                bismark_args = '--bowtie2'
             }
             process {
                 """
-                input[0] = [
-                            [ id:'test', single_end:false ],
+                input[0] = Channel.of([
+                            [ id:'test', single_end:true ],
                             [
-                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
-                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true)
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true)
                             ]
-                           ]
-                input[1] = BISMARK_GENOMEPREPARATION.out.index
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = BISMARK_GENOMEPREPARATION.out.index
                 """
             }
         }
 
         then {
             assertAll(
-            { assert process.success },
-            {
-                with(process.out.report) {
-                    with(get(0)) {
-                        assert get(1).endsWith("_bt2_PE_report.txt")
-                        assert path(get(1)).readLines().last().contains("Bismark completed in")
-                    }
+                { assert process.success },
+                { assert snapshot(
+                    process.out.bam.collect { meta, bamfiles ->
+                                                bamfiles.collect { bamfile ->
+                                                    bam(bamfile).getReadsMD5()
+                                                }
+                                            },
+                    process.out.report.collect { meta, reports ->
+                                                    reports.collect { report ->
+                                                        file(report).readLines().contains("Number of alignments with a unique best hit from the different alignments:\t5009")
+                                                        }
+                                                },
+                    process.out.unmapped,
+                    process.out.versions
+                    ).match()
                 }
-            },
-            { assert snapshot(
-                process.out.bam.collect { bam(it[1]).getReadsMD5() },
-                process.out.unmapped,
-                process.out.versions
-                ).match()
-            }
             )
         }
     }
 
-    test("Should run bismark/align (hisat2 single end) without failures") {
-        config './nextflow_hisat2.config'
-
-        setup {
-            run("BISMARK_GENOMEPREPARATION") {
-                script "../../genomepreparation/main.nf"
-                process {
-                    """
-                    input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                    """
-                }
-            }
-        }
+    test("hisat2 | single-end | sarscov2 genome [fasta]") {
 
         when {
             params {
-                outdir = "$outputDir"
+                bismark_args = '--hisat2'
             }
             process {
                 """
-                input[0] = [
+                input[0] = Channel.of([
                             [ id:'test', single_end:true ],
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true)
-                           ]
-                input[1] = BISMARK_GENOMEPREPARATION.out.index
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = BISMARK_GENOMEPREPARATION.out.index
                 """
             }
         }
 
         then {
             assertAll(
-            { assert process.success },
-            {
-                with(process.out.report) {
-                    with(get(0)) {
-                        assert get(1).endsWith("hisat2_SE_report.txt")
-                        assert path(get(1)).readLines().last().contains("Bismark completed in")
-                    }
+                { assert process.success },
+                { assert snapshot(
+                    process.out.bam.collect { meta, bamfile ->
+                                                bam(bamfile).getReadsMD5()
+                                            },
+                    process.out.report.collect { meta, report ->
+                                                    file(report).readLines().contains("Number of alignments with a unique best hit from the different alignments:\t5009")
+                                                },
+                    process.out.unmapped,
+                    process.out.versions
+                    ).match()
                 }
-            },
-            { assert snapshot(
-                process.out.bam.collect { bam(it[1]).getReadsMD5() },
-                process.out.unmapped,
-                process.out.versions
-                ).match()
-            }
             )
         }
     }
 
-    test("Should run bismark/align (hisat2 paired end) without failures") {
-        config './nextflow_hisat2.config'
-
-        setup {
-            run("BISMARK_GENOMEPREPARATION") {
-                script "../../genomepreparation/main.nf"
-                process {
-                    """
-                    input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                    """
-                }
-            }
-        }
+    test("hisat2 | paired-end | sarscov2 genome [fasta]") {
 
         when {
             params {
-                outdir = "$outputDir"
+                bismark_args = '--hisat2'
             }
             process {
                 """
-                input[0] = [
-                            [ id:'test', single_end:false ],
+                input[0] = Channel.of([
+                            [ id:'test', single_end:true ],
                             [
-                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
-                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true)
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true)
                             ]
-                           ]
-                input[1] = BISMARK_GENOMEPREPARATION.out.index
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = BISMARK_GENOMEPREPARATION.out.index
                 """
             }
         }
 
         then {
             assertAll(
-            { assert process.success },
-            {
-                with(process.out.report) {
-                    with(get(0)) {
-                        assert get(1).endsWith("hisat2_PE_report.txt")
-                        assert path(get(1)).readLines().last().contains("Bismark completed in")
-                    }
+                { assert process.success },
+                { assert snapshot(
+                    process.out.bam.collect { meta, bamfiles ->
+                                                bamfiles.collect { bamfile ->
+                                                    bam(bamfile).getReadsMD5()
+                                                }
+                                            },
+                    process.out.report.collect { meta, reports ->
+                                                    reports.collect { report ->
+                                                        file(report).readLines().contains("Number of alignments with a unique best hit from the different alignments:\t5009")
+                                                        }
+                                                },
+                    process.out.unmapped,
+                    process.out.versions
+                    ).match()
                 }
-            },
-            { assert snapshot(
-                process.out.bam.collect { bam(it[1]).getReadsMD5() },
-                process.out.unmapped,
-                process.out.versions
-                ).match()
-            }
             )
         }
     }
 
-    test("Should run bismark/align (minimap2 single end) without failures") {
-        config './nextflow_minimap2.config'
-
-        setup {
-            run("BISMARK_GENOMEPREPARATION") {
-                script "../../genomepreparation/main.nf"
-                process {
-                    """
-                    input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                    """
-                }
-            }
-        }
+    test("minimap2 | single-end | sarscov2 genome [fasta]") {
 
         when {
             params {
-                outdir = "$outputDir"
+                bismark_args = '--minimap2'
             }
             process {
                 """
-                input[0] = [
+                input[0] = Channel.of([
                             [ id:'test', single_end:true ],
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true)
-                           ]
-                input[1] = BISMARK_GENOMEPREPARATION.out.index
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = BISMARK_GENOMEPREPARATION.out.index
                 """
             }
         }
 
         then {
             assertAll(
-            { assert process.success },
-            {
-                with(process.out.report) {
-                    with(get(0)) {
-                        assert get(1).endsWith("mm2_SE_report.txt")
-                        assert path(get(1)).readLines().last().contains("Bismark completed in")
-                    }
+                { assert process.success },
+                { assert snapshot(
+                    process.out.bam.collect { meta, bamfile ->
+                                                bam(bamfile).getReadsMD5()
+                                            },
+                    process.out.report.collect { meta, report ->
+                                                    file(report).readLines().contains("Number of alignments with a unique best hit from the different alignments:\t5009")
+                                                },
+                    process.out.unmapped,
+                    process.out.versions
+                    ).match()
                 }
-            },
-            { assert snapshot(
-                process.out.bam.collect { bam(it[1]).getReadsMD5() },
-                process.out.unmapped,
-                process.out.versions
-                ).match()
+            )
+        }
+    }
+
+    test("minimap2 | paired-end | sarscov2 genome [fasta]") {
+
+        when {
+            params {
+                bismark_args = '--minimap2'
             }
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:true ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true)
+                            ]
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = BISMARK_GENOMEPREPARATION.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.bam.collect { meta, bamfiles ->
+                                                bamfiles.collect { bamfile ->
+                                                    bam(bamfile).getReadsMD5()
+                                                }
+                                            },
+                    process.out.report.collect { meta, reports ->
+                                                    reports.collect { report ->
+                                                        file(report).readLines().contains("Number of alignments with a unique best hit from the different alignments:\t5009")
+                                                        }
+                                                },
+                    process.out.unmapped,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("minimap2 | paired-end | sarscov2 genome [fasta] | stub") {
+        options "-stub"
+
+        when {
+            params {
+                bismark_args = '--minimap2'
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:true ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true)
+                            ]
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = BISMARK_GENOMEPREPARATION.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match()
+                }
             )
         }
     }

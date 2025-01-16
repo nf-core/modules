@@ -6,42 +6,41 @@ keywords:
   - image
 tools:
   - "stardist":
-      description: "Stardist is an cell segmentation tool developed in Python by Martin Weigert and Uwe Schmidt"
+      description: "Stardist is an cell segmentation tool developed in Python by Martin
+        Weigert and Uwe Schmidt"
       homepage: "https://stardist.net/"
       documentation: "https://stardist.net/faq/"
       tool_dev_url: "https://github.com/stardist/stardist"
       doi: "10.1109/ISBIC56247.2022.9854534"
       licence: ["BSD 3-Clause"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1' ]`
-
-  - image:
-      type: file
-      description: Single channel nuclear image
-      pattern: "*.{tiff,tif}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - image:
+        type: file
+        description: Single channel nuclear image
+        pattern: "*.{tiff,tif}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1' ]`
-
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
   - mask:
-      type: file
-      description: labelled mask output from stardist in tif format.
-      pattern: "*.{tiff,tif}"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.stardist.tif":
+          type: file
+          description: labelled mask output from stardist in tif format.
+          pattern: "*.{tiff,tif}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@migueLib"
 maintainers:

@@ -3,7 +3,6 @@ nextflow_process {
     name "Test Process PARAPHASE"
     script "../main.nf"
     process "PARAPHASE"
-    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -25,6 +24,9 @@ nextflow_process {
     }
 
     test("homo_sapiens - [ bam, bai ], []") {
+
+        config "./nextflow.config"
+
         when {
             process {
                 """
@@ -45,22 +47,24 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert process.out.vcf_index.get(0).get(1).endsWith("tbi") },
                 { assert snapshot(
                     file(process.out.json.get(0).get(1)).readLines()[0..39],
-                    process.out.versions,
-                    file(process.out.vcf.get(0).get(1)).readLines()[0..962],
-                    process.out.bam ==~ "test.paraphase.bam",
-                    process.out.bai ==~ "test.paraphase.bam.bai",
+                    path(process.out.vcf.get(0).get(1)).linesGzip[10],
+                    bam(process.out.bam.get(0).get(1)).getReadsMD5(),
+                    file(process.out.bai.get(0).get(1)).name,
+                    file(process.out.vcf_index.get(0).get(1)).name,
+                    process.out.versions
                     ).match()
-                },
-                { assert process.out.bam.get(0).get(1) =~ "test.paraphase.bam" },
-                { assert process.out.bai.get(0).get(1) =~ "test.paraphase.bam.bai" },
+                }
             )
         }
 
     }
 
     test("homo_sapiens - [ bam, bai ], config") {
+
+        config "./nextflow.config"
 
         when {
             process {
@@ -82,16 +86,54 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert process.out.vcf_index.get(0).get(1).endsWith("tbi") },
                 { assert snapshot(
                     file(process.out.json.get(0).get(1)).readLines()[0..39],
-                    process.out.versions,
-                    file(process.out.vcf.get(0).get(1)).readLines()[0..962],
-                    process.out.bam ==~ "test.paraphase.bam",
-                    process.out.bai ==~ "test.paraphase.bam.bai",
+                    path(process.out.vcf.get(0).get(1)).linesGzip[10],
+                    bam(process.out.bam.get(0).get(1)).getReadsMD5(),
+                    file(process.out.bai.get(0).get(1)).name,
+                    file(process.out.vcf_index.get(0).get(1)).name,
+                    process.out.versions
                     ).match()
-                },
-                { assert process.out.bam.get(0).get(1) =~ "test.paraphase.bam" },
-                { assert process.out.bai.get(0).get(1) =~ "test.paraphase.bam.bai" },
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens - [ bam, bai ], config - csi_index") {
+
+        config "./nextflow.csi_index.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true),
+                ]
+                input[1] = TABIX_BGZIP.out.output
+                input[2] = [
+                    [ id:'test_config' ],
+                    file(params.modules_testdata_base_path + 'generic/config/paraphase_config.yaml', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.vcf_index.get(0).get(1).endsWith("csi") },
+                { assert snapshot(
+                    file(process.out.json.get(0).get(1)).readLines()[0..39],
+                    path(process.out.vcf.get(0).get(1)).linesGzip[10],
+                    bam(process.out.bam.get(0).get(1)).getReadsMD5(),
+                    file(process.out.bai.get(0).get(1)).name,
+                    file(process.out.vcf_index.get(0).get(1)).name,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
     }
@@ -99,6 +141,7 @@ nextflow_process {
     test("homo_sapiens - [ bam, bai ], [] - stub") {
 
         options "-stub"
+        config "./nextflow.config"
 
         when {
             process {
@@ -128,6 +171,37 @@ nextflow_process {
     test("homo_sapiens - [ bam, bai ], config - stub") {
 
         options "-stub"
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true),
+                ]
+                input[1] = TABIX_BGZIP.out.output
+                input[2] = [
+                    [ id:'test_config' ],
+                    file(params.modules_testdata_base_path + 'generic/config/paraphase_config.yaml', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - [ bam, bai ], config - stub - csi_index") {
+
+        options "-stub"
+        config "./nextflow.csi_index.config"
 
         when {
             process {

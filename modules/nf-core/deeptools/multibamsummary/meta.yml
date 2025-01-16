@@ -7,44 +7,48 @@ keywords:
   - bin
 tools:
   - deeptools:
-      description: A set of user-friendly tools for normalization and visualization of deep-sequencing data
+      description: A set of user-friendly tools for normalization and visualization
+        of deep-sequencing data
       documentation: https://deeptools.readthedocs.io/en/develop/index.html
       tool_dev_url: https://github.com/deeptools/deepTools
       doi: "10.1093/nar/gku365"
       licence: ["GPL v3"]
+      identifier: biotools:deeptools
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bams:
-      type: file
-      description: One or more BAM files
-      pattern: "*.{bam}"
-  - bais:
-      type: file
-      description: Corresponding BAM file indexes
-      pattern: "*.bam.bai"
-  - labels:
-      type: string
-      description: User specified labels instead of default labels (file names).
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bams:
+        type: file
+        description: One or more BAM files
+        pattern: "*.{bam}"
+    - bais:
+        type: file
+        description: Corresponding BAM file indexes
+        pattern: "*.bam.bai"
+    - labels:
+        type: string
+        description: User specified labels instead of default labels (file names).
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - matrix:
-      type: file
-      description: |
-        compressed numpy array of read coverage data used by plotCorrelation and plotPCA
-        deeptool utilities
-      pattern: "all_bam.bamSummary.npz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.npz":
+          type: file
+          description: |
+            compressed numpy array of read coverage data used by plotCorrelation and plotPCA
+            deeptool utilities
+          pattern: "all_bam.bamSummary.npz"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@tamara-hodgetts"
   - "@chris-cheshire"

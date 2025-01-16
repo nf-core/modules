@@ -8,95 +8,120 @@ keywords:
   - gene set
 tools:
   - "gprofiler2":
-      description: "An R interface corresponding to the 2019 update of g:Profiler web tool."
+      description: "An R interface corresponding to the 2019 update of g:Profiler web
+        tool."
       homepage: "https://biit.cs.ut.ee/gprofiler/page/r"
       documentation: "https://rdrr.io/cran/gprofiler2/"
       tool_dev_url: "https://gl.cs.ut.ee/biit/r-gprofiler2"
       doi: "10.1093/nar/gkad347"
       licence: ["GPL v2"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing contrast information, e.g. [ variable:'treatment', reference:'treated', control:'saline', blocking:'' ]
-  - de_file:
-      type: file
-      pattern: "*.{csv,tsv}"
-      description: |
-        CSV or TSV-format tabular file with differential analysis outputs
-  - contrast_variable:
-      type: string
-      description: |
-        The contrast variable that is being investigated in DE analysis, e.g. "treatment".
-  - reference:
-      type: string
-      description: |
-        The contrast level of the reference samples, e.g. "control"
-  - target:
-      type: string
-      description: |
-        The contrast level of the target samples, e.g. "treated"
-  - background_file:
-      type: file
-      pattern: "*.{csv,tsv,txt}"
-      description: |
-        Path to a CSV/TSV/TXT file listing gene IDs that should be used as the background (will override count_file). This can be an expression matrix (see also background_column parameter); if so, will only consider those genes with an expression value > 0 in at least one sample. Alternatively, this can be a TXT file containing only a list of gene IDs.
-  - gmt_file:
-      type: file
-      pattern: "*.gmt"
-      description: |
-        Path to a GMT file downloaded from g:profiler that should be queried instead of the online databases
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing contrast information, e.g. [ variable:'treatment', reference:'treated', control:'saline', blocking:'' ]
+    - de_file:
+        type: file
+        pattern: "*.{csv,tsv}"
+        description: |
+          CSV or TSV-format tabular file with differential analysis outputs
+  - - gmt_file:
+        type: file
+        pattern: "*.gmt"
+        description: |
+          Path to a GMT file downloaded from g:profiler that should be queried instead of the online databases
+  - - background_file:
+        type: file
+        pattern: "*.{csv,tsv,txt}"
+        description: |
+          Path to a CSV/TSV/TXT file listing gene IDs that should be used as the background (will override count_file). This can be an expression matrix (see also background_column parameter); if so, will only consider those genes with an expression value > 0 in at least one sample. Alternatively, this can be a TXT file containing only a list of gene IDs.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing contrast information, e.g. [ variable:'treatment', reference:'treated', control:'saline', blocking:'' ]
   - all_enrich:
-      type: file
-      description: |
-        TSV file; table listing all enriched pathways that were found. This table will always be created (empty if no enrichment was found), the other output files are only created if enriched pathways were found
-      pattern: "*gprofiler2.*all_enriched_pathways.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information, e.g. [ variable:'treatment', reference:'treated', control:'saline', blocking:'' ]
+      - "*.gprofiler2.all_enriched_pathways.tsv":
+          type: file
+          description: |
+            TSV file; table listing all enriched pathways that were found. This table will always be created (empty if no enrichment was found), the other output files are only created if enriched pathways were found
+          pattern: "*gprofiler2.*all_enriched_pathways.tsv"
   - rds:
-      type: file
-      description: |
-        RDS file; R object containing the results of the gost query
-      pattern: "*gprofiler2.*gost_results.rds"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information, e.g. [ variable:'treatment', reference:'treated', control:'saline', blocking:'' ]
+      - "*.gprofiler2.gost_results.rds":
+          type: file
+          description: |
+            RDS file; R object containing the results of the gost query
+          pattern: "*gprofiler2.*gost_results.rds"
   - plot_png:
-      type: file
-      description: |
-        PNG file; Manhattan plot of all enriched pathways
-      pattern: "*gprofiler2.*gostplot.png"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information, e.g. [ variable:'treatment', reference:'treated', control:'saline', blocking:'' ]
+      - "*.gprofiler2.gostplot.png":
+          type: file
+          description: |
+            PNG file; Manhattan plot of all enriched pathways
+          pattern: "*gprofiler2.*gostplot.png"
   - plot_html:
-      type: file
-      description: |
-        HTML file; interactive Manhattan plot of all enriched pathways
-      pattern: "*gprofiler2.*gostplot.html"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information, e.g. [ variable:'treatment', reference:'treated', control:'saline', blocking:'' ]
+      - "*.gprofiler2.gostplot.html":
+          type: file
+          description: |
+            HTML file; interactive Manhattan plot of all enriched pathways
+          pattern: "*gprofiler2.*gostplot.html"
   - sub_enrich:
-      type: file
-      description: |
-        TSV file; table listing enriched pathways that were found from one particular source
-      pattern: "*gprofiler2.*sub_enriched_pathways.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information, e.g. [ variable:'treatment', reference:'treated', control:'saline', blocking:'' ]
+      - "*.gprofiler2.*.sub_enriched_pathways.tsv":
+          type: file
+          description: |
+            TSV file; table listing enriched pathways that were found from one particular source
+          pattern: "*gprofiler2.*sub_enriched_pathways.tsv"
   - sub_plot:
-      type: file
-      description: |
-        PNG file; bar plot showing the fraction of genes that were found enriched in each pathway
-      pattern: "*gprofiler2.*sub_enriched_pathways.png"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information, e.g. [ variable:'treatment', reference:'treated', control:'saline', blocking:'' ]
+      - "*.gprofiler2.*.sub_enriched_pathways.png":
+          type: file
+          description: |
+            PNG file; bar plot showing the fraction of genes that were found enriched in each pathway
+          pattern: "*gprofiler2.*sub_enriched_pathways.png"
   - filtered_gmt:
-      type: file
-      description: |
-        GMT file that was provided as input or that was downloaded from g:profiler if no input GMT file was given; filtered for the selected datasources
-      pattern: "*ENSG_filtered.gmt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information, e.g. [ variable:'treatment', reference:'treated', control:'saline', blocking:'' ]
+      - "*ENSG_filtered.gmt":
+          type: file
+          description: |
+            GMT file that was provided as input or that was downloaded from g:profiler if no input GMT file was given; filtered for the selected datasources
+          pattern: "*ENSG_filtered.gmt"
   - session_info:
-      type: file
-      description: |
-        Log file containing information about the R session that was run for this module
-      pattern: "*R_sessionInfo.log"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information, e.g. [ variable:'treatment', reference:'treated', control:'saline', blocking:'' ]
+      - "*R_sessionInfo.log":
+          type: file
+          description: |
+            Log file containing information about the R session that was run for this module
+          pattern: "*R_sessionInfo.log"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@WackerO"

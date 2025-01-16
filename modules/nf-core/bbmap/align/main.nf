@@ -26,7 +26,7 @@ process BBMAP_ALIGN {
     input = meta.single_end ? "in=${fastq}" : "in=${fastq[0]} in2=${fastq[1]}"
 
     // Set the db variable to reflect the three possible types of reference input: 1) directory
-    // named 'ref', 2) directory named something else (containg a 'ref' subdir) or 3) a sequence
+    // named 'ref', 2) directory named something else (containing a 'ref' subdir) or 3) a sequence
     // file in fasta format
     if ( ref.isDirectory() ) {
         if ( ref ==~ /(.\/)?ref\/?/ ) {
@@ -47,6 +47,19 @@ process BBMAP_ALIGN {
         threads=$task.cpus \\
         -Xmx${task.memory.toGiga()}g \\
         &> ${prefix}.bbmap.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+        pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
+    END_VERSIONS
+    """
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bam
+    touch ${prefix}.bbmap.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

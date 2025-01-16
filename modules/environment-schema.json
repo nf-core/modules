@@ -4,10 +4,6 @@
     "description": "Validate the environment.yml file for an nf-core module",
     "type": "object",
     "properties": {
-        "name": {
-            "type": "string",
-            "description": "The name of the component, same as in the meta.yml"
-        },
         "channels": {
             "type": "array",
             "items": {
@@ -18,9 +14,29 @@
         "dependencies": {
             "type": "array",
             "items": {
-                "type": "string"
+                "oneOf": [
+                    {
+                        "type": "string",
+                        "pattern": "^.*[^><]=[^><].*$",
+                        "$comment": "The above pattern ensures that all packages are pinned to a specific version. This ensures the reproducibility of the environment"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "pip": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string",
+                                    "pattern": "^.*==.*$",
+                                    "$comment": "The above pattern ensures that all packages are pinned to a specific version. This ensures the reproducibility of the environment"
+                                }
+                            }
+                        }
+                    }
+                ]
             }
         }
     },
-    "required": ["name", "channels", "dependencies"]
+    "required": ["channels", "dependencies"],
+    "not": { "required": ["name"] }
 }

@@ -8,34 +8,43 @@ keywords:
   - indexing
 tools:
   - "mmseqs":
-      description: "MMseqs2: ultra fast and sensitive sequence search and clustering suite"
+      description: "MMseqs2: ultra fast and sensitive sequence search and clustering
+        suite"
       homepage: "https://github.com/soedinglab/MMseqs2"
       documentation: "https://mmseqs.com/latest/userguide.pdf"
       tool_dev_url: "https://github.com/soedinglab/MMseqs2"
       doi: "10.1093/bioinformatics/btw006"
       licence: ["GPL v3"]
+      identifier: biotools:mmseqs
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - db:
-      type: directory
-      description: |
-        Directory containing the DB to be indexed
-      pattern: "*"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - db:
+        type: directory
+        description: |
+          Directory containing the DB to be indexed
+        pattern: "*"
 output:
-  - versions:
-      type: file
-      description: |
-        File containing software versions
-      pattern: "versions.yml"
   - db_indexed:
-      type: directory
-      description: |
-        Directory containing the DB and the generated indexes
-      pattern: "*"
+      - meta:
+          type: directory
+          description: |
+            Directory containing the DB and the generated indexes
+          pattern: "*"
+      - db:
+          type: directory
+          description: |
+            Directory containing the DB and the generated indexes
+          pattern: "*"
+  - versions:
+      - versions.yml:
+          type: file
+          description: |
+            File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@JoseEspinosa"
 maintainers:

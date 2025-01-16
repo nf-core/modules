@@ -1,10 +1,7 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
-name: "longphase_phase"
 channels:
   - conda-forge
   - bioconda
-  - defaults
+
 dependencies:
-  - "bioconda::longphase=1.7.3"
-  - "bioconda::htslib=1.20"
+  - bioconda::htslib=1.20
+  - bioconda::longphase=1.7.3

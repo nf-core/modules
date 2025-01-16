@@ -15,31 +15,44 @@ tools:
       tool_dev_url: "https://github.com/CSOgroup/CALDER2"
       doi: "10.1038/s41467-021-22666-3"
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: Groovy Map containing sample information. E.g. [ id:'test', single_end:false ]
-  - cool:
-      type: file
-      description: Path to COOL file
-      pattern: "*.{cool.mcool}"
-  - resolution:
-      type: integer
-      description: In case a .mcool file is provided, which resolution level to use for the analysis
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. E.g. [ id:'test', single_end:false
+          ]
+    - cool:
+        type: file
+        description: Path to COOL file
+        pattern: "*.{cool.mcool}"
+  - - resolution:
+        type: integer
+        description: In case a .mcool file is provided, which resolution level to use
+          for the analysis
 output:
-  - meta:
-      type: map
-      description: Groovy Map containing sample information. E.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - output_folder:
-      type: directory
-      description: Output folder containing sub-compartment (.tsv/.bed) and domain boundaries calls (.bed)
+      - meta:
+          type: map
+          description: Groovy Map containing sample information. E.g. [ id:'test', single_end:false
+            ]
+      - ${prefix}/:
+          type: directory
+          description: Output folder containing sub-compartment (.tsv/.bed) and domain
+            boundaries calls (.bed)
   - intermediate_data_folder:
-      type: directory
-      description: Output folder containing intermediate data produced during the computation
+      - meta:
+          type: map
+          description: Groovy Map containing sample information. E.g. [ id:'test', single_end:false
+            ]
+      - ${prefix}/intermediate_data/:
+          type: directory
+          description: Output folder containing intermediate data produced during the
+            computation
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@lucananni93"
 maintainers:

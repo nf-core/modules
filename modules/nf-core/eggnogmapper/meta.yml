@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "eggnogmapper"
 description: Fast genome-wide functional annotation through orthology assignment.
@@ -14,55 +13,71 @@ tools:
       tool_dev_url: "https://github.com/eggnogdb/eggnog-mapper"
       doi: "10.1093/molbev/msab293"
       licence: ["AGPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - fasta:
-      type: file
-      description: Database of sequences in FASTA format
-      pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
-  - eggnog_db:
-      type: file
-      description: The eggnog database file (e.g. eggnog-mapper/data/eggnog.db)
-      pattern: "*.db"
-  - eggnog_data_dir:
-      type: directory
-      description: Directory containing eggnog database files (e.g. eggnog-mapper/data)
-      pattern: "*"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing database information
-        e.g. `[ id:'test' ]`
-  - eggnog_diamond_db:
-      type: file
-      description: The eggnog Diamond protein database file (e.g. eggnog-mapper/data/eggnog_proteins.dmnd)
-      pattern: "*.dmnd"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - fasta:
+        type: file
+        description: Database of sequences in FASTA format
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+  - - eggnog_db:
+        type: file
+        description: The eggnog database file (e.g. eggnog-mapper/data/eggnog.db)
+        pattern: "*.db"
+  - - eggnog_data_dir:
+        type: directory
+        description: Directory containing eggnog database files (e.g. eggnog-mapper/data)
+        pattern: "*"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing database information
+          e.g. `[ id:'test' ]`
+    - eggnog_diamond_db:
+        type: file
+        description: The eggnog Diamond protein database file (e.g. eggnog-mapper/data/eggnog_proteins.dmnd)
+        pattern: "*.dmnd"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
   - annotations:
-      type: file
-      description: TSV with the results from the annotation phase
-      pattern: "*.emapper.annotations"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.emapper.annotations":
+          type: file
+          description: TSV with the results from the annotation phase
+          pattern: "*.emapper.annotations"
   - orthologs:
-      type: file
-      description: TSV with the results from parsing the hits, linking queries with seed orthologs (with commented metadata)
-      pattern: "*.emapper.seed_orthologs"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.emapper.seed_orthologs":
+          type: file
+          description: TSV with the results from parsing the hits, linking queries with
+            seed orthologs (with commented metadata)
+          pattern: "*.emapper.seed_orthologs"
   - hits:
-      type: file
-      description: TSV with the results from the Diamond search phase
-      pattern: "*.emapper.hits"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.emapper.hits":
+          type: file
+          description: TSV with the results from the Diamond search phase
+          pattern: "*.emapper.hits"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@vagkaratzas"
 maintainers:

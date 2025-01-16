@@ -4,15 +4,13 @@ process HIFIASM {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hifiasm:0.19.8--h43eeafb_0' :
-        'biocontainers/hifiasm:0.19.8--h43eeafb_0' }"
+        'https://depot.galaxyproject.org/singularity/hifiasm:0.24.0--h5ca1c30_0' :
+        'biocontainers/hifiasm:0.24.0--h5ca1c30_0' }"
 
     input:
-    tuple val(meta), path(reads)
-    path  paternal_kmer_dump
-    path  maternal_kmer_dump
-    path  hic_read1
-    path  hic_read2
+    tuple val(meta) , path(reads)
+    tuple val(meta1), path(paternal_kmer_dump), path(maternal_kmer_dump)
+    tuple val(meta2), path(hic_read1)         , path(hic_read2)
 
     output:
     tuple val(meta), path("*.r_utg.gfa")       , emit: raw_unitigs

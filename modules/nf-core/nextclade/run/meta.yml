@@ -1,59 +1,146 @@
 name: nextclade_run
-description: SARS-CoV-2 genome clade assignment, mutation calling, and sequence quality checks (C++ implementation)
+description: SARS-CoV-2 genome clade assignment, mutation calling, and sequence quality
+  checks (C++ implementation)
 keywords:
   - nextclade
   - variant
   - consensus
 tools:
   - nextclade:
-      description: SARS-CoV-2 genome clade assignment, mutation calling, and sequence quality checks
+      description: SARS-CoV-2 genome clade assignment, mutation calling, and sequence
+        quality checks
       homepage: https://github.com/nextstrain/nextclade
       documentation: https://github.com/nextstrain/nextclade
       tool_dev_url: https://github.com/nextstrain/nextclade
       licence: ["MIT"]
+      identifier: biotools:nextclade
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - dataset:
-      type: path
-      description: Path containing the dataset files obtained by running nextclade dataset get
-      pattern: "*"
-  - fasta:
-      type: file
-      description: FASTA file containing one or more consensus sequences
-      pattern: "*.{fasta,fa}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: FASTA file containing one or more consensus sequences
+        pattern: "*.{fasta,fa}"
+  - - dataset:
+        type: directory
+        description: Path containing the dataset files obtained by running nextclade
+          dataset get
+        pattern: "*"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - csv:
-      type: file
-      description: CSV file containing nextclade results
-      pattern: "*.{csv}"
-  - json:
-      type: file
-      description: JSON file containing nextclade results
-      pattern: "*.{json}"
-  - json_tree:
-      type: file
-      description: Auspice JSON V2 containing nextclade results
-      pattern: "*.{tree.json}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.csv:
+          type: file
+          description: CSV file containing nextclade results
+          pattern: "*.{csv}"
+  - csv_errors:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.errors.csv:
+          type: file
+          description: CSV file containing errors from nextclade results
+          pattern: "*.{errors.csv}"
+  - csv_insertions:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.insertions.csv:
+          type: file
+          description: CSV file containing insertions from nextclade results
+          pattern: "*.{insertions.csv}"
   - tsv:
-      type: file
-      description: TSV file containing nextclade results
-      pattern: "*.{tsv}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.tsv:
+          type: file
+          description: TSV file containing nextclade results
+          pattern: "*.{tsv}"
+  - json:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.json:
+          type: file
+          description: JSON file containing nextclade results
+          pattern: "*.{json}"
+  - json_auspice:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.auspice.json:
+          type: file
+          description: Auspice JSON V2 containing nextclade results
+          pattern: "*.{tree.json}"
+  - ndjson:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.ndjson:
+          type: file
+          description: newline-delimited JSON file containing nextclade results
+          pattern: "*.{ndjson}"
+  - fasta_aligned:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.aligned.fasta:
+          type: file
+          description: FASTA file containing aligned sequences from nextclade results
+          pattern: "*.{aligned.fasta}"
+  - fasta_translation:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_translation.*.fasta":
+          type: file
+          description: FASTA file containing aligned peptides from nextclade results
+          pattern: "*.{_translation.}*.{fasta}"
+  - nwk:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.nwk:
+          type: file
+          description: NWK file containing nextclade results
+          pattern: "*.{nwk}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@antunderwood"
   - "@drpatelh"
 maintainers:
   - "@antunderwood"
   - "@drpatelh"
+  - "@drpatelh"
+updated on 2024.08.23:
+  - "@nmshahir"

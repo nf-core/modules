@@ -1,5 +1,6 @@
 name: "gvcftools_extractvariants"
-description: Removes all non-variant blocks from a gVCF file to produce a smaller variant-only VCF file.
+description: Removes all non-variant blocks from a gVCF file to produce a smaller
+  variant-only VCF file.
 keywords:
   - gvcftools
   - extract_variants
@@ -8,35 +9,39 @@ keywords:
   - vcf
 tools:
   - "gvcftools":
-      description: "gvcftools is a package of small utilities for creating and analyzing gVCF files"
+      description: "gvcftools is a package of small utilities for creating and analyzing
+        gVCF files"
       homepage: "https://sites.google.com/site/gvcftools/home"
       documentation: "https://sites.google.com/site/gvcftools/home/configuration-and-analysis"
       tool_dev_url: "https://github.com/sequencing/gvcftools"
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - gvcf:
-      type: file
-      description: GVCF file
-      pattern: "*.{g.vcf,gvcf}.gz"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - gvcf:
+        type: file
+        description: GVCF file
+        pattern: "*.{g.vcf,gvcf}.gz"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - vcf:
-      type: file
-      description: Converted variant-only VCF file
-      pattern: "*.vcf.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf.gz":
+          type: file
+          description: Converted variant-only VCF file
+          pattern: "*.vcf.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

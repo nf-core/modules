@@ -12,34 +12,43 @@ tools:
       tool_dev_url: "https://github.com/gtonkinhill/panaroo"
       doi: "10.1186/s13059-020-02090-4"
       licence: ["MIT"]
+      identifier: biotools:panaroo
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - gff:
-      type: file
-      description: A set of GFF3 formatted files
-      pattern: "*.{gff}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - gff:
+        type: file
+        description: A set of GFF3 formatted files
+        pattern: "*.{gff}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - results:
-      type: directory
-      description: Directory containing Panaroo result files
-      pattern: "*/*"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - results/*:
+          type: directory
+          description: Directory containing Panaroo result files
+          pattern: "*/*"
   - aln:
-      type: file
-      description: Core-genome alignment produced by Panaroo (Optional)
-      pattern: "*.{fasta}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - results/core_gene_alignment.aln:
+          type: file
+          description: Core-genome alignment produced by Panaroo (Optional)
+          pattern: "*.{fasta}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@rpetit3"
 maintainers:

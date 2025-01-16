@@ -1,0 +1,167 @@
+name: Run nf-test
+on:
+  push:
+    branches:
+      # https://docs.renovatebot.com/key-concepts/automerge/#branch-vs-pr-automerging
+      - "renovate/**" # branches Renovate creates
+  pull_request:
+    branches: [master]
+  merge_group:
+    types: [checks_requested]
+    branches: [master]
+  workflow_dispatch:
+    inputs:
+      runners:
+        description: "Runners to test on"
+        type: choice
+        options:
+          - "ubuntu-latest"
+          - "self-hosted"
+        default: "self-hosted"
+
+# Cancel if a newer run is started
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # renovate: datasource=github-releases depName=askimed/nf-test versioning=semver
+  NFT_VER: "0.9.2"
+  NXF_ANSI_LOG: false
+  NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
+  NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
+  # renovate: datasource=github-releases depName=nextflow/nextflow versioning=semver
+  NXF_VER: "24.10.2"
+
+jobs:
+  nf-test-changes:
+    name: nf-test-changes
+    runs-on: ubuntu-latest
+    outputs:
+      # Expose detected tags as 'modules' and 'workflows' output variables
+      paths: ${{ steps.list.outputs.components }}
+      modules: ${{ steps.outputs.outputs.modules }}
+      subworkflows: ${{ steps.outputs.outputs.subworkflows}}
+      # Prod for version bumping
+    steps:
+      - name: Clean Workspace # Purge the workspace in case it's running on a self-hosted runner
+        run: |
+          ls -la ./
+          rm -rf ./* || true
+          rm -rf ./.??* || true
+          ls -la ./
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          fetch-depth: 0
+
+      - name: List nf-test files
+        id: list
+        uses: adamrtalbot/detect-nf-test-changes@de3c3c8e113031b4f15a3c1104b5f135e8346997 # v0.0.6
+        with:
+          head: ${{ github.sha }}
+          base: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
+          n_parents: 0
+          exclude_tags: "gpu"
+
+      - name: Separate modules and subworkflows
+        id: outputs
+        run: |
+          echo modules=$(echo '${{ steps.list.outputs.components }}' | jq -c '. | map(select(contains("modules"))) | map(gsub("modules/nf-core/"; ""))') >> $GITHUB_OUTPUT
+          echo subworkflows=$(echo '${{ steps.list.outputs.components }}' | jq '. | map(select(contains("subworkflows"))) | map(gsub("subworkflows/nf-core/"; ""))') >> $GITHUB_OUTPUT
+      - name: debug
+        run: |
+          echo ${{ steps.list.outputs.components }}
+          echo ${{ steps.outputs.outputs.modules }}
+          echo ${{ steps.outputs.outputs.subworkflows }}
+  nf-test:
+    runs-on: ${{ github.event.inputs.runners || 'ubuntu-latest' }}
+    name: "Test | ${{ matrix.profile }} | ${{ matrix.shard }}"
+    needs: nf-test-changes
+    if: ${{ needs.nf-test-changes.outputs.modules != '[]' || needs.nf-test-changes.outputs.subworkflows != '[]' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4, 5]
+        profile: [conda, docker_self_hosted, singularity]
+    env:
+      NXF_ANSI_LOG: false
+      TOTAL_SHARDS: 5
+
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          fetch-depth: 0
+
+      - name: Filter paths
+        id: filter
+        run: |
+          PATHS='${{ needs.nf-test-changes.outputs.paths }}'
+          FILTERED=$(jq -n -c \
+            --arg profile "${{ matrix.profile }}" \
+            --argjson input_paths "$PATHS" \
+            '
+            def get_skip_list: inputs | .[$profile] // [];
+
+            # Get skip list and filter
+            get_skip_list as $skip_patterns |
+
+            # Debug output
+            ($skip_patterns | "Skip patterns: " + (map("  - " + .) | join(","))) |
+            debug |
+
+            # Do the actual filtering
+            $input_paths | map(
+              . as $path |
+              select($skip_patterns | all(. as $pattern | ($path | startswith($pattern)) | not))
+            ) as $result |
+
+            # Debug what was skipped
+            (if ($input_paths - $result) | length > 0 then
+              "Skipped: " + (($input_paths - $result) | map("  - " + .) | join(","))
+            else
+              "No paths skipped"
+            end) |
+            debug |
+
+            $result
+            ' .github/skip_nf_test.json)
+
+          echo "filtered_paths=${FILTERED}" >> $GITHUB_OUTPUT
+
+      - name: Run nf-test Action
+        if: ${{steps.filter.outputs.filtered_paths != '[]'}}
+        uses: ./.github/actions/nf-test-action
+        env:
+          SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
+          SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
+          SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
+          SENTIEON_AUTH_MECH: "GitHub Actions - token"
+        with:
+          profile: ${{ matrix.profile }}
+          shard: ${{ matrix.shard }}
+          total_shards: ${{ env.TOTAL_SHARDS }}
+          paths: "${{ join(fromJson(steps.filter.outputs.filtered_paths), ' ') }}"
+
+  confirm-pass:
+    runs-on: ubuntu-latest
+    needs: [nf-test]
+    if: always()
+    steps:
+      - name: One or more tests failed
+        if: ${{ contains(needs.*.result, 'failure') }}
+        run: exit 1
+
+      - name: One or more tests cancelled
+        if: ${{ contains(needs.*.result, 'cancelled') }}
+        run: exit 1
+
+      - name: All tests ok
+        if: ${{ contains(needs.*.result, 'success') }}
+        run: exit 0
+
+      - name: debug-print
+        if: always()
+        run: |
+          echo "toJSON(needs) = ${{ toJSON(needs) }}"
+          echo "toJSON(needs.*.result) = ${{ toJSON(needs.*.result) }}"
