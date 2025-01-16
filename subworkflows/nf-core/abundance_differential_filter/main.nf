@@ -59,26 +59,6 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         .combine(ch_contrasts.first()) // Just taking the first contrast
         .multiMap(criteria)
 
-    ch_input.view{ it -> "ch_input is ${it}"}
-    ch_samplesheet.view{ it -> "ch_samplesheet is ${it}"}
-    ch_contrasts.view{ it -> "ch_contrasts is ${it}"}
-
-    ch_input
-        .combine(ch_samplesheet)
-        .combine(ch_contrasts)
-        .view{ it -> "inputs is ${it}"}
-    ch_input
-        .combine(ch_samplesheet)
-        .combine(ch_contrasts.first())
-        .view{ it -> "norm_inputs is ${it}"}
-
-    inputs.samples_and_matrix.view{ it -> "inputs.samples_and_matrix is ${it}" }
-    inputs.contrasts_for_diff.view{ it -> "inputs.contrasts is ${it}" }
-    inputs.filter_params.view{ it -> "inputs.filter_params is ${it}" }
-
-    norm_inputs.samples_and_matrix.view{ it -> "norm_inputs.samples_and_matrix is ${it}" }
-    norm_inputs.contrasts_for_norm.view { it -> "norm_inputs.contrasts is ${it}" }
-
     // ----------------------------------------------------
     // Run Limma
     // ----------------------------------------------------
@@ -195,11 +175,6 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         ch_diff_filter_params.fc_input,
         ch_diff_filter_params.stat_input
     )
-
-    ch_results.view{ it -> "ch_results is ${it}" }
-    ch_normalised_matrix.view{ it -> "ch_normalised_matrix is ${it}" }
-    ch_model.view{ it -> "ch_model is ${it}" }
-    CUSTOM_FILTERDIFFERENTIALTABLE.out.filtered.view{ it -> "filtered output is ${it}" }
 
     emit:
     // main results
