@@ -102,6 +102,8 @@ jobs:
     env:
       NXF_ANSI_LOG: false
       TOTAL_SHARDS: ${{ needs.nf-test-changes.outputs.total_shards }}
+    outputs:
+      filtered_paths: ${{ steps.filter.outputs.filtered_paths }}
 
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
