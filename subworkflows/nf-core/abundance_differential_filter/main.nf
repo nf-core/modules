@@ -31,18 +31,16 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
 
     // Set up how the channels crossed below will be used to generate channels for processing
     def criteria = multiMapCriteria { meta_input, abundance, analysis_method, fc_threshold, stat_threshold, meta_exp, samplesheet, meta_contrasts, variable, reference, target ->
+        def meta_for_diff = mergeMaps(meta_contrasts, meta_input) + [ 'method': analysis_method ]
+        def meta_input_new = meta_input + [ 'method': analysis_method ]
         samples_and_matrix:
-            meta_map = meta_input + [ 'method': analysis_method ]
-            [meta_map, samplesheet, abundance]
-        contrasts:
-            meta_map = mergeMaps(meta_contrasts, meta_input) + [ 'method': analysis_method ]
-            [ meta_map, variable, reference, target ]
+            [ meta_input_new, samplesheet, abundance ]
+        contrasts_for_diff:
+            [ meta_for_diff, variable, reference, target ]
         filter_params:
-            meta_map = mergeMaps(meta_contrasts, meta_input) + [ 'method': analysis_method ]
-            [meta_map, [ 'fc_threshold': fc_threshold, 'stat_threshold': stat_threshold ]]
+            [ meta_for_diff, [ 'fc_threshold': fc_threshold, 'stat_threshold': stat_threshold ]]
         contrasts_for_norm:
-            meta_map = meta_input + [ 'method': analysis_method ]
-            [ meta_map, variable, reference, target ]
+            [ meta_input_new, variable, reference, target ]
     }
 
     // For DIFFERENTIAL modules we need to cross the things we're iterating so we
@@ -61,13 +59,13 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // depending on the contrast setting etc, these modules may subset matrices,
     // hence not returning the full normalized matrix as NORM modules would do.
     LIMMA_NORM(
-        inputs.contrasts_for_norm.filter{it[0].method == 'limma'}.unique(),
-        inputs.samples_and_matrix.filter{it[0].method == 'limma'}.unique()
+        norm_inputs.contrasts_for_norm.filter{it[0].method == 'limma'},
+        norm_inputs.samples_and_matrix.filter{it[0].method == 'limma'}
     )
 
     LIMMA_DIFFERENTIAL(
-        inputs.contrasts.filter{it[0].method == 'limma'},
-        inputs.samples_and_matrix.filter { it[0].method == 'limma' }
+        inputs.contrasts_for_diff.filter{ it[0].method == 'limma' },
+        inputs.samples_and_matrix.filter{ it[0].method == 'limma' }
     )
 
     // ----------------------------------------------------
@@ -79,14 +77,14 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // depending on the contrast setting etc, these modules may subset matrices,
     // hence not returning the full normalized matrix as NORM modules would do.
     DESEQ2_NORM(
-        inputs.contrasts_for_norm.filter{it[0].method == 'deseq2'}.unique(),
-        inputs.samples_and_matrix.filter{it[0].method == 'deseq2'}.unique(),
+        norm_inputs.contrasts_for_norm.filter{it[0].method == 'deseq2'},
+        norm_inputs.samples_and_matrix.filter{it[0].method == 'deseq2'},
         ch_control_features.first(),
         ch_transcript_lengths.first()
     )
 
     DESEQ2_DIFFERENTIAL(
-        inputs.contrasts.filter{it[0].method == 'deseq2'},
+        inputs.contrasts_for_diff.filter{it[0].method == 'deseq2'},
         inputs.samples_and_matrix.filter{it[0].method == 'deseq2'},
         ch_control_features.first(),
         ch_transcript_lengths.first()
@@ -99,7 +97,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // NOTE that this method don't rely on normalization, hence it does
     // not produce a normalized matrix.
     PROPR_PROPD(
-        inputs.contrasts.filter{it[0].method == 'propd'},
+        inputs.contrasts_for_diff.filter{it[0].method == 'propd'},
         inputs.samples_and_matrix.filter { it[0].method == 'propd' }
     )
 
