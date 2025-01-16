@@ -58,21 +58,14 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         .combine(ch_contrasts.first()) // Just taking the first contrast
         .multiMap(criteria)
 
-    println('---- inputs ----')
-    println('inputs - samples_and_matrix')
-    inputs.samples_and_matrix.view()
-    println('inputs - contrasts')
-    inputs.contrasts.view()
-    println('inputs - filter_params')
-    inputs.filter_params.view()
 
-    println('---- norm_inputs ----')
-    println('norm_inputs - samples_and_matrix')
-    norm_inputs.samples_and_matrix.view()
-    println('norm_inputs - contrasts')
-    norm_inputs.contrasts.view()
-    println('norm_inputs - filter_params')
-    norm_inputs.filter_params.view()
+    inputs.samples_and_matrix.view{ it -> "inputs.samples_and_matrix is ${it}" }
+    inputs.contrasts.view{ it -> "inputs.contrasts is ${it}" }
+    inputs.filter_params.view{ it -> "inputs.filter_params is ${it}" }
+
+    norm_inputs.samples_and_matrix.view{ it -> "norm_inputs.samples_and_matrix is ${it}" }
+    norm_inputs.contrasts.view { it -> "norm_inputs.contrasts is ${it}" }
+    norm_inputs.filter_params.view{ it -> "norm_inputs.filter_params is ${it}" }
 
 
     // ----------------------------------------------------
@@ -151,14 +144,9 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         .mix(LIMMA_DIFFERENTIAL.out.versions)
         .mix(PROPR_PROPD.out.versions)
 
-    println('---- results ----')
-    ch_results.view()
-
-    println('---- normalized_matrix ----')
-    ch_normalised_matrix.view()
-
-    println('---- model ----')
-    ch_model.view()
+    ch_results.view{ it -> "ch_results is ${it}" }
+    ch_normalised_matrix.view{ it -> "ch_normalised_matrix is ${it}" }
+    ch_model.view{ it -> "ch_model is ${it}" }
 
     // ----------------------------------------------------
     // Filter DE results
@@ -201,8 +189,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         ch_diff_filter_params.stat_input
     )
 
-    println('---- filtered_results ----')
-    CUSTOM_FILTERDIFFERENTIALTABLE.out.filtered.view()
+    CUSTOM_FILTERDIFFERENTIALTABLE.out.filtered.view{ it -> "filtered output is ${it}" }
 
     emit:
     // main results
