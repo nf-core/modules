@@ -62,11 +62,11 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         .multiMap(criteria)
 
     inputs.samples_and_matrix.view{ it -> "inputs.samples_and_matrix is ${it}" }
-    inputs.contrasts.view{ it -> "inputs.contrasts is ${it}" }
+    inputs.contrasts_for_diff.view{ it -> "inputs.contrasts is ${it}" }
     inputs.filter_params.view{ it -> "inputs.filter_params is ${it}" }
 
     norm_inputs.samples_and_matrix.view{ it -> "norm_inputs.samples_and_matrix is ${it}" }
-    norm_inputs.contrasts.view { it -> "norm_inputs.contrasts is ${it}" }
+    norm_inputs.contrasts_for_norm.view { it -> "norm_inputs.contrasts is ${it}" }
     norm_inputs.filter_params.view{ it -> "norm_inputs.filter_params is ${it}" }
 
     // ----------------------------------------------------
