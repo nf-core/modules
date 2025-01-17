@@ -1,0 +1,65 @@
+nextflow_process {
+
+    name "Test Process KRAKENUNIQ_DOWNLOAD"
+    script "../main.nf"
+    process "KRAKENUNIQ_DOWNLOAD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "krakenuniq"
+    tag "krakenuniq/download"
+    tag "debug"
+
+    test("taxonomy") {
+
+        when {
+            process {
+                """
+                input[0] = 'taxonomy'
+                """
+            }
+        }
+
+        then {
+            println('HHELLLOOOOO')
+            def stablefiles = []
+            file(process.out.output.get(0)).eachFileRecurse{ file -> if (!file.isDirectory() && !["timestamp"].find {file.toString().endsWith(it)}) {stablefiles.add(file)} }
+            println(stablefiles)
+            def unstablefiles = []
+            file(process.out.output.get(0)).eachFileRecurse{ file -> if (["timestamp"].find {file.toString().endsWith(it)}) {unstablefiles.add(file.getName().toString())} }
+            println(unstablefiles)
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        stablefiles.sort(),
+                        unstablefiles.sort(),
+                        process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("taxonomy - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = 'taxonomy'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
