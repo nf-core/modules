@@ -32,7 +32,6 @@ process CATPACK_PREPARE {
         --acc2tax ${acc2tax} \\
         --db_dir ${prefix}/ \\
         ${args}
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         catpack: \$(CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g')
@@ -44,7 +43,6 @@ process CATPACK_PREPARE {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}/
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         catpack: \$(CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g')
