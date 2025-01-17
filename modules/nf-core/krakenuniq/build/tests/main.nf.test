@@ -53,8 +53,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        stablefiles,
-                        unstablefiles.sort()
+                        stablefiles.sort(),
+                        unstablefiles.sort(),
+                        process.out.versions
                     ).match()
                 }
             )
@@ -93,8 +94,9 @@ test("sarscov2 - fasta - nocleanup") {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        stablefiles,
-                        unstablefiles.sort()
+                        stablefiles.sort(),
+                        unstablefiles.sort(),
+                        process.out.versions
                     ).match()
                 }
             )
