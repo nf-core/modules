@@ -1,0 +1,54 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test krakenuniq/download
+nextflow_process {
+
+    name "Test Process KRAKENUNIQ_DOWNLOAD"
+    script "../main.nf"
+    process "KRAKENUNIQ_DOWNLOAD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "krakenuniq"
+    tag "krakenuniq/download"
+
+    test("taxonomy") {
+
+        when {
+            process {
+                """
+                input[0] = 'taxonomy'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("taxonomy - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = 'taxonomy'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
