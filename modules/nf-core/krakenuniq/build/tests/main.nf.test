@@ -40,17 +40,61 @@ nextflow_process {
                             }
 
                 input[0] = ch_input
+                input[1] = false
                 """
             }
         }
 
         then {
             def stablefiles = []
-            file(process.out.db.get(0).get(1)).eachFileRecurse{ file -> if (!["database-build.log", "database.report.tsv", "timestamp", "taxonomy", "taxdump.tar.gz", "names.dmp", "nodes.dmp"].find {file.toString().endsWith(it)}) {stablefiles.add(file)} }
+            file(process.out.db.get(0).get(1)).eachFileRecurse{ file -> if (!file.isDirectory() && !["database-build.log", "database.report.tsv", "timestamp", "taxdump.tar.gz", "names.dmp", "nodes.dmp"].find {file.toString().endsWith(it)}) {stablefiles.add(file)} }
+            def unstablefiles = []
+            file(process.out.db.get(0).get(1)).eachFileRecurse{ file -> if (["database-build.log", "database.report.tsv", "timestamp", "taxdump.tar.gz", "names.dmp", "nodes.dmp"].find {file.toString().endsWith(it)}) {unstablefiles.add(file.getName().toString())} }
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        stablefiles
+                        stablefiles,
+                        unstablefiles.sort()
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+test("sarscov2 - fasta - nocleanup") {
+
+        when {
+            process {
+                """
+                ch_fastas      = Channel.fromPath(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ch_seqid2mapid = Channel.fromPath(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/seqid2taxid.map', checkIfExists: true)
+
+                ch_input = ch_fastas
+                            .combine(KRAKENUNIQ_DOWNLOAD.out.output)
+                            .combine(ch_seqid2mapid)
+                            .map {
+                                fna, tax, map ->
+
+                                [ [id:'test'] , fna, tax, map ]
+                            }
+
+                input[0] = ch_input
+                input[1] = true
+                """
+            }
+        }
+
+        then {
+            def stablefiles = []
+            file(process.out.db.get(0).get(1)).eachFileRecurse{ file -> if (!file.isDirectory() && !["database-build.log", "database.report.tsv", "timestamp", "taxdump.tar.gz", "names.dmp", "nodes.dmp"].find {file.toString().endsWith(it)}) {stablefiles.add(file)} }
+            def unstablefiles = []
+            file(process.out.db.get(0).get(1)).eachFileRecurse{ file -> if (["database-build.log", "database.report.tsv", "timestamp", "taxdump.tar.gz", "names.dmp", "nodes.dmp"].find {file.toString().endsWith(it)}) {unstablefiles.add(file.getName().toString())} }
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        stablefiles,
+                        unstablefiles.sort()
                     ).match()
                 }
             )
@@ -65,6 +109,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [[id:'test'], [] , [] , []]
+                input[1] = false
                 """
             }
         }

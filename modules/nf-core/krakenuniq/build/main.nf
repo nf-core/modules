@@ -9,18 +9,21 @@ process KRAKENUNIQ_BUILD {
 
     input:
     tuple val(meta), path(custom_library_dir, stageAs: "library/*"), path(custom_taxonomy_dir, stageAs: "taxonomy"), path(custom_seqid2taxid)
+    val keep_intermediate
 
     output:
     tuple val(meta), path("${prefix}/"), emit: db
-    path "versions.yml"                , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args  = task.ext.args ?: ''
-    prefix    = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
     custom_db = custom_library_dir ? "mkdir ${prefix} && mv library taxonomy ${custom_seqid2taxid} ${prefix}" : ""
+    run_cleanup = keep_intermediate ? "" : "find -L ${prefix} -type f -not -name \"*.kdb\" -type f -not -name \"*idx\" -not -name \"taxDB\" -delete"
+
     """
     ${custom_db}
 
@@ -28,6 +31,8 @@ process KRAKENUNIQ_BUILD {
         ${args} \\
         --threads ${task.cpus} \\
         --db ${prefix}
+
+    ${run_cleanup}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -37,6 +42,7 @@ process KRAKENUNIQ_BUILD {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
+    run_cleanup = keep_intermediate ? "" : "find -L ${prefix} -type f -not -name \"*.kdb\" -type f -not -name \"*idx\" -not -name \"taxDB\" -delete"
     """
     mkdir ${prefix}/
     touch ${prefix}/database-build.log
