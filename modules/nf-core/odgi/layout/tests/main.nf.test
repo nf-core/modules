@@ -26,10 +26,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-//                { assert snapshot(process.out).match() } // odgi layout is not deterministic
+                // odgi layout is not deterministic
+                { assert path(process.out.lay.get(0).get(1)).exists() },
+                { assert path(process.out.tsv.get(0).get(1)).exists() }
             )
         }
-
     }
-
 }

@@ -25,10 +25,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-//                 { assert snapshot(process.out).match() } // the odgi file on disk may not be deterministic, but the graph itself is
+                { assert path(process.out.og.get(0).get(1)).exists() } // the odgi file on disk may not be deterministic, but the graph itself is
             )
         }
-
     }
-
 }
