@@ -48,7 +48,7 @@ nextflow_process {
 
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("versions_paired") },
+                { assert snapshot(process.out.versions).match("") },
                 { assert output_content.size() > 1 }
             )
         }
