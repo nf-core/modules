@@ -40,7 +40,6 @@ process SHINYNGS_VALIDATEFOMCOMPONENTS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        r-base: \$(echo \$(R --version 2>&1) | sed 's/^.*R version //; s/ .*\$//')
         r-shinyngs: \$(Rscript -e "library(shinyngs); cat(as.character(packageVersion('shinyngs')))")
     END_VERSIONS
     """

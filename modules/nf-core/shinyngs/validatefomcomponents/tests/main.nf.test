@@ -62,7 +62,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/Mus_musculus.anno.tsv", checkIfExists:true)
                 ]
                 input[2] = [['id':'SRP254919'],
-                    file("params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.contrasts.yaml", checkIfExists:true)
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.contrasts.yaml", checkIfExists:true)
                 ]
                 """
             }
