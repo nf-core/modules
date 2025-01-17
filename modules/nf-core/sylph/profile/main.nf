@@ -32,7 +32,6 @@ process SYLPH_PROFILE {
     "${task.process}":
         sylph: \$(sylph -V|awk '{print \$2}')
     END_VERSIONS
-
     """
 
     stub:
