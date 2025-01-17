@@ -34,6 +34,11 @@ input:
     - custom_seqid2taxid:
         type: file
         description: custom seqid2taxid
+  - - keep_intermediate:
+        type: boolean
+        description: "Keep intermediate files"
+        pattern: true|false
+
 output:
   - db:
       - meta:
