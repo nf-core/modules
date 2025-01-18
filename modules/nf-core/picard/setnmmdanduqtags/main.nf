@@ -8,11 +8,12 @@ process PICARD_SETNMMDANDUQTAGS {
         'biocontainers/picard:3.3.0--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bam, name: "input/*")
+    tuple val(meta), path(bam, name:"input/*"), path(bai, name:"input/*")
     tuple val(meta2), path(reference)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.bai"), emit: bai
     path "versions.yml"           , emit: versions
 
     when:
@@ -38,6 +39,13 @@ process PICARD_SETNMMDANDUQTAGS {
         --OUTPUT ${prefix}.bam \\
         --REFERENCE_SEQUENCE ${reference}
 
+    if [ ${bai.getExtension()} == "bai" ] ; then
+        cp ${bai} ${prefix}.bam.bai
+    else
+        java -jar picard.jar BuildBamIndex \\
+            I=${prefix}.bam
+    fi
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         picard: \$( echo \$(picard SetNmMdAndUqTags --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
@@ -49,6 +57,7 @@ process PICARD_SETNMMDANDUQTAGS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bam
+    touch ${prefix}.bai
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

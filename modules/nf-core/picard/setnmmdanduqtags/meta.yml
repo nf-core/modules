@@ -29,6 +29,12 @@ input:
         ontologies:
           - edam: "http://edamontology.org/format_2572"
           - edam: "http://edamontology.org/format_2573"
+    - bai:
+        type: file
+        description: BAM indexing file
+        pattern: "*.bai"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327"
   - - meta2:
         type: map
         description: |
@@ -40,7 +46,7 @@ input:
         pattern: "*.{fasta,fa}"
         ontologies:
           - edam: "http://edamontology.org/format_1929"
-          
+
 output:
   - bam:
     - meta:
@@ -54,7 +60,18 @@ output:
         pattern: "*.bam"
         ontologies:
           - edam: "http://edamontology.org/format_2572"
-          
+  - bai:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - "*.bai":
+        type: file
+        description: BAM indexing file
+        pattern: "*.bai"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327"
   - versions:
     - "versions.yml":
         type: file
