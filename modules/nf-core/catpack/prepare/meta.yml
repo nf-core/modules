@@ -62,6 +62,12 @@ output:
           pattern: "${db}/"
           ontologies:
             - edam: "http://edamontology.org/data_1049"
+  - taxonomy:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
       - "${prefix}/tax/":
           type: directory
           description: Directory containing CAT prepared taxonomy database files
