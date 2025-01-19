@@ -1,0 +1,71 @@
+// nf-core modules test 2FAST2Q
+
+config './nextflow.config'
+
+nextflow_process {
+
+    name "Test Process 2FAST2Q"
+    script "../main.nf"
+    process "FAST2Q"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "2FAST2Q"
+
+    test("FASTQ file with optional guides") {
+
+        when {
+
+            params {
+                module_args = '--g ' + params.modules_testdata_base_path + '/brunello_target_sequence.txt'
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id: 'test', single_end: true ], // meta map
+                    file(params.modules_testdata_base_path + '/SRR23101364_1.small.fastq.gz', checkIfExists: true), // FASTQ file
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.data).exists() }, // Check that output data exists
+                { assert path(process.out.versions).readLines().join("\n").contains("2FAST2Q version") } // Verify version output
+            )
+        }
+
+    }
+
+    test("FASTQ self test") {
+
+        when {
+            
+        params {
+            module_args = '-t'
+        }
+
+        process {
+            """
+            input[0] = [
+            [ id:'test1', single_end:false ], // meta map
+            file(params.modules_testdata_base_path + '/SRR23101364_1.small.fastq.gz', checkIfExists: true), // FASTQ file
+            ]
+            """
+        }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.data).exists() }, // Check that output data exists
+                { assert path(process.out.versions).readLines().join("\n").contains("2FAST2Q version") } // Verify version output
+            )
+        }
+
+    }
+
+}
