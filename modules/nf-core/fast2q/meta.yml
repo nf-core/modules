@@ -16,7 +16,7 @@ tools:
     identifier: ''
 
 input:
-- - meta:
+- - meta1:
       type: map
       description: |
         Groovy Map containing sample information
@@ -25,6 +25,16 @@ input:
       type: file
       description: FASTQ file
       pattern: "*.{fastq,gz}"
+
+- - meta2:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - library:
+      type: file
+      description: library file
+      pattern: "*.csv"
 
 output:
 - processed:

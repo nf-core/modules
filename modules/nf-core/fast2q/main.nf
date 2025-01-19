@@ -9,7 +9,8 @@ process FAST2Q {
         'quay.io/biocontainers/fast2q' }"
 
     input:
-    tuple val(meta), path(fastq)
+    tuple val(meta1), path(fastq)
+    tuple val(meta2), path(library)
 
     output:
     tuple val(meta), path("./2FAST2Q_output/*.*")   , emit: processed
@@ -19,13 +20,14 @@ process FAST2Q {
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args ?: ''
-    def input   = "--s ${fastq}" ?: ''
+    def args            = task.ext.args ?: ''
+    def input_file      = "--s ${fastq}" ?: ''
+    def library_file    = library ? "--g ${library}" : ''
 
     """
-    mkdir ./2FAST2Q_output
+    mkdir -p ./2FAST2Q_output
 
-    2fast2q -c --o ./2FAST2Q_output/ $input $args
+    2fast2q -c --o ./2FAST2Q_output/ $input_file $library_file $args
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process}:
