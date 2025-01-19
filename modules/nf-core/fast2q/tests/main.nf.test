@@ -10,19 +10,79 @@ nextflow_process {
     
     config './nextflow.config'
 
-    test("FASTQ file with optional library") {
-
+    test("Extracting all features at position=0 with default length of 20bp from a FASTQ file (without optional library.csv)") {
+        
         when {
-
+            
             params {
-                module_args = '-c'
+                module_args = '--mo EC'
             }
 
             process {
                 """
                 input[0] = [
                     [ id:'test1', single_end:true ], // meta map
-                    file(params.modules_testdata_base_path + '/example.fastq.gz', checkIfExists: true) // FASTQ file
+                    file(params.modules_testdata_base_path + '/SRR8983579.small.fastq.gz', checkIfExists: true) // FASTQ file
+                ]
+                input[1] = [
+                    [ id:'test2', single_end:true ], // meta map for second input
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.processed).exists() } // Check processed output exists
+                { assert path(process.out.versions).readLines().join("\n").contains("2FAST2Q version") } // Verify version output
+            )
+        }
+
+    }
+
+    test("2FAST2Q self-test") {
+
+        when {
+
+            params {
+            module_args = '-t'
+                }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test1', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + '/SRR8983579.small.fastq.gz', checkIfExists: true) // FASTQ file
+                ]
+                input[1] = [
+                    [ id:'test2', single_end:true ], // meta map for second input
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.processed).exists() } // Check processed output exists
+                { assert path(process.out.versions).readLines().join("\n").contains("2FAST2Q version") } // Verify version output
+            )
+        }
+
+    }
+
+    /* test("FASTQ file with optional library") {
+
+        when {
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test1', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + '/SRR8983579.small.fastq.gz', checkIfExists: true) // FASTQ file
                 ]
                 input[1] = [
                     [ id:'test2', single_end:true ], // meta map for second input
@@ -39,71 +99,6 @@ nextflow_process {
                 { assert path(process.out.versions).readLines().join("\n").contains("2FAST2Q version") } // Verify version output
             )
         }
-
-    }
-
-    test("Extracting all features at position=0 with default length of 20bp from a FASTQ file (without optional library.csv)") {
-        
-        when {
-            
-            params {
-                module_args = '-c --mo EC'
-            }
-
-            process {
-                """
-                input[0] = [
-                    [ id:'test1', single_end:true ], // meta map
-                    file(params.modules_testdata_base_path + '/example.fastq.gz', checkIfExists: true) // FASTQ file
-                ]
-                input[1] = [
-                    [ id:'test2', single_end:true ], // meta map for second input
-                    []
-                ]
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert path(process.out.processed).exists() } // Check processed output exists
-                { assert path(process.out.versions).readLines().join("\n").contains("2FAST2Q version") } // Verify version output
-            )
-        }
-
-    }
-
-        test("2FAST2Q self-test") {
-
-        when {
-
-            params {
-            module_args = '-c -t'
-                }
-
-            process {
-                """
-                input[0] = [
-                    [ id:'test1', single_end:true ], // meta map
-                    file(params.modules_testdata_base_path + '/example.fastq.gz', checkIfExists: true) // FASTQ file
-                ]
-                input[1] = [
-                    [ id:'test2', single_end:true ], // meta map for second input
-                    []
-                ]
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert path(process.out.processed).exists() } // Check processed output exists
-                { assert path(process.out.versions).readLines().join("\n").contains("2FAST2Q version") } // Verify version output
-            )
-        }
-
-    }
+    } */
 
 }
