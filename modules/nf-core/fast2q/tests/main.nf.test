@@ -33,7 +33,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.data).exists() }, // Check that output data exists
+                { assert path(process.out.processed).exists() } // Check processed output exists
                 { assert path(process.out.versions).readLines().join("\n").contains("2FAST2Q version") } // Verify version output
             )
         }
@@ -61,7 +61,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.data).exists() }, // Check that output data exists
+                { assert path(process.out.processed).exists() } // Check processed output exists
                 { assert path(process.out.versions).readLines().join("\n").contains("2FAST2Q version") } // Verify version output
             )
         }
