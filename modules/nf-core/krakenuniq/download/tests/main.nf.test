@@ -8,7 +8,6 @@ nextflow_process {
     tag "modules_nfcore"
     tag "krakenuniq"
     tag "krakenuniq/download"
-    tag "debug"
 
     test("taxonomy") {
 
@@ -21,12 +20,11 @@ nextflow_process {
         }
 
         then {
-            println('HHELLLOOOOO')
             def stablefiles = []
-            file(process.out.output.get(0)).eachFileRecurse{ file -> if (!file.isDirectory() && !["timestamp"].find {file.toString().endsWith(it)}) {stablefiles.add(file)} }
+            file(process.out.output.get(0)).eachFileRecurse{ file -> if (!file.isDirectory() && !["timestamp", "taxdump.tar.gz"].find {file.toString().endsWith(it)}) {stablefiles.add(file)} }
             println(stablefiles)
             def unstablefiles = []
-            file(process.out.output.get(0)).eachFileRecurse{ file -> if (["timestamp"].find {file.toString().endsWith(it)}) {unstablefiles.add(file.getName().toString())} }
+            file(process.out.output.get(0)).eachFileRecurse{ file -> if (["timestamp", "taxdump.tar.gz"].find {file.toString().endsWith(it)}) {unstablefiles.add(file.getName().toString())} }
             println(unstablefiles)
             assertAll(
                 { assert process.success },
