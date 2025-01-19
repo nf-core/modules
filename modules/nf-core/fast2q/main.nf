@@ -12,9 +12,8 @@ process FAST2Q {
     tuple val(meta), path(fastq)
 
     output:
-    val(meta)           , emit: summary
-    path("*.*")         , emit: results_dir
-    path "versions.yml" , emit: versions
+    tuple val(meta), path("./2FAST2Q_output/*.*")   , emit: processed
+    path "versions.yml"                             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

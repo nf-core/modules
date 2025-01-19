@@ -10,7 +10,7 @@ nextflow_process {
 
     tag "modules"
     tag "modules_nfcore"
-    tag "2FAST2Q"
+    tag "fast2q"
 
     test("FASTQ file with optional guides") {
 
@@ -41,7 +41,7 @@ nextflow_process {
     }
 
     test("FASTQ self test") {
-
+        
         when {
             
         params {

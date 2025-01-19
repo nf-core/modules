@@ -1,37 +1,53 @@
----
 name: fast2q
 description: A program that counts sequence occurrences in FASTQ files.
 keywords:
-  - CRISPRi
-  - FASTQ
-  - genomics
+- CRISPRi
+- FASTQ
+- genomics
 tools:
-  - 2FAST2Q:
-      description: |
-        2FAST2Q is ideal for CRISPRi-Seq, and for extracting and counting any kind of information from reads in the fastq format, such as barcodes in Bar-seq experiments.
-        2FAST2Q can work with sequence mismatches, Phred-score, and be used to find and extract unknown sequences delimited by known sequences.
-        2FAST2Q can extract multiple features per read using either fixed positions or delimiting search sequences.
-      homepage: https://github.com/afombravo/2FAST2Q
-      doi: PeerJ 10:e14041
-      licence: ["GPL-3.0-or-later"]
+- 2FAST2Q:
+    description: |
+      2FAST2Q is ideal for CRISPRi-Seq, and for extracting and counting any kind of information from reads in the fastq format, such as barcodes in Bar-seq experiments.
+      2FAST2Q can work with sequence mismatches, Phred-score, and be used to find and extract unknown sequences delimited by known sequences.
+      2FAST2Q can extract multiple features per read using either fixed positions or delimiting search sequences.
+    homepage: https://github.com/afombravo/2FAST2Q
+    doi: 10.7717/peerj.14041
+    licence: ["GPL-3.0-or-later"]
+    identifier: ''
 
 input:
-    type: file
-    description: FASTQ file
-    pattern: "*.{fastq,gz}"
+- - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fastq:
+      type: file
+      description: FASTQ file
+      pattern: "*.{fastq,gz}"
 
 output:
-    type: folder
-    description: Output folder containing all relevant 2FAST2Q outputs
-    pattern: "*.*"
+- processed:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:true ]
+      pattern: "./2FAST2Q_output/*.*"
 
-  - versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+  - ./2FAST2Q_output/*.*:
+      type: map
+      description: |
+        Folder containing all the processed data
+      pattern: "./2FAST2Q_output/*.*"
+
+- versions:
+  - versions.yml:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 
 authors:
-  - Afonso Bravo
+- "@afombravo"
 maintainers:
-  - Afonso Bravo
+- "@afombravo"
