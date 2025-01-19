@@ -52,6 +52,10 @@ nextflow_process {
                     [ id:'test1', single_end:true ], // meta map
                     file(params.modules_testdata_base_path + '/SRR23101364_1.small.fastq.gz', checkIfExists: true) // FASTQ file
                 ]
+                input[1] = [
+                    [ id:'test2', single_end:true ], // meta map for second input
+                    []
+                ]
                 """
             }
         }
@@ -79,6 +83,10 @@ nextflow_process {
                 input[0] = [
                     [ id:'test1', single_end:true ], // meta map
                     file(params.modules_testdata_base_path + '/SRR23101364_1.small.fastq.gz', checkIfExists: true) // FASTQ file
+                ]
+                input[1] = [
+                    [ id:'test2', single_end:true ], // meta map for second input
+                    []
                 ]
                 """
             }

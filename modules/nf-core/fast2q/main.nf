@@ -10,7 +10,7 @@ process FAST2Q {
 
     input:
     tuple val(meta1), path(fastq)
-    tuple val(meta2), path(library, optional: true)
+    tuple val(meta2), path(library)
 
     output:
     tuple val(meta), path("./2FAST2Q_output/*.*")   , emit: processed
