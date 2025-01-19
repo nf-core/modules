@@ -14,6 +14,10 @@ nextflow_process {
 
         when {
 
+            params {
+                module_args = '-c'
+            }
+
             process {
                 """
                 input[0] = [
@@ -43,7 +47,7 @@ nextflow_process {
         when {
             
             params {
-                module_args = '--mo EC'
+                module_args = '-c --mo EC'
             }
 
             process {
@@ -75,7 +79,7 @@ nextflow_process {
         when {
 
             params {
-            module_args = '-t'
+            module_args = '-c -t'
                 }
 
             process {
