@@ -56,9 +56,15 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "${prefix}/":
+      - "${prefix}/db/":
           type: directory
           description: Directory containing CAT database files
+          pattern: "${db}/"
+          ontologies:
+            - edam: "http://edamontology.org/data_1049"
+      - "${prefix}/tax/":
+          type: directory
+          description: Directory containing CAT prepared taxonomy database files
           pattern: "${db}/"
           ontologies:
             - edam: "http://edamontology.org/data_1049"

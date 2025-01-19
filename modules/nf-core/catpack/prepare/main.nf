@@ -14,7 +14,8 @@ process CATPACK_PREPARE {
     path acc2tax
 
     output:
-    tuple val(meta), path("${prefix}/"), emit: db
+    tuple val(meta), path("${prefix}/db/"), emit: db
+    tuple val(meta), path("${prefix}/tax/"), emit: taxonomy
     path "versions.yml", emit: versions
 
     when:
@@ -32,6 +33,7 @@ process CATPACK_PREPARE {
         --acc2tax ${acc2tax} \\
         --db_dir ${prefix}/ \\
         ${args}
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         catpack: \$(CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g')
@@ -42,7 +44,15 @@ process CATPACK_PREPARE {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir ${prefix}/
+    touch database.log
+    mkdir -p ${prefix}/db
+    touch ${prefix}/db/database.dmnd
+    touch ${prefix}/db/database.fastaid2LCAtaxid
+    touch ${prefix}/db/database.taxids_with_multiple_offspring
+    mkdir -p ${prefix}/tax
+    touch ${prefix}/tax/nodes.dmp
+    touch ${prefix}/tax/names.dmp
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         catpack: \$(CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g')
