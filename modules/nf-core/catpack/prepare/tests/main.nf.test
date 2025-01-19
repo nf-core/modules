@@ -33,6 +33,7 @@ nextflow_process {
                 { assert snapshot(
                         stablefiles.sort(),
                         unstablefiles.sort(),
+                        process.out.taxonomy,
                         process.out.versions
                     ).match() }
             )
