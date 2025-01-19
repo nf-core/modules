@@ -39,18 +39,19 @@ nextflow_process {
         
         when {
             
-        params {
-            module_args = '--mo EC'
-        }
+            params {
+                module_args = '--mo EC'
+            }
 
-        process {
-            """
-            input[0] = [
-            [ id:'test1', single_end:false ], // meta map
-            file(params.modules_testdata_base_path + '/SRR23101364_1.small.fastq.gz', checkIfExists: true) // FASTQ file
-            ]
-            """
-        }
+            process {
+                """
+                input[0] = [
+                    [ id:'test1', single_end:false ], // meta map for the first input
+                    file(params.modules_testdata_base_path + '/SRR23101364_1.small.fastq.gz', checkIfExists: true), // First input (FASTQ file)
+                    null // Second input is null
+                ]
+                """
+            }
         }
 
         then {
@@ -74,8 +75,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id: 'test', single_end: true ], // meta map
-                    file(params.modules_testdata_base_path + '/SRR23101364_1.small.fastq.gz', checkIfExists: true) // FASTQ file
+                    [ id:'test1', single_end:false ], // meta map for the first input
+                    file(params.modules_testdata_base_path + '/SRR23101364_1.small.fastq.gz', checkIfExists: true), // First input (FASTQ file)
+                    null // Second input is null
                 ]
                 """
             }
