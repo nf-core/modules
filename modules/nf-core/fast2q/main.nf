@@ -22,7 +22,7 @@ process FAST2Q {
     script:
     def args            = task.ext.args ?: ''
     def input_file      = "--s ${fastq}" ?: ''
-    def library_file    = library ? "--g ${library}" : ''
+    def library_file    = (library instanceof Path && library.exists()) ? "--g ${library}" : ''
 
     """
     mkdir -p ./2FAST2Q_output
