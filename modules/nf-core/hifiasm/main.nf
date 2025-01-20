@@ -70,7 +70,7 @@ process HIFIASM {
             -t $task.cpus \\
             --h1 $hic_read1 \\
             --h2 $hic_read2 \\
-            $reads \\
+            $reads_hifi \\
             2> >( tee ${prefix}.stderr.log >&2 )
 
 
@@ -85,7 +85,7 @@ process HIFIASM {
             $args \\
             -o ${prefix}.asm \\
             -t $task.cpus \\
-            $reads \\
+            $reads_hifi \\
             2> >( tee ${prefix}.stderr.log >&2 )
 
         cat <<-END_VERSIONS > versions.yml
