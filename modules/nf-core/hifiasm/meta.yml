@@ -22,12 +22,12 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - reads_hifi:
+    - long_reads:
         type: file
-        description: PacBio HiFi reads.
-    - reads_ont:
+        description: Long reads PacBio HiFi reads or ONT reads (requires ext.arg '--ont').
+    - ul_reads:
         type: file
-        description: ONT long reads.
+        description: ONT long reads to use with --ul.
   - - meta1:
         type: map
         description: |

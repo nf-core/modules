@@ -8,7 +8,7 @@ process HIFIASM {
         'biocontainers/hifiasm:0.24.0--h5ca1c30_0' }"
 
     input:
-    tuple val(meta) , path(reads_hifi)        , path(reads_ont)
+    tuple val(meta) , path(long_reads)        , path(ul_reads)
     tuple val(meta1), path(paternal_kmer_dump), path(maternal_kmer_dump)
     tuple val(meta2), path(hic_read1)         , path(hic_read2)
 
@@ -32,7 +32,7 @@ process HIFIASM {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def cmd_reads_ont = reads_ont ? "--ul ${reads_ont}" : ""
+    def ultralong = ul_reads ? "--ul ${ul_reads}" : ""
 
     if ((paternal_kmer_dump) && (maternal_kmer_dump) && (hic_read1) && (hic_read2)) {
         error "Hifiasm Trio-binning and Hi-C integrated should not be used at the same time"
@@ -48,7 +48,7 @@ process HIFIASM {
             -t $task.cpus \\
             -1 $paternal_kmer_dump \\
             -2 $maternal_kmer_dump \\
-            $cmd_reads_ont \\
+            $ultralong \\
             $reads_hifi \\
             2> >( tee ${prefix}.stderr.log >&2 )
 
@@ -70,7 +70,7 @@ process HIFIASM {
             -t $task.cpus \\
             --h1 $hic_read1 \\
             --h2 $hic_read2 \\
-            $cmd_reads_ont \\
+            $ultralong \\
             $reads_hifi \\
             2> >( tee ${prefix}.stderr.log >&2 )
 
@@ -86,7 +86,7 @@ process HIFIASM {
             $args \\
             -o ${prefix}.asm \\
             -t $task.cpus \\
-            $cmd_reads_ont \\
+            $ultralong \\
             $reads_hifi \\
             2> >( tee ${prefix}.stderr.log >&2 )
 
