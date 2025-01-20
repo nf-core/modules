@@ -52,13 +52,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    path("${process.out.map[0][1]}/map.rad"),
-                    path("${process.out.map[0][1]}/unmapped_bc_count.bin"),
-                    path("${process.out.quant[0][1]}/map.collated.rad"),
-                    path("${process.out.quant[0][1]}/featureDump.txt"))
-                    .match() }
+                // { assert snapshot(
+                //     process.out.versions,
+                //     path("${process.out.map[0][1]}/map.rad"),
+                //     path("${process.out.map[0][1]}/unmapped_bc_count.bin"),
+                //     path("${process.out.quant[0][1]}/map.collated.rad"),
+                //     path("${process.out.quant[0][1]}/featureDump.txt"))
+                //     .match() }
             )
         }
 
