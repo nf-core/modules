@@ -13,7 +13,7 @@ process FAST2Q {
     tuple val(meta2), path(library)
 
     output:
-    tuple val(meta1), path "2FAST2Q_output_*"    , emit: out_folder
+    tuple val(meta1), path("2FAST2Q_output_*")   , emit: out_folder
     path "2FAST2Q_output_*/compiled.csv"         , emit: count_matrix
     path "2FAST2Q_output_*/compiled_stats.csv"   , emit: run_statistics
     path "versions.yml"                          , emit: versions
@@ -23,10 +23,17 @@ process FAST2Q {
 
     script:
     def args            = task.ext.args ?: ''
+    def input_file      = "--s ${fastq}" ?: ''
     def library_file    = (library instanceof Path && library.exists()) ? "--g ${library}" : ''
 
     """
-    2fast2q -c --o ./ ${fastq} $library_file $args
+
+    2fast2q 
+        -c \\
+        --o ./ \\
+        $input_file \\
+        $library_file \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process}:
