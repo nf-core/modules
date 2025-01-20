@@ -113,32 +113,6 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
         ch_gene_sets.collect()
     )
 
-    ch_input.view{ it -> "ch_input is ${it}"}
-    ch_preinput_for_gsea.input.view { it -> "ch_preinput_for_gsea.input is ${it}"}
-    ch_preinput_for_gsea.contrasts_and_samples.view { it -> "ch_preinput_for_gsea.contrasts_and_samples is ${it}"}
-    ch_preinput_for_gsea.features.view{ it -> "ch_preinput_for_gsea.features is ${it}"}
-
-    GPROFILER2_GOST.out.all_enrich.view { it -> "gprofiler2 output all enrich is ${it}"}
-    GPROFILER2_GOST.out.sub_enrich.view { it -> "gprofiler2 output sub enrich is ${it}"}
-    GPROFILER2_GOST.out.plot_html.view { it -> "gprofiler2 output html is ${it}"}
-
-    CUSTOM_TABULARTOGSEAGCT.out.gct.view{ it -> "gct output is ${it}"}
-    CUSTOM_TABULARTOGSEACLS.out.cls.view{ it -> "cls output is ${it}"}
-    CUSTOM_TABULARTOGSEACHIP.out.chip.view{ it -> "chip output is ${it}"}
-    GSEA_GSEA.out.report_tsvs_ref.view{ it -> "gsea ref report is ${it}"}
-    GSEA_GSEA.out.report_tsvs_target.view{ it -> "gsea target report is ${it}"}
-
-    PROPR_GREA.out.results.view{ it -> "grea output is ${it}"}
-
-    ch_versions
-        .mix(GPROFILER2_GOST.out.versions)
-        .mix(CUSTOM_TABULARTOGSEAGCT.out.versions)
-        .mix(CUSTOM_TABULARTOGSEACLS.out.versions)
-        .mix(CUSTOM_TABULARTOGSEACHIP.out.versions)
-        .mix(GSEA_GSEA.out.versions)
-        .mix(PROPR_GREA.out.versions)
-        .view{ it -> "versions is ${it}"}
-
     emit:
     // here we emit the outputs that will be useful afterwards in the
     // nf-core/differentialabundance pipeline
