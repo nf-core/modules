@@ -44,6 +44,7 @@ nextflow_process {
                 input[2] = SIMPLEAF_INDEX.out.transcript_tsv
                 input[3] = Channel.of('cr-like')
                 input[4] = Channel.of([[],[]])
+                input[5] = Channel.of([[],[]])
                 """
             }
         }
@@ -55,11 +56,9 @@ nextflow_process {
                     process.out.versions,
                     path("${process.out.results[0][1]}/af_map/map.rad"),
                     path("${process.out.results[0][1]}/af_map/unmapped_bc_count.bin"),
-                    path("${process.out.results[0][1]}/af_quant/alevin/quants_mat_rows.txt"),
-                    path("${process.out.results[0][1]}/af_quant/alevin/quants_mat_rows.txt"),
-                    path("${process.out.results[0][1]}/af_quant/all_freq.bin"),
                     path("${process.out.results[0][1]}/af_quant/map.collated.rad"),
-                    path("${process.out.results[0][1]}/af_quant/permit_freq.bin"))
+                    path("${process.out.results[0][1]}/af_quant/permit_freq.bin"),
+                    path("${process.out.results[0][1]}/af_quant/featureDump.txt"))
                     .match() }
             )
         }
@@ -83,6 +82,7 @@ nextflow_process {
                 input[2] = SIMPLEAF_INDEX.out.transcript_tsv
                 input[3] = Channel.of('cr-like')
                 input[4] = Channel.of([[],[]])
+                input[5] = Channel.of([[],[]])
                 """
             }
         }
@@ -97,5 +97,4 @@ nextflow_process {
     }
 
 }
-
 

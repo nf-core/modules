@@ -9,6 +9,7 @@ nextflow_process {
     tag "simpleaf"
     tag "simpleaf/index"
 
+    // test piscem
     test("Homo sapiens - genome index - expanded - fasta + gtf") {
 
         when {
@@ -21,7 +22,6 @@ nextflow_process {
                 input[0] = Channel.of([ meta, genome_fasta ])
                 input[1] = Channel.of([ meta, gtf ])
                 input[2] = Channel.of([[],[]])
-
                 """
             }
         }
@@ -30,9 +30,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    path("${process.out.index[0][1]}/ctg_offsets.bin"),
-                    path("${process.out.index[0][1]}/duplicate_clusters.tsv"),
-                    path("${process.out.index[0][1]}/mphf.bin"),
+                    path("${process.out.index[0][1]}/piscem_idx.ctab"),
+                    path("${process.out.index[0][1]}/piscem_idx.sshash"),
+                    path("${process.out.index[0][1]}/piscem_idx.json"),
+                    path("${process.out.index[0][1]}/piscem_idx_cfish.json"),
                     process.out.versions)
                     .match() }
             )
@@ -59,9 +60,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    path("${process.out.index[0][1]}/ctg_offsets.bin"),
-                    path("${process.out.index[0][1]}/duplicate_clusters.tsv"),
-                    path("${process.out.index[0][1]}/mphf.bin"),
+                    path("${process.out.index[0][1]}/piscem_idx.ctab"),
+                    path("${process.out.index[0][1]}/piscem_idx.sshash"),
+                    path("${process.out.index[0][1]}/piscem_idx.json"),
+                    path("${process.out.index[0][1]}/piscem_idx_cfish.json"),
                     process.out.versions)
                     .match() }
             )
@@ -90,5 +92,4 @@ nextflow_process {
             )
         }
     }
-
 }
