@@ -48,7 +48,7 @@ process HIFIASM {
             -t $task.cpus \\
             -1 $paternal_kmer_dump \\
             -2 $maternal_kmer_dump \\
-            $reads_ont \\
+            $cmd_reads_ont \\
             $reads_hifi \\
             2> >( tee ${prefix}.stderr.log >&2 )
 
@@ -70,6 +70,7 @@ process HIFIASM {
             -t $task.cpus \\
             --h1 $hic_read1 \\
             --h2 $hic_read2 \\
+            $cmd_reads_ont \\
             $reads_hifi \\
             2> >( tee ${prefix}.stderr.log >&2 )
 
@@ -85,6 +86,7 @@ process HIFIASM {
             $args \\
             -o ${prefix}.asm \\
             -t $task.cpus \\
+            $cmd_reads_ont \\
             $reads_hifi \\
             2> >( tee ${prefix}.stderr.log >&2 )
 
