@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: simpleaf_index
 description: Indexing of transcriptome for gene expression quantification using SimpleAF
 keywords:
@@ -46,7 +45,6 @@ input:
           FASTA file containing the transcript sequences to build index directly on.
           It conflicts with genome_gtf and genome_fasta.
           When genome_gtf and genome_fasta are provided, it must be empty (provided as []).
-
 output:
   - index:
       - meta:

@@ -46,6 +46,8 @@ process SIMPLEAF_QUANT {
     // if no whitelist is provided, we hope there will be one pl option in the args list
     pl_option = permitListOption(args_list, whitelist)
     quant_dir = "${prefix}/af_quant"
+    meta = meta_out
+
 
     // separate forward from reverse pairs
     """
