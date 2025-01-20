@@ -65,6 +65,7 @@ process SIMPLEAF_QUANT {
     "${task.process}":
         alevin-fry: \$(alevin-fry --version | sed -e "s/alevin-fry //g")
         piscem: \$(piscem --version | sed -e "s/piscem //g")
+        salmon: \$(salmon --version | sed -e "s/salmon //g")
         simpleaf: \$(simpleaf --version | sed -e "s/simpleaf //g")
     END_VERSIONS
     """
