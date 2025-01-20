@@ -37,19 +37,31 @@ input:
       pattern: "*.csv"
 
 output:
-- processed:
-  - meta:
+- out_folder:
+  - meta1:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:true ]
       pattern: "./2FAST2Q_output/*.*"
 
-  - ./2FAST2Q_output/*.*:
+  - 2FAST2Q_output_*:
       type: map
       description: |
         Folder containing all the processed data
-      pattern: "./2FAST2Q_output/*.*"
+      pattern: "2FAST2Q_output"
+
+- count_matrix:
+  - 2FAST2Q_output_*/compiled.csv:
+      type: file
+      description: Count matrix
+      pattern: "2FAST2Q_output_*/compiled.csv"
+
+- run_statistics:
+  - 2FAST2Q_output_*/compiled_stats.csv:
+      type: file
+      description: Statistics file
+      pattern: "2FAST2Q_output_*/compiled_stats.csv"
 
 - versions:
   - versions.yml:
