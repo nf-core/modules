@@ -22,10 +22,12 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - reads:
+    - reads_hifi:
         type: file
-        description: FASTQ file with PacBio HiFi reads
-        pattern: "*.{fastq}"
+        description: PacBio HiFi reads.
+    - reads_ont:
+        type: file
+        description: ONT long reads.
   - - meta1:
         type: map
         description: |
