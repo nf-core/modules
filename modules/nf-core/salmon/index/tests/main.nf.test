@@ -26,13 +26,16 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.index.get(0)).exists() },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    file(process.out.index[0]).listFiles().collect { it.getName() }.sort().toString(),
+                    path(process.out.versions.get(0)).yaml
+                ).match()}
             )
         }
 
     }
 
-        test("sarscov2 transcriptome only") {
+    test("sarscov2 transcriptome only") {
 
         when {
             params {
@@ -50,13 +53,16 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.index.get(0)).exists() },
-                { assert snapshot(process.out.versions).match("versions_transcriptome_only") }
+                { assert snapshot(
+                    file(process.out.index[0]).listFiles().collect { it.getName() }.sort().toString(),
+                    path(process.out.versions.get(0)).yaml
+                ).match()}
             )
         }
 
     }
 
-     test("sarscov2 stub") {
+    test("sarscov2 stub") {
         options "-stub"
         when {
             params {
@@ -74,7 +80,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.index.get(0)).exists() },
-                { assert snapshot(process.out.versions).match("versions stub") }
+                { assert snapshot(
+                    file(process.out.index[0]).listFiles().collect { it.getName() }.sort().toString(),
+                    path(process.out.versions.get(0)).yaml
+                ).match()}
             )
         }
 
