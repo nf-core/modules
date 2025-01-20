@@ -23,17 +23,10 @@ process FAST2Q {
 
     script:
     def args            = task.ext.args ?: ''
-    def input_file      = "--s ${fastq}" ?: ''
     def library_file    = (library instanceof Path && library.exists()) ? "--g ${library}" : ''
 
     """
-
-    2fast2q 
-        -c \\
-        --o ./ \\
-        $input_file \\
-        $library_file \\
-        $args
+    2fast2q -c --o ./ ${fastq} $library_file $args
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process}:
