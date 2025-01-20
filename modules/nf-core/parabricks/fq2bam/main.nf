@@ -29,6 +29,12 @@ process PARABRICKS_FQ2BAM {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
+
+
+    // Test modification to trigger GitHub Actions path filtering
+    // This change is to verify the skip_nf_test.yml filtering mechanism
+    // FIXME
+
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def in_fq_command = meta.single_end ? "--in-se-fq $reads" : "--in-fq $reads"
