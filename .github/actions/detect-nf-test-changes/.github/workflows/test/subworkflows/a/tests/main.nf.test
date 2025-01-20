@@ -1,0 +1,8 @@
+nextflow_workflow {
+
+    name "Test subworkflow A"
+    script "../main.nf"
+    workflow "SUBWORKFLOW_A"
+    test("mytest") {
+    }
+}

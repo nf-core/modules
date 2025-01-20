@@ -1,0 +1,19 @@
+nextflow_process {
+
+    name "Test process B"
+    script "../main.nf"
+    process "PROCESS_B"
+
+    setup {
+        run("PROCESS_A") {
+            script "../../a/main.nf"
+            process {
+                """
+                """
+            }
+        }
+    }
+
+    test("mytest") {
+    }
+}
