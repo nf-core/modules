@@ -49,7 +49,7 @@ process HIFIASM {
             -1 $paternal_kmer_dump \\
             -2 $maternal_kmer_dump \\
             $ultralong \\
-            $reads_hifi \\
+            $long_reads \\
             2> >( tee ${prefix}.stderr.log >&2 )
 
 
@@ -71,7 +71,7 @@ process HIFIASM {
             --h1 $hic_read1 \\
             --h2 $hic_read2 \\
             $ultralong \\
-            $reads_hifi \\
+            $long_reads \\
             2> >( tee ${prefix}.stderr.log >&2 )
 
 
@@ -87,7 +87,7 @@ process HIFIASM {
             -o ${prefix}.asm \\
             -t $task.cpus \\
             $ultralong \\
-            $reads_hifi \\
+            $long_reads \\
             2> >( tee ${prefix}.stderr.log >&2 )
 
         cat <<-END_VERSIONS > versions.yml
