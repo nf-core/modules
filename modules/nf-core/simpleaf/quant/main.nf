@@ -4,8 +4,8 @@ process SIMPLEAF_QUANT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/simpleaf:0.17.2--h919a2d8_0' :
-        'biocontainers/simpleaf:0.17.2--h919a2d8_0' }"
+        'https://depot.galaxyproject.org/singularity/simpleaf:0.18.4--ha6fb395_1':
+        'biocontainers/simpleaf:0.18.4--ha6fb395_1' }"
 
     input:
     //
@@ -72,6 +72,7 @@ process SIMPLEAF_QUANT {
 
     stub:
     prefix    = task.ext.prefix ?: "${meta.id}"
+    meta_out = []
     """
     export ALEVIN_FRY_HOME=.
 

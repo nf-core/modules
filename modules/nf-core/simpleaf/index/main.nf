@@ -24,6 +24,7 @@ process SIMPLEAF_INDEX {
     script:
     def args = task.ext.args ?: ''
     def seq_inputs = (transcript_fasta) ? "--refseq $transcript_fasta" : "--gtf $genome_gtf --fasta $genome_fasta"
+    def indexer = args.contains("--no-piscem") ? "salmon" : "piscem"
 
     // Output meta needs to correspond to the input used
     meta = (transcript_fasta) ? meta3 : meta
@@ -49,8 +50,7 @@ process SIMPLEAF_INDEX {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         alevin-fry: \$(alevin-fry --version | sed -e "s/alevin-fry //g")
-        piscem: \$(piscem --version | sed -e "s/piscem //g")
-        salmon: \$(salmon --version | sed -e "s/salmon //g")
+        $indexer: \$($indexer --version | sed -e "s/$indexer //g")
         simpleaf: \$(simpleaf --version | sed -e "s/simpleaf //g")
     END_VERSIONS
     """
@@ -71,7 +71,6 @@ process SIMPLEAF_INDEX {
     "${task.process}":
         alevin-fry: \$(alevin-fry --version | sed -e "s/alevin-fry //g")
         piscem: \$(piscem --version | sed -e "s/piscem //g")
-        salmon: \$(salmon --version | sed -e "s/salmon //g")
         simpleaf: \$(simpleaf --version | sed -e "s/simpleaf //g")
     END_VERSIONS
     """
