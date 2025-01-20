@@ -35,7 +35,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.processed).exists() } // Check processed output exists
+                { assert path(process.out.count_matrix).exists() } // Check processed count table exists
                 { assert path(process.out.versions).readLines().join("\n").contains("2FAST2Q version") } // Verify version output
             )
         }
@@ -67,7 +67,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.processed).exists() } // Check processed output exists
+                { assert path(process.out.count_matrix).exists() } // Check processed count table exists
                 { assert path(process.out.versions).readLines().join("\n").contains("2FAST2Q version") } // Verify version output
             )
         }
@@ -95,7 +95,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.processed).exists() } // Check processed output exists
+                { assert path(process.out.count_matrix).exists() } // Check processed count table exists
                 { assert path(process.out.versions).readLines().join("\n").contains("2FAST2Q version") } // Verify version output
             )
         }
