@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: simpleaf_quant
 description: simpleaf is a program to simplify and customize the running and configuration
   of single-cell processing with alevin-fry.
@@ -71,7 +70,7 @@ input:
         description: Folder containing the existing mapping results. It must be generated
           by simpleaf or alevin-fry, and contain the mapping file named map.rad.
 output:
-  - results:
+  - simpleaf:
       - meta_out:
           type: map
           description: |
@@ -84,6 +83,32 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "simpleaf"
+  - map:
+      - meta_out:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "simpleaf/af_map"
+      - map_dir:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "simpleaf/af_map"
+  - quant:
+      - meta_out:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "simpleaf/af_quant/alevin"
+      - quant_dir:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "simpleaf/af_quant/alevin"
   - versions:
       - versions.yml:
           type: file

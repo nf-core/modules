@@ -20,8 +20,10 @@ process SIMPLEAF_QUANT {
     tuple val(meta5), path(map_dir)
 
     output:
-    tuple val(meta_out), path("${prefix}"), emit: results
-    path  "versions.yml"              , emit: versions
+    tuple val(meta_out), path("${prefix}")  , emit: simpleaf
+    tuple val(meta_out), path(map_dir)      , emit: map
+    tuple val(meta_out), path(quant_dir)    , emit: quant
+    path  "versions.yml"                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,10 +40,12 @@ process SIMPLEAF_QUANT {
         def (forward, reverse) = reads.collate(2).transpose()
         mapping_args = " -i ${index} -c ${chemistry} -1 ${forward.join( "," )} -2 ${reverse.join( "," )}"
         meta_out = meta
+        map_dir = "${prefix}/af_map"
     }
 
     // if no whitelist is provided, we hope there will be one pl option in the args list
     pl_option = permitListOption(args_list, whitelist)
+    quant_dir = "${prefix}/af_quant"
 
     // separate forward from reverse pairs
     """
@@ -72,6 +76,7 @@ process SIMPLEAF_QUANT {
 
     stub:
     prefix    = task.ext.prefix ?: "${meta.id}"
+    quant_dir = "${prefix}/af_quant"
     meta_out = []
     """
     export ALEVIN_FRY_HOME=.
@@ -89,6 +94,7 @@ process SIMPLEAF_QUANT {
     "${task.process}":
         alevin-fry: \$(alevin-fry --version | sed -e "s/alevin-fry //g")
         piscem: \$(piscem --version | sed -e "s/piscem //g")
+        salmon: \$(salmon --version | sed -e "s/salmon //g")
         simpleaf: \$(simpleaf --version | sed -e "s/simpleaf //g")
     END_VERSIONS
     """
