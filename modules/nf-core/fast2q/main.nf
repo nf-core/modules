@@ -27,7 +27,12 @@ process FAST2Q {
     """
     mkdir -p ./2FAST2Q_output
 
-    2fast2q -c --o ./2FAST2Q_output/ $input_file $library_file $args
+    2fast2q 
+        -c \\
+        --o ./2FAST2Q_output/ \\
+        $input_file \\
+        $library_file \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process}:
