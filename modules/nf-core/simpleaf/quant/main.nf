@@ -76,6 +76,7 @@ process SIMPLEAF_QUANT {
 
     stub:
     prefix    = task.ext.prefix ?: "${meta.id}"
+    quant_dir = "${prefix}/af_quant"
     meta_out = []
     """
     export ALEVIN_FRY_HOME=.
