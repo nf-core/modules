@@ -146,8 +146,12 @@ jobs:
 
           echo "filtered_paths=${FILTERED}" >> $GITHUB_OUTPUT
 
+      - name: debug
+        run: |
+          echo filtered_paths = ${{ steps.filter.outputs.filtered_paths }}
+
       - name: Run nf-test Action
-        if: ${{steps.filter.outputs.filtered_paths != ''}}
+        if: ${{steps.filter.outputs.filtered_paths != '[]'}}
         uses: ./.github/actions/nf-test-action
         env:
           SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
