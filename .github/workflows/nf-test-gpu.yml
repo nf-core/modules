@@ -89,9 +89,8 @@ jobs:
   nf-test-gpu:
     runs-on: "gpu"
     name: "GPU Test | ${{ matrix.profile }} | ${{ matrix.shard }}"
-    needs:
-      - nf-test-changes
-    if: ${{ needs.nf-test-changes.outputs.modules != '[]' || needs.nf-test-changes.outputs.subworkflows != '[]' }}
+    needs: [nf-test-changes]
+    if: ${{ needs.nf-test-changes.outputs.total_shards != '0' }}
     strategy:
       fail-fast: false
       matrix:

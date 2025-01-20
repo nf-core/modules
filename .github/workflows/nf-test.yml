@@ -177,13 +177,13 @@ jobs:
         if: ${{ contains(needs.*.result, 'cancelled') }}
         run: exit 1
 
-      - name: All tests ok
-        if: ${{ contains(needs.*.result, 'success') }}
-        run: exit 0
-
       - name: If no tests run, but filtered_paths was not empty and no tests succeeded, fail
         if: ${{ needs.nf-test.outputs.filtered_paths != '' && !contains(needs.*.result, 'success') }}
         run: exit 1
+
+      - name: All tests ok
+        if: ${{ contains(needs.*.result, 'success') }}
+        run: exit 0
 
       - name: debug-print
         if: always()
