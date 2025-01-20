@@ -14,16 +14,16 @@ process CATPACK_PREPARE {
     path acc2tax
 
     output:
-    tuple val(meta), path("${prefix}/db/"), emit: db
-    tuple val(meta), path("${prefix}/tax/"), emit: taxonomy
-    path "versions.yml", emit: versions
+    tuple val(meta), path("${prefix}/db/")  , emit: db
+    tuple val(meta), path("${prefix}/tax/") , emit: taxonomy
+    path "versions.yml"                              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def args   = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     CAT_pack prepare \\
         -n ${task.cpus} \\
@@ -41,8 +41,7 @@ process CATPACK_PREPARE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch database.log
     mkdir -p ${prefix}/db
