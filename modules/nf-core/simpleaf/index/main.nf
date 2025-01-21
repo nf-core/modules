@@ -8,14 +8,16 @@ process SIMPLEAF_INDEX {
         'biocontainers/simpleaf:0.18.4--ha6fb395_1' }"
 
     input:
-    tuple val(meta), path(genome_fasta)
-    tuple val(meta2), path(genome_gtf)
-    tuple val(meta3), path(transcript_fasta)
+    tuple val(meta),  path(genome_fasta), path(genome_gtf)
+    tuple val(meta2), path(transcript_fasta)
+
+    // tuple val(meta3), path(probe_csv)
+    // tuple val(meta4), path(feature_csv)
 
     output:
     tuple val(meta), path("${prefix}/index")                    , emit: index
-    tuple val(meta), path("${prefix}/ref/{t2g,t2g_3col}.tsv")   , emit: transcript_tsv, optional: true
-    tuple val(meta), path("${prefix}")                          , emit: simpleaf
+    tuple val(meta), path("${prefix}/ref")                      , optional: true, emit: ref
+    tuple val(meta), path("${prefix}/ref/{t2g,t2g_3col}.tsv")   , optional: true, emit: t2g
     path "versions.yml"                                         , emit: versions
 
     when:
@@ -23,10 +25,10 @@ process SIMPLEAF_INDEX {
 
     script:
     def args = task.ext.args ?: ''
-    def seq_inputs = (transcript_fasta) ? "--refseq $transcript_fasta" : "--gtf $genome_gtf --fasta $genome_fasta"
+    def seq_inputs = input_args(genome_fasta, genome_gtf, transcript_fasta)//, probes_csv, features_csv)
 
     // Output meta needs to correspond to the input used
-    meta = (transcript_fasta) ? meta3 : meta
+    meta = (transcript_fasta) ? meta2 : meta
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     # export required var
@@ -57,7 +59,7 @@ process SIMPLEAF_INDEX {
 
     stub:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: (meta.id ? "${meta.id}" : "${meta3.id}")
+    prefix = task.ext.prefix ?: (meta.id ? "${meta.id}" : "${meta2.id}")
 
     """
     mkdir -p ${prefix}/index
@@ -76,4 +78,21 @@ process SIMPLEAF_INDEX {
         simpleaf: \$(simpleaf --version | sed -e "s/simpleaf //g")
     END_VERSIONS
     """
+}
+
+def input_args(genome_fasta, genome_gtf, transcript_fasta) { //, probes_csv, features_csv) {
+    // if (probe_csv) {
+    //     args = "--probe_csv ${probe_csv}"
+    // } else if (feature_csv) {
+    //     args = "--feature_csv ${feature_csv}"
+    // } else
+    if (transcript_fasta) {
+        return "--ref-seq ${transcript_fasta}"
+    } else if (genome_fasta && genome_gtf) {
+        return "--fasta ${genome_fasta} --gtf ${genome_gtf}"
+    } else {
+        error "No valid input provided; please provide either a genome fasta + gtf set or a transcript fasta file."
+        // error "No valid input provided; please provide one of the followings: (i) a genome fasta + gtf set, (ii) a transcript fasta file, (iii) a probes csv file (iv) a features csv file."
+    }
+
 }

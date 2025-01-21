@@ -12,17 +12,15 @@ process SIMPLEAF_QUANT {
     // Input reads are expected to come as: [ meta, [ pair1_read1, pair1_read2, pair2_read1, pair2_read2 ] ]
     // Input array for a sample is created in the same order reads appear in samplesheet as pairs from replicates are appended to array.
     //
-    tuple val(meta), val(chemistry), path(reads)
-    tuple val(meta2), path(index)
-    tuple val(meta3), path(txp2gene)
-    val resolution
-    tuple val(meta4), path(whitelist)
-    tuple val(meta5), path(map_dir)
+    tuple val(meta), val(chemistry), path(reads)                        // chemistry and reads
+    tuple val(meta2), path(index), path(txp2gene)                       // index and t2g mapping
+    tuple val(meta3), val(cell_filter), val(number_cb), path(cb_list)   // cell filtering strategy
+    val resolution                                                      // UMI resolution
+    tuple val(meta4), path(map_dir)                                     // mapping results
 
     output:
-    tuple val(meta_out), path("${prefix}")  , emit: simpleaf
-    tuple val(meta_out), path(map_dir)      , emit: map
-    tuple val(meta_out), path(quant_dir)    , emit: quant
+    tuple val(meta), path("${prefix}/af_map")      , emit: map, optional: true // missing if map_dir is provided
+    tuple val(meta), path("${prefix}/af_quant")    , emit: quant
     path  "versions.yml"                    , emit: versions
 
     when:
@@ -30,22 +28,15 @@ process SIMPLEAF_QUANT {
 
     script:
     def args      = task.ext.args ?: ''
-    def args_list = args.tokenize()
     prefix    = task.ext.prefix ?: "${meta.id}"
 
-    if ( map_dir ) {
-        mapping_args = " --map-dir ${map_dir}"
-        meta_out = meta5
-    } else {
-        def (forward, reverse) = reads.collate(2).transpose()
-        mapping_args = " -i ${index} -c ${chemistry} -1 ${forward.join( "," )} -2 ${reverse.join( "," )}"
-        meta_out = meta
-        map_dir = "${prefix}/af_map"
-    }
+    // The first required input is either a mapping result directory, or the reads and index files for mapping.
+    mapping_args = mappingArgs(chemistry, reads, index, txp2gene, map_dir)
 
-    // if no whitelist is provided, we hope there will be one pl option in the args list
-    pl_option = permitListOption(args_list, whitelist)
-    quant_dir = "${prefix}/af_quant"
+    // The second required input is a cell filtering strategy.
+    cf_option = cellFilteringArgs(cell_filter, number_cb, cb_list)
+
+    meta = map_dir ? meta4  : meta + meta2 + meta3
 
     // separate forward from reverse pairs
     """
@@ -58,12 +49,11 @@ process SIMPLEAF_QUANT {
     # run simpleaf quant
     simpleaf quant \\
         $mapping_args \\
-        -r $resolution \\
-        -o ${prefix} \\
-        -t $task.cpus \\
-        -m $txp2gene \\
-        $pl_option \\
-        $args
+        --resolution ${resolution} \\
+        --output ${prefix} \\
+        --threads ${task.cpus} \\
+        ${cf_option} \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -76,7 +66,6 @@ process SIMPLEAF_QUANT {
 
     stub:
     prefix    = task.ext.prefix ?: "${meta.id}"
-    quant_dir = "${prefix}/af_quant"
     meta_out = []
     """
     export ALEVIN_FRY_HOME=.
@@ -112,21 +101,56 @@ process SIMPLEAF_QUANT {
 // 1. if there is at least one of the options in the args list, and
 // 2. if none of the four options are in the args list, there must be a non-empty whitelist channel.
 
-def permitListOption(args_list, whitelist) {
-    def pl_options = ["-k", "--knee", "-f", "--forced-cells", "-x", "--explicit-pl", "-e", "--expect-cells", "-u", "--unfiltered-pl"]
+def cellFilteringArgs(cell_filter_method, number_cb, cb_list) {
+    def pl_options = ["knee", "forced-cells", "explicit-pl", "expect-cells", "unfiltered-pl"]
 
-    // check if the args_list contains any of the pl_options
-    def found = args_list.any { it in pl_options }
+    def method = cell_filter_method
+    def number = number_cb
+    if (!method) {
+        error "No cell filtering method was provided; cannot proceed."
+    } else if (! method in pl_options) {
+        error "Invalid cell filtering method, '${method}', was provided; cannot proceed. possible options are ${pl_options.join(',')}."
+    }
 
-    // if we have a whitelist, we can use it to generate a permit list
-    // otherwise, we find is an explicit permit list generation option in the args list
-    //
-    if (whitelist) {
-        return "-u ${whitelist}" // new alevin-fry support gz whitelist file
-    } else if (found) {
-        //
-        return ""
+    if (method == "unfiltered-pl") {
+        return "--${method} ${cb_list}"
+    } else if (method == "explicit-pl") {
+        return "--${method} ${cb_list}"
+    } else if (method == "knee") {
+        return "--${method}"
     } else {
-        error "No permit list generation option was provided; cannot proceed."
+        if (!number) {
+            error "Could not find the corresponding 'number' field for the cell filtering method '${method}'; please use the following format: [method:'${method}',number:3000]."
+        }
+        return "--${method} ${number}"
+    }
+}
+
+def mappingArgs(chemistry, reads, index, txp2gene, map_dir) {
+    if ( map_dir ) {
+        if (reads) {
+            error "Found both reads and map_dir. Please provide only one of the two."
+        }
+        return "--map-dir ${map_dir}"
+    } else {
+        if (!reads) {
+            error "Missing read files; could not proceed."
+        }
+        if (!index) {
+            error "Missing index files; could not proceed."
+        }
+        if (!chemistry) {
+            error "Missing chemistry; could not proceed."
+        }
+
+        def (forward, reverse) = reads.collate(2).transpose()
+
+        def t2g = txp2gene ? "--t2g-map ${txp2gene}" : ""
+        def mapping_args = """${t2g} \\
+        --chemistry ${chemistry} \\
+        --index ${index} \\
+        --reads1 ${forward.join( "," )} \\
+        --reads2 ${reverse.join( "," )}"""
+        return mapping_args
     }
 }
