@@ -19,9 +19,8 @@ nextflow_process {
                 gtf = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
                 meta = [ 'id': 'human_genome']
 
-                input[0] = Channel.of([ meta, genome_fasta ])
-                input[1] = Channel.of([ meta, gtf ])
-                input[2] = Channel.of([[],[]])
+                input[0] = Channel.of([ meta, genome_fasta, gtf ])
+                input[1] = Channel.of([[],[]])
                 """
             }
         }
@@ -48,9 +47,8 @@ nextflow_process {
                 transcriptome_fasta = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true)
                 meta = [ 'id': 'human_transcriptome']
 
-                input[0] = Channel.of([[],[]])
-                input[1] = Channel.of([[],[]])
-                input[2] = Channel.of([ meta, transcriptome_fasta ])
+                input[0] = Channel.of([[],[],[]])
+                input[1] = Channel.of([ meta, transcriptome_fasta ])
                 """
             }
         }
@@ -76,9 +74,8 @@ nextflow_process {
                 transcriptome_fasta = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true)
                 meta = [ 'id': 'human_transcriptome']
 
-                input[0] = Channel.of([[],[]])
-                input[1] = Channel.of([[],[]])
-                input[2] = Channel.of([ meta, transcriptome_fasta ])
+                input[0] = Channel.of([[],[],[]])
+                input[1] = Channel.of([ meta, transcriptome_fasta ])
                 """
             }
         }

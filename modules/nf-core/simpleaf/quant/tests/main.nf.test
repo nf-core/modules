@@ -21,9 +21,8 @@ nextflow_process {
                 gtf = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
                 meta = [ 'id': 'human']
 
-                input[0] = Channel.of([meta, genome_fasta])
-                input[1] = Channel.of([meta, gtf])
-                input[2] = Channel.of([[],[]])
+                input[0] = Channel.of([meta, genome_fasta, gtf])
+                input[1] = Channel.of([[],[]])
                 """
             }
         }
@@ -31,7 +30,7 @@ nextflow_process {
 
     test("test_simpleaf_quant") {
         when {
-            config "./nextflow.config"
+            // config "./nextflow.config"
             process {
                 """
                 meta = [id:'test_10x', single_end:false, strandedness:'auto']
@@ -40,11 +39,10 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                 ]
                 input[0] = Channel.of([meta, '10xv3', files])
-                input[1] = SIMPLEAF_INDEX.out.index
-                input[2] = SIMPLEAF_INDEX.out.transcript_tsv
+                input[1] = SIMPLEAF_INDEX.out.index.combine(SIMPLEAF_INDEX.out.t2g, by: 0)
+                input[2] = [[],"knee",[],[]]
                 input[3] = Channel.of('cr-like')
                 input[4] = Channel.of([[],[]])
-                input[5] = Channel.of([[],[]])
                 """
             }
         }
@@ -66,9 +64,9 @@ nextflow_process {
 
     test("test_simpleaf_quant stub") {
         options "-stub-run"
+            // config "./nextflow.config"
 
         when {
-            config "./nextflow.config"
             process {
                 """
                 meta = [id:'test_10x', single_end:false, strandedness:'auto']
@@ -77,11 +75,10 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                 ]
                 input[0] = Channel.of([meta, '10xv3', files])
-                input[1] = SIMPLEAF_INDEX.out.index
-                input[2] = SIMPLEAF_INDEX.out.transcript_tsv
+                input[1] = SIMPLEAF_INDEX.out.index.combine(SIMPLEAF_INDEX.out.t2g, by: 0)
+                input[2] = [[],"knee",[],[]]
                 input[3] = Channel.of('cr-like')
                 input[4] = Channel.of([[],[]])
-                input[5] = Channel.of([[],[]])
                 """
             }
         }
