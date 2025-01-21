@@ -9,7 +9,8 @@ process OPENMS_FILEFILTER {
 
     input:
     tuple val(meta), path(file)
-    
+    val(suffix)
+
     output:
     tuple val(meta), path("*.mzML"),         emit: mzml, optional: true
     tuple val(meta), path("*.featureXML"),   emit: featurexml, optional: true
@@ -22,7 +23,8 @@ process OPENMS_FILEFILTER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "${file.getExtension()}"
+    def valid_suffixes = ['mzML', 'featureXML', 'consensusXML']
+    if (!valid_suffixes.contains(suffix)) { error "Invalid extention: ${suffix}. Must be one of ${valid_suffixes.join(', ')}"}
     if ("$file" == "${prefix}.${suffix}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     """
@@ -41,7 +43,8 @@ process OPENMS_FILEFILTER {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "${file.getExtension()}"
+    def valid_suffixes = ['mzML', 'featureXML', 'consensusXML']
+    if (!valid_suffixes.contains(suffix)) { error "Invalid extention: ${suffix}. Must be one of ${valid_suffixes.join(', ')}"}
     if ("$file" == "${prefix}.${suffix}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     """

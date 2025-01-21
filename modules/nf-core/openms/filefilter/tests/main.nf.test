@@ -9,6 +9,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "openms"
     tag "openms/filefilter"
+    tag "thermorawfileparser"
 
     setup {
         run("THERMORAWFILEPARSER") {
@@ -30,6 +31,7 @@ nextflow_process {
             process {
                 """
                 input[0] = THERMORAWFILEPARSER.out.spectra
+                input[1] = "mzML"
                 """
             }
         }
@@ -52,6 +54,7 @@ nextflow_process {
             process {
                 """
                 input[0] = THERMORAWFILEPARSER.out.spectra
+                input[1] = "mzML"
                 """
             }
         }
