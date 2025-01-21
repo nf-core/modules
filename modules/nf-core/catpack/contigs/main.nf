@@ -36,7 +36,6 @@ process CATPACK_CONTIGS {
         -o ${prefix}
         ${args} \\
 
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         catpack: \$(CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g')
