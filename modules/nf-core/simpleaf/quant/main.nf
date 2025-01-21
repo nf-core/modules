@@ -1,5 +1,5 @@
 process SIMPLEAF_QUANT {
-    tag "${meta.id ? meta.id : meta4.id}"
+    tag "${meta.id ?: meta4.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
@@ -36,7 +36,7 @@ process SIMPLEAF_QUANT {
     // The second required input is a cell filtering strategy.
     cf_option = cellFilteringArgs(cell_filter, number_cb, cb_list)
 
-    meta = map_dir ? meta4  : meta + meta2 + meta3
+    meta = map_dir ? meta4 : meta2 + meta3 + meta
     meta += [ "filtered": cell_filter != "unfiltered-pl" ]
 
     // separate forward from reverse pairs
