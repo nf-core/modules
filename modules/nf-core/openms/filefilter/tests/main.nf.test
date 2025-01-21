@@ -31,7 +31,6 @@ nextflow_process {
             process {
                 """
                 input[0] = THERMORAWFILEPARSER.out.spectra
-                input[1] = "mzML"
                 """
             }
         }
@@ -54,7 +53,6 @@ nextflow_process {
             process {
                 """
                 input[0] = THERMORAWFILEPARSER.out.spectra
-                input[1] = "mzML"
                 """
             }
         }
