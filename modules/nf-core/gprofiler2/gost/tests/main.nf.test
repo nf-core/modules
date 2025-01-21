@@ -72,9 +72,19 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.all_enrich,
-                    process.out.plot_png,
                     process.out.sub_enrich,
-                    process.out.sub_plot,
+                    [
+                        file(process.out.plot_png[0][1]).name,
+                        file(process.out.sub_plot[0][1][0]).name,
+                        file(process.out.sub_plot[0][1][1]).name,
+                        file(process.out.sub_plot[0][1][2]).name,
+                        file(process.out.sub_plot[0][1][3]).name,
+                        file(process.out.sub_plot[0][1][4]).name,
+                        file(process.out.sub_plot[0][1][5]).name,
+                        file(process.out.sub_plot[0][1][6]).name,
+                        file(process.out.sub_plot[0][1][7]).name,
+                        file(process.out.sub_plot[0][1][8]).name,
+                    ],  // assert unstable file
                     process.out.filtered_gmt,
                     process.out.session_info.collect{ meta,session_info -> file(session_info).name }, //assert unstable file
                     process.out.versions,
