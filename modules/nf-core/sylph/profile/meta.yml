@@ -26,10 +26,10 @@ input:
         description: |
           List of input FastQ/FASTA files of size 1 and 2 for single-end and paired-end data,
           respectively. They are automatically sketched to .sylsp/.syldb
-  - - pre_sketched_files:
+  - - database:
         type: file
         description: Pre-sketched *.syldb/*.sylsp files. Raw single-end fastq/fasta are allowed and will be automatically sketched to .sylsp/.syldb.
-        pattern: "*.{syldb,sylsp}"
+        pattern: "*.{syldb,sylsp,fasta,fastq}"
 output:
   - profile_out:
       - meta:

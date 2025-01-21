@@ -9,7 +9,7 @@ process SYLPH_PROFILE {
 
     input:
     tuple val(meta), path(reads)
-    path(pre_sketched_files)
+    path(database)
 
     output:
     tuple val(meta), path('*.tsv'), emit: profile_out
@@ -25,7 +25,7 @@ process SYLPH_PROFILE {
     sylph profile \\
           $args \\
           $reads \\
-          $pre_sketched_files\\
+          $database\\
           -o ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
