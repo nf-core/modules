@@ -1,5 +1,5 @@
 process SIMPLEAF_INDEX {
-    tag meta.id ? "${meta.id}" : "${meta2.id}"
+    tag "${meta.id ? meta.id : meta2.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"

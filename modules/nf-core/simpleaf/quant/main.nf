@@ -1,5 +1,5 @@
 process SIMPLEAF_QUANT {
-    tag meta.id ? "${meta.id}" : "${meta4.id}"
+    tag "${meta.id ? meta.id : meta4.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
