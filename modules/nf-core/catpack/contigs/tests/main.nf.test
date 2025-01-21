@@ -1,0 +1,84 @@
+nextflow_process {
+
+    name "Test Process CATPACK_CONTIGS"
+    script "../main.nf"
+    process "CATPACK_CONTIGS"
+    config './nextflow.config'
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "catpack"
+    tag "catpack/contigs"
+    tag "catpack/prepare"
+
+    setup {
+        run('CATPACK_PREPARE') {
+            script '../../prepare/main.nf'
+            process {
+            """
+            input[0] = [ [id:'test'], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)  ] ]
+            input[1] = [ file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/prot_nodes.dmp', checkIfExists: true) ]
+            input[2] = [ file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/prot_names.dmp', checkIfExists: true) ]
+            input[3] = [ file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/prot.accession2taxid.gz', checkIfExists: true) ]
+            """
+            }
+        }
+    }
+
+    test("sarscov2 - genome - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)  ] ]
+                input[1] = CATPACK_PREPARE.out.db
+                input[2] = CATPACK_PREPARE.out.taxonomy
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot (
+                        process.out.orf2lca,
+                        process.out.contig2classification,
+                        process.out.diamond,
+                        process.out.faa,
+                        process.out.gff,
+                        process.out.versions,
+                        path(process.out.log.get(0).get(1)).readLines().last().contains("CAT is done!")
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("sarscov2 - genome - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)  ] ]
+                input[1] = CATPACK_PREPARE.out.db
+                input[2] = CATPACK_PREPARE.out.taxonomy
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+}

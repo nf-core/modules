@@ -62,7 +62,7 @@ jobs:
           echo ${{ steps.tags.outputs.subworkflows }}
 
   pytest:
-    runs-on: ${{ github.event.inputs.runners  || 'ubuntu-latest' }}
+    runs-on: ${{ github.event.inputs.runners || 'self-hosted' }}
     name: pytest
     needs: [pytest-changes]
     if: needs.pytest-changes.outputs.tags != '[]'
@@ -280,7 +280,7 @@ jobs:
 
       - name: Conda setup
         if: matrix.profile == 'conda'
-        uses: conda-incubator/setup-miniconda@d2e6a045a86077fb6cad6f5adf368e9076ddaa8d # v3
+        uses: conda-incubator/setup-miniconda@505e6394dae86d6a5c7fbb6e3fb8938e3e863830 # v3
         with:
           auto-update-conda: true
           conda-solver: libmamba
@@ -320,7 +320,7 @@ jobs:
             !/home/ubuntu/pytest_workflow_*/*/work/singularity
             !${{ github.workspace }}/.singularity
 
-  confirm-pass:
+  confirm-pass-pytest:
     runs-on: ubuntu-latest
     needs: [pytest-changes, pytest]
     if: always()
