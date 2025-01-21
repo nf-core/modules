@@ -31,8 +31,17 @@ runs:
       id: shards
       shell: bash
       run: |
-        # Run nf-test to get the number of related tests
-        nftest_output=$(nf-test test --dry-run --changed-since HEAD^ --filter pipeline --tag ${{ inputs.tags }} ${{ inputs.paths}})
+
+        # Prepare tag parameter if tags are provided
+        TAGS=$([ -n "${{ inputs.tags }}" ] && echo "--tag ${{ inputs.tags }}" || echo "")
+        # Run nf-test with dynamic tag parameter
+        nftest_output=$(nf-test test \
+          --dry-run \
+          --profile docker \
+          ${TAGS} \
+          --filter process,workflow \
+          ${{ inputs.paths }})
+
         echo "nf-test dry-run output: $nftest_output"
 
         # Default values for shard and total_shards
@@ -40,7 +49,7 @@ runs:
         total_shards=0
 
         # Check if there are related tests
-        if echo "$nftest_output" | grep -q 'Nothing to do'; then
+        if echo "$nftest_output" | grep -q 'No tests to execute'; then
           echo "No related tests found."
         else
           # Extract the number of related tests
