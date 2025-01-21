@@ -19,9 +19,9 @@ process SIMPLEAF_QUANT {
     tuple val(meta4), path(map_dir)                                     // mapping results
 
     output:
-    tuple val(meta), path("${prefix}/af_map")      , emit: map, optional: true // missing if map_dir is provided
-    tuple val(meta), path("${prefix}/af_quant")    , emit: quant
-    path  "versions.yml"                    , emit: versions
+    tuple val(meta), path("${prefix}/af_map")       , emit: map, optional: true // missing if map_dir is provided
+    tuple val(meta), path("${prefix}/af_quant")     , emit: quant
+    path  "versions.yml"                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -67,7 +67,6 @@ process SIMPLEAF_QUANT {
 
     stub:
     prefix    = task.ext.prefix ?: "${meta.id}"
-    meta_out = []
     """
     export ALEVIN_FRY_HOME=.
 
@@ -103,9 +102,9 @@ process SIMPLEAF_QUANT {
 // 2. if none of the four options are in the args list, there must be a non-empty whitelist channel.
 
 def cellFilteringArgs(cell_filter_method, number_cb, cb_list) {
-    def pl_options = ["knee", "forced-cells", "explicit-pl", "expect-cells", "unfiltered-pl"]
+    def pl_options = ["knee", "forced_cells", "explicit_pl", "expect_cells", "unfiltered_pl"]
 
-    def method = cell_filter_method
+    def method = cell_filter_method.replaceAll('-','_')
     def number = number_cb
     if (!method) {
         error "No cell filtering method was provided; cannot proceed."

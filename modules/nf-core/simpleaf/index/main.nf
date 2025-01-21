@@ -11,13 +11,10 @@ process SIMPLEAF_INDEX {
     tuple val(meta),  path(genome_fasta), path(genome_gtf)
     tuple val(meta2), path(transcript_fasta)
 
-    // tuple val(meta3), path(probe_csv)
-    // tuple val(meta4), path(feature_csv)
-
     output:
     tuple val(meta), path("${prefix}/index")                    , emit: index
-    tuple val(meta), path("${prefix}/ref")                      , optional: true, emit: ref
-    tuple val(meta), path("${prefix}/ref/{t2g,t2g_3col}.tsv")   , optional: true, emit: t2g
+    tuple val(meta), path("${prefix}/ref")                      , emit: ref, optional: true
+    path "${prefix}/ref/{t2g,t2g_3col}.tsv"                     , emit: t2g, optional: true
     path "versions.yml"                                         , emit: versions
 
     when:
@@ -91,7 +88,7 @@ def input_args(genome_fasta, genome_gtf, transcript_fasta) { //, probes_csv, fea
     } else if (genome_fasta && genome_gtf) {
         return "--fasta ${genome_fasta} --gtf ${genome_gtf}"
     } else {
-        error "No valid input provided; please provide either a genome fasta + gtf set or a transcript fasta file."
+        error "No valid input provided; please provide either a genome fasta + gtf set or a transcript fasta file. ${genome_fasta} ${genome_gtf} ${transcript_fasta}"
         // error "No valid input provided; please provide one of the followings: (i) a genome fasta + gtf set, (ii) a transcript fasta file, (iii) a probes csv file (iv) a features csv file."
     }
 
