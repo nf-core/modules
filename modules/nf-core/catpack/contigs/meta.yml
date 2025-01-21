@@ -1,0 +1,141 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "catpack_contigs"
+description: Taxonomic classification of long DNA sequences and metagenome assembled genomes (e.g. contigs, MAGs / bins).
+keywords:
+  - taxonomic classification
+  - classification
+  - long reads
+  - mags
+  - assembly
+tools:
+  - "catpack":
+      description: "CAT/BAT: tool for taxonomic classification of contigs and metagenome-assembled
+        genomes (MAGs)"
+      homepage: "https://github.com/MGXlab/CAT_pack"
+      documentation: "https://github.com/MGXlab/CAT_pack"
+      tool_dev_url: "https://github.com/MGXlab/CAT_pack"
+      doi: "10.1186/s13059-019-1817-x"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+
+    - contigs:
+        type: file
+        description: A nucleotide FASTA file containing long DNA sequences such as contigs.
+        pattern: "*.{fasta,fna,fa,fas}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+
+    - database:
+        type: directory
+        description: Directory containing CAT_pack database files (e.g. output from
+          CAT_pack prepare)
+        pattern: "*./"
+        ontologies:
+          - edam: "http://edamontology.org/data_1049"
+
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+
+    - taxonomy:
+        type: directory
+        description: Directory containing CAT_pack taxonomy files (e.g. output from
+          CAT_pack prepare)
+        pattern: "*./"
+        ontologies:
+          - edam: "http://edamontology.org/data_1049"
+
+output:
+  - orf2lca:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.ORF2LCA.txt":
+          type: file
+          description: A TSV file with per-ORF hit stats and identified lineage
+          pattern: "*.ORF2LCA.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+  - contig2classification:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.contig2classification.txt":
+          type: file
+          description: A TSV file with per-contig hit stats and assignment justification
+            information
+          pattern: "*.contig2classification.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+  - log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.log":
+          type: file
+          description: Log file with run messages and basic statistics
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  - diamond:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.diamond":
+          type: file
+          description: Intermediate DIAMOND TSV summary output file with alignment results
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+  - faa:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.predicted_proteins.faa":
+          type: file
+          description: FAA file of DIAMOND predicted proteins hits
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+  - gff:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.gff":
+          type: file
+          description: GFF file of DIAMOND predicted proteins hits
+          ontologies:
+            - edam: "http://edamontology.org/format_2305"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@jfy133"
+maintainers:
+  - "@jfy133"
