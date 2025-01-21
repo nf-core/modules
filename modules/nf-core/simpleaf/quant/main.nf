@@ -37,7 +37,7 @@ process SIMPLEAF_QUANT {
     cf_option = cellFilteringArgs(cell_filter, number_cb, cb_list)
 
     meta = map_dir ? meta4  : meta + meta2 + meta3
-    meta += [ "count_type": cell_filter == "unfiltered-pl" ? "raw" : "filtered" ]
+    meta += [ "filtered": cell_filter != "unfiltered-pl" ]
 
     // separate forward from reverse pairs
     """
