@@ -13,7 +13,8 @@ nextflow_process {
 
 
     setup {
-        run("KMA_INDEX") {
+
+        run("KMA_INDEX", alias: "KMA_INDEX_SPARSE") {
             script "../../index/main.nf"
 
             params {
@@ -29,8 +30,25 @@ nextflow_process {
                 """
             }
         }
-    }
 
+        run("KMA_INDEX", alias: "KMA_INDEX_ALL") {
+            script "../../index/main.nf"
+
+            params {
+                module_args = ''
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id: 'MT192765.1', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+        
+    }
 
     test("sarscov2 - fasta - sparse") {
 
@@ -49,7 +67,7 @@ nextflow_process {
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                         ]
                     ]
-                input[1] = KMA_INDEX.out.index
+                input[1] = KMA_INDEX_SPARSE.out.index
                 input[2] = false
                 input[3] = false
                 """
@@ -85,7 +103,7 @@ nextflow_process {
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                         ]
                     ]
-                input[1] = KMA_INDEX.out.index
+                input[1] = KMA_INDEX_SPARSE.out.index
                 input[2] = false
                 input[3] = false
                 """
@@ -100,27 +118,6 @@ nextflow_process {
         }
 
     }
-
-
-    setup {
-        run("KMA_INDEX") {
-            script "../../index/main.nf"
-
-            params {
-                module_args = ''
-            }
-
-            process {
-                """
-                input[0] = [
-                    [ id: 'MT192765.1', single_end:false ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                ]
-                """
-            }
-        }
-    }
-
 
     test("sarscov2 - fasta") {
 
@@ -139,7 +136,7 @@ nextflow_process {
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                         ]
                     ]
-                input[1] = KMA_INDEX.out.index
+                input[1] = KMA_INDEX_ALL.out.index
                 input[2] = false
                 input[3] = false
                 """
@@ -175,7 +172,7 @@ nextflow_process {
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                         ]
                     ]
-                input[1] = KMA_INDEX.out.index
+                input[1] = KMA_INDEX_ALL.out.index
                 input[2] = false
                 input[3] = false
                 """
@@ -209,7 +206,7 @@ nextflow_process {
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                         ]
                     ]
-                input[1] = KMA_INDEX.out.index
+                input[1] = KMA_INDEX_ALL.out.index
                 input[2] = false
                 input[3] = true
                 """
@@ -245,7 +242,7 @@ nextflow_process {
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                         ]
                     ]
-                input[1] = KMA_INDEX.out.index
+                input[1] = KMA_INDEX_ALL.out.index
                 input[2] = false
                 input[3] = true
                 """
