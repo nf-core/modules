@@ -1,5 +1,5 @@
 process SIMPLEAF_QUANT {
-    tag "$meta.id"
+    tag meta.id ? "${meta.id}" : "${meta4.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
@@ -102,9 +102,11 @@ process SIMPLEAF_QUANT {
 // 2. if none of the four options are in the args list, there must be a non-empty whitelist channel.
 
 def cellFilteringArgs(cell_filter_method, number_cb, cb_list) {
-    def pl_options = ["knee", "forced_cells", "explicit_pl", "expect_cells", "unfiltered_pl"]
+    def pl_options = ["knee", "forced-cells", "explicit-pl", "expect-cells", "unfiltered-pl"]
 
-    def method = cell_filter_method.replaceAll('-','_')
+    // try catch unintentional underscore in method name
+    def method = cell_filter_method.replaceAll('_','-')
+
     def number = number_cb
     if (!method) {
         error "No cell filtering method was provided; cannot proceed."
