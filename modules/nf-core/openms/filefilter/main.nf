@@ -9,10 +9,12 @@ process OPENMS_FILEFILTER {
 
     input:
     tuple val(meta), path(file)
-
+    
     output:
-    tuple val(meta), path("*.{mzML,featureXML,consensusXML}"), emit: filtered
-    path "versions.yml"                                      , emit: versions
+    tuple val(meta), path("*.mzML"),         emit: mzml, optional: true
+    tuple val(meta), path("*.featureXML"),   emit: featurexml, optional: true
+    tuple val(meta), path("*.consensusXML"), emit: consensusxml, optional: true
+    path "versions.yml"                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,6 +23,7 @@ process OPENMS_FILEFILTER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "${file.getExtension()}"
+    if ("$file" == "${prefix}.${suffix}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     """
     FileFilter \\
@@ -39,6 +42,7 @@ process OPENMS_FILEFILTER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "${file.getExtension()}"
+    if ("$file" == "${prefix}.${suffix}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     """
     touch ${prefix}.${suffix}

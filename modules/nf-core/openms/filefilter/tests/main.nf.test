@@ -10,15 +10,26 @@ nextflow_process {
     tag "openms"
     tag "openms/filefilter"
 
+    setup {
+        run("THERMORAWFILEPARSER") {
+            script "../../../thermorawfileparser/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'proteomics/msspectra/PXD012083_e005640_II.raw', checkIfExists: true)
+                ])
+                """
+            }
+        }
+    }
+
     test("filter - mzml") {
 
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'proteomics/msspectra/peakpicker_tutorial_1.mzML', checkIfExists: true)
-                ]
+                input[0] = THERMORAWFILEPARSER.out.spectra
                 """
             }
         }
@@ -26,7 +37,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                // work dir is written into xml file. Check only the first few lines
+                { assert snapshot(path(process.out.mzml[0][1]).readLines().take(15)).match() }
             )
         }
 
@@ -39,10 +51,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'proteomics/msspectra/peakpicker_tutorial_1.mzML', checkIfExists: true)
-                ]
+                input[0] = THERMORAWFILEPARSER.out.spectra
                 """
             }
         }
