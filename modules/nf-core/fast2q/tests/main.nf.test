@@ -82,7 +82,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test1', single_end:true ], // meta map
-                    file(params.test_data_base + '/data/genomics/mus_musculus/mageck/ERR376998.small.fastq.gz', checkIfExists: true) // FASTQ file
+                    file(params.modules_testdata_base_path + '/genomics/mus_musculus/mageck/ERR376998.small.fastq.gz', checkIfExists: true) // FASTQ file
                 ]
                 input[1] = [
                     [ id:'test2', single_end:true ], // meta map for second input
