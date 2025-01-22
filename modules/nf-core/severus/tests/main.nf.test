@@ -36,7 +36,7 @@ nextflow_process {
                     process.out.read_qual,
                     process.out.breakpoints_double,
                     path(process.out.all_vcf.get(0).get(1)).vcf.summary,
-                    path(process.out.all_vcf.get(0).get(1)).vcf.variantsMD5,
+                    //path(process.out.all_vcf.get(0).get(1)).vcf.variantsMD5, - lint fails because of emtpy md5sum
                     process.out.all_breakpoints_clusters_list,
                     process.out.all_breakpoints_clusters,
                     process.out.versions
