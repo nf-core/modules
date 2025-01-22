@@ -1,41 +1,57 @@
 process PARABRICKS_DEEPVARIANT {
     tag "$meta.id"
-    label 'process_high'
-    label 'process_gpu'
-    stageInMode 'copy' // needed by the module to work properly can be removed when fixed upstream - Issue #7226
+    label 'gpu'
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.4.0-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.3.0-1"
 
     input:
-    tuple val(meta), path(input), path(input_index), path(interval_file)
-    tuple val(ref_meta), path(fasta)
+    tuple val(meta), path(bam), path(bai), path(target_region_bed)
+    tuple path(fasta), path(fai)
+    path model_file
+    path proposed_variants
+
 
     output:
-    tuple val(meta), path("*.vcf"),      optional: true, emit: vcf
-    tuple val(meta), path("*.g.vcf.gz"), optional: true, emit: gvcf
-    path "versions.yml",                                 emit: versions
+    tuple val(meta), path("*.vcf"), emit: vcf
+    tuple val(meta), path("*.log"), emit: log
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         exit 1, "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
+
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def output_file = ("--gvcf" =~ task.ext.args)? "${prefix}.g.vcf.gz" : "${prefix}.vcf"
-    def interval_file_command = interval_file ? interval_file.collect{"--interval-file $it"}.join(' ') : ""
-    def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
+    def prefix     = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    def output_file = args =~ "gvcf" ? "${prefix}.genome.vcf" : "${prefix}.vcf"
+    def target_region_bed_command = target_region_bed ? target_region_bed.collect{"--interval-file $it"}.join(' ') : ""
+    def proposed_variants_option = proposed_variants ? "--proposed-variants $proposed_variants" : ""
+    def model_file_option = model_file ? "--pb-model-file $model_file" : ""
+    def wes_model_option = (params.assay == "WES") ? "--use-wes-model" : ""
+
     """
+
+    logfile=run.log
+    exec > >(tee \$logfile)
+    exec 2>&1
+
+    echo "pbrun deepvariant --ref $fasta --in-bam $bam --out-variants $output_file --num-gpus $task.accelerator.request $wes_model_option $target_region_bed_command $proposed_variants_option $model_file_option $args"
+
     pbrun \\
         deepvariant \\
         --ref $fasta \\
-        --in-bam $input \\
+        --in-bam $bam \\
         --out-variants $output_file \\
-        $interval_file_command \\
-        $num_gpus \\
+        --num-gpus $task.accelerator.request \\
+        $wes_model_option \\
+        $target_region_bed_command \\
+        $proposed_variants_option \\
+        $model_file_option \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
@@ -45,10 +61,12 @@ process PARABRICKS_DEEPVARIANT {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def output_cmd = ("--gvcf" =~ task.ext.args)? "echo '' | gzip > ${prefix}.g.vcf.gz" : "touch ${prefix}.vcf"
+    def output_file = args =~ "gvcf" ? "${prefix}.genome.vcf" : "${prefix}.vcf"
     """
-    $output_cmd
+    touch run.log
+    touch $output_file
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
