@@ -7,7 +7,7 @@
                     {
                         "id": "test"
                     },
-                    "read_qual.txt:md5,3a99166c04453f184c43c348f530301a"
+                    "read_qual.txt:md5,d0428d5dc149f2b40e46e480809d7417"
                 ]
             ],
             [
@@ -15,52 +15,10 @@
                     {
                         "id": "test"
                     },
-                    "breakpoints_double.csv:md5,68f6ea1191c90253e56f30023a1fbdbf"
+                    "breakpoints_double.csv:md5,a0fdb9d522587e7b088b3a61fce99843"
                 ]
             ],
-            [
-                "##fileformat=VCFv4.2",
-                "##source=Severus v1.1",
-                "##CommandLine= --min-sv-size 1 --min-mapq 0 --min-support 1 --TIN-ratio 1 --threads 2 --target-bam test2.sorted.bam --out-dir test"
-            ],
-            [
-                "##contig=<ID=chr22,length=40001>",
-                "##ALT=<ID=DEL,Description=\"Deletion\">",
-                "##ALT=<ID=INS,Description=\"Insertion\">",
-                "##ALT=<ID=DUP,Description=\"Duplication\">",
-                "##ALT=<ID=INV,Description=\"Inversion\">",
-                "##ALT=<ID=BND,Description=\"Breakend\">",
-                "##FILTER=<ID=PASS,Description=\"All filters passed\">",
-                "##FILTER=<ID=FAIL_LOWSUPP,Description=\"Less number of support, but ok in other samples\">",
-                "##FILTER=<ID=FAIL_MAP_CONS,Description=\"Majority of variant reads have unreliable mappability\">",
-                "##FILTER=<ID=FAIL_CONN_CONS,Description=\"Majority of variant reads have unreliable connections\">",
-                "##FILTER=<ID=FAIL_LOWCOV_OTHER,Description=\"Low variant coverage in other samples\">",
-                "##INFO=<ID=PRECISE,Number=0,Type=Flag,Description=\"SV with precise breakpoints coordinates and length\">",
-                "##INFO=<ID=IMPRECISE,Number=0,Type=Flag,Description=\"SV with imprecise breakpoints coordinates and length\">",
-                "##INFO=<ID=SVTYPE,Number=1,Type=String,Description=\"Type of structural variant\">",
-                "##INFO=<ID=SVLEN,Number=1,Type=Integer,Description=\"Length of the SV\">",
-                "##INFO=<ID=CHR2,Number=1,Type=String,Description=\"Chromosome for END coordinate\">",
-                "##INFO=<ID=END,Number=1,Type=Integer,Description=\"End position of the SV\">",
-                "##INFO=<ID=STRANDS,Number=1,Type=String,Description=\"Breakpoint strandedness\">",
-                "##INFO=<ID=DETAILED_TYPE,Number=1,Type=String,Description=\"Detailed type of the SV\">",
-                "##INFO=<ID=INSLEN,Number=1,Type=Integer,Description=\"Length of the unmapped sequence between breakpoint\">",
-                "##INFO=<ID=MAPQ,Number=1,Type=Integer,Description=\"Median mapping quality of supporting reads\">",
-                "##INFO=<ID=PHASESETID,Number=1,Type=String,Description=\"Matching phaseset ID for phased SVs\">",
-                "##INFO=<ID=HP,Number=1,Type=Integer,Description=\"Matching haplotype ID for phased SVs\">",
-                "##INFO=<ID=CLUSTERID,Number=1,Type=String,Description=\"Cluster ID in breakpoint_graph\">",
-                "##INFO=<ID=INSSEQ,Number=1,Type=String,Description=\"Insertion sequence between breakpoints\">",
-                "##INFO=<ID=MATE_ID,Number=1,Type=String,Description=\"MATE ID for breakends\">",
-                "##INFO=<ID=INSIDE_VNTR,Number=1,Type=String,Description=\"True if an indel is inside a VNTR\">",
-                "##INFO=<ID=ALINGED_POS,Number=1,Type=String,Description=\"Position in the reference\">",
-                "##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">",
-                "##FORMAT=<ID=GQ,Number=1,Type=Integer,Description=\"Genotyping quality\">",
-                "##FORMAT=<ID=DR,Number=1,Type=Integer,Description=\"Number of reference reads\">",
-                "##FORMAT=<ID=DV,Number=1,Type=Integer,Description=\"Number of variant reads\">",
-                "##FORMAT=<ID=VAF,Number=1,Type=Float,Description=\"Variant allele frequency\">",
-                "##FORMAT=<ID=hVAF,Number=3,Type=Float,Description=\"Haplotype specific variant Allele frequency (H0,H1,H2)\">",
-                "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\ttest2.sorted",
-                "chr22\t16879\tseverus_DEL0\tN\t<DEL>\t60.0\tPASS\tPRECISE;SVTYPE=DEL;SVLEN=13;END=16892;STRANDS=+-;MAPQ=60.0\tGT:GQ:VAF:hVAF:DR:DV\t0/1:232:0.38:0.38,0.00,0.00:28:17"
-            ],
+            "VcfFile [chromosomes=[], sampleCount=1, variantCount=0, phased=true, phasedAutodetect=true]",
             [
                 
             ],
@@ -68,14 +26,14 @@
                 
             ],
             [
-                "versions.yml:md5,99a20821f27fa27a3ed91d9c3d424c84"
+                "versions.yml:md5,ba5c727bfdd7186a318f8fa6c2aca06b"
             ]
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.3"
         },
-        "timestamp": "2024-08-15T09:39:57.407065744"
+        "timestamp": "2025-01-22T16:04:54.595896309"
     },
     "homo_sapiens - [ bam, bai, bam, bai, vcf ], [[],[]]": {
         "content": [
@@ -85,7 +43,7 @@
                     {
                         "id": "test"
                     },
-                    "read_qual.txt:md5,90b9e913572e1452f8ec1ad9fdc063f5"
+                    "read_qual.txt:md5,799cd79452b0480c945e6663c572ea87"
                 ]
             ],
             [
@@ -93,52 +51,10 @@
                     {
                         "id": "test"
                     },
-                    "breakpoints_double.csv:md5,6e235b941ded1fbe04edf0c081b531a0"
+                    "breakpoints_double.csv:md5,085eae5aaaed3f4970b65b80f5ded767"
                 ]
             ],
-            [
-                "##fileformat=VCFv4.2",
-                "##source=Severus v1.1",
-                "##CommandLine= --min-sv-size 1 --min-mapq 0 --min-support 1 --TIN-ratio 1 --threads 2 --target-bam test2.sorted.bam --control-bam test.sorted.phased.bam --phasing-vcf test.genome.vcf --out-dir test"
-            ],
-            [
-                "##contig=<ID=chr22,length=40001>",
-                "##ALT=<ID=DEL,Description=\"Deletion\">",
-                "##ALT=<ID=INS,Description=\"Insertion\">",
-                "##ALT=<ID=DUP,Description=\"Duplication\">",
-                "##ALT=<ID=INV,Description=\"Inversion\">",
-                "##ALT=<ID=BND,Description=\"Breakend\">",
-                "##FILTER=<ID=PASS,Description=\"All filters passed\">",
-                "##FILTER=<ID=FAIL_LOWSUPP,Description=\"Less number of support, but ok in other samples\">",
-                "##FILTER=<ID=FAIL_MAP_CONS,Description=\"Majority of variant reads have unreliable mappability\">",
-                "##FILTER=<ID=FAIL_CONN_CONS,Description=\"Majority of variant reads have unreliable connections\">",
-                "##FILTER=<ID=FAIL_LOWCOV_OTHER,Description=\"Low variant coverage in other samples\">",
-                "##INFO=<ID=PRECISE,Number=0,Type=Flag,Description=\"SV with precise breakpoints coordinates and length\">",
-                "##INFO=<ID=IMPRECISE,Number=0,Type=Flag,Description=\"SV with imprecise breakpoints coordinates and length\">",
-                "##INFO=<ID=SVTYPE,Number=1,Type=String,Description=\"Type of structural variant\">",
-                "##INFO=<ID=SVLEN,Number=1,Type=Integer,Description=\"Length of the SV\">",
-                "##INFO=<ID=CHR2,Number=1,Type=String,Description=\"Chromosome for END coordinate\">",
-                "##INFO=<ID=END,Number=1,Type=Integer,Description=\"End position of the SV\">",
-                "##INFO=<ID=STRANDS,Number=1,Type=String,Description=\"Breakpoint strandedness\">",
-                "##INFO=<ID=DETAILED_TYPE,Number=1,Type=String,Description=\"Detailed type of the SV\">",
-                "##INFO=<ID=INSLEN,Number=1,Type=Integer,Description=\"Length of the unmapped sequence between breakpoint\">",
-                "##INFO=<ID=MAPQ,Number=1,Type=Integer,Description=\"Median mapping quality of supporting reads\">",
-                "##INFO=<ID=PHASESETID,Number=1,Type=String,Description=\"Matching phaseset ID for phased SVs\">",
-                "##INFO=<ID=HP,Number=1,Type=Integer,Description=\"Matching haplotype ID for phased SVs\">",
-                "##INFO=<ID=CLUSTERID,Number=1,Type=String,Description=\"Cluster ID in breakpoint_graph\">",
-                "##INFO=<ID=INSSEQ,Number=1,Type=String,Description=\"Insertion sequence between breakpoints\">",
-                "##INFO=<ID=MATE_ID,Number=1,Type=String,Description=\"MATE ID for breakends\">",
-                "##INFO=<ID=INSIDE_VNTR,Number=1,Type=String,Description=\"True if an indel is inside a VNTR\">",
-                "##INFO=<ID=ALINGED_POS,Number=1,Type=String,Description=\"Position in the reference\">",
-                "##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">",
-                "##FORMAT=<ID=GQ,Number=1,Type=Integer,Description=\"Genotyping quality\">",
-                "##FORMAT=<ID=DR,Number=1,Type=Integer,Description=\"Number of reference reads\">",
-                "##FORMAT=<ID=DV,Number=1,Type=Integer,Description=\"Number of variant reads\">",
-                "##FORMAT=<ID=VAF,Number=1,Type=Float,Description=\"Variant allele frequency\">",
-                "##FORMAT=<ID=hVAF,Number=3,Type=Float,Description=\"Haplotype specific variant Allele frequency (H0,H1,H2)\">",
-                "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\ttest2.sorted\ttest.sorted.phased",
-                "chr22\t16879\tseverus_DEL0\tN\t<DEL>\t60.0\tPASS\tPRECISE;SVTYPE=DEL;SVLEN=13;END=16892;STRANDS=+-;MAPQ=60.0\tGT:GQ:VAF:hVAF:DR:DV\t0/1:232:0.38:0.38,0.00,0.00:28:17\t0/1:93:0.50:0.00,0.60,0.50:13:13"
-            ],
+            "VcfFile [chromosomes=[chr22], sampleCount=2, variantCount=1, phased=false, phasedAutodetect=false]",
             [
                 
             ],
@@ -155,14 +71,14 @@
                 
             ],
             [
-                "versions.yml:md5,99a20821f27fa27a3ed91d9c3d424c84"
+                "versions.yml:md5,ba5c727bfdd7186a318f8fa6c2aca06b"
             ]
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.3"
         },
-        "timestamp": "2024-08-15T09:40:30.613156728"
+        "timestamp": "2025-01-22T16:06:07.651581365"
     },
     "homo_sapiens - [ bam, bai, [], [], [] ], [[],[]] - stub": {
         "content": [
@@ -225,7 +141,7 @@
                     ]
                 ],
                 "15": [
-                    "versions.yml:md5,99a20821f27fa27a3ed91d9c3d424c84"
+                    "versions.yml:md5,ba5c727bfdd7186a318f8fa6c2aca06b"
                 ],
                 "2": [
                     [
@@ -413,15 +329,15 @@
                     
                 ],
                 "versions": [
-                    "versions.yml:md5,99a20821f27fa27a3ed91d9c3d424c84"
+                    "versions.yml:md5,ba5c727bfdd7186a318f8fa6c2aca06b"
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.3"
         },
-        "timestamp": "2024-07-10T12:00:07.296601854"
+        "timestamp": "2025-01-22T16:03:53.176564181"
     },
     "homo_sapiens - [ bam, bai, bam, bai, [] ], [[],[]]": {
         "content": [
@@ -431,7 +347,7 @@
                     {
                         "id": "test"
                     },
-                    "read_qual.txt:md5,90b9e913572e1452f8ec1ad9fdc063f5"
+                    "read_qual.txt:md5,799cd79452b0480c945e6663c572ea87"
                 ]
             ],
             [
@@ -442,49 +358,7 @@
                     "breakpoints_double.csv:md5,e2b55013bcb77a0b738cdba485520f68"
                 ]
             ],
-            [
-                "##fileformat=VCFv4.2",
-                "##source=Severus v1.1",
-                "##CommandLine= --min-sv-size 1 --min-mapq 0 --min-support 1 --TIN-ratio 1 --threads 2 --target-bam test2.sorted.bam --control-bam test.sorted.phased.bam --out-dir test"
-            ],
-            [
-                "##contig=<ID=chr22,length=40001>",
-                "##ALT=<ID=DEL,Description=\"Deletion\">",
-                "##ALT=<ID=INS,Description=\"Insertion\">",
-                "##ALT=<ID=DUP,Description=\"Duplication\">",
-                "##ALT=<ID=INV,Description=\"Inversion\">",
-                "##ALT=<ID=BND,Description=\"Breakend\">",
-                "##FILTER=<ID=PASS,Description=\"All filters passed\">",
-                "##FILTER=<ID=FAIL_LOWSUPP,Description=\"Less number of support, but ok in other samples\">",
-                "##FILTER=<ID=FAIL_MAP_CONS,Description=\"Majority of variant reads have unreliable mappability\">",
-                "##FILTER=<ID=FAIL_CONN_CONS,Description=\"Majority of variant reads have unreliable connections\">",
-                "##FILTER=<ID=FAIL_LOWCOV_OTHER,Description=\"Low variant coverage in other samples\">",
-                "##INFO=<ID=PRECISE,Number=0,Type=Flag,Description=\"SV with precise breakpoints coordinates and length\">",
-                "##INFO=<ID=IMPRECISE,Number=0,Type=Flag,Description=\"SV with imprecise breakpoints coordinates and length\">",
-                "##INFO=<ID=SVTYPE,Number=1,Type=String,Description=\"Type of structural variant\">",
-                "##INFO=<ID=SVLEN,Number=1,Type=Integer,Description=\"Length of the SV\">",
-                "##INFO=<ID=CHR2,Number=1,Type=String,Description=\"Chromosome for END coordinate\">",
-                "##INFO=<ID=END,Number=1,Type=Integer,Description=\"End position of the SV\">",
-                "##INFO=<ID=STRANDS,Number=1,Type=String,Description=\"Breakpoint strandedness\">",
-                "##INFO=<ID=DETAILED_TYPE,Number=1,Type=String,Description=\"Detailed type of the SV\">",
-                "##INFO=<ID=INSLEN,Number=1,Type=Integer,Description=\"Length of the unmapped sequence between breakpoint\">",
-                "##INFO=<ID=MAPQ,Number=1,Type=Integer,Description=\"Median mapping quality of supporting reads\">",
-                "##INFO=<ID=PHASESETID,Number=1,Type=String,Description=\"Matching phaseset ID for phased SVs\">",
-                "##INFO=<ID=HP,Number=1,Type=Integer,Description=\"Matching haplotype ID for phased SVs\">",
-                "##INFO=<ID=CLUSTERID,Number=1,Type=String,Description=\"Cluster ID in breakpoint_graph\">",
-                "##INFO=<ID=INSSEQ,Number=1,Type=String,Description=\"Insertion sequence between breakpoints\">",
-                "##INFO=<ID=MATE_ID,Number=1,Type=String,Description=\"MATE ID for breakends\">",
-                "##INFO=<ID=INSIDE_VNTR,Number=1,Type=String,Description=\"True if an indel is inside a VNTR\">",
-                "##INFO=<ID=ALINGED_POS,Number=1,Type=String,Description=\"Position in the reference\">",
-                "##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">",
-                "##FORMAT=<ID=GQ,Number=1,Type=Integer,Description=\"Genotyping quality\">",
-                "##FORMAT=<ID=DR,Number=1,Type=Integer,Description=\"Number of reference reads\">",
-                "##FORMAT=<ID=DV,Number=1,Type=Integer,Description=\"Number of variant reads\">",
-                "##FORMAT=<ID=VAF,Number=1,Type=Float,Description=\"Variant allele frequency\">",
-                "##FORMAT=<ID=hVAF,Number=3,Type=Float,Description=\"Haplotype specific variant Allele frequency (H0,H1,H2)\">",
-                "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\ttest2.sorted\ttest.sorted.phased",
-                "chr22\t16879\tseverus_DEL0\tN\t<DEL>\t60.0\tPASS\tPRECISE;SVTYPE=DEL;SVLEN=13;END=16892;STRANDS=+-;MAPQ=60.0\tGT:GQ:VAF:hVAF:DR:DV\t0/1:232:0.38:0.38,0.00,0.00:28:17\t0/1:93:0.50:0.00,0.60,0.50:13:13"
-            ],
+            "VcfFile [chromosomes=[chr22], sampleCount=2, variantCount=1, phased=false, phasedAutodetect=false]",
             [
                 
             ],
@@ -501,14 +375,14 @@
                 
             ],
             [
-                "versions.yml:md5,99a20821f27fa27a3ed91d9c3d424c84"
+                "versions.yml:md5,ba5c727bfdd7186a318f8fa6c2aca06b"
             ]
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.3"
         },
-        "timestamp": "2024-08-15T09:40:15.084382239"
+        "timestamp": "2025-01-22T16:05:05.958319951"
     },
     "homo_sapiens - [ bam, bai, bam, bai, vcf ], [ bed ]": {
         "content": [
@@ -518,7 +392,7 @@
                     {
                         "id": "test"
                     },
-                    "read_qual.txt:md5,d2355003691b9a3a2563f40533ec562f"
+                    "read_qual.txt:md5,8ef1a36618e7f2cad39c79c9aed3cd64"
                 ]
             ],
             [
@@ -526,52 +400,10 @@
                     {
                         "id": "test"
                     },
-                    "breakpoints_double.csv:md5,6e235b941ded1fbe04edf0c081b531a0"
+                    "breakpoints_double.csv:md5,085eae5aaaed3f4970b65b80f5ded767"
                 ]
             ],
-            [
-                "##fileformat=VCFv4.2",
-                "##source=Severus v1.1",
-                "##CommandLine= --min-sv-size 1 --min-mapq 0 --min-support 1 --TIN-ratio 1 --threads 2 --target-bam test2.sorted.bam --vntr-bed genome.blacklist_intervals.bed --control-bam test.sorted.phased.bam --phasing-vcf test.genome.vcf --out-dir test"
-            ],
-            [
-                "##contig=<ID=chr22,length=40001>",
-                "##ALT=<ID=DEL,Description=\"Deletion\">",
-                "##ALT=<ID=INS,Description=\"Insertion\">",
-                "##ALT=<ID=DUP,Description=\"Duplication\">",
-                "##ALT=<ID=INV,Description=\"Inversion\">",
-                "##ALT=<ID=BND,Description=\"Breakend\">",
-                "##FILTER=<ID=PASS,Description=\"All filters passed\">",
-                "##FILTER=<ID=FAIL_LOWSUPP,Description=\"Less number of support, but ok in other samples\">",
-                "##FILTER=<ID=FAIL_MAP_CONS,Description=\"Majority of variant reads have unreliable mappability\">",
-                "##FILTER=<ID=FAIL_CONN_CONS,Description=\"Majority of variant reads have unreliable connections\">",
-                "##FILTER=<ID=FAIL_LOWCOV_OTHER,Description=\"Low variant coverage in other samples\">",
-                "##INFO=<ID=PRECISE,Number=0,Type=Flag,Description=\"SV with precise breakpoints coordinates and length\">",
-                "##INFO=<ID=IMPRECISE,Number=0,Type=Flag,Description=\"SV with imprecise breakpoints coordinates and length\">",
-                "##INFO=<ID=SVTYPE,Number=1,Type=String,Description=\"Type of structural variant\">",
-                "##INFO=<ID=SVLEN,Number=1,Type=Integer,Description=\"Length of the SV\">",
-                "##INFO=<ID=CHR2,Number=1,Type=String,Description=\"Chromosome for END coordinate\">",
-                "##INFO=<ID=END,Number=1,Type=Integer,Description=\"End position of the SV\">",
-                "##INFO=<ID=STRANDS,Number=1,Type=String,Description=\"Breakpoint strandedness\">",
-                "##INFO=<ID=DETAILED_TYPE,Number=1,Type=String,Description=\"Detailed type of the SV\">",
-                "##INFO=<ID=INSLEN,Number=1,Type=Integer,Description=\"Length of the unmapped sequence between breakpoint\">",
-                "##INFO=<ID=MAPQ,Number=1,Type=Integer,Description=\"Median mapping quality of supporting reads\">",
-                "##INFO=<ID=PHASESETID,Number=1,Type=String,Description=\"Matching phaseset ID for phased SVs\">",
-                "##INFO=<ID=HP,Number=1,Type=Integer,Description=\"Matching haplotype ID for phased SVs\">",
-                "##INFO=<ID=CLUSTERID,Number=1,Type=String,Description=\"Cluster ID in breakpoint_graph\">",
-                "##INFO=<ID=INSSEQ,Number=1,Type=String,Description=\"Insertion sequence between breakpoints\">",
-                "##INFO=<ID=MATE_ID,Number=1,Type=String,Description=\"MATE ID for breakends\">",
-                "##INFO=<ID=INSIDE_VNTR,Number=1,Type=String,Description=\"True if an indel is inside a VNTR\">",
-                "##INFO=<ID=ALINGED_POS,Number=1,Type=String,Description=\"Position in the reference\">",
-                "##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">",
-                "##FORMAT=<ID=GQ,Number=1,Type=Integer,Description=\"Genotyping quality\">",
-                "##FORMAT=<ID=DR,Number=1,Type=Integer,Description=\"Number of reference reads\">",
-                "##FORMAT=<ID=DV,Number=1,Type=Integer,Description=\"Number of variant reads\">",
-                "##FORMAT=<ID=VAF,Number=1,Type=Float,Description=\"Variant allele frequency\">",
-                "##FORMAT=<ID=hVAF,Number=3,Type=Float,Description=\"Haplotype specific variant Allele frequency (H0,H1,H2)\">",
-                "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\ttest2.sorted\ttest.sorted.phased",
-                "chr22\t16879\tseverus_DEL0\tN\t<DEL>\t60.0\tPASS\tPRECISE;SVTYPE=DEL;SVLEN=13;END=16892;STRANDS=+-;MAPQ=60.0\tGT:GQ:VAF:hVAF:DR:DV\t0/1:232:0.38:0.38,0.00,0.00:28:17\t0/1:93:0.50:0.00,0.60,0.50:13:13"
-            ],
+            "VcfFile [chromosomes=[chr22], sampleCount=2, variantCount=1, phased=false, phasedAutodetect=false]",
             [
                 
             ],
@@ -588,13 +420,13 @@
                 
             ],
             [
-                "versions.yml:md5,99a20821f27fa27a3ed91d9c3d424c84"
+                "versions.yml:md5,ba5c727bfdd7186a318f8fa6c2aca06b"
             ]
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.3"
         },
-        "timestamp": "2024-08-15T09:47:36.803934533"
+        "timestamp": "2025-01-22T16:06:26.389282306"
     }
 }
