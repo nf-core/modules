@@ -43,8 +43,8 @@ nextflow_process {
             }
             process {
                 """
-                merged_reports = FQW1.out.report.merge(FQW2.out.report)
-                input[0] = merged_reports.map(it -> tuple ([id: 'reports'], it) )
+                merged_reports = FQW1.out.report.mix(FQW2.out.report)
+                input[0] = merged_reports.map(it -> tuple ([id: 'reports'], it[1]) )
                 """
             }
         }
@@ -52,14 +52,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.report_out.get(0).get(1)).readLines().size() == 11},
+                { assert path(process.out.gathered_report.get(0).get(1)).readLines().size() == 11},
                 {
-                    def report_header = path(process.out.report_out.get(0).get(1)).readLines()[0]
+                    def report_header = path(process.out.gathered_report.get(0).get(1)).readLines()[0]
                     assert report_header.equals('FASTQWIPER REPORT:')
                 },
                 {
-                    def well_formed_lines = path(process.out.report_out.get(0).get(1)).readLines()[3]
-                    assert well_formed_lines.equals('Well-formed lines: 16 (72.73%)')
+                    def well_formed_lines = path(process.out.gathered_report.get(0).get(1)).readLines()[3]
+                    assert well_formed_lines.equals('Well-formed lines: 8 (80.0%)')
                 },
                 { assert snapshot(process.out).match() }
             )
@@ -72,8 +72,8 @@ nextflow_process {
         when {
             process {
                 """
-                merged_reports = FQW1.out.report.merge(FQW2.out.report)
-                input[0] = merged_reports.map(it -> tuple ([id: 'reports'], it) )
+                merged_reports = FQW1.out.report.mix(FQW2.out.report)
+                input[0] = merged_reports.map(it -> tuple ([id: 'reports'], it[1]) )
                 """
             }
         }

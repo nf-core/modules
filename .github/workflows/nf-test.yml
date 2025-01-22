@@ -41,9 +41,10 @@ jobs:
     outputs:
       # Expose detected tags as 'modules' and 'workflows' output variables
       paths: ${{ steps.list.outputs.components }}
-      modules: ${{ steps.outputs.outputs.modules }}
-      subworkflows: ${{ steps.outputs.outputs.subworkflows}}
-      # Prod for version bumping
+      modules: ${{ steps.components.outputs.modules }}
+      subworkflows: ${{ steps.components.outputs.subworkflows}}
+      shard: ${{ steps.set-shards.outputs.shard }}
+      total_shards: ${{ steps.set-shards.outputs.total_shards }}
     steps:
       - name: Clean Workspace # Purge the workspace in case it's running on a self-hosted runner
         run: |
@@ -65,28 +66,44 @@ jobs:
           exclude_tags: "gpu"
 
       - name: Separate modules and subworkflows
-        id: outputs
+        id: components
         run: |
           echo modules=$(echo '${{ steps.list.outputs.components }}' | jq -c '. | map(select(contains("modules"))) | map(gsub("modules/nf-core/"; ""))') >> $GITHUB_OUTPUT
           echo subworkflows=$(echo '${{ steps.list.outputs.components }}' | jq '. | map(select(contains("subworkflows"))) | map(gsub("subworkflows/nf-core/"; ""))') >> $GITHUB_OUTPUT
+
+      - name: get number of shards
+        id: set-shards
+        if: ${{ steps.list.outputs.components != '[]' }}
+        uses: ./.github/actions/get-shards
+        env:
+          NFT_VER: ${{ env.NFT_VER }}
+        with:
+          max_shards: 15
+          paths: "${{ join(fromJson(steps.list.outputs.components ), ' ') }}"
+
       - name: debug
         run: |
           echo ${{ steps.list.outputs.components }}
-          echo ${{ steps.outputs.outputs.modules }}
-          echo ${{ steps.outputs.outputs.subworkflows }}
+          echo ${{ steps.components.outputs.modules }}
+          echo ${{ steps.components.outputs.subworkflows }}
+          echo ${{ steps.set-shards.outputs.shard }}
+          echo ${{ steps.set-shards.outputs.total_shards }}
+
   nf-test:
     runs-on: ${{ github.event.inputs.runners || 'self-hosted' }}
     name: "Test | ${{ matrix.profile }} | ${{ matrix.shard }}"
-    needs: nf-test-changes
-    if: ${{ needs.nf-test-changes.outputs.modules != '[]' || needs.nf-test-changes.outputs.subworkflows != '[]' }}
+    needs: [nf-test-changes]
+    if: ${{ needs.nf-test-changes.outputs.total_shards != '0' }}
     strategy:
       fail-fast: false
       matrix:
-        shard: [1, 2, 3, 4, 5]
+        shard: ${{ fromJson(needs.nf-test-changes.outputs.shard) }}
         profile: [conda, docker_self_hosted, singularity]
     env:
       NXF_ANSI_LOG: false
-      TOTAL_SHARDS: 5
+      TOTAL_SHARDS: ${{ needs.nf-test-changes.outputs.total_shards }}
+    outputs:
+      filtered_paths: ${{ steps.filter.outputs.filtered_paths }}
 
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
@@ -129,6 +146,10 @@ jobs:
 
           echo "filtered_paths=${FILTERED}" >> $GITHUB_OUTPUT
 
+      - name: debug
+        run: |
+          echo filtered_paths = ${{ steps.filter.outputs.filtered_paths }}
+
       - name: Run nf-test Action
         if: ${{steps.filter.outputs.filtered_paths != '[]'}}
         uses: ./.github/actions/nf-test-action
@@ -156,6 +177,10 @@ jobs:
         if: ${{ contains(needs.*.result, 'cancelled') }}
         run: exit 1
 
+      - name: If no tests run, but filtered_paths was not empty and no tests succeeded, fail
+        if: ${{ needs.nf-test.outputs.filtered_paths != '' && !contains(needs.*.result, 'success') }}
+        run: exit 1
+
       - name: All tests ok
         if: ${{ contains(needs.*.result, 'success') }}
         run: exit 0
@@ -163,5 +188,8 @@ jobs:
       - name: debug-print
         if: always()
         run: |
-          echo "toJSON(needs) = ${{ toJSON(needs) }}"
-          echo "toJSON(needs.*.result) = ${{ toJSON(needs.*.result) }}"
+          echo "::group::DEBUG: `needs` Contents"
+          echo "DEBUG: toJSON(needs) = ${{ toJSON(needs) }}"
+          echo "DEBUG: toJSON(needs.*.result) = ${{ toJSON(needs.*.result) }}"
+          echo "DEBUG: needs.nf-test.outputs.filtered_paths = ${{ needs.nf-test.outputs.filtered_paths }}"
+          echo "::endgroup::"
