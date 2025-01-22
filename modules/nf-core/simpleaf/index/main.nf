@@ -1,5 +1,5 @@
 process SIMPLEAF_INDEX {
-    tag "$genome_fasta $transcript_fasta"
+    tag "${meta.id ?: meta2.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
