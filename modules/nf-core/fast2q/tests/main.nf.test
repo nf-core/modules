@@ -86,7 +86,7 @@ nextflow_process {
                 ]
                 input[1] = [
                     [ id:'test2', single_end:true ], // meta map for second input
-                    file(params.test_data_base + '/data/genomics/mus_musculus/mageck/yusa_library.csv', checkIfExists: true) // library file
+                    file(params.modules_testdata_base_path + '/genomics/mus_musculus/mageck/yusa_library.csv', checkIfExists: true) // library file
                 ]
                 """
             }
