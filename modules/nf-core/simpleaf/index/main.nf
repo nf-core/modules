@@ -1,3 +1,4 @@
+// NOTE because the default indexer, piscem, needs to frequently read and write a large number of intermediate files, if your use case involves the situations where the CPU and storage are not physically connected, we recommend setting `--work-dir /path/to/a/local/dir` or in the `ext.args` in nextflow.config, or  `scratch = true`, to avoid runtime issues.
 process SIMPLEAF_INDEX {
     tag "${meta.id ?: meta2.id}"
     label 'process_high'
