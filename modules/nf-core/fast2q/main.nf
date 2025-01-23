@@ -32,7 +32,6 @@ process FAST2Q {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process}:
-        python: \$(python --version | sed 's/Python //g')
         2FAST2Q version: \$(2fast2q -v | grep 'Version:' | sed 's/Version: //g')
     END_VERSIONS
     """
