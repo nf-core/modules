@@ -6,48 +6,47 @@
                     [
                         {
                             "id": "test",
+                            "read_group": "rg",
+                            "sample": "sm",
+                            "platform": "pl",
                             "single_end": true
                         },
-                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e",
+                        "test.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "1": [
                     [
                         {
                             "id": "test",
+                            "read_group": "rg",
+                            "sample": "sm",
+                            "platform": "pl",
                             "single_end": true
                         },
-                        "test.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "alignment.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "2": [
                     
                 ],
                 "3": [
-                    "versions.yml:md5,55d1e67ef8fa9d0ea3065363a653ffef"
+                    
                 ],
                 "4": [
-                    
+                    "versions.yml:md5,55d1e67ef8fa9d0ea3065363a653ffef"
                 ],
-                "5": [
-                    
-                ],
-                "bai": [
+                "bam_bai": [
                     [
                         {
                             "id": "test",
+                            "read_group": "rg",
+                            "sample": "sm",
+                            "platform": "pl",
                             "single_end": true
                         },
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e",
                         "test.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "bam": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "bqsr_table": [
@@ -57,7 +56,16 @@
                     
                 ],
                 "qc_metrics": [
-                    
+                    [
+                        {
+                            "id": "test",
+                            "read_group": "rg",
+                            "sample": "sm",
+                            "platform": "pl",
+                            "single_end": true
+                        },
+                        "alignment.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
                 "versions": [
                     "versions.yml:md5,55d1e67ef8fa9d0ea3065363a653ffef"
@@ -71,9 +79,9 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.2"
+            "nextflow": "24.10.4"
         },
-        "timestamp": "2024-12-16T12:16:33.055785098"
+        "timestamp": "2025-01-23T17:54:47.091148531"
     },
     "sarscov2 - fastq - pe - stub": {
         "content": [
@@ -82,48 +90,47 @@
                     [
                         {
                             "id": "test",
-                            "single_end": false
+                            "read_group": "rg",
+                            "sample": "sm",
+                            "platform": "pl",
+                            "single_end": true
                         },
-                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e",
+                        "test.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "1": [
                     [
                         {
                             "id": "test",
-                            "single_end": false
+                            "read_group": "rg",
+                            "sample": "sm",
+                            "platform": "pl",
+                            "single_end": true
                         },
-                        "test.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "alignment.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "2": [
                     
                 ],
                 "3": [
-                    "versions.yml:md5,55d1e67ef8fa9d0ea3065363a653ffef"
+                    
                 ],
                 "4": [
-                    
+                    "versions.yml:md5,55d1e67ef8fa9d0ea3065363a653ffef"
                 ],
-                "5": [
-                    
-                ],
-                "bai": [
+                "bam_bai": [
                     [
                         {
                             "id": "test",
-                            "single_end": false
+                            "read_group": "rg",
+                            "sample": "sm",
+                            "platform": "pl",
+                            "single_end": true
                         },
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e",
                         "test.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "bam": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "bqsr_table": [
@@ -133,7 +140,16 @@
                     
                 ],
                 "qc_metrics": [
-                    
+                    [
+                        {
+                            "id": "test",
+                            "read_group": "rg",
+                            "sample": "sm",
+                            "platform": "pl",
+                            "single_end": true
+                        },
+                        "alignment.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
                 "versions": [
                     "versions.yml:md5,55d1e67ef8fa9d0ea3065363a653ffef"
@@ -147,13 +163,13 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.2"
+            "nextflow": "24.10.4"
         },
-        "timestamp": "2024-12-16T12:16:48.158061416"
+        "timestamp": "2025-01-23T17:55:43.480803117"
     },
-    "sarscov2 - fastq - pe": {
+    "sarscov2 - fastq - pe - merge": {
         "content": [
-            "2d64e4363d9f3c0e2167fce49d5087cf",
+            "1083e9c5f0dc3549fde9d588548cf7dd",
             "test.bam.bai",
             [
                 "versions.yml:md5,55d1e67ef8fa9d0ea3065363a653ffef"
@@ -166,9 +182,28 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.2"
+            "nextflow": "24.10.4"
         },
-        "timestamp": "2024-12-16T12:25:23.63061876"
+        "timestamp": "2025-01-23T18:03:33.518683912"
+    },
+    "sarscov2 - fastq - pe": {
+        "content": [
+            "da777b5d079e09dfc076b1c89f93ef3e",
+            "test.bam.bai",
+            [
+                "versions.yml:md5,55d1e67ef8fa9d0ea3065363a653ffef"
+            ],
+            {
+                "PARABRICKS_FQ2BAM": {
+                    "pbrun": "4.4.0-1"
+                }
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.4"
+        },
+        "timestamp": "2025-01-23T17:55:35.155014235"
     },
     "SRR389222 - fastq - se": {
         "content": [
@@ -188,5 +223,24 @@
             "nextflow": "24.10.2"
         },
         "timestamp": "2024-12-16T12:24:32.45197929"
+    },
+    "sarscov2 - fastq - pe - merge - stub": {
+        "content": [
+            "d41d8cd98f00b204e9800998ecf8427e",
+            "test.bam.bai",
+            [
+                "versions.yml:md5,55d1e67ef8fa9d0ea3065363a653ffef"
+            ],
+            {
+                "PARABRICKS_FQ2BAM": {
+                    "pbrun": "4.4.0-1"
+                }
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.4"
+        },
+        "timestamp": "2025-01-23T18:10:03.788922476"
     }
 }
