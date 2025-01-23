@@ -56,7 +56,17 @@ output:
       - "*.vcf":
           type: file
           description: Annotated VCF file
-          pattern: "*.vcf"
+          pattern: "*.vcf.gz"
+  - tbi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf.gz.tbi":
+          type: file
+          description: Index of the VCF file
+          pattern: "*.vcf.gz.tbi"
   - versions:
       - versions.yml:
           type: file
@@ -65,6 +75,8 @@ output:
 authors:
   - "@projectoriented"
   - "@matthdsm"
+  - "@nvnieuwk"
 maintainers:
   - "@projectoriented"
   - "@matthdsm"
+  - "@nvnieuwk"
