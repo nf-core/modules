@@ -23,7 +23,7 @@ process FAST2Q {
 
     script:
     def args            = task.ext.args ?: ''
-    def input_file      = "--s ${fastq}" ?: ''
+    def input_file      = (fastq instanceof Path && fastq.exists()) ? "--s ${fastq}" : ''
     def library_file    = (library instanceof Path && library.exists()) ? "--g ${library}" : ''
 
     """

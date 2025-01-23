@@ -10,7 +10,41 @@ nextflow_process {
     
     config './nextflow.config'
 
-    test("Extracting all features at position=0 with default length of 20bp from a FASTQ file (without optional library.csv)") {
+    test("2FAST2Q self-test") {
+
+        when {
+
+            params {
+            module_args = '-t'
+                }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test1', single_end:true ], // meta map
+                    []
+                ]
+                input[1] = [
+                    [ id:'test2', single_end:true ], // meta map for second input
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out,                                // Full process output
+                        path(process.out.versions[0]).yaml          // Validate against the versions snapshot
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("Extracting and counting all features at position=0 with default length of 20bp from a FASTQ file (without optional library.csv)") {
         
         when {
             
@@ -44,40 +78,7 @@ nextflow_process {
         }
     }
 
-    test("2FAST2Q self-test") {
-
-        when {
-
-            params {
-            module_args = '-t'
-                }
-
-            process {
-                """
-                input[0] = [
-                    [ id:'test1', single_end:true ], // meta map
-                    file(params.modules_testdata_base_path + '/genomics/mus_musculus/mageck/ERR376998.small.fastq.gz', checkIfExists: true) // FASTQ file
-                ]
-                input[1] = [
-                    [ id:'test2', single_end:true ], // meta map for second input
-                    []
-                ]
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert path(process.out.count_matrix).exists() }, // Check processed count table exists
-                { assert path(process.out.count_matrix).md5() == "22686579ca39d81107b7889cc87c3865" }, //check md5sum
-                { assert path(process.out.versions).readLines().join("\n").contains("2FAST2Q version") } // Verify version output
-            )
-        }
-
-    }
-
-    test("FASTQ file with optional library") {
+    test("Extracting all features at position=0 with default length of 20bp from a FASTQ file, and respective alignment to a file with DNA features (library.csv)") {
 
         when {
 
@@ -85,11 +86,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test1', single_end:true ], // meta map
-                    file(params.modules_testdata_base_path + '/genomics/mus_musculus/mageck/ERR376998.small.fastq.gz', checkIfExists: true) // FASTQ file
+                    file(params.test_data_base + '/data/genomics/mus_musculus/mageck/ERR376998.small.fastq.gz', checkIfExists: true) // FASTQ file
                 ]
                 input[1] = [
                     [ id:'test2', single_end:true ], // meta map for second input
-                    file(params.modules_testdata_base_path + '/genomics/mus_musculus/mageck/yusa_library.csv', checkIfExists: true) // library file
+                    file(params.test_data_base + '/data/genomics/mus_musculus/mageck/yusa_library.csv', checkIfExists: true) // library file
                 ]
                 """
             }
