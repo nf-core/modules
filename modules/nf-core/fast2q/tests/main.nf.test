@@ -34,12 +34,14 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },
-                { assert path(process.out.count_matrix).exists() } // Check processed count table exists
-                { assert path(process.out.versions).readLines().join("\n").contains("2FAST2Q version") } // Verify version output
+                { assert process.success }, // Ensure process ran successfully
+                { assert snapshot(
+                        process.out,                                // Full process output
+                        path(process.out.versions[0]).yaml          // Validate against the versions snapshot
+                    ).match()
+                }
             )
         }
-
     }
 
     test("2FAST2Q self-test") {
@@ -67,7 +69,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.count_matrix).exists() } // Check processed count table exists
+                { assert path(process.out.count_matrix).exists() }, // Check processed count table exists
+                { assert path(process.out.count_matrix).md5() == "22686579ca39d81107b7889cc87c3865" }, //check md5sum
                 { assert path(process.out.versions).readLines().join("\n").contains("2FAST2Q version") } // Verify version output
             )
         }
@@ -94,9 +97,12 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },
-                { assert path(process.out.count_matrix).exists() } // Check processed count table exists
-                { assert path(process.out.versions).readLines().join("\n").contains("2FAST2Q version") } // Verify version output
+                { assert process.success }, // Ensure process ran successfully
+                { assert snapshot(
+                        process.out,                                // Full process output
+                        path(process.out.versions[0]).yaml          // Validate against the versions snapshot
+                    ).match()
+                }
             )
         }
     }
