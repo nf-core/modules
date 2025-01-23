@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "catpack_contigs"
-description: Taxonomic classification of long DNA sequences and metagenome assembled genomes (e.g. contigs, MAGs / bins).
+name: "catpack_bins"
+description: Taxonomic classification of long DNA sequences and metagenome assembled genomes (e.g. MAGs / bins).
 keywords:
   - taxonomic classification
   - classification
@@ -25,9 +25,9 @@ input:
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
 
-    - contigs:
+    - bins:
         type: file
-        description: A nucleotide FASTA file containing long DNA sequences such as contigs.
+        description: One or more nucleotide FASTA file containing binned long DNA sequences.
         pattern: "*.{fasta,fna,fa,fas}"
         ontologies:
           - edam: "http://edamontology.org/format_1929"
@@ -99,17 +99,17 @@ output:
           pattern: "*.ORF2LCA.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475"
-  - contig2classification:
+  - bin2classification:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.contig2classification.txt":
+      - "*.bin2classification.txt":
           type: file
-          description: A TSV file with per-contig hit stats and assignment justification
+          description: A TSV file with per-bin hit stats and assignment justification
             information
-          pattern: "*.contig2classification.txt"
+          pattern: "*.bin2classification.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475"
   - log:
