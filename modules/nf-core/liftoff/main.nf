@@ -9,7 +9,7 @@ process LIFTOFF {
 
     input:
     tuple val(meta), path(target_fa)
-    path ref_fa,
+    path ref_fa
     path ref_annotation
     path ref_db
 
