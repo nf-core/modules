@@ -29,10 +29,22 @@ input:
         description: |
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
-  - - database:
-        type: directory
-        description: fastq screen database folder containing config file and index folders
-        pattern: "FastQ_Screen_Genomes"
+  - - name:
+        type: string
+        description: |
+          Working nickname of the reference.
+    - dir:
+        type: path
+        description: |
+          Path to the directory containing the reference and its index.
+    - basename:
+        type: string
+        description: |
+          Basename (i.e. without the file extension) of the reference and its index.
+    - aligner:
+        type: string
+        description: |
+          Which aligner to use. Valid arguments are 'bowtie', bowtie2' (default), 'bwa' or 'minimap2'.
 output:
   - txt:
       - meta:
