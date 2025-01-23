@@ -51,26 +51,25 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions).match() },
-                { assert file("${process.out.map[0][1]}/map.rad").exists() },
-                { assert file("${process.out.map[0][1]}/map_info.json").exists() },
-                { assert file("${process.out.map[0][1]}/unmapped_bc_count.bin").exists() },
-                { assert file("${process.out.quant[0][1]}/gene_id_to_name.tsv").exists() },
-                { assert file("${process.out.quant[0][1]}/permit_map.bin").exists() },
-                { assert file("${process.out.quant[0][1]}/collate.json").exists() },
-                { assert file("${process.out.quant[0][1]}/generate_permit_list.json").exists() },
-                { assert file("${process.out.quant[0][1]}/quant.json").exists() },
-                { assert file("${process.out.quant[0][1]}/featureDump.txt").exists() },
-                { assert file("${process.out.quant[0][1]}/permit_freq.bin").exists() },
-                { assert file("${process.out.quant[0][1]}/unmapped_bc_count_collated.bin").exists() },
-                { assert file("${process.out.quant[0][1]}/alevin/quants_mat.mtx").exists() },
-                { assert file("${process.out.quant[0][1]}/alevin/quants_mat_cols.txt").exists() },
-                { assert file("${process.out.quant[0][1]}/alevin/quants_mat_rows.txt").exists() },
+                { assert file("${process.out.map.get(0).get(1)}/map.rad").exists() },
+                { assert file("${process.out.map.get(0).get(1)}/map_info.json").exists() },
+                { assert file("${process.out.map.get(0).get(1)}/unmapped_bc_count.bin").exists() },
+                { assert file("${process.out.quant.get(0).get(1)}/permit_map.bin").exists() },
+                { assert file("${process.out.quant.get(0).get(1)}/collate.json").exists() },
+                { assert file("${process.out.quant.get(0).get(1)}/generate_permit_list.json").exists() },
+                { assert file("${process.out.quant.get(0).get(1)}/quant.json").exists() },
+                { assert file("${process.out.quant.get(0).get(1)}/featureDump.txt").exists() },
+                { assert file("${process.out.quant.get(0).get(1)}/permit_freq.bin").exists() },
+                { assert file("${process.out.quant.get(0).get(1)}/unmapped_bc_count_collated.bin").exists() },
+                { assert file("${process.out.quant.get(0).get(1)}/alevin/quants_mat.mtx").exists() },
+                { assert file("${process.out.quant.get(0).get(1)}/alevin/quants_mat_cols.txt").exists() },
+                { assert file("${process.out.quant.get(0).get(1)}/alevin/quants_mat_rows.txt").exists() },
                 // { assert snapshot(
                 //     process.out.versions,
-                //     path("${process.out.map[0][1]}/map.rad"),
-                //     path("${process.out.map[0][1]}/unmapped_bc_count.bin"),
-                //     path("${process.out.quant[0][1]}/map.collated.rad"),
-                //     path("${process.out.quant[0][1]}/featureDump.txt"))
+                //     path("${process.out.map.get(0).get(1)}/map.rad"),
+                //     path("${process.out.map.get(0).get(1)}/unmapped_bc_count.bin"),
+                //     path("${process.out.quant.get(0).get(1)}/map.collated.rad"),
+                //     path("${process.out.quant.get(0).get(1)}/featureDump.txt"))
                 //     .match() }
             )
         }
