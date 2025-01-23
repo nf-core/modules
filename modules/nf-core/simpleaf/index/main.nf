@@ -14,7 +14,7 @@ process SIMPLEAF_INDEX {
     output:
     tuple val(meta), path("${prefix}/index")                    , emit: index
     tuple val(meta), path("${prefix}/ref")                      , emit: ref, optional: true
-    path "${prefix}/ref/{t2g,t2g_3col}.tsv"                     , emit: t2g, optional: true
+    tuple val(meta), path("${prefix}/ref/{t2g,t2g_3col}.tsv")   , emit: t2g, optional: true
     path "versions.yml"                                         , emit: versions
 
     when:
