@@ -34,7 +34,8 @@ process VCFANNO {
         ${lua_cmd} \\
         ${toml} \\
         ${vcf} \\
-        | bgzip ${args2} --threads ${task.cpus} > ${prefix}.vcf.gz \\
+        | bgzip ${args2} --threads ${task.cpus} \\
+        > ${prefix}.vcf.gz \\
         && tabix ${args3} ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
