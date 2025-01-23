@@ -41,8 +41,7 @@ process CATPACK_ADDNAMES {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo "CAT_pack \\
-        add_names \\
+    echo "CAT_pack add_names \\
         ${args} \\
         -i ${input} \\
         -o ${prefix}.txt"
