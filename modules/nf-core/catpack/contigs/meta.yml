@@ -42,7 +42,7 @@ input:
         type: directory
         description: Directory containing CAT_pack database files (e.g. output from
           CAT_pack prepare)
-        pattern: "*./"
+        pattern: "*/"
         ontologies:
           - edam: "http://edamontology.org/data_1049"
 
@@ -56,9 +56,35 @@ input:
         type: directory
         description: Directory containing CAT_pack taxonomy files (e.g. output from
           CAT_pack prepare)
-        pattern: "*./"
+        pattern: "*/"
         ontologies:
           - edam: "http://edamontology.org/data_1049"
+
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+
+    - proteins:
+        type: directory
+        description: Optional pre predicted-made proteins FASTA
+        pattern: "*.{fasta,faa,fa,fas}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+
+    - diamond_table:
+        type: directory
+        description: Optional pre-made DIAMOND alignment table
+        pattern: "*"
+        ontologies:
+          - edam: "http://edamontology.org/format_3751"
 
 output:
   - orf2lca:
