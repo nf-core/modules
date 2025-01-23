@@ -35,10 +35,10 @@ process SYLPH_PROFILE {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tsv
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         sylph: \$(sylph -V|awk '{print \$2}')
