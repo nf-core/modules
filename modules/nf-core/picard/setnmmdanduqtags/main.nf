@@ -34,7 +34,7 @@ process PICARD_SETNMMDANDUQTAGS {
     picard \\
         -Xmx${avail_mem}M \\
         SetNmMdAndUqTags \\
-        --tmp-dir . \\
+        --TMP_DIR . \\
         $args \\
         --CREATE_INDEX \\
         --INPUT ${bam} \\
