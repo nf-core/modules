@@ -25,8 +25,7 @@ process CATPACK_ADDNAMES {
         error("Input and output names are the same, set prefix in module configuration to disambiguate!")
     }
     """
-    CAT_pack \\
-        add_names \\
+    CAT_pack add_names \\
         ${args} \\
         -i ${input} \\
         -t ${taxonomy} \\
