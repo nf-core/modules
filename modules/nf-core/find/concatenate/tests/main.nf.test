@@ -143,6 +143,12 @@ nextflow_process {
                 """
             }
         }
+        // then {
+        //     assertAll(
+        //         { assert process.success },
+        //         { assert snapshot(process.out).match() }
+        //     )
+        // }
         then {
             def lines = path(process.out.file_out.get(0).get(1)).linesGzip
             assertAll(
@@ -175,6 +181,12 @@ nextflow_process {
                 """
             }
         }
+        // then {
+        //     assertAll(
+        //         { assert process.success },
+        //         { assert snapshot(process.out).match() }
+        //     )
+        // }
         then {
             def lines = path(process.out.file_out.get(0).get(1)).linesGzip
             assertAll(

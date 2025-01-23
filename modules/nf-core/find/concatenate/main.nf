@@ -63,7 +63,7 @@ process FIND_CONCATENATE {
     }
 
     """
-    find . -maxdepth 1 -not -name '.*' ${pattern_string} \\
+    find . -maxdepth 1 \\( -not -name '.*'  ${pattern_string} \\) \\
          -exec sh -c "${command1} ${args} {} ${command2} >> ${prefix}" \\;
 
     cat <<-END_VERSIONS > versions.yml
@@ -103,6 +103,10 @@ def getSetofFileSuffixes(in_files) {
 def generatePatternString(fileExtensionList) {
     if (!fileExtensionList || fileExtensionList.isEmpty()) {
         return ""
+    }
+
+    if (fileExtensionList.size() == 1) {
+        return "-name '*${fileExtensionList[0]}'"
     }
 
     def patternString = "-name '*${fileExtensionList[0]}' "
