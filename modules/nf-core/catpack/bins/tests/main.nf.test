@@ -1,15 +1,16 @@
 nextflow_process {
 
-    name "Test Process CATPACK_CONTIGS"
+    name "Test Process CATPACK_BINS"
     script "../main.nf"
-    process "CATPACK_CONTIGS"
+    process "CATPACK_BINS"
     config './nextflow.config'
 
     tag "modules"
     tag "modules_nfcore"
     tag "catpack"
-    tag "catpack/contigs"
+    tag "catpack/bins"
     tag "catpack/prepare"
+    tag "catpack/contigs"
 
     setup {
         run('CATPACK_PREPARE') {
@@ -44,9 +45,55 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot (
                         process.out.orf2lca,
-                        process.out.contig2classification,
+                        process.out.bin2classification,
                         process.out.diamond,
                         process.out.faa,
+                        process.out.gff,
+                        process.out.versions,
+                        path(process.out.log.get(0).get(1)).readLines().last().contains("CAT is done!")
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("sarscov2 - genome - fasta - premade proteins") {
+
+        setup {
+            run('CATPACK_CONTIGS') {
+                script '../../contigs/main.nf'
+                process {
+                """
+                    input[0] = [ [id:'test'], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)  ] ]
+                    input[1] = CATPACK_PREPARE.out.db
+                    input[2] = CATPACK_PREPARE.out.taxonomy
+                    input[3] = [[:], []]
+                    input[4] = [[:], []]
+                """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)  ] ]
+                input[1] = CATPACK_PREPARE.out.db
+                input[2] = CATPACK_PREPARE.out.taxonomy
+                input[3] = CATPACK_CONTIGS.out.faa
+                input[4] = [[:], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot (
+                        process.out.orf2lca,
+                        process.out.bin2classification,
+                        process.out.diamond,
                         process.out.gff,
                         process.out.versions,
                         path(process.out.log.get(0).get(1)).readLines().last().contains("CAT is done!")
