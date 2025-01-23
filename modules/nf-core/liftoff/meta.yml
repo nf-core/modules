@@ -28,12 +28,12 @@ input:
           e.g. `[ id:'test' ]`
     - target_fa:
         type: file
-        description: Target assembly in fasta format
-        pattern: "*.{fsa,fa,fasta}"
+        description: Target assembly in fasta format (can be gzipped)
+        pattern: "*.{fa,fa.gz,fasta,fasta.gz}"
   - - ref_fa:
         type: file
-        description: Reference assembly in fasta format
-        pattern: "*.{fsa,fa,fasta}"
+        description: Reference assembly in fasta format (can be gzipped)
+        pattern: "*.{fa,fa.gz,fasta,fasta.gz}"
   - - ref_annotation:
         type: file
         description: Reference assembly annotations in gtf or gff3 format
