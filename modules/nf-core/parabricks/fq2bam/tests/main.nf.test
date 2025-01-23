@@ -56,6 +56,7 @@ nextflow_process {
 				    [
 				        file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz', checkIfExists: true)
 				    ],
+                    [],
                     []
 				])
                 input[1] = Channel.of([
@@ -64,7 +65,6 @@ nextflow_process {
                 ])
 				input[2] = BWA_INDEX.out.index
                 input[3] = []
-                input[4] = []
                 """
             }
         }
@@ -94,6 +94,7 @@ nextflow_process {
 				    [
 				        file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz', checkIfExists: true)
 				    ],
+                    [],
                     []
 				])
                 input[1] = Channel.of([
@@ -102,7 +103,6 @@ nextflow_process {
                 ])
 				input[2] = BWA_INDEX.out.index
                 input[3] = []
-                input[4] = []
                 """
             }
         }
@@ -139,7 +139,8 @@ nextflow_process {
 				    ],
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
-				    ]
+				    ],
+                    []
 				])
                 input[1] = Channel.of([
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
@@ -147,7 +148,6 @@ nextflow_process {
                 ])
 				input[2] = BWA_INDEX.out.index
                 input[3] = []
-                input[4] = []
                 """
             }
         }
@@ -181,7 +181,8 @@ nextflow_process {
 				    ],
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
-				    ]
+				    ],
+                    []
 				])
                 input[1] = Channel.of([
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
@@ -189,7 +190,6 @@ nextflow_process {
                 ])
 				input[2] = BWA_INDEX.out.index
                 input[3] = []
-                input[4] = []
                 """
             }
         }
@@ -229,7 +229,8 @@ nextflow_process {
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
-				    ]
+				    ],
+                    []
 				])
                 input[1] = Channel.of([
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
@@ -237,7 +238,6 @@ nextflow_process {
                 ])
 				input[2] = BWA_INDEX.out.index
                 input[3] = []
-                input[4] = []
                 """
             }
         }
@@ -279,7 +279,8 @@ nextflow_process {
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
-				    ]
+				    ],
+                    []
 				])
                 input[1] = Channel.of([
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
@@ -287,7 +288,6 @@ nextflow_process {
                 ])
 				input[2] = BWA_INDEX.out.index
                 input[3] = []
-                input[4] = []
                 """
             }
         }
