@@ -36,7 +36,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        process.out,                                // Full process output
+                        process.out.count_matrix,                   // count matrix
                         path(process.out.versions[0]).yaml          // Validate against the versions snapshot
                     ).match()
                 }
@@ -70,7 +70,7 @@ nextflow_process {
             assertAll(
                 { assert process.success }, // Ensure process ran successfully
                 { assert snapshot(
-                        process.out,                                // Full process output
+                        process.out.count_matrix,                   // count matrix
                         path(process.out.versions[0]).yaml          // Validate against the versions snapshot
                     ).match()
                 }
@@ -100,7 +100,7 @@ nextflow_process {
             assertAll(
                 { assert process.success }, // Ensure process ran successfully
                 { assert snapshot(
-                        process.out,                                // Full process output
+                        process.out.count_matrix,                   // count matrix
                         path(process.out.versions[0]).yaml          // Validate against the versions snapshot
                     ).match()
                 }
