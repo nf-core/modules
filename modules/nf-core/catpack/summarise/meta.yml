@@ -1,7 +1,7 @@
+---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "catpack_addnames"
-description: Taxonomic classification of long DNA sequences and metagenome assembled
-  genomes (e.g. MAGs / bins).
+name: "catpack_summarise"
+description: Summarises results from CAT/BAT/RAT classification steps
 keywords:
   - taxonomic classification
   - classification
@@ -26,25 +26,24 @@ input:
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
 
-    - input:
+    - classification:
         type: file
-        description: Classification or ORF2LCA output file from CAT/BAT/RAT
+        description: CAT/BAT/RAT classification table annotated with official names (from CAT_pack addnames)
         pattern: "*.txt"
         ontologies:
           - edam: "http://edamontology.org/format_3475"
-
   - - meta2:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
 
-    - taxonomy:
-        type: directory
-        description: "Directory containing taxonomy files: names.dmp, nodes.dmp, acc2taxid.txt"
-        pattern: "*/"
+    - contigs:
+        type: file
+        description: Optional nucleotide FASTA file containing long DNA sequences such as contigs that were classified (only if classification table is from CAT_pack contigs)
+        pattern: "*.{fasta,fna,fa,fas}"
         ontologies:
-          - edam: "http://edamontology.org/data_1049"
+          - edam: "http://edamontology.org/format_1929"
 
 output:
   - txt:
@@ -53,20 +52,20 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-
-      - ${prefix}.txt:
-          type: map
+      - "*.txt":
+          type: file
           description: |
-            CAT/BAT/RAT classification file with added taxonomic names
-          pattern: "*.{bam,cram,sam}"
+            Summary statistics table of CAT/BAT/RAT results
+          pattern: "*.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475"
 
   - versions:
-      - versions.yml:
+      - "versions.yml":
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+
 authors:
   - "@jfy133"
 maintainers:
