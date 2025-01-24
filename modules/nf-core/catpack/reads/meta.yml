@@ -21,37 +21,41 @@ tools:
       licence: ["MIT"]
       identifier: ""
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - reads:
+        type: file
+        description: One or a pair of nucleotide FASTQ files (R1, R2) containing reads for mapping. Interleaved not supported.
+        pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2182"
+  - - meta2:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
     - contigs:
         type: file
-        description: A nucleotide FASTA file containing long DNA sequences such as contigs.
+        description: A nucleotide FASTA file containing long DNA sequences such as contigs. Optional if `bins` supplied.
         pattern: "*.{fasta,fna,fa,fas}"
         ontologies:
           - edam: "http://edamontology.org/format_1929"
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - reads: {}
   - - meta3:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-    - bins:
-        type: file
-        description: One or more nucleotide FASTA file containing binned long DNA sequences.
-        pattern: "*.{fasta,fna,fa,fas}"
+    - database:
+        type: directory
+        description: Directory containing CAT_pack database files (e.g. output from
+          CAT_pack prepare)
+        pattern: "*/"
         ontologies:
-          - edam: "http://edamontology.org/format_1929"
+          - edam: "http://edamontology.org/data_1049"
   - - meta4:
         type: map
         description: |
@@ -69,26 +73,41 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-    - database:
-        type: directory
-        description: Directory containing CAT_pack database files (e.g. output from
-          CAT_pack prepare)
-        pattern: "*/"
+    - bins:
+        type: file
+        description: One or more nucleotide FASTA file containing binned long DNA sequences. . Optional if `contigs` supplied.
+        pattern: "*.{fasta,fna,fa,fas}"
         ontologies:
-          - edam: "http://edamontology.org/data_1049"
-  - - mode: {}
+          - edam: "http://edamontology.org/format_1929"
+  - - mode:
+        type: string
+        description: |
+          Mode of operation of CAT_pack reads,  "mcr": integrate annotations from MAGs (bins), contigs, and
+          reads; "cr": integrate annotations from contigs and reads; "mr": integrate
+          annotations from MAGs (bins) and reads.
+        pattern: "mcr|cr|mr"
   - - meta6:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-    - bam_aligned: {}
+    - bam_aligned:
+        type: file
+        description: Optional pre-aligned and sorted reads mapped against contigs/bins.
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
   - - meta7:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-    - bam_unaligned: {}
+    - bam_unaligned:
+        type: file
+        description: Optional sorted unaligned reads from mapping against contigs/bins.
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
   - - meta8:
         type: map
         description: |
@@ -96,7 +115,7 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - contig2classification:
         type: file
-        description: A TSV file with per-contig hit stats and assignment justification
+        description: Optional TSV file with per-contig hit stats and assignment justification
           information
         pattern: "*.contig2classification.txt"
         ontologies:
@@ -108,7 +127,7 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - bin2classification:
         type: file
-        description: A TSV file with per-bin hit stats and assignment justification
+        description: Optional TSV file with per-bin hit stats and assignment justification
           information
         pattern: "*.bin2classification.txt"
         ontologies:
@@ -118,7 +137,13 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-    - unclassified2classification: {}
+    - unclassified2classification:
+        type: file
+        description: Optional TSV file with pre-made CAT_pack reads unmapped2classification.txt file
+          information
+        pattern: "*.txt"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
   - - meta11:
         type: map
         description: |
@@ -143,12 +168,19 @@ input:
           - edam: "http://edamontology.org/format_3751"
 output:
   - txt:
+      # TO UPDARTE STILLL!
       - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-      - "*.txt": {}
+      - "*.txt":
+          type: file
+          description: A TSV file with per-read hit stats and assignment justification
+            information
+          pattern: "*.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
   - versions:
       - versions.yml:
           type: file

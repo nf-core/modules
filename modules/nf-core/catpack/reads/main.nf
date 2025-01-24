@@ -8,11 +8,11 @@ process CATPACK_READS {
         : 'biocontainers/cat:6.0.1--hdfd78af_0'}"
 
     input:
-    tuple val(meta), path(contigs)
-    tuple val(meta2), path(reads)
-    tuple val(meta3), path(bins)
+    tuple val(meta), path(reads)
+    tuple val(meta2), path(contigs)
+    tuple val(meta3), path(database)
     tuple val(meta4), path(taxonomy)
-    tuple val(meta5), path(database)
+    tuple val(meta5), path(bins, stageAs: 'bins/')
     val mode
     tuple val(meta6), path(bam_aligned)
     tuple val(meta7), path(bam_unaligned)
@@ -33,7 +33,7 @@ process CATPACK_READS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def insert_reads = meta.single_end ? "--read_file1 ${reads}" : "--read_file1 ${reads[0]} --read_file2 ${reads[1]}"
-    def insert_bins = bins ? "-b-bin_fasta ${bins}" : ''
+    def insert_bins = bins ? "--bin_fasta bins/" : ''
     def insert_bam_aligned = bam_aligned ? "-bam1 ${bam_aligned}" : ''
     def insert_bam_unaligned = bam_unaligned ? "--alignment_unmapped ${bam_unaligned}" : ''
     def insert_c2c = contig2classification ? "--c2c ${contig2classification}" : ''
@@ -42,10 +42,10 @@ process CATPACK_READS {
     def insert_proteins = proteins ? "--proteins_fasta ${proteins}" : ''
     def insert_diamond_alignment = diamond_alignment ? "--diamond_alignment ${diamond_alignment}" : ''
     """
-    CAT_pack \\
+    CAT_pack reads \\
         ${insert_reads} \\
         ${args} \\
-        ${reads} \\
+        -d ${database} \\
         -c ${contigs} \\
         -t ${taxonomy} \\
         -m ${mode} \\
@@ -68,6 +68,7 @@ process CATPACK_READS {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def insert_reads = meta.single_end ? "--read_file1 ${reads}" : "--read_file1 ${reads[0]} --read_file2 ${reads[1]}"
     def insert_bins = bins ? "-b-bin_fasta ${bins}" : ''
     def insert_bam_aligned = bam_aligned ? "-bam1 ${bam_aligned}" : ''
     def insert_bam_unaligned = bam_unaligned ? "--alignment_unmapped ${bam_unaligned}" : ''
@@ -77,10 +78,10 @@ process CATPACK_READS {
     def insert_proteins = proteins ? "--proteins_fasta ${proteins}" : ''
     def insert_diamond_alignment = diamond_alignment ? "--diamond_alignment ${diamond_alignment}" : ''
     """
-    echo "CAT_pack \\
-        reads \\
+    echo "    CAT_pack reads \\
+        ${insert_reads} \\
         ${args} \\
-        ${reads} \\
+        -d ${database} \\
         -c ${contigs} \\
         -t ${taxonomy} \\
         -m ${mode} \\
