@@ -45,7 +45,8 @@ nextflow_workflow {
                     workflow.out.gprofiler2_all_enrich,
                     workflow.out.gprofiler2_sub_enrich,
                     workflow.out.gprofiler2_plot_html.collect{ meta, html -> file(html).name }, //assert unstable file,
-                    path(workflow.out.versions.get(0)).yaml
+                    path(workflow.out.versions.get(0)).yaml,
+                    workflow.out.versions
                 ).match()}
             )
         }
@@ -123,7 +124,8 @@ nextflow_workflow {
                     workflow.out.gprofiler2_all_enrich,
                     workflow.out.gprofiler2_sub_enrich,
                     workflow.out.gprofiler2_plot_html.collect{ meta, html -> file(html).name }, //assert unstable file
-                    path(workflow.out.versions.get(0)).yaml
+                    path(workflow.out.versions.get(0)).yaml,
+                    workflow.out.versions
                 ).match()},
             )
         }
@@ -225,7 +227,8 @@ nextflow_workflow {
                 { assert workflow.success},
                 { assert snapshot(
                     workflow.out.gsea_report,
-                    path(workflow.out.versions.get(0)).yaml
+                    path(workflow.out.versions.get(0)).yaml,
+                    workflow.out.versions
                 ).match()}
             )
         }
@@ -302,7 +305,8 @@ nextflow_workflow {
                 { assert workflow.success},
                 { assert snapshot(
                     workflow.out.grea_results,
-                    path(workflow.out.versions.get(0)).yaml
+                    path(workflow.out.versions.get(0)).yaml,
+                    workflow.out.versions
                 ).match()},
             )
         }
@@ -449,6 +453,38 @@ nextflow_workflow {
             )
         }
 
+    }
+
+    test("stub") {
+        tag 'gprofiler2_basic'
+        config './gprofiler2.config'
+        options '-stub'
+
+        when {
+            workflow {
+                """
+                ch_input = Channel.of([
+                    ['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'],
+                    file("https://github.com/nf-core/test-datasets/raw/refs/heads/differentialabundance/modules_testdata/Condition_genotype_WT_KO.deseq2.results_filtered.tsv", checkIfExists: true),
+                    [],
+                    file("https://github.com/nf-core/test-datasets/raw/refs/heads/differentialabundance/modules_testdata/study.filtered.tsv", checkIfExists: true),
+                    'gprofiler2'
+                ])
+
+                input[0] = ch_input
+                input[1] = Channel.of([[], [], [], []])
+                input[2] = Channel.of([[], []])
+                input[3] = Channel.of([[], [], [], []])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
     }
 
 }
