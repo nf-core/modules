@@ -37,6 +37,12 @@ process CATPACK_DOWNLOAD {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    echo "CAT_pack \\
+        download \\
+        ${args} \\
+        --db ${db}
+        -o ${prefix}/"
+
     mkdir ${prefix}/
 
     cat <<-END_VERSIONS > versions.yml
