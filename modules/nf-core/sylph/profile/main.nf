@@ -23,6 +23,7 @@ process SYLPH_PROFILE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     sylph profile \\
+        -t $task.cpus \\
           $args \\
           $reads \\
           $database\\
