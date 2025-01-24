@@ -31,7 +31,7 @@ process SYLPH_PROFILE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sylph: \$(sylph -V|awk '{print \$2}')
+        sylph: \$(sylph -V | awk '{print \$2}')
     END_VERSIONS
     """
 
