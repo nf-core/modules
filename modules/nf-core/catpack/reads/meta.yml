@@ -1,0 +1,160 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "catpack_reads"
+description: Taxonomic classification plus read-based abundance estimation from long
+  DNA sequences and metagenome assembled genomes (e.g. contigs, MAGs / bins).
+keywords:
+  - taxonomic classification
+  - classification
+  - long reads
+  - mags
+  - assembly
+  - abundance
+  - taxonomic composition
+tools:
+  - "catpack":
+      description: "CAT/BAT: tool for taxonomic classification of contigs and metagenome-assembled
+        genomes (MAGs)"
+      homepage: "https://github.com/MGXlab/CAT_pack"
+      documentation: "https://github.com/MGXlab/CAT_pack"
+      tool_dev_url: "https://github.com/MGXlab/CAT_pack"
+      doi: "10.1186/s13059-019-1817-x"
+      licence: ["MIT"]
+      identifier: ""
+
+## TODO nf-core: Add a description of all of the variables used as input
+input:
+  # Only when we have meta
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - contigs:
+        type: file
+        description: A nucleotide FASTA file containing long DNA sequences such as contigs.
+        pattern: "*.{fasta,fna,fa,fas}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - reads: {}
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bins:
+        type: file
+        description: One or more nucleotide FASTA file containing binned long DNA sequences.
+        pattern: "*.{fasta,fna,fa,fas}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - taxonomy:
+        type: directory
+        description: Directory containing CAT_pack taxonomy files (e.g. output from
+          CAT_pack prepare)
+        pattern: "*/"
+        ontologies:
+          - edam: "http://edamontology.org/data_1049"
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - database:
+        type: directory
+        description: Directory containing CAT_pack database files (e.g. output from
+          CAT_pack prepare)
+        pattern: "*/"
+        ontologies:
+          - edam: "http://edamontology.org/data_1049"
+  - - mode: {}
+  - - meta6:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam_aligned: {}
+  - - meta7:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam_unaligned: {}
+  - - meta8:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - contig2classification:
+        type: file
+        description: A TSV file with per-contig hit stats and assignment justification
+          information
+        pattern: "*.contig2classification.txt"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+  - - meta9:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bin2classification:
+        type: file
+        description: A TSV file with per-bin hit stats and assignment justification
+          information
+        pattern: "*.bin2classification.txt"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+  - - meta10:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - unclassified2classification: {}
+  - - meta11:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - proteins:
+        type: directory
+        description: Optional pre predicted-made proteins FASTA
+        pattern: "*.{fasta,faa,fa,fas}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+  - - meta12:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - diamond_alignment:
+        type: directory
+        description: Optional pre-made DIAMOND alignment table
+        pattern: "*"
+        ontologies:
+          - edam: "http://edamontology.org/format_3751"
+output:
+  - txt:
+      - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+      - "*.txt": {}
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@jfy133"
+maintainers:
+  - "@jfy133"
