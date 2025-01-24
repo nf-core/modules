@@ -12,7 +12,12 @@ nextflow_process {
 
     test("human - bam") {
 
+        config './nextflow.config'
+
         when {
+            params {
+                 module_args = ''
+            }
             process {
                 """
                 input[0] = [
@@ -44,9 +49,15 @@ nextflow_process {
 
     test("human - bam - intervals") {
 
+        config './nextflow.config'
+
         when {
+            params {
+                 module_args = ''
+            }
             process {
                 """
+
                 input[0] = [
                     [ id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
@@ -155,6 +166,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                 module_args = ''
+            }
             process {
                 """
                 input[0] = [
@@ -185,7 +199,6 @@ nextflow_process {
 
     test("human - bam - intervals - gvcf - stub") {
 
-        config './nextflow.config'
         options "-stub"
 
         when {
