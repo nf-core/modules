@@ -20,7 +20,7 @@ input:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        e.g. [ id:'test', single_end:true ]
   - fastq:
       type: file
       description: FASTQ file
@@ -30,7 +30,7 @@ input:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+        e.g. [ id:'library_name', multiple_features_per_read:false ]
   - library:
       type: file
       description: library file
@@ -42,7 +42,7 @@ output:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test', single_end:true ]
+        e.g. [ id:'test', library:'library_name' ]
       pattern: "./2FAST2Q_output/*.*"
 
   - 2FAST2Q_output_*:
