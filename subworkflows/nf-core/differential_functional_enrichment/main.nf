@@ -118,6 +118,15 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
         ch_input.genesets.filter{ it[0].method == 'grea' }
     )
 
+    // collect versions info
+    ch_versions
+        .mix(GPROFILER2_GOST.out.versions)
+        .mix(CUSTOM_TABULARTOGSEAGCT.out.versions)
+        .mix(CUSTOM_TABULARTOGSEACLS.out.versions)
+        .mix(CUSTOM_TABULARTOGSEACHIP.out.versions)
+        .mix(GSEA_GSEA.out.versions)
+        .mix(PROPR_GREA.out.versions)
+
     emit:
     // here we emit the outputs that will be useful afterwards in the
     // nf-core/differentialabundance pipeline
@@ -128,18 +137,11 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     gprofiler2_plot_html  = GPROFILER2_GOST.out.plot_html
 
     // gsea-specific outputs
-    gsea_report           = GSEA_GSEA.out.report_tsvs_ref
-                                .join(GSEA_GSEA.out.report_tsvs_target)
+    gsea_report           = GSEA_GSEA.out.report_tsvs_ref.join(GSEA_GSEA.out.report_tsvs_target)
 
     // grea-specific outputs
     grea_results          = PROPR_GREA.out.results
 
     // tool versions
     versions              = ch_versions
-                                .mix(GPROFILER2_GOST.out.versions)
-                                .mix(CUSTOM_TABULARTOGSEAGCT.out.versions)
-                                .mix(CUSTOM_TABULARTOGSEACLS.out.versions)
-                                .mix(CUSTOM_TABULARTOGSEACHIP.out.versions)
-                                .mix(GSEA_GSEA.out.versions)
-                                .mix(PROPR_GREA.out.versions)
 }
