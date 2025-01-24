@@ -29,11 +29,11 @@ input:
     - target_fa:
         type: file
         description: Target assembly in fasta format (can be gzipped)
-        pattern: "*.{fa,fa.gz,fasta,fasta.gz}"
+        pattern: "*.{fa,fa.gz,fasta,fasta.gz,fas,fas.gz,fsa,fsa.gz}"
   - - ref_fa:
         type: file
         description: Reference assembly in fasta format (can be gzipped)
-        pattern: "*.{fa,fa.gz,fasta,fasta.gz}"
+        pattern: "*.{fa,fa.gz,fasta,fasta.gz,fas,fas.gz,fsa,fsa.gz}"
   - - ref_annotation:
         type: file
         description: Reference assembly annotations in gtf or gff3 format

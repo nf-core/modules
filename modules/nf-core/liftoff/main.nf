@@ -9,7 +9,7 @@ process LIFTOFF {
 
     input:
     tuple val(meta), path(target_fa)
-    path ref_fa
+    path(ref_fa, stageAs = 'ref/*') 
     path ref_annotation
     path ref_db
 
@@ -32,7 +32,7 @@ process LIFTOFF {
         zcat ${target_fa} > target.fasta
     fi
 
-    if [[ ${target_fa} == *.fa || ${target_fa} == *.fasta ]]; then
+    if [[ ${target_fa} != *.gz ]]; then
         ln -s ${target_fa} target.fasta
     fi
 
@@ -40,7 +40,7 @@ process LIFTOFF {
         zcat ${ref_fa} > reference.fasta
     fi
 
-    if [[ ${ref_fa} == *.fa || ${ref_fa} == *.fasta ]]; then
+    if [[ ${ref_fa} != *.gz  ]]; then
         ln -s ${ref_fa} reference.fasta
     fi
 
