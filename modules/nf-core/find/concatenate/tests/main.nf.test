@@ -58,9 +58,6 @@ nextflow_process {
 
     test("test_cat_zipped_zipped") {
         when {
-            params {
-                outdir   = "${outputDir}"
-            }
             process {
                 """
                 input[0] =
@@ -92,9 +89,6 @@ nextflow_process {
         config './nextflow_zipped_unzipped.config'
 
         when {
-            params {
-                outdir   = "${outputDir}"
-            }
             process {
                 """
                 input[0] =
@@ -121,9 +115,6 @@ nextflow_process {
     test("test_cat_unzipped_zipped") {
         config './nextflow_unzipped_zipped.config'
         when {
-            params {
-                outdir   = "${outputDir}"
-            }
             process {
                 """
                 input[0] =
@@ -160,9 +151,6 @@ nextflow_process {
     test("test_cat_one_file_unzipped_zipped") {
         config './nextflow_unzipped_zipped.config'
         when {
-            params {
-                outdir   = "${outputDir}"
-            }
             process {
                 """
                 input[0] =
