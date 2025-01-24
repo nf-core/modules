@@ -19,18 +19,14 @@ def mergeMaps(meta, meta2){
 workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     take:
     // input data for functional analysis
-    // They can be the results from differential expression analysis or abundance matrix
-    // The functional analysis method to run should be explicitly provided
-    ch_input                            // [ meta_input, input file, method to run ]
-
-    // gene sets and background
-    ch_gene_sets                        // [ meta_gmt, gmt file ]
-    ch_background                       // [ meta_background, background file ]
+    ch_input                 // [ meta_input, input file, genesets file, background file, method to run ]
 
     // other - for the moment these files are only needed for GSEA
-    ch_contrasts                        // [ meta_contrast, contrast_variable, reference, target ]
-    ch_samplesheet                      // [ meta_exp, samples sheet ]
-    ch_featuresheet                     // [ meta_exp, features sheet, features id, features symbol ]
+    // as it is the only one that takes expression data as input
+    // if in the future this setting is changed, this section could be removed
+    ch_contrasts             // [ meta_contrast, contrast_variable, reference, target ]
+    ch_samplesheet           // [ meta_exp, samples sheet ]
+    ch_featuresheet          // [ meta_exp, features sheet, features id, features symbol ]
 
     main:
 
@@ -38,17 +34,16 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
 
     // Add method information into meta map of ch_input
     // This information is used later to determine which method to run for each input
+    // Also, reorganize the structure to match them with the modules' input organization
 
     ch_input = ch_input
-        .combine(ch_gene_sets)
-        .combine(ch_background)
         .multiMap {
-            meta_input, file, analysis_method, meta_gmt, gmt, meta_background, background ->
+            meta_input, file, genesets, background, analysis_method ->
             def meta_new = meta_input + [ 'method': analysis_method ]
             input:
                 [ meta_new, file ]
-            gene_sets:
-                [ meta_new, gmt ]  // NOTE here we assume that the modules will not make use of meta_gmt and meta_background
+            genesets:
+                [ meta_new, genesets ]  // NOTE here we assume that the modules will not make use of meta_genesets and meta_background
             background:
                 [ meta_new, background ]
         }
@@ -56,13 +51,13 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     // In the case of GSEA, it needs additional files coming from other channels that other methods don't use
     // here we define the input channel for the GSEA section
 
-    def criteria = multiMapCriteria { meta_input, input, gmt, meta_exp, samplesheet, featuresheet, features_id, features_symbol, meta_contrasts, variable, reference, target ->
+    def criteria = multiMapCriteria { meta_input, input, genesets, meta_exp, samplesheet, featuresheet, features_id, features_symbol, meta_contrasts, variable, reference, target ->
         def meta_contrasts_new = meta_contrasts + [ 'variable': variable, 'reference': reference, 'target': target ]  // make sure variable, reference, target are in the meta
         def meta_all = mergeMaps(meta_contrasts_new, meta_input)
         input:
             [ meta_all, input ]
-        gene_sets:
-            [ meta_all, gmt ]
+        genesets:
+            [ meta_all, genesets ]
         contrasts_and_samples:
             [ meta_all, samplesheet ]
         features:
@@ -71,7 +66,7 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
             [ features_id, features_symbol ]
     }
     ch_preinput_for_gsea = ch_input.input
-        .join(ch_input.gene_sets)
+        .join(ch_input.genesets)
         .filter{ it[0].method == 'gsea' }
         .combine(ch_samplesheet.join(ch_featuresheet))
         .combine(ch_contrasts)
@@ -83,7 +78,7 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
 
     GPROFILER2_GOST(
         ch_input.input.filter{ it[0].method == 'gprofiler2' },
-        ch_input.gene_sets.filter{ it[0].method == 'gprofiler2'},
+        ch_input.genesets.filter{ it[0].method == 'gprofiler2'},
         ch_input.background.filter{ it[0].method == 'gprofiler2'}
     )
 
@@ -106,7 +101,7 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
 
     ch_input_for_gsea = CUSTOM_TABULARTOGSEAGCT.out.gct
         .join(CUSTOM_TABULARTOGSEACLS.out.cls)
-        .join( ch_preinput_for_gsea.gene_sets )
+        .join( ch_preinput_for_gsea.genesets )
 
     GSEA_GSEA(
         ch_input_for_gsea,
@@ -120,7 +115,7 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
 
     PROPR_GREA(
         ch_input.input.filter{ it[0].method == 'grea' },
-        ch_input.gene_sets.filter{ it[0].method == 'grea' }
+        ch_input.genesets.filter{ it[0].method == 'grea' }
     )
 
     emit:

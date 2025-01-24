@@ -25,19 +25,15 @@ nextflow_workflow {
                 ch_input = Channel.of([
                     ['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'],
                     file("https://github.com/nf-core/test-datasets/raw/refs/heads/differentialabundance/modules_testdata/Condition_genotype_WT_KO.deseq2.results_filtered.tsv", checkIfExists: true),
+                    [],
+                    file("https://github.com/nf-core/test-datasets/raw/refs/heads/differentialabundance/modules_testdata/study.filtered.tsv", checkIfExists: true),
                     'gprofiler2'
-                ])
-                ch_background = Channel.of([
-                    ['id': 'test'],
-                    file("https://github.com/nf-core/test-datasets/raw/refs/heads/differentialabundance/modules_testdata/study.filtered.tsv", checkIfExists: true)
                 ])
 
                 input[0] = ch_input
-                input[1] = Channel.of([[], []])
-                input[2] = ch_background
+                input[1] = Channel.of([[], [], [], []])
+                input[2] = Channel.of([[], []])
                 input[3] = Channel.of([[], [], [], []])
-                input[4] = Channel.of([[], []])
-                input[5] = Channel.of([[], [], [], []])
                 """
             }
         }
@@ -109,15 +105,13 @@ nextflow_workflow {
                     .map { meta, results ->
                         def meta_new = meta - ['method': meta.method]
                         meta_new.method_de = meta.method
-                        [meta_new, results, 'gprofiler2']
+                        [meta_new, results, [], [], 'gprofiler2']
                     }
 
                 input[0] = ch_input
-                input[1] = Channel.of([[], []])
+                input[1] = Channel.of([[], [], [], []])
                 input[2] = Channel.of([[], []])
                 input[3] = Channel.of([[], [], [], []])
-                input[4] = Channel.of([[], []])
-                input[5] = Channel.of([[], [], [], []])
                 """
             }
         }
@@ -196,15 +190,12 @@ nextflow_workflow {
 
                 // define input channels
                 ch_input = ABUNDANCE_DIFFERENTIAL_FILTER.out.normalised_matrix
-                    .map { meta, matrix ->
+                    .combine(Channel.fromPath(testData.genesets_file))
+                    .map { meta, matrix, genesets ->
                         def meta_new = meta - ['method': meta.method]
                         meta_new.method_de = meta.method
-                        [meta_new, matrix, 'gsea']
+                        [meta_new, matrix, genesets, [], 'gsea']
                     }
-                ch_gene_sets = Channel.of([
-                    [ id:'test' ],
-                    file(testData.genesets_file)
-                ])
                 ch_contrasts = Channel.fromPath(file(testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
@@ -222,11 +213,9 @@ nextflow_workflow {
                 ])
 
                 input[0] = ch_input
-                input[1] = ch_gene_sets
-                input[2] = Channel.of([[], []])
-                input[3] = ch_contrasts
-                input[4] = ch_samplesheet
-                input[5] = ch_featuresheet
+                input[1] = ch_contrasts
+                input[2] = ch_samplesheet
+                input[3] = ch_featuresheet
                 """
             }
         }
@@ -293,22 +282,17 @@ nextflow_workflow {
             workflow {
                 """
                 ch_input = ABUNDANCE_DIFFERENTIAL_FILTER.out.adjacency
-                    .map { meta, results ->
+                    .combine(Channel.fromPath(params.modules_testdata_base_path + 'genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt'))
+                    .map { meta, results, genesets ->
                         def meta_new = meta - ['method': meta.method]
                         meta_new.method_de = meta.method
-                        [meta_new, results, 'grea']
+                        [meta_new, results, genesets, [], 'grea']
                     }
-                ch_gene_sets = Channel.of([
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt')
-                ])
 
                 input[0] = ch_input
-                input[1] = ch_gene_sets
+                input[1] = Channel.of([[], [], [], []])
                 input[2] = Channel.of([[], []])
                 input[3] = Channel.of([[], [], [], []])
-                input[4] = Channel.of([[], []])
-                input[5] = Channel.of([[], [], [], []])
                 """
             }
         }
@@ -421,12 +405,10 @@ nextflow_workflow {
                 ch_input = ch_input_for_gprofiler2
                     .mix(ch_input_for_gsea)
                     .mix(ch_input_for_grea)
-
-                // define gene sets
-                ch_gene_sets = Channel.of([
-                    [ id:'test' ],
-                    file(testData.genesets_file)
-                ])
+                    .combine(Channel.fromPath(testData.genesets_file))
+                    .map { meta, input_file, method, genesets ->
+                        [meta, input_file, genesets, [], method]
+                    }
 
                 // define gsea-specific inputs
                 ch_contrasts = Channel.fromPath(file(testData.contrasts_file))
@@ -446,11 +428,9 @@ nextflow_workflow {
                 ])
 
                 input[0] = ch_input
-                input[1] = ch_gene_sets
-                input[2] = Channel.of([[], []])
-                input[3] = ch_contrasts
-                input[4] = ch_samplesheet
-                input[5] = ch_featuresheet
+                input[1] = ch_contrasts
+                input[2] = ch_samplesheet
+                input[3] = ch_featuresheet
                 """
             }
         }
