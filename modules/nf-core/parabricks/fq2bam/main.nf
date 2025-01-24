@@ -8,12 +8,11 @@ process PARABRICKS_FQ2BAM {
     container "nvcr.io/nvidia/clara/clara-parabricks:4.4.0-1"
 
     input:
-    tuple val(meta), val(read_group), path ( r1_fastq, stageAs: "?/*"), path ( r2_fastq, stageAs: "?/*")
+    tuple val(meta), val(read_group), path (r1_fastq, stageAs: "?/*"), path (r2_fastq, stageAs: "?/*"), path(interval_file)
     tuple path(fasta), path(fai)
     tuple val(meta1), path(index)
     path known_sites
-    path interval_file
-
+    
     output:
     tuple val(meta), path("*.bam"), path("*.bai") , emit: bam_bai
     tuple val(meta), path("qc_metrics/*"), optional: true, emit: qc_metrics
