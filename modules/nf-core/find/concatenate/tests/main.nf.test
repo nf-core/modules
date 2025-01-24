@@ -10,9 +10,6 @@ nextflow_process {
 
     test("test_cat_name_conflict") {
         when {
-            params {
-                outdir   = "${outputDir}"
-            }
             process {
                 """
                 input[0] =
@@ -37,9 +34,6 @@ nextflow_process {
 
     test("test_cat_unzipped_unzipped") {
         when {
-            params {
-                outdir   = "${outputDir}"
-            }
             process {
                 """
                 input[0] =
