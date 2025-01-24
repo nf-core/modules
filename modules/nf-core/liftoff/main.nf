@@ -9,7 +9,7 @@ process LIFTOFF {
 
     input:
     tuple val(meta), path(target_fa)
-    path ref_fa, stageAs = 'ref/*'
+    path ref_fa, name: 'ref/*'
     path ref_annotation
     path ref_db
 
