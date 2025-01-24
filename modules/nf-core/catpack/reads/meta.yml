@@ -29,7 +29,8 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - reads:
         type: file
-        description: One or a pair of nucleotide FASTQ files (R1, R2) containing reads for mapping. Interleaved not supported.
+        description: One or a pair of nucleotide FASTQ files (R1, R2) containing reads
+          for mapping. Interleaved not supported.
         pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_2182"
@@ -40,7 +41,8 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - contigs:
         type: file
-        description: A nucleotide FASTA file containing long DNA sequences such as contigs. Optional if `bins` supplied.
+        description: A nucleotide FASTA file containing long DNA sequences such as contigs.
+          Optional if `bins` supplied.
         pattern: "*.{fasta,fna,fa,fas}"
         ontologies:
           - edam: "http://edamontology.org/format_1929"
@@ -75,7 +77,11 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - bins:
         type: file
-        description: One or more nucleotide FASTA file containing binned long DNA sequences. . Optional if `contigs` supplied.
+        description: |
+          One or more nucleotide FASTA file containing binned long DNA sequences.
+          Optional if `contigs` supplied.
+          Note: if you supply bins, you must also give the `-s <fasta suffix>`
+          corresponding to the file extension of the bins via `ext.args`
         pattern: "*.{fasta,fna,fa,fas}"
         ontologies:
           - edam: "http://edamontology.org/format_1929"
@@ -139,8 +145,8 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - unclassified2classification:
         type: file
-        description: Optional TSV file with pre-made CAT_pack reads unmapped2classification.txt file
-          information
+        description: Optional TSV file with pre-made CAT_pack reads unmapped2classification.txt
+          file information
         pattern: "*.txt"
         ontologies:
           - edam: "http://edamontology.org/format_3475"
@@ -167,18 +173,161 @@ input:
         ontologies:
           - edam: "http://edamontology.org/format_3751"
 output:
-  - txt:
-      # TO UPDARTE STILLL!
+  - rat_log:
       - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-      - "*.txt":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}.log:
+          type: map
+          description: |
+            Log file from RAT run
+          pattern: "*.log"
+          ontologies:
+            - edam: "http://edamontology.org/data_3106"
+  - complete_abundance:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.complete.abundance.txt":
+          type: file
+          description: |
+            TSV file containing complete abundance information
+          pattern: "*.contig.abundance.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3751"
+  - contig_abundance:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.contig.abundance.txt":
+          type: file
+          description: |
+            TSV file containing contig abundance information
+          pattern: "*.contig.abundance.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3751"
+  - read2classification:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.read2classification.txt":
           type: file
           description: A TSV file with per-read hit stats and assignment justification
             information
-          pattern: "*.txt"
+          pattern: "*.read2classification.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+  - alignment_diamond:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.alignment.diamond":
+          type: file
+          description: Intermediate DIAMOND TSV summary output file with alignment results
+          pattern: "*.alignment.diamond"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+  - contig2classification:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.contig2classification.txt":
+          type: file
+          description: A TSV file with per-contig hit stats and assignment justification
+            information
+          pattern: "*.contig2classification.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+  - cat_log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.CAT.log":
+          type: file
+          description: CAT log file with run messages and basic statistics
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  - orf2lca:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.ORF2LCA.txt":
+          type: file
+          description: A TSV file with per-ORF hit stats and identified lineage
+          pattern: "*.ORF2LCA.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+  - faa:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.predicted_proteins.faa":
+          type: file
+          description: FAA file of DIAMOND predicted proteins hits
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+  - gff:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.predicted_proteins.gff":
+          type: file
+          description: GFF file of DIAMOND predicted proteins hits
+          ontologies:
+            - edam: "http://edamontology.org/format_2305"
+  - unmapped_diamond:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_unmapped.alignment.diamond":
+          type: file
+          description: Intermediate DIAMOND TSV summary output file list of unassigned hits
+          pattern: "*.alignment.diamond"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+  - unmapped_fasta:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_unmapped.fasta":
+          type: file
+          description: Nucleotide FASTA file of contigs with no hits
+          ontologies:
+            - edam: "http://edamontology.org/format_1929"
+  - unmapped2classification:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.unmapped2classification.txt":
+          type: file
+          description: A TSV file with per-contig unmapped assignment justification information
+          pattern: "*.contig2classification.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475"
   - versions:

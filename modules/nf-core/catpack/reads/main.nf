@@ -23,7 +23,20 @@ process CATPACK_READS {
     tuple val(meta12), path(diamond_alignment)
 
     output:
-    tuple val(meta), path("*.txt"), emit: txt
+    tuple val(meta), path("${prefix}.log"), emit: rat_log
+    tuple val(meta), path("*.complete.abundance.txt"), emit: complete_abundance
+    tuple val(meta), path("*.contig.abundance.txt"), emit: contig_abundance
+    tuple val(meta), path("*.read2classification.txt"), emit: read2classification
+    tuple val(meta), path("*.alignment.diamond"), emit: alignment_diamond
+    tuple val(meta), path("*.contig2classification.txt"), emit: contig2classification
+    tuple val(meta), path("*.CAT.log"), emit: cat_log
+    tuple val(meta), path("*.ORF2LCA.txt"), emit: orf2lca
+    tuple val(meta), path("*.predicted_proteins.faa"), emit: faa
+    tuple val(meta), path("*.predicted_proteins.gff"), emit: gff
+    tuple val(meta), path("*_unmapped.alignment.diamond"), emit: unmapped_diamond
+    tuple val(meta), path("*_unmapped.fasta"), emit: unmapped_fasta
+    tuple val(meta), path("*.unmapped2classification.txt"), emit: unmapped2classification
+
     path "versions.yml", emit: versions
 
     when:
@@ -31,7 +44,7 @@ process CATPACK_READS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def insert_reads = meta.single_end ? "--read_file1 ${reads}" : "--read_file1 ${reads[0]} --read_file2 ${reads[1]}"
     def insert_bins = bins ? "--bin_fasta bins/" : ''
     def insert_bam_aligned = bam_aligned ? "-bam1 ${bam_aligned}" : ''
@@ -49,7 +62,7 @@ process CATPACK_READS {
         -c ${contigs} \\
         -t ${taxonomy} \\
         -m ${mode} \\
-        -o ${prefix}.txt \\
+        -o ${prefix} \\
         ${insert_bins} \\
         ${insert_bam_aligned} \\
         ${insert_bam_unaligned} \\
@@ -67,7 +80,7 @@ process CATPACK_READS {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def insert_reads = meta.single_end ? "--read_file1 ${reads}" : "--read_file1 ${reads[0]} --read_file2 ${reads[1]}"
     def insert_bins = bins ? "-b-bin_fasta ${bins}" : ''
     def insert_bam_aligned = bam_aligned ? "-bam1 ${bam_aligned}" : ''
@@ -95,7 +108,20 @@ process CATPACK_READS {
         ${insert_proteins} \\
         ${insert_diamond_alignment}"
 
-    touch ${prefix}.txt
+    touch ${prefix}.CAT.alignment.diamond
+    touch ${prefix}.CAT.contig2classification.txt
+    touch ${prefix}.CAT.log
+    touch ${prefix}.CAT.ORF2LCA.txt
+    touch ${prefix}.CAT.predicted_proteins.faa
+    touch ${prefix}.CAT.predicted_proteins.gff
+    touch ${prefix}.complete.abundance.txt
+    touch ${prefix}.contig.abundance.txt
+    touch ${prefix}.contigs.fasta.test_1.fastq.gz.bwamem.sorted
+    touch ${prefix}.log
+    touch ${prefix}.read2classification.txt
+    touch ${prefix}.unclassified_unmapped.alignment.diamond
+    touch ${prefix}.unclassified_unmapped.fasta
+    touch ${prefix}.unmapped2classification.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
