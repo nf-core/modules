@@ -47,10 +47,11 @@ nextflow_process {
         }
 
         then {
-                assert snapshot(
+               { assert process.success },
+               { assert snapshot(
                     process.out.versions,
                     file(process.out.profile_out[0][1]).readLines()[0]
-                    ).match()
+                    ).match() }
         }
     }
 
