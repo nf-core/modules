@@ -19,6 +19,8 @@ def mergeMaps(meta, meta2){
 workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     take:
     // input data for functional analysis
+    // Note that genesets and background are optional depending on the method.
+    // Please set to [] if not provided, eg: [meta, input, [], [], method]
     ch_input                 // [ meta_input, input file, genesets file, background file, method to run ]
 
     // other - for the moment these files are only needed for GSEA

@@ -11,46 +11,28 @@ components:
   - propr/grea
 input:
   - ch_input:
-      description: |
-        Channel with the input data for functional analysis.
-        Note that the input file can be the results from differential abundance analysis,
-        or normalized abundance.
+      description: Channel with the input data for functional analysis.
       structure:
         - meta_input:
             type: map
             description: Metadata map
         - input:
             type: file
-            description: Input file
+            description: |
+              Input file. This should be the DE statistics obtained from the DE modules,
+              or the normalized abundance matrix (in the case of running GSEA).
+        - genesets:
+            type: file
+            description: |
+              Gene sets database. Currently all methods support GMT format.
+        - background:
+            type: file
+            description: |
+              Background features for functional analysis.
+              For the moment, it is only required for gprofiler2.
         - analysis_method:
             type: value
             description: Analysis method (gprofiler2, gsea, or grea)
-  - ch_gene_sets:
-      description: |
-        Channel with the gene sets file.
-        If only gprofiler2 is required to run, and no gene sets file is available,
-        one can provide this as a empty `Channel.of([[], []])`, then gprofiler2 will 
-        automatically parse a gene sets database based on organism/token information.
-      structure:
-        - meta_gmt:
-            type: map
-            description: Metadata map
-        - gmt:
-            type: file
-            description: Gene sets File
-            pattern: "*.gmt"
-  - ch_background:
-      description: |
-        Channel with the file specifying the background genes.
-        This is only needed to run gprofiler2. If not, a empty `Channel.of([[], []])`
-        can be provided instead.
-      structure:
-        - meta_background:
-            type: map
-            description: Metadata map
-        - background:
-            type: file
-            description: Background genes file
   - ch_contrasts:
       description: Channel with contrast information
       structure:
