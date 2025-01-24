@@ -7,35 +7,35 @@ process PARABRICKS_DEEPVARIANT {
     container "nvcr.io/nvidia/clara/clara-parabricks:4.4.0-1"
 
     input:
-    tuple val(meta), path(input), path(input_index), path(interval_file)
-    tuple val(ref_meta), path(fasta)
+    tuple val(meta), path(bam), path(bai), path(interval_bed)
+    tuple val(meta1), path(fasta)
+    path model_file
 
     output:
-    tuple val(meta), path("*.vcf"),      optional: true, emit: vcf
+    tuple val(meta), path("*.vcf"), optional: true, emit: vcf
     tuple val(meta), path("*.g.vcf"), optional: true, emit: gvcf
-    path "versions.yml",                                 emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix     = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     def output_file = ("--gvcf" =~ task.ext.args)? "${prefix}.g.vcf" : "${prefix}.vcf"
-    def interval_file_command = interval_file ? interval_file.collect{"--interval-file $it"}.join(' ') : ""
+    def interval_bed_option = interval_bed ? interval_bed.collect{"--interval-file $it"}.join(' ') : ""
+    def model_command = model_file ? "--pb-model-file $model_file" : ""
     def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
+
     """
     pbrun \\
         deepvariant \\
         --ref $fasta \\
-        --in-bam $input \\
+        --in-bam $bam \\
         --out-variants $output_file \\
-        $interval_file_command \\
-        $num_gpus \\
+        ${interval_bed_option} \\
+        ${num_gpus} \\
+        ${model_command} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
