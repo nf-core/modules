@@ -7,8 +7,8 @@ process PARABRICKS_DEEPVARIANT {
     container "nvcr.io/nvidia/clara/clara-parabricks:4.4.0-1"
 
     input:
-    tuple val(meta), path(bam), path(bai), path(interval_bed)
-    tuple val(meta1), path(fasta)
+    tuple val(meta), path(bam), path(bai), path(interval_file)
+    tuple val(ref_meta), path(fasta)
     path model_file
 
     output:
@@ -23,7 +23,7 @@ process PARABRICKS_DEEPVARIANT {
     def args = task.ext.args ?: ''
     def prefix     = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     def output_file = ("--gvcf" =~ task.ext.args)? "${prefix}.g.vcf" : "${prefix}.vcf"
-    def interval_bed_option = interval_bed ? interval_bed.collect{"--interval-file $it"}.join(' ') : ""
+    def interval_file_option = interval_file ? interval_file.collect{"--interval-file $it"}.join(' ') : ""
     def model_command = model_file ? "--pb-model-file $model_file" : ""
     def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
 
@@ -33,7 +33,7 @@ process PARABRICKS_DEEPVARIANT {
         --ref $fasta \\
         --in-bam $bam \\
         --out-variants $output_file \\
-        ${interval_bed_option} \\
+        ${interval_file_option} \\
         ${num_gpus} \\
         ${model_command} \\
         $args

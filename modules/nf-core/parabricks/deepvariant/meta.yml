@@ -21,11 +21,11 @@ input:
         description: |
           Groovy Map containing tumor sample information - id must match read groups for this sample.
           [ id:'test']
-    - input:
+    - bam:
         type: file
         description: bam file for sample to be variant called.
         pattern: "*.bam"
-    - input_index:
+    - bai:
         type: file
         description: bai index corresponding to input bam file. Only necessary if intervals
           are provided.
@@ -44,6 +44,10 @@ input:
         type: file
         description: reference fasta - must be unzipped.
         pattern: "*.fasta"
+  - - model_file:
+        type: file
+        description: custom deepvariant model file
+        pattern: "*,model"
 output:
   - vcf:
       - meta:
@@ -56,15 +60,15 @@ output:
           description: vcf file created with deepvariant (does not support .gz for normal vcf), optional
           pattern: "*.vcf"
   - gvcf:
-      - meta:          
+      - meta:
           type: map
           description: |
             Groovy Map containing sample information.
             e.g. [ id:'test' ]
-      - "*.g.vcf.gz":
+      - "*.g.vcf":
           type: file
           description: bgzipped gvcf created with deepvariant, optional
-          pattern: "*.g.vcf.gz"
+          pattern: "*.g.vcf"
   - versions:
       - versions.yml:
           type: file
