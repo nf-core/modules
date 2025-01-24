@@ -24,10 +24,10 @@ process SYLPH_PROFILE {
     """
     sylph profile \\
         -t $task.cpus \\
-          $args \\
-          $reads \\
-          $database\\
-          -o ${prefix}.tsv
+        $args \\
+        $reads \\
+        $database\\
+        -o ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
