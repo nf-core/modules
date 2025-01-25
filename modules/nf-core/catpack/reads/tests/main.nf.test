@@ -58,9 +58,9 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                         file(process.out.rat_log.get(0).get(1)).readLines().last().contains('RAT is done!'),
-                        process.out.complete_abundance,
-                        process.out.contig_abundance,
-                        process.out.read2classification,
+                        file(process.out.complete_abundance.get(0).get(1)).readLines().last().contains('unclassified'),
+                        file(process.out.contig_abundance.get(0).get(1)).readLines().last().contains('NODE_2'),
+                        file(process.out.read2classification.get(0).get(1)).readLines().last().contains('no taxid assigned'),
                         process.out.alignment_diamond,
                         process.out.contig2classification,
                         file(process.out.cat_log.get(0).get(1)).readLines().last().contains('CAT is done!'),
