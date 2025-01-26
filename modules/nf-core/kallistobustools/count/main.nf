@@ -4,8 +4,8 @@ process KALLISTOBUSTOOLS_COUNT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/kb-python:0.28.2--pyhdfd78af_2' :
-        'biocontainers/kb-python:0.28.2--pyhdfd78af_2' }"
+        'https://depot.galaxyproject.org/singularity/kb-python:0.29.1--pyhdfd78af_0' :
+        'biocontainers/kb-python:0.29.1--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(reads)
