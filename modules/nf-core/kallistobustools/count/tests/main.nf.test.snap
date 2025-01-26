@@ -71,10 +71,10 @@
             [
                 "    \"commands\": [",
                 "        \"kallisto bus -i kb_ref_out.idx -o test.count -x 10XV3 -t 2 subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R1_001.fastq.gz subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R2_001.fastq.gz\",",
-                "        \"bustools sort -o test.count/tmp/output.s.bus -T test.count/tmp -t 2 -m 2G test.count/output.bus\",",
+                "        \"bustools sort -o test.count/tmp/output.s.bus -T test.count/tmp -t 2 -m 3G test.count/output.bus\",",
                 "        \"bustools inspect -o test.count/inspect.json -w test.count/10x_version3_whitelist.txt test.count/tmp/output.s.bus\",",
                 "        \"bustools correct -o test.count/tmp/output.s.c.bus -w test.count/10x_version3_whitelist.txt test.count/tmp/output.s.bus\",",
-                "        \"bustools sort -o test.count/output.unfiltered.bus -T test.count/tmp -t 2 -m 2G test.count/tmp/output.s.c.bus\",",
+                "        \"bustools sort -o test.count/output.unfiltered.bus -T test.count/tmp -t 2 -m 3G test.count/tmp/output.s.c.bus\",",
                 "        \"bustools count -o test.count/counts_unfiltered/cells_x_genes -g t2g.txt -e test.count/matrix.ec -t test.count/transcripts.txt --genecounts --umi-gene test.count/output.unfiltered.bus\"",
                 "    ],"
             ],
@@ -92,9 +92,9 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.3"
         },
-        "timestamp": "2024-03-01T15:48:24.476953631"
+        "timestamp": "2025-01-26T19:28:54.613634668"
     }
 }
