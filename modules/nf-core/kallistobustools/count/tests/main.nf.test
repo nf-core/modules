@@ -41,8 +41,9 @@ nextflow_process {
                 input[2] = KALLISTOBUSTOOLS_REF.out.t2g
                 input[3] = KALLISTOBUSTOOLS_REF.out.cdna_t2c.ifEmpty{ [] }   // when empty the module doesn't run unless something is passed.
                 input[4] = KALLISTOBUSTOOLS_REF.out.intron_t2c.ifEmpty{ [] } // when empty the module doesn't run unless something is passed.
-                input[5] = "10XV3"
-                input[6] = "standard"
+                input[5] = [] // Barcode whitelist is not required, as 10XV3 is used
+                input[6] = "10XV3"
+                input[7] = "standard"
                 """
             }
         }

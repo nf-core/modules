@@ -13,6 +13,7 @@ process KALLISTOBUSTOOLS_COUNT {
     path  t2g
     path  t1c
     path  t2c
+    path  whitelist
     val   technology
     val   workflow_mode
 
@@ -25,11 +26,12 @@ process KALLISTOBUSTOOLS_COUNT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args ?: ''
-    def prefix  = task.ext.prefix ?: "${meta.id}"
-    def cdna    = t1c ? "-c1 $t1c" : ''
-    def intron  = t2c ? "-c2 $t2c" : ''
-    def memory  = task.memory.toGiga() - 1
+    def args      = task.ext.args ?: ''
+    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def cdna      = t1c ? "-c1 $t1c" : ''
+    def intron    = t2c ? "-c2 $t2c" : ''
+    def whitelist = whitelist ? "-w $whitelist" : ''
+    def memory    = task.memory.toGiga() - 1
     """
     kb \\
         count \\
@@ -38,6 +40,7 @@ process KALLISTOBUSTOOLS_COUNT {
         -g $t2g \\
         $cdna \\
         $intron \\
+        $whitelist \\
         -x $technology \\
         --workflow $workflow_mode \\
         $args \\

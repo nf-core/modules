@@ -42,6 +42,10 @@ input:
         type: file
         description: kb ref's c2 intron_t2c file
         pattern: "*.{intron_t2c.txt}"
+  - - whitelist:
+        type: file
+        description: barcode whitelist file
+        pattern: "*.txt"
   - - technology:
         type: string
         description: String value defining the sequencing technology used.
