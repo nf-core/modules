@@ -53,8 +53,18 @@ output:
             e.g. [ id:'test' ]
       - "*.vcf":
           type: file
-          description: Variant file.
+          description: vcf file created with deepvariant (does not support .gz for normal vcf), optional
           pattern: "*.vcf"
+  - gvcf:
+      - meta:          
+          type: map
+          description: |
+            Groovy Map containing sample information.
+            e.g. [ id:'test' ]
+      - "*.g.vcf.gz":
+          type: file
+          description: bgzipped gvcf created with deepvariant, optional
+          pattern: "*.g.vcf.gz"
   - versions:
       - versions.yml:
           type: file
@@ -62,3 +72,5 @@ output:
           pattern: "versions.yml"
 authors:
   - "@bsiranosian"
+maintainers:
+  - "@famosab"
