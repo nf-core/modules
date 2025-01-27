@@ -1,4 +1,4 @@
-process CATPACK_ADDNAMES {
+process CATPACK_SUMMARISE {
     tag "${meta.id}"
     label 'process_single'
 
@@ -8,11 +8,11 @@ process CATPACK_ADDNAMES {
         : 'biocontainers/cat:6.0.1--hdfd78af_1'}"
 
     input:
-    tuple val(meta), path(input)
-    tuple val(meta2), path(taxonomy)
+    tuple val(meta), path(classification)
+    tuple val(meta2), path(contigs)
 
     output:
-    tuple val(meta), path("${prefix}.txt"), emit: txt
+    tuple val(meta), path("*.txt"), emit: txt
     path "versions.yml", emit: versions
 
     when:
@@ -20,15 +20,16 @@ process CATPACK_ADDNAMES {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
-    if ("${input}" == "${prefix}.txt") {
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("${classification}" == "${prefix}.txt") {
         error("Input and output names are the same, set prefix in module configuration to disambiguate!")
     }
+    def insert_contigs = contigs ? "-c ${contigs}" : ''
     """
-    CAT_pack add_names \\
+    CAT_pack summarise \\
         ${args} \\
-        -i ${input} \\
-        -t ${taxonomy} \\
+        -i ${classification} \\
+        ${insert_contigs} \\
         -o ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
@@ -39,11 +40,16 @@ process CATPACK_ADDNAMES {
 
     stub:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("${classification}" == "${prefix}.txt") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
+    def insert_contigs = contigs ? "-c ${contigs}" : ''
     """
-    echo "CAT_pack add_names \\
+    echo "CAT_pack summarise \\
         ${args} \\
-        -i ${input} \\
+        -i ${classification} \\
+        ${insert_contigs} \\
         -o ${prefix}.txt"
 
     touch ${prefix}.txt
