@@ -29,15 +29,15 @@ process CATPACK_CONTIGS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def premade_proteins = proteins ? "-p ${proteins}" : ''
-    def premade_table = diamond_table ? "-a ${diamond_table}" : ''
+    def premade_proteins = proteins ? "--proteins_fasta ${proteins}" : ''
+    def premade_table = diamond_table ? "--diamond_alignment ${diamond_table}" : ''
     """
     CAT_pack contigs \\
-        -n ${task.cpus} \\
-        -c ${contigs} \\
-        -d ${database} \\
-        -t ${taxonomy} \\
-        -o ${prefix} \\
+        --nproc ${task.cpus} \\
+        --contigs_fasta ${contigs} \\
+        --database_folder ${database} \\
+        --taxonomy_folder ${taxonomy} \\
+        --out_prefix ${prefix} \\
         ${premade_proteins} \\
         ${premade_table} \\
         ${args}
