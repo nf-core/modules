@@ -31,9 +31,12 @@ process FIND_CONCATENATE {
     // | gzipped   | ungzipped  | zcat     |          |
     // | ungzipped | gzipped    | cat      | pigz     |
 
+
+    // get file extensions, if extension is .gz then get the second to last extension as well
+    file_extensions = files_in.collect { in_file -> in_file.name - in_file.getBaseName(in_file.name.endsWith('.gz') ? 2 : 1) }.toSet()
+
     // Use input file ending as default
-    prefix = task.ext.prefix ?: "${meta.id}${getFileSuffix(file_list[0])}"
-    file_extensions = getSetofFileSuffixes(file_list)
+    prefix = task.ext.prefix ?: "${meta.id}${file_extensions[0]}"
     pattern_string = generatePatternString(file_extensions.toList())
 
     out_zip = prefix.endsWith('.gz')
@@ -72,16 +75,6 @@ process FIND_CONCATENATE {
         pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
     END_VERSIONS
     """
-}
-
-// for .gz files also include the second to last extension if it is present. E.g., .fasta.gz
-def getFileSuffix(filename) {
-    def match = filename =~ /^.*?((\.\w{1,5})?(\.\w{1,5}\.gz$))/
-    return match ? match[0][1] : filename.substring(filename.lastIndexOf('.'))
-}
-
-def getSetofFileSuffixes(in_files) {
-    return in_files.collect { getFileSuffix(it) }.toSet()
 }
 
 def generatePatternString(fileExtensionList) {
