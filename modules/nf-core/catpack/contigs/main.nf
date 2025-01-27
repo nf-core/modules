@@ -30,7 +30,7 @@ process CATPACK_CONTIGS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def premade_proteins = proteins ? "-p ${proteins}" : ''
-    def premade_table = diamond_table ? "-d ${diamond_table}" : ''
+    def premade_table = diamond_table ? "-a ${diamond_table}" : ''
     """
     CAT_pack contigs \\
         -n ${task.cpus} \\
