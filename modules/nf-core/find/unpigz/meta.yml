@@ -1,61 +1,52 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "find_pigz"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+name: "find_unpigz"
+description: A module for decompressing a large number of gzipped files, getting around the UNIX terminal argument limit
 keywords:
-  - sort
-  - example
-  - genomics
+  - concatenate
+  - gzip
+  - find
+  - pigz
 tools:
-  - "find":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: ""
-      homepage: ""
-      documentation: ""
-      tool_dev_url: ""
-      doi: ""
-      licence:
-      identifier:
+  - find:
+      description: GNU find searches the directory tree rooted at each given starting-point by evaluating the given expression
+      documentation: https://man7.org/linux/man-pages/man1/find.1.html
+      licence: ["GPL-3.0-or-later"]
+      identifier: ""
+  - pigz:
+      description: pigz, which stands for Parallel Implementation of GZip, is a fully functional replacement for gzip that exploits multiple processors and multiple cores to the hilt when compressing data.
+      documentation: https://zlib.net/pigz/pigz.pdf
+      licence: ["other"]
+      identifier: ""
+  - xargs:
+      description: build and execute command lines from standard input
+      documentation: http://man7.org/linux/man-pages/man1/xargs.1.html
+      license: ["GPL-3.0-or-later"]
+      identifier: ""
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-
-  ## TODO nf-core: Delete / customise this example input
-    - bam:
+          e.g. [ id:'test', single_end:false ]
+    - files_in:
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
-        ontologies:
-          - edam: "http://edamontology.org/format_25722"
-          - edam: "http://edamontology.org/format_2573"
-          - edam: "http://edamontology.org/format_3462"
+        description: List of compressed / uncompressed files
+        pattern: "*"
 
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  - bam:
-  #Only when we have meta
+  - file_out:
     - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-  ## TODO nf-core: Delete / customise this example output
-    - "*.bam":
+    - ${prefix}.*:
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
-        ontologies:
-          - edam: "http://edamontology.org/format_25722"
-          - edam: "http://edamontology.org/format_2573"
-          - edam: "http://edamontology.org/format_3462"
+        description: Decompressed files
+        pattern: "${prefix}.*"
 
   - versions:
     - "versions.yml":
