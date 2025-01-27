@@ -22,8 +22,6 @@ process SOMALIER_ANCESTRY {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     somalier  \\
         ancestry  \\
@@ -37,4 +35,14 @@ process SOMALIER_ANCESTRY {
     END_VERSIONS
     """
 
+    stub:
+    """
+    touch "somalier-ancestry.somalier-ancestry.tsv"
+    touch "somalier-ancestry.somalier-ancestry.html"
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        somalier: \$(echo \$(somalier 2>&1) | sed 's/^.*somalier version: //; s/Commands:.*\$//')
+    END_VERSIONS
+    """
 }
