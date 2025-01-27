@@ -15,7 +15,7 @@ repos:
         args: ["--schemafile", "modules/yaml-schema.json"]
       - id: check-jsonschema
         name: "Validate environment.ymls against schema"
-        files: ^.*/environment\.yml$
+        files: ^modules/nf-core/.*/environment\.yml$
         types: [yaml]
         args: ["--schemafile", "modules/environment-schema.json"]
       - id: check-jsonschema
