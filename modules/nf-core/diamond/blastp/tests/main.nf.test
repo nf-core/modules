@@ -23,7 +23,7 @@ nextflow_process {
         }
     }
 
-    test("Should search for protein hits against a DIAMOND db and return a tab separated output file of hits") {
+    test("sarscov2 - proteome - txt") {
 
         when {
             params {
@@ -42,17 +42,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.txt,
-                    process.out.versions
-                    ).match()
-                }
+                { assert snapshot(process.out).match() }
             )
         }
 
     }
 
-    test("Should search for zipped protein hits against a DIAMOND db and return a tab separated output file of hits") {
+    test("sarscov2 - proteome - gz - txt") {
 
         when {
             params {
@@ -71,22 +67,15 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.txt,
-                    process.out.versions
-                    ).match("gz_txt")
-                }
+                { assert snapshot(process.out).match("gz_txt")}
             )
         }
 
     }
 
-    test("Should search for protein hits against a DIAMOND db and return a daa format file of hits") {
+    test("sarscov2 - proteome - daa") {
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
@@ -101,7 +90,31 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert process.out.daa },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(process.out.versions).match("daa") }
+            )
+        }
+
+    }
+
+    test("sarscov2 - proteome - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
+                input[1] = DIAMOND_MAKEDB.out.db
+                input[2] = 'txt'
+                input[3] = 'qseqid qlen'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match("stub") }
             )
         }
 

@@ -14,14 +14,14 @@ process DIAMOND_BLASTP {
     val blast_columns
 
     output:
-    tuple val(meta), path('*.blast'), optional: true, emit: blast
-    tuple val(meta), path('*.xml')  , optional: true, emit: xml
-    tuple val(meta), path('*.txt')  , optional: true, emit: txt
-    tuple val(meta), path('*.daa')  , optional: true, emit: daa
-    tuple val(meta), path('*.sam')  , optional: true, emit: sam
-    tuple val(meta), path('*.tsv')  , optional: true, emit: tsv
-    tuple val(meta), path('*.paf')  , optional: true, emit: paf
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path('*.{blast,blast.gz}'), optional: true, emit: blast
+    tuple val(meta), path('*.{xml,xml.gz}')    , optional: true, emit: xml
+    tuple val(meta), path('*.{txt,txt.gz}')    , optional: true, emit: txt
+    tuple val(meta), path('*.{daa,daa.gz}')    , optional: true, emit: daa
+    tuple val(meta), path('*.{sam,sam.gz}')    , optional: true, emit: sam
+    tuple val(meta), path('*.{tsv,tsv.gz}')    , optional: true, emit: tsv
+    tuple val(meta), path('*.{paf,paf.gz}')    , optional: true, emit: paf
+    path "versions.yml"                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -49,6 +49,8 @@ process DIAMOND_BLASTP {
         out_ext = 'txt'
         log.warn("Unknown output file format provided (${out_ext}): selecting DIAMOND default of tabular BLAST output (txt)")
     }
+    if ( args =~ /--compress\s+1/ ) out_ext += '.gz'
+
     """
     diamond \\
         blastp \\
