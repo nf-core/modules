@@ -4,8 +4,8 @@ process FIND_UNPIGZ {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/pigz:2.8'
-        : 'biocontainers/pigz:2.8'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a2/a29445e2c5525aa423e773c664fd60c471a7ec36544eed4347b3c3bba2761a9b/data'
+        : 'community.wave.seqera.io/library/findutils_pigz_sed:32a7c6ae07e1d7ab'}"
 
     input:
     tuple val(meta), path(files_in)
