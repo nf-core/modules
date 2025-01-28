@@ -11,12 +11,12 @@ process TRANSDECODER_LONGORF {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("${output_dir_name}/*.pep")   , emit: pep
-    tuple val(meta), path("${output_dir_name}/*.gff3")  , emit: gff3
-    tuple val(meta), path("${output_dir_name}/*.cds")   , emit: cds
-    tuple val(meta), path("${output_dir_name}/*.dat")   , emit: dat
-    path("${output_dir_name}")                          , emit: folder
-    path "versions.yml"                                 , emit: versions
+    tuple val(meta), path("${output_dir_name}/*.pep") , emit: pep
+    tuple val(meta), path("${output_dir_name}/*.gff3"), emit: gff3
+    tuple val(meta), path("${output_dir_name}/*.cds") , emit: cds
+    tuple val(meta), path("${output_dir_name}/*.dat") , emit: dat
+    path("${output_dir_name}/")                       , emit: folder
+    path "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
