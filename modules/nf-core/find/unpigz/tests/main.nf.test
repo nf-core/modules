@@ -30,7 +30,7 @@ nextflow_process {
                 { assert snapshot(
                         process.out,
                         process.out.versions
-                    ).match() 
+                    ).match()
                 }
             )
         }
@@ -55,7 +55,11 @@ nextflow_process {
             assertAll(
                 { assert !process.success },
                 { assert process.stdout.toString().contains("All files provided to this module must be gzipped (and have the .gz extension).") },
-                { assert snapshot(process.out, process.out.versions).match() }
+                { assert snapshot(
+                        process.out,
+                        process.out.versions
+                    ).match()
+                }
             )
         }
     }
@@ -79,7 +83,11 @@ nextflow_process {
             assertAll(
                 { assert !process.success },
                 { assert process.stdout.toString().contains("No input files can start with the same name as the output prefix in the module FIND_UNPIGZ (currently 'genome'). Please choose a different one.") },
-                { assert snapshot(process.out, process.out.versions).match() }
+                { assert snapshot(
+                        process.out,
+                        process.out.versions
+                    ).match()
+                }
             )
         }
     }
@@ -102,7 +110,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out, process.out.versions).match() }
+                { assert snapshot(
+                        process.out,
+                        process.out.versions
+                    ).match()
+                }
             )
         }
     }
