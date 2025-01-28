@@ -30,27 +30,30 @@ process DIAMOND_BLASTP {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def columns = blast_columns ? "${blast_columns}" : ''
-    switch ( out_ext ) {
-        case "blast": outfmt = 0; break
-        case "xml": outfmt = 5; break
-        case "txt": outfmt = 6; break
-        case "daa": outfmt = 100; break
-        case "sam": outfmt = 101; break
-        case "tsv": outfmt = 102; break
-        case "paf": outfmt = 103; break
-        default:
-            outfmt = '6';
-            out_ext = 'txt';
-            log.warn("Unknown output file format provided (${out_ext}): selecting DIAMOND default of tabular BLAST output (txt)");
-            break
+    if (out_ext == "blast") {
+        outfmt = 0
+    } else if (out_ext == "xml") {
+        outfmt = 5
+    } else if (out_ext == "txt") {
+        outfmt = 6
+    } else if (out_ext == "daa") {
+        outfmt = 100
+    } else if (out_ext == "sam") {
+        outfmt = 101
+    } else if (out_ext == "tsv") {
+        outfmt = 102
+    } else if (out_ext == "paf") {
+        outfmt = 103
+    } else {
+        outfmt = '6'
+        out_ext = 'txt'
+        log.warn("Unknown output file format provided (${out_ext}): selecting DIAMOND default of tabular BLAST output (txt)")
     }
     """
-    DB=`find -L ./ -name "*.dmnd" | sed 's/\\.dmnd\$//'`
-
     diamond \\
         blastp \\
         --threads ${task.cpus} \\
-        --db \$DB \\
+        --db ${db} \\
         --query ${fasta} \\
         --outfmt ${outfmt} ${columns} \\
         ${args} \\
