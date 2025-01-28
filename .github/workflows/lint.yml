@@ -56,6 +56,11 @@ jobs:
       subworkflows: ${{ steps.filter.outputs.subworkflows }}
       subworkflows_files: ${{ steps.subworkflow_names.outputs.result }}
     steps:
+      - name: Clean workspace
+        run: |
+          sudo rm -rf ./* || true
+          sudo rm -rf ./.* || true
+
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           fetch-depth: 2 # To retrieve the preceding commit.
