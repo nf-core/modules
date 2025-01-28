@@ -54,70 +54,77 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.blast":
-          type: file
+          pattern: "*.{blast,blast.gz}"
+      - "*.{blast,blast.gz}":
+          type: map
           description: File containing blastp hits
-          pattern: "*.{blast}"
+          pattern: "*.{blast,blast.gz}"
   - xml:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.xml":
-          type: file
+          pattern: "*.{xml,xml.gz}"
+      - "*.{xml,xml.gz}":
+          type: map
           description: File containing blastp hits
-          pattern: "*.{xml}"
+          pattern: "*.{xml,xml.gz}"
   - txt:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.txt":
-          type: file
+          pattern: "*.{txt,txt.gz}"
+      - "*.{txt,txt.gz}":
+          type: map
           description: File containing hits in tabular BLAST format.
-          pattern: "*.{txt}"
+          pattern: "*.{txt,txt.gz}"
   - daa:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.daa":
-          type: file
+          pattern: "*.{daa,daa.gz}"
+      - "*.{daa,daa.gz}":
+          type: map
           description: File containing hits DAA format
-          pattern: "*.{daa}"
+          pattern: "*.{daa,daa.gz}"
   - sam:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.sam":
-          type: file
+          pattern: "*.{sam,sam.gz}"
+      - "*.{sam,sam.gz}":
+          type: map
           description: File containing aligned reads in SAM format
-          pattern: "*.{sam}"
+          pattern: "*.{sam,sam.gz}"
   - tsv:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.tsv":
-          type: file
+          pattern: "*.{tsv,tsv.gz}"
+      - "*.{tsv,tsv.gz}":
+          type: map
           description: Tab separated file containing taxonomic classification of hits
-          pattern: "*.{tsv}"
+          pattern: "*.{tsv,tsv.gz}"
   - paf:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.paf":
-          type: file
+          pattern: "*.{paf,paf.gz}"
+      - "*.{paf,paf.gz}":
+          type: map
           description: File containing aligned reads in pairwise mapping format format
-          pattern: "*.{paf}"
+          pattern: "*.{paf,paf.gz}"
   - versions:
       - versions.yml:
           type: file
