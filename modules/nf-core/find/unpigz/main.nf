@@ -4,11 +4,11 @@ process FIND_UNPIGZ {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a2/a29445e2c5525aa423e773c664fd60c471a7ec36544eed4347b3c3bba2761a9b/data'
-        : 'community.wave.seqera.io/library/findutils_pigz_sed:32a7c6ae07e1d7ab'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7f/7fd226561e12b32bcacdf4f5ff74577e76233adf52ae5cbc499a2cdfe0e27d82/data'
+        : 'community.wave.seqera.io/library/findutils_pigz:c4dd5edc44402661'}"
 
     input:
-    tuple val(meta), path(files_in)
+    tuple val(meta), path(files_in, stageAs: 'gzipped/*')
 
     output:
     tuple val(meta), path("${prefix}.*"), emit: file_out
@@ -19,34 +19,25 @@ process FIND_UNPIGZ {
 
     script:
     def args = task.ext.args ?: ""
-    def args2 = task.ext.args2 ?: ""
-    def args3 = task.ext.args3 ?: ""
-    def args4 = task.ext.args4 ?: ""
     prefix = task.ext.prefix ?: "${meta.id}"
 
-    file_extensions = files_in.collect { in_file -> in_file.name - in_file.getBaseName(in_file.name.endsWith('.gz') ? 2 : 1) }.toSet()
-
-    file_names = files_in.collect { it.toString() }
-
-    pattern_string = generatePatternString(file_extensions.toList())
-
-    if (!file_extensions.every { it.endsWith(".gz") }) {
+    if (files_in.any { file -> !file.name.endsWith('.gz') }) {
         error("All files provided to this module must be gzipped (and have the .gz extension).")
     }
 
-    if (file_names.any { it.startsWith("${prefix}") }) {
-        error("No input files can start with the same name as the output prefix in the module FIND_UNPIGZ (currently '${prefix}'). Please choose a different one.")
-    }
-
     """
-    find . -maxdepth 1 \\( -not -name '.*'  ${pattern_string} \\) ${args} |\\
-        sed ${args2} 's:^./::g' | sed ${args3} 's/.gz\$//g' | xargs -I{} sh -c "unpigz -cd --processes ${task.cpus} ${args4} {}.gz > ${prefix}.{}"
+    while IFS= read -r -d \$'\\0' file; do
+        unpigz \\
+            ${args} \\
+            -cd \\
+            --processes ${task.cpus} \\
+            \$file \\
+            > ${prefix}.\$( basename \$file .gz )
+    done < <( find gzipped/ -name '*.gz' -print0 )
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         find: \$( find --version | head -n 1 | sed 's/find (GNU findutils) //g' )
-        sed: \$( sed --version | head -n 1 | sed 's/sed (GNU sed) //g' )
-        xargs: \$( xargs --version | head -n 1 | sed 's/xargs (GNU findutils) //g' )
         pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
     END_VERSIONS
     """
@@ -59,25 +50,7 @@ process FIND_UNPIGZ {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         find: \$( find --version | head -n 1 | sed 's/find (GNU findutils) //g' )
-        sed: \$( sed --version | head -n 1 | sed 's/sed (GNU sed) //g' )
-        xargs: \$( xargs --version | head -n 1 | sed 's/xargs (GNU findutils) //g' )
         pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
     END_VERSIONS
     """
-}
-
-def generatePatternString(fileExtensionList) {
-    if (!fileExtensionList || fileExtensionList.isEmpty()) {
-        return ""
-    }
-
-    if (fileExtensionList.size() == 1) {
-        return "-name '*${fileExtensionList[0]}'"
-    }
-
-    def patternString = "-name '*${fileExtensionList[0]}' "
-    fileExtensionList[1..-1].each {
-        patternString += "-o -name '*${it}' "
-    }
-    return patternString.trim()
 }

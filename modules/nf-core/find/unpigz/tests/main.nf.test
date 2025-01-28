@@ -64,34 +64,6 @@ nextflow_process {
         }
     }
 
-    test("test_input_starts_with_prefix") {
-        when {
-            process {
-                """
-                input[0] =
-                    [
-                        [ id:'genome', single_end:true ],
-                        [
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3.gz', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true)
-                        ]
-                    ]
-                """
-            }
-        }
-        then {
-            assertAll(
-                { assert !process.success },
-                { assert process.stdout.toString().contains("No input files can start with the same name as the output prefix in the module FIND_UNPIGZ (currently 'genome'). Please choose a different one.") },
-                { assert snapshot(
-                        process.out,
-                        process.out.versions
-                    ).match()
-                }
-            )
-        }
-    }
-
     test("test_stub") {
         options "-stub"
         when {
