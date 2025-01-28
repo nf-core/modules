@@ -54,7 +54,7 @@ process FIND_UNPIGZ {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.${files_in[0].dropRight(3)}
+    touch ${prefix}.test_file.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

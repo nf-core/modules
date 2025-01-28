@@ -93,16 +93,14 @@ nextflow_process {
     }
 
     test("test_stub") {
+        options "-stub"
         when {
             process {
                 """
                 input[0] =
                     [
                         [ id:'test', single_end:true ],
-                        [
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3.gz', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true)
-                        ]
+                        []
                     ]
                 """
             }
