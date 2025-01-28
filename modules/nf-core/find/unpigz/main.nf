@@ -49,7 +49,7 @@ process FIND_UNPIGZ {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        find: \$( find --version | head -n 1 | sed 's/find (GNU findutils) //g' )
+        find: \$( find --version | sed '1!d; s/.* //' )
         pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
     END_VERSIONS
     """
