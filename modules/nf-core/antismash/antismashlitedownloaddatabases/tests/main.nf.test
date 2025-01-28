@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES"
     script "../main.nf"
     process "ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES"
+    config './nextflow.config'
 
     tag "modules"
     tag "modules_nfcore"
