@@ -2,9 +2,9 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/antismash-lite:7.1.0--pyhdfd78af_0' :
-        'biocontainers/antismash-lite:7.1.0--pyhdfd78af_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/antismash-lite:7.1.0--pyhdfd78af_0'
+        : 'biocontainers/antismash-lite:7.1.0--pyhdfd78af_0'}"
 
     /*
     These files are normally downloaded/created by download-antismash-databases itself, and must be retrieved for input by manually running the command with conda or a standalone installation of antiSMASH. Therefore we do not recommend using this module for production pipelines, but rather require users to specify their own local copy of the antiSMASH database in pipelines. This is solely for use for CI tests of the nf-core/module version of antiSMASH.
@@ -13,12 +13,12 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
     */
 
     containerOptions {
-        workflow.containerEngine == 'singularity' ?
-        "-B $database_css:/usr/local/lib/python3.10/site-packages/antismash/outputs/html/css,$database_detection:/usr/local/lib/python3.10/site-packages/antismash/detection,$database_modules:/usr/local/lib/python3.10/site-packages/antismash/modules" :
-        workflow.containerEngine == 'docker' ?
-        "-v \$PWD/$database_css:/usr/local/lib/python3.10/site-packages/antismash/outputs/html/css -v \$PWD/$database_detection:/usr/local/lib/python3.10/site-packages/antismash/detection -v \$PWD/$database_modules:/usr/local/lib/python3.10/site-packages/antismash/modules" :
-        ''
-        }
+        ['singularity', 'apptainer'].contains(workflow.containerEngine)
+            ? "-B ${database_css}:/usr/local/lib/python3.10/site-packages/antismash/outputs/html/css,${database_detection}:/usr/local/lib/python3.10/site-packages/antismash/detection,${database_modules}:/usr/local/lib/python3.10/site-packages/antismash/modules"
+            : workflow.containerEngine == 'docker'
+                ? "-v \$PWD/${database_css}:/usr/local/lib/python3.10/site-packages/antismash/outputs/html/css -v \$PWD/${database_detection}:/usr/local/lib/python3.10/site-packages/antismash/detection -v \$PWD/${database_modules}:/usr/local/lib/python3.10/site-packages/antismash/modules"
+                : ''
+    }
 
     input:
     path database_css
@@ -26,8 +26,8 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
     path database_modules
 
     output:
-    path("antismash_db") , emit: database
-    path("antismash_dir"), emit: antismash_dir
+    path ("antismash_db"), emit: database
+    path ("antismash_dir"), emit: antismash_dir
     path "versions.yml", emit: versions
 
     when:
@@ -35,13 +35,13 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
 
     script:
     def args = task.ext.args ?: ''
-    cp_cmd = ( session.config.conda && session.config.conda.enabled ) ? "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" : "cp -r /usr/local/lib/python3.10/site-packages/antismash antismash_dir;"
+    cp_cmd = session.config.conda && session.config.conda.enabled ? "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" : "cp -r /usr/local/lib/python3.10/site-packages/antismash antismash_dir;"
     """
     download-antismash-databases \\
         --database-dir antismash_db \\
-        $args
+        ${args}
 
-    $cp_cmd
+    ${cp_cmd}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -51,19 +51,20 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
 
     stub:
     def args = task.ext.args ?: ''
-    cp_cmd = (session.config.conda && session.config.conda.enabled ) ? "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" : "cp -r /usr/local/lib/python3.10/site-packages/antismash antismash_dir;"
-    def VERSION = '7.1.0' // WARN: Version information not provided by tool during stub run. Please update this string when bumping container versions.
+    cp_cmd = session.config.conda && session.config.conda.enabled ? "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" : "cp -r /usr/local/lib/python3.10/site-packages/antismash antismash_dir;"
+    def VERSION = '7.1.0'
+    // WARN: Version information not provided by tool during stub run. Please update this string when bumping container versions.
     """
-    echo "download-antismash-databases --database-dir antismash_db $args"
+    echo "download-antismash-databases --database-dir antismash_db ${args}"
 
-    echo "$cp_cmd"
+    echo "${cp_cmd}"
 
     mkdir antismash_dir
     mkdir antismash_db
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        antismash-lite: $VERSION
+        antismash-lite: ${VERSION}
     END_VERSIONS
     """
 }
