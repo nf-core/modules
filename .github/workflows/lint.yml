@@ -107,8 +107,11 @@ jobs:
       matrix:
         module: "${{ fromJson(needs.nf-core-changes.outputs.modules_files) }}"
     steps:
+      - name: Clean workspace
+        run: |
+          sudo rm -rf ./* || true
+          sudo rm -rf ./.* || true
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-
       - name: Set up Python
         uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
         with:
