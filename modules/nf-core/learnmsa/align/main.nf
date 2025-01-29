@@ -2,10 +2,12 @@ process LEARNMSA_ALIGN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-741e0da5cf2d6d964f559672e2908c2111cbb46b:4930edd009376542543bfd2e20008bb1ae58f841-0' :
-        'biocontainers/mulled-v2-741e0da5cf2d6d964f559672e2908c2111cbb46b:4930edd009376542543bfd2e20008bb1ae58f841-0' }"
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error("LearnMSA align module does not support Conda. Please use Docker / Singularity / Podman instead.")
+    }
+
+    container "registry.hub.docker.com/felbecker/learnmsa:2.0.9"
 
     input:
     tuple val(meta), path(fasta)
@@ -24,9 +26,9 @@ process LEARNMSA_ALIGN {
     def write_output = compress ? ">(pigz -cp ${task.cpus} > ${prefix}.aln.gz)" : "${prefix}.aln"
     """
     learnMSA \\
-        $args \\
-        -i <(unpigz -cdf $fasta) \\
-        -o $write_output
+        -i $fasta \\
+        -o $write_output \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
