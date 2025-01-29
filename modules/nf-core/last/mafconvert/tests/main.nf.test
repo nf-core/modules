@@ -19,6 +19,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true)
                 ]
                 input[1] = 'psl'
+                input[2] = []
                 """
             }
         }
@@ -42,6 +43,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true)
                 ]
                 input[1] = 'bam'
+                input[2] = []
                 """
             }
         }
@@ -49,7 +51,39 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bam.collect { bam(it[1]).getSamLines() }).match() }
+                { assert snapshot(
+                    process.out.bam.collect { bam(it[1]).getSamLines() },
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - cram") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'contigs.genome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true)
+                ]
+                input[1] = 'cram'
+                input[2] = [
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.cram.collect { cram(it[1], it[2]).getSamLines() },
+                    process.out.versions
+                ).match() }
             )
         }
 
@@ -66,6 +100,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true)
                 ]
                 input[1] = 'psl'
+                input[2] = []
                 """
             }
         }

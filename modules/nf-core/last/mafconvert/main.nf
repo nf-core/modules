@@ -10,19 +10,23 @@ process LAST_MAFCONVERT {
     input:
     tuple val(meta), path(maf)
     val(format)
+    path(fasta)
 
     output:
-    tuple val(meta), path("*.axt.gz"),      optional:true, emit: axt_gz
-    tuple val(meta), path("*.bam"),         optional:true, emit: bam
-    tuple val(meta), path("*.blast.gz"),    optional:true, emit: blast_gz
-    tuple val(meta), path("*.blasttab.gz"), optional:true, emit: blasttab_gz
-    tuple val(meta), path("*.chain.gz"),    optional:true, emit: chain_gz
-    tuple val(meta), path("*.gff.gz"),      optional:true, emit: gff_gz
-    tuple val(meta), path("*.html.gz"),     optional:true, emit: html_gz
-    tuple val(meta), path("*.psl.gz"),      optional:true, emit: psl_gz
-    tuple val(meta), path("*.sam.gz"),      optional:true, emit: sam_gz
-    tuple val(meta), path("*.tab.gz"),      optional:true, emit: tab_gz
-    path "versions.yml"                                  , emit: versions
+    tuple val(meta), path("*.axt.gz"),             optional:true, emit: axt_gz
+    tuple val(meta), path("*.bam"),                optional:true, emit: bam
+    tuple val(meta), path("*.blast.gz"),           optional:true, emit: blast_gz
+    tuple val(meta), path("*.blasttab.gz"),        optional:true, emit: blasttab_gz
+    tuple val(meta), path("*.chain.gz"),           optional:true, emit: chain_gz
+    tuple val(meta), path("*.cram"), path(fasta),  optional:true, emit: cram
+    path("*.fai"),                                 optional:true, emit: fai
+    tuple val(meta), path("*.gff.gz"),             optional:true, emit: gff_gz
+    path("*.gzi"),                                 optional:true, emit: gzi
+    tuple val(meta), path("*.html.gz"),            optional:true, emit: html_gz
+    tuple val(meta), path("*.psl.gz"),             optional:true, emit: psl_gz
+    tuple val(meta), path("*.sam.gz"),             optional:true, emit: sam_gz
+    tuple val(meta), path("*.tab.gz"),             optional:true, emit: tab_gz
+    path "versions.yml"                                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,6 +40,11 @@ process LAST_MAFCONVERT {
     case $format in
         bam)
             maf-convert $args -d sam  $maf | samtools view -b -o ${prefix}.${format}
+            ;;
+        cram)
+            # CRAM output is not supported if the genome is compressed with something else than bgzip
+            samtools faidx $fasta
+            maf-convert $args -d sam  $maf | samtools view -Ct $fasta -o ${prefix}.${format}
             ;;
         *)
             maf-convert $args $format $maf | gzip --no-name > ${prefix}.${format}.gz

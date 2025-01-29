@@ -29,6 +29,11 @@ input:
         type: string
         description: Output format (one of axt, blast, blasttab, chain, gff, html, psl,
           sam, or tab)
+  - - fasta:
+        type: file
+        description: Genome file in FASTA format for CRAM conversion.  If compressed it
+          must be done in BGZF format (like with the bgzip tool).
+        pattern: "*.{fasta,fasta.gz,fasta.bgz,fasta.bgzf}"
 output:
   - axt_gz:
       - meta:
@@ -40,6 +45,16 @@ output:
           type: file
           description: Gzipped pairwise alignment in Axt (Blastz) format (optional)
           pattern: "*.axt.gz"
+  - bam:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.bam":
+          type: file
+          description: Pairwise alignment in BAM format (optional)
+          pattern: "*.bam"
   - blast_gz:
       - meta:
           type: map
@@ -70,6 +85,25 @@ output:
           type: file
           description: Gzipped pairwise alignment in UCSC chain format (optional)
           pattern: "*.chain.gz"
+  - cram:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.cram":
+          type: file
+          description: Pairwise alignment in CRAM format (optional)
+          pattern: "*.cram"
+      - fasta:
+          type: file
+          description: Genome file to recover sequences from the CRAM file (optional)
+          pattern: "*.{fasta,fasta.gz,fasta.bgz,fasta.bgzf}"
+  - fai:
+      - "*.fai":
+          type: file
+          description: Genome file index generated during CRAM conversion (optional)
+          pattern: "*.fai"
   - gff_gz:
       - meta:
           type: map
@@ -80,6 +114,11 @@ output:
           type: file
           description: Gzipped pairwise alignment in GFF format (optional)
           pattern: "*.gff.gz"
+  - gzi:
+      - "*.gzi":
+          type: file
+          description: Genome file index generated during CRAM conversion (optional)
+          pattern: "*.gzi"
   - html_gz:
       - meta:
           type: map
