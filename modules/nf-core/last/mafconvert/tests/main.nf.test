@@ -9,7 +9,7 @@ nextflow_process {
     tag "last"
     tag "last/mafconvert"
 
-    test("sarscov2 - bam") {
+    test("sarscov2 - psl") {
 
         when {
             process {
@@ -32,7 +32,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - bam - stub") {
+    test("sarscov2 - psl - stub") {
 
         options "-stub"
         when {
