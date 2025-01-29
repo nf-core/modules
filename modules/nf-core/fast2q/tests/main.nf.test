@@ -15,7 +15,7 @@ nextflow_process {
         when {
 
             params {
-            module_args = '-t'
+                    module_args = '-t'
                 }
 
             process {
@@ -91,6 +91,10 @@ nextflow_process {
     test("Extracting all features at position=0 with default length of 20bp from a FASTQ file, and respective alignment to a file with DNA features (library.csv)") {
 
         when {
+
+            params {
+                module_args = ''
+            }
 
             process {
                 """
