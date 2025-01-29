@@ -4,8 +4,8 @@ process CATPACK_ADDNAMES {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/cat:6.0.1--hdfd78af_0'
-        : 'biocontainers/cat:6.0.1--hdfd78af_0'}"
+        ? 'https://depot.galaxyproject.org/singularity/cat:6.0.1--hdfd78af_1'
+        : 'biocontainers/cat:6.0.1--hdfd78af_1'}"
 
     input:
     tuple val(meta), path(input)

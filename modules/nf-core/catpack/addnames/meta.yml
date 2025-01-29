@@ -53,13 +53,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-          pattern: "*.{bam,cram,sam}"
 
       - ${prefix}.txt:
           type: map
           description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            CAT/BAT/RAT classification file with added taxonomic names
           pattern: "*.{bam,cram,sam}"
           ontologies:
             - edam: "http://edamontology.org/format_3475"

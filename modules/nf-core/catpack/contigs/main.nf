@@ -4,8 +4,8 @@ process CATPACK_CONTIGS {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/cat:6.0.1--hdfd78af_0'
-        : 'biocontainers/cat:6.0.1--hdfd78af_0'}"
+        ? 'https://depot.galaxyproject.org/singularity/cat:6.0.1--hdfd78af_1'
+        : 'biocontainers/cat:6.0.1--hdfd78af_1'}"
 
     input:
     tuple val(meta), path(contigs)
@@ -29,15 +29,15 @@ process CATPACK_CONTIGS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def premade_proteins = proteins ? "-p ${proteins}" : ''
-    def premade_table = diamond_table ? "-d ${diamond_table}" : ''
+    def premade_proteins = proteins ? "--proteins_fasta ${proteins}" : ''
+    def premade_table = diamond_table ? "--diamond_alignment ${diamond_table}" : ''
     """
     CAT_pack contigs \\
-        -n ${task.cpus} \\
-        -c ${contigs} \\
-        -d ${database} \\
-        -t ${taxonomy} \\
-        -o ${prefix} \\
+        --nproc ${task.cpus} \\
+        --contigs_fasta ${contigs} \\
+        --database_folder ${database} \\
+        --taxonomy_folder ${taxonomy} \\
+        --out_prefix ${prefix} \\
         ${premade_proteins} \\
         ${premade_table} \\
         ${args}
