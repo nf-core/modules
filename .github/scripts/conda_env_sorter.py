@@ -24,6 +24,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
     parser.add_argument("paths", nargs="*", type=Path)
     args = parser.parse_args(argv)
     for path in args.paths:
+        # Read the entire file content
         with path.open() as f:
             lines = f.readlines()
 
@@ -35,14 +36,12 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
 
         # Check if the first two lines match the expected schema lines
         if lines[:2] == schema_lines:
-            header = lines[:2]
-            content = lines[2:]
+            content = "".join(lines[2:])  # Skip schema lines when reading content
         else:
-            # Add schema lines if they are missing
-            header = schema_lines
-            content = lines
+            content = "".join(lines)  # Use all content if no schema lines present
 
-        doc = yaml.load("".join(content))
+        # Parse the YAML content
+        doc = yaml.load(content)
         dicts = []
         others = []
 
@@ -61,8 +60,11 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         doc["dependencies"].extend(others)
         doc["dependencies"].extend(dicts)
 
+        # Write back to file with headers
         with path.open("w") as f:
-            f.writelines(header)
+            # Always write schema lines first
+            f.writelines(schema_lines)
+            # Then dump the sorted YAML
             yaml.dump(doc, f)
 
 
