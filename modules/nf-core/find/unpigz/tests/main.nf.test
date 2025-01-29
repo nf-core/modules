@@ -36,6 +36,32 @@ nextflow_process {
         }
     }
 
+    test("test_unpigz_success_single_file") {
+        when {
+            process {
+                """
+                input[0] =
+                    [
+                        [ id:'test', single_end:true ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3.gz', checkIfExists: true),
+                        ]
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out,
+                        process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
     test("test_non_gzipped_files") {
         when {
             process {
@@ -72,7 +98,9 @@ nextflow_process {
                 input[0] =
                     [
                         [ id:'test', single_end:true ],
-                        []
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                        ]
                     ]
                 """
             }
