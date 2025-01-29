@@ -64,7 +64,7 @@ output:
             Groovy Map containing output name.
             e.g. [ id:'test' ]
       - ${prefix}_distribution_plot.png:
-          type: png
+          type: file
           description: |
             Violin plot of the distribution of reads per feature across all samples.
   - reads_plot:
@@ -74,7 +74,7 @@ output:
             Groovy Map containing output name.
             e.g. [ id:'test' ]
       - ${prefix}_reads_plot.png:
-          type: png
+          type: file
           description: |
             Bar plot with the distribution of reads, in absolute numbers, binned to the different quality metrics indicated in the statistics.csv
   - reads_plot_percentage:
@@ -84,7 +84,7 @@ output:
             Groovy Map containing output name.
             e.g. [ id:'test' ]
       - ${prefix}_reads_plot_percentage.png:
-          type: png
+          type: file
           description: |
             Bar plot with the distribution of reads, in percentage, binned to the different quality metrics indicated in the statistics.csv
   - versions:
