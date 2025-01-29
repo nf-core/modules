@@ -13,6 +13,7 @@ process LAST_MAFCONVERT {
 
     output:
     tuple val(meta), path("*.axt.gz"),      optional:true, emit: axt_gz
+    tuple val(meta), path("*.bam"),         optional:true, emit: bam
     tuple val(meta), path("*.blast.gz"),    optional:true, emit: blast_gz
     tuple val(meta), path("*.blasttab.gz"), optional:true, emit: blasttab_gz
     tuple val(meta), path("*.chain.gz"),    optional:true, emit: chain_gz
@@ -31,7 +32,15 @@ process LAST_MAFCONVERT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     set -o pipefail
-    maf-convert $args $format $maf | gzip --no-name > ${prefix}.${format}.gz
+
+    case $format in
+        bam)
+            maf-convert $args -d sam  $maf | samtools view -b -o ${prefix}.${format}
+            ;;
+        *)
+            maf-convert $args $format $maf | gzip --no-name > ${prefix}.${format}.gz
+            ;;
+    esac
 
     # maf-convert has no --version option but lastdb (part of the same package) has.
     cat <<-END_VERSIONS > versions.yml

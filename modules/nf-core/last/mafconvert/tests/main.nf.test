@@ -32,6 +32,29 @@ nextflow_process {
 
     }
 
+    test("sarscov2 - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'contigs.genome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true)
+                ]
+                input[1] = 'bam'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.bam.collect { bam(it[1]).getSamLines() }).match() }
+            )
+        }
+
+    }
+
     test("sarscov2 - psl - stub") {
 
         options "-stub"
