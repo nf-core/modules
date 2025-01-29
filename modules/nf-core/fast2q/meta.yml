@@ -1,75 +1,103 @@
 name: fast2q
 description: A program that counts sequence occurrences in FASTQ files.
 keywords:
-- CRISPRi
-- FASTQ
-- genomics
+  - CRISPRi
+  - FASTQ
+  - genomics
 tools:
-- 2FAST2Q:
-    description: |
-      2FAST2Q is ideal for CRISPRi-Seq, and for extracting and counting any kind of information from reads in the fastq format, such as barcodes in Bar-seq experiments.
-      2FAST2Q can work with sequence mismatches, Phred-score, and be used to find and extract unknown sequences delimited by known sequences.
-      2FAST2Q can extract multiple features per read using either fixed positions or delimiting search sequences.
-    homepage: https://github.com/afombravo/2FAST2Q
-    doi: 10.7717/peerj.14041
-    licence: ["GPL-3.0-or-later"]
-    identifier: ''
+  - 2FAST2Q:
+      description: |
+        2FAST2Q is ideal for CRISPRi-Seq, and for extracting and counting any kind of information from reads in the fastq format, such as barcodes in Bar-seq experiments.
+        2FAST2Q can work with sequence mismatches, Phred-score, and be used to find and extract unknown sequences delimited by known sequences.
+        2FAST2Q can extract multiple features per read using either fixed positions or delimiting search sequences.
+      homepage: https://github.com/afombravo/2FAST2Q
+      doi: 10.7717/peerj.14041
+      licence: ["GPL-3.0-or-later"]
+      identifier: ""
 
 input:
-- - meta1:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:true ]
-  - fastq:
-      type: file
-      description: FASTQ file
-      pattern: "*.{fastq,gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:true ]
+    - fastq:
+        type: file
+        description: FASTQ file
+        pattern: "*.{fastq,gz}"
 
-- - meta2:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'library_name', multiple_features_per_read:false ]
-  - library:
-      type: file
-      description: library file
-      pattern: "*.csv"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'library_name', multiple_features_per_read:false ]
+    - library:
+        type: file
+        description: library file
+        pattern: "*.csv"
 
 output:
-- out_folder:
-  - meta1:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', library:'library_name' ]
-      pattern: "./2FAST2Q_output/*.*"
-
-  - 2FAST2Q_output_*:
-      type: map
-      description: |
-        Folder containing all the processed data
-      pattern: "2FAST2Q_output"
-
-- count_matrix:
-  - 2FAST2Q_output_*/compiled.csv:
-      type: file
-      description: Count matrix
-      pattern: "2FAST2Q_output_*/compiled.csv"
-
-- run_statistics:
-  - 2FAST2Q_output_*/compiled_stats.csv:
-      type: file
-      description: Statistics file
-      pattern: "2FAST2Q_output_*/compiled_stats.csv"
-
-- versions:
-  - versions.yml:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+  - count_matrix:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}.csv:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+  - stats:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}_stats.csv:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+  - distribution_plot:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}_distribution_plot.png:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+  - reads_plot:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}_reads_plot.png:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+  - reads_plot_percentage:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}_reads_plot_percentage.png:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
-- "@afombravo"
+  - "@afombravo"
 maintainers:
-- "@afombravo"
+  - "@afombravo"
