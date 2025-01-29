@@ -45,15 +45,13 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        antismash-lite: \$(antismash --version | sed 's/antiSMASH //')
+        antismash-lite: \$(echo \$(antismash --version) | sed 's/antiSMASH //;s/-.*//g')
     END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
     cp_cmd = session.config.conda && session.config.conda.enabled ? "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" : "cp -r /usr/local/lib/python3.10/site-packages/antismash antismash_dir;"
-    def VERSION = '7.1.0'
-    // WARN: Version information not provided by tool during stub run. Please update this string when bumping container versions.
     """
     echo "download-antismash-databases --database-dir antismash_db ${args}"
 
@@ -64,7 +62,7 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        antismash-lite: ${VERSION}
+        antismash-lite: \$(echo \$(antismash --version) | sed 's/antiSMASH //;s/-.*//g')
     END_VERSIONS
     """
 }

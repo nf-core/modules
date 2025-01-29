@@ -66,14 +66,12 @@ process ANTISMASH_ANTISMASHLITE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        antismash-lite: \$(echo \$(antismash --version) | sed 's/antiSMASH //')
+        antismash-lite: \$(echo \$(antismash --version) | sed 's/antiSMASH //;s/-.*//g')
     END_VERSIONS
     """
 
     stub:
     prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
-    def VERSION = '7.1.0'
-    // WARN: Version information not provided by tool during stub run. Please update this string when bumping container versions.
     """
     mkdir -p ${prefix}/css
     mkdir ${prefix}/images
@@ -93,7 +91,7 @@ process ANTISMASH_ANTISMASHLITE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        antismash-lite: ${VERSION}
+        antismash-lite: \$(echo \$(antismash --version) | sed 's/antiSMASH //;s/-.*//g')
     END_VERSIONS
     """
 }
