@@ -19,11 +19,11 @@ input:
   - - meta:
         type: map
         description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:true ]
+          Groovy Map containing output name.
+          e.g. [ id:'test']
     - fastq:
-        type: file
-        description: FASTQ file
+        type: folder
+        description: Folder with FASTQ file(s). 2FAST2Q automatically picks up all the FASTQ files inside the provided folder.
         pattern: "*.{fastq,gz}"
 
   - - meta2:
@@ -33,7 +33,7 @@ input:
           e.g. [ id:'library_name', multiple_features_per_read:false ]
     - library:
         type: file
-        description: library file
+        description: .csv library file following the ´Feature_name,sequence´ or ´Feature_name,sequence1:sequence2´ format. See 2FAST2Q instructions for more information.
         pattern: "*.csv"
 
 output:
@@ -41,57 +41,52 @@ output:
       - meta:
           type: map
           description: |
-            Groovy Map containing sample information
+            Groovy Map containing output name.
             e.g. [ id:'test' ]
       - ${prefix}.csv:
-          type: map
+          type: file
           description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test' ]
+            Count matrix csv file
   - stats:
       - meta:
           type: map
           description: |
-            Groovy Map containing sample information
+            Groovy Map containing output name.
             e.g. [ id:'test' ]
       - ${prefix}_stats.csv:
-          type: map
+          type: file
           description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test' ]
+            File containing all the relevant statistics such as quality passing reads, aligned reads, total reads, and sample run times.
   - distribution_plot:
       - meta:
           type: map
           description: |
-            Groovy Map containing sample information
+            Groovy Map containing output name.
             e.g. [ id:'test' ]
       - ${prefix}_distribution_plot.png:
-          type: map
+          type: png
           description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test' ]
+            Violin plot of the distribution of reads per feature across all samples.
   - reads_plot:
       - meta:
           type: map
           description: |
-            Groovy Map containing sample information
+            Groovy Map containing output name.
             e.g. [ id:'test' ]
       - ${prefix}_reads_plot.png:
-          type: map
+          type: png
           description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test' ]
+            Bar plot with the distribution of reads, in absolute numbers, binned to the different quality metrics indicated in the statistics.csv
   - reads_plot_percentage:
       - meta:
           type: map
           description: |
-            Groovy Map containing sample information
+            Groovy Map containing output name.
             e.g. [ id:'test' ]
       - ${prefix}_reads_plot_percentage.png:
-          type: map
+          type: png
           description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test' ]
+            Bar plot with the distribution of reads, in percentage, binned to the different quality metrics indicated in the statistics.csv
   - versions:
       - versions.yml:
           type: file
