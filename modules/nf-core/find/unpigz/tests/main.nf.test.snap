@@ -35,8 +35,13 @@
                             "single_end": true
                         },
                         [
-                            "test.contigs.genome.maf:md5,caebfb2c47ffb50b1e64d5520dddd5d2",
-                            "test.genome.gff3:md5,357435a81a9981a0128e840ebe11051e"
+                            "contigs.genome.maf:md5,caebfb2c47ffb50b1e64d5520dddd5d2",
+                            "genome.gff3:md5,357435a81a9981a0128e840ebe11051e",
+                            [
+                                "contigs.genome.maf.gz:md5,caebfb2c47ffb50b1e64d5520dddd5d2",
+                                "genome.gff3.gz:md5,357435a81a9981a0128e840ebe11051e"
+                            ],
+                            "versions.yml:md5,45d396302ee792b4eb2d5b68d101e029"
                         ]
                     ]
                 ],
@@ -50,8 +55,13 @@
                             "single_end": true
                         },
                         [
-                            "test.contigs.genome.maf:md5,caebfb2c47ffb50b1e64d5520dddd5d2",
-                            "test.genome.gff3:md5,357435a81a9981a0128e840ebe11051e"
+                            "contigs.genome.maf:md5,caebfb2c47ffb50b1e64d5520dddd5d2",
+                            "genome.gff3:md5,357435a81a9981a0128e840ebe11051e",
+                            [
+                                "contigs.genome.maf.gz:md5,caebfb2c47ffb50b1e64d5520dddd5d2",
+                                "genome.gff3.gz:md5,357435a81a9981a0128e840ebe11051e"
+                            ],
+                            "versions.yml:md5,45d396302ee792b4eb2d5b68d101e029"
                         ]
                     ]
                 ],
@@ -67,7 +77,7 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.4"
         },
-        "timestamp": "2025-01-29T11:41:14.076548"
+        "timestamp": "2025-01-30T14:25:42.231376"
     },
     "test_stub": {
         "content": [
@@ -78,7 +88,13 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test.test_file.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        [
+                            [
+                                "genome.fasta:md5,6e9fe4042a72f2345f644f239272b7e6"
+                            ],
+                            "test.test_file.txt:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "versions.yml:md5,45d396302ee792b4eb2d5b68d101e029"
+                        ]
                     ]
                 ],
                 "1": [
@@ -90,7 +106,13 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test.test_file.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        [
+                            [
+                                "genome.fasta:md5,6e9fe4042a72f2345f644f239272b7e6"
+                            ],
+                            "test.test_file.txt:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "versions.yml:md5,45d396302ee792b4eb2d5b68d101e029"
+                        ]
                     ]
                 ],
                 "versions": [
@@ -105,7 +127,7 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.4"
         },
-        "timestamp": "2025-01-29T11:56:40.312202"
+        "timestamp": "2025-01-30T14:26:08.74619"
     },
     "test_unpigz_success_single_file": {
         "content": [
@@ -116,7 +138,13 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test.genome.gff3:md5,357435a81a9981a0128e840ebe11051e"
+                        [
+                            "genome.gff3:md5,357435a81a9981a0128e840ebe11051e",
+                            [
+                                "genome.gff3.gz:md5,357435a81a9981a0128e840ebe11051e"
+                            ],
+                            "versions.yml:md5,45d396302ee792b4eb2d5b68d101e029"
+                        ]
                     ]
                 ],
                 "1": [
@@ -128,7 +156,13 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test.genome.gff3:md5,357435a81a9981a0128e840ebe11051e"
+                        [
+                            "genome.gff3:md5,357435a81a9981a0128e840ebe11051e",
+                            [
+                                "genome.gff3.gz:md5,357435a81a9981a0128e840ebe11051e"
+                            ],
+                            "versions.yml:md5,45d396302ee792b4eb2d5b68d101e029"
+                        ]
                     ]
                 ],
                 "versions": [
@@ -143,6 +177,6 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.4"
         },
-        "timestamp": "2025-01-29T11:54:16.396814"
+        "timestamp": "2025-01-30T14:25:51.098457"
     }
 }
