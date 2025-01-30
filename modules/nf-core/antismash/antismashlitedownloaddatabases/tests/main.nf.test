@@ -10,7 +10,6 @@ nextflow_process {
     tag "antismash"
     tag "antismash/antismashlitedownloaddatabases"
     tag "untar"
-    tag "debug"
 
     test("antiSMASH-lite downloaddatabases") {
 
@@ -69,7 +68,7 @@ nextflow_process {
                 { assert snapshot(
                     file(process.out.database.get(0)).list().sort(),
                     path(process.out.versions[0]).yaml,
-                    file(process.out.versions[0]).name(),
+                    file(process.out.versions[0]).name,
                     ).match()
                 }
             )
@@ -134,8 +133,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                         file(process.out.database.get(0)).list().sort(),
-                        path(process.out.versions[0]).yaml,
-                        file(process.out.versions[0]).name(),
+                        file(process.out.versions[0]).name,
                     ).match()
                 }
             )

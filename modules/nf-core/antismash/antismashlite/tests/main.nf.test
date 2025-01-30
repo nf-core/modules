@@ -12,6 +12,7 @@ nextflow_process {
     tag "antismash/antismashlitedownloaddatabases"
     tag "gunzip"
     tag "untar"
+    tag "debug"
 
     setup {
         run("UNTAR", alias: "UNTAR_CSS") {
@@ -99,7 +100,7 @@ nextflow_process {
                 { assert path(process.out.log.get(0).get(1)).text.contains("antiSMASH status: SUCCESS") },
                 { assert snapshot(
                     path(process.out.versions[0]).yaml,
-                    file(process.out.versions[0]).name(),
+                    file(process.out.versions[0]).name,
                     ).match("versions")
                 }
             )
@@ -125,8 +126,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    path(process.out.versions[0]).yaml,
-                    file(process.out.versions[0]).name(),
+                    file(process.out.versions[0]).name,
                     ).match("versions")
                 }
             )
