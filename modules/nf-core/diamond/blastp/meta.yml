@@ -54,77 +54,77 @@ input:
           qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore
 output:
   - blast:
-      - meta:
+      - outmeta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test', single_end:false, db:'ncbi-refseq' ]
           pattern: "*.{blast,blast.gz}"
       - "*.{blast,blast.gz}":
           type: map
           description: File containing blastp hits
           pattern: "*.{blast,blast.gz}"
   - xml:
-      - meta:
+      - outmeta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test', single_end:false, db:'ncbi-refseq' ]
           pattern: "*.{xml,xml.gz}"
       - "*.{xml,xml.gz}":
           type: map
           description: File containing blastp hits
           pattern: "*.{xml,xml.gz}"
   - txt:
-      - meta:
+      - outmeta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test', single_end:false, db:'ncbi-refseq' ]
           pattern: "*.{txt,txt.gz}"
       - "*.{txt,txt.gz}":
           type: map
           description: File containing hits in tabular BLAST format.
           pattern: "*.{txt,txt.gz}"
   - daa:
-      - meta:
+      - outmeta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test', single_end:false, db:'ncbi-refseq' ]
           pattern: "*.{daa,daa.gz}"
       - "*.{daa,daa.gz}":
           type: map
           description: File containing hits DAA format
           pattern: "*.{daa,daa.gz}"
   - sam:
-      - meta:
+      - outmeta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test', single_end:false, db:'ncbi-refseq' ]
           pattern: "*.{sam,sam.gz}"
       - "*.{sam,sam.gz}":
           type: map
           description: File containing aligned reads in SAM format
           pattern: "*.{sam,sam.gz}"
   - tsv:
-      - meta:
+      - outmeta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test', single_end:false, db:'ncbi-refseq' ]
           pattern: "*.{tsv,tsv.gz}"
       - "*.{tsv,tsv.gz}":
           type: map
           description: Tab separated file containing taxonomic classification of hits
           pattern: "*.{tsv,tsv.gz}"
   - paf:
-      - meta:
+      - outmeta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test', single_end:false, db:'ncbi-refseq' ]
           pattern: "*.{paf,paf.gz}"
       - "*.{paf,paf.gz}":
           type: map
