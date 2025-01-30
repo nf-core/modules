@@ -33,19 +33,24 @@ input:
         type: file
         description: File of the indexed DIAMOND database
         pattern: "*.dmnd"
-  - - out_ext:
-        type: string
+  - - outfmt:
+        type: integer
         description: |
-          Specify the type of output file to be generated. `blast` corresponds to
-          BLAST pairwise format. `xml` corresponds to BLAST xml format.
-          `txt` corresponds to to BLAST tabular format. `tsv` corresponds to
-          taxonomic classification format.
-        pattern: "blast|xml|txt|daa|sam|tsv|paf"
+          Specify the type of output file to be generated.
+          0, .blast, BLAST pairwise format.
+          5, .xml, BLAST XML format.
+          6, .txt, BLAST tabular format (default). This format can be customized, the 6 may be followed by a space-separated list of the blast_columns keywords, each specifying a field of the output.
+          100, .daa, DIAMOND alignment archive (DAA). The DAA format is a proprietary binary format that can subsequently be used to generate other output formats using the view command. It is also supported by MEGAN and allows a quick import of results.
+          101, .sam, SAM format.
+          102, .tsv, Taxonomic classification. This format will not print alignments but only a taxonomic classification for each query using the LCA algorithm.
+          103, .paf, PAF format. The custom fields in the format are AS (bit score), ZR (raw score) and ZE (e-value).
+        pattern: "0|5|6|100|101|102|103"
   - - blast_columns:
         type: string
         description: |
           Optional space separated list of DIAMOND tabular BLAST output keywords
-          used for in conjunction with the 'txt' out_ext option (--outfmt 6). Options:
+          used in conjunction with the --outfmt 6 option (txt).
+          Options:
           qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore
 output:
   - blast:

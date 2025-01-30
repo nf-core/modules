@@ -30,7 +30,7 @@ nextflow_process {
                 """
                 input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
                 input[1] = DIAMOND_MAKEDB.out.db
-                input[2] = 'txt'
+                input[2] = 6
                 input[3] = 'qseqid qlen'
                 """
             }
@@ -52,7 +52,7 @@ nextflow_process {
                 """
                 input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta.gz', checkIfExists: true) ]
                 input[1] = DIAMOND_MAKEDB.out.db
-                input[2] = 'txt'
+                input[2] = 6
                 input[3] = 'qseqid qlen'
                 """
             }
@@ -74,7 +74,7 @@ nextflow_process {
                 """
                 input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
                 input[1] = DIAMOND_MAKEDB.out.db
-                input[2] = 'daa'
+                input[2] = 100
                 input[3] = []
                 """
             }
@@ -99,7 +99,7 @@ nextflow_process {
                 """
                 input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
                 input[1] = DIAMOND_MAKEDB.out.db
-                input[2] = 'txt'
+                input[2] = 6
                 input[3] = 'qseqid qlen'
                 """
             }
@@ -123,7 +123,7 @@ nextflow_process {
                 """
                 input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
                 input[1] = DIAMOND_MAKEDB.out.db
-                input[2] = 'txt'
+                input[2] = 6
                 input[3] = 'qseqid qlen'
                 """
             }
