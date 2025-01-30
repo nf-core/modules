@@ -14,20 +14,20 @@ process DIAMOND_BLASTP {
     val blast_columns
 
     output:
-    tuple val(outmeta), path('*.{blast,blast.gz}'), optional: true, emit: blast
-    tuple val(outmeta), path('*.{xml,xml.gz}')    , optional: true, emit: xml
-    tuple val(outmeta), path('*.{txt,txt.gz}')    , optional: true, emit: txt
-    tuple val(outmeta), path('*.{daa,daa.gz}')    , optional: true, emit: daa
-    tuple val(outmeta), path('*.{sam,sam.gz}')    , optional: true, emit: sam
-    tuple val(outmeta), path('*.{tsv,tsv.gz}')    , optional: true, emit: tsv
-    tuple val(outmeta), path('*.{paf,paf.gz}')    , optional: true, emit: paf
+    tuple val(meta), path('*.{blast,blast.gz}'), optional: true, emit: blast
+    tuple val(meta), path('*.{xml,xml.gz}')    , optional: true, emit: xml
+    tuple val(meta), path('*.{txt,txt.gz}')    , optional: true, emit: txt
+    tuple val(meta), path('*.{daa,daa.gz}')    , optional: true, emit: daa
+    tuple val(meta), path('*.{sam,sam.gz}')    , optional: true, emit: sam
+    tuple val(meta), path('*.{tsv,tsv.gz}')    , optional: true, emit: tsv
+    tuple val(meta), path('*.{paf,paf.gz}')    , optional: true, emit: paf
     path "versions.yml"                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    outmeta = meta + [ db: meta2.id ]
+    meta = meta + [ db: meta2.id ]
 
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -74,7 +74,7 @@ process DIAMOND_BLASTP {
     """
 
     stub:
-    outmeta = meta + [ db: meta2.id ]
+    meta = meta + [ db: meta2.id ]
 
     def prefix = task.ext.prefix ?: "${meta.id}"
 

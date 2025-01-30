@@ -54,7 +54,7 @@ input:
           qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore
 output:
   - blast:
-      - outmeta:
+      - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -65,7 +65,7 @@ output:
           description: File containing blastp hits
           pattern: "*.{blast,blast.gz}"
   - xml:
-      - outmeta:
+      - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -76,7 +76,7 @@ output:
           description: File containing blastp hits
           pattern: "*.{xml,xml.gz}"
   - txt:
-      - outmeta:
+      - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -87,7 +87,7 @@ output:
           description: File containing hits in tabular BLAST format.
           pattern: "*.{txt,txt.gz}"
   - daa:
-      - outmeta:
+      - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -98,7 +98,7 @@ output:
           description: File containing hits DAA format
           pattern: "*.{daa,daa.gz}"
   - sam:
-      - outmeta:
+      - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -109,7 +109,7 @@ output:
           description: File containing aligned reads in SAM format
           pattern: "*.{sam,sam.gz}"
   - tsv:
-      - outmeta:
+      - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -120,7 +120,7 @@ output:
           description: Tab separated file containing taxonomic classification of hits
           pattern: "*.{tsv,tsv.gz}"
   - paf:
-      - outmeta:
+      - meta:
           type: map
           description: |
             Groovy Map containing sample information
