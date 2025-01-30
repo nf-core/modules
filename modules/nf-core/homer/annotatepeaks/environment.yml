@@ -1,10 +1,11 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
 dependencies:
   - bioconda::bioconductor-deseq2=1.42.0
   - bioconda::bioconductor-edger=4.0.16
-  # renovate: datasource=conda depName=bioconda/homer
   - bioconda::homer=4.11
   - bioconda::samtools=1.21
   - conda-forge::r-essentials=4.3

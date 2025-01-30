@@ -1,15 +1,13 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
 dependencies:
   # renovate: datasource=conda depName=conda-forge/quarto
   # FIXME https://github.com/nf-core/modules/issues/7006
-  - conda-forge::quarto=1.5.57
-  # renovate: datasource=conda depName=conda-forge/jupyter
   - conda-forge::jupyter=1.0.0
-  # renovate: datasource=conda depName=conda-forge/matplotlib
   - conda-forge::matplotlib=3.4.3
-  # renovate: datasource=conda depName=conda-forge/papermill
   - conda-forge::papermill=2.4.0
-  # renovate: datasource=conda depName=conda-forge/r-rmarkdown
+  - conda-forge::quarto=1.5.57
   - conda-forge::r-rmarkdown=2.25
