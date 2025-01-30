@@ -1,0 +1,54 @@
+nextflow_process {
+
+    name "Test Process HIFIADAPTERFILT"
+    script "../main.nf"
+    process "HIFIADAPTERFILT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hifiadapterfilt"
+
+    test("hifiadapterfilt - fastq.gz") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.test_data['homo_sapiens']['pacbio']['hifi'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out[0][1].findAll {
+                    file(it).name == "test.filt.fastq.gz" &&
+                    file(it).name == "test.contaminant.blastout" &&
+                    file(it).name == "test.blocklist" }).match()},
+                { assert path(process.out.stats[0].get(1)).text.contains('Number of adapter contaminated ccs reads: 0 (0% of total)') },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
+
+    test("hifiadapterfilt - fastq.gz - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.test_data['homo_sapiens']['pacbio']['hifi'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

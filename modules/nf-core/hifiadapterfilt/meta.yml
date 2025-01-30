@@ -1,0 +1,86 @@
+name: "hifiadapterfilt"
+description: "Convert .bam to .fastq and remove reads with remnant PacBio adapter
+  sequences"
+keywords:
+  - pacbio
+  - hifi
+  - filter
+  - metagenomics
+  - adapters
+tools:
+  - hifiadapterfilt:
+      description: "Convert .bam to .fastq and remove CCS reads with remnant PacBio
+        adapter sequences"
+      homepage: "https://bio.tools/hifiadapterfilt"
+      documentation: "https://github.com/sheinasim/HiFiAdapterFilt"
+      tool_dev_url: "https://github.com/sheinasim/HiFiAdapterFilt"
+      doi: "10.1186/s12864-022-08375-1"
+      licence: ["GPL-3.0"]
+      identifier: biotools:hifiadapterfilt
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fastq:
+        type: file
+        description: Fastq pacbio hifi raw reads file. The tool AUTOMATICALLY detects fastq files from the input folder, hence an explicit call of "fastq" is not needed.
+        pattern: "*.fastq"
+
+output:
+  - filt:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.filt.fastq.gz":
+          type: file
+          description: |
+            Fastq reads free of pacbio adapter sequence ready for assembly
+          pattern: "*.filt.fastq.gz"
+  - blast_search:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.contaminant.blastout":
+          type: file
+          description: |
+            Output of BLAST search
+          pattern: "*.contaminant.blastout"
+  - stats:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.stats":
+          type: file
+          description: |
+            File with simple math on number of reads removed, etc
+          pattern: "*.stats"
+  - headers:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.blocklist":
+          type: file
+          description: |
+            Headers of pacbio adapter contaminated reads to be removed
+          pattern: "*.blocklist"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@Ge94"
+maintainers:
+  - "@Ge94"
