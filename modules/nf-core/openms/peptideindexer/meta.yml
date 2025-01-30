@@ -20,31 +20,26 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - id_file:
+          e.g. `[ id:'sample1' ]`
+    - idxml:
         type: file
         description: idXML identification file
-        pattern: "*.{idXML}"
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - id_fasta:
-        type: file
+        pattern: "*.idXML"
+    - fasta:
+        type: filee
         description: Input sequence database in FASTA format
         pattern: "*.fasta"
 output:
-  - id_file_pi:
+  - indexed_idxml:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1' ]`
       - "*.idXML":
           type: file
           description: Refreshed idXML identification file
-          pattern: "*.{idXML}"
+          pattern: "*.idXML"
   - versions:
       - versions.yml:
           type: file

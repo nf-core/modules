@@ -4,15 +4,14 @@ process OPENMS_PEPTIDEINDEXER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/openms:3.3.0--h0656172_8':
+        'https://depot.galaxyproject.org/singularity/openms:3.3.0--h0656172_8' :
         'biocontainers/openms:3.3.0--h0656172_8' }"
 
     input:
-    tuple val(meta), path(id_file)
-    tuple val(meta), path(id_fasta)
+    tuple val(meta), path(idxml), path(fasta_file)
 
     output:
-    tuple val(meta), path("*.idXML"), emit: id_file_pi
+    tuple val(meta), path("*.idXML"), emit: indexed_idxml
     path "versions.yml"             , emit: versions
 
     when:
@@ -20,15 +19,17 @@ process OPENMS_PEPTIDEINDEXER {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}_pi"
+    def prefix = task.ext.prefix ?: "${meta.id}_indexed"
+    def fasta = fasta_file ? "-fasta ${fasta_file}": ""
+
 
     """
     PeptideIndexer \\
-        -in $id_file \\
-        -fasta $id_fasta \\
+        -in $idxml \\
         -out ${prefix}.idXML \\
         -threads $task.cpus \\
-        $args \\
+        $fasta \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -38,7 +39,7 @@ process OPENMS_PEPTIDEINDEXER {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}_pi"
+    def prefix = task.ext.prefix ?: "${meta.id}_indexed"
 
     """
     touch ${prefix}.idXML
