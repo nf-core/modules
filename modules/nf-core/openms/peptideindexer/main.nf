@@ -8,7 +8,7 @@ process OPENMS_PEPTIDEINDEXER {
         'biocontainers/openms:3.3.0--h0656172_8' }"
 
     input:
-    tuple val(meta), path(idxml), path(fasta_file)
+    tuple val(meta), path(idxml), path(fasta)
 
     output:
     tuple val(meta), path("*.idXML"), emit: indexed_idxml
@@ -20,15 +20,15 @@ process OPENMS_PEPTIDEINDEXER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_indexed"
-    def fasta = fasta_file ? "-fasta ${fasta_file}": ""
+    def fasta_file = fasta ? "-fasta ${fasta}": ""
 
 
     """
     PeptideIndexer \\
         -in $idxml \\
+        $fasta_file \\
         -out ${prefix}.idXML \\
         -threads $task.cpus \\
-        $fasta \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
