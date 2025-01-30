@@ -329,7 +329,7 @@ ads <- do.call(anota2seqDataSetFromMatrix, anota2seqDataSetFromMatrix_args)
 contrast_matrix <- matrix(
     c(-1, 1),
     nrow = 2,
-    dimnames = list(sort(c(opt$reference_level, opt$target_level)), NULL)
+    dimnames = list(sort(c(opt\$reference_level, opt\$target_level)), NULL)
 )
                                                                                  
 ads <- anota2seqRun(
