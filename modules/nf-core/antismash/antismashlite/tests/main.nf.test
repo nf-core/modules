@@ -127,7 +127,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.versions[0]).name,
-                    ).match("versions")
+                    ).match("versions_stub")
                 }
             )
         }
