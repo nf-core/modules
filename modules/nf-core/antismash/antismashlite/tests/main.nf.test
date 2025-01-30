@@ -99,7 +99,7 @@ nextflow_process {
                 { assert path(process.out.log.get(0).get(1)).text.contains("antiSMASH status: SUCCESS") },
                 { assert snapshot(
                     path(process.out.versions[0]).yaml,
-                    file(process.out.versions[0]).name(),
+                    file(process.out.versions[0]).name,
                     ).match("versions")
                 }
             )
@@ -126,8 +126,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     path(process.out.versions[0]).yaml,
-                    file(process.out.versions[0]).name(),
-                    ).match("versions")
+                    file(process.out.versions[0]).name,
+                    ).match("versions_stub")
                 }
             )
         }
