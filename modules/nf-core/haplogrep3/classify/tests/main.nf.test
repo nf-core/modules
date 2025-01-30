@@ -1,26 +1,26 @@
 
 nextflow_process {
 
-    name "Test Process COOLER_MAKEBINS"
+    name "Test Process HAPLOGREP3_CLASSIFY"
     script "../main.nf"
-    process "COOLER_MAKEBINS"
+    process "HAPLOGREP3_CLASSIFY"
 
     tag "modules"
     tag "modules_nfcore"
-    tag "cooler"
-    tag "cooler/makebins"
+    tag "haplogrep3"
+    tag "haplogrep3/classify"
 
-    test("test-cooler-makebins") {
+    test("test-haplogrep3-classify") {
+
+        config './nextflow.config'
 
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/cload/hg19/hg19.chrom.sizes', checkIfExists: true),
-				    "1000000"
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_chrM.vcf.gz', checkIfExists: true)
 				]
-
                 """
             }
         }
@@ -33,17 +33,17 @@ nextflow_process {
         }
     }
 
-    test("test-cooler-makebins - stub") {
-        options "-stub"
+    test("test-haplogrep3-classify-stub") {
+
+        options '-stub'
+
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/cload/hg19/hg19.chrom.sizes', checkIfExists: true),
-				    "1000000"
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_chrM.vcf.gz', checkIfExists: true)
 				]
-
                 """
             }
         }

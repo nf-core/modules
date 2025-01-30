@@ -1,44 +1,49 @@
-process COOLER_MAKEBINS {
-    tag "${meta.id}"
-    label 'process_low'
+process SYLPH_PROFILE {
+    tag "$meta.id"
+    label 'process_high'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cooler:0.9.2--pyh7cba7a3_0' :
-        'biocontainers/cooler:0.9.2--pyh7cba7a3_0' }"
+        'https://depot.galaxyproject.org/singularity/sylph:0.7.0--h919a2d8_0' :
+        'biocontainers/sylph:0.7.0--h919a2d8_0' }"
 
     input:
-    tuple val(meta), path(chromsizes), val(cool_bin)
+    tuple val(meta), path(reads)
+    path(database)
 
     output:
-    tuple val(meta), path("*.bed"), emit: bed
+    tuple val(meta), path('*.tsv'), emit: profile_out
     path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    cooler makebins \\
+    sylph profile \\
+        -t $task.cpus \\
         $args \\
-        ${chromsizes} \\
-        ${cool_bin} > ${prefix}.bed
+        $reads \\
+        $database\\
+        -o ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cooler: \$(cooler --version 2>&1 | sed 's/cooler, version //')
+        sylph: \$(sylph -V | awk '{print \$2}')
     END_VERSIONS
     """
+
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.bed
-
+    touch ${prefix}.tsv
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cooler: \$(cooler --version 2>&1 | sed 's/cooler, version //')
+        sylph: \$(sylph -V | awk '{print \$2}')
     END_VERSIONS
     """
+
 }

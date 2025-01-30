@@ -1,10 +1,10 @@
-name: "sylph_sketch"
-description: Sketching/indexing sequencing reads
+name: "sylph_profile"
+description: Sylph profile command for taxonoming profiling
 keywords:
-  - sketch
+  - profile
   - metagenomics
   - sylph
-  - indexing
+  - classification
 tools:
   - sylph:
       description: Sylph quickly enables querying of genomes against even low-coverage
@@ -23,30 +23,22 @@ input:
           e.g. `[ id:'test', single_end:false ]`
     - reads:
         type: file
-        description: Input fastq files
-        pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
-  - - reference:
+        description: |
+          List of input FastQ/FASTA files of size 1 and 2 for single-end and paired-end data,
+          respectively. They are automatically sketched to .sylsp/.syldb
+  - - database:
         type: file
-        description: Reference genome file in FASTA format
+        description: Pre-sketched *.syldb/*.sylsp files. Raw single-end fastq/fasta are allowed and will be automatically sketched to .sylsp/.syldb.
+        pattern: "*.{syldb,sylsp,fasta,fastq}"
 output:
-  - sketch_fastq_genome:
+  - profile_out:
       - meta:
           type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test']
-      - my_sketches/*.sylsp:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-          pattern: "my_sketches/*.sylsp"
-      - database.syldb:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-          pattern: "my_sketches/*.sylsp"
+          description: Groovy Map containing sample information
+      - "*.tsv":
+          type: file
+          description: Output file of species-level taxonomic profiling with abundances and ANIs.
+          pattern: "*tsv"
   - versions:
       - versions.yml:
           type: file
