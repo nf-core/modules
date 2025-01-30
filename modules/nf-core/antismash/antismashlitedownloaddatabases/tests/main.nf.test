@@ -69,6 +69,7 @@ nextflow_process {
                 { assert snapshot(
                     file(process.out.database.get(0)).list().sort(),
                     path(process.out.versions[0]).yaml,
+                    file(process.out.versions[0]).name(),
                     ).match()
                 }
             )
@@ -132,8 +133,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.database.get(0)).list().sort(),
-                    path(process.out.versions[0]).yaml,
+                        file(process.out.database.get(0)).list().sort(),
+                        path(process.out.versions[0]).yaml,
+                        file(process.out.versions[0]).name(),
                     ).match()
                 }
             )
