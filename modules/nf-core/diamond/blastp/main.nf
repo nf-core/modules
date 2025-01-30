@@ -48,9 +48,9 @@ process DIAMOND_BLASTP {
     } else if (outfmt == 103) {
         out_ext = "paf"
     } else {
-        outfmt = '6'
+        log.warn("Unknown output file format provided (${outfmt}): selecting DIAMOND default of tabular BLAST output (txt)")
+        outfmt = 6
         out_ext = 'txt'
-        log.warn("Unknown output file format provided (${out_ext}): selecting DIAMOND default of tabular BLAST output (txt)")
     }
 
     if ( args =~ /--compress\s+1/ ) out_ext += '.gz'
