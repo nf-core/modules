@@ -53,6 +53,7 @@ process SIMPLEAF_QUANT {
         --resolution ${resolution} \\
         --output ${prefix} \\
         --threads ${task.cpus} \\
+        --anndata-out \\
         ${cf_option} \\
         ${args}
 

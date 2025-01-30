@@ -66,6 +66,7 @@ nextflow_process {
                 { assert file("${process.out.quant.get(0).get(1)}/alevin/quants_mat.mtx").exists() },
                 { assert file("${process.out.quant.get(0).get(1)}/alevin/quants_mat_cols.txt").exists() },
                 { assert file("${process.out.quant.get(0).get(1)}/alevin/quants_mat_rows.txt").exists() },
+                { assert file("${process.out.quant.get(0).get(1)}/alevin/quant.h5ad").exists() },
                 // { assert snapshot(
                 //     process.out.versions,
                 //     path("${process.out.map.get(0).get(1)}/map.rad"),
