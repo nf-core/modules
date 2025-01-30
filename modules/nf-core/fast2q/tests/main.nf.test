@@ -21,11 +21,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test1', single_end:true ], // meta map
+                    [ id:'test1' ], // meta map
                     []
                 ]
                 input[1] = [
-                    [ id:'test2', single_end:true ], // meta map for second input
+                    [ id:'library_name', multiple_features_per_read:false ], // meta map for second input
                     []
                 ]
                 """
@@ -60,11 +60,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test1', single_end:true ], // meta map
+                    [ id:'test1' ], // meta map
                     file(params.test_data_base + '/data/genomics/mus_musculus/mageck/ERR376998.small.fastq.gz', checkIfExists: true) // FASTQ file
                 ]
                 input[1] = [
-                    [ id:'test2', single_end:true ], // meta map for second input
+                    [ id:'library_name', multiple_features_per_read:false ], // meta map for second input
                     []
                 ]
                 """
@@ -99,11 +99,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test1', single_end:true ], // meta map
+                    [ id:'test1' ], // meta map
                     file(params.test_data_base + '/data/genomics/mus_musculus/mageck/ERR376998.small.fastq.gz', checkIfExists: true) // FASTQ file
                 ]
                 input[1] = [
-                    [ id:'test2', single_end:true ], // meta map for second input
+                    [ id:'library_name', multiple_features_per_read:false ], // meta map for second input
                     file(params.test_data_base + '/data/genomics/mus_musculus/mageck/yusa_library.csv', checkIfExists: true) // library file
                 ]
                 """
@@ -138,11 +138,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test1', single_end:true ], // meta map
+                    [ id:'test1' ], // meta map
                     []
                 ]
                 input[1] = [
-                    [ id:'test2', single_end:true ], // meta map for second input
+                    [ id:'library_name', multiple_features_per_read:false ], // meta map for second input
                     []
                 ]
                 """
