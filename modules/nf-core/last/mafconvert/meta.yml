@@ -34,6 +34,15 @@ input:
         description: Genome file in FASTA format for CRAM conversion.  If compressed it
           must be done in BGZF format (like with the bgzip tool).
         pattern: "*.{fasta,fasta.gz,fasta.bgz,fasta.bgzf}"
+    - fai:
+        type: file
+        description: Genome index file needed for CRAM conversion.
+        pattern: "*.fai"
+    - gzi:
+        type: file
+        description: Genome index file needed for CRAM conversion when the genome file
+          was compressed with the BGZF algorithm.
+        pattern: "*.gzi"
 output:
   - axt_gz:
       - meta:
@@ -99,11 +108,6 @@ output:
           type: file
           description: Genome file to recover sequences from the CRAM file (optional)
           pattern: "*.{fasta,fasta.gz,fasta.bgz,fasta.bgzf}"
-  - fai:
-      - "*.fai":
-          type: file
-          description: Genome file index generated during CRAM conversion (optional)
-          pattern: "*.fai"
   - gff_gz:
       - meta:
           type: map
@@ -114,11 +118,6 @@ output:
           type: file
           description: Gzipped pairwise alignment in GFF format (optional)
           pattern: "*.gff.gz"
-  - gzi:
-      - "*.gzi":
-          type: file
-          description: Genome file index generated during CRAM conversion (optional)
-          pattern: "*.gzi"
   - html_gz:
       - meta:
           type: map
