@@ -19,7 +19,9 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true)
                 ]
                 input[1] = 'psl'
-                input[2] = [[],[],[]]
+                input[2] = [[],[]]
+                input[3] = [[],[]]
+                input[4] = [[],[]]
                 """
             }
         }
@@ -43,7 +45,9 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true)
                 ]
                 input[1] = 'bam'
-                input[2] = [[],[],[]]
+                input[2] = [[],[]]
+                input[3] = [[],[]]
+                input[4] = [[],[]]
                 """
             }
         }
@@ -71,10 +75,14 @@ nextflow_process {
                 ]
                 input[1] = 'cram'
                 input[2] = [
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta',     checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
-                    []
+                    [ id:'contigs.genome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta',     checkIfExists: true)
                 ]
+                input[3] = [
+                    [ id:'contigs.genome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[4] = [[],[]]
                 """
             }
         }
@@ -102,7 +110,9 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true)
                 ]
                 input[1] = 'psl'
-                input[2] = [[],[],[]]
+                input[2] = [[],[]]
+                input[3] = [[],[]]
+                input[4] = [[],[]]
                 """
             }
         }

@@ -10,8 +10,8 @@ process LAST_MAFCONVERT {
     input:
     tuple val(meta), path(maf)
     val(format)
-    tuple val(meta2), path(fasta),
-    tuple val(meta3), path(fai),
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
     tuple val(meta4), path(gzi)
 
     output:

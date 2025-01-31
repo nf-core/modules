@@ -29,15 +29,30 @@ input:
         type: string
         description: Output format (one of axt, blast, blasttab, chain, gff, html, psl,
           sam, or tab)
-  - - fasta:
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fasta:
         type: file
         description: Genome file in FASTA format for CRAM conversion.  If compressed it
           must be done in BGZF format (like with the bgzip tool).
         pattern: "*.{fasta,fasta.gz,fasta.bgz,fasta.bgzf}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
     - fai:
         type: file
         description: Genome index file needed for CRAM conversion.
         pattern: "*.fai"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
     - gzi:
         type: file
         description: Genome index file needed for CRAM conversion when the genome file
