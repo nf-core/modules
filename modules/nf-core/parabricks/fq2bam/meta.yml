@@ -20,61 +20,69 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - reads:
-        type: file
-        description: fastq.gz files
-        pattern: "*.fastq.gz"
-  - - meta2:
+    - read_group:
         type: map
         description: |
-          Groovy Map containing fasta information
-    - fasta:
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - r1_fastq:
+        type: file
+        description: R1 fastq file
+        pattern: "*.fastq.gz"
+    - r2_fastq:
+        type: file
+        description: R2 fastq file
+        pattern: "*.fastq.gz"
+    - interval_file:
+        type: file
+        description: file or files containing genomic intervals for use in base quality
+          score recalibration.
+        pattern: "*.{bed,interval_list,picard,list,intervals}"
+  - - fasta:
         type: file
         description: reference fasta file - must be unzipped
-        pattern: "*.fasta"
-  - - meta3:
+        pattern: "*.{fasta,fa}"
+    - fai:
+        type: file
+        description: reference fasta fai index
+        pattern: "*.fai"
+  - - meta1:
         type: map
         description: |
-          Groovy Map containing index information
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
     - index:
         type: file
         description: reference BWA index
         pattern: "*.{amb,ann,bwt,pac,sa}"
-  - - meta4:
-        type: map
-        description: |
-          Groovy Map containing index information
-    - interval_file:
-        type: file
-        description: (optional) file(s) containing genomic intervals for use in base
-          quality score recalibration (BQSR)
-        pattern: "*.{bed,interval_list,picard,list,intervals}"
   - - known_sites:
         type: file
         description: (optional) known sites file(s) for calculating BQSR. markdups must
           be true to perform BQSR.
         pattern: "*.vcf.gz"
 output:
-  - bam:
+  - bam_bai:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test']
       - "*.bam":
           type: file
-          description: Sorted BAM file
+          description: output bam file
           pattern: "*.bam"
-  - bai:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
       - "*.bai":
           type: file
-          description: index corresponding to sorted BAM file
+          description: output bam bai file
           pattern: "*.bai"
+  - qc_metrics:
+      - meta:
+          type: map
+          description: (optional) optional directory of qc metrics
+      - qc_metrics/*:
+          type: directory
+          description: (optional) optional directory of qc metrics
+          pattern: "qc_metrics"
   - bqsr_table:
       - meta:
           type: map
@@ -83,25 +91,21 @@ output:
             e.g. [ id:'test']
       - "*.table":
           type: file
-          description: (optional) table from base quality score recalibration calculation,
-            to be used with parabricks/applybqsr
+          description: bqsr table
           pattern: "*.table"
+  - duplicate_metrics:
+      - meta:
+          type: map
+          description: (optional) metrics calculated from marking duplicates in the bam
+      - "*.duplicate-metrics.txt":
+          type: file
+          description: (optional) metrics calculated from marking duplicates in the bam
+          pattern: "*-duplicate-metrics.txt"
   - versions:
       - versions.yml:
           type: file
-          description: File containing software versions
+          description: File containing software versions.
           pattern: "versions.yml"
-  - qc_metrics:
-      - qc_metrics:
-          type: directory
-          description: (optional) optional directory of qc metrics
-          pattern: "qc_metrics"
-  - duplicate_metrics:
-      - duplicate-metrics.txt:
-          type: file
-          description: (optional) metrics calculated from marking duplicates in the bam
-            file
-          pattern: "*-duplicate-metrics.txt"
 authors:
   - "@bsiranosian"
   - "@adamrtalbot"
