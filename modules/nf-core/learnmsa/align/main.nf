@@ -7,7 +7,7 @@ process LEARNMSA_ALIGN {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.aln{.gz,}"), emit: alignment
+    tuple val(meta), path("*.aln"), emit: alignment
     path "versions.yml"                 , emit: versions
 
     when:
