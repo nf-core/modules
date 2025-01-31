@@ -2,7 +2,7 @@ process LEARNMSA_ALIGN {
     tag "$meta.id"
     label 'process_medium'
 
-    // Exit if running this module with -profile conda / -profile mamba
+    // //Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error("LearnMSA align module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
@@ -11,7 +11,6 @@ process LEARNMSA_ALIGN {
 
     input:
     tuple val(meta), path(fasta)
-    val(compress)
 
     output:
     tuple val(meta), path("*.aln{.gz,}"), emit: alignment
@@ -23,17 +22,15 @@ process LEARNMSA_ALIGN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def write_output = compress ? ">(pigz -cp ${task.cpus} > ${prefix}.aln.gz)" : "${prefix}.aln"
     """
     learnMSA \\
         -i $fasta \\
-        -o $write_output \\
+        -o "${prefix}.aln" \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         learnmsa: \$(learnMSA -h | grep 'version' | awk -F 'version ' '{print \$2}' | awk '{print \$1}' | sed 's/)//g')
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
     END_VERSIONS
     """
 
@@ -41,12 +38,11 @@ process LEARNMSA_ALIGN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.aln${compress ? '.gz' : ''}
+    touch ${prefix}.aln
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        learnmsa: \$(learnMSA -h | grep 'version' | awk -F 'version ' '{print \$2}' | awk '{print \$1}' | sed 's/)//g')
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
+        learnmsa: \$(if command -v learnMSA &>/dev/null; then learnMSA -h | grep 'version' | awk -F 'version ' '{print \$2}' | awk '{print \$1}' | sed 's/)//g'; else echo "STUB_TEST_HARDCODED_VERSION"; fi)
     END_VERSIONS
     """
 }

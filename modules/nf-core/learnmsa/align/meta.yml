@@ -23,11 +23,6 @@ input:
         type: file
         description: Input sequences in FASTA format. May be gz-compressed or uncompressed.
         pattern: "*.{fa,fasta}{.gz,}"
-  - - compress:
-        type: boolean
-        description: Flag representing whether the output MSA should be compressed.
-          Set to true to enable/false to disable compression. Compression is done using
-          pigz, and is multithreaded.
 output:
   - alignment:
       - meta:

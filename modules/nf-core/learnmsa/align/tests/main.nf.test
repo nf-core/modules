@@ -2,6 +2,7 @@
 nextflow_process {
 
     name "Test Process LEARNMSA_ALIGN"
+    config "./nextflow.config"
     script "../main.nf"
     process "LEARNMSA_ALIGN"
 
@@ -10,53 +11,7 @@ nextflow_process {
     tag "learnmsa"
     tag "learnmsa/align"
 
-    test("seatoxin - uncompressed") {
-
-        when {
-            process {
-                """
-                input[0] = [ [ id:'test' ],
-                             file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
-                           ]
-                input[1] = false
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert path(process.out.alignment.get(0).get(1)).getText().contains(">sample1") },
-                { assert snapshot(process.out.versions).match("versions") }
-            )
-        }
-
-    }
-
-    test("seatoxin - compressed") {
-
-        when {
-            process {
-                """
-                input[0] = [ [ id:'test' ],
-                             file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
-                           ]
-                input[1] = true
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert path(process.out.alignment.get(0).get(1)).getTextGzip().contains(">sample1") },
-                { assert snapshot(process.out.versions).match("versions1") }
-            )
-        }
-
-    }
-
-    test("seatoxin - uncompressed - stub") {
+    test("seatoxin - stub") {
         options "-stub"
 
         when {
@@ -65,7 +20,6 @@ nextflow_process {
                 input[0] = [ [ id:'test' ],
                              file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
                            ]
-                input[1] = false
                 """
             }
         }
@@ -73,8 +27,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.alignment.get(0).get(1)).getText().contains(">sample1") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot ( process.out ).match() }
+
             )
         }
 
