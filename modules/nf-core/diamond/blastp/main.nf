@@ -30,7 +30,7 @@ process DIAMOND_BLASTP {
     meta = meta + [ db: meta2.id ]
 
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}.${meta2.id}"
 
     def columns = blast_columns ? "${blast_columns}" : ''
     def out_ext = ""
