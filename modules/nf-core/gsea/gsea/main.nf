@@ -45,7 +45,7 @@ process GSEA_GSEA {
     def rpt_label = prefix.replaceAll('\\.$', '') // Remove any trailing dots from prefix when passed as report label, so GSEA doesn't produce double-dotted top-level outputs
     def chip_command = chip ? "-chip $chip -collapse true" : ''
     def VERSION = '4.3.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    if (!(args ==~ /.*-rnd_seed.*/)) {args += " -rnd_seed 10"}
+    // if (!(args ==~ /.*-rnd_seed.*/)) {args += " -rnd_seed 10"} // unable this for the moment, until a global seed option is set for differentialabundance pipeline
 
     """
     # Run GSEA

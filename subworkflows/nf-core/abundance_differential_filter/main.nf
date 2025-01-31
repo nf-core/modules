@@ -9,12 +9,6 @@ include { DESEQ2_DIFFERENTIAL as DESEQ2_NORM  } from '../../../modules/nf-core/d
 include { PROPR_PROPD                         } from '../../../modules/nf-core/propr/propd/main'
 include { CUSTOM_FILTERDIFFERENTIALTABLE      } from '../../../modules/nf-core/custom/filterdifferentialtable/main'
 
-// Combine meta maps, including merging non-identical values of shared keys (e.g. 'id')
-def mergeMaps(meta, meta2){
-    (meta + meta2).collectEntries { k, v ->
-        meta[k] && meta[k] != v ? [k, "${meta[k]}_${v}"] : [k, v]
-    }
-}
 
 workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     take:
@@ -31,7 +25,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
 
     // Set up how the channels crossed below will be used to generate channels for processing
     def criteria = multiMapCriteria { meta_input, abundance, analysis_method, fc_threshold, stat_threshold, meta_exp, samplesheet, meta_contrasts, variable, reference, target ->
-        def meta_for_diff = mergeMaps(meta_contrasts, meta_input) + [ 'method': analysis_method ]
+        def meta_for_diff = meta_input + meta_contrasts + [ 'method': analysis_method ]
         def meta_input_new = meta_input + [ 'method': analysis_method ]
         samples_and_matrix:
             [ meta_input_new, samplesheet, abundance ]
@@ -131,6 +125,18 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     ch_model = DESEQ2_DIFFERENTIAL.out.model
         .mix(LIMMA_DIFFERENTIAL.out.model)
 
+    ch_variance_stabilised_matrix = DESEQ2_NORM.out.rlog_counts.ifEmpty([[],[]])
+        .combine(DESEQ2_NORM.out.vst_counts.ifEmpty([[],[]]))
+        .map { meta_rlog, rlog, meta_vst, vst ->
+            if (meta_rlog == meta_vst && meta_rlog != []) {
+                return [meta_rlog, [rlog, vst]]
+            } else if (meta_rlog != [] && meta_vst == []) {
+                return [meta_rlog, [rlog]]
+            } else if (meta_rlog == [] && meta_vst != []) {
+                return [meta_vst, [vst]]
+            }
+        }
+
     ch_versions = DESEQ2_DIFFERENTIAL.out.versions
         .mix(LIMMA_DIFFERENTIAL.out.versions)
         .mix(PROPR_PROPD.out.versions)
@@ -186,7 +192,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
 
     // other
     normalised_matrix          = ch_normalised_matrix
-    variance_stabilised_matrix = DESEQ2_NORM.out.rlog_counts.mix(DESEQ2_NORM.out.vst_counts)
+    variance_stabilised_matrix = ch_variance_stabilised_matrix
     model                      = ch_model
     versions                   = ch_versions
 }
