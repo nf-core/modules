@@ -9,7 +9,7 @@ nextflow_process {
     tag "last"
     tag "last/mafconvert"
 
-    test("sarscov2 - bam") {
+    test("sarscov2 - psl") {
 
         when {
             process {
@@ -19,6 +19,9 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true)
                 ]
                 input[1] = 'psl'
+                input[2] = [[],[]]
+                input[3] = [[],[]]
+                input[4] = [[],[]]
                 """
             }
         }
@@ -32,7 +35,71 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - bam - stub") {
+    test("sarscov2 - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'contigs.genome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true)
+                ]
+                input[1] = 'bam'
+                input[2] = [[],[]]
+                input[3] = [[],[]]
+                input[4] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.bam.collect { bam(it[1]).getSamLines() },
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - cram") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'contigs.genome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true)
+                ]
+                input[1] = 'cram'
+                input[2] = [
+                    [ id:'contigs.genome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta',     checkIfExists: true)
+                ]
+                input[3] = [
+                    [ id:'contigs.genome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[4] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.cram.collect { cram(it[1], it[2]).getSamLines() },
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - psl - stub") {
 
         options "-stub"
         when {
@@ -43,6 +110,9 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true)
                 ]
                 input[1] = 'psl'
+                input[2] = [[],[]]
+                input[3] = [[],[]]
+                input[4] = [[],[]]
                 """
             }
         }
