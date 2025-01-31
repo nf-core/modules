@@ -139,7 +139,8 @@ opt <- list(
     domain_scope = 'annotated',
     min_diff = 1,
     round_digits = -1,
-    palette_name = 'Blues'
+    palette_name = 'Blues',
+    archive = 'gprofiler'
 )
 
 opt_types <- lapply(opt, class)
@@ -181,6 +182,8 @@ for (file_input in c('de_file')) {
         stop(paste0('Value of ', file_input, ': ', opt[[file_input]], ' is not a valid file'))
     }
 }
+
+print(opt)
 
 ################################################
 ################################################
@@ -235,7 +238,7 @@ if (nrow(de.genes) > 0) {
     } else if (!is.null(opt\$organism)) {
 
         # Next, check if organism was provided. Get the GMT file from gprofiler and save both the full file as well as the filtered one to metadata
-        gmt_url <- paste0("https://biit.cs.ut.ee/gprofiler//static/gprofiler_full_", opt\$organism, ".ENSG.gmt")
+        gmt_url <- paste0("https://biit.cs.ut.ee/", opt\$archive, "//static/gprofiler_full_", opt\$organism, ".ENSG.gmt")
         tryCatch(
             {
                 gmt_path <- paste0("gprofiler_full_", opt\$organism, ".ENSG.gmt")
