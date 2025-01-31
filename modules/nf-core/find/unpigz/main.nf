@@ -8,7 +8,7 @@ process FIND_UNPIGZ {
         : 'community.wave.seqera.io/library/findutils_pigz:c4dd5edc44402661'}"
 
     input:
-    tuple val(meta), path(files_in, stageAs: 'gzipped/*')
+    tuple val(meta), path(files_in, stageAs: 'gzipped/*', arity: '1..*')
 
     output:
     tuple val(meta), path("${prefix}.*"), emit: file_out
