@@ -27,9 +27,9 @@ process BCFTOOLS_MPILEUP {
     def args2 = task.ext.args2 ?: ''
     def args3 = task.ext.args3 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def mpileup = save_mpileup ? "| tee ${prefix}.mpileup" : ""
-    def bgzip_mpileup = save_mpileup ? "bgzip ${prefix}.mpileup" : ""
-    def intervals = intervals ? "-T ${intervals}" : ""
+    def mpileup_command = save_mpileup ? "| tee ${prefix}.mpileup" : ""
+    def bgzip_command = save_mpileup ? "bgzip ${prefix}.mpileup" : ""
+    def intervals_command = intervals ? "-T ${intervals}" : ""
     """
     echo "${meta.id}" > sample_name.list
 
@@ -38,13 +38,13 @@ process BCFTOOLS_MPILEUP {
         --fasta-ref $fasta \\
         $args \\
         $bam \\
-        $intervals \\
-        $mpileup \\
+        $intervals_command \\
+        $mpileup_command \\
         | bcftools call --output-type v $args2 \\
         | bcftools reheader --samples sample_name.list \\
         | bcftools view --output-file ${prefix}.vcf.gz --output-type z $args3
 
-    $bgzip_mpileup
+    $bgzip_command
 
     tabix -p vcf -f ${prefix}.vcf.gz
 
