@@ -26,8 +26,9 @@ process LAST_DOTPLOT {
     def annot_a_arg = annot_a ? "-a ${annot_a}" : ''
     def annot_b_arg = annot_b ? "-b ${annot_b}" : ''
     """
+    CONDA_BASE=\$(conda info --base)
     last-dotplot \\
-        -f /opt/conda/pkgs/pillow-11.1.0-py313h8db990d_0/info/test/Tests/fonts/FreeMono.ttf \\
+        -f \${CONDA_BASE}/pkgs/pillow-11.1.0-py313h8db990d_0/info/test/Tests/fonts/FreeMono.ttf \\
         $args \\
         $annot_a_arg \\
         $annot_b_arg \\
