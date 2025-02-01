@@ -26,13 +26,13 @@ process LAST_DOTPLOT {
     def annot_a_arg = annot_a ? "-a ${annot_a}" : ''
     def annot_b_arg = annot_b ? "-b ${annot_b}" : ''
     """
-    if [ -n "\${CONDA_PREFIX+x}" ]; then
-        CONDA_BASE=\$(conda info --base)
+    if [ -d "/home/ubuntu/miniconda3/" ]; then
+        TTF=$(find /home/ubuntu/miniconda3/ -type f -name 'FreeMono.ttf' | head -n 1)
     else
-        CONDA_BASE=/opt/conda
+        TTF=/opt/conda/pkgs/pillow-11.1.0-py313h8db990d_0/info/test/Tests/fonts/FreeMono.ttf
     fi
     last-dotplot \\
-        -f \${CONDA_BASE}/pkgs/pillow-11.1.0-py313h8db990d_0/info/test/Tests/fonts/FreeMono.ttf \\
+        -f \$TTF \\
         $args \\
         $annot_a_arg \\
         $annot_b_arg \\
