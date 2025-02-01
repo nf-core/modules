@@ -27,7 +27,7 @@ process LAST_DOTPLOT {
     def annot_b_arg = annot_b ? "-b ${annot_b}" : ''
     """
     if [ -d "/home/ubuntu/miniconda3/" ]; then
-        TTF=$(find /home/ubuntu/miniconda3/ -type f -name 'FreeMono.ttf' | head -n 1)
+        TTF=\$(find /home/ubuntu/miniconda3/ -type f -name 'FreeMono.ttf' | head -n 1)
     else
         TTF=/opt/conda/pkgs/pillow-11.1.0-py313h8db990d_0/info/test/Tests/fonts/FreeMono.ttf
     fi
