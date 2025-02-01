@@ -12,12 +12,14 @@ tools:
         by evaluating the given expression
       documentation: https://man7.org/linux/man-pages/man1/find.1.html
       licence: ["GPL-3.0-or-later"]
+      identifier: ""
   - pigz:
       description: pigz, which stands for Parallel Implementation of GZip, is a fully
         functional replacement for gzip that exploits multiple processors and multiple
         cores to the hilt when compressing data.
       documentation: https://zlib.net/pigz/pigz.pdf
       licence: ["other"]
+      identifier: ""
 
 input:
   - - meta:
@@ -37,17 +39,18 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}.*:
-          type: file
-          description: Decompressed files
-          pattern: "${prefix}.*"
-
+          pattern: "*"
+      - "*":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+          pattern: "*"
   - versions:
-      - "versions.yml":
+      - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
-
 authors:
   - "@Biowilko"
 maintainers:

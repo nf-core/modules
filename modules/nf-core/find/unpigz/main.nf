@@ -11,7 +11,7 @@ process FIND_UNPIGZ {
     tuple val(meta), path(files_in, stageAs: 'gzipped/*', arity: '1..*')
 
     output:
-    tuple val(meta), path("${prefix}.*"), emit: file_out
+    tuple val(meta), path("*"), emit: file_out
     path "versions.yml", emit: versions
 
     when:
@@ -19,7 +19,6 @@ process FIND_UNPIGZ {
 
     script:
     def args = task.ext.args ?: ""
-    prefix = task.ext.prefix ?: "${meta.id}"
 
     if (files_in.any { file -> !file.name.endsWith('.gz') }) {
         error("All files provided to this module must be gzipped (and have the .gz extension).")
@@ -32,7 +31,7 @@ process FIND_UNPIGZ {
             -cd \\
             --processes ${task.cpus} \\
             \$file \\
-            > ${prefix}.\$( basename \$file .gz )
+            > \$( basename \$file .gz )
     done < <( find gzipped/ -name '*.gz' -print0 )
 
     cat <<-END_VERSIONS > versions.yml
@@ -43,9 +42,8 @@ process FIND_UNPIGZ {
     """
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.test_file.txt
+    touch test_file.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
