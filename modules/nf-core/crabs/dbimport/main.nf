@@ -4,11 +4,14 @@ process CRABS_DBIMPORT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/crabs:1.0.6--a95c7815a4a67eb2':
-        'community.wave.seqera.io/library/crabs:1.0.6--462aa28d85ee454e' }"
+        'https://depot.galaxyproject.org/singularity/crabs:1.0.7--pyhdfd78af_0':
+        'biocontainers/crabs:1.0.7--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
+    tuple val(meta2), path(accession2taxid)
+    tuple val(meta3), path(names)
+    tuple val(meta4), path(nodes)
 
     output:
     tuple val(meta), path("*.fa"), emit: fasta
@@ -30,13 +33,16 @@ process CRABS_DBIMPORT {
     crabs --import \\
         --input ${fasta_name} \\
         --output ${prefix}.crabsdb.fa \\
+        --acc2tax ${accession2taxid} \\
+        --names ${names} \\
+        --nodes ${nodes} \\
         $args
 
     rm ${fasta_name}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        crabs: \$(crabs --version | sed -e 's/crabs v//g')
+        crabs: \$(crabs --help | grep 'CRABS |' | sed 's/.*CRABS | \\(v[0-9.]*\\).*/\\1/')
     END_VERSIONS
     """
 
@@ -47,7 +53,7 @@ process CRABS_DBIMPORT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        crabs: \$(crabs --version | sed -e 's/crabs v//g')
+        crabs: \$(crabs --help | grep 'CRABS |' | sed 's/.*CRABS | \\(v[0-9.]*\\).*/\\1/')
     END_VERSIONS
     """
 }
