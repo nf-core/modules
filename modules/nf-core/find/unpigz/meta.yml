@@ -1,0 +1,57 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "find_unpigz"
+description: A module for decompressing a large number of gzipped files, getting around
+  the UNIX terminal argument limit
+keywords:
+  - gzip
+  - find
+  - pigz
+tools:
+  - find:
+      description: GNU find searches the directory tree rooted at each given starting-point
+        by evaluating the given expression
+      documentation: https://man7.org/linux/man-pages/man1/find.1.html
+      licence: ["GPL-3.0-or-later"]
+      identifier: ""
+  - pigz:
+      description: pigz, which stands for Parallel Implementation of GZip, is a fully
+        functional replacement for gzip that exploits multiple processors and multiple
+        cores to the hilt when compressing data.
+      documentation: https://zlib.net/pigz/pigz.pdf
+      licence: ["other"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - files_in:
+        type: file
+        description: List of gzipped files to decompress
+        pattern: "*.gz"
+
+output:
+  - file_out:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+          pattern: "*"
+      - "*":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+          pattern: "*"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@Biowilko"
+maintainers:
+  - "@Biowilko"
