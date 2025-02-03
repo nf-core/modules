@@ -31,7 +31,10 @@ nextflow_process {
                         process.out,
                         process.out.versions
                     ).match()
-                }
+                },
+                { assert process.out.file_out[0][1].size() == 2 },
+                { assert file(process.out.file_out[0][1].find { file(it).name == "genome.gff3" }).exists() },
+                { assert file(process.out.file_out[0][1].find { file(it).name == "contigs.genome.maf" }).exists() },
             )
         }
     }
