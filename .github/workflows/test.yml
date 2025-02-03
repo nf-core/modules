@@ -49,7 +49,7 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Set up Prettier
+      - name: Install Prettier
         run: npm install -g prettier@3.2.5
 
       - name: Run Prettier --check
@@ -64,7 +64,7 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Set up editorconfig-checker
+      - name: Install editorconfig-checker
         run: npm install -g editorconfig-checker
 
       - name: Run ECLint check
@@ -163,7 +163,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip
 
-      - name: Set up pip
+      - name: Update pip
         run: python -m pip install --upgrade pip
 
       - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
@@ -174,7 +174,7 @@ jobs:
       - name: Set up Nextflow
         uses: nf-core/setup-nextflow@v2
 
-      - name: Set up nf-core tools development version
+      - name: Install nf-core tools development version
         run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
 
       - name: Lint module ${{ matrix.tags }}
@@ -201,7 +201,7 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Set up pip
+      - name: Update pip
         run: python -m pip install --upgrade pip
 
       - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
@@ -212,7 +212,7 @@ jobs:
       - name: Set up Nextflow
         uses: nf-core/setup-nextflow@561fcfc7146dcb12e3871909b635ab092a781f34 # v2
 
-      - name: Set up nf-core tools development version
+      - name: Install nf-core tools development version
         run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
 
       - name: Lint module ${{ matrix.tags }}
@@ -413,7 +413,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-pytest
 
-      - name: Set up Python dependencies
+      - name: Install Python dependencies
         run: python -m pip install --upgrade pip pytest-workflow cryptography
 
       - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
@@ -690,7 +690,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-pdiff
 
-      - name: Set up Python dependencies
+      - name: Install Python dependencies
         run: python -m pip install --upgrade pip pdiff cryptography
 
       - name: Set up miniconda
