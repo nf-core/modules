@@ -9,12 +9,7 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([[
-                        genome:'GRCh38_chr22',
-                        id:'GRCh38_chr22',
-                        species:'Homo_sapiens',
-                        fasta:'\${params.igenomes_base}/test-datasets/modules/data/genomics/homo_sapiens/genome/genome.fasta',
-                    ], []])
+                input[0] = https://github.com/nf-core/references-assets/blob/main/genomes/Homo_sapiens/test/GRCh38_chr22.yml
                 input[1] = []
                 input[2] = []
                 input[3] = 'fasta'
@@ -35,12 +30,7 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([[
-                        genome:'GRCh38_chr22',
-                        id:'GRCh38_chr22',
-                        species:'Homo_sapiens',
-                        fasta:'\${params.igenomes_base}/test-datasets/modules/data/genomics/homo_sapiens/genome/genome.fasta',
-                    ], []])
+                input[0] = https://github.com/nf-core/references-assets/blob/main/genomes_no_base/Homo_sapiens/test/GRCh38_chr22.yml
                 input[1] = 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/chr21/sequence/genome.fasta'
                 input[2] = 'WBCel235'
                 input[3] = 'fasta'
