@@ -4,8 +4,8 @@ process LAST_DOTPLOT {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/db/db0b5de918238f07ec1ca668be942397da85e26aa582f8927ac37c70896303cf/data'
-        : 'community.wave.seqera.io/library/last:1608--f41c047f7dc37e30'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a3/a35d17772276115874eda45f17b05407c9855ecec8c11d39cce49f0028f44cfb/data'
+        : 'community.wave.seqera.io/library/last_open-fonts:f1048938520a62ad'}"
 
     input:
     tuple val(meta), path(maf), path(annot_b)
@@ -27,9 +27,9 @@ process LAST_DOTPLOT {
     def annot_b_arg = annot_b ? "-b ${annot_b}" : ''
     """
     if [ -d "/home/ubuntu/miniconda3/" ]; then
-        TTF=\$(find /home/ubuntu/miniconda3/ -type f -name 'FreeMono.ttf' | head -n 1)
+        TTF=/home/ubuntu/miniconda3/conda/fonts/open-fonts/DejaVuSansMono-Regular.ttf
     else
-        TTF=/opt/conda/pkgs/pillow-11.1.0-py313h8db990d_0/info/test/Tests/fonts/FreeMono.ttf
+        TTF=/opt/conda/fonts/open-fonts/DejaVuSansMono-Regular.ttf
     fi
     last-dotplot \\
         -f \$TTF \\
