@@ -3,7 +3,6 @@ nextflow_process {
     name "Test Process CRABS_DBIMPORT"
     script "../main.nf"
     process "CRABS_DBIMPORT"
-    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -11,6 +10,8 @@ nextflow_process {
     tag "crabs/dbimport"
 
     test("sarscov2 - fasta") {
+
+        config "./nextflow.config"
 
         when {
             params {
