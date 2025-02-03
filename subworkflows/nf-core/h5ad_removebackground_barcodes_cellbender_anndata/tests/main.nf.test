@@ -1,0 +1,32 @@
+nextflow_workflow {
+
+    name "Test Subworkflow H5AD_REMOVEBACKGROUND_BARCODES_CELLBENDER_ANNDATA"
+    script "../main.nf"
+    workflow "H5AD_REMOVEBACKGROUND_BARCODES_CELLBENDER_ANNDATA"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/h5ad_removebackground_barcodes_cellbender_anndata"
+    tag "cellbender/removebackground"
+    tag "anndata/barcodes"
+
+    test("h5ad - h5ad_removebackground_barcodes_cellbender_anndata") {
+        config './epochs.config'
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_raw_matrix_5k.h5ad", checkIfExists: true)
+                ])
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
+}

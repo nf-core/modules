@@ -10,7 +10,7 @@ process TCOFFEE_ALIGN {
     input:
     tuple val(meta) ,  path(fasta)
     tuple val(meta2),  path(tree)
-    tuple val(meta3),  path(template), path(accessory_informations)
+    tuple val(meta3),  path(template), path(accessory_information)
     val(compress)
 
     output:
@@ -38,14 +38,6 @@ process TCOFFEE_ALIGN {
         -thread ${task.cpus} \
         -outfile $outfile \
         $write_output
-
-    # If stdout file exist and compress is true, then compress the file
-    # This is a patch for the current behaviour of the regressive algorithm
-    # that does not support the stdout redirection
-    if [ -f stdout ] && [ "$compress" = true ]; then
-        pigz -cp ${task.cpus} < stdout > ${prefix}.aln.gz
-        rm stdout
-    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

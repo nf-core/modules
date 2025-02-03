@@ -3,9 +3,9 @@ process LAST_POSTMASK {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/last:1571--h43eeafb_0' :
-        'biocontainers/last:1571--h43eeafb_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/db/db0b5de918238f07ec1ca668be942397da85e26aa582f8927ac37c70896303cf/data'
+        : 'community.wave.seqera.io/library/last:1608--f41c047f7dc37e30'}"
 
     input:
     tuple val(meta), path(maf)

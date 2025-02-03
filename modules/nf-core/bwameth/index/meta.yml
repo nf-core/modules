@@ -19,12 +19,21 @@ tools:
       licence: ["MIT"]
       identifier: ""
 input:
-  - - fasta:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
         type: file
         description: Input genome fasta file
 output:
   - index:
-      - bwameth:
+      - meta:
+          type: directory
+          description: Directory containing bwameth genome index
+          pattern: "index"
+      - BwamethIndex:
           type: directory
           description: Directory containing bwameth genome index
           pattern: "index"
@@ -37,3 +46,4 @@ authors:
   - "@phue"
 maintainers:
   - "@phue"
+  - "@sateeshperi"

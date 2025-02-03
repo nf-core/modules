@@ -31,7 +31,12 @@ input:
         type: file
         description: BAM file containing read alignments
         pattern: "*.{bam}"
-  - - index:
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - index:
         type: directory
         description: Bismark genome index directory
         pattern: "BismarkIndex"
@@ -95,3 +100,4 @@ authors:
   - "@phue"
 maintainers:
   - "@phue"
+  - "@sateeshperi"

@@ -3,9 +3,9 @@ process LAST_DOTPLOT {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/last:1571--h43eeafb_0' :
-        'biocontainers/last:1571--h43eeafb_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a3/a35d17772276115874eda45f17b05407c9855ecec8c11d39cce49f0028f44cfb/data'
+        : 'community.wave.seqera.io/library/last_open-fonts:f1048938520a62ad'}"
 
     input:
     tuple val(meta), path(maf), path(annot_b)
@@ -26,7 +26,10 @@ process LAST_DOTPLOT {
     def annot_a_arg = annot_a ? "-a ${annot_a}" : ''
     def annot_b_arg = annot_b ? "-b ${annot_b}" : ''
     """
+    TTF=/home/ubuntu/conda_pkgs_dir/open-fonts-0.7.0-1/fonts/open-fonts/DejaVuSansMono-Regular.ttf
+    [ -e "\$TTF" ] || TTF="/opt/conda/fonts/open-fonts/DejaVuSansMono-Regular.ttf"
     last-dotplot \\
+        -f \$TTF \\
         $args \\
         $annot_a_arg \\
         $annot_b_arg \\

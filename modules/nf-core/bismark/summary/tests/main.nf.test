@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process BISMARK_SUMMARY"
     script "../main.nf"
     process "BISMARK_SUMMARY"
+
     tag "modules"
     tag "modules_nfcore"
     tag "bismark"
@@ -12,14 +13,17 @@ nextflow_process {
     tag "bismark/genomepreparation"
     tag "bismark/methylationextractor"
 
-    test("Should run bismark/summary without failures") {
+    test("sarscov2 genome [fasta] | sarscov2 single-end methylated [fastq]") {
 
         setup {
             run("BISMARK_GENOMEPREPARATION") {
                 script "../../genomepreparation/main.nf"
                 process {
                     """
-                    input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    input[0] = Channel.of([
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ])
                     """
                 }
             }
@@ -28,14 +32,12 @@ nextflow_process {
                 script "../../align/main.nf"
                 process {
                     """
-                    input[0] = [
-                                [ id:'test', single_end:false ],
-                                [
-                                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
-                                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true)
-                                ]
-                               ]
-                    input[1] = BISMARK_GENOMEPREPARATION.out.index
+                    input[0] = Channel.of([
+                                [ id:'test', single_end:true ],
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true)
+                    ])
+                    input[1] = Channel.of([ [ id:'sarscov2'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ])
+                    input[2] = BISMARK_GENOMEPREPARATION.out.index
                     """
                 }
             }
@@ -61,9 +63,6 @@ nextflow_process {
         }
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = BISMARK_ALIGN.out.bam.collect { meta, bam -> bam }

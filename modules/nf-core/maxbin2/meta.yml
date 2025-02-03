@@ -35,8 +35,8 @@ input:
           supply at the same time as abundance files.
         pattern: "*.fasta"
     - abund:
-        type: file
-        description: Contig abundance files, i.e. reads against each contig. See MaxBin2
+        type: list
+        description: One or more contig abundance files, i.e. average depth of reads against each contig. See MaxBin2
           README for details. Do not supply at the same time as read files.
 output:
   - binned_fastas:
@@ -60,6 +60,17 @@ output:
           description: Summary file describing which contigs are being classified into
             which bin
           pattern: "*.summary"
+  - abundance:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.abundance":
+          type: file
+          description: Abundance of each bin if multiple abundance files were supplied
+            which bin
+          pattern: "*.abundance"
   - log:
       - meta:
           type: map

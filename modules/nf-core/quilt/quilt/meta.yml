@@ -31,6 +31,11 @@ input:
         type: file
         description: (Mandatory) BAM/CRAM index files
         pattern: "*.{bai}"
+    - bamlist:
+        type: file
+        description: (Optional) File with list of BAM/CRAM files to impute. One file
+          per line.
+        pattern: "*.{txt}"
     - reference_haplotype_file:
         type: file
         description: (Mandatory) Reference haplotype file in IMPUTE format (file with
@@ -78,7 +83,7 @@ input:
     - posfile:
         type: file
         description: (Optional) File with positions of where to impute, lining up one-to-one
-          with genfile. File is tab seperated with no header, one row per SNP, with
+          with genfile. File is tab separated with no header, one row per SNP, with
           col 1 = chromosome, col 2 = physical position (sorted from smallest to largest),
           col 3 = reference base, col 4 = alternate base. Bases are capitalized.
         pattern: "*.{txt}"
@@ -86,7 +91,7 @@ input:
         type: file
         description: (Optional) File with truth phasing results. Supersedes genfile
           if both options given. File has a header row with a name for each sample,
-          matching what is found in the bam file. Each subject is then a tab seperated
+          matching what is found in the bam file. Each subject is then a tab separated
           column, with 0 = ref and 1 = alt, separated by a vertical bar |, e.g. 0|0
           or 0|1. Note therefore this file has one more row than posfile which has no
           header.
