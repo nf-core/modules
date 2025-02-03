@@ -3,7 +3,6 @@ nextflow_process {
     name "Test Process CRABS_INSILICOPCR"
     script "../main.nf"
     process "CRABS_INSILICOPCR"
-    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -11,6 +10,8 @@ nextflow_process {
     tag "crabs/insilicopcr"
 
     test("sarscov2 - fasta") {
+
+        config "./nextflow.config"
 
         when {
             params {
