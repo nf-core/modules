@@ -26,12 +26,8 @@ process LAST_DOTPLOT {
     def annot_a_arg = annot_a ? "-a ${annot_a}" : ''
     def annot_b_arg = annot_b ? "-b ${annot_b}" : ''
     """
-    find / -name DejaVuSansMono-Regular.ttf
-    if [ -d "/home/ubuntu/miniconda3/" ]; then
-        TTF=/home/ubuntu/miniconda3/conda/fonts/open-fonts/DejaVuSansMono-Regular.ttf
-    else
-        TTF=/opt/conda/fonts/open-fonts/DejaVuSansMono-Regular.ttf
-    fi
+    TTF=/home/ubuntu/conda_pkgs_dir/open-fonts-0.7.0-1/fonts/open-fonts/DejaVuSansMono-Regular.ttf
+    [ -e "\$TTF" ] || TTF="/opt/conda/fonts/open-fonts/DejaVuSansMono-Regular.ttf"
     last-dotplot \\
         -f \$TTF \\
         $args \\
