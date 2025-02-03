@@ -425,7 +425,7 @@ jobs:
         with:
           version: "${{ matrix.NXF_VER }}"
 
-      - name: Set up apptainer
+      - name: Set up Apptainer
         if: matrix.profile == 'singularity'
         uses: eWaterCycle/setup-apptainer@main
 
