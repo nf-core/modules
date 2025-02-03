@@ -8,7 +8,7 @@ process DUPHOLD {
         'biocontainers/duphold:0.2.1--h516909a_1' }"
 
     input:
-    tuple val(meta), path(alignment_file), path(alignement_index), path(sv_variants), path(snp_variants), path(snp_variants_index)
+    tuple val(meta), path(alignment_file), path(alignment_index), path(sv_variants), path(snp_variants), path(snp_variants_index)
     path(fasta)
     path(fasta_fai)
 

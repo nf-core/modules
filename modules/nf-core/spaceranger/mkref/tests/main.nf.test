@@ -25,7 +25,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
+                    path(process.out.versions.get(0)).yaml,
                     "${process.out.reference[0]}/fasta",
                     "${process.out.reference[0]}/genes",
                     "${process.out.reference[0]}/reference.json",

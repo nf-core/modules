@@ -82,7 +82,7 @@ nextflow_process {
                     ]
                 ]
 
-                input[1] = file(params.modules_testdata_base_path + 'generic/config/agat_config.yaml', checkIfExists: true)
+                input[1] = file('https://raw.githubusercontent.com/NBISweden/AGAT/refs/tags/v1.4.2/share/agat_config.yaml', checkIfExists: true)
                 """
             }
         }
@@ -113,7 +113,7 @@ nextflow_process {
                     ]
                 ]
 
-                input[1] = file(params.modules_testdata_base_path + 'generic/config/agat_config.yaml', checkIfExists: true)
+                input[1] = file('https://raw.githubusercontent.com/NBISweden/AGAT/refs/tags/v1.4.2/share/agat_config.yaml', checkIfExists: true)
                 """
             }
         }
