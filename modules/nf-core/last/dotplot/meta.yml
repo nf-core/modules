@@ -43,6 +43,9 @@ input:
   - - format:
         type: string
         description: Output format (PNG or GIF).
+  - - filter:
+        type: boolean
+        description: Remove isolated alignments using the `maf-linked` software.
 output:
   - gif:
       - meta:
