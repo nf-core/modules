@@ -9,6 +9,12 @@ include { DESEQ2_DIFFERENTIAL as DESEQ2_NORM  } from '../../../modules/nf-core/d
 include { PROPR_PROPD                         } from '../../../modules/nf-core/propr/propd/main'
 include { CUSTOM_FILTERDIFFERENTIALTABLE      } from '../../../modules/nf-core/custom/filterdifferentialtable/main'
 
+// Combine meta maps, including merging non-identical values of shared keys (e.g. 'id')
+def mergeMaps(meta, meta2){
+    (meta + meta2).collectEntries { k, v ->
+        meta[k] && meta[k] != v ? [k, "${meta[k]}_${v}"] : [k, v]
+    }
+}
 
 workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     take:
@@ -25,7 +31,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
 
     // Set up how the channels crossed below will be used to generate channels for processing
     def criteria = multiMapCriteria { meta_input, abundance, analysis_method, fc_threshold, stat_threshold, meta_exp, samplesheet, meta_contrasts, variable, reference, target ->
-        def meta_for_diff = meta_input + meta_contrasts + [ 'method': analysis_method ]
+        def meta_for_diff = mergeMaps(meta_contrasts, meta_input) + [ 'method': analysis_method ]
         def meta_input_new = meta_input + [ 'method': analysis_method ]
         samples_and_matrix:
             [ meta_input_new, samplesheet, abundance ]
