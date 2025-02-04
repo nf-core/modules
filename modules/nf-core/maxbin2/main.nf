@@ -35,8 +35,8 @@ process MAXBIN2 {
     } else if (abund instanceof List) {
         associate_files = [0..(abund.size() - 1)].collect { n ->
             def arg_n = n == 0 ? "" : "${n}"
-            return " -${abund}${arg_n} ${abund[n]}"
-        }.join()
+            return "-${abund}${arg_n} ${abund[n]}"
+        }.join(" ")
     } else {
         associate_files = "-abund $abund"
     }
