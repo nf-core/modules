@@ -33,8 +33,7 @@ process MAXBIN2 {
     if ( reads ) {
         associate_files = "-reads $reads"
     } else if ( abund instanceof List ) {
-        associate_files = "-abund ${abund[0]}"
-        for (i in 2..abund.size()) { associate_files += " -abund$i ${abund[i-1]}" }
+        associate_files = "-abund ${abund[0]}" + 2..abund.size().collect { it -> " -abund$it ${abund[i-1]}" }.join()
     } else {
         associate_files = "-abund $abund"
     }
