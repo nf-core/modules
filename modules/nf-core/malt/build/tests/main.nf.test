@@ -14,7 +14,7 @@ nextflow_process {
         config "./nextflow.config"
 
         setup {
-            run("UNZIP") {
+            run("UNZIP", alias: "UNZIP_MDB") {
                 script "../../../unzip/main.nf"
                 process {
                     """
@@ -35,7 +35,7 @@ nextflow_process {
 
                 input[0] = [genome_1,genome_2]
                 input[1] = []
-                input[2] = UNZIP.out.unzipped_archive.map { it[1] }
+                input[2] = UNZIP_MDB.out.unzipped_archive.map { it[1] }
                 input[3] = 'mdb'
                 """
             }
@@ -68,11 +68,11 @@ nextflow_process {
         config "./nextflow.config"
 
         setup {
-            run("UNZIP") {
+            run("UNZIP", alias: "UNZIP_ABIN") {
                 script "../../../unzip/main.nf"
                 process {
                     """
-                    input[0] = [[], file("https://software-ab.informatik.uni-tuebingen.de/download/megan6/nucl_acc2tax-Jul2019.abin.zip", checkIfExists: true)]
+                    input[0] = [[], file("https://software-ab.cs.uni-tuebingen.de/download/megan6/nucl_acc2tax-Jul2019.abin.zip", checkIfExists: true)]
                     """
                 }
             }
@@ -89,7 +89,7 @@ nextflow_process {
 
                 input[0] = [genome_1,genome_2]
                 input[1] = []
-                input[2] = UNZIP.out.unzipped_archive.map { it[1] }
+                input[2] = UNZIP_ABIN.out.unzipped_archive.map { it[1] }
                 input[3] = 'a2t'
                 """
             }
@@ -130,7 +130,7 @@ nextflow_process {
 
                 input[0] = [genome_1,genome_2]
                 input[1] = []
-                input[2] = UNZIP.out.unzipped_archive.map { it[1] }
+                input[2] = []
                 input[3] = 'mdb'
                 """
             }

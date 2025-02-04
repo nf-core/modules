@@ -23,6 +23,8 @@ process MALT_BUILD {
     def args = task.ext.args ?: ''
     def igff = gff ? "-igff ${gff}" : ""
     """
+    INDEX=`find -L . -name '*.db' -o -name '*.abin' -type f`
+    echo \$INDEX
     malt-build \\
         ${args} \\
         -v \\
@@ -30,7 +32,7 @@ process MALT_BUILD {
         ${igff} \\
         -d 'malt_index/' \\
         -t ${task.cpus} \\
-        -${map_type} ${mapping_db} |&tee malt-build.log
+        -${map_type} \$INDEX |&tee malt-build.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
