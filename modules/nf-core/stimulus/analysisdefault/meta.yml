@@ -1,0 +1,82 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "stimulus_analysisdefault"
+description: Model robustness analysis and reporting from the stimulus package.
+keywords:
+  - machine learning
+  - neural network
+  - unit test
+tools:
+  - "stimulus":
+      description: "Stochastic Testing and Input Manipulation for Unbiased Learning Systems"
+      homepage: "https://github.com/mathysgrapotte/stimulus-py"
+      documentation: "https://github.com/mathysgrapotte/stimulus-py"
+      tool_dev_url: "https://github.com/mathysgrapotte/stimulus-py"
+      licence: ["MIT"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - data:
+        type: file
+        description: "List of data files to be used for the analysis."
+        pattern: ".csv"
+    - experiment_config:
+        type: file
+        description: "The experiment config used to modify the data."
+        pattern: "*.json"
+    - model_config:
+        type: file
+        description: "The tune config file."
+        pattern: "*.yaml"
+    - weights:
+        type: file
+        description: "Model weights .pt file."
+        pattern: "*.pt"
+    - optimizer:
+        type: file
+        description: "The best optimizer used during training."
+        pattern: "*.pt"
+    - metrics:
+        type: file
+        description: "The file path for the metrics file obtained during tuning."
+        pattern: "*.csv"
+  - - model:
+        type: file
+        description: "The model .py file."
+        pattern: "*.py"
+
+output:        
+  - performance_tune_train:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - "performance_tune_train":
+        type: directory
+        description: "Output directory with images detailing performance during tuning/training."
+
+  - performance_robustness:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - "performance_robustness":
+        type: directory
+        description: "Output directory with images detailing model robustness."
+          
+  - versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@tombch"
+maintainers:
+  - "@tombch"
