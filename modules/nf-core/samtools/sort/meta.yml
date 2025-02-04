@@ -1,92 +1,68 @@
-name: samtools_sort
-description: Sort SAM/BAM/CRAM file
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "samtools_sort"
+## TODO nf-core: Add a description of the module and list keywords
+description: write your description here
 keywords:
   - sort
-  - bam
-  - sam
-  - cram
+  - example
+  - genomics
 tools:
-  - samtools:
-      description: |
-        SAMtools is a set of utilities for interacting with and post-processing
-        short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
-        These files are generated as output by short read aligners like BWA.
-      homepage: http://www.htslib.org/
-      documentation: http://www.htslib.org/doc/samtools.html
-      doi: 10.1093/bioinformatics/btp352
+  - "samtools":
+      ## TODO nf-core: Add a description and other details for the software below
+      description: "Tools for dealing with SAM, BAM and CRAM files"
+      homepage: "None"
+      documentation: "None"
+      tool_dev_url: "None"
+      doi: ""
       licence: ["MIT"]
       identifier: biotools:samtools
+
+## TODO nf-core: Add a description of all of the variables used as input
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - bam:
+          e.g. `[ id:'sample1', single_end:false ]`
+
+    - sequence_trace:
+        # TODO nf-core: Update the information obtained form bio.tools and make sure that it is correct
         type: file
-        description: BAM/CRAM/SAM file(s)
-        pattern: "*.{bam,cram,sam}"
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing reference information
-          e.g. [ id:'genome' ]
-    - fasta:
-        type: file
-        description: Reference genome FASTA file
-        pattern: "*.{fa,fasta,fna}"
-        optional: true
+        description: sequence_trace file
+        pattern: "*.{bam,sam,cram}"
+        ontologies:
+          - edam: "http://edamontology.org/data_0924"
+          - edam: "http://edamontology.org/format_2572"
+          - edam: "http://edamontology.org/format_2573"
+          - edam: "http://edamontology.org/format_3462"
+
+## TODO nf-core: Add a description of all of the variables used as output
 output:
-  - bam:
+  - sequence_trace:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.bam":
+            e.g. `[ id:'sample1', single_end:false ]`
+      - sequence_trace:
+          # TODO nf-core: Update the information obtained form bio.tools and make sure that it is correct
           type: file
-          description: Sorted BAM file
-          pattern: "*.{bam}"
-  - cram:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.cram":
-          type: file
-          description: Sorted CRAM file
-          pattern: "*.{cram}"
-  - crai:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.crai":
-          type: file
-          description: CRAM index file (optional)
-          pattern: "*.crai"
-  - csi:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.csi":
-          type: file
-          description: BAM index file (optional)
-          pattern: "*.csi"
+          description: sequence_trace file
+          pattern: "*.{bam,sam,cram}"
+          ontologies:
+            - edam: "http://edamontology.org/data_0924"
+            - edam: "http://edamontology.org/format_2572"
+            - edam: "http://edamontology.org/format_2573"
+            - edam: "http://edamontology.org/format_3462"
+
   - versions:
-      - versions.yml:
+      - "versions.yml":
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+
 authors:
-  - "@drpatelh"
-  - "@ewels"
-  - "@matthdsm"
+  - "@mirpedrol"
 maintainers:
-  - "@drpatelh"
-  - "@ewels"
-  - "@matthdsm"
+  - "@mirpedrol"
