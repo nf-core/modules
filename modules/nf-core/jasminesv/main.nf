@@ -26,13 +26,13 @@ process JASMINESV {
     def args3   = task.ext.args3 ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
 
-    make_bam = bams ? "ls *.bam > bams.txt" : ""
-    bam_argument = bams ? "bam_list=bams.txt" : ""
-    iris_argument = args2 != '' ? "iris_args=${args2}" : ""
-    sample_dists_argument = sample_dists ? "sample_dists=${sample_dists}" : ""
-    chr_norm_argument = chr_norm ? "chr_norm_file=${chr_norm}" : ""
+    def make_bam = bams ? "ls *.bam > bams.txt" : ""
+    def bam_argument = bams ? "bam_list=bams.txt" : ""
+    def iris_argument = args2 != '' ? "iris_args=${args2}" : ""
+    def sample_dists_argument = sample_dists ? "sample_dists=${sample_dists}" : ""
+    def chr_norm_argument = chr_norm ? "chr_norm_file=${chr_norm}" : ""
 
-    unzip_inputs = vcfs.collect { it.extension == "gz" ? "    bgzip -d --threads ${task.cpus} ${args2} ${it}" : "" }.join("\n")
+    def unzip_inputs = vcfs.collect { it.baseName.endsWith(".vcf.gz") ? "    bgzip -d --threads ${task.cpus} ${args2} ${it}" : "" }.join("\n")
     """
     ${unzip_inputs}
 
