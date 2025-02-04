@@ -9,7 +9,7 @@ process LAST_MAFCONVERT {
 
     input:
     tuple val(meta), path(maf)
-    val(format)
+    val(format_list)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(gzi)
@@ -34,21 +34,24 @@ process LAST_MAFCONVERT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def format_string = format_list instanceof List ? format_list.join(' ') : format_list
     """
     set -o pipefail
 
-    case $format in
-        bam)
-            maf-convert $args -d sam  $maf | samtools view -b -o ${prefix}.${format}
-            ;;
-        cram)
-            # CRAM output is not supported if the genome is compressed with something else than bgzip
-            maf-convert $args -d sam  $maf | samtools view -Ct $fasta -o ${prefix}.${format}
-            ;;
-        *)
-            maf-convert $args $format $maf | gzip --no-name > ${prefix}.${format}.gz
-            ;;
-    esac
+    for format in $format_string; do
+        case \$format in
+            bam)
+                maf-convert $args -d sam  $maf | samtools view -b -o ${prefix}.bam
+                ;;
+            cram)
+                # CRAM output is not supported if the genome is compressed with something else than bgzip
+                maf-convert $args -d sam  $maf | samtools view -Ct $fasta -o ${prefix}.cram
+                ;;
+            *)
+                maf-convert $args \$format $maf | gzip --no-name > ${prefix}.\${format}.gz
+                ;;
+        esac
+    done
 
     # maf-convert has no --version option but lastdb (part of the same package) has.
     cat <<-END_VERSIONS > versions.yml
@@ -60,8 +63,18 @@ process LAST_MAFCONVERT {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def format_string = format_list instanceof List ? format_list.join(' ') : format_list
     """
-    echo stub | gzip --no-name > ${prefix}.${format}.gz
+    for format in $format_string; do
+        case \$format in
+            bam)
+                touch ${prefix}.bam ;;
+            cram)
+                touch ${prefix}.cram ;;
+            *)
+                echo stub | gzip --no-name > ${prefix}.\${format}.gz ;;
+        esac
+    done
 
     # maf-convert has no --version option but lastdb (part of the same package) has.
     cat <<-END_VERSIONS > versions.yml

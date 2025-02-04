@@ -9,7 +9,7 @@ nextflow_process {
     tag "last"
     tag "last/mafconvert"
 
-    test("sarscov2 - psl") {
+    test("sarscov2 - psl,gff") {
 
         when {
             process {
@@ -18,7 +18,7 @@ nextflow_process {
                     [ id:'contigs.genome' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true)
                 ]
-                input[1] = 'psl'
+                input[1] = ['psl','gff']
                 input[2] = [[],[]]
                 input[3] = [[],[]]
                 input[4] = [[],[]]
@@ -99,7 +99,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - psl - stub") {
+    test("sarscov2 - psl,bam - stub") {
 
         options "-stub"
         when {
@@ -109,7 +109,7 @@ nextflow_process {
                     [ id:'contigs.genome' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true)
                 ]
-                input[1] = 'psl'
+                input[1] = ['psl','bam']
                 input[2] = [[],[]]
                 input[3] = [[],[]]
                 input[4] = [[],[]]

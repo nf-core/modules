@@ -25,10 +25,10 @@ input:
         description: Multiple Alignment Format (MAF) file, optionally compressed with
           gzip
         pattern: "*.{maf.gz,maf}"
-  - - format:
-        type: string
-        description: Output format (one of axt, blast, blasttab, chain, gff, html, psl,
-          sam, or tab)
+  - - format_list:
+        type: list
+        description: List of output formats (among axt, bam, blast, blasttab, chain,
+          cram, gff, html, psl, sam, or tab).
   - - meta2:
         type: map
         description: |
