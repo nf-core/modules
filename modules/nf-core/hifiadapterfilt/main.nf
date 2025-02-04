@@ -11,11 +11,11 @@ process HIFIADAPTERFILT {
     tuple val(meta), path(fastq)
 
     output:
-    tuple val(meta), path("*.filt.fastq.gz")        , emit: filt
-    tuple val(meta), path("*.contaminant.blastout") , emit: blast_search
-    tuple val(meta), path("*.stats")                , emit: stats
-    tuple val(meta), path("*.blocklist")            , emit: headers
-    path "versions.yml"                             , emit: versions
+    tuple val(meta), path("*.filt.fastq.gz")       , emit: filt
+    tuple val(meta), path("*.contaminant.blastout"), emit: blast_search
+    tuple val(meta), path("*.stats")               , emit: stats
+    tuple val(meta), path("*.blocklist")           , emit: headers
+    path "versions.yml"                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
