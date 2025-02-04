@@ -22,8 +22,8 @@ process HIFIADAPTERFILT {
 
 script:
     def args = task.ext.args ?: ''
-    // The tool AUTOMATICALLY detects fastq files from the input folder, hence an explicit call of "fastq" is not needed.
     def prefix = task.ext.prefix ?: "${meta.id}"
+    // The tool AUTOMATICALLY detects fastq files from the input folder, hence an explicit call of "fastq" is not needed.
 
     """
     hifiadapterfilt.sh \\
