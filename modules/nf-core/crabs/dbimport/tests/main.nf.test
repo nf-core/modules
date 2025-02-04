@@ -8,18 +8,6 @@ nextflow_process {
     tag "modules_nfcore"
     tag "crabs"
     tag "crabs/dbimport"
-    tag "crabs/downloadtaxonomy"
-
-    setup {
-        run("CRABS_DOWNLOADTAXONOMY") {
-            script "../../downloadtaxonomy/main.nf"
-            process {
-                """
-                input[0] = [ id:'taxonomy' ]
-                """
-            }
-        }
-    }
 
     test("sarscov2 - fasta") {
 
@@ -35,9 +23,18 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path +'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = CRABS_DOWNLOADTAXONOMY.out.accession2taxid
-                input[2] = CRABS_DOWNLOADTAXONOMY.out.names
-                input[3] = CRABS_DOWNLOADTAXONOMY.out.nodes
+                input[1] = [
+                    [ id:'accession2taxid' ], // meta map
+                    file(params.modules_testdata_base_path +'genomics/prokaryotes/metagenome/taxonomy/accession2taxid/nucl_gb.accession2taxid', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'names' ], // meta map
+                    file(params.modules_testdata_base_path +'genomics/prokaryotes/metagenome/taxonomy/taxdmp/names.dmp', checkIfExists: true)
+                ]
+                input[3] = [
+                    [ id:'nodes' ], // meta map
+                    file(params.modules_testdata_base_path +'genomics/prokaryotes/metagenome/taxonomy/taxdmp/nodes.dmp', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -62,9 +59,18 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path +'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = CRABS_DOWNLOADTAXONOMY.out.accession2taxid
-                input[2] = CRABS_DOWNLOADTAXONOMY.out.names
-                input[3] = CRABS_DOWNLOADTAXONOMY.out.nodes
+                input[1] = [
+                    [ id:'accession2taxid' ], // meta map
+                    file(params.modules_testdata_base_path +'genomics/prokaryotes/metagenome/taxonomy/accession2taxid/nucl_gb.accession2taxid', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'names' ], // meta map
+                    file(params.modules_testdata_base_path +'genomics/prokaryotes/metagenome/taxonomy/taxdmp/names.dmp', checkIfExists: true)
+                ]
+                input[3] = [
+                    [ id:'nodes' ], // meta map
+                    file(params.modules_testdata_base_path +'genomics/prokaryotes/metagenome/taxonomy/taxdmp/nodes.dmp', checkIfExists: true)
+                ]
                 """
             }
         }
