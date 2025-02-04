@@ -32,8 +32,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
-                { assert process.out.png.get(0).get(1).endsWith("test.png") }
+                { assert snapshot(process.out).match() }
             )
         }
 
@@ -58,8 +57,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
-                { assert process.out.gif.get(0).get(1).endsWith("test.gif") }
+                { assert snapshot(process.out).match() }
             )
         }
 
@@ -85,8 +83,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
-                { assert process.out.png.get(0).get(1).endsWith("test.png") }
+                { assert snapshot(process.out).match() }
             )
         }
 
