@@ -32,6 +32,10 @@ process JASMINESV {
     def sample_dists_argument = sample_dists ? "sample_dists=${sample_dists}" : ""
     def chr_norm_argument = chr_norm ? "chr_norm_file=${chr_norm}" : ""
 
+    vcfs.each { vcf ->
+        if ("$vcf".startsWith("${prefix}.vcf")) error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    }
+
     def unzip_inputs = vcfs.collect { it.baseName.endsWith(".vcf.gz") ? "    bgzip -d --threads ${task.cpus} ${args2} ${it}" : "" }.join("\n")
     """
     ${unzip_inputs}
