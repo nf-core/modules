@@ -1,64 +1,90 @@
+// TODO nf-core: If in doubt look at other nf-core/modules to see how we are doing things! :)
+//               https://github.com/nf-core/modules/tree/master/modules/nf-core/
+//               You can also ask for help via your pull request or on the #modules channel on the nf-core Slack workspace:
+//               https://nf-co.re/join
+// TODO nf-core: A module file SHOULD only define input and output files as command-line parameters.
+//               All other parameters MUST be provided using the "task.ext" directive, see here:
+//               https://www.nextflow.io/docs/latest/process.html#ext
+//               where "task.ext" is a string.
+//               Any parameters that need to be evaluated in the context of a particular sample
+//               e.g. single-end/paired-end data MUST also be defined and evaluated appropriately.
+// TODO nf-core: Software that can be piped together SHOULD be added to separate module files
+//               unless there is a run-time, storage advantage in implementing in this way
+//               e.g. it's ok to have a single module for bwa to output BAM instead of SAM:
+//                 bwa mem | samtools view -B -T ref.fasta
+// TODO nf-core: Optional inputs are not currently supported by Nextflow. However, using an empty
+//               list (`[]`) instead of a file can be used to work around this issue.
+
 process FASTQC {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_medium'
 
+    // TODO nf-core: List required Conda package(s).
+    //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10").
+    //               For Conda, the build (i.e. "h9402c20_2") must be EXCLUDED to support installation on different operating systems.
+    // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fastqc:0.12.1--hdfd78af_0' :
+        'https://depot.galaxyproject.org/singularity/fastqc:0.12.1--hdfd78af_0':
         'biocontainers/fastqc:0.12.1--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(reads)
+    // TODO nf-core: Update the information obtained form bio.tools and make sure that it is correct
+    tuple val(meta), path(raw_sequence)
 
     output:
-    tuple val(meta), path("*.html"), emit: html
-    tuple val(meta), path("*.zip") , emit: zip
-    path  "versions.yml"           , emit: versions
+    // TODO nf-core: Update the information obtained form bio.tools and make sure that it is correct
+    tuple val(meta), path("*{html}"), emit: sequence_report
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args          = task.ext.args ?: ''
-    def prefix        = task.ext.prefix ?: "${meta.id}"
-    // Make list of old name and new name pairs to use for renaming in the bash while loop
-    def old_new_pairs = reads instanceof Path || reads.size() == 1 ? [[ reads, "${prefix}.${reads.extension}" ]] : reads.withIndex().collect { entry, index -> [ entry, "${prefix}_${index + 1}.${entry.extension}" ] }
-    def rename_to     = old_new_pairs*.join(' ').join(' ')
-    def renamed_files = old_new_pairs.collect{ _old_name, new_name -> new_name }.join(' ')
-
-    // The total amount of allocated RAM by FastQC is equal to the number of threads defined (--threads) time the amount of RAM defined (--memory)
-    // https://github.com/s-andrews/FastQC/blob/1faeea0412093224d7f6a07f777fad60a5650795/fastqc#L211-L222
-    // Dividing the task.memory by task.cpu allows to stick to requested amount of RAM in the label
-    def memory_in_mb = task.memory ? task.memory.toUnit('MB').toFloat() / task.cpus : null
-    // FastQC memory value allowed range (100 - 10000)
-    def fastqc_memory = memory_in_mb > 10000 ? 10000 : (memory_in_mb < 100 ? 100 : memory_in_mb)
-
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
+    //               If the software is unable to output a version number on the command-line then it can be manually specified
+    //               e.g. https://github.com/nf-core/modules/blob/master/modules/nf-core/homer/annotatepeaks/main.nf
+    //               Each software used MUST provide the software name and version number in the YAML version file (versions.yml)
+    // TODO nf-core: It MUST be possible to pass additional parameters to the tool as a command-line string via the "task.ext.args" directive
+    // TODO nf-core: If the tool supports multi-threading then you MUST provide the appropriate parameter
+    //               using the Nextflow "task" variable e.g. "--threads $task.cpus"
+    // TODO nf-core: Please replace the example samtools command below with your module's command
+    // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
-    printf "%s %s\\n" ${rename_to} | while read old_name new_name; do
-        [ -f "\${new_name}" ] || ln -s \$old_name \$new_name
-    done
-
     fastqc \\
-        ${args} \\
-        --threads ${task.cpus} \\
-        --memory ${fastqc_memory} \\
-        ${renamed_files}
+        $args \\
+        -@ $task.cpus \\
+        -o ${prefix}.fastq-like \\
+        -o ${prefix}.sam \\
+        -o ${prefix}.fastq \\
+        -o ${prefix}.bam \\
+        $raw_sequence \\
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        fastqc: \$( fastqc --version | sed '/FastQC v/!d; s/.*v//' )
+        fastqc: \$(fastqc --version)
     END_VERSIONS
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    // TODO nf-core: A stub section should mimic the execution of the original module as best as possible
+    //               Have a look at the following examples:
+    //               Simple example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bcftools/annotate/main.nf#L47-L63
+    //               Complex example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bedtools/split/main.nf#L38-L54
     """
-    touch ${prefix}.html
-    touch ${prefix}.zip
+    
+    touch ${prefix}.fastq-like
+    touch ${prefix}.sam
+    touch ${prefix}.fastq
+    touch ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        fastqc: \$( fastqc --version | sed '/FastQC v/!d; s/.*v//' )
+        fastqc: \$(fastqc --version)
     END_VERSIONS
     """
 }

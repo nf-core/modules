@@ -1,67 +1,67 @@
-name: fastqc
-description: Run FastQC on sequenced reads
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "fastqc"
+## TODO nf-core: Add a description of the module and list keywords
+description: write your description here
 keywords:
-  - quality control
-  - qc
-  - adapters
-  - fastq
+  - sort
+  - example
+  - genomics
 tools:
-  - fastqc:
-      description: |
-        FastQC gives general quality metrics about your reads.
-        It provides information about the quality score distribution
-        across your reads, the per base sequence content (%A/C/G/T).
-
-        You get information about adapter contamination and other
-        overrepresented sequences.
-      homepage: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
-      documentation: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/
-      licence: ["GPL-2.0-only"]
+  - "fastqc":
+      ## TODO nf-core: Add a description and other details for the software below
+      description: "A quality control tool for high throughput sequence data."
+      homepage: "None"
+      documentation: "None"
+      tool_dev_url: "None"
+      doi: ""
+      licence: ["GPL >=3"]
       identifier: biotools:fastqc
+
+## TODO nf-core: Add a description of all of the variables used as input
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - reads:
+          e.g. `[ id:'sample1', single_end:false ]`
+
+    - raw_sequence:
+        # TODO nf-core: Update the information obtained form bio.tools and make sure that it is correct
         type: file
-        description: |
-          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-          respectively.
+        description: raw_sequence file
+        pattern: "*.{fastq-like,sam,fastq,bam}"
+        ontologies:
+          - edam: "http://edamontology.org/data_0848"
+          - edam: "http://edamontology.org/format_2182"
+          - edam: "http://edamontology.org/format_2573"
+          - edam: "http://edamontology.org/format_1930"
+          - edam: "http://edamontology.org/format_2572"
+
+## TODO nf-core: Add a description of all of the variables used as output
 output:
-  - html:
+  - sequence_report:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.html":
+            e.g. `[ id:'sample1', single_end:false ]`
+      - sequence_report:
+          # TODO nf-core: Update the information obtained form bio.tools and make sure that it is correct
           type: file
-          description: FastQC report
-          pattern: "*_{fastqc.html}"
-  - zip:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.zip":
-          type: file
-          description: FastQC report archive
-          pattern: "*_{fastqc.zip}"
+          description: sequence_report file
+          pattern: "*.{html}"
+          ontologies:
+            - edam: "http://edamontology.org/data_2955"
+            - edam: "http://edamontology.org/format_2331"
+
   - versions:
-      - versions.yml:
+      - "versions.yml":
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+
 authors:
-  - "@drpatelh"
-  - "@grst"
-  - "@ewels"
-  - "@FelixKrueger"
+  - "@mirpedrol"
 maintainers:
-  - "@drpatelh"
-  - "@grst"
-  - "@ewels"
-  - "@FelixKrueger"
+  - "@mirpedrol"
