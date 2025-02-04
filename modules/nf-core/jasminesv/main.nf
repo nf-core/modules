@@ -66,6 +66,10 @@ process JASMINESV {
     stub:
     def prefix  = task.ext.prefix ?: "${meta.id}"
 
+    vcfs.each { vcf ->
+        if ("$vcf".startsWith("${prefix}.vcf")) error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    }
+
     """
     echo "" | gzip > ${prefix}.vcf.gz
 
