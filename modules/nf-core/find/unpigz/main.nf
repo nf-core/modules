@@ -11,7 +11,7 @@ process FIND_UNPIGZ {
     tuple val(meta), path(files_in, stageAs: 'gzipped/*', arity: '1..*')
 
     output:
-    tuple val(meta), path("*"), emit: file_out
+    tuple val(meta), path("ungzipped/*"), emit: file_out
     path "versions.yml", emit: versions
 
     when:
@@ -25,13 +25,14 @@ process FIND_UNPIGZ {
     }
 
     """
+    mkdir -p ungzipped
     while IFS= read -r -d \$'\\0' file; do
         unpigz \\
             ${args} \\
             -cd \\
             --processes ${task.cpus} \\
             \$file \\
-            > \$( basename \$file .gz )
+            > ungzipped/\$( basename \$file .gz )
     done < <( find gzipped/ -name '*.gz' -print0 )
 
     cat <<-END_VERSIONS > versions.yml
@@ -43,7 +44,8 @@ process FIND_UNPIGZ {
 
     stub:
     """
-    touch test_file.txt
+    mkdir -p ungzipped
+    touch ungzipped/test_file.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
