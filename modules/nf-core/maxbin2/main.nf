@@ -30,12 +30,12 @@ process MAXBIN2 {
     def prefix = task.ext.prefix ?: "${meta.id}"
     if (reads && abund) { error("ERROR: MaxBin2 can only accept one of `reads` or `abund`, no both. Check input.") }
     def associate_files = ""
-    if ( reads ) {
+    if (reads  {
         associate_files = "-reads $reads"
-    } else if ( abund instanceof List ) {
-        associate_files = [0..(abund.size() - 1)].collect { v ->
-            def string = v == 0 ? "-abund" : "-abund$v"
-            return " -$string ${abund[v]}"
+    } else if (abund instanceof List) {
+        associate_files = [0..(abund.size() - 1)].collect { n ->
+            def arg_n = n == 0 ? "" : "${n}"
+            return " -${abund}${arg_n} ${abund[n]}"
         }.join()
     } else {
         associate_files = "-abund $abund"
