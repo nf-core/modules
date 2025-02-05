@@ -34,6 +34,42 @@ nextflow_process {
         }
     }
 
+    test("sarscov2 - cram") {
+        config "./cram.config"
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id: 'test', single_end: false], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
+                    [ id:'fasta' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        cram(
+                            process.out.cram[0][1],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                        ).getReadsMD5(),
+                        process.out.crai,
+                        process.out.metrics,
+                    ).match()
+                }
+            )
+        }
+    }
+
+
     test("sarscov2 - bam - stub") {
 
         options "-stub"
