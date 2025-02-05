@@ -1,0 +1,96 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "ska_distance"
+description: Calculate pairwise distances and basic clustering from SKA sketches
+keywords:
+  - genomics
+  - metagenomics
+  - kmer
+  - split_kmers
+  - distance
+  - clustering
+tools:
+  - "ska":
+      description: "SKA (Split Kmer Analysis)"
+      homepage: "https://github.com/simonrharris/SKA"
+      documentation: "https://github.com/simonrharris/SKA/wiki"
+      tool_dev_url: "https://github.com/simonrharris/SKA"
+      doi: "10.1101/453142"
+      licence: ['MIT']
+
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+
+    - sketch_files:
+        type: file
+        description: SKA sketch files
+        pattern: "*.skf"
+
+    - sketch_list:
+        type: file
+        description: List of SKA sketch files
+        pattern: "*.txt"
+
+
+output:
+  - distances:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - "*distances.tsv":
+        type: file
+        description: Pairwise distance table
+        pattern: "*distance.tsv"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+
+  - cluster_list:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - "*clusters.tsv":
+        type: file
+        description: List of samples and their clusters
+        pattern: "*clusters.tsv"
+
+  - cluster_files:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - "*cluster*.txt":
+        type: file
+        description: Cluster files
+        pattern: "*cluster*.txt"
+
+  - dot:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - "*.dot":
+        type: file
+        description: DOT file for visualization
+        pattern: "*.dot"
+
+  - versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@itrujnara"
+maintainers:
+  - "@itrujnara"

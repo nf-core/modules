@@ -1,0 +1,89 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test ska/distance
+nextflow_process {
+
+    name "Test Process SKA_DISTANCE"
+    script "../main.nf"
+    process "SKA_DISTANCE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ska"
+    tag "ska/distance"
+
+    test("sarscov2 - pfal - skf") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/ska/sarscov2_reduced.skf', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/eukaryotes/plasmodium_falciparum/ska/plasmodium_reduced.skf', checkIfExists: true)],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - pfal - skf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/ska/sarscov2_reduced.skf', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/eukaryotes/plasmodium_falciparum/ska/plasmodium_reduced.skf', checkIfExists: true)],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - pfal - list - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [],
+                    [file(params.modules_testdata_base_path + 'generic/txt/ska_sketches.txt', checkIfExists: true)]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
