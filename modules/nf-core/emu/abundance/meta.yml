@@ -31,19 +31,46 @@ input:
 
 
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - report:
-      type: file
-      description: Report (tsv file) over detected species and estimated number of reads and relative abundance
-      pattern: "*{.tsv}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "results/*.tsv":
+        type: file
+        description: Report (tsv file) over detected species and estimated number of reads and relative abundance.
+        pattern: "*{.tsv}"
+  - assignment_report:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*read-assignment-distributions.tsv":
+        type: file
+        description: Output file of read assignment distribution.
+        pattern: "*{.tsv}"
   - samfile:
-      type: file
-      description: File containing alignment data
-      pattern: "*{.sam}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*sam":
+        type: file
+        description: File containing alignment data in sam format.
+        pattern: "*{.sam}"
+  - unclassified_fa:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fa":
+        type: file
+        description: Sequence files of unmapped and unclassified mapped input reads.
+        pattern: "*{.fa"
   - versions:
       type: file
       description: File containing software versions
