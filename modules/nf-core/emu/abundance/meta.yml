@@ -1,0 +1,49 @@
+
+name: "emu_abundance"
+description: A taxonomic profiler for metagenomic 16S data optimized for error prone long reads.
+keywords:
+  - metagenomics
+  - 16S
+  - manopore
+
+tools:
+  - "emu":
+      description: "Emu is a relative abundance estimator for 16s genomic data."
+      homepage: "https://gitlab.com/treangenlab/emu"
+      documentation: "https://gitlab.com/treangenlab/emu"
+      tool_dev_url: "None"
+      doi: "https://doi.org/10.1038/s41592-022-01520-4"
+      licence: "['MIT']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: fastq.gz file containing metagenomic 16S data
+      pattern: "*.{fastq.gz}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - report:
+      type: file
+      description: Report (tsv file) over detected species and estimated number of reads and relative abundance
+      pattern: "*{.tsv}"
+  - samfile:
+      type: file
+      description: File containing alignment data
+      pattern: "*{.sam}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@fwa93"
+  - "@sofstam"

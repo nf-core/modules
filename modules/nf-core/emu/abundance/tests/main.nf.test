@@ -1,0 +1,72 @@
+nextflow_process {
+    name "Test Process EMU_ABUNDANCE"
+    script "../main.nf"
+    process "EMU_ABUNDANCE"
+    tag "modules"
+    tag "untar"
+    tag "modules_nfcore"
+    tag "emu"
+    tag "emu/abundance"
+
+    setup {
+        run("UNTAR") {
+            script "modules/nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [],
+                    file(
+                        params.modules_testdata_base_path + "genomics/prokaryotes/streptococcus_agalactiae/genome/emu.tar.gz",
+                        checkIfExists: true
+                    )
+                ])
+                """
+            }
+        }
+    }
+
+    test("sarscov2 nanopore [fastq_gz]") {
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/streptococcus_agalactiae/nanopore/fastq/test.fastq.gz', checkIfExists: true)
+                        ]
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(
+                process.out.versions,
+                file(process.out.report[0][1]).readLines()[0]
+            ).match()
+        }
+    }
+
+    test("sarscov2 nanopore [fastq_gz] - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/streptococcus_agalactiae/nanopore/fastq/test.fastq.gz', checkIfExists: true)
+                        ]
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(
+                process.out.versions,
+                file(process.out.report[0][1]).readLines()[0]
+            ).match()
+        }
+    }
+}
+
+
