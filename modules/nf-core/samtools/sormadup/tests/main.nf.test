@@ -59,9 +59,9 @@ nextflow_process {
                     assert snapshot(
                         cram(
                             process.out.cram[0][1],
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                            "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta",
                         ).getReadsMD5(),
-                        process.out.crai,
+                        file(process.out.crai[0][1]).name,
                         process.out.metrics,
                     ).match()
                 }
