@@ -26,9 +26,9 @@ process PYCHOPPER {
         $args \\
         -t $task.cpus \\
         $fastq \\
-        ${prefix}.out.fastq \\
+        ${prefix}.out.fastq
 
-    gzip ${prefix}.out.fastq > ${prefix}.out.fastq.gz
+    gzip -f ${prefix}.out.fastq > ${prefix}.out.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
