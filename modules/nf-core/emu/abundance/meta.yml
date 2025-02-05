@@ -5,7 +5,6 @@ keywords:
   - metagenomics
   - 16S
   - nanopore
-
 tools:
   - emu:
       description: Emu is a relative abundance estimator for 16s genomic data.
@@ -13,7 +12,6 @@ tools:
       documentation: https://gitlab.com/treangenlab/emu
       doi: https://doi.org/10.1038/s41592-022-01520-4
       licence: ["MIT"]
-
 input:
   - - meta:
         type: map
@@ -27,8 +25,6 @@ input:
   - - db:
         type: directory
         description: Emu database
-
-
 output:
   - report:
       - meta:
