@@ -38,11 +38,13 @@ nextflow_process {
         }
 
         then {
-            assert process.success
-            assert snapshot(
-                process.out.versions,
-                file(process.out.report[0][1]).readLines()[0]
-            ).match()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.report,
+                    process.out.versions
+                ).match() }
+            )
         }
     }
 
@@ -60,13 +62,13 @@ nextflow_process {
         }
 
         then {
-            assert process.success
-            assert snapshot(
-                process.out.versions,
-                file(process.out.report[0][1]).readLines()[0]
-            ).match()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.report,
+                    process.out.versions
+                ).match() }
+            )
         }
     }
 }
-
-
