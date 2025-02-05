@@ -6,16 +6,19 @@ keywords:
   - nanopore
 tools:
   - "pychopper":
-      description: "A tool to identify, orient and rescue full length cDNA reads from nanopore data."
+      description: "A tool to identify, orient and rescue full length cDNA reads from
+        nanopore data."
       homepage: "https://github.com/epi2me-labs/pychopper"
       documentation: "https://github.com/epi2me-labs/pychopper"
       tool_dev_url: "https://github.com/epi2me-labs/pychopper"
-      licence: ['Oxford Nanopore Technologies PLC. Public License Version 1.0']
+      licence: ["Oxford Nanopore Technologies PLC. Public License Version 1.0"]
+      identifier: ""
   - "gzip":
       description: "Gzip reduces the size of the named files using Lempel-Ziv coding
         (LZ77)."
       documentation: "https://linux.die.net/man/1/gzip"
       args_id: "$args3"
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -33,9 +36,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.fastq.gz":
-          type: file
-          description: Filtered and trimmed FastQ file
+          pattern: "*.{fastq.gz}"
+      - "*.out.fastq.gz":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*.{fastq.gz}"
   - versions:
       - versions.yml:
