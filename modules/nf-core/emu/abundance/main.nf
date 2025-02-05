@@ -12,11 +12,11 @@ process EMU_ABUNDANCE {
     path db
 
     output:
-    tuple val(meta), path("results/*.tsv")                             , emit: report
-    tuple val(meta), path("*read-assignment-distributions.tsv")        , emit: assignment_report, optional:true
-    tuple val(meta), path("*.sam")                                     , emit: samfile, optional:true
-    tuple val(meta), path("*.fa")                                      , emit: unclassified_fa , optional:true
-    path "versions.yml"                                                , emit: versions
+    tuple val(meta), path("results/*.tsv")                                     , emit: report
+    tuple val(meta), path("results/*read-assignment-distributions.tsv")        , emit: assignment_report, optional:true
+    tuple val(meta), path("results/*.sam")                                     , emit: samfile, optional:true
+    tuple val(meta), path("results/*.fasta")                                   , emit: unclassified_fa , optional:true
+    path "versions.yml"                                                        , emit: versions
 
 
     when:
@@ -45,6 +45,8 @@ process EMU_ABUNDANCE {
     """
     mkdir -p results
     touch results/${prefix}.tsv
+    touch results/${prefix}.sam
+    touch results/${prefix}.fasta
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         emu: \$(echo \$(emu --version 2>&1) | sed 's/^.*emu //; s/Using.*\$//' )
