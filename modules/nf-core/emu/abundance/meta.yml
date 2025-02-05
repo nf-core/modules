@@ -16,15 +16,19 @@ tools:
       licence: "['MIT']"
 
 input:
-  - meta:
+  - - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
   - reads:
       type: file
-      description: fastq.gz file containing metagenomic 16S data
+      description: fastq.gz file containing 16S metagenomics data
       pattern: "*.{fastq.gz}"
+  - - db:
+      type: directory
+      description: Emu database
+
 
 output:
   - meta:
