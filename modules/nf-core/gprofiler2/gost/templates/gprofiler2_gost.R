@@ -236,7 +236,9 @@ if (nrow(de.genes) > 0) {
     } else if (!is.null(opt\$organism)) {
 
         # Next, check if organism was provided. Get the GMT file from gprofiler and save both the full file as well as the filtered one to metadata
-        gmt_url <- paste0("https://biit.cs.ut.ee/", opt\$archive, "//static/gprofiler_full_", opt\$organism, ".ENSG.gmt")
+        base_url <- paste0("https://biit.cs.ut.ee/", opt\$archive)
+        gmt_url <- paste0(base_url, "//static/gprofiler_full_", opt\$organism, ".ENSG.gmt")
+        set_base_url(base_url)
         tryCatch(
             {
                 gmt_path <- paste0("gprofiler_full_", opt\$organism, ".ENSG.gmt")
