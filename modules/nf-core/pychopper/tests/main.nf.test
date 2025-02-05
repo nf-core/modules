@@ -34,7 +34,7 @@ nextflow_process {
                 // additional nf-test checks
                 // Order of reads is not deterministic, so only assess whether the number of reads is correct
                 { assert snapshot(
-                    fastq_content.size(),
+                    process.out.fastq,
                     process.out.versions
                     ).match() }
             )
@@ -59,7 +59,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
+                    process.out.fastq,
                     process.out.versions
                 ).match() }
             )

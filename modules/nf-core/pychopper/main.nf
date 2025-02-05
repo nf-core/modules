@@ -40,7 +40,8 @@ process PYCHOPPER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.out.fastq.gz
+    touch ${prefix}.out.fastq
+    gzip ${prefix}.out.fastq
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
