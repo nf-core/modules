@@ -1,68 +1,50 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "pychopper"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Identify, orient and trim nanopore cDNA reads
 keywords:
   - sort
-  - example
-  - genomics
+  - trimming
+  - nanopore
 tools:
   - "pychopper":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "A tool to identify, orient and rescue full length cDNA reads from nanopore data."
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
+      homepage: "https://github.com/epi2me-labs/pychopper"
+      documentation: "https://github.com/epi2me-labs/pychopper"
+      tool_dev_url: "https://github.com/epi2me-labs/pychopper"
       doi: ""
-      licence: ['Mozilla Public License 2.0']
-      identifier: 
-
-## TODO nf-core: Add a description of all of the variables used as input
+      licence: ['Oxford Nanopore Technologies PLC. Public License Version 1.0']
+      identifier: ""
+  - "gzip":
+      description: "Gzip reduces the size of the named files using Lempel-Ziv coding
+        (LZ77)."
+      documentation: "https://linux.die.net/man/1/gzip"
+      args_id: "$args3"
+      identifier: ""
 input:
-  # Only when we have meta
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-  
-  ## TODO nf-core: Delete / customise this example input
-    - bam:
+    - fastq:
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
-        ontologies:
-          - edam: "http://edamontology.org/format_25722"
-          - edam: "http://edamontology.org/format_2573"
-          - edam: "http://edamontology.org/format_3462"
-          
-
-## TODO nf-core: Add a description of all of the variables used as output
+        description: FastQ with reads from long read sequencing e.g. nanopore
+        pattern: "*.{fastq.gz}"
 output:
-  - bam:
-  #Only when we have meta
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-  ## TODO nf-core: Delete / customise this example output
-    - "*.bam":
-        type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
-        ontologies:
-          - edam: "http://edamontology.org/format_25722"
-          - edam: "http://edamontology.org/format_2573"
-          - edam: "http://edamontology.org/format_3462"
-          
+  - fastq:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fastq.gz":
+          type: file
+          description: Filtered and trimmed FastQ file
+          pattern: "*.{fastq.gz}"
   - versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@chriswyatt1"
 maintainers:
