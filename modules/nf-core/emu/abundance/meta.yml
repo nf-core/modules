@@ -47,7 +47,7 @@ output:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
       pattern: "*{.tsv}"
-  - '*read-assignment-distributions.tsv':
+  - results/*read-assignment-distributions.tsv:
       type: map
       description: |
         Groovy Map containing sample information
@@ -60,7 +60,7 @@ output:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
       pattern: "*{.sam}"
-  - '*.sam':
+  - results/*.sam:
       type: map
       description: |
         Groovy Map containing sample information
@@ -73,12 +73,12 @@ output:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
       pattern: "*{.fa}"
-  - '*.fasta':
+  - results/*.fasta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-      pattern: "*{.fasta}"
+      pattern: "*{.fa}"
 - versions:
   - versions.yml:
       type: file
