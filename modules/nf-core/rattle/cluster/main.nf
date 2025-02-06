@@ -3,7 +3,7 @@ process RATTLE_CLUSTER {
     label 'process_low'
 
     if (params.enable_conda) {
-        error "Conda environments cannot be used when using the rattle tool (when this module was built). Please use docker or singularity containers."
+        error "Conda environments are not set up for rattle (when this module was built). Please use docker or singularity containers."
     }
     container 'quay.io/ecoflowucl/rattle:v1.0'
 
