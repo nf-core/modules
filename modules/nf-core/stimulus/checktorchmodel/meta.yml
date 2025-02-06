@@ -15,13 +15,13 @@ tools:
       licence: ["MIT"]
 
 input:
-  - - original_csv:
+  - - data:
         type: file
         description: A CSV file with untransformed data
         pattern: "*.csv"
         ontologies:
           - edam: "http://edamontology.org/format_3752"
-  - - experiment_config:
+  - - data_config:
         type: file
         description: A YAML file describing data transformations
         pattern: "*.{yml,yaml}"
@@ -33,7 +33,7 @@ input:
         pattern: "*.py"
         ontologies:
           - edam: "http://edamontology.org/format_3996"
-  - - ray_tune_config:
+  - - model_config:
         type: file
         description: YAML file containing RayTune tuning parameters
         pattern: "*.{yml,yaml}"

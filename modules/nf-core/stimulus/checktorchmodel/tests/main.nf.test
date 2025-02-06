@@ -10,16 +10,15 @@ nextflow_process {
     tag "stimulus"
     tag "stimulus/checktorchmodel"
 
-    // TODO nf-core: Change the test name preferably indicating the test-data and file-format used
     test("basic - csv - py") {
 
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/input_data_with_split.csv', checkIfExists: true)
-                input[1] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/experiment_config.yaml', checkIfExists: true)
-                input[2] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/dna_to_float_model.py', checkIfExists: true)
-                input[3] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/tune_config.yaml', checkIfExists: true)
+                input[0] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_stimulus.csv', checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic.yaml', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_model.py', checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_model_cpu.yaml', checkIfExists: true)
                 input[4] = []
                 """
             }
@@ -45,10 +44,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/input_data_with_split.csv', checkIfExists: true)
-                input[1] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/experiment_config.yaml', checkIfExists: true)
-                input[2] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/dna_to_float_model.py', checkIfExists: true)
-                input[3] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/dna_experiment/tune_config.yaml', checkIfExists: true)
+                input[0] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_stimulus.csv', checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic.yaml', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_model.py', checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_model_cpu.yaml', checkIfExists: true)
                 input[4] = []
                 """
             }

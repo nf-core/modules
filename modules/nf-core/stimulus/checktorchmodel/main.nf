@@ -1,15 +1,14 @@
 process STIMULUS_CHECKTORCHMODEL {
-    tag "$experiment_config - $original_csv"
+    tag "$data_config - $data"
     label 'process_medium'
 
-    // TODO freeze to Wave
     container "docker.io/mathysgrapotte/stimulus-py:latest"
 
     input:
-    path(original_csv)
-    path(experiment_config)
+    path(data)
+    path(data_config)
     path(model)
-    path(ray_tune_config)
+    path(model_config)
     path(initial_weights)
 
     output:
@@ -26,10 +25,10 @@ process STIMULUS_CHECKTORCHMODEL {
     def gpu_arg     = task.accelerator ? "--gpus ${task.accelerator.request}" : ""
     """
     stimulus-check-model \
-        -d ${original_csv} \
+        -d ${data} \
         -m ${model} \
-        -e ${experiment_config} \
-        -c ${ray_tune_config} \
+        -e ${data_config} \
+        -c ${model_config} \
         ${weights_arg} \
         ${gpu_arg} \
         --cpus ${task.cpus} \
@@ -46,7 +45,7 @@ process STIMULUS_CHECKTORCHMODEL {
     stub:
     def args         = task.ext.args ?: ''
     prefix           = task.ext.prefix ?: model.baseName.replaceFirst(/\.py/, "")
-    def STIMULUS_VER = '0.0.9' // container not used in stub, change manually
+    def STIMULUS_VER = '0.2.2' // container not used in stub, change manually
     """
     touch ${prefix}_modelcheck.log
 

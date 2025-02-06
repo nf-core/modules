@@ -3,11 +3,7 @@ channels:
   - bioconda
 
 dependencies:
-  - conda-forge::matplotlib=3.9.2
-  - conda-forge::pandas=2.2.3
-  - conda-forge::polars=1.9.0
-  - conda-forge::python=3.12
-  - conda-forge::pytorch=2.4.1
-  - conda-forge::ray-core=2.37.0
-  - conda-forge::safetensors=0.4.5
-  - conda-forge::scikit-learn=1.5.2
+  - python=3.12
+  - pip
+  - pip:
+    - stimulus-py==0.2.2
