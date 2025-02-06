@@ -1,0 +1,69 @@
+nextflow_process {
+
+    name "Test Process PYCHOPPER"
+    script "../main.nf"
+    process "PYCHOPPER"
+    tag "pychopper"
+    tag "modules"
+    tag "modules_nfcore"
+
+    test("pychopper-test") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] =  [
+                                [id:'test_out' ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test_2.fastq.gz', checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        then {
+
+            def fastq_content = path(process.out.fastq.get(0).get(1)).linesGzip
+
+            assertAll(
+                { assert process.success },
+                // original pytest checks
+                { assert process.out.fastq.get(0).get(1) ==~ ".*/test_out.out.fastq.gz" },
+                // additional nf-test checks
+                // Order of reads is not deterministic, so only assess whether the number of reads is correct
+                { assert snapshot(
+                    process.out.fastq,
+                    process.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+    test("test-pychopper-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] =  [
+                                [id:'test_out' ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fastq,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+}
