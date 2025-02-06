@@ -37,6 +37,9 @@ nextflow_process {
     test("sarscov2 - cram") {
         config "./cram.config"
         when {
+            params {
+                modules_testdata_base_path = 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            }
             process {
                 """
                 input[0] = Channel.of([
@@ -53,13 +56,14 @@ nextflow_process {
         }
 
         then {
+            def fasta = params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta'
             assertAll(
                 { assert process.success },
                 {
                     assert snapshot(
                         cram(
                             process.out.cram[0][1],
-                            "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta",
+                            fasta,
                         ).getReadsMD5(),
                         file(process.out.crai[0][1]).name,
                         process.out.metrics,
