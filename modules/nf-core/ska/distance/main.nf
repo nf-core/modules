@@ -44,12 +44,12 @@ process SKA_DISTANCE {
     def output_dist  = task.ext.args =~ "-d" ? "" : "touch ${prefix}.distances.tsv"
     def output_clust = task.ext.args =~ "-c" ? "" : "touch ${prefix}.clusters.tsv"
     // this is not a complete criterion for this output but it is good enough
-    def output_dot   = task.ext.args =~ "-S" || sketch_files.size > 1 ? "touch ${prefix}.dot" : ""
+    def output_dot   = task.ext.args =~ "-S" || sketch_files.size() > 1 ? "touch ${prefix}.dot" : ""
     """
     $output_dist
     $output_clust
     # this is not how this works but it's the best we can do without knowing the input content
-    for i in {1..${sketch_files.size}}
+    for i in {1..${sketch_files.size()}}
     do
         touch ${prefix}.cluster\${i}.txt
     done

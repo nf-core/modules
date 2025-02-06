@@ -27,7 +27,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.versions,
+                    path(process.out.distances[0][1]).csv(sep:"\t").sort(),
+                    path(process.out.cluster_list[0][1]).csv(sep:"\t").sort(),
+                    process.out.dot
+                ).match() }
             )
         }
 
@@ -62,22 +67,31 @@ nextflow_process {
     test("sarscov2 - pfal - list") {
 
         setup {
-            """
-            echo "sarscov2_reduced.skf" > sketch_list.txt
-            echo "plasmodium_reduced.skf" >> sketch_list.txt
-            wget https://raw.githubusercontent.com/nf-core/test-datasets/modules/genomics/sarscov2/genome/ska/sarscov2_reduced.skf
-            wget https://raw.githubusercontent.com/nf-core/test-datasets/modules/genomics/eukaryotes/plasmodium_falciparum/ska/plasmodium_reduced.skf
-            """
+            run("WGET", alias: "WGET1") {
+                script "modules/nf-core/ska/distance/wget.nf"
+                process {
+                """
+                input[0] = params.modules_testdata_base_path + 'genomics/sarscov2/genome/ska/sarscov2_reduced.skf'
+                input[1] = "sarscov2_reduced.skf"
+                """
+                }
+            }
+
+            run("WGET", alias: "WGET2") {
+                script "modules/nf-core/ska/distance/wget.nf"
+                process {
+                """
+                input[0] = params.modules_testdata_base_path + 'genomics/eukaryotes/plasmodium_falciparum/ska/plasmodium_reduced.skf'
+                input[1] = "plasmodium_reduced.skf"
+                """
+                }
+            }
         }
 
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test' ], // meta map
-                    [],
-                    [file("sketch_list.txt", checkIfExists: true)]
-                ]
+                input[0] = WGET1.out.outfile.mix(WGET2.out.outfile).map {it -> it.toString()}.collectFile(name: 'samples.txt', newLine: true).map { it -> [['id': 'test'], [], it] }
                 """
             }
         }
@@ -85,7 +99,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.versions,
+                    path(process.out.distances[0][1]).csv(sep:"\t").sort(),
+                    path(process.out.cluster_list[0][1]).csv(sep:"\t").sort(),
+                    process.out.dot
+                ).match() }
             )
         }
 
