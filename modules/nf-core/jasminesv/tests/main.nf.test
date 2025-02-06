@@ -73,10 +73,14 @@ nextflow_process {
     test("homo_sapiens - [vcf, vcf2], [bam, bam2], [], fasta, fai, [] - iris") {
 
         when {
+            params {
+                args = "--run_iris"
+                args2 = "threads=1,--pacbio,min_ins_length=30"
+            }
             process {
                 """
                 input[0] = [
-                    [ id:"test", args:"--run_iris", args2:"threads=1,--pacbio,min_ins_length=30" ],
+                    [ id:"test" ],
                     [
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gvcf/test.genome.vcf", checkIfExists:true),
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gvcf/test2.genome.vcf", checkIfExists:true),
@@ -112,10 +116,13 @@ nextflow_process {
     test("homo_sapiens - [vcf, vcf2], [bam, bam2], [], fasta, fai, txt - normalize") {
 
         when {
+            params {
+                args = "--normalize_chrs"
+            }
             process {
                 """
                 input[0] = [
-                    [ id:"test", args:"--normalize_chrs" ],
+                    [ id:"test" ],
                     [
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gvcf/test.genome.vcf", checkIfExists:true),
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gvcf/test2.genome.vcf", checkIfExists:true),
@@ -183,10 +190,13 @@ nextflow_process {
     test("homo_sapiens - [vcf, vcf2], [], [], [], [], [] - empty vcf") {
 
         when {
+            params {
+                args = "min_support=2"
+            }
             process {
                 """
                 input[0] = [
-                    [ id:"test", args:"min_support=2" ],
+                    [ id:"test" ],
                     [
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gvcf/test.genome.vcf", checkIfExists:true),
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/empty.vcf.gz", checkIfExists:true),                    ],
