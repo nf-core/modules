@@ -1,68 +1,43 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "rattle_cluster"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Reference-free reconstruction and quantification of transcriptomes from long-read sequencing
 keywords:
-  - sort
-  - example
-  - genomics
+  - transcriptomes
+  - cluster
 tools:
   - "rattle":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: ""
-      homepage: ""
-      documentation: ""
-      tool_dev_url: ""
-      doi: ""
-      licence: 
+      description: "Reference-free reconstruction and quantification of transcriptomes from long-read sequencing"
+      homepage: "https://github.com/comprna/RATTLE"
+      documentation: "https://github.com/comprna/RATTLE"
+      tool_dev_url: "https://github.com/comprna/RATTLE"
+      doi: "https://doi.org/10.1186/s13059-022-02715-w"
+      licence: ["GPL-3.0"]
       identifier: biotools:rattle
-
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-  
-  ## TODO nf-core: Delete / customise this example input
-    - bam:
+          e.g. `[ id:'sample1', suffix:'bacteria' ]`
+    - reads:
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
-        ontologies:
-          - edam: "http://edamontology.org/format_25722"
-          - edam: "http://edamontology.org/format_2573"
-          - edam: "http://edamontology.org/format_3462"
-          
-
-## TODO nf-core: Add a description of all of the variables used as output
+        description: Input file in FASTA/FASTQ format.
+        pattern: "*.{fasta,fastq,fasta.gz,fastq.gz,fa,fq,fa.gz,fq.gz}"
 output:
   - bam:
-  #Only when we have meta
     - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-  ## TODO nf-core: Delete / customise this example output
-    - "*.bam":
+          e.g. `[ id:'sample1', suffix:'bacteria']`
+    - "*.out":
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
-        ontologies:
-          - edam: "http://edamontology.org/format_25722"
-          - edam: "http://edamontology.org/format_2573"
-          - edam: "http://edamontology.org/format_3462"
-          
+        description: Read clusters in binary format
+        pattern: "clusters.out"
   - versions:
     - "versions.yml":
         type: file
         description: File containing software versions
         pattern: "versions.yml"
-
 authors:
   - "@chriswyatt1"
 maintainers:
