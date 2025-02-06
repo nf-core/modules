@@ -8,7 +8,9 @@ nextflow_process {
     tag "modules_nfcore"
     tag "jasminesv"
 
-    test("homo_sapiens - [vcf, vcf2], [], [], [], [], []") {
+    config "./nextflow.config"
+
+    test("homo_sapiens - [vcf, vcf2], [], [], [], [], [] - vcf") {
 
         when {
             process {
@@ -32,13 +34,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match("vcf") }
+                { assert snapshot(process.out).match() }
             )
         }
 
     }
 
-    test("homo_sapiens - [vcf_gz, vcf_gz2], [], [], [], [], []") {
+    test("homo_sapiens - [vcf_gz, vcf_gz2], [], [], [], [], [] - vcf.gz") {
 
         when {
             process {
@@ -62,21 +64,19 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match("vcf_gz") }
+                { assert snapshot(process.out).match() }
             )
         }
 
     }
 
-    test("homo_sapiens - [vcf, vcf2], [bam, bam2], [], fasta, fai, []") {
-
-        config "./iris.config"
+    test("homo_sapiens - [vcf, vcf2], [bam, bam2], [], fasta, fai, [] - iris") {
 
         when {
             process {
                 """
                 input[0] = [
-                    [ id:"test" ],
+                    [ id:"test", args:"--run_iris", args2:"threads=1,--pacbio,min_ins_length=30" ],
                     [
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gvcf/test.genome.vcf", checkIfExists:true),
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gvcf/test2.genome.vcf", checkIfExists:true),
@@ -103,21 +103,19 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match("iris") }
+                { assert snapshot(process.out).match() }
             )
         }
 
     }
 
-    test("homo_sapiens - [vcf, vcf2], [bam, bam2], [], fasta, fai, txt") {
-
-        config "./normalize.config"
+    test("homo_sapiens - [vcf, vcf2], [bam, bam2], [], fasta, fai, txt - normalize") {
 
         when {
             process {
                 """
                 input[0] = [
-                    [ id:"test" ],
+                    [ id:"test", args:"--normalize_chrs" ],
                     [
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gvcf/test.genome.vcf", checkIfExists:true),
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gvcf/test2.genome.vcf", checkIfExists:true),
@@ -144,7 +142,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match("normalize") }
+                { assert snapshot(process.out).match() }
             )
         }
 
@@ -176,7 +174,36 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match("stub") }
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - [vcf, vcf2], [], [], [], [], [] - empty vcf") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:"test", args:"min_support=2" ],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gvcf/test.genome.vcf", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/empty.vcf.gz", checkIfExists:true),                    ],
+                    [],
+                    []
+                ]
+                input[1] = [[],[]]
+                input[2] = [[],[]]
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
             )
         }
 
