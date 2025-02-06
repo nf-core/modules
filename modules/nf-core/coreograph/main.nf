@@ -8,9 +8,9 @@ process COREOGRAPH {
     tuple val(meta), path(image)
 
     output:
-    tuple val(meta), path("*[0-9]*.tif"), emit: cores
-    tuple val(meta), path("./masks/"), emit: masks
-    tuple val(meta), path("TMA_MAP.tif"), emit: tma_map
+    tuple val(meta), path("*[0-9]*.tif")     , emit: cores
+    tuple val(meta), path("./masks/")        , emit: masks
+    tuple val(meta), path("TMA_MAP.tif")     , emit: tma_map
     tuple val(meta), path("centroidsY-X.txt"), emit: centroids
 
     path "versions.yml" , emit: versions
@@ -20,8 +20,7 @@ process COREOGRAPH {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '2.2.9'
+    def VERSION = '2.2.9' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     python /app/UNetCoreograph.py \\
@@ -37,7 +36,7 @@ process COREOGRAPH {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '2.2.9' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch TMA_MAP.tif
     cat <<-END_VERSIONS > versions.yml

@@ -1,9 +1,0 @@
-- name: mmseqs easysearch test_mmseqs_easysearch
-  command: nextflow run ./tests/modules/nf-core/mmseqs/easysearch -entry test_mmseqs_easysearch -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/mmseqs/easysearch/nextflow.config
-  tags:
-    - mmseqs
-    - mmseqs/easysearch
-  files:
-    - path: output/mmseqs/test_query.tsv
-      md5sum: 98a6e138ad41ed04366808799fd6a4b8
-    - path: output/mmseqs/versions.yml

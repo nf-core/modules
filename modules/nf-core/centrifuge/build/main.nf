@@ -1,11 +1,11 @@
 process CENTRIFUGE_BUILD {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/centrifuge:1.0.4.1--hdcf5f25_1' :
-        'biocontainers/centrifuge:1.0.4.1--hdcf5f25_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/centrifuge:1.0.4.2--hdcf5f25_0'
+        : 'biocontainers/centrifuge:1.0.4.2--hdcf5f25_0'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -15,8 +15,8 @@ process CENTRIFUGE_BUILD {
     path size_table
 
     output:
-    tuple val(meta), path("${prefix}/") , emit: cf
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("${prefix}/"), emit: cf
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,13 +29,15 @@ process CENTRIFUGE_BUILD {
     mkdir ${prefix}
 
     centrifuge-build \\
-        -p $task.cpus \\
-        $fasta \\
+        -p ${task.cpus} \\
+        ${fasta} \\
         ${prefix}/${prefix} \\
-        --conversion-table $conversion_table \\
-        --taxonomy-tree $taxonomy_tree \\
-        --name-table $name_table \\
-        ${size_table_cmd}
+        --conversion-table ${conversion_table} \\
+        --taxonomy-tree ${taxonomy_tree} \\
+        --name-table ${name_table} \\
+        ${size_table_cmd} \\
+        ${args} \\
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -44,7 +46,7 @@ process CENTRIFUGE_BUILD {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+    def _args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}/
