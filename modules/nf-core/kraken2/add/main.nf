@@ -24,7 +24,7 @@ process KRAKEN2_ADD {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir ${prefix}
+    mkdir -p ${prefix}
     mv "taxonomy" ${prefix}
 
     echo ${fasta} |\\
