@@ -41,7 +41,7 @@ nextflow_process {
                             return null
                         }
                         if(key == "vcf") {
-                            return [key, val.collect { it.collect { it instanceof Map ? it : "${file(it).name},variantsMD5:${path(it).vcf.variantsMD5}" } }]
+                            return [key, val.collect { it.collect { it instanceof Map ? it : path(it).vcf.summary } }]
                         }
                         return [key, val]
                     }.findAll { it != null }
@@ -82,7 +82,7 @@ nextflow_process {
                             return null
                         }
                         if(key == "vcf") {
-                            return [key, val.collect { it.collect { it instanceof Map ? it : "${file(it).name},variantsMD5:${path(it).vcf.variantsMD5}" } }]
+                            return [key, val.collect { it.collect { it instanceof Map ? it : path(it).vcf.summary } }]
                         }
                         return [key, val]
                     }.findAll { it != null }
@@ -136,7 +136,7 @@ nextflow_process {
                             return null
                         }
                         if(key == "vcf") {
-                            return [key, val.collect { it.collect { it instanceof Map ? it : "${file(it).name},variantsMD5:${path(it).vcf.variantsMD5}" } }]
+                            return [key, val.collect { it.collect { it instanceof Map ? it : path(it).vcf.summary } }]
                         }
                         return [key, val]
                     }.findAll { it != null }
@@ -189,7 +189,7 @@ nextflow_process {
                             return null
                         }
                         if(key == "vcf") {
-                            return [key, val.collect { it.collect { it instanceof Map ? it : "${file(it).name},variantsMD5:${path(it).vcf.variantsMD5}" } }]
+                            return [key, val.collect { it.collect { it instanceof Map ? it : path(it).vcf.summary } }]
                         }
                         return [key, val]
                     }.findAll { it != null }
@@ -264,7 +264,7 @@ nextflow_process {
                             return null
                         }
                         if(key == "vcf") {
-                            return [key, val.collect { it.collect { it instanceof Map ? it : "${file(it).name},variantsMD5:${path(it).vcf.variantsMD5}" } }]
+                            return [key, val.collect { it.collect { it instanceof Map ? it : path(it).vcf.summary } }]
                         }
                         return [key, val]
                     }.findAll { it != null }
