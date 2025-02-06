@@ -20,6 +20,7 @@ process PYCHOPPER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def PYCHOPPER_VERSION = '2.7.10'
 
     """
     pychopper \\
@@ -32,7 +33,7 @@ process PYCHOPPER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pychopper: 2.7.10 (hard coded- check container used for this module)
+        pychopper: $PYCHOPPER_VERSION (hard coded- check container used for this module)
     END_VERSIONS
     """
 
