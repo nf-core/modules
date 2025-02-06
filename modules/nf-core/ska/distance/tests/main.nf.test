@@ -59,6 +59,38 @@ nextflow_process {
 
     }
 
+    test("sarscov2 - pfal - list") {
+
+        setup {
+            """
+            echo "sarscov2_reduced.skf" > sketch_list.txt
+            echo "plasmodium_reduced.skf" >> sketch_list.txt
+            wget https://raw.githubusercontent.com/nf-core/test-datasets/modules/genomics/sarscov2/genome/ska/sarscov2_reduced.skf
+            wget https://raw.githubusercontent.com/nf-core/test-datasets/modules/genomics/eukaryotes/plasmodium_falciparum/ska/plasmodium_reduced.skf
+            """
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [],
+                    [file("sketch_list.txt", checkIfExists: true)]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
     test("sarscov2 - pfal - list - stub") {
 
         options "-stub"

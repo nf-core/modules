@@ -8,7 +8,7 @@ process SKA_DISTANCE {
         'biocontainers/ska:1.0--h077b44d_6' }"
 
     input:
-    tuple val(meta), path(sketch_files), path(sketch_list)
+    tuple val(meta), path(sketch_files, arity: '0..*'), path(sketch_list)
 
     output:
     tuple val(meta), path("*distances.tsv"), emit: distances    , optional: true
@@ -39,13 +39,21 @@ process SKA_DISTANCE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args         = task.ext.args ?: ''
+    def prefix       = task.ext.prefix ?: "${meta.id}"
+    def output_dist  = task.ext.args =~ "-d" ? "" : "touch ${prefix}.distances.tsv"
+    def output_clust = task.ext.args =~ "-c" ? "" : "touch ${prefix}.clusters.tsv"
+    // this is not a complete criterion for this output but it is good enough
+    def output_dot   = task.ext.args =~ "-S" || sketch_files.size > 1 ? "touch ${prefix}.dot" : ""
     """
-    touch ${prefix}.distances.tsv
-    touch ${prefix}.clusters.tsv
-    touch ${prefix}.cluster.1.txt
-    touch ${prefix}.dot
+    $output_dist
+    $output_clust
+    # this is not how this works but it's the best we can do without knowing the input content
+    for i in {1..${sketch_files.size}}
+    do
+        touch ${prefix}.cluster\${i}.txt
+    done
+    $output_dot
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
