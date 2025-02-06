@@ -6,7 +6,7 @@ include { SORTMERNA                          } from '../../../modules/nf-core/so
 include { SORTMERNA as SORTMERNA_INDEX       } from '../../../modules/nf-core/sortmerna/main'
 include { FQ_LINT                            } from '../../../modules/nf-core/fq/lint/main'
 include { FQ_LINT as FQ_LINT_AFTER_TRIMMING  } from '../../../modules/nf-core/fq/lint/main'
-include { FQ_LINT as FQ_LINT_AFTER_BBMAP     } from '../../../modules/nf-core/fq/lint/main'
+include { FQ_LINT as FQ_LINT_AFTER_BBSPLIT   } from '../../../modules/nf-core/fq/lint/main'
 include { FQ_LINT as FQ_LINT_AFTER_SORTMERNA } from '../../../modules/nf-core/fq/lint/main'
 
 include { FASTQ_SUBSAMPLE_FQ_SALMON          } from '../fastq_subsample_fq_salmon'
@@ -111,6 +111,7 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     stranded_threshold   // float: The fraction of stranded reads that must be assigned to a strandedness for confident assignment. Must be at least 0.5
     unstranded_threshold // float: The difference in fraction of stranded reads assigned to 'forward' and 'reverse' below which a sample is classified as 'unstranded'
     skip_linting         // boolean: true/false
+    fastp_merge          // boolean: true/false: whether to stitch paired end reads together in FASTP output
 
     main:
 
@@ -119,18 +120,6 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     ch_trim_read_count = Channel.empty()
     ch_multiqc_files   = Channel.empty()
     ch_lint_log        = Channel.empty()
-
-    //
-    // MODULE: Lint FastQ files
-    //
-    if(!skip_linting) {
-        FQ_LINT (
-            ch_reads.map{ meta, fastqs -> [meta, fastqs.flatten()] }
-        )
-        ch_versions = ch_versions.mix(FQ_LINT.out.versions.first())
-        ch_lint_log = ch_lint_log.mix(FQ_LINT.out.lint)
-        ch_reads = ch_reads.join(FQ_LINT.out.lint.map{it[0]})
-    }
 
     ch_reads
         .branch {
@@ -153,6 +142,19 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     .set { ch_filtered_reads }
 
     ch_versions = ch_versions.mix(CAT_FASTQ.out.versions.first())
+
+    //
+    // MODULE: Lint FastQ files
+    //
+
+    if(!skip_linting) {
+        FQ_LINT (
+            ch_filtered_reads
+        )
+        ch_versions = ch_versions.mix(FQ_LINT.out.versions.first())
+        ch_lint_log = ch_lint_log.mix(FQ_LINT.out.lint)
+        ch_reads = ch_reads.join(FQ_LINT.out.lint.map{it[0]})
+    }
 
     //
     // SUBWORKFLOW: Read QC, extract UMI and trim adapters with TrimGalore!
@@ -190,7 +192,7 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
             skip_trimming,
             [],
             save_trimmed,
-            save_trimmed,
+            fastp_merge,
             min_trimmed_reads
         )
         ch_filtered_reads      = FASTQ_FASTQC_UMITOOLS_FASTP.out.reads

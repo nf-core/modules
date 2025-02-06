@@ -1,0 +1,84 @@
+nextflow_process {
+
+    name "Test Process CATPACK_ADDNAMES"
+    script "../main.nf"
+    process "CATPACK_ADDNAMES"
+    config './nextflow.config'
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "catpack"
+    tag "catpack/addnames"
+    tag "catpack/prepare"
+    tag "catpack/contigs"
+
+    setup {
+        run('CATPACK_PREPARE') {
+            script '../../prepare/main.nf'
+            process {
+            """
+            input[0] = [ [id:'test'], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)  ] ]
+            input[1] = [ file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/prot_nodes.dmp', checkIfExists: true) ]
+            input[2] = [ file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/prot_names.dmp', checkIfExists: true) ]
+            input[3] = [ file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/prot.accession2taxid.gz', checkIfExists: true) ]
+            """
+            }
+        }
+
+        run('CATPACK_CONTIGS') {
+            script '../../contigs/main.nf'
+            process {
+            """
+                input[0] = [ [id:'test'], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)  ] ]
+                input[1] = CATPACK_PREPARE.out.db
+                input[2] = CATPACK_PREPARE.out.taxonomy
+                input[3] = [[:], []]
+                input[4] = [[:], []]
+            """
+            }
+        }
+    }
+
+    test("sarscov2 - genome - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = CATPACK_CONTIGS.out.contig2classification
+                input[1] = CATPACK_PREPARE.out.taxonomy
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - genome -fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = CATPACK_CONTIGS.out.contig2classification
+                input[1] = CATPACK_PREPARE.out.taxonomy
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
