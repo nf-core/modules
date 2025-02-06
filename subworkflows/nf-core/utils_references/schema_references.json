@@ -42,114 +42,133 @@
             "ascat_alleles": {
                 "meta": ["ascat_alleles"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+$",
                 "errorMessage": "TODO"
             },
             "ascat_loci": {
                 "meta": ["ascat_loci"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+$",
                 "errorMessage": "TODO"
             },
             "ascat_loci_gc": {
                 "meta": ["ascat_loci_gc"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+$",
                 "errorMessage": "TODO"
             },
             "bed12": {
                 "meta": ["bed12"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+$",
                 "errorMessage": "TODO"
             },
             "bowtie1_index": {
                 "meta": ["bowtie1_index"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+$",
                 "errorMessage": "Bowtie1 index, cannot contain spaces"
             },
             "bowtie2_index": {
                 "meta": ["bowtie2_index"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+$",
                 "errorMessage": "Bowtie2 index, cannot contain spaces"
             },
             "bwamem1_index": {
                 "meta": ["bwamem1_index"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+$",
                 "errorMessage": "BWA-MEM index, cannot contain spaces"
             },
             "bwamem2_index": {
                 "meta": ["bwamem2_index"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+$",
                 "errorMessage": "BWA-MEM2 index, cannot contain spaces"
             },
             "dragmap_hashtable": {
                 "meta": ["dragmap_hashtable"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+$",
                 "errorMessage": "DRAGMAP hashtable, cannot contain spaces"
             },
             "chr_dir": {
                 "meta": ["chr_dir"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+$",
                 "errorMessage": "TODO"
             },
             "fasta": {
                 "meta": ["fasta"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+\\.f(ast|n)?a(\\.gz)?$",
                 "errorMessage": "Fasta file [required when creating a reference], cannot contain spaces"
             },
             "fasta_dict": {
                 "meta": ["fasta_dict"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+\\.dict(\\.gz)?$",
                 "errorMessage": "Fasta dictionary, cannot contain spaces"
             },
             "fasta_fai": {
                 "meta": ["fasta_fai"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+\\.f(ast|n)?a\\.fai(\\.gz)?$",
                 "errorMessage": "Fasta index, cannot contain spaces"
             },
             "fasta_sizes": {
                 "meta": ["fasta_sizes"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+\\.f(ast|n)?a\\.sizes(\\.gz)?$",
                 "errorMessage": "Fasta sizes, cannot contain spaces"
             },
             "gff": {
                 "meta": ["gff"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+\\.gff(\\.gz)?$",
                 "errorMessage": "GFF3 file, required when no GTF is provided and wanting to build a reference needing such genes annotation, cannot contain spaces"
             },
             "gtf": {
                 "meta": ["gtf"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+\\.gtf(\\.gz)?$",
                 "errorMessage": "GTF file, required when no GFF3 is provided and wanting to build a reference needing such genes annotation, cannot contain spaces"
             },
             "hisat2_index": {
                 "meta": ["hisat2_index"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+$",
                 "errorMessage": "HISAT2 index, cannot contain spaces"
             },
             "intervals_bed": {
                 "meta": ["intervals_bed"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+\\.bed$",
                 "errorMessage": "Fasta intervals bed, cannot contain spaces "
             },
             "kallisto_index": {
                 "meta": ["kallisto_index"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+$",
                 "errorMessage": "Kallisto index, cannot contain spaces"
             },
@@ -161,59 +180,69 @@
             "mito_name": {
                 "meta": ["mito_name"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+$",
                 "errorMessage": "TODO"
             },
             "msisensorpro_list": {
                 "meta": ["msisensorpro_list"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+$",
                 "errorMessage": "MSIsensor-pro list, cannot contain spaces"
             },
             "ngscheckmate_bed": {
                 "meta": ["ngscheckmate_bed"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+\\.bed$",
                 "errorMessage": "ngscheckmate bed, cannot contain spaces "
             },
             "readme": {
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+$",
                 "errorMessage": "README file describing the reference, cannot contain spaces"
             },
             "rsem_index": {
                 "meta": ["rsem_index"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+$",
                 "errorMessage": "RSEM index, cannot contain spaces"
             },
             "salmon_index": {
                 "meta": ["salmon_index"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+$",
                 "errorMessage": "Salmon index, cannot contain spaces"
             },
             "splice_sites": {
                 "meta": ["splice_sites"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+(\\.splice_sites)(\\.txt)?$",
                 "errorMessage": "Splice sites [can be generated with HISAT2], cannot contain spaces"
             },
             "star_index": {
                 "meta": ["star_index"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+$",
                 "errorMessage": "STAR index, cannot contain spaces"
             },
             "snpeff_db": {
                 "meta": ["snpeff_db"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+$",
                 "errorMessage": "SnpEff database, cannot contain spaces"
             },
             "transcript_fasta": {
                 "meta": ["transcript_fasta"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+\\.f(ast|n)?a(\\.gz)?$",
                 "errorMessage": "Transcript fasta [can be generated with RSEM], cannot contain spaces"
             },
@@ -238,12 +267,14 @@
             "vcf_dbsnp_vcf": {
                 "meta": ["vcf_dbsnp_vcf"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+\\.vcf(\\.gz)?$",
                 "errorMessage": "VCF file (can be bgzipped), cannot contain spaces"
             },
             "vcf_dbsnp_vcf_tbi": {
                 "meta": ["vcf_dbsnp_vcf_tbi"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+\\.vcf\\.gz\\.tbi?$",
                 "errorMessage": "VCF tabix index, cannot contain spaces"
             },
@@ -255,18 +286,21 @@
             "vcf_dbsnp_vcf_source": {
                 "meta": ["vcf_dbsnp_vcf_source"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+$",
                 "errorMessage": "Source of dbsnp, cannot contain spaces"
             },
             "vcf_germline_resource_vcf": {
                 "meta": ["vcf_germline_resource_vcf"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+\\.vcf(\\.gz)?$",
                 "errorMessage": "VCF file (can be bgzipped), cannot contain spaces"
             },
             "vcf_germline_resource_vcf_tbi": {
                 "meta": ["vcf_germline_resource_vcf_tbi"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+\\.vcf\\.gz\\.tbi?$",
                 "errorMessage": "VCF tabix index, cannot contain spaces"
             },
@@ -279,12 +313,14 @@
             "vcf_known_indels_vcf": {
                 "meta": ["vcf_known_indels_vcf"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+\\.vcf(\\.gz)?$",
                 "errorMessage": "VCF file (can be bgzipped), cannot contain spaces"
             },
             "vcf_known_indels_vcf_tbi": {
                 "meta": ["vcf_known_indels_vcf_tbi"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+\\.vcf\\.gz\\.tbi?$",
                 "errorMessage": "VCF tabix index, cannot contain spaces"
             },
@@ -297,12 +333,14 @@
             "vcf_known_snps_vcf": {
                 "meta": ["vcf_known_snps_vcf"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+\\.vcf(\\.gz)?$",
                 "errorMessage": "VCF file (can be bgzipped), cannot contain spaces"
             },
             "vcf_known_snps_vcf_tbi": {
                 "meta": ["vcf_known_snps_vcf_tbi"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+\\.vcf\\.gz\\.tbi?$",
                 "errorMessage": "VCF tabix index, cannot contain spaces"
             },
@@ -315,12 +353,14 @@
             "vcf_pon_vcf": {
                 "meta": ["vcf_pon_vcf"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+\\.vcf(\\.gz)?$",
                 "errorMessage": "VCF file (can be bgzipped), cannot contain spaces"
             },
             "vcf_pon_vcf_tbi": {
                 "meta": ["vcf_pon_vcf_tbi"],
                 "type": "string",
+                "format": "path",
                 "pattern": "^\\S+\\.vcf\\.gz\\.tbi?$",
                 "errorMessage": "VCF tabix index, cannot contain spaces"
             },
