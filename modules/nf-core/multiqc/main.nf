@@ -19,9 +19,6 @@ process MULTIQC {
     tag "$meta.id"
     label 'process_medium'
 
-    // TODO nf-core: List required Conda package(s).
-    //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10").
-    //               For Conda, the build (i.e. "h9402c20_2") must be EXCLUDED to support installation on different operating systems.
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -37,9 +34,9 @@ process MULTIQC {
     tuple val(meta), path(bam)
 
     output:
-    // TODO nf-core: Update the information obtained form bio.tools and make sure that it is correct
-    tuple val(meta), path("*{csv,json,html,yaml,tsv}"), emit: quality_control_report
-    tuple val(meta), path("*{html}"), emit: sequence_alignment_report
+    // TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
+    tuple val(meta), path("*{,csv,json,html,yaml,tsv}"), emit: quality_control_report
+    tuple val(meta), path("*{,html}"), emit: sequence_alignment_report
     path "versions.yml"           , emit: versions
 
     when:

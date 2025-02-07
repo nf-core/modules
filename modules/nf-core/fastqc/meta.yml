@@ -24,19 +24,19 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
+          e.g. `[ id:'sample1' ]`
 
     - raw_sequence:
-        # TODO nf-core: Update the information obtained form bio.tools and make sure that it is correct
+        # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
         type: file
         description: raw_sequence file
-        pattern: "*.{fastq-like,sam,fastq,bam}"
+        pattern: "*.{,fastq-like,sam,fastq,bam}"
         ontologies:
-          - edam: "http://edamontology.org/data_0848"
-          - edam: "http://edamontology.org/format_2182"
-          - edam: "http://edamontology.org/format_2573"
-          - edam: "http://edamontology.org/format_1930"
-          - edam: "http://edamontology.org/format_2572"
+          - edam: "http://edamontology.org/data_0848" #
+          - edam: "http://edamontology.org/format_2182" # fastq-like
+          - edam: "http://edamontology.org/format_2573" # sam
+          - edam: "http://edamontology.org/format_1930" # fastq
+          - edam: "http://edamontology.org/format_2572" # bam
 
 ## TODO nf-core: Add a description of all of the variables used as output
 output:
@@ -45,15 +45,15 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1' ]`
       - sequence_report:
-          # TODO nf-core: Update the information obtained form bio.tools and make sure that it is correct
+          # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
           type: file
           description: sequence_report file
-          pattern: "*.{html}"
+          pattern: "*.{,html}"
           ontologies:
-            - edam: "http://edamontology.org/data_2955"
-            - edam: "http://edamontology.org/format_2331"
+            - edam: "http://edamontology.org/data_2955" #
+            - edam: "http://edamontology.org/format_2331" # html
 
   - versions:
       - "versions.yml":

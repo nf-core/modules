@@ -24,18 +24,18 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
+          e.g. `[ id:'sample1' ]`
 
     - sequence_trace:
-        # TODO nf-core: Update the information obtained form bio.tools and make sure that it is correct
+        # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
         type: file
         description: sequence_trace file
-        pattern: "*.{bam,sam,cram}"
+        pattern: "*.{,bam,sam,cram}"
         ontologies:
-          - edam: "http://edamontology.org/data_0924"
-          - edam: "http://edamontology.org/format_2572"
-          - edam: "http://edamontology.org/format_2573"
-          - edam: "http://edamontology.org/format_3462"
+          - edam: "http://edamontology.org/data_0924" #
+          - edam: "http://edamontology.org/format_2572" # bam
+          - edam: "http://edamontology.org/format_2573" # sam
+          - edam: "http://edamontology.org/format_3462" # cram
 
 ## TODO nf-core: Add a description of all of the variables used as output
 output:
@@ -44,17 +44,17 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1' ]`
       - sequence_trace:
-          # TODO nf-core: Update the information obtained form bio.tools and make sure that it is correct
+          # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
           type: file
           description: sequence_trace file
-          pattern: "*.{bam,sam,cram}"
+          pattern: "*.{,bam,sam,cram}"
           ontologies:
-            - edam: "http://edamontology.org/data_0924"
-            - edam: "http://edamontology.org/format_2572"
-            - edam: "http://edamontology.org/format_2573"
-            - edam: "http://edamontology.org/format_3462"
+            - edam: "http://edamontology.org/data_0924" #
+            - edam: "http://edamontology.org/format_2572" # bam
+            - edam: "http://edamontology.org/format_2573" # sam
+            - edam: "http://edamontology.org/format_3462" # cram
 
   - versions:
       - "versions.yml":

@@ -19,9 +19,6 @@ process FASTQC {
     tag "$meta.id"
     label 'process_medium'
 
-    // TODO nf-core: List required Conda package(s).
-    //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10").
-    //               For Conda, the build (i.e. "h9402c20_2") must be EXCLUDED to support installation on different operating systems.
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -29,12 +26,12 @@ process FASTQC {
         'biocontainers/fastqc:0.12.1--hdfd78af_0' }"
 
     input:
-    // TODO nf-core: Update the information obtained form bio.tools and make sure that it is correct
+    // TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
     tuple val(meta), path(raw_sequence)
 
     output:
-    // TODO nf-core: Update the information obtained form bio.tools and make sure that it is correct
-    tuple val(meta), path("*{html}"), emit: sequence_report
+    // TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
+    tuple val(meta), path("*{,html}"), emit: sequence_report
     path "versions.yml"           , emit: versions
 
     when:
@@ -56,6 +53,7 @@ process FASTQC {
     fastqc \\
         $args \\
         -@ $task.cpus \\
+        -o ${prefix}. \\
         -o ${prefix}.fastq-like \\
         -o ${prefix}.sam \\
         -o ${prefix}.fastq \\
@@ -77,6 +75,7 @@ process FASTQC {
     //               Complex example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bedtools/split/main.nf#L38-L54
     """
     
+    touch ${prefix}.
     touch ${prefix}.fastq-like
     touch ${prefix}.sam
     touch ${prefix}.fastq

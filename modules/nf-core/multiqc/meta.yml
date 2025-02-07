@@ -25,7 +25,7 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
+          e.g. `[ id:'sample1' ]`
 
     ## TODO nf-core: Delete / customise this example input
     - bam:
@@ -44,33 +44,33 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1' ]`
       - quality_control_report:
-          # TODO nf-core: Update the information obtained form bio.tools and make sure that it is correct
+          # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
           type: file
           description: quality_control_report file
-          pattern: "*.{csv,json,html,yaml,tsv}"
+          pattern: "*.{,csv,json,html,yaml,tsv}"
           ontologies:
-            - edam: "http://edamontology.org/data_3914"
-            - edam: "http://edamontology.org/format_3752"
-            - edam: "http://edamontology.org/format_3464"
-            - edam: "http://edamontology.org/format_2331"
-            - edam: "http://edamontology.org/format_3750"
-            - edam: "http://edamontology.org/format_3475"
+            - edam: "http://edamontology.org/data_3914" #
+            - edam: "http://edamontology.org/format_3752" # csv
+            - edam: "http://edamontology.org/format_3464" # json
+            - edam: "http://edamontology.org/format_2331" # html
+            - edam: "http://edamontology.org/format_3750" # yaml
+            - edam: "http://edamontology.org/format_3475" # tsv
   - sequence_alignment_report:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1' ]`
       - sequence_alignment_report:
-          # TODO nf-core: Update the information obtained form bio.tools and make sure that it is correct
+          # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
           type: file
           description: sequence_alignment_report file
-          pattern: "*.{html}"
+          pattern: "*.{,html}"
           ontologies:
-            - edam: "http://edamontology.org/data_0867"
-            - edam: "http://edamontology.org/format_2331"
+            - edam: "http://edamontology.org/data_0867" #
+            - edam: "http://edamontology.org/format_2331" # html
 
   - versions:
       - "versions.yml":
