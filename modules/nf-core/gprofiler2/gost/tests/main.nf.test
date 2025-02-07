@@ -46,7 +46,8 @@ nextflow_process {
                     ((params.gprofiler2_token == null) ? '' : "--token \"${params.gprofiler2_token}\""),
                     ((params.gprofiler2_organism == null) ? '' : "--organism \"${params.gprofiler2_organism}\""),
                     ((params.gprofiler2_background_column == null) ? '' : "--background_column \"${params.gprofiler2_background_column}\""),
-                    ((params.gprofiler2_sources == null) ? '' : "--sources \"${params.gprofiler2_sources}\"")
+                    ((params.gprofiler2_sources == null) ? '' : "--sources \"${params.gprofiler2_sources}\""),
+                    "--archive gprofiler_archive3/e111_eg58_p18"
                 ].join(' ').trim()
             }
             process {
