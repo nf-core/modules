@@ -193,3 +193,11 @@ jobs:
           echo "DEBUG: toJSON(needs.*.result) = ${{ toJSON(needs.*.result) }}"
           echo "DEBUG: needs.nf-test.outputs.filtered_paths = ${{ needs.nf-test.outputs.filtered_paths }}"
           echo "::endgroup::"
+
+      - name: Clean Workspace # Purge the workspace in case it's running on a self-hosted runner
+        if: always()
+        run: |
+          ls -la ./
+          rm -rf ./* || true
+          rm -rf ./.??* || true
+          ls -la ./

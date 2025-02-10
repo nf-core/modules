@@ -5,12 +5,14 @@ process SIMPLEAF_INDEX {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/simpleaf:0.18.4--ha6fb395_1':
-        'biocontainers/simpleaf:0.18.4--ha6fb395_1' }"
+        'https://depot.galaxyproject.org/singularity/simpleaf:0.19.1--ha6fb395_0':
+        'biocontainers/simpleaf:0.19.1--ha6fb395_0' }"
 
     input:
     tuple val(meta),  path(genome_fasta), path(genome_gtf)
     tuple val(meta2), path(transcript_fasta)
+    tuple val(meta3), path(probe_csv)
+    tuple val(meta4), path(feature_csv)
 
     output:
     tuple val(meta), path("${prefix}/index")                    , emit: index
@@ -23,10 +25,9 @@ process SIMPLEAF_INDEX {
 
     script:
     def args = task.ext.args ?: ''
-    def seq_inputs = input_args(genome_fasta, genome_gtf, transcript_fasta)//, probes_csv, features_csv)
+    (meta, seq_inputs) = input_args(genome_fasta, genome_gtf, transcript_fasta, probe_csv, feature_csv, meta, meta2, meta3, meta4)
 
     // Output meta needs to correspond to the input used
-    meta = (transcript_fasta) ? meta2 : meta
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     # export required var
@@ -56,8 +57,8 @@ process SIMPLEAF_INDEX {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: (meta.id ? "${meta.id}" : "${meta2.id}")
+    meta = meta ? meta : [id: 'stub']
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     mkdir -p ${prefix}/index
@@ -78,19 +79,22 @@ process SIMPLEAF_INDEX {
     """
 }
 
-def input_args(genome_fasta, genome_gtf, transcript_fasta) { //, probes_csv, features_csv) {
-    // if (probe_csv) {
-    //     args = "--probe_csv ${probe_csv}"
-    // } else if (feature_csv) {
-    //     args = "--feature_csv ${feature_csv}"
-    // } else
-    if (transcript_fasta) {
-        return "--ref-seq ${transcript_fasta}"
+def input_args(genome_fasta, genome_gtf, transcript_fasta, probe_csv, feature_csv, meta, meta2, meta3, meta4) {
+    // check if all null
+    if (!genome_fasta && !genome_gtf && !transcript_fasta && !probe_csv && !feature_csv) {
+        error "No valid input provided; please provide either a genome fasta + gtf set or a transcript fasta file."
+    }
+
+    if (feature_csv) {
+        return [meta4, "--feature-csv ${feature_csv}"]
+    } else if (probe_csv) {
+        return [meta3, "--probe-csv ${probe_csv}"]
+    } else if (transcript_fasta) {
+        return [meta2, "--ref-seq ${transcript_fasta}"]
     } else if (genome_fasta && genome_gtf) {
-        return "--fasta ${genome_fasta} --gtf ${genome_gtf}"
+        return [meta, "--fasta ${genome_fasta} --gtf ${genome_gtf}"]
     } else {
-        error "No valid input provided; please provide either a genome fasta + gtf set or a transcript fasta file. ${genome_fasta} ${genome_gtf} ${transcript_fasta}"
-        // error "No valid input provided; please provide one of the followings: (i) a genome fasta + gtf set, (ii) a transcript fasta file, (iii) a probes csv file (iv) a features csv file."
+        error "No valid input provided; please provide one of the followings: (i) a genome fasta + gtf set, (ii) a transcript fasta file, (iii) a probes csv file (iv) a features csv file."
     }
 
 }

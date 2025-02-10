@@ -9,6 +9,7 @@ process MALT_BUILD {
     path fastas, stageAs: 'fa_folder/'
     path gff
     path mapping_db
+    val map_type
 
     output:
     path "malt_index/", emit: index
@@ -21,16 +22,17 @@ process MALT_BUILD {
     script:
     def args = task.ext.args ?: ''
     def igff = gff ? "-igff ${gff}" : ""
-
     """
+    INDEX=`find -L . -name '*.db' -o -name '*.abin' -type f`
+    echo \$INDEX
     malt-build \\
         ${args} \\
         -v \\
-        --input fa_folder \\
+        --input fa_folder/ \\
         ${igff} \\
         -d 'malt_index/' \\
         -t ${task.cpus} \\
-        -mdb ${mapping_db}/*.db |&tee malt-build.log
+        -${map_type} \$INDEX |&tee malt-build.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
