@@ -10,7 +10,7 @@ nextflow_process {
     tag "catpack"
     tag "catpack/prepare"
 
-    test("metagenome -sarscov2 - fasta") {
+    test("metagenome - sarscov2 - fasta") {
 
         when {
             process {
@@ -24,24 +24,27 @@ nextflow_process {
         }
 
         then {
-            def stablefiles = []
-            file(process.out.db.get(0).get(1)).eachFileRecurse{ file -> if (!file.isDirectory() && !["database.dmnd", "database.log", "database.fastaid2LCAtaxid", "database.taxids_with_multiple_offspring"].find {file.toString().endsWith(it)}) {stablefiles.add(file)} }
-            def unstablefiles = []
-            file(process.out.db.get(0).get(1)).eachFileRecurse{ file -> if (["database.dmnd", "database.log", "database.fastaid2LCAtaxid", "database.taxids_with_multiple_offspring"].find {file.toString().endsWith(it)}) {unstablefiles.add(file.getName().toString())} }
+            def allFiles = file(process.out.db.get(0).get(1)).listFiles().sort()
+            // Defile all files that have unstable content (ie: timestamp, non-deterministic or any other variable content)
+            def unstableNames = ["database.dmnd", "database.fastaid2LCAtaxid", "database.log", "database.taxids_with_multiple_offspring"]
+            // Filter out the unstable files
+            def stableFiles = allFiles.grep { file -> !unstableNames.contains(file.name) }
+            // Collect the stable file names
+            def stableNames = allFiles.grep { file -> unstableNames.contains(file.name) }.collect { file -> file.name }
+
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        stablefiles.sort(),
-                        unstablefiles.sort(),
+                        stableFiles,
+                        stableNames,
                         process.out.taxonomy,
                         process.out.versions
                     ).match() }
             )
         }
-
     }
 
-    test("metagenome -sarscov2 - fasta - stub") {
+    test("metagenome - sarscov2 - fasta - stub") {
 
         options "-stub"
 
@@ -62,7 +65,5 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
-
 }
