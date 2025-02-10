@@ -45,7 +45,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - sequence_trace:
+      - "*.{,bam,sam,cram}":
           # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
           type: file
           description: sequence_trace file

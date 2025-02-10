@@ -46,7 +46,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - sequence_report:
+      - "*.{,html}":
           # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
           type: file
           description: sequence_report file
