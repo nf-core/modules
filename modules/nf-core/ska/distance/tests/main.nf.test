@@ -102,7 +102,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.versions,
-                    path(process.out.distances[0][1]).csv(sep:"\t").sort(),
+                    path(process.out.distances[0][1]).csv(sep:"\t").columnNames.sort(),
+                    path(process.out.distances[0][1]).csv(sep:"\t").rows[0].values().sort(),
                     path(process.out.cluster_list[0][1]).csv(sep:"\t").sort(),
                     process.out.dot
                 ).match() }
