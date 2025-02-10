@@ -31,6 +31,11 @@ input:
           - edam: "http://edamontology.org/format_25722"
           - edam: "http://edamontology.org/format_3462"
 
+    - index:
+        type: file
+        description: BAI/CRAI file
+        pattern: "*.{bai,crai}"
+
 output:
   - tsv:
       #Only when we have meta

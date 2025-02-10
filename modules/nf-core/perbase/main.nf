@@ -8,7 +8,7 @@ process PERBASE {
         'biocontainers/perbase:0.10.2--h15397dd_0' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(bam), path(index)
 
     output:
     tuple val(meta), path("*.tsv.gz"), emit: tsv
