@@ -1,24 +1,20 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "perbase"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Per-base metrics on BAM/CRAM files.
 keywords:
-  - sort
-  - example
-  - genomics
+  - bam
+  - cram
+  - depth
 tools:
   - "perbase":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Per-base metrics on BAM/CRAM files."
       homepage: "https://github.com/sstadick/perbase/blob/v0.10.2/README.md"
       documentation: "https://github.com/sstadick/perbase/blob/v0.10.2/README.md"
       tool_dev_url: "https://github.com/sstadick/perbase"
-      doi: ""
-      licence: ['MIT']
+      licence: ["MIT"]
       identifier: biotools:perbase
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   # Only when we have meta
   - - meta:
@@ -26,42 +22,35 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-  
-  ## TODO nf-core: Delete / customise this example input
+
     - bam:
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
+        description: Sorted BAM/CRAM file
+        pattern: "*.{bam,cram}"
         ontologies:
           - edam: "http://edamontology.org/format_25722"
-          - edam: "http://edamontology.org/format_2573"
           - edam: "http://edamontology.org/format_3462"
-          
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  - bam:
-  #Only when we have meta
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-  ## TODO nf-core: Delete / customise this example output
-    - "*.bam":
-        type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
-        ontologies:
-          - edam: "http://edamontology.org/format_25722"
-          - edam: "http://edamontology.org/format_2573"
-          - edam: "http://edamontology.org/format_3462"
-          
+  - tsv:
+      #Only when we have meta
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.tsv.gz":
+          type: file
+          description: TSV file
+          pattern: "*.{tsv.gz}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+
   - versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 
 authors:
   - "@camlloyd"
