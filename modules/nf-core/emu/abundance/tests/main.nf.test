@@ -7,11 +7,11 @@ nextflow_process {
     tag "modules_nfcore"
     tag "emu"
     tag "emu/abundance"
+    config "./nextflow.config"
 
     setup {
         run("UNTAR") {
             script "modules/nf-core/untar/main.nf"
-            config "./nextflow.config"
             process {
                 """
                 input[0] = Channel.of([
