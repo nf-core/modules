@@ -2,7 +2,7 @@ process STIMULUS_CHECKTORCHMODEL {
     tag "$data_config - $data"
     label 'process_medium'
 
-    container "docker.io/mathysgrapotte/stimulus-py:latest"
+    container "docker.io/mathysgrapotte/stimulus-py:0.2.4"
 
     input:
     path(data)
@@ -22,17 +22,12 @@ process STIMULUS_CHECKTORCHMODEL {
     def args        = task.ext.args ?: ''
     prefix          = task.ext.prefix ?: model.baseName.replaceFirst(/\.py/, "")
     def weights_arg = initial_weights ? "--initial_weights ${initial_weights}" : ""
-    def gpu_arg     = task.accelerator ? "--gpus ${task.accelerator.request}" : ""
     """
     stimulus-check-model \
         -d ${data} \
         -m ${model} \
         -e ${data_config} \
         -c ${model_config} \
-        ${weights_arg} \
-        ${gpu_arg} \
-        --cpus ${task.cpus} \
-        --memory "${task.memory}" \
         $args > ${prefix}_modelcheck.log
 
     cat <<-END_VERSIONS > versions.yml
