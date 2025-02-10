@@ -10,7 +10,7 @@ nextflow_process {
     tag "ska/distance"
     tag "ska/distance/wget.nf"
 
-    test("sarscov2 - pfal - skf") {
+    test("sarscov2 - plasmodium - skf") {
 
         when {
             process {
@@ -39,7 +39,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - pfal - skf - stub") {
+    test("sarscov2 - plasmodium - skf - stub") {
 
         options "-stub"
 
@@ -65,7 +65,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - pfal - list") {
+    test("sarscov2 - plasmodium - list") {
 
         setup {
             run("WGET", alias: "WGET1") {
@@ -111,7 +111,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - pfal - list - stub") {
+    test("sarscov2 - plasmodium - list - stub") {
 
         options "-stub"
 
