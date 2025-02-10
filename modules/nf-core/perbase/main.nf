@@ -4,7 +4,7 @@ process PERBASE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/perbase:0.10.1--h15397dd_0':
+        'https://depot.galaxyproject.org/singularity/perbase:0.10.2--h15397dd_0':
         'biocontainers/perbase:0.10.2--h15397dd_0' }"
 
     input:
