@@ -17,7 +17,7 @@
 
 process MULTIQC {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_single'
 
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "${moduleDir}/environment.yml"
@@ -35,8 +35,8 @@ process MULTIQC {
 
     output:
     // TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
-    tuple val(meta), path("*{,csv,json,html,yaml,tsv}"), emit: quality_control_report
-    tuple val(meta), path("*{,html}"), emit: sequence_alignment_report
+    tuple val(meta), path("*{csv,json,html,yaml,tsv}"), emit: quality_control_report
+    tuple val(meta), path("*{html}"), emit: sequence_alignment_report
     path "versions.yml"           , emit: versions
 
     when:

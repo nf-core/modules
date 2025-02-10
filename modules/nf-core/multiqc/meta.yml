@@ -33,9 +33,9 @@ input:
         description: Sorted BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
         ontologies:
-          - edam: "http://edamontology.org/format_25722"
-          - edam: "http://edamontology.org/format_2573"
-          - edam: "http://edamontology.org/format_3462"
+          - edam: "http://edamontology.org/format_25722" # BAM
+          - edam: "http://edamontology.org/format_2573" # CRAM
+          - edam: "http://edamontology.org/format_3462" # SAM
 
 ## TODO nf-core: Add a description of all of the variables used as output
 output:
@@ -45,32 +45,32 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.{,csv,json,html,yaml,tsv}":
+      - "*.{csv,json,html,yaml,tsv}":
           # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
           type: file
           description: quality_control_report file
-          pattern: "*.{,csv,json,html,yaml,tsv}"
+          pattern: "*.{csv,json,html,yaml,tsv}"
           ontologies:
-            - edam: "http://edamontology.org/data_3914" #
-            - edam: "http://edamontology.org/format_3752" # csv
-            - edam: "http://edamontology.org/format_3464" # json
-            - edam: "http://edamontology.org/format_2331" # html
-            - edam: "http://edamontology.org/format_3750" # yaml
-            - edam: "http://edamontology.org/format_3475" # tsv
+            - edam: "http://edamontology.org/data_3914" # Quality control report
+            - edam: "http://edamontology.org/format_3752" # CSV
+            - edam: "http://edamontology.org/format_3464" # JSON
+            - edam: "http://edamontology.org/format_2331" # HTML
+            - edam: "http://edamontology.org/format_3750" # YAML
+            - edam: "http://edamontology.org/format_3475" # TSV
   - sequence_alignment_report:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.{,html}":
+      - "*.{html}":
           # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
           type: file
           description: sequence_alignment_report file
-          pattern: "*.{,html}"
+          pattern: "*.{html}"
           ontologies:
-            - edam: "http://edamontology.org/data_0867" #
-            - edam: "http://edamontology.org/format_2331" # html
+            - edam: "http://edamontology.org/data_0867" # Sequence alignment report
+            - edam: "http://edamontology.org/format_2331" # HTML
 
   - versions:
       - "versions.yml":

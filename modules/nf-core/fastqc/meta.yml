@@ -30,13 +30,13 @@ input:
         # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
         type: file
         description: raw_sequence file
-        pattern: "*.{,fastq-like,sam,fastq,bam}"
+        pattern: "*.{fastq-like,sam,fastq,bam}"
         ontologies:
-          - edam: "http://edamontology.org/data_0848" #
-          - edam: "http://edamontology.org/format_2182" # fastq-like
-          - edam: "http://edamontology.org/format_2573" # sam
-          - edam: "http://edamontology.org/format_1930" # fastq
-          - edam: "http://edamontology.org/format_2572" # bam
+          - edam: "http://edamontology.org/data_0848" # Raw sequence
+          - edam: "http://edamontology.org/format_2182" # FASTQ-like format (text)
+          - edam: "http://edamontology.org/format_2573" # SAM
+          - edam: "http://edamontology.org/format_1930" # FASTQ
+          - edam: "http://edamontology.org/format_2572" # BAM
 
 ## TODO nf-core: Add a description of all of the variables used as output
 output:
@@ -46,14 +46,14 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.{,html}":
+      - "*.{html}":
           # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
           type: file
           description: sequence_report file
-          pattern: "*.{,html}"
+          pattern: "*.{html}"
           ontologies:
-            - edam: "http://edamontology.org/data_2955" #
-            - edam: "http://edamontology.org/format_2331" # html
+            - edam: "http://edamontology.org/data_2955" # Sequence report
+            - edam: "http://edamontology.org/format_2331" # HTML
 
   - versions:
       - "versions.yml":

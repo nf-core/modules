@@ -30,12 +30,12 @@ input:
         # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
         type: file
         description: sequence_trace file
-        pattern: "*.{,bam,sam,cram}"
+        pattern: "*.{bam,sam,cram}"
         ontologies:
-          - edam: "http://edamontology.org/data_0924" #
-          - edam: "http://edamontology.org/format_2572" # bam
-          - edam: "http://edamontology.org/format_2573" # sam
-          - edam: "http://edamontology.org/format_3462" # cram
+          - edam: "http://edamontology.org/data_0924" # Sequence trace
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_2573" # SAM
+          - edam: "http://edamontology.org/format_3462" # CRAM
 
 ## TODO nf-core: Add a description of all of the variables used as output
 output:
@@ -45,16 +45,16 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.{,bam,sam,cram}":
+      - "*.{bam,sam,cram}":
           # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
           type: file
           description: sequence_trace file
-          pattern: "*.{,bam,sam,cram}"
+          pattern: "*.{bam,sam,cram}"
           ontologies:
-            - edam: "http://edamontology.org/data_0924" #
-            - edam: "http://edamontology.org/format_2572" # bam
-            - edam: "http://edamontology.org/format_2573" # sam
-            - edam: "http://edamontology.org/format_3462" # cram
+            - edam: "http://edamontology.org/data_0924" # Sequence trace
+            - edam: "http://edamontology.org/format_2572" # BAM
+            - edam: "http://edamontology.org/format_2573" # SAM
+            - edam: "http://edamontology.org/format_3462" # CRAM
 
   - versions:
       - "versions.yml":
