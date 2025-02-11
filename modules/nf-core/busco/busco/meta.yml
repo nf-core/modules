@@ -40,6 +40,9 @@ input:
   - - config_file:
         type: file
         description: Path to BUSCO config file.
+  - - clean_intermediates:
+        type: boolean
+        description: Flag to remove intermediate files.
 output:
   - batch_summary:
       - meta:
