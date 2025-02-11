@@ -4,14 +4,14 @@ process BUSCO_BUSCO {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/busco:5.7.1--pyhdfd78af_0':
-        'biocontainers/busco:5.7.1--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/busco:5.8.2--pyhdfd78af_0':
+        'biocontainers/busco:5.8.2--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta, stageAs:'tmp_input/*')
     val mode                              // Required:    One of genome, proteins, or transcriptome
-    val lineage                           // Required:    lineage to check against, "auto" enables --auto-lineage instead
-    path busco_lineages_path              // Recommended: path to busco lineages - downloads if not set
+    val lineage                           // Required:    lineage for checking against, or "auto/auto_prok/auto_euk" for enabling auto-lineage
+    path busco_lineages_path              // Recommended: busco lineages file - downloads if not set
     path config_file                      // Optional:    busco configuration file
 
     output:
@@ -21,9 +21,11 @@ process BUSCO_BUSCO {
     tuple val(meta), path("*-busco/*/run_*/full_table.tsv")           , emit: full_table            , optional: true
     tuple val(meta), path("*-busco/*/run_*/missing_busco_list.tsv")   , emit: missing_busco_list    , optional: true
     tuple val(meta), path("*-busco/*/run_*/single_copy_proteins.faa") , emit: single_copy_proteins  , optional: true
-    tuple val(meta), path("*-busco/*/run_*/busco_sequences")          , emit: seq_dir
+    tuple val(meta), path("*-busco/*/run_*/busco_sequences")          , emit: seq_dir               , optional: true
     tuple val(meta), path("*-busco/*/translated_proteins")            , emit: translated_dir        , optional: true
     tuple val(meta), path("*-busco")                                  , emit: busco_dir
+    tuple val(meta), path("busco_downloads/lineages/*")               , emit: downloaded_lineages   , optional: true
+
     path "versions.yml"                                               , emit: versions
 
     when:
@@ -35,8 +37,10 @@ process BUSCO_BUSCO {
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}-${lineage}"
-    def busco_config = config_file ? "--config $config_file" : ''
-    def busco_lineage = lineage.equals('auto') ? '--auto-lineage' : "--lineage_dataset ${lineage}"
+    def busco_config = config_file ? "--config ${config_file}" : ''
+    def busco_lineage = lineage in [ 'auto', 'auto_prok', 'auto_euk']
+        ? lineage.replaceFirst('auto', '--auto-lineage').replaceAll('_', '-')
+        : "--lineage_dataset ${lineage}"
     def busco_lineage_dir = busco_lineages_path ? "--download_path ${busco_lineages_path}" : ''
     """
     # Nextflow changes the container --entrypoint to /bin/bash (container default entrypoint: /usr/local/env-execute)

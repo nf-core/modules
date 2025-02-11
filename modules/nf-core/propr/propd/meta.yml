@@ -6,6 +6,7 @@ keywords:
   - logratio
   - expression
   - propr
+  - propd
 tools:
   - "propr":
       description: "Logratio methods for omics data"
@@ -14,63 +15,158 @@ tools:
       tool_dev_url: "https://github.com/tpq/propr"
       doi: "10.1038/s41598-017-16520-0"
       licence: ["GPL-2"]
+      identifier: biotools:propr
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing additional information.
-        This can be used at the workflow level to pass optional parameters to the module.
-        [id: 'test', ...]
-  - count:
-      type: file
-      description: |
-        Count matrix, where rows = variables or genes, columns = samples or cells.
-        This matrix should not contain zeros. One should plug this module after another one that handles the zeros.
-      pattern: "*.{csv,tsv}"
-  - meta2:
-      type: map
-      description: |
-        Groovy map containing study-wide metadata related to the sample sheet and matrix
-  - samplesheet:
-      type: file
-      description: |
-        CSV or TSV format sample sheet with sample metadata
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing contrast information. This can be used at the
+          workflow level to pass optional parameters to the module, e.g.
+          [ id:'contrast1', blocking:'patient' ] passed in as ext.args like:
+          '--blocking_variable $meta.blocking'.
+    - contrast_variable:
+        type: string
+        description: |
+          The column in the sample sheet that should be used to define groups for
+          comparison
+    - reference:
+        type: string
+        description: |
+          The value within the contrast_variable column of the sample sheet that
+          should be used to derive the reference samples
+    - target:
+        type: string
+        description: |
+          The value within the contrast_variable column of the sample sheet that
+          should be used to derive the target samples
+  - - meta2:
+        type: map
+        description: |
+          Groovy map containing study-wide metadata related to the sample sheet
+          and matrix
+    - samplesheet:
+        type: file
+        description: |
+          CSV or TSV format sample sheet with sample metadata
+    - counts:
+        type: file
+        description: |
+          Raw TSV or CSV format expression matrix as output from the nf-core
+          RNA-seq workflow
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing additional information.
-        This can be used at the workflow level to pass optional parameters to the module.
-        [id: 'test', ...]
-  - propd:
-      type: file
-      description: R propd object
-      pattern: "*.propd.rds"
-  - results:
-      type: file
-      description: Results table
-      pattern: "*.propd.tsv"
+  - results_genewise:
+      - meta:
+          type: file
+          description: |
+            TSV-format table of genes associated with differential expression 
+            information as compiled from the propd results
+          pattern: "*.propd.genewise.tsv"
+      - "*.propd.genewise.tsv":
+          type: file
+          description: |
+            TSV-format table of genes associated with differential expression 
+            information as compiled from the propd results
+          pattern: "*.propd.genewise.tsv"
+  - genewise_plot:
+      - meta:
+          type: file
+          description: |
+            PNG-format plot of accumulated between group variance vs median log
+            fold change. Genes with high between group variance and high log fold
+            change are likely to be differentially expressed.
+          pattern: "*.propd.genewise.png"
+      - "*.propd.genewise.png":
+          type: file
+          description: |
+            PNG-format plot of accumulated between group variance vs median log
+            fold change. Genes with high between group variance and high log fold
+            change are likely to be differentially expressed.
+          pattern: "*.propd.genewise.png"
+  - rdata:
+      - meta:
+          type: file
+          description: |
+            (Optional) R data containing propd object
+          pattern: "*.propd.rds"
+      - "*.propd.rds":
+          type: file
+          description: |
+            (Optional) R data containing propd object
+          pattern: "*.propd.rds"
+  - results_pairwise:
+      - meta:
+          type: file
+          description: |
+            (Optional) TSV-format table of the native propd pairwise results. This 
+            table contains the differential proportionality values associated to 
+            each pair of genes.
+          pattern: "*.propd.pairwise.tsv"
+      - "*.propd.pairwise.tsv":
+          type: file
+          description: |
+            (Optional) TSV-format table of the native propd pairwise results. This 
+            table contains the differential proportionality values associated to 
+            each pair of genes.
+          pattern: "*.propd.pairwise.tsv"
+  - results_pairwise_filtered:
+      - meta:
+          type: file
+          description: |
+            (Optional) TSV-format table of the filtered propd pairwise results. This
+            table contains the pairs of genes with significant differential 
+            proportionality values.
+          pattern: "*.propd.pairwise_filtered.tsv"
+      - "*.propd.pairwise_filtered.tsv":
+          type: file
+          description: |
+            (Optional) TSV-format table of the filtered propd pairwise results. This
+            table contains the pairs of genes with significant differential 
+            proportionality values.
+          pattern: "*.propd.pairwise_filtered.tsv"
+  - adjacency:
+      - meta:
+          type: file
+          description: |
+            (Optional) CSV-format table of the adjacency matrix defining a graph, with 
+            edges (1) associated to pairs of genes that are significantly differentially
+            proportional.
+          pattern: "*.propd.adjacency.csv"
+      - "*.propd.adjacency.csv":
+          type: file
+          description: |
+            (Optional) CSV-format table of the adjacency matrix defining a graph, with 
+            edges (1) associated to pairs of genes that are significantly differentially
+            proportional.
+          pattern: "*.propd.adjacency.csv"
   - fdr:
-      type: file
-      description: (optional) propd fdr table
-      pattern: "*.fdr.tsv"
-  - adj:
-      type: file
-      description: (optional) propd adj table
-      pattern: "*.adj.csv"
-  - warnings:
-      type: file
-      description: propd warnings
-      pattern: "*.warnings.txt"
+      - meta:
+          type: file
+          description: |
+            (Optional) TSV-format table of FDR values. When permutation tests is performed,
+            this table is generated with the FDR values calculated by the permutation tests.
+            This is a more conservative test than the default BH method, but more
+            computationally expensive.
+          pattern: "*.propd.fdr.tsv"
+      - "*.propd.fdr.tsv":
+          type: file
+          description: |
+            (Optional) TSV-format table of FDR values. When permutation tests is performed,
+            this table is generated with the FDR values calculated by the permutation tests.
+            This is a more conservative test than the default BH method, but more
+            computationally expensive.
+          pattern: "*.propd.fdr.tsv"
   - session_info:
-      type: file
-      description: dump of R SessionInfo
-      pattern: "*.R_sessionInfo.log"
+      - "*.R_sessionInfo.log":
+          type: file
+          description: dump of R SessionInfo
+          pattern: "*.R_sessionInfo.log"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@suzannejin"
+  - "@caraiz2001"
 maintainers:
   - "@suzannejin"

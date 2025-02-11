@@ -15,15 +15,15 @@ nextflow_process {
                 """
 		input[0] = Channel.of([
                     [ id:'test'], // meta map
-                    file(params.test_data['proteomics']['msspectra']['profile_spectra'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'proteomics/msspectra/peakpicker_tutorial_1.mzML', checkIfExists: true)
 	        ])
 		input[1] = Channel.of([
 		    [id:'test'], // meta2 map
-		    file(params.test_data['proteomics']['database']['yeast_ups'], checkIfExists: true)
+		    file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS.fasta', checkIfExists: true)
 	        ])
 		input[2] = Channel.of([
 		    [id:'test'], // meta3 map
-		    file(params.test_data['proteomics']['parameter']['sage_base_config'], checkIfExists: true)
+		    file(params.modules_testdata_base_path + 'proteomics/parameter/sage_base_config.json', checkIfExists: true)
 	        ])
                 """
             }
@@ -44,15 +44,15 @@ nextflow_process {
                 """
 		input[0] = Channel.of([
                     [ id:'test'], // meta map
-                    file(params.test_data['proteomics']['msspectra']['profile_spectra'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'proteomics/msspectra/peakpicker_tutorial_1.mzML', checkIfExists: true)
 	        ])
 		input[1] = Channel.of([
 		    [id:'test'], // meta2 map
-		    file(params.test_data['proteomics']['database']['yeast_ups'], checkIfExists: true)
+		    file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS.fasta', checkIfExists: true)
 	        ])
 		input[2] = Channel.of([
 		    [id:'test'], // meta3 map
-		   file(params.test_data['proteomics']['parameter']['sage_base_config'], checkIfExists: true)
+		   file(params.modules_testdata_base_path + 'proteomics/parameter/sage_base_config.json', checkIfExists: true)
 	        ])
                 """
             }

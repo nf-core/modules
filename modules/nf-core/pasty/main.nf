@@ -33,4 +33,17 @@ process PASTY {
         pasty: \$(echo \$(pasty --version 2>&1) | sed 's/^.*pasty, version //;' )
     END_VERSIONS
     """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.tsv
+    touch ${prefix}.blastn.tsv
+    touch ${prefix}.details.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        pasty: \$(echo \$(pasty --version 2>&1) | sed 's/^.*pasty, version //;' )
+    END_VERSIONS
+    """
 }

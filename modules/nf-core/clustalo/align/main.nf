@@ -10,7 +10,11 @@ process CLUSTALO_ALIGN {
     input:
     tuple val(meta) , path(fasta)
     tuple val(meta2), path(tree)
-    val(compress)
+    path  hmm_in
+    path  hmm_batch
+    path  profile1
+    path  profile2
+    val   compress
 
     output:
     tuple val(meta), path("*.aln{.gz,}"), emit: alignment
@@ -20,9 +24,14 @@ process CLUSTALO_ALIGN {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def write_output = compress ? "--force -o >(pigz -cp ${task.cpus} > ${prefix}.aln.gz)" : "> ${prefix}.aln"
+    def args         = task.ext.args ?: ''
+    def prefix       = task.ext.prefix ?: "${meta.id}"
+    def options_tree = tree ? "--guidetree-in=$tree" : ""
+    def fhmm_in      = hmm_in    ? "--hmm-in=${hmm_in}"       : ""
+    def fhmm_batch   = hmm_batch ? "--hmm-batch=${hmm_batch}" : ""
+    def fprofile1    = profile1  ? "--profile1=${profile1}"   : ""
+    def fprofile2    = profile2  ? "--profile2=${profile2}"   : ""
+    def write_output = compress ? "--force -o >(pigz -cp ${task.cpus} > ${prefix}.aln.gz)" : "-o ${prefix}.aln"
     // using >() is necessary to preserve the return value,
     // so nextflow knows to display an error when it failed
     // the --force -o is necessary, as clustalo expands the commandline input,
@@ -31,6 +40,11 @@ process CLUSTALO_ALIGN {
     """
     clustalo \
         -i ${fasta} \
+        $options_tree \
+        ${fhmm_in} \
+        ${fhmm_batch} \
+        ${fprofile1} \
+        ${fprofile2} \
         --threads=${task.cpus} \
         $args \
         $write_output

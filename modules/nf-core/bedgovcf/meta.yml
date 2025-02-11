@@ -1,4 +1,3 @@
----
 name: "bedgovcf"
 description: Convert a BED file to a VCF file according to a YAML config
 keywords:
@@ -13,45 +12,46 @@ tools:
       documentation: "https://github.com/nvnieuwk/bedgovcf"
       tool_dev_url: "https://github.com/nvnieuwk/bedgovcf"
       licence: ["MIT"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - bed:
-      type: file
-      description: The BED file to convert to VCF
-      pattern: "*.bed"
-  - config:
-      type: file
-      description: The config file to use for the conversion
-      pattern: "*.{yml,yaml}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing fasta index information
-        e.g. `[ id:'test', single_end:false ]`
-  - fai:
-      type: file
-      description: The fasta index file
-      pattern: "*.fai"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - bed:
+        type: file
+        description: The BED file to convert to VCF
+        pattern: "*.bed"
+    - config:
+        type: file
+        description: The config file to use for the conversion
+        pattern: "*.{yml,yaml}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing fasta index information
+          e.g. `[ id:'test', single_end:false ]`
+    - fai:
+        type: file
+        description: The fasta index file
+        pattern: "*.fai"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - vcf:
-      type: file
-      description: The converted VCF file
-      pattern: "*.vcf.gz"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.vcf.gz":
+          type: file
+          description: The converted VCF file
+          pattern: "*.vcf.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"

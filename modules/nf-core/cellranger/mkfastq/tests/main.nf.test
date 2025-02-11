@@ -41,6 +41,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.fastq,
+                    process.out.undetermined_fastq,
                     process.out.interop,
                     process.out.versions
                     ).match()
@@ -65,6 +66,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.fastq,
+                    process.out.undetermined_fastq,
                     process.out.interop,
                     process.out.versions
                     ).match()
@@ -91,6 +93,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.fastq,
+                    process.out.undetermined_fastq,
                     process.out.interop,
                     process.out.versions
                     ).match()

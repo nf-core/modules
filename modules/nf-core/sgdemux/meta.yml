@@ -6,61 +6,96 @@ keywords:
   - bgzip
 tools:
   - "sgdemux":
-      description: "Tool for demultiplexing sequencing data generated on Singular Genomics' sequencing instruments."
+      description: "Tool for demultiplexing sequencing data generated on Singular Genomics'
+        sequencing instruments."
       homepage: "https://github.com/Singular-Genomics/singular-demux"
       documentation: "https://github.com/Singular-Genomics/singular-demux#sgdemux"
       licence: ["For Singular G4™ Sequencing Platform only"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - sample_sheet:
-      type: file
-      description: sample_sheet file (either a Singular Genomics sample sheet, or a two column csv wih Sample_Barcode and Sample_ID)
-      pattern: "*.{csv}"
-  - fastqs_dir:
-      type: directory
-      description: "Input directory containing bgzipped (not gzip) FASTQ files"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - sample_sheet:
+        type: file
+        description: sample_sheet file (either a Singular Genomics sample sheet, or
+          a two column csv with Sample_Barcode and Sample_ID)
+        pattern: "*.{csv}"
+    - fastqs_dir:
+        type: directory
+        description: "Input directory containing bgzipped (not gzip) FASTQ files"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - sample_fastq:
-      type: file
-      description: Demultiplexed per-sample FASTQ files
-      pattern: "output/*_R*.fastq.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - output/*_R*.fastq.gz:
+          type: file
+          description: Demultiplexed per-sample FASTQ files
+          pattern: "output/*_R*.fastq.gz"
   - metrics:
-      type: file
-      description: |
-        Demultiplexing summary stats; control_reads_omitted failing_reads_omitted, total_templates
-      pattern: "output/metrics.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - output/metrics.tsv:
+          type: file
+          description: |
+            Demultiplexing summary stats; control_reads_omitted failing_reads_omitted, total_templates
+          pattern: "output/metrics.tsv"
   - most_frequent_unmatched:
-      type: file
-      description: |
-        File containing approx. counts of barcodes that did not match the expected barcodes
-      pattern: "output/most_frequence_unmatched.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - output/most_frequent_unmatched.tsv:
+          type: file
+          description: |
+            File containing approx. counts of barcodes that did not match the expected barcodes
+          pattern: "output/most_frequence_unmatched.tsv"
   - per_project_metrics:
-      type: file
-      description: Summary metrics for samples in the same project
-      pattern: "output/per_project_metrics.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - output/per_project_metrics.tsv:
+          type: file
+          description: Summary metrics for samples in the same project
+          pattern: "output/per_project_metrics.tsv"
   - per_sample_metrics:
-      type: file
-      description: Summary metrics for each sample
-      pattern: "output/per_sample_metrics.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - output/per_sample_metrics.tsv:
+          type: file
+          description: Summary metrics for each sample
+          pattern: "output/per_sample_metrics.tsv"
   - sample_barcode_hop_metrics:
-      type: file
-      description: |
-        File output for dual-indexed runs with barcodes which are unexpected combinations of
-        expected barcodes e.g. expected barcodes = AA-TT/GG-CC and observed barcodes = AA-CC/GG-TT
-      pattern: "output/sample_barcode_hop_metrics/tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - output/sample_barcode_hop_metrics.tsv:
+          type: file
+          description: |
+            File output for dual-indexed runs with barcodes which are unexpected combinations of
+            expected barcodes e.g. expected barcodes = AA-TT/GG-CC and observed barcodes = AA-CC/GG-TT
+          pattern: "output/sample_barcode_hop_metrics/tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nh13"
   - "@sam-white04"

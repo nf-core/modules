@@ -13,15 +13,12 @@ nextflow_process {
         config "./single-end.nextflow.config"
 
         when {
-            params {
-                outdir   = "$outputDir"
-            }
             process {
                 """
                 input[0] = [
                     [id: 'test'],
                     [
-                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ]
                 ]
                 input[1] = 'HS25'
@@ -48,7 +45,7 @@ nextflow_process {
                     def read_qc = path(process.out.fastq.get(0).get(1)).linesGzip[3]
                     assert read_qc.equals("C1CGGGCGG=GGGJGJG=JJCJJJCJGJJJJGJJJ1JJJGJJGGJGJJGGGJJGJJJCJGGGJ(=G1GGG(CCCGGGCGCGGGCCGCCG8GGGGGGGGGGCC(CGG1GGGG1GGCGCGGCGGGCGCGGGCGGGGCGCCGGGGGCG8GGGG")
                 },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.versions).match() }
             )
         }
 
@@ -60,15 +57,12 @@ nextflow_process {
         config "./single-end.nextflow.config"
 
         when {
-            params {
-                outdir   = "$outputDir"
-            }
             process {
                 """
                 input[0] = [
                     [id: 'test'],
                     [
-                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ]
                 ]
                 input[1] = 'HS25'
@@ -92,15 +86,12 @@ nextflow_process {
         config "./paired-end.nextflow.config"
 
         when {
-            params {
-                outdir   = "$outputDir"
-            }
             process {
                 """
                 input[0] = [
                     [id: 'test'],
                     [
-                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ]
                 ]
                 input[1] = 'HS25'
@@ -139,7 +130,7 @@ nextflow_process {
                     def read_qc = path(process.out.fastq.get(0).get(1).get(1)).linesGzip[3]
                     assert read_qc.equals("1CCGGGGGGGCGGGJJJJJGJG1GJGJ=JGJJCJJJCJJJGJ1GJGJGGJJC8JGG=JGGCGCCGCGGCCCGJCGGGGCJC==CGG88CGGGCGGGCCCGGC8JJJJCGGCGGCCGGGG=CGGGGCCGGCCCGCGCCCCG8GGGG=GGGC")
                 },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.versions).match() }
             )
         }
 
@@ -151,15 +142,12 @@ nextflow_process {
         config "./paired-end.nextflow.config"
 
         when {
-            params {
-                outdir   = "$outputDir"
-            }
             process {
                 """
                 input[0] = [
                     [id: 'test'],
                     [
-                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ]
                 ]
                 input[1] = 'HS25'
