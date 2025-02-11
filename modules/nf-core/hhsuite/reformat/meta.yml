@@ -40,7 +40,7 @@ output:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-    - "${meta.id}.${outformat}":
+    - "${prefix}.${outformat}":
           type: file
           description: Reformatted output MSA file
           pattern: "*.{fas,a2m,a3m,sto,psi,clu}"
