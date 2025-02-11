@@ -24,7 +24,7 @@ process STIMULUS_CHECKTORCHMODEL {
     def weights_arg = initial_weights ? "--initial_weights ${initial_weights}" : ""
     """
     # initialize Ray
-    ray start --head
+    ray start --head --port=6379 --temp-dir /tmp/ray
 
     # wait or it to start
     sleep 10
@@ -35,6 +35,7 @@ process STIMULUS_CHECKTORCHMODEL {
         -m ${model} \
         -e ${data_config} \
         -c ${model_config} \
+        --ray_results_dirpath ${workDir} \
         $args > ${prefix}_modelcheck.log
 
     cat <<-END_VERSIONS > versions.yml
