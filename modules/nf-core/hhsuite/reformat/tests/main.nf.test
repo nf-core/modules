@@ -1,0 +1,73 @@
+nextflow_process {
+
+    name "Test Process HHSUITE_REFORMAT"
+    script "../main.nf"
+    process "HHSUITE_REFORMAT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hhsuite"
+    tag "hhsuite/reformat"
+    tag "hmmer"
+    tag "hmmer/hmmalign"
+
+    setup {
+        run("HMMER_HMMALIGN") {
+            script "modules/nf-core/hmmer/hmmalign/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ], // meta map
+                    file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/proteome.fasta.gz', checkIfExists: true)
+                ]
+				input[1] = file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/proteome.hmm.gz', checkIfExists: true)
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - proteome - sto - a3m") {
+
+        when {
+            process {
+                """
+                input[0] = HMMER_HMMALIGN.out.sto
+                input[1] = "sto"
+                input[2] = "a3m"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - proteome - sto - a3m - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = HMMER_HMMALIGN.out.sto
+                input[1] = "sto"
+                input[2] = "a3m"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
