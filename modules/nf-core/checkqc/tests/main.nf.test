@@ -1,0 +1,116 @@
+nextflow_process {
+
+    name "Test Process CHECKQC"
+    script "../main.nf"
+    process "CHECKQC"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "untar"
+    tag "checkqc"
+
+    test("homo_sapiens illumina test_interop_bcl2fastqstats_flowcell - QC OK") {
+        config "./nextflow.config"
+
+        setup {
+            run("UNTAR") {
+                script "../../untar/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([[id: 'test'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/interop_bcl2fastqstats/test_flowcell_stats.tar.gz', checkIfExists: true)])
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                    input[0] = UNTAR.out.untar
+                    input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert snapshot(process.out).match() },
+            { assert process.out.report },
+            { assert process.out.report.size() == 1 },
+            { assert process.out.report.get(0).get(1) ==~ ".*/checkqc_report.json" },
+            { assert path(process.out.report.get(0).get(1)).json.exit_status == 0 },
+            { assert path(process.out.report.get(0).get(1)).json.run_summary.instrument_and_reagent_type == "hiseq2500_rapidhighoutput_v4" }
+          )
+        }
+
+    }
+    test("homo_sapiens illumina test_miseq_noRunParameters - Log Error: no File") {
+        config "./nextflow.config"
+
+        setup {
+            run("UNTAR") {
+                script "../../untar/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([[id: 'test_no_xml'], file('https://github.com/nf-core/test-datasets/raw/demultiplex/testdata/MiSeq/220422_M11111_0222_000000000-K9H97.tar.gz', checkIfExists: true)])
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                    input[0] = UNTAR.out.untar
+                    input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.failed },
+            { assert process.stdout.any { it.contains("ERROR    Could not find [R|r]unParameters.xml") } }
+          )
+        }
+
+    }
+
+    test("homo_sapiens illumina test_interop_bcl2fastqstats_flowcell - QC Error") {
+
+        setup {
+            run("UNTAR") {
+                script "../../untar/main.nf"
+                process {
+                    """
+                   input[0] = Channel.of([[id: 'test_no_downgrade_errors'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/interop_bcl2fastqstats/test_flowcell_stats.tar.gz', checkIfExists: true)])
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                    input[0] = UNTAR.out.untar
+                    input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert snapshot(process.out).match() },
+            { assert process.out.report },
+            { assert process.out.report.size() == 1 },
+            { assert process.out.report.get(0).get(1) ==~ ".*/checkqc_report.json" },
+            { assert path(process.out.report.get(0).get(1)).json.exit_status == 1 },
+            { assert path(process.out.report.get(0).get(1)).json.run_summary.handlers.find { it.name == 'UndeterminedPercentageHandler' }.error == 9 }
+          )
+        }
+
+    }
+    }
+
+

@@ -1,0 +1,88 @@
+
+nextflow_process {
+
+    name "Test Process GATK4_SAMTOFASTQ"
+    script "../main.nf"
+    process "GATK4_SAMTOFASTQ"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gatk4"
+    tag "gatk4/samtofastq"
+
+    test("test-gatk4-samtofastq-single-end") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end: true ], // meta map
+				    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists: true) ]
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					path(process.out.fastq[0][1]).linesGzip[3..7],
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-gatk4-samtofastq-paired-end") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end: false ], // meta map
+				    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true) ]
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					process.out.fastq[0][1].collect { path(it).linesGzip[3..7] },
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-gatk4-samtofastq-paired-end-stubs") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end: true ], // meta map
+				    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists: true) ]
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					process.out.fastq[0][1].collect { file(it).name },
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

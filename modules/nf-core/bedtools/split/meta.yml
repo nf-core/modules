@@ -9,30 +9,36 @@ tools:
       description: "A powerful toolset for genome arithmetic"
       documentation: "https://bedtools.readthedocs.io/en/latest/content/tools/sort.html"
       licence: ["MIT", "GPL v2"]
+      identifier: biotools:bedtools
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bed:
-      type: file
-      description: BED file
-      pattern: "*.bed"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bed:
+        type: file
+        description: BED file
+        pattern: "*.bed"
+    - count:
+        type: integer
+        description: Number of lines per split file
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - beds:
-      type: list
-      description: list of split BED files
-      pattern: "*.bed"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bed":
+          type: list
+          description: list of split BED files
+          pattern: "*.bed"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

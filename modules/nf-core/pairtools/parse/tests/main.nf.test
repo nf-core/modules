@@ -1,0 +1,40 @@
+
+nextflow_process {
+
+    name "Test Process PAIRTOOLS_PARSE"
+    script "../main.nf"
+    process "PAIRTOOLS_PARSE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pairtools"
+    tag "pairtools/parse"
+
+    test("test-pairtools-parse") {
+        
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+				file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pairtools/mock.sam', checkIfExists: true) ]
+				input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pairtools/mock.chrom.sizes', checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					path(process.out.pairsam[0][1]).linesGzip[3..7],
+					process.out.stat,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+    
+}

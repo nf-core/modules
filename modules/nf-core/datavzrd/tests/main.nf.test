@@ -1,0 +1,112 @@
+nextflow_process {
+    name "Test Process DATAVZRD"
+    script "../main.nf"
+    process "DATAVZRD"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "datavzrd"
+
+    test("csv") {
+
+        when {
+            process {
+                """
+                input[0] = [ [id: "csv_config"],
+                    file(params.modules_testdata_base_path + 'generic/config/config_test.datavzrd.yaml', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/csv/test.csv', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                            process.out.versions,
+                            path(process.out.report[0][1])
+                                .list()
+                                .collect { getRecursiveFileNames(it, process.out.report[0][1]) }
+                                .flatten()
+                        ).match("csv")
+                    }
+            )
+        }
+    }
+
+    test("tsv") {
+
+        when {
+            process {
+                """
+                input[0] = [ [id: "tsv_config"],
+                    file(params.modules_testdata_base_path + 'generic/config/config_network.datavzrd.yaml', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/tsv/network.tsv', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                            process.out.versions,
+                            path(process.out.report[0][1])
+                                .list()
+                                .collect { getRecursiveFileNames(it, process.out.report[0][1]) }
+                                .flatten()
+                        ).match("tsv")
+                    }
+            )
+        }
+    }
+
+    test("csv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [id: "csv_config"],
+                    file(params.modules_testdata_base_path + 'generic/config/config_test.datavzrd.yaml', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/csv/test.csv', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("no_config_file") {
+        when {
+            process {
+                """
+                input[0] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.out['report'].isEmpty() },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
+
+def getRecursiveFileNames(fileOrDir, outputDir) {
+    if(file(fileOrDir.toString()).isDirectory()) {
+        return fileOrDir.list().collect { getRecursiveFileNames(it, outputDir) }
+    }
+    return fileOrDir.toString().replace("${outputDir}/", "")
+}

@@ -1,0 +1,59 @@
+// nf-core modules test coptr/index
+nextflow_process {
+
+    name "Test Process COPTR_INDEX"
+    script "../main.nf"
+    process "COPTR_INDEX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "coptr"
+    tag "coptr/index"
+
+    test("coptr index with single fastq") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'indexNameExample'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("coptr index with single fastq - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'indexNameExample'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

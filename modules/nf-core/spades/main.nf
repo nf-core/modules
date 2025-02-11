@@ -18,7 +18,7 @@ process SPADES {
     tuple val(meta), path('*.transcripts.fa.gz')  , optional:true, emit: transcripts
     tuple val(meta), path('*.gene_clusters.fa.gz'), optional:true, emit: gene_clusters
     tuple val(meta), path('*.assembly.gfa.gz')    , optional:true, emit: gfa
-    tuple val(meta), path('warnings.log')         , optional:true, emit: warnings
+    tuple val(meta), path('*.warnings.log')         , optional:true, emit: warnings
     tuple val(meta), path('*.spades.log')         , emit: log
     path  "versions.yml"                          , emit: versions
 
@@ -66,6 +66,10 @@ process SPADES {
         gzip -n ${prefix}.gene_clusters.fa
     fi
 
+    if [ -f warnings.log ]; then
+        mv warnings.log ${prefix}.warnings.log
+    fi
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         spades: \$(spades.py --version 2>&1 | sed -n 's/^.*SPAdes genome assembler v//p')
@@ -88,7 +92,7 @@ process SPADES {
     echo "" | gzip > ${prefix}.gene_clusters.fa.gz
     echo "" | gzip > ${prefix}.assembly.gfa.gz
     touch ${prefix}.spades.log
-    touch warnings.log
+    touch ${prefix}.warnings.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

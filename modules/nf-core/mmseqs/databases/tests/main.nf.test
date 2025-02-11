@@ -1,0 +1,55 @@
+
+nextflow_process {
+
+    name "Test Process MMSEQS_DATABASES"
+    script "../main.nf"
+    process "MMSEQS_DATABASES"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mmseqs"
+    tag "mmseqs/databases"
+
+    test("test-mmseqs-databases") {
+
+        when {
+            process {
+                """
+                input[0] = "SILVA"
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.database[0]).listFiles().collect { it.name }.toSorted(), // unstable
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-mmseqs-databases-stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = "SILVA"
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

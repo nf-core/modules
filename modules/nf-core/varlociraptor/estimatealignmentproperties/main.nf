@@ -33,4 +33,16 @@ process VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES {
         varlociraptor: \$(echo \$(varlociraptor --version 2>&1) | sed 's/^.*varlociraptor //; s/:.*\$//' )
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.alignment-properties.json
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        varlociraptor: \$(echo \$(varlociraptor --version 2>&1) | sed 's/^.*varlociraptor //; s/:.*\$//' )
+    END_VERSIONS
+    """
 }

@@ -1,0 +1,93 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "fcsgx_rungx"
+description: Runs FCS-GX (Foreign Contamination Screen - Genome eXtractor) to screen
+  and remove foreign contamination from genome assemblies
+keywords:
+  - genome
+  - assembly
+  - contamination
+  - screening
+  - cleaning
+  - fcs-gx
+tools:
+  - "fcsgx":
+      description: "The NCBI Foreign Contamination Screen. Genomic cross-species aligner,
+        for contamination detection."
+      homepage: "https://github.com/ncbi/fcs-gx"
+      documentation: "https://github.com/ncbi/fcs/wiki/"
+      tool_dev_url: "https://github.com/ncbi/fcs-gx"
+      doi: "10.1186/s13059-024-03198-7"
+      licence: ["NCBI-PD"]
+      identifier: "biotools:ncbi_fcs"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - taxid:
+        type: string
+        description: Taxonomy ID of the expected organism
+    - fasta:
+        type: file
+        description: Input genome assembly file in FASTA format
+        pattern: "*.{fa,fasta,fna}"
+  - - gxdb:
+        type: directory
+        description: Directory containing the FCS-GX database
+  - - ramdisk_path:
+        type: string
+        description: Path to RAM disk for improved performance (optional)
+
+output:
+  - fcsgx_report:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.fcs_gx_report.txt":
+          type: file
+          description: Final contamination report with contaminant cleaning actions. Interpreted by gx clean genome to separate cleaned sequences from contaminants.
+  - taxonomy_report:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.taxonomy.rpt":
+          type: file
+          description: Intermediate report with assigned taxonomies to individual sequences.
+          pattern: "*.taxonomy.rpt"
+  - log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.summary.txt":
+          type: file
+          description: FCSGX log file
+          pattern: "*.summary.txt"
+  - hits:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.hits.tsv.gz":
+          type: file
+          description: Save intermediate alignments
+          pattern: "*.hits.tsv.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@tillenglert"
+  - "@mahesh-panchal"
+maintainers:
+  - "@tillenglert"
+  - "@mahesh-panchal"

@@ -35,8 +35,10 @@ process SNPSIFT_DBNSFP {
     """
 
     stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.vcf
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         snpsift: \$( echo \$(SnpSift split -h 2>&1) | sed 's/^.*version //' | sed 's/(.*//' | sed 's/t//g' )

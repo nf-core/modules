@@ -94,4 +94,3 @@ process PLINK_LD {
     END_VERSIONS
     """
 }
-

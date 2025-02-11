@@ -1,0 +1,35 @@
+
+nextflow_process {
+
+    name "Test Process SCOARY"
+    script "../main.nf"
+    process "SCOARY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "scoary"
+
+    test("test-scoary") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+				    file("https://github.com/AdmiralenOla/Scoary/raw/master/scoary/exampledata/Gene_presence_absence.csv", checkIfExists: true),
+				    file("https://github.com/AdmiralenOla/Scoary/raw/master/scoary/exampledata/Tetracycline_resistance.csv", checkIfExists: true)
+                ]
+				input[1] = []
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

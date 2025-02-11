@@ -65,4 +65,3 @@ workflow BAM_SPLIT_BY_REGION {
     bam_bai     = ch_output                         // channel: [ val(meta), path(bam), path(bai) ]
     versions    = ch_versions                       // channel: [ path(versions.yml) ]
 }
-

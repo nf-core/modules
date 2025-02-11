@@ -10,48 +10,51 @@ tools:
       homepage: "https://github.com/dnil/rhocall"
       documentation: "https://github.com/dnil/rhocall"
       tool_dev_url: "https://github.com/dnil"
-      licence: "['GPL v3']"
+      licence: ["GPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: vcf file
-      pattern: "*.{vcf,vcf.gz}"
-  - tbi:
-      type: file
-      description: vcf index file
-      pattern: "*.{tbi}"
-  - roh:
-      type: file
-      description: Bcftools roh style TSV file with CHR,POS,AZ,QUAL
-      pattern: "*.{roh}"
-  - bed:
-      type: file
-      description: BED file with AZ windows.
-      pattern: "*.{bed}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: vcf file
+        pattern: "*.{vcf,vcf.gz}"
+    - tbi:
+        type: file
+        description: vcf index file
+        pattern: "*.{tbi}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - roh:
+        type: file
+        description: Bcftools roh style TSV file with CHR,POS,AZ,QUAL
+        pattern: "*.{roh}"
+  - - bed:
+        type: file
+        description: BED file with AZ windows.
+        pattern: "*.{bed}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - vcf:
-      type: file
-      description: vcf file
-      pattern: "*.{vcf,vcf.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_rhocall.vcf":
+          type: file
+          description: vcf file
+          pattern: "*.{vcf,vcf.gz}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@ramprasadn"
 maintainers:
