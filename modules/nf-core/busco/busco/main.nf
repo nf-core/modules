@@ -13,7 +13,7 @@ process BUSCO_BUSCO {
     val lineage                           // Required:    lineage for checking against, or "auto/auto_prok/auto_euk" for enabling auto-lineage
     path busco_lineages_path              // Recommended: busco lineages file - downloads if not set
     path config_file                      // Optional:    busco configuration file
-    val clean_intermediades               // Optional:    Remove intermediate files
+    val clean_intermediates               // Optional:    Remove intermediate files
 
     output:
     tuple val(meta), path("*-busco.batch_summary.txt")                , emit: batch_summary
@@ -44,7 +44,7 @@ process BUSCO_BUSCO {
         ? lineage.replaceFirst('auto', '--auto-lineage').replaceAll('_', '-')
         : "--lineage_dataset ${lineage}"
     def busco_lineage_dir = busco_lineages_path ? "--download_path ${busco_lineages_path}" : ''
-    def clean_cmd = clean_intermediades ? 'rm -fr ./*-busco/*/auto_lineage ./*-busco/*/**/{miniprot,hmmer,.bbtools}_output' : ''
+    def clean_cmd = clean_intermediates ? 'rm -fr ./*-busco/*/auto_lineage ./*-busco/*/**/{miniprot,hmmer,.bbtools}_output' : ''
     """
     # Nextflow changes the container --entrypoint to /bin/bash (container default entrypoint: /usr/local/env-execute)
     # Check for container variable initialisation script and source it.
