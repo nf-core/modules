@@ -37,7 +37,7 @@ env:
 jobs:
   nf-test-changes:
     name: nf-test-changes
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
     outputs:
       # Expose detected tags as 'modules' and 'workflows' output variables
       paths: ${{ steps.list.outputs.components }}
@@ -90,7 +90,7 @@ jobs:
           echo ${{ steps.set-shards.outputs.total_shards }}
 
   nf-test:
-    runs-on: ${{ github.event.inputs.runners || 'self-hosted' }}
+    runs-on: ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
     name: "Test | ${{ matrix.profile }} | ${{ matrix.shard }}"
     needs: [nf-test-changes]
     if: ${{ needs.nf-test-changes.outputs.total_shards != '0' }}
@@ -164,8 +164,8 @@ jobs:
           total_shards: ${{ env.TOTAL_SHARDS }}
           paths: "${{ join(fromJson(steps.filter.outputs.filtered_paths), ' ') }}"
 
-  confirm-pass-nf-test:
-    runs-on: ubuntu-latest
+  confirm-pass:
+    runs-on: ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
     needs: [nf-test]
     if: always()
     steps:
