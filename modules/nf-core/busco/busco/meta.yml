@@ -74,6 +74,16 @@ output:
           type: file
           description: Short Busco summary in JSON format
           pattern: "short_summary.*.json"
+  - log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*-busco/logs/busco.log":
+          type: file
+          description: BUSCO main log
+          pattern: "*-busco/logs/busco.log"
   - full_table:
       - meta:
           type: map
