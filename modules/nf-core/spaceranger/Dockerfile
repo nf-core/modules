@@ -1,10 +1,10 @@
 # syntax=docker/dockerfile:1
 
-FROM mambaorg/micromamba:1.5.10-noble
-ARG SPACERANGER_VER="3.1.2"
+FROM mambaorg/micromamba:1.5.10-jammy
+ARG SPACERANGER_VER="3.1.3"
 # NOTE you need to go fill out the form to get a new download link
-ARG SPACERANGER_URL="https://cf.10xgenomics.com/releases/spatial-exp/spaceranger-3.1.2.tar.gz?Expires=1732608367&Key-Pair-Id=APKAI7S6A5RYOXBWRPDA&Signature=S4jcGCs5H0wLFfREhSc~AfuPIOXE~PW96kX9o2EyxZnmn1goUecgfEWTj67fL1DnZJBIa06kFdUdNpsMn2ustiSWOfXEgjlYQnxIcNnQIiEBGoQTHWphvx3LEQ6wtZnkWS80P6IcE0HJkIsgy04t6Sohih5cxY4jgytYsrAfZDYr5G3KKFwTfCKmhzMaXqW635yPbyQ8xEcQHK0QwviAx8-EFq-PE8UzC4QgUKi2MW-ivcfZkSDSfF8C3s7SgwDXIGIWv52mzeszenxMjN4KrWQotZ7ZpktzI0Vfpz0dNC17dQeDQUHj4LuNYbdh3RqsPKtqu3wjCe2Q7KiyoWnmaw__" \"
-ARG SPACERANGER_SHA256="2566b24f29829b39f3add112a674990b1c54ae2fbe7ccb50a4c7dce9ccf152e6"
+ARG SPACERANGER_URL="https://cf.10xgenomics.com/releases/spatial-exp/spaceranger-3.1.3.tar.gz?Expires=1739251752&Key-Pair-Id=APKAI7S6A5RYOXBWRPDA&Signature=ohLEz5jR~HNzWrUz4pd35VGlJP~g7ywmVDaD29BoCdUvio46HWEfhIuUT19D~2JoFlYsbaLQ2d~qIuBB-d9WmX9bdmoQ1vzc9ozikwufXhuJhvrvxIXAZ4kUreoGWX7b51emM7nq8kJxTL9CmTKQZXRe~DuQjP6q6z0XxDUxeLhdPRg3ACfj~jFgMlNfwiJwBRHDH3yM5Hrtz~gNmxZ9O0fl~KNwlzZh7Mtm9GG-GyXYOtM5KAPQjv69JpM2XiZoZFpaVbPq5uqGfr~B3GC1dY25MGqVgXavc~uQFVcsZiyF5BewbeFzYTKu0SiW4WdO21K5L6CdkJ1M5AflXZmpsw__" \"
+ARG SPACERANGER_SHA256="cee7e94942cf72af76e28ead0024992642f81f10b89006bf93756c1e08528522"
 LABEL org.opencontainers.image.authors="Gisela Gabernet <gisela.gabernet@gmail.com>,Edmund Miller <edmund@nf-co.re>"
 LABEL org.opencontainers.image.description="Docker image containing spaceranger"
 LABEL org.opencontainers.image.version="$SPACERANGER_VER"

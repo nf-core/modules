@@ -2,7 +2,7 @@ process SPACERANGER_MKGTF {
     tag "$gtf"
     label 'process_low'
 
-    container "nf-core/modules/spaceranger:d71611e316a8614b"
+    container "nf-core/spaceranger:3.1.3"
 
     input:
     path gtf
