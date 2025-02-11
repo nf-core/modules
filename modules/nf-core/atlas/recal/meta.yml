@@ -6,51 +6,59 @@ keywords:
   - bias
 tools:
   - "atlas":
-      description: "ATLAS, a suite of methods to accurately genotype and estimate genetic diversity"
+      description: "ATLAS, a suite of methods to accurately genotype and estimate genetic
+        diversity"
       homepage: "https://bitbucket.org/wegmannlab/atlas/wiki/Home"
       documentation: "https://bitbucket.org/wegmannlab/atlas/wiki/Home"
       doi: "10.1101/105346"
       licence: ["GPL v3"]
+      identifier: biotools:atlas_db
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: BAM file
-      pattern: "*.bam"
-  - bai:
-      type: file
-      description: BAI file
-      pattern: "*.bai"
-  - empiric:
-      type: file
-      description: Optional txt file from PMD estimations (atlas/pmd)
-      pattern: "*.txt"
-  - alleles:
-      type: file
-      description: Optional bed file with known alleles
-      pattern: "*.bed"
-  - invariant_sites:
-      type: file
-      description: Optional bed file with invariant site coordinates
-      pattern: "*.bed"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM file
+        pattern: "*.bam"
+    - bai:
+        type: file
+        description: BAI file
+        pattern: "*.bai"
+    - empiric:
+        type: file
+        description: Optional txt file from PMD estimations (atlas/pmd)
+        pattern: "*.txt"
+    - readgroups:
+        type: file
+        description: read groups
+  - - alleles:
+        type: file
+        description: Optional bed file with known alleles
+        pattern: "*.bed"
+  - - invariant_sites:
+        type: file
+        description: Optional bed file with invariant site coordinates
+        pattern: "*.bed"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - recal_patterns:
-      type: file
-      description: file containing the sequencing bias for each of the Read Group pools
-      pattern: "*.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt":
+          type: file
+          description: file containing the sequencing bias for each of the Read Group
+            pools
+          pattern: "*.txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@ltcrod"
 maintainers:

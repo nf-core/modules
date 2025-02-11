@@ -1,0 +1,89 @@
+nextflow_process {
+    name "Test Process MOTUS_MERGE"
+    script "../main.nf"
+    process "MOTUS_MERGE"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "motus"
+    tag "motus/downloaddb"
+    tag "motus/profile"
+    tag "motus/merge"
+
+
+    setup {
+        run("MOTUS_DOWNLOADDB") {
+            script "modules/nf-core/motus/downloaddb/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    file('https://raw.githubusercontent.com/motu-tool/mOTUs/master/motus/downloadDB.py')
+                ])
+                """
+            }
+        }
+
+        run("MOTUS_PROFILE") {
+            script "modules/nf-core/motus/profile/main.nf"
+            process {
+                """
+                input[0] = [
+                [ id:'test', single_end:false ], // meta map
+                [
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true ),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true )
+                ]
+            ]
+
+                input[1] =  MOTUS_DOWNLOADDB.out.db
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - illumina paired end [fastq]") {
+
+
+        when {
+            process {
+                """
+                input[0] =  MOTUS_PROFILE.out.out.map{ [[id:"test"], it[1]] }.groupTuple()
+                input[1] =  MOTUS_DOWNLOADDB.out.db
+                input[2] =  MOTUS_PROFILE.out.versions.first()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        path(process.out.txt[0][1]).readLines()[3..10],
+                        process.out.versions,
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("sarscov2 - illumina paired end [fastq] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] =  MOTUS_PROFILE.out.out.map{ [[id:"test"], it[1]] }.groupTuple()
+                input[1] =  MOTUS_DOWNLOADDB.out.db
+                input[2] =  MOTUS_PROFILE.out.versions.first()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot( process.out ).match() }
+            )
+        }
+    }
+}

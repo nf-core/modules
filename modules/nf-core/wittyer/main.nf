@@ -2,7 +2,7 @@ process WITTYER {
     tag "$meta.id"
     label 'process_single'
 
-    container "nf-core/wittyer:0.5.2.0"
+    container "nf-core/modules/wittyer:4c55c27c711b558f"
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {

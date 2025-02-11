@@ -1,5 +1,6 @@
 name: gstama_polyacleanup
-description: Helper script, remove remaining polyA sequences from Full Length Non Chimeric reads (Pacbio isoseq3)
+description: Helper script, remove remaining polyA sequences from Full Length Non
+  Chimeric reads (Pacbio isoseq3)
 keywords:
   - gstama
   - gstama/polyacleanup
@@ -16,38 +17,55 @@ tools:
       tool_dev_url: https://github.com/sguizard/gs-tama
       doi: "10.1186/s12864-020-07123-7"
       licence: ["GPL v3 License"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: Full Length Non Chimeric reads in fasta format
-      pattern: "*.{fa,fasta}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Full Length Non Chimeric reads in fasta format
+        pattern: "*.{fa,fasta}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - fasta:
-      type: file
-      description: The Full Length Non Chimeric reads clened from remaining polyA tails. The sequences are in FASTA format compressed with gzip.
-      pattern: "*_tama.fa.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_tama.fa.gz":
+          type: file
+          description: The Full Length Non Chimeric reads cleaned from remaining polyA
+            tails. The sequences are in FASTA format compressed with gzip.
+          pattern: "*_tama.fa.gz"
   - report:
-      type: file
-      description: A text file describing the number of polyA tails removed and their length. Compressed with gzip.
-      pattern: "*_tama_polya_flnc_report.txt.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_tama_polya_flnc_report.txt.gz":
+          type: file
+          description: A text file describing the number of polyA tails removed and their
+            length. Compressed with gzip.
+          pattern: "*_tama_polya_flnc_report.txt.gz"
   - tails:
-      type: file
-      description: A gzip compressed FASTA file of trimmed polyA tails.
-      pattern: "*_tama_tails.fa.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_tama_tails.fa.gz":
+          type: file
+          description: A gzip compressed FASTA file of trimmed polyA tails.
+          pattern: "*_tama_tails.fa.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@sguizard"
 maintainers:

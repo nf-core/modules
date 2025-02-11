@@ -10,30 +10,33 @@ tools:
       homepage: "https://www.gnu.org"
       documentation: "https://linux.die.net/man/1/shasum"
       licence: ["GPLv3+"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - file:
-      type: file
-      description: Any file
-      pattern: "*.*"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - file:
+        type: file
+        description: Any file
+        pattern: "*.*"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - checksum:
-      type: file
-      description: File containing checksum
-      pattern: "*.sha256"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.sha256":
+          type: file
+          description: File containing checksum
+          pattern: "*.sha256"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@matthdsm"
 maintainers:

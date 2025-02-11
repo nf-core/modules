@@ -16,77 +16,114 @@ tools:
       documentation: http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml
       doi: 10.1038/nmeth.1923
       licence: ["GPL-3.0-or-later"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: |
-        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-        respectively.
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test', single_end:false ]
-  - index:
-      type: file
-      description: Bowtie2 genome index files
-      pattern: "*.ebwt"
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: Bowtie2 genome fasta file
-      pattern: "*.fasta"
-  - save_unaligned:
-      type: boolean
-      description: |
-        Save reads that do not map to the reference (true) or discard them (false)
-        (default: false)
-  - sort_bam:
-      type: boolean
-      description: use samtools sort (true) or samtools view (false)
-      pattern: "true or false"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively.
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test', single_end:false ]
+    - index:
+        type: file
+        description: Bowtie2 genome index files
+        pattern: "*.ebwt"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Bowtie2 genome fasta file
+        pattern: "*.fasta"
+  - - save_unaligned:
+        type: boolean
+        description: |
+          Save reads that do not map to the reference (true) or discard them (false)
+          (default: false)
+  - - sort_bam:
+        type: boolean
+        description: use samtools sort (true) or samtools view (false)
+        pattern: "true or false"
 output:
   - sam:
-      type: file
-      description: Output SAM file containing read alignments
-      pattern: "*.sam"
+      - meta:
+          type: file
+          description: Output SAM file containing read alignments
+          pattern: "*.sam"
+      - "*.sam":
+          type: file
+          description: Output SAM file containing read alignments
+          pattern: "*.sam"
   - bam:
-      type: file
-      description: Output BAM file containing read alignments
-      pattern: "*.bam"
+      - meta:
+          type: file
+          description: Output BAM file containing read alignments
+          pattern: "*.bam"
+      - "*.bam":
+          type: file
+          description: Output BAM file containing read alignments
+          pattern: "*.bam"
   - cram:
-      type: file
-      description: Output CRAM file containing read alignments
-      pattern: "*.cram"
+      - meta:
+          type: file
+          description: Output CRAM file containing read alignments
+          pattern: "*.cram"
+      - "*.cram":
+          type: file
+          description: Output CRAM file containing read alignments
+          pattern: "*.cram"
   - csi:
-      type: file
-      description: Output SAM/BAM index for large inputs
-      pattern: "*.csi"
+      - meta:
+          type: file
+          description: Output SAM/BAM index for large inputs
+          pattern: "*.csi"
+      - "*.csi":
+          type: file
+          description: Output SAM/BAM index for large inputs
+          pattern: "*.csi"
   - crai:
-      type: file
-      description: Output CRAM index
-      pattern: "*.crai"
+      - meta:
+          type: file
+          description: Output CRAM index
+          pattern: "*.crai"
+      - "*.crai":
+          type: file
+          description: Output CRAM index
+          pattern: "*.crai"
   - log:
-      type: file
-      description: Aligment log
-      pattern: "*.log"
+      - meta:
+          type: file
+          description: Alignment log
+          pattern: "*.log"
+      - "*.log":
+          type: file
+          description: Alignment log
+          pattern: "*.log"
   - fastq:
-      type: file
-      description: Unaligned FastQ files
-      pattern: "*.fastq.gz"
+      - meta:
+          type: file
+          description: Unaligned FastQ files
+          pattern: "*.fastq.gz"
+      - "*fastq.gz":
+          type: file
+          description: Unaligned FastQ files
+          pattern: "*.fastq.gz"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@joseespinosa"
   - "@drpatelh"

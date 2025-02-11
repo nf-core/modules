@@ -22,7 +22,7 @@ workflow BCL_DEMULTIPLEX {
         // Split flowcells into separate channels containing run as tar and run as path
         // https://nextflow.slack.com/archives/C02T98A23U7/p1650963988498929
         ch_flowcell
-            .branch { meta, samplesheet, run ->
+            .branch { _meta, _samplesheet, run ->
                 tar: run.toString().endsWith(".tar.gz")
                 dir: true
             }.set { ch_flowcells }
@@ -88,18 +88,18 @@ workflow BCL_DEMULTIPLEX {
                 line = line.substring(1)
                 // expected format is like:
                 // xx:yy:FLOWCELLID:LANE:... (seven fields)
-                fields = line.split(':')
+                def fields = line.split(':')
                 // CASAVA 1.8+ format, from  https://support.illumina.com/help/BaseSpace_OLH_009008/Content/Source/Informatics/BS/FileFormat_FASTQ-files_swBS.htm
                 // "@<instrument>:<run number>:<flowcell ID>:<lane>:<tile>:<x-pos>:<y-pos>:<UMI> <read>:<is filtered>:<control number>:<index>"
-                sequencer_serial = fields[0]
-                run_nubmer       = fields[1]
-                fcid             = fields[2]
-                lane             = fields[3]
-                index            = fields[-1] =~ /[GATC+-]/ ? fields[-1] : ""
-                ID = [fcid, lane].join(".")
-                PU = [fcid, lane, index].findAll().join(".")
-                PL = "ILLUMINA"
-                SM = fastq.getSimpleName().toString() - ~/_S[0-9]+.*$/
+                //def sequencer_serial = fields[0]
+                //def run_nubmer       = fields[1]
+                def fcid             = fields[2]
+                def lane             = fields[3]
+                def index            = fields[-1] =~ /[GATC+-]/ ? fields[-1] : ""
+                def ID = [fcid, lane].join(".")
+                def PU = [fcid, lane, index].findAll().join(".")
+                def PL = "ILLUMINA"
+                def SM = fastq.getSimpleName().toString() - ~/_S[0-9]+.*$/
                 meta.readgroup = [
                     "ID": ID,
                     "SM": SM,

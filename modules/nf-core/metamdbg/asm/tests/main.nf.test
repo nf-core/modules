@@ -1,0 +1,116 @@
+nextflow_process {
+
+    name "Test Process METAMDBG_ASM"
+    script "../main.nf"
+    process "METAMDBG_ASM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "metamdbg"
+    tag "metamdbg/asm"
+
+    test("metamdbg_asm - ont") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/nanopore/fastq/test.fastq.gz', checkIfExists: true),
+                ]
+                input[1] = "ont"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                // output is stochastic - contig names differ per run
+                // log file contains nextflow work dir paths
+                { assert snapshot(
+                    file(process.out.contigs[0][1]).name,
+                    file(process.out.log[0][1]).name,
+                    process.out.versions
+                ).match() },
+                { assert path(process.out.log[0][1]).readLines().last().contains("Done!") }
+            )
+        }
+    }
+    test("metamdbg_asm - hifi") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true),
+                ]
+                input[1] = "hifi"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                // output is stochastic - contig names differ per run
+                // log file contains nextflow work dir paths
+                { assert snapshot(
+                    file(process.out.contigs[0][1]).name,
+                    file(process.out.log[0][1]).name,
+                    process.out.versions
+                ).match() },
+                { assert path(process.out.log[0][1]).readLines().last().contains("Done!") }
+            )
+        }
+    }
+
+    test("metamdbg_asm - wrong format") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true),
+                ]
+                input[1] = "wrong"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("ERROR: input_type must be one of either 'hifi' or 'ont'.") }
+            )
+        }
+
+    }
+
+    test("metamdbg_asm - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true),
+                ]
+                input[1] = "hifi"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("stub_versions") }
+            )
+        }
+
+    }
+}

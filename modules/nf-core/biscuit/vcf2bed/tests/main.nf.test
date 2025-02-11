@@ -10,16 +10,15 @@ nextflow_process {
     tag "biscuit"
     tag "biscuit/vcf2bed"
 
-    test("test-biscuit-vcf2bed") {
+    test("test [vcf]") {
 
         when {
             process {
                 """
-                input[0] = [
+                input[0] = Channel.of([
 				    [ id:'test', single_end:false ], // meta map
 				    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/biscuit/test.vcf.gz', checkIfExists: true)
-				]
-
+				])
                 """
             }
         }
@@ -32,17 +31,16 @@ nextflow_process {
         }
     }
 
-    test("test-biscuit-vcf2bed-stub") {
+    test("test [vcf] - stub") {
         options '-stub'
 
         when {
             process {
                 """
-                input[0] = [
+                input[0] = Channel.of([
 				    [ id:'test', single_end:false ], // meta map
 				    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/biscuit/test.vcf.gz', checkIfExists: true)
-				]
-
+				])
                 """
             }
         }

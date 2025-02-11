@@ -1,4 +1,3 @@
----
 name: "sentieon_qualcal"
 description: Generate recalibration table and optionally perform base quality recalibration
 keywords:
@@ -12,74 +11,125 @@ tools:
         Our software improves upon BWA, STAR, Minimap2, GATK, HaplotypeCaller, Mutect, and Mutect2 based pipelines and is deployable on any generic-CPU-based computing system.
       homepage: https://www.sentieon.com/
       documentation: https://www.sentieon.com/
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - input:
-      type: file
-      description: BAM/CRAM file from alignment
-      pattern: "*.{bam,cram}"
-  - input_index:
-      type: file
-      description: BAI/CRAI file from alignment
-      pattern: "*.{bai,crai}"
-  - fasta:
-      type: file
-      description: The reference fasta file
-      pattern: "*.fasta"
-  - fai:
-      type: file
-      description: Index of reference fasta file
-      pattern: "*.fasta.fai"
-  - known_sites:
-      type: file
-      description: VCF files with known sites for indels / snps (optional)
-      pattern: "*.vcf.gz"
-  - known_sites_tbi:
-      type: file
-      description: Tabix index of the known_sites (optional)
-      pattern: "*.vcf.gz.tbi"
-  - recalibration_table:
-      type: file
-      description: File containing recalibration values (optional)
-      pattern: "*.table"
-  - generate_recalibrated_bams:
-      type: boolean
-      description: If truem, writes recalibrated bams to disc
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input:
+        type: file
+        description: BAM/CRAM file from alignment
+        pattern: "*.{bam,cram}"
+    - input_index:
+        type: file
+        description: BAI/CRAI file from alignment
+        pattern: "*.{bai,crai}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: The reference fasta file
+        pattern: "*.fasta"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fai:
+        type: file
+        description: Index of reference fasta file
+        pattern: "*.fasta.fai"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - known_sites:
+        type: file
+        description: VCF files with known sites for indels / snps (optional)
+        pattern: "*.vcf.gz"
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - known_sites_tbi:
+        type: file
+        description: Tabix index of the known_sites (optional)
+        pattern: "*.vcf.gz.tbi"
+  - - meta6:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - recalibration_table:
+        type: file
+        description: File containing recalibration values (optional)
+        pattern: "*.table"
+  - - generate_recalibrated_bams:
+        type: boolean
+        description: If truem, writes recalibrated bams to disc
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - table:
-      type: file
-      description: Pre Recalibration table (optional)
-      pattern: "*.table"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.table":
+          type: file
+          description: Pre Recalibration table (optional)
+          pattern: "*.table"
   - table_post:
-      type: file
-      description: Post recalibration table (optional)
-      pattern: "*.table.post"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.table.post":
+          type: file
+          description: Post recalibration table (optional)
+          pattern: "*.table.post"
   - recal_alignment:
-      type: file
-      description: Recalibrated input files (optional)
-      pattern: "*.{bam,cram}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.{cram,bam}":
+          type: file
+          description: Recalibrated input files (optional)
+          pattern: "*.{bam,cram}"
   - csv:
-      type: file
-      description: Recalibration results output file used for plotting. (optional)
-      pattern: "*.csv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.csv":
+          type: file
+          description: Recalibration results output file used for plotting. (optional)
+          pattern: "*.csv"
   - pdf:
-      type: file
-      description: PDF file containing graphs (optional)
-      pattern: "*.pdf"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.pdf":
+          type: file
+          description: PDF file containing graphs (optional)
+          pattern: "*.pdf"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@FriederikeHanssen"
 maintainers:

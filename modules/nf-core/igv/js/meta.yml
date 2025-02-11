@@ -9,7 +9,7 @@ tools:
   - "igv":
       description: |
         Create an embeddable interactive genome browser component.
-        Output files are expected to be present in the same directory as teh genome browser html file.
+        Output files are expected to be present in the same directory as the genome browser html file.
         To visualise it, files have to be served. Check the documentation at:
           https://github.com/igvteam/igv-webapp for an example and
           https://github.com/igvteam/igv.js/wiki/Data-Server-Requirements for server requirements
@@ -18,42 +18,57 @@ tools:
       tool_dev_url: https://github.com/igvteam/igv.js
       doi: 10.1093/bioinformatics/btac830
       licence: ["MIT"]
+      identifier: biotools:igv
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - alignment:
-      type: file
-      description: Sorted BAM/CRAM file
-      pattern: "*.{bam,cram}"
-  - index:
-      type: file
-      description: Index of sorted BAM/CRAM file
-      pattern: "*.{bai,crai}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - alignment:
+        type: file
+        description: Sorted BAM/CRAM file
+        pattern: "*.{bam,cram}"
+    - index:
+        type: file
+        description: Index of sorted BAM/CRAM file
+        pattern: "*.{bai,crai}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - browser:
-      type: file
-      description: Genome browser HTML file
-      pattern: "*.{html}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_genome-browser.html":
+          type: file
+          description: Genome browser HTML file
+          pattern: "*.{html}"
   - align_files:
-      type: file
-      description: Copy of the input sorted BAM/CRAM file
-      pattern: "*.{bam,cram}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - alignment:
+          type: file
+          description: Copy of the input sorted BAM/CRAM file
+          pattern: "*.{bam,cram}"
   - index_files:
-      type: file
-      description: Copy of the input index of sorted BAM/CRAM file
-      pattern: "*.{bai,crai}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - index:
+          type: file
+          description: Copy of the input index of sorted BAM/CRAM file
+          pattern: "*.{bai,crai}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@mirpedrol"
 maintainers:

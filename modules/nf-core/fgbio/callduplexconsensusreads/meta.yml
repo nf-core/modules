@@ -1,47 +1,53 @@
 name: "fgbio_callduplexconsensusreads"
-description: Uses FGBIO CallDuplexConsensusReads to call duplex consensus sequences from reads generated from the same double-stranded source molecule.
+description: Uses FGBIO CallDuplexConsensusReads to call duplex consensus sequences
+  from reads generated from the same double-stranded source molecule.
 keywords:
   - umi
   - duplex
   - fgbio
 tools:
   - "fgbio":
-      description: "A set of tools for working with genomic and high throughput sequencing data, including UMIs"
+      description: "A set of tools for working with genomic and high throughput sequencing
+        data, including UMIs"
       homepage: http://fulcrumgenomics.github.io/fgbio/
       documentation: http://fulcrumgenomics.github.io/fgbio/tools/latest/CallDuplexConsensusReads.html
       tool_dev_url: https://github.com/fulcrumgenomics/fgbio
       licence: ["MIT"]
+      identifier: biotools:fgbio
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: BAM/SAM file, grouped by UMI
-      pattern: "*.{bam,sam}"
-  - min_reads:
-      type: string
-      description: Minimum number of raw/original reads to build each consensus read.  Can be a space delimited list of 1-3 values.  See fgbio documentation for more details.
-  - min_baseq:
-      type: integer
-      description: Ignore bases in raw reads that have Q below this value
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - grouped_bam:
+        type: file
+        description: Grouped BAM file
+        pattern: "*.bam"
+  - - min_reads:
+        type: string
+        description: Minimum number of raw/original reads to build each consensus read.  Can
+          be a space delimited list of 1-3 values.  See fgbio documentation for more
+          details.
+  - - min_baseq:
+        type: integer
+        description: Ignore bases in raw reads that have Q below this value
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  #
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - bam:
-      type: file
-      description: consensus BAM file
-      pattern: "*.bam"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.bam:
+          type: file
+          description: consensus BAM file
+          pattern: "*.bam"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@lescai"
 maintainers:

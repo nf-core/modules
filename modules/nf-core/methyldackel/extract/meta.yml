@@ -18,46 +18,55 @@ tools:
       homepage: https://github.com/dpryan79/MethylDackel
       documentation: https://github.com/dpryan79/MethylDackel/blob/master/README.md
       licence: ["MIT"]
+      identifier: biotools:methyldackel
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: Input genome fasta file
-      pattern: "*.{fasta,fa}"
-  - fai:
-      type: file
-      description: FASTA index file
-      pattern: "*.fai"
-  - bam:
-      type: file
-      description: BAM/CRAM file
-      pattern: "*.{bam,cram}"
-  - bai:
-      type: file
-      description: BAM/CRAM index file
-      pattern: "*.{bai,crai}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM/CRAM file
+        pattern: "*.{bam,cram}"
+    - bai:
+        type: file
+        description: BAM/CRAM index file
+        pattern: "*.{bai,crai}"
+  - - fasta:
+        type: file
+        description: Input genome fasta file
+        pattern: "*.{fasta,fa}"
+  - - fai:
+        type: file
+        description: FASTA index file
+        pattern: "*.fai"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - bedgraph:
-      type: file
-      description: bedGraph file, containing per-base methylation metrics
-      pattern: "*.bedGraph"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bedGraph":
+          type: file
+          description: bedGraph file, containing per-base methylation metrics
+          pattern: "*.bedGraph"
   - methylkit:
-      type: file
-      description: methylKit file, containing per-base methylation metrics
-      pattern: "*.methylKit"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.methylKit":
+          type: file
+          description: methylKit file, containing per-base methylation metrics
+          pattern: "*.methylKit"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@phue"
 maintainers:
