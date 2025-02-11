@@ -37,7 +37,7 @@ process BBMAP_REPAIR {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        repair.sh: \$(repair.sh --version |& sed '2!d ; s/BBMap version //')
+        bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
     END_VERSIONS
     """
 
@@ -51,7 +51,7 @@ process BBMAP_REPAIR {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        repair.sh: \$(repair.sh --version |& sed '2!d ; s/BBMap version //')
+        bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
     END_VERSIONS
     """
 }

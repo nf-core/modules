@@ -4,8 +4,8 @@ process UPP_ALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/sepp_pigz:d72591720d0277b1':
-        'community.wave.seqera.io/library/sepp_pigz:ea6dbc7704a2e251' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/80/800667a716528cc6d655da1885d38f9d10385a184e0b1165985ae12034ff5f1d/data':
+        'community.wave.seqera.io/library/sepp_pigz:8f996974b960fc41' }"
 
     input:
     tuple val(meta) , path(fasta)

@@ -33,7 +33,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = WIPERTOOLS_FASTQSCATTER.out.chunks
+                input[0] = WIPERTOOLS_FASTQSCATTER.out.fastq_chunks
                 """
             }
         }
@@ -56,7 +56,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = WIPERTOOLS_FASTQSCATTER.out.chunks
+                input[0] = WIPERTOOLS_FASTQSCATTER.out.fastq_chunks
                 """
             }
         }
