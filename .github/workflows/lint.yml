@@ -142,7 +142,7 @@ jobs:
       - name: Lint module ${{ matrix.module }}
         run: nf-core modules lint ${{ matrix.module }}
 
-  confirm-pass:
+  confirm-pass-lint:
     runs-on: ubuntu-latest
     needs: [nf-core-lint-modules]
     if: always()

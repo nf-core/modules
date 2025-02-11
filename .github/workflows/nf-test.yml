@@ -164,7 +164,7 @@ jobs:
           total_shards: ${{ env.TOTAL_SHARDS }}
           paths: "${{ join(fromJson(steps.filter.outputs.filtered_paths), ' ') }}"
 
-  confirm-pass:
+  confirm-pass-nf-test:
     runs-on: ubuntu-latest
     needs: [nf-test]
     if: always()
