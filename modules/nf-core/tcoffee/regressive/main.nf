@@ -4,8 +4,8 @@ process TCOFFEE_REGRESSIVE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-a76a981c07359a31ff55b9dc13bd3da5ce1909c1:84c8f17f1259b49e2f7783b95b7a89c6f2cb199e-0':
-        'biocontainers/mulled-v2-a76a981c07359a31ff55b9dc13bd3da5ce1909c1:84c8f17f1259b49e2f7783b95b7a89c6f2cb199e-0' }"
+        'oras://community.wave.seqera.io/library/t-coffee_pigz:f97a52063857069b':
+        'community.wave.seqera.io/library/t-coffee_pigz:c98a6c87c62d9df6' }"
 
     input:
     tuple val(meta) , path(fasta)
