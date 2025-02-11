@@ -1,31 +1,53 @@
 repos:
+  - repo: local
+    hooks:
+      - id: conda-env-sorter
+        name: Sort dependencies in conda environment files.
+        entry: ./.github/scripts/conda_env_sorter.py
+        language: python
+        files: environment
+        types: [yaml]
+        additional_dependencies: ["ruamel.yaml"]
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: "v3.1.0"
     hooks:
       - id: prettier
         additional_dependencies:
-          - prettier@3.2.5
+          - prettier@3.3.3
   - repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 0.29.4
     hooks:
       - id: check-jsonschema
-        # match meta.ymls in one of the subdirectories of modules/nf-core
+        name: "Match meta.ymls in one of the subdirectories of modules/nf-core"
         files: ^modules/nf-core/.*/meta\.yml$
+        types: [yaml]
         args: ["--schemafile", "modules/yaml-schema.json"]
       - id: check-jsonschema
-        # match meta.ymls in one of the subdirectories of subworkflows/nf-core
+        name: "Validate environment.ymls against schema"
+        files: ^modules/nf-core/.*/environment\.yml$
+        types: [yaml]
+        args: ["--schemafile", "modules/environment-schema.json"]
+      - id: check-jsonschema
+        name: "Match meta.ymls in one of the subdirectories of subworkflows/nf-core"
         files: ^subworkflows/nf-core/.*/meta\.yml$
+        types: [yaml]
         args: ["--schemafile", "subworkflows/yaml-schema.json"]
       - id: check-github-workflows
-  - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 38.46.0
-    hooks:
-      - id: renovate-config-validator
+      - id: check-github-actions
   # use ruff for python files
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.7.0
+    rev: v0.7.3
     hooks:
       - id: ruff
         files: \.py$
         args: [--fix, --exit-non-zero-on-fix, "--select", "I,E1,E4,E7,E9,F,UP,N"] # sort imports and fix (rules taken from nf-core/tools)
       - id: ruff-format # formatter
+  - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
+    rev: "3.0.3"
+    hooks:
+      - id: editorconfig-checker
+        alias: ec
+  - repo: https://github.com/nf-core/tools
+    rev: pre-commit
+    hooks:
+      - id: lint-subworkflows
