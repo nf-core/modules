@@ -142,7 +142,7 @@ jobs:
       - name: Lint module ${{ matrix.module }}
         run: nf-core modules lint ${{ matrix.module }}
 
-  confirm-pass:
+  confirm-pass-lint:
     runs-on: ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
     needs: [nf-core-lint-modules]
     if: always()
