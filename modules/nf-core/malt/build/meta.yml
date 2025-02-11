@@ -31,8 +31,12 @@ input:
         pattern: "*/|*.gff|*.gff3"
   - - mapping_db:
         type: file
-        description: MEGAN .db file from https://software-ab.cs.uni-tuebingen.de/download/megan6/welcome.html
-        pattern: "*.db"
+        description: An uncompressed MEGAN mapping file from https://software-ab.cs.uni-tuebingen.de/download/megan6/welcome.html (either mapping db, or acc2* .abin file)
+        pattern: "*.{db,abin}"
+  - - map_type:
+        type: string
+        description: The type of map file provided to the pipeline. Must be a valid string corresponding to a single-dash parameter, for example '-a2tax' or '-a2interpro2go'
+        pattern: "mdb|a2t|s2t|a2ec|s2ec|t4ec|a2eggnog|s2eggnog|t4eggnog|a2gtdb|s2gtdb|t4gtdb|a2interpro2go|s2interpro2go|t4interprotogo|a2kegg|s2kegg|t4kegg|a2pgpt|s2pgpt|t4pgpt|a2seed|s2seed|t4seed"
 output:
   - index:
       - malt_index/:
@@ -51,5 +55,7 @@ output:
           pattern: "malt-build.log"
 authors:
   - "@jfy133"
+  - "@LilyAnderssonLee"
 maintainers:
   - "@jfy133"
+  - "@LilyAnderssonLee"
