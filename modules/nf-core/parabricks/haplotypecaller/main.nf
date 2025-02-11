@@ -25,7 +25,7 @@ process PARABRICKS_HAPLOTYPECALLER {
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def output_file = ("--gvcf" =~ task.ext.args)? "${prefix}.g.vcf.gz" : "${prefix}.vcf"
+    def output_file = ("gvcf" =~ task.ext.args)? "${prefix}.g.vcf.gz" : "${prefix}.vcf"
     def interval_file_command = interval_file ? interval_file.collect{"--interval-file $it"}.join(' ') : ""
     def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
     """
