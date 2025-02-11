@@ -2,7 +2,7 @@ process STIMULUS_CHECKTORCHMODEL {
     tag "$data_config - $data"
     label 'process_medium'
 
-    container "docker.io/mathysgrapotte/stimulus-py:0.2.4"
+    container "docker.io/mathysgrapotte/stimulus-py:0.2.4.dev"
 
     input:
     path(data)
@@ -23,6 +23,13 @@ process STIMULUS_CHECKTORCHMODEL {
     prefix          = task.ext.prefix ?: model.baseName.replaceFirst(/\.py/, "")
     def weights_arg = initial_weights ? "--initial_weights ${initial_weights}" : ""
     """
+    # initialize Ray
+    ray start --head
+
+    # wait or it to start
+    sleep 10
+
+    # run the model check
     stimulus-check-model \
         -d ${data} \
         -m ${model} \
