@@ -104,7 +104,9 @@ nextflow_process {
                     process.out.versions,
                     path(process.out.distances[0][1]).csv(sep:"\t").columnNames.sort(),
                     path(process.out.distances[0][1]).csv(sep:"\t").rows[0].values().sort(),
-                    path(process.out.cluster_list[0][1]).csv(sep:"\t").sort(),
+                    path(process.out.cluster_list[0][1]).csv(sep:"\t").columnNames.sort(),
+                    path(process.out.cluster_list[0][1]).csv(sep:"\t").columns["ID"].sort(),
+                    path(process.out.cluster_list[0][1]).csv(sep:"\t").columns["Cluster__autocolour"].sort(),
                     process.out.dot
                 ).match() }
             )
