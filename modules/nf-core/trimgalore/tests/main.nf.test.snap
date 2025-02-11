@@ -11,9 +11,9 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.2"
+            "nextflow": "24.10.3"
         },
-        "timestamp": "2024-12-05T22:56:18.454197"
+        "timestamp": "2025-01-06T12:25:01.330769598"
     },
     "test_trimgalore_single_end - stub": {
         "content": [
@@ -89,9 +89,9 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.2"
+            "nextflow": "24.10.3"
         },
-        "timestamp": "2024-12-05T22:56:22.085472"
+        "timestamp": "2025-01-06T12:25:15.582246999"
     },
     "test_trimgalore_paired_end - stub": {
         "content": [
@@ -172,9 +172,9 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.2"
+            "nextflow": "24.10.3"
         },
-        "timestamp": "2024-12-05T22:44:33.751013"
+        "timestamp": "2025-01-06T12:26:05.201562315"
     },
     "versions": {
         "content": [
@@ -188,9 +188,9 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.2"
+            "nextflow": "24.10.3"
         },
-        "timestamp": "2024-12-05T22:57:28.77107"
+        "timestamp": "2025-01-06T12:26:05.229598492"
     },
     "test_trimgalore_paired_end": {
         "content": [
@@ -204,8 +204,48 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.2"
+            "nextflow": "24.10.3"
         },
-        "timestamp": "2024-12-05T22:56:27.019872"
+        "timestamp": "2025-01-06T12:25:33.510924538"
+    },
+    "test_trimgalore_paired_end_keep_unpaired": {
+        "content": [
+            {
+                "TRIMGALORE": {
+                    "trimgalore": "0.6.10",
+                    "cutadapt": 4.9,
+                    "pigz": 2.8
+                }
+            },
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    [
+                        "test_1_val_1.fq.gz:md5,75413e85910bbc2e1556e12f6479f935",
+                        "test_2_val_2.fq.gz:md5,d3c588c12646ebd36a0812fe02d0bda6"
+                    ]
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    [
+                        "test_1_unpaired_1.fq.gz:md5,17e0e878f6d0e93b9008a05f128660b6",
+                        "test_2_unpaired_2.fq.gz:md5,b09a064368a867e099e66df5ef69b044"
+                    ]
+                ]
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.3"
+        },
+        "timestamp": "2025-01-06T12:25:46.461002981"
     }
 }

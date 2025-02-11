@@ -471,7 +471,7 @@ if (opt\$permutation == 0) {
             window_size=1
         )
 
-        # update maximun theta value to test the FDR values for the next iteration
+        # update maximum theta value to test the FDR values for the next iteration
 
         part <- pd@fdr[which(pd@fdr\$truecounts > 0),]
         max_cutoff <- ifelse(nrow(part) > 1, min(part\$cutoff), 0)
