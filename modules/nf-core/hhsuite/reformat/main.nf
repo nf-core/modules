@@ -4,8 +4,8 @@ process HHSUITE_REFORMAT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/60/60413102dd36ffb8767525d16df897c5b5cee15a8af56bbcf10f407537aa823b/data':
-        'community.wave.seqera.io/library/hhsuite_perl:5e6367cac8ba3a53' }"
+        'https://depot.galaxyproject.org/singularity/hhsuite:3.3.0--py39pl5321h0dd7abe_13':
+        'biocontainers/hhsuite:3.3.0--py39pl5321h0dd7abe_13' }"
 
     input:
     tuple val(meta), path(aln)
