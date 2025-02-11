@@ -10,9 +10,14 @@ nextflow_process {
     tag "parabricks/haplotypecaller"
     tag "gpu"
 
+    config './nextflow.config'
+
     test("human - bam") {
 
         when {
+            params {
+                 module_args = '--htvc-low-memory'
+            }
             process {
                 """
                 input[0] = [
@@ -45,6 +50,9 @@ nextflow_process {
     test("human - bam - intervals") {
 
         when {
+            params {
+                 module_args = '--htvc-low-memory'
+            }
             process {
                 """
                 input[0] = [
@@ -76,11 +84,9 @@ nextflow_process {
 
     test("human - bam - intervals - gvcf") {
 
-        config './nextflow.config'
-
         when {
             params {
-                 module_args = '--gvcf'
+                 module_args = '--gvcf --htvc-low-memory'
             }
             process {
                 """
@@ -116,6 +122,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                 module_args = '--htvc-low-memory'
+            }
             process {
                 """
                 input[0] = [
@@ -150,6 +159,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                 module_args = '--htvc-low-memory'
+            }
             process {
                 """
                 input[0] = [
@@ -181,13 +193,9 @@ nextflow_process {
 
     test("human - bam - intervals - gvcf - stub") {
 
-        options "-stub"
-
-        config './nextflow.config'
-
         when {
             params {
-                 module_args = '--gvcf'
+                 module_args = '--gvcf --htvc-low-memory'
             }
             process {
                 """
