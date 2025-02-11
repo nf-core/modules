@@ -25,7 +25,7 @@ nextflow_process {
 
         then {
             def allFiles = file(process.out.db.get(0).get(1)).listFiles().sort()
-            // Defile all files that have unstable content (ie: timestamp, non-deterministic or any other variable content)
+            // Filter out all files that have unstable content (ie: timestamp, non-deterministic or any other variable content)
             def unstableNames = ["database.dmnd", "database.fastaid2LCAtaxid", "database.log", "database.taxids_with_multiple_offspring"]
             // Filter out the unstable files
             def stableFiles = allFiles.grep { file -> !unstableNames.contains(file.name) }
