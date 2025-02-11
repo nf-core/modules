@@ -5,6 +5,7 @@ process FAST2Q {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+
         'https://depot.galaxyproject.org/singularity/fast2q:2.7.4--pyh7e72e81_0' :
         'biocontainers/fast2q:2.7.4--pyh7e72e81_0' }"
 
