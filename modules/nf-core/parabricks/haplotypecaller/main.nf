@@ -11,8 +11,8 @@ process PARABRICKS_HAPLOTYPECALLER {
     tuple val(ref_meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.vcf"),   optional: true, emit: vcf
-    tuple val(meta), path("*.g.vcf"), optional: true, emit: gvcf
+    tuple val(meta), path("*.vcf"),      optional: true, emit: vcf
+    tuple val(meta), path("*.g.vcf.gz"), optional: true, emit: gvcf
     path "versions.yml",            emit: versions
 
     when:
@@ -25,7 +25,7 @@ process PARABRICKS_HAPLOTYPECALLER {
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def output_file = ("--gvcf" =~ task.ext.args)? "${prefix}.g.vcf" : "${prefix}.vcf"
+    def output_file = ("--gvcf" =~ task.ext.args)? "${prefix}.g.vcf.gz" : "${prefix}.vcf"
     def interval_file_command = interval_file ? interval_file.collect{"--interval-file $it"}.join(' ') : ""
     def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
     """
@@ -45,11 +45,10 @@ process PARABRICKS_HAPLOTYPECALLER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def output_file = ("--gvcf" =~ task.ext.args)? "${prefix}.g.vcf" : "${prefix}.vcf"
+    def output_cmd = ("--gvcf" =~ task.ext.args)? "echo '' | gzip > ${prefix}.g.vcf.gz" : "touch ${prefix}.vcf"
     """
-    touch $output_file
+    $output_cmd
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
