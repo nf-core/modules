@@ -5,8 +5,8 @@ process FAST2Q {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fast2q:2.7.2--pyh7e72e81_0' :
-        'biocontainers/fast2q:2.7.2--pyh7e72e81_0' }"
+        'https://depot.galaxyproject.org/singularity/fast2q:2.7.4--pyh7e72e81_0' :
+        'biocontainers/fast2q:2.7.4--pyh7e72e81_0' }"
 
     input:
     tuple val(meta), path(fastq)
@@ -18,7 +18,7 @@ process FAST2Q {
     tuple val(meta), path("${prefix}_distribution_plot.png")    , emit: distribution_plot
     tuple val(meta), path("${prefix}_reads_plot.png")           , emit: reads_plot
     tuple val(meta), path("${prefix}_reads_plot_percentage.png"), emit: reads_plot_percentage
-    path "versions.yml", emit: versions
+    path "versions.yml"                                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
