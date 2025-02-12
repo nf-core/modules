@@ -2,6 +2,7 @@ process UPP_ALIGN {
     tag "$meta.id"
     label 'process_medium'
 
+    //TODO: Use bioconda container once the recipe is fixed (see https://github.com/smirarab/sepp/issues/141)
     container "nf-core/multiplesequencealign_upp2:4.5.5"
 
     input:
