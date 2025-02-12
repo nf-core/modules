@@ -58,12 +58,11 @@ process BCFTOOLS_PLUGINTAG2TAG {
                     args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
                     "vcf"
     def stub_index = args.contains("--write-index=tbi") || args.contains("-W=tbi") ? "tbi" :
-                args.contains("--write-index=csi") || args.contains("-W=csi") ? "csi" :
-                args.contains("--write-index") || args.contains("-W") ? "csi" :
-                ""
+                     args.contains("--write-index=csi") || args.contains("-W=csi") ? "csi" :
+                     args.contains("--write-index")     || args.contains("-W") ? "csi" :
+                     ""
     def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
     def create_index = extension.endsWith(".gz") && index.matches("csi|tbi") ? "touch ${prefix}.${extension}.${stub_index}" : ""
-
     """
     ${create_cmd} ${prefix}.${extension}
     ${create_index}
