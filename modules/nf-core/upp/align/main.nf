@@ -2,10 +2,7 @@ process UPP_ALIGN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/80/800667a716528cc6d655da1885d38f9d10385a184e0b1165985ae12034ff5f1d/data':
-        'community.wave.seqera.io/library/sepp_pigz:8f996974b960fc41' }"
+    container "nf-core/multiplesequencealign_upp2:4.5.5"
 
     input:
     tuple val(meta) , path(fasta)
@@ -23,6 +20,9 @@ process UPP_ALIGN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def tree_args = tree ? "-t $tree" : ""
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error("LearnMSA align module does not support Conda. Please use Docker / Singularity / Podman instead.")
+    }
     """
 
     if [ "$workflow.containerEngine" = 'singularity' ]; then
