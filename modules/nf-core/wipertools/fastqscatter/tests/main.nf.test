@@ -8,7 +8,7 @@ nextflow_process {
     tag "wipertools"
     tag "wipertools/fastqscatter"
 
-    test("3 reads, one truncated - fastq") {
+    test("test1 - fastq") {
         config "./nextflow.config"
 
         when {
@@ -34,7 +34,7 @@ nextflow_process {
         }
     }
 
-    test("3 reads, one truncated - fastq - stub") {
+    test("test1 - fastq - stub") {
         options "-stub"
         config "./nextflow.config"
 

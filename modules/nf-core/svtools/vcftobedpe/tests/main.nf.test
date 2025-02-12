@@ -1,0 +1,58 @@
+nextflow_process {
+
+    name "Test Process SVTOOLS_VCFTOBEDPE"
+    script "../main.nf"
+    process "SVTOOLS_VCFTOBEDPE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "svtools"
+    tag "svtools/vcftobedpe"
+
+    test("homo_sapiens - vcf") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA24385_sv.vcf.gz', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - vcf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA24385_sv.vcf.gz', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
