@@ -62,8 +62,7 @@ process BCFTOOLS_PLUGINIMPUTEINFO {
                      args.contains("--write-index")     || args.contains("-W") ? "csi" :
                      ""
     def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
-    def create_index = extension.endsWith(".gz") && index.matches("csi|tbi") ? "touch ${prefix}.${extension}.${stub_index}" : ""
-
+    def create_index = extension.endsWith(".gz") && stub_index.matches("csi|tbi") ? "touch ${prefix}.${extension}.${stub_index}" : ""
     """
     ${create_cmd} ${prefix}.${extension}
     ${create_index}

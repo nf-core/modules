@@ -51,7 +51,7 @@ process BCFTOOLS_CALL {
                      args.contains("--write-index=csi") || args.contains("-W=csi") ? "csi" :
                      args.contains("--write-index")     || args.contains("-W") ? "csi" :
                      ""
-    def create_index = index.matches("csi|tbi") ? "touch ${prefix}.vcf.gz.${stub_index}" : ""
+    def create_index = stub_index.matches("csi|tbi") ? "touch ${prefix}.vcf.gz.${stub_index}" : ""
     """
     echo "" | gzip > ${prefix}.vcf.gz
     ${create_index}
