@@ -15,31 +15,41 @@ tools:
       licence: ["MIT"]
 
 input:
-  - - data:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - data:
         type: file
         description: A CSV file with untransformed data
         pattern: "*.csv"
         ontologies:
           - edam: "http://edamontology.org/format_3752"
-  - - data_config:
+    - data_config:
         type: file
         description: A YAML file describing data transformations
         pattern: "*.{yml,yaml}"
         ontologies:
           - edam: "http://edamontology.org/format_3464"
-  - - model:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - model:
         type: file
         description: Python source file containing the model
         pattern: "*.py"
         ontologies:
           - edam: "http://edamontology.org/format_3996"
-  - - model_config:
+    - model_config:
         type: file
         description: YAML file containing RayTune tuning parameters
         pattern: "*.{yml,yaml}"
         ontologies:
           - edam: "http://edamontology.org/format_3750"
-  - - initial_weights:
+    - initial_weights:
         type: file
         description: An optional SafeTensors file containing initial weights
         pattern: "*.safetensors"
