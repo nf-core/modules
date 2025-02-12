@@ -15,11 +15,13 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_stimulus_split.csv', checkIfExists: true)
-                input[1] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_sub_config_0.yaml', checkIfExists: true)
-                input[2] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_model.py', checkIfExists: true)
-                input[3] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_model_cpu.yaml', checkIfExists: true)
-                input[4] = []
+                input[0] = [[id: 'test'],
+                            file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_stimulus_split.csv', checkIfExists: true),
+                            file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_sub_config_0.yaml', checkIfExists: true)]
+                input[1] = [[id: 'test'],
+                            file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_model.py', checkIfExists: true),
+                            file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_model_cpu.yaml', checkIfExists: true),
+                            []]
                 """
             }
         }
@@ -34,7 +36,6 @@ nextflow_process {
 
     }
 
-    // TODO nf-core: Change the test name preferably indicating the test-data and file-format used but keep the " - stub" suffix.
     test("basic - csv - stub") {
 
         options "-stub"
@@ -42,11 +43,13 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_stimulus_split.csv', checkIfExists: true)
-                input[1] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_sub_config_0.yaml', checkIfExists: true)
-                input[2] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_model.py', checkIfExists: true)
-                input[3] = file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_model_cpu.yaml', checkIfExists: true)
-                input[4] = []
+                input[0] = [[id: 'test'],
+                            file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_stimulus_split.csv', checkIfExists: true),
+                            file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_sub_config_0.yaml', checkIfExists: true)]
+                input[1] = [[id: 'test'],
+                            file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_model.py', checkIfExists: true),
+                            file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_model_cpu.yaml', checkIfExists: true),
+                            []]
                 """
             }
         }
