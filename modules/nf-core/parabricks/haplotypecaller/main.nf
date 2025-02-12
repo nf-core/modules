@@ -45,6 +45,7 @@ process PARABRICKS_HAPLOTYPECALLER {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def output_cmd = ("gvcf" =~ args)? "echo '' | gzip > ${prefix}.g.vcf.gz" : "touch ${prefix}.vcf"
     """
