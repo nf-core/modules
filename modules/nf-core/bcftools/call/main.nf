@@ -47,13 +47,12 @@ process BCFTOOLS_CALL {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def index = args.contains("--write-index=tbi") || args.contains("-W=tbi") ? "tbi" :
+    def stub_index = args.contains("--write-index=tbi") || args.contains("-W=tbi") ? "tbi" :
                 args.contains("--write-index=csi") || args.contains("-W=csi") ? "csi" :
                 args.contains("--write-index") || args.contains("-W") ? "csi" :
                 ""
 
-    def create_index = index.matches("csi|tbi") ? "touch ${prefix}.vcf.gz.${index}" : ""
-
+    def create_index = index.matches("csi|tbi") ? "touch ${prefix}.vcf.gz.${stub_index}" : ""
     """
     echo "" | gzip > ${prefix}.vcf.gz
     ${create_index}
