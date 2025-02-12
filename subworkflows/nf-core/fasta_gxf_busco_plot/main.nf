@@ -23,6 +23,7 @@ workflow FASTA_GXF_BUSCO_PLOT {
     val_lineages                                // [ val(lineage) ]
     val_busco_lineages_path                     // val(path); Optional; Set to [] if not needed
     val_busco_config                            // val(path); Optional; Set to [] if not needed
+    val_busco_cleanup                           // val(boolean); Set to true to remove BUSCO intermediate files
 
     main:
     ch_versions                                 = Channel.empty()
@@ -32,6 +33,7 @@ workflow FASTA_GXF_BUSCO_PLOT {
     ch_config_path                              = val_busco_config
                                                 ? Channel.of(file(val_busco_config, checkIfExists: true))
                                                 : Channel.of( [ [] ] )
+    ch_busco_cleanup                            = Channel.of([val_busco_cleanup])
 
     // MODULE: BUSCO_BUSCO as BUSCO_ASSEMBLY
     ch_busco_assembly_inputs                    = ch_fasta
@@ -53,13 +55,17 @@ workflow FASTA_GXF_BUSCO_PLOT {
                                                 | combine(
                                                     ch_config_path
                                                 )
+                                                | combine(
+                                                    ch_busco_cleanup
+                                                )
 
     BUSCO_ASSEMBLY(
-        ch_busco_assembly_inputs.map { meta,  fasta,  _mode, _lineage, _db, _config -> [ meta, fasta ] },
-        ch_busco_assembly_inputs.map { _meta, _fasta, mode,  _lineage, _db, _config -> mode },
-        ch_busco_assembly_inputs.map { _meta, _fasta, _mode, lineage,  _db, _config -> lineage },
-        ch_busco_assembly_inputs.map { _meta, _fasta, _mode, _lineage, db,  _config -> db },
-        ch_busco_assembly_inputs.map { _meta, _fasta, _mode, _lineage, _db, config  -> config }
+        ch_busco_assembly_inputs.map { meta,  fasta,  _mode, _lineage, _db, _config, _cleanup -> [ meta, fasta ] },
+        ch_busco_assembly_inputs.map { _meta, _fasta, mode,  _lineage, _db, _config, _cleanup -> mode },
+        ch_busco_assembly_inputs.map { _meta, _fasta, _mode, lineage,  _db, _config, _cleanup -> lineage },
+        ch_busco_assembly_inputs.map { _meta, _fasta, _mode, _lineage, db,  _config, _cleanup -> db },
+        ch_busco_assembly_inputs.map { _meta, _fasta, _mode, _lineage, _db, config, _cleanup  -> config },
+        ch_busco_assembly_inputs.map { _meta, _fasta, _mode, _lineage, _db, _config, cleanup -> cleanup }
     )
 
     ch_assembly_batch_summary                   = BUSCO_ASSEMBLY.out.batch_summary
@@ -123,13 +129,17 @@ workflow FASTA_GXF_BUSCO_PLOT {
                                                 | combine(
                                                     ch_config_path
                                                 )
+                                                | combine(
+                                                    ch_busco_cleanup
+                                                )
 
     BUSCO_ANNOTATION(
-        ch_busco_annotation_inputs.map { meta,  fasta,  _mode, _lineage, _db, _config -> [ meta, fasta ] },
-        ch_busco_annotation_inputs.map { _meta, _fasta, mode,  _lineage, _db, _config -> mode },
-        ch_busco_annotation_inputs.map { _meta, _fasta, _mode, lineage,  _db, _config -> lineage },
-        ch_busco_annotation_inputs.map { _meta, _fasta, _mode, _lineage, db,  _config -> db },
-        ch_busco_annotation_inputs.map { _meta, _fasta, _mode, _lineage, _db, config  -> config }
+        ch_busco_annotation_inputs.map { meta,  fasta,  _mode, _lineage, _db, _config, _cleanup -> [ meta, fasta ] },
+        ch_busco_annotation_inputs.map { _meta, _fasta, mode,  _lineage, _db, _config, _cleanup -> mode },
+        ch_busco_annotation_inputs.map { _meta, _fasta, _mode, lineage,  _db, _config, _cleanup -> lineage },
+        ch_busco_annotation_inputs.map { _meta, _fasta, _mode, _lineage, db,  _config, _cleanup -> db },
+        ch_busco_annotation_inputs.map { _meta, _fasta, _mode, _lineage, _db, config, _cleanup  -> config },
+        ch_busco_annotation_inputs.map { _meta, _fasta, _mode, _lineage, _db, _config, cleanup -> cleanup }
     )
 
     ch_annotation_batch_summary                 = BUSCO_ANNOTATION.out.batch_summary
