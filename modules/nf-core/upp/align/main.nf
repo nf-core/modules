@@ -21,7 +21,7 @@ process UPP_ALIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def tree_args = tree ? "-t $tree" : ""
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error("LearnMSA align module does not support Conda. Please use Docker / Singularity / Podman instead.")
+        error("Upp align module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     """
 
