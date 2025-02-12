@@ -1,5 +1,5 @@
 name: fast2q
-description: A program that counts sequence occurrences in FASTQ files.
+description: A program that extracts and counts sequence occurrences in FASTQ files.
 keywords:
   - CRISPRi
   - FASTQ
@@ -8,8 +8,8 @@ tools:
   - 2FAST2Q:
       description: |
         2FAST2Q is ideal for CRISPRi-Seq, and for extracting and counting any kind of information from reads in the fastq format, such as barcodes in Bar-seq experiments.
-        2FAST2Q can work with sequence mismatches, Phred-score, and be used to find and extract unknown sequences delimited by known sequences.
-        2FAST2Q can extract multiple features per read using either fixed positions or delimiting search sequences.
+        It can work with sequence mismatches, Phred-score, and be used to find and extract unknown sequences delimited by known sequences.
+        It can also extract multiple features per read using either fixed positions or delimiting search sequences.
       homepage: https://github.com/afombravo/2FAST2Q
       doi: 10.7717/peerj.14041
       licence: ["GPL-3.0-or-later"]
@@ -29,7 +29,7 @@ input:
   - - meta2:
         type: map
         description: |
-          Groovy Map containing sample information
+          Groovy Map containing library information
           e.g. [ id:'library_name', multiple_features_per_read:false ]
     - library:
         type: file
