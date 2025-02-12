@@ -13,8 +13,8 @@ process HHSUITE_REFORMAT {
     val(outformat)
 
     output:
-    tuple val(meta), path("${prefix}.${outformat}"), emit: msa
-    path "versions.yml"                            , emit: versions
+    tuple val(meta), path("${prefix}.${outformat}.gz"), emit: msa
+    path "versions.yml"                               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,8 +24,9 @@ process HHSUITE_REFORMAT {
     prefix = task.ext.prefix ?: "${meta.id}"
     def is_compressed = aln.name.endsWith(".gz")
     def aln_name = aln.name
-    if (is_compressed)
+    if (is_compressed) {
         aln_name = aln.name.replace(".gz", "")
+    }
     """
     if [ "$is_compressed" == "true" ]; then
         gzip -c -d $aln > $aln_name
@@ -38,6 +39,8 @@ process HHSUITE_REFORMAT {
         ${aln_name} \\
         ${prefix}.${outformat}
 
+    gzip ${prefix}.${outformat}
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         hhsuite: \$(hhblits -h | grep 'HHblits' | sed -n -e 's/.*\\([0-9]\\+\\.[0-9]\\+\\.[0-9]\\+\\).*/\\1/p')
@@ -48,7 +51,7 @@ process HHSUITE_REFORMAT {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.${outformat}
+    echo "" | gzip > ${prefix}.${outformat}.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

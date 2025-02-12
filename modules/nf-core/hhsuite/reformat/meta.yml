@@ -1,7 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "hhsuite_reformat"
-description: reformat a Multiple Sequence Alignment (MSA) file
+description: Reformat a Multiple Sequence Alignment (MSA) file
 keywords:
   - reformat
   - MSA
@@ -14,7 +14,7 @@ tools:
       tool_dev_url: "https://github.com/soedinglab/hh-suite"
       doi: "10.1371/journal.pone.0082138"
       licence: ['GPL v3']
-      identifier: ""
+      identifier: biotools:hh-suite
 input:
   - - meta:
         type: map
@@ -40,10 +40,10 @@ output:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-    - "${prefix}.${outformat}":
+    - "${prefix}.${outformat}.gz":
           type: file
-          description: Reformatted output MSA file
-          pattern: "*.{fas,a2m,a3m,sto,psi,clu}"
+          description: Gzipped reformatted output MSA file
+          pattern: "*.{fas.gz,a2m.gz,a3m.gz,sto.gz,psi.gz,clu.gz}"
   - versions:
     - "versions.yml":
         type: file
