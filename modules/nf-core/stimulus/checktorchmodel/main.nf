@@ -2,14 +2,12 @@ process STIMULUS_CHECKTORCHMODEL {
     tag "$data_config - $data"
     label 'process_medium'
 
+    conda "${moduleDir}/environment.yml"
     container "docker.io/mathysgrapotte/stimulus-py:0.2.4.dev"
 
     input:
-    path(data)
-    path(data_config)
-    path(model)
-    path(model_config)
-    path(initial_weights)
+    tuple val(meta), path(data), path(data_config)
+    tuple val(meta), path(model), path(model_config), path(initial_weights)
 
     output:
     path "*_modelcheck.log", emit: log
@@ -26,7 +24,7 @@ process STIMULUS_CHECKTORCHMODEL {
     # initialize Ray
     ray start --head --port=6379 --temp-dir /tmp/ray
 
-    # wait or it to start
+    # wait for it to start
     sleep 10
 
     # run the model check
@@ -35,6 +33,7 @@ process STIMULUS_CHECKTORCHMODEL {
         -m ${model} \
         -e ${data_config} \
         -c ${model_config} \
+        ${weights_arg} \
         --ray_results_dirpath ${workDir} \
         $args > ${prefix}_modelcheck.log
 
