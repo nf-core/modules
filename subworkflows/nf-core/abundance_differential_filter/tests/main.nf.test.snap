@@ -8,7 +8,7 @@
                         "variable": "diagnosis",
                         "reference": "normal",
                         "target": "uremia",
-                        "method": "limma"
+                        "method_differential": "limma"
                     },
                     "diagnosis_normal_uremia_test_limma.limma.results.tsv:md5,4f0944b54b3ab7aa6ded5dd4b4e82802"
                 ]
@@ -20,7 +20,7 @@
                         "variable": "diagnosis",
                         "reference": "normal",
                         "target": "uremia",
-                        "method": "limma",
+                        "method_differential": "limma",
                         "fc_threshold": 1.5,
                         "stat_threshold": 0.05
                     },
@@ -28,7 +28,7 @@
                 ]
             ],
             [
-                
+
             ],
             [
                 [
@@ -37,7 +37,7 @@
                         "variable": "diagnosis",
                         "reference": "normal",
                         "target": "uremia",
-                        "method": "limma"
+                        "method_differential": "limma"
                     },
                     "diagnosis_normal_uremia_test_limma.limma.model.txt:md5,70b000f632b8bdba4917046362dd876b"
                 ]
@@ -50,7 +50,7 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.4"
         },
-        "timestamp": "2025-02-04T13:54:29.394126445"
+        "timestamp": "2025-02-13T10:34:11.577546081"
     },
     "deseq2 and limma - mouse - basic": {
         "content": [
@@ -62,7 +62,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "",
-                        "method": "deseq2"
+                        "method_differential": "deseq2"
                     },
                     "treatment_mCherry_hND6__test_deseq2.deseq2.results.tsv:md5,791cdba2615a445cded13cae95df73ef"
                 ],
@@ -73,7 +73,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "",
-                        "method": "limma"
+                        "method_differential": "limma"
                     },
                     "treatment_mCherry_hND6__test_limma_voom.limma.results.tsv:md5,ff36827b7869a8a3c3c905efedcafc93"
                 ],
@@ -84,7 +84,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "sample_number",
-                        "method": "deseq2"
+                        "method_differential": "deseq2"
                     },
                     "treatment_mCherry_hND6_sample_number_test_deseq2.deseq2.results.tsv:md5,2438053a4bdc869f467a12d3c22c7ba7"
                 ],
@@ -95,7 +95,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "sample_number",
-                        "method": "limma"
+                        "method_differential": "limma"
                     },
                     "treatment_mCherry_hND6_sample_number_test_limma_voom.limma.results.tsv:md5,5f34e79dbcb5ba1908d797548921d7fc"
                 ]
@@ -108,7 +108,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "",
-                        "method": "deseq2",
+                        "method_differential": "deseq2",
                         "fc_threshold": 1.5,
                         "stat_threshold": 0.05
                     },
@@ -121,7 +121,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "",
-                        "method": "limma",
+                        "method_differential": "limma",
                         "fc_threshold": 1.5,
                         "stat_threshold": 0.05
                     },
@@ -134,7 +134,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "sample_number",
-                        "method": "deseq2",
+                        "method_differential": "deseq2",
                         "fc_threshold": 1.5,
                         "stat_threshold": 0.05
                     },
@@ -147,7 +147,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "sample_number",
-                        "method": "limma",
+                        "method_differential": "limma",
                         "fc_threshold": 1.5,
                         "stat_threshold": 0.05
                     },
@@ -158,14 +158,14 @@
                 [
                     {
                         "id": "test",
-                        "method": "deseq2"
+                        "method_differential": "deseq2"
                     },
                     "test_deseq2_norm.normalised_counts.tsv:md5,46ab7200c626649ab6256ed797ef5071"
                 ],
                 [
                     {
                         "id": "test",
-                        "method": "limma"
+                        "method_differential": "limma"
                     },
                     "test_limma_voom_norm.normalised_counts.tsv:md5,2aa4880ba5ae246a728b25f4316ca2ca"
                 ]
@@ -174,7 +174,7 @@
                 [
                     {
                         "id": "test",
-                        "method": "deseq2"
+                        "method_differential": "deseq2"
                     },
                     [
                         "test_deseq2_norm.rlog.tsv:md5,b1adc1fba6bd0c8b55973608f4b97030"
@@ -189,7 +189,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "",
-                        "method": "deseq2"
+                        "method_differential": "deseq2"
                     },
                     "treatment_mCherry_hND6__test_deseq2.deseq2.model.txt:md5,d2113d82b76046c319e6602da2ad74d6"
                 ],
@@ -200,7 +200,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "",
-                        "method": "limma"
+                        "method_differential": "limma"
                     },
                     "treatment_mCherry_hND6__test_limma_voom.limma.model.txt:md5,d2113d82b76046c319e6602da2ad74d6"
                 ],
@@ -211,7 +211,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "sample_number",
-                        "method": "deseq2"
+                        "method_differential": "deseq2"
                     },
                     "treatment_mCherry_hND6_sample_number_test_deseq2.deseq2.model.txt:md5,fa05126a58cb67c107d45426b0bdea83"
                 ],
@@ -222,7 +222,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "sample_number",
-                        "method": "limma"
+                        "method_differential": "limma"
                     },
                     "treatment_mCherry_hND6_sample_number_test_limma_voom.limma.model.txt:md5,3b96713b4e3f027b0347859f02a9038d"
                 ]
@@ -238,7 +238,7 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.4"
         },
-        "timestamp": "2025-02-04T13:56:48.852994235"
+        "timestamp": "2025-02-13T10:36:58.093453556"
     },
     "limma - voom": {
         "content": [
@@ -250,7 +250,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "",
-                        "method": "limma",
+                        "method_differential": "limma",
                         "fc_threshold": 1.5,
                         "stat_threshold": 0.05
                     },
@@ -263,7 +263,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "sample_number",
-                        "method": "limma",
+                        "method_differential": "limma",
                         "fc_threshold": 1.5,
                         "stat_threshold": 0.05
                     },
@@ -274,7 +274,7 @@
                 [
                     {
                         "id": "test",
-                        "method": "limma"
+                        "method_differential": "limma"
                     },
                     "test_limma_voom_norm.normalised_counts.tsv:md5,2aa4880ba5ae246a728b25f4316ca2ca"
                 ]
@@ -287,7 +287,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "",
-                        "method": "limma"
+                        "method_differential": "limma"
                     },
                     "treatment_mCherry_hND6__test_limma_voom.limma.model.txt:md5,d2113d82b76046c319e6602da2ad74d6"
                 ],
@@ -298,7 +298,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "sample_number",
-                        "method": "limma"
+                        "method_differential": "limma"
                     },
                     "treatment_mCherry_hND6_sample_number_test_limma_voom.limma.model.txt:md5,3b96713b4e3f027b0347859f02a9038d"
                 ]
@@ -312,7 +312,7 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.4"
         },
-        "timestamp": "2025-02-04T13:54:49.182493737"
+        "timestamp": "2025-02-13T10:34:30.079348808"
     },
     "deseq2 + limma-voom + propd - mouse - basic": {
         "content": [
@@ -324,7 +324,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "",
-                        "method": "deseq2"
+                        "method_differential": "deseq2"
                     },
                     "treatment_mCherry_hND6__test_deseq2.deseq2.results.tsv:md5,791cdba2615a445cded13cae95df73ef"
                 ],
@@ -335,7 +335,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "",
-                        "method": "limma"
+                        "method_differential": "limma"
                     },
                     "treatment_mCherry_hND6__test_limma_voom.limma.results.tsv:md5,ff36827b7869a8a3c3c905efedcafc93"
                 ],
@@ -346,7 +346,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "",
-                        "method": "propd"
+                        "method_differential": "propd"
                     },
                     "treatment_mCherry_hND6__test_propd.propd.genewise.tsv:md5,bdc19a4b7430f248cd332287b630c872"
                 ],
@@ -357,7 +357,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "sample_number",
-                        "method": "deseq2"
+                        "method_differential": "deseq2"
                     },
                     "treatment_mCherry_hND6_sample_number_test_deseq2.deseq2.results.tsv:md5,2438053a4bdc869f467a12d3c22c7ba7"
                 ],
@@ -368,7 +368,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "sample_number",
-                        "method": "limma"
+                        "method_differential": "limma"
                     },
                     "treatment_mCherry_hND6_sample_number_test_limma_voom.limma.results.tsv:md5,5f34e79dbcb5ba1908d797548921d7fc"
                 ],
@@ -379,7 +379,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "sample_number",
-                        "method": "propd"
+                        "method_differential": "propd"
                     },
                     "treatment_mCherry_hND6_sample_number_test_propd.propd.genewise.tsv:md5,bdc19a4b7430f248cd332287b630c872"
                 ]
@@ -392,7 +392,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "",
-                        "method": "deseq2",
+                        "method_differential": "deseq2",
                         "fc_threshold": 1.5,
                         "stat_threshold": 0.05
                     },
@@ -405,7 +405,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "",
-                        "method": "limma",
+                        "method_differential": "limma",
                         "fc_threshold": 1.5,
                         "stat_threshold": 0.05
                     },
@@ -418,7 +418,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "",
-                        "method": "propd",
+                        "method_differential": "propd",
                         "fc_threshold": 1.5,
                         "stat_threshold": 100
                     },
@@ -431,7 +431,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "sample_number",
-                        "method": "deseq2",
+                        "method_differential": "deseq2",
                         "fc_threshold": 1.5,
                         "stat_threshold": 0.05
                     },
@@ -444,7 +444,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "sample_number",
-                        "method": "limma",
+                        "method_differential": "limma",
                         "fc_threshold": 1.5,
                         "stat_threshold": 0.05
                     },
@@ -457,7 +457,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "sample_number",
-                        "method": "propd",
+                        "method_differential": "propd",
                         "fc_threshold": 1.5,
                         "stat_threshold": 100
                     },
@@ -472,7 +472,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "",
-                        "method": "propd"
+                        "method_differential": "propd"
                     },
                     "treatment_mCherry_hND6__test_propd.propd.adjacency.csv:md5,3a947ffd8172990c6207aa7561a41cb8"
                 ],
@@ -483,7 +483,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "sample_number",
-                        "method": "propd"
+                        "method_differential": "propd"
                     },
                     "treatment_mCherry_hND6_sample_number_test_propd.propd.adjacency.csv:md5,3a947ffd8172990c6207aa7561a41cb8"
                 ]
@@ -492,14 +492,14 @@
                 [
                     {
                         "id": "test",
-                        "method": "deseq2"
+                        "method_differential": "deseq2"
                     },
                     "test_deseq2_norm.normalised_counts.tsv:md5,46ab7200c626649ab6256ed797ef5071"
                 ],
                 [
                     {
                         "id": "test",
-                        "method": "limma"
+                        "method_differential": "limma"
                     },
                     "test_limma_voom_norm.normalised_counts.tsv:md5,2aa4880ba5ae246a728b25f4316ca2ca"
                 ]
@@ -508,7 +508,7 @@
                 [
                     {
                         "id": "test",
-                        "method": "deseq2"
+                        "method_differential": "deseq2"
                     },
                     [
                         "test_deseq2_norm.rlog.tsv:md5,b1adc1fba6bd0c8b55973608f4b97030"
@@ -523,7 +523,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "",
-                        "method": "deseq2"
+                        "method_differential": "deseq2"
                     },
                     "treatment_mCherry_hND6__test_deseq2.deseq2.model.txt:md5,d2113d82b76046c319e6602da2ad74d6"
                 ],
@@ -534,7 +534,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "",
-                        "method": "limma"
+                        "method_differential": "limma"
                     },
                     "treatment_mCherry_hND6__test_limma_voom.limma.model.txt:md5,d2113d82b76046c319e6602da2ad74d6"
                 ],
@@ -545,7 +545,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "sample_number",
-                        "method": "deseq2"
+                        "method_differential": "deseq2"
                     },
                     "treatment_mCherry_hND6_sample_number_test_deseq2.deseq2.model.txt:md5,fa05126a58cb67c107d45426b0bdea83"
                 ],
@@ -556,7 +556,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "sample_number",
-                        "method": "limma"
+                        "method_differential": "limma"
                     },
                     "treatment_mCherry_hND6_sample_number_test_limma_voom.limma.model.txt:md5,3b96713b4e3f027b0347859f02a9038d"
                 ]
@@ -574,7 +574,7 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.4"
         },
-        "timestamp": "2025-02-04T13:57:45.650163566"
+        "timestamp": "2025-02-13T10:38:17.764737776"
     },
     "stub": {
         "content": [
@@ -587,7 +587,7 @@
                             "reference": "mCherry",
                             "target": "hND6",
                             "blocking": "",
-                            "method": "deseq2"
+                            "method_differential": "deseq2"
                         },
                         "treatment_mCherry_hND6__test.deseq2.results.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ],
@@ -598,7 +598,7 @@
                             "reference": "mCherry",
                             "target": "hND6",
                             "blocking": "sample_number",
-                            "method": "deseq2"
+                            "method_differential": "deseq2"
                         },
                         "treatment_mCherry_hND6_sample_number_test.deseq2.results.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
@@ -611,7 +611,7 @@
                             "reference": "mCherry",
                             "target": "hND6",
                             "blocking": "",
-                            "method": "deseq2",
+                            "method_differential": "deseq2",
                             "fc_threshold": 1.5,
                             "stat_threshold": 0.05
                         },
@@ -624,7 +624,7 @@
                             "reference": "mCherry",
                             "target": "hND6",
                             "blocking": "sample_number",
-                            "method": "deseq2",
+                            "method_differential": "deseq2",
                             "fc_threshold": 1.5,
                             "stat_threshold": 0.05
                         },
@@ -632,13 +632,13 @@
                     ]
                 ],
                 "2": [
-                    
+
                 ],
                 "3": [
                     [
                         {
                             "id": "test",
-                            "method": "deseq2"
+                            "method_differential": "deseq2"
                         },
                         "test.normalised_counts.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
@@ -647,7 +647,7 @@
                     [
                         {
                             "id": "test",
-                            "method": "deseq2"
+                            "method_differential": "deseq2"
                         },
                         [
                             "test.rlog.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
@@ -662,7 +662,7 @@
                             "reference": "mCherry",
                             "target": "hND6",
                             "blocking": "",
-                            "method": "deseq2"
+                            "method_differential": "deseq2"
                         },
                         "treatment_mCherry_hND6__test.deseq2.model.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ],
@@ -673,7 +673,7 @@
                             "reference": "mCherry",
                             "target": "hND6",
                             "blocking": "sample_number",
-                            "method": "deseq2"
+                            "method_differential": "deseq2"
                         },
                         "treatment_mCherry_hND6_sample_number_test.deseq2.model.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
@@ -683,7 +683,7 @@
                     "versions.yml:md5,05e3901f6d78f8839a7e07f422e9bc03"
                 ],
                 "adjacency": [
-                    
+
                 ],
                 "model": [
                     [
@@ -693,7 +693,7 @@
                             "reference": "mCherry",
                             "target": "hND6",
                             "blocking": "",
-                            "method": "deseq2"
+                            "method_differential": "deseq2"
                         },
                         "treatment_mCherry_hND6__test.deseq2.model.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ],
@@ -704,7 +704,7 @@
                             "reference": "mCherry",
                             "target": "hND6",
                             "blocking": "sample_number",
-                            "method": "deseq2"
+                            "method_differential": "deseq2"
                         },
                         "treatment_mCherry_hND6_sample_number_test.deseq2.model.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
@@ -713,7 +713,7 @@
                     [
                         {
                             "id": "test",
-                            "method": "deseq2"
+                            "method_differential": "deseq2"
                         },
                         "test.normalised_counts.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
@@ -726,7 +726,7 @@
                             "reference": "mCherry",
                             "target": "hND6",
                             "blocking": "",
-                            "method": "deseq2"
+                            "method_differential": "deseq2"
                         },
                         "treatment_mCherry_hND6__test.deseq2.results.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ],
@@ -737,7 +737,7 @@
                             "reference": "mCherry",
                             "target": "hND6",
                             "blocking": "sample_number",
-                            "method": "deseq2"
+                            "method_differential": "deseq2"
                         },
                         "treatment_mCherry_hND6_sample_number_test.deseq2.results.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
@@ -750,7 +750,7 @@
                             "reference": "mCherry",
                             "target": "hND6",
                             "blocking": "",
-                            "method": "deseq2",
+                            "method_differential": "deseq2",
                             "fc_threshold": 1.5,
                             "stat_threshold": 0.05
                         },
@@ -763,7 +763,7 @@
                             "reference": "mCherry",
                             "target": "hND6",
                             "blocking": "sample_number",
-                            "method": "deseq2",
+                            "method_differential": "deseq2",
                             "fc_threshold": 1.5,
                             "stat_threshold": 0.05
                         },
@@ -774,7 +774,7 @@
                     [
                         {
                             "id": "test",
-                            "method": "deseq2"
+                            "method_differential": "deseq2"
                         },
                         [
                             "test.rlog.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
@@ -791,7 +791,7 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.4"
         },
-        "timestamp": "2025-02-04T13:58:07.872952803"
+        "timestamp": "2025-02-13T10:38:39.583037677"
     },
     "deseq2 - mouse - basic": {
         "content": [
@@ -803,7 +803,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "",
-                        "method": "deseq2"
+                        "method_differential": "deseq2"
                     },
                     "treatment_mCherry_hND6__test_deseq2.deseq2.results.tsv:md5,791cdba2615a445cded13cae95df73ef"
                 ],
@@ -814,7 +814,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "sample_number",
-                        "method": "deseq2"
+                        "method_differential": "deseq2"
                     },
                     "treatment_mCherry_hND6_sample_number_test_deseq2.deseq2.results.tsv:md5,2438053a4bdc869f467a12d3c22c7ba7"
                 ]
@@ -827,7 +827,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "",
-                        "method": "deseq2",
+                        "method_differential": "deseq2",
                         "fc_threshold": 1.5,
                         "stat_threshold": 0.05
                     },
@@ -840,7 +840,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "sample_number",
-                        "method": "deseq2",
+                        "method_differential": "deseq2",
                         "fc_threshold": 1.5,
                         "stat_threshold": 0.05
                     },
@@ -851,7 +851,7 @@
                 [
                     {
                         "id": "test",
-                        "method": "deseq2"
+                        "method_differential": "deseq2"
                     },
                     "test_deseq2_norm.normalised_counts.tsv:md5,46ab7200c626649ab6256ed797ef5071"
                 ]
@@ -860,7 +860,7 @@
                 [
                     {
                         "id": "test",
-                        "method": "deseq2"
+                        "method_differential": "deseq2"
                     },
                     [
                         "test_deseq2_norm.rlog.tsv:md5,b1adc1fba6bd0c8b55973608f4b97030"
@@ -875,7 +875,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "",
-                        "method": "deseq2"
+                        "method_differential": "deseq2"
                     },
                     "treatment_mCherry_hND6__test_deseq2.deseq2.model.txt:md5,d2113d82b76046c319e6602da2ad74d6"
                 ],
@@ -886,7 +886,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "sample_number",
-                        "method": "deseq2"
+                        "method_differential": "deseq2"
                     },
                     "treatment_mCherry_hND6_sample_number_test_deseq2.deseq2.model.txt:md5,fa05126a58cb67c107d45426b0bdea83"
                 ]
@@ -900,7 +900,7 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.4"
         },
-        "timestamp": "2025-02-04T13:53:33.612999183"
+        "timestamp": "2025-02-13T10:32:38.95991796"
     },
     "deseq2 - with transcript lengths": {
         "content": [
@@ -912,7 +912,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "",
-                        "method": "deseq2"
+                        "method_differential": "deseq2"
                     },
                     "treatment_mCherry_hND6__test_deseq2.deseq2.results.tsv:md5,944176b73455aa7c8de3ec32c03edef6"
                 ],
@@ -923,7 +923,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "sample_number",
-                        "method": "deseq2"
+                        "method_differential": "deseq2"
                     },
                     "treatment_mCherry_hND6_sample_number_test_deseq2.deseq2.results.tsv:md5,6a9bc76c9d54034c90fa159372f97516"
                 ]
@@ -936,7 +936,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "",
-                        "method": "deseq2",
+                        "method_differential": "deseq2",
                         "fc_threshold": 1.5,
                         "stat_threshold": 0.05
                     },
@@ -949,7 +949,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "sample_number",
-                        "method": "deseq2",
+                        "method_differential": "deseq2",
                         "fc_threshold": 1.5,
                         "stat_threshold": 0.05
                     },
@@ -960,7 +960,7 @@
                 [
                     {
                         "id": "test",
-                        "method": "deseq2"
+                        "method_differential": "deseq2"
                     },
                     "test_deseq2_norm.normalised_counts.tsv:md5,7050f44c460cc13e3f101d048d503527"
                 ]
@@ -969,7 +969,7 @@
                 [
                     {
                         "id": "test",
-                        "method": "deseq2"
+                        "method_differential": "deseq2"
                     },
                     [
                         "test_deseq2_norm.rlog.tsv:md5,22a4b117246b2317e0f4daf7919703f2"
@@ -984,7 +984,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "",
-                        "method": "deseq2"
+                        "method_differential": "deseq2"
                     },
                     "treatment_mCherry_hND6__test_deseq2.deseq2.model.txt:md5,d2113d82b76046c319e6602da2ad74d6"
                 ],
@@ -995,7 +995,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "sample_number",
-                        "method": "deseq2"
+                        "method_differential": "deseq2"
                     },
                     "treatment_mCherry_hND6_sample_number_test_deseq2.deseq2.model.txt:md5,fa05126a58cb67c107d45426b0bdea83"
                 ]
@@ -1009,7 +1009,7 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.4"
         },
-        "timestamp": "2025-02-04T13:55:36.036520174"
+        "timestamp": "2025-02-13T10:35:17.824545735"
     },
     "propd - mouse - basic": {
         "content": [
@@ -1021,7 +1021,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "",
-                        "method": "propd"
+                        "method_differential": "propd"
                     },
                     "treatment_mCherry_hND6__test.propd.genewise.tsv:md5,bdc19a4b7430f248cd332287b630c872"
                 ],
@@ -1032,7 +1032,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "sample_number",
-                        "method": "propd"
+                        "method_differential": "propd"
                     },
                     "treatment_mCherry_hND6_sample_number_test.propd.genewise.tsv:md5,bdc19a4b7430f248cd332287b630c872"
                 ]
@@ -1045,7 +1045,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "",
-                        "method": "propd",
+                        "method_differential": "propd",
                         "fc_threshold": 1.5,
                         "stat_threshold": 100
                     },
@@ -1058,7 +1058,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "sample_number",
-                        "method": "propd",
+                        "method_differential": "propd",
                         "fc_threshold": 1.5,
                         "stat_threshold": 100
                     },
@@ -1073,7 +1073,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "",
-                        "method": "propd"
+                        "method_differential": "propd"
                     },
                     "treatment_mCherry_hND6__test.propd.adjacency.csv:md5,3a947ffd8172990c6207aa7561a41cb8"
                 ],
@@ -1084,7 +1084,7 @@
                         "reference": "mCherry",
                         "target": "hND6",
                         "blocking": "sample_number",
-                        "method": "propd"
+                        "method_differential": "propd"
                     },
                     "treatment_mCherry_hND6_sample_number_test.propd.adjacency.csv:md5,3a947ffd8172990c6207aa7561a41cb8"
                 ]
@@ -1098,6 +1098,6 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.4"
         },
-        "timestamp": "2025-02-04T13:55:58.53500005"
+        "timestamp": "2025-02-13T10:35:58.616740674"
     }
 }
