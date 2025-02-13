@@ -2,7 +2,7 @@ process SPACERANGER_COUNT {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/modules/spaceranger:d71611e316a8614b"
+    container "nf-core/spaceranger:3.1.3"
 
     input:
     tuple val(meta), path(reads), path(image), path(cytaimage), path(darkimage), path(colorizedimage), path(alignment), path(slidefile)
@@ -31,17 +31,23 @@ process SPACERANGER_COUNT {
     def cytaimage = cytaimage ? "--cytaimage=\"${cytaimage}\"" : ""
     def darkimage = darkimage ? "--darkimage=\"${darkimage}\"" : ""
     def colorizedimage = colorizedimage ? "--colorizedimage=\"${colorizedimage}\"" : ""
+    def slide = meta.slide ? meta.slide : ""
+    def area = meta.area ? meta.area : ""
+    if (slide.matches("visium-(.*)") && area == "" && slidefile == "") {
+        slide_and_area = "--unknown-slide=\"${slide}\""
+    } else {
+        slide_and_area = "--slide=\"${slide}\" --area=\"${area}\""
+    }
     """
     spaceranger count \\
         --id="${prefix}" \\
         --sample="${meta.id}" \\
         --fastqs=. \\
-        --slide="${meta.slide}" \\
-        --area="${meta.area}" \\
         --transcriptome="${reference}" \\
         --localcores=${task.cpus} \\
         --localmem=${task.memory.toGiga()} \\
         $image $cytaimage $darkimage $colorizedimage \\
+        $slide_and_area \\
         $probeset \\
         $alignment \\
         $slidefile \\
