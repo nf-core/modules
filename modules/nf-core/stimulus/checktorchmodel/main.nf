@@ -1,13 +1,13 @@
 process STIMULUS_CHECKTORCHMODEL {
-    tag "$data_config - $data"
+    tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "docker.io/mathysgrapotte/stimulus-py:0.2.4.dev"
 
     input:
-    tuple val(meta), path(data), path(data_config)
-    tuple val(meta), path(model), path(model_config), path(initial_weights)
+    tuple val(meta) , path(data) , path(data_config)
+    tuple val(meta2), path(model), path(model_config), path(initial_weights)
 
     output:
     path "*_modelcheck.log", emit: log
@@ -18,7 +18,7 @@ process STIMULUS_CHECKTORCHMODEL {
 
     script:
     def args        = task.ext.args ?: ''
-    prefix          = task.ext.prefix ?: model.baseName.replaceFirst(/\.py/, "")
+    prefix          = task.ext.prefix ?: meta.id
     def weights_arg = initial_weights ? "--initial_weights ${initial_weights}" : ""
     """
     # initialize Ray
@@ -46,8 +46,8 @@ process STIMULUS_CHECKTORCHMODEL {
 
     stub:
     def args         = task.ext.args ?: ''
-    prefix           = task.ext.prefix ?: model.baseName.replaceFirst(/\.py/, "")
-    def STIMULUS_VER = '0.2.2' // container not used in stub, change manually
+    prefix           = task.ext.prefix ?: meta.id
+    def STIMULUS_VER = '0.2.5' // container not used in stub, change manually
     """
     touch ${prefix}_modelcheck.log
 
