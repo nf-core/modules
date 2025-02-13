@@ -43,7 +43,6 @@ process GPROFILER2_GOST {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        r-base: \$(echo \$(R --version 2>&1) | sed 's/^.*R version //; s/ .*\$//')
         r-ggplot2: \$(Rscript -e "library(ggplot2); cat(as.character(packageVersion('ggplot2')))")
         r-gprofiler2: \$(Rscript -e "library(gprofiler2); cat(as.character(packageVersion('gprofiler2')))")
     END_VERSIONS
