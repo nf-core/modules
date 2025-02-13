@@ -33,7 +33,7 @@ process SYLPHTAX_TAXPROF {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sylph-tax: \$(sylph-tax --version 2>&1 | sed -n 's/.*sylph-tax: \\([0-9]\\+\\.[0-9]\\+\\.[0-9]\\+\\).*/\\1/p')
+        sylph-tax: \$(sylph-tax --version 2>&1 | sed -n 's/.*\\([0-9]\\+\\.[0-9]\\+\\.[0-9]\\+\\).*/\\1/p' | head -n 1)
     END_VERSIONS
     """
 
@@ -44,7 +44,7 @@ process SYLPHTAX_TAXPROF {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sylph-tax: \$(sylph-tax --version 2>&1)
+        sylph-tax: \$(sylph-tax --version 2>&1 | sed -n 's/.*\\([0-9]\\+\\.[0-9]\\+\\.[0-9]\\+\\).*/\\1/p' | head -n 1)
     END_VERSIONS
     """
 }
