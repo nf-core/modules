@@ -21,7 +21,7 @@ process OPENMS_IDFILTER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "${id_file.getExtension()}"
-    if ("$file" == "${prefix}.${suffix}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("$id_file" == "${prefix}.${suffix}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     // Optional filtering via filter_file
     def filter_citerion = task.ext.args2 ?: "-whitelist:peptides"
     def filter = filter_file ? "${filter_citerion} ${filter_file}" : ""
@@ -43,7 +43,7 @@ process OPENMS_IDFILTER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "${id_file.getExtension()}"
-    if ("$file" == "${prefix}.${suffix}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("$id_file" == "${prefix}.${suffix}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     // Optional filtering via filter_file
     def filter_citerion = task.ext.args2 ?: "-whitelist:peptides"
     def filter = filter_file ? "${filter_citerion} ${filter_file}" : ""
