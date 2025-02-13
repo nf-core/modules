@@ -19,8 +19,7 @@ input:
         e.g. `[ id:'sample1', single_end:false ]`
   - sylph_results:
       type: file
-      description: Output results from sylph classifier. The databases used for sylph
-        must be the same as the -t option.
+      description: Output results from sylph classifier. The database file(s) used to create this file with sylph must be the same as those of the taxonomy input channel of this module.
       pattern: "*.{tsv}"
 - - taxonomy:
       type: file
