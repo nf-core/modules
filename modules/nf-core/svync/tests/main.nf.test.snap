@@ -2,39 +2,46 @@
     "sarscov2 - vcf, config": {
         "content": [
             {
-                "id": "test",
-                "single_end": false
-            },
-            [
-                "chr21\t6279548\t_2\tN\t<DUP>\t.\tLowQual\tEND=6280162;IMPRECISE;SVLEN=614;SVMETHOD=svync;SVTYPE=DUP\tGT\t1/1",
-                "chr21\t6279548\t_3\tN\t<INV>\t.\tLowQual\tEND=6280162;IMPRECISE;SVLEN=614;SVMETHOD=svync;SVTYPE=INV\tGT\t1/1",
-                "chr21\t6497225\t_4\tN\t<INV>\t.\tLowQual\tEND=6497978;IMPRECISE;SVLEN=753;SVMETHOD=svync;SVTYPE=INV\tGT\t1/1",
-                "chr21\t6801798\t_5\tN\t<DEL>\t.\tLowQual\tEND=6801868;IMPRECISE;SVLEN=70;SVMETHOD=svync;SVTYPE=DEL\tGT\t1/1",
-                "chr21\t6801868\t_6\tN\t<INV>\t.\tLowQual\tEND=6802434;IMPRECISE;SVLEN=566;SVMETHOD=svync;SVTYPE=INV\tGT\t1/1",
-                "chr21\t6802434\t_7\tN\t<DEL>\t.\tLowQual\tEND=6802504;IMPRECISE;SVLEN=70;SVMETHOD=svync;SVTYPE=DEL\tGT\t1/1",
-                "chr21\t6907396\t_8\tN\t<DEL>\t.\tLowQual\tEND=6907463;IMPRECISE;SVLEN=67;SVMETHOD=svync;SVTYPE=DEL\tGT\t1/1",
-                "chr21\t6907463\t_9\tN\t<INV>\t.\tLowQual\tEND=6908007;IMPRECISE;SVLEN=544;SVMETHOD=svync;SVTYPE=INV\tGT\t1/1",
-                "chr21\t6908007\t_10\tN\t<DEL>\t.\tLowQual\tEND=6908074;IMPRECISE;SVLEN=67;SVMETHOD=svync;SVTYPE=DEL\tGT\t1/1",
-                "chr21\t7776662\t_11\tN\t<INV>\t.\tLowQual\tEND=7777323;IMPRECISE;SVLEN=661;SVMETHOD=svync;SVTYPE=INV\tGT\t1/1",
-                "chr21\t8245292\t_12\tN\t<INV>\t.\tLowQual\tEND=8245913;IMPRECISE;SVLEN=621;SVMETHOD=svync;SVTYPE=INV\tGT\t1/1"
-            ]
-        ],
-        "timestamp": "2024-01-23T11:22:21.730837098"
-    },
-    "sarscov2 - vcf, config - stub": {
-        "content": [
-            {
-                "0": [
+                "tbi": [
                     [
                         {
                             "id": "test",
                             "single_end": false
                         },
-                        "test.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "test.vcf.gz.tbi"
                     ]
                 ],
-                "1": [
+                "vcf": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.vcf.gz,variantsMD5:2bce0e43fb6a93283f76f1464130bfc3"
+                    ]
+                ],
+                "versions": [
                     "versions.yml:md5,dd982c7896f22ebaa0ea51d00472c96c"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.1",
+            "nextflow": "24.10.4"
+        },
+        "timestamp": "2025-02-13T15:20:25.459243101"
+    },
+    "sarscov2 - vcf, config - stub": {
+        "content": [
+            {
+                "tbi": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
                 "vcf": [
                     [
@@ -50,6 +57,10 @@
                 ]
             }
         ],
-        "timestamp": "2024-01-24T12:23:01.99066345"
+        "meta": {
+            "nf-test": "0.9.1",
+            "nextflow": "24.10.4"
+        },
+        "timestamp": "2025-02-13T15:18:08.523826702"
     }
 }
