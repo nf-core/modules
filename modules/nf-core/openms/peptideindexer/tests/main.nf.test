@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process OPENMS_PEPTIDEINDEXER"
     script "../main.nf"
     process "OPENMS_PEPTIDEINDEXER"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -15,10 +16,10 @@ nextflow_process {
             script "../../decoydatabase/main.nf"
             process {
                 """
-                input[0] = [
-                    [id:'test'],
-                    file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS.fasta', checkIfExists: true)
-                ]
+                input[0] = Channel.of([
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'proteomics/database/UP000005640_9606.fasta', checkIfExists: true)
+                ])
                 """
             }
         }
@@ -29,11 +30,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
+                input[0] = Channel.of([
                     [id:'test'],
-                    file(params.modules_testdata_base_path + 'proteomics/openms/HepG2_rep1_small.idXML', checkIfExists: true),
-                    OPENMS_DECOYDATABASE.out.decoy_fasta[0][1]
-                ]
+                    file(params.modules_testdata_base_path + 'proteomics/openms/HepG2_rep1_small.idXML', checkIfExists: true)
+                ]).join(OPENMS_DECOYDATABASE.out.decoy_fasta)
                 """
             }
         }
@@ -53,11 +53,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
+                input[0] = Channel.of([
                     [id:'test'],
-                    file(params.modules_testdata_base_path + 'proteomics/openms/HepG2_rep1_small.idXML', checkIfExists: true),
-                    OPENMS_DECOYDATABASE.out.decoy_fasta[0][1]
-                ]
+                    file(params.modules_testdata_base_path + 'proteomics/openms/HepG2_rep1_small.idXML', checkIfExists: true)
+                ]).join(OPENMS_DECOYDATABASE.out.decoy_fasta)
                 """
             }
         }
