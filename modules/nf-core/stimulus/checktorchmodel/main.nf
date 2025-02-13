@@ -3,7 +3,7 @@ process STIMULUS_CHECKTORCHMODEL {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "docker.io/mathysgrapotte/stimulus-py:0.2.4.dev"
+    container "docker.io/mathysgrapotte/stimulus-py:0.2.6"
 
     input:
     tuple val(meta) , path(data) , path(data_config)
@@ -47,7 +47,7 @@ process STIMULUS_CHECKTORCHMODEL {
     stub:
     def args         = task.ext.args ?: ''
     prefix           = task.ext.prefix ?: meta.id
-    def STIMULUS_VER = '0.2.5' // container not used in stub, change manually
+    def STIMULUS_VER = '0.2.6' // container not used in stub, change manually
     """
     touch ${prefix}_modelcheck.log
 
