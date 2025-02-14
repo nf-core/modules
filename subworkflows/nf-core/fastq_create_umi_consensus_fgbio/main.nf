@@ -157,7 +157,7 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
         // using the above created groups, a consensus across reads in the same group
         // can be called
         // this will emit a consensus BAM file
-        CALLUMICONSENSUS ( GROUPREADSBYUMI.out.bam )
+        CALLUMICONSENSUS ( GROUPREADSBYUMI.out.bam, [], [])
         ch_versions = ch_versions.mix(CALLUMICONSENSUS.out.versions)
         consensus_bam =  CALLUMICONSENSUS.out.bam
     }
