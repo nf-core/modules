@@ -35,7 +35,7 @@ workflow test_graphtyper_genotype_multi {
             file(params.test_data['sarscov2']['illumina']['test_single_end_sorted_bam_bai'], checkIfExists: true)
         ]
     ] )
-    reference = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    reference = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true).map { it -> [ [ 'id': it.simpleName], it ] }
     ref_with_meta = [ [ id: 'ref' ], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
     ref_index = [ [ id: 'ref_index' ], file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)]
     region = file(params.test_data['sarscov2']['genome']['regions_txt'], checkIfExists: true)
