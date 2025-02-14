@@ -31,6 +31,8 @@ process TCOFFEE_ALIGN {
     def write_output = compress ? " | pigz -cp ${task.cpus} > ${prefix}.aln.gz" : ""
     """
     export TEMP='./'
+    export TMP_4_TCOFFEE="./"
+    export HOME="./"
     t_coffee -seq ${fasta} \
         $tree_args \
         $template_args \
@@ -51,6 +53,8 @@ process TCOFFEE_ALIGN {
     """
     # Otherwise, tcoffee will crash when calling its version
     export TEMP='./'
+    export TMP_4_TCOFFEE="./"
+    export HOME="./"
     touch ${prefix}.aln${compress ? '.gz':''}
 
     cat <<-END_VERSIONS > versions.yml
