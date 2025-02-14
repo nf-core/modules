@@ -123,7 +123,7 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
         dummy_bam_bai = ZIPPERBAMS_PRE.out.bam.map{meta, bam -> [meta, bam, dummyIndexFile]}
         check_dummy_bam_bai = dummy_bam_bai.dump(tag: 'dummy_index')
         // then applying samtools view to filter only paired reads
-        BAMFILTER ( dummy_bam_bai, [[],[]], [] )
+        BAMFILTER ( dummy_bam_bai, [[],[]], [], [] )
         ch_versions = ch_versions.mix(BAMFILTER.out.versions)
         groupready_bam = BAMFILTER.out.bam
         // deleting dummy file
