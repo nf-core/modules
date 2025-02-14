@@ -23,7 +23,6 @@ process GRAPHTYPER_GENOTYPE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     def bam_path_text = bam.join('\\n')
     def region_text = region_file.size() > 0 ? "--region_file ${region_file}" : ""
     if (region_file.size() == 0 && ! args.contains("region")) {
@@ -44,4 +43,19 @@ process GRAPHTYPER_GENOTYPE {
         graphtyper: \$(graphtyper --help | tail -n 1 | sed 's/^   //')
     END_VERSIONS
     """
+
+    stub:
+    """
+    mkdir -p results/test
+    echo | gzip > results/test/region1.vcf.gz
+    echo | gzip > results/test/region2.vcf.gz
+    touch results/test/region1.vcf.gz.tbi
+    touch results/test/region2.vcf.gz.tbi
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        graphtyper: \$(graphtyper --help | tail -n 1 | sed 's/^   //')
+    END_VERSIONS
+    """
+
 }
