@@ -4,8 +4,8 @@ process DASTOOL_DASTOOL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/das_tool:1.1.7--r43hdfd78af_0' :
-        'biocontainers/das_tool:1.1.7--r43hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/das_tool:1.1.7--r44hdfd78af_1' :
+        'biocontainers/das_tool:1.1.7--r44hdfd78af_1' }"
 
     input:
     tuple val(meta), path(contigs), path(bins), path(proteins)
