@@ -1,0 +1,45 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core subworkflows test bam_split_by_region
+nextflow_workflow {
+
+    name "Test Subworkflow BAM_SPLIT_BY_REGION"
+    script "../main.nf"
+    workflow "BAM_SPLIT_BY_REGION"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/bam_split_by_region"
+    tag "samtools"
+    tag "samtools/sort"
+    tag "samtools/index"
+
+    config "./nextflow.config"
+
+    test("homo_sapiens - test_paired_end_markduplicates_sorted_bam") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id: 'test', single_end: false ],
+                    file(params.modules_testdata_base_path +'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path +'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path +'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true),
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.bam_bai.findAll { file(it.get(1)).name }.toSorted(),
+                    workflow.out.bam_bai.findAll { bam(it.get(1)).getReadsMD5() }.toSorted(),
+                    workflow.out.bam_bai.findAll { file(it.get(2)).name }.toSorted(),
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+}
