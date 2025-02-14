@@ -79,7 +79,7 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
         // appropriately tagged interleaved FASTQ reads are mapped to the reference
         // the aligner should be set with the following parameters "-p -K 150000000 -Y"
         // to be configured in ext.args of your config
-        BWAMEM1_MEM_PRE ( BAM2FASTQ_PRE.out.fastq, bwaindex, false )
+        BWAMEM1_MEM_PRE ( BAM2FASTQ_PRE.out.fastq, bwaindex, [[],[]], false )
         ch_versions = ch_versions.mix(BWAMEM1_MEM_PRE.out.versions)
         aligned_bam = aligned_bam.mix(BWAMEM1_MEM_PRE.out.bam)
     } else {
