@@ -35,7 +35,7 @@ workflow test_endorspy_raw_qualityfilter {
 
 
     SAMTOOLS_FLAGSTAT1 ( input )
-    SAMTOOLS_VIEW ( input, [], [], [] )
+    SAMTOOLS_VIEW ( input, [[],[]], [], [] )
     SAMTOOLS_INDEX ( SAMTOOLS_VIEW.out.bam )
     input2 = SAMTOOLS_VIEW.out.bam
        .mix(SAMTOOLS_INDEX.out.bai)
@@ -62,7 +62,7 @@ workflow test_endorspy_raw_qualityfilter_dedup {
 
 
     SAMTOOLS_FLAGSTAT1 ( input )
-    SAMTOOLS_VIEW ( input, [], [], [] )
+    SAMTOOLS_VIEW ( input, [[],[]], [], [] )
     SAMTOOLS_INDEX ( SAMTOOLS_VIEW.out.bam )
     input2 = SAMTOOLS_VIEW.out.bam
        .mix(SAMTOOLS_INDEX.out.bai)
@@ -91,7 +91,7 @@ workflow test_endorspy_raw_dedup {
 
 
     SAMTOOLS_FLAGSTAT1 ( input )
-    SAMTOOLS_VIEW ( input, [], [], [] )
+    SAMTOOLS_VIEW ( input, [[],[]], [], [] )
     SAMTOOLS_INDEX ( SAMTOOLS_VIEW.out.bam )
     input2 = SAMTOOLS_VIEW.out.bam
        .mix(SAMTOOLS_INDEX.out.bai)
@@ -117,7 +117,7 @@ workflow test_endorspy_qualityfilter_dedup {
 
 
     SAMTOOLS_FLAGSTAT1 ( input )
-    SAMTOOLS_VIEW ( input, [], [], [] )
+    SAMTOOLS_VIEW ( input, [[],[]], [], [] )
     SAMTOOLS_INDEX ( SAMTOOLS_VIEW.out.bam )
     input2 = SAMTOOLS_VIEW.out.bam
        .mix(SAMTOOLS_INDEX.out.bai)
