@@ -85,6 +85,7 @@ jobs:
           script: |
             return [...new Set(${{ steps.filter.outputs.modules_files }}
               .map(path => path
+                .replace('tests/modules/nf-core/', '')
                 .replace('modules/nf-core/', '')
                 .split('/')
                 .slice(0, 2)
