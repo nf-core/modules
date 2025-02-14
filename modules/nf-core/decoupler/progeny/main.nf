@@ -30,8 +30,13 @@ process DECOUPLER_PROGENY {
     #!/usr/bin/env python3
     import os
 
+    # Force HOME to current working directory to avoid permission issues
+    os.environ["HOME"] = os.getcwd()
+
+    # Set cache and config dirs to a writable location
     os.environ["OMNIPATH_CACHE_DIR"] = "./tmp"
-    os.makedirs(os.environ["OMNIPATH_CACHE_DIR"], exist_ok=True)
+    os.environ["XDG_CONFIG_HOME"] = "./tmp"
+    os.makedirs("./tmp", exist_ok=True)
 
     os.environ["MPLCONFIGDIR"] = "./tmp"
     os.environ["NUMBA_CACHE_DIR"] = "./tmp"
