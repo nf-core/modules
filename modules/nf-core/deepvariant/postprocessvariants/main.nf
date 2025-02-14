@@ -12,10 +12,11 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
     tuple val(meta4), path(gzi)
 
     output:
-    tuple val(meta), path("${prefix}.vcf.gz")      ,  emit: vcf
-    tuple val(meta), path("${prefix}.vcf.gz.tbi")  ,  emit: vcf_tbi
-    tuple val(meta), path("${prefix}.g.vcf.gz")    ,  emit: gvcf
-    tuple val(meta), path("${prefix}.g.vcf.gz.tbi"),  emit: gvcf_tbi
+    tuple val(meta), path("${prefix}.vcf.gz")             , emit: vcf
+    tuple val(meta), path("${prefix}.vcf.gz.{tbi,csi}")   , emit: vcf_index
+    tuple val(meta), path("${prefix}.g.vcf.gz")           , emit: gvcf
+    tuple val(meta), path("${prefix}.g.vcf.gz.{tbi,csi}") , emit: gvcf_index
+    path "versions.yml"                                   , emit: versions
 
     path "versions.yml",  emit: versions
 
