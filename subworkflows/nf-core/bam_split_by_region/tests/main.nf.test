@@ -34,11 +34,36 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.bam_bai.findAll { file(it.get(1)).name }.toSorted(),
-                    workflow.out.bam_bai.findAll { bam(it.get(1)).getReadsMD5() }.toSorted(),
-                    workflow.out.bam_bai.findAll { file(it.get(2)).name }.toSorted(),
+                    workflow.out.bam_bai.toSorted { a, b -> file(a.get(1)).name <=> file(b.get(1)).name }.collect { file(it.get(1)).name },
+                    workflow.out.bam_bai.toSorted { a, b -> file(a.get(1)).name <=> file(b.get(1)).name }.collect { bam(it.get(1)).getReadsMD5() },
+                    workflow.out.bam_bai.toSorted { a, b -> file(a.get(1)).name <=> file(b.get(1)).name }.collect { file(it.get(2)).name },
                     workflow.out.versions
                 ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - test_paired_end_markduplicates_sorted_bam - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id: 'test', single_end: false ],
+                    file(params.modules_testdata_base_path +'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path +'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path +'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true),
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
             )
         }
     }

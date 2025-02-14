@@ -37,7 +37,7 @@ process SAMTOOLS_VIEW {
                 args.contains("--output-fmt cram") ? "cram" :
                 input.getExtension()
 
-    output_file = index_format ? "${prefix}.${file_type}##idx##${prefix}.${file_type}.${index_format}" : "${prefix}.${file_type}"
+    output_file = index_format ? "${prefix}.${file_type}##idx##${prefix}.${file_type}.${index_format} --write-index" : "${prefix}.${file_type}"
     // Can't choose index type of unselected file
     readnames = qname ? "--qname-file ${qname} --output-unselected ${prefix}.unselected.${file_type}": ""
 
@@ -76,10 +76,10 @@ process SAMTOOLS_VIEW {
     default_index_format =
         file_type == "bam" ? "csi" :
         file_type == "cram" ? "crai" : ""
-    index = args.contains("--write-index") && index_format ? "touch ${prefix}.${file_type}.${index_format}" : args.contains("--write-index") ? "touch ${prefix}.${file_type}.${default_index_format}" : ""
+    index =  index_format ? "touch ${prefix}.${file_type}.${index_format}" : args.contains("--write-index") ? "touch ${prefix}.${file_type}.${default_index_format}" : ""
     unselected = qname ? "touch ${prefix}.unselected.${file_type}" : ""
     // Can't choose index type of unselected file
-    unselected_index = qname && args.contains("--write-index") ? "touch ${prefix}.unselected.${file_type}.${default_index_format}" : ""
+    unselected_index = qname && (args.contains("--write-index") || index_format) ? "touch ${prefix}.unselected.${file_type}.${default_index_format}" : ""
 
     if ("$input" == "${prefix}.${file_type}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     if (index_format) {
