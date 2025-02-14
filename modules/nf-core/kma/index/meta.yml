@@ -15,8 +15,7 @@ tools:
       documentation: "https://bitbucket.org/genomicepidemiology/kma/src/master/"
       tool_dev_url: "https://bitbucket.org/genomicepidemiology/kma/src/master/"
       doi: "10.1186/s12859-018-2336-6"
-      licence:
-        ["http://www.apache.org/licenses/LICENSE-2.0"]
+      licence: ["http://www.apache.org/licenses/LICENSE-2.0"]
 
 input:
   - - meta:
@@ -31,20 +30,20 @@ input:
 
 output:
   - index:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'reference' ]`
-    - 'kmaindex':
-        type: directory
-        description: Directory of KMA index files
-        pattern: "*.{comp.b,length.b,name,seq.b}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'reference' ]`
+      - "kmaindex":
+          type: directory
+          description: Directory of KMA index files
+          pattern: "*.{comp.b,length.b,name,seq.b}"
   - versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 
 authors:
   - "@krannich479"

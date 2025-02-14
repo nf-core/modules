@@ -1,5 +1,5 @@
 process COOLER_MAKEBINS {
-    tag "${meta.id}}"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
@@ -25,6 +25,16 @@ process COOLER_MAKEBINS {
         $args \\
         ${chromsizes} \\
         ${cool_bin} > ${prefix}.bed
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        cooler: \$(cooler --version 2>&1 | sed 's/cooler, version //')
+    END_VERSIONS
+    """
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bed
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

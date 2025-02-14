@@ -1,0 +1,154 @@
+name: "differential_functional_enrichment"
+description: Run functional analysis on differential abundance analysis output
+keywords:
+  - functional analysis
+  - functional enrichment
+  - differential
+  - over-representation analysis
+components:
+  - gprofiler2/gost
+  - gsea/gsea
+  - propr/grea
+  - custom/tabulartogseagct
+  - custom/tabulartogseacls
+  - custom/tabulartogseachip
+input:
+  - ch_input:
+      description: Channel with the input data for functional analysis.
+      structure:
+        - meta_input:
+            type: map
+            description: Metadata map
+        - input:
+            type: file
+            description: |
+              Input file. This should be the DE statistics obtained from the DE modules,
+              or the normalized abundance matrix (in the case of running GSEA).
+        - genesets:
+            type: file
+            description: |
+              Gene sets database. Currently all methods support GMT format.
+        - background:
+            type: file
+            description: |
+              Background features for functional analysis.
+              For the moment, it is only required for gprofiler2.
+        - analysis_method:
+            type: value
+            description: Analysis method (gprofiler2, gsea, or grea)
+  - ch_contrasts:
+      description: Channel with contrast information
+      structure:
+        - meta_contrast:
+            type: map
+            description: Contrast metadata map
+        - contrast_variable:
+            type: value
+            description: Contrast variable
+        - reference:
+            type: value
+            description: Reference level
+        - target:
+            type: value
+            description: Target level
+  - ch_samplesheet:
+      description: Channel with sample information
+      structure:
+        - meta_exp:
+            type: map
+            description: Experiment metadata map
+        - samplesheet:
+            type: file
+            description: Sample information file
+            pattern: "*.{csv,tsv}"
+  - ch_featuresheet:
+      description: Channel with features information
+      structure:
+        - meta_exp:
+            type: map
+            description: Experiment metadata map
+        - features:
+            type: file
+            description: Features information file
+            pattern: "*.{csv,tsv}"
+        - features_id:
+            type: value
+            description: Features id column
+        - features_symbol:
+            type: value
+            description: Features symbol column
+
+output:
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+  - gprofiler2_all_enrich:
+      description: Channel containing the main enrichment table output from gprofiler2
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - all_enrich:
+            type: file
+            description: table listing all enriched pathways that were found by gprofiler2.
+              It can be empty, if none is found.
+            pattern: "*.gprofiler2.all_enriched_pathways.tsv"
+  - gprofiler2_sub_enrich:
+      description: Channel containing the secondary enrichment table output from gprofiler.
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - sub_enrich:
+            type: file
+            description: |
+              table listing enriched pathways that were found from one particular source.
+              Note that it will only be created if any were found.
+            pattern: "*.gprofiler2.*.sub_enriched_pathways.tsv"
+  - gprofiler2_plot_html:
+      description: Channel containing the html report generated from gprofiler2.
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - plot_html:
+            type: file
+            description: |
+              Channel containing HTML file; interactive Manhattan plot of all enriched pathways.
+              Note that this file will only be generated if enriched pathways were found.
+            pattern: "*.gprofiler2.gostplot.html"
+  - gsea_report:
+      description: Channel containing all the output from GSEA needed for further reporting.
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - reports_ref:
+            type: file
+            description: Main TSV results report file for the reference group.
+            pattern: "*gsea_report_for_${reference}.tsv"
+        - reports_target:
+            type: file
+            description: Main TSV results report file for the target group.
+            pattern: "*gsea_report_for_${target}.tsv"
+  - grea_results:
+      description: |
+        Channel containing the output from GREA.
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - results:
+            type: file
+            description: Main TSV results file.
+            pattern: "*.grea.tsv"
+authors:
+  - "@suzannejin"
+  - "@bjlang"
+  - "@caraiz2001"
+maintainers:
+  - "@suzannejin"
+  - "@pinin4fjords"

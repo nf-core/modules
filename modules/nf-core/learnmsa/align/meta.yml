@@ -21,13 +21,8 @@ input:
           e.g. `[ id:'test']`
     - fasta:
         type: file
-        description: Input sequences in FASTA format. May be gz-compressed or uncompressed.
-        pattern: "*.{fa,fasta}{.gz,}"
-  - - compress:
-        type: boolean
-        description: Flag representing whether the output MSA should be compressed.
-          Set to true to enable/false to disable compression. Compression is done using
-          pigz, and is multithreaded.
+        description: Input sequences in FASTA format.
+        pattern: "*.{fa,fasta}"
 output:
   - alignment:
       - meta:
@@ -35,10 +30,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test']`
-      - "*.aln{.gz,}":
+      - "*.aln":
           type: file
-          description: Alignment file, in FASTA format. May be gzipped or uncompressed.
-          pattern: "*.aln{.gz,}"
+          description: Alignment file, in FASTA format.
+          pattern: "*.aln"
   - versions:
       - versions.yml:
           type: file

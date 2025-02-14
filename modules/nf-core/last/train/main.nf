@@ -32,15 +32,15 @@ process LAST_TRAIN {
         $fastx \\
         > ${prefix}.train
 
-    echo "id\tsubstitution_percent_identity\tlast -t\tlast -a\tlast -A\tlast -b\tlast -B\tlast -S"       > ${prefix}.train.tsv
-    printf "\$(basename ${prefix}.train .target.train)\t"                                               >> ${prefix}.train.tsv
-    grep 'substitution percent identity' ${prefix}.train | tail -n 1 | awk '{print \$5}' | tr '\n' '\t' >> ${prefix}.train.tsv
-    grep 'last -t' ${prefix}.train | tail -n 1 | awk '{print \$2}'   | sed -e 's/-t//'   | tr '\n' '\t' >> ${prefix}.train.tsv
-    grep 'last -a' ${prefix}.train | tail -n 1 | awk '{print \$3}'                       | tr '\n' '\t' >> ${prefix}.train.tsv
-    grep 'last -A' ${prefix}.train | tail -n 1 | awk '{print \$3}'                       | tr '\n' '\t' >> ${prefix}.train.tsv
-    grep 'last -b' ${prefix}.train | tail -n 1 | awk '{print \$3}'                       | tr '\n' '\t' >> ${prefix}.train.tsv
-    grep 'last -B' ${prefix}.train | tail -n 1 | awk '{print \$3}'                       | tr '\n' '\t' >> ${prefix}.train.tsv
-    grep 'last -S' ${prefix}.train | tail -n 1 | awk '{print \$3}'                                      >> ${prefix}.train.tsv
+    echo "id\tsubstitution_percent_identity\tlast -t\tlast -a\tlast -A\tlast -b\tlast -B\tlast -S"         > ${prefix}.train.tsv
+    printf "\$(basename ${prefix}.train .target.train)\t"                                                 >> ${prefix}.train.tsv
+    grep 'substitution percent identity' ${prefix}.train | tail -n 1 | awk '{print \$5}' | tr '\\n' '\\t' >> ${prefix}.train.tsv
+    grep 'last -t' ${prefix}.train | tail -n 1 | awk '{print \$2}'   | sed -e 's/-t//'   | tr '\\n' '\\t' >> ${prefix}.train.tsv
+    grep 'last -a' ${prefix}.train | tail -n 1 | awk '{print \$3}'                       | tr '\\n' '\\t' >> ${prefix}.train.tsv
+    grep 'last -A' ${prefix}.train | tail -n 1 | awk '{print \$3}'                       | tr '\\n' '\\t' >> ${prefix}.train.tsv
+    grep 'last -b' ${prefix}.train | tail -n 1 | awk '{print \$3}'                       | tr '\\n' '\\t' >> ${prefix}.train.tsv
+    grep 'last -B' ${prefix}.train | tail -n 1 | awk '{print \$3}'                       | tr '\\n' '\\t' >> ${prefix}.train.tsv
+    grep 'last -S' ${prefix}.train | tail -n 1 | awk '{print \$3}'                                        >> ${prefix}.train.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

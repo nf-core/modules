@@ -17,7 +17,6 @@ outputs:
   total_shards:
     description: "Total number of shards"
     value: ${{ steps.shards.outputs.total_shards }}
-
 runs:
   using: "composite"
   steps:
@@ -26,22 +25,24 @@ runs:
       with:
         version: ${{ env.NFT_VER }}
         install-pdiff: true
-
     - name: Get number of shards
       id: shards
       shell: bash
       run: |
-
         # Prepare tag parameter if tags are provided
         TAGS=$([ -n "${{ inputs.tags }}" ] && echo "--tag ${{ inputs.tags }}" || echo "")
-        # Run nf-test with dynamic tag parameter
+
+        # Run nf-test with dynamic parameter
         nftest_output=$(nf-test test \
           --dry-run \
           --profile docker \
           ${TAGS} \
           --filter process,workflow \
-          ${{ inputs.paths }})
-
+          ${{ inputs.paths }}) || {
+            echo "nf-test command failed with exit code $?"
+            echo "Full output: $nftest_output"
+            exit 1
+        }
         echo "nf-test dry-run output: $nftest_output"
 
         # Default values for shard and total_shards

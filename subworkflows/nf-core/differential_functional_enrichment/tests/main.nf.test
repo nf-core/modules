@@ -1,0 +1,476 @@
+nextflow_workflow {
+
+    name "Test Subworkflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT"
+    script "../main.nf"
+    workflow "DIFFERENTIAL_FUNCTIONAL_ENRICHMENT"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/differential_functional_enrichment"
+    tag "gprofiler2"
+    tag "gprofiler2/gost"
+    tag "gsea"
+    tag "gsea/gsea"
+    tag "propr"
+    tag "propr/grea"
+    tag "custom"
+    tag "custom/tabulartogseagct"
+    tag "custom/tabulartogseacls"
+    tag "custom/tabulartogseachip"
+
+    test("test gprofiler2 - mouse") {
+        tag 'gprofiler2_basic'
+        config './gprofiler2.config'
+        // NOTE that this generates the same outputs as the module GPROFILER2_GOST test
+
+        when {
+            workflow {
+                """
+                ch_input = Channel.of([
+                    ['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'],
+                    file("https://github.com/nf-core/test-datasets/raw/refs/heads/differentialabundance/modules_testdata/Condition_genotype_WT_KO.deseq2.results_filtered.tsv", checkIfExists: true),
+                    [],
+                    file("https://github.com/nf-core/test-datasets/raw/refs/heads/differentialabundance/modules_testdata/study.filtered.tsv", checkIfExists: true),
+                    'gprofiler2'
+                ])
+
+                input[0] = ch_input
+                input[1] = Channel.of([[], [], [], []])
+                input[2] = Channel.of([[], []])
+                input[3] = Channel.of([[], [], [], []])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.gprofiler2_all_enrich,
+                    workflow.out.gprofiler2_sub_enrich,
+                    workflow.out.gprofiler2_plot_html.collect{ meta, html -> file(html).name }, //assert unstable file,
+                    path(workflow.out.versions.get(0)).yaml,
+                    workflow.out.versions
+                ).match()}
+            )
+        }
+    }
+
+    test("deseq2 + gprofiler2 - mouse") {
+        tag "deseq2+gprofiler2"
+        config "./deseq2_gprofiler2.config"
+
+        setup {
+            run("ABUNDANCE_DIFFERENTIAL_FILTER") {
+                script "../../abundance_differential_filter/main.nf"
+                workflow {
+                """
+                // Define test data
+                def testData = [
+                    expression_test_data_dir: params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/',
+                    contrasts_file: 'SRP254919.contrasts.csv',
+                    abundance_file: 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv',
+                    samplesheet_file: 'SRP254919.samplesheet.csv'
+                ]
+
+                // Define inputs
+                ch_samplesheet = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.samplesheet_file)
+                ])
+                ch_transcript_lengths = Channel.of([ [], [] ])
+                ch_control_features = Channel.of([ [], [] ])
+                ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_input = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.abundance_file),
+                    'deseq2',  // analysis method
+                    1.5,       // FC threshold
+                    0.05       // padj threshold
+                ])
+
+                input[0] = ch_input
+                input[1] = ch_samplesheet
+                input[2] = ch_transcript_lengths
+                input[3] = ch_control_features
+                input[4] = ch_contrasts
+                """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                ch_input = ABUNDANCE_DIFFERENTIAL_FILTER.out.results_genewise_filtered
+                    .map { meta, results ->
+                        [meta, results, [], [], 'gprofiler2']
+                    }
+
+                input[0] = ch_input
+                input[1] = Channel.of([[], [], [], []])
+                input[2] = Channel.of([[], []])
+                input[3] = Channel.of([[], [], [], []])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.gprofiler2_all_enrich,
+                    workflow.out.gprofiler2_sub_enrich,
+                    workflow.out.gprofiler2_plot_html.collect{ meta, html -> file(html).name }, //assert unstable file
+                    path(workflow.out.versions.get(0)).yaml,
+                    workflow.out.versions
+                ).match()},
+            )
+        }
+    }
+
+    test("deseq2 + gsea - mouse") {
+        tag "deseq2+gsea"
+        config "./deseq2_gsea.config"
+
+        setup {
+            run("ABUNDANCE_DIFFERENTIAL_FILTER") {
+                script "../../abundance_differential_filter/main.nf"
+                workflow {
+                """
+                // Define test data
+                def testData = [
+                    expression_test_data_dir: params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/',
+                    contrasts_file: 'SRP254919.contrasts.csv',
+                    abundance_file: 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv',
+                    samplesheet_file: 'SRP254919.samplesheet.csv'
+                ]
+
+                // Define inputs
+                ch_samplesheet = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.samplesheet_file)
+                ])
+                ch_transcript_lengths = Channel.of([ [], [] ])
+                ch_control_features = Channel.of([ [], [] ])
+                ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_input = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.abundance_file),
+                    'deseq2',  // analysis method
+                    1.5,       // FC threshold
+                    0.05       // padj threshold
+                ])
+
+                input[0] = ch_input
+                input[1] = ch_samplesheet
+                input[2] = ch_transcript_lengths
+                input[3] = ch_control_features
+                input[4] = ch_contrasts
+                """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                // Define test data
+                def test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/'
+                def testData = [
+                    contrasts_file: test_data_dir + 'rnaseq_expression/SRP254919.contrasts.csv',
+                    abundance_file: test_data_dir + 'rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv',
+                    samplesheet_file: test_data_dir + 'rnaseq_expression/SRP254919.samplesheet.csv',
+                    genesets_file: test_data_dir + 'gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt'
+                ]
+
+                // define input channels
+                ch_input = ABUNDANCE_DIFFERENTIAL_FILTER.out.normalised_matrix
+                    .combine(Channel.fromPath(testData.genesets_file))
+                    .map { meta, matrix, genesets ->
+                        [meta, matrix, genesets, [], 'gsea']
+                    }
+                ch_contrasts = Channel.fromPath(file(testData.contrasts_file))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_samplesheet = Channel.of([
+                    [ id:'test' ],
+                    file(testData.samplesheet_file)
+                ])
+                ch_featuresheet = Channel.of([
+                    [ id:'test' ],
+                    file(testData.abundance_file),
+                    'gene_id',
+                    'gene_name'
+                ])
+
+                input[0] = ch_input
+                input[1] = ch_contrasts
+                input[2] = ch_samplesheet
+                input[3] = ch_featuresheet
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.gsea_report,
+                    path(workflow.out.versions.get(0)).yaml,
+                    workflow.out.versions
+                ).match()}
+            )
+        }
+    }
+
+    test("propd + grea - mouse") {
+        tag "propd+grea"
+        config "./propd_grea.config"
+
+        setup {
+            run("ABUNDANCE_DIFFERENTIAL_FILTER") {
+                script "../../abundance_differential_filter/main.nf"
+                workflow {
+                """
+                // Define test data
+                def testData = [
+                    expression_test_data_dir: params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/',
+                    contrasts_file: 'SRP254919.contrasts.csv',
+                    abundance_file: 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv',
+                    samplesheet_file: 'SRP254919.samplesheet.csv'
+                ]
+
+                // Define inputs
+                ch_samplesheet = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.samplesheet_file)
+                ])
+                ch_transcript_lengths = Channel.of([ [], [] ])
+                ch_control_features = Channel.of([ [], [] ])
+                ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_input = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.abundance_file),
+                    'propd',   // analysis method
+                    1.5,       // FC threshold
+                    100        // stat threshold
+                ])
+
+                input[0] = ch_input
+                input[1] = ch_samplesheet
+                input[2] = ch_transcript_lengths
+                input[3] = ch_control_features
+                input[4] = ch_contrasts
+                """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                ch_input = ABUNDANCE_DIFFERENTIAL_FILTER.out.adjacency
+                    .combine(Channel.fromPath(params.modules_testdata_base_path + 'genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt'))
+                    .map { meta, results, genesets ->
+                        [meta, results, genesets, [], 'grea']
+                    }
+
+                input[0] = ch_input
+                input[1] = Channel.of([[], [], [], []])
+                input[2] = Channel.of([[], []])
+                input[3] = Channel.of([[], [], [], []])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.grea_results,
+                    path(workflow.out.versions.get(0)).yaml,
+                    workflow.out.versions
+                ).match()},
+            )
+        }
+    }
+
+    test("deseq2|limmavoom|propd + gprofiler2|gsea|gsea - mouse") {
+        tag 'all'
+        config './all.config'
+
+        setup {
+            run("ABUNDANCE_DIFFERENTIAL_FILTER") {
+                script "../../abundance_differential_filter/main.nf"
+                workflow {
+                """
+                // Define test data
+                def testData = [
+                    expression_test_data_dir: params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/',
+                    contrasts_file: 'SRP254919.contrasts.csv',
+                    abundance_file: 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv',
+                    samplesheet_file: 'SRP254919.samplesheet.csv'
+                ]
+
+                // Define inputs
+                ch_samplesheet = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.samplesheet_file)
+                ])
+                ch_transcript_lengths = Channel.of([ [], [] ])
+                ch_control_features = Channel.of([ [], [] ])
+                ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_input = Channel.of(
+                    [
+                        [ id:'test' ],
+                        file(testData.expression_test_data_dir + testData.abundance_file),
+                        'deseq2',
+                        1.5,       // FC threshold
+                        0.05       // stat (adjusted p-value) threshold
+                    ],
+                    [
+                        [ id:'test' ],
+                        file(testData.expression_test_data_dir + testData.abundance_file),
+                        'limma',
+                        1.5,       // FC threshold
+                        0.05       // stat (adjusted p-value) threshold
+                    ],
+                    [
+                        [ id:'test' ],
+                        file(testData.expression_test_data_dir + testData.abundance_file),
+                        'propd',
+                        1.5,       // FC threshold
+                        100        // stat (weighted connectivity) threshold
+                    ]
+                )
+
+                input[0] = ch_input
+                input[1] = ch_samplesheet
+                input[2] = ch_transcript_lengths
+                input[3] = ch_control_features
+                input[4] = ch_contrasts
+                """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                // Define test data
+                def test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/'
+                def testData = [
+                    contrasts_file: test_data_dir + 'rnaseq_expression/SRP254919.contrasts.csv',
+                    abundance_file: test_data_dir + 'rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv',
+                    samplesheet_file: test_data_dir + 'rnaseq_expression/SRP254919.samplesheet.csv',
+                    genesets_file: test_data_dir + 'gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt'
+                ]
+
+                // define input channels
+                ch_input_for_gprofiler2 = ABUNDANCE_DIFFERENTIAL_FILTER.out.results_genewise_filtered
+                    .combine(Channel.of('gprofiler2'))
+                ch_input_for_gsea = ABUNDANCE_DIFFERENTIAL_FILTER.out.normalised_matrix
+                    .combine(Channel.of('gsea'))
+                ch_input_for_grea = ABUNDANCE_DIFFERENTIAL_FILTER.out.adjacency
+                    .combine(Channel.of('grea'))
+                ch_input = ch_input_for_gprofiler2
+                    .mix(ch_input_for_gsea)
+                    .mix(ch_input_for_grea)
+                    .combine(Channel.fromPath(testData.genesets_file))
+                    .map { meta, input_file, method, genesets ->
+                        [meta, input_file, genesets, [], method]
+                    }
+
+                // define gsea-specific inputs
+                ch_contrasts = Channel.fromPath(file(testData.contrasts_file))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                ch_samplesheet = Channel.of([
+                    [ id:'test' ],
+                    file(testData.samplesheet_file)
+                ])
+                ch_featuresheet = Channel.of([
+                    [ id:'test' ],
+                    file(testData.abundance_file),
+                    'gene_id',
+                    'gene_name'
+                ])
+
+                input[0] = ch_input
+                input[1] = ch_contrasts
+                input[2] = ch_samplesheet
+                input[3] = ch_featuresheet
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.gprofiler2_all_enrich,
+                    workflow.out.gprofiler2_sub_enrich,
+                    workflow.out.gprofiler2_plot_html.collect{ meta, html -> file(html).name }, //assert unstable file
+                    workflow.out.gsea_report,
+                    workflow.out.grea_results,
+                    workflow.out.versions
+                ).match()},
+            )
+        }
+
+    }
+
+    test("stub") {
+        tag 'gprofiler2_basic'
+        config './gprofiler2.config'
+        options '-stub'
+
+        when {
+            workflow {
+                """
+                ch_input = Channel.of([
+                    ['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'],
+                    file("https://github.com/nf-core/test-datasets/raw/refs/heads/differentialabundance/modules_testdata/Condition_genotype_WT_KO.deseq2.results_filtered.tsv", checkIfExists: true),
+                    [],
+                    file("https://github.com/nf-core/test-datasets/raw/refs/heads/differentialabundance/modules_testdata/study.filtered.tsv", checkIfExists: true),
+                    'gprofiler2'
+                ])
+
+                input[0] = ch_input
+                input[1] = Channel.of([[], [], [], []])
+                input[2] = Channel.of([[], []])
+                input[3] = Channel.of([[], [], [], []])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+
+}
