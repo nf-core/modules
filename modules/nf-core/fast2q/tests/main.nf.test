@@ -1,0 +1,165 @@
+nextflow_process {
+
+    name "Test Process 2FAST2Q"
+    script "../main.nf"
+    process "FAST2Q"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fast2q"
+
+    config './nextflow.config'
+
+    test("2FAST2Q self-test") {
+
+        when {
+
+            params {
+                    module_args = '-t'
+                }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test1' ], // meta map
+                    []
+                ]
+                input[1] = [
+                    [ id:'library_name', multiple_features_per_read:false ], // meta map for second input
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out.count_matrix,
+                        file(process.out.stats[0][1]).name,
+                        file(process.out.distribution_plot[0][1]).name,
+                        file(process.out.reads_plot[0][1]).name,
+                        file(process.out.reads_plot_percentage[0][1]).name,
+                        process.out.versions,                       // versions file
+                        path(process.out.versions[0]).yaml          // Validate against the versions snapshot
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("Extracting and counting all features at position=0 with default length of 20bp from a FASTQ file (without optional library.csv)") {
+
+        when {
+
+            params {
+                module_args = '--mo EC'
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test1' ], // meta map
+                    file(params.test_data_base + '/data/genomics/mus_musculus/mageck/ERR376998.small.fastq.gz', checkIfExists: true) // FASTQ file
+                ]
+                input[1] = [
+                    [ id:'library_name', multiple_features_per_read:false ], // meta map for second input
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success }, // Ensure process ran successfully
+                { assert snapshot(
+                        process.out.count_matrix,
+                        file(process.out.stats[0][1]).name,
+                        file(process.out.distribution_plot[0][1]).name,
+                        file(process.out.reads_plot[0][1]).name,
+                        file(process.out.reads_plot_percentage[0][1]).name,
+                        process.out.versions,                       // versions file
+                        path(process.out.versions[0]).yaml          // Validate against the versions snapshot
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("Extracting all features at position=0 with default length of 20bp from a FASTQ file, and respective alignment to a file with DNA features (library.csv)") {
+
+        when {
+
+            params {
+                module_args = ''
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test1' ], // meta map
+                    file(params.test_data_base + '/data/genomics/mus_musculus/mageck/ERR376998.small.fastq.gz', checkIfExists: true) // FASTQ file
+                ]
+                input[1] = [
+                    [ id:'library_name', multiple_features_per_read:false ], // meta map for second input
+                    file(params.test_data_base + '/data/genomics/mus_musculus/mageck/yusa_library.csv', checkIfExists: true) // library file
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success }, // Ensure process ran successfully
+                { assert snapshot(
+                        process.out.count_matrix,
+                        file(process.out.stats[0][1]).name,
+                        file(process.out.distribution_plot[0][1]).name,
+                        file(process.out.reads_plot[0][1]).name,
+                        file(process.out.reads_plot_percentage[0][1]).name,
+                        process.out.versions,                       // versions file
+                        path(process.out.versions[0]).yaml          // Validate against the versions snapshot
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("2FAST2Q self-test - stub") {
+        options "-stub"
+        when {
+
+            params {
+            module_args = '-t'
+                }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test1' ], // meta map
+                    []
+                ]
+                input[1] = [
+                    [ id:'library_name', multiple_features_per_read:false ], // meta map for second input
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out,
+                        path(process.out.versions[0]).yaml // Validate against the versions snapshot
+                    ).match()
+                }
+            )
+        }
+    }
+
+
+}

@@ -4,8 +4,8 @@ process SIMPLEAF_QUANT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/simpleaf:0.18.4--ha6fb395_1':
-        'biocontainers/simpleaf:0.18.4--ha6fb395_1' }"
+        'https://depot.galaxyproject.org/singularity/simpleaf:0.19.2--ha6fb395_0':
+        'biocontainers/simpleaf:0.19.2--ha6fb395_0' }"
 
     input:
     //
@@ -53,6 +53,7 @@ process SIMPLEAF_QUANT {
         --resolution ${resolution} \\
         --output ${prefix} \\
         --threads ${task.cpus} \\
+        --anndata-out \\
         ${cf_option} \\
         ${args}
 
