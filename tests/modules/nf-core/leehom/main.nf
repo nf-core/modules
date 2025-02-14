@@ -12,7 +12,7 @@ workflow test_leehom_bam {
             []
         ]
 
-    SAMTOOLS_VIEW ( input, [] , [], [])
+    SAMTOOLS_VIEW ( input, [[],[]], [], [])
     LEEHOM ( SAMTOOLS_VIEW.out.bam )
 }
 
