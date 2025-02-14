@@ -4,8 +4,8 @@ process TCOFFEE_ALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-a76a981c07359a31ff55b9dc13bd3da5ce1909c1:84c8f17f1259b49e2f7783b95b7a89c6f2cb199e-0':
-        'biocontainers/mulled-v2-a76a981c07359a31ff55b9dc13bd3da5ce1909c1:84c8f17f1259b49e2f7783b95b7a89c6f2cb199e-0' }"
+        'oras://community.wave.seqera.io/library/t-coffee_tmalign_pigz:f861f2f8f266c2fe':
+        'community.wave.seqera.io/library/t-coffee_tmalign_pigz:4d0971cdf12a9460' }"
 
     input:
     tuple val(meta) ,  path(fasta)
