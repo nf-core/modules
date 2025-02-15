@@ -5,7 +5,7 @@ process TCOFFEE_ALIGN {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'oras://community.wave.seqera.io/library/t-coffee_tmalign_pigz:f861f2f8f266c2fe':
-        'community.wave.seqera.io/library/t-coffee_tmalign_pigz:4d0971cdf12a9460' }"
+        'community.wave.seqera.io/library/t-coffee_tmalign_pigz:be7dac2ae6aba380' }"
 
     input:
     tuple val(meta) ,  path(fasta)
@@ -31,6 +31,8 @@ process TCOFFEE_ALIGN {
     def write_output = compress ? " | pigz -cp ${task.cpus} > ${prefix}.aln.gz" : ""
     """
     export TEMP='./'
+    export TMP_4_TCOFFEE="./"
+    export HOME="./"
     t_coffee -seq ${fasta} \
         $tree_args \
         $template_args \
@@ -51,6 +53,8 @@ process TCOFFEE_ALIGN {
     """
     # Otherwise, tcoffee will crash when calling its version
     export TEMP='./'
+    export TMP_4_TCOFFEE="./"
+    export HOME="./"
     touch ${prefix}.aln${compress ? '.gz':''}
 
     cat <<-END_VERSIONS > versions.yml
