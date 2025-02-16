@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "perbase"
 description: Per-base metrics on BAM/CRAM files.
@@ -22,7 +21,6 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-
     - bam:
         type: file
         description: Sorted BAM/CRAM file
@@ -35,7 +33,19 @@ input:
         type: file
         description: BAI/CRAI file
         pattern: "*.{bai,crai}"
-
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: Reference fasta (optional)
+        pattern: "*.{fasta,fa}"
+    - fai:
+        type: file
+        description: FAI file (optional)
+        pattern: "*.{fai}"
 output:
   - tsv:
       #Only when we have meta

@@ -9,6 +9,7 @@ process PERBASE {
 
     input:
     tuple val(meta), path(bam), path(index)
+    tuple val(meta2), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("*.tsv.gz"), emit: tsv
@@ -20,11 +21,13 @@ process PERBASE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def reference = fasta ? "--ref-fasta ${fasta}" : ""
     """
     perbase \\
         base-depth \\
         $bam \\
         $args \\
+        $reference \\
         --threads $task.cpus \\
         --bgzip \\
         --output ${prefix}.tsv.gz
