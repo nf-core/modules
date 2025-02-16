@@ -14,9 +14,6 @@ process KRONA_KTIMPORTTEXT {
     tuple val(meta), path ('*.html'), emit: html
     path "versions.yml"             , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
-
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -33,7 +30,6 @@ process KRONA_KTIMPORTTEXT {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.html

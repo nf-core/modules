@@ -16,13 +16,9 @@ process KRONA_KTIMPORTTAXONOMY {
     tuple val(meta), path ('*.html'), emit: html
     path "versions.yml"             , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
-
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '2.8.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     TAXONOMY=\$(find -L . -name '*.tab' -exec dirname {} \\;)
     echo \$TAXONOMY
@@ -35,20 +31,18 @@ process KRONA_KTIMPORTTAXONOMY {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        krona: $VERSION
+        krona: \$(ktImportTaxonomy | grep -Po "(?<=KronaTools )[0-9.]+")
     END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '2.8.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.html
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        krona: $VERSION
+        krona: \$(ktImportTaxonomy | grep -Po "(?<=KronaTools )[0-9.]+")
     END_VERSIONS
     """
 }
