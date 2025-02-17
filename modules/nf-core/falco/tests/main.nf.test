@@ -34,6 +34,7 @@ nextflow_process {
                     file(process.out.html.get(0).get(1)).list(),
                     ).match()
                 },
+                { assert snapshot(process.out.versions).match() },
             )
         }
 
@@ -69,6 +70,7 @@ nextflow_process {
                     process.out.html.get(0).get(1).collect{ it.split("/")[-1] }.sort(),
                     ).match()
                 },
+                { assert snapshot(process.out.versions).match() },
             )
         }
 
@@ -100,6 +102,7 @@ nextflow_process {
                     file(process.out.html.get(0).get(1)).list(),
                     ).match()
                 },
+                { assert snapshot(process.out.versions).match() },
             )
         }
 
