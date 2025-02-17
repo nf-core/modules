@@ -17,9 +17,6 @@ process SPOTIFLOW {
 
     script:
     def args    = task.ext.args   ?: ''
-    def prefix  = task.ext.prefix ?: "${meta.id}"
-    def VERSION = "0.0.3"
-
     """
     spotiflow-predict \\
         ${image_2d} \\
@@ -28,20 +25,18 @@ process SPOTIFLOW {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        spotiflow: $VERSION
+        spotiflow: \"pip show spotiflow | grep 'Version:' | cut -d ' ' -f2\"
     END_VERSIONS
     """
 
     stub:
-    def args    = task.ext.args   ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def VERSION = "0.0.3"
     """
     touch ${prefix}.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        spotiflow: $VERSION
+        spotiflow: \"pip show spotiflow | grep 'Version:' | cut -d ' ' -f2\"
     END_VERSIONS
     """
 }
