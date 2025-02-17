@@ -15,11 +15,11 @@ workflow FASTQ_ALIGN_PARABRICKS {
 
     main:
     ch_versions          = Channel.empty()
-    //ch_bam               = Channel.empty()
-    //ch_bai               = Channel.empty()
-    //ch_bqsr_table        = Channel.empty()
-    //ch_qc_metrics        = Channel.empty()
-    //ch_duplicate_metrics = Channel.empty()
+    ch_bam               = Channel.empty()
+    ch_bai               = Channel.empty()
+    ch_bqsr_table        = Channel.empty()
+    ch_qc_metrics        = Channel.empty()
+    ch_duplicate_metrics = Channel.empty()
 
     PARABRICKS_FQ2BAM(
         ch_reads,
@@ -30,11 +30,11 @@ workflow FASTQ_ALIGN_PARABRICKS {
     )
 
     // Collecting FQ2BAM outputs
-    ch_bam               = PARABRICKS_FQ2BAM.out.bam
-    ch_bai               = PARABRICKS_FQ2BAM.out.bai
-    ch_qc_metrics        = PARABRICKS_FQ2BAM.out.qc_metrics
-    ch_bqsr_table        = PARABRICKS_FQ2BAM.out.bqsr_table
-    ch_duplicate_metrics = PARABRICKS_FQ2BAM.out.duplicate_metrics
+    ch_bam               = ch_bam.mix(PARABRICKS_FQ2BAM.out.bam)
+    ch_bai               = ch_bai.mix(PARABRICKS_FQ2BAM.out.bai)
+    ch_qc_metrics        = ch_qc_metrics.mix(PARABRICKS_FQ2BAM.out.qc_metrics)
+    ch_bqsr_table        = ch_bqsr_table.mix(PARABRICKS_FQ2BAM.out.bqsr_table)
+    ch_duplicate_metrics = ch_duplicate_metrics.mix(PARABRICKS_FQ2BAM.out.duplicate_metrics)
     ch_versions          = ch_versions.mix(PARABRICKS_FQ2BAM.out.versions)
 
     // Apply BQSR
@@ -50,5 +50,8 @@ workflow FASTQ_ALIGN_PARABRICKS {
     emit:
     bam      = PARABRICKS_APPLYBQSR.out.bam // channel: [ [meta], bam ]
     bai      = PARABRICKS_APPLYBQSR.out.bai // channel: [ [meta], bai ]
+    qc_metrics = ch_qc_metrics // channel: [ [meta], qc_metrics ]
+    duplicate_metrics = ch_duplicate_metrics // channel: [ [meta], duplicate_metrics ]
+    bqsr_table = ch_bqsr_table // channel: [ [meta], bqsr_table ]
     versions = ch_versions                  // channel: [ versions.yml ]
 }
