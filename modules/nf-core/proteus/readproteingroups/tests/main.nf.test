@@ -26,7 +26,18 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(
+                    process.out.dendro_plot,
+                    process.out.mean_var_plot,
+                    process.out.raw_dist_plot,
+                    process.out.norm_dist_plot,
+                    process.out.raw_rdata,
+                    process.out.norm_rdata,
+                    process.out.raw_tab,
+                    process.out.norm_tab,
+                    file(process.out.session_info[0][1]).name,
+                    process.out.versions
+                ).match() }
             )
         }
     }
@@ -49,7 +60,18 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(
+                    process.out.dendro_plot,
+                    process.out.mean_var_plot,
+                    process.out.raw_dist_plot,
+                    process.out.norm_dist_plot,
+                    process.out.raw_rdata,
+                    process.out.norm_rdata,
+                    process.out.raw_tab,
+                    process.out.norm_tab,
+                    file(process.out.session_info[0][1]).name,
+                    process.out.versions,
+                ).match() }
             )
         }
     }

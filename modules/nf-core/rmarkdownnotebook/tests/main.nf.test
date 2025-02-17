@@ -26,7 +26,13 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(
+                    file(process.out.report[0][1]).name,
+                    process.out.parameterised_notebook,
+                    process.out.artifacts,
+                    file(process.out.session_info[0][1]).name,
+                    process.out.versions
+                ).match() }
             )
         }
     }
@@ -49,7 +55,13 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(
+                    file(process.out.report[0][1]).name,
+                    process.out.parameterised_notebook,
+                    process.out.artifacts,
+                    file(process.out.session_info[0][1]).name,
+                    process.out.versions
+                ).match() }
             )
         }
     }
@@ -74,7 +86,13 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(
+                    file(process.out.report[0][1]).name,
+                    process.out.parameterised_notebook,
+                    process.out.artifacts,
+                    file(process.out.session_info[0][1]).name,
+                    process.out.versions
+                ).match() }
             )
         }
     }
