@@ -21,7 +21,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path +'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/b4563f0cff0619f2692245d574205540d68e9a6a/data/genomics/sarscov2/genome/genome-embl.fasta', checkIfExists: true)
                 ]
                 input[1] = [
                     [ id:'accession2taxid' ], // meta map
@@ -57,7 +57,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path +'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/b4563f0cff0619f2692245d574205540d68e9a6a/data/genomics/sarscov2/genome/genome-embl.fasta', checkIfExists: true)
                 ]
                 input[1] = [
                     [ id:'accession2taxid' ], // meta map
