@@ -1,20 +1,20 @@
 process FALCO {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/falco:1.2.5--h077b44d_0':
-        'biocontainers/falco:1.2.5--h077b44d_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/falco:1.2.5--h077b44d_0'
+        : 'biocontainers/falco:1.2.5--h077b44d_0'}"
 
     input:
     tuple val(meta), path(reads)
 
     output:
     tuple val(meta), path("*.html"), emit: html
-    tuple val(meta), path("*.txt") , emit: txt
-    path  "versions.yml"           , emit: versions
+    tuple val(meta), path("*.txt"), emit: txt
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,23 +22,24 @@ process FALCO {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if ( reads.toList().size() == 1 ) {
+    if (reads.toList().size() == 1) {
         """
         [ ! -f  ${prefix}.fastq.gz ] && ln -sf ${reads[0]} ${prefix}.fastq.gz
 
-        falco $args --threads $task.cpus ${reads} -D ${prefix}_fastqc_data.txt -S ${prefix}_summary.txt -R ${prefix}_report.html
+        falco ${args} --threads ${task.cpus} ${reads} -D ${prefix}_fastqc_data.txt -S ${prefix}_summary.txt -R ${prefix}_report.html
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
             falco:\$( falco --version | sed -e "s/falco//g" )
         END_VERSIONS
         """
-    } else {
+    }
+    else {
         """
         [ ! -f  ${prefix}_1.fastq.gz ] && ln -sf ${reads[0]} ${prefix}_1.fastq.gz
         [ ! -f  ${prefix}_2.fastq.gz ] && ln -sf ${reads[1]} ${prefix}_2.fastq.gz
 
-        falco $args --threads $task.cpus ${reads}
+        falco ${args} --threads ${task.cpus} ${reads}
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
