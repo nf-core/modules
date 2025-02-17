@@ -1,0 +1,178 @@
+def pathbam = "file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/"
+def pathgenome = "file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/"
+// positions and essential parameters
+def posfile             = "${pathgenome}dbsnp_138.hg38.first_10_biallelic_sites.tsv', checkIfExists: true)"
+def stitch_params       = "[ [ id: 'test_positions' ], $posfile, [], [], 'chr21', 2, 1 ]"
+
+// sequencing data in cram format
+def crams_val = "[${pathbam}cram/test.paired_end.recalibrated.sorted.cram', checkIfExists: true), ${pathbam}cram/test2.paired_end.recalibrated.sorted.cram', checkIfExists: true)]"
+def crais_val = "[${pathbam}cram/test.paired_end.recalibrated.sorted.cram.crai', checkIfExists: true), ${pathbam}cram/test2.paired_end.recalibrated.sorted.cram.crai', checkIfExists: true)]"
+def reads_cram = "[ [ id: 'test_reads' ], $crams_val, $crais_val ]"
+
+// sequencing data in bam format
+def bams_val = "[${pathbam}bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true), ${pathbam}bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true)]"
+def bais_val = "[${pathbam}bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true), ${pathbam}bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)]"
+def reads_bam = "[ [ id:'test_reads' ], $bams_val, $bais_val ]"
+
+// reference genome
+def reference = "[[ id:'test_reference' ], ${pathgenome}genome.fasta', checkIfExists: true), ${pathgenome}genome.fasta.fai', checkIfExists: true)]"
+
+// for reproducibility
+def seed = 1
+
+nextflow_process {
+    name "Test Process STITCH"
+    script "../main.nf"
+    process "STITCH"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "stitch"
+
+    test("test_no_seed") {
+        when {
+            process {
+                """
+                filelist = Channel.fromPath( $crams_val )
+                    .map { it[-1] as String } // get only filename
+                    .collectFile( name: "cramlist.txt", newLine: true, sort: true )
+                
+                input[0] = Channel.of( $reads_cram ).combine( filelist )
+                input[1] = $stitch_params
+                input[2] = $reference
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.input.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.rdata.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.plots.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.vcf.collect{ file(it[1]).name },
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("test_with_seed") {
+        when {
+            process {
+                """
+                filelist = Channel.fromPath( $crams_val )
+                    .map { it[-1] as String } // get only filename
+                    .collectFile( name: "cramlist.txt", newLine: true, sort: true )
+                input[0] = Channel.of( $reads_cram ).combine( filelist )
+                input[1] = $stitch_params
+                input[2] = $reference
+                input[3] = $seed
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.input.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.rdata.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.plots.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.vcf.collect{ file(it[1]).name },
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("test_two_stage_imputation") {
+        setup {
+            run ("STITCH", alias: "STITCH_GENERATE_INPUTS") {
+                script "../main.nf"
+                config "./stitch_generate_input.config"
+                process {
+                """
+                filelist = Channel.fromPath( $crams_val )
+                    .map { it[-1] as String } // get only filename
+                    .collectFile( name: "cramlist.txt", newLine: true, sort: true )
+                input[0] = Channel.of( $reads_cram ).combine( filelist )
+                input[1] = $stitch_params
+                input[2] = $reference
+                input[3] = $seed
+                """
+                }
+            }
+        }
+
+        when {
+            config "./stitch_impute_only.config"
+            process {
+                """
+                ch_input_2step = Channel.of( $stitch_params )
+                    .map {
+                        meta, positions, target, rdata, chromosome_name, K, nGen ->
+                        [ meta, positions ]
+                    }
+                    .combine(
+                        STITCH_GENERATE_INPUTS.out.input
+                        .join ( STITCH_GENERATE_INPUTS.out.rdata )
+                    )
+                    .map {
+                        meta, positions, metaT, target, rdata ->
+                        [ metaT, positions, target, rdata, "chr21", 2, 1 ]
+                    }
+                input[0] = [[id: null], [], [], []]
+                input[1] = ch_input_2step
+                input[2] = [[id: null], [], []]
+                input[3] = $seed
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.input.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.rdata.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.plots.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.vcf.collect{ file(it[1]).name },
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("test_with_bam") {
+        when {
+            process {
+                """
+                filelist = Channel.fromPath( $bams_val )
+                    .map { it[-1] as String } // get only filename
+                    .collectFile( name: "cramlist.txt", newLine: true, sort: true )
+                input[0] = Channel.of( $reads_bam ).combine( filelist )
+                input[1] = $stitch_params
+                input[2] = $reference
+                input[3] = $seed
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.input.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.rdata.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.plots.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.vcf.collect{ file(it[1]).name },
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+}

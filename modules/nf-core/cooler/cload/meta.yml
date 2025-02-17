@@ -13,41 +13,45 @@ tools:
       tool_dev_url: https://github.com/open2c/cooler
       doi: "10.1093/bioinformatics/btz540"
       licence: ["BSD-3-clause"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - pairs:
-      type: file
-      description: Path to contacts (i.e. read pairs) file.
-  - index:
-      type: file
-      description: Path to index file of the contacts.
-  - cool_bin:
-      type: integer
-      description: Bins size in bp
-  - chromsizes:
-      type: file
-      description: Path to a chromsizes file.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - pairs:
+        type: file
+        description: Path to contacts (i.e. read pairs) file.
+    - index:
+        type: file
+        description: Path to index file of the contacts.
+    - cool_bin:
+        type: integer
+        description: Bins size in bp
+  - - chromsizes:
+        type: file
+        description: Path to a chromsizes file.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - version:
-      type: file
-      description: File containing software version
-      pattern: "versions.yml"
   - cool:
-      type: file
-      description: Output COOL file path
-      pattern: "*.cool"
-  - cool_bin:
-      type: integer
-      description: Bins size in bp
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.cool":
+          type: file
+          description: Output COOL file path
+          pattern: "*.cool"
+      - cool_bin:
+          type: file
+          description: Output COOL file path
+          pattern: "*.cool"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jianhong"
   - "@muffato"

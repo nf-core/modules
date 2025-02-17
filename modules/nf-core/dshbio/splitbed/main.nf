@@ -33,4 +33,16 @@ process DSHBIO_SPLITBED {
         dshbio: \$(dsh-bio --version 2>&1 | grep -o 'dsh-bio-tools .*' | cut -f2 -d ' ')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo | gzip > ${prefix}0.bed.gz
+    echo | gzip > ${prefix}1.bed.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        dshbio: \$(dsh-bio --version 2>&1 | grep -o 'dsh-bio-tools .*' | cut -f2 -d ' ')
+    END_VERSIONS
+    """
 }

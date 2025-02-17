@@ -14,33 +14,34 @@ tools:
       documentation: "https://github.com/lh3/yak/blob/master/README.md"
       tool_dev_url: "https://github.com/lh3/yak"
       licence: ["MIT"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - fastq:
-      type: file
-      description: reads fastq/fasta file
-      pattern: "*.{fastq.gz,fq.gz,fasta.gz,fa.gz}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fastq:
+        type: file
+        description: reads fastq/fasta file
+        pattern: "*.{fastq.gz,fq.gz,fasta.gz,fa.gz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - yak:
-      type: file
-      description: k-mer hash table of input
-      pattern: "*.{yak}"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.yak":
+          type: file
+          description: k-mer hash table of input
+          pattern: "*.{yak}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@yumisims"
 maintainers:

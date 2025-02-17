@@ -12,29 +12,32 @@ tools:
       documentation: https://github.com/haowenz/chromap
       tool_dev_url: https://github.com/haowenz/chromap
       licence: ["GPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test' ]
-  - fasta:
-      type: file
-      description: Fasta reference file.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: Fasta reference file.
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test' ]
   - index:
-      type: file
-      description: Index file of the reference genome
-      pattern: "*.{index}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing reference information
+            e.g. [ id:'test' ]
+      - "*.index":
+          type: file
+          description: Index file of the reference genome
+          pattern: "*.{index}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@mahesh-panchal"
   - "@joseespinosa"

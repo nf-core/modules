@@ -12,38 +12,41 @@ tools:
       homepage: http://hgdownload.cse.ucsc.edu/admin/exe/
       documentation: https://genome.ucsc.edu/goldenPath/help/bigBed.html
       licence: ["varies; see http://genome.ucsc.edu/license"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bed:
-      type: file
-      description: bed file
-      pattern: "*.{bed}"
-  - sizes:
-      type: file
-      description: chromosome sizes file
-      pattern: "*.{sizes}"
-  - autosql:
-      type: file
-      description: autoSql file to describe the columns of the BED file
-      pattern: "*.{as}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bed:
+        type: file
+        description: bed file
+        pattern: "*.{bed}"
+  - - sizes:
+        type: file
+        description: chromosome sizes file
+        pattern: "*.{sizes}"
+  - - autosql:
+        type: file
+        description: autoSql file to describe the columns of the BED file
+        pattern: "*.{as}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - bigbed:
-      type: file
-      description: bigBed file
-      pattern: "*.{bigBed}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bigBed":
+          type: file
+          description: bigBed file
+          pattern: "*.{bigBed}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@drpatelh"
 maintainers:

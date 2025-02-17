@@ -1,0 +1,81 @@
+nextflow_process {
+
+    name "Test Process OPENMS_IDMASSACCURACY"
+    script "../main.nf"
+    process "OPENMS_IDMASSACCURACY"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "openms"
+    tag "openms/idmassaccuracy"
+    tag "thermorawfileparser"
+    tag "openms/decoydatabase"
+    tag "openmsthirdparty/cometadapter"
+
+    setup {
+        run("THERMORAWFILEPARSER") {
+            script "../../../thermorawfileparser/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'proteomics/msspectra/PXD012083_e005640_II.raw', checkIfExists: true)
+                ])
+                """
+            }
+        }
+        run("OPENMS_DECOYDATABASE") {
+            script "../../../openms/decoydatabase/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'proteomics/database/UP000005640_9606.fasta', checkIfExists: true)
+                ])
+                """
+            }
+        }
+        run("OPENMSTHIRDPARTY_COMETADAPTER") {
+            script "../../../openmsthirdparty/cometadapter/main.nf"
+            process {
+                """
+                input[0] = THERMORAWFILEPARSER.out.spectra.join(OPENMS_DECOYDATABASE.out.decoy_fasta)
+                """
+            }
+        }
+    }
+
+    test("proteomics - openms - mass_error") {
+        when {
+            process {
+                """
+                input[0] = THERMORAWFILEPARSER.out.spectra.join(OPENMSTHIRDPARTY_COMETADAPTER.out.idxml)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("proteomics - openms - mass_error - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = THERMORAWFILEPARSER.out.spectra.join(OPENMSTHIRDPARTY_COMETADAPTER.out.idxml)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

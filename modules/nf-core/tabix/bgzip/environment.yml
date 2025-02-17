@@ -1,8 +1,9 @@
-name: tabix_bgzip
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
-  - defaults
+
 dependencies:
-  - bioconda::tabix=1.11
   - bioconda::htslib=1.20
+  - bioconda::tabix=1.11

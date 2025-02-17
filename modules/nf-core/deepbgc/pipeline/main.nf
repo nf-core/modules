@@ -1,29 +1,29 @@
 process DEEPBGC_PIPELINE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/deepbgc:0.1.31--pyhca03a8a_0':
-        'biocontainers/deepbgc:0.1.31--pyhca03a8a_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/deepbgc:0.1.31--pyhca03a8a_0'
+        : 'biocontainers/deepbgc:0.1.31--pyhca03a8a_0'}"
 
     input:
     tuple val(meta), path(genome)
-    path(db)
+    path db
 
     output:
-    tuple val(meta), path("${prefix}/README.txt")                    ,   optional: true, emit: readme
-    tuple val(meta), path("${prefix}/LOG.txt")                       ,   emit: log
-    tuple val(meta), path("${prefix}/${prefix}.antismash.json")      ,   optional: true, emit: json
-    tuple val(meta), path("${prefix}/${prefix}.bgc.gbk")             ,   optional: true, emit: bgc_gbk
-    tuple val(meta), path("${prefix}/${prefix}.bgc.tsv")             ,   optional: true, emit: bgc_tsv
-    tuple val(meta), path("${prefix}/${prefix}.full.gbk")            ,   optional: true, emit: full_gbk
-    tuple val(meta), path("${prefix}/${prefix}.pfam.tsv")            ,   optional: true, emit: pfam_tsv
-    tuple val(meta), path("${prefix}/evaluation/${prefix}.bgc.png")  ,   optional: true, emit: bgc_png
-    tuple val(meta), path("${prefix}/evaluation/${prefix}.pr.png")   ,   optional: true, emit: pr_png
-    tuple val(meta), path("${prefix}/evaluation/${prefix}.roc.png")  ,   optional: true, emit: roc_png
-    tuple val(meta), path("${prefix}/evaluation/${prefix}.score.png"),   optional: true, emit: score_png
-    path "versions.yml"                                                                    ,   emit: versions
+    tuple val(meta), path("${prefix}/README.txt"), optional: true, emit: readme
+    tuple val(meta), path("${prefix}/LOG.txt"), emit: log
+    tuple val(meta), path("${prefix}/${prefix}.antismash.json"), optional: true, emit: json
+    tuple val(meta), path("${prefix}/${prefix}.bgc.gbk"), optional: true, emit: bgc_gbk
+    tuple val(meta), path("${prefix}/${prefix}.bgc.tsv"), optional: true, emit: bgc_tsv
+    tuple val(meta), path("${prefix}/${prefix}.full.gbk"), optional: true, emit: full_gbk
+    tuple val(meta), path("${prefix}/${prefix}.pfam.tsv"), optional: true, emit: pfam_tsv
+    tuple val(meta), path("${prefix}/evaluation/${prefix}.bgc.png"), optional: true, emit: bgc_png
+    tuple val(meta), path("${prefix}/evaluation/${prefix}.pr.png"), optional: true, emit: pr_png
+    tuple val(meta), path("${prefix}/evaluation/${prefix}.roc.png"), optional: true, emit: roc_png
+    tuple val(meta), path("${prefix}/evaluation/${prefix}.score.png"), optional: true, emit: score_png
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,8 +36,8 @@ process DEEPBGC_PIPELINE {
 
     deepbgc \\
         pipeline \\
-        $args \\
-        $genome
+        ${args} \\
+        ${genome}
 
     if [[ "${genome.baseName}/" != "${prefix}/" ]]; then
         mv "${genome.baseName}/" "${prefix}/"
@@ -55,7 +55,6 @@ process DEEPBGC_PIPELINE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}/evaluation

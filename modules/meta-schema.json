@@ -38,40 +38,8 @@
             "type": "array",
             "description": "Input channels for the module",
             "items": {
-                "type": "object",
-                "patternProperties": {
-                    ".*": {
-                        "type": "object",
-                        "properties": {
-                            "type": {
-                                "type": "string",
-                                "description": "Type of the input channel",
-                                "enum": ["map", "file", "directory", "string", "integer", "float", "boolean", "list"]
-                            },
-                            "description": {
-                                "type": "string",
-                                "description": "Description of the input channel"
-                            },
-                            "pattern": {
-                                "type": "string",
-                                "description": "Pattern of the input channel, given in Java glob syntax"
-                            },
-                            "default": {
-                                "type": ["string", "number", "boolean", "array", "object"],
-                                "description": "Default value for the input channel"
-                            },
-                            "enum": {
-                                "type": "array",
-                                "description": "List of allowed values for the input channel",
-                                "items": {
-                                    "type": ["string", "number", "boolean", "array", "object"]
-                                },
-                                "uniqueItems": true
-                            }
-                        },
-                        "required": ["type", "description"]
-                    }
-                }
+                "type": "array",
+                "items": { "$ref": "#/definitions/elementProperties" }
             }
         },
         "output": {
@@ -81,31 +49,10 @@
                 "type": "object",
                 "patternProperties": {
                     ".*": {
-                        "type": "object",
-                        "properties": {
-                            "type": {
-                                "type": "string",
-                                "description": "Type of the output channel",
-                                "enum": ["map", "file", "directory", "string", "integer", "float", "boolean", "list"]
-                            },
-                            "description": {
-                                "type": "string",
-                                "description": "Description of the output channel"
-                            },
-                            "pattern": {
-                                "type": "string",
-                                "description": "Pattern of the input channel, given in Java glob syntax"
-                            },
-                            "enum": {
-                                "type": "array",
-                                "description": "List of allowed values for the output channel",
-                                "items": {
-                                    "type": ["string", "number", "boolean", "array", "object"]
-                                },
-                                "uniqueItems": true
-                            }
-                        },
-                        "required": ["type", "description"]
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/elementProperties"
+                        }
                     }
                 }
             }
@@ -160,6 +107,19 @@
                                 "minItems": 1,
                                 "uniqueItems": true,
                                 "message": "Licence must be an array of one or more entries, e.g. [\"MIT\"]"
+                            },
+                            "identifier": {
+                                "description": "bio.tools identifier of the tool",
+                                "anyOf": [
+                                    {
+                                        "type": "string",
+                                        "pattern": "^biotools:.*$"
+                                    },
+                                    {
+                                        "type": "string",
+                                        "maxLength": 0
+                                    }
+                                ]
                             }
                         },
                         "required": ["description"],
@@ -178,6 +138,54 @@
                             }
                         ]
                     }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "elementProperties": {
+            "type": "object",
+            "patternProperties": {
+                ".*": {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "description": "Type of the channel element",
+                            "enum": ["map", "file", "directory", "string", "integer", "float", "boolean", "list"]
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "Description of the channel"
+                        },
+                        "pattern": {
+                            "type": "string",
+                            "description": "Pattern of the channel, given in Java glob syntax"
+                        },
+                        "enum": {
+                            "type": "array",
+                            "description": "List of allowed values for the channel",
+                            "items": {
+                                "type": ["string", "number", "boolean", "array", "object"]
+                            },
+                            "uniqueItems": true
+                        },
+                        "ontologies": {
+                            "type": "array",
+                            "description": "List of ontologies for the channel",
+                            "uniqueItems": true,
+                            "items": {
+                                "type": "object",
+                                "patternProperties": {
+                                    ".*": {
+                                        "type": "string",
+                                        "pattern": "^(http|https)://.*"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "required": ["type", "description"]
                 }
             }
         }

@@ -1,5 +1,6 @@
 name: metaphlan_metaphlan
-description: MetaPhlAn is a tool for profiling the composition of microbial communities from metagenomic shotgun sequencing data.
+description: MetaPhlAn is a tool for profiling the composition of microbial communities
+  from metagenomic shotgun sequencing data.
 keywords:
   - metagenomics
   - classification
@@ -8,49 +9,71 @@ keywords:
   - sam
 tools:
   - metaphlan:
-      description: Identify clades (phyla to species) present in the metagenome obtained from a microbiome sample and their relative abundance
+      description: Identify clades (phyla to species) present in the metagenome obtained
+        from a microbiome sample and their relative abundance
       homepage: https://huttenhower.sph.harvard.edu/metaphlan/
       documentation: https://github.com/biobakery/MetaPhlAn
       doi: "10.1038/s41587-023-01688-w"
       licence: ["MIT License"]
+      identifier: biotools:metaphlan
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - input:
-      type: file
-      description: Metaphlan can classify the metagenome from a variety of input data types, including FASTQ files (single-end and paired-end), FASTA, bowtie2-produced SAM files (produced from alignments to the MetaPHlAn marker database) and intermediate bowtie2 alignment files (bowtie2out)
-      pattern: "*.{fastq.gz, fasta, fasta.gz, sam, bowtie2out.txt}"
-  - metaphlan_db_latest:
-      type: file
-      description: |
-        Directory containing pre-downloaded and uncompressed MetaPhlAn database downloaded from: http://cmprod1.cibio.unitn.it/biobakery4/metaphlan_databases/.
-        Note that you will also need to specify `--index` and the database version name (e.g. 'mpa_vJan21_TOY_CHOCOPhlAnSGB_202103') in your module.conf ext.args for METAPHLAN_METAPHLAN!
-      pattern: "*/"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input:
+        type: file
+        description: Metaphlan can classify the metagenome from a variety of input data
+          types, including FASTQ files (single-end and paired-end), FASTA, bowtie2-produced
+          SAM files (produced from alignments to the MetaPHlAn marker database) and
+          intermediate bowtie2 alignment files (bowtie2out)
+        pattern: "*.{fastq.gz, fasta, fasta.gz, sam, bowtie2out.txt}"
+  - - metaphlan_db_latest:
+        type: file
+        description: |
+          Directory containing pre-downloaded and uncompressed MetaPhlAn database downloaded from: http://cmprod1.cibio.unitn.it/biobakery4/metaphlan_databases/.
+          Note that you will also need to specify `--index` and the database version name (e.g. 'mpa_vJan21_TOY_CHOCOPhlAnSGB_202103') in your module.conf ext.args for METAPHLAN_METAPHLAN!
+        pattern: "*/"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - profile:
-      type: file
-      description: Tab-separated output file of the predicted taxon relative abundances
-      pattern: "*.{txt}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_profile.txt":
+          type: file
+          description: Tab-separated output file of the predicted taxon relative abundances
+          pattern: "*.{txt}"
   - biom:
-      type: file
-      description: General-use format for representing biological sample by observation contingency tables
-      pattern: "*.{biom}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.biom":
+          type: file
+          description: General-use format for representing biological sample by observation
+            contingency tables
+          pattern: "*.{biom}"
   - bt2out:
-      type: file
-      description: Intermediate Bowtie2 output produced from mapping the metagenome against the MetaPHlAn marker database ( not compatible with `bowtie2out` files generated with MetaPhlAn versions below 3 )
-      pattern: "*.{bowtie2out.txt}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bowtie2out.txt":
+          type: file
+          description: Intermediate Bowtie2 output produced from mapping the metagenome
+            against the MetaPHlAn marker database ( not compatible with `bowtie2out` files
+            generated with MetaPhlAn versions below 3 )
+          pattern: "*.{bowtie2out.txt}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@MGordon09"
   - "@LilyAnderssonLee"

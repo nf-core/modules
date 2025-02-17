@@ -31,4 +31,16 @@ process NANOLYSE {
         nanolyse: \$(NanoLyse --version 2>&1 | sed -e "s/NanoLyse //g")
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo | gzip > ${prefix}.fastq.gz
+    touch ${prefix}.nanolyse.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        nanolyse: \$(NanoLyse --version 2>&1 | sed -e "s/NanoLyse //g")
+    END_VERSIONS
+    """
 }

@@ -1,0 +1,127 @@
+nextflow_process {
+
+    name "Test Process PYPGX_RUNNGSPIPELINE"
+    script "../main.nf"
+    process "PYPGX_RUNNGSPIPELINE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pypgx"
+    tag "pypgx/runngspipeline"
+    tag "pypgx/createinputvcf"
+    tag "pypgx/computecontrolstatistics"
+    tag "pypgx/preparedepthofcoverage"
+    tag "untar"
+
+    test("human paired end bam - CYP2D6 locus - GRCh37 - CYP2D6 pharmacogene") {
+        setup {
+            run("PYPGX_CREATEINPUTVCF") {
+                script "../../createinputvcf/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: 'test'], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.PGx.CYP2D6.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.PGx.CYP2D6.bam.bai', checkIfExists: true)
+                    ]
+                    input[1] = [
+                        [id: 'GRCh37'], // meta2 map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/GRCh37_chr22.fasta.gz', checkIfExists: true)
+                    ]
+                    input[2] = ["CYP2D6"] // Pharmacogene
+                    input[3] = "GRCh37" // assembly version
+                    """
+                }
+            }
+            run("PYPGX_PREPAREDEPTHOFCOVERAGE") {
+                script "../../preparedepthofcoverage"
+                process {
+                    """
+                    input[0] = [
+                        [id: 'test'], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.PGx.CYP2D6.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.PGx.CYP2D6.bam.bai', checkIfExists: true)
+                    ]
+                    input[1] = ["CYP2D6"] // Pharmacogene
+                    input[2] = "GRCh37" // assembly version
+                    """
+                }
+            }
+            run("PYPGX_COMPUTECONTROLSTATISTICS") {
+                script "../../computecontrolstatistics/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: 'test'], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.PGx.CYP2D6.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.PGx.CYP2D6.bam.bai', checkIfExists: true)
+                    ]
+                    input[1] = "22:42512500-42551883"
+                    input[2] = "GRCh37" // assembly version
+                    """
+                }
+            }
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: 'resource_bundle'],
+                        file('https://github.com/sbslee/pypgx-bundle/archive/refs/tags/0.25.0.tar.gz')
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = PYPGX_CREATEINPUTVCF.out.vcf
+                            .join(PYPGX_CREATEINPUTVCF.out.tbi)
+                            .join(PYPGX_PREPAREDEPTHOFCOVERAGE.out.coverage)
+                            .join(PYPGX_COMPUTECONTROLSTATISTICS.out.control_stats)
+                            .combine(Channel.fromList(["CYP2D6"]))
+                input[1] = UNTAR.out.untar // resource bundle
+                input[2] = 'GRCh37' //assembly version
+                """
+            }
+        }
+
+        then {
+            def results = process.out.results[0][1]
+
+
+            def zipFile = path(results).zip
+            def paths = zipFile.extractAll()
+            def metaFile = paths.find { it.getFileName().toString() == 'metadata.txt' }
+
+            assertAll(
+                { assert process.success },
+                { assert zipFile.isValid() },
+                { assert paths.size() == 2 },
+                { assert snapshot(
+                    metaFile,
+                    process.out.versions).match()}
+            )
+        }
+    }
+
+    test("stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [[id: 'test'], [], [], [], [], 'gene']
+                input[1] = [[id: 'bundle'], []]
+                input[2] = ''
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

@@ -1,43 +1,50 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "checkqc"
-description: A simple program to parse Illumina NGS data and check it for quality criteria
+description: A simple program to parse Illumina NGS data and check it for quality
+  criteria
 keywords:
   - QC
   - Illumina
   - genomics
 tools:
   - "checkqc":
-      description: "A simple program to parse Illumina NGS data and check it for quality criteria."
+      description: "A simple program to parse Illumina NGS data and check it for quality
+        criteria."
       homepage: "https://github.com/Molmed/checkQC"
       documentation: "http://checkqc.readthedocs.io/en/latest/"
       doi: "10.21105/joss.00556"
       licence: ["GPL v3"]
+      identifier: ""
 
 input:
-  - run_dir:
-      type: file
-      description: |
-        Illumina sequencing run directory
-        Can be directory or a compressed tar (tar.gz) of the directory
-  - checkqc_config:
-      type: file
-      description: CheckQC configuration file
-      pattern: "*.{yml,yaml}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - run_dir:
+        type: file
+        description: |
+          Illumina sequencing run directory
+          Can be directory or a compressed tar (tar.gz) of the directory
+  - - checkqc_config:
+        type: file
+        description: CheckQC configuration file
+        pattern: "*.{yml,yaml}"
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - report:
-      type: file
-      description: CheckQC report in json format
-      pattern: "*checkqc_report.json"
-  - log:
-      type: file
-      description: CheckQC log in txt format
-      pattern: "*_log.txt"
-
+      - meta:
+          type: file
+          description: CheckQC report in json format
+          pattern: "*checkqc_report.json"
+      - "*checkqc_report.json":
+          type: file
+          description: CheckQC report in json format
+          pattern: "*checkqc_report.json"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@matrulda"

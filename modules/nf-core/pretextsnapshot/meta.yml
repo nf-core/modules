@@ -14,30 +14,33 @@ tools:
       homepage: "https://github.com/wtsi-hpag/PretextSnapshot"
       tool_dev_url: "https://github.com/wtsi-hpag/PretextSnapshot"
       licence: ["https://github.com/wtsi-hpag/PretextSnapshot/blob/master/LICENSE"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - pretext_map:
-      type: file
-      description: pretext hic map
-      pattern: "*.pretext"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - pretext_map:
+        type: file
+        description: pretext hic map
+        pattern: "*.pretext"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - image:
-      type: file
-      description: image of a hic contact map
-      pattern: "*.{png,jpg,bmp}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.{jpeg,png,bmp}":
+          type: file
+          description: image of a hic contact map
+          pattern: "*.{png,jpg,bmp}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@epaule"
 maintainers:
