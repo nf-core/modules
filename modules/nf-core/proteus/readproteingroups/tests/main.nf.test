@@ -27,16 +27,16 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    process.out.dendro_plot,
-                    process.out.mean_var_plot,
-                    process.out.raw_dist_plot,
-                    process.out.norm_dist_plot,
-                    process.out.raw_rdata,
-                    process.out.norm_rdata,
+                    file(process.out.dendro_plot[0][1]).name,
+                    file(process.out.mean_var_plot[0][1]).name,
+                    file(process.out.raw_dist_plot[0][1]).name,
+                    file(process.out.norm_dist_plot[0][1]).name,
+                    file(process.out.raw_rdata[0][1]).name,
+                    file(process.out.norm_rdata[0][1]).name,
                     process.out.raw_tab,
                     process.out.norm_tab,
                     file(process.out.session_info[0][1]).name,
-                    process.out.versions
+                    process.out.versions,
                 ).match() }
             )
         }
@@ -61,12 +61,12 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    process.out.dendro_plot,
-                    process.out.mean_var_plot,
-                    process.out.raw_dist_plot,
-                    process.out.norm_dist_plot,
-                    process.out.raw_rdata,
-                    process.out.norm_rdata,
+                    file(process.out.dendro_plot[0][1]).name,
+                    file(process.out.mean_var_plot[0][1]).name,
+                    file(process.out.raw_dist_plot[0][1]).name,
+                    file(process.out.norm_dist_plot[0][1]).name,
+                    file(process.out.raw_rdata[0][1]).name,
+                    file(process.out.norm_rdata[0][1]).name,
                     process.out.raw_tab,
                     process.out.norm_tab,
                     file(process.out.session_info[0][1]).name,
