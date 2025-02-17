@@ -14,6 +14,9 @@ nextflow_process {
         config './nextflow.config'
 
         when {
+            params {
+                busco_args = '--tar'
+            }
             process {
                 """
                 input[0] = [
@@ -75,6 +78,9 @@ nextflow_process {
         config './nextflow.config'
 
         when {
+            params {
+                busco_args = '--tar'
+            }
             process {
                 """
                 input[0] = [
@@ -157,9 +163,12 @@ nextflow_process {
 
     test("test_busco_eukaryote_metaeuk") {
 
-        config './nextflow.metaeuk.config'
+        config './nextflow.config'
 
         when {
+            params {
+                busco_args = '--tar --metaeuk'
+            }
             process {
                 """
                 input[0] = [
@@ -220,9 +229,12 @@ nextflow_process {
 
     test("test_busco_eukaryote_augustus") {
 
-        config './nextflow.augustus.config'
+        config './nextflow.config'
 
         when {
+            params {
+                busco_args = '--tar --augustus'
+            }
             process {
                 """
                 input[0] = [
@@ -266,6 +278,9 @@ nextflow_process {
         config './nextflow.config'
 
         when {
+            params {
+                busco_args = '--tar'
+            }
             process {
                 """
                 input[0] = [
@@ -328,6 +343,9 @@ nextflow_process {
         config './nextflow.config'
 
         when {
+            params {
+                busco_args = '--tar'
+            }
             process {
                 """
                 input[0] = [
@@ -389,6 +407,9 @@ nextflow_process {
         options '-stub'
 
         when {
+            params {
+                busco_args = '--tar'
+            }
             process {
                 """
                 input[0] = [
