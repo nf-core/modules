@@ -33,7 +33,7 @@ env:
 
 jobs:
   pre-commit:
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5
@@ -48,7 +48,7 @@ jobs:
   # https://github.com/nf-core/tools/pull/3141
   nf-core-changes:
     name: nf-core-changes
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
     outputs:
       # https://github.com/dorny/paths-filter?tab=readme-ov-file#custom-processing-of-changed-files
       modules: ${{ steps.filter.outputs.modules }}
@@ -98,7 +98,7 @@ jobs:
           echo ${{ steps.module_names.outputs.result }}
 
   nf-core-lint-modules:
-    runs-on: ${{ github.event.inputs.runners || 'self-hosted' }}
+    runs-on: ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
     name: nf-core lint modules
     needs: nf-core-changes
     if: ${{ (needs.nf-core-changes.outputs.modules == 'true') }}
@@ -142,8 +142,8 @@ jobs:
       - name: Lint module ${{ matrix.module }}
         run: nf-core modules lint ${{ matrix.module }}
 
-  confirm-pass:
-    runs-on: ubuntu-latest
+  confirm-pass-lint:
+    runs-on: ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
     needs: [nf-core-lint-modules]
     if: always()
     steps:
