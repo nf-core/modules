@@ -48,10 +48,10 @@ workflow FASTQ_ALIGN_PARABRICKS {
     ch_versions = ch_versions.mix(PARABRICKS_APPLYBQSR.out.versions)
 
     emit:
-    bam      = PARABRICKS_APPLYBQSR.out.bam // channel: [ [meta], bam ]
-    bai      = PARABRICKS_APPLYBQSR.out.bai // channel: [ [meta], bai ]
-    qc_metrics = ch_qc_metrics // channel: [ [meta], qc_metrics ]
-    duplicate_metrics = ch_duplicate_metrics // channel: [ [meta], duplicate_metrics ]
-    bqsr_table = ch_bqsr_table // channel: [ [meta], bqsr_table ]
-    versions = ch_versions                  // channel: [ versions.yml ]
+    bam               = PARABRICKS_APPLYBQSR.out.bam // channel: [ [meta], bam ]
+    bai               = PARABRICKS_APPLYBQSR.out.bai // channel: [ [meta], bai ]
+    qc_metrics        = ch_qc_metrics                // channel: [ [meta], qc_metrics ]
+    duplicate_metrics = ch_duplicate_metrics         // channel: [ [meta], duplicate_metrics ]
+    bqsr_table        = ch_bqsr_table                // channel: [ [meta], bqsr_table ]
+    versions          = ch_versions                  // channel: [ versions.yml ]
 }
