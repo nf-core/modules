@@ -1,13 +1,13 @@
 
 nextflow_process {
 
-    name "Test Process SPLITUBAM"
+    name "Test Process TAGBAM"
     script "../main.nf"
-    process "SPLITUBAM"
+    process "TAGBAM"
 
     tag "modules"
     tag "modules_nfcore"
-    tag "splitubam"
+    tag "tagbam"
 
     test("sarscov2 - bam") {
 

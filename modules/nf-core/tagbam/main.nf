@@ -1,11 +1,11 @@
-process SPLITUBAM {
+process TAGBAM {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/tagbam:0.1.0--hc9368f3_0':
-        'biocontainers/tagbam:0.1.0-hc9368f3_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5c/5c4d2c045368ba77115020250c39205495f7e42f9d49e4f98add77280757cc2c/data':
+        'community.wave.seqera.io/library/tagbam:0.1.0--a58e5b41b01b9027' }"
 
     input:
     tuple val(meta), path(bam)
@@ -25,11 +25,11 @@ process SPLITUBAM {
         $args \\
         --threads $task.cpus \\
         --input $bam \\
-        --output-file {prefix}.bam
+        --output-file ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        splitubam: \$(splitubam --version | sed 's/splitubam //')
+        tagbam: \$(tagbam --version | sed 's/tagbam //')
     END_VERSIONS
     """
 
@@ -41,7 +41,7 @@ process SPLITUBAM {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        splitubam: \$(splitubam --version | sed 's/splitubam //')
+        tagbam: \$(tagbam --version | sed 's/tagbam //')
     END_VERSIONS
     """
 }
