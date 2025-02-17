@@ -15,11 +15,11 @@ workflow FASTQ_ALIGN_PARABRICKS {
 
     main:
     ch_versions          = Channel.empty()
-    ch_bam               = Channel.empty()
-    ch_bai               = Channel.empty()
-    ch_bqsr_table        = Channel.empty()
-    ch_qc_metrics        = Channel.empty()
-    ch_duplicate_metrics = Channel.empty()
+    //ch_bam               = Channel.empty()
+    //ch_bai               = Channel.empty()
+    //ch_bqsr_table        = Channel.empty()
+    //ch_qc_metrics        = Channel.empty()
+    //ch_duplicate_metrics = Channel.empty()
 
     PARABRICKS_FQ2BAM(
         ch_reads,
