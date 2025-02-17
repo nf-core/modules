@@ -40,11 +40,10 @@ output:
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
           pattern: "*"
-      - "*":
-          type: map
+      - ungzipped/*:
+          type: file
           description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            Files that have been decompressed
           pattern: "*"
   - versions:
       - versions.yml:
