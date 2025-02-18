@@ -4,14 +4,15 @@ process CLIPKIT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/clipkit:2.3.0--pyhdfd78af_0':
-        'biocontainers/clipkit:2.3.0--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/clipkit:2.4.0--pyhdfd78af_0':
+        'biocontainers/clipkit:2.4.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(aln)
 
     output:
     tuple val(meta), path("*.clipkit"), emit: clipkit
+    tuple val(meta), path("log.txt")  , emit: log
     path "versions.yml"               , emit: versions
 
     when:
@@ -24,7 +25,7 @@ process CLIPKIT {
     clipkit \\
         $args \\
         $aln \\
-        -o ${prefix}.clipkit
+        -o ${prefix}.clipkit > log.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -37,6 +38,7 @@ process CLIPKIT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.clipkit
+    touch log.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

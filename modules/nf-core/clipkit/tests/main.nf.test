@@ -42,6 +42,27 @@ nextflow_process {
 
     }
 
+    test("PF14720 - aln - ends only") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
     test("PF14720 - aln - stub") {
 
         options "-stub"
