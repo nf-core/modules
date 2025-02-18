@@ -33,4 +33,19 @@ process SPACERANGER_MKGTF {
         spaceranger: \$(spaceranger -V | sed -e "s/spaceranger spaceranger-//g")
     END_VERSIONS
     """
+
+    stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "SPACERANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
+    def prefix = task.ext.prefix ?: "${gtf.baseName}.filtered"
+    """
+    touch ${prefix}.gtf
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        spaceranger: \$(spaceranger -V | sed -e "s/spaceranger spaceranger-//g")
+    END_VERSIONS
+    """
 }
