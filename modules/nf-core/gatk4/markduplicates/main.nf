@@ -25,16 +25,14 @@ process GATK4_MARKDUPLICATES {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}.bam"
-
-    // Define output format for samtools, CRAM output requires a reference fasta
-    if (prefix.tokenize('.')[-1] == 'cram' && !fasta) {
-        log.error '[GATK MarkDuplicates] CRAM output requires providing a FASTA reference.'
-    }
-    output_args = prefix.tokenize('.')[-1] == 'cram' ? "--cram -T ${fasta}" : "--bam"
+    def args2 = task.ext.args2 ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}.bam"
+    def output_format = prefix.tokenize('.')[-1] == 'cram' ? "cram" : "bam"
+    def output_flag = output_format == 'cram' ? "-Ch" : "-bh"
 
     def input_list = bam.collect{"--INPUT $it"}.join(' ')
     def reference = fasta ? "--REFERENCE_SEQUENCE ${fasta}" : ""
+    def reference2 = fasta ? "-T ${fasta}" : ""
 
     def avail_mem = 3072
     if (!task.memory) {
@@ -42,6 +40,8 @@ process GATK4_MARKDUPLICATES {
     } else {
         avail_mem = (task.memory.mega*0.8).intValue()
     }
+
+    if (!fasta && output_format == 'cram') error "Fasta reference is required for CRAM output"
 
     // Using samtools and not Markduplicates to compress to CRAM speeds up computation:
     // https://medium.com/@acarroll.dna/looking-at-trade-offs-in-compression-levels-for-genomics-tools-eec2834e8b94
@@ -55,12 +55,7 @@ process GATK4_MARKDUPLICATES {
         --TMP_DIR . \\
         ${reference} \\
         $args \\
-        | \\
-        samtools view \\
-        ${output_args} \\
-        -h \\
-        -o ${prefix} \\
-        -
+        | samtools view $args2 ${output_flag} ${reference2} -o ${prefix}
 
     # Create index for BAM/CRAM
     samtools index ${prefix}
