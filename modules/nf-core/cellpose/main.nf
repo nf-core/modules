@@ -25,6 +25,8 @@ process CELLPOSE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def model_command = model ? "--pretrained_model $model" : ""
     """
+    export OMP_NUM_THREADS=${task.cpus}
+    export MKL_NUM_THREADS=${task.cpus}
     cellpose \\
         --image_path $image \\
         --save_tif \\
