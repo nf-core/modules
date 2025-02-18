@@ -1,45 +1,56 @@
 name: "seroba_run"
-description: Determine Streptococcus pneumoniae serotype from Illumina paired-end reads
+description: Determine Streptococcus pneumoniae serotype from Illumina paired-end
+  reads
 keywords:
   - fastq
   - serotype
   - Streptococcus pneumoniae
 tools:
   - "seroba":
-      description: "SeroBA is a k-mer based pipeline to identify the Serotype from Illumina NGS reads for given references."
+      description: "SeroBA is a k-mer based pipeline to identify the Serotype from Illumina
+        NGS reads for given references."
       homepage: "https://sanger-pathogens.github.io/seroba/"
       documentation: "https://sanger-pathogens.github.io/seroba/"
       tool_dev_url: "https://github.com/sanger-pathogens/seroba"
       doi: "10.1099/mgen.0.000186"
       licence: ["GPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: Input Illunina paired-end FASTQ files
-      pattern: "*.{fq.gz,fastq.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: Input Illunina paired-end FASTQ files
+        pattern: "*.{fq.gz,fastq.gz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - tsv:
-      type: file
-      description: The predicted serotype in tab-delimited format
-      pattern: "*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/${prefix}.tsv:
+          type: file
+          description: The predicted serotype in tab-delimited format
+          pattern: "*.tsv"
   - txt:
-      type: file
-      description: A detailed description of the predicted serotype
-      pattern: "*.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/detailed_serogroup_info.txt:
+          type: file
+          description: A detailed description of the predicted serotype
+          pattern: "*.txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@rpetit3"
 maintainers:

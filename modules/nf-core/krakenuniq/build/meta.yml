@@ -8,40 +8,53 @@ keywords:
   - ncbi
 tools:
   - "krakenuniq":
-      description: "Metagenomics classifier with unique k-mer counting for more specific results"
+      description: "Metagenomics classifier with unique k-mer counting for more specific
+        results"
       homepage: https://github.com/fbreitwieser/krakenuniq
       documentation: https://github.com/fbreitwieser/krakenuniq
       tool_dev_url: https://github.com/fbreitwieser/krakenuniq
       doi: 10.1186/s13059-018-1568-0
       licence: ["MIT"]
+      identifier: biotools:KrakenUniq
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - custom_library_dir:
-      type: directory
-      description: Optional directory containing custom fasta files for database build
-      pattern: "*"
-  - custom_taxonomy_dir:
-      type: directory
-      description: Optional directory containing custom taxonomy files for database build
-      pattern: "*"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - custom_library_dir:
+        type: directory
+        description: Optional directory containing custom fasta files for database build
+        pattern: "*"
+    - custom_taxonomy_dir:
+        type: directory
+        description: Optional directory containing custom taxonomy files for database
+          build
+        pattern: "*"
+    - custom_seqid2taxid:
+        type: file
+        description: custom seqid2taxid
+  - - keep_intermediate:
+        type: boolean
+        description: "Keep intermediate files"
+        pattern: true|false
+
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - db:
-      type: directory
-      description: Directory containing KrakenUniq database
-      pattern: "*/"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/:
+          type: directory
+          description: Directory containing KrakenUniq database
+          pattern: "*/"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jfy133"
 maintainers:

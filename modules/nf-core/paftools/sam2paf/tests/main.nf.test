@@ -1,0 +1,57 @@
+
+nextflow_process {
+
+    name "Test Process PAFTOOLS_SAM2PAF"
+    script "../main.nf"
+    process "PAFTOOLS_SAM2PAF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "paftools"
+    tag "paftools/sam2paf"
+
+    test("test-paftools-sam2paf") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [id:'test'],
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scramble/test.bam', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-paftools-sam2paf-stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+				    [id:'test'],
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scramble/test.bam', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

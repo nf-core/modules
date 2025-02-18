@@ -4,8 +4,8 @@ process SAMTOOLS_CONSENSUS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.20--h50ea8bc_1':
-        'biocontainers/samtools:1.20--h50ea8bc_1' }"
+        'https://depot.galaxyproject.org/singularity/samtools:1.21--h50ea8bc_0' :
+        'biocontainers/samtools:1.21--h50ea8bc_0' }"
 
     input:
     tuple val(meta), path(input)
@@ -37,7 +37,7 @@ process SAMTOOLS_CONSENSUS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        samtools: \$(samtools --version |& sed '1!d ; s/samtools //')
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 
@@ -54,7 +54,7 @@ process SAMTOOLS_CONSENSUS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        samtools: \$(samtools --version |& sed '1!d ; s/samtools //')
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 }

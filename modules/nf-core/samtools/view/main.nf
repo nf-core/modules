@@ -4,8 +4,8 @@ process SAMTOOLS_VIEW {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.20--h50ea8bc_0' :
-        'biocontainers/samtools:1.20--h50ea8bc_0' }"
+        'https://depot.galaxyproject.org/singularity/samtools:1.21--h50ea8bc_0' :
+        'biocontainers/samtools:1.21--h50ea8bc_0' }"
 
     input:
     tuple val(meta), path(input), path(index)
@@ -63,7 +63,7 @@ process SAMTOOLS_VIEW {
                 input.getExtension()
     if ("$input" == "${prefix}.${file_type}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
 
-    def index = args.contains("--write-index") ? "touch ${prefix}.${file_type}.csi" : ""
+    index = args.contains("--write-index") ? "touch ${prefix}.${file_type}.csi" : ""
 
     """
     touch ${prefix}.${file_type}

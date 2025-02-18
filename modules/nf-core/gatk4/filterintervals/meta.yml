@@ -6,53 +6,63 @@ keywords:
   - interval_list
 tools:
   - "gatk4":
-      description: Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools with a primary focus on variant discovery and genotyping. Its powerful processing engine and high-performance computing features make it capable of taking on projects of any size.
+      description: Developed in the Data Sciences Platform at the Broad Institute, the
+        toolkit offers a wide variety of tools with a primary focus on variant discovery
+        and genotyping. Its powerful processing engine and high-performance computing
+        features make it capable of taking on projects of any size.
       homepage: https://gatk.broadinstitute.org/hc/en-us
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
       doi: "10.1158/1538-7445.AM2017-3590"
       licence: ["Apache-2.0"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test' ]
-  - intervals:
-      type: file
-      description: Processed interval list file (processed_intervals.interval_list)
-      pattern: "*.interval_list"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - read_counts:
-      type: file
-      description: Read counts input file
-      pattern: "*.{tsv, hdf5}"
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - annotated_intervals:
-      type: file
-      description: Annotated intervals TSV file (annotated_intervals.tsv).
-      pattern: "*.tsv"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test' ]
+    - intervals:
+        type: file
+        description: Processed interval list file (processed_intervals.interval_list)
+        pattern: "*.interval_list"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - read_counts:
+        type: file
+        description: Read counts input file
+        pattern: "*.{tsv, hdf5}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - annotated_intervals:
+        type: file
+        description: Annotated intervals TSV file (annotated_intervals.tsv).
+        pattern: "*.tsv"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - interval_list:
-      type: file
-      description: Filtered interval list file
-      pattern: "*.interval_list"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.interval_list":
+          type: file
+          description: Filtered interval list file
+          pattern: "*.interval_list"
+      - _list:
+          type: file
+          description: Filtered interval list file
+          pattern: "*.interval_list"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@ryanjameskennedy"
   - "@ViktorHy"

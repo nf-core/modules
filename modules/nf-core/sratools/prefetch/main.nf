@@ -13,7 +13,7 @@ process SRATOOLS_PREFETCH {
     path certificate
 
     output:
-    tuple val(meta), path(id), emit: sra
+    tuple val(meta), path(id, type: 'dir'), emit: sra
     path 'versions.yml'      , emit: versions
 
     when:

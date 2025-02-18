@@ -15,38 +15,49 @@ tools:
       documentation: http://qualimap.conesalab.org/doc_html/index.html
       doi: 10.1093/bioinformatics/bts503
       licence: ["GPL-2.0-only"]
+      identifier: biotools:qualimap
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bacramm:
-      type: file
-      description: BAM file
-      pattern: "*.{bam}"
-  - gff:
-      type: file
-      description: Feature file with regions of interest
-      pattern: "*.{gff,gtf,bed}"
-  - fasta:
-      type: file
-      description: Reference file of cram file
-      pattern: "*.{fasta,fa,fna}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - cram:
+        type: file
+        description: Input cram file
+        pattern: "*.{cram}"
+    - crai:
+        type: file
+        description: Index file for cram file
+        pattern: "*.{crai}"
+  - - gff:
+        type: file
+        description: Feature file with regions of interest
+        pattern: "*.{gff,gtf,bed}"
+  - - fasta:
+        type: file
+        description: Reference file of cram file
+        pattern: "*.{fasta,fa,fna}"
+  - - fasta_fai:
+        type: file
+        description: Index file for reference file
+        pattern: "*.{fai}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - results:
-      type: directory
-      description: Qualimap results dir
-      pattern: "*/*"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}:
+          type: directory
+          description: Qualimap results dir
+          pattern: "*/*"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@FriederikeHanssen"
 maintainers:

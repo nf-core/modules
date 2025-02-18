@@ -1,5 +1,6 @@
 name: "parabricks_dbsnp"
-description: NVIDIA Clara Parabricks GPU-accelerated variant calls annotation based on dbSNP database
+description: NVIDIA Clara Parabricks GPU-accelerated variant calls annotation based
+  on dbSNP database
 keywords:
   - annotation
   - dbsnp
@@ -11,40 +12,43 @@ tools:
       homepage: https://www.nvidia.com/en-us/clara/genomics/
       documentation: https://docs.nvidia.com/clara/parabricks/4.2.0/index.html
       licence: ["custom"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test' ]`
-  - vcf_file:
-      type: file
-      description: VCF file undergoing annotation.
-      pattern: "*.vcf"
-  - dbsnp_file:
-      type: file
-      description: dbSNP file required for annotation.
-      pattern: "*.vcf.gz"
-  - tabix_file:
-      type: file
-      description: dbSNP file index.
-      pattern: "*.vcf.gz.tbi"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - vcf_file:
+        type: file
+        description: VCF file undergoing annotation.
+        pattern: "*.vcf"
+    - dbsnp_file:
+        type: file
+        description: dbSNP file required for annotation.
+        pattern: "*.vcf.gz"
+    - tabix_file:
+        type: file
+        description: dbSNP file index.
+        pattern: "*.vcf.gz.tbi"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
+  - vcf:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.vcf":
+          type: file
+          description: VCF file.
+          pattern: "*{.vcf}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - ann_vcf:
-      type: file
-      description: Annotated VCF file
-      pattern: "*.vcf"
-
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@Furentsu"
+maintainers:
+  - "@famosab"

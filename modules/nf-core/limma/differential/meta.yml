@@ -13,68 +13,105 @@ tools:
       tool_dev_url: https://github.com/cran/limma""
       doi: "10.18129/B9.bioc.limma"
       licence: ["LGPL >=3"]
+      identifier: biotools:limma
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing contrast information. This can be used at the
-        workflow level to pass optional parameters to the module, e.g.
-        [ id:'contrast1', blocking:'patient' ] passed in as ext.args like:
-        '--blocking_variable $meta.blocking'.
-  - contrast_variable:
-      type: string
-      description: |
-        The column in the sample sheet that should be used to define groups for
-        comparison
-  - reference:
-      type: string
-      description: |
-        The value within the contrast_variable column of the sample sheet that
-        should be used to derive the reference samples
-  - target:
-      type: string
-      description: |
-        The value within the contrast_variable column of the sample sheet that
-        should be used to derive the target samples
-  - meta2:
-      type: map
-      description: |
-        Groovy map containing study-wide metadata related to the sample sheet
-        and matrix
-  - samplesheeet:
-      type: file
-      description: |
-        CSV or TSV format sample sheet with sample metadata
-  - intensities:
-      type: file
-      description: |
-        Raw TSV or CSV format expression matrix with probes by row and samples
-        by column
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing contrast information. This can be used at the
+          workflow level to pass optional parameters to the module, e.g.
+          [ id:'contrast1', blocking:'patient' ] passed in as ext.args like:
+          '--blocking_variable $meta.blocking'.
+    - contrast_variable:
+        type: string
+        description: |
+          The column in the sample sheet that should be used to define groups for
+          comparison
+    - reference:
+        type: string
+        description: |
+          The value within the contrast_variable column of the sample sheet that
+          should be used to derive the reference samples
+    - target:
+        type: string
+        description: |
+          The value within the contrast_variable column of the sample sheet that
+          should be used to derive the target samples
+  - - meta2:
+        type: map
+        description: |
+          Groovy map containing study-wide metadata related to the sample sheet
+          and matrix
+    - samplesheet:
+        type: file
+        description: Sample sheet file
+    - intensities:
+        type: file
+        description: |
+          Raw TSV or CSV format expression matrix with probes by row and samples
+          by column
 output:
   - results:
-      type: file
-      description: TSV-format table of differential expression information as output by Limma
-      pattern: "*.limma.results.tsv"
+      - meta:
+          type: file
+          description: TSV-format table of differential expression information as output
+            by Limma
+          pattern: "*.limma.results.tsv"
+      - "*.limma.results.tsv":
+          type: file
+          description: TSV-format table of differential expression information as output
+            by Limma
+          pattern: "*.limma.results.tsv"
   - md_plot:
-      type: file
-      description: Limma mean difference plot
-      pattern: "*.mean_difference.png"
+      - meta:
+          type: file
+          description: Limma mean difference plot
+          pattern: "*.mean_difference.png"
+      - "*.limma.mean_difference.png":
+          type: file
+          description: Limma mean difference plot
+          pattern: "*.mean_difference.png"
   - rdata:
-      type: file
-      description: Serialised MArrayLM object
-      pattern: "*.MArrayLM.limma.rds"
+      - meta:
+          type: file
+          description: Serialised MArrayLM object
+          pattern: "*.MArrayLM.limma.rds"
+      - "*.MArrayLM.limma.rds":
+          type: file
+          description: Serialised MArrayLM object
+          pattern: "*.MArrayLM.limma.rds"
   - model:
-      type: file
-      description: TXT-format limma model
-      pattern: "*.limma.model.tsv"
+      - meta:
+          type: file
+          description: TXT-format limma model
+          pattern: "*.limma.model.tsv"
+      - "*.limma.model.txt":
+          type: file
+          description: TXT-format limma model
+          pattern: "*.limma.model.tsv"
   - session_info:
-      type: file
-      description: dump of R SessionInfo
-      pattern: "*.log"
+      - meta:
+          type: file
+          description: dump of R SessionInfo
+          pattern: "*.log"
+      - "*.R_sessionInfo.log":
+          type: file
+          description: dump of R SessionInfo
+          pattern: "*.log"
+  - normalised_counts:
+      - meta:
+          type: file
+          description: normalised TSV format expression matrix with probes by row and samples by column
+          pattern: "*.normalised_counts.tsv"
+      - "*.normalised_counts.tsv":
+          type: file
+          description: normalised TSV format expression matrix with probes by row and samples by column
+          pattern: "*.normalised_counts.tsv"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@pinin4fjords"
 maintainers:

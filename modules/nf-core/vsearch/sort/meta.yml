@@ -1,5 +1,6 @@
 name: "vsearch_sort"
-description: Sort fasta entries by decreasing abundance (--sortbysize) or sequence length (--sortbylength).
+description: Sort fasta entries by decreasing abundance (--sortbysize) or sequence
+  length (--sortbylength).
 keywords:
   - vsearch/sort
   - vsearch
@@ -10,38 +11,47 @@ keywords:
   - population genetics
 tools:
   - vsearch:
-      description: VSEARCH is a versatile open-source tool for microbiome analysis, including chimera detection, clustering, dereplication and rereplication, extraction, FASTA/FASTQ/SFF file processing, masking, orienting, pair-wise alignment, restriction site cutting, searching, shuffling, sorting, subsampling, and taxonomic classification of amplicon sequences for metagenomics, genomics, and population genetics. (USEARCH alternative)
+      description: VSEARCH is a versatile open-source tool for microbiome analysis,
+        including chimera detection, clustering, dereplication and rereplication, extraction,
+        FASTA/FASTQ/SFF file processing, masking, orienting, pair-wise alignment, restriction
+        site cutting, searching, shuffling, sorting, subsampling, and taxonomic classification
+        of amplicon sequences for metagenomics, genomics, and population genetics. (USEARCH
+        alternative)
       homepage: https://github.com/torognes/vsearch
       documentation: https://github.com/torognes/vsearch/releases/download/v2.21.1/vsearch_manual.pdf
       tool_dev_url: https://github.com/torognes/vsearch
       doi: 10.7717/peerj.2584
       licence: ["GPL v3-or-later OR BSD-2-clause"]
+      identifier: biotools:vsearch
 input:
-  - meta:
-      type: map
-      description: Groovy Map containing sample information e.g. [ id:'test' ]
-  - fasta:
-      type: file
-      description: Sequences to be sorted in FASTA format
-      pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
-  - sort_arg:
-      type: string
-      description: Argument to provide to sort algorithm. Sort by abundance with --sortbysize or by sequence length with --sortbylength.
-      enum: ["--sortbysize", "--sortbylength"]
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: Sequences to be sorted in FASTA format
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+  - - sort_arg:
+        type: string
+        description: Argument to provide to sort algorithm. Sort by abundance with --sortbysize
+          or by sequence length with --sortbylength.
+        enum: ["--sortbysize", "--sortbylength"]
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - fasta:
-      type: file
-      description: Sorted FASTA file
-      pattern: "*.{fasta}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fasta":
+          type: file
+          description: Sorted FASTA file
+          pattern: "*.{fasta}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@mirpedrol"
 maintainers:
