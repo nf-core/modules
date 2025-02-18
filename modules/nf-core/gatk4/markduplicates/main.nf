@@ -27,8 +27,11 @@ process GATK4_MARKDUPLICATES {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}.bam"
 
-    // If the extension is CRAM, then change it to BAM
-    prefix_bam = prefix.tokenize('.')[-1] == 'cram' ? "${prefix.substring(0, prefix.lastIndexOf('.'))}.bam" : prefix
+    // Define output format for samtools, CRAM output requires a reference fasta
+    if (prefix.tokenize('.')[-1] == 'cram' && !fasta) {
+        log.error '[GATK MarkDuplicates] CRAM output requires providing a FASTA reference.'
+    }
+    output_args = prefix.tokenize('.')[-1] == 'cram' ? "--cram -T ${fasta}" : "--bam"
 
     def input_list = bam.collect{"--INPUT $it"}.join(' ')
     def reference = fasta ? "--REFERENCE_SEQUENCE ${fasta}" : ""
@@ -46,18 +49,21 @@ process GATK4_MARKDUPLICATES {
     gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         MarkDuplicates \\
         $input_list \\
-        --OUTPUT ${prefix_bam} \\
+        --COMPRESSION_LEVEL 0 \\
+        --OUTPUT /dev/stdout \\
         --METRICS_FILE ${prefix}.metrics \\
         --TMP_DIR . \\
         ${reference} \\
-        $args
+        $args \\
+        | \\
+        samtools view \\
+        ${output_args} \\
+        -h \\
+        -o ${prefix} \\
+        -
 
-    # If cram files are wished as output, the run samtools for conversion
-    if [[ ${prefix} == *.cram ]]; then
-        samtools view -Ch -T ${fasta} -o ${prefix} ${prefix_bam}
-        rm ${prefix_bam}
-        samtools index ${prefix}
-    fi
+    # Create index for BAM/CRAM
+    samtools index ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
