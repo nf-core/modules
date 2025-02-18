@@ -21,7 +21,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path +'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path +'genomics/sarscov2/genome/genome-ena.fasta', checkIfExists: true)
                 ]
                 """
             }
@@ -34,7 +34,7 @@ nextflow_process {
                     process.out.versions,
                     file(process.out.fasta[0][1]).name,
                     ).match()
-                    }
+                }
             )
         }
 
@@ -49,7 +49,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path +'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path +'genomics/sarscov2/genome/genome-ena.fasta', checkIfExists: true)
                 ]
                 """
             }
@@ -61,7 +61,8 @@ nextflow_process {
                 { assert snapshot(
                     process.out,
                     path(process.out.versions[0]).yaml
-                    ).match() }
+                    ).match() 
+                }
             )
         }
 
