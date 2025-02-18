@@ -32,8 +32,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out,
-                path(process.out.txt.get(0).get(1)).readLines()).match() }
+                { assert snapshot(
+                    process.out.versions,
+                    path(process.out.txt.get(0).get(1)).readLines()[1..-1] 
+                    // first line holds build version which differs between conda and docker/singularity
+                    ).match() 
+                }
             )
         }
 
