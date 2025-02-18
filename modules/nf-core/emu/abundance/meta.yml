@@ -62,9 +62,7 @@ output:
       pattern: "*{.sam}"
   - '*.sam':
       type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+      description: Sam alignment file
       pattern: "*{.sam}"
 - unclassified_fa:
   - meta:
@@ -75,9 +73,7 @@ output:
       pattern: "*{.fa}"
   - '*.fasta':
       type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+      description: Output file with unclassified sequences
       pattern: "*{.fa}"
 - versions:
   - versions.yml:
