@@ -28,6 +28,33 @@ input:
         type: file
         description: In-house sequencing data
         pattern: "*.{fa,fasta}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - accession2taxid:
+        type: file
+        description: Linking accession numbers to taxonomic IDs
+        pattern: "*.accession2taxid"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - names:
+        type: file
+        description: Containing information about the phylogenetic name associated with each taxonomic ID 
+        pattern: "*.dmp"
+  - - meta4: 
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - nodes:
+        type: file
+        description: Containing information how taxonomic IDs are linked
+        pattern: "*.dmp"
 output:
   - fasta:
       - meta:
