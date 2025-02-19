@@ -83,11 +83,10 @@ jobs:
           script: |
             return [...new Set(${{ steps.filter.outputs.modules_files }}
               .map(path => path
-                .replace('tests/modules/nf-core/', '')
                 .replace('modules/nf-core/', '')
                 .split('/')
                 .slice(0, 2)
-                .filter(x => !x.startsWith('main.nf') && x !== 'tests' && x !== 'templates' && x !== 'meta.yml' && x !== 'environment.yml' && x !== 'nextflow.config' && x !== 'test.yml' && !x.endsWith('.md'))
+                .filter(x => !x.startsWith('main.nf') && x !== 'tests' && x !== 'templates' && x !== 'meta.yml' && x !== 'environment.yml' && !x.endsWith('.md'))
                 .join('/'))
               )
             ];
