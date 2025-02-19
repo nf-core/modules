@@ -1,24 +1,22 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "fastqdl"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Download FASTQ files from SRA or ENA repositories.
 keywords:
-  - sort
-  - example
-  - genomics
+  - download
+  - ena
+  - fastq
+  - sra
 tools:
   - "fastqdl":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "A tool to download FASTQs associated with Study, Experiment, or Run accessions."
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      homepage: "https://github.com/rpetit3/fastq-dl"
+      documentation: "https://github.com/rpetit3/fastq-dl"
+      tool_dev_url: "https://github.com/rpetit3/fastq-dl"
+      doi: "10.5281/zenodo.13957735"
       licence: ["MIT"]
       identifier: biotools:fastq-dl
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   # Only when we have meta
   - - meta:
@@ -27,34 +25,22 @@ input:
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
 
-    ## TODO nf-core: Delete / customise this example input
-    - bam:
-        type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
-        ontologies:
-          - edam: "http://edamontology.org/format_25722" # BAM
-          - edam: "http://edamontology.org/format_2573" # CRAM
-          - edam: "http://edamontology.org/format_3462" # SAM
+    - accession:
+        type: string
+        description: ENA/SRA accession to query
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  - bam:
+  - db:
       #Only when we have meta
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      ## TODO nf-core: Delete / customise this example output
-      - "*.bam":
-          type: file
-          description: Sorted BAM/CRAM/SAM file
-          pattern: "*.{bam,cram,sam}"
-          ontologies:
-            - edam: "http://edamontology.org/format_25722" # BAM
-            - edam: "http://edamontology.org/format_2573" # CRAM
-            - edam: "http://edamontology.org/format_3462" # SAM
+      - test:
+          type: directory
+          description: Directory containing FASTQ files
+          pattern: "*"
 
   - versions:
       - "versions.yml":
