@@ -23,6 +23,9 @@ process TCOFFEE_EXTRACTFROMPDB {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     export TEMP='./'
+    export TMP_4_TCOFFEE="./"
+    export HOME="./"
+
     t_coffee -other_pg extract_from_pdb \
         -infile ${pdb} \
         $args \
@@ -40,6 +43,9 @@ process TCOFFEE_EXTRACTFROMPDB {
     """
     # Otherwise, tcoffee will crash when calling its version
     export TEMP='./'
+    export TMP_4_TCOFFEE="./"
+    export HOME="./"
+
     touch "${prefix}.pdb"
 
     cat <<-END_VERSIONS > versions.yml

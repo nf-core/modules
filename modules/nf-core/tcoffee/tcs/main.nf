@@ -28,6 +28,9 @@ process TCOFFEE_TCS {
     def unzipped_name = msa.toString() - '.gz'
     """
     export TEMP='./'
+    export TMP_4_TCOFFEE="./"
+    export HOME="./"
+
     filename=${msa}
     if [[ \$(basename $msa) == *.gz ]] ; then
         unpigz -f $msa
@@ -65,6 +68,9 @@ process TCOFFEE_TCS {
     """
     # Otherwise, tcoffee will crash when calling its version
     export TEMP='./'
+    export TMP_4_TCOFFEE="./"
+    export HOME="./"
+
     touch ${prefix}.tcs
     touch ${prefix}.scores
 

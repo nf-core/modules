@@ -23,7 +23,8 @@ process TCOFFEE_IRMSD {
     prefix = task.ext.prefix ?: "${msa.baseName}"
     """
     export TEMP='./'
-
+    export TMP_4_TCOFFEE="./"
+    export HOME="./"
     if [[ \$(basename $msa) == *.gz ]] ; then
         unpigz -f $msa
     fi
@@ -46,6 +47,8 @@ process TCOFFEE_IRMSD {
     """
     # Otherwise, tcoffee will crash when calling its version
     export TEMP='./'
+    export TMP_4_TCOFFEE="./"
+    export HOME="./"
     touch ${prefix}.irmsd
 
     cat <<-END_VERSIONS > versions.yml

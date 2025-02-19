@@ -28,6 +28,9 @@ process TCOFFEE_REGRESSIVE {
     def outfile       = compress ? "stdout" : "${prefix}.aln"
     """
     export TEMP='./'
+    export TMP_4_TCOFFEE="./"
+    export HOME="./"
+
     t_coffee -reg \
         -seq ${fasta} \
         $tree_args \
@@ -53,6 +56,9 @@ process TCOFFEE_REGRESSIVE {
     """
     # Otherwise, tcoffee will crash when calling its version
     export TEMP='./'
+    export TMP_4_TCOFFEE="./"
+    export HOME="./"
+
     touch ${prefix}.aln${compress ? '.gz':''}
 
     cat <<-END_VERSIONS > versions.yml

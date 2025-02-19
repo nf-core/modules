@@ -23,6 +23,9 @@ process TCOFFEE_SEQREFORMAT {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     export TEMP='./'
+    export TMP_4_TCOFFEE="./"
+    export HOME="./"
+
     t_coffee -other_pg seq_reformat \
         -in ${infile} \
         $args \
@@ -40,6 +43,9 @@ process TCOFFEE_SEQREFORMAT {
     """
     # Otherwise, tcoffee will crash when calling its version
     export TEMP='./'
+    export TMP_4_TCOFFEE="./"
+    export HOME="./"
+
     touch "${prefix}.txt"
 
     cat <<-END_VERSIONS > versions.yml

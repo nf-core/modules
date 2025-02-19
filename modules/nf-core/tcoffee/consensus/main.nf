@@ -28,6 +28,9 @@ process TCOFFEE_CONSENSUS {
     def write_output = compress ? " | pigz -cp ${task.cpus} > ${prefix}.aln.gz" : ""
     """
     export TEMP='./'
+    export TMP_4_TCOFFEE="./"
+    export HOME="./"
+
     t_coffee -aln ${aln} \
         $tree_args \
         $args \
@@ -46,6 +49,8 @@ process TCOFFEE_CONSENSUS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     export TEMP='./'
+    export TMP_4_TCOFFEE="./"
+    export HOME="./"
     touch ${prefix}.aln${compress ? '.gz':''}
 
     cat <<-END_VERSIONS > versions.yml

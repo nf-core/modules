@@ -33,6 +33,8 @@ process TCOFFEE_ALNCOMPARE {
     fi
 
     export TEMP='./'
+    export TMP_4_TCOFFEE="./"
+    export HOME="./"
     t_coffee -other_pg aln_compare \
         -al1 ${ref_msa} \
         -al2 uncompressed_msa.fa \
@@ -60,6 +62,8 @@ process TCOFFEE_ALNCOMPARE {
     """
     # Otherwise, tcoffee will crash when calling its version
     export TEMP='./'
+    export TMP_4_TCOFFEE="./"
+    export HOME="./"
     touch "${prefix}.scores"
 
     cat <<-END_VERSIONS > versions.yml
