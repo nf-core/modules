@@ -57,7 +57,10 @@ nextflow_process {
                 input[0] = DEEPVARIANT_CALLVARIANTS.out.call_variants_tfrecords.join(
                     DEEPVARIANT_MAKEEXAMPLES.out.gvcf,
                     failOnMismatch: true
-                ).map { meta, tf, gvcf -> [ meta, tf, gvcf, [] ] }
+                ).join(
+                    DEEPVARIANT_MAKEEXAMPLES.out.small_model_calls,
+                    failOnMismatch: true
+                ).map { meta, tf, gvcf, small_model_calls -> [ meta, tf, gvcf, small_model_calls, [] ] }
                 input[1] = [
                     [ id:'genome'],
                     file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
