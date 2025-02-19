@@ -69,7 +69,7 @@ process PARABRICKS_FQ2BAM {
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def extension = args2.contains("--output-fmt bam") ? "bam" : "cram"
-    def extension_index = extension == "cram" ? ".crai" : ".bai"
+    def extension_index = extension == "cram" ? "crai" : "bai"
     """
     touch ${prefix}.${extension}
     touch ${prefix}.${extension}.${extension_index}
