@@ -42,7 +42,7 @@ process CRABS_IMPORT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        crabs: \$(crabs --help 2>/dev/null | grep 'CRABS |' | sed 's/.*CRABS | \\(v[0-9.]*\\).*/\\1/')
+        crabs: \$(crabs --help 2>/dev/null | grep 'CRABS |' | sed 's/.*CRABS | v\\([0-9.]*\\).*/\\1/')
     END_VERSIONS
     """
 
@@ -53,7 +53,7 @@ process CRABS_IMPORT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        crabs: \$(crabs --help 2>/dev/null | grep 'CRABS |' | sed 's/.*CRABS | \\(v[0-9.]*\\).*/\\1/')
+        crabs: \$(crabs --help 2>/dev/null | grep 'CRABS |' | sed 's/.*CRABS | v\\([0-9.]*\\).*/\\1/')
     END_VERSIONS
     """
 }
