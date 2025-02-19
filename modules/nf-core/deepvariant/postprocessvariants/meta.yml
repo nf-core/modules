@@ -31,6 +31,15 @@ input:
         description: |
           Sharded tfrecord file from DEEPVARIANT_MAKEEXAMPLES with the coverage information used for GVCF output
         pattern: "*.gz"
+    - small_model_calls:
+        type: file
+        description: |
+          Sharded tfrecord file from DEEPVARIANT_MAKEEXAMPLES with variant calls from the small model
+        pattern: "*.gz"
+    - intervals:
+        type: file
+        description: Interval file for targeted regions
+        pattern: "*.bed"
   - - meta2:
         type: map
         description: |
