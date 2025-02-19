@@ -46,8 +46,29 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.vcf[0][0],
-                    path(process.out.vcf[0][1]).linesGzip[20..30]
+                    process.out.collectEntries { key, value ->
+                        if(key.matches("^\\d+\$")) {
+                            return null
+                        }
+                        else if(key == "vcf") {
+                            return [
+                                key,
+                                value.collect { meta, vcf ->
+                                    [ meta, "${file(vcf).name},variantsMD5:${path(vcf).vcf.variantsMD5}" ]
+                                }
+                            ]
+                        }
+                        else if(key == "tbi") {
+                            return [
+                                key,
+                                value.collect { meta, tbi ->
+                                    [ meta, file(tbi).name ]
+                                }
+                            ]
+                        }
+                        return [key, value]
+                    }
+                    .findAll { it != null }
                 ).match() }
             )
         }
@@ -80,7 +101,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.collectEntries { key, value -> key.matches("^\\d+\$") ? null : [ key, value ]}.findAll { it != null }
+                ).match() }
             )
         }
 
