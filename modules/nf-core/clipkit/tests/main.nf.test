@@ -39,7 +39,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.clipkit,
-                    path(process.out.log.get(0).get(1)).readLines().contains("Number of sites kept: 79")
+                    path(process.out.log.get(0).get(1)).readLines().contains("Number of sites kept: 79"),
+                    process.out.versions
                     ).match()
                 }
             )
@@ -65,7 +66,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.clipkit,
-                    path(process.out.log.get(0).get(1)).readLines().contains("Number of sites kept: 86")
+                    path(process.out.log.get(0).get(1)).readLines().contains("Number of sites kept: 86"),
+                    process.out.versions
                     ).match()
                 }
             )
