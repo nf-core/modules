@@ -89,6 +89,7 @@ nextflow_process {
 
         when {
             params {
+                module_args = ''
                 module_args2 = '--output-fmt bam'
             }
             process {
@@ -171,6 +172,7 @@ nextflow_process {
 
         when {
             params {
+                module_args = ''
                 module_args2 = '--output-fmt bam'
             }
             process {
@@ -249,12 +251,13 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - fastq - pe - stub") {
+    test("sarscov2 - fastq - pe - cram - stub") {
 
         options '-stub'
 
         when {
             params {
+                module_args = ''
                 module_args2 = '--output-fmt cram'
             }
             process {
