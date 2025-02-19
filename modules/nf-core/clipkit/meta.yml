@@ -15,7 +15,6 @@ tools:
       doi: "10.1371/journal.pbio.3001007"
       licence: ["MIT"]
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -26,7 +25,10 @@ input:
         type: file
         description: Multiple sequence alignment file in various supported formats.
         pattern: "*.{fa,fasta,fa,fna,faa,alnfaa,aln,sto,stk,mauve,alignment,clustal}"
-
+  - - out_format:
+        type: string
+        description: Output format (aln,msa,fas,etc.), default is clipkit.
+        pattern: "*"
 output:
   - clipkit:
       - meta:
@@ -34,16 +36,25 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.clipkit":
+      - ${prefix}.${out_extension}:
           type: file
           description: Trimmed multiple sequence alignment file
-          pattern: "*.clipkit"
+          pattern: "*.*"
+  - log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "${prefix}.log":
+          type: file
+          description: Trimmed multiple sequence alignment file
+          pattern: "*.log"
   - versions:
       - "versions.yml":
           type: file
           description: File containing software versions
           pattern: "versions.yml"
-
 authors:
   - "@vagkaratzas"
 maintainers:
