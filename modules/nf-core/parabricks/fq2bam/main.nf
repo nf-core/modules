@@ -70,9 +70,13 @@ process PARABRICKS_FQ2BAM {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def extension = args2.contains("--output-fmt bam") ? "bam" : "cram"
     def extension_index = extension == "cram" ? "crai" : "bai"
+    def known_sites_output = known_sites ? "touch ${prefix}.table" : ""
     """
     touch ${prefix}.${extension}
     touch ${prefix}.${extension}.${extension_index}
+    $known_sites_output
+    mkdir qc_metrics
+    touch duplicate-metrics.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
