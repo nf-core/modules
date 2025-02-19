@@ -14,12 +14,14 @@ process PARABRICKS_FQ2BAM {
     path(known_sites)
 
     output:
-    tuple val(meta), path("*.bam")  , emit: bam
-    tuple val(meta), path("*.bai")  , emit: bai
-    tuple val(meta), path("*.table"), emit: bqsr_table         , optional:true
+    tuple val(meta), path("*.bam")  , emit: bam              , optional:true
+    tuple val(meta), path("*.bai")  , emit: bai              , optional:true
+    tuple val(meta), path("*.cram") , emit: cram             , optional:true
+    tuple val(meta), path("*.crai") , emit: crai             , optional:true
+    tuple val(meta), path("*.table"), emit: bqsr_table       , optional:true
     path("versions.yml")            , emit: versions
-    path("qc_metrics")              , emit: qc_metrics          , optional:true
-    path("duplicate-metrics.txt")   , emit: duplicate_metrics  , optional:true
+    path("qc_metrics")              , emit: qc_metrics       , optional:true
+    path("duplicate-metrics.txt")   , emit: duplicate_metrics, optional:true
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,8 +32,10 @@ process PARABRICKS_FQ2BAM {
         error "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def in_fq_command = meta.single_end ? "--in-se-fq $reads" : "--in-fq $reads"
+    def extension = args2.contains("--output-fmt bam") ? "bam" : "cram"
     def known_sites_command = known_sites ? known_sites.collect{"--knownSites $it"}.join(' ') : ""
     def known_sites_output = known_sites ? "--out-recal-file ${prefix}.table" : ""
     def interval_file_command = interval_file ? interval_file.collect{"--interval-file $it"}.join(' ') : ""
@@ -44,7 +48,7 @@ process PARABRICKS_FQ2BAM {
         fq2bam \\
         --ref \$INDEX \\
         $in_fq_command \\
-        --out-bam ${prefix}.bam \\
+        --out-bam ${prefix}.${extension} \\
         $known_sites_command \\
         $known_sites_output \\
         $interval_file_command \\
@@ -62,10 +66,13 @@ process PARABRICKS_FQ2BAM {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
+    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def extension = args2.contains("--output-fmt bam") ? "bam" : "cram"
+    def extension_index = extension == "cram" ? ".crai" : ".bai"
     """
-    touch ${prefix}.bam
-    touch ${prefix}.bam.bai
+    touch ${prefix}.${extension}
+    touch ${prefix}.${extension}.${extension_index}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
