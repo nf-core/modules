@@ -25,7 +25,7 @@ process SPOTIFLOW {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        spotiflow: \"pip show spotiflow | grep 'Version:' | cut -d ' ' -f2\"
+        spotiflow: \$( python -m pip show --version spotiflow | grep "Version" | sed -e "s/Version: //g" )
     END_VERSIONS
     """
 
@@ -36,7 +36,7 @@ process SPOTIFLOW {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        spotiflow: \"pip show spotiflow | grep 'Version:' | cut -d ' ' -f2\"
+        spotiflow: \$( python -m pip show --version spotiflow | grep "Version" | sed -e "s/Version: //g" )
     END_VERSIONS
     """
 }
