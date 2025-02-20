@@ -37,6 +37,18 @@ nextflow_process {
                 """
             }
         }
+
+        run("BWA_INDEX", alias: 'BWA_INDEX_CRAM') {
+            script "../../../bwa/index/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
     }
 
     test("SRR389222 - fastq - se") {
@@ -207,7 +219,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - fastq - pe - cram") {
+    test("sarscov2 - fastq - se - cram") {
 
         when {
             params {
@@ -220,17 +232,13 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test', single_end:true ], // meta map
                     [
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                     ]
                 ]
-                input[1] = Channel.of([
-                    [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                ])
-                input[2] = BWA_INDEX_PE.out.index
+                input[1] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                input[2] = BWA_INDEX_CRAM.out.index
                 input[3] = [ [], [] ]
                 input[4] = []
                 """
