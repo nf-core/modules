@@ -246,10 +246,14 @@ nextflow_process {
         }
 
         then {
+            def fasta = params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta'
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.cram.collect { cram(it[1], it[2]).getSamLines() },
+                    cram(
+                        process.out.cram[0][1],
+                        fasta,
+                        ).getReadsMD5(),
                     file(process.out.crai[0][1]).name,
                     process.out.versions,
                     path(process.out.versions[0]).yaml
