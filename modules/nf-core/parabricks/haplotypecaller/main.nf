@@ -25,7 +25,7 @@ process PARABRICKS_HAPLOTYPECALLER {
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def output_file = ("gvcf" =~ args)? "${prefix}.g.vcf.gz" : "${prefix}.vcf"
+    def output_file = args.contains("--gvcf") ? "${prefix}.g.vcf.gz" : "${prefix}.vcf"
     def interval_file_command = interval_file ? interval_file.collect{"--interval-file $it"}.join(' ') : ""
     def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
     """
@@ -47,7 +47,7 @@ process PARABRICKS_HAPLOTYPECALLER {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def output_cmd = ("gvcf" =~ args)? "echo '' | gzip > ${prefix}.g.vcf.gz" : "touch ${prefix}.vcf"
+    def output_cmd = args.contains("--gvcf") ? "echo '' | gzip > ${prefix}.g.vcf.gz" : "touch ${prefix}.vcf"
     """
     $output_cmd
 
