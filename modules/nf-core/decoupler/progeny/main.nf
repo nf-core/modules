@@ -9,8 +9,6 @@ process DECOUPLER_PROGENY {
 
     input:
     tuple val(meta), path(mat)
-    val(organism)
-    val(top_genes)
 
     output:
     tuple val(meta), path("progeny_mlm_estimate_decoupler.tsv") , emit: dc_estimate
@@ -25,7 +23,9 @@ process DECOUPLER_PROGENY {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: "{}"
+    def args = task.ext.args ? new groovy.json.JsonSlurper().parseText(task.ext.args) : [:]
+    def organism = args.organism ?: 'human'
+    def top_genes = args.top_genes ?: 1000
     """
     #!/usr/bin/env python3
     import os

@@ -19,8 +19,6 @@ nextflow_process {
                     [ id: 'test' ],
                     file("https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/scrnaseq/h5ad/pbmc3k.h5ad", checkIfExists: true)
                 ]
-                input[1] = Channel.value("human")
-                input[2] = Channel.value("1000")
                 """
             }
         }
@@ -52,8 +50,6 @@ nextflow_process {
                     [ id: 'test' ],
                     file("https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/scrnaseq/h5ad/pbmc3k.h5ad", checkIfExists: true)
                 ]
-                input[1] = Channel.value("human")
-                input[2] = Channel.value("1000")
                 """
             }
         }

@@ -33,14 +33,6 @@ input:
           Path to the input matrix file (e.g. single-cell gene expression data).
           Should be in HDF5 format (`*.h5ad`).
         pattern: "*.h5ad"
-  - - organism:
-        type: string
-        description: |
-          Name of the organism (e.g., "human" or "mouse") for retrieving PROGENy gene sets.
-  - - top_genes:
-        type: integer
-        description: |
-          Number of top genes to use for the PROGENy enrichment analysis.
 output:
   - dc_estimate:
       - meta:
