@@ -20,8 +20,8 @@ process PARABRICKS_FQ2BAM {
     tuple val(meta), path("*.crai") , emit: crai             , optional:true
     tuple val(meta), path("*.table"), emit: bqsr_table       , optional:true
     path("versions.yml")            , emit: versions
-    path("qc_metrics")              , emit: qc_metrics       , optional:true
-    path("duplicate-metrics.txt")   , emit: duplicate_metrics, optional:true
+    path("*")                       , emit: qc_metrics       , optional:true
+    path("*.txt")                   , emit: duplicate_metrics, optional:true
 
     when:
     task.ext.when == null || task.ext.when
@@ -66,17 +66,20 @@ process PARABRICKS_FQ2BAM {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
+    def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def extension = args2.contains("--output-fmt bam") ? "bam" : "cram"
     def extension_index = extension == "cram" ? "crai" : "bai"
     def known_sites_output = known_sites ? "touch ${prefix}.table" : ""
+    def qc_metrics_output = args.contains("--out-qc-metrics-dir") ? "mkdir ${prefix}_qc_metrics" : ""
+    def duplicate_metrics_output = args.contains("--out-duplicate-metrics") ? "touch ${prefix}.duplicate-metrics.txt" : ""
     """
     touch ${prefix}.${extension}
     touch ${prefix}.${extension}.${extension_index}
     $known_sites_output
-    mkdir qc_metrics
-    touch duplicate-metrics.txt
+    $qc_metrics_output
+    $duplicate_metrics_output
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

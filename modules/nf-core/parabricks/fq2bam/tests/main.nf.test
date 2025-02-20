@@ -39,13 +39,13 @@ nextflow_process {
         }
     }
 
-    test("SRR389222 - fastq - se") {
+    test("SRR389222 - fastq - se - allfiles") {
 
         config './nextflow.config'
 
         when {
             params {
-                module_args = '--low-memory'
+                module_args = "--low-memory --out-recal-file ${meta.id}.table --out-duplicate-metrics ${meta.id}.duplicate-metrics.txt --out-qc-metrics-dir ${meta.id}_qc_metrics"
                 // Ref: https://forums.developer.nvidia.com/t/problem-with-gpu/256825/6
                 // Parabricks’s fq2bam requires 24GB of memory.
                 // Using --low-memory for testing
@@ -83,13 +83,13 @@ nextflow_process {
         }
     }
 
-    test("SRR389222 - fastq - se - stub") {
+    test("SRR389222 - fastq - se - allfiles - stub") {
         
         options '-stub'
 
         when {
             params {
-                module_args = ''
+                module_args = "--low-memory --out-recal-file ${meta.id}.table --out-duplicate-metrics ${meta.id}.duplicate-metrics.txt --out-qc-metrics-dir ${meta.id}_qc_metrics"
                 module_args2 = '--output-fmt bam'
             }
             process {
