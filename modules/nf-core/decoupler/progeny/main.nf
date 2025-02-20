@@ -26,7 +26,7 @@ process DECOUPLER_PROGENY {
 
     script:
     def args = task.ext.args ?: "{}"
-"""
+    """
     #!/usr/bin/env python3
     import os
 
@@ -102,6 +102,6 @@ process DECOUPLER_PROGENY {
     with open('versions.yml', 'a') as version_file:
         version_file.write('"${task.process}":' + "\\n")
         version_file.write("\tdecoupler-py: " + dc.__version__ + "\\n")
-"""
+    """
 
 }
