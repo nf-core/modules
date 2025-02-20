@@ -246,7 +246,7 @@ nextflow_process {
         }
 
         then {
-            def fasta = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta')
+            def fasta = "https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/sarscov2/genome/genome.fasta"
             assertAll(
                 { assert process.success },
                 { assert snapshot(
