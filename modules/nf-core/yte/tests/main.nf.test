@@ -9,6 +9,8 @@ nextflow_process {
     tag "yte"
 
     test("yaml - no_template") {
+        // no_template refers to the yaml file that is used not being a real yte template file
+        // but only a yaml file to test whether the program does something
 
         when {
             process {
