@@ -14,11 +14,11 @@ process DECOUPLER_PROGENY {
 
     output:
     tuple val(meta), path("progeny_mlm_estimate_decoupler.tsv") , emit: dc_estimate
-    tuple val(meta), path("progeny_mlm_pvals_decoupler.tsv"), emit: dc_pvals
-    tuple val(meta), path("acts_decoupler.tsv"), emit: dc_acts
-    tuple val(meta), path("figures/*umap.png"), emit: dc_umap
-    tuple val(meta), path("figures/*violin.png"), emit: dc_violin
-    tuple val(meta), path("matrixplot_decoupler.png"), emit: dc_matrixplot
+    tuple val(meta), path("progeny_mlm_pvals_decoupler.tsv")    , emit: dc_pvals
+    tuple val(meta), path("acts_decoupler.tsv")                 , emit: dc_acts
+    tuple val(meta), path("figures/*umap.png")                  , emit: dc_umap
+    tuple val(meta), path("figures/*violin.png")                , emit: dc_violin
+    tuple val(meta), path("matrixplot_decoupler.png")           , emit: dc_matrixplot
     path("versions.yml"), emit: versions
 
     when:
@@ -102,6 +102,18 @@ process DECOUPLER_PROGENY {
     with open('versions.yml', 'a') as version_file:
         version_file.write('"${task.process}":' + "\\n")
         version_file.write("\tdecoupler-py: " + dc.__version__ + "\\n")
+    """
+
+    stub:
+    """
+    touch progeny_mlm_estimate_decoupler.tsv
+    touch progeny_mlm_pvals_decoupler.tsv
+    touch acts_decoupler.tsv
+    mkdir -p figures
+    touch figures/dc_umap.png
+    touch figures/dc_violin.png
+    touch matrixplot_decoupler.png
+    touch versions.yml
     """
 
 }
