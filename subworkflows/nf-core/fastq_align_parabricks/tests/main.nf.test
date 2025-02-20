@@ -53,10 +53,11 @@ nextflow_workflow {
         }
 
         then {
+            def fasta = "https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/sarscov2/genome/genome.fasta"
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(
-                    workflow.out.cram.collect { meta, cramfile -> cram(cramfile).getReadsMD5() },
+                    workflow.out.cram.collect { meta, cramfile -> cram(cramfile, fasta).getReadsMD5() },
                     workflow.out.crai.collect { meta, crai -> file(crai).name },
                     workflow.out.versions
                     ).match()
@@ -92,10 +93,11 @@ nextflow_workflow {
         }
 
         then {
+            def fasta = "https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/sarscov2/genome/genome.fasta"
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(
-                    workflow.out.cram.collect { meta, cramfile -> cram(cramfile).getReadsMD5() },
+                    workflow.out.cram.collect { meta, cramfile -> cram(cramfile, fasta).getReadsMD5() },
                     workflow.out.crai.collect { meta, crai -> file(crai).name },
                     workflow.out.versions
                     ).match()
