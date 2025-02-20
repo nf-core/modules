@@ -207,7 +207,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - fastq - pe - cram") {
+    test("sarscov2 - fastq - se - cram") {
 
         when {
             params {
@@ -219,18 +219,17 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    [
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
-                    ]
-                ]
+                input[0] = Channel.of([
+				    [ id:'test', single_end:true ], // meta map
+				    [
+				        file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz', checkIfExists: true)
+				    ]
+				])
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
                 ])
-                input[2] = BWA_INDEX_PE.out.index
+				input[2] = BWA_INDEX.out.index
                 input[3] = [ [], [] ]
                 input[4] = []
                 """
@@ -286,7 +285,8 @@ nextflow_process {
                 { assert snapshot(
                     process.out,
                     path(process.out.versions[0]).yaml
-                    ).match() }
+                    ).match() 
+                }
             )
         }
 
