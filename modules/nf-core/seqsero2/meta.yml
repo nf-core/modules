@@ -13,38 +13,53 @@ tools:
       tool_dev_url: https://github.com/denglab/SeqSero2
       doi: "10.1128/AEM.01746-19"
       licence: ["GPL v2"]
+      identifier: biotools:SeqSero2
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - seqs:
-      type: file
-      description: FASTQ or FASTA formated sequences
-      pattern: "*.{fq.gz,fastq.gz,fna.gz,fna,fasta.gz,fasta,fa.gz,fa}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - seqs:
+        type: file
+        description: FASTQ or FASTA formatted sequences
+        pattern: "*.{fq.gz,fastq.gz,fna.gz,fna,fasta.gz,fasta,fa.gz,fa}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - log:
-      type: file
-      description: A log of serotype antigen results
-      pattern: "*_log.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - results/*_log.txt:
+          type: file
+          description: A log of serotype antigen results
+          pattern: "*_log.txt"
   - tsv:
-      type: file
-      description: Tab-delimited summary of the SeqSero2 results
-      pattern: "*_result.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - results/*_result.tsv:
+          type: file
+          description: Tab-delimited summary of the SeqSero2 results
+          pattern: "*_result.tsv"
   - txt:
-      type: file
-      description: Detailed summary of the SeqSero2 results
-      pattern: "*_result.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - results/*_result.txt:
+          type: file
+          description: Detailed summary of the SeqSero2 results
+          pattern: "*_result.txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@rpetit3"
 maintainers:

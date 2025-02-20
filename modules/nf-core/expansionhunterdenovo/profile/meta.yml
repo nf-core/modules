@@ -9,65 +9,81 @@ keywords:
   - cram
 tools:
   - "expansionhunterdenovo":
-      description: "ExpansionHunter Denovo (EHdn) is a suite of tools for detecting novel expansions of short tandem repeats (STRs)."
+      description: "ExpansionHunter Denovo (EHdn) is a suite of tools for detecting
+        novel expansions of short tandem repeats (STRs)."
       homepage: "https://github.com/Illumina/ExpansionHunterDenovo"
       documentation: "https://github.com/Illumina/ExpansionHunterDenovo/blob/master/documentation/00_Introduction.md"
       tool_dev_url: "https://github.com/Illumina/ExpansionHunterDenovo"
-      licence: "['Apache License 2.0']"
+      licence: ["Apache License 2.0"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - alignment_file:
-      type: file
-      description: BAM/CRAM file
-      pattern: "*.{bam,cram}"
-  - alignment_index:
-      type: file
-      description: Index of the BAM/CRAM file
-      pattern: "*.{bai,crai}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test' ]
-  - fasta:
-      type: file
-      description: The FASTA reference file
-      pattern: "*.{fasta,fa}"
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test' ]
-  - fasta_fai:
-      type: file
-      description: The index of the FASTA reference file
-      pattern: "*.fai"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - alignment_file:
+        type: file
+        description: BAM/CRAM file
+        pattern: "*.{bam,cram}"
+    - alignment_index:
+        type: file
+        description: Index of the BAM/CRAM file
+        pattern: "*.{bai,crai}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: The FASTA reference file
+        pattern: "*.{fasta,fa}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test' ]
+    - fasta_fai:
+        type: file
+        description: The index of the FASTA reference file
+        pattern: "*.fai"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - locus_tsv:
-      type: file
-      description: The locus TSV file
-      pattern: "*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.locus.tsv":
+          type: file
+          description: The locus TSV file
+          pattern: "*.tsv"
   - motif_tsv:
-      type: file
-      description: The motif TSV file
-      pattern: "*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.motif.tsv":
+          type: file
+          description: The motif TSV file
+          pattern: "*.tsv"
   - str_profile:
-      type: file
-      description: The JSON file containing the STR profile
-      pattern: "*.json"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.str_profile.json":
+          type: file
+          description: The JSON file containing the STR profile
+          pattern: "*.json"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

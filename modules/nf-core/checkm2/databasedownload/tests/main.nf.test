@@ -10,6 +10,14 @@ nextflow_process {
 
     test("Test CheckM2 Database Download") {
 
+        when {
+            process {
+                """
+                input[0] = []
+                """
+            }
+        }
+
         then {
             assertAll(
                 { assert process.success },

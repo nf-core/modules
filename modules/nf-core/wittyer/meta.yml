@@ -12,48 +12,67 @@ tools:
       documentation: "https://github.com/Illumina/witty.er"
       tool_dev_url: "https://github.com/Illumina/witty.er"
       licence: ["BSD-2"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - query_vcf:
-      type: file
-      description: A VCF with called variants to benchmark against the standard
-      pattern: "*.{vcf}"
-
-  - truth_vcf:
-      type: file
-      description: A standard VCF to compare against
-      pattern: "*.{vcf}"
-
-  - bed:
-      type: file
-      description: A BED file specifying regions to be included in the analysis (optional)
-      pattern: "*.bed"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - query_vcf:
+        type: file
+        description: A VCF with called variants to benchmark against the standard
+        pattern: "*.{vcf}"
+    - truth_vcf:
+        type: file
+        description: A standard VCF to compare against
+        pattern: "*.{vcf}"
+    - bed:
+        type: file
+        description: A BED file specifying regions to be included in the analysis (optional)
+        pattern: "*.bed"
+    - wittyer_config:
+        type: file
+        description: |
+          Config file in json format used to specify per variant type settings.
+          Used in place of include bed arguments. (optional)
+        pattern: "*.json"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - report:
-      type: file
-      description: Detailed per-sample-pair, per-svtype, per-bin stats
-      pattern: "*.json"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.json":
+          type: file
+          description: Detailed per-sample-pair, per-svtype, per-bin stats
+          pattern: "*.json"
   - bench_vcf:
-      type: file
-      description: Updated query and truth entries merged into one file
-      pattern: "*.vcf.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.vcf.gz":
+          type: file
+          description: Updated query and truth entries merged into one file
+          pattern: "*.vcf.gz"
   - bench_vcf_tbi:
-      type: file
-      description: Index of merged query and truth entries VCF file
-      pattern: "*.vcf.gz.tbi"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.vcf.gz.tbi":
+          type: file
+          description: Index of merged query and truth entries VCF file
+          pattern: "*.vcf.gz.tbi"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@famosab"
 maintainers:

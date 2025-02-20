@@ -17,7 +17,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'test_img' ],
-                    file(params.test_data['imaging']['segmentation']['image'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'imaging/segmentation/cycif_tonsil_registered.ome.tif', checkIfExists: true)
                 ]
                 input[1] = [
                     [:],

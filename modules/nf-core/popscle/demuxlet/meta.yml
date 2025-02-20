@@ -1,7 +1,8 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "popscle_demuxlet"
-description: Software to deconvolute sample identity and identify multiplets when multiple samples are pooled by barcoded single cell sequencing and external genotyping data for each sample is available.
+description: Software to deconvolute sample identity and identify multiplets when
+  multiple samples are pooled by barcoded single cell sequencing and external genotyping
+  data for each sample is available.
 keywords:
   - popscle
   - demultiplexing
@@ -9,51 +10,53 @@ keywords:
   - single cell
 tools:
   - "popscle":
-      description: "A suite of population scale analysis tools for single-cell genomics data including implementation of Demuxlet / Freemuxlet methods and auxilary tools"
+      description: "A suite of population scale analysis tools for single-cell genomics
+        data including implementation of Demuxlet / Freemuxlet methods and auxiliary
+        tools"
       homepage: "https://github.com/statgen/popscle"
       documentation: "https://github.com/statgen/popscle"
       tool_dev_url: "https://github.com/statgen/popscle"
       doi: "10.1038/nbt.4042"
       licence: ["Apache-2.0"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1']`
-
-  - plp_prefix:
-      type: string
-      description: Prefix of pileup files (CEL,VAR and PLP) produced by popscle/dsc_pileup.
-
-  - bam:
-      type: file
-      description: Input SAM/BAM/CRAM file without running popscle/dsc_pileup, must be sorted by coordinates and indexed.
-      pattern: "*.{bam,cram,sam}"
-
-  - donor_genotype:
-      type: file
-      description: Input VCF/BCF file, containing the individual genotypes (GT), posterior probability (GP), or genotype likelihood (PL) to assign each barcode to a specific sample (or a pair of samples) in the VCF file.
-      pattern: "*.{vcf,bcf}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1']`
+    - plp_prefix:
+        type: string
+        description: Prefix of pileup files (CEL,VAR and PLP) produced by popscle/dsc_pileup.
+    - bam:
+        type: file
+        description: Input SAM/BAM/CRAM file without running popscle/dsc_pileup, must
+          be sorted by coordinates and indexed.
+        pattern: "*.{bam,cram,sam}"
+    - donor_genotype:
+        type: file
+        description: Input VCF/BCF file, containing the individual genotypes (GT), posterior
+          probability (GP), or genotype likelihood (PL) to assign each barcode to a
+          specific sample (or a pair of samples) in the VCF file.
+        pattern: "*.{vcf,bcf}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1']`
-
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
   - demuxlet_result:
-      type: file
-      description: Result of demuxlet containing the best guess of the sample identity, with detailed statistics to reach to the best guess.
-      pattern: "*.best"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - "*.best":
+          type: file
+          description: Result of demuxlet containing the best guess of the sample identity,
+            with detailed statistics to reach to the best guess.
+          pattern: "*.best"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@mari-ga"
   - "@maxozo"

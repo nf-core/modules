@@ -4,8 +4,8 @@ process STRANGER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/stranger:0.9.0--pyh7cba7a3_0':
-        'biocontainers/stranger:0.9.0--pyh7cba7a3_0' }"
+        'https://depot.galaxyproject.org/singularity/stranger:0.9.2--pyh7e72e81_0':
+        'biocontainers/stranger:0.9.2--pyh7e72e81_0' }"
 
     input:
     tuple val(meta), path(vcf)

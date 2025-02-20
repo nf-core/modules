@@ -1,0 +1,88 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "mirtop_export"
+description: mirtop export generates files such as fasta, vcf or compatible with isomiRs
+  bioconductor package
+keywords:
+  - mirna
+  - isomir
+  - gff
+tools:
+  - "mirtop":
+      description: "Small RNA-seq annotation"
+      homepage: "https://github.com/miRTop/mirtop"
+      documentation: "https://mirtop.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/miRTop/mirtop"
+      licence: ["MIT License"]
+      identifier: biotools:miRTop
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - mirtop_gff:
+        type: file
+        description: GFF file
+        pattern: "*.{gff}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - hairpin:
+        type: file
+        description: Hairpin file
+        pattern: "*.{fa,fasta}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - gtf:
+        type: file
+        description: GTF file
+        pattern: "*.{gtf}"
+    - species:
+        type: string
+        description: Species name of the GTF file
+output:
+  - tsv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - export/*_rawData.tsv:
+          type: file
+          description: TSV file
+          pattern: "*.{tsv}"
+  - fasta:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - export/*.fasta:
+          type: file
+          description: FASTA file
+          pattern: "*.{fasta,fa}"
+  - vcf:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - export/*.vcf*:
+          type: file
+          description: VCF file
+          pattern: "*.{vcf,vcf.gz}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@atrigila"
+maintainers:
+  - "@atrigila"

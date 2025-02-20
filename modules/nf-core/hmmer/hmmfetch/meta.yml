@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "hmmer_hmmfetch"
 description: extract hmm from hmm database file or create index for hmm database
@@ -15,41 +14,55 @@ tools:
       tool_dev_url: https://github.com/EddyRivasLab/hmmer
       doi: "10.1371/journal.pcbi.1002195"
       licence: ["BSD"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - hmm:
-      type: file
-      description: HMM file with multiple HMM models
-      pattern: "*.hmm"
-  - key:
-      type: string
-      description: Name of HMM to extract. Specify either this or keyfile. If none is specified, an index will be built.
-  - keyfile:
-      type: file
-      description: File containing list of HMM models to extract. Specify either this or key. If none is specified, an index will be built.
-      pattern: "*.txt"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - hmm:
+        type: file
+        description: HMM file with multiple HMM models
+        pattern: "*.hmm"
+  - - key:
+        type: string
+        description: Name of HMM to extract. Specify either this or keyfile. If none
+          is specified, an index will be built.
+  - - keyfile:
+        type: file
+        description: File containing list of HMM models to extract. Specify either this
+          or key. If none is specified, an index will be built.
+        pattern: "*.txt"
+  - - index:
+        type: file
+        description: Index file from another run.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - hmm:
-      type: file
-      description: File with one or more HMM models
-      pattern: "selection.hmm"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.hmm":
+          type: file
+          description: File with one or more HMM models
+          pattern: "selection.hmm"
   - index:
-      type: file
-      description: Index for HMM database. Created if neither key nor keyfile is specified.
-      pattern: "*.ssi"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.ssi":
+          type: file
+          description: Index for HMM database. Created if neither key nor keyfile is specified.
+          pattern: "*.ssi"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@erikrikarddaniel"
 maintainers:

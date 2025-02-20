@@ -13,30 +13,33 @@ tools:
       homepage: https://github.com/heuermh/dishevelled-bio
       documentation: https://github.com/heuermh/dishevelled-bio
       licence: ["LGPL-3.0-or-later"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - gfa:
-      type: file
-      description: Assembly segments in uncompressed or compressed GFA 1.0 format
-      pattern: "*.{gfa|gfa.bgz|gfa.gz|gfa.zst}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - gfa:
+        type: file
+        description: Assembly segments in uncompressed or compressed GFA 1.0 format
+        pattern: "*.{gfa|gfa.bgz|gfa.gz|gfa.zst}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - fasta:
-      type: file
-      description: Assembly segment sequences in gzipped FASTA format
-      pattern: "*.{fa.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fa.gz":
+          type: file
+          description: Assembly segment sequences in gzipped FASTA format
+          pattern: "*.{fa.gz}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@heuermh"
 maintainers:
