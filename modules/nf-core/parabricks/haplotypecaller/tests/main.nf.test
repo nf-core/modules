@@ -193,6 +193,8 @@ nextflow_process {
 
     test("human - bam - intervals - gvcf - stub") {
 
+        options "-stub"
+
         when {
             params {
                  module_args = '--gvcf --htvc-low-memory'
