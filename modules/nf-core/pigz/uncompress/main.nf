@@ -1,4 +1,5 @@
 process PIGZ_UNCOMPRESS {
+    tag "$meta.id"
     label 'process_low'
     //stageInMode 'copy' // this directive can be set in case the original input should be kept
 
