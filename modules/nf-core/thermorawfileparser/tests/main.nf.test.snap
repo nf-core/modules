@@ -9,7 +9,7 @@
                 "      </referenceableParamGroup>",
                 "    </referenceableParamGroupList>",
                 "    <softwareList count=\"1\">",
-                "      <software id=\"ThermoRawFileParser\" version=\"1.4.3\">",
+                "      <software id=\"ThermoRawFileParser\" version=\"1.4.5\">",
                 "        <cvParam cvRef=\"MS\" accession=\"MS:1003145\" name=\"ThermoRawFileParser\" />",
                 "      </software>",
                 "    </softwareList>",
@@ -21,7 +21,7 @@
                 "            <cvParam cvRef=\"MS\" accession=\"MS:1000073\" value=\"\" name=\"electrospray ionization\" />",
                 "          </source>",
                 "          <analyzer order=\"2\">",
-                "            <cvParam cvRef=\"MS\" accession=\"MS:1000079\" value=\"\" name=\"fourier transform ion cyclotron resonance mass spectrometer\" />",
+                "            <cvParam cvRef=\"MS\" accession=\"MS:1000484\" value=\"\" name=\"orbitrap\" />",
                 "          </analyzer>",
                 "          <detector order=\"3\">",
                 "            <cvParam cvRef=\"MS\" accession=\"MS:1000624\" value=\"\" name=\"inductive detector\" />",
@@ -34,7 +34,11 @@
                 "        <processingMethod order=\"0\" softwareRef=\"ThermoRawFileParser\">"
             ]
         ],
-        "timestamp": "2024-01-21T22:31:20.271719782"
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.4"
+        },
+        "timestamp": "2025-02-14T11:00:45.572003942"
     },
     "proteomics - parse - raw - stub": {
         "content": [
@@ -48,7 +52,7 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,dd82b5b6b8f27a1b1cf5a5d7c57017bf"
+                    "versions.yml:md5,92962c5af8265404031d46df0bda0eff"
                 ],
                 "spectra": [
                     [
@@ -59,10 +63,14 @@
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,dd82b5b6b8f27a1b1cf5a5d7c57017bf"
+                    "versions.yml:md5,92962c5af8265404031d46df0bda0eff"
                 ]
             }
         ],
-        "timestamp": "2024-01-21T22:31:27.393155134"
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.4"
+        },
+        "timestamp": "2025-02-14T11:00:58.349510248"
     }
 }
