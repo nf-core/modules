@@ -249,7 +249,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    //cram(process.out.cram[0][1]).getReadsMD5(),
+                    cram(process.out.cram[0][1]).getReadsMD5(),
                     file(process.out.crai[0][1]).name,
                     process.out.versions,
                     path(process.out.versions[0]).yaml
