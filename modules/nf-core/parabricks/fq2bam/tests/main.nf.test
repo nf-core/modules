@@ -246,7 +246,7 @@ nextflow_process {
         }
 
         then {
-            def fasta = params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta'
+            def fasta = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta')
             assertAll(
                 { assert process.success },
                 { assert snapshot(
