@@ -33,8 +33,13 @@ input:
         pattern: "*.{bai}"
     - bamlist:
         type: file
-        description: (Optional) File with list of BAM/CRAM files to impute. One file
-          per line.
+        description: (Optional) File with list of BAM/CRAM files to impute.
+          One file per line.
+        pattern: "*.{txt}"
+    - samplename:
+        type: file
+        description: (Optional) File with list of samples names in the same order as in bamlist to impute.
+          One file per line.
         pattern: "*.{txt}"
     - reference_haplotype_file:
         type: file
@@ -95,6 +100,17 @@ input:
           column, with 0 = ref and 1 = alt, separated by a vertical bar |, e.g. 0|0
           or 0|1. Note therefore this file has one more row than posfile which has no
           header.
+        pattern: "*.{txt}"
+    - genfile:
+        type: file
+        description: (Optional) Path to gen file with high coverage results.
+          Empty for no genfile. If both genfile and phasefile are given, only phasefile
+          is used, as genfile (unphased genotypes) is derivative to phasefile
+          (phased genotypes). File has a header row with a name for each sample,
+          matching what is found in the bam file. Each subject is then a tab seperated
+          column, with 0 = hom ref, 1 = het, 2 = hom alt and NA indicating missing genotype,
+          with rows corresponding to rows of the posfile.
+          Note therefore this file has one more row than posfile which has no header [default \"\"] 
         pattern: "*.{txt}"
   - - meta3:
         type: map
