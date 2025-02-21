@@ -75,6 +75,26 @@ output:
           type: file
           description: index corresponding to sorted BAM file
           pattern: "*.bai"
+  - cram:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.cram":
+          type: file
+          description: Sorted CRAM file
+          pattern: "*.cram"
+  - crai:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.crai":
+          type: file
+          description: index corresponding to sorted CRAM file
+          pattern: "*.crai"
   - bqsr_table:
       - meta:
           type: map
@@ -92,12 +112,12 @@ output:
           description: File containing software versions
           pattern: "versions.yml"
   - qc_metrics:
-      - qc_metrics:
+      - "*":
           type: directory
           description: (optional) optional directory of qc metrics
           pattern: "qc_metrics"
   - duplicate_metrics:
-      - duplicate-metrics.txt:
+      - "*.txt":
           type: file
           description: (optional) metrics calculated from marking duplicates in the bam
             file
