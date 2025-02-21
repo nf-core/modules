@@ -8,7 +8,7 @@ include { SAMTOOLS_VIEW                                     } from '../../../../
 include { SAMTOOLS_INDEX                                    } from '../../../../../modules/nf-core/samtools/index/main.nf'
 
 workflow test_graphtyper_genotype_single {
-    
+
     input = [
         [ id:'test' ], // meta map
         [ file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true) ],
@@ -22,7 +22,7 @@ workflow test_graphtyper_genotype_single {
 }
 
 workflow test_graphtyper_genotype_multi {
-    
+
     input = Channel.fromList ( [
         [
             [ id: 'test1' ], // meta map
@@ -35,12 +35,15 @@ workflow test_graphtyper_genotype_multi {
             file(params.test_data['sarscov2']['illumina']['test_single_end_sorted_bam_bai'], checkIfExists: true)
         ]
     ] )
-    reference = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    reference = Channel.of([
+        [ id: 'test_genome'],
+        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+    ])
     ref_with_meta = [ [ id: 'ref' ], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
     ref_index = [ [ id: 'ref_index' ], file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)]
     region = file(params.test_data['sarscov2']['genome']['regions_txt'], checkIfExists: true)
 
-    SAMTOOLS_VIEW ( input, reference, [])
+    SAMTOOLS_VIEW ( input, reference, [], [])
     SAMTOOLS_INDEX ( SAMTOOLS_VIEW.out.cram )
     cram_grouped = SAMTOOLS_VIEW.out.cram.map{ [[id: 'group'], it[1]] }.groupTuple()
     crai_grouped = SAMTOOLS_INDEX.out.crai.map{ [[id: 'group'], it[1]] }.groupTuple()
