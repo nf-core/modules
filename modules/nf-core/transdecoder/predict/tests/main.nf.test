@@ -1,0 +1,140 @@
+nextflow_process {
+
+    name "Test Process TRANSDECODER_PREDICT"
+    script "../main.nf"
+    process "TRANSDECODER_PREDICT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "transdecoder"
+    tag "transdecoder/longorf"
+    tag "transdecoder/predict"
+
+    test("sarscov2 - uncompressed") {
+
+        setup {
+            run("TRANSDECODER_LONGORF") {
+                script "../../longorf/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: 'test'],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                input[1] = TRANSDECODER_LONGORF.out.folder
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    // orfs are output in a random order; can't be easily sorted either.
+                    path(process.out.bed[0][1] ).getText().contains("ID=GENE.MT192765.1~~MT192765.1.p7"),
+                    path(process.out.cds[0][1] ).getText().contains("ID=GENE.MT192765.1~~MT192765.1.p7"),
+                    path(process.out.gff3[0][1]).getText().contains("ID=GENE.MT192765.1~~MT192765.1.p7"),
+                    path(process.out.pep[0][1] ).getText().contains("ID=GENE.MT192765.1~~MT192765.1.p7"),
+                    process.out.versions
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - compressed") {
+
+        setup {
+            run("TRANSDECODER_LONGORF") {
+                script "../../longorf/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: 'test'],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                    ]
+                input[1] = TRANSDECODER_LONGORF.out.folder
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    // orfs are output in a random order; can't be easily sorted either.
+                    path(process.out.bed[0][1] ).getText().contains("ID=GENE.MT192765.1~~MT192765.1.p7"),
+                    path(process.out.cds[0][1] ).getText().contains("ID=GENE.MT192765.1~~MT192765.1.p7"),
+                    path(process.out.gff3[0][1]).getText().contains("ID=GENE.MT192765.1~~MT192765.1.p7"),
+                    path(process.out.pep[0][1] ).getText().contains("ID=GENE.MT192765.1~~MT192765.1.p7"),
+                    process.out.versions
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - uncompressed - stub") {
+
+        options "-stub"
+
+        setup {
+            run("TRANSDECODER_LONGORF") {
+                script "../../longorf/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: 'test'],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                input[1] = TRANSDECODER_LONGORF.out.folder
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
