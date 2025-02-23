@@ -1,0 +1,61 @@
+
+nextflow_process {
+
+    name "Test Process NANOQC"
+    script "../main.nf"
+    process "NANOQC"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "nanoqc"
+
+    test("sarscov2 - fastq") {
+
+        
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match() }
+                
+            )
+        }
+
+    }
+
+
+    test("sarscov2 - fastq - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+
+    }
+
+}
