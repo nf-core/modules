@@ -4,13 +4,12 @@ process STITCH {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-stitch:1.6.10--r43h06b5641_0':
-        'biocontainers/r-stitch:1.6.10--r43h06b5641_0' }"
+        'https://depot.galaxyproject.org/singularity/r-stitch:1.7.3--r44h64f727c_0':
+        'biocontainers/r-stitch:1.7.3--r44h64f727c_0' }"
 
     input:
-    tuple val(meta), path(collected_crams), path(collected_crais), path(cramlist)
-    tuple val(meta2), path(posfile), path(input, stageAs: "input"), path(rdata, stageAs: "RData_in"), val(chromosome_name), val(K), val(nGen)
-    tuple val(meta3), path(fasta), path(fasta_fai)
+    tuple val(meta), path(collected_crams), path(collected_crais), path(cramlist), path(samplename), path(posfile), path(input, stageAs: "input"), path(rdata, stageAs: "RData_in"), val(chromosome_name), val(K), val(nGen)
+    tuple val(meta2), path(fasta), path(fasta_fai)
     val seed
 
     output:
@@ -38,6 +37,7 @@ process STITCH {
     def reference_cmd        = fasta                       ? "--reference ${fasta}"                                            : ""
     def regenerate_input_cmd = input && rdata && !cramlist ? "--regenerateInput FALSE --originalRegionName ${chromosome_name}" : ""
     def rsync_version_cmd    = rdata                       ? "rsync: \$(rsync --version | head -n1 | sed 's/^rsync  version //; s/ .*\$//')" : ""
+    def samplename_cmd       = samplename                  ? "--sampleNames_file ${samplename}"                               : ""
     """
     ${rsync_cmd} ${args}
 
@@ -52,6 +52,7 @@ process STITCH {
         ${bamlist_cmd} \\
         ${reference_cmd} \\
         ${regenerate_input_cmd} \\
+        ${samplename_cmd} \\
         ${args2}
 
     cat <<-END_VERSIONS > versions.yml
