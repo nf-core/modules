@@ -29,7 +29,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert file(process.out.log[0]).readLines().get(1).contains("Configuration for experiment") },
+                { assert file(process.out.log[0][1]).readLines().get(1).contains("Configuration for experiment") },
                 { assert snapshot(process.out.versions).match() }
             )
         }

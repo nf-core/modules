@@ -56,6 +56,11 @@ input:
 
 output:
   - log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
       - "*_modelcheck.log":
           type: file
           description: Model check output

@@ -10,8 +10,8 @@ process STIMULUS_CHECKTORCHMODEL {
     tuple val(meta2), path(model), path(model_config), path(initial_weights)
 
     output:
-    path "*_modelcheck.log", emit: log
-    path "versions.yml"    , emit: versions
+    tuple val(meta), path("*_modelcheck.log"), emit: log
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
