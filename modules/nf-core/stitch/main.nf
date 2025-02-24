@@ -10,7 +10,7 @@ process STITCH {
     input:
     tuple val(meta), path(collected_crams), path(collected_crais), path(cramlist), path(samplename), path(posfile), path(input, stageAs: "input"), path(rdata, stageAs: "RData_in"), val(chromosome_name), val(K), val(nGen)
     tuple val(meta2), path(fasta), path(fasta_fai)
-    val seed
+    val(seed)
 
     output:
     tuple val(meta), path("input", type: "dir") , emit: input
@@ -24,7 +24,7 @@ process STITCH {
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix               = task.ext.prefix ?: "${meta.id}"
+    def _prefix               = task.ext.prefix ?: "${meta.id}"
     def args                 = task.ext.args   ?: ""
     def args2                = task.ext.args2  ?: ""
     def generate_input_only  = args2.contains( "--generateInputOnly TRUE" )
@@ -65,7 +65,7 @@ process STITCH {
 
     stub:
     def prefix               = task.ext.prefix      ?: "${meta.id}"
-    def args                 = task.ext.args        ?: ""
+    def _args                 = task.ext.args        ?: ""
     def args2                = task.ext.args2       ?: ""
     def generate_input_only  = args2.contains( "--generateInputOnly TRUE" )
     def generate_plots_cmd   = !generate_input_only ? "mkdir plots"                                                                   : ""
