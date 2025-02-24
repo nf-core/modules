@@ -299,13 +299,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.input.collect{ file(it[1]).listFiles().sort().name },
-                    process.out.rdata.collect{ file(it[1]).listFiles().sort().name },
-                    process.out.plots.collect{ file(it[1]).listFiles().sort().name },
-                    process.out.bgen.collect{ file(it[1]).name },
-                    process.out.versions
-                ).match() }
+                { assert snapshot(process.out).match() }
             )
         }
     }
