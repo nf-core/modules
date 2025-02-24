@@ -307,7 +307,10 @@ nextflow_process {
         }
     }
 
-    test("test_with_bam - stub - vcf") {
+    test("test_with_bam - vcf - stub") {
+    
+       options "-stub"
+       
         when {
             params {
                 stitch_args2 = "--chrStart 8522360 --chrEnd 8522670"
