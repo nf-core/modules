@@ -37,6 +37,8 @@ process STIMULUS_CHECKTORCHMODEL {
         --ray_results_dirpath ${workDir} \
         $args > ${prefix}_modelcheck.log
 
+    ray stop
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         Python: \$(python --version | cut -d ' ' -f 2)
