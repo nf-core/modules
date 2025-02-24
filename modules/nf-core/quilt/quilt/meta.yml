@@ -54,37 +54,6 @@ input:
           in 1 based coordinates, a0 for the reference allele, and a1 for the alternate
           allele).
         pattern: "*.{legend.gz}"
-    - chr:
-        type: string
-        description: (Mandatory) What chromosome to run. Should match BAM headers.
-    - regions_start:
-        type: integer
-        description: (Mandatory) When running imputation, where to start from. The 1-based
-          position x is kept if regionStart <= x <= regionEnd.
-    - regions_end:
-        type: integer
-        description: (Mandatory) When running imputation, where to stop.
-    - ngen:
-        type: integer
-        description: Number of generations since founding or mixing. Note that the algorithm
-          is relatively robust to this. Use nGen = 4 * Ne / K if unsure.
-    - buffer:
-        type: integer
-        description: Buffer of region to perform imputation over. So imputation is run
-          form regionStart-buffer to regionEnd+buffer, and reported for regionStart
-          to regionEnd, including the bases of regionStart and regionEnd.
-    - genetic_map_file:
-        type: file
-        description: (Optional) File with genetic map information, a file with 3 white-space
-          delimited entries giving position (1-based), genetic rate map in cM/Mbp, and
-          genetic map in cM. If no file included, rate is based on physical distance
-          and expected rate (expRate).
-        pattern: "*.{txt.gz}"
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
     - posfile:
         type: file
         description: (Optional) File with positions of where to impute, lining up one-to-one
@@ -112,7 +81,33 @@ input:
           with rows corresponding to rows of the posfile.
           Note therefore this file has one more row than posfile which has no header [default \"\"] 
         pattern: "*.{txt}"
-  - - meta3:
+    - chr:
+        type: string
+        description: (Mandatory) What chromosome to run. Should match BAM headers.
+    - regions_start:
+        type: integer
+        description: (Mandatory) When running imputation, where to start from. The 1-based
+          position x is kept if regionStart <= x <= regionEnd.
+    - regions_end:
+        type: integer
+        description: (Mandatory) When running imputation, where to stop.
+    - ngen:
+        type: integer
+        description: Number of generations since founding or mixing. Note that the algorithm
+          is relatively robust to this. Use nGen = 4 * Ne / K if unsure.
+    - buffer:
+        type: integer
+        description: Buffer of region to perform imputation over. So imputation is run
+          form regionStart-buffer to regionEnd+buffer, and reported for regionStart
+          to regionEnd, including the bases of regionStart and regionEnd.
+    - genetic_map_file:
+        type: file
+        description: (Optional) File with genetic map information, a file with 3 white-space
+          delimited entries giving position (1-based), genetic rate map in cM/Mbp, and
+          genetic map in cM. If no file included, rate is based on physical distance
+          and expected rate (expRate).
+        pattern: "*.{txt.gz}"
+  - - meta2:
         type: map
         description: |
           Groovy Map containing sample information
