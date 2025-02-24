@@ -16,9 +16,6 @@ nextflow_process {
     setup {
         run("BCFTOOLS_QUERY") {
             script "../../../bcftools/query/main.nf"
-            params {
-                bcftools_args = "-f '[%GT]\\n'"
-            }
             process {
                 """
                 input[0] = [
