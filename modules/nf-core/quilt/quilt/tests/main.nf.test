@@ -13,53 +13,54 @@ nextflow_process {
 
     config "./nextflow.config"
 
-    setup {
-        run("BCFTOOLS_QUERY") {
-            script "../../../bcftools/query/main.nf"
-            process {
-                """
-                input[0] = [
-                    [id: 'NA12878'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi', checkIfExists: true)
-                ]
-                input[1] = []
-                input[2] = []
-                input[3] = []
-                """
-            }
-        }
-
-        run("GAWK", alias: "GAWK_NAME") {
-            script "../../../gawk/main.nf"
-            process {
-                """
-                program  = Channel.of('BEGIN{print "NA12878"} {print}').collectFile(name: 'program.txt', newLine: true)
-                input[0] = BCFTOOLS_QUERY.out.output
-                input[1] = program
-                """
-            }
-        }
-
-        run("GAWK", alias: "GAWK_POSFILE") {
-            script "../../../gawk/main.nf"
-            process {
-                """
-                program  = Channel.of('BEGIN{OFS=\"\\t\"} NR>1 {split(\$1, a, \"[:-_]\"); print a[1],\$2,\$3,\$4}').collectFile(name: 'program.txt', newLine: true)
-                input[0] = [
-                    [id: 'NA12878'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.legend.gz', checkIfExists: true)
-                ]
-                input[1] = program
-                """
-            }
-        }
-    }
-
     test("QUILT") {
+        setup {
+            run("BCFTOOLS_QUERY") {
+                script "../../../bcftools/query/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: 'NA12878'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi', checkIfExists: true)
+                    ]
+                    input[1] = []
+                    input[2] = []
+                    input[3] = []
+                    """
+                }
+            }
+
+            run("GAWK", alias: "GAWK_NAME") {
+                script "../../../gawk/main.nf"
+                process {
+                    """
+                    program  = Channel.of('BEGIN{print "NA12878"} {print}').collectFile(name: 'program.txt', newLine: true)
+                    input[0] = BCFTOOLS_QUERY.out.output
+                    input[1] = program
+                    """
+                }
+            }
+
+            run("GAWK", alias: "GAWK_POSFILE") {
+                script "../../../gawk/main.nf"
+                process {
+                    """
+                    program  = Channel.of('BEGIN{OFS=\"\\t\"} NR>1 {split(\$1, a, \"[:-_]\"); print a[1],\$2,\$3,\$4}').collectFile(name: 'program.txt', newLine: true)
+                    input[0] = [
+                        [id: 'NA12878'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.legend.gz', checkIfExists: true)
+                    ]
+                    input[1] = program
+                    """
+                }
+            }
+        }
+
         when {
             params{
                 quilt_args = "--save_prepared_reference=TRUE --make_plots=TRUE --seed=1"
+                bcftools_query_args = "-f '[%GT]\\n'"
             }
             process {
                 """
