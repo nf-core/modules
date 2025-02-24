@@ -87,8 +87,7 @@ nextflow_process {
                     process.out.plots.collect{ file(it[1]).listFiles().sort().name },
                     process.out.vcf.collect{ file(it[1]).name },
                     process.out.versions,
-                    process.out.vcf.collect{ path(it[1]).vcf.header.getGenotypeSamples().sort() },
-                    process.out.vcf.collect{ path(it[1]).vcf.variantsMD5 }
+                    process.out.vcf.collect{ path(it[1]).vcf.header.getGenotypeSamples().sort() }
                 ).match() }
             )
         }
