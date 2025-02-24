@@ -157,7 +157,7 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(
-                    workflow.out.bam.collect { meta, bamfile -> bam(bamfile, fasta).getReadsMD5() },
+                    workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
                     workflow.out.bai.collect { meta, bai -> file(bai).name },
                     workflow.out.versions
                     ).match()
