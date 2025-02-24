@@ -17,6 +17,8 @@ workflow FASTQ_ALIGN_PARABRICKS {
     ch_versions          = Channel.empty()
     ch_cram              = Channel.empty()
     ch_crai              = Channel.empty()
+    ch_bam               = Channel.empty()
+    ch_bai               = Channel.empty()
     ch_bqsr_table        = Channel.empty()
     ch_qc_metrics        = Channel.empty()
     ch_duplicate_metrics = Channel.empty()
@@ -32,6 +34,8 @@ workflow FASTQ_ALIGN_PARABRICKS {
     // Collecting FQ2BAM outputs
     ch_cram              = ch_cram.mix(PARABRICKS_FQ2BAM.out.cram)
     ch_crai              = ch_crai.mix(PARABRICKS_FQ2BAM.out.crai)
+    ch_bam               = ch_bam.mix(PARABRICKS_FQ2BAM.out.bam)
+    ch_bai               = ch_bai.mix(PARABRICKS_FQ2BAM.out.bai)
     ch_qc_metrics        = ch_qc_metrics.mix(PARABRICKS_FQ2BAM.out.qc_metrics)
     ch_bqsr_table        = ch_bqsr_table.mix(PARABRICKS_FQ2BAM.out.bqsr_table)
     ch_duplicate_metrics = ch_duplicate_metrics.mix(PARABRICKS_FQ2BAM.out.duplicate_metrics)
@@ -40,6 +44,8 @@ workflow FASTQ_ALIGN_PARABRICKS {
     emit:
     cram              = ch_cram              // channel: [ [meta], cram ]
     crai              = ch_crai              // channel: [ [meta], crai ]
+    bam               = ch_bam               // channel: [ [meta], bam ]
+    bai               = ch_bai               // channel: [ [meta], bai ]
     qc_metrics        = ch_qc_metrics        // channel: [ [meta], qc_metrics ]
     duplicate_metrics = ch_duplicate_metrics // channel: [ [meta], duplicate_metrics ]
     bqsr_table        = ch_bqsr_table        // channel: [ [meta], bqsr_table ]
