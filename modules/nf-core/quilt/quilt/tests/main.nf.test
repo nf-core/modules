@@ -98,6 +98,44 @@ nextflow_process {
         }
     }
 
+    test("QUILT - stub") {
+
+        options '-stub'
+        config ("./quilt_option.config")
+
+        when {
+            params{
+                quilt_args = "--save_prepared_reference=TRUE --make_plots=TRUE"
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'NA12878', chr:'chr22' ],
+                    [], [], [], [], [], [], [], [],
+                    [], "chr22", "16570000", "16610000", "100", "10000", []
+                ])
+                input[1] = [[id: 'GRCh38'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            def dir = new File(process.out.plots[0][1])
+            def list = []
+            dir.eachFileRecurse { file -> list << file.getName() }
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.vcf,
+                    process.out.tbi,
+                    list.sort(),
+                    process.out.rdata,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
     test("QUILT no optional files") {
         config ("./quilt_option.config")
         when {

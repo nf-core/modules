@@ -67,4 +67,41 @@ process QUILT_QUILT {
         r-quilt: \$(Rscript -e "cat(as.character(utils::packageVersion(\\"QUILT\\")))")
     END_VERSIONS
     """
+
+    stub:
+    def args          = task.ext.args   ?: ''
+    prefix            = task.ext.prefix ?: "${meta.id}"
+    def make_plots    = args.contains("--make_plots=TRUE")
+    def save_ref      = args.contains("--save_prepared_reference=TRUE")
+    def nGibbsSamples = args.contains("--nGibbsSamples=") ? args.split("--nGibbsSamples=")[1].split(" ")[0] : 7
+    def n_seek_its    = args.contains("--n_seek_its=")    ? args.split("--n_seek_its=")[1].split(" ")[0]    : 3
+
+    """
+    touch "quilt.${chr}.${regions_start}.${regions_end}.vcf"
+    gzip "quilt.${chr}.${regions_start}.${regions_end}.vcf"
+    touch "quilt.${chr}.${regions_start}.${regions_end}.vcf.gz.tbi"
+    if [ "${save_ref}" == true ]
+    then
+        mkdir -p RData
+        touch "RData/QUILT_prepared_reference.${chr}.${regions_start}.${regions_end}.RData"
+    fi
+    if [ "${make_plots}" == true ]
+    then
+        mkdir -p plots
+        for nGibbs in {0..${nGibbsSamples}}
+        do
+            touch "plots/haps.${prefix}.${chr}.${regions_start}.${regions_end}_igs.\$((nGibbs+1)).0.truth.png"
+            for its in {1..${n_seek_its}}
+            do
+                touch "plots/haps.${prefix}.${chr}.${regions_start}.${regions_end}_igs.\$((nGibbs+1)).it\$its.gibbs.png"
+            done
+        done
+    fi
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        r-base: \$(Rscript -e "cat(strsplit(R.version[['version.string']], ' ')[[1]][3])")
+        r-quilt: \$(Rscript -e "cat(as.character(utils::packageVersion(\\"QUILT\\")))")
+    END_VERSIONS
+    """
 }
