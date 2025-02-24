@@ -51,7 +51,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "stitch"
 
-    config "./stitch.config"
+    config "./nextflow.config"
 
     test("test_no_seed") {
 
@@ -87,7 +87,8 @@ nextflow_process {
                     process.out.plots.collect{ file(it[1]).listFiles().sort().name },
                     process.out.vcf.collect{ file(it[1]).name },
                     process.out.versions,
-                    process.out.vcf.collect{ path(it[1]).vcf.header.getGenotypeSamples().sort() }
+                    process.out.vcf.collect{ path(it[1]).vcf.header.getGenotypeSamples().sort() },
+                    process.out.vcf.collect{ path(it[1]).vcf.variantsMD5 }
                 ).match() }
             )
         }
@@ -96,7 +97,7 @@ nextflow_process {
     test("test_with_seed") {
         when {
             params {
-                stitch_args2 = "--chrStart 8522360 --chrEnd 8522670"
+                stitch_args2 = "--chrStart 8522360 --chrEnd 8522670 --output_format bgen"
             }
             process {
                 """
@@ -122,9 +123,8 @@ nextflow_process {
                     process.out.input.collect{ file(it[1]).listFiles().sort().name },
                     process.out.rdata.collect{ file(it[1]).listFiles().sort().name },
                     process.out.plots.collect{ file(it[1]).listFiles().sort().name },
-                    process.out.vcf.collect{ file(it[1]).name },
-                    process.out.versions,
-                    process.out.vcf.collect{ path(it[1]).vcf.header.getGenotypeSamples().sort() }
+                    process.out.bgen.collect{ file(it[1]).name },
+                    process.out.versions
                 ).match() }
             )
         }
@@ -183,7 +183,8 @@ nextflow_process {
                     process.out.plots.collect{ file(it[1]).listFiles().sort().name },
                     process.out.vcf.collect{ file(it[1]).name },
                     process.out.versions,
-                    process.out.vcf.collect{ path(it[1]).vcf.header.getGenotypeSamples().sort() }
+                    process.out.vcf.collect{ path(it[1]).vcf.header.getGenotypeSamples().sort() },
+                    process.out.vcf.collect{ path(it[1]).vcf.variantsMD5 }
                 ).match() }
             )
         }
@@ -219,7 +220,8 @@ nextflow_process {
                     process.out.plots.collect{ file(it[1]).listFiles().sort().name },
                     process.out.vcf.collect{ file(it[1]).name },
                     process.out.versions,
-                    process.out.vcf.collect{ path(it[1]).vcf.header.getGenotypeSamples().sort() }
+                    process.out.vcf.collect{ path(it[1]).vcf.header.getGenotypeSamples().sort() },
+                    process.out.vcf.collect{ path(it[1]).vcf.variantsMD5 }
                 ).match() }
             )
         }
@@ -259,10 +261,88 @@ nextflow_process {
                     process.out.plots.collect{ file(it[1]).listFiles().sort().name },
                     process.out.vcf.collect{ file(it[1]).name },
                     process.out.versions,
-                    process.out.vcf.collect{ path(it[1]).vcf.header.getGenotypeSamples().sort() }
+                    process.out.vcf.collect{ path(it[1]).vcf.header.getGenotypeSamples().sort() },
+                    process.out.vcf.collect{ path(it[1]).vcf.variantsMD5 }
                 ).match() }
             )
         }
     }
 
+    test("test_with_bam - stub - bgen") {
+        when {
+            params {
+                stitch_args2 = "--chrStart 8522360 --chrEnd 8522670 --output_format bgen"
+            }
+            process {
+                """
+                filelist = Channel.of(
+                    "test.paired_end.recalibrated.sorted.bam", "test2.paired_end.recalibrated.sorted.bam"
+                ).collectFile( name: "cramlist.txt", newLine: true, sort: true )
+
+                samplename = Channel.of(
+                    "MySample1", "MySample2"
+                ).collectFile( name: "samplename.txt", newLine: true, sort: true )
+
+                input[0] = $ch_bam
+                    .combine( filelist )
+                    .combine( samplename )
+                    .combine( $ch_params )
+                input[1] = $ch_ref
+                input[2] = $seed
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.input.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.rdata.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.plots.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.bgen.collect{ file(it[1]).name },
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("test_with_bam - stub - vcf") {
+        when {
+            params {
+                stitch_args2 = "--chrStart 8522360 --chrEnd 8522670"
+            }
+            process {
+                """
+                filelist = Channel.of(
+                    "test.paired_end.recalibrated.sorted.bam", "test2.paired_end.recalibrated.sorted.bam"
+                ).collectFile( name: "cramlist.txt", newLine: true, sort: true )
+
+                samplename = Channel.of(
+                    "MySample1", "MySample2"
+                ).collectFile( name: "samplename.txt", newLine: true, sort: true )
+
+                input[0] = $ch_bam
+                    .combine( filelist )
+                    .combine( samplename )
+                    .combine( $ch_params )
+                input[1] = $ch_ref
+                input[2] = $seed
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.input.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.rdata.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.plots.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.vcf.collect{ file(it[1]).name },
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
 }

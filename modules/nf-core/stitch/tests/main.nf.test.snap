@@ -29,7 +29,7 @@
                 ]
             ],
             [
-                "stitch.chr21.vcf.gz"
+                "test_reads.vcf.gz"
             ],
             [
                 "versions.yml:md5,b55947a2088b8879167b09e9c5647d09"
@@ -39,13 +39,16 @@
                     "normal",
                     "tumour"
                 ]
+            ],
+            [
+                "e41c51d08be2cdacd81fc8800cffb156"
             ]
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.3"
+            "nf-test": "0.9.1",
+            "nextflow": "24.10.4"
         },
-        "timestamp": "2025-02-23T16:51:56.74333292"
+        "timestamp": "2025-02-24T14:48:34.099650378"
     },
     "test_no_seed": {
         "content": [
@@ -77,7 +80,7 @@
                 ]
             ],
             [
-                "stitch.chr21.vcf.gz"
+                "test_reads.vcf.gz"
             ],
             [
                 "versions.yml:md5,b55947a2088b8879167b09e9c5647d09"
@@ -87,13 +90,16 @@
                     "normal",
                     "tumour"
                 ]
+            ],
+            [
+                "e41c51d08be2cdacd81fc8800cffb156"
             ]
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.3"
+            "nf-test": "0.9.1",
+            "nextflow": "24.10.4"
         },
-        "timestamp": "2025-02-22T21:09:01.514734469"
+        "timestamp": "2025-02-24T14:46:59.194483351"
     },
     "test_two_stage_imputation": {
         "content": [
@@ -125,7 +131,7 @@
                 ]
             ],
             [
-                "stitch.chr21.vcf.gz"
+                "test_reads.vcf.gz"
             ],
             [
                 "versions.yml:md5,eef9f03e8ecc018178523587971973d1"
@@ -135,13 +141,58 @@
                     "normal",
                     "tumour"
                 ]
+            ],
+            [
+                "e41c51d08be2cdacd81fc8800cffb156"
             ]
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.3"
+            "nf-test": "0.9.1",
+            "nextflow": "24.10.4"
         },
-        "timestamp": "2025-02-22T21:13:50.649602502"
+        "timestamp": "2025-02-24T14:48:01.010813477"
+    },
+    "test_with_bam - stub - vcf": {
+        "content": [
+            [
+                [
+                    "sample.1.input.chr21.RData",
+                    "sample.2.input.chr21.RData"
+                ]
+            ],
+            [
+                [
+                    "EM.all.chr21.RData",
+                    "end.chr21.RData",
+                    "endEM.chr21.RData",
+                    "sampleNames.chr21.RData",
+                    "start.chr21.RData",
+                    "startEM.chr21.RData"
+                ]
+            ],
+            [
+                [
+                    "alphaMat.chr21.all.s.1.png",
+                    "alphaMat.chr21.normalized.s.1.png",
+                    "hapSum.chr21.s.1.png",
+                    "hapSum_log.chr21.s.1.png",
+                    "metricsForPostImputationQC.chr21.sample.jpg",
+                    "metricsForPostImputationQCChromosomeWide.chr21.sample.jpg",
+                    "r2.chr21.goodonly.jpg"
+                ]
+            ],
+            [
+                "test_reads.vcf.gz"
+            ],
+            [
+                "versions.yml:md5,b55947a2088b8879167b09e9c5647d09"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.1",
+            "nextflow": "24.10.4"
+        },
+        "timestamp": "2025-02-24T14:50:01.692776061"
     },
     "test_with_bam and renaming": {
         "content": [
@@ -173,7 +224,7 @@
                 ]
             ],
             [
-                "stitch.chr21.vcf.gz"
+                "test_reads.vcf.gz"
             ],
             [
                 "versions.yml:md5,b55947a2088b8879167b09e9c5647d09"
@@ -183,13 +234,16 @@
                     "MySample1",
                     "MySample2"
                 ]
+            ],
+            [
+                "e41c51d08be2cdacd81fc8800cffb156"
             ]
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.3"
+            "nf-test": "0.9.1",
+            "nextflow": "24.10.4"
         },
-        "timestamp": "2025-02-23T17:03:04.614577444"
+        "timestamp": "2025-02-24T14:49:03.383069005"
     },
     "test_with_seed": {
         "content": [
@@ -221,22 +275,58 @@
                 ]
             ],
             [
-                "stitch.chr21.vcf.gz"
+                "test_reads.bgen"
             ],
             [
                 "versions.yml:md5,b55947a2088b8879167b09e9c5647d09"
-            ],
-            [
-                [
-                    "normal",
-                    "tumour"
-                ]
             ]
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.3"
+            "nf-test": "0.9.1",
+            "nextflow": "24.10.4"
         },
-        "timestamp": "2025-02-22T21:10:15.612450498"
+        "timestamp": "2025-02-24T14:47:27.306454435"
+    },
+    "test_with_bam - stub - bgen": {
+        "content": [
+            [
+                [
+                    "sample.1.input.chr21.RData",
+                    "sample.2.input.chr21.RData"
+                ]
+            ],
+            [
+                [
+                    "EM.all.chr21.RData",
+                    "end.chr21.RData",
+                    "endEM.chr21.RData",
+                    "sampleNames.chr21.RData",
+                    "start.chr21.RData",
+                    "startEM.chr21.RData"
+                ]
+            ],
+            [
+                [
+                    "alphaMat.chr21.all.s.1.png",
+                    "alphaMat.chr21.normalized.s.1.png",
+                    "hapSum.chr21.s.1.png",
+                    "hapSum_log.chr21.s.1.png",
+                    "metricsForPostImputationQC.chr21.sample.jpg",
+                    "metricsForPostImputationQCChromosomeWide.chr21.sample.jpg",
+                    "r2.chr21.goodonly.jpg"
+                ]
+            ],
+            [
+                "test_reads.bgen"
+            ],
+            [
+                "versions.yml:md5,b55947a2088b8879167b09e9c5647d09"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.1",
+            "nextflow": "24.10.4"
+        },
+        "timestamp": "2025-02-24T14:49:33.499999847"
     }
 }

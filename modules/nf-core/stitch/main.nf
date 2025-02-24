@@ -24,11 +24,12 @@ process STITCH {
     task.ext.when == null || task.ext.when
 
     script:
-    def _prefix               = task.ext.prefix ?: "${meta.id}"
+    def prefix               = task.ext.prefix ?: "${meta.id}"
     def args                 = task.ext.args   ?: ""
     def args2                = task.ext.args2  ?: ""
     def generate_input_only  = args2.contains( "--generateInputOnly TRUE" )
     def bgen_output          = args2.contains( "--output_format bgen" )
+    def suffix               = bgen_output     ? "bgen"    : "vcf.gz"
     def reads_ext            = collected_crams             ? collected_crams.extension.unique()                                : []
     def rsync_cmd            = rdata                       ? "rsync -rL ${rdata}/ RData"                                       : ""
     def stitch_cmd           = seed                        ? "Rscript <(cat \$(which STITCH.R) | tail -n +2 | cat <(echo 'set.seed(${seed})') -)" : "STITCH.R"
@@ -53,6 +54,7 @@ process STITCH {
         ${reference_cmd} \\
         ${regenerate_input_cmd} \\
         ${samplename_cmd} \\
+        --output_filename ${prefix}.${suffix} \\
         ${args2}
 
     cat <<-END_VERSIONS > versions.yml
@@ -65,17 +67,41 @@ process STITCH {
 
     stub:
     def prefix               = task.ext.prefix      ?: "${meta.id}"
-    def _args                 = task.ext.args        ?: ""
+    def _args                = task.ext.args        ?: ""
     def args2                = task.ext.args2       ?: ""
+    def nb_samples           = collected_crams.size()
     def generate_input_only  = args2.contains( "--generateInputOnly TRUE" )
-    def generate_plots_cmd   = !generate_input_only ? "mkdir plots"                                                                   : ""
-    def generate_vcf_cmd     = !generate_input_only ? "touch ${prefix}.vcf.gz"                                                        : ""
+    def bgen_output          = args2.contains( "--output_format bgen" )
+    def generate_plots_cmd   = !generate_input_only
+    def generate_file_cmd    = !generate_input_only ? bgen_output ? "${prefix}.bgen" : "echo '' | gzip > ${prefix}.vcf.gz"            : ""
     def rsync_version_cmd    = rdata                ? "rsync: \$(rsync --version | head -n1 | sed 's/^rsync  version //; s/ .*\$//')" : ""
     """
-    touch input
-    touch RData
-    ${generate_plots_cmd}
-    ${generate_vcf_cmd}
+    mkdir -p input
+    for i in {1..$nb_samples}
+    do
+        touch "input/sample.\$i.input.${chromosome_name}.RData"
+    done
+
+    ${generate_file_cmd}
+
+    mkdir -p RData
+    touch "RData/EM.all.${chromosome_name}.RData"
+    touch "RData/end.${chromosome_name}.RData"
+    touch "RData/sampleNames.${chromosome_name}.RData"
+    touch "RData/start.${chromosome_name}.RData"
+    touch "RData/startEM.${chromosome_name}.RData"
+
+    if [ "${generate_plots_cmd}" == true ]
+    then
+        mkdir -p plots
+        touch "plots/alphaMat.${chromosome_name}.all.s.1.png"
+        touch "plots/alphaMat.${chromosome_name}.normalized.s.1.png"
+        touch "plots/hapSum.${chromosome_name}.s.1.png"
+        touch "plots/hapSum_log.${chromosome_name}.s.1.png"
+        touch "plots/metricsForPostImputationQC.${chromosome_name}.sample.jpg"
+        touch "plots/metricsForPostImputationQCChromosomeWide.${chromosome_name}.sample.jpg"
+        touch "plots/r2.${chromosome_name}.goodonly.jpg"
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
