@@ -1,10 +1,10 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "star_help"
-description: Get the help message from STAR
+name: "star_indexversion"
+description: Get the minimal allowed index version from STAR
 keywords:
-  - help
-  - message
+  - index
+  - version
   - rna
 tools:
   - star:
@@ -18,10 +18,10 @@ tools:
       identifier: biotools:star
 
 output:
-  - help:
+  - index_version:
     - "*.txt":
         type: file
-        description: File with the help message
+        description: File with the minimal index version
         pattern: "*.txt"
 
   - versions:

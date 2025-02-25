@@ -1,4 +1,4 @@
-process STAR_HELP {
+process STAR_INDEXVERSION {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -7,16 +7,16 @@ process STAR_HELP {
         'community.wave.seqera.io/library/htslib_samtools_star_gawk:ae438e9a604351a4' }"
 
     output:
-    path("*.txt")       , emit: help
+    path("*.txt")       , emit: index_version
     path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix = task.ext.prefix ?: "help"
+    def prefix = task.ext.prefix ?: "index_version"
     """
-    STAR --help > ${prefix}.txt
+    STAR --help | grep 'versionGenome' | sed -e 's/versionGenome[ \t]*//' | sed -e 's/ .*//'  > ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -27,9 +27,9 @@ process STAR_HELP {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "help"
+    def prefix = task.ext.prefix ?: "index_version"
     """
-    STAR --help > ${prefix}.txt
+    STAR --help | grep 'versionGenome' | sed -e 's/versionGenome[ \t]*//' | sed -e 's/ .*//'  > ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
