@@ -1,0 +1,47 @@
+name: "hmmer_hmmpress"
+description: compress and index profile database for hmmscan
+keywords:
+  - hidden Markov model
+  - HMM
+  - hmmer
+  - hmmpress
+  - hmmscan
+tools:
+  - "hmmer":
+      description: "Biosequence analysis using profile hidden Markov models"
+      homepage: "http://hmmer.org"
+      documentation: "http://hmmer.org/documentation.html"
+      tool_dev_url: "https://github.com/EddyRivasLab/hmmer"
+      doi: "10.1371/journal.pcbi.1002195"
+      licence: ["BSD"]
+      identifier: biotools:hmmer
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - hmmfile:
+        type: file
+        description: HMMER flatfile database of HMM profiles
+        pattern: "*"
+output:
+  - compressed_db:
+      - meta:
+          type: map
+          description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+      - "*.h3?"
+          type: dir
+          description: Binary files with compressed profiles and their index
+          pattern: "*.h3?"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@ochkalova"
+maintainers:
+  - "@ochkalova"
