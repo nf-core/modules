@@ -1,0 +1,130 @@
+nextflow_process {
+
+    name "Test Process STRDUST"
+    script "../main.nf"
+    process "STRDUST"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "strdust"
+    tag "gunzip"
+    tag "samtools/faidx"
+
+    setup {
+        run("GUNZIP"){
+            script "../../gunzip/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id : 'chr22' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22_chr22_KI270734v1_random/sequence/genome.fa.gz', checkIfExists: true)
+                ]
+            """
+            }
+        }
+        run("SAMTOOLS_FAIDX"){
+            script "../../samtools/faidx/main.nf"
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = [[],[]]
+                """
+            }
+        }
+    }
+
+    test("homo sapiens - bam, fasta, bed") {
+        options '-dump-channels'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[1] = GUNZIP.out.gunzip.join(SAMTOOLS_FAIDX.out.fai).dump()
+                input[2] = Channel.of('chr22\t18890357\t18890451')
+                            .collectFile(name : 'repeats.bed', newLine: false)
+                            .map { file -> [ [ id : 'chr22' ], file ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        path(process.out.vcf[0][1]).vcf.variantsMD5,
+                        process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+    test("homo sapiens - bam, fasta, [] - region parameter") {
+
+        when {
+            params {
+                args = "-r chr22:18890358-18890451"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[1] = GUNZIP.out.gunzip.join(SAMTOOLS_FAIDX.out.fai)
+                input[2] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        path(process.out.vcf[0][1]).vcf.variantsMD5,
+                        process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+    test("Homo sapiens - bam, fasta, [] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[1] = GUNZIP.out.gunzip.join(SAMTOOLS_FAIDX.out.fai)
+                input[2] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        file(process.out.vcf[0][1]).name,
+                        process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+}

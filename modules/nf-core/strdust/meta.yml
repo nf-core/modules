@@ -1,0 +1,84 @@
+name: "STRdust"
+description: Tandem repeat genotyper for long reads
+keywords:
+  - long read
+  - tandem repeats
+  - genomics
+tools:
+  - "STRdust":
+      description: "Tandem repeat genotyper for long reads."
+      homepage: "https://github.com/wdecoster/STRdust/blob/v0.8.2/README.md"
+      documentation: "https://github.com/wdecoster/STRdust/blob/v0.8.2/README.md"
+      tool_dev_url: "https://github.com/wdecoster/STRdust"
+      doi: "10.1101/gr.279265.124 "
+      licence: ["MIT"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: Sorted (and preferably phased) BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+          - edam: "http://edamontology.org/format_2573"
+          - edam: "http://edamontology.org/format_3462"
+    - bai:
+        type: file
+        description: Index of BAM/CRAM/SAM file
+        pattern: "*.{bai,crai,sai,csi}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id: 'GRCh38' ]`
+    - fasta:
+        type: file
+        description: Reference genome
+        pattern: "*.{fa,fasta,fna}?(.gz)"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+    - fai:
+        type: file
+        description: Index of reference genome
+        pattern: "*.{fai,gzi}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing interval information
+          e.g. `[ id: "GRCh38_strs" ] `
+    - bed:
+        type: file
+        description: BED file containing STR regions to genotype (optional)
+        pattern: "*.bed"
+
+output:
+  - bam:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.vcf.gz":
+          type: file
+          description: |
+            Called tandem repeats as VCF file.
+            Sorted only if run in single-threaded mode.
+          pattern: "*.vcf.gz"
+
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@Schmytzi"
+maintainers:
+  - "@Schmytzi"
