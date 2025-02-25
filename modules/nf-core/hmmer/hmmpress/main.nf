@@ -5,7 +5,7 @@ process HMMER_HMMPRESS {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hmmer:3.4--hdbdd923_1' :
-        'community.wave.seqera.io/library/hmmer:3.4--cb5d2dd2e85974ca' }"
+        'biocontainers/hmmer:3.4--hdbdd923_1' }"
 
     input:
     tuple val(meta), path(hmmfile)
@@ -13,6 +13,9 @@ process HMMER_HMMPRESS {
     output:
     tuple val(meta), path("*.h3?"), emit: compressed_db
     path "versions.yml"           , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
