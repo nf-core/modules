@@ -10,10 +10,7 @@ nextflow_process {
     tag "hmmer"
     tag "hmmer/hmmpress"
 
-    test("sarscov2 - proteome_hmm_gz") {
-
-        setup {
-
+    setup {
             run("GUNZIP") {
                 script "../../../gunzip"
 
@@ -27,6 +24,8 @@ nextflow_process {
                 }
             }
         }
+
+    test("sarscov2 - proteome_hmm_gz") {
 
         when {
             process {
@@ -46,22 +45,6 @@ nextflow_process {
 
     test("test-hmmer-hmmpress-stub") {
         options '-stub'
-
-        setup {
-
-            run("GUNZIP") {
-                script "../../../gunzip"
-
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test' ],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.hmm.gz', checkIfExists: true)
-                    ]
-                    """
-                }
-            }
-        }
 
         when {
             process {
