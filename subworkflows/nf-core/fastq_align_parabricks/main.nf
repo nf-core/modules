@@ -1,8 +1,7 @@
 //
 // Alignment and BQSR with Nvidia CLARA Parabricks
 //
-include { PARABRICKS_FQ2BAM    } from '../../../modules/nf-core/parabricks/fq2bam/main'
-include { PARABRICKS_APPLYBQSR } from '../../../modules/nf-core/parabricks/applybqsr/main'
+include { PARABRICKS_FQ2BAM } from '../../../modules/nf-core/parabricks/fq2bam/main'
 
 workflow FASTQ_ALIGN_PARABRICKS {
 
