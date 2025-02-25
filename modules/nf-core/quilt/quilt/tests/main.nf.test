@@ -61,6 +61,9 @@ nextflow_process {
             params{
                 quilt_args = "--save_prepared_reference=TRUE --make_plots=TRUE --seed=1"
                 bcftools_query_args = "-f '[%GT]\\n'"
+                bcftools_query_suffix = "genfile.txt"
+                gawk_posfile_suffix = "posfile.txt"
+                gawk_name_suffix = "genfile.name.txt"
             }
             process {
                 """
