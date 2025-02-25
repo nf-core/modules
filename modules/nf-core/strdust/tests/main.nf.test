@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process STRDUST"
     script "../main.nf"
     process "STRDUST"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -68,7 +69,7 @@ nextflow_process {
 
         when {
             params {
-                args = "-r chr22:18890358-18890451"
+                strdust_args = "--region chr22:18890358-18890451"
             }
             process {
                 """

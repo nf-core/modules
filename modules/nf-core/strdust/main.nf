@@ -41,7 +41,7 @@ process STRDUST {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        STRdust: \$(STRdust --version |& sed '1!d ; s/samtools //')
+        STRdust: \$(STRdust --version |& sed '1!d ; s/STRdust //')
         bgzip: \$(bgzip --version |& sed '1!d ; s/bgzip (htslib) //')
     END_VERSIONS
     """
@@ -54,7 +54,7 @@ process STRDUST {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        strdust: \$(samtools --version |& sed '1!d ; s/samtools //')
+        strdust: \$(STRdust --version |& sed '1!d ; s/STRdust //')
         bgzip: \$(bgzip --version |& sed '1!d ; s/bgzip (htslib) //')
     END_VERSIONS
     """
