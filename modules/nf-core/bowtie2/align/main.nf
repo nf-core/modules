@@ -4,8 +4,8 @@ process BOWTIE2_ALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-ac74a7f02cebcfcc07d8e8d1d750af9c83b4d45a:f70b31a2db15c023d641c32f433fb02cd04df5a6-0' :
-        'biocontainers/mulled-v2-ac74a7f02cebcfcc07d8e8d1d750af9c83b4d45a:f70b31a2db15c023d641c32f433fb02cd04df5a6-0' }"
+        'oras://community.wave.seqera.io/library/bowtie2_samtools_pigz:19e9ad812f803021' :
+        'community.wave.seqera.io/library/bowtie2_samtools_pigz:8bde63944b003030' }"
 
     input:
     tuple val(meta) , path(reads)
