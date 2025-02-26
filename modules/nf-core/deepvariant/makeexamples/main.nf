@@ -3,7 +3,7 @@ process DEEPVARIANT_MAKEEXAMPLES {
     label 'process_high'
 
     //Conda is not supported at the moment
-    container "nf-core/deepvariant:1.6.1"
+    container "docker.io/google/deepvariant:1.8.0"
 
     input:
     tuple val(meta), path(input), path(index), path(intervals)
@@ -15,6 +15,7 @@ process DEEPVARIANT_MAKEEXAMPLES {
     output:
     tuple val(meta), path("${prefix}.examples.tfrecord-*-of-*.gz{,.example_info.json}"),    emit: examples
     tuple val(meta), path("${prefix}.gvcf.tfrecord-*-of-*.gz"),        emit: gvcf
+    tuple val(meta), path("${prefix}_call_variant_outputs.examples.tfrecord-*-of-*.gz",  arity: "0..*"),        emit: small_model_calls
     path "versions.yml",  emit: versions
 
     when:
