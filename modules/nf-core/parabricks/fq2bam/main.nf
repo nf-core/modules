@@ -70,7 +70,6 @@ process PARABRICKS_FQ2BAM {
         error "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
     def extension = "$output_fmt"
     def extension_index = "$output_fmt" == "cram" ? "crai" : "bai"
     def known_sites_output = known_sites ? "touch ${prefix}.table" : ""
