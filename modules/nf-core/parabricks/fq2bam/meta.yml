@@ -49,7 +49,11 @@ input:
         description: (optional) file(s) containing genomic intervals for use in base
           quality score recalibration (BQSR)
         pattern: "*.{bed,interval_list,picard,list,intervals}"
-  - - known_sites:
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing known sites information
+    - known_sites:
         type: file
         description: (optional) known sites file(s) for calculating BQSR. markdups must
           be true to perform BQSR.
@@ -119,13 +123,13 @@ output:
       - "*":
           type: directory
           description: (optional) optional directory of qc metrics
-          pattern: "qc_metrics"
+          pattern: "*_qc_metrics"
   - duplicate_metrics:
       - "*.txt":
           type: file
           description: (optional) metrics calculated from marking duplicates in the bam
             file
-          pattern: "*-duplicate-metrics.txt"
+          pattern: "*.duplicate-metrics.txt"
 authors:
   - "@bsiranosian"
   - "@adamrtalbot"
