@@ -20,7 +20,7 @@ process PARABRICKS_FQ2BAM {
     tuple val(meta), path("*.cram")                 , emit: cram             , optional:true
     tuple val(meta), path("*.crai")                 , emit: crai             , optional:true
     tuple val(meta), path("*.table")                , emit: bqsr_table       , optional:true
-    tuple val(meta), path("${prefix}_qc_metrics")   , emit: qc_metrics       , optional:true
+    tuple val(meta), path("*_qc_metrics")   , emit: qc_metrics       , optional:true
     tuple val(meta), path("*.duplicate-metrics.txt"), emit: duplicate_metrics, optional: true
     path("versions.yml")                            , emit: versions
 
@@ -33,7 +33,7 @@ process PARABRICKS_FQ2BAM {
         error "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     def in_fq_command = meta.single_end ? "--in-se-fq $reads" : "--in-fq $reads"
     def extension = "$output_fmt"
@@ -70,6 +70,7 @@ process PARABRICKS_FQ2BAM {
         error "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def extension = "$output_fmt"
     def extension_index = "$output_fmt" == "cram" ? "crai" : "bai"
     def known_sites_output = known_sites ? "touch ${prefix}.table" : ""

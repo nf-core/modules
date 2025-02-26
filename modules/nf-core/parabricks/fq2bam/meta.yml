@@ -119,7 +119,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-      - ${prefix}_qc_metrics:
+      - "*_qc_metrics":
           type: directory
           description: (optional) optional directory of qc metrics
           pattern: "*_qc_metrics"
