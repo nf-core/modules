@@ -1,13 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
-  - pytorch
   - conda-forge
-  # NOTE https://github.com/nf-core/modules/issues/5813
+  - bioconda
 dependencies:
-  - cpuonly
-  - python=3.9
-  - pytorch
-  - torchvision
-  - pip:
-      - spotiflow
+  - bioconda::hmmer=3.4
