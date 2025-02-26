@@ -26,13 +26,14 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ])
                 input[2] = []
+                input[3] = []
                 """
             }
             }
         }
 
     test("homo_sapiens-bam-fasta-fai") {
-        
+
         when {
             process {
                 """
@@ -50,5 +51,5 @@ nextflow_process {
             )
         }
     }
-    
+
 }
