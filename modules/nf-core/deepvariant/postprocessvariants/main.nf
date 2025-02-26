@@ -45,16 +45,15 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
     // The following block determines whether the small model was used, and if so, adds the variant calls from it
     // to the argument --small_model_cvo_records.
     def small_model_arg = ""
-    def small_model_calls_copy = small_model_calls // Create a copy of the process-level variable so it can be used inside the if{}
-    if (small_model_calls_copy) {
-        def small_model_matcher = (small_model_calls_copy[0].baseName =~ /^(.+)-\d{5}-of-(\d{5})$/)
+    if (small_model_calls) {
+        small_model_matcher = (small_model_calls[0].baseName =~ /^(.+)-\d{5}-of-(\d{5})$/)
         if (!small_model_matcher.matches()) {
-            throw new IllegalArgumentException("tfrecord baseName '" + small_model_calls_copy[0].baseName + "' doesn't match the expected pattern")
+            throw new IllegalArgumentException("tfrecord baseName '" + small_model_calls[0].baseName + "' doesn't match the expected pattern")
         }
-        def small_model_tfrecord_name = small_model_matcher[0][1]
-        def small_model_shardCount = small_model_matcher[0][2]
+        small_model_tfrecord_name = small_model_matcher[0][1]
+        small_model_shardCount = small_model_matcher[0][2]
         // Reconstruct the logical name. Example: test_call_variant_outputs.examples.tfrecord@12.gz
-        def small_model_tfrecords_logical_name = "${small_model_tfrecord_name}@${small_model_shardCount}.gz"
+        small_model_tfrecords_logical_name = "${small_model_tfrecord_name}@${small_model_shardCount}.gz"
         small_model_arg = "--small_model_cvo_records ${small_model_tfrecords_logical_name}"
     }
 
