@@ -36,7 +36,6 @@ nextflow_workflow {
                 // Ref: https://forums.developer.nvidia.com/t/problem-with-gpu/256825/6
                 // Parabricks’s fq2bam requires 24GB of memory.
                 // Using --low-memory for testing
-                module_args2 = '--output-fmt cram'
             }
             workflow {
                 """
@@ -54,6 +53,7 @@ nextflow_workflow {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/baits.interval_list', checkIfExists: true)
                 ])
                 input[4] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
+                input[5] = 'cram'
                 """
             }
         }
@@ -80,7 +80,6 @@ nextflow_workflow {
                 // Ref: https://forums.developer.nvidia.com/t/problem-with-gpu/256825/6
                 // Parabricks’s fq2bam requires 24GB of memory.
                 // Using --low-memory for testing
-                module_args2 = '--output-fmt cram'
             }
             workflow {
                 """
@@ -101,6 +100,7 @@ nextflow_workflow {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/baits.interval_list', checkIfExists: true)
                 ])
                 input[4] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
+                input[5] = 'cram'
                 """
             }
         }
@@ -128,7 +128,6 @@ nextflow_workflow {
                 // Ref: https://forums.developer.nvidia.com/t/problem-with-gpu/256825/6
                 // Parabricks’s fq2bam requires 24GB of memory.
                 // Using --low-memory for testing
-                module_args2 = '--output-fmt bam'
             }
             workflow {
                 """
@@ -149,6 +148,7 @@ nextflow_workflow {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/picard/baits.interval_list', checkIfExists: true)
                 ])
                 input[4] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
+                input[5] = 'bam'
                 """
             }
         }

@@ -11,6 +11,7 @@ workflow FASTQ_ALIGN_PARABRICKS {
     ch_index // channel: [mandatory] meta, index
     ch_interval_file // channel: [optional] meta, intervals_bed_combined
     ch_known_sites // channel [optional] known_sites_indels
+    val_output_fmt // either bam or cram
 
     main:
     ch_versions          = Channel.empty()
@@ -27,7 +28,8 @@ workflow FASTQ_ALIGN_PARABRICKS {
         ch_fasta,
         ch_index,
         ch_interval_file,
-        ch_known_sites
+        ch_known_sites,
+        val_output_fmt
     )
 
     // Collecting FQ2BAM outputs
