@@ -120,12 +120,12 @@ output:
           description: File containing software versions
           pattern: "versions.yml"
   - qc_metrics:
-      - "*":
+      - "*_qc_metrics":
           type: directory
           description: (optional) optional directory of qc metrics
           pattern: "*_qc_metrics"
   - duplicate_metrics:
-      - "*.txt":
+      - "*.duplicate-metrics.txt":
           type: file
           description: (optional) metrics calculated from marking duplicates in the bam
             file
