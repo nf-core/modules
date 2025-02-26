@@ -165,6 +165,7 @@ jobs:
           paths: "${{ join(fromJson(steps.filter.outputs.filtered_paths), ' ') }}"
 
       - name: Setup ssh session
+        if: always()
         uses: Warpbuilds/action-debugger@v1.3
 
   confirm-pass-nf-test:
