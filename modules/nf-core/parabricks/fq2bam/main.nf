@@ -12,6 +12,7 @@ process PARABRICKS_FQ2BAM {
     tuple val(meta3), path(index)
     tuple val(meta4), path(interval_file)
     path(known_sites)
+    val(output_fmt) // either bam or cram
 
     output:
     tuple val(meta), path("*.bam")  , emit: bam              , optional:true
@@ -32,10 +33,9 @@ process PARABRICKS_FQ2BAM {
         error "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def in_fq_command = meta.single_end ? "--in-se-fq $reads" : "--in-fq $reads"
-    def extension = args2.contains("--output-fmt bam") ? "bam" : "cram"
+    def extension = "$output_fmt"
     def known_sites_command = known_sites ? known_sites.collect{"--knownSites $it"}.join(' ') : ""
     def known_sites_output = known_sites ? "--out-recal-file ${prefix}.table" : ""
     def interval_file_command = interval_file ? interval_file.collect{"--interval-file $it"}.join(' ') : ""
@@ -67,10 +67,9 @@ process PARABRICKS_FQ2BAM {
         error "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def extension = args2.contains("--output-fmt bam") ? "bam" : "cram"
-    def extension_index = extension == "cram" ? "crai" : "bai"
+    def extension = "$output_fmt"
+    def extension_index = "$output_fmt" == "cram" ? "crai" : "bai"
     def known_sites_output = known_sites ? "touch ${prefix}.table" : ""
     def qc_metrics_output = args.contains("--out-qc-metrics-dir") ? "mkdir ${prefix}_qc_metrics" : ""
     def duplicate_metrics_output = args.contains("--out-duplicate-metrics") ? "touch ${prefix}.duplicate-metrics.txt" : ""

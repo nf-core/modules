@@ -54,6 +54,10 @@ input:
         description: (optional) known sites file(s) for calculating BQSR. markdups must
           be true to perform BQSR.
         pattern: "*.vcf.gz"
+  - - output_fmt:
+        type: value
+        description: Output format for the alignment. Options are 'bam' or 'cram'
+        pattern: "{bam,cram}"
 output:
   - bam:
       - meta:
