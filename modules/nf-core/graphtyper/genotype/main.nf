@@ -14,17 +14,17 @@ process GRAPHTYPER_GENOTYPE {
     path region_file  // can be empty if --region is supplied to task.ext.args
 
     output:
-    tuple val(meta), path("results/*/*.vcf.gz"), emit: vcf
+    tuple val(meta), path("results/*/*.vcf.gz")    , emit: vcf
     tuple val(meta), path("results/*/*.vcf.gz.tbi"), emit: tbi
-    path "versions.yml"           , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def bam_path_text = bam.join('\\n')
-    def region_text = region_file.size() > 0 ? "--region_file ${region_file}" : ""
+    def args          = task.ext.args ?: ''
+    def bam_path_text = bam.sort().join('\\n')
+    def region_text   = region_file.size() > 0 ? "--region_file ${region_file}" : ""
     if (region_file.size() == 0 && ! args.contains("region")) {
         error "GRAPHTYPER_GENOTYPE requires either a region file or a region specified using '--region' in ext.args"
     }
