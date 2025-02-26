@@ -22,7 +22,7 @@ process SVTOOLS_VCFTOBEDPE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     svtools vcftobedpe \\
-        $args
+        $args \\
         --input $vcf \\
         --output ${prefix}.bedpe \\
         --tempdir ./tmp
