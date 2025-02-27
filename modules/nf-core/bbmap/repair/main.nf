@@ -3,8 +3,8 @@ process BBMAP_REPAIR {
     label 'process_single'
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bbmap:39.13--he5f24ec_1':
-        'biocontainers/bbmap:39.13--he5f24ec_1' }"
+        'https://depot.galaxyproject.org/singularity/bbmap:39.17-h44cf5ac_0':
+        'biocontainers/bbmap:39.17-h44cf5ac_0' }"
 
     input:
     tuple val(meta), path(reads)
