@@ -4,8 +4,8 @@ process TCOFFEE_EXTRACTFROMPDB {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/t-coffee:13.46.0.919e8c6b--hfc96bf3_0':
-        'biocontainers/t-coffee:13.46.0.919e8c6b--hfc96bf3_0' }"
+        'oras://community.wave.seqera.io/library/t-coffee:13.46.1.b8b01e06--b0a9122109906f7c':
+        'community.wave.seqera.io/library/t-coffee:13.46.1.b8b01e06--6dba321d206c56ab' }"
 
     input:
     tuple val(meta), path(pdb)
@@ -23,6 +23,9 @@ process TCOFFEE_EXTRACTFROMPDB {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     export TEMP='./'
+    export TMP_4_TCOFFEE="./"
+    export HOME="./"
+
     t_coffee -other_pg extract_from_pdb \
         -infile ${pdb} \
         $args \
@@ -40,6 +43,9 @@ process TCOFFEE_EXTRACTFROMPDB {
     """
     # Otherwise, tcoffee will crash when calling its version
     export TEMP='./'
+    export TMP_4_TCOFFEE="./"
+    export HOME="./"
+
     touch "${prefix}.pdb"
 
     cat <<-END_VERSIONS > versions.yml
