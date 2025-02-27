@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process MGIKIT_DEMULTIPLEX"
     script "modules/nf-core/mgikit/demultiplex/main.nf"
     process "MGIKIT_DEMULTIPLEX"
+    config "./nextflow.config"
     tag "mgikit"
     tag "mgikit/demultiplex"
     tag "modules"
