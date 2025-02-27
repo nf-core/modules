@@ -20,8 +20,8 @@ process PARABRICKS_FQ2BAM {
     tuple val(meta), path("*.cram")                 , emit: cram             , optional:true
     tuple val(meta), path("*.crai")                 , emit: crai             , optional:true
     tuple val(meta), path("*.table")                , emit: bqsr_table       , optional:true
-    tuple val(meta), path("*_qc_metrics")   , emit: qc_metrics       , optional:true
-    tuple val(meta), path("*.duplicate-metrics.txt"), emit: duplicate_metrics, optional: true
+    tuple val(meta), path("*_qc_metrics")           , emit: qc_metrics       , optional:true
+    tuple val(meta), path("*.duplicate-metrics.txt"), emit: duplicate_metrics, optional:true
     path("versions.yml")                            , emit: versions
 
     when:
