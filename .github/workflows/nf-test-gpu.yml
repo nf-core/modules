@@ -105,15 +105,44 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Debug GPU access
+      - name: Basic GPU Check
         run: |
           whoami
           groups
           nvidia-smi
           docker info | grep -i runtime
+        # This should succeed based on your output
+
+      - name: Run Application (Will Fail)
+        run: |
+          # Run your actual application command here
+          # For example: python my_gpu_script.py
+          # Or: docker run your_image your_command
+          # ADD "set -x" TO SEE EXACTLY WHAT'S HAPPENING
+          set -x
+          your_actual_command_that_fails
+        continue-on-error: true # This allows the workflow to continue even if this step fails
+
+      - name: Debug Environment
+        run: |
+          echo "=== Debug After Failure ==="
           env | grep -i cuda
           env | grep -i nvidia
           ls -la /dev/nvidia*
+          ldconfig -p | grep cuda
+        continue-on-error: true # This allows the workflow to continue even if this step fails
+
+      - name: Test Different CUDA Versions
+        run: |
+          # Test with CUDA 12.0
+          docker run --rm --gpus all nvidia/cuda:12.0.1-base-ubuntu22.04 nvidia-smi
+
+          # Test with CUDA 11.8
+          docker run --rm --gpus all nvidia/cuda:11.8.0-base-ubuntu22.04 nvidia-smi
+
+          # Try running your application inside a CUDA container
+          docker run --rm --gpus all -v $(pwd):/app -w /app nvidia/cuda:11.8.0-runtime-ubuntu22.04 your_application_command
+        continue-on-error: true # This allows the workflow to continue even if this step fails
 
       - name: Run nf-test Action
         uses: ./.github/actions/nf-test-action
