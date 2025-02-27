@@ -9,6 +9,9 @@ components:
   - gprofiler2/gost
   - gsea/gsea
   - propr/grea
+  - custom/tabulartogseagct
+  - custom/tabulartogseacls
+  - custom/tabulartogseachip
 input:
   - ch_input:
       description: Channel with the input data for functional analysis.
@@ -133,7 +136,7 @@ output:
             pattern: "*gsea_report_for_${target}.tsv"
   - grea_results:
       description: |
-          Channel containing the output from GREA.
+        Channel containing the output from GREA.
       structure:
         - meta:
             type: map
