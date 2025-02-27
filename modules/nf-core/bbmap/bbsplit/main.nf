@@ -5,7 +5,7 @@ process BBMAP_BBSPLIT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bbmap:39.17--h44cf5ac_0':
+        'https://depot.galaxyproject.org/singularity/bbmap:39.17--he5f24ec_0':
         'biocontainers/bbmap:39.17--he5f24ec_0' }"
 
     input:
