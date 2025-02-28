@@ -191,6 +191,10 @@ jobs:
         if: ${{ contains(needs.*.result, 'success') }}
         run: exit 0
 
+      - name: All tests skipped
+        if: ${{ !contains(needs.*.result, 'success') && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') }}
+        run: exit 0
+
       - name: debug-print
         if: always()
         run: |
