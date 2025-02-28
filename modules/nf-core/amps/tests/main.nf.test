@@ -84,7 +84,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.json,
+                    process.out.tsv,
+                    process.out.summary_pdf.collect{file(it).name},
+                    process.out.candidate_pdfs.collect{file(it).listFiles().name}
+                ).match() }
             )
         }
 
