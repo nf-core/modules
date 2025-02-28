@@ -1,0 +1,107 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core subworkflows test fastq_create_umi_consensus_fgbio
+nextflow_workflow {
+
+    name "Test Subworkflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO"
+    script "../main.nf"
+    workflow "FASTQ_CREATE_UMI_CONSENSUS_FGBIO"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fastq_create_umi_consensus_fgbio"
+    tag "bwa/index"
+    tag "bwa/mem"
+    tag "bwamem2/mem"
+    tag "bwamem2/index"
+    tag "fgbio/callmolecularconsensus"
+    tag "fgbio/callduplexconsensus"
+    tag "fgbio/fastqtobam"
+    tag "fgbio/filterconsensusreads"
+    tag "fgbio/groupreadsbyumi"
+    tag "fgbio/zipperbams"
+    tag "samtools/fastq"
+    tag "samtools/sort"
+    tag "samtools/view"
+    tag "samtools/index"
+
+    test("single_umi") {
+
+        config './single.config'
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [ id:'test_single', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test.umi_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test.umi_2.fastq.gz', checkIfExists: true),
+                    ]
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                ]
+                input[2] = false
+                input[3] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true),
+                ]
+                input[4] = "Adjacency"
+                input[5] = "bwa-mem"
+                input[6] = false
+                input[7] = 1
+                input[8] = 20
+                input[9] = 0.5
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
+
+    test("duplex_umi") {
+
+        config './duplex.config'
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [ id:'test_single', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_duplex_umi_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_duplex_umi_2.fastq.gz', checkIfExists: true),
+                    ]
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                ]
+                input[2] = false
+                input[3] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true),
+                ]
+                input[4] = "Adjacency"
+                input[5] = "bwa-mem"
+                input[6] = false
+                input[7] = 1
+                input[8] = 20
+                input[9] = 0.5
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
+
+}
