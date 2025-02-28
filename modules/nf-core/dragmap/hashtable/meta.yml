@@ -22,6 +22,7 @@ input:
     - fasta:
         type: file
         description: Input genome fasta file
+        ontologies: []
 output:
   - hashmap:
       - meta:
@@ -33,11 +34,13 @@ output:
           type: file
           description: DRAGMAP hash table
           pattern: "*.{cmp,.bin,.txt}"
+          ontologies: []
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies: []
 authors:
   - "@edmundmiller"
 maintainers:
