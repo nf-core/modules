@@ -7,28 +7,34 @@ keywords:
   - tumor
 tools:
   - "msisensor2":
-      description: "MSIsensor2 is a novel algorithm based machine learning, featuring a large upgrade in the microsatellite instability (MSI) detection for tumor only sequencing data, including Cell-Free DNA (cfDNA), Formalin-Fixed Paraffin-Embedded(FFPE) and other sample types. The original MSIsensor is specially designed for tumor/normal paired sequencing data."
+      description: "MSIsensor2 is a novel algorithm based machine learning, featuring
+        a large upgrade in the microsatellite instability (MSI) detection for tumor
+        only sequencing data, including Cell-Free DNA (cfDNA), Formalin-Fixed Paraffin-Embedded(FFPE)
+        and other sample types. The original MSIsensor is specially designed for tumor/normal
+        paired sequencing data."
       homepage: "https://github.com/niu-lab/msisensor2"
       documentation: "https://github.com/niu-lab/msisensor2/blob/master/README.md"
       tool_dev_url: "https://github.com/niu-lab/msisensor2"
       licence: ["GPL-3.0"]
+      identifier: ""
 input:
-  - fasta:
-      type: file
-      description: Path to reference genome.
-      pattern: "*.fasta"
-  - output:
-      type: string
-      description: Name of output MSI scan to write.
+  - - fasta:
+        type: file
+        description: Path to reference genome.
+        pattern: "*.fasta"
+  - - output:
+        type: string
+        description: Name of output MSI scan to write.
 output:
+  - scan:
+      - output_path:
+          type: file
+          description: Path to output MSI scan file.
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - output:
-      type: file
-      description: Output scan of MSI regions in FASTA file.
-      pattern: "*"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@adamrtalbot"
 maintainers:

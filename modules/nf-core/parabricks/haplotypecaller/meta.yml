@@ -1,5 +1,6 @@
 name: "parabricks_haplotypecaller"
-description: NVIDIA Clara Parabricks GPU-accelerated germline variant calling, replicating GATK haplotypecaller.
+description: NVIDIA Clara Parabricks GPU-accelerated germline variant calling, replicating
+  GATK haplotypecaller.
 keywords:
   - variant
   - vcf
@@ -11,49 +12,61 @@ tools:
       homepage: https://www.nvidia.com/en-us/clara/genomics/
       documentation: https://docs.nvidia.com/clara/parabricks/4.2.0/index.html
       licence: ["custom"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information.
-        [ id:'test']
-  - ref_meta:
-      type: map
-      description: |
-        Groovy Map containing reference information.
-        [ id:'test']
-  - input:
-      type: file
-      description: bam file for sample to be variant called.
-      pattern: "*.bam"
-  - input_index:
-      type: file
-      description: (Optional) bai index corresponding to input bam file. Only necessary when using intervals.
-      pattern: "*.bai"
-  - interval_file:
-      type: file
-      description: file or files containing genomic intervals.
-      pattern: "*.{bed,interval_list,picard,list,intervals}"
-  - fasta:
-      type: file
-      description: reference fasta - must be unzipped.
-      pattern: "*.fasta"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information.
+          [ id:'test']
+    - input:
+        type: file
+        description: bam file for sample to be variant called.
+        pattern: "*.bam"
+    - input_index:
+        type: file
+        description: (Optional) bai index corresponding to input bam file. Only necessary
+          when using intervals.
+        pattern: "*.bai"
+    - interval_file:
+        type: file
+        description: file or files containing genomic intervals.
+        pattern: "*.{bed,interval_list,picard,list,intervals}"
+  - - ref_meta:
+        type: map
+        description: |
+          Groovy Map containing reference information.
+          [ id:'test']
+    - fasta:
+        type: file
+        description: reference fasta - must be unzipped.
+        pattern: "*.fasta"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information.
-        e.g. [ id:'test' ]
-  - versions:
-      type: file
-      description: File containing software versions.
-      pattern: "versions.yml"
   - vcf:
-      type: file
-      description: variant file.
-      pattern: "*.vcf"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+            e.g. [ id:'test' ]
+      - "*.vcf":
+          type: file
+          description: variant file.
+          pattern: "*.vcf"
+  - gvcf:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+            e.g. [ id:'test' ]
+      - "*.g.vcf.gz":
+          type: file
+          description: genomic variant file, gzipped.
+          pattern: "*.g.vcf.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions.
+          pattern: "versions.yml"
 authors:
   - "@bsiranosian"

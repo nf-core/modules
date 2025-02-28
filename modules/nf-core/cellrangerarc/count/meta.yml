@@ -1,39 +1,60 @@
 name: cellrangerarc_count
-description: Module to use Cell Ranger's ARC pipelines analyze sequencing data produced from Chromium Single Cell ARC. Uses the cellranger-arc count command.
+description: Module to use Cell Ranger's ARC pipelines analyze sequencing data produced
+  from Chromium Single Cell ARC. Uses the cellranger-arc count command.
 keywords:
   - align
   - count
   - reference
 tools:
   - cellrangerarc:
-      description: Cell Ranger ARC is a set of analysis pipelines that process Chromium Single Cell ARC data.
+      description: Cell Ranger ARC is a set of analysis pipelines that process Chromium
+        Single Cell ARC data.
       homepage: https://support.10xgenomics.com/single-cell-multiome-atac-gex/software/pipelines/latest/what-is-cell-ranger-arc
       documentation: https://support.10xgenomics.com/single-cell-multiome-atac-gex/software/pipelines/latest/what-is-cell-ranger-arc
       tool_dev_url: https://support.10xgenomics.com/single-cell-multiome-atac-gex/software/pipelines/latest/what-is-cell-ranger-arc
       licence:
         - 10x Genomics EULA
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - lib_csv:
-      type: file
-      description: |
-        Path to a 3-column CSV file declaring FASTQ paths, sample names and library types of input ATAC and GEX FASTQs.
-  - reference:
-      type: directory
-      description: Directory containing all the reference indices needed by Cell Ranger ARC
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - sample_type:
+        type: string
+        description: The type of sample
+    - sub_sample:
+        type: string
+        description: The name of sub sample
+    - reads:
+        type: file
+        description: FASTQ files produced using Cell Ranger ARC
+        pattern: "*.fastq.gz"
+  - - reference:
+        type: directory
+        description: Directory containing all the reference indices needed by Cell Ranger
+          ARC
 output:
   - outs:
-      type: file
-      description: Files containing the outputs of Cell Ranger ARC
-      pattern: "${meta.id}/outs/*"
+      - meta:
+          type: file
+          description: Files containing the outputs of Cell Ranger ARC
+          pattern: "${meta.id}/outs/*"
+      - ${meta.id}/outs/**:
+          type: file
+          description: Files containing the outputs of Cell Ranger ARC
+          pattern: "${meta.id}/outs/*"
+  - lib:
+      - ${meta.id}_lib.csv:
+          type: file
+          description: Library
+          pattern: "*_lib.csv"
   - versions:
-      type: file
-      description: File containing software version
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software version
+          pattern: "versions.yml"
 authors:
   - "@ggabernet"
   - "@edmundmiller"

@@ -10,40 +10,50 @@ keywords:
   - contamination
 tools:
   - "haplocheck":
-      description: "Detects in-sample contamination in mtDNA or WGS sequencing studies by analyzing the mitochondrial content."
+      description: "Detects in-sample contamination in mtDNA or WGS sequencing studies
+        by analyzing the mitochondrial content."
       homepage: "https://github.com/genepi/haplocheck"
       documentation: "https://github.com/genepi/haplocheck"
       tool_dev_url: "https://github.com/genepi/haplocheck"
       doi: 10.1101/gr.256545.119
       licence: ["MIT"]
+      identifier: biotools:haplocheck
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: VCF file
-      pattern: "*.{vcf.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: VCF file
+        pattern: "*.{vcf.gz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - txt:
-      type: file
-      description: Raw report in txt format
-      pattern: "*.{txt}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt":
+          type: file
+          description: Raw report in txt format
+          pattern: "*.{txt}"
   - html:
-      type: file
-      description: Haplocheck HTML report
-      pattern: "*.{html}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.html":
+          type: file
+          description: Haplocheck HTML report
+          pattern: "*.{html}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@lmtani"
 maintainers:

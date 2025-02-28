@@ -18,63 +18,88 @@ tools:
       tool_dev_url: "https://github.com/tpq/propr"
       doi: "10.1038/s41598-017-16520-0"
       licence: ["GPL-2"]
+      identifier: biotools:propr
   - "corpcor":
       description: "Efficient Estimation of Covariance and (Partial) Correlation"
       homepage: "https://cran.r-project.org/web/packages/corpcor/index.html"
       documentation: "https://cran.r-project.org/web/packages/corpcor/corpcor.pdf"
       doi: "10.2202/1544-6115.1175"
       licence: ["GPL >=3"]
+      identifier: biotools:propr
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information.
-        This can be used at the workflow level to pass optional parameters to the module.
-        [id: 'test', ...]
-  - count:
-      type: file
-      description: |
-        Count matrix, where rows = variables or genes, columns = samples or cells.
-        This matrix should not contain zeros. Otherwise, they will be replaced by the minimun number.
-        It is recommended to handle the zeros beforehand with the method of preference.
-      pattern: "*.{csv,tsv}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information.
+          This can be used at the workflow level to pass optional parameters to the module.
+          [id: 'test', ...]
+    - count:
+        type: file
+        description: |
+          Count matrix, where rows = variables or genes, columns = samples or cells.
+          This matrix should not contain zeros. Otherwise, they will be replaced by the minimum number.
+          It is recommended to handle the zeros beforehand with the method of preference.
+        pattern: "*.{csv,tsv}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information.
-        This can be used at the workflow level to pass optional parameters to the module.
-        [id: 'test', ...]
   - propr:
-      type: file
-      description: R propr object
-      pattern: "*.propr.rds"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+            This can be used at the workflow level to pass optional parameters to the module.
+            [id: 'test', ...]
+      - "*.propr.rds":
+          type: file
+          description: R propr object
+          pattern: "*.propr.rds"
   - matrix:
-      type: file
-      description: Coefficient matrix
-      pattern: "*.propr.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+            This can be used at the workflow level to pass optional parameters to the module.
+            [id: 'test', ...]
+      - "*.propr.tsv":
+          type: file
+          description: Coefficient matrix
+          pattern: "*.propr.tsv"
   - fdr:
-      type: file
-      description: (optional) propr fdr table
-      pattern: "*.fdr.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+            This can be used at the workflow level to pass optional parameters to the module.
+            [id: 'test', ...]
+      - "*.fdr.tsv":
+          type: file
+          description: (optional) propr fdr table
+          pattern: "*.fdr.tsv"
   - adj:
-      type: file
-      description: (optional) propr adjacency table
-      pattern: "*.adj.csv"
-  - session_info:
-      type: file
-      description: dump of R SessionInfo
-      pattern: "*.R_sessionInfo.log"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+            This can be used at the workflow level to pass optional parameters to the module.
+            [id: 'test', ...]
+      - "*.adj.csv":
+          type: file
+          description: (optional) propr adjacency table
+          pattern: "*.adj.csv"
   - warnings:
-      type: file
-      description: Warnings
-      pattern: "*.warnings.log"
+      - "*.warnings.log":
+          type: file
+          description: Warnings
+          pattern: "*.warnings.log"
+  - session_info:
+      - "*.R_sessionInfo.log":
+          type: file
+          description: dump of R SessionInfo
+          pattern: "*.R_sessionInfo.log"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@suzannejin"

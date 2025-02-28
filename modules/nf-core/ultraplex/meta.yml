@@ -1,5 +1,6 @@
 name: "ultraplex"
-description: Ultraplex is an all-in-one software package for processing and demultiplexing fastq files.
+description: Ultraplex is an all-in-one software package for processing and demultiplexing
+  fastq files.
 keywords:
   - demultiplex
   - fastq
@@ -12,38 +13,56 @@ tools:
       tool_dev_url: https://github.com/ulelab/ultraplex
       doi: "10.5281/zenodo.465128"
       licence: ["MIT"]
+      identifier: biotools:ultraplex
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fastq:
-      type: file
-      description: Zipped FASTQ file
-      pattern: "*.{fastq.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: FASTQ file(s) to demultiplex
+  - - barcode_file:
+        type: file
+        description: FASTQ file containing barcode sequences
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - fastq:
-      type: file
-      description: Demultiplexed sample FASTQ files
-      pattern: "*[!no_match].fastq.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*[!no_match].fastq.gz"
+      - "*_matched.fastq.gz":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*[!no_match].fastq.gz"
   - no_match_fastq:
-      type: file
-      description: FASTQ file containing reads that could not be demultiplexed
-      pattern: "*no_match.fastq.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*no_match.fastq.gz"
+      - "*_no_match_*.fastq.gz":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*no_match.fastq.gz"
   - report:
-      type: file
-      description: File containing demultiplexing log
-      pattern: "*.log"
+      - "*.log":
+          type: file
+          description: File containing demultiplexing log
+          pattern: "*.log"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@CharlotteAnne"
   - "@oscarwilkins"

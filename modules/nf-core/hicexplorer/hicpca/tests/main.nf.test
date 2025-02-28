@@ -1,0 +1,58 @@
+nextflow_process {
+
+    name "Test Process HICEXPLORER_HICPCA"
+    script "../main.nf"
+    process "HICEXPLORER_HICPCA"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hicexplorer"
+    tag "hicexplorer/hicpca"
+
+    test("mm9 chr1") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file('https://github.com/deeptools/HiCExplorer/raw/master/hicexplorer/test/test_data/hicPCA/mm9_reduced_chr1.cool', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("mm9 chr1 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file('https://github.com/deeptools/HiCExplorer/raw/master/hicexplorer/test/test_data/hicPCA/mm9_reduced_chr1.cool', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

@@ -1,5 +1,6 @@
 name: "mmseqs_tsv2exprofiledb"
-description: Conversion of expandable profile to databases to the MMseqs2 databases format
+description: Conversion of expandable profile to databases to the MMseqs2 databases
+  format
 keywords:
   - protein sequence
   - databases
@@ -8,30 +9,35 @@ keywords:
   - indexing
 tools:
   - "mmseqs":
-      description: "MMseqs2: ultra fast and sensitive sequence search and clustering suite"
+      description: "MMseqs2: ultra fast and sensitive sequence search and clustering
+        suite"
       homepage: "https://github.com/soedinglab/MMseqs2"
       documentation: "https://mmseqs.com/latest/userguide.pdf"
       tool_dev_url: "https://github.com/soedinglab/MMseqs2"
       doi: "10.1093/bioinformatics/btw006"
       licence: ["GPL v3"]
+      identifier: biotools:mmseqs
 input:
-  - db:
-      type: directory
-      description: |
-        Directory containing the DB to be indexed
-      pattern: "*"
+  - - database:
+        type: directory
+        description: |
+          Directory containing the database to be indexed
+        pattern: "*"
 output:
-  - versions:
-      type: file
-      description: |
-        File containing software versions
-      pattern: "versions.yml"
   - db_exprofile:
-      type: directory
-      description: |
-        Directory containing the expandable profile DB
-      pattern: "*"
+      - database:
+          type: directory
+          description: |
+            Directory containing the expandable profile database
+          pattern: "*"
+  - versions:
+      - versions.yml:
+          type: file
+          description: |
+            File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@JoseEspinosa"
 maintainers:
   - "@JoseEspinosa"
+  - "@sateeshperi"

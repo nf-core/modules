@@ -1,5 +1,6 @@
 name: dastool_fastatocontig2bin
-description: Helper script to convert a set of bins in fasta format to tabular scaffolds2bin format
+description: Helper script to convert a set of bins in fasta format to tabular scaffolds2bin
+  format
 keywords:
   - binning
   - das tool
@@ -20,33 +21,38 @@ tools:
       tool_dev_url: https://github.com/cmks/DAS_Tool
       doi: "10.1038/s41564-018-0171-1"
       licence: ["BSD"]
+      identifier: biotools:dastool
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: Fasta of list of fasta files recommended to be gathered via with .collect() of bins
-      pattern: "*.{fa,fa.gz,fas,fas.gz,fna,fna.gz,fasta,fasta.gz}"
-  - extension:
-      type: val
-      description: Fasta file extension (fa | fas | fasta | ...), without .gz suffix, if gzipped input.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Fasta of list of fasta files recommended to be gathered via with
+          .collect() of bins
+        pattern: "*.{fa,fa.gz,fas,fas.gz,fna,fna.gz,fasta,fasta.gz}"
+  - - extension:
+        type: string
+        description: Fasta file extension (fa | fas | fasta | ...), without .gz suffix,
+          if gzipped input.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - fastatocontig2bin:
-      type: file
-      description: tabular contig2bin file for DAS tool input
-      pattern: "*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: tabular contig2bin file for DAS tool input
+          pattern: "*.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@maxibor"
   - "@jfy133"
