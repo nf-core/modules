@@ -20,8 +20,6 @@ include { FGBIO_ZIPPERBAMS                  as ZIPPERBAMS_POST     } from '../..
 include { SAMTOOLS_FASTQ                    as BAM2FASTQ_PRE       } from '../../../modules/nf-core/samtools/fastq/main.nf'
 include { SAMTOOLS_FASTQ                    as BAM2FASTQ_POST      } from '../../../modules/nf-core/samtools/fastq/main.nf'
 include { SAMTOOLS_SORT                     as SORTBAM             } from '../../../modules/nf-core/samtools/sort/main.nf'
-include { SAMTOOLS_INDEX                    as INDEXBAM            } from '../../../modules/nf-core/samtools/index/main.nf'
-
 workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
 
     take:
