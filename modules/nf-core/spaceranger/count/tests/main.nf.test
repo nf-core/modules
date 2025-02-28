@@ -50,8 +50,8 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/spaceranger/human-ovarian-cancer-1-standard_v1_ffpe/Visium_FFPE_Human_Ovarian_Cancer_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                     ], // Reads
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/spaceranger/human-ovarian-cancer-1-standard_v1_ffpe/Visium_FFPE_Human_Ovarian_Cancer_image.jpg', checkIfExists: true), // Image
-                    val('V10L13-020'), // Slide
-                    val('D1'), // Area
+                    'V10L13-020', // Slide
+                    'D1', // Area
                     [], // Cytaimage
                     [], // Darkimage
                     [], // Colorizedimage
@@ -127,8 +127,8 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/spaceranger/human-ovarian-cancer-1-standard_v1_ffpe/Visium_FFPE_Human_Ovarian_Cancer_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                     ], // Reads
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/spaceranger/human-ovarian-cancer-1-standard_v1_ffpe/Visium_FFPE_Human_Ovarian_Cancer_image.jpg', checkIfExists: true), // Image
-                    val('V10L13-020'), // Slide
-                    val('D1'), // Area
+                    'V10L13-020', // Slide
+                    'D1', // Area
                     [], // Cytaimage
                     [], // Darkimage
                     [], // Colorizedimage
@@ -186,8 +186,8 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/spaceranger/human-brain-cancer-11-mm-capture-area-ffpe-2-standard_v2_ffpe_cytassist/CytAssist_11mm_FFPE_Human_Glioblastoma_2_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                     ], // Reads
                     [], // Image
-                    val('V52Y10-317'), // Slide
-                    val('B1'), // Area
+                    'V52Y10-317', // Slide
+                    'B1', // Area
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/spaceranger/human-brain-cancer-11-mm-capture-area-ffpe-2-standard_v2_ffpe_cytassist/CytAssist_11mm_FFPE_Human_Glioblastoma_image.tif', checkIfExists: true), // Cytaimage
                     [], // Darkimage
                     [], // Colorizedimage
