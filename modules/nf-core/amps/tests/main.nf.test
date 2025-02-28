@@ -14,7 +14,7 @@ nextflow_process {
 
     config "./nextflow.config"
 
-    test("sarscov2") {
+    test("maltextract - sarscov2 - genome_fasta") {
         setup {
             run("UNZIP", alias: "UNZIP_MALT") {
                 script "../../unzip/main.nf"
