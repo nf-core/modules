@@ -4,14 +4,20 @@ on:
     branches:
       # https://docs.renovatebot.com/key-concepts/automerge/#branch-vs-pr-automerging
       - "renovate/**" # branches Renovate creates
+    paths-ignore:
+      - "**/meta.yml"
   pull_request:
     branches: [master]
     paths:
       - ".github/workflows/gpu-tests.yml"
       - "modules/nf-core/parabricks/**"
+    paths-ignore:
+      - "**/meta.yml"
   merge_group:
     types: [checks_requested]
     branches: [master]
+    paths-ignore:
+      - "**/meta.yml"
   workflow_dispatch:
     inputs:
       runners:
