@@ -40,44 +40,33 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:‘test’, single_end ]
-          pattern: "*estimate__decoupler.tsv"
       - progeny_mlm_estimate_decoupler.tsv:
-          type: map
+          type: file
           description: |
-            Groovy Map containing sample information
-            e.g. [ id:‘test’, single_end ]
-          pattern: "*estimate__decoupler.tsv"
+            The file containing the estimation results of the enrichment(s)
+          pattern: "*progeny_mlm_estimate_decoupler.tsv"
   - dc_pvals:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:‘test’, single_end ]
-          pattern: "*pvals__decoupler.tsv"
       - progeny_mlm_pvals_decoupler.tsv:
-          type: map
+          type: file
           description: |
-            Groovy Map containing sample information
-            e.g. [ id:‘test’, single_end ]
-          pattern: "*pvals__decoupler.tsv"
-      - s:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:‘test’, single_end ]
-          pattern: "*pvals__decoupler.tsv"
+            The file containing the p-value associated to the estimation
+            results of the enrichment(s)
+          pattern: "progeny_mlm_pvals_decoupler.tsv"
   - dc_acts:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:‘test’, single_end ]
-          pattern: "acts_decoupler.tsv"
       - acts_decoupler.tsv:
-          type: map
+          type: file
           description: |
-            Groovy Map containing sample information
-            e.g. [ id:‘test’, single_end ]
+            Activities in TSV format from the AnnData object
           pattern: "acts_decoupler.tsv"
   - dc_umap:
       - meta:
@@ -87,23 +76,18 @@ output:
             e.g. [ id:‘test’, single_end ]
           pattern: "figures/*umap.png"
       - figures/*umap.png:
-          type: map
+          type: file
           description: |
-            Groovy Map containing sample information
-            e.g. [ id:‘test’, single_end ]
+            UMAP plot
           pattern: "figures/*umap.png"
   - dc_violin:
       - meta:
           type: map
           description: |
-            Groovy Map containing sample information
-            e.g. [ id:‘test’, single_end ]
+            Violin plot
           pattern: "figures/*violin.png"
       - figures/*violin.png:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:‘test’, single_end ]
+          type: file
           pattern: "figures/*violin.png"
   - dc_matrixplot:
       - meta:
@@ -113,10 +97,9 @@ output:
             e.g. [ id:‘test’, single_end ]
           pattern: "matrixplot_decoupler.png"
       - matrixplot_decoupler.png:
-          type: map
+          type: file
           description: |
-            Groovy Map containing sample information
-            e.g. [ id:‘test’, single_end ]
+            Matrix plot with dendrogram
           pattern: "matrixplot_decoupler.png"
   - versions:
       - versions.yml:
