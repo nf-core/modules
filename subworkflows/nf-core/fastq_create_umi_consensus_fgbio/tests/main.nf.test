@@ -102,4 +102,46 @@ nextflow_workflow {
         }
     }
 
+    test("single_umi - stub") {
+
+        options "-stub"
+        config './single.config'
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [ id:'test_single', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test.umi_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test.umi_2.fastq.gz', checkIfExists: true),
+                    ]
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                ]
+                input[2] = false
+                input[3] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true),
+                ]
+                input[4] = "Adjacency"
+                input[5] = "bwa-mem"
+                input[6] = false
+                input[7] = 1
+                input[8] = 20
+                input[9] = 0.5
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
+
+
 }
