@@ -191,10 +191,6 @@ jobs:
         if: ${{ contains(needs.*.result, 'success') }}
         run: exit 0
 
-      - name: All tests skipped
-        if: ${{ needs.nf-test.outputs.filtered_paths != '' }}
-        run: exit 0
-
       - name: debug-print
         if: always()
         run: |
