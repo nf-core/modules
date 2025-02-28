@@ -116,10 +116,11 @@ output:
         - meta:
             type: map
             description: Metadata map
-        - matrix:
-            type: file
-            description: Variance stabilised count matrix file
+        - matrices:
+            type: list
+            description: A list of variance stabilised count matrix files
             pattern: "*.{csv,tsv}"
+
   - model:
       description: Channel containing statistical model object from differential analysis
       structure:
@@ -133,7 +134,7 @@ output:
 authors:
   - "@pinin4fjords"
   - "@bjlang"
-  - "@araiz2001"
+  - "@caraiz2001"
   - "@suzannejin"
 maintainers:
   - "@pinin4fjords"
