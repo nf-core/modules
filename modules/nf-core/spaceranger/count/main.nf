@@ -5,7 +5,7 @@ process SPACERANGER_COUNT {
     container "nf-core/spaceranger:3.1.3"
 
     input:
-    tuple val(meta), path(reads), path(image), path(cytaimage), path(darkimage), path(colorizedimage), path(alignment), path(slidefile)
+    tuple val(meta), path(reads), path(image), val(slide), val(area), path(cytaimage), path(darkimage), path(colorizedimage), path(alignment), path(slidefile)
     path(reference)
     path(probeset)
 
@@ -31,8 +31,6 @@ process SPACERANGER_COUNT {
     def cytaimage = cytaimage ? "--cytaimage=\"${cytaimage}\"" : ""
     def darkimage = darkimage ? "--darkimage=\"${darkimage}\"" : ""
     def colorizedimage = colorizedimage ? "--colorizedimage=\"${colorizedimage}\"" : ""
-    def slide = meta.slide ? meta.slide : ""
-    def area = meta.area ? meta.area : ""
     if (slide.matches("visium-(.*)") && area == "" && slidefile == "") {
         slide_and_area = "--unknown-slide=\"${slide}\""
     } else {
