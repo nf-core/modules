@@ -12,6 +12,7 @@ process KRAKEN2_ADD {
     path taxonomy_names, stageAs: 'taxonomy/names.dmp'
     path taxonomy_nodes, stageAs: 'taxonomy/nodes.dmp'
     path accession2taxid, stageAs: 'taxonomy/*'
+    path seqid2taxid, stageAs: 'taxonomy/*'
 
     output:
     tuple val(meta), path("$prefix"), emit: db
