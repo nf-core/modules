@@ -24,6 +24,9 @@ input:
     - fasta:
         type: file
         description: Input genome fasta file
+        ontologies:
+          - edam: "http://edamontology.org/data_2044" # Sequence
+          - edam: "http://edamontology.org/format_1929" # FASTA
 output:
   - index:
       - meta:
@@ -31,13 +34,14 @@ output:
           description: |
             Groovy Map containing reference information.
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.{amb,ann,bwt,pac,sa}"
       - bwa:
           type: map
           description: |
             Groovy Map containing reference information.
             e.g. [ id:'test', single_end:false ]
           pattern: "*.{amb,ann,bwt,pac,sa}"
+          ontologies:
+            - edam: "http://edamontology.org/data_3210" # Genome index
   - versions:
       - versions.yml:
           type: file

@@ -30,6 +30,9 @@ input:
         type: file
         description: FASTQ files specified alongside meta in input channel.
         pattern: "*.{fastq,fq}.gz"
+        ontologies:
+          - edam: "http://edamontology.org/data_2044" # Sequence
+          - edam: "http://edamontology.org/format_1930" # FASTQ
     - sai:
         type: file
         description: SAI file specified alongside meta and reads in input channel.
@@ -44,6 +47,8 @@ input:
         description: Directory containing BWA index files (amb,ann,bwt,pac,sa) from
           BWA_INDEX
         pattern: "bwa/"
+        ontologies:
+        - edam: "http://edamontology.org/data_3210" # Genome index
 output:
   - bam:
       - meta:
@@ -55,6 +60,8 @@ output:
           type: file
           description: BAM file
           pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
   - versions:
       - versions.yml:
           type: file

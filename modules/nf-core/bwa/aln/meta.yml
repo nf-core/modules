@@ -30,6 +30,9 @@ input:
         description: |
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
+        ontologies:
+          - edam: "http://edamontology.org/data_2044" # Sequence
+          - edam: "http://edamontology.org/format_1930" # FASTQ
   - - meta2:
         type: map
         description: |
@@ -39,6 +42,8 @@ input:
         type: file
         description: BWA genome index files
         pattern: "Directory containing BWA index *.{amb,ann,bwt,pac,sa}"
+        ontologies:
+          - edam: "http://edamontology.org/data_3210" # Genome index
 output:
   - sai:
       - meta:
