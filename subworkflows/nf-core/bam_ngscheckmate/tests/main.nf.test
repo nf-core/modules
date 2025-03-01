@@ -1,0 +1,100 @@
+nextflow_workflow {
+
+    name "Test Subworkflow BAM_NGSCHECKMATE"
+    script "../main.nf"
+    workflow "BAM_NGSCHECKMATE"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/bam_ngscheckmate"
+    tag "samtools"
+    tag "samtools/sort"
+    tag "samtools/index"
+    config "./nextflow.config"
+
+    test("sarscov2 - bam") {
+
+        when {
+
+            workflow {
+                """
+
+                bed_file = file('test_snp.bed')
+                bed_file.text = "MT192765.1\t1262\t1263\\nMT192765.1\t1263\t1264\\nMT192765.1\t1575\t1576"
+
+                input[0] = Channel.fromList([
+                    [
+                        [ id:'test1' ], // meta map
+                        file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+                    ],
+                    [
+                        [ id:'test2' ], // meta map
+                        file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_sorted_bam'], checkIfExists: true)
+                    ]
+                ])
+                input[1] = Channel.of([ [id:'test_bed'], bed_file])
+                input[2] = Channel.of([
+                    [ id:'sarscov2'],
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.corr_matrix,
+                    workflow.out.matched,
+                    workflow.out.all,
+                    workflow.out.vcf,
+                    file(workflow.out.pdf[0][1]).name,
+                    workflow.out.versions
+                    ).match()}
+            )
+        }
+    }
+
+    test("sarscov2 - cram") {
+
+        when {
+
+            workflow {
+                """
+                bed_file = file('test_snp.bed')
+                bed_file.text = "chr22\t1981\t1982\\nchr22\t2122\t2123\\nchr22\t3139\t3140\\nchr22\t3265\t3266\\nchr22\t3412\t3413"
+
+                input[0] = Channel.fromList([[
+                            [ id:'test1' ], // meta map
+                            file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true)
+                        ],[
+                            [ id:'test2' ], // meta map
+                            file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_cram'], checkIfExists: true)
+                        ]
+                ])
+                input[1] = Channel.of([ [id:'test_bed'], bed_file])
+                input[2] = Channel.of([
+                    [ id:'sarscov2'],
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.corr_matrix,
+                    workflow.out.matched,
+                    workflow.out.all,
+                    workflow.out.vcf,
+                    file(workflow.out.pdf[0][1]).name,
+                    workflow.out.versions
+                    ).match()}
+            )
+        }
+    }
+
+}
