@@ -25,19 +25,19 @@ input:
         description: FastQ file containing reads
         pattern: "*.{fastq.gz}"
   - - meta2:
-      type: map
-      description: |
-        Groovy Map containing model information
-        e.g. [ id:'test', single_end:false ]
+        type: map
+        description: |
+          Groovy Map containing model information
+          e.g. [ id:'test', single_end:false ]
     - model_dir:
         type: directory
         description: Path containing clair3 models, defaults to models packaged with conda installation
         pattern: "*"
     - model:
-      type: string
-      description: |
-        The model to use for clair3, if not provided the pipeline will try to figure
-        it out the appropriate model from the read fastq
+        type: string
+        description: |
+          The model to use for clair3, if not provided the pipeline will try to figure
+          it out the appropriate model from the read fastq
   - - '"primer-schemes/${scheme}/V${scheme_version}/${scheme}.reference.fasta"':
         type: file
         description: Scheme reference file
