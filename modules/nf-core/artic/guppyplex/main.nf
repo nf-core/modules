@@ -20,7 +20,6 @@ process ARTIC_GUPPYPLEX {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.2.3' // WARN: Version information provided by tool on CLI is incorrect. Please update this string when bumping container versions.
     """
     artic \\
         guppyplex \\
@@ -31,7 +30,18 @@ process ARTIC_GUPPYPLEX {
     pigz -p $task.cpus *.fastq
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        artic: $VERSION
+        artic: \$(artic -v 2>&1 | sed 's/^.*artic //; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo '' | gzip > ${prefix}.fastq.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        artic: \$(artic -v 2>&1 | sed 's/^.*artic //; s/ .*\$//')
     END_VERSIONS
     """
 }
