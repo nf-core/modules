@@ -4,17 +4,14 @@ process ARTIC_MINION {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/artic:1.2.3--pyhdfd78af_0' :
-        'biocontainers/artic:1.2.3--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/artic:1.6.1--pyhdfd78af_0' :
+        'biocontainers/artic:1.6.1--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fastq)
-    path  fast5_dir
-    path  sequencing_summary
+    tuple val(meta2), path(model_dir), val(model)
     path  ("primer-schemes/${scheme}/V${scheme_version}/${scheme}.reference.fasta")
     path  ("primer-schemes/${scheme}/V${scheme_version}/${scheme}.scheme.bed")
-    path  medaka_model_file
-    val   medaka_model_string
     val   scheme
     val   scheme_version
 
@@ -38,17 +35,9 @@ process ARTIC_MINION {
     script:
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
-    def version  = scheme_version.toString().toLowerCase().replaceAll('v','')
-    def fast5    = fast5_dir ? "--fast5-directory $fast5_dir"             : ""
-    def summary  = sequencing_summary ? "--sequencing-summary $sequencing_summary" : ""
-    def model    = ""
-    if (args.tokenize().contains('--medaka')) {
-        fast5   = ""
-        summary = ""
-        model   = medaka_model_file ? "--medaka-model ./$medaka_model_file" : "--medaka-model $medaka_model_string"
-    }
+    def version  = scheme_version.toString().toLowerCase()
+    def model_dir_cmd   = model_dir   ? "--model-dir $model_dir" : "--model-dir /usr/local/bin/models/"
     def hd5_plugin_path = task.ext.hd5_plugin_path ? "export HDF5_PLUGIN_PATH=" + task.ext.hd5_plugin_path : "export HDF5_PLUGIN_PATH=/usr/local/lib/python3.6/site-packages/ont_fast5_api/vbz_plugin"
-
     """
     $hd5_plugin_path
 
@@ -59,10 +48,9 @@ process ARTIC_MINION {
         --read-file $fastq \\
         --scheme-directory ./primer-schemes \\
         --scheme-version $version \\
-        $model \\
-        $fast5 \\
-        $summary \\
-        $scheme \\
+        --scheme-name $scheme \\
+        $model_dir_cmd \\
+        --model $model \\
         $prefix
 
     cat <<-END_VERSIONS > versions.yml
@@ -74,10 +62,15 @@ process ARTIC_MINION {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    touch ${prefix}.1.trimmed.rg.sorted.bam
+    touch ${prefix}.1.trimmed.rg.sorted.bai
     touch ${prefix}.1.vcf
+    touch ${prefix}.2.trimmed.rg.sorted.bam
+    touch ${prefix}.2.trimmed.rg.sorted.bai
     touch ${prefix}.2.vcf
-    touch ${prefix}.alignreport.er
-    touch ${prefix}.alignreport.txt
+
+    touch ${prefix}.alignreport.csv
+    touch ${prefix}.amplicon_depths.tsv
 
     touch ${prefix}.consensus.fasta
     touch ${prefix}.coverage_mask.txt
@@ -85,21 +78,23 @@ process ARTIC_MINION {
     touch ${prefix}.coverage_mask.txt.2.depths
 
     touch ${prefix}.fail.vcf
-    touch ${prefix}.fastq.gz.index
-    touch ${prefix}.fastq.gz.index.fai
-    touch ${prefix}.fastq.gz.index.gzi
-    touch ${prefix}.fastq.gz.index.readdb
 
     touch ${prefix}.merged.vcf
+    echo "" | gzip > ${prefix}.merged.vcf.gz
+    touch ${prefix}.merged.vcf.tbi
+
     touch ${prefix}.minion.log.txt
 
-    touch ${prefix}.muscle.in.fasta
-    touch ${prefix}.muscle.out.fasta
+    echo "" | gzip > ${prefix}.normalised.vcf.gz
+    touch ${prefix}.normalised.vcf.tbi
 
+    touch ${prefix}.pass.vcf
     echo "" | gzip > ${prefix}.pass.vcf.gz
     touch ${prefix}.pass.vcf.gz.tbi
 
     touch ${prefix}.preconsensus.fasta
+    touch ${prefix}.preconsensus.fasta.fai
+
     touch ${prefix}.primers.vcf
     touch ${prefix}.primersitereport.txt
     touch ${prefix}.primertrimmed.rg.sorted.bam
