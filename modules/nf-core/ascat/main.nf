@@ -56,13 +56,11 @@ process ASCAT {
     options(bitmapType='cairo')
 
     #build prefixes: <abspath_to_files/prefix_chr>
-    allele_path = normalizePath("$allele_files")
-    allele_prefix = paste0(allele_path, "/", "$allele_files", "_chr")
-    allele_prefix = "G1000_alleles_hg38_chr"
+    allele_path = basename(normalizePath("$allele_files"))
+    allele_prefix = sub("_chr[0-9]+\\.txt$", "_chr", allele_path)
 
-    loci_path = normalizePath("$loci_files")
-    loci_prefix = paste0(loci_path, "/", "$loci_files", "_chr")
-    loci_prefix = "G1000_loci_hg38_chr"
+    loci_path =  basename(normalizePath("$loci_files"))
+    loci_prefix = sub("_chr[0-9]+\\.txt$", "_chr", loci_path)
 
     #prepare from BAM files
     ascat.prepareHTS(

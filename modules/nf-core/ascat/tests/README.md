@@ -38,16 +38,10 @@ workflow test_ascat {
 // wget http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase1/data/HG00154/alignment/HG00154.mapped.ILLUMINA.bwa.GBR.low_coverage.20101123.bam.bai
 // wget http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase1/data/HG00155/alignment/HG00155.mapped.ILLUMINA.bwa.GBR.low_coverage.20101123.bam
 // wget http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase1/data/HG00155/alignment/HG00155.mapped.ILLUMINA.bwa.GBR.low_coverage.20101123.bam.bai
-wget https://zenodo.org/records/14008443/files/G1000_loci_WGS_hg38.zip
-unzip G1000_loci_WGS_hg38.zip
-wget https://zenodo.org/records/14008443/files/G1000_alleles_WGS_hg38.zip
-unzip G1000_alleles_WGS_hg38.zip
-// wget https://www.dropbox.com/s/v0tgr1esyoh1krw/GC_G1000_hg19.zip
-// wget https://www.dropbox.com/s/50n7xb06x318tgl/RT_G1000_hg19.zip
-
-
-samtools view test2.paired_end.markduplicates.sorted.bam | awk '{if (NR==1) {min=$4; max=$4} if ($4<min) {min=$4} if ($4>max) {max=$4}} END {print "Min position:", min, "\nMax position:", max}'
-
+// wget https://zenodo.org/records/14008443/files/G1000_loci_WGS_hg38.zip
+// wget https://zenodo.org/records/14008443/files/G1000_alleles_WGS_hg38.zip
+// wget https://www.dropbox.com/s/v0tgr1esyoh1krw/GC_G1000_WGS_hg38.zip
+// wget https://www.dropbox.com/s/50n7xb06x318tgl/RT_G1000_WGS_hg38.zip
 
 // workflow test_ascat_with_ploidy_and_purity {
 //     input = [ [ id:'test', single_end:false ], // meta map

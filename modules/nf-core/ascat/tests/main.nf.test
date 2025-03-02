@@ -22,8 +22,8 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.markduplicates.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.markduplicates.sorted.bam.bai', checkIfExists: true)
                 ]
-                input[1] = [file('https://raw.githubusercontent.com/nf-core/test-datasets/d677699283dbbeb51876d1bb3c18fb687d1db4ea/data/genomics/homo_sapiens/illumina/ascat/G1000_alleles_WGS_hg38/G1000_alleles_hg38_chr21.txt')]
-                input[2] = [file('https://raw.githubusercontent.com/nf-core/test-datasets/d677699283dbbeb51876d1bb3c18fb687d1db4ea/data/genomics/homo_sapiens/illumina/ascat/G1000_loci_WGS_hg38/G1000_loci_hg38_chr21.txt')]
+                input[1] = [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/ascat/G1000_alleles_hg38_chr21.txt', checkIfExists: true)]
+                input[2] = [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/ascat/G1000_loci_hg38_chr21.txt', checkIfExists: true)]
                 input[3] = []
                 input[4] = []
                 input[5] = []
