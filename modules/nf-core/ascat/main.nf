@@ -40,14 +40,14 @@ process ASCAT {
     def gc_input       = gc_file              ?  "$gc_file" :            "NULL"
     def rt_input       = rt_file              ?  "$rt_file" :            "NULL"
 
-    def minCounts_arg                    = args.minCounts                     ?  ",minCounts = $args.minCounts" : ""
-    def bed_file_arg                     = bed_file                           ?  ",BED_file = '$bed_file'": ""
-    def chrom_names_arg                  = args.chrom_names                   ?  ",chrom_names = $args.chrom_names" : ""
-    def min_base_qual_arg                = args.min_base_qual                 ?  ",min_base_qual = $args.min_base_qual" : ""
-    def min_map_qual_arg                 = args.min_map_qual                  ?  ",min_map_qual = $args.min_map_qual" : ""
-    def fasta_arg                        = fasta                              ?  ",ref.fasta = '$fasta'" : ""
-    def skip_allele_counting_tumour_arg  = args.skip_allele_counting_tumour   ?  ",skip_allele_counting_tumour = $args.skip_allele_counting_tumour" : ""
-    def skip_allele_counting_normal_arg  = args.skip_allele_counting_normal   ?  ",skip_allele_counting_normal = $args.skip_allele_counting_normal" : ""
+    def minCounts_arg                    = args.minCounts                     ?  ", minCounts = $args.minCounts" : ""
+    def bed_file_arg                     = bed_file                           ?  ", BED_file = '$bed_file'": ""
+    def chrom_names_arg                  = args.chrom_names                   ?  ", chrom_names = $args.chrom_names" : ""
+    def min_base_qual_arg                = args.min_base_qual                 ?  ", min_base_qual = $args.min_base_qual" : ""
+    def min_map_qual_arg                 = args.min_map_qual                  ?  ", min_map_qual = $args.min_map_qual" : ""
+    def fasta_arg                        = fasta                              ?  ", ref.fasta = '$fasta'" : ""
+    def skip_allele_counting_tumour_arg  = args.skip_allele_counting_tumour   ?  ", skip_allele_counting_tumour = $args.skip_allele_counting_tumour" : ""
+    def skip_allele_counting_normal_arg  = args.skip_allele_counting_normal   ?  ", skip_allele_counting_normal = $args.skip_allele_counting_normal" : ""
 
     """
     #!/usr/bin/env Rscript
@@ -58,9 +58,11 @@ process ASCAT {
     #build prefixes: <abspath_to_files/prefix_chr>
     allele_path = normalizePath("$allele_files")
     allele_prefix = paste0(allele_path, "/", "$allele_files", "_chr")
+    allele_prefix = "G1000_alleles_hg38_chr"
 
     loci_path = normalizePath("$loci_files")
     loci_prefix = paste0(loci_path, "/", "$loci_files", "_chr")
+    loci_prefix = "G1000_loci_hg38_chr"
 
     #prepare from BAM files
     ascat.prepareHTS(
@@ -81,8 +83,8 @@ process ASCAT {
         $min_map_qual_arg
         $fasta_arg
         $skip_allele_counting_tumour_arg
-        $skip_allele_counting_normal_arg,
-        seed = 42
+        $skip_allele_counting_normal_arg
+        , seed = 42
     )
 
 
