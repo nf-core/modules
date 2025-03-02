@@ -57,7 +57,8 @@ nextflow_process {
                 { assert snapshot(
                     process.out.versions,
                     fileNames,
-                    process.out.bam, process.out.bai,
+                    process.out.bam.collect{ file(it[1]).name },
+                    process.out.bai,
                     process.out.bam_trimmed.collect{ file(it[1]).name },
                     process.out.bai_trimmed,
                     process.out.bam_primertrimmed.collect{ file(it[1]).name },
