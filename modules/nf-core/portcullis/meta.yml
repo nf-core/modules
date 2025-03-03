@@ -1,0 +1,100 @@
+name: "portcullis"
+description: Run all Portcullis steps in one go
+keywords:
+  - rnaseq
+  - genome
+  - splice
+  - junction
+tools:
+  - "portcullis":
+      description: "Portcullis is a tool that filters out invalid splice junctions from
+        RNA-seq alignment data. It accepts BAM files from various RNA-seq mappers, analyzes
+        splice  junctions, and  removes likely false positives, outputting filtered
+        results in multiple formats for downstream analysis."
+      homepage: "https://portcullis.readthedocs.io/en/latest/index.html"
+      documentation: "https://portcullis.readthedocs.io/en/latest/using.html"
+      doi: "10.1101/217620"
+      license: ["GPL-3.0"]
+      identifier: biotools:portcullis
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing information about the sample
+          e.g. [ id:'sample1', single_end:false ]
+    - bam:
+        type: file
+        description: RNA-seq-aligned and sorted BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+          - edam: "http://edamontology.org/format_2573"
+          - edam: "http://edamontology.org/format_3462"
+  - - bed:
+        type: file
+        description: Input reference annotation of junctions in BED format
+        pattern: "*.bed"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
+  - - fasta:
+        type: file
+        description: Input genome reference fasta file
+        pattern: "*.{fa,fasta}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1332"
+output:
+  - log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.log"
+      - "*.log":
+          type: file
+          description: Log file containing Portcullis execution details, processing steps,
+            and filtering statistics
+          pattern: "*.log"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  - bed:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.bed"
+      - ${meta.id}/3-filt/*.bed:
+          type: file
+          description: |
+            Filtered splice junction coordinates in BED format, containing genomic coordinates of valid splice junctions after filtering out false positives
+          pattern: "*.bed"
+          ontologies:
+            - edam: "http://edamontology.org/format_3003"
+  - tab:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.tab"
+      - ${meta.id}/3-filt/*.tab:
+          type: map
+          description: |
+            Tabular representation of filtered splice junctions with additional metrics including junction scores, read support, and filtering decision data
+          pattern: "*.tab"
+          ontologies:
+            - eadam: "http://edamontology.org/format_3475"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/format_3750"
+authors:
+  - "daniel.mapleson@earlham.ac.uk"
+  - "luca.venturini@earlham.ac.uk"
+  - "david.swarbreck@earlham.ac.uk"
+maintainer:
+  - "@jblancoheredia"
