@@ -1,5 +1,3 @@
-
-
 process FASTQDL {
     tag "$meta.id"
     label 'process_medium'
@@ -10,7 +8,6 @@ process FASTQDL {
         'biocontainers/fastq-dl:3.0.0--pyhdfd78af_0' }"
 
     input:
-
     tuple val(meta), val(accession)
 
     output:

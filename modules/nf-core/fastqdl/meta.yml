@@ -18,7 +18,6 @@ tools:
       identifier: biotools:fastq-dl
 
 input:
-  # Only when we have meta
   - - meta:
         type: map
         description: |
@@ -31,7 +30,6 @@ input:
 
 output:
   - db:
-      #Only when we have meta
       - meta:
           type: map
           description: |
