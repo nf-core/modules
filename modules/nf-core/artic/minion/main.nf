@@ -4,19 +4,13 @@ process ARTIC_MINION {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/artic:1.2.3--pyhdfd78af_0' :
-        'biocontainers/artic:1.2.3--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/artic:1.6.1--pyhdfd78af_0' :
+        'biocontainers/artic:1.6.1--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fastq)
-    path  fast5_dir
-    path  sequencing_summary
-    path  ("primer-schemes/${scheme}/V${scheme_version}/${scheme}.reference.fasta")
-    path  ("primer-schemes/${scheme}/V${scheme_version}/${scheme}.scheme.bed")
-    path  medaka_model_file
-    val   medaka_model_string
-    val   scheme
-    val   scheme_version
+    tuple val(meta2), path(model_dir), val(model)
+    tuple val(meta3), path(fasta), path(bed)
 
     output:
     tuple val(meta), path("${prefix}.*")                              , emit: results
@@ -38,17 +32,8 @@ process ARTIC_MINION {
     script:
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
-    def version  = scheme_version.toString().toLowerCase().replaceAll('v','')
-    def fast5    = fast5_dir ? "--fast5-directory $fast5_dir"             : ""
-    def summary  = sequencing_summary ? "--sequencing-summary $sequencing_summary" : ""
-    def model    = ""
-    if (args.tokenize().contains('--medaka')) {
-        fast5   = ""
-        summary = ""
-        model   = medaka_model_file ? "--medaka-model ./$medaka_model_file" : "--medaka-model $medaka_model_string"
-    }
+    def model_dir_cmd   = model_dir   ? "--model-dir $model_dir" : "--model-dir \$(which artic | sed 's/artic/models/')"
     def hd5_plugin_path = task.ext.hd5_plugin_path ? "export HDF5_PLUGIN_PATH=" + task.ext.hd5_plugin_path : "export HDF5_PLUGIN_PATH=/usr/local/lib/python3.6/site-packages/ont_fast5_api/vbz_plugin"
-    def VERSION = '1.2.3' // WARN: Version information provided by tool on CLI is incorrect. Please update this string when bumping container versions.
     """
     $hd5_plugin_path
 
@@ -57,17 +42,67 @@ process ARTIC_MINION {
         $args \\
         --threads $task.cpus \\
         --read-file $fastq \\
-        --scheme-directory ./primer-schemes \\
-        --scheme-version $version \\
-        $model \\
-        $fast5 \\
-        $summary \\
-        $scheme \\
+        --bed $bed \\
+        --ref $fasta \\
+        $model_dir_cmd \\
+        --model $model \\
         $prefix
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        artic: $VERSION
+        artic: \$(artic -v 2>&1 | sed 's/^.*artic //; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.1.trimmed.rg.sorted.bam
+    touch ${prefix}.1.trimmed.rg.sorted.bai
+    touch ${prefix}.1.vcf
+    touch ${prefix}.2.trimmed.rg.sorted.bam
+    touch ${prefix}.2.trimmed.rg.sorted.bai
+    touch ${prefix}.2.vcf
+
+    touch ${prefix}.alignreport.csv
+    touch ${prefix}.amplicon_depths.tsv
+
+    touch ${prefix}.consensus.fasta
+    touch ${prefix}.coverage_mask.txt
+    touch ${prefix}.coverage_mask.txt.1.depths
+    touch ${prefix}.coverage_mask.txt.2.depths
+
+    touch ${prefix}.fail.vcf
+
+    touch ${prefix}.merged.vcf
+    echo "" | gzip > ${prefix}.merged.vcf.gz
+    touch ${prefix}.merged.vcf.tbi
+
+    touch ${prefix}.minion.log.txt
+
+    echo "" | gzip > ${prefix}.normalised.vcf.gz
+    touch ${prefix}.normalised.vcf.tbi
+
+    touch ${prefix}.pass.vcf
+    echo "" | gzip > ${prefix}.pass.vcf.gz
+    touch ${prefix}.pass.vcf.gz.tbi
+
+    touch ${prefix}.preconsensus.fasta
+    touch ${prefix}.preconsensus.fasta.fai
+
+    touch ${prefix}.primers.vcf
+    touch ${prefix}.primersitereport.txt
+    touch ${prefix}.primertrimmed.rg.sorted.bam
+    touch ${prefix}.primertrimmed.rg.sorted.bam.bai
+
+    touch ${prefix}.sorted.bam
+    touch ${prefix}.sorted.bam.bai
+    touch ${prefix}.trimmed.rg.sorted.bam
+    touch ${prefix}.trimmed.rg.sorted.bam.bai
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        artic: \$(artic -v 2>&1 | sed 's/^.*artic //; s/ .*\$//')
     END_VERSIONS
     """
 }
