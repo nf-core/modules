@@ -1,0 +1,50 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "bioformats2raw"
+description: Java application to convert image file formats, including .mrxs, to an intermediate Zarr structure compatible with the OME-NGFF specification.
+keywords:
+  - zarr
+  - OME-NGFF
+  - imaging
+tools:
+  - "bioformats2raw":
+      description: "Java application to convert image file formats, including .mrxs, to an intermediate Zarr structure compatible with the OME-NGFF specification."
+      homepage: "https://github.com/glencoesoftware/bioformats2raw"
+      documentation: "https://github.com/glencoesoftware/bioformats2raw"
+      tool_dev_url: "https://github.com/glencoesoftware/bioformats2raw"
+      licence: ["GPL-2.0"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1']`
+  
+    - image:
+        type: file
+        description: bioformats supported image file format 
+        pattern: "*.{tif,tiff,svs,mrxs}"
+          
+output:
+  - omezarr:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1']`
+    - "*ome.zarr":
+        type: directory
+        description: OME-Zarr fileset for image data storage. Specification can be found at https://ngff.openmicroscopy.org/latest/#storage-format
+        pattern: "*{ome.zarr}"
+          
+  - versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@CaroAMN"
+maintainers:
+  - "@CaroAMN"
