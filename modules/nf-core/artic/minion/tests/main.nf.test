@@ -17,13 +17,14 @@ nextflow_process {
                 """
                 input[0] = [
                     [id:'test',single_end:false],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz',checkIfExists:true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists:true)
                 ]
                 input[1] = [[id: 'model'], [], "hifi"]
-                input[2] = file('https://github.com/artic-network/primer-schemes/raw/master/nCoV-2019/V3/nCoV-2019.reference.fasta',checkIfExists:true)
-                input[3] = file('https://github.com/artic-network/primer-schemes/raw/master/nCoV-2019/V3/nCoV-2019.primer.bed',checkIfExists:true)
-                input[4] = 'nCoV-2019'
-                input[5] = 'v3.0.0'
+                input[2] = [
+                    [id: "nCov-2019", version: "3.0.0"],
+                    file('https://github.com/artic-network/primer-schemes/raw/master/nCoV-2019/V3/nCoV-2019.reference.fasta', checkIfExists:true),
+                    file('https://github.com/artic-network/primer-schemes/raw/master/nCoV-2019/V3/nCoV-2019.primer.bed', checkIfExists:true)
+                ]
                 """
             }
         }
@@ -63,13 +64,14 @@ nextflow_process {
                 """
                 input[0] = [
                     [id:'test',single_end:false],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz',checkIfExists:true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists:true)
                 ]
                 input[1] = [[id: 'model'], [], "hifi"]
-                input[2] = file('https://github.com/artic-network/primer-schemes/raw/master/nCoV-2019/V3/nCoV-2019.reference.fasta',checkIfExists:true)
-                input[3] = file('https://github.com/artic-network/primer-schemes/raw/master/nCoV-2019/V3/nCoV-2019.primer.bed',checkIfExists:true)
-                input[4] = 'nCoV-2019'
-                input[5] = 'v3.0.0'
+                input[2] = [
+                    [id: "nCov-2019", version: "3.0.0"],
+                    file('https://github.com/artic-network/primer-schemes/raw/master/nCoV-2019/V3/nCoV-2019.reference.fasta', checkIfExists:true),
+                    file('https://github.com/artic-network/primer-schemes/raw/master/nCoV-2019/V3/nCoV-2019.primer.bed', checkIfExists:true)
+                ]
                 """
             }
         }

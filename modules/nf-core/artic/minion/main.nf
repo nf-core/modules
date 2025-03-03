@@ -10,10 +10,7 @@ process ARTIC_MINION {
     input:
     tuple val(meta), path(fastq)
     tuple val(meta2), path(model_dir), val(model)
-    path  ("primer-schemes/${scheme}/V${scheme_version}/${scheme}.reference.fasta")
-    path  ("primer-schemes/${scheme}/V${scheme_version}/${scheme}.scheme.bed")
-    val   scheme
-    val   scheme_version
+    tuple val(meta3), path(fasta), path(bed)
 
     output:
     tuple val(meta), path("${prefix}.*")                              , emit: results
@@ -35,7 +32,6 @@ process ARTIC_MINION {
     script:
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
-    def version  = scheme_version.toString().toLowerCase()
     def model_dir_cmd   = model_dir   ? "--model-dir $model_dir" : "--model-dir \$(which artic | sed 's/artic/models/')"
     def hd5_plugin_path = task.ext.hd5_plugin_path ? "export HDF5_PLUGIN_PATH=" + task.ext.hd5_plugin_path : "export HDF5_PLUGIN_PATH=/usr/local/lib/python3.6/site-packages/ont_fast5_api/vbz_plugin"
     """
@@ -46,9 +42,8 @@ process ARTIC_MINION {
         $args \\
         --threads $task.cpus \\
         --read-file $fastq \\
-        --scheme-directory ./primer-schemes \\
-        --scheme-version $version \\
-        --scheme-name $scheme \\
+        --bed $bed \\
+        --ref $fasta \\
         $model_dir_cmd \\
         --model $model \\
         $prefix
