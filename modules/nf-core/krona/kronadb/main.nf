@@ -34,4 +34,16 @@ process KRONA_KRONADB {
         krona: $VERSION
     END_VERSIONS
     """
+
+    stub:
+    """
+    mkdir taxonomy
+
+    touch taxonomy/taxonomy.tab
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        krona: \$(ktImportTaxonomy | grep -Po "(?<=KronaTools )[0-9.]+")
+    END_VERSIONS
+    """
 }
