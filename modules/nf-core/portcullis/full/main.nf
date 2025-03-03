@@ -24,7 +24,6 @@ process PORTCULLIS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def log_file = "${meta.id}.portcullis.log"
     """
     portcullis \\
         full \\
@@ -33,7 +32,7 @@ process PORTCULLIS {
         -o $prefix \\
         -r $bed \\
         $fasta \\
-        $bam > $log_file
+        $bam > ${prefix}.portcullis.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -44,10 +43,12 @@ process PORTCULLIS {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def log_file = "${meta.id}.portcullis.log"
     """
-    touch ${log_file}
+    touch ${prefix}.portcullis.log
     mkdir ${prefix}
+    mkdir ${prefix}/3-filt/
+    touch ${prefix}/3-filt/${prefix}.portcullis.bed
+    touch ${prefix}/3-filt/${prefix}.portcullis.tab
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
