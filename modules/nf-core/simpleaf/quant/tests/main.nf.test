@@ -52,7 +52,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
                 { assert file("${process.out.map.get(0).get(1)}/map.rad").exists() },
                 { assert file("${process.out.map.get(0).get(1)}/map_info.json").exists() },
                 { assert file("${process.out.map.get(0).get(1)}/unmapped_bc_count.bin").exists() },
@@ -67,13 +66,24 @@ nextflow_process {
                 { assert file("${process.out.quant.get(0).get(1)}/alevin/quants_mat_cols.txt").exists() },
                 { assert file("${process.out.quant.get(0).get(1)}/alevin/quants_mat_rows.txt").exists() },
                 { assert file("${process.out.quant.get(0).get(1)}/alevin/quants.h5ad").exists() },
+                { assert snapshot(process.out.versions).match() },
                 // { assert snapshot(
-                //     process.out.versions,
                 //     path("${process.out.map.get(0).get(1)}/map.rad"),
+                //     path("${process.out.map.get(0).get(1)}/map_info.json"),
                 //     path("${process.out.map.get(0).get(1)}/unmapped_bc_count.bin"),
-                //     path("${process.out.quant.get(0).get(1)}/map.collated.rad"),
-                //     path("${process.out.quant.get(0).get(1)}/featureDump.txt"))
-                //     .match() }
+                //     path("${process.out.quant.get(0).get(1)}/permit_map.bin"),
+                //     path("${process.out.quant.get(0).get(1)}/collate.json"),
+                //     path("${process.out.quant.get(0).get(1)}/generate_permit_list.json"),
+                //     path("${process.out.quant.get(0).get(1)}/quant.json"),
+                //     path("${process.out.quant.get(0).get(1)}/featureDump.txt"),
+                //     path("${process.out.quant.get(0).get(1)}/permit_freq.bin"),
+                //     path("${process.out.quant.get(0).get(1)}/unmapped_bc_count_collated.bin"),
+                //     path("${process.out.quant.get(0).get(1)}/alevin/quants_mat.mtx"),
+                //     path("${process.out.quant.get(0).get(1)}/alevin/quants_mat_cols.txt"),
+                //     path("${process.out.quant.get(0).get(1)}/alevin/quants_mat_rows.txt"),
+                //     path("${process.out.quant.get(0).get(1)}/alevin/quants.h5ad"),
+                //     process.out.versions
+                // ).match() }
             )
         }
 
