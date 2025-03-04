@@ -12,8 +12,6 @@ nextflow_process {
 
     test("basic - csv - py") {
 
-        config "./docker.config"
-
         when {
             process {
                 """
@@ -39,8 +37,6 @@ nextflow_process {
     }
 
     test("basic - csv - stub") {
-
-        config "./docker.config"
 
         options "-stub"
 
