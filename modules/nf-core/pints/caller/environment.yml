@@ -6,9 +6,11 @@ channels:
 dependencies:
   - bedtools
   - htslib
+  # NOTE This is the version in the Seqera container
+  # - python=3.12.6
   - pip
   - pybedtools
   - pip: # FIXME https://github.com/nf-core/modules/issues/5814
       # NOTE PINTS isn't adding conda builds and is a few versions behind.
       # renovate: datasource=pypi depName=pypints
-      - pypints==1.1.13
+      - pypints==1.1.15
