@@ -57,10 +57,10 @@ process ASCAT {
 
     #build prefixes: <abspath_to_files/prefix_chr>
     allele_path = basename(normalizePath("$allele_files"))
-    allele_prefix = sub("_chr[0-9]+\\.txt$", "_chr", allele_path)
+    allele_prefix = sub('_chr[0-9]+\\\\.txt\$', "_chr", allele_path)
 
     loci_path =  basename(normalizePath("$loci_files"))
-    loci_prefix = sub("_chr[0-9]+\\.txt$", "_chr", loci_path)
+    loci_prefix = sub('_chr[0-9]+\\\\.txt\$', "_chr", loci_path)
 
     #prepare from BAM files
     ascat.prepareHTS(
@@ -101,10 +101,10 @@ process ASCAT {
 
     # optional LogRCorrection
     if("$gc_input" != "NULL") {
-        gc_input = paste0(normalizePath("$gc_input"), "/", "$gc_input", ".txt")
+        gc_input = normalizePath("$gc_input")
 
         if("$rt_input" != "NULL"){
-            rt_input = paste0(normalizePath("$rt_input"), "/", "$rt_input", ".txt")
+            rt_input = normalizePath("$rt_input")
             ascat.bc = ascat.correctLogR(ascat.bc, GCcontentfile = gc_input, replictimingfile = rt_input)
             #Plot raw data after correction
             ascat.plotRawData(ascat.bc, img.prefix = paste0("$prefix", ".after_correction_gc_rt."))
@@ -165,7 +165,6 @@ process ASCAT {
     writeLines(paste("    alleleCounter:", alleleCounter_version), f)
     writeLines(paste("    ascat:", ascat_version), f)
     close(f)
-
     """
 
     stub:
