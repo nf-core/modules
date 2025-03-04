@@ -53,6 +53,16 @@ output:
           type: file
           description: variant file.
           pattern: "*.vcf"
+  - gvcf:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+            e.g. [ id:'test' ]
+      - "*.g.vcf.gz":
+          type: file
+          description: genomic variant file, gzipped.
+          pattern: "*.g.vcf.gz"
   - versions:
       - versions.yml:
           type: file
