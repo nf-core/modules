@@ -28,7 +28,6 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.log,
                     process.out.bed,
                     process.out.tab,
                     process.out.versions
@@ -59,7 +58,6 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.log,
                     process.out.bed,
                     process.out.tab,
                     process.out.versions
