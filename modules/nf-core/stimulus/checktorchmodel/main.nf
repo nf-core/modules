@@ -3,7 +3,7 @@ process STIMULUS_CHECKTORCHMODEL {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "docker.io/mathysgrapotte/stimulus-py:0.2.6"
+    container "community.wave.seqera.io/library/stimulus-py:0.2.6--41ca4e25d23aeadd"
 
     input:
     tuple val(meta) , path(data) , path(data_config)
