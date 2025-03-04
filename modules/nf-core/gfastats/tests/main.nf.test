@@ -11,19 +11,20 @@ nextflow_process {
     test("test_gfastats_fasta_gfa") {
 
         when {
+
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = 'gfa'   // GFA output format
-                input[2] = ''      // No genome size
-                input[3] = ''      // No target
-                input[4] = []      // No agp file
-                input[5] = []      // No include bed file
-                input[6] = []      // No exclude bed file
-                input[7] = []       // No swiss army knife instructions
+                input[1] = 'gfa'
+                input[2] = ''
+                input[3] = ''
+                input[4] = []
+                input[5] = []
+                input[6] = []
+                input[7] = []
                 """
             }
         }
@@ -46,13 +47,13 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = 'fasta' // Fasta output format
-                input[2] = ''      // No genome size
-                input[3] = ''      // No target
-                input[4] = []      // No agp file
-                input[5] = []      // No include bed file
-                input[6] = []      // No exclude bed file
-                input[7] = []       // No swiss army knife instructions
+                input[1] = 'fasta'
+                input[2] = ''
+                input[3] = ''
+                input[4] = []
+                input[5] = []
+                input[6] = []
+                input[7] = []
                 """
             }
         }
@@ -75,13 +76,13 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = 'fastq' // Fastq output format
-                input[2] = ''      // No genome size
-                input[3] = ''      // No target
-                input[4] = []      // No agp file
+                input[1] = 'fastq'
+                input[2] = ''
+                input[3] = ''
+                input[4] = []
                 input[5] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
-                input[6] = []      // No exclude bed file
-                input[7] = []       // No swiss army knife instructions
+                input[6] = []
+                input[7] = []
                 """
             }
         }
@@ -104,13 +105,13 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = 'fasta' // Fasta output format
-                input[2] = ''      // No genome size
-                input[3] = ''      // No target
-                input[4] = []      // No agp file
-                input[5] = []      // No include bed file
+                input[1] = 'fasta'
+                input[2] = ''
+                input[3] = ''
+                input[4] = []
+                input[5] = []
                 input[6] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
-                input[7] = []       // No swiss army knife instructions
+                input[7] = []
                 """
             }
         }
@@ -133,12 +134,12 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = 'fasta' // Fasta output format
-                input[2] = ''      // No genome size
-                input[3] = ''      // No target
-                input[4] = []      // No agp file
-                input[5] = []      // No include bed file
-                input[6] = []      // No exclude bed file
+                input[1] = 'fasta'
+                input[2] = ''
+                input[3] = ''
+                input[4] = []
+                input[5] = []
+                input[6] = []
                 input[7] = Channel.of(
                     'RVCP\tMT192765.1'
                     ).collectFile(name:'assembly.sak')
@@ -166,13 +167,13 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = 'gfa'   // GFA output format
-                input[2] = ''      // No genome size
-                input[3] = ''      // No target
-                input[4] = []      // No agp file
-                input[5] = []      // No include bed file
-                input[6] = []      // No exclude bed file
-                input[7] = []       // No swiss army knife instructions
+                input[1] = 'gfa'
+                input[2] = ''
+                input[3] = ''
+                input[4] = []
+                input[5] = []
+                input[6] = []
+                input[7] = []
                 """
             }
         }
@@ -197,13 +198,13 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = 'fasta' // Fasta output format
-                input[2] = ''      // No genome size
-                input[3] = ''      // No target
-                input[4] = []      // No agp file
-                input[5] = []      // No include bed file
-                input[6] = []      // No exclude bed file
-                input[7] = []       // No swiss army knife instructions
+                input[1] = 'fasta'
+                input[2] = ''
+                input[3] = ''
+                input[4] = []
+                input[5] = []
+                input[6] = []
+                input[7] = []
                 """
             }
         }
@@ -228,13 +229,13 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = 'fastq' // Fastq output format
-                input[2] = ''      // No genome size
-                input[3] = ''      // No target
-                input[4] = []      // No agp file
+                input[1] = 'fastq'
+                input[2] = ''
+                input[3] = ''
+                input[4] = []
                 input[5] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
-                input[6] = []      // No exclude bed file
-                input[7] = []       // No swiss army knife instructions
+                input[6] = []
+                input[7] = []
                 """
             }
         }
@@ -259,13 +260,13 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = 'fasta' // Fasta output format
-                input[2] = ''      // No genome size
-                input[3] = ''      // No target
-                input[4] = []      // No agp file
-                input[5] = []      // No include bed file
+                input[1] = 'fasta'
+                input[2] = ''
+                input[3] = ''
+                input[4] = []
+                input[5] = []
                 input[6] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
-                input[7] = []       // No swiss army knife instructions
+                input[7] = []
                 """
             }
         }
@@ -290,12 +291,12 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = 'fasta' // Fasta output format
-                input[2] = ''      // No genome size
-                input[3] = ''      // No target
-                input[4] = []      // No agp file
-                input[5] = []      // No include bed file
-                input[6] = []      // No exclude bed file
+                input[1] = 'fasta'
+                input[2] = ''
+                input[3] = ''
+                input[4] = []
+                input[5] = []
+                input[6] = []
                 input[7] = Channel.of(
                     'RVCP\tMT192765.1'
                     ).collectFile(name:'assembly.sak')
