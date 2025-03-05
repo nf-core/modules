@@ -39,6 +39,7 @@ process SYLPH_PROFILE {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def input = meta.single_end ? "${reads}" : "-1 ${reads[0]} -2 ${reads[1]}"
     """
     touch ${prefix}.tsv
     cat <<-END_VERSIONS > versions.yml
