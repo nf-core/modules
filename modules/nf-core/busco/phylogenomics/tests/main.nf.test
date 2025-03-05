@@ -43,8 +43,18 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        file(process.out.gene_trees[0][1]).list().sort().findAll { file(it).name != "ALL.tree" },
-                        process.out.supermatrix,
+                        file(process.out.gene_trees[0][1]).list().sort().findAll {
+                            file(it).name != "ALL.tree"
+                        },
+                        // file(process.out.gene_trees[0][1].find { file(it).name == "ALL.tree" }).exists(),
+                        file(process.out.supermatrix[0][1]).list().sort().findAll {
+                            file(it).name != "SUPERMATRIX.fasta" &&
+                            file(it).name != "SUPERMATRIX.partitions.nex" &&
+                            file(it).name != "SUPERMATRIX.phylip"
+                        },
+                        // file(process.out.supermatrix[0][1].find { file(it).name == "SUPERMATRIX.fasta" }).text.contains("MTDPIADYLTRLRNAINAKHRVVEVPASNLKKEITKILFEKGYILNYKFVEDGPQGTIKV"),
+                        // file(process.out.supermatrix[0][1].find { file(it).name == "SUPERMATRIX.partitions.nex" }).text.contains("genome.fna  MTDPIADYLT RLRNAINAKH RVVEVPASNL KKEITKILFE KGYILNYKFV"),
+                        // file(process.out.supermatrix[0][1].find { file(it).name == "SUPERMATRIX.phylip" }).text.contains("	charset 1692188at2 = SUPERMATRIX.phylip: 1-132;"),
                         process.out.versions
                     ).match()
                 }
