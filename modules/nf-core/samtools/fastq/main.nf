@@ -41,4 +41,20 @@ process SAMTOOLS_FASTQ {
         samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def output = ( interleave && ! meta.single_end ) ? "echo | gzip > ${prefix}_interleaved.fastq" :
+        meta.single_end ? "echo | gzip > ${prefix}_1.fastq.gz ; echo | gzip > ${prefix}_singleton.fastq.gz" :
+        "echo | gzip > ${prefix}_1.fastq.gz ; echo | gzip > ${prefix}_2.fastq.gz ; echo | gzip > ${prefix}_singleton.fastq.gz"
+    """
+    echo | gzip > ${prefix}_other.fastq.gz
+    $output
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+    END_VERSIONS
+    """
+
 }
