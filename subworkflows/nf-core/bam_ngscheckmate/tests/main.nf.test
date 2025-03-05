@@ -48,7 +48,7 @@ nextflow_workflow {
                     workflow.out.corr_matrix,
                     workflow.out.matched,
                     workflow.out.all,
-                    workflow.out.vcf,
+                    workflow.out.vcf.collect {meta, vcf -> path(vcf).vcf.variantsMD5 },
                     file(workflow.out.pdf[0][1]).name,
                     workflow.out.versions
                     ).match()}
@@ -89,7 +89,7 @@ nextflow_workflow {
                     workflow.out.corr_matrix,
                     workflow.out.matched,
                     workflow.out.all,
-                    workflow.out.vcf,
+                    workflow.out.vcf.collect {meta, vcf -> path(vcf).vcf.variantsMD5 },
                     file(workflow.out.pdf[0][1]).name,
                     workflow.out.versions
                     ).match()}
