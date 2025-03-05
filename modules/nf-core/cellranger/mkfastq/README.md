@@ -17,7 +17,7 @@ ENV BCL2FASTQ2_VER=<VERSION> \
 docker build . -t quay.io/nf-core/cellrangermkfastq:<CELLRANGER_VERSION>
 ```
 
-4. Access rights are needed to push the container to the Dockerhub nfcore organization, please ask a core team member to do so.
+4. Access rights are needed to push the container to the Quay.io nfcore organization, please ask a core team member to do so. For those who have permission, `docker login quay.io` is your friend with an appropriate user + token.
 
 ```bash
 docker push quay.io/nf-core/cellrangermkfastq:<CELLRANGER_VERSION>
