@@ -13,8 +13,8 @@ process GAWK {
     val(disable_redirect_output)
 
     output:
-    tuple val(meta), path("${prefix}.${suffix}"), emit: output
-    path "versions.yml"                         , emit: versions
+    tuple val(meta), path("*.${suffix}"), emit: output
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
