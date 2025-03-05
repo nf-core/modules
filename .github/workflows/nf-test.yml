@@ -101,9 +101,8 @@ jobs:
 
   nf-test:
     runs-on:
-      - runs-on=${{ github.run_id }}
-      - runner=4cpu-linux-x64
-      - image=ubuntu22-full-x64
+      - ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
+      - ubuntu-24.04-arm
     name: "Test | ${{ matrix.profile }} | ${{ matrix.shard }}"
     needs: [nf-test-changes]
     if: ${{ needs.nf-test-changes.outputs.total_shards != '0' }}
