@@ -34,6 +34,11 @@ input:
         description: Optional file containing logic for awk to execute. If you don't
           wish to use a file, you can use `ext.args2` to specify the logic.
         pattern: "*"
+  - - disable_redirect_output:
+        type: boolean
+        description: Disable the redirection of awk output to a given file. This is
+          useful if you want to use awk's built-in redirect to write files instead
+          of the shell's redirect.
 output:
   - output:
       - meta:
