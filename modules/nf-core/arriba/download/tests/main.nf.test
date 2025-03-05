@@ -11,6 +11,7 @@ nextflow_process {
     tag "arriba/download"
 
     test("test-arriba-download") {
+        config "./nextflow.config"
         when {
             process {
                 """
@@ -29,6 +30,7 @@ nextflow_process {
     }
 
     test("download - stub") {
+        config "./nextflow.config"
 
         options "-stub"
 
