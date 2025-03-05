@@ -22,6 +22,7 @@ on:
         type: choice
         options:
           - "ubuntu-latest"
+          - "ubuntu-24.04-arm"
           - "self-hosted"
         default: "self-hosted"
 
@@ -96,8 +97,9 @@ jobs:
           echo ${{ steps.set-shards.outputs.total_shards }}
 
   nf-test:
-    runs-on: ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
-    name: "Test | ${{ matrix.profile }} | ${{ matrix.shard }}"
+    runs-on: ${{ matrix.os }}
+    # NOTE Try matrix.os | matrix.profile | matrix.shard
+    name: "${{ matrix.profile }} | ${{ matrix.os }} | ${{ matrix.shard }}"
     needs: [nf-test-changes]
     if: ${{ needs.nf-test-changes.outputs.total_shards != '0' }}
     strategy:
@@ -105,6 +107,9 @@ jobs:
       matrix:
         shard: ${{ fromJson(needs.nf-test-changes.outputs.shard) }}
         profile: [conda, docker_self_hosted, singularity]
+        os:
+          - ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
+          - ubuntu-24.04-arm
     env:
       NXF_ANSI_LOG: false
       TOTAL_SHARDS: ${{ needs.nf-test-changes.outputs.total_shards }}
@@ -164,8 +169,9 @@ jobs:
           SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
           SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
           SENTIEON_AUTH_MECH: "GitHub Actions - token"
+          IS_ARM_RUNNER: ${{ contains(github.event.inputs.runners || '', 'arm') }}
         with:
-          profile: ${{ matrix.profile }}
+          profile: ${{ matrix.profile }}${{ env.IS_ARM_RUNNER == 'true' && ',arm' || '' }}
           shard: ${{ matrix.shard }}
           total_shards: ${{ env.TOTAL_SHARDS }}
           paths: "${{ join(fromJson(steps.filter.outputs.filtered_paths), ' ') }}"
