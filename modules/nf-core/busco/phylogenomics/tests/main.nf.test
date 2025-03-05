@@ -1,0 +1,76 @@
+nextflow_process {
+
+    name "Test Process BUSCO_PHYLOGENOMICS"
+    script "../main.nf"
+    process "BUSCO_PHYLOGENOMICS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "busco"
+    tag "busco/busco"
+    tag "busco/phylogenomics"
+
+    setup {
+        run("BUSCO_BUSCO") {
+            script "../../busco"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                ]
+                input[1] = 'genome'
+                input[2] = 'bacteria_odb10'
+                input[3] = []
+                input[4] = []
+                input[5] = false
+                """
+            }
+        }
+    }
+
+    test("bacteroides_fragilis - genome - fna - gz") {
+
+        when {
+            process {
+                """
+                input[0] = BUSCO_BUSCO.out.busco_dir
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        file(process.out.phylogenomics[0][1]).list().sort().findAll { file(it).name != "ALL.tree" },
+                        process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("bacteroides_fragilis - genome - fna - gz - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = BUSCO_BUSCO.out.busco_dir
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

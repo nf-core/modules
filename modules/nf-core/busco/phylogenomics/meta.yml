@@ -1,0 +1,47 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "busco_phylogenomics"
+description: Construct species phylogenies using BUSCO proteins
+keywords:
+  - phylogenies
+  - orthologs
+  - alignment
+tools:
+  - "busco":
+      description: "Construct species phylogenies using BUSCO proteins"
+      homepage: "https://github.com/jamiemcg/BUSCO_phylogenomics"
+      documentation: "https://github.com/jamiemcg/BUSCO_phylogenomics"
+      tool_dev_url: "https://github.com/jamiemcg/BUSCO_phylogenomics"
+      doi: "10.1371/journal.pgen.1011512"
+      licence: ['MIT']
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - busco:
+        type: directory
+        description: BUSCO lineage specific output
+        pattern: "*"
+output:
+  - phylogenomics:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - ${prefix}:
+          type: directory
+          description: BUSCO phylogenomics output directory
+          pattern: "*/"
+  - versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"
