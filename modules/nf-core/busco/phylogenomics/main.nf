@@ -11,8 +11,9 @@ process BUSCO_PHYLOGENOMICS {
     tuple val(meta), path(busco)
 
     output:
-    tuple val(meta), path("${prefix}"), emit: phylogenomics
-    path "versions.yml"               , emit: versions
+    tuple val(meta), path("${prefix}/gene_trees_single_copy/"), emit: gene_trees
+    tuple val(meta), path("${prefix}/supermatrix/")           , emit: supermatrix
+    path "versions.yml"                                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,7 +41,13 @@ process BUSCO_PHYLOGENOMICS {
     def VERSION = '20240919' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     mkdir ${prefix}
-    touch ${prefix}/${prefix}.tree
+    mkdir ${prefix}/gene_trees_single_copy
+    mkdir ${prefix}/supermatrix
+
+    touch ${prefix}/gene_trees_single_copy/ALL.tree
+    touch ${prefix}/supermatrix/SUPERMATRIX.fasta
+    touch ${prefix}/supermatrix/SUPERMATRIX.partitions.nex
+    touch ${prefix}/supermatrix/SUPERMATRIX.phylip
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

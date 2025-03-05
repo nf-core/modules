@@ -43,7 +43,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        file(process.out.phylogenomics[0][1]).list().sort().findAll { file(it).name != "ALL.tree" },
+                        file(process.out.gene_trees[0][1]).list().sort().findAll { file(it).name != "ALL.tree" },
+                        process.out.supermatrix,
                         process.out.versions
                     ).match()
                 }

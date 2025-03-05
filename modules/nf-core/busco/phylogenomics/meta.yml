@@ -26,16 +26,26 @@ input:
         description: BUSCO lineage specific output
         pattern: "*"
 output:
-  - phylogenomics:
+  - gene_trees:
     - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - ${prefix}:
+    - ${prefix}/gene_trees_single_copy/:
           type: directory
-          description: BUSCO phylogenomics output directory
-          pattern: "*/"
+          description: Gene trees of BUSCO families
+          pattern: "${prefix}/gene_trees_single_copy"
+  - supermatrix:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - ${prefix}/supermatrix/:
+          type: directory
+          description: Concatenated supermatrix alignments of BUSCO families
+          pattern: "${prefix}/supermatrix"
   - versions:
     - "versions.yml":
         type: file
