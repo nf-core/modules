@@ -62,7 +62,7 @@ process ASCAT {
     loci_path =  basename(normalizePath("$loci_files"))
     loci_prefix = sub('_chr[0-9]+\\\\.txt\$', "_chr", loci_path)
 
-    #prepare from BAM files
+    # Prepare from BAM files
     ascat.prepareHTS(
         tumourseqfile = "$input_tumor",
         normalseqfile = "$input_normal",
@@ -86,7 +86,7 @@ process ASCAT {
     )
 
 
-    #Load the data
+    # Load the data
     ascat.bc = ascat.loadData(
         Tumor_LogR_file = paste0("$prefix", ".tumour_tumourLogR.txt"),
         Tumor_BAF_file = paste0("$prefix", ".tumour_tumourBAF.txt"),
@@ -96,10 +96,10 @@ process ASCAT {
         gender = "$gender"
     )
 
-    #Plot the raw data
+    # Plot the raw data
     ascat.plotRawData(ascat.bc, img.prefix = paste0("$prefix", ".before_correction."))
 
-    # optional LogRCorrection
+    # Optional LogRCorrection
     if("$gc_input" != "NULL") {
         gc_input = normalizePath("$gc_input")
 
@@ -116,7 +116,7 @@ process ASCAT {
         }
     }
 
-    #Segment the data
+    # Segment the data
     ascat.bc = ascat.aspcf(ascat.bc, seed=42)
 
     #Plot the segmented data
@@ -162,37 +162,38 @@ process ASCAT {
     alleleCounter_version = system(paste("alleleCounter --version"), intern = T)
     ascat_version = sessionInfo()\$otherPkgs\$ASCAT\$Version
     writeLines(paste0('"', "$task.process", '"', ":"), f)
-    writeLines(paste("    alleleCounter:", alleleCounter_version), f)
     writeLines(paste("    ascat:", ascat_version), f)
+    writeLines(paste("    alleleCounter:", alleleCounter_version), f)
     close(f)
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo stub > ${prefix}.after_correction.gc_rt.test.tumour.germline.png
-    echo stub > ${prefix}.after_correction.gc_rt.test.tumour.tumour.png
-    echo stub > ${prefix}.before_correction.test.tumour.germline.png
-    echo stub > ${prefix}.before_correction.test.tumour.tumour.png
-    echo stub > ${prefix}.cnvs.txt
-    echo stub > ${prefix}.metrics.txt
-    echo stub > ${prefix}.normal_alleleFrequencies_chr21.txt
-    echo stub > ${prefix}.normal_alleleFrequencies_chr22.txt
-    echo stub > ${prefix}.purityploidy.txt
-    echo stub > ${prefix}.segments.txt
-    echo stub > ${prefix}.tumour.ASPCF.png
-    echo stub > ${prefix}.tumour.sunrise.png
-    echo stub > ${prefix}.tumour_alleleFrequencies_chr21.txt
-    echo stub > ${prefix}.tumour_alleleFrequencies_chr22.txt
-    echo stub > ${prefix}.tumour_normalBAF.txt
-    echo stub > ${prefix}.tumour_normalLogR.txt
-    echo stub > ${prefix}.tumour_tumourBAF.txt
-    echo stub > ${prefix}.tumour_tumourLogR.txt
+    touch ${prefix}.after_correction.gc_rt.test.tumour.germline.png
+    touch ${prefix}.after_correction.gc_rt.test.tumour.tumour.png
+    touch ${prefix}.before_correction.test.tumour.germline.png
+    touch ${prefix}.before_correction.test.tumour.tumour.png
+    touch ${prefix}.cnvs.txt
+    touch ${prefix}.metrics.txt
+    touch ${prefix}.normal_alleleFrequencies_chr21.txt
+    touch ${prefix}.normal_alleleFrequencies_chr22.txt
+    touch ${prefix}.purityploidy.txt
+    touch ${prefix}.segments.txt
+    touch ${prefix}.tumour.ASPCF.png
+    touch ${prefix}.tumour.sunrise.png
+    touch ${prefix}.tumour_alleleFrequencies_chr21.txt
+    touch ${prefix}.tumour_alleleFrequencies_chr22.txt
+    touch ${prefix}.tumour_normalBAF.txt
+    touch ${prefix}.tumour_normalLogR.txt
+    touch ${prefix}.tumour_tumourBAF.txt
+    touch ${prefix}.tumour_tumourLogR.txt
 
-    echo "${task.process}:" > versions.yml
-    echo ' alleleCounter: 4.3.0' >> versions.yml
-    echo ' ascat: 3.0.0' >> versions.yml
-
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bioconductor-ascat: \$(Rscript -e "library(ASCAT); cat(as.character(packageVersion('ASCAT')))")
+        alleleCounter: \$(Rscript -e "library(alleleCounter); cat(as.character(packageVersion('alleleCounter')))")
+    END_VERSIONS
     """
 
 
