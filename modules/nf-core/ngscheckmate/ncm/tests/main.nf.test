@@ -110,7 +110,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.corr_matrix,
-                    process.out.matched,
+                    file(process.out.matched[0][1]).name,
                     process.out.all,
                     file(process.out.pdf[0][1]).name,
                     process.out.versions
