@@ -100,17 +100,19 @@ jobs:
           echo ${{ steps.set-shards.outputs.total_shards }}
 
   nf-test:
-    runs-on:
-      - ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
-      - ubuntu-24.04-arm
-    name: "Test | ${{ matrix.profile }} | ${{ matrix.shard }}"
+    runs-on: ${{ matrix.os }}
+    # NOTE Try matrix.os | matrix.profile | matrix.shard
+    name: "${{ matrix.profile }} | ${{ matrix.os }} | ${{ matrix.shard }}"
     needs: [nf-test-changes]
     if: ${{ needs.nf-test-changes.outputs.total_shards != '0' }}
     strategy:
       fail-fast: false
       matrix:
         shard: ${{ fromJson(needs.nf-test-changes.outputs.shard) }}
-        profile: [conda, docker, singularity]
+        profile: [conda, docker_self_hosted, singularity]
+        os:
+          - ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
+          - ubuntu-24.04-arm
     env:
       NXF_ANSI_LOG: false
       TOTAL_SHARDS: ${{ needs.nf-test-changes.outputs.total_shards }}
