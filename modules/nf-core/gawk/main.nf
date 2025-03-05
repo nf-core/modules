@@ -27,7 +27,7 @@ process GAWK {
 
     program    = program_file ? "-f ${program_file}" : "${args2}"
     lst_gz     = input.findResults{ it.getExtension().endsWith("gz") ? it.toString() : null }
-    unzip      = lst_gz ? "gunzip ${lst_gz.join(" ")}" : ""
+    unzip      = lst_gz ? "gunzip -q -f ${lst_gz.join(" ")}" : ""
     input_cmd  = input.collect { it.toString() - ~/\.gz$/ }.join(" ")
     output_cmd = suffix.endsWith("gz") ? "| gzip > ${prefix}.${suffix}" : "> ${prefix}.${suffix}"
     output     = disable_redirect_output ? "" : output_cmd
