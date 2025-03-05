@@ -46,24 +46,33 @@ nextflow_process {
         }
 
         then {
-            def stablefiles = []
-            file(process.out.db.get(0).get(1)).eachFileRecurse{ file -> if (!file.isDirectory() && !["database-build.log", "database.report.tsv", "timestamp", "taxdump.tar.gz", "names.dmp", "nodes.dmp"].find {file.toString().endsWith(it)}) {stablefiles.add(file)} }
-            def unstablefiles = []
-            file(process.out.db.get(0).get(1)).eachFileRecurse{ file -> if (["database-build.log", "database.report.tsv", "timestamp", "taxdump.tar.gz", "names.dmp", "nodes.dmp"].find {file.toString().endsWith(it)}) {unstablefiles.add(file.getName().toString())} }
+            def allFiles = []
+            file(process.out.db.get(0).get(1)).eachFileRecurse{ file -> if (!file.isDirectory()) {allFiles.add(file)} }
+
+            def allFolders = []
+            file(process.out.db.get(0).get(1)).eachFileRecurse{ folder -> if (folder.isDirectory()) {allFolders.add(folder)} }
+
+            // Defile all files that have unstable content (ie: timestamp, non-deterministic or any other variable content)
+            def unstableNames = ["database-build.log", "database.report.tsv", "names.dmp", "nodes.dmp", "taxdump.tar.gz", "timestamp"]
+            // Filter out the unstable files
+            def stableFiles = allFiles.grep { file -> !unstableNames.contains(file.name) }.sort()
+            // Collect the stable file names
+            def stableNames = allFiles.grep { file -> unstableNames.contains(file.name) }.collect { file -> file.name }
+            stableNames = (stableNames + allFolders.collect { file -> file.name }).sort()
+
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        stablefiles.sort(),
-                        unstablefiles.sort(),
+                        stableFiles,
+                        stableNames,
                         process.out.versions
                     ).match()
                 }
             )
         }
-
     }
 
-test("sarscov2 - fasta - nocleanup") {
+    test("sarscov2 - fasta - nocleanup") {
 
         when {
             process {
@@ -87,21 +96,30 @@ test("sarscov2 - fasta - nocleanup") {
         }
 
         then {
-            def stablefiles = []
-            file(process.out.db.get(0).get(1)).eachFileRecurse{ file -> if (!file.isDirectory() && !["database-build.log", "database.report.tsv", "timestamp", "taxdump.tar.gz", "names.dmp", "nodes.dmp"].find {file.toString().endsWith(it)}) {stablefiles.add(file)} }
-            def unstablefiles = []
-            file(process.out.db.get(0).get(1)).eachFileRecurse{ file -> if (["database-build.log", "database.report.tsv", "timestamp", "taxdump.tar.gz", "names.dmp", "nodes.dmp"].find {file.toString().endsWith(it)}) {unstablefiles.add(file.getName().toString())} }
+            def allFiles = []
+            file(process.out.db.get(0).get(1)).eachFileRecurse{ file -> if (!file.isDirectory()) {allFiles.add(file)} }
+
+            def allFolders = []
+            file(process.out.db.get(0).get(1)).eachFileRecurse{ folder -> if (folder.isDirectory()) {allFolders.add(folder)} }
+
+            // Defile all files that have unstable content (ie: timestamp, non-deterministic or any other variable content)
+            def unstableNames = ["database-build.log", "database.report.tsv", "names.dmp", "nodes.dmp", "taxdump.tar.gz", "timestamp"]
+            // Filter out the unstable files
+            def stableFiles = allFiles.grep { file -> !unstableNames.contains(file.name) }.sort()
+            // Collect the stable file names
+            def stableNames = allFiles.grep { file -> unstableNames.contains(file.name) }.collect { file -> file.name }
+            stableNames = (stableNames + allFolders.collect { file -> file.name }).sort()
+
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        stablefiles.sort(),
-                        unstablefiles.sort(),
+                        stableFiles,
+                        stableNames,
                         process.out.versions
                     ).match()
                 }
             )
         }
-
     }
 
     test("sarscov2 - fasta - stub") {
@@ -120,7 +138,7 @@ test("sarscov2 - fasta - nocleanup") {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out).match() }
-                )
+            )
         }
     }
 }
