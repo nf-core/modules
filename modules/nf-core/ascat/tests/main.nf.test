@@ -39,8 +39,11 @@ nextflow_process {
                     process.out.allelefreqs,
                     process.out.bafs,
                     process.out.cnvs,
+                    // Logrs Tumour has a float margin discrepancy in conda due to
+                    // log and mean transformation
                     process.out.logrs.collect{it[1].collect{file(it).name}},
                     process.out.metrics,
+                    // This discrepancy affect the png generated
                     process.out.png.collect{it[1].collect{file(it).name}},
                     process.out.purityploidy,
                     process.out.segments,
@@ -80,8 +83,11 @@ nextflow_process {
                     process.out.allelefreqs,
                     process.out.bafs,
                     process.out.cnvs,
+                    // Logrs Tumour has a float margin discrepancy in conda due to
+                    // log and mean transformation
                     process.out.logrs.collect{it[1].collect{file(it).name}},
                     process.out.metrics,
+                    // This discrepancy affect the png generated
                     process.out.png.collect{it[1].collect{file(it).name}},
                     process.out.purityploidy,
                     process.out.segments,
