@@ -55,7 +55,7 @@ process ASCAT {
     library(ASCAT)
     options(bitmapType='cairo')
 
-    #build prefixes: <abspath_to_files/prefix_chr>
+    # Build prefixes: <abspath_to_files/prefix_chr>
     allele_path = basename(normalizePath("$allele_files"))
     allele_prefix = sub('_chr[0-9]+\\\\.txt\$', "_chr", allele_path)
 
@@ -106,12 +106,12 @@ process ASCAT {
         if("$rt_input" != "NULL"){
             rt_input = normalizePath("$rt_input")
             ascat.bc = ascat.correctLogR(ascat.bc, GCcontentfile = gc_input, replictimingfile = rt_input)
-            #Plot raw data after correction
+            # Plot raw data after correction
             ascat.plotRawData(ascat.bc, img.prefix = paste0("$prefix", ".after_correction_gc_rt."))
         }
         else {
             ascat.bc = ascat.correctLogR(ascat.bc, GCcontentfile = gc_input, replictimingfile = $rt_input)
-            #Plot raw data after correction
+            # Plot raw data after correction
             ascat.plotRawData(ascat.bc, img.prefix = paste0("$prefix", ".after_correction_gc."))
         }
     }
@@ -119,11 +119,12 @@ process ASCAT {
     # Segment the data
     ascat.bc = ascat.aspcf(ascat.bc, seed=42)
 
-    #Plot the segmented data
+    # Plot the segmented data
     ascat.plotSegmentedData(ascat.bc)
 
-    #Run ASCAT to fit every tumor to a model, inferring ploidy, normal cell contamination, and discrete copy numbers
-    #If psi and rho are manually set:
+    # Run ASCAT to fit every tumor to a model, inferring ploidy, normal cell contamination,
+    # and discrete copy numbers
+    # If psi and rho are manually set:
     if (!is.null($purity) && !is.null($ploidy)){
         ascat.output <- ascat.runAscat(ascat.bc, gamma=1, rho_manual=$purity, psi_manual=$ploidy)
     } else if(!is.null($purity) && is.null($ploidy)){
@@ -134,17 +135,17 @@ process ASCAT {
         ascat.output <- ascat.runAscat(ascat.bc, gamma=1)
     }
 
-    #Extract metrics from ASCAT profiles
+    # Extract metrics from ASCAT profiles
     QC = ascat.metrics(ascat.bc,ascat.output)
 
-    #Write out segmented regions (including regions with one copy of each allele)
+    # Write out segmented regions (including regions with one copy of each allele)
     write.table(ascat.output[["segments"]], file=paste0("$prefix", ".segments.txt"), sep="\t", quote=F, row.names=F)
 
-    #Write out CNVs in bed format
+    # Write out CNVs in bed format
     cnvs=ascat.output[["segments"]][2:6]
     write.table(cnvs, file=paste0("$prefix",".cnvs.txt"), sep="\t", quote=F, row.names=F, col.names=T)
 
-    #Write out purity and ploidy info
+    # Write out purity and ploidy info
     summary <- tryCatch({
             matrix(c(ascat.output[["aberrantcellfraction"]], ascat.output[["ploidy"]]), ncol=2, byrow=TRUE)}, error = function(err) {
                 # error handler picks up where error was generated
@@ -157,10 +158,10 @@ process ASCAT {
 
     write.table(QC, file=paste0("$prefix", ".metrics.txt"), sep="\t", quote=F, row.names=F)
 
-    # version export
+    # Version export
     f <- file("versions.yml","w")
     alleleCounter_version = system(paste("alleleCounter --version"), intern = T)
-    ascat_version = sessionInfo()\$otherPkgs\$ASCAT\$Version
+    ascat_version = as.character(packageVersion('ASCAT'))
     writeLines(paste0('"', "$task.process", '"', ":"), f)
     writeLines(paste("    ascat:", ascat_version), f)
     writeLines(paste("    alleleCounter:", alleleCounter_version), f)
@@ -192,7 +193,7 @@ process ASCAT {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         bioconductor-ascat: \$(Rscript -e "library(ASCAT); cat(as.character(packageVersion('ASCAT')))")
-        alleleCounter: \$(Rscript -e "library(alleleCounter); cat(as.character(packageVersion('alleleCounter')))")
+        alleleCounter: \$(alleleCounter --version)
     END_VERSIONS
     """
 

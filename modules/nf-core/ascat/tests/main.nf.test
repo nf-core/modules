@@ -35,7 +35,17 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.allelefreqs,
+                    process.out.bafs,
+                    process.out.cnvs,
+                    process.out.logrs.collect{it[1].collect{file(it).name}},
+                    process.out.metrics,
+                    process.out.png.collect{it[1].collect{file(it).name}},
+                    process.out.purityploidy,
+                    process.out.segments,
+                    process.out.versions
+                ).match() }
             )
         }
     }
@@ -66,7 +76,17 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.allelefreqs,
+                    process.out.bafs,
+                    process.out.cnvs,
+                    process.out.logrs.collect{it[1].collect{file(it).name}},
+                    process.out.metrics,
+                    process.out.png.collect{it[1].collect{file(it).name}},
+                    process.out.purityploidy,
+                    process.out.segments,
+                    process.out.versions
+                ).match() }
             )
         }
     }
