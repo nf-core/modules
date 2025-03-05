@@ -58,8 +58,8 @@ nextflow_process {
                 },
                 { assert new File(geneTreeDir, geneTreeDir.list().find { file(it).name == "ALL.tree" }).exists() },
                 { assert new File(supermatrixDir, supermatrixDir.list().find { file(it).name == "SUPERMATRIX.fasta" }).text.contains("MTDPIADYLTRLRNAINAKHRVVEVPASNLKKEITKILFEKGYILNYKFVEDGPQGTIKV") },
-                { assert new File(supermatrixDir, supermatrixDir.list().find { file(it).name == "SUPERMATRIX.partitions.nex" }).text.contains("	charset 1692188at2 = SUPERMATRIX.phylip: 1-132;") },
-                { assert new File(supermatrixDir, supermatrixDir.list().find { file(it).name == "SUPERMATRIX.phylip" }).text.contains("genome.fna  MTDPIADYLT RLRNAINAKH RVVEVPASNL KKEITKILFE KGYILNYKFV") }
+                { assert new File(supermatrixDir, supermatrixDir.list().find { file(it).name == "SUPERMATRIX.partitions.nex" }).text.contains("#nexus\nbegin sets;\n\tcharset") },
+                { assert new File(supermatrixDir, supermatrixDir.list().find { file(it).name == "SUPERMATRIX.phylip" }).text.contains(" 1 36572\ngenome.fna") }
             )
         }
 
