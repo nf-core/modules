@@ -27,7 +27,7 @@ process SYLPH_PROFILE {
         -t $task.cpus \\
         $args \\
         $database\\
-        $reads \\
+        $input \\
         -o ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
