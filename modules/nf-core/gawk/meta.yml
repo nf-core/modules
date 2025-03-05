@@ -46,10 +46,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}.${suffix}:
+      - "*.${suffix}":
           type: file
-          description: The output file - specify the name of this file using `ext.prefix`
-            and the extension using `ext.suffix`
+          description: The output file - if using shell redirection, specify the name of this
+            file using `ext.prefix` and the extension using `ext.suffix`. Otherwise, ensure
+            the awk program produces files with the extension in `ext.suffix`.
           pattern: "*"
   - versions:
       - versions.yml:
