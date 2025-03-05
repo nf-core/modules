@@ -8,8 +8,7 @@ process LAST_MAFCONVERT {
         : 'community.wave.seqera.io/library/last_samtools:e2b51d2d9a1ce9fa'}"
 
     input:
-    tuple val(meta), path(maf)
-    val(format)
+    tuple val(meta), path(maf), val(format)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(gzi)
@@ -61,7 +60,17 @@ process LAST_MAFCONVERT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo stub | gzip --no-name > ${prefix}.${format}.gz
+    case $format in
+        bam)
+            touch ${prefix}.${format}
+            ;;
+        cram)
+            touch ${prefix}.${format}
+            ;;
+        *)
+            echo stub | gzip --no-name > ${prefix}.${format}.gz
+            ;;
+    esac
 
     # maf-convert has no --version option but lastdb (part of the same package) has.
     cat <<-END_VERSIONS > versions.yml
