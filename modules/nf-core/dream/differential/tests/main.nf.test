@@ -6,6 +6,7 @@ nextflow_process {
     config "./nextflow.config"
 
     tag "modules"
+    tag "modules_nfcore"
     tag "models"
     tag "dge"
     tag "dream"
@@ -48,7 +49,7 @@ nextflow_process {
                     process.out.model,
                     process.out.normalised_counts,
                     process.out.versions
-                )}
+                ).match()}
             )
         }
     }
@@ -90,7 +91,7 @@ nextflow_process {
                     process.out.model,
                     process.out.normalised_counts,
                     process.out.versions
-                )}
+                ).match()}
             )
         }
     }
@@ -133,7 +134,7 @@ nextflow_process {
                     process.out.model,
                     process.out.normalised_counts,
                     process.out.versions
-                )}
+                ).match()}
             )
         }
     }

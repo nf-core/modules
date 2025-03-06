@@ -1,7 +1,3 @@
-// TODO:
-//      should this module take all variables already processed (meta),
-//      or should it be able to take the yaml file and parse it on its own?
-
 process DREAM_DIFFERENTIAL {
     tag "${meta.id} - ${meta.contrast_id}"
     label 'process_single'

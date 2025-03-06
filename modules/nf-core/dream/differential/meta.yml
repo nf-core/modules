@@ -1,6 +1,6 @@
-## TODO: Update outputs after completing the module.
 name: "dream_differential"
-description: Runs a differential expression analysis with dream() from variancePartition R package
+description: Runs a differential expression analysis with dream() from variancePartition
+  R package
 keywords:
   - differential
   - expression
@@ -15,7 +15,7 @@ tools:
       tool_dev_url: "https://github.com/DiseaseNeuroGenomics/variancePartition"
       doi: "10.1093/bioinformatics/btaa687"
       licence: ["LGPL >=3"]
-      identifier: null
+      identifier: biotools:dream_database
 input:
   - - meta:
         type: map
@@ -33,11 +33,13 @@ input:
     - samplesheet:
         type: file
         description: Sample sheet file containing sample metadata.
+        ontologies: []
     - counts:
         type: file
         description: |
           Raw TSV or CSV format expression matrix with count data by row and samples
           by column
+        ontologies: []
 output:
   - results:
       - meta:
@@ -75,16 +77,16 @@ output:
       - "*.dream.model.txt":
           type: file
           description: TXT-format dream model
-          pattern: "*.dream.model.tsv"
+          pattern: "*.dream.model.txt"
   - contrasts_png:
       - meta:
           type: map
           description: |
             groovy array with metadata information for the contrast generated
-      - "*.dream.contrasts.png":
+      - "*.dream.contrasts_plot.png":
           type: file
           description: plot representing the contrast design analyzed
-          pattern: "*.dream.contrasts.png"
+          pattern: "*.dream.contrasts_plot.png"
   - var_png:
       - meta:
           type: map
@@ -102,7 +104,7 @@ output:
       - "*.R_sessionInfo.log":
           type: file
           description: dump of R SessionInfo
-          pattern: "*.log"
+          pattern: "*.R_sessionInfo.log"
   - normalised_counts:
       - meta:
           type: map
@@ -118,7 +120,9 @@ output:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies: []
 authors:
   - "@alanmmobbs03"
 maintainers:
   - "@alanmmobbs03"
+  - "@nschcolnicov"
