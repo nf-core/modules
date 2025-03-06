@@ -19,15 +19,24 @@ tools:
       licence: ["MIT"]
       identifier: biotools:biscuit
 input:
-  - - fasta:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
         type: file
         description: Input genome fasta file
 output:
   - index:
-      - BiscuitIndex/*.fa*:
+      - meta:
           type: directory
-          description: Biscuit genome index directory
-          pattern: "BiscuitIndex"
+          description: Directory containing biscuit genome index
+          pattern: "index"
+      - BiscuitIndex:
+          type: directory
+          description: Directory containing biscuit genome index
+          pattern: "index"
   - versions:
       - versions.yml:
           type: file
@@ -37,3 +46,4 @@ authors:
   - "@njspix"
 maintainers:
   - "@njspix"
+  - "@sateeshperi"

@@ -28,7 +28,7 @@ input:
     - input:
         type: file
         description: |
-          The input format. Each format needs a seperate parameter to be specified in the `args`:
+          The input format. Each format needs a separate parameter to be specified in the `args`:
           - GEN/SAMPLE file: `--gensample2vcf`
           - gVCF file: `--gvcf2vcf`
           - HAP/SAMPLE file: `--hapsample2vcf`
@@ -125,6 +125,26 @@ output:
           type: file
           description: samples format used by IMPUTE2 and SHAPEIT
           pattern: "*.samples"
+  - tbi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tbi":
+          type: file
+          description: Alternative VCF file index
+          pattern: "*.tbi"
+  - csi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.csi":
+          type: file
+          description: Default VCF file index
+          pattern: "*.csi"
   - versions:
       - versions.yml:
           type: file

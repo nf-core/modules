@@ -1,0 +1,311 @@
+nextflow_process {
+
+    name "Test Process LIMMA_DIFFERENTIAL"
+    script "../main.nf"
+    process "LIMMA_DIFFERENTIAL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "limma"
+    tag "limma/differential"
+    tag "affy"
+    tag "affy/justrma"
+    tag "untar"
+
+    test("test_limma_differential") {
+
+        config "./nextflow.config"
+
+        setup {
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: 'test'],
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751_RAW.tar", checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+            run("AFFY_JUSTRMA") {
+                script "../../../affy/justrma/main.nf"
+                process {
+                    """
+                    ch_samplesheet = Channel.of([
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true)
+                        ]
+                    )
+                    input[0] = ch_samplesheet.join(UNTAR.out.untar)
+                    input[1] = [[],[]]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                ch_samplesheet = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true)
+                    ]
+                )
+                input[0] = Channel.of(['id': 'diagnosis_normal_uremia', 'variable': 'diagnosis', 'reference': 'normal', 'target': 'uremia'])
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                input[1] =  ch_samplesheet
+                    .join(AFFY_JUSTRMA.out.expression)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.model, process.out.versions).match() },
+                { assert path(process.out.session_info[0][1]).getText().contains("limma_3.58.1") },
+                { assert path(process.out.results[0][1]).getText().contains("1007_s_at\t-0.2775254") },
+                { assert path(process.out.results[0][1]).getText().contains("1053_at\t-0.071547786") }
+            )
+        }
+
+    }
+
+    test("test_limma_differential - exclude_samples") {
+
+        config "./nextflow.exclude_samples.config"
+
+        setup {
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: 'test'],
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751_RAW.tar", checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+            run("AFFY_JUSTRMA") {
+                script "../../../affy/justrma/main.nf"
+                process {
+                    """
+                    ch_samplesheet = Channel.of([
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true)
+                        ]
+                    )
+                    input[0] = ch_samplesheet.join(UNTAR.out.untar)
+                    input[1] = [[],[]]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                ch_samplesheet = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true)
+                    ]
+                )
+                input[0] = Channel.of(['id': 'diagnosis_normal_uremia', 'variable': 'diagnosis', 'reference': 'normal', 'target': 'uremia'])
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                input[1] =  ch_samplesheet
+                    .join(AFFY_JUSTRMA.out.expression)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.model, process.out.versions).match() },
+                { assert path(process.out.session_info[0][1]).getText().contains("limma_3.58.1") },
+                { assert path(process.out.results[0][1]).getText().contains("1007_s_at\t-0.4778282") },
+                { assert path(process.out.results[0][1]).getText().contains("1053_at\t-0.08958278") }
+            )
+        }
+
+    }
+
+    test("test_limma_differential - subset_to_contrast") {
+
+        config "./nextflow.subset_to_contrast.config"
+
+
+        setup {
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: 'test'],
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751_RAW.tar", checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+            run("AFFY_JUSTRMA") {
+                script "../../../affy/justrma/main.nf"
+                process {
+                    """
+                    ch_samplesheet = Channel.of([
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true)
+                        ]
+                    )
+                    input[0] = ch_samplesheet.join(UNTAR.out.untar)
+                    input[1] = [[],[]]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                ch_samplesheet = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true)
+                    ]
+                )
+                input[0] = Channel.of(['id': 'diagnosis_normal_uremia', 'variable': 'diagnosis', 'reference': 'normal', 'target': 'uremia'])
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                input[1] =  ch_samplesheet
+                    .join(AFFY_JUSTRMA.out.expression)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.model, process.out.versions).match() },
+                { assert path(process.out.session_info[0][1]).getText().contains("limma_3.58.1") },
+                { assert path(process.out.results[0][1]).getText().contains("1007_s_at\t-0.2775254") },
+                { assert path(process.out.results[0][1]).getText().contains("1053_at\t-0.071547786") }
+            )
+        }
+
+    }
+
+    test("test_limma_differential - voom_blocking") {
+
+        config "./nextflow.voom_blocking.config"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of(['id': 'test', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
+                        .map{tuple(it, it.variable, it.reference, it.target)}
+                input[1] = Channel.of([[id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.model, process.out.versions).match() },
+                { assert path(process.out.results[0][1]).getText().contains("ENSMUSG00000023978\t-4.89014922224241") },
+                { assert path(process.out.results[0][1]).getText().contains("ENSMUSG00000059991\t0.779227180297504") },
+                { assert path(process.out.normalised_counts[0][1]).getText().contains("ENSMUSG00000023978\t6.11247620232167") },
+                { assert path(process.out.normalised_counts[0][1]).getText().contains("ENSMUSG00000059991\t4.52751370160052") }
+            )
+        }
+
+    }
+
+    test("test_limma_differential - voom") {
+
+        config "./nextflow.voom.config"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of(['id': 'test', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
+                        .map{tuple(it, it.variable, it.reference, it.target)}
+                input[1] = Channel.of([[id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.model, process.out.versions).match() },
+                { assert path(process.out.results[0][1]).getText().contains("ENSMUSG00000023978\t-2.84055986312942") },
+                { assert path(process.out.results[0][1]).getText().contains("ENSMUSG00000059991\t0.705508451587681") },
+                { assert path(process.out.normalised_counts[0][1]).getText().contains("ENSMUSG00000023978\t6.11247620232167") },
+                { assert path(process.out.normalised_counts[0][1]).getText().contains("ENSMUSG00000059991\t4.52751370160052") }
+            )
+        }
+
+    }
+
+    test("test_limma_differential - voom_mixed") {
+
+        config "./nextflow.voom_mixed.config"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of(['id': 'test', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
+                        .map{tuple(it, it.variable, it.reference, it.target)}
+                input[1] = Channel.of([[id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.model, process.out.versions).match() },
+                { assert path(process.out.results[0][1]).getText().contains("ENSMUSG00000023978\t-2.8363444336503") },
+                { assert path(process.out.results[0][1]).getText().contains("ENSMUSG00000059991\t0.736009837885068") },
+                { assert path(process.out.normalised_counts[0][1]).getText().contains("ENSMUSG00000023978\t6.11247620232167") },
+                { assert path(process.out.normalised_counts[0][1]).getText().contains("ENSMUSG00000059991\t4.52751370160052") }
+            )
+        }
+
+    }
+
+    test("test_limma_differential - stub") {
+
+        options "-stub"
+
+        when {
+            process {                """
+                input[0] = Channel.of(['id': 'test', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
+                        .map{tuple(it, it.variable, it.reference, it.target)}
+                input[1] = Channel.of([[id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot([process.out.results, process.out.model, process.out.normalised_counts, process.out.versions]).match() }
+            )
+        }
+    }
+}

@@ -56,27 +56,30 @@ input:
 output:
   - log_final:
       - meta:
-          type: file
-          description: STAR final log file
-          pattern: "*Log.final.out"
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - "*Log.final.out":
           type: file
           description: STAR final log file
           pattern: "*Log.final.out"
   - log_out:
       - meta:
-          type: file
-          description: STAR lot out file
-          pattern: "*Log.out"
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - "*Log.out":
           type: file
           description: STAR lot out file
           pattern: "*Log.out"
   - log_progress:
       - meta:
-          type: file
-          description: STAR log progress file
-          pattern: "*Log.progress.out"
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - "*Log.progress.out":
           type: file
           description: STAR log progress file
@@ -88,54 +91,70 @@ output:
           pattern: "versions.yml"
   - bam:
       - meta:
-          type: file
-          description: Output BAM file containing read alignments
-          pattern: "*.{bam}"
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - "*d.out.bam":
           type: file
           description: Output BAM file containing read alignments
           pattern: "*.{bam}"
   - bam_sorted:
       - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.sortedByCoord.out.bam:
           type: file
           description: Sorted BAM file of read alignments (optional)
           pattern: "*sortedByCoord.out.bam"
-      - "*sortedByCoord.out.bam":
+  - bam_sorted_aligned:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.Aligned.sortedByCoord.out.bam:
           type: file
           description: Sorted BAM file of read alignments (optional)
-          pattern: "*sortedByCoord.out.bam"
+          pattern: "*.Aligned.sortedByCoord.out.bam"
   - bam_transcript:
       - meta:
-          type: file
-          description: Output BAM file of transcriptome alignment (optional)
-          pattern: "*toTranscriptome.out.bam"
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - "*toTranscriptome.out.bam":
           type: file
           description: Output BAM file of transcriptome alignment (optional)
           pattern: "*toTranscriptome.out.bam"
   - bam_unsorted:
       - meta:
-          type: file
-          description: Unsorted BAM file of read alignments (optional)
-          pattern: "*Aligned.unsort.out.bam"
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - "*Aligned.unsort.out.bam":
           type: file
           description: Unsorted BAM file of read alignments (optional)
           pattern: "*Aligned.unsort.out.bam"
   - fastq:
       - meta:
-          type: file
-          description: Unmapped FastQ files (optional)
-          pattern: "*fastq.gz"
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - "*fastq.gz":
           type: file
           description: Unmapped FastQ files (optional)
           pattern: "*fastq.gz"
   - tab:
       - meta:
-          type: file
-          description: STAR output tab file(s) (optional)
-          pattern: "*.tab"
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - "*.tab":
           type: file
           description: STAR output tab file(s) (optional)
@@ -162,9 +181,10 @@ output:
           pattern: "*.ReadsPerGene.out.tab"
   - junction:
       - meta:
-          type: file
-          description: STAR chimeric junction output file (optional)
-          pattern: "*.out.junction"
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - "*.out.junction":
           type: file
           description: STAR chimeric junction output file (optional)
@@ -175,24 +195,27 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*.out.sam"
       - "*.out.sam":
           type: file
-          description: STAR output SAM file
+          description: STAR output SAM file(s) (optional)
           pattern: "*.out.sam"
   - wig:
       - meta:
-          type: file
-          description: STAR output wiggle format file(s) (optional)
-          pattern: "*.wig"
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - "*.wig":
           type: file
           description: STAR output wiggle format file(s) (optional)
           pattern: "*.wig"
   - bedgraph:
       - meta:
-          type: file
-          description: STAR output bedGraph format file(s) (optional)
-          pattern: "*.bg"
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - "*.bg":
           type: file
           description: STAR output bedGraph format file(s) (optional)
