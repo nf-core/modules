@@ -72,7 +72,9 @@ nextflow_process {
     }
 
     test("bam - stub") {
+
         options "-stub"
+
         when {
             process {
                 """
@@ -88,7 +90,7 @@ nextflow_process {
         }
 
         then {
-            assertAll(
+            assertAll (
                 { assert process.success },
                 { assert snapshot(process.out).match() }
             )
@@ -96,7 +98,9 @@ nextflow_process {
     }
 
     test("bam_interleave - stub") {
+
         options "-stub"
+
         when {
             process {
                 """
@@ -112,11 +116,10 @@ nextflow_process {
         }
 
         then {
-            assertAll(
+            assertAll (
                 { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
     }
-
 }
