@@ -28,14 +28,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.fastq[0][1].collect { path(it).linesGzip[0..6] },
-                    process.out.interleaved,
-                    file(process.out.singleton[0][1]).name,
-                    file(process.out.other[0][1]).name,
-                    process.out.versions
-                    ).match()
-                }
+                { assert snapshot(process.out.fastq[0][1].collect { path(it).linesGzip[0..6] }).match("bam_fastq") },
+                { assert snapshot(process.out.interleaved).match("bam_interleaved") },
+                { assert snapshot(file(process.out.singleton[0][1]).name).match("bam_singleton") },
+                { assert snapshot(file(process.out.other[0][1]).name).match("bam_other") },
+                { assert snapshot(process.out.versions).match("bam_versions") }
             )
         }
     }
@@ -59,14 +56,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.fastq,
-                    path(process.out.interleaved[0][1]).readLines()[0..6],
-                    process.out.singleton,
-                    file(process.out.other[0][1]).name,
-                    process.out.versions
-                    ).match()
-                }
+                { assert snapshot(process.out.fastq).match("bam_interleave_fastq") },
+                { assert snapshot(path(process.out.interleaved[0][1]).readLines()[0..6]).match("bam_interlinterleave_eaved") },
+                { assert snapshot(process.out.singleton).match("bam_singinterleave_leton") },
+                { assert snapshot(file(process.out.other[0][1]).name).match("bam_interleave_other") },
+                { assert snapshot(process.out.versions).match("bam_verinterleave_sions") }
             )
         }
     }
