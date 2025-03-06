@@ -38,6 +38,7 @@ nextflow_process {
                     program  = Channel.of('BEGIN{print "NA12878"} {print}').collectFile(name: 'program.txt', newLine: true)
                     input[0] = BCFTOOLS_QUERY.out.output
                     input[1] = program
+                    input[2] = false
                     """
                 }
             }
@@ -52,6 +53,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.legend.gz', checkIfExists: true)
                     ]
                     input[1] = program
+                    input[2] = false
                     """
                 }
             }
