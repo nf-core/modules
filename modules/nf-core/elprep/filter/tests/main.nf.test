@@ -1,0 +1,103 @@
+
+nextflow_process {
+
+    name "Test Process ELPREP_FILTER"
+    script "../main.nf"
+    process "ELPREP_FILTER"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "elprep"
+    tag "elprep/filter"
+
+    test("test-elprep-filter") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+				]
+				input[1] = true
+				input[2] = true
+				input[3] = []
+                input[4] = []
+                input[5] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.elfasta', checkIfExists: true)
+                input[6] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.elsites', checkIfExists: true)
+                input[7] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
+                input[8] = []
+                input[9] = []
+				input[10] = true
+				input[11] = true
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.logs }, // name is unstable
+                { assert snapshot(
+					bam(process.out.bam[0][1]).getReadsMD5(),
+					file(process.out.metrics[0][1]).readLines()[5..7],
+					process.out.recall,
+					file(process.out.gvcf[0][1]).name, // unstable
+					process.out.table,
+					process.out.activity_profile,
+					process.out.assembly_regions,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-elprep-filter-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+				]
+				input[1] = true
+				input[2] = true
+				input[3] = []
+                input[4] = []
+                input[5] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.elfasta', checkIfExists: true)
+                input[6] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.elsites', checkIfExists: true)
+                input[7] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
+                input[8] = []
+                input[9] = []
+				input[10] = true
+				input[11] = true
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.logs }, // name is unstable
+                { assert snapshot(
+					process.out.bam,
+					process.out.metrics,
+					process.out.recall,
+					process.out.gvcf,
+					process.out.table,
+					process.out.activity_profile,
+					process.out.assembly_regions,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

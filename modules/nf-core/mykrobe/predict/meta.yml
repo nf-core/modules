@@ -11,39 +11,48 @@ tools:
       documentation: "https://github.com/Mykrobe-tools/mykrobe/wiki"
       tool_dev_url: "https://github.com/Mykrobe-tools/mykrobe"
       doi: "10.1038/ncomms10063"
-      licence: "['MIT']"
+      licence: ["MIT"]
+      identifier: biotools:Mykrobe
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - seqs:
-      type: file
-      description: BAM or FASTQ file
-      pattern: "*.{bam,fastq.gz,fq.gz}"
-  - species:
-      type: string
-      description: Species to make AMR prediction against
-      pattern: "*"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - seqs:
+        type: file
+        description: BAM or FASTQ file
+        pattern: "*.{bam,fastq.gz,fq.gz}"
+  - - species:
+        type: string
+        description: Species to make AMR prediction against
+        pattern: "*"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - csv:
-      type: file
-      description: AMR predictions in CSV format
-      pattern: "*.csv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.csv:
+          type: file
+          description: AMR predictions in CSV format
+          pattern: "*.csv"
   - json:
-      type: file
-      description: AMR predictions in JSON format
-      pattern: "*.json"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.json:
+          type: file
+          description: AMR predictions in JSON format
+          pattern: "*.json"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@rpetit3"
 maintainers:

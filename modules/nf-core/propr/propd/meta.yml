@@ -14,54 +14,88 @@ tools:
       tool_dev_url: "https://github.com/tpq/propr"
       doi: "10.1038/s41598-017-16520-0"
       licence: ["GPL-2"]
+      identifier: biotools:propr
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing additional information.
-        This can be used at the workflow level to pass optional parameters to the module.
-        [id: 'test', ...]
-  - count:
-      type: file
-      description: |
-        Count matrix, where rows = variables or genes, columns = samples or cells.
-        This matrix should not contain zeros. One should plug this module after another one that handles the zeros.
-      pattern: "*.{csv,tsv}"
-  - meta2:
-      type: map
-      description: |
-        Groovy map containing study-wide metadata related to the sample sheet and matrix
-  - samplesheet:
-      type: file
-      description: |
-        CSV or TSV format sample sheet with sample metadata
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing additional information.
+          This can be used at the workflow level to pass optional parameters to the module.
+          [id: 'test', ...]
+    - count:
+        type: file
+        description: |
+          Count matrix, where rows = variables or genes, columns = samples or cells.
+          This matrix should not contain zeros. One should plug this module after another one that handles the zeros.
+        pattern: "*.{csv,tsv}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy map containing study-wide metadata related to the sample sheet and matrix
+    - samplesheet:
+        type: file
+        description: |
+          CSV or TSV format sample sheet with sample metadata
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing additional information.
-        This can be used at the workflow level to pass optional parameters to the module.
-        [id: 'test', ...]
   - propd:
-      type: file
-      description: R propd object
-      pattern: "*.propd.rds"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing additional information.
+            This can be used at the workflow level to pass optional parameters to the module.
+            [id: 'test', ...]
+      - "*.propd.rds":
+          type: file
+          description: R propd object
+          pattern: "*.propd.rds"
   - results:
-      type: file
-      description: Results table
-      pattern: "*.propd.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing additional information.
+            This can be used at the workflow level to pass optional parameters to the module.
+            [id: 'test', ...]
+      - "*.propd.tsv":
+          type: file
+          description: Results table
+          pattern: "*.propd.tsv"
   - fdr:
-      type: file
-      description: (optional) propr fdr table
-      pattern: "*.fdr.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing additional information.
+            This can be used at the workflow level to pass optional parameters to the module.
+            [id: 'test', ...]
+      - "*.fdr.tsv":
+          type: file
+          description: (optional) propd fdr table
+          pattern: "*.fdr.tsv"
+  - adj:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing additional information.
+            This can be used at the workflow level to pass optional parameters to the module.
+            [id: 'test', ...]
+      - "*.adj.csv":
+          type: file
+          description: (optional) propd adj table
+          pattern: "*.adj.csv"
+  - warnings:
+      - "*.warnings.log":
+          type: file
+          description: propd warnings
+          pattern: "*.warnings.txt"
   - session_info:
-      type: file
-      description: dump of R SessionInfo
-      pattern: "*.R_sessionInfo.log"
+      - "*.R_sessionInfo.log":
+          type: file
+          description: dump of R SessionInfo
+          pattern: "*.R_sessionInfo.log"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@suzannejin"
 maintainers:

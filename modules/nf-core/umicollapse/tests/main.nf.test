@@ -22,8 +22,8 @@ nextflow_process {
                     input[0] = [
                     [ id:'test', single_end:true ], // meta map
                     [
-                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                        file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                     ]
                     """
@@ -34,7 +34,7 @@ nextflow_process {
                 script "../../bwa/index/main.nf"
                 process{
                     """
-                    input[0] = [[ id:'sarscov2'],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+                    input[0] = [[ id:'sarscov2'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                     """
                 }
             }
@@ -44,7 +44,7 @@ nextflow_process {
                     """
                     input[0] = UMITOOLS_EXTRACT.out.reads
                     input[1] = BWA_INDEX.out.index
-                    input[2] = [[ id:'sarscov2'],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+                    input[2] = [[ id:'sarscov2'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                     input[3] = true
                     """
                 }
@@ -90,8 +90,8 @@ nextflow_process {
                     input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     [
-                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                        file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                     ]
                     """
@@ -104,7 +104,7 @@ nextflow_process {
                     """
                     input[0] = [
                             [ id:'sarscov2'],
-                            file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                             ]
                     """
                 }
@@ -115,7 +115,7 @@ nextflow_process {
                     """
                     input[0] = UMITOOLS_EXTRACT.out.reads
                     input[1] = BWA_INDEX.out.index
-                    input[2] = [[ id:'sarscov2'],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+                    input[2] = [[ id:'sarscov2'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                     input[3] = true
                     """
                 }
@@ -159,7 +159,7 @@ nextflow_process {
                     """
                     input[0] = [
                     [ id:'test', single_end:true ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                     []
                     ]
                     input[1] = 'fastq'
@@ -188,8 +188,8 @@ nextflow_process {
                     input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     [
-                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                        file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                     ]
                     """
@@ -202,7 +202,7 @@ nextflow_process {
                     """
                     input[0] = [
                             [ id:'sarscov2'],
-                            file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                             ]
                     """
                 }
@@ -213,7 +213,7 @@ nextflow_process {
                     """
                     input[0] = UMITOOLS_EXTRACT.out.reads
                     input[1] = BWA_INDEX.out.index
-                    input[2] = [[ id:'sarscov2'],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+                    input[2] = [[ id:'sarscov2'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                     input[3] = true
                     """
                 }

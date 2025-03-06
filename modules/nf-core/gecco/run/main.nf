@@ -11,7 +11,6 @@ process GECCO_RUN {
     tuple val(meta), path(input), path(hmm)
     path model_dir
 
-
     output:
     tuple val(meta), path("*.genes.tsv")    , optional: true, emit: genes
     tuple val(meta), path("*.features.tsv")                 , emit: features
@@ -38,6 +37,11 @@ process GECCO_RUN {
         -g ${input} \\
         $custom_model \\
         $custom_hmm
+
+    for i in \$(find -name '${input.baseName}*' -type f); do
+        mv \$i \${i/${input.baseName}/${prefix}};
+    done
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

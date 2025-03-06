@@ -1,0 +1,79 @@
+
+nextflow_process {
+
+    name "Test Process GAPPA_EXAMINEASSIGN"
+    script "../main.nf"
+    process "GAPPA_EXAMINEASSIGN"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gappa"
+    tag "gappa/examineassign"
+
+    test("test-gappa-examineassign") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ], // meta map
+				    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/gappa/epa_result.jplace.gz', checkIfExists: true),
+				    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/gappa/gappa_taxonomy.tsv', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.examineassign }, // The entire work folder
+                { assert snapshot(
+                    process.out.profile,
+                    process.out.labelled_tree,
+                    process.out.per_query,
+                    process.out.krona,
+                    process.out.sativa,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-gappa-examineassign-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ], // meta map
+				    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/gappa/epa_result.jplace.gz', checkIfExists: true),
+				    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/gappa/gappa_taxonomy.tsv', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.examineassign }, // The entire work folder
+                { assert snapshot(
+                    process.out.profile,
+                    process.out.labelled_tree,
+                    process.out.per_query,
+                    process.out.krona,
+                    process.out.sativa,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+}

@@ -1,0 +1,67 @@
+// nf-core modules test csvtk/concat
+nextflow_process {
+
+    name "Test Process CSVTK_CONCAT"
+    script "../main.nf"
+    process "CSVTK_CONCAT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "csvtk"
+    tag "csvtk/concat"
+
+    test("tsv - concat - csv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [ file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_hybrid.csv", checkIfExists: true),
+                      file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_long.csv", checkIfExists: true),
+                      file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_short.csv", checkIfExists: true) ]
+                ]
+                input[1] = "tsv"
+                input[2] = "csv"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("tsv - concat - csv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [ file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_hybrid.csv", checkIfExists: true),
+                      file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_long.csv", checkIfExists: true),
+                      file("https://github.com/nf-core/test-datasets/raw/bacass/bacass_short.csv", checkIfExists: true) ]
+                ]
+                input[1] = "tsv"
+                input[2] = "csv"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

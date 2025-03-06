@@ -31,4 +31,16 @@ process KRONA_KTIMPORTTEXT {
         krona: \$( echo \$(ktImportText 2>&1) | sed 's/^.*KronaTools //g; s/- ktImportText.*\$//g')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.html
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        krona: \$( echo \$(ktImportText 2>&1) | sed 's/^.*KronaTools //g; s/- ktImportText.*\$//g')
+    END_VERSIONS
+    """
 }

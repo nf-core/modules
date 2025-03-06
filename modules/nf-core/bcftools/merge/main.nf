@@ -4,26 +4,28 @@ process BCFTOOLS_MERGE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bcftools:1.18--h8b25389_0':
-        'biocontainers/bcftools:1.18--h8b25389_0' }"
+        'https://depot.galaxyproject.org/singularity/bcftools:1.20--h8b25389_0':
+        'biocontainers/bcftools:1.20--h8b25389_0' }"
 
     input:
     tuple val(meta), path(vcfs), path(tbis)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
-    path(bed)
+    tuple val(meta4), path(bed)
 
     output:
-    tuple val(meta), path("*.{bcf,vcf}{,.gz}"), emit: merged_variants
+    tuple val(meta), path("*.{bcf,vcf}{,.gz}"), emit: vcf
+    tuple val(meta), path("*.{csi,tbi}")      , emit: index, optional: true
     path "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args   ?: ''
-    def prefix   = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
+    def input = (vcfs.collect().size() > 1) ? vcfs.sort{ it.name } : vcfs
     def regions = bed ? "--regions-file $bed" : ""
     def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
                     args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
@@ -37,7 +39,7 @@ process BCFTOOLS_MERGE {
         $regions \\
         --threads $task.cpus \\
         --output ${prefix}.${extension} \\
-        $vcfs
+        $input
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -53,8 +55,16 @@ process BCFTOOLS_MERGE {
                     args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
                     args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
                     "vcf"
+    def index = args.contains("--write-index=tbi") || args.contains("-W=tbi") ? "tbi" :
+                args.contains("--write-index=csi") || args.contains("-W=csi") ? "csi" :
+                args.contains("--write-index") || args.contains("-W") ? "csi" :
+                ""
+    def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
+    def create_index = extension.endsWith(".gz") && index.matches("csi|tbi") ? "touch ${prefix}.${extension}.${index}" : ""
+
     """
-    touch ${prefix}.${extension}
+    ${create_cmd} ${prefix}.${extension}
+    ${create_index}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

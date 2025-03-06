@@ -39,4 +39,3 @@ workflow FASTA_BUILD_ADD_KRAKEN2_BRACKEN {
     db = ch_final_db // channel: [ val(meta), [ db ] ]
     versions = ch_versions    // channel: [ versions.yml ]
 }
-

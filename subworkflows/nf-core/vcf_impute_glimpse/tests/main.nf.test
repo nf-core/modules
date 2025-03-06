@@ -59,10 +59,10 @@ nextflow_workflow {
 
                 ch_map = Channel.fromList([
                     [[ chr: "chr21"],
-                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/reference_genome/GRCh38.chr21.s.map", checkIfExists: true)
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/reference_genome/21/GRCh38_chr21.s.map", checkIfExists: true)
                     ],
                     [[ chr: "chr22"],
-                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/reference_genome/GRCh38.chr22.s.map", checkIfExists: true)
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/data/reference_genome/22/GRCh38_chr22.s.map", checkIfExists: true)
                     ]
                 ])
 

@@ -3,10 +3,14 @@ nextflow_process {
     name "Test Process BISMARK_SUMMARY"
     script "../main.nf"
     process "BISMARK_SUMMARY"
-    tag "bismark"
-    tag "bismark/summary"
     tag "modules"
     tag "modules_nfcore"
+    tag "bismark"
+    tag "bismark/summary"
+    tag "bismark/align"
+    tag "bismark/deduplicate"
+    tag "bismark/genomepreparation"
+    tag "bismark/methylationextractor"
 
     test("Should run bismark/summary without failures") {
 
@@ -15,7 +19,7 @@ nextflow_process {
                 script "../../genomepreparation/main.nf"
                 process {
                     """
-                    input[0] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     """
                 }
             }
@@ -26,9 +30,9 @@ nextflow_process {
                     """
                     input[0] = [
                                 [ id:'test', single_end:false ],
-                                [ 
-                                    file(params.test_data['sarscov2']['illumina']['test_methylated_1_fastq_gz'], checkIfExists: true),
-                                    file(params.test_data['sarscov2']['illumina']['test_methylated_2_fastq_gz'], checkIfExists: true)
+                                [
+                                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
+                                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true)
                                 ]
                                ]
                     input[1] = BISMARK_GENOMEPREPARATION.out.index

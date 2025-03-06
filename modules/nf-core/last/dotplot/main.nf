@@ -4,11 +4,12 @@ process LAST_DOTPLOT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/last:1453--h5b5514e_0' :
-        'biocontainers/last:1453--h5b5514e_0' }"
+        'https://depot.galaxyproject.org/singularity/last:1571--h43eeafb_0' :
+        'biocontainers/last:1571--h43eeafb_0' }"
 
     input:
-    tuple val(meta), path(maf)
+    tuple val(meta), path(maf), path(annot_b)
+    tuple val(meta2), path(annot_a)
     val(format)
 
     output:
@@ -22,9 +23,13 @@ process LAST_DOTPLOT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def annot_a_arg = annot_a ? "-a ${annot_a}" : ''
+    def annot_b_arg = annot_b ? "-b ${annot_b}" : ''
     """
     last-dotplot \\
         $args \\
+        $annot_a_arg \\
+        $annot_b_arg \\
         $maf \\
         $prefix.$format
 
@@ -34,4 +39,18 @@ process LAST_DOTPLOT {
         last: \$(lastal --version | sed 's/lastal //')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch $prefix.$format
+
+    # last-dotplot has no --version option so let's use lastal from the same suite
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        last: \$(lastal --version | sed 's/lastal //')
+    END_VERSIONS
+    """
+
 }

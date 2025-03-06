@@ -1,0 +1,83 @@
+nextflow_process {
+
+    name "Test Process SAMTOOLS_IMPORT"
+    script "../main.nf"
+    process "SAMTOOLS_IMPORT"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "samtools"
+    tag "samtools/import"
+
+    test("samtools_import_single ") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                {assert process.success},
+                {assert snapshot(process.out.bam.collect { it.collect { it instanceof Map ? it : file(it).name } }).match()}
+            )
+        }
+    }
+
+    test("samtools_import_paired ") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                {assert process.success},
+                {assert snapshot(process.out.bam.collect { it.collect { it instanceof Map ? it : file(it).name } }).match()}
+            )
+        }
+    }
+
+    test("samtools_import_interleaved") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_interleaved.fastq.gz', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                {assert process.success},
+                {assert snapshot(process.out.bam.collect { it.collect { it instanceof Map ? it : file(it).name } }).match()}
+            )
+        }
+    }
+}

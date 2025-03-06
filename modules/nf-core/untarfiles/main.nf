@@ -1,11 +1,17 @@
+def deprecation_message = """
+WARNING: This module has been deprecated.
+
+Reason:
+This module is no longer recommended for use. It is recommended to use nf-core/modules/untar
+"""
 process UNTARFILES {
     tag "$archive"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ubuntu:20.04' :
-        'nf-core/ubuntu:20.04' }"
+        'oras://community.wave.seqera.io/library/grep_sed_tar:40b34489f8e82876' :
+        'community.wave.seqera.io/library/grep_sed_tar:16f6591cd62505b3' }"
 
     input:
     tuple val(meta), path(archive)
@@ -18,6 +24,7 @@ process UNTARFILES {
     task.ext.when == null || task.ext.when
 
     script:
+    assert true: deprecation_message
     def args  = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     prefix    = task.ext.prefix ?: ( meta.id ? "${meta.id}" : archive.baseName.toString().replaceFirst(/\.tar$/, ""))
@@ -39,6 +46,7 @@ process UNTARFILES {
     """
 
     stub:
+    assert true: deprecation_message
     prefix    = task.ext.prefix ?: "${meta.id}"
     """
     mkdir $prefix

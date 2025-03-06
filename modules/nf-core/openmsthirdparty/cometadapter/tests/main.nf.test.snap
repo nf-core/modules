@@ -1,0 +1,59 @@
+{
+    "proteomics - comet": {
+        "content": [
+            [
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
+                "<?xml-stylesheet type=\"text/xsl\" href=\"https://www.openms.de/xml-stylesheet/IdXML.xsl\" ?>",
+                "<IdXML version=\"1.5\" xsi:noNamespaceSchemaLocation=\"https://www.openms.de/xml-schema/IdXML_1_5.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">",
+                "\t<SearchParameters id=\"SP_0\" db=\"UP000005640_9606_decoy.fasta\" db_version=\"\" taxonomy=\"\" mass_type=\"monoisotopic\" charges=\"2:5\" enzyme=\"unspecific cleavage\" missed_cleavages=\"1\" precursor_peak_tolerance=\"5\" precursor_peak_tolerance_ppm=\"true\" peak_mass_tolerance=\"0.50025\" peak_mass_tolerance_ppm=\"false\" >",
+                "\t\t<FixedModification name=\"Carbamidomethyl (C)\" />",
+                "\t\t<VariableModification name=\"Oxidation (M)\" />",
+                "\t\t\t\t<UserParam type=\"string\" name=\"CometAdapter:1:in\" value=\"test.mzML\"/>",
+                "\t\t\t\t<UserParam type=\"string\" name=\"CometAdapter:1:out\" value=\"test.idXML\"/>",
+                "\t\t\t\t<UserParam type=\"string\" name=\"CometAdapter:1:database\" value=\"UP000005640_9606_decoy.fasta\"/>",
+                "\t\t\t\t<UserParam type=\"string\" name=\"CometAdapter:1:comet_executable\" value=\"comet.exe\"/>",
+                "\t\t\t\t<UserParam type=\"string\" name=\"CometAdapter:1:pin_out\" value=\"\"/>",
+                "\t\t\t\t<UserParam type=\"string\" name=\"CometAdapter:1:default_params_file\" value=\"\"/>",
+                "\t\t\t\t<UserParam type=\"float\" name=\"CometAdapter:1:precursor_mass_tolerance\" value=\"5.0\"/>",
+                "\t\t\t\t<UserParam type=\"string\" name=\"CometAdapter:1:precursor_error_units\" value=\"ppm\"/>",
+                "\t\t\t\t<UserParam type=\"string\" name=\"CometAdapter:1:isotope_error\" value=\"off\"/>",
+                "\t\t\t\t<UserParam type=\"float\" name=\"CometAdapter:1:fragment_mass_tolerance\" value=\"0.50025\"/>",
+                "\t\t\t\t<UserParam type=\"string\" name=\"CometAdapter:1:fragment_error_units\" value=\"Da\"/>",
+                "\t\t\t\t<UserParam type=\"float\" name=\"CometAdapter:1:fragment_bin_offset\" value=\"0.4\"/>",
+                "\t\t\t\t<UserParam type=\"string\" name=\"CometAdapter:1:instrument\" value=\"low_res\"/>",
+                "\t\t\t\t<UserParam type=\"string\" name=\"CometAdapter:1:use_A_ions\" value=\"false\"/>",
+                "\t\t\t\t<UserParam type=\"string\" name=\"CometAdapter:1:use_B_ions\" value=\"true\"/>",
+                "\t\t\t\t<UserParam type=\"string\" name=\"CometAdapter:1:use_C_ions\" value=\"false\"/>",
+                "\t\t\t\t<UserParam type=\"string\" name=\"CometAdapter:1:use_X_ions\" value=\"false\"/>",
+                "\t\t\t\t<UserParam type=\"string\" name=\"CometAdapter:1:use_Y_ions\" value=\"true\"/>",
+                "\t\t\t\t<UserParam type=\"string\" name=\"CometAdapter:1:use_Z_ions\" value=\"false\"/>",
+                "\t\t\t\t<UserParam type=\"string\" name=\"CometAdapter:1:use_NL_ions\" value=\"false\"/>",
+                "\t\t\t\t<UserParam type=\"string\" name=\"CometAdapter:1:enzyme\" value=\"unspecific cleavage\"/>",
+                "\t\t\t\t<UserParam type=\"string\" name=\"CometAdapter:1:second_enzyme\" value=\"\"/>",
+                "\t\t\t\t<UserParam type=\"string\" name=\"CometAdapter:1:num_enzyme_termini\" value=\"fully\"/>",
+                "\t\t\t\t<UserParam type=\"int\" name=\"CometAdapter:1:missed_cleavages\" value=\"1\"/>",
+                "\t\t\t\t<UserParam type=\"int\" name=\"CometAdapter:1:min_peptide_length\" value=\"5\"/>"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-09-13T13:57:34.932657501"
+    },
+    "versions": {
+        "content": [
+            {
+                "OPENMSTHIRDPARTY_COMETADAPTER": {
+                    "CometAdapter": "3.1.0",
+                    "Comet": "2023.01 rev. 2"
+                }
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-09-13T13:57:35.577894316"
+    }
+}

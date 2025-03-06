@@ -3,10 +3,11 @@ nextflow_process {
     name "Test Process BISMARK_METHYLATIONEXTRACTOR"
     script "../main.nf"
     process "BISMARK_METHYLATIONEXTRACTOR"
-    tag "bismark"
-    tag "bismark/methylationextractor"
     tag "modules"
     tag "modules_nfcore"
+    tag "bismark"
+    tag "bismark/methylationextractor"
+    tag "bismark/genomepreparation"
 
     test("Should run bismark/methylationextractor without failures") {
 
@@ -15,21 +16,18 @@ nextflow_process {
                 script "../../genomepreparation/main.nf"
                 process {
                     """
-                    input[0] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     """
                 }
             }
         }
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = [
                             [ id:'test', single_end:false ],
-                            file(params.test_data['sarscov2']['illumina']['test_paired_end_methylated_bam'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.bam', checkIfExists: true)
                            ]
                 input[1] = BISMARK_GENOMEPREPARATION.out.index
                 """

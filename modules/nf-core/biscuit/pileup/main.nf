@@ -42,4 +42,15 @@ process BISCUIT_PILEUP {
         biscuit: \$( biscuit version |& sed '1!d; s/^.*BISCUIT Version: //' )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo | gzip > ${prefix}.vcf.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        biscuit: \$( biscuit version |& sed '1!d; s/^.*BISCUIT Version: //' )
+    END_VERSIONS
+    """
 }

@@ -4,8 +4,8 @@ process IVAR_CONSENSUS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ivar:1.4--h6b7c446_1' :
-        'biocontainers/ivar:1.4--h6b7c446_1' }"
+        'https://depot.galaxyproject.org/singularity/ivar:1.4.3--h43eeafb_0' :
+        'biocontainers/ivar:1.4.3--h43eeafb_0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -37,6 +37,20 @@ process IVAR_CONSENSUS {
             consensus \\
             $args \\
             -p $prefix
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ivar: \$(echo \$(ivar version 2>&1) | sed 's/^.*iVar version //; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def touch_mpileup = save_mpileup ? "touch ${prefix}.mpileup" : ''
+    """
+    touch ${prefix}.fa
+    touch ${prefix}.qual.txt
+    $touch_mpileup
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

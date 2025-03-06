@@ -4,8 +4,8 @@ process BBMAP_BBDUK {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bbmap:39.01--h5c4e2a8_0':
-        'biocontainers/bbmap:39.01--h5c4e2a8_0' }"
+        'https://depot.galaxyproject.org/singularity/bbmap:39.06--h92535d8_1':
+        'biocontainers/bbmap:39.06--h92535d8_1' }"
 
     input:
     tuple val(meta), path(reads)
@@ -35,6 +35,20 @@ process BBMAP_BBDUK {
         $args \\
         $contaminants_fa \\
         &> ${prefix}.bbduk.log
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def output_command  = meta.single_end ? "echo '' | gzip > ${prefix}.fastq.gz" : "echo '' | gzip > ${prefix}_1.fastq.gz ; echo '' | gzip > ${prefix}_2.fastq.gz"
+    """
+    touch ${prefix}.bbduk.log
+    $output_command
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")

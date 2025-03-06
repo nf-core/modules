@@ -20,42 +20,57 @@ tools:
       documentation: https://github.com/FelixKrueger/Bismark/tree/master/Docs
       doi: 10.1093/bioinformatics/btr167
       licence: ["GPL-3.0-or-later"]
+      identifier: biotools:bismark
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - coverage_file:
-      type: file
-      description: |
-        A file containing methylation calls per position, in the format produced by bismark_methylation_extractor.
-  - index:
-      type: dir
-      description: Bismark genome index directory
-      pattern: "BismarkIndex"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - coverage_file:
+        type: file
+        description: |
+          A file containing methylation calls per position, in the format produced by bismark_methylation_extractor.
+  - - index:
+        type: directory
+        description: Bismark genome index directory
+        pattern: "BismarkIndex"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - coverage:
-      type: file
-      description: A file containing methylation calls per position.
-      pattern: "*.cov.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.cov.gz":
+          type: file
+          description: A file containing methylation calls per position.
+          pattern: "*.cov.gz"
   - report:
-      type: file
-      description: Genomic cytosine context results.
-      pattern: "*report.txt.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*report.txt.gz":
+          type: file
+          description: Genomic cytosine context results.
+          pattern: "*report.txt.gz"
   - summary:
-      type: file
-      description: Cyotosine context summary report.
-      pattern: "*cytosine_context_summary.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*cytosine_context_summary.txt":
+          type: file
+          description: Cyotosine context summary report.
+          pattern: "*cytosine_context_summary.txt"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@ewels"
 maintainers:

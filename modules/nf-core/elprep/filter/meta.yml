@@ -1,5 +1,6 @@
 name: "elprep_filter"
-description: "Filter, sort and markdup sam/bam files, with optional BQSR and variant calling."
+description: "Filter, sort and markdup sam/bam files, with optional BQSR and variant
+  calling."
 keywords:
   - sort
   - bam
@@ -8,99 +9,156 @@ keywords:
   - variant calling
 tools:
   - "elprep":
-      description: "elPrep is a high-performance tool for preparing .sam/.bam files for variant calling in sequencing pipelines. It can be used as a drop-in replacement for SAMtools/Picard/GATK4."
+      description: "elPrep is a high-performance tool for preparing .sam/.bam files
+        for variant calling in sequencing pipelines. It can be used as a drop-in replacement
+        for SAMtools/Picard/GATK4."
       homepage: "https://github.com/ExaScience/elprep"
       documentation: "https://github.com/ExaScience/elprep"
       tool_dev_url: "https://github.com/ExaScience/elprep"
       doi: "10.1371/journal.pone.0244471"
-      licence: "['AGPL v3']"
+      licence: ["AGPL v3"]
+      identifier: biotools:elprep
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: Input SAM/BAM file
-      pattern: "*.{bam,sam}"
-  - run_haplotypecaller:
-      type: boolean
-      description: Run variant calling on the input files. Needed to generate gvcf output.
-  - run_bqsr:
-      type: boolean
-      description: Run BQSR on the input files. Needed to generate recall metrics.
-  - reference_sequences:
-      type: file
-      description: Optional SAM header to replace existing header.
-      pattern: "*.sam"
-  - filter_regions_bed:
-      type: file
-      description: Optional BED file containing regions to filter.
-      pattern: "*.bed"
-  - reference_elfasta:
-      type: file
-      description: Elfasta file, required for BQSR and variant calling.
-      pattern: "*.elfasta"
-  - known_sites:
-      type: file
-      description: Optional elsites file containing known SNPs for BQSR.
-      pattern: "*.elsites"
-  - target_regions_bed:
-      type: file
-      description: Optional BED file containing target regions for BQSR and variant calling.
-      pattern: "*.bed"
-  - intermediate_bqsr_tables:
-      type: file
-      description: Optional list of BQSR tables, used when parsing files created by `elprep split`
-      pattern: "*.table"
-  - bqsr_tables_only:
-      type: boolean
-      description: Write intermediate BQSR tables, used when parsing files created by `elprep split`.
-  - get_activity_profile:
-      type: boolean
-      description: Get the activity profile calculated by the haplotypecaller to the given file in IGV format.
-  - get_assembly_regions:
-      type: boolean
-      description: Get the assembly regions calculated by haplotypecaller to the speficied file in IGV format.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: Input SAM/BAM file
+        pattern: "*.{bam,sam}"
+  - - run_haplotypecaller:
+        type: boolean
+        description: Run variant calling on the input files. Needed to generate gvcf
+          output.
+  - - run_bqsr:
+        type: boolean
+        description: Run BQSR on the input files. Needed to generate recall metrics.
+  - - reference_sequences:
+        type: file
+        description: Optional SAM header to replace existing header.
+        pattern: "*.sam"
+  - - filter_regions_bed:
+        type: file
+        description: Optional BED file containing regions to filter.
+        pattern: "*.bed"
+  - - reference_elfasta:
+        type: file
+        description: Elfasta file, required for BQSR and variant calling.
+        pattern: "*.elfasta"
+  - - known_sites_elsites:
+        type: file
+        description: Optional elsites file containing known SNPs for BQSR.
+        pattern: "*.elsites"
+  - - target_regions_bed:
+        type: file
+        description: Optional BED file containing target regions for BQSR and variant
+          calling.
+        pattern: "*.bed"
+  - - intermediate_bqsr_tables:
+        type: file
+        description: Optional list of BQSR tables, used when parsing files created by
+          `elprep split`
+        pattern: "*.table"
+  - - bqsr_tables_only:
+        type: boolean
+        description: Write intermediate BQSR tables, used when parsing files created
+          by `elprep split`.
+  - - get_activity_profile:
+        type: boolean
+        description: Get the activity profile calculated by the haplotypecaller to the
+          given file in IGV format.
+  - - get_assembly_regions:
+        type: boolean
+        description: Get the assembly regions calculated by haplotypecaller to the speficied
+          file in IGV format.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - bam:
-      type: file
-      description: Sorted, markdup, optionally BQSR BAM/SAM file
-      pattern: "*.{bam,sam}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - output/**.{bam,sam}:
+          type: file
+          description: Sorted, markdup, optionally BQSR BAM/SAM file
+          pattern: "*.{bam,sam}"
+  - logs:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - logs/elprep/elprep*:
+          type: list
+          description: Runtime log files
+          pattern: "elprep-*.log"
   - metrics:
-      type: file
-      description: Optional duplicate metrics file generated by elprep
-      pattern: "*.{metrics.txt}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.metrics.txt":
+          type: file
+          description: Optional duplicate metrics file generated by elprep
+          pattern: "*.{metrics.txt}"
   - recall:
-      type: file
-      description: Optional recall metrics file generated by elprep
-      pattern: "*.{recall}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.recall":
+          type: file
+          description: Optional recall metrics file generated by elprep
+          pattern: "*.{recall}"
   - gvcf:
-      type: file
-      description: Optional GVCF output file
-      pattern: "*.{vcf.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf.gz":
+          type: file
+          description: Optional GVCF output file
+          pattern: "*.{vcf.gz}"
   - table:
-      type: file
-      description: Optional intermediate BQSR table output file
-      pattern: "*.{table}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.table":
+          type: file
+          description: Optional intermediate BQSR table output file
+          pattern: "*.{table}"
   - activity_profile:
-      type: file
-      description: Optional activity profile output file
-      pattern: "*.{activity_profile.igv}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.activity_profile.igv":
+          type: file
+          description: Optional activity profile output file
+          pattern: "*.{activity_profile.igv}"
   - assembly_regions:
-      type: file
-      description: Optional activity regions output file
-      pattern: "*.{assembly_regions.igv}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.assembly_regions.igv":
+          type: file
+          description: Optional activity regions output file
+          pattern: "*.{assembly_regions.igv}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@matthdsm"
 maintainers:

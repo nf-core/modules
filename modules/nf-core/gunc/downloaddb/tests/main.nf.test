@@ -1,0 +1,56 @@
+
+nextflow_process {
+
+    name "Test Process GUNC_DOWNLOADDB"
+    script "../main.nf"
+    process "GUNC_DOWNLOADDB"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gunc"
+    tag "gunc/downloaddb"
+
+    test("test-gunc-downloaddb") {
+
+        when {
+            process {
+                """
+                input[0] = 'progenomes'
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.db[0]).name, // ~ 12 GB file
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-gunc-downloaddb-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = 'progenomes'
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

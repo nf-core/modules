@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "presto_filterseq"
 description: Filter reads by quality score.
@@ -9,46 +8,50 @@ keywords:
   - immunoinformatics
 tools:
   - "presto":
-      description: "A bioinformatics toolkit for processing high-throughput lymphocyte receptor sequencing data."
+      description: "A bioinformatics toolkit for processing high-throughput lymphocyte
+        receptor sequencing data."
       homepage: "https://immcantation.readthedocs.io"
       documentation: "https://presto.readthedocs.io"
       tool_dev_url: "https://bitbucket.org/kleinstein/presto"
       doi: "10.1093/bioinformatics/btu138"
       licence: ["AGPL v3"]
+      identifier: biotools:presto-measure
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - reads:
-      type: file
-      description: fastq file
-      pattern: "*.{fastq}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - reads:
+        type: file
+        description: fastq file
+        pattern: "*.{fastq}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - reads:
-      type: file
-      description: filtered fastq file
-      pattern: "*.{fastq}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*_quality-pass.fastq":
+          type: file
+          description: filtered fastq file
+          pattern: "*.{fastq}"
   - logs:
-      type: file
-      description: command logs
-      pattern: "*.txt"
+      - "*_command_log.txt":
+          type: file
+          description: command logs
+          pattern: "*.txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
   - log_tab:
-      type: file
-      description: parsed log table
-      pattern: "*.tab"
-
+      - "*.tab":
+          type: file
+          description: parsed log table
+          pattern: "*.tab"
 authors:
   - "@ggabernet"

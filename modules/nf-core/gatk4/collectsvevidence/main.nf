@@ -54,4 +54,22 @@ process GATK4_COLLECTSVEVIDENCE {
         gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def sd_vcf = site_depth_vcf ? "echo '' | gzip > ${prefix}.sd.txt.gz" : ""
+    def sd_vcf_tbi = site_depth_vcf_tbi ? "touch ${prefix}.sd.txt.gz.tbi" : ""
+    """
+    echo "" | gzip > ${prefix}.sr.txt.gz
+    touch ${prefix}.sr.txt.gz.tbi
+    echo "" | gzip > ${prefix}.pe.txt.gz
+    touch ${prefix}.pe.txt.gz.tbi
+    ${sd_vcf}
+    ${sd_vcf_tbi}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
+    END_VERSIONS
+    """
 }

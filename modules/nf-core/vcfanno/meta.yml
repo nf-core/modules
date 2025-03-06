@@ -1,5 +1,6 @@
 name: vcfanno
-description: quickly annotate your VCF with any number of INFO fields from any number of VCFs or BED files
+description: quickly annotate your VCF with any number of INFO fields from any number
+  of VCFs or BED files
 keywords:
   - vcf
   - bed
@@ -14,48 +15,53 @@ tools:
       tool_dev_url: https://github.com/brentp/vcfanno
       doi: "10.1186/s13059-016-0973-5"
       license: ["MIT"]
+      identifier: biotools:vcfanno
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: query VCF file
-      pattern: "*.{vcf, vcf.gz}"
-  - vcf_tabix:
-      type: file
-      description: tabix index of query VCF - only needed if vcf is compressed
-      pattern: "*.vcf.gz.tbi"
-  - specific_resources:
-      type: map
-      description: A list of sample specific reference files defined in toml config, must also include indices if bgzipped.
-  - toml:
-      type: file
-      description: configuration file with reference file basenames
-      pattern: "*.toml"
-  - lua:
-      type: file
-      description: Lua file for custom annotations
-      pattern: "*.lua"
-  - resources:
-      type: map
-      description: List of reference files defined in toml config, must also include indices if bgzipped.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: query VCF file
+        pattern: "*.{vcf, vcf.gz}"
+    - tbi:
+        type: file
+        description: tabix index file for the query VCF
+        pattern: "*.tbi"
+    - specific_resources:
+        type: map
+        description: A list of sample specific reference files defined in toml config,
+          must also include indices if bgzipped.
+  - - toml:
+        type: file
+        description: configuration file with reference file basenames
+        pattern: "*.toml"
+  - - lua:
+        type: file
+        description: Lua file for custom annotations
+        pattern: "*.lua"
+  - - resources:
+        type: map
+        description: List of reference files defined in toml config, must also include
+          indices if bgzipped.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - vcf:
-      type: file
-      description: Annotated VCF file
-      pattern: "*.vcf"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf":
+          type: file
+          description: Annotated VCF file
+          pattern: "*.vcf"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@projectoriented"
   - "@matthdsm"

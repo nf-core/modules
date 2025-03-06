@@ -1,5 +1,6 @@
 name: iqtree
-description: Produces a Newick format phylogeny from a multiple sequence alignment using the maxium likelihood algorithm. Capable of bacterial genome size alignments.
+description: Produces a Newick format phylogeny from a multiple sequence alignment
+  using the maxium likelihood algorithm. Capable of bacterial genome size alignments.
 keywords:
   - phylogeny
   - newick
@@ -12,51 +13,343 @@ tools:
       tool_dev_url: https://github.com/iqtree/iqtree2
       doi: 10.1093/molbev/msaa015
       licence: ["GPL v2-or-later"]
+      identifier: biotools:iqtree
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy map containing sample information
-        e.g. [ id: 'test' ]
-  - alignment:
-      type: file
-      description: A FASTA format multiple sequence alignment file
-      pattern: "*.{fasta,fas,fa,mfa}"
-  - constant_sites:
-      type: string
-      description: Number of constant sites to add,
-        see iqtree documentation for details
-        (http://www.iqtree.org/doc/Command-Reference)
+  - - meta:
+        type: map
+        description: |
+          Groovy map containing sample information for the
+          alignment/tree file, e.g. [ id: 'test' ]
+    - alignment:
+        type: file
+        description: Input alignment file in PHYLIP, FASTA, NEXUS, CLUSTAL or MSF format
+          (-s)
+        pattern: "*.{fasta,fas,fa,mfa,phy,aln,nex,nexus,msf}"
+    - tree:
+        type: file
+        description: "File containing one or multiple phylogenetic trees (-t): - Single
+          tree used e.g. as starting tree for tree search - Set of trees used e.g. for
+          distance computation, consensus tree construction"
+        pattern: "*.{tre,tree,treefile,newick,nwk,nex,nexus}"
+  - - tree_te:
+        type: file
+        description: "File containing single phylogenetic tree (-te) Use cases: - fixed
+          user tree to skip tree search - ancestral sequence reconstruction"
+        pattern: "*.{tre,tree,treefile,newick,nwk,nex,nexus}"
+  - - lmclust:
+        type: file
+        description: NEXUS file containing taxon clusters for quartet mapping analysis
+          (-lmclust)
+        pattern: "*.nex{us}"
+  - - mdef:
+        type: file
+        description: NEXUS model file defining new models (-mdef)
+        pattern: "*.nex{us}"
+  - - partitions_equal:
+        type: file
+        description: Partition file for edge-equal partition model, all partitions share
+          same set of branch lengths (-q)
+        pattern: "*.{nex,nexus,tre,tree,treefile}"
+  - - partitions_proportional:
+        type: file
+        description: Partition file for edge-equal partition model, all partitions share
+          same set of branch lengths (-spp)
+        pattern: "*.{nex,nexus,tre,tree,treefile}"
+  - - partitions_unlinked:
+        type: file
+        description: Partition file for edge-equal partition model, all partitions share
+          same set of branch lengths (-sp)
+        pattern: "*.{nex,nexus,tre,tree,treefile}"
+  - - guide_tree:
+        type: file
+        description: File containing guide tree for inference of site frequency profiles
+          (-ft)
+        pattern: "*.{nex,nexus,tre,tree,treefile}"
+  - - sitefreq_in:
+        type: file
+        description: Site frequency file (-fs)
+        pattern: "*.sitefreq"
+  - - constraint_tree:
+        type: file
+        description: File containing opological constraint tree in NEWICK format. The
+          constraint tree can be a multifurcating tree and need not to include all taxa.
+          (-g)
+        pattern: "*.{nwk,newick}"
+  - - trees_z:
+        type: file
+        description: File containing a set of trees for which log-likelihoods should
+          be computed (-z)
+  - - suptree:
+        type: file
+        description: File containing input “target” tree, support values are extracted
+          from trees passed via -t, and mapped onto the target tree (-sup)
+  - - trees_rf:
+        type: file
+        description: "File containing a second tree set (-rf). Used for computing the
+          distance to the primary tree set (`tree`)"
+        pattern: "*.{tre,tree,treefile,newick,nwk,nex,nexus}"
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - phylogeny:
-      type: file
-      description: A phylogeny in Newick format
-      pattern: "*.{treefile}"
-  - bootstrap:
-      type: file
-      description: |
-        A file containing all bootstrap trees,
-        only generated if bootstrap is on
-        and the -wbt flag is passed in ext.args
-      pattern: "*.{ufboot}"
+      - meta:
+          type: file
+          description: A phylogeny in Newick format
+          pattern: "*.{treefile}"
+      - "*.treefile":
+          type: file
+          description: A phylogeny in Newick format
+          pattern: "*.{treefile}"
   - report:
-      type: file
-      description: |
-        Main report file containing computational
-        results as well as a textual visualisation
-        of the final tree.
+      - meta:
+          type: file
+          description: |
+            Main report file containing computational
+            results as well as a textual visualization
+            of the final tree
+          pattern: "*.{iqtree}"
+      - "*.iqtree":
+          type: file
+          description: |
+            Main report file containing computational
+            results as well as a textual visualization
+            of the final tree
+          pattern: "*.{iqtree}"
   - mldist:
-      type: file
-      description: |
-        File containing the pairwise maximum
-        likelihood distances as a matrix.
+      - meta:
+          type: file
+          description: |
+            File containing the pairwise maximum
+            likelihood distances as a matrix
+          pattern: "*.{mldist}"
+      - "*.mldist":
+          type: file
+          description: |
+            File containing the pairwise maximum
+            likelihood distances as a matrix
+          pattern: "*.{mldist}"
+  - lmap_svg:
+      - meta:
+          type: file
+          description: |
+            File containing likelihood mapping analysis
+            results in .svg format (-lmap/-lmclust)
+          pattern: "*.lmap.svg"
+      - "*.lmap.svg":
+          type: file
+          description: |
+            File containing likelihood mapping analysis
+            results in .svg format (-lmap/-lmclust)
+          pattern: "*.lmap.svg"
+  - lmap_eps:
+      - meta:
+          type: file
+          description: |
+            File containing likelihood mapping analysis
+            results in .eps format (-lmap/-lmclust)
+          pattern: "*.lmap.eps"
+      - "*.lmap.eps":
+          type: file
+          description: |
+            File containing likelihood mapping analysis
+            results in .eps format (-lmap/-lmclust)
+          pattern: "*.lmap.eps"
+  - lmap_quartetlh:
+      - meta:
+          type: file
+          description: |
+            File containing quartet log-likelihoods (-wql)
+          pattern: "*.lmap.quartetlh"
+      - "*.lmap.quartetlh":
+          type: file
+          description: |
+            File containing quartet log-likelihoods (-wql)
+          pattern: "*.lmap.quartetlh"
+  - sitefreq_out:
+      - meta:
+          type: file
+          description: |
+            File containing site frequency profiles (-ft)
+          pattern: "*.sitefreq"
+      - "*.sitefreq":
+          type: file
+          description: |
+            File containing site frequency profiles (-ft)
+          pattern: "*.sitefreq"
+  - bootstrap:
+      - meta:
+          type: file
+          description: |
+            File containing all bootstrap trees (-wbt/-wbtl)
+          pattern: "*.ufboot"
+      - "*.ufboot":
+          type: file
+          description: |
+            File containing all bootstrap trees (-wbt/-wbtl)
+          pattern: "*.ufboot"
+  - state:
+      - meta:
+          type: file
+          description: |
+            File containing ancestral sequences for all
+            nodes of the tree by empirical Bayesian method (-asr)
+          pattern: "*.{state}"
+      - "*.state":
+          type: file
+          description: |
+            File containing ancestral sequences for all
+            nodes of the tree by empirical Bayesian method (-asr)
+          pattern: "*.{state}"
+  - contree:
+      - meta:
+          type: file
+          description: |
+            File containing consensus tree (-con/-bb)
+          pattern: "*.{contree}"
+      - "*.contree":
+          type: file
+          description: |
+            File containing consensus tree (-con/-bb)
+          pattern: "*.{contree}"
+  - nex:
+      - meta:
+          type: file
+          description: |
+            File containing consensus network (-net/-bb)
+          pattern: "*.{nex}"
+      - "*.nex":
+          type: file
+          description: |
+            File containing consensus network (-net/-bb)
+          pattern: "*.{nex}"
+  - splits:
+      - meta:
+          type: file
+          description: |
+            File containing consensus network in star-dot format (-wsplits)
+          pattern: "*.{splits}"
+      - "*.splits":
+          type: file
+          description: |
+            File containing consensus network in star-dot format (-wsplits)
+          pattern: "*.{splits}"
+  - suptree:
+      - meta:
+          type: file
+          description: |
+            File containing tree with assigned support
+            values based on supplied "target" tree (-sup)
+          pattern: "*.{suptree}"
+      - "*.suptree":
+          type: file
+          description: |
+            File containing tree with assigned support
+            values based on supplied "target" tree (-sup)
+          pattern: "*.{suptree}"
+  - alninfo:
+      - meta:
+          type: file
+          description: |
+            File containing alignment site statistics (-alninfo)
+          pattern: "*.{alninfo}"
+      - "*.alninfo":
+          type: file
+          description: |
+            File containing alignment site statistics (-alninfo)
+          pattern: "*.{alninfo}"
+  - partlh:
+      - meta:
+          type: file
+          description: |
+            File containing partition log-likelihoods (-wpl)
+          pattern: "*.{partlh}"
+      - "*.partlh":
+          type: file
+          description: |
+            File containing partition log-likelihoods (-wpl)
+          pattern: "*.{partlh}"
+  - siteprob:
+      - meta:
+          type: file
+          description: |
+            File containing site posterior probabilities (-wspr/-wspm/-wspmr)
+          pattern: "*.{siteprob}"
+      - "*.siteprob":
+          type: file
+          description: |
+            File containing site posterior probabilities (-wspr/-wspm/-wspmr)
+          pattern: "*.{siteprob}"
+  - sitelh:
+      - meta:
+          type: file
+          description: |
+            File containing site log-likelihoods (-wsl/-wslr/-wslm/-wslmr)
+          pattern: "*.{sitelh}"
+      - "*.sitelh":
+          type: file
+          description: |
+            File containing site log-likelihoods (-wsl/-wslr/-wslm/-wslmr)
+          pattern: "*.{sitelh}"
+  - treels:
+      - meta:
+          type: file
+          description: |
+            File containing all locally optimal trees (-wt)
+          pattern: "*.{treels}"
+      - "*.treels":
+          type: file
+          description: |
+            File containing all locally optimal trees (-wt)
+          pattern: "*.{treels}"
+  - rate:
+      - meta:
+          type: file
+          description: |
+            File containing inferred site-specific
+            evolutionary rates (-wsr)
+          pattern: "*.{rate}"
+      - "*.rate  ":
+          type: file
+          description: |
+            File containing inferred site-specific
+            evolutionary rates (-wsr)
+          pattern: "*.{rate}"
+  - mlrate:
+      - meta:
+          type: file
+          description: |
+            File containing site-specific subtitution
+            rates determined by maximum likelihood (--mlrate)
+          pattern: "*.{mlrate}"
+      - "*.mlrate":
+          type: file
+          description: |
+            File containing site-specific subtitution
+            rates determined by maximum likelihood (--mlrate)
+          pattern: "*.{mlrate}"
+  - exch_matrix:
+      - meta:
+          type: file
+          description: File containing the exchangeability matrix obtained from the optimization
+            (--link-exchange-rates)
+          pattern: "GTRPMIX.nex"
+      - GTRPMIX.nex:
+          type: file
+          description: File containing the exchangeability matrix obtained from the optimization
+            (--link-exchange-rates)
+          pattern: "GTRPMIX.nex"
   - log:
-      type: file
-      description: Log file of entire run
+      - meta:
+          type: file
+          description: Log file of entire run
+          pattern: "*.{log}"
+      - "*.log":
+          type: file
+          description: Log file of entire run
+          pattern: "*.{log}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@avantonder"
   - "@aunderwo"

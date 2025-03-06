@@ -1,10 +1,9 @@
-name: purecn_run
 channels:
   - conda-forge
   - bioconda
-  - defaults
+
 dependencies:
+  - bioconda::bioconductor-org.hs.eg.db=3.16.0
   - bioconda::bioconductor-purecn=2.4.0
   - bioconda::bioconductor-txdb.hsapiens.ucsc.hg38.knowngene=3.16.0
   - bioconductor-txdb.hsapiens.ucsc.hg19.knowngene=3.2.2
-  - bioconda::bioconductor-org.hs.eg.db=3.16.0

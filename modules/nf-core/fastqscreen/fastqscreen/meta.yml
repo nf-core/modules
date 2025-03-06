@@ -1,0 +1,78 @@
+name: fastqscreen_fastqscreen
+description: Align reads to multiple reference genomes using fastq-screen
+keywords:
+  - align
+  - map
+  - fasta
+  - fastq
+  - genome
+  - reference
+tools:
+  - "fastqscreen":
+      description: "FastQ Screen allows you to screen a library of sequences in FastQ
+        format against a set of sequence databases so you can see if the composition
+        of the library matches with what you expect."
+      homepage: "https://www.bioinformatics.babraham.ac.uk/projects/fastq_screen/"
+      documentation: "https://stevenwingett.github.io/FastQ-Screen/"
+      tool_dev_url: "https://github.com/StevenWingett/FastQ-Screen/archive/refs/tags/v0.15.3.zip"
+      doi: "10.5281/zenodo.5838377"
+      licence: ["GPL-3.0-or-later"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively.
+  - - database:
+        type: directory
+        description: fastq screen database folder containing config file and index folders
+        pattern: "FastQ_Screen_Genomes"
+output:
+  - txt:
+      - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.txt":
+          type: file
+          description: TXT file containing alignment statistics
+          pattern: "*.txt"
+  - png:
+      - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.png":
+          type: file
+          description: PNG file with graphical representation of alignments
+          pattern: "*.png"
+  - html:
+      - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.html":
+          type: file
+          description: HTML file containing mapping results as a table and graphical representation
+          pattern: "*.html"
+  - fastq:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fastq.gz":
+          type: file
+          description: FastQ file containing reads that did not align to any database (optional)
+          pattern: "*.fastq.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@snesic"
+  - "@JPejovicApis"

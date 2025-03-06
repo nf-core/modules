@@ -1,0 +1,66 @@
+nextflow_process {
+    name 'Test Process CELLBENDER_REMOVEBACKGROUND'
+    script '../main.nf'
+    process 'CELLBENDER_REMOVEBACKGROUND'
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cellbender/removebackground"
+    tag "cellbender"
+
+    test("test_cellbender_removebackground") {
+        config './epochs.config'
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_raw_matrix_5k.h5ad", checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                {assert process.success},
+                {assert file(process.out.h5.get(0).get(1)).exists()},
+                {assert file(process.out.filtered_h5.get(0).get(1)).exists()},
+                {assert file(process.out.posterior_h5.get(0).get(1)).exists()},
+                {assert snapshot(process.out.barcodes).match("cellbender_removebackground_barcodes")},
+                {assert snapshot(process.out.metrics).match("cellbender_removebackground_metrics")},
+                {assert file(process.out.report.get(0).get(1)).exists()},
+                {assert file(process.out.pdf.get(0).get(1)).exists()},
+                {assert file(process.out.log.get(0).get(1)).exists()},
+                {assert snapshot(process.out.versions).match("cellbender_removebackground_versions")}
+            )
+        }
+    }
+
+    test("test_cellbender_removebackground - stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_raw_matrix_5k.h5ad", checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                {assert process.success},
+                {assert snapshot(process.out.h5).match("cellbender_removebackground_h5_stub")},
+                {assert snapshot(process.out.filtered_h5).match("cellbender_removebackground_filtered_h5_stub")},
+                {assert snapshot(process.out.posterior_h5).match("cellbender_removebackground_posterior_h5_stub")},
+                {assert snapshot(process.out.barcodes).match("cellbender_removebackground_barcodes_stub")},
+                {assert snapshot(process.out.metrics).match("cellbender_removebackground_metrics_stub")},
+                {assert snapshot(process.out.report).match("cellbender_removebackground_report_stub")},
+                {assert snapshot(process.out.pdf).match("cellbender_removebackground_pdf_stub")},
+                {assert snapshot(process.out.log).match("cellbender_removebackground_log_stub")},
+                {assert snapshot(process.out.versions).match("cellbender_removebackground_versions_stub")}
+            )
+        }
+    }
+}

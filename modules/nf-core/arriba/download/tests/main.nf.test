@@ -1,0 +1,35 @@
+
+nextflow_process {
+
+    name "Test Process ARRIBA_DOWNLOAD"
+    script "../main.nf"
+    process "ARRIBA_DOWNLOAD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "arriba"
+    tag "arriba/download"
+
+    test("test-arriba-download") {
+
+        when {
+            process {
+                """
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.reference[0].collect { file(it).name }.toSorted(),
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+}

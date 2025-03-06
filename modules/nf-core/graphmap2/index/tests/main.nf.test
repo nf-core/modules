@@ -1,0 +1,52 @@
+
+nextflow_process {
+
+    name "Test Process GRAPHMAP2_INDEX"
+    script "../main.nf"
+    process "GRAPHMAP2_INDEX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "graphmap2"
+    tag "graphmap2/index"
+
+    test("test-graphmap2-index") {
+
+        when {
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-graphmap2-index-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

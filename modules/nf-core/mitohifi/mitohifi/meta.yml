@@ -12,96 +12,188 @@ tools:
       tool_dev_url: https://github.com/marcelauliano/MitoHiFi
       doi: "10.1101/2022.12.23.521667"
       licence: ["MIT"]
+      identifier: biotools:mitohifi
 input:
-  - input:
-      type: file
-      description: Path to PacBio HiFi reads or contigs. Type (-r/-c) is specified in ext.args2
-      pattern: "*.{fa,fa.gz,fasta,fasta.gz}"
-  - ref_fa:
-      type: file
-      description: Reference sequence
-      pattern: "*.{fa,fasta}"
-  - ref_gb:
-      type: file
-      description: Reference annotation
-      pattern: "*.{gb}"
-  - input_mode:
-      type: string
-      description: Specifies type of input - reads or contigs
-      pattern: "{r,c}"
-  - code:
-      type: integer
-      description: Mitochndrial code for annotation
-      pattern: "[0-9]*"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input:
+        type: file
+        description: Path to PacBio HiFi reads or contigs. Type (-r/-c) is specified
+          in ext.args2
+        pattern: "*.{fa,fa.gz,fasta,fasta.gz}"
+  - - ref_fa:
+        type: file
+        description: Reference sequence
+        pattern: "*.{fa,fasta}"
+  - - ref_gb:
+        type: file
+        description: Reference annotation
+        pattern: "*.{gb}"
+  - - input_mode:
+        type: string
+        description: Specifies type of input - reads or contigs
+        pattern: "{r,c}"
+  - - mito_code:
+        type: string
+        description: Mitochondrial genetic code
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - fasta:
-      type: file
-      description: Mitochondrial sequence
-      pattern: "*.{fasta,fa}"
+      - meta:
+          type: file
+          description: Mitochondrial sequence
+          pattern: "*.{fasta,fa}"
+      - "*fasta":
+          type: file
+          description: Mitochondrial sequence
+          pattern: "*.{fasta,fa}"
+  - stats:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*contigs_stats.tsv":
+          type: file
+          description: Contigs statistics
+          pattern: "*contigs_stats.tsv"
   - gb:
-      type: file
-      description: Genome annotation in case mitofinder was used
-      pattern: "*.gb"
+      - meta:
+          type: file
+          description: Genome annotation in case mitofinder was used
+          pattern: "*.gb"
+      - "*gb":
+          type: file
+          description: Genome annotation in case mitofinder was used
+          pattern: "*.gb"
   - gff:
-      type: file
-      description: Genome annotation in case mitos was used
-      pattern: "*.gff"
+      - meta:
+          type: file
+          description: Genome annotation in case mitos was used
+          pattern: "*.gff"
+      - "*gff":
+          type: file
+          description: Genome annotation in case mitos was used
+          pattern: "*.gff"
   - all_potential_contigs:
-      type: file
-      description: Contains sequences of all potential contigs
-      pattern: "*all_potential_contigs.fa"
+      - meta:
+          type: file
+          description: Contains sequences of all potential contigs
+          pattern: "*all_potential_contigs.fa"
+      - "*all_potential_contigs.fa":
+          type: file
+          description: Contains sequences of all potential contigs
+          pattern: "*all_potential_contigs.fa"
   - contigs_annotations:
-      type: file
-      description: Graphical representation of annotated genes and tRNAs
-      pattern: "*contigs_annotations.png"
+      - meta:
+          type: file
+          description: Graphical representation of annotated genes and tRNAs
+          pattern: "*contigs_annotations.png"
+      - "*contigs_annotations.png":
+          type: file
+          description: Graphical representation of annotated genes and tRNAs
+          pattern: "*contigs_annotations.png"
   - contigs_circularization:
-      type: directory
-      description: Contains circularization reports
-      pattern: "*contigs_circularization"
+      - meta:
+          type: directory
+          description: Contains circularization reports
+          pattern: "*contigs_circularization"
+      - "*contigs_circularization":
+          type: directory
+          description: Contains circularization reports
+          pattern: "*contigs_circularization"
   - contigs_filtering:
-      type: directory
-      description: Contains files with initial blast matches
-      pattern: "*contigs_filtering"
+      - meta:
+          type: directory
+          description: Contains files with initial blast matches
+          pattern: "*contigs_filtering"
+      - "*contigs_filtering":
+          type: directory
+          description: Contains files with initial blast matches
+          pattern: "*contigs_filtering"
   - coverage_mapping:
-      type: directory
-      description: Contains statistics on coverage mapping
-      pattern: "*coverage_mapping"
+      - meta:
+          type: directory
+          description: Contains statistics on coverage mapping
+          pattern: "*coverage_mapping"
+      - "*coverage_mapping":
+          type: directory
+          description: Contains statistics on coverage mapping
+          pattern: "*coverage_mapping"
   - coverage_plot:
-      type: file
-      description: Read coverage plot for mitochondrial contigs
-      pattern: "*coverage_plot.png"
+      - meta:
+          type: file
+          description: Read coverage plot for mitochondrial contigs
+          pattern: "*coverage_plot.png"
+      - "*coverage_plot.png":
+          type: file
+          description: Read coverage plot for mitochondrial contigs
+          pattern: "*coverage_plot.png"
   - final_mitogenome_annotation:
-      type: file
-      description: Graphical representation of annotated genes for the final mito contig
-      pattern: "*final_mitogenome.annotation.png"
+      - meta:
+          type: file
+          description: Graphical representation of annotated genes for the final mito
+            contig
+          pattern: "*final_mitogenome.annotation.png"
+      - "*final_mitogenome.annotation.png":
+          type: file
+          description: Graphical representation of annotated genes for the final mito
+            contig
+          pattern: "*final_mitogenome.annotation.png"
   - final_mitogenome_choice:
-      type: directory
-      description: Files with potential contigs clusterings and alignments
-      pattern: "*final_mitogenome_choice"
+      - meta:
+          type: directory
+          description: Files with potential contigs clusterings and alignments
+          pattern: "*final_mitogenome_choice"
+      - "*final_mitogenome_choice":
+          type: directory
+          description: Files with potential contigs clusterings and alignments
+          pattern: "*final_mitogenome_choice"
   - final_mitogenome_coverage:
-      type: file
-      description: Graphical representation of reads coverage plot for the final mito contig
-      pattern: "*final_mitogenome.coverage.png"
+      - meta:
+          type: file
+          description: Graphical representation of reads coverage plot for the final mito
+            contig
+          pattern: "*final_mitogenome.coverage.png"
+      - "*final_mitogenome.coverage.png":
+          type: file
+          description: Graphical representation of reads coverage plot for the final mito
+            contig
+          pattern: "*final_mitogenome.coverage.png"
   - potential_contigs:
-      type: directory
-      description: Files with sequences and annotations of the potential contigs
-      pattern: "*potential_contigs"
+      - meta:
+          type: directory
+          description: Files with sequences and annotations of the potential contigs
+          pattern: "*potential_contigs"
+      - "*potential_contigs":
+          type: directory
+          description: Files with sequences and annotations of the potential contigs
+          pattern: "*potential_contigs"
   - reads_mapping_and_assembly:
-      type: directory
-      description: Read mapping files for run from the raw reads
-      pattern: "*reads_mapping_and_assembly"
+      - meta:
+          type: directory
+          description: Read mapping files for run from the raw reads
+          pattern: "*reads_mapping_and_assembly"
+      - "*reads_mapping_and_assembly":
+          type: directory
+          description: Read mapping files for run from the raw reads
+          pattern: "*reads_mapping_and_assembly"
   - shared_genes:
-      type: directory
-      description: Report on genes shared with the reference genome
-      pattern: "*shared_genes.tsv"
+      - meta:
+          type: directory
+          description: Report on genes shared with the reference genome
+          pattern: "*shared_genes.tsv"
+      - "*shared_genes.tsv":
+          type: directory
+          description: Report on genes shared with the reference genome
+          pattern: "*shared_genes.tsv"
   - versions:
-      type: file
-      description: Software versions used in the run
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@ksenia-krasheninnikova"
 maintainers:

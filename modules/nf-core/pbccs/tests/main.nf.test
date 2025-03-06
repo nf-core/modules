@@ -1,0 +1,69 @@
+nextflow_process {
+
+    name "Test Process PBCCS"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "PBCCS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pbccs"
+
+    test("PacBio pbccs - Compute CSS test") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'alz' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.bam.pbi', checkIfExists: true)
+                ]
+                input[1] = 2
+                input[2] = 3
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.bam).match("bam") },
+                { assert snapshot(process.out.pbi).match("pbi") },
+                { assert snapshot(process.out.report_txt).match("report_txt") },
+                { assert path(process.out.report_json.get(0).get(1)).text.contains("pbcopper") },
+                { assert path(process.out.metrics.get(0).get(1)).linesGzip.get(0).toString().contains("zmws") },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+    test("PacBio pbccs - Compute CSS test - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'alz' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.bam.pbi', checkIfExists: true)
+                ]
+                input[1] = 2
+                input[2] = 3
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

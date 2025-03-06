@@ -27,4 +27,15 @@ process GUNC_DOWNLOADDB {
         gunc: \$( gunc --version )
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    """
+    touch ${db_name}.dmnd
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gunc: \$( gunc --version )
+    END_VERSIONS
+    """
 }

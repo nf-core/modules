@@ -57,6 +57,7 @@ process ANTISMASH_ANTISMASHLITE {
         $gff_flag \\
         -c $task.cpus \\
         --output-dir $prefix \\
+        --output-basename $prefix \\
         --genefinding-tool none \\
         --logfile $prefix/${prefix}.log \\
         --databases $databases \\

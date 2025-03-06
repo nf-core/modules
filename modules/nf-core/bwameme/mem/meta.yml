@@ -1,0 +1,121 @@
+name: "bwameme_mem"
+description: Performs fastq alignment to a fasta reference using BWA-MEME
+keywords:
+  - mem
+  - bwa
+  - bwamem2
+  - bwameme
+  - alignment
+  - map
+  - fastq
+  - bam
+  - sam
+  - cram
+tools:
+  - "bwameme":
+      description: "Faster BWA-MEM2 using learned-index"
+      homepage: https://github.com/kaist-ina/BWA-MEME
+      documentation: https://github.com/kaist-ina/BWA-MEME#getting-started
+      doi: "10.1093/bioinformatics/btac137"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively.
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference/index information
+          e.g. [ id:'test' ]
+    - index:
+        type: file
+        description: BWA genome index files
+        pattern: "Directory containing BWA index *.{0132,amb,ann,bwt.2bit.64,pac}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: Reference genome in FASTA format
+        pattern: "*.{fa,fasta,fna}"
+  - - sort_bam:
+        type: boolean
+        description: use samtools sort (true) or samtools view (false)
+        pattern: "true or false"
+  - - mbuffer:
+        type: integer
+        description: memory for mbuffer in megabytes (default 3072)
+  - - samtools_threads:
+        type: integer
+        description: number of threads for samtools (default 2)
+output:
+  - sam:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.sam":
+          type: file
+          description: Output SAM file containing read alignments
+          pattern: "*.{sam}"
+  - bam:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bam":
+          type: file
+          description: Output BAM file containing read alignments
+          pattern: "*.{bam}"
+  - cram:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.cram":
+          type: file
+          description: Output CRAM file containing read alignments
+          pattern: "*.{cram}"
+  - crai:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.crai":
+          type: file
+          description: Index file for CRAM file
+          pattern: "*.{crai}"
+  - csi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.csi":
+          type: file
+          description: Index file for BAM file
+          pattern: "*.{csi}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@ramprasadn"
+maintainers:
+  - "@ramprasadn"

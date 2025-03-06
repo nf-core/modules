@@ -10,39 +10,43 @@ keywords:
   - bed
 tools:
   - biscuit:
-      description: A utility for analyzing sodium bisulfite conversion-based DNA methylation/modification data
+      description: A utility for analyzing sodium bisulfite conversion-based DNA methylation/modification
+        data
       homepage: https://huishenlab.github.io/biscuit/
       documentation: https://huishenlab.github.io/biscuit/docs/methylextraction.html
       tool_dev_url: https://github.com/huishenlab/biscuit
       licence: ["MIT"]
+      identifier: biotools:biscuit
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bed:
-      type: file
-      description: |
-        Biscuit BED file (output of biscuit vcf2bed)
-  - index:
-      type: directory
-      description: Biscuit genome index directory (generated with 'biscuit index')
-      pattern: "BiscuitIndex"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bed:
+        type: file
+        description: |
+          Biscuit BED file (output of biscuit vcf2bed)
+  - - index:
+        type: directory
+        description: Biscuit genome index directory (generated with 'biscuit index')
+        pattern: "BiscuitIndex"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - mergecg_bed:
-      type: file
-      description: Gzipped BED file with merged methylation information
-      pattern: "*.bed.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bed.gz":
+          type: file
+          description: Gzipped BED file with merged methylation information
+          pattern: "*.bed.gz"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@njspix"
 maintainers:

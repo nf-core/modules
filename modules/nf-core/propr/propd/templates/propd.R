@@ -67,24 +67,27 @@ read_delim_flexible <- function(file, header = TRUE, row.names = 1, check.names 
 #'
 #' @param object propd object
 one_metric_df <- function(object){
-    result <- getResults(object)
-    genes <- unique(c(result\$Pair, result\$Partner))
+    results <- getResults(object)
+    #keep only the metric of interest
+    one_metric <- cbind(results\$Partner, results\$Pair, results\$theta)
+    colnames(one_metric) <- c("Partner", "Pair", "theta")
+    one_metric <- as.data.frame(one_metric)
 
-    empty_matrix <- matrix(NA, nrow = length(genes), ncol = length(genes), dimnames = list(genes, genes))
+    # Extract the unique gene names
+    gene_names <- sort(unique(c(one_metric\$Partner, one_metric\$Pair)))
+    # Initialize a square matrix with NA
+    square_matrix <- matrix(NA, nrow = length(gene_names), ncol = length(gene_names))
+    rownames(square_matrix) <- gene_names
+    colnames(square_matrix) <- gene_names
 
-    if (object@active == "theta_d"){
-    metric <- "theta"
-    }else{
-    metric <- object@active
-    }
-
-    for (i in 1:nrow(result)) {
-        row_name <- result\$Pair[i]
-        col_name <- result\$Partner[i]
-        empty_matrix[row_name, col_name] <- result[[metric]][i]
-        empty_matrix[col_name, row_name] <- result[[metric]][i]
-        }
-    return(empty_matrix)
+    # Use the `match` function to get the row and column indices
+    row_indices <- match(one_metric\$Partner, gene_names)
+    col_indices <- match(one_metric\$Pair, gene_names)
+    # Use these indices to populate the matrix
+    square_matrix[cbind(row_indices, col_indices)] <- one_metric[["theta"]]
+    # Populate the reverse pairs to ensure symmetry
+    square_matrix[cbind(col_indices, row_indices)] <- one_metric[["theta"]]
+    return(square_matrix)
 }
 
 #' Extract the differential proportionality cutoff for a specified FDR value.

@@ -1,0 +1,78 @@
+
+nextflow_process {
+
+    name "Test Process TBPROFILER_PROFILE"
+    script "../main.nf"
+    process "TBPROFILER_PROFILE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "tbprofiler"
+    tag "tbprofiler/profile"
+
+    test("test-tbprofiler-profile-illumina") {
+        config "./nextflow.illumina.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    [
+				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+				    ]
+                ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					bam(process.out.bam[0][1]).getReadsMD5(),
+					process.out.csv,
+					file(process.out.json[0][1]).name, // unstable
+					process.out.txt,
+					path(process.out.vcf[0][1]).vcf.summary,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-tbprofiler-profile-nanopore") {
+        config "./nextflow.nanopore.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:true ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					bam(process.out.bam[0][1]).getReadsMD5(),
+					process.out.csv,
+					file(process.out.json[0][1]).name, // unstable
+					process.out.txt,
+					path(process.out.vcf[0][1]).vcf.summary,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

@@ -1,46 +1,73 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "igvreports"
-description: A Python application to generate self-contained HTML reports for variant review and other genomic applications
+description: A Python application to generate self-contained HTML reports for variant
+  review and other genomic applications
 keywords:
   - vcf
   - variant
   - genomics
 tools:
   - "igvreports":
-      description: "Creates self-contained html pages for visual variant review with IGV (igv.js)."
+      description: "Creates self-contained html pages for visual variant review with
+        IGV (igv.js)."
       homepage: "https://github.com/igvteam/igv-reports"
       documentation: "https://github.com/igvteam/igv-reports"
       tool_dev_url: "https://github.com/igvteam/igv-reports"
       doi: "10.1093/bioinformatics/btac830"
       licence: ["MIT"]
+      identifier: ""
 
 input:
-  # Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-
-  - sites:
-      type: file
-      description: VCF, BED, MAF, BEDPE, or generic tab delimited file of genomic variant sites
-  - genomeFasta:
-      type: file
-      description: Reference fasta file
-      pattern: "*.{fasta,fa}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - sites:
+        type: file
+        description: |
+          VCF, BED, MAF, BEDPE, or generic tab delimited file of genomic variant sites
+    - tracks:
+        type: file
+        description: |
+          List of any set of files of the types that IGV can display,
+          eg BAM/CRAM, GTF/GFF, VCF, BED, etc
+    - tracks_indicies:
+        type: file
+        description: |
+          List of indices for the tracks
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing genome information
+          e.g. [ id:'genome_name' ]
+    - fasta:
+        type: file
+        description: Reference fasta file
+        pattern: "*.{fasta,fa}"
+    - fai:
+        type: file
+        description: Reference fasta file index
+        pattern: "*.{fai}"
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - report:
-      type: file
-      description: html report  with a table of genomic sites and an embedded IGV genome browser for viewing data for each site
-      pattern: "*.{html}"
-
+      - meta:
+          type: file
+          description: |
+            html report  with a table of genomic sites and an embedded
+            IGV genome browser for viewing data for each site
+          pattern: "*.{html}"
+      - "*.html":
+          type: file
+          description: |
+            html report  with a table of genomic sites and an embedded
+            IGV genome browser for viewing data for each site
+          pattern: "*.{html}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@souljamie"
 maintainers:

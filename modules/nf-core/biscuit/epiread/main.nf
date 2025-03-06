@@ -54,4 +54,19 @@ process BISCUIT_EPIREAD {
         samtools: \$( samtools --version |& sed '1!d; s/^.*samtools //' )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def unzipped_snp_bed = snp_bed ? snp_bed.toString() - ~/\.gz$/: ""
+    def options_snp_bed = snp_bed ? "-B ${unzipped_snp_bed}" : ""
+    if ("$options_snp_bed" == "${prefix}.bed.gz") error "Input and output names for biscuit epiread are the same, set prefix in module configuration to disambiguate!"
+    """
+    echo | gzip > ${prefix}.bed.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        biscuit: \$( biscuit version |& sed '1!d; s/^.*BISCUIT Version: //' )
+        samtools: \$( samtools --version |& sed '1!d; s/^.*samtools //' )
+    END_VERSIONS
+    """
 }

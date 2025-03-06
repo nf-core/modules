@@ -124,33 +124,26 @@ seqCutoff <- function(object){
 valCutoff  <- function(object, metric, fdrVal = 0.05){
     fdr_df <- object@fdr
     print(fdr_df)
-    metric_up <- c("rho", "cor", "pcor", "pcor.shrink", "pcor.bshrink")
+    # metric_up <- c("rho", "cor", "pcor", "pcor.shrink", "pcor.bshrink")
+
     if (prod(dim(fdr_df) == 0)){
         warning("Please run updateCutoff on propr first")
     }else{
         fdr_vals <- fdr_df\$FDR
-        if (any(is.na(fdr_vals))){
+        if(any(!is.na(fdr_vals))){ # if there is some defined value, continue, else out of range
+            if(any(fdr_vals <= fdrVal)){ # if there is some value that is belowe the FDR threshold,
+                fdr_threshold <- fdr_vals[which.max(fdr_vals <= fdrVal)] #choose the highest FDR that is lower than the threshold, else choose the lowest
+            }else{
+                warning("FDR is higher than the specified threshold for all proportionality values. Using the lowest fdr instead")
+                fdr_threshold <- min(fdr_vals, na.rm = TRUE)
+            }
+            cutoff <- fdr_df\$cutoff[which(fdr_df\$FDR == fdr_threshold)] #select the corresponding cutoff value for the FDR
+            print(cutoff)
+        }else{
             stop("FDR not defined. This metric is not appropiate for the given dataset")
         }
-        threshold <- any(fdr_vals <= fdrVal)
-        if (metric %in% metric_up){
-            if (threshold){
-                fdr_threshold <- fdr_vals[which.max(fdr_vals <= fdrVal)]
-            }else{
-                warning("FDR is higher than the specified threshold for all proportionality values. Using the lowest fdr instead")
-                fdr_threshold <- fdr_vals[length(fdr_vals)]
-            }
-        }else{
-            if (threshold){
-                fdr_threshold <- fdr_vals[which.min(fdr_vals <= fdrVal) - 1]
-            }else{
-                warning("FDR is higher than the specified threshold for all proportionality values. Using the lowest fdr instead")
-                fdr_threshold <- fdr_vals[1]
-            }
-        }
-    cutoff <- fdr_df\$cutoff[fdr_df\$FDR == fdr_threshold]
-    }
     return(cutoff)
+    }
 }
 
 

@@ -4,8 +4,8 @@ process SHINYNGS_STATICEXPLORATORY {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-shinyngs:1.8.5--r43hdfd78af_0' :
-        'biocontainers/r-shinyngs:1.8.5--r43hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/r-shinyngs:2.0.0--r43hdfd78af_0' :
+        'biocontainers/r-shinyngs:2.0.0--r43hdfd78af_0' }"
 
     input:
     tuple val(meta), path(sample), path(feature_meta), path(assay_files)
@@ -43,7 +43,29 @@ process SHINYNGS_STATICEXPLORATORY {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        r-base: \$(echo \$(R --version 2>&1) | sed 's/^.*R version //; s/ .*\$//')
+        r-shinyngs: \$(Rscript -e "library(shinyngs); cat(as.character(packageVersion('shinyngs')))")
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: meta.id
+    """
+    mkdir -p ${prefix}/png ${prefix}/html
+    touch ${prefix}/png/boxplot.png
+    touch ${prefix}/html/boxplot.html
+    touch ${prefix}/png/density.png
+    touch ${prefix}/html/density.html
+    touch ${prefix}/png/pca2d.png
+    touch ${prefix}/html/pca3d.html
+    touch ${prefix}/png/pca3d.png
+    touch ${prefix}/html/pca2d.html
+    touch ${prefix}/png/mad_correlation.png
+    touch ${prefix}/html/mad_correlation.html
+    touch ${prefix}/png/sample_dendrogram.png
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
         r-shinyngs: \$(Rscript -e "library(shinyngs); cat(as.character(packageVersion('shinyngs')))")
     END_VERSIONS
     """

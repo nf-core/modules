@@ -3,10 +3,11 @@ nextflow_process {
     name "Test Process BISMARK_ALIGN"
     script "../main.nf"
     process "BISMARK_ALIGN"
-    tag "bismark"
-    tag "bismark/align"
     tag "modules"
     tag "modules_nfcore"
+    tag "bismark"
+    tag "bismark/align"
+    tag "bismark/genomepreparation"
 
     test("Should run bismark/align (bowtie2 single end) without failures") {
         config './nextflow_bowtie2.config'
@@ -16,7 +17,7 @@ nextflow_process {
                 script "../../genomepreparation/main.nf"
                 process {
                     """
-                    input[0] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     """
                 }
             }
@@ -30,7 +31,7 @@ nextflow_process {
                 """
                 input[0] = [
                             [ id:'test', single_end:true ],
-                            file(params.test_data['sarscov2']['illumina']['test_methylated_1_fastq_gz'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true)
                            ]
                 input[1] = BISMARK_GENOMEPREPARATION.out.index
                 """
@@ -40,9 +41,6 @@ nextflow_process {
         then {
             assertAll(
             { assert process.success },
-            { assert snapshot(process.out.bam).match("bam_bt2_se") },
-            { assert snapshot(process.out.unmapped).match("unmapped_bt2_se") },
-            { assert snapshot(process.out.versions).match("versions") },
             {
                 with(process.out.report) {
                     with(get(0)) {
@@ -50,6 +48,12 @@ nextflow_process {
                         assert path(get(1)).readLines().last().contains("Bismark completed in")
                     }
                 }
+            },
+            { assert snapshot(
+                process.out.bam.collect { bam(it[1]).getReadsMD5() },
+                process.out.unmapped,
+                process.out.versions
+                ).match()
             }
             )
         }
@@ -63,7 +67,7 @@ nextflow_process {
                 script "../../genomepreparation/main.nf"
                 process {
                     """
-                    input[0] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     """
                 }
             }
@@ -76,9 +80,9 @@ nextflow_process {
                 """
                 input[0] = [
                             [ id:'test', single_end:false ],
-                            [ 
-                             file(params.test_data['sarscov2']['illumina']['test_methylated_1_fastq_gz'], checkIfExists: true),
-                             file(params.test_data['sarscov2']['illumina']['test_methylated_2_fastq_gz'], checkIfExists: true)
+                            [
+                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
+                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true)
                             ]
                            ]
                 input[1] = BISMARK_GENOMEPREPARATION.out.index
@@ -89,9 +93,6 @@ nextflow_process {
         then {
             assertAll(
             { assert process.success },
-            { assert snapshot(process.out.bam).match("bam_bt2_pe") },
-            { assert snapshot(process.out.unmapped).match("unmapped_bt2_pe") },
-            { assert snapshot(process.out.versions).match("versions") },
             {
                 with(process.out.report) {
                     with(get(0)) {
@@ -99,6 +100,12 @@ nextflow_process {
                         assert path(get(1)).readLines().last().contains("Bismark completed in")
                     }
                 }
+            },
+            { assert snapshot(
+                process.out.bam.collect { bam(it[1]).getReadsMD5() },
+                process.out.unmapped,
+                process.out.versions
+                ).match()
             }
             )
         }
@@ -112,7 +119,7 @@ nextflow_process {
                 script "../../genomepreparation/main.nf"
                 process {
                     """
-                    input[0] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     """
                 }
             }
@@ -126,7 +133,7 @@ nextflow_process {
                 """
                 input[0] = [
                             [ id:'test', single_end:true ],
-                            file(params.test_data['sarscov2']['illumina']['test_methylated_1_fastq_gz'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true)
                            ]
                 input[1] = BISMARK_GENOMEPREPARATION.out.index
                 """
@@ -136,9 +143,6 @@ nextflow_process {
         then {
             assertAll(
             { assert process.success },
-            { assert snapshot(process.out.bam).match("bam_hisat2_se") },
-            { assert snapshot(process.out.unmapped).match("unmapped_hisat2_se") },
-            { assert snapshot(process.out.versions).match("versions") },
             {
                 with(process.out.report) {
                     with(get(0)) {
@@ -146,6 +150,12 @@ nextflow_process {
                         assert path(get(1)).readLines().last().contains("Bismark completed in")
                     }
                 }
+            },
+            { assert snapshot(
+                process.out.bam.collect { bam(it[1]).getReadsMD5() },
+                process.out.unmapped,
+                process.out.versions
+                ).match()
             }
             )
         }
@@ -159,7 +169,7 @@ nextflow_process {
                 script "../../genomepreparation/main.nf"
                 process {
                     """
-                    input[0] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     """
                 }
             }
@@ -173,9 +183,9 @@ nextflow_process {
                 """
                 input[0] = [
                             [ id:'test', single_end:false ],
-                            [ 
-                             file(params.test_data['sarscov2']['illumina']['test_methylated_1_fastq_gz'], checkIfExists: true),
-                             file(params.test_data['sarscov2']['illumina']['test_methylated_2_fastq_gz'], checkIfExists: true)
+                            [
+                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
+                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true)
                             ]
                            ]
                 input[1] = BISMARK_GENOMEPREPARATION.out.index
@@ -186,9 +196,6 @@ nextflow_process {
         then {
             assertAll(
             { assert process.success },
-            { assert snapshot(process.out.bam).match("bam_hisat2_pe") },
-            { assert snapshot(process.out.unmapped).match("unmapped_hisat2_pe") },
-            { assert snapshot(process.out.versions).match("versions") },
             {
                 with(process.out.report) {
                     with(get(0)) {
@@ -196,6 +203,12 @@ nextflow_process {
                         assert path(get(1)).readLines().last().contains("Bismark completed in")
                     }
                 }
+            },
+            { assert snapshot(
+                process.out.bam.collect { bam(it[1]).getReadsMD5() },
+                process.out.unmapped,
+                process.out.versions
+                ).match()
             }
             )
         }
@@ -209,7 +222,7 @@ nextflow_process {
                 script "../../genomepreparation/main.nf"
                 process {
                     """
-                    input[0] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     """
                 }
             }
@@ -223,7 +236,7 @@ nextflow_process {
                 """
                 input[0] = [
                             [ id:'test', single_end:true ],
-                            file(params.test_data['sarscov2']['illumina']['test_methylated_1_fastq_gz'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true)
                            ]
                 input[1] = BISMARK_GENOMEPREPARATION.out.index
                 """
@@ -233,9 +246,6 @@ nextflow_process {
         then {
             assertAll(
             { assert process.success },
-            { assert snapshot(process.out.bam).match("bam_minimap2_se") },
-            { assert snapshot(process.out.unmapped).match("unmapped_minimap2_se") },
-            { assert snapshot(process.out.versions).match("versions") },
             {
                 with(process.out.report) {
                     with(get(0)) {
@@ -243,6 +253,12 @@ nextflow_process {
                         assert path(get(1)).readLines().last().contains("Bismark completed in")
                     }
                 }
+            },
+            { assert snapshot(
+                process.out.bam.collect { bam(it[1]).getReadsMD5() },
+                process.out.unmapped,
+                process.out.versions
+                ).match()
             }
             )
         }

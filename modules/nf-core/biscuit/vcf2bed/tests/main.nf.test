@@ -1,0 +1,58 @@
+
+nextflow_process {
+
+    name "Test Process BISCUIT_VCF2BED"
+    script "../main.nf"
+    process "BISCUIT_VCF2BED"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "biscuit"
+    tag "biscuit/vcf2bed"
+
+    test("test-biscuit-vcf2bed") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/biscuit/test.vcf.gz', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-biscuit-vcf2bed-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/biscuit/test.vcf.gz', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

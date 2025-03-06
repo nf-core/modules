@@ -1,0 +1,52 @@
+name: bamtofastq10x
+
+description: Tool for converting 10x BAMs produced by Cell Ranger, Space Ranger, Cell
+  Ranger ATAC, Cell Ranger DNA, and Long Ranger back to FASTQ files that can be used
+  as inputs to re-run analysis
+
+keywords:
+  - bam
+  - convert
+  - fastq
+  - 10x
+
+tools:
+  - bamtofastq10x:
+      description: Tool for converting 10x BAMs produced by Cell Ranger, Space Ranger,
+        Cell Ranger ATAC, Cell Ranger DNA, and Long Ranger back to FASTQ files that
+        can be used as inputs to re-run analysis
+      homepage: https://github.com/10XGenomics/bamtofastq
+      documentation: https://github.com/10XGenomics/bamtofastq
+      tool_dev_url: https://github.com/10XGenomics/bamtofastq
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: BAM file
+        pattern: "*.bam"
+output:
+  - fastq:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.fastq.gz":
+          type: file
+          description: fastq compressed file
+          pattern: "*.fastq.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@BlueBicycleBlog"
+maintainers:
+  - "@BlueBicycleBlog"

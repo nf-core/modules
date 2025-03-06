@@ -2,10 +2,11 @@
 // Alignment with BWA to an additional genome, then use BAMCMP to remove reads that map to the second genome.
 //
 
-include { BWA_MEM as BWA_MEM_PRIMARY     } from '../../../modules/nf-core/bwa/mem/main'
-include { BWA_MEM as BWA_MEM_CONTAMINANT } from '../../../modules/nf-core/bwa/mem/main'
-include { BAMCMP                         } from '../../../modules/nf-core/bamcmp/main'
-include { BAM_SORT_STATS_SAMTOOLS        } from '../bam_sort_stats_samtools/main'
+include { BWA_MEM as BWA_MEM_PRIMARY                                    } from '../../../modules/nf-core/bwa/mem/main'
+include { BWA_MEM as BWA_MEM_CONTAMINANT                                } from '../../../modules/nf-core/bwa/mem/main'
+include { BAMCMP                                                        } from '../../../modules/nf-core/bamcmp/main'
+include { BAM_SORT_STATS_SAMTOOLS as BAM_SORT_STATS_SAMTOOLS_UNFILTERED } from '../bam_sort_stats_samtools/main'
+include { BAM_SORT_STATS_SAMTOOLS as BAM_SORT_STATS_SAMTOOLS_FILTERED   } from '../bam_sort_stats_samtools/main'
 
 workflow FASTQ_ALIGN_BAMCMP_BWA {
     take:
@@ -43,20 +44,33 @@ workflow FASTQ_ALIGN_BAMCMP_BWA {
     BAMCMP(ch_both_bams)
     ch_versions = ch_versions.mix(BAMCMP.out.versions)
     //
-    // Sort, index BAM file and run samtools stats, flagstat and idxstats
+    // Sort, index primary unfiltered BAM file and run samtools stats, flagstat and idxstats
     //
 
-    BAM_SORT_STATS_SAMTOOLS ( BAMCMP.out.primary_filtered_bam, ch_fasta)
-    ch_versions = ch_versions.mix(BAM_SORT_STATS_SAMTOOLS.out.versions)
+    BAM_SORT_STATS_SAMTOOLS_UNFILTERED ( BWA_MEM_PRIMARY.out.bam, ch_fasta )
+    ch_versions = ch_versions.mix(BAM_SORT_STATS_SAMTOOLS_UNFILTERED.out.versions)
+
+    //
+    // Sort, index filtered BAM file and run samtools stats, flagstat and idxstats
+    //
+
+    BAM_SORT_STATS_SAMTOOLS_FILTERED ( BAMCMP.out.primary_filtered_bam, ch_fasta)
+    ch_versions = ch_versions.mix(BAM_SORT_STATS_SAMTOOLS_FILTERED.out.versions)
 
     emit:
-    bam      = BAM_SORT_STATS_SAMTOOLS.out.bam      // channel: [ val(meta), path(bam) ]
-    bai      = BAM_SORT_STATS_SAMTOOLS.out.bai      // channel: [ val(meta), path(bai) ]
-    csi      = BAM_SORT_STATS_SAMTOOLS.out.csi      // channel: [ val(meta), path(csi) ]
-    stats    = BAM_SORT_STATS_SAMTOOLS.out.stats    // channel: [ val(meta), path(stats) ]
-    flagstat = BAM_SORT_STATS_SAMTOOLS.out.flagstat // channel: [ val(meta), path(flagstat) ]
-    idxstats = BAM_SORT_STATS_SAMTOOLS.out.idxstats // channel: [ val(meta), path(idxstats) ]
-    contaminant_bam = BAMCMP.out.contamination_bam  // channel: [ val(meta), path(bam) ]
+    bam      = BAM_SORT_STATS_SAMTOOLS_FILTERED.out.bam                   // channel: [ val(meta), path(bam) ]
+    bai      = BAM_SORT_STATS_SAMTOOLS_FILTERED.out.bai                   // channel: [ val(meta), path(bai) ]
+    csi      = BAM_SORT_STATS_SAMTOOLS_FILTERED.out.csi                   // channel: [ val(meta), path(csi) ]
+    stats    = BAM_SORT_STATS_SAMTOOLS_FILTERED.out.stats                 // channel: [ val(meta), path(stats) ]
+    flagstat = BAM_SORT_STATS_SAMTOOLS_FILTERED.out.flagstat              // channel: [ val(meta), path(flagstat) ]
+    idxstats = BAM_SORT_STATS_SAMTOOLS_FILTERED.out.idxstats              // channel: [ val(meta), path(idxstats) ]
+    contaminant_bam = BAMCMP.out.contamination_bam                        // channel: [ val(meta), path(bam) ]
+    unfiltered_bam = BAM_SORT_STATS_SAMTOOLS_UNFILTERED.out.bam           // channel: [ val(meta), path(bam) ]
+    unfiltered_bai = BAM_SORT_STATS_SAMTOOLS_UNFILTERED.out.bai           // channel: [ val(meta), path(bai) ]
+    unfiltered_csi = BAM_SORT_STATS_SAMTOOLS_UNFILTERED.out.csi           // channel: [ val(meta), path(csi) ]
+    unfiltered_stats = BAM_SORT_STATS_SAMTOOLS_UNFILTERED.out.stats       // channel: [ val(meta), path(stats) ]
+    unfiltered_flagstat = BAM_SORT_STATS_SAMTOOLS_UNFILTERED.out.flagstat // channel: [ val(meta), path(flagstat) ]
+    unfiltered_idxstats = BAM_SORT_STATS_SAMTOOLS_UNFILTERED.out.idxstats // channel: [ val(meta), path(idxstats) ]
 
-    versions = ch_versions                          // channel: [ path(versions.yml) ]
+    versions = ch_versions                                                // channel: [ path(versions.yml) ]
 }
