@@ -18,32 +18,31 @@ tools:
       licence: ["MIT"]
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1' ]`
-  - queries:
-      type: file
-      description: |
-        Space-separated list of FASTA(s)/skani sketch(es) to be used as query.
-      pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,sketch}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - queries:
+        type: file
+        description: Space-separated list of FASTA(s)/skani sketch(es) to be used as query.
+        pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,sketch}"
 
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1' ]`
   - triangle:
-      type: file
-      description: |
-        TSV file containing ANIs and AFs calculated between queries.
-      pattern: "*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.tsv":
+          type: file
+          description: TSV file containing ANIs and AFs calculated between queries.
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 
 authors:
   - "@CarsonJM"

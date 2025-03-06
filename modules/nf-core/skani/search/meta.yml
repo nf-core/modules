@@ -16,37 +16,41 @@ tools:
       licence: ["MIT"]
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1' ]`
-  - query:
-      type: file
-      description: |
-        Input FASTA/skani sketch to search with.
-      pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
-  - sketch_dir:
-      type: directory
-      description: |
-        Directory containing the genome sketches and markers.
-      pattern: "*"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - query:
+        type: file
+        description: Input FASTA/skani sketch to search with.
+        pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - sketch_dir:
+        type: directory
+        description: Directory containing the genome sketches and markers.
+        pattern: "*"
 
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1' ]`
   - search:
-      type: file
-      description: |
-        TSV file containing ANI and AF as predicted by skani.
-      pattern: "*.sketch"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.tsv":
+          type: file
+          description: TSV file containing ANI and AF as predicted by skani.
+          pattern: "*.tsv"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 
 authors:
   - "@CarsonJM"

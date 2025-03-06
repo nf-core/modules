@@ -18,37 +18,44 @@ tools:
       licence: ["MIT"]
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1' ]`
-  - query:
-      type: file
-      description: |
-        FASTA/skani sketch file to be used as query.
-      pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,sketch}"
-  - reference:
-      type: file
-      description: |
-        FASTA/skani sketch file to be used as reference.
-      pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,sketch}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - query:
+        type: file
+        description: |
+          FASTA/skani sketch file to be used as query.
+        pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,sketch}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - reference:
+        type: file
+        description: |
+          FASTA/skani sketch file to be used as reference.
+        pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,sketch}"
 
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1' ]`
   - dist:
-      type: file
-      description: |
-        TSV file containing ANI and AF between query and reference as calculated by skani.
-      pattern: "*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.tsv":
+          type: file
+          description: |
+            TSV file containing ANI and AF between query and reference as calculated by skani.
+            pattern: "*.tsv"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 
 authors:
   - "@CarsonJM"

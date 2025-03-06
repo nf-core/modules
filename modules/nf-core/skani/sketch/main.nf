@@ -4,17 +4,17 @@ process SKANI_SKETCH {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/skani:0.2.1--h4ac6f70_0':
-        'biocontainers/skani:0.2.1--h4ac6f70_0' }"
+        'https://depot.galaxyproject.org/singularity/skani:0.2.2--ha6fb395_2':
+        'biocontainers/skani:0.2.2--ha6fb395_2' }"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("${prefix}")                          , emit: sketch_dir
-    tuple val(meta), path("${prefix}/${fasta}.sketch")          , emit: sketch
-    tuple val(meta), path("${prefix}/markers.bin")              , emit: markers
-    path "versions.yml"                                         , emit: versions
+    tuple val(meta), path("${prefix}")                 , emit: sketch_dir
+    tuple val(meta), path("${prefix}/${fasta}.sketch") , emit: sketch
+    tuple val(meta), path("${prefix}/markers.bin")     , emit: markers
+    path "versions.yml"                                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,7 +37,6 @@ process SKANI_SKETCH {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}
