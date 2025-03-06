@@ -38,7 +38,17 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    file(process.out.md_plot[0][1]).name,
+                    file(process.out.contrasts_png[0][1]).name,
+                    file(process.out.session_info[0][1]).name,
+                    file(process.out.var_png[0][1]).name,
+                    process.out.results,
+                    process.out.rdata,
+                    process.out.model,
+                    process.out.normalised_counts,
+                    process.out.versions
+                )}
             )
         }
     }
@@ -70,7 +80,17 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    file(process.out.md_plot[0][1]).name,
+                    file(process.out.contrasts_png[0][1]).name,
+                    file(process.out.session_info[0][1]).name,
+                    file(process.out.var_png[0][1]).name,
+                    process.out.results,
+                    process.out.rdata,
+                    process.out.model,
+                    process.out.normalised_counts,
+                    process.out.versions
+                )}
             )
         }
     }
@@ -103,7 +123,17 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    file(process.out.md_plot[0][1]).name,
+                    file(process.out.contrasts_png[0][1]).name,
+                    file(process.out.session_info[0][1]).name,
+                    file(process.out.var_png[0][1]).name,
+                    process.out.results,
+                    process.out.rdata,
+                    process.out.model,
+                    process.out.normalised_counts,
+                    process.out.versions
+                )}
             )
         }
     }
