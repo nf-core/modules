@@ -1,7 +1,6 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "clair3"
-## TODO nf-core: Add a description of the module and list keywords
 description: write your description here
 keywords:
   - sort
@@ -9,7 +8,6 @@ keywords:
   - genomics
 tools:
   - "clair3":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Clair3 is a small variant caller for long-reads. Compare to PEPPER (r0.4), Clair3 (v0.1) shows a better SNP F1-score with ≤30-fold of ONT data (precisionFDA Truth Challenge V2), and a better Indel F1-score, while runs generally four times faster. Clair3 makes the best of both worlds of using pileup or full-alignment as input for deep-learning based long-read small variant calling. Clair3 is simple and modular for easy deployment and integration."
       homepage: "None"
       documentation: "None"
@@ -18,16 +16,13 @@ tools:
       licence: ['BSD-3-clause']
       identifier: biotools:clair3
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
   
-  ## TODO nf-core: Delete / customise this example input
     - bam:
         type: file
         description: Sorted BAM/CRAM/SAM file
@@ -38,24 +33,17 @@ input:
           - edam: "http://edamontology.org/format_3462"
           
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  - bam:
-  #Only when we have meta
+  - vcf:
     - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-  ## TODO nf-core: Delete / customise this example output
-    - "*.bam":
-        type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
-        ontologies:
-          - edam: "http://edamontology.org/format_25722"
-          - edam: "http://edamontology.org/format_2573"
-          - edam: "http://edamontology.org/format_3462"
+    - "*.vcf":
+        type: vcf
+        description: vcf file containing small germline variants
+        pattern: "*.{vcf,vcf.gz}"
           
   - versions:
     - "versions.yml":
