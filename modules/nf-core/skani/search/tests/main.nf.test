@@ -1,0 +1,73 @@
+nextflow_process {
+
+    name "Test Process SKANI_SEARCH"
+    script "../main.nf"
+    process "SKANI_SEARCH"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "skani"
+    tag "skani/search"
+
+    // Dependencies
+    tag "skani/sketch"
+
+    setup {
+        run("SKANI_SKETCH") {
+            script "../../sketch/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta.gz", checkIfExists: true)
+                    ]
+                """
+            }
+        }
+    }
+
+    test("fasta.gz + sketch") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta.gz", checkIfExists: true)
+                    ]
+                input[1] = SKANI_SKETCH.out.sketch_dir
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("fasta.gz + sketch - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta.gz", checkIfExists: true)
+                    ]
+                input[1] = SKANI_SKETCH.out.sketch_dir
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
