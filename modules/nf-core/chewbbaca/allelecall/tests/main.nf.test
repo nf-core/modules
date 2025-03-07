@@ -48,13 +48,13 @@ nextflow_process {
                 { assert path(process.out.stats.get(0).get(1)).exists() },
                 {
                     def statsFile = path(process.out.stats.get(0).get(1))
-                    // Check for atleast 2 classification type counts columns
+                    // Check for two classification type counts columns
                     assert statsFile.text.contains("EXC")
                     assert statsFile.text.contains("INF")
                     // Check for total counts columns
-                    assert statsFile.text.contains("Invalid_CDS")
-                    assert statsFile.text.contains("Classified_CDS")
-                    assert statsFile.text.contains("Total_CDS")
+                    assert statsFile.text.contains("Invalid CDSs")
+                    assert statsFile.text.contains("Classified_CDSs")
+                    assert statsFile.text.contains("Total_CDSs")
                     // Should have more than just header
                     assert statsFile.readLines().size() > 1
                 },
@@ -67,13 +67,13 @@ nextflow_process {
                     assert contigsFile.text.contains("FILE")
                     // Should have content
                     assert contigsFile.readLines().size() > 1
-                    // Check for contig coordinate format or LNF classification
+                    // Check for coordinate format (using & separator) or classification codes
                     def lines = contigsFile.readLines()
                     if (lines.size() > 1) {
                         def dataLine = lines[1].split("\t")
                         if (dataLine.length > 1) {
-                            // Either contains contig coordinates or classification
-                            assert dataLine[1].contains("contig") ||
+                            // Either contains coordinates with & separator or classification
+                            assert dataLine[1].contains("&") ||
                                    dataLine[1] == "LNF" ||
                                    dataLine[1].startsWith("INF") ||
                                    dataLine[1].startsWith("PLOT") ||
@@ -115,10 +115,11 @@ nextflow_process {
                 { assert path(process.out.log.get(0).get(1)).exists() },
                 {
                     def logFile = path(process.out.log.get(0).get(1))
-                    // Should contain log information
-                    assert logFile.text.contains("INFO")
-                    assert logFile.text.contains("chewBBACA")
-                    assert logFile.text.contains("AlleleCall")
+                    // Check for expected log content
+                    assert logFile.text.contains("Started script")
+                    assert logFile.text.contains("Finished script")
+                    assert logFile.text.contains("Number of inputs")
+                    assert logFile.text.contains("Number of loci")
                 },
 
                 // Check that paralogous_counts file exists and has expected content (if not empty)
@@ -131,17 +132,24 @@ nextflow_process {
                 { assert path(process.out.cds_coordinates.get(0).get(1)).exists() },
                 {
                     def cdsFile = path(process.out.cds_coordinates.get(0).get(1))
-                    // Should have content if CDSs were found
-                    if (cdsFile.size() > 0) {
-                        // Check for expected columns (genome ID, contig ID, start, stop, protein ID, strand)
-                        def lines = cdsFile.readLines()
-                        if (lines.size() > 0) {
-                            def parts = lines[0].split("\t")
-                            // Should have 6 columns
-                            assert parts.length >= 6
-                            // Check if strand is either 1 or -1 (for chewBBACA >= 3.3.0)
-                            if (parts.length >= 6) {
-                                assert parts[5] == "1" || parts[5] == "-1"
+                    // Should have content
+                    assert cdsFile.size() > 0
+                    // Check for expected header columns
+                    def lines = cdsFile.readLines()
+                    if (lines.size() > 0) {
+                        def headers = lines[0].split("\t")
+                        assert headers.contains("Genome")
+                        assert headers.contains("Contig")
+                        assert headers.contains("Start")
+                        assert headers.contains("Stop")
+                        assert headers.contains("Protein_ID")
+                        assert headers.contains("Coding_Strand")
+
+                        // If there's data beyond the header, check the strand values
+                        if (lines.size() > 1) {
+                            def dataLine = lines[1].split("\t")
+                            if (dataLine.length >= 6) {
+                                assert dataLine[5] == "1" || dataLine[5] == "-1"
                             }
                         }
                     }
@@ -158,6 +166,7 @@ nextflow_process {
                     if (lociStatsFile.size() > 0) {
                         assert lociStatsFile.text.contains("EXC")
                         assert lociStatsFile.text.contains("INF")
+                        assert lociStatsFile.text.contains("Classified_CDS")
                     }
                 },
 
