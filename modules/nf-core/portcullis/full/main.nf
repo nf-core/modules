@@ -23,7 +23,7 @@ process PORTCULLIS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+   prefix = task.ext.prefix ?: "${meta.id}"
     """
     portcullis \\
         full \\
