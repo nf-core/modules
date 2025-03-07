@@ -16,30 +16,24 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                            [ id:'test', single_end:false ], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+                    [ id:'sarscov2' ],
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
                 ]
-                input[1] = [] // ptf
-                input[2] = [] //cds
+                input[1] = []
+                input[2] = []
                 """
             }
         }
     }
 
-    test("sarscov2 - fasta_dir") {
+    test("sarscov2 - fasta") {
 
         when {
             process {
                 """
-                // Create a directory and copy the FASTA file into it
-                def fasta_file = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                def fasta_dir = file("\${workDir}/fasta_dir")
-                fasta_dir.mkdirs()
-                fasta_file.copyTo(fasta_dir)
-
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    fasta_dir
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
                 ]
                 input[1] = CHEWBBACA_CREATESCHEMA.out.schema
                 """
@@ -49,31 +43,145 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+
+                // Check that stats file exists and has expected content
                 { assert path(process.out.stats.get(0).get(1)).exists() },
+                {
+                    def statsFile = path(process.out.stats.get(0).get(1))
+                    // Check for atleast 2 classification type counts columns
+                    assert statsFile.text.contains("EXC")
+                    assert statsFile.text.contains("INF")
+                    // Check for total counts columns
+                    assert statsFile.text.contains("Invalid_CDS")
+                    assert statsFile.text.contains("Classified_CDS")
+                    assert statsFile.text.contains("Total_CDS")
+                    // Should have more than just header
+                    assert statsFile.readLines().size() > 1
+                },
+
+                // Check that contigsInfo file exists and has expected content
                 { assert path(process.out.contigsInfo.get(0).get(1)).exists() },
+                {
+                    def contigsFile = path(process.out.contigsInfo.get(0).get(1))
+                    // Should contain FILE column header
+                    assert contigsFile.text.contains("FILE")
+                    // Should have content
+                    assert contigsFile.readLines().size() > 1
+                    // Check for contig coordinate format or LNF classification
+                    def lines = contigsFile.readLines()
+                    if (lines.size() > 1) {
+                        def dataLine = lines[1].split("\t")
+                        if (dataLine.length > 1) {
+                            // Either contains contig coordinates or classification
+                            assert dataLine[1].contains("contig") ||
+                                   dataLine[1] == "LNF" ||
+                                   dataLine[1].startsWith("INF") ||
+                                   dataLine[1].startsWith("PLOT") ||
+                                   dataLine[1].startsWith("NIPH") ||
+                                   dataLine[1] == "ALM" ||
+                                   dataLine[1] == "ASM" ||
+                                   dataLine[1] == "PAMA"
+                        }
+                    }
+                },
+
+                // Check that alleles file exists and has expected content
                 { assert path(process.out.alleles.get(0).get(1)).exists() },
+                {
+                    def allelesFile = path(process.out.alleles.get(0).get(1))
+                    // Should contain FILE column header
+                    assert allelesFile.text.contains("FILE")
+                    // Should have more than just header
+                    assert allelesFile.readLines().size() > 1
+                    // Check for allele numbers or classification codes
+                    def lines = allelesFile.readLines()
+                    if (lines.size() > 1) {
+                        def dataLine = lines[1].split("\t")
+                        if (dataLine.length > 1) {
+                            // Either contains allele number or classification
+                            assert dataLine[1].matches("\\d+") ||
+                                   dataLine[1].startsWith("INF") ||
+                                   dataLine[1].startsWith("PLOT") ||
+                                   dataLine[1].startsWith("NIPH") ||
+                                   dataLine[1] == "ALM" ||
+                                   dataLine[1] == "ASM" ||
+                                   dataLine[1] == "PAMA" ||
+                                   dataLine[1] == "LNF"
+                        }
+                    }
+                },
+
+                // Check that log file exists and has expected content
                 { assert path(process.out.log.get(0).get(1)).exists() },
-                { assert path(process.out.versions.get(0)).exists() }
+                {
+                    def logFile = path(process.out.log.get(0).get(1))
+                    // Should contain log information
+                    assert logFile.text.contains("INFO")
+                    assert logFile.text.contains("chewBBACA")
+                    assert logFile.text.contains("AlleleCall")
+                },
+
+                // Check that paralogous_counts file exists and has expected content (if not empty)
+                { assert path(process.out.paralogous_counts.get(0).get(1)).exists() },
+
+                // Check that paralogous_loci file exists and has expected content (if not empty)
+                { assert path(process.out.paralogous_loci.get(0).get(1)).exists() },
+
+                // Check that cds_coordinates file exists and has expected content
+                { assert path(process.out.cds_coordinates.get(0).get(1)).exists() },
+                {
+                    def cdsFile = path(process.out.cds_coordinates.get(0).get(1))
+                    // Should have content if CDSs were found
+                    if (cdsFile.size() > 0) {
+                        // Check for expected columns (genome ID, contig ID, start, stop, protein ID, strand)
+                        def lines = cdsFile.readLines()
+                        if (lines.size() > 0) {
+                            def parts = lines[0].split("\t")
+                            // Should have 6 columns
+                            assert parts.length >= 6
+                            // Check if strand is either 1 or -1 (for chewBBACA >= 3.3.0)
+                            if (parts.length >= 6) {
+                                assert parts[5] == "1" || parts[5] == "-1"
+                            }
+                        }
+                    }
+                },
+
+                // Check that invalid_cds file exists
+                { assert path(process.out.invalid_cds.get(0).get(1)).exists() },
+
+                // Check that loci_summary_stats file exists and has expected content
+                { assert path(process.out.loci_summary_stats.get(0).get(1)).exists() },
+                {
+                    def lociStatsFile = path(process.out.loci_summary_stats.get(0).get(1))
+                    // Check for classification type counts columns if file is not empty
+                    if (lociStatsFile.size() > 0) {
+                        assert lociStatsFile.text.contains("EXC")
+                        assert lociStatsFile.text.contains("INF")
+                    }
+                },
+
+                // Check versions file
+                { assert path(process.out.versions.get(0)).exists() },
+                {
+                    def versionsFile = path(process.out.versions.get(0))
+                    assert versionsFile.text.contains("chewbbaca") // Should contain tool name
+                    assert versionsFile.text.contains("3.") // Should contain version number
+                }
             )
         }
     }
 
-    test("sarscov2 - fasta_dir - stub") {
+    test("sarscov2 - fasta - stub") {
 
         options "-stub"
 
         when {
             process {
                 """
-                // Create a directory and copy the FASTA file into it
-                def fasta_file = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                def fasta_dir = file("\${workDir}/fasta_dir")
-                fasta_dir.mkdirs()
-                fasta_file.copyTo(fasta_dir)
-
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    fasta_dir
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
                 ]
                 input[1] = CHEWBBACA_CREATESCHEMA.out.schema
                 """
@@ -87,7 +195,16 @@ nextflow_process {
                 { assert path(process.out.contigsInfo.get(0).get(1)).exists() },
                 { assert path(process.out.alleles.get(0).get(1)).exists() },
                 { assert path(process.out.log.get(0).get(1)).exists() },
-                { assert path(process.out.versions.get(0)).exists() }
+                { assert path(process.out.paralogous_counts.get(0).get(1)).exists() },
+                { assert path(process.out.paralogous_loci.get(0).get(1)).exists() },
+                { assert path(process.out.cds_coordinates.get(0).get(1)).exists() },
+                { assert path(process.out.invalid_cds.get(0).get(1)).exists() },
+                { assert path(process.out.loci_summary_stats.get(0).get(1)).exists() },
+                { assert path(process.out.versions.get(0)).exists() },
+                {
+                    def versionsFile = path(process.out.versions.get(0))
+                    assert versionsFile.text.contains("chewbbaca") // Should contain tool name
+                }
             )
         }
     }

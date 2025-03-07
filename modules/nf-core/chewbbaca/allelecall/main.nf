@@ -8,7 +8,7 @@ process CHEWBBACA_ALLELECALL {
         'biocontainers/chewbbaca:3.3.10--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(fasta_dir)
+    tuple val(meta), path(fasta, stageAs: "input_dir/*")
     tuple val(meta2), path(scheme)
 
     output:
@@ -35,7 +35,7 @@ process CHEWBBACA_ALLELECALL {
         AlleleCall \\
         --cpu ${task.cpus} \\
         $args \\
-        --input-files ${fasta_dir} \\
+        --input-files input_dir \\
         --schema-directory ${scheme} \\
         --output-directory results
 

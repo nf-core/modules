@@ -20,10 +20,11 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'test', single_end:false ]`
-    - fasta_dir:
-        type: directory
-        description: Directory containing one or multiple FASTA files for allele calling
-        pattern: "*/"
+    - fasta:
+        type: file
+        description: FASTA file(s) to be staged in a directory for allele calling
+        pattern: "*.{fasta,fa,fna}"
+        stageAs: "input_dir/*"
   - - meta2:
         type: map
         description: |
@@ -33,7 +34,6 @@ input:
         type: directory
         description: Directory containing the schema files
         pattern: "*/"
-
 output:
   - stats:
       - meta:
@@ -41,12 +41,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-          pattern: "*_results_statistics.tsv"
       - "*_results_statistics.tsv":
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+          type: file
+          description: File contains the total number of exact matches
           pattern: "*_results_statistics.tsv"
   - contigsInfo:
       - meta:
@@ -54,12 +51,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-          pattern: "*_results_contigsInfo.tsv"
       - "*_results_contigsInfo.tsv":
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+          type: file
+          description: File contains the loci coordinates in the genomes analyzed
           pattern: "*_results_contigsInfo.tsv"
   - alleles:
       - meta:
@@ -67,12 +61,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-          pattern: "*_results_alleles.tsv"
       - "*_results_alleles.tsv":
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+          type: file
+          description: File contains the allelic profiles determined for the input sample
           pattern: "*_results_alleles.tsv"
   - log:
       - meta:
@@ -80,12 +71,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-          pattern: "*_logging_info.txt"
       - "*_logging_info.txt":
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+          type: file
+          description: File contains the log information
           pattern: "*_logging_info.txt"
   - paralogous_counts:
       - meta:
@@ -93,12 +81,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-          pattern: "*_paralogous_counts.tsv"
       - "*_paralogous_counts.tsv":
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+          type: file
+          description: File contains the list of paralogous loci and the number of times those loci matched a CDS that was also similar to other loci in the schema
           pattern: "*_paralogous_counts.tsv"
   - paralogous_loci:
       - meta:
@@ -106,12 +91,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-          pattern: "*_paralogous_loci.tsv"
       - "*_paralogous_loci.tsv":
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+          type: file
+          description: File contains the sets of paralogous loci identified in the input sample
           pattern: "*_paralogous_loci.tsv"
   - cds_coordinates:
       - meta:
@@ -119,12 +101,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-          pattern: "*_cds_coordinates.tsv"
       - "*_cds_coordinates.tsv":
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+          type: file
+          description: File contains the coordinates of the CDS in the input sample
           pattern: "*_cds_coordinates.tsv"
   - invalid_cds:
       - meta:
@@ -132,18 +111,13 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-          pattern: "*_invalid_cds.txt"
       - "*_invalid_cds.txt":
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+          type: file
+          description: File contains the list of alleles predicted by Prodigal that were excluded
           pattern: "*_invalid_cds.txt"
       - id_cds:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+          type: file
+          description: File contains the list of alleles predicted by Prodigal that were excluded
           pattern: "*_invalid_cds.txt"
   - loci_summary_stats:
       - meta:
@@ -151,12 +125,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-          pattern: "*_loci_summary_stats.tsv"
       - "*_loci_summary_stats.tsv":
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+          type: file
+          description: File contains summary statistics for each locus
           pattern: "*_loci_summary_stats.tsv"
   - versions:
       - versions.yml:
