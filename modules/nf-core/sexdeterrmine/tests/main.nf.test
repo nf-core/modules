@@ -12,7 +12,9 @@ nextflow_process {
     test("sarscov2 - bam") {
 
     setup {
-
+        params {
+            module_args = '-H'
+        }
         run("SAMTOOLS_DEPTH") {
             script "../../samtools/depth/main.nf"
             config './nextflow.config'
