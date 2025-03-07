@@ -60,22 +60,19 @@ input:
           - edam: "http://edamontology.org/data_1278"
 
 output:
-  - bam:
-  #Only when we have meta
+  - vcf:
     - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-  ## TODO nf-core: Delete / customise this example output
-    - "*.bam":
+    - "*.{bcf,sav,vcf.gz,vcf,ubcf,usav}":
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
+        description: Imputed variants file
+        pattern: "*.{bcf,sav,vcf.gz,vcf,ubcf,usav}"
         ontologies:
-          - edam: "http://edamontology.org/format_25722"
-          - edam: "http://edamontology.org/format_2573"
-          - edam: "http://edamontology.org/format_3462"
+          - edam: "http://edamontology.org/format_3016"
+          - edam: "http://edamontology.org/format_3020"
 
   - versions:
     - "versions.yml":
