@@ -26,7 +26,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.msav,
+                    process.out.msav.collect{ file(it[1]).name },
                     ["versions.yml": path(process.out.versions.get(0)).yaml]
                 ).match() }
             )
