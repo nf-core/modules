@@ -14,8 +14,8 @@ process PORTCULLIS {
 
     output:
     tuple val(meta), path("*.log")                  , emit: log
-    tuple val(meta), path("${meta.id}/3-filt/*.bed"), emit: bed
-    tuple val(meta), path("${meta.id}/3-filt/*.tab"), emit: tab
+    tuple val(meta), path("${prefix}/3-filt/*.bed"), emit: bed
+    tuple val(meta), path("${prefix}/3-filt/*.tab"), emit: tab
     path "versions.yml"                             , emit: versions
 
     when:
