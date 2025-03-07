@@ -1,0 +1,50 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "diamond_cluster"
+description: calculate clusters of highly similar sequences
+keywords:
+  - clustering
+  - alignment
+  - genomics
+  - proteomics
+tools:
+  - "diamond":
+      description: "Accelerated BLAST compatible local sequence aligner"
+      homepage: "https://github.com/bbuchfink/diamond/wiki"
+      documentation: "https://github.com/bbuchfink/diamond/wiki"
+      tool_dev_url: "https://github.com/bbuchfink/diamond"
+      doi: "10.1038/s41592-021-01101-x"
+      licence: ["GPL v3-or-later"]
+      identifier: biotools:diamond
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - db:
+        type: file
+        description: The input sequence database. Supported formats are FASTA and DIAMOND
+          (.dmnd) format.
+        pattern: "*.{dmnd,fa,faa,fasta}(.gz)"
+output:
+  - tsv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.tsv":
+          type: file
+          description: a 2-column tabular file with the representative accession as the
+            first column and the member sequence accession as the second column
+          pattern: "*.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@itrujnara"
+maintainers:
+  - "@itrujnara"

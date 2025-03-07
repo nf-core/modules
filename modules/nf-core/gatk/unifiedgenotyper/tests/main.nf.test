@@ -1,0 +1,56 @@
+
+nextflow_process {
+
+    name "Test Process GATK_UNIFIEDGENOTYPER"
+    script "../main.nf"
+    process "GATK_UNIFIEDGENOTYPER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gatk"
+    tag "gatk/unifiedgenotyper"
+
+    test("test-gatk-unifiedgenotyper") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+				]
+				input[1] = [
+				    [id: 'test'],
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+				]
+				input[2] = [
+				    [id: 'test'],
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+				]
+				input[3] = [
+				    [id: 'test'],
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
+				]
+				input[4] = [[],[]]
+                input[5] = [[],[]]
+                input[6] = [[],[]]
+                input[7] = [[],[]]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					path(process.out.vcf[0][1]).vcf.variantsMD5,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

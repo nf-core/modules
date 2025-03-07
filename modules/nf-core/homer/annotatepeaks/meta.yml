@@ -11,42 +11,50 @@ tools:
       documentation: http://homer.ucsd.edu/homer/
       doi: 10.1016/j.molcel.2010.05.004.
       licence: ["GPL-3.0-or-later"]
+      identifier: biotools:homer
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - peaks:
-      type: file
-      description: The peak files in bed format
-      pattern: "*.bed"
-  - fasta:
-      type: file
-      description: Fasta file of reference genome
-      pattern: "*.fasta"
-  - gtf:
-      type: file
-      description: GTF file of reference genome
-      pattern: "*.gtf"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - peak:
+        type: file
+        description: Peak file to annotate
+  - - fasta:
+        type: file
+        description: Fasta file of reference genome
+        pattern: "*.fasta"
+  - - gtf:
+        type: file
+        description: GTF file of reference genome
+        pattern: "*.gtf"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - annotated_peaks:
-      type: file
-      description: The annotated peaks
-      pattern: "*annotatePeaks.txt"
-  - annotation_stats:
-      type: file
-      description: the annStats file output from -annStats parameter
-      pattern: "*annStats.txt"
+  - txt:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*annotatePeaks.txt":
+          type: file
+          description: Annotated peaks in txt file
+          pattern: "*annotatePeaks.txt"
+  - stats:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*annStats.txt":
+          type: file
+          description: Annotation statistics in txt file
+          pattern: "*annStats.txt"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@drpatelh"
   - "@kevinmenden"

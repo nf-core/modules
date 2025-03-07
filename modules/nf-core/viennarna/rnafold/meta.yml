@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "viennarna_rnafold"
-description: Predict RNA secondary structure using the ViennaRNA RNAfold tools. Calculate minimum free energy secondary structures and partition function of RNAs.
+description: Predict RNA secondary structure using the ViennaRNA RNAfold tools. Calculate
+  minimum free energy secondary structures and partition function of RNAs.
 keywords:
   - RNA
   - fasta
@@ -21,25 +21,46 @@ tools:
       documentation: "https://viennarna.readthedocs.io/en/latest/"
       doi: 10.1186/1748-7188-6-26
       licence: ["custom"]
+      identifier: biotools:viennarna
 input:
-  - fasta:
-      type: file
-      description: |
-        A fasta file containing RNA or transcript sequences
-      pattern: "*.{fasta,fa}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: |
+          A fasta file containing RNA or transcript sequences
+        pattern: "*.{fasta,fa}"
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - rnafold_txt:
-      type: file
-      description: The text Output of RNAfold that
-      pattern: "*.{fold}"
+      - meta:
+          type: file
+          description: The text Output of RNAfold that
+          pattern: "*.{fold}"
+      - "*.fold":
+          type: file
+          description: The text Output of RNAfold that
+          pattern: "*.{fold}"
   - rnafold_ps:
-      type: file
-      description: The text Output of RNAfold that
-      pattern: "*.ss"
+      - meta:
+          type: file
+          description: The text Output of RNAfold that
+          pattern: "*.ss"
+      - "*.ps":
+          type: file
+          description: The text Output of RNAfold that
+          pattern: "*.ss"
+  - versions:
+      - meta:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@kokul-atx"
 maintainers:

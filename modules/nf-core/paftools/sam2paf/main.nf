@@ -12,7 +12,7 @@ process PAFTOOLS_SAM2PAF {
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), file("*.paf")      , emit: paf
+    tuple val(meta), file("*.paf")          , emit: paf
     path "versions.yml"                     , emit: versions
 
     when:

@@ -17,10 +17,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ],
-                    file(params.test_data['homo_sapiens']['genome']['justhusky_minimal_vcf_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['genome']['justhusky_minimal_vcf_gz_tbi'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky_minimal.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky_minimal.vcf.gz.tbi', checkIfExists: true)
                 ]
-                input[1] = file(params.test_data['homo_sapiens']['genome']['justhusky_ped'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky.ped', checkIfExists: true)
                 """
             }
         }

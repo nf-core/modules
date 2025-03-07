@@ -1,5 +1,7 @@
 name: antismash_antismashlitedownloaddatabases
-description: antiSMASH allows the rapid genome-wide identification, annotation and analysis of secondary metabolite biosynthesis gene clusters. This module downloads the antiSMASH databases for conda and docker/singularity runs.
+description: antiSMASH allows the rapid genome-wide identification, annotation and
+  analysis of secondary metabolite biosynthesis gene clusters. This module downloads
+  the antiSMASH databases for conda and docker/singularity runs.
 keywords:
   - secondary metabolites
   - BGC
@@ -22,36 +24,40 @@ tools:
       tool_dev_url: https://github.com/antismash/antismash
       doi: "10.1093/nar/gkab335"
       licence: ["AGPL v3"]
+      identifier: biotools:antismash
 input:
-  - database_css:
-      type: directory
-      description: |
-        antismash/outputs/html/css folder which is being created during the antiSMASH database downloading step. These files are normally downloaded by download-antismash-databases itself, and must be retrieved by the user by manually running the command with conda or a standalone installation of antiSMASH. Therefore we do not recommend using this module for production pipelines, but rather require users to specify their own local copy of the antiSMASH database in pipelines.
-      pattern: "css"
-  - database_detection:
-      type: directory
-      description: |
-        antismash/detection folder which is being created during the antiSMASH database downloading step. These files are normally downloaded by download-antismash-databases itself, and must be retrieved by the user by manually running the command with conda or a standalone installation of antiSMASH. Therefore we do not recommend using this module for production pipelines, but rather require users to specify their own local copy of the antiSMASH database in pipelines.
-      pattern: "detection"
-  - database_modules:
-      type: directory
-      description: |
-        antismash/modules folder which is being created during the antiSMASH database downloading step. These files are normally downloaded by download-antismash-databases itself, and must be retrieved by the user by manually running the command with conda or a standalone installation of antiSMASH. Therefore we do not recommend using this module for production pipelines, but rather require users to specify their own local copy of the antiSMASH database in pipelines.
-      pattern: "modules"
+  - - database_css:
+        type: directory
+        description: |
+          antismash/outputs/html/css folder which is being created during the antiSMASH database downloading step. These files are normally downloaded by download-antismash-databases itself, and must be retrieved by the user by manually running the command with conda or a standalone installation of antiSMASH. Therefore we do not recommend using this module for production pipelines, but rather require users to specify their own local copy of the antiSMASH database in pipelines.
+        pattern: "css"
+  - - database_detection:
+        type: directory
+        description: |
+          antismash/detection folder which is being created during the antiSMASH database downloading step. These files are normally downloaded by download-antismash-databases itself, and must be retrieved by the user by manually running the command with conda or a standalone installation of antiSMASH. Therefore we do not recommend using this module for production pipelines, but rather require users to specify their own local copy of the antiSMASH database in pipelines.
+        pattern: "detection"
+  - - database_modules:
+        type: directory
+        description: |
+          antismash/modules folder which is being created during the antiSMASH database downloading step. These files are normally downloaded by download-antismash-databases itself, and must be retrieved by the user by manually running the command with conda or a standalone installation of antiSMASH. Therefore we do not recommend using this module for production pipelines, but rather require users to specify their own local copy of the antiSMASH database in pipelines.
+        pattern: "modules"
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - database:
-      type: directory
-      description: Download directory for antiSMASH databases
-      pattern: "antismash_db"
+      - antismash_db:
+          type: directory
+          description: Download directory for antiSMASH databases
+          pattern: "antismash_db"
   - antismash_dir:
-      type: directory
-      description: |
-        antismash installation folder which is being modified during the antiSMASH database downloading step. The modified files are normally downloaded by download-antismash-databases itself, and must be retrieved by the user by manually running the command with conda or a standalone installation of antiSMASH. Therefore we do not recommend using this module for production pipelines, but rather require users to specify their own local copy of the antiSMASH database and installation folder in pipelines.
-      pattern: "antismash_dir"
+      - antismash_dir:
+          type: directory
+          description: |
+            antismash installation folder which is being modified during the antiSMASH database downloading step. The modified files are normally downloaded by download-antismash-databases itself, and must be retrieved by the user by manually running the command with conda or a standalone installation of antiSMASH. Therefore we do not recommend using this module for production pipelines, but rather require users to specify their own local copy of the antiSMASH database and installation folder in pipelines.
+          pattern: "antismash_dir"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jasmezz"
 maintainers:

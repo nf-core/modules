@@ -49,4 +49,3 @@ process LEVIOSAM2_LIFT {
     END_VERSIONS
     """
 }
-

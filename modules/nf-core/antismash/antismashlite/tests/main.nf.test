@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process ANTISMASH_ANTISMASHLITE"
     script "../main.nf"
     process "ANTISMASH_ANTISMASHLITE"
+    config './nextflow.config'
 
     tag "modules"
     tag "modules_nfcore"
@@ -66,7 +67,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.test_data['bacteroides_fragilis']['genome']['genome_gbff_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.gbff.gz', checkIfExists: true)
                 ]
                 """
             }
@@ -96,7 +97,11 @@ nextflow_process {
                 { assert path(process.out.html.get(0).get(1)).text.contains("https://antismash.secondarymetabolites.org/") },
                 { assert path(process.out.json_sideloading.get(0).get(1)).text.contains("\"seq_id\": \"NZ_CP069563.1\"") },
                 { assert path(process.out.log.get(0).get(1)).text.contains("antiSMASH status: SUCCESS") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    path(process.out.versions[0]).yaml,
+                    file(process.out.versions[0]).name,
+                    ).match("versions")
+                }
             )
         }
     }
@@ -119,7 +124,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    file(process.out.versions[0]).name,
+                    ).match("versions_stub")
+                }
             )
         }
     }

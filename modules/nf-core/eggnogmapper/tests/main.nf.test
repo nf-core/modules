@@ -13,7 +13,7 @@ nextflow_process {
             script "../../diamond/makedb/main.nf"
             process {
                 """
-                input[0] = [ [id:'test2'], file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
+                input[0] = [ [id:'test2'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
                 input[1] = []
                 input[2] = []
                 input[3] = []
@@ -30,7 +30,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
                 eggnog_db = file("https://github.com/nf-core/test-datasets/raw/eddf5b0e3336e0f93c81d4b4843b07257f9efaec/data/delete_me/eggnogmapper/eggnog.db", checkIfExists: true)
                 eggnog_db.copyTo("${workDir}/tmp/eggnog.db")
                 eggnog_data_dir = "${workDir}/tmp/"
@@ -72,7 +72,7 @@ nextflow_process {
                     | combine ( Channel.fromPath( "${workDir}/tmp/" ) )
                 eggnog_data_dir = ch_synced_inputs.map { sync_status, data_dir -> data_dir }
 
-                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true) ]
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
                 input[1] = []
                 input[2] = eggnog_data_dir
                 input[3] = [[], []]
