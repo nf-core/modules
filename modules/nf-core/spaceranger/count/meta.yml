@@ -41,6 +41,12 @@ input:
         type: file
         description: Brightfield tissue H&E image in JPEG or TIFF format.
         pattern: "*.{tif,tiff,jpg,jpeg}"
+    - slide:
+        type: string
+        description: Visium slide ID used for the sample.
+    - area:
+        type: string
+        description: Visium slide capture area used for the sample.
     - cytaimage:
         type: file
         description: |
