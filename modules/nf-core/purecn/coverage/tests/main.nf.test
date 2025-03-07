@@ -8,10 +8,13 @@ nextflow_process {
     tag "modules_nfcore"
     tag "purecn"
     tag "purecn/coverage"
+    config './nextflow.config'
 
-    test("homo_sapiens") {
-        config './nextflow.config'
+    test("homo_sapiens - skip_gc") {
         when {
+            params {
+                module_args = "--skip-gc-norm"
+            }
             process {
                 """
                 input[0] =  [ [ id:'test' ],
@@ -32,18 +35,20 @@ nextflow_process {
 
     }
 
-    test("homo_sapiens - config - stub") {
-        config './nextflow.config'
+    test("homo_sapiens - stub") {
         options "-stub"
 
         when {
+            params {
+                module_args = ""
+            }
             process {
                 """
                 input[0] =  [ [ id:'test' ],
-                    file(params.test_data['homo_sapiens']['illumina']['purecn_ex1_bam'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['illumina']['purecn_ex1_bai'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/purecn/purecn_ex1.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/purecn/purecn_ex1.bam.bai', checkIfExists: true)
                 ]
-                input[1] = file(params.test_data['homo_sapiens']['illumina']['purecn_ex1_interval'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/purecn/purecn_ex1_intervals.txt', checkIfExists: true)
                 """
             }
         }
@@ -57,17 +62,20 @@ nextflow_process {
 
     }
 
-    test("homo_sapiens - no_config - stub") {
+    test("homo_sapiens - skip_gc - stub") {
         options "-stub"
 
         when {
+            params {
+                module_args = "--skip-gc-norm"
+            }
             process {
                 """
                 input[0] =  [ [ id:'test' ],
-                    file(params.test_data['homo_sapiens']['illumina']['purecn_ex1_bam'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['illumina']['purecn_ex1_bai'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/purecn/purecn_ex1.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/purecn/purecn_ex1.bam.bai', checkIfExists: true)
                 ]
-                input[1] = file(params.test_data['homo_sapiens']['illumina']['purecn_ex1_interval'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/purecn/purecn_ex1_intervals.txt', checkIfExists: true)
                 """
             }
         }
