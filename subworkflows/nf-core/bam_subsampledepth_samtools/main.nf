@@ -37,6 +37,7 @@ workflow BAM_SUBSAMPLEDEPTH_SAMTOOLS {
     SAMTOOLS_VIEW(
         ch_input_subsample,
         ch_fasta,
+        [],
         []
     )
     ch_versions = ch_versions.mix(SAMTOOLS_VIEW.out.versions.first())
