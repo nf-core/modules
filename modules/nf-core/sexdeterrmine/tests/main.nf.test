@@ -7,7 +7,9 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "sexdeterrmine"
-    tag 'samtools/depth'
+    tag "samtools/depth"
+
+    test("sarscov2 - bam") {
 
     setup {
 
@@ -24,8 +26,6 @@ nextflow_process {
         }
 
     }
-
-    test("sarscov2 - bam") {
 
         when {
             process {
@@ -52,8 +52,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [[ id:'test' ],
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test3.single_end.markduplicates.sorted.bam', checkIfExists: true) ]
+                input[0] = [[ id:'test' ], []]
                 input[1] = []
                 """
             }
