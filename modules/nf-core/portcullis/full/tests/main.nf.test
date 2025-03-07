@@ -9,7 +9,7 @@ nextflow_process {
     tag "portcullis"
     tag "portcullis/full"
 
-    test("portcullis_paired_end") {
+    test("portcullis_full_paired_end") {
 
         when {
             process {
@@ -18,8 +18,14 @@ nextflow_process {
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.bam', checkIfExists: true)
                     ]
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/tab/test_rnaseq_SJ.out.tab', checkIfExists: true)
-                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                input[1] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/tab/test_rnaseq_SJ.out.tab', checkIfExists: true)
+                    ]
+                input[2] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    ]
                 """
             }
         }
@@ -37,7 +43,7 @@ nextflow_process {
         }
     }
 
-    test("portcullis_paired_end_stub") {
+    test("portcullis_full_paired_end_stub") {
 
         options "-stub"
 
@@ -48,8 +54,14 @@ nextflow_process {
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.bam', checkIfExists: true)
                     ]
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/tab/test_rnaseq_SJ.out.tab', checkIfExists: true)
-                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                input[1] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/tab/test_rnaseq_SJ.out.tab', checkIfExists: true)
+                    ]
+                input[2] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    ]
                 """
             }
         }
