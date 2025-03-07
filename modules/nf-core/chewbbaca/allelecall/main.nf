@@ -35,7 +35,7 @@ process CHEWBBACA_ALLELECALL {
         AlleleCall \\
         --cpu ${task.cpus} \\
         $args \\
-        --input-files ${fasta} \\
+        --input-files ${fasta_dir} \\
         --schema-directory ${scheme} \\
         --output-directory results
 
