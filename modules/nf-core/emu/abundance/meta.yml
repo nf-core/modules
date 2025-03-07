@@ -34,24 +34,19 @@ output:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
       pattern: "*{.tsv}"
-  - results/*.tsv:
+  - '*.tsv':
       type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+      description: Output file containing relative abundances for reads
       pattern: "*{.tsv}"
 - assignment_report:
   - meta:
       type: map
-      description: |
-        Groovy Map containing sample information
+      description: Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
       pattern: "*{.tsv}"
-  - results/*read-assignment-distributions.tsv:
+  - '*read-assignment-distributions.tsv':
       type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+      description: Output file with read assignment distributions.
       pattern: "*{.tsv}"
 - samfile:
   - meta:
@@ -60,11 +55,9 @@ output:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
       pattern: "*{.sam}"
-  - results/*.sam:
+  - '*.sam':
       type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+      description: Sam alignment file
       pattern: "*{.sam}"
 - unclassified_fa:
   - meta:
@@ -73,11 +66,9 @@ output:
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
       pattern: "*{.fa}"
-  - results/*.fasta:
+  - '*.fasta':
       type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+      description: Output file with unclassified sequences
       pattern: "*{.fa}"
 - versions:
   - versions.yml:
