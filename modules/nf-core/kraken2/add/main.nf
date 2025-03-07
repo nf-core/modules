@@ -26,7 +26,7 @@ process KRAKEN2_ADD {
     prefix = task.ext.prefix ?: "${meta.id}"
     inject_custom_seqid2taxid_map = seqid2taxid ? "mv ${seqid2taxid} ${prefix}/" : ""
     """
-    mkdir ${prefix}
+    mkdir -p ${prefix}
     mv "taxonomy" ${prefix}
 
     ${inject_custom_seqid2taxid_map}
