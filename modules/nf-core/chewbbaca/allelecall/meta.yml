@@ -1,81 +1,167 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
-name: "chewbbaca_allelecall"
-
+name: chewbbaca_allelecall
 description: Determine the allelic profiles of a genome using a pre-defined schema
 keywords:
   - cgMLST
   - WGS
   - genomics
 tools:
-  - "chewbbaca":
+  - chewbbaca:
       description: "A complete suite for gene-by-gene schema creation and strain identification."
       homepage: "https://chewbbaca.readthedocs.io/en/latest/index.html"
       documentation: "https://chewbbaca.readthedocs.io/en/latest/index.html"
       tool_dev_url: "https://github.com/B-UMMI/chewBBACA"
       doi: "10.1099/mgen.0.000166"
       licence: ["GPL v3"]
-
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:true ]`
-  
-  - fasta:
-      type: file
-      description: Assembled genome in FASTA format
-      pattern: "*.{fasta,fa,fna}"
-
-  - dir:
-      type: directory
-      description: Directory containing the schema files
-      pattern: "*/"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - fasta:
+        type: file
+        description: Assembled genome in FASTA format
+        pattern: "*.{fasta,fa,fna}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing scheme information
+          e.g. `[ id:'scheme' ]`
+    - scheme:
+        type: directory
+        description: Directory containing the schema files
+        pattern: "*/"
 
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+  - stats:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+          pattern: "*_results_statistics.tsv"
+      - "*_results_statistics.tsv":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+          pattern: "*_results_statistics.tsv"
+  - contigsInfo:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+          pattern: "*_results_contigsInfo.tsv"
+      - "*_results_contigsInfo.tsv":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+          pattern: "*_results_contigsInfo.tsv"
+  - alleles:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+          pattern: "*_results_alleles.tsv"
+      - "*_results_alleles.tsv":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+          pattern: "*_results_alleles.tsv"
+  - log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+          pattern: "*_logging_info.txt"
+      - "*_logging_info.txt":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+          pattern: "*_logging_info.txt"
+  - paralogous_counts:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+          pattern: "*_paralogous_counts.tsv"
+      - "*_paralogous_counts.tsv":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+          pattern: "*_paralogous_counts.tsv"
+  - paralogous_loci:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+          pattern: "*_paralogous_loci.tsv"
+      - "*_paralogous_loci.tsv":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+          pattern: "*_paralogous_loci.tsv"
+  - cds_coordinates:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+          pattern: "*_cds_coordinates.tsv"
+      - "*_cds_coordinates.tsv":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+          pattern: "*_cds_coordinates.tsv"
+  - invalid_cds:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+          pattern: "*_invalid_cds.txt"
+      - "*_invalid_cds.txt":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+          pattern: "*_invalid_cds.txt"
+      - id_cds:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+          pattern: "*_invalid_cds.txt"
+  - loci_summary_stats:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+          pattern: "*_loci_summary_stats.tsv"
+      - "*_loci_summary_stats.tsv":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+          pattern: "*_loci_summary_stats.tsv"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - tsv:
-      type: file
-      description: file contains the total number of exact matches 
-      pattern: "*_results_statistics.tsv"
-  - tsv:
-      type: file
-      description: file contains the loci coordinates in the genomes analyzed
-      pattern: "*_results_contigsInfo.tsv"
-  - tsv:
-      type: file
-      description: file contains the allelic profiles determined for the input sample.
-      pattern: "*_results_alleles.tsv"
-  - tsv:
-      type: file
-      description: file contains the list of paralogous loci and the number of times those loci matched a CDS that was also similar to other loci in the schema.
-      pattern: "*_paralogous_counts.tsv"
-  - tsv:
-      type: file
-      description: file contains the sets of paralogous loci identified in the input sample
-      pattern: "*_paralogous_loci.tsv"
-  - txt:
-      type: file
-      description: file contains the log information
-      pattern: "*_logging_info.txt"
-  - tsv:
-      type: file
-      description: file contains the coordinates of the CDS in the input sample
-      pattern: "*_cds_coordinates.tsv"
-  - txt:
-      type: file
-      description:  file contains the list of alleles predicted by Prodigal that were excluded 
-      pattern: "*_invalid_cds.txt"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@anwarMZ"

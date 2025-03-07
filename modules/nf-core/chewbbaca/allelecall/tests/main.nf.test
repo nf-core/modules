@@ -8,6 +8,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "chewbbaca"
     tag "chewbbaca/allelecall"
+    tag "chewbbaca/createschema"
 
     setup {
         run("CHEWBBACA_CREATESCHEMA") {
@@ -45,7 +46,6 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
 
     test("sarscov2 - fasta - stub") {
@@ -70,7 +70,5 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
-
 }
