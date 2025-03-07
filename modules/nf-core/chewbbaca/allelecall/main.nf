@@ -8,7 +8,7 @@ process CHEWBBACA_ALLELECALL {
         'biocontainers/chewbbaca:3.3.10--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(fasta)
+    tuple val(meta), path(fasta_dir)
     tuple val(meta2), path(scheme)
 
     output:

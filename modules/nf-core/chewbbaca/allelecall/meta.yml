@@ -20,10 +20,10 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'test', single_end:false ]`
-    - fasta:
-        type: file
-        description: Assembled genome in FASTA format
-        pattern: "*.{fasta,fa,fna}"
+    - fasta_dir:
+        type: directory
+        description: Directory containing one or multiple FASTA files for allele calling
+        pattern: "*/"
   - - meta2:
         type: map
         description: |

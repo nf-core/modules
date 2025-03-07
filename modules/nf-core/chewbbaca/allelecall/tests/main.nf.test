@@ -26,14 +26,14 @@ nextflow_process {
         }
     }
 
-    test("sarscov2 - fasta") {
+    test("sarscov2 - fasta_dir") {
 
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta', checkIfExists: true)
                 ]
                 input[1] = CHEWBBACA_CREATESCHEMA.out.schema
                 """
@@ -48,7 +48,7 @@ nextflow_process {
         }
     }
 
-    test("sarscov2 - fasta - stub") {
+    test("sarscov2 - fasta_dir - stub") {
 
         options "-stub"
 
@@ -57,7 +57,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta', checkIfExists: true)
                 ]
                 input[1] = CHEWBBACA_CREATESCHEMA.out.schema
                 """
