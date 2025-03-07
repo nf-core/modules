@@ -27,14 +27,14 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.msav,
-                    path(process.out.versions.get(0)).yaml
+                    ["versions.yml": path(process.out.versions.get(0)).yaml]
                 ).match() }
             )
         }
 
     }
 
-    test("sarscov2 - bam - stub") {
+    test("homo sapiens - vcf - stub") {
 
         options "-stub"
 
@@ -55,7 +55,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.msav,
-                    path(process.out.versions.get(0)).yaml
+                    ["versions.yml": path(process.out.versions.get(0)).yaml]
                 ).match() }
             )
         }
