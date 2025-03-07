@@ -30,13 +30,23 @@ input:
           - edam: "http://edamontology.org/format_2572"
           - edam: "http://edamontology.org/format_2573"
           - edam: "http://edamontology.org/format_3462"
-  - - bed:
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing information about the sample
+          e.g. [ id:'sample1', single_end:false ]
+    - bed:
         type: file
         description: Input reference annotation of junctions in BED format
         pattern: "*.bed"
         ontologies:
           - edam: "http://edamontology.org/format_3003"
-  - - fasta:
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing information about the sample
+          e.g. [ id:'sample1', single_end:false ]
+    - fasta:
         type: file
         description: Input genome reference fasta file
         pattern: "*.{fa,fasta}"
