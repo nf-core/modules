@@ -1,0 +1,71 @@
+nextflow_process {
+
+    name "Test Process SEXDETERRMINE"
+    script "../main.nf"
+    process "SEXDETERRMINE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "sexdeterrmine"
+    tag 'samtools/depth'
+
+    setup {
+
+        run("SAMTOOLS_DEPTH") {
+            script "../../samtools/depth/main.nf"
+            config './nextflow.config'
+            process {
+                """
+                input[0] = [[ id:'test' ],
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test3.single_end.markduplicates.sorted.bam', checkIfExists: true) ]
+                input[1] = [[ id:'test2'], []]
+                """
+            }
+        }
+
+    }
+
+    test("sarscov2 - bam") {
+
+        when {
+            process {
+                """
+                input[0] = SAMTOOLS_DEPTH.out.tsv
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [[ id:'test' ],
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test3.single_end.markduplicates.sorted.bam', checkIfExists: true) ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
