@@ -4,8 +4,8 @@ process TCOFFEE_SEQREFORMAT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/t-coffee:13.46.0.919e8c6b--hfc96bf3_0':
-        'biocontainers/t-coffee:13.46.0.919e8c6b--hfc96bf3_0' }"
+        'oras://community.wave.seqera.io/library/t-coffee_pigz:91ac7e26b23bb246':
+        'community.wave.seqera.io/library/t-coffee_pigz:7d1373a24f76afe6' }"
 
     input:
     tuple val(meta), path(infile)
@@ -23,6 +23,9 @@ process TCOFFEE_SEQREFORMAT {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     export TEMP='./'
+    export TMP_4_TCOFFEE="./"
+    export HOME="./"
+
     t_coffee -other_pg seq_reformat \
         -in ${infile} \
         $args \
@@ -40,6 +43,9 @@ process TCOFFEE_SEQREFORMAT {
     """
     # Otherwise, tcoffee will crash when calling its version
     export TEMP='./'
+    export TMP_4_TCOFFEE="./"
+    export HOME="./"
+
     touch "${prefix}.txt"
 
     cat <<-END_VERSIONS > versions.yml

@@ -4,8 +4,8 @@ process TCOFFEE_TCS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-a76a981c07359a31ff55b9dc13bd3da5ce1909c1:84c8f17f1259b49e2f7783b95b7a89c6f2cb199e-0':
-        'biocontainers/mulled-v2-a76a981c07359a31ff55b9dc13bd3da5ce1909c1:84c8f17f1259b49e2f7783b95b7a89c6f2cb199e-0' }"
+        'oras://community.wave.seqera.io/library/t-coffee_pigz:91ac7e26b23bb246':
+        'community.wave.seqera.io/library/t-coffee_pigz:7d1373a24f76afe6' }"
 
     input:
     tuple val(meta) , path(msa)
@@ -28,6 +28,9 @@ process TCOFFEE_TCS {
     def unzipped_name = msa.toString() - '.gz'
     """
     export TEMP='./'
+    export TMP_4_TCOFFEE="./"
+    export HOME="./"
+
     filename=${msa}
     if [[ \$(basename $msa) == *.gz ]] ; then
         unpigz -f $msa
@@ -65,6 +68,9 @@ process TCOFFEE_TCS {
     """
     # Otherwise, tcoffee will crash when calling its version
     export TEMP='./'
+    export TMP_4_TCOFFEE="./"
+    export HOME="./"
+
     touch ${prefix}.tcs
     touch ${prefix}.scores
 
