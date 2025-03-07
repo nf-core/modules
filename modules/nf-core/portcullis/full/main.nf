@@ -1,4 +1,4 @@
-process PORTCULLIS {
+process PORTCULLIS_FULL {
     tag "$meta.id"
     label 'process_high'
 
