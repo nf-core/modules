@@ -8,9 +8,9 @@ process PORTCULLIS_FULL {
         'biocontainers/portcullis:1.2.4--py38haf070c8_0' }"
 
     input:
-    tuple val(meta), path(bam)
-    path(bed)
-    path(fasta)
+    tuple val(meta) , path(bam)
+    tuple val(meta2), path(bed)
+    tuple val(meta3), path(fasta)
 
     output:
     tuple val(meta), path("*.log"), emit: log
