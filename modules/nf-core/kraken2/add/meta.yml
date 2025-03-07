@@ -52,9 +52,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - $prefix:
+          pattern: "*/"
+      - ${prefix}:
           type: directory
-          description: contains required files to build the database
+          description: |
+            Contains required files to build the database
           pattern: "*/"
   - versions:
       - versions.yml:
