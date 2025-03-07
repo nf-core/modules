@@ -32,12 +32,12 @@ process CHEWBBACA_ALLELECALL {
 
     """
     chewie \\
-      AlleleCall \\
-      --cpu ${task.cpus} \\
-      $args \\
-      --input-files ${fasta} \\
-      --schema-directory ${scheme} \\
-      --output-directory results
+        AlleleCall \\
+        --cpu ${task.cpus} \\
+        $args \\
+        --input-files ${fasta} \\
+        --schema-directory ${scheme} \\
+        --output-directory results
 
     mv results/results_statistics.tsv ${prefix}_results_statistics.tsv
     mv results/results_contigsInfo.tsv ${prefix}_results_contigsInfo.tsv
