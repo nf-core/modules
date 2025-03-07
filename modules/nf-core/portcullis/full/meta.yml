@@ -1,4 +1,4 @@
-name: "portcullis"
+name: "portcullis_full"
 description: Run all Portcullis steps in one go
 keywords:
   - rnaseq
@@ -64,7 +64,7 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.bed"
-      - ${meta.id}/3-filt/*.bed:
+      - "*.bed":
           type: file
           description: |
             Filtered splice junction coordinates in BED format, containing genomic coordinates of valid splice junctions after filtering out false positives
@@ -78,7 +78,7 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.tab"
-      - ${meta.id}/3-filt/*.tab:
+      - "*.tab":
           type: map
           description: |
             Tabular representation of filtered splice junctions with additional metrics including junction scores, read support, and filtering decision data
