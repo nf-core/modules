@@ -1,0 +1,66 @@
+// nf-core modules test stimulus/checktorchmodel
+nextflow_process {
+
+    name "Test Process STIMULUS_CHECKTORCHMODEL"
+    script "../main.nf"
+    process "STIMULUS_CHECKTORCHMODEL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "stimulus"
+    tag "stimulus/checktorchmodel"
+
+    test("basic - csv - py") {
+
+        when {
+            process {
+                """
+                input[0] = [[id: 'test'],
+                            file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_stimulus_split.csv', checkIfExists: true),
+                            file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_sub_config_0.yaml', checkIfExists: true)]
+                input[1] = [[id: 'test'],
+                            file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_model.py', checkIfExists: true),
+                            file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_model_cpu.yaml', checkIfExists: true),
+                            []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.log[0][1]).readLines().get(1).contains("Configuration for experiment") },
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+
+    }
+
+    test("basic - csv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [[id: 'test'],
+                            file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_stimulus_split.csv', checkIfExists: true),
+                            file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_sub_config_0.yaml', checkIfExists: true)]
+                input[1] = [[id: 'test'],
+                            file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_model.py', checkIfExists: true),
+                            file(params.modules_testdata_base_path + '../../deepmodeloptim/testdata/titanic/titanic_model_cpu.yaml', checkIfExists: true),
+                            []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
