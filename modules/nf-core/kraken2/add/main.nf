@@ -1,21 +1,22 @@
 process KRAKEN2_ADD {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-8706a1dd73c6cc426e12dd4dd33a5e917b3989ae:c8cbdc8ff4101e6745f8ede6eb5261ef98bdaff4-0' :
-        'biocontainers/mulled-v2-8706a1dd73c6cc426e12dd4dd33a5e917b3989ae:c8cbdc8ff4101e6745f8ede6eb5261ef98bdaff4-0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/mulled-v2-8706a1dd73c6cc426e12dd4dd33a5e917b3989ae:c8cbdc8ff4101e6745f8ede6eb5261ef98bdaff4-0'
+        : 'biocontainers/mulled-v2-8706a1dd73c6cc426e12dd4dd33a5e917b3989ae:c8cbdc8ff4101e6745f8ede6eb5261ef98bdaff4-0'}"
 
     input:
     tuple val(meta), path(fasta)
     path taxonomy_names, stageAs: 'taxonomy/names.dmp'
     path taxonomy_nodes, stageAs: 'taxonomy/nodes.dmp'
     path accession2taxid, stageAs: 'taxonomy/*'
+    path seqid2taxid, stageAs: "seqid2taxid.map"
 
     output:
-    tuple val(meta), path("$prefix"), emit: db
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path("${prefix}"), emit: db
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,17 +24,20 @@ process KRAKEN2_ADD {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    inject_custom_seqid2taxid_map = seqid2taxid ? "mv ${seqid2taxid} ${prefix}/" : ""
     """
-    mkdir ${prefix}
+    mkdir -p ${prefix}
     mv "taxonomy" ${prefix}
+
+    ${inject_custom_seqid2taxid_map}
 
     echo ${fasta} |\\
     tr -s " " "\\012" |\\
     xargs -I {} -n1 kraken2-build \\
         --add-to-library {} \\
         --db ${prefix} \\
-        --threads $task.cpus \\
-        $args
+        --threads ${task.cpus} \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -45,12 +49,11 @@ process KRAKEN2_ADD {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir "$prefix"
+    mkdir "${prefix}"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         kraken2: \$(echo \$(kraken2 --version 2>&1) | sed 's/^.*Kraken version //; s/ .*\$//')
     END_VERSIONS
     """
-
 }

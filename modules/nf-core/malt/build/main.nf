@@ -23,7 +23,7 @@ process MALT_BUILD {
     def args = task.ext.args ?: ''
     def igff = gff ? "-igff ${gff}" : ""
     """
-    INDEX=`find -L . -name '*.db' -o -name '*.abin' -type f`
+    INDEX=`find -L . \\( -name '*.db' -o -name '*.abin' \\) -type f`
     echo \$INDEX
     malt-build \\
         ${args} \\
