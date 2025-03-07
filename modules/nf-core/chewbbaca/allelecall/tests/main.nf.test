@@ -48,9 +48,18 @@ nextflow_process {
                 { assert path(process.out.stats.get(0).get(1)).exists() },
                 {
                     def statsFile = path(process.out.stats.get(0).get(1))
-                    // Check for two classification type counts columns
+                    // Check for classification type counts columns
                     assert statsFile.text.contains("EXC")
                     assert statsFile.text.contains("INF")
+                    assert statsFile.text.contains("PLOT3")
+                    assert statsFile.text.contains("PLOT5")
+                    assert statsFile.text.contains("LOTSC")
+                    assert statsFile.text.contains("NIPH")
+                    assert statsFile.text.contains("NIPHEM")
+                    assert statsFile.text.contains("ALM")
+                    assert statsFile.text.contains("ASM")
+                    assert statsFile.text.contains("PAMA")
+                    assert statsFile.text.contains("LNF")
                     // Check for total counts columns
                     assert statsFile.text.contains("Invalid CDSs")
                     assert statsFile.text.contains("Classified_CDSs")
@@ -166,7 +175,16 @@ nextflow_process {
                     if (lociStatsFile.size() > 0) {
                         assert lociStatsFile.text.contains("EXC")
                         assert lociStatsFile.text.contains("INF")
-                        assert lociStatsFile.text.contains("Classified_CDS")
+                        assert lociStatsFile.text.contains("PLOT3")
+                        assert lociStatsFile.text.contains("PLOT5")
+                        assert lociStatsFile.text.contains("LOTSC")
+                        assert lociStatsFile.text.contains("NIPH")
+                        assert lociStatsFile.text.contains("NIPHEM")
+                        assert lociStatsFile.text.contains("ALM")
+                        assert lociStatsFile.text.contains("ASM")
+                        assert lociStatsFile.text.contains("PAMA")
+                        assert lociStatsFile.text.contains("LNF")
+                        assert lociStatsFile.text.contains("Total_CDS")  // Changed from Classified_CDS to Total_CDS
                     }
                 },
 
