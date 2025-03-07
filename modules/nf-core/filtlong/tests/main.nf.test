@@ -17,10 +17,10 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                            [ id:'test', single_end:false ], // meta map
-                            [],
-                            [ file(params.test_data['sarscov2']['nanopore']['test_fastq_gz'], checkIfExists: true) ]
-                           ]
+                    [ id:'test', single_end:false ], // meta map
+                    [],
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true) ]
+                ]
                 """
             }
         }
@@ -29,8 +29,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.log.get(0).get(1)).readLines().contains("Scoring long reads")},
-                { assert snapshot(process.out.reads).match("nanopore") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    process.out.reads,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
 
@@ -46,10 +49,10 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                            [ id:'test', single_end:true ], // meta map
-                            [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ],
-                            [ file(params.test_data['sarscov2']['nanopore']['test_fastq_gz'], checkIfExists: true) ]
-                           ]
+                    [ id:'test', single_end:true ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ],
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true) ]
+                ]
                 """
             }
         }
@@ -58,8 +61,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.log.get(0).get(1)).readLines().contains("Scoring long reads")},
-                { assert snapshot(process.out.reads).match("nanopore_illumina_se") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    process.out.reads,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
 
@@ -75,11 +81,13 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                            [ id:'test', single_end:false ], // meta map
-                            [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                              file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ],
-                            [ file(params.test_data['sarscov2']['nanopore']['test_fastq_gz'], checkIfExists: true) ]
-                           ]
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ],
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true) ]
+                ]
                 """
             }
         }
@@ -88,12 +96,13 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.log.get(0).get(1)).readLines().contains("Scoring long reads")},
-                { assert snapshot(process.out.reads).match("nanopore_illumina_pe") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    process.out.reads,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
 
     }
-
-
 }

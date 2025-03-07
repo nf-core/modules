@@ -1,0 +1,341 @@
+def pathbam = "file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/"
+def pathgenome = "file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/"
+
+// sequencing data in cram format
+def ch_cram = """Channel.of([
+    [ id: 'test_reads' ],
+    [
+        ${pathbam}cram/test.paired_end.recalibrated.sorted.cram', checkIfExists: true),
+        ${pathbam}cram/test2.paired_end.recalibrated.sorted.cram', checkIfExists: true)
+    ],
+    [
+        ${pathbam}cram/test.paired_end.recalibrated.sorted.cram.crai', checkIfExists: true),
+        ${pathbam}cram/test2.paired_end.recalibrated.sorted.cram.crai', checkIfExists: true)
+    ]
+])"""
+
+// sequencing data in bam format
+def ch_bam = """Channel.of([
+    [ id:'test_reads' ],
+    [
+        ${pathbam}bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+        ${pathbam}bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true)
+    ],
+    [
+        ${pathbam}bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true),
+        ${pathbam}bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
+    ]
+])"""
+
+def ch_params = """Channel.of([
+    ${pathgenome}dbsnp_138.hg38.first_10_biallelic_sites.tsv', checkIfExists: true),
+    [], [], 'chr21', 2, 1
+])"""
+
+// reference genome
+def ch_ref = """Channel.of([
+    [ id:'test_reference' ],
+    ${pathgenome}genome.fasta', checkIfExists: true),
+    ${pathgenome}genome.fasta.fai', checkIfExists: true)
+]).collect()"""
+
+// for reproducibility
+def seed = 1
+
+nextflow_process {
+    name "Test Process STITCH"
+    script "../main.nf"
+    process "STITCH"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "stitch"
+
+    config "./nextflow.config"
+
+    test("test_no_seed") {
+
+        when {
+            params {
+                stitch_args2 = "--chrStart 8522360 --chrEnd 8522670"
+            }
+
+            process {
+                """
+                filelist = Channel.of(
+                    "test.paired_end.recalibrated.sorted.cram",
+                    "test2.paired_end.recalibrated.sorted.cram"
+                ).collectFile( name: "cramlist.txt", newLine: true, sort: true )
+
+                input[0] = $ch_cram
+                    .combine( filelist )
+                    .combine( Channel.of([[]]) )
+                    .combine( $ch_params )
+
+                input[1] = $ch_ref
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.input.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.rdata.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.plots.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.vcf.collect{ file(it[1]).name },
+                    process.out.versions,
+                    process.out.vcf.collect{ path(it[1]).vcf.header.getGenotypeSamples().sort() }
+                ).match() }
+            )
+        }
+    }
+
+    test("test_with_seed") {
+        when {
+            params {
+                stitch_args2 = "--chrStart 8522360 --chrEnd 8522670 --output_format bgen"
+            }
+            process {
+                """
+                filelist = Channel.of(
+                    "test.paired_end.recalibrated.sorted.cram",
+                    "test2.paired_end.recalibrated.sorted.cram"
+                ).collectFile( name: "cramlist.txt", newLine: true, sort: true )
+
+                input[0] = $ch_cram
+                    .combine( filelist )
+                    .combine( Channel.of([[]]) )
+                    .combine( $ch_params )
+                input[1] = $ch_ref
+                input[2] = $seed
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.input.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.rdata.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.plots.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.bgen.collect{ file(it[1]).name },
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("test_two_stage_imputation") {
+        setup {
+            run ("STITCH", alias: "STITCH_GENERATE_INPUTS") {
+                script "../main.nf"
+                params {
+                    stitch_args2 = "--chrStart 8522360 --chrEnd 8522670 --generateInputOnly TRUE"
+                }
+                process {
+                """
+                filelist = Channel.of(
+                    "test.paired_end.recalibrated.sorted.cram",
+                    "test2.paired_end.recalibrated.sorted.cram"
+                ).collectFile( name: "cramlist.txt", newLine: true, sort: true )
+
+                input[0] = $ch_cram
+                    .combine( filelist )
+                    .combine( Channel.of([[]]) )
+                    .combine( $ch_params )
+                input[1] = $ch_ref
+                input[2] = $seed
+                """
+                }
+            }
+        }
+
+        when {
+            params {
+                stitch_args2 = "--chrStart 8522360 --chrEnd 8522670 --regenerateInputWithDefaultValues TRUE"
+            }
+            process {
+                """
+                input[0] = STITCH_GENERATE_INPUTS.out.input
+                    .join ( STITCH_GENERATE_INPUTS.out.rdata )
+                    .combine( $ch_params )
+                    .map {
+                        meta, target, rdata, positions, _emptytarget, _emptyrdata, chr, k, nGen  ->
+                        [ meta, [], [], [], [], positions, target, rdata, chr, k, nGen ]
+                    }
+                input[1] = [[id: null], [], []]
+                input[2] = $seed
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.input.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.rdata.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.plots.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.vcf.collect{ file(it[1]).name },
+                    process.out.versions,
+                    process.out.vcf.collect{ path(it[1]).vcf.header.getGenotypeSamples().sort() },
+                    process.out.vcf.collect{ path(it[1]).vcf.variantsMD5 }
+                ).match() }
+            )
+        }
+    }
+
+    test("test_with_bam") {
+        when {
+            params {
+                stitch_args2 = "--chrStart 8522360 --chrEnd 8522670"
+            }
+            process {
+                """
+                filelist = Channel.of(
+                    "test.paired_end.recalibrated.sorted.bam", "test2.paired_end.recalibrated.sorted.bam"
+                ).collectFile( name: "cramlist.txt", newLine: true, sort: true )
+
+                input[0] = $ch_bam
+                    .combine( filelist )
+                    .combine( Channel.of([[]]))
+                    .combine( $ch_params )
+                input[1] = $ch_ref
+                input[2] = $seed
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.input.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.rdata.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.plots.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.vcf.collect{ file(it[1]).name },
+                    process.out.versions,
+                    process.out.vcf.collect{ path(it[1]).vcf.header.getGenotypeSamples().sort() },
+                    process.out.vcf.collect{ path(it[1]).vcf.variantsMD5 }
+                ).match() }
+            )
+        }
+    }
+
+    test("test_with_bam and renaming") {
+        when {
+            params {
+                stitch_args2 = "--chrStart 8522360 --chrEnd 8522670"
+            }
+            process {
+                """
+                filelist = Channel.of(
+                    "test.paired_end.recalibrated.sorted.bam", "test2.paired_end.recalibrated.sorted.bam"
+                ).collectFile( name: "cramlist.txt", newLine: true, sort: true )
+
+                samplename = Channel.of(
+                    "MySample1", "MySample2"
+                ).collectFile( name: "samplename.txt", newLine: true, sort: true )
+
+                input[0] = $ch_bam
+                    .combine( filelist )
+                    .combine( samplename )
+                    .combine( $ch_params )
+                input[1] = $ch_ref
+                input[2] = $seed
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.input.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.rdata.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.plots.collect{ file(it[1]).listFiles().sort().name },
+                    process.out.vcf.collect{ file(it[1]).name },
+                    process.out.versions,
+                    process.out.vcf.collect{ path(it[1]).vcf.header.getGenotypeSamples().sort() },
+                    process.out.vcf.collect{ path(it[1]).vcf.variantsMD5 }
+                ).match() }
+            )
+        }
+    }
+
+    test("test_with_bam - bgen - stub") {
+    
+       options "-stub"
+    
+        when {
+            params {
+                stitch_args2 = "--chrStart 8522360 --chrEnd 8522670 --output_format bgen"
+            }
+            process {
+                """
+                filelist = Channel.of(
+                    "test.paired_end.recalibrated.sorted.bam", "test2.paired_end.recalibrated.sorted.bam"
+                ).collectFile( name: "cramlist.txt", newLine: true, sort: true )
+
+                samplename = Channel.of(
+                    "MySample1", "MySample2"
+                ).collectFile( name: "samplename.txt", newLine: true, sort: true )
+
+                input[0] = $ch_bam
+                    .combine( filelist )
+                    .combine( samplename )
+                    .combine( $ch_params )
+                input[1] = $ch_ref
+                input[2] = $seed
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test_with_bam - vcf - stub") {
+    
+       options "-stub"
+       
+        when {
+            params {
+                stitch_args2 = "--chrStart 8522360 --chrEnd 8522670"
+            }
+            process {
+                """
+                filelist = Channel.of(
+                    "test.paired_end.recalibrated.sorted.bam", "test2.paired_end.recalibrated.sorted.bam"
+                ).collectFile( name: "cramlist.txt", newLine: true, sort: true )
+
+                samplename = Channel.of(
+                    "MySample1", "MySample2"
+                ).collectFile( name: "samplename.txt", newLine: true, sort: true )
+
+                input[0] = $ch_bam
+                    .combine( filelist )
+                    .combine( samplename )
+                    .combine( $ch_params )
+                input[1] = $ch_ref
+                input[2] = $seed
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

@@ -8,7 +8,7 @@ process BCFTOOLS_CONSENSUS {
         'biocontainers/bcftools:1.20--h8b25389_0' }"
 
     input:
-    tuple val(meta), path(vcf), path(tbi), path(fasta)
+    tuple val(meta), path(vcf), path(tbi), path(fasta), path(mask)
 
     output:
     tuple val(meta), path('*.fa'), emit: fasta
@@ -20,13 +20,28 @@ process BCFTOOLS_CONSENSUS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def masking = mask ? "-m $mask" : ""
     """
     cat $fasta \\
         | bcftools \\
             consensus \\
             $vcf \\
             $args \\
+            $masking \\
             > ${prefix}.fa
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def masking = mask ? "-m $mask" : ""
+    """
+    touch ${prefix}.fa
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

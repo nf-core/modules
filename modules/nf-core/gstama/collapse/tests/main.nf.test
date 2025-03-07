@@ -1,0 +1,49 @@
+
+nextflow_process {
+
+    name "Test Process GSTAMA_COLLAPSE"
+    script "../main.nf"
+    process "GSTAMA_COLLAPSE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gstama"
+    tag "gstama/collapse"
+
+    test("test-gstama-collapse") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.singletons.merged.aligned.bam', checkIfExists: true)
+				]
+				input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome2.fasta', checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					process.out.bed,
+					process.out.bed_trans_reads,
+					file(process.out.local_density_error[0][1]).readLines()[3..7],
+					file(process.out.polya[0][1]).readLines()[0],
+					file(process.out.read[0][1]).readLines()[3..7],
+					file(process.out.strand_check[0][1]).readLines()[0],
+					file(process.out.trans_report[0][1]).readLines()[3..7],
+					file(process.out.varcov[0][1]).readLines()[3..7],
+					file(process.out.variants[0][1]).readLines()[3..7],
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

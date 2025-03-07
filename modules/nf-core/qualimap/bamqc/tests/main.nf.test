@@ -9,11 +9,7 @@ nextflow_process {
     tag "qualimap/bamqc"
 
     test("homo_sapiens [bam]") {
-
         when {
-            params {
-                outdir   = "$outputDir"
-            }
             process {
                 """
                 gff = []
@@ -30,9 +26,35 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert path("${process.out.results[0][1]}/qualimapReport.html").exists() },
-                { assert snapshot(path("${process.out.results[0][1]}/genome_results.txt")).match("genome_results") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    file("${process.out.results[0][1]}/qualimapReport.html").name,
+                    path("${process.out.results[0][1]}/genome_results.txt"),
+                    process.out.versions)
+                    .match() }
+            )
+        }
+    }
+
+    test("homo_sapiens [bam] - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                gff = []
+
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                ])
+                input[1] = gff
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
             )
         }
     }

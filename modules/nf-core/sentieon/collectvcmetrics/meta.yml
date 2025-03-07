@@ -1,0 +1,104 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "sentieon_collectvcmetrics"
+description: Accelerated implementation of the Picard CollectVariantCallingMetrics
+  tool.
+keywords:
+  - vcf
+  - sentieon
+  - genomics
+tools:
+  - sentieon:
+      description: |
+        Sentieon® provides complete solutions for secondary DNA/RNA analysis for a variety of sequencing platforms, including short and long reads.
+        Our software improves upon BWA, STAR, Minimap2, GATK, HaplotypeCaller, Mutect, and Mutect2 based pipelines and is deployable on any generic-CPU-based computing system.
+      homepage: https://www.sentieon.com/
+      documentation: https://www.sentieon.com/
+      licence: ["Commercial (requires license for use; redistribution allowed)"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - vcf:
+        type: file
+        description: Sorted VCF file [required]
+        pattern: "*.vcf"
+    - tbi:
+        type: file
+        description: VCF index file [required]
+        pattern: "*.vcf{,.gz}.tbi"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - dbsnp:
+        type: file
+        description: dbsnp VCF file [required]
+        pattern: "*.vcf{,.gz}"
+    - dbsnp_tbi:
+        type: file
+        description: dbsnp VCF index file [required]
+        pattern: "*.vcf{,.gz}.tbi"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - fasta:
+        type: file
+        description: Genome fasta file [required]
+        pattern: "*.{fa,fasta}"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - fai:
+        type: file
+        description: Index of the genome fasta file [required]
+        pattern: "*.fai"
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - interval:
+        type: file
+        description: BED file of genome regions to draw coverage from
+        pattern: "*.bed"
+output:
+  - metrics:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.variant_calling_detail_metrics":
+          type: file
+          description: |
+            Metrics file from VCF
+          pattern: "*.variant_calling_detail_metrics"
+  - summary:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.variant_calling_summary_metrics":
+          type: file
+          description: |
+            Summary of VCF metrics
+          pattern: "*.collectvcmetrics.txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@adamrtalbot"
+maintainers:
+  - "@adamrtalbot"

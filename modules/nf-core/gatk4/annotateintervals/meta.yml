@@ -1,5 +1,6 @@
 name: "gatk4_annotateintervals"
-description: Annotates intervals with GC content, mappability, and segmental-duplication content
+description: Annotates intervals with GC content, mappability, and segmental-duplication
+  content
 keywords:
   - annotateintervals
   - annotation
@@ -16,95 +17,105 @@ tools:
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
       doi: 10.1158/1538-7445.AM2017-3590
       licence: ["Apache-2.0"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - intervals:
-      type: file
-      description: One or more interval files to annotate
-      pattern: "*.{interval_list,list,bed}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test' ]
-  - fasta:
-      type: file
-      description: The reference FASTA file
-      pattern: "*.{fasta,fa}"
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test' ]
-  - fasta_fai:
-      type: file
-      description: The index of the reference FASTA file
-      pattern: "*.fai"
-  - meta4:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test' ]
-  - dict:
-      type: file
-      description: The sequence dictionary reference FASTA file
-      pattern: "*.dict"
-  - meta5:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test' ]
-  - mappable_regions:
-      type: file
-      description: |
-        Optional - Umap single-read mappability track
-        The track should correspond to the appropriate read length and overlapping intervals must be merged
-      pattern: "*.bed(.gz)?"
-  - meta6:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test' ]
-  - mappable_regions_tbi:
-      type: file
-      description: Optional - The index of the gzipped umap single-read mappability track
-      pattern: "*.bed.gz.tbi"
-  - meta7:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test' ]
-  - segmental_duplication_regions:
-      type: file
-      description: Optional - Segmental-duplication track
-      pattern: "*.bed(.gz)?"
-  - meta8:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test' ]
-  - segmental_duplication_regions_tbi:
-      type: file
-      description: Optional - The index of the gzipped segmental-duplication track
-      pattern: "*.bed.gz.tbi"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - intervals:
+        type: file
+        description: One or more interval files to annotate
+        pattern: "*.{interval_list,list,bed}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: The reference FASTA file
+        pattern: "*.{fasta,fa}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test' ]
+    - fasta_fai:
+        type: file
+        description: The index of the reference FASTA file
+        pattern: "*.fai"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test' ]
+    - dict:
+        type: file
+        description: The sequence dictionary reference FASTA file
+        pattern: "*.dict"
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test' ]
+    - mappable_regions:
+        type: file
+        description: |
+          Optional - Umap single-read mappability track
+          The track should correspond to the appropriate read length and overlapping intervals must be merged
+        pattern: "*.bed(.gz)?"
+  - - meta6:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test' ]
+    - mappable_regions_tbi:
+        type: file
+        description: Optional - The index of the gzipped umap single-read mappability
+          track
+        pattern: "*.bed.gz.tbi"
+  - - meta7:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test' ]
+    - segmental_duplication_regions:
+        type: file
+        description: Optional - Segmental-duplication track
+        pattern: "*.bed(.gz)?"
+  - - meta8:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test' ]
+    - segmental_duplication_regions_tbi:
+        type: file
+        description: Optional - The index of the gzipped segmental-duplication track
+        pattern: "*.bed.gz.tbi"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - annotated_intervals:
-      type: file
-      description: The output TSV file with a SAM-style header containing the annotated intervals
-      pattern: "*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: The output TSV file with a SAM-style header containing the annotated
+            intervals
+          pattern: "*.tsv"
+      - s:
+          type: file
+          description: The output TSV file with a SAM-style header containing the annotated
+            intervals
+          pattern: "*.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

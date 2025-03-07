@@ -1,0 +1,57 @@
+
+nextflow_process {
+
+    name "Test Process GENMAP_INDEX"
+    script "../main.nf"
+    process "GENMAP_INDEX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "genmap"
+    tag "genmap/index"
+
+    test("test-genmap-index") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [id:"test"],
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-genmap-index-stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+				    [id:"test"],
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

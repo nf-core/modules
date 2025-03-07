@@ -2,10 +2,10 @@ process OPENMS_IDFILTER {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::openms=3.1.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/openms:3.1.0--h8964181_3' :
-        'biocontainers/openms:3.1.0--h8964181_3' }"
+        'https://depot.galaxyproject.org/singularity/openms:3.3.0--h0656172_8' :
+        'biocontainers/openms:3.3.0--h0656172_8' }"
 
     input:
     tuple val(meta), path(id_file), path(filter_file)
@@ -21,6 +21,7 @@ process OPENMS_IDFILTER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "${id_file.getExtension()}"
+    if ("$id_file" == "${prefix}.${suffix}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     // Optional filtering via filter_file
     def filter_citerion = task.ext.args2 ?: "-whitelist:peptides"
     def filter = filter_file ? "${filter_citerion} ${filter_file}" : ""
@@ -42,6 +43,7 @@ process OPENMS_IDFILTER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "${id_file.getExtension()}"
+    if ("$id_file" == "${prefix}.${suffix}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     // Optional filtering via filter_file
     def filter_citerion = task.ext.args2 ?: "-whitelist:peptides"
     def filter = filter_file ? "${filter_citerion} ${filter_file}" : ""

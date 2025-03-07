@@ -10,51 +10,78 @@ tools:
       homepage: https://github.com/rpetit3/dragonflye
       documentation: https://github.com/rpetit3/dragonflye/blob/main/README.md
       licence: ["GPL v2"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - shortreads:
-      type: file
-      description: |
-        Optional. List of FastQ files of short reads (paired-end data) that will be used to polish the draft genome.
-      pattern: "*.fastq.gz"
-  - longreads:
-      type: file
-      description: Input Nanopore FASTQ file
-      pattern: "*.fastq.gz"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - shortreads:
+        type: file
+        description: |
+          Optional. List of FastQ files of short reads (paired-end data) that will be used to polish the draft genome.
+        pattern: "*.fastq.gz"
+    - longreads:
+        type: file
+        description: Input Nanopore FASTQ file
+        pattern: "*.fastq.gz"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - contigs:
-      type: file
-      description: The final assembly produced by Dragonflye
-      pattern: "*.fa"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fa":
+          type: file
+          description: The final assembly produced by Dragonflye
+          pattern: "*.fa"
   - log:
-      type: file
-      description: Full log file for bug reporting
-      pattern: "dragonflye.log"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - dragonflye.log:
+          type: file
+          description: Full log file for bug reporting
+          pattern: "dragonflye.log"
   - raw_contigs:
-      type: file
-      description: Raw assembly produced by the assembler (Flye, Miniasm, or Raven)
-      pattern: "{flye,miniasm,raven}.fasta"
-  - txt:
-      type: file
-      description: Assembly information output by Flye
-      pattern: "flye-info.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "{flye,miniasm,raven}.fasta":
+          type: file
+          description: Raw assembly produced by the assembler (Flye, Miniasm, or Raven)
+          pattern: "{flye,miniasm,raven}.fasta"
   - gfa:
-      type: file
-      description: Assembly graph produced by Miniasm, or Raven
-      pattern: "{flye,miniasm,raven}-unpolished.gfa"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "{flye,miniasm,raven}-unpolished.gfa":
+          type: file
+          description: Assembly graph produced by Miniasm, or Raven
+          pattern: "{flye,miniasm,raven}-unpolished.gfa"
+  - txt:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - flye-info.txt:
+          type: file
+          description: Assembly information output by Flye
+          pattern: "flye-info.txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@rpetit3"
 maintainers:

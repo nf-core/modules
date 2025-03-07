@@ -86,7 +86,7 @@ workflow BAM_TUMOR_ONLY_SOMATIC_VARIANT_CALLING_GATK {
         .combine(ch_stats, by: 0)
         .combine(ch_segment, by: 0)
         .combine(ch_contamination, by: 0)
-    // Adding [] as a placeholder for the optional input file artifact priors, which is only used for tumor-normal samples and therefor isn't needed in this workflow.
+    // Adding [] as a placeholder for the optional input file artifact priors, which is only used for tumor-normal samples and therefore isn't needed in this workflow.
     // and [] as a placeholder for entering a contamination estimate value, which is not needed as this workflow uses the contamination table instead.
         .map{ meta, vcf, tbi, stats, segment, contamination -> [meta, vcf, tbi, stats, [], segment, contamination, [] ] }
 

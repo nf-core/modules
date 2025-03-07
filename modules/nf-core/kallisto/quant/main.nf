@@ -4,8 +4,8 @@ process KALLISTO_QUANT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/kallisto:0.48.0--h15996b6_2':
-        'biocontainers/kallisto:0.48.0--h15996b6_2' }"
+        'https://depot.galaxyproject.org/singularity/kallisto:0.51.1--heb0cbe2_0':
+        'biocontainers/kallisto:0.51.1--heb0cbe2_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -69,7 +69,13 @@ process KALLISTO_QUANT {
     """
 
     stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+
     """
+    mkdir -p $prefix
+    touch ${prefix}.log
+    touch ${prefix}.run_info.json
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         kallisto: \$(echo \$(kallisto version) | sed "s/kallisto, version //g" )

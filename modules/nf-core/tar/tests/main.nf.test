@@ -1,0 +1,210 @@
+// nf-core modules test tar
+nextflow_process {
+
+    name "Test Process TAR"
+    script "../main.nf"
+    process "TAR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "tar"
+    tag "untar"
+
+    setup {
+        run("UNTAR") {
+            script "../../untar/main.nf"
+            process {
+            """
+            input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz', checkIfExists: true)
+            ]
+            """
+            }
+        }
+    }
+
+    test("sarscov2 - genome - db - kraken2 - none") {
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.archive[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - genome - db - kraken2 - .gz") {
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                input[1] = '.gz'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.archive[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - genome - db - kraken2 - .bz2") {
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                input[1] = '.bz2'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.archive[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - genome - db - kraken2 - .lzip") {
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                input[1] = '.lz'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.archive[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - genome - db - kraken2 - .lzma") {
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                input[1] = '.lzma'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.archive[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - genome - db - kraken2 - .lzo") {
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                input[1] = '.lzo'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.archive[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - genome - db - kraken2 - .zst") {
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                input[1] = '.zst'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.archive[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - genome - db - kraken2 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                input[1] = '.gz'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

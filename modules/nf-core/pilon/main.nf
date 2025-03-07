@@ -28,11 +28,19 @@ process PILON {
     def prefix     = task.ext.prefix ?: "${meta.id}"
     def valid_mode = ["frags", "jumps", "unpaired", "bam"]
     if ( !valid_mode.contains(pilon_mode) )  { error "Unrecognised mode to run Pilon. Options: ${valid_mode.join(', ')}" }
+    def mem_mb = 1024
+    if (!task.memory) {
+        log.info '[Pilon] Available memory not known - defaulting to 1GB. Specify process memory requirements to change this.'
+    } else {
+        mem_mb = task.memory.giga < 2 ? (task.memory.mega*0.8).intValue() : task.memory.mega - 1024
+    }
     """
-    pilon \\
+    # `which` allows us to get the directory that contains `pilon`, independent of whether we
+    # are in a container or conda environment.
+    PILON_JAR=\$(dirname \$(which pilon))/../share/pilon*/pilon.jar
+    java -Xmx${mem_mb}M -jar \$PILON_JAR \\
         --genome $fasta \\
-        --output ${meta.id} \\
-        --threads $task.cpus \\
+        --output ${prefix} \\
         $args \\
         --$pilon_mode $bam
 

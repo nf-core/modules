@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "liftoff"
 description: |
@@ -20,51 +19,66 @@ tools:
       tool_dev_url: "https://github.com/agshumate/Liftoff"
       doi: "10.1093/bioinformatics/bty191"
       licence: ["GPL v3 License"]
+      identifier: biotools:liftoff
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test' ]`
-  - target_fa:
-      type: file
-      description: Target assembly in fasta format
-      pattern: "*.{fsa,fa,fasta}"
-  - ref_fa:
-      type: file
-      description: Reference assembly in fasta format
-      pattern: "*.{fsa,fa,fasta}"
-  - ref_annotation:
-      type: file
-      description: Reference assembly annotations in gtf or gff3 format
-      pattern: "*.{gtf,gff3}"
-  - ref_db:
-      type: file
-      description: |
-        Name of feature database; if not specified, the -g argument must
-        be provided and a database will be built automatically
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - target_fa:
+        type: file
+        description: Target assembly in fasta format (can be gzipped)
+        pattern: "*.{fa,fa.gz,fasta,fasta.gz,fas,fas.gz,fsa,fsa.gz}"
+  - - ref_fa:
+        type: file
+        description: Reference assembly in fasta format (can be gzipped)
+        pattern: "*.{fa,fa.gz,fasta,fasta.gz,fas,fas.gz,fsa,fsa.gz}"
+  - - ref_annotation:
+        type: file
+        description: Reference assembly annotations in gtf or gff3 format
+        pattern: "*.{gtf,gff3}"
+  - - ref_db:
+        type: file
+        description: |
+          Name of feature database; if not specified, the -g argument must
+          be provided and a database will be built automatically
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test' ]`
   - gff3:
-      type: file
-      description: Lifted annotations for the target assembly in gff3 format
-      pattern: "*.gff3"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}.gff3:
+          type: file
+          description: Lifted annotations for the target assembly in gff3 format
+          pattern: "*.gff3"
   - polished_gff3:
-      type: file
-      description: Polished lifted annotations for the target assembly in gff3 format
-      pattern: "*.polished.gff3"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.polished.gff3":
+          type: file
+          description: Polished lifted annotations for the target assembly in gff3 format
+          pattern: "*.polished.gff3"
   - unmapped_txt:
-      type: file
-      description: List of unmapped reference annotations
-      pattern: "*.unmapped.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.unmapped.txt":
+          type: file
+          description: List of unmapped reference annotations
+          pattern: "*.unmapped.txt"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@GallVp"
 maintainers:

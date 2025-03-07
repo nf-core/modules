@@ -17,9 +17,9 @@ nextflow_process {
                 """
                 input[0] = [
                     [id: "test" ],
-                    file(params.test_data['sarscov2']['genome']['all_sites_fas'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
                 ]
-                input[1] = [[id: "genome" ], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+                input[1] = [[id: "genome" ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                 input[2] = []
                 """
 
@@ -56,9 +56,9 @@ nextflow_process {
                 """
                 input[0] = [
                     [id: "test" ],
-                    file(params.test_data['sarscov2']['genome']['all_sites_fas'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
                 ]
-                input[1] = [[id: "genome" ], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+                input[1] = [[id: "genome" ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                 input[2] = "true"
                 """
             }
@@ -95,9 +95,9 @@ nextflow_process {
                 """
                 input[0] = [
                     [id: "test" ],
-                    file(params.test_data['sarscov2']['genome']['all_sites_fas'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
                 ]
-                input[1] = [[id: "genome" ], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+                input[1] = [[id: "genome" ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                 input[2] = false
                 """
 
@@ -119,9 +119,9 @@ nextflow_process {
                 """
                 input[0] = [
                     [id: "test" ],
-                    file(params.test_data['sarscov2']['genome']['all_sites_fas'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
                 ]
-                input[1] = [[id: "genome" ], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+                input[1] = [[id: "genome" ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                 input[2] = true
                 """
 
