@@ -31,9 +31,15 @@ nextflow_process {
         when {
             process {
                 """
+                // Create a directory and copy the FASTA file into it
+                def fasta_file = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                def fasta_dir = file("\${workDir}/fasta_dir")
+                fasta_dir.mkdirs()
+                fasta_file.copyTo(fasta_dir)
+
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    fasta_dir
                 ]
                 input[1] = CHEWBBACA_CREATESCHEMA.out.schema
                 """
@@ -43,11 +49,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.stats },
-                { assert process.out.contigsInfo },
-                { assert process.out.alleles },
-                { assert process.out.log },
-                { assert process.out.versions }
+                { assert path(process.out.stats.get(0).get(1)).exists() },
+                { assert path(process.out.contigsInfo.get(0).get(1)).exists() },
+                { assert path(process.out.alleles.get(0).get(1)).exists() },
+                { assert path(process.out.log.get(0).get(1)).exists() },
+                { assert path(process.out.versions.get(0)).exists() }
             )
         }
     }
@@ -59,9 +65,15 @@ nextflow_process {
         when {
             process {
                 """
+                // Create a directory and copy the FASTA file into it
+                def fasta_file = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                def fasta_dir = file("\${workDir}/fasta_dir")
+                fasta_dir.mkdirs()
+                fasta_file.copyTo(fasta_dir)
+
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    fasta_dir
                 ]
                 input[1] = CHEWBBACA_CREATESCHEMA.out.schema
                 """
@@ -71,11 +83,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.stats },
-                { assert process.out.contigsInfo },
-                { assert process.out.alleles },
-                { assert process.out.log },
-                { assert process.out.versions }
+                { assert path(process.out.stats.get(0).get(1)).exists() },
+                { assert path(process.out.contigsInfo.get(0).get(1)).exists() },
+                { assert path(process.out.alleles.get(0).get(1)).exists() },
+                { assert path(process.out.log.get(0).get(1)).exists() },
+                { assert path(process.out.versions.get(0)).exists() }
             )
         }
     }
