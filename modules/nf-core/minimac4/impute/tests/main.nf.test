@@ -56,7 +56,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.vcf.collect{ [file(it[1]).name, path(it[1]).vcf.summary, path(it[1]).vcf.variantsMD5] },
-                    path(process.out.versions.get(0)).yaml
+                    [versions: path(process.out.versions.get(0)).yaml]
                 ).match() }
             )
         }
@@ -90,7 +90,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.vcf.collect{ [file(it[1]).name, path(it[1]).vcf.summary, path(it[1]).vcf.variantsMD5] },
-                    path(process.out.versions.get(0)).yaml
+                    [versions: path(process.out.versions.get(0)).yaml]
                 ).match() }
             )
         }
@@ -122,7 +122,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.vcf,
-                    path(process.out.versions.get(0)).yaml
+                    [versions: path(process.out.versions.get(0)).yaml]
                 ).match() }
             )
         }
