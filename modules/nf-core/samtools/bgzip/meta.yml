@@ -1,0 +1,59 @@
+name: samtools_bgzip
+description: Produce a FASTA file compressed with the BGZF algorithm
+keywords:
+  - fasta
+  - BGZF
+  - bgzip
+tools:
+  - file:
+      description: |
+        The file command is "a file type guesser", that is, a command-line tool that tells you
+        in words what kind of data a file contains. Unlike most GUI systems, command-line UNIX
+        systems - with this program leading the charge - don't rely on filename extentions to
+        tell you the type of a file, but look at the file's actual contents. This is, of course,
+        more reliable, but requires a bit of I/O.
+      homepage: https://www.darwinsys.com/file/
+      documentation: https://manpages.debian.org/bookworm/file/file.1.en.html
+      licence: ["BSD-2-clause"]
+  - samtools:
+      description: |
+        SAMtools is a set of utilities for interacting with and post-processing
+        short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
+        These files are generated as output by short read aligners like BWA.
+      homepage: http://www.htslib.org/
+      documentation: http://www.htslib.org/doc/samtools.html
+      doi: 10.1093/bioinformatics/btp352
+      licence: ["MIT"]
+      identifier: biotools:samtools
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: FASTA file, compressed or not.
+        pattern: "*.{fa,fa.gz,fasta,fasta.gz}"
+output:
+  - fa:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bgzip.fa.gz":
+          type: file
+          description: |
+            A FASTA file compressed with the BGZF algorithm.  It will be
+            the original file if it was already BGZF-compressed.
+          pattern: "*.{bgzip.fa.gz}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@charles-plessy"
+maintainers:
+  - "@charles-plessy"
