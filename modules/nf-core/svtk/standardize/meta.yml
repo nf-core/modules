@@ -16,31 +16,36 @@ tools:
       licence: ["MIT"]
       identifier: ""
 input:
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - vcf:
-        type: file
-        description: A gzipped VCF file to be standardized
-        pattern: "*.vcf.gz"
-  - - fasta_fai:
-        type: file
-        description: Optional fasta index file that specifies the contigs to be used
-          in the VCF header (defaults to all contigs of GRCh37)
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', caller:"delly" ]
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'test2' ]
+  - input:
+      type: file
+      description: A gzipped VCF file to be standardized
+      pattern: "*.vcf.gz"
+  - fai:
+      type: file
+      description: Optional fasta index file that specifies the contigs to be used
+        in the VCF header (defaults to all contigs of GRCh37)
         pattern: "*.fai"
 output:
-  - standardized_vcf:
+  - vcf:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.std.vcf.gz":
+            e.g. [ id:'test', caller:"delly" ]
+      - "*.vcf.gz":
           type: file
           description: A gzipped version of the standardized VCF file
-          pattern: "*.std.vcf.gz"
+          pattern: "*.vcf.gz"
   - versions:
       - versions.yml:
           type: file
