@@ -24,13 +24,20 @@ process BBMAP_BBNORM {
     input  = meta.single_end ? "in=${fastq.join(',')}" : "in=${fastq[0]} in2=${fastq[1]}"
     output = meta.single_end ? "out=${prefix}.fastq.gz" : "out1=${prefix}_1.nm.fastq.gz out2=${prefix}_2.nm.fastq.gz"
 
+    memory = '-Xmx3g'
+    if ( ! task.memory ) {
+        log.info '[BBNorm]: Available memory not know, defaulting to 3 GiB. Specify process memory requirements to change this.'
+    } else {
+        memory = "-Xmx${Math.round(Math.max(1, Math.floor(task.memory.toGiga() * 0.95)))}g"
+    }
+
     """
     bbnorm.sh \\
         $input \\
         $output \\
         $args \\
         threads=$task.cpus \\
-        -Xmx${Math.round(Math.max(1, Math.floor(task.memory.toGiga() * 0.95)))}g \\
+        $memory \\
         &> ${prefix}.bbnorm.log
 
     cat <<-END_VERSIONS > versions.yml
