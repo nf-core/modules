@@ -1,0 +1,32 @@
+nextflow_process {
+
+    name "Test Process MITOHIFI_FINDMITOREFERENCE"
+    script "../main.nf"
+    process "MITOHIFI_FINDMITOREFERENCE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mitohifi"
+    tag "mitohifi/findmitoreference"
+    tag "mitohifi/findmitoreference"
+
+    test("mitohifi - findmitoreference - homo sapiens") {
+
+        when {
+            process {
+                """
+                input[0] = [[id: "test"], "Homo sapiens"]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
