@@ -16,24 +16,23 @@ tools:
       licence: ["MIT"]
       identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', caller:"delly" ]
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test2' ]
-  - input:
-      type: file
-      description: A gzipped VCF file to be standardized
-      pattern: "*.vcf.gz"
-  - fai:
-      type: file
-      description: Optional fasta index file that specifies the contigs to be used
-        in the VCF header (defaults to all contigs of GRCh37)
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information. Caller can be one of the tools: delly, manta, melt, wham
+          e.g. [ id:'test', caller:"delly" ]
+    - input:
+        type: file
+        description: A gzipped VCF file to be standardized
+        pattern: "*.vcf.gz"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test2' ]
+    - fai:
+        type: file
+        description: Optional fasta index file that specifies the contigs to be used in the VCF header (defaults to all contigs of GRCh37)
         pattern: "*.fai"
 output:
   - vcf:
