@@ -4,8 +4,8 @@ process METAMDBG_ASM {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/metamdbg:1.0--hdcf5f25_1':
-        'biocontainers/metamdbg:1.0--hdcf5f25_1' }"
+        'https://depot.galaxyproject.org/singularity/metamdbg:1.1--h077b44d_1':
+        'biocontainers/metamdbg:1.1--h077b44d_1' }"
 
     input:
     tuple val(meta), path(reads)
@@ -22,19 +22,15 @@ process METAMDBG_ASM {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    switch(input_type) {
-        case "hifi": input = "--in-hifi ${reads}"; break
-        case "ont" : input = "--in-ont ${reads}" ; break
-        default:
-            error("ERROR: input_type must be one of either 'hifi' or 'ont'.")
-            break
+    if(!(input_type in ["hifi", "ont"])) {
+        error("ERROR: input_type must be one of either 'hifi' or 'ont'.")
     }
     """
     metaMDBG asm \\
         --threads ${task.cpus} \\
         --out-dir . \\
         ${args} \\
-        ${input}
+        --in-${input_type} ${reads}
 
     rm -r tmp/
 

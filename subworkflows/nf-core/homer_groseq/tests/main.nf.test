@@ -72,7 +72,11 @@ nextflow_workflow {
             )
         }
     }
-    test("Test files from tutorial") {
+
+    test("Test files from GROseq tutorial with uniqmap") {
+
+        tag "uniqmap"
+
         config "./bed.config"
 
         when {
@@ -80,11 +84,11 @@ nextflow_workflow {
                 """
                 input[0] = [
                     [ id: 'test' ],
-                    file('ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM340nnn/GSM340901/suppl/GSM340901_lib1_aligned.bed.gz', checkIfExists: true),
-                    file('ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM340nnn/GSM340902/suppl/GSM340902_lib2_aligned.bed.gz', checkIfExists: true),
+                    [file('ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM340nnn/GSM340901/suppl/GSM340901_lib1_aligned.bed.gz', checkIfExists: true),
+                    file('ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM340nnn/GSM340902/suppl/GSM340902_lib2_aligned.bed.gz', checkIfExists: true)],
                 ]
                 input[1] = file('https://hgdownload.soe.ucsc.edu/goldenPath/hg18/chromosomes/chr14.fa.gz', checkIfExists: true)
-                input[2] = []
+                input[2] = file('https://raw.githubusercontent.com/nf-core/test-datasets/nascent/reference/uniqmap.GRCh38_chr21.50nt.zip', checkIfExists: true)
                 """
             }
         }
@@ -97,13 +101,13 @@ nextflow_workflow {
                     path(workflow.out.bed_graph.get(0).get(1)).linesGzip.size(),
                     workflow.out.peaks,
                     workflow.out.bed,
+                    path(workflow.out.bed.get(0).get(1)).readLines()[30],
+                    path(workflow.out.bed.get(0).get(1)).readLines()[32],
                     path(workflow.out.versions.get(0)).yaml,
                 ).match() },
             )
         }
     }
-
-    // TODO Test uniqmap
 
     test("sarscov2 - stub") {
 
