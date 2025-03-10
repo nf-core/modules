@@ -1,0 +1,52 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "fastqdl"
+description: Download FASTQ files from SRA or ENA repositories.
+keywords:
+  - download
+  - ena
+  - fastq
+  - sra
+tools:
+  - "fastqdl":
+      description: "A tool to download FASTQs associated with Study, Experiment, or Run accessions."
+      homepage: "https://github.com/rpetit3/fastq-dl"
+      documentation: "https://github.com/rpetit3/fastq-dl"
+      tool_dev_url: "https://github.com/rpetit3/fastq-dl"
+      doi: "10.5281/zenodo.13957735"
+      licence: ["MIT"]
+      identifier: biotools:fastq-dl
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+
+    - accession:
+        type: string
+        description: ENA/SRA accession to query
+
+output:
+  - db:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - test:
+          type: directory
+          description: Directory containing FASTQ files
+          pattern: "*"
+
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@camlloyd"
+maintainers:
+  - "@camlloyd"
