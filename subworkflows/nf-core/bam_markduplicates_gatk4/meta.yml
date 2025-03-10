@@ -1,0 +1,59 @@
+# yaml-language-server: $schema=htps://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "bam_markduplicates_gatk4"
+description: 
+keywords:
+  - bam
+  - fasta
+  - cram
+  - intervals
+components:
+  - cram_qc_mosdepth_samtools
+  - gatk4/markduplicates
+input:
+  - ch_bam:
+      type: file
+      description: |
+        The input channel containing the BAM/CRAM/SAM files
+        Structure: [ val(meta), path(bam) ]
+      pattern: "*.{bam/cram/sam}"
+  - fasta:
+      type: file
+      description: |
+        Channel containing fasta files
+        Structure: [ path(fasta) ]
+      pattern: "*.fasta"
+  - fasta-index:
+      type: file
+      description: |
+        Channel containing fasta index files
+        Structure: [ path(fasta_fai) ]
+      pattern: "*.fasta.fai"
+  - intervals:
+      type: file
+      description: |
+        Channel containing intervals bed file
+        Structure: [ path(intervals_bed) ]
+      pattern: "*.bed"
+output:
+  - :m
+      type: file
+      description: |
+        Channel containing cram files
+        Structure: [ val(meta), path(cram) ]
+      pattern: "*.cram"
+  - reports:
+      type: file
+      description: |
+        Channel containing reports
+        Structure: [ val(meta) ]
+      pattern: "*.*"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@shounak1990"
+maintainers:
+  - "@shounak1990"
