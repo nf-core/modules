@@ -1,0 +1,90 @@
+nextflow_process {
+
+    name "Test Process SOMALIER_ANCESTRY"
+    config "./nextflow.test.config"
+    script "../main.nf"
+    process "SOMALIER_ANCESTRY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "somalier"
+    tag "somalier/extract"
+    tag "somalier/ancestry"
+    tag "untar"
+
+    setup {
+        run("UNTAR") {
+            script "../../../untar/main.nf"
+            params {
+                module_args = "--wildcards '*.somalier'"
+            }
+
+            process {
+                """
+                labelled_somalier_tar = file("https://zenodo.org/record/3479773/files/1kg.somalier.tar.gz")
+                input[0] = [[id:"1kg"],labelled_somalier_tar]
+                """
+            }
+        }
+    }
+
+    test("test_somalier_ancestry") {
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                whole_genome_sommalier = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/somalier/whole_genome.somalier", checkIfExists: true)
+                labels = file("https://github.com/brentp/somalier/raw/73db124d3fe9febe3a53787707554f863595b48f/scripts/ancestry-labels-1kg.tsv", checkIfExists: true)
+
+                ch_labels = Channel.of([[id:"1kg"], labels])
+                ch_whole_genome_somalier = Channel.of([[id:"test"], whole_genome_sommalier])
+
+                input[0] = Channel.of([[id:"test"],whole_genome_sommalier])
+                input[1] = ch_labels.join(UNTAR.out.untar)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.tsv[0][1]).text.contains('AFR	AFR'),
+                    path(process.out.html[0][1]).text.contains('"ancestry_label":"AMR"'),
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+
+    test("test_somalier_ancestry -- stub") {
+        options '-stub'
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                whole_genome_sommalier = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/somalier/whole_genome.somalier", checkIfExists: true)
+                labels = file("https://github.com/brentp/somalier/raw/73db124d3fe9febe3a53787707554f863595b48f/scripts/ancestry-labels-1kg.tsv", checkIfExists: true)
+
+                ch_labels = Channel.of([[id:"1kg"], labels])
+                ch_whole_genome_somalier = Channel.of([[id:"test"], whole_genome_sommalier])
+
+                input[0] = Channel.of([[id:"test"],whole_genome_sommalier])
+                input[1] = ch_labels.join(UNTAR.out.untar)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
