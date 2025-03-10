@@ -3,8 +3,8 @@ process BBMAP_REPAIR {
     label 'process_single'
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bbmap:39.13--he5f24ec_1':
-        'biocontainers/bbmap:39.13--he5f24ec_1' }"
+        'https://depot.galaxyproject.org/singularity/bbmap:39.17--he5f24ec_0':
+        'biocontainers/bbmap:39.17--he5f24ec_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -37,7 +37,7 @@ process BBMAP_REPAIR {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        repair.sh: \$(repair.sh --version |& sed '2!d ; s/BBMap version //')
+        bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
     END_VERSIONS
     """
 
@@ -51,7 +51,7 @@ process BBMAP_REPAIR {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        repair.sh: \$(repair.sh --version |& sed '2!d ; s/BBMap version //')
+        bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
     END_VERSIONS
     """
 }

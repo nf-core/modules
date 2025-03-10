@@ -4,8 +4,8 @@ process CATPACK_DOWNLOAD {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/cat:6.0.1--hdfd78af_0'
-        : 'biocontainers/cat:6.0.1--hdfd78af_0'}"
+        ? 'https://depot.galaxyproject.org/singularity/cat:6.0.1--hdfd78af_1'
+        : 'biocontainers/cat:6.0.1--hdfd78af_1'}"
 
     input:
     tuple val(meta), val(db)
@@ -37,6 +37,12 @@ process CATPACK_DOWNLOAD {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    echo "CAT_pack \\
+        download \\
+        ${args} \\
+        --db ${db}
+        -o ${prefix}/"
+
     mkdir ${prefix}/
 
     cat <<-END_VERSIONS > versions.yml

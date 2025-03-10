@@ -1,32 +1,3 @@
-// Input data
-def path = "file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/quilt/"
-def bam  = "[${path}NA12878.haplotagged.1.0.bam', checkIfExists: true), ${path}NA12878.ont.1.0.bam', checkIfExists: true), ${path}NA12878.illumina.1.0.bam', checkIfExists: true)]"
-def bai  = "[${path}NA12878.haplotagged.1.0.bam.bai', checkIfExists: true), ${path}NA12878.ont.1.0.bam.bai', checkIfExists: true),${path}NA12878.illumina.1.0.bam.bai', checkIfExists: true)]"
-
-// Input reference data
-def reference_haplotype_file = "file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/quilt/ALL.chr20_GRCh38.genotypes.20170504.chr20.2000001.2100000.noNA12878.hap.gz', checkIfExists: true)"
-def reference_legend_file    = "file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/quilt/ALL.chr20_GRCh38.genotypes.20170504.chr20.2000001.2100000.noNA12878.legend.gz', checkIfExists: true)"
-def genetic_map_file         = "file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/quilt/CEU-chr20-final.b38.txt.gz', checkIfExists: true)"
-
-// Parameters
-def chr           = "'chr20'"
-def regions_start = "2000001"
-def regions_end   = "2100000"
-def ngen          = "100"
-def buffer        = "10000"
-
-
-// (optional) input truth data
-def posfile   = "file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/quilt/ALL.chr20_GRCh38.genotypes.20170504.chr20.2000001.2100000.posfile.txt', checkIfExists: true)"
-def phasefile = "file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/quilt/ALL.chr20_GRCh38.genotypes.20170504.chr20.2000001.2100000.phasefile.txt', checkIfExists: true)"
-def posfile_phasefile = "[[ id:'test', chr:'chr20' ], [$posfile], [$phasefile]]"
-def fasta = "[[id:'test'], []]"
-
-// Input channel quilt
-def ch_input = "[ id:'test', chr:'chr20' ], $bam, $bai, [], [$reference_haplotype_file], [$reference_legend_file], $chr, $regions_start, $regions_end, $ngen, $buffer"
-def ch_input_gmap = "[$ch_input, [$genetic_map_file]]"
-def ch_input_nogmap = "[$ch_input, []]"
-
 nextflow_process {
 
     name "Test Process QUILT"
@@ -37,57 +8,79 @@ nextflow_process {
     tag "modules_nfcore"
     tag "quilt/quilt"
     tag "quilt"
+    tag "bcftools/query"
+    tag "gawk"
+
+    config "./nextflow.config"
 
     test("QUILT") {
-        config ("./quilt_default.config")
-        when {
-            process {
-                """
-                input[0] = $ch_input_gmap
-                input[1] = $posfile_phasefile
-                input[2] = $fasta
-                """
+        setup {
+            run("BCFTOOLS_QUERY") {
+                script "../../../bcftools/query/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: 'NA12878'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi', checkIfExists: true)
+                    ]
+                    input[1] = []
+                    input[2] = []
+                    input[3] = []
+                    """
+                }
+            }
+
+            run("GAWK", alias: "GAWK_NAME") {
+                script "../../../gawk/main.nf"
+                process {
+                    """
+                    program  = Channel.of('BEGIN{print "NA12878"} {print}').collectFile(name: 'program.txt', newLine: true)
+                    input[0] = BCFTOOLS_QUERY.out.output
+                    input[1] = program
+                    input[2] = false
+                    """
+                }
+            }
+
+            run("GAWK", alias: "GAWK_POSFILE") {
+                script "../../../gawk/main.nf"
+                process {
+                    """
+                    program  = Channel.of('BEGIN{OFS=\"\\t\"} NR>1 {split(\$1, a, \"[:-_]\"); print a[1],\$2,\$3,\$4}').collectFile(name: 'program.txt', newLine: true)
+                    input[0] = [
+                        [id: 'NA12878'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.legend.gz', checkIfExists: true)
+                    ]
+                    input[1] = program
+                    input[2] = false
+                    """
+                }
             }
         }
 
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
-
-    }
-
-    test("QUILT no optional files") {
-        config ("./quilt_default.config")
         when {
-            process {
-                """
-                input[0] = $ch_input_nogmap
-                input[1] = [[id: null], [], []]
-                input[2] = $fasta
-                """
+            params{
+                quilt_args = "--save_prepared_reference=TRUE --make_plots=TRUE --seed=1"
+                bcftools_query_args = "-f '[%GT]\\n'"
+                bcftools_query_suffix = "genfile.txt"
+                gawk_posfile_suffix = "posfile.txt"
+                gawk_name_suffix = "genfile.name.txt"
             }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
-
-    }
-
-    test("QUILT optional output") {
-        config ("./quilt_optional.config")
-        when {
             process {
                 """
-                input[0] = $ch_input_gmap
-                input[1] = $posfile_phasefile
-                input[2] = $fasta
+                input[0] = Channel.of([
+                    [ id:'NA12878', chr:'chr22' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam.bai', checkIfExists: true),
+                    [], [],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.hap.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.legend.gz', checkIfExists: true)
+                ])
+                .combine(GAWK_POSFILE.out.output.map{ it[1] })
+                .combine(GAWK_NAME.out.output.map{ it[1] })
+                .combine(Channel.of([[], "chr22", "16570000", "16610000", "100", "10000", []]))
+                input[1] = [[id: 'GRCh38'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
                 """
             }
         }
@@ -99,23 +92,72 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.vcf + process.out.tbi +
-                    list.sort() +
-                    process.out.rdata + process.out.versions
+                    process.out.vcf,
+                    process.out.tbi,
+                    list.sort(),
+                    process.out.rdata,
+                    process.out.versions,
+                    process.out.vcf.collect{ path(it[1]).vcf.header.getGenotypeSamples().sort() },
+                    process.out.vcf.collect{ path(it[1]).vcf.variantsMD5 }
                 ).match() }
             )
         }
-
     }
 
-    test("QUILT no seed") {
-        config ("./quilt_noseed.config")
+    test("QUILT - stub") {
+        options '-stub'
         when {
+            params{
+                quilt_args = "--save_prepared_reference=TRUE --make_plots=TRUE"
+            }
             process {
                 """
-                input[0] = $ch_input_gmap
-                input[1] = $posfile_phasefile
-                input[2] = $fasta
+                input[0] = Channel.of([
+                    [ id:'NA12878', chr:'chr22' ],
+                    [], [], [], [], [], [], [], [],
+                    [], "chr22", "16570000", "16610000", "100", "10000", []
+                ])
+                input[1] = [[id: 'GRCh38'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            def dir = new File(process.out.plots[0][1])
+            def list = []
+            dir.eachFileRecurse { file -> list << file.getName() }
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.vcf,
+                    process.out.tbi,
+                    list.sort(),
+                    process.out.rdata,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("QUILT no optional files") {
+        when {
+            params{
+                quilt_args = "--seed=1"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', chr:'chr22' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam.bai', checkIfExists: true),
+                    [], [],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.hap.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.legend.gz', checkIfExists: true),
+                    [], [], [],
+                    "chr22", "16570000", "16610000", "100", "10000",
+                    []
+                ]
+                input[1] = [[id: null], []]
                 """
             }
         }
@@ -123,39 +165,50 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.vcf,
+                    process.out.tbi,
+                    process.out.rdata,
+                    process.out.versions,
+                    process.out.vcf.collect{ path(it[1]).vcf.header.getGenotypeSamples().sort() },
+                    process.out.vcf.collect{ path(it[1]).vcf.variantsMD5 }
+                ).match() }
             )
         }
-
     }
 
-    test("QUILT with bamlist") {
-        config ("./quilt_default.config")
-        tag "test"
+    test("QUILT with bamlist and renaming") {
         when {
+            params{
+                quilt_args = "--seed=1"
+            }
             process {
                 """
                 bamlist = Channel.of(
-                    "NA12878.illumina.1.0.bam",
-                    "NA12878.ont.1.0.bam",
-                    "NA12878.haplotagged.1.0.bam"
+                    "NA12878.chr22.1X.bam",
                 ).collectFile(name : 'bamlist.txt', newLine : true)
+
+                bamnames = Channel.of(
+                    "Mysample1",
+                ).collectFile(name : 'bamnames.txt', newLine : true)
 
                 ch_input = Channel.of([
                     [ id:'test', chr:'chr20' ],
-                    $bam, $bai
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam.bai', checkIfExists: true)
                 ])
                 .combine(bamlist)
-                .map { map, bam, bai, bamlist -> [
-                    map, bam, bai, bamlist,
-                    [$reference_haplotype_file], [$reference_legend_file],
-                    $chr, $regions_start, $regions_end, $ngen, $buffer,
-                    [$genetic_map_file]
-                ]}
+                .combine(bamnames)
+                .combine(Channel.of([
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.hap.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.legend.gz', checkIfExists: true),
+                    [], [], [],
+                    "chr22", "16570000", "16610000", "100", "10000",
+                    []
+                ]))
 
                 input[0] = ch_input
-                input[1] = $posfile_phasefile
-                input[2] = $fasta
+                input[1] = [[id: null], []]
                 """
             }
         }
@@ -163,10 +216,15 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.vcf,
+                    process.out.tbi,
+                    process.out.rdata,
+                    process.out.versions,
+                    process.out.vcf.collect{ path(it[1]).vcf.header.getGenotypeSamples().sort() },
+                    process.out.vcf.collect{ path(it[1]).vcf.variantsMD5 }
+                ).match() }
             )
         }
-
     }
-
 }
