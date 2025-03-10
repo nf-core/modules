@@ -23,8 +23,7 @@ process CLAIR3 {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def clair3_command = workflow.containerEngine ? "/opt/bin/run_clair3.sh" : "run_clair3.sh"
-
+    
     """
     run_clair3.sh \\
         --bam_fn=$bam \\
