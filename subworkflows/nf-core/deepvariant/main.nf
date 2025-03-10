@@ -22,10 +22,19 @@ workflow DEEPVARIANT {
 
     // Input to postprocessing step needs both the gvcfs from MAKEEXAMPLES and the variant
     // calls from CALLVARIANTS. Joining on meta, which is assumed to be unique.
+    ch_intervals = ch_input.map { meta, input, index, intervals -> [ meta, intervals ] }
+
     ch_postproc_input = DEEPVARIANT_CALLVARIANTS.out.call_variants_tfrecords.join(
         DEEPVARIANT_MAKEEXAMPLES.out.gvcf,
         failOnMismatch: true
+    ).join(
+        DEEPVARIANT_MAKEEXAMPLES.out.small_model_calls,
+        failOnMismatch: true
+    ).join(
+        ch_intervals,
+        failOnMismatch: true
     )
+
     DEEPVARIANT_POSTPROCESSVARIANTS(
         ch_postproc_input,
         ch_fasta,

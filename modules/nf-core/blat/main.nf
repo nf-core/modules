@@ -4,8 +4,8 @@ process BLAT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/blat:36--0':
-        'biocontainers/blat:36--0' }"
+        'https://depot.galaxyproject.org/singularity/ucsc-blat:472--h9b8f530_0':
+        'biocontainers/ucsc-blat:472--h664eb37_1' }"
 
     input:
     tuple val(meta) , path(query)
