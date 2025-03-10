@@ -8,7 +8,7 @@ process MINIMAC4_COMPRESSREF {
         'biocontainers/minimac4:4.1.6--hcb620b3_1' }"
 
     input:
-    tuple val(meta), path(ref), path(ref_index)
+    tuple val(meta), path(ref), path(ref_index) // Reference index is autodetected from reference file name
 
     output:
     tuple val(meta), path("*.msav"), emit: msav
