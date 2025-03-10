@@ -12,33 +12,36 @@ tools:
       tool_dev_url: https://github.com/open2c/cooler
       doi: "10.1093/bioinformatics/btz540"
       licence: ["BSD-3-Clause"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - cool:
-      type: file
-      description: Path to COOL file
-      pattern: "*.{cool,mcool}"
-  - resolution:
-      type: integer
-      description: Resolution
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - cool:
+        type: file
+        description: Path to COOL file
+        pattern: "*.{cool,mcool}"
+    - resolution:
+        type: integer
+        description: Resolution
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - bedpe:
-      type: file
-      description: Output text file
-      pattern: "*.bedpe"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bedpe":
+          type: file
+          description: Output text file
+          pattern: "*.bedpe"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jianhong"
   - "@muffato"

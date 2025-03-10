@@ -4,8 +4,8 @@ process CHECKM_LINEAGEWF {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/checkm-genome:1.2.2--pyhdfd78af_0' :
-        'biocontainers/checkm-genome:1.2.2--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/checkm-genome:1.2.3--pyhdfd78af_1' :
+        'biocontainers/checkm-genome:1.2.3--pyhdfd78af_1' }"
 
     input:
     tuple val(meta), path(fasta, stageAs: "input_bins/*")
@@ -22,22 +22,34 @@ process CHECKM_LINEAGEWF {
     task.ext.when == null || task.ext.when
 
     script:
-    def args  = task.ext.args   ?: ''
-    prefix    = task.ext.prefix ?: "${meta.id}"
-    checkm_db = db ? "export CHECKM_DATA_PATH=${db}" : ""
+    def args      = task.ext.args   ?: ''
+    def checkm_db = db ? "export CHECKM_DATA_PATH=${db}" : ""
+    prefix        = task.ext.prefix ?: "${meta.id}"
     """
-    $checkm_db
+    ${checkm_db}
 
     checkm \\
         lineage_wf \\
-        -t $task.cpus \\
+        -t ${task.cpus} \\
         -f ${prefix}.tsv \\
         --tab_table \\
-        --pplacer_threads $task.cpus \\
-        -x $fasta_ext \\
-        $args \\
+        --pplacer_threads ${task.cpus} \\
+        -x ${fasta_ext} \\
+        ${args} \\
         input_bins/ \\
-        $prefix
+        ${prefix}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        checkm: \$( checkm 2>&1 | grep '...:::' | sed 's/.*CheckM v//;s/ .*//' )
+    END_VERSIONS
+    """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir ${prefix}/
+    touch ${prefix}/lineage.ms ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

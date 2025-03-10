@@ -1,0 +1,71 @@
+nextflow_process {
+
+    name "Test Process CRISPRCLEANR_NORMALIZE"
+    script "../main.nf"
+    process "CRISPRCLEANR_NORMALIZE"
+
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "crisprcleanr"
+    tag "crisprcleanr/normalize"
+
+
+    test("homo_sapiens - [crispr_functional_counts, crispr_functional_library]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/tsv/functional_genomics_counts.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/tsv/library_functional_genomics.tsv', checkIfExists: true)
+                ]
+                input[1] = 30
+                input[2] = 5
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert file(process.out.norm_count_file[0][1]).text.contains("sgRNA") },
+                { assert snapshot(
+                    file(process.out.norm_count_file[0][1]).name,
+                    process.out.versions
+                    ).match()
+                }
+            )
+
+        }
+
+    }
+
+    test("homo_sapiens - [crispr_functional_counts, crispr_functional_library] - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/tsv/functional_genomics_counts.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/tsv/library_functional_genomics.tsv', checkIfExists: true)
+                ]
+                input[1] = 30
+                input[2] = 5
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+
+        }
+
+    }
+
+}

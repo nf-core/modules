@@ -1,0 +1,116 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTA_GXF_BUSCO_PLOT"
+    script "../main.nf"
+    workflow "FASTA_GXF_BUSCO_PLOT"
+    config './nextflow.config'
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fasta_gxf_busco_plot"
+    tag "busco"
+    tag "busco/busco"
+    tag "busco/generateplot"
+    tag "gffread"
+
+    test("candidatus_portiera_aleyrodidarum - bacteroides_fragilis - genome") {
+
+        when {
+
+            params {
+                extract_proteins_args = '-y'
+            }
+
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists: true)
+                    ],
+                    [
+                        [ id:'test2' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                    ]
+                )
+                input[1] = Channel.of(
+                    [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true)
+                    ]
+                )
+                input[2] = 'genome'
+                input[3] = [ 'bacteria_odb10', 'archaea_odb10' ]
+                input[4] = []
+                input[5] = []
+                input[6] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.assembly_batch_summary,
+                    workflow.out.annotation_batch_summary,
+                    workflow.out.versions,
+                    ).match()
+                },
+
+                { assert workflow.out.assembly_png != null },
+                { assert workflow.out.annotation_png != null },
+
+                { assert workflow.out.assembly_short_summaries_json != null },
+                { assert workflow.out.assembly_short_summaries_txt != null },
+                { assert workflow.out.annotation_short_summaries_json != null },
+                { assert workflow.out.annotation_short_summaries_txt != null }
+            )
+        }
+    }
+
+    test("candidatus_portiera_aleyrodidarum - bacteroides_fragilis - genome - stub") {
+
+        options '-stub'
+
+        when {
+
+            params {
+                extract_proteins_args = '-y'
+            }
+
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists: true)
+                    ],
+                    [
+                        [ id:'test2' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                    ]
+                )
+                input[1] = Channel.of(
+                    [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true)
+                    ]
+                )
+                input[2] = 'genome'
+                input[3] = [ 'bacteria_odb10', 'archaea_odb10' ]
+                input[4] = []
+                input[5] = []
+                input[6] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
+}

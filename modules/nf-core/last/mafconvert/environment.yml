@@ -1,7 +1,9 @@
-name: last_mafconvert
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
-  - defaults
+
 dependencies:
-  - bioconda::last=1453
+  - bioconda::last=1608
+  - bioconda::samtools=1.21

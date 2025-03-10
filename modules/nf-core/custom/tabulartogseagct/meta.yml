@@ -1,37 +1,43 @@
 name: "custom_tabulartogseagct"
-description: Convert a TSV or CSV with features by row and observations by column to a GCT format file as consumed by GSEA
+description: Convert a TSV or CSV with features by row and observations by column
+  to a GCT format file as consumed by GSEA
 keywords:
   - gsea
   - gct
   - tabular
 tools:
   - tabulartogseagct:
-      description: "Convert a TSV or CSV with features by row and observations by column to a GCT format file as consumed by GSEA"
+      description: "Convert a TSV or CSV with features by row and observations by column
+        to a GCT format file as consumed by GSEA"
       tool_dev_url: "https://github.com/nf-core/modules/blob/master/modules/nf-core/custom/tabulartogseagct/main.nf"
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing matrix information
-        e.g. [ id:'test' ]
-  - tabular:
-      type: file
-      description: Tabular (e.g. TSV or CSV file) containing a numeric matrix with features (e.g. genes) by row and samples by column.
-      pattern: "*.{tsv,csv}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing matrix information
+          e.g. [ id:'test' ]
+    - tabular:
+        type: file
+        description: Tabular (e.g. TSV or CSV file) containing a numeric matrix with
+          features (e.g. genes) by row and samples by column.
+        pattern: "*.{tsv,csv}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing matrix information
-        e.g. [ id:'test' ]
   - gct:
-      type: file
-      description: GCT format version of input TSV
-      pattern: "*.{gct}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing matrix information
+            e.g. [ id:'test' ]
+      - "*.gct":
+          type: file
+          description: GCT format version of input TSV
+          pattern: "*.{gct}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@pinin4fjords"
 maintainers:

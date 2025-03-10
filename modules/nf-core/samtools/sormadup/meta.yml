@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "samtools_sormadup"
 description: Collate/Fixmate/Sort/Markdup SAM/BAM/CRAM file
@@ -23,6 +22,7 @@ tools:
       doi: 10.1093/bioinformatics/btp352
       licence: ["MIT"]
       args_id: "$args"
+      identifier: biotools:samtools
   - samtools_collate:
       description: |
         SAMtools is a set of utilities for interacting with and post-processing
@@ -33,6 +33,7 @@ tools:
       doi: 10.1093/bioinformatics/btp352
       licence: ["MIT"]
       args_id: "$args2"
+      identifier: biotools:samtools
   - samtools_fixmate:
       description: |
         SAMtools is a set of utilities for interacting with and post-processing
@@ -43,6 +44,7 @@ tools:
       doi: 10.1093/bioinformatics/btp352
       licence: ["MIT"]
       args_id: "$args3"
+      identifier: biotools:samtools
   - samtools_sort:
       description: |
         SAMtools is a set of utilities for interacting with and post-processing
@@ -53,6 +55,7 @@ tools:
       doi: 10.1093/bioinformatics/btp352
       licence: ["MIT"]
       args_id: "$args4"
+      identifier: biotools:samtools
   - samtools_markdup:
       description: |
         SAMtools is a set of utilities for interacting with and post-processing
@@ -63,56 +66,82 @@ tools:
       doi: 10.1093/bioinformatics/btp352
       licence: ["MIT"]
       args_id: "$args5"
+      identifier: biotools:samtools
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - input:
-      type: file
-      description: BAM/CRAM/SAM files
-      pattern: "*.{bam,cram,sam}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'genome' ]
-  - fasta:
-      type: file
-      description: Reference genome file
-      pattern: "*.{fasta,fa,fna}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input:
+        type: file
+        description: BAM/CRAM/SAM files
+        pattern: "*.{bam,cram,sam}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: Reference genome file
+        pattern: "*.{fasta,fa,fna}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - bam:
-      type: file
-      description: Sorted and duplicate marked BAM file
-      pattern: "*.bam"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bam":
+          type: file
+          description: Sorted and duplicate marked BAM file
+          pattern: "*.bam"
   - cram:
-      type: file
-      description: Sorted and duplicate marked CRAM file
-      pattern: "*.cram"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.cram":
+          type: file
+          description: Sorted and duplicate marked CRAM file
+          pattern: "*.cram"
   - csi:
-      type: file
-      description: Sorted and duplicate marked BAM index file
-      pattern: "*.csi"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.csi":
+          type: file
+          description: Sorted and duplicate marked BAM index file
+          pattern: "*.csi"
   - crai:
-      type: file
-      description: Sorted and duplicate marked CRAM index file
-      pattern: "*.crai"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.crai":
+          type: file
+          description: Sorted and duplicate marked CRAM index file
+          pattern: "*.crai"
   - metrics:
-      type: file
-      description: Duplicate metrics file
-      pattern: "*.metrics"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.metrics":
+          type: file
+          description: Duplicate metrics file
+          pattern: "*.metrics"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@matthdsm"
 maintainers:

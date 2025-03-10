@@ -11,28 +11,35 @@ tools:
         or bedGraph format) to binary big wig format
       homepage: http://www.genome.ucsc.edu/goldenPath/help/bigWig.html
       licence: ["varies; see http://genome.ucsc.edu/license"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - wig:
-      type: file
-      description: wig file
-      pattern: "*.{wig}"
-  - chromsizes:
-      type: file
-      description: chromosome sizes file
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - wig:
+        type: file
+        description: wig file
+        pattern: "*.{wig}"
+  - - sizes:
+        type: file
+        description: Chromosome sizes file
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - bw:
-      type: file
-      description: bigwig file
-      pattern: "*.{bw}"
+      - meta:
+          type: file
+          description: bigwig file
+          pattern: "*.{bw}"
+      - "*.bw":
+          type: file
+          description: bigwig file
+          pattern: "*.{bw}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jianhong"
   - "@projectoriented"

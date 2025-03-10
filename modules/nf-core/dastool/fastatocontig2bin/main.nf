@@ -4,8 +4,8 @@ process DASTOOL_FASTATOCONTIG2BIN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/das_tool:1.1.6--r42hdfd78af_0' :
-        'biocontainers/das_tool:1.1.6--r42hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/das_tool:1.1.7--r44hdfd78af_1' :
+        'biocontainers/das_tool:1.1.7--r44hdfd78af_1' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -32,6 +32,17 @@ process DASTOOL_FASTATOCONTIG2BIN {
         -i . \\
         -e $file_extension \\
         > ${prefix}.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        dastool: \$( DAS_Tool --version 2>&1 | grep "DAS Tool" | sed 's/DAS Tool //' )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

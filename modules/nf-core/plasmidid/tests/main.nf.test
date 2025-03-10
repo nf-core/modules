@@ -1,0 +1,46 @@
+
+nextflow_process {
+
+    name "Test Process PLASMIDID"
+    script "../main.nf"
+    process "PLASMIDID"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "plasmidid"
+
+    test("test-plasmidid") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+				]
+				input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					file(process.out.data[0][1]).name,
+					file(process.out.database[0][1]).name,
+					file(process.out.images[0][1]).name,
+					file(process.out.kmer[0][1]).name,
+					file(process.out.logs[0][1]).name,
+					process.out.fasta_files,
+					process.out.html,
+					process.out.tab,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

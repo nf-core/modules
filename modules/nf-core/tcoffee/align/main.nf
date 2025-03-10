@@ -4,13 +4,13 @@ process TCOFFEE_ALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-a76a981c07359a31ff55b9dc13bd3da5ce1909c1:84c8f17f1259b49e2f7783b95b7a89c6f2cb199e-0':
-        'biocontainers/mulled-v2-a76a981c07359a31ff55b9dc13bd3da5ce1909c1:84c8f17f1259b49e2f7783b95b7a89c6f2cb199e-0' }"
+        'oras://community.wave.seqera.io/library/t-coffee_tmalign_pigz:f861f2f8f266c2fe':
+        'community.wave.seqera.io/library/t-coffee_tmalign_pigz:be7dac2ae6aba380' }"
 
     input:
     tuple val(meta) ,  path(fasta)
     tuple val(meta2),  path(tree)
-    tuple val(meta3),  path(template), path(accessory_informations)
+    tuple val(meta3),  path(template), path(accessory_information)
     val(compress)
 
     output:
@@ -27,17 +27,18 @@ process TCOFFEE_ALIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def tree_args = tree ? "-usetree $tree" : ""
     def template_args = template ? "-template_file $template" : ""
-    def write_output = compress ? " >(pigz -cp ${task.cpus} > ${prefix}.aln.gz)" : "> ${prefix}.aln"
-    // using >() is necessary to preserve the tcoffee return value,
-    // so nextflow knows to display an error when it failed
+    def outfile = compress ? "stdout" : "${prefix}.aln"
+    def write_output = compress ? " | pigz -cp ${task.cpus} > ${prefix}.aln.gz" : ""
     """
     export TEMP='./'
+    export TMP_4_TCOFFEE="./"
+    export HOME="./"
     t_coffee -seq ${fasta} \
         $tree_args \
         $template_args \
         $args \
         -thread ${task.cpus} \
-        -outfile stdout \
+        -outfile $outfile \
         $write_output
 
     cat <<-END_VERSIONS > versions.yml
@@ -50,6 +51,10 @@ process TCOFFEE_ALIGN {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    # Otherwise, tcoffee will crash when calling its version
+    export TEMP='./'
+    export TMP_4_TCOFFEE="./"
+    export HOME="./"
     touch ${prefix}.aln${compress ? '.gz':''}
 
     cat <<-END_VERSIONS > versions.yml

@@ -13,14 +13,14 @@ nextflow_process {
 
    test("AMPlify predict (with Prodigal) - sarscov2 - contigs.fasta") {
 
-        setup { 
+        setup {
             run("PRODIGAL") {
                 script "../../../prodigal/main.nf"
                 process {
                     """
                     input[0] = Channel.fromList([
                         tuple([ id:'test', single_end:false ], // meta map
-                        file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true))
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true))
                     ])
                     input[1] = "gbk"
                     """
@@ -31,7 +31,7 @@ nextflow_process {
                 process {
                     """
                     input[0] =  PRODIGAL.out.amino_acid_fasta
-                    
+
                     """
                 }
             }
@@ -55,7 +55,7 @@ nextflow_process {
 
     }
 
-    test("AMPlify predict - stub") {
+    test("AMPlify predict (with Prodigal) - sarscov2 - contigs.fasta - stub") {
 
         options "-stub"
 

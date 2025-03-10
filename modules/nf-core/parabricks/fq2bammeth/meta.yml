@@ -1,0 +1,95 @@
+name: "parabricks_fq2bammeth"
+description: VIDIA Clara Parabricks GPU-accelerated fast, accurate algorithm for mapping methylated DNA sequence reads to a reference genome, performing local alignment, and producing alignment for different parts of the query sequence
+keywords:
+  - align
+  - sort
+  - bqsr
+  - duplicates
+  - bwameth
+tools:
+  - "parabricks":
+      description: "NVIDIA Clara Parabricks GPU-accelerated genomics tools"
+      homepage: "https://www.nvidia.com/en-us/clara/genomics/"
+      documentation: "https://docs.nvidia.com/clara/parabricks/latest/index.html"
+      licence: ["custom"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: fastq.gz files
+        pattern: "*.fastq.gz"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing fasta information
+    - fasta:
+        type: file
+        description: reference fasta file - must be unzipped
+        pattern: "*.fasta"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing index information
+    - index:
+        type: file
+        description: reference BWA index
+        pattern: "*.{amb,ann,bwt,pac,sa}"
+  - - known_sites:
+        type: file
+        description: (optional) known sites file(s) for calculating BQSR. markdups must
+          be true to perform BQSR.
+        pattern: "*.vcf.gz"
+output:
+  - bam:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bam":
+          type: file
+          description: Sorted BAM file
+          pattern: "*.bam"
+  - bai:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bai":
+          type: file
+          description: index corresponding to sorted BAM file
+          pattern: "*.bai"
+  - qc_metrics:
+      - qc_metrics:
+          type: directory
+          description: (optional) optional directory of qc metrics
+          pattern: "qc_metrics"
+  - bqsr_table:
+      - "*.table":
+          type: file
+          description: (optional) table from base quality score recalibration calculation,
+            to be used with parabricks/applybqsr
+          pattern: "*.table"
+  - duplicate_metrics:
+      - duplicate-metrics.txt:
+          type: file
+          description: (optional) metrics calculated from marking duplicates in the bam
+            file
+          pattern: "*-duplicate-metrics.txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@sateeshperi"
+maintainers:
+  - "@sateeshperi"
+  - "@gallvp"

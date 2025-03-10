@@ -1,9 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
-name: "fastavalidator"
 channels:
   - conda-forge
   - bioconda
-  - defaults
 dependencies:
-  - "bioconda::py_fasta_validator=0.6"
+  - bioconda::py_fasta_validator=0.6

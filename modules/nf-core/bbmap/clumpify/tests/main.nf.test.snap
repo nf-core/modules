@@ -1,0 +1,49 @@
+{
+    "test-bbmap-clumpify-paired-end": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    [
+                        "test_1.clumped.fastq.gz:md5,27e51643262c1ef3905c4be184c3814c",
+                        "test_2.clumped.fastq.gz:md5,c70ab7bbd44d6b6fadd6a1a79ef1648f"
+                    ]
+                ]
+            ],
+            "test.clumpify.log",
+            [
+                "versions.yml:md5,91b47f212a43c3b0072ed764c5292ebd"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-10-19T16:16:59.10822554"
+    },
+    "test-bbmap-clumpify-single-end": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.clumped.fastq.gz:md5,27e51643262c1ef3905c4be184c3814c"
+                ]
+            ],
+            "test.clumpify.log",
+            [
+                "versions.yml:md5,91b47f212a43c3b0072ed764c5292ebd"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-10-19T16:16:36.9005326"
+    }
+}

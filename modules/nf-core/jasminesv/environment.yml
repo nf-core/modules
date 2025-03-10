@@ -1,8 +1,9 @@
-name: jasminesv
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
-  - defaults
+
 dependencies:
-  - bioconda::jasminesv=1.1.5
   - bioconda::htslib=1.15.1
+  - bioconda::jasminesv=1.1.5
