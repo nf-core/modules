@@ -3,7 +3,7 @@ process MITOHIFI_FINDMITOREFERENCE {
     label 'process_single'
 
     // Docker image available at the project github repository
-    container 'ghcr.io/marcelauliano/mitohifi:master'
+    container 'ghcr.io/marcelauliano/mitohifi:3.2.3'
 
     input:
     tuple val(meta), val(species)
