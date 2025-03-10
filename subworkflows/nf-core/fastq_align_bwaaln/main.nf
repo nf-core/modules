@@ -102,11 +102,10 @@ workflow FASTQ_ALIGN_BWAALN {
 
     emit:
     // Note: output channels will contain meta with additional 'id_index' meta
-    // value to allow association of BAM file with the meta.id of input indicies
+    // value to allow association of BAM file with the meta.id of input indices
     bam      = ch_bam_for_emit     // channel: [ val(meta), path(bam) ]
     bai      = ch_bai_for_emit     // channel: [ val(meta), path(bai) ]
     csi      = ch_csi_for_emit     // channel: [ val(meta), path(csi) ]
 
     versions = ch_versions         // channel: [ path(versions.yml) ]
 }
-

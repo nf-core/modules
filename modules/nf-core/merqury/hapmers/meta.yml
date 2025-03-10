@@ -1,0 +1,97 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "merqury_hapmers"
+description: A script to generate hap-mer dbs for trios
+keywords:
+  - genomics
+  - quality check
+  - qc
+  - kmer
+tools:
+  - "merqury":
+      description: "Evaluate genome assemblies with k-mers and more."
+      tool_dev_url: "https://github.com/marbl/merqury"
+      doi: "10.1186/s13059-020-02134-9"
+      licence: ["United States Government Work"]
+      identifier: biotools:merqury
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - child_meryl:
+        type: directory
+        description: Childs' k-mers (all, from WGS reads)
+        pattern: "*.meryl"
+  - - maternal_meryl:
+        type: directory
+        description: Haplotype1 k-mers (all, ex. maternal)
+        pattern: "*.meryl"
+  - - paternal_meryl:
+        type: directory
+        description: Haplotype2 k-mers (all, ex. paternal)
+        pattern: "*.meryl"
+output:
+  - mat_hapmer_meryl:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_mat.hapmer.meryl":
+          type: directory
+          description: Inherited maternal hap-mer dbs
+          pattern: "*_mat.hapmer.meryl"
+  - pat_hapmer_meryl:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_pat.hapmer.meryl":
+          type: directory
+          description: Inherited paternal hap-mer dbs
+          pattern: "*_pat.hapmer.meryl"
+  - inherited_hapmers_fl_png:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_inherited_hapmers.fl.png":
+          type: file
+          description: k-mer distribution of the inherited dbs and cutoffs used to generate
+            hap-mer dbs
+          pattern: "*_inherited_hapmers.fl.png"
+  - inherited_hapmers_ln_png:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_inherited_hapmers.ln.png":
+          type: file
+          description: k-mer distribution of the inherited dbs and cutoffs used to generate
+            hap-mer dbs
+          pattern: "*_inherited_hapmers.ln.png"
+  - inherited_hapmers_st_png:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_inherited_hapmers.st.png":
+          type: file
+          description: k-mer distribution of the inherited dbs and cutoffs used to generate
+            hap-mer dbs
+          pattern: "*_inherited_hapmers.st.png"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@GallVp"
+maintainers:
+  - "@GallVp"

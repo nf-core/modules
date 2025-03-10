@@ -1,0 +1,68 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "mmseqs_contig_taxonomy"
+description: Assign taxonomy to contigs using the MMseqs2 workflow.
+keywords:
+  - metagenomics
+  - database
+  - contigs
+  - mmsesq2
+  - taxonomy
+components:
+  - mmseqs/databases
+  - mmseqs/createdb
+  - mmseqs/taxonomy
+  - mmseqs/createtsv
+input:
+  - contigs:
+      type: file
+      description: |
+        Channel containing each fasta in nucleotide format as a distinct element with meta.
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.{fasta,fa,fna}"
+  - mmseqs_databases:
+      type: string
+      description: |
+        Channel containing a database created by mmseqs2 databases.
+        Structure: [ path(mmseqsdb) ]
+      pattern: "*/mmseqs/database"
+  - databases_id:
+      type: string
+      description: |
+        Channel containing the ID of a database made available by developers of mmseqs2. Please refer to https://github.com/soedinglab/MMseqs2/wiki#downloading-databases for possible IDs to use.
+        Structure: [ val(id) ]
+output:
+  - taxonomy:
+      type: file
+      description: |
+        Channel containing the tab separated file with all assigned taxonomy.
+        Structure: [ val(meta), path(tsv) ]
+      pattern: "*.tsv"
+  - db_mmseqs:
+      type: directory
+      description: |
+        Channel containing the mmseqs database directory. Useful for when the databases is downloaded in the pipeline.
+        Structure: [ path(outputdir) ]
+      pattern: "*/mmseqs_database"
+  - db_taxonomy:
+      type: directory
+      description: |
+        Channel containing the database containing the taxonomic classification for each input fasta file.
+        Structure: [ path(outputdir) ]
+      pattern: "*/sample_taxonomy"
+  - db_contig:
+      type: directory
+      description: |
+        Channel containing the database containing the mmseqs format of each input fasta file.
+        Structure: [ path(outputdir) ]
+      pattern: "*/sample_db"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+
+authors:
+  - "@darcy220606"
+maintainers:
+  - "@darcy220606"

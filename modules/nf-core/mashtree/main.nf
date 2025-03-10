@@ -34,4 +34,17 @@ process MASHTREE {
         mashtree: \$( echo \$( mashtree --version 2>&1 ) | sed 's/^.*Mashtree //' )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.dnd
+    touch ${prefix}.tsv
+
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        mashtree: \$( echo \$( mashtree --version 2>&1 ) | sed 's/^.*Mashtree //' )
+    END_VERSIONS
+    """
 }

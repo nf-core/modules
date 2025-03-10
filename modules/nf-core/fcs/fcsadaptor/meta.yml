@@ -17,47 +17,75 @@ tools:
       homepage: "https://www.ncbi.nlm.nih.gov/data-hub/cgr/data-quality-tools/"
       documentation: "https://github.com/ncbi/fcs/wiki/FCS-adaptor"
       tool_dev_url: "https://github.com/ncbi/fcs"
-      licence: "United States Government Work"
+      licence: ["United States Government Work"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - assembly:
-      type: file
-      description: assembly fasta file
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - assembly:
+        type: file
+        description: assembly fasta file
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - cleaned_assembly:
-      type: file
-      description: Cleaned assembly in fasta format
-      pattern: "*.{cleaned_sequences.fa.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.cleaned_sequences.fa.gz":
+          type: file
+          description: Cleaned assembly in fasta format
+          pattern: "*.{cleaned_sequences.fa.gz}"
   - adaptor_report:
-      type: file
-      description: Report of identified adaptors
-      pattern: "*.{fcs_adaptor_report.txt}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fcs_adaptor_report.txt":
+          type: file
+          description: Report of identified adaptors
+          pattern: "*.{fcs_adaptor_report.txt}"
   - log:
-      type: file
-      description: Log file
-      pattern: "*.{fcs_adaptor.log}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fcs_adaptor.log":
+          type: file
+          description: Log file
+          pattern: "*.{fcs_adaptor.log}"
   - pipeline_args:
-      type: file
-      description: Run arguments
-      pattern: "*.{pipeline_args.yaml}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.pipeline_args.yaml":
+          type: file
+          description: Run arguments
+          pattern: "*.{pipeline_args.yaml}"
   - skipped_trims:
-      type: file
-      description: Skipped trim information
-      pattern: "*.{skipped_trims.jsonl}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.skipped_trims.jsonl":
+          type: file
+          description: Skipped trim information
+          pattern: "*.{skipped_trims.jsonl}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@d4straub"
 maintainers:
   - "@d4straub"
+  - "@gallvp"

@@ -54,7 +54,7 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL){
 #' Install the right CDF for a given cel file
 #'
 #' @param celfile A valid path to a CEL file
-#' @param annotation Boolean indication wheter to install the annotation
+#' @param annotation Boolean indication whether to install the annotation
 #'        package
 #'
 #' @return output The CDF environment or a list detailing the failed locations.
@@ -271,8 +271,8 @@ if (opt\$build_annotation){
 
 # R object for other processes to use
 
-output_prefix <- '$task.ext.prefix'
-saveRDS(eset, file = paste0(output_prefix, 'eset.rds'))
+output_prefix <- '$prefix'
+saveRDS(eset, file = paste0(output_prefix, '_eset.rds'))
 
 # Write matrix
 
@@ -282,7 +282,7 @@ write.table(
         round_dataframe_columns(as.data.frame(exprs(eset))),
         check.names = FALSE
     ),
-    file = paste0(output_prefix, 'matrix.tsv'),
+    file = paste0(output_prefix, '_matrix.tsv'),
     col.names = TRUE,
     row.names = FALSE,
     sep = '\t',

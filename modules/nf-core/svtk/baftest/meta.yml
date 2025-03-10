@@ -9,47 +9,51 @@ keywords:
   - structural variants
 tools:
   - "svtk":
-      description: "Utilities for consolidating, filtering, resolving, and annotating structural variants."
+      description: "Utilities for consolidating, filtering, resolving, and annotating
+        structural variants."
       homepage: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
       documentation: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
       tool_dev_url: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
-      licence: "['MIT']"
+      licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bed:
-      type: file
-      description: A BED file created with `svtk vcf2bed`
-      pattern: "*.bed"
-  - baf:
-      type: file
-      description: A BAF file created with `gatk PrintSVEvidence`
-      pattern: "*.baf.txt.gz"
-  - baf_index:
-      type: file
-      description: The index of the BAF file
-      pattern: "*.baf.txt.gz.tbi"
-  - batch:
-      type: file
-      description: A text file containing information about the sample(s)
-      pattern: "*.txt"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bed:
+        type: file
+        description: A BED file created with `svtk vcf2bed`
+        pattern: "*.bed"
+    - baf:
+        type: file
+        description: A BAF file created with `gatk PrintSVEvidence`
+        pattern: "*.baf.txt.gz"
+    - baf_index:
+        type: file
+        description: The index of the BAF file
+        pattern: "*.baf.txt.gz.tbi"
+    - batch:
+        type: file
+        description: A text file containing information about the sample(s)
+        pattern: "*.txt"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - metrics:
-      type: file
-      description: The results file from the BAF test
-      pattern: "*.metrics"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.metrics":
+          type: file
+          description: The results file from the BAF test
+          pattern: "*.metrics"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

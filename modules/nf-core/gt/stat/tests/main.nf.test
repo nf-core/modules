@@ -1,0 +1,62 @@
+nextflow_process {
+
+    name "Test Process GT_STAT"
+    script "../main.nf"
+    process "GT_STAT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gt"
+    tag "gt/stat"
+
+    test("sarscov2-gff3") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    "##gff-version 3" +
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3', checkIfExists: true).text.toLowerCase()
+                )
+                .collectFile(name: 'sample.gff3', newLine: true)
+                .map { file -> [ [ id:'test' ], file ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert path(process.out.stats[0][1]).text.contains("cdss: 12") }
+            )
+        }
+
+    }
+
+    test("sarscov2-gff3-stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.stats != null }, // md5sum for empty files not allowed by nf-core/tools 2.14.0
+                { assert snapshot(process.out.versions).match("stub_versions") }
+            )
+        }
+
+    }
+
+}

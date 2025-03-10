@@ -1,0 +1,63 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "hmmer_hmmrank"
+description: R script that scores output from multiple runs of hmmer/hmmsearch
+keywords:
+  - hmmer
+  - hmmsearch
+  - rank
+tools:
+  - "hmmer":
+      description: "Biosequence analysis using profile hidden Markov models"
+      homepage: http://hmmer.org/
+      documentation: http://hmmer.org/documentation.html
+      tool_dev_url: https://github.com/EddyRivasLab/hmmer
+      doi: "10.1371/journal.pcbi.1002195"
+      licence: ["BSD"]
+      identifier: ""
+  - "R":
+      description: "A Language and Environment for Statistical Computing"
+      homepage: https://www.r-project.org/
+      documentation: https://www.r-project.org/
+      licence: ["GPL v2"]
+      identifier: ""
+  - "Tidyverse":
+      description: "Tidyverse: R packages for data science"
+      homepage: https://www.tidyverse.org/
+      documentation: https://www.tidyverse.org/
+      tool_dev_url: https://github.com/tidyverse
+      doi: "10.21105/joss.01686"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  # Only when we have meta
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - tblouts:
+        type: file
+        description: table outputs from hmmsearch
+        pattern: "*.tsv.gz"
+output:
+  #Only when we have meta
+  - hmmrank:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.hmmrank.tsv.gz":
+          type: file
+          description: TSV file with ranked hmmer results
+          pattern: "*.hmmrank.tsv.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"

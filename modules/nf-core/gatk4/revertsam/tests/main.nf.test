@@ -1,0 +1,59 @@
+
+nextflow_process {
+
+    name "Test Process GATK4_REVERTSAM"
+    script "../main.nf"
+    process "GATK4_REVERTSAM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gatk4"
+    tag "gatk4/revertsam"
+
+    test("test-gatk4-revertsam") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					bam(process.out.bam[0][1]).getReadsMD5(),
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-gatk4-revertsam-stubs") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

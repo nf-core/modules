@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "gem2_gemindexer"
 description: Create a GEM index from a FASTA file
@@ -9,37 +8,47 @@ keywords:
   - mappability
 tools:
   - "gem2":
-      description: "GEM2 is a high-performance mapping tool. It also provide a unique tool to evaluate mappability."
+      description: "GEM2 is a high-performance mapping tool. It also provide a unique
+        tool to evaluate mappability."
       homepage: "https://paoloribeca.science/gem"
-      licence: "['Custom']"
+      licence: ["Custom"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: A reference FASTA file to index
-      pattern: "*.{fasta,fa,fna}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: A reference FASTA file to index
+        pattern: "*.{fasta,fa,fna}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - gem:
-      type: file
-      description: The created index
-      pattern: "*.gem"
+  - index:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.gem":
+          type: file
+          description: The GEM index file
+          pattern: "*.gem"
   - log:
-      type: file
-      description: The execution log
-      pattern: "*.log"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: The execution log
+          pattern: "*.log"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

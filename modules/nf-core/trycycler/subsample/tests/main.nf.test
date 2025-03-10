@@ -1,0 +1,82 @@
+nextflow_process {
+
+    name "Test Process TRYCYCLER_SUBSAMPLE"
+    script "../main.nf"
+    process "TRYCYCLER_SUBSAMPLE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "trycycler"
+    tag "trycycler/subsample"
+
+    test("candidatus_portiera_aleyrodidarum - default") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/nanopore/fastq/test.fastq.gz', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("candidatus_portiera_aleyrodidarum - stub, ext args") {
+
+        when {
+            config "./config_1.config"
+            process {
+                options "-stub-run"
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/nanopore/fastq/test.fastq.gz', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("candidatus_portiera_aleyrodidarum - stub, no ext args") {
+
+        when {
+            config "./config_2.config"
+            process {
+                options "-stub-run"
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/nanopore/fastq/test.fastq.gz', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

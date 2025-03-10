@@ -1,0 +1,60 @@
+name: "argnorm"
+description: Normalize antibiotic resistance genes (ARGs) using the ARO ontology (developed
+  by CARD).
+keywords:
+  - amr
+  - antimicrobial resistance
+  - arg
+  - antimicrobial resistance genes
+  - genomics
+  - metagenomics
+  - normalization
+  - drug categorization
+tools:
+  - "argnorm":
+      description: "Normalize antibiotic resistance genes (ARGs) using the ARO ontology
+        (developed by CARD)."
+      homepage: "https://argnorm.readthedocs.io/en/latest/"
+      documentation: "https://argnorm.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/BigDataBiology/argNorm"
+      licence: ["MIT"]
+      identifier: biotools:argnorm
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - input_tsv:
+        type: file
+        description: ARG annotation output
+        pattern: "*.tsv"
+  - - tool:
+        type: string
+        description: ARG annotation tool used
+        pattern: "argsoap|abricate|deeparg|resfinder|amrfinderplus"
+  - - db:
+        type: string
+        description: Database used for ARG annotation
+        pattern: "sarg|ncbi|resfinder|deeparg|megares|argannot|resfinderfg"
+output:
+  - tsv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.tsv":
+          type: file
+          description: Normalized argNorm output
+          pattern: "*.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@Vedanth-Ramji"
+maintainers:
+  - "@Vedanth-Ramji"

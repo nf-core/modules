@@ -1,0 +1,71 @@
+name: "sourcepredict"
+description: Classifies and predicts the origin of metagenomic samples
+keywords:
+  - source tracking
+  - metagenomics
+  - machine learning
+tools:
+  - "sourcepredict":
+      description: "Classification and prediction of the origin of metagenomic samples."
+      homepage: "https://github.com/maxibor/sourcepredict"
+      documentation: "https://sourcepredict.readthedocs.io/en/latest/index.html"
+      tool_dev_url: "https://github.com/maxibor/sourcepredict"
+      doi: "10.21105/joss.01540"
+      licence: ["GPL v3-or-later"]
+      identifier: biotools:sourcepredict
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - kraken_parse:
+        type: file
+        description: Sink TAXID count table in csv format
+        pattern: "*.csv"
+
+  - - sources:
+        type: file
+        description: Sources TAXID count table in csv format. Default can be downloaded from
+          https://raw.githubusercontent.com/maxibor/sourcepredict/master/data/modern_gut_microbiomes_sources.csv
+        pattern: "*.csv"
+
+  - - labels:
+        type: file
+        description: Labels for the sources table in csv format. Default can be downloaded from
+          https://raw.githubusercontent.com/maxibor/sourcepredict/master/data/modern_gut_microbiomes_labels.csv
+        pattern: "*.csv"
+
+  - - taxa_sqlite:
+        type: file
+        description: taxa.sqlite file downloaded with ete3 toolkit
+        pattern: "taxa.sqlite"
+
+  - - taxa_sqlite_traverse_pkl:
+        type: file
+        description: taxa.sqlite.traverse.pkl file downloaded with ete3 toolkit
+        pattern: "taxa.sqlite.traverse.pkl"
+
+output:
+  - report:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.sourcepredict.csv":
+          type: file
+          description: Table containing the predicted proportion of each source in each sample
+          pattern: "*.sourcepredict.csv"
+
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@MeriamOs"
+maintainers:
+  - "@MeriamOs"

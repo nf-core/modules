@@ -1,133 +1,140 @@
 {
-    " Test propr/propd using default boxcox permutation - fdr": {
+    "Test propr/propd using default params": {
         "content": [
             [
                 [
                     {
-                        "id": "test"
+                        "id": "treatment_mCherry_hND6_",
+                        "variable": "treatment",
+                        "reference": "mCherry",
+                        "target": "hND6",
+                        "blocking": ""
                     },
-                    "test+theta_d+0.2.fdr.tsv:md5,17e1c382e5f8275e2858a86e98c1aa6c"
+                    "treatment_mCherry_hND6_.propd.genewise.tsv:md5,bdc19a4b7430f248cd332287b630c872"
                 ]
-            ]
+            ],
+            [
+                "versions.yml:md5,f356eb5d430713b086255dfc32b5d6ee"
+            ],
+            "treatment_mCherry_hND6_.propd.genewise.png"
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.4"
         },
-        "timestamp": "2024-04-16T11:55:35.703293"
+        "timestamp": "2025-02-13T11:28:17.523375516"
     },
-    "Test propr/propd using theta_e and boxcox permutation - results": {
+    "Test propr/propd when using Box-cox transformation": {
         "content": [
             [
                 [
                     {
-                        "id": "test"
+                        "id": "treatment_mCherry_hND6_",
+                        "variable": "treatment",
+                        "reference": "mCherry",
+                        "target": "hND6",
+                        "blocking": ""
                     },
-                    "test+theta_e+0.2.propd.tsv:md5,d56fcc7c8ae0b0853ea9ca6ac6484a08"
+                    "treatment_mCherry_hND6_.propd.genewise.tsv:md5,6e8f9c57051a286b85cee317a87c8162"
                 ]
-            ]
+            ],
+            [
+                "versions.yml:md5,f356eb5d430713b086255dfc32b5d6ee"
+            ],
+            "treatment_mCherry_hND6_.propd.genewise.png"
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.4"
         },
-        "timestamp": "2024-04-16T11:59:33.28078"
+        "timestamp": "2025-02-13T11:29:03.711287557"
     },
-    "Test propr/propd using theta_e permutation - results": {
+    "Test propr/propd when using permutation tests": {
         "content": [
             [
                 [
                     {
-                        "id": "test"
+                        "id": "treatment_mCherry_hND6_",
+                        "variable": "treatment",
+                        "reference": "mCherry",
+                        "target": "hND6",
+                        "blocking": ""
                     },
-                    "test+theta_e+NA.propd.tsv:md5,c190d80c11ba99a0303a8dd5ab8ed76f"
+                    "treatment_mCherry_hND6_.propd.genewise.tsv:md5,0ae150edfbd22a35f9ed1c7213217579"
                 ]
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-04-16T11:57:24.038188"
-    },
-    "versions": {
-        "content": [
+            ],
             [
-                "versions.yml:md5,b41d17751970fc8bcf4f8e0326d239e2"
-            ]
+                [
+                    {
+                        "id": "treatment_mCherry_hND6_",
+                        "variable": "treatment",
+                        "reference": "mCherry",
+                        "target": "hND6",
+                        "blocking": ""
+                    },
+                    "treatment_mCherry_hND6_.propd.fdr.tsv:md5,9c7011afa34a2ce7e33da9a6a6820c7e"
+                ]
+            ],
+            [
+                "versions.yml:md5,f356eb5d430713b086255dfc32b5d6ee"
+            ],
+            "treatment_mCherry_hND6_.propd.genewise.png"
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.4"
         },
-        "timestamp": "2024-04-16T11:53:45.165637"
+        "timestamp": "2025-02-13T11:29:38.37807294"
     },
-    " - results": {
+    "Test propr/propd when saving all outputs": {
         "content": [
             [
                 [
                     {
-                        "id": "test"
+                        "id": "treatment_mCherry_hND6_",
+                        "variable": "treatment",
+                        "reference": "mCherry",
+                        "target": "hND6",
+                        "blocking": ""
                     },
-                    "test.propd.tsv:md5,34fda117492faf9a60f5807f56c4be68"
+                    "treatment_mCherry_hND6_.propd.genewise.tsv:md5,bdc19a4b7430f248cd332287b630c872"
                 ]
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-04-16T14:13:47.602525"
-    },
-    " Test propr/propd using default boxcox permutation - results": {
-        "content": [
+            ],
             [
                 [
                     {
-                        "id": "test"
+                        "id": "treatment_mCherry_hND6_",
+                        "variable": "treatment",
+                        "reference": "mCherry",
+                        "target": "hND6",
+                        "blocking": ""
                     },
-                    "test+theta_d+0.2.propd.tsv:md5,f1886c538e6aeed1bbac4c8c1ef0c930"
+                    "treatment_mCherry_hND6_.propd.pairwise.tsv:md5,ff79479ea826c54aa178b0376784cbf1"
                 ]
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-04-16T11:55:32.476341"
-    },
-    "Test propr/propd using default permutation - results": {
-        "content": [
+            ],
             [
                 [
                     {
-                        "id": "test"
+                        "id": "treatment_mCherry_hND6_",
+                        "variable": "treatment",
+                        "reference": "mCherry",
+                        "target": "hND6",
+                        "blocking": ""
                     },
-                    "test+theta_d+NA.propd.tsv:md5,34fda117492faf9a60f5807f56c4be68"
+                    "treatment_mCherry_hND6_.propd.pairwise_filtered.tsv:md5,9473f045ca1acfe1f9d6138528f743d1"
                 ]
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-04-16T11:53:43.056295"
-    },
-    "Test propr/propd with adjacency matrix - adj": {
-        "content": [
+            ],
+            null,
             [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.adj.csv:md5,f9d19255f9400e6c4daa01f86d74f017"
-                ]
-            ]
+                "versions.yml:md5,f356eb5d430713b086255dfc32b5d6ee"
+            ],
+            "treatment_mCherry_hND6_.propd.genewise.png",
+            "treatment_mCherry_hND6_.propd.rds"
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.4"
         },
-        "timestamp": "2024-04-16T14:13:47.427246"
+        "timestamp": "2025-02-13T11:28:45.957361627"
     }
 }

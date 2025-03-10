@@ -1,0 +1,97 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "macs3_callpeak"
+description: Peak calling of enriched genomic regions of ChIP-seq and ATAC-seq experiments
+keywords:
+  - alignment
+  - atac-seq
+  - chip-seq
+  - peak-calling
+tools:
+  - macs3:
+      description: "Model Based Analysis for ChIP-Seq data"
+      homepage: "https://macs3-project.github.io/MACS/"
+      documentation: "https://macs3-project.github.io/MACS/"
+      tool_dev_url: "https://github.com/macs3-project/MACS/"
+      doi: "10.1101/496521"
+      licence: ["BSD-3-clause"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample_1', single_end:false ]`
+    - ipbam:
+        type: file
+        description: The ChIP-seq treatment file
+    - controlbam:
+        type: file
+        description: The control file
+  - - macs3_gsize:
+        type: string
+        description: |
+          Effective genome size. It can be 1.0e+9 or 1000000000,
+          or shortcuts:'hs' for human (2,913,022,398), 'mm' for mouse
+          (2,652,783,500), 'ce' for C. elegans (100,286,401)
+          and 'dm' for fruitfly (142,573,017), Default:hs.
+output:
+  - peak:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.{narrowPeak,broadPeak}":
+          type: file
+          description: BED file containing annotated peaks
+          pattern: "*.gappedPeak,*.narrowPeak}"
+  - xls:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.xls":
+          type: file
+          description: xls file containing annotated peaks
+          pattern: "*.xls"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software version
+          pattern: "versions.yml"
+  - gapped:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.gappedPeak":
+          type: file
+          description: Optional BED file containing gapped peak
+          pattern: "*.gappedPeak"
+  - bed:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.bed":
+          type: file
+          description: Optional BED file containing peak summits locations for every peak
+          pattern: "*.bed"
+  - bdg:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.bdg":
+          type: file
+          description: Optional bedGraph files for input and treatment input samples
+          pattern: "*.bdg"
+authors:
+  - "@JoseEspinosa"
+maintainers:
+  - "@JoseEspinosa"
