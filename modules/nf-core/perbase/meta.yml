@@ -1,0 +1,77 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "perbase"
+description: Per-base metrics on BAM/CRAM files.
+keywords:
+  - bam
+  - cram
+  - depth
+tools:
+  - "perbase":
+      description: "Per-base metrics on BAM/CRAM files."
+      homepage: "https://github.com/sstadick/perbase/blob/v0.10.2/README.md"
+      documentation: "https://github.com/sstadick/perbase/blob/v0.10.2/README.md"
+      tool_dev_url: "https://github.com/sstadick/perbase"
+      licence: ["MIT"]
+      identifier: biotools:perbase
+
+input:
+  # Only when we have meta
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM file
+        pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: "http://edamontology.org/format_25722"
+          - edam: "http://edamontology.org/format_3462"
+
+    - index:
+        type: file
+        description: BAI/CRAI file
+        pattern: "*.{bai,crai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: Reference fasta (optional)
+        pattern: "*.{fasta,fa}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+    - fai:
+        type: file
+        description: FAI file (optional)
+        pattern: "*.{fai}"
+output:
+  - tsv:
+      #Only when we have meta
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.tsv.gz":
+          type: file
+          description: TSV file
+          pattern: "*.{tsv.gz}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@camlloyd"
+maintainers:
+  - "@camlloyd"

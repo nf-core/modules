@@ -46,13 +46,13 @@ nextflow_process {
                 { assert process.out.examples.get(0).get(0) == [ id:'test', single_end:false ] },
                 { assert process.out.gvcf.get(0).get(0) == [ id:'test', single_end:false ] },
                 { assert process.out.examples.get(0).get(1).size() == 4 },
-                { assert snapshot( // Check examples (tfrecord / json) file name list 
+                { assert snapshot( // Check examples (tfrecord / json) file name list
                     file(process.out.examples.get(0).get(1).get(0)).name,
                     file(process.out.examples.get(0).get(1).get(1)).name,
                     file(process.out.examples.get(0).get(1).get(2)).name,
                     file(process.out.examples.get(0).get(1).get(3)).name,
                 ).match("test1-exaamples-filenames")},
-                
+
                 { assert process.out.gvcf.get(0).get(0) == [ id:'test', single_end:false ] },
                 { assert process.out.gvcf.get(0).get(1).size() == 2 },
                 { assert snapshot( // Check gvcf file name list
@@ -154,7 +154,7 @@ nextflow_process {
                 { assert process.out.examples.get(0).get(0) == [ id:'test', single_end:false ] },
                 // The test is always run with 2 cpus
                 { assert process.out.examples.get(0).get(1).size() == 4 },
-                { assert snapshot( // Check examples (tfrecord / json) file name list 
+                { assert snapshot( // Check examples (tfrecord / json) file name list
                     file(process.out.examples.get(0).get(1).get(0)).name,
                     file(process.out.examples.get(0).get(1).get(1)).name,
                     file(process.out.examples.get(0).get(1).get(2)).name,
@@ -173,7 +173,7 @@ nextflow_process {
     }
 
     test("stub") {
-        
+
         options "-stub"
 
         when {
@@ -208,13 +208,13 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert process.out.examples.get(0).get(1).size() == 4 },
-                { assert snapshot( // Check examples (tfrecord / json) file name list 
+                { assert snapshot( // Check examples (tfrecord / json) file name list
                     file(process.out.examples.get(0).get(1).get(0)).name,
                     file(process.out.examples.get(0).get(1).get(1)).name,
                     file(process.out.examples.get(0).get(1).get(2)).name,
                     file(process.out.examples.get(0).get(1).get(3)).name,
                 ).match("test4-examples-filenames")},
-                
+
                 { assert process.out.gvcf.get(0).get(0) == [ id:'test', single_end:false ] },
                 { assert process.out.gvcf.get(0).get(1).size() == 2 },
                 { assert snapshot( // Check gvcf file name list
