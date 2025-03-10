@@ -1,11 +1,11 @@
 process BCFTOOLS_MPILEUP {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bcftools:1.20--h8b25389_0':
-        'biocontainers/bcftools:1.20--h8b25389_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/bcftools:1.20--h8b25389_0'
+        : 'biocontainers/bcftools:1.20--h8b25389_0'}"
 
     input:
     tuple val(meta), path(bam), path(intervals)
@@ -13,11 +13,11 @@ process BCFTOOLS_MPILEUP {
     val save_mpileup
 
     output:
-    tuple val(meta), path("*vcf.gz")     , emit: vcf
-    tuple val(meta), path("*vcf.gz.tbi") , emit: tbi
-    tuple val(meta), path("*stats.txt")  , emit: stats
+    tuple val(meta), path("*vcf.gz"),      emit: vcf
+    tuple val(meta), path("*vcf.gz.tbi"),  emit: tbi
+    tuple val(meta), path("*stats.txt"),   emit: stats
     tuple val(meta), path("*.mpileup.gz"), emit: mpileup, optional: true
-    path  "versions.yml"                 , emit: versions
+    path "versions.yml",                   emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,16 +35,16 @@ process BCFTOOLS_MPILEUP {
 
     bcftools \\
         mpileup \\
-        --fasta-ref $fasta \\
-        $args \\
-        $bam \\
-        $intervals_cmd \\
-        $mpileup \\
-        | bcftools call --output-type v $args2 \\
+        --fasta-ref ${fasta} \\
+        ${args} \\
+        ${bam} \\
+        ${intervals_cmd} \\
+        ${mpileup} \\
+        | bcftools call --output-type v ${args2} \\
         | bcftools reheader --samples sample_name.list \\
-        | bcftools view --output-file ${prefix}.vcf.gz --output-type z $args3
+        | bcftools view --output-file ${prefix}.vcf.gz --output-type z ${args3}
 
-    $bgzip_command
+    ${bgzip_mpileup}
 
     tabix -p vcf -f ${prefix}.vcf.gz
 
