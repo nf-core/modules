@@ -22,15 +22,11 @@ process EAGLE2 {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def input_cmd = ref_vcf ? "--vcfTarget $input" : "--vcf $input"
     def vcfref_cmd = ref_vcf ? "--vcfRef $ref_vcf" : ""
-    def remove_cmd = remove ? "--remove $remove" : ""
-    def exclude_cmd = exclude ? "--exclude $exclude" : ""
     """
     eagle \\
         $input_cmd \\
         $vcfref_cmd \\
         --geneticMapFile $map \\
-        $remove_cmd \\
-        $exclude_cmd \\
         $args \\
         --numThreads $task.cpus \\
         --outPrefix ${prefix} \\
