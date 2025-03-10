@@ -83,12 +83,10 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
         if (fasta_index) {
             ch_fasta_index = Channel.value(file(fasta_index, checkIfExists: true))
         } else {
-            // No sizes generation
-            def generate_sizes = false
             SAMTOOLS_FAIDX(
                 ch_fasta,
                 [[:], []],
-                generate_sizes
+                false // No sizes generation
             )
             ch_fasta_index = SAMTOOLS_FAIDX.out.fai
             ch_versions    = ch_versions.mix(SAMTOOLS_FAIDX.out.versions)
