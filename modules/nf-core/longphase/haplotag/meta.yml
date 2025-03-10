@@ -1,88 +1,93 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "longphase_haplotag"
-description: LongPhase is an ultra-fast program for simultaneously co-phasing SNPs, small indels, large SVs, and (5mC) modifications for Nanopore and PacBio platforms.
+description: LongPhase is an ultra-fast program for simultaneously co-phasing SNPs,
+  small indels, large SVs, and (5mC) modifications for Nanopore and PacBio platforms.
 keywords:
   - haplotag
   - long-read
   - genomics
 tools:
   - "longphase":
-      description: "LongPhase is an ultra-fast program for simultaneously co-phasing SNPs, small indels, large SVs, and (5mC) modifications for Nanopore and PacBio platforms."
+      description: "LongPhase is an ultra-fast program for simultaneously co-phasing
+        SNPs, small indels, large SVs, and (5mC) modifications for Nanopore and PacBio
+        platforms."
       homepage: "https://github.com/twolinin/longphase"
       documentation: "https://github.com/twolinin/longphase"
       tool_dev_url: "https://github.com/twolinin/longphase"
       doi: "10.1093/bioinformatics/btac058"
       licence: ["GPL v3"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM file
-      pattern: "*.{bam,cram}"
-  - bai:
-      type: file
-      description: Index of sorted BAM/CRAM file
-      pattern: "*.{bai,crai,csi}"
-  - snps:
-      type: file
-      description: VCF file with SNPs (and INDELs)
-      pattern: "*.{vcf,vcf.gz}"
-  - svs:
-      type: file
-      description: VCF file with SVs
-      pattern: "*.{vcf,vcf.gz}"
-  - mods:
-      type: file
-      description: modcall-generated VCF with modifications
-      pattern: "*.{vcf,vcf.gz}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. `[ id:'hg38' ]`
-  - fasta:
-      type: file
-      description: Reference fasta file
-      pattern: "*.fasta"
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. `[ id:'hg38' ]`
-  - fai:
-      type: file
-      description: Reference fai index
-      pattern: "*.fai"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM file
+        pattern: "*.{bam,cram}"
+    - bai:
+        type: file
+        description: Index of sorted BAM/CRAM file
+        pattern: "*.{bai,crai,csi}"
+    - snps:
+        type: file
+        description: VCF file with SNPs (and INDELs)
+        pattern: "*.{vcf,vcf.gz}"
+    - svs:
+        type: file
+        description: VCF file with SVs
+        pattern: "*.{vcf,vcf.gz}"
+    - mods:
+        type: file
+        description: modcall-generated VCF with modifications
+        pattern: "*.{vcf,vcf.gz}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'hg38' ]`
+    - fasta:
+        type: file
+        description: Reference fasta file
+        pattern: "*.fasta"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'hg38' ]`
+    - fai:
+        type: file
+        description: Reference fai index
+        pattern: "*.fai"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - bam:
-      type: file
-      description: BAM file with haplotagged reads
-      pattern: "*.bam"
-  - cram:
-      type: file
-      description: CRAM file with haplotagged reads
-      pattern: "*.cram"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.{bam,cram}":
+          type: file
+          description: BAM file with haplotagged reads
+          pattern: "*.bam"
   - log:
-      type: file
-      description: Log file
-      pattern: "*.log"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.log":
+          type: file
+          description: Log file
+          pattern: "*.log"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@fellen31"
 maintainers:

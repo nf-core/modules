@@ -1,0 +1,79 @@
+nextflow_process {
+
+    name "Test Process METAPHLAN_MERGEMETAPHLANTABLES"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "METAPHLAN_MERGEMETAPHLANTABLES"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "untar"
+    tag "metaphlan"
+    tag "metaphlan/metaphlan"
+    tag "metaphlan/mergemetaphlantables"
+
+    setup {
+        run("UNTAR") {
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [],
+                    file( params.modules_testdata_base_path + 'delete_me/metaphlan4_database.tar.gz', checkIfExists: true )
+                ])
+                """
+            }
+        }
+        run("METAPHLAN_METAPHLAN") {
+            script "../../../metaphlan/metaphlan/main.nf"
+            process {
+                """
+                input[0] = Channel.of(
+                    [ [ id: 'test', single_end: true], file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz',checkIfExists: true ) ],
+                    [ [ id: 'test2', single_end: true], file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz',checkIfExists: true ) ],
+                )
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - illumina single end [fastq]") {
+
+        when {
+            process {
+                """
+                input[0] = METAPHLAN_METAPHLAN.out.profile.map{meta, profile -> [[id: 'test'], profile]}.groupTuple()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot( process.out ).match() }
+            )
+        }
+    }
+
+
+    test("sarscov2 - illumina single end [fastq] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = METAPHLAN_METAPHLAN.out.profile.map{meta, profile -> [[id: 'test'], profile]}.groupTuple()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot( process.out ).match() }
+            )
+        }
+    }
+}

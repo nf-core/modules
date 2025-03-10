@@ -1,0 +1,47 @@
+name: samshee
+description: Module to validate illumina® Sample Sheet v2 files.
+keywords:
+  - samplesheet
+  - illumina
+  - bclconvert
+  - bcl2fastq
+tools:
+  - samshee:
+      description: A schema-agnostic parser and writer for illumina® sample sheets v2 and similar documents.
+      homepage: https://github.com/lit-regensburg/samshee
+      documentation: https://github.com/lit-regensburg/samshee/blob/main/README.md
+      tool_dev_url: https://github.com/lit-regensburg/samshee
+      licence: [MIT license]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', lane:1 ]
+    - samplesheet:
+        type: file
+        description: "illumina v2 samplesheet"
+        pattern: "*.{csv}"
+  - - file_schema_validator:
+        type: string
+        description: "Optional JSON file used additional samplesheet validation settings"
+output:
+  - samplesheet:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', lane:1 ]
+      - "*_formatted.csv":
+          type: file
+          description: "illumina v2 samplesheet"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software version
+          pattern: "versions.yml"
+authors:
+  - "@nschcolnicov"
+maintainers:
+  - "@nschcolnicov"

@@ -12,36 +12,40 @@ tools:
       tool_dev_url: https://github.com/bioinformatics-centre/kaiju
       doi: "10.1038/ncomms11257"
       licence: ["GNU GPL v3"]
+      identifier: biotools:kaiju
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - results:
-      type: file
-      description: File containing the kaiju classification results
-      pattern: "*.{txt}"
-  - taxon_rank:
-      type: string
-      description: |
-        Taxonomic rank to display in report
-        pattern: "phylum|class|order|family|genus|species"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input:
+        type: file
+        description: Kaiju input file
+  - - db:
+        type: file
+        description: Kaiju database
+  - - taxon_rank:
+        type: string
+        description: |
+          Taxonomic rank to display in report
+          pattern: "phylum|class|order|family|genus|species"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+  - summary:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt":
+          type: file
+          description: Kaiju output file
+          pattern: "*.txt"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - results:
-      type: file
-      description: |
-        Summary table for a given taxonomic rank
-      pattern: "*.{tsv}"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@sofstam"
   - "@talnor"

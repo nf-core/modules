@@ -11,7 +11,7 @@ process NONPAREIL_CURVE {
     tuple val(meta), path(npo)
 
     output:
-    tuple val(meta), path("*.png"), emit: png
+    tuple val(meta), path("*.png"), optional: true, emit: png
     path "versions.yml"           , emit: versions
 
     when:

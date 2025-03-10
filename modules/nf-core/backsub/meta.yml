@@ -1,5 +1,6 @@
 name: "backsub"
-description: Pixel-by-pixel channel subtraction scaled by exposure times of pre-stitched `tif` images.
+description: Pixel-by-pixel channel subtraction scaled by exposure times of pre-stitched
+  `tif` images.
 keywords:
   - background
   - cycif
@@ -9,53 +10,59 @@ keywords:
   - highly_multiplexed_imaging
 tools:
   - "backsub":
-      description: "Module for pixel-by-pixel channel subtraction scaled by exposure times"
+      description: "Module for pixel-by-pixel channel subtraction scaled by exposure
+        times"
       homepage: "https://github.com/SchapiroLabor/Background_subtraction"
       documentation: "https://github.com/SchapiroLabor/Background_subtraction/blob/master/README.md"
       tool_dev_url: "https://github.com/SchapiroLabor/Background_subtraction"
       licence: ["MIT licence"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - image:
-      type: file
-      description: Multi-channel image file
-      pattern: "*.{tif,tiff}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - markerfile:
-      type: file
-      description: Marker file with channel names, exposure times, and specified background to subtract (and remove to exclude channels from output)
-      pattern: "*.csv"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - image:
+        type: file
+        description: Multi-channel image file
+        pattern: "*.{tif,tiff}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - markerfile:
+        type: file
+        description: Marker file with channel names, exposure times, and specified background
+          to subtract (and remove to exclude channels from output)
+        pattern: "*.csv"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - backsub_tif:
-      type: file
-      description: Background corrected pyramidal ome.tif
-      pattern: "*.{tif}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.ome.tif":
+          type: file
+          description: Background corrected pyramidal ome.tif
+          pattern: "*.{tif}"
   - markerout:
-      type: file
-      description: Marker file adjusted to match the background corrected image
-      pattern: "*.{csv}"
+      - meta2:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.csv":
+          type: file
+          description: Marker file adjusted to match the background corrected image
+          pattern: "*.{csv}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@kbestak"
 maintainers:

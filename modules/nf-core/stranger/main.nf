@@ -4,8 +4,8 @@ process STRANGER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/stranger:0.9.1--pyh7e72e81_0':
-        'biocontainers/stranger:0.9.1--pyh7e72e81_0' }"
+        'https://depot.galaxyproject.org/singularity/stranger:0.9.4--pyhdfd78af_0':
+        'biocontainers/stranger:0.9.4--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(vcf)
@@ -30,7 +30,7 @@ process STRANGER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        stranger: \$( stranger --version )
+        stranger: \$( stranger --version | sed 's/stranger, version //g' )
     END_VERSIONS
     """
 
@@ -41,7 +41,7 @@ process STRANGER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        stranger: \$( stranger --version )
+        stranger: \$( stranger --version | sed 's/stranger, version //g' )
     END_VERSIONS
     """
 }
