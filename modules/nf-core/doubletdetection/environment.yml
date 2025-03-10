@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - conda-forge::anndata=0.10.7
+  - conda-forge::louvain=0.8.2
+  - conda-forge::numpy=1.26.4
+  - conda-forge::pip=24.0
+  - conda-forge::python=3.12.3
+  - conda-forge::scipy=1.13.1
+  - pip
+  - pip:
+      - doubletdetection==4.2

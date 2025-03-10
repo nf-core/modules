@@ -11,7 +11,7 @@ nextflow_process {
     test("scdownsteam - h5ad") {
         when {
             process {
-                """                
+                """
                 input[0] = [
                      [id: 'test'],
                      file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_custom_emptydrops_filter_matrix.h5ad", checkIfExists: true)
@@ -21,7 +21,7 @@ nextflow_process {
         }
 
         then {
-            def mb = 1024 * 1024 
+            def mb = 1024 * 1024
             def kb = 1024
             assertAll(
                 { assert process.success },
