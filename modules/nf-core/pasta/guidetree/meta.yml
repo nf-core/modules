@@ -1,0 +1,49 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "pasta_guidetree"
+description: Practical Alignment using Saté and TrAnsitivity
+keywords:
+  - MSA
+  - guidetree
+  - genomics
+  - graph
+tools:
+  - "pasta":
+      description: "Practical Alignment using Saté and TrAnsitivity"
+      homepage: "https://github.com/smirarab/pasta"
+      documentation: "https://github.com/smirarab/pasta/blob/master/pasta-doc/pasta-tutorial.md"
+      tool_dev_url: "https://github.com/smirarab/pasta"
+      doi: "10.1089/cmb.2014.0156"
+      licence: ["GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing the fasta meta information
+        e.g. `[ id:'test', single_end:false ]`
+
+  - fasta:
+      type: file
+      description: Input sequences in FASTA format. Note that PASTA assumes input to be DNA, unless specified otherwise by passing the type to `--datatype`.
+      pattern: "*.{fa,fna,fasta}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample meta information.
+        e.g. `[ id:'test', single_end:false ]`
+
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+  - tree:
+      type: file
+      description: File containing the output guidetree, in newick format.
+      pattern: "*.tre"
+
+authors:
+  - "@lrauschning"
