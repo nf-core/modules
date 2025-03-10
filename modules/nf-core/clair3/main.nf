@@ -26,7 +26,7 @@ process CLAIR3 {
     def clair3_command = workflow.containerEngine ? "/opt/bin/run_clair3.sh" : "run_clair3.sh"
 
     """
-    $clair3_command \\
+    run_clair3.sh \\
         --bam_fn=$bam \\
         --ref_fn=$fasta \\
         --threads=$task.cpus \\
