@@ -11,15 +11,15 @@
 # uv run --with pytest -- pytest -v .github/scripts/conda_env_sorter.py
 
 import argparse
+import sys
 from pathlib import Path
 from typing import Optional, Sequence
+
 import ruamel.yaml
-import sys
 
 # Add pytest imports conditionally
-if 'pytest' in sys.modules:
+if "pytest" in sys.modules:
     import pytest
-    from tempfile import NamedTemporaryFile
 
 yaml = ruamel.yaml.YAML()
 yaml.indent(mapping=2, sequence=2, offset=2)  # Set indentation to 2 spaces
@@ -79,24 +79,19 @@ if __name__ == "__main__":
     main()
 
 # Pytest tests (only loaded when running pytest)
-if 'pytest' in sys.modules:
-    @pytest.mark.parametrize("input_content,expected", [
-        # Test basic sorting
-        (
-            "dependencies:\n  - zlib\n  - python\n",
-            ["python", "zlib"]
-        ),
-        # Test dict sorting
-        (
-            "dependencies:\n  - pip:\n    - b\n    - a\n  - python\n",
-            ["python", {"pip": ["a", "b"]}]
-        ),
-        # Test existing headers
-        (
-            "---\n# yaml-language-server: $schema=...\ndependencies:\n  - b\n  - a\n",
-            ["a", "b"]
-        )
-    ])
+if "pytest" in sys.modules:
+
+    @pytest.mark.parametrize(
+        "input_content,expected",
+        [
+            # Test basic sorting
+            ("dependencies:\n  - zlib\n  - python\n", ["python", "zlib"]),
+            # Test dict sorting
+            ("dependencies:\n  - pip:\n    - b\n    - a\n  - python\n", ["python", {"pip": ["a", "b"]}]),
+            # Test existing headers
+            ("---\n# yaml-language-server: $schema=...\ndependencies:\n  - b\n  - a\n", ["a", "b"]),
+        ],
+    )
     def test_conda_sorter(tmp_path, input_content, expected):
         test_file = tmp_path / "environment.yml"
         test_file.write_text(input_content)

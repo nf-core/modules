@@ -13,7 +13,7 @@ repos:
     hooks:
       - id: prettier
         additional_dependencies:
-          - prettier@3.3.3
+          - prettier@3.5.0
   - repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 0.29.4
     hooks:
@@ -34,15 +34,6 @@ repos:
         args: ["--schemafile", "subworkflows/yaml-schema.json"]
       - id: check-github-workflows
       - id: check-github-actions
-  - repo: local
-    hooks:
-      - id: conda-env-sorter
-        name: Sort dependencies in conda environment files.
-        entry: ./.github/scripts/conda_env_sorter.py
-        language: python
-        files: environment
-        types: [yaml]
-        additional_dependencies: ["ruamel.yaml"]
   # use ruff for python files
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.7.3
