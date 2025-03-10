@@ -29,7 +29,7 @@ process LAST_DOTPLOT {
     def annot_b_arg = annot_b ? "-b ${annot_b}" : ''
     def input_command = filter ? "maf-linked ${args2}" : "zcat -f"
     """
-    TTF=/home/ubuntu/conda_pkgs_dir/open-fonts-0.7.0-1/fonts/open-fonts/DejaVuSansMono-Regular.ttf
+    TTF=/home/runner/conda_pkgs_dir/open-fonts-0.7.0-1/fonts/open-fonts/DejaVuSansMono-Regular.ttf
     [ -e "\$TTF" ] || TTF="/opt/conda/fonts/open-fonts/DejaVuSansMono-Regular.ttf"
     $input_command $maf |
     last-dotplot \\
