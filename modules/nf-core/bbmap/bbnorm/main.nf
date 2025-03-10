@@ -30,7 +30,7 @@ process BBMAP_BBNORM {
         $output \\
         $args \\
         threads=$task.cpus \\
-        -Xmx${task.memory.toGiga()}g \\
+        -Xmx${Math.round(Math.max(1, Math.floor(task.memory.toGiga() * 0.95)))}g \\
         &> ${prefix}.bbnorm.log
 
     cat <<-END_VERSIONS > versions.yml
