@@ -9,11 +9,11 @@ process SVTK_STANDARDIZE {
 
     input:
     tuple val(meta), path(vcf)
-    path fasta_fai
+    tuple val(meta2), path (fai)
 
     output:
-    tuple val(meta), path("*.std.vcf.gz"), emit: standardized_vcf
-    path "versions.yml"                  , emit: versions
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,21 +21,34 @@ process SVTK_STANDARDIZE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     def arguments   = args.args     ?: ''
     def caller      = args.caller   ?: 'delly'
-
+    def contigs = fai ? "--contigs ${fai}" : ""
     def VERSION = '0.0.20190615' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
-    def contigs = fasta_fai ? "--contigs ${fasta_fai}" : ""
+    if ("$vcf" == "${prefix}.vcf.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     """
     svtk standardize \\
-        ${arguments} \\
+        $arguments \\
         ${contigs} \\
         ${vcf} \\
-        ${prefix}.std.vcf.gz \\
+        ${prefix}.vcf.gz \\
         ${caller}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        svtk: ${VERSION}
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '0.0.20190615' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    if ("$vcf" == "${prefix}.vcf.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+
+    """
+    echo | gzip > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
