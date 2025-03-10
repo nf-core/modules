@@ -26,7 +26,7 @@ process BBMAP_BBNORM {
 
     memory = '-Xmx3g'
     if ( ! task.memory ) {
-        log.info '[BBNorm]: Available memory not know, defaulting to 3 GiB. Specify process memory requirements to change this.'
+        log.info '[BBNorm]: Available memory not known, defaulting to 3 GB. Specify process memory requirements to change this.'
     } else {
         memory = "-Xmx${Math.round(Math.max(1, Math.floor(task.memory.toGiga() * 0.95)))}g"
     }
