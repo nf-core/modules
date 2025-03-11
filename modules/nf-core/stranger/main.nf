@@ -30,7 +30,7 @@ process STRANGER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        stranger: \$( stranger --version )
+        stranger: \$( stranger --version | sed 's/stranger, version //g' )
     END_VERSIONS
     """
 
@@ -41,7 +41,7 @@ process STRANGER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        stranger: \$( stranger --version )
+        stranger: \$( stranger --version | sed 's/stranger, version //g' )
     END_VERSIONS
     """
 }
