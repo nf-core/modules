@@ -82,8 +82,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        file(process.out.fastq[0][1][0]).length(),
-                        file(process.out.fastq[0][1][1]).length(),
+                        path(process.out.fastq[0][1][0]).linesGzip.size(),
+                        path(process.out.fastq[0][1][1]).linesGzip.size(),
                         process.out.versions,
                         path(process.out.json[0][1]).readLines().any{ it.contains('\"reads_removed\": 0')}
                     ).match() }
