@@ -5,8 +5,8 @@ process VCF2DB {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vcf2db:2020.02.24--hdfd78af_1':
-        'biocontainers/vcf2db:2020.02.24--hdfd78af_1' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/30/3013992b36b50c203acfd01b000d37f3753aee640238f6dd39d5e47f58e54d98/data':
+        'community.wave.seqera.io/library/python_python-snappy_snappy_cyvcf2_vcf2db:9c1d7f361187f21a' }"
 
     input:
     tuple val(meta), path(vcf), path(ped)

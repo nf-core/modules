@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "chromograph"
-description: Chromograph is a python package to create PNG images from genetics data such as BED and WIG files.
+description: Chromograph is a python package to create PNG images from genetics data
+  such as BED and WIG files.
 keywords:
   - chromosome_visualization
   - bed
@@ -9,83 +9,87 @@ keywords:
   - png
 tools:
   - "chromograph":
-      description: "Chromograph is a python package to create PNG images from genetics data such as BED and WIG files."
+      description: "Chromograph is a python package to create PNG images from genetics
+        data such as BED and WIG files."
       homepage: "https://github.com/Clinical-Genomics/chromograph"
       documentation: "https://github.com/Clinical-Genomics/chromograph/blob/master/README.md"
-      licence: "['MIT']"
+      licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - meta4:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - meta5:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - meta6:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - meta7:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - autozyg:
-      type: file
-      description: Bed file containing the regions of autozygosity
-  - coverage:
-      type: file
-      description: Wig file containing the coverage information
-  - exome:
-      type: file
-      description: Bed file containing the coverage for exome.
-  - fracsnp:
-      type: file
-      description: Wig file containing the fraction of homozygous SNPs
-  - ideogram:
-      type: file
-      description: |
-        Bed file containing information necessary for ideogram plots.
-        Format ['chrom', 'start', 'end', 'name', 'gStain']
-  - regions:
-      type: file
-      description: Bed file containing UPD regions
-  - sites:
-      type: file
-      description: Bed file containing UPD sites
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - autozyg:
+        type: file
+        description: Bed file containing the regions of autozygosity
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - coverage:
+        type: file
+        description: Wig file containing the coverage information
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - exome:
+        type: file
+        description: Bed file containing the coverage for exome.
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fracsnp:
+        type: file
+        description: Wig file containing the fraction of homozygous SNPs
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - ideogram:
+        type: file
+        description: |
+          Bed file containing information necessary for ideogram plots.
+          Format ['chrom', 'start', 'end', 'name', 'gStain']
+  - - meta6:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - regions:
+        type: file
+        description: Bed file containing UPD regions
+  - - meta7:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - sites:
+        type: file
+        description: Bed file containing UPD sites
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - plots:
-      type: file
-      description: Directory containing the plots in png format
-      pattern: "*.png"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}:
+          type: file
+          description: Directory containing the plots in png format
+          pattern: "*.png"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@ramprasadn"
 maintainers:

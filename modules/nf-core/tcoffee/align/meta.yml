@@ -6,61 +6,90 @@ keywords:
   - genomics
 tools:
   - "tcoffee":
-      description: "A collection of tools for Computing, Evaluating and Manipulating Multiple Alignments of DNA, RNA, Protein Sequences and Structures."
+      description: "A collection of tools for Computing, Evaluating and Manipulating
+        Multiple Alignments of DNA, RNA, Protein Sequences and Structures."
       homepage: "http://www.tcoffee.org/Projects/tcoffee/"
       documentation: "https://tcoffee.readthedocs.io/en/latest/tcoffee_main_documentation.html"
       tool_dev_url: "https://github.com/cbcrg/tcoffee"
       doi: "10.1006/jmbi.2000.4042"
       licence: ["GPL v3"]
+      identifier: ""
+  - "pigz":
+      description: "Parallel implementation of the gzip algorithm."
+      homepage: "https://zlib.net/pigz/"
+      documentation: "https://zlib.net/pigz/pigz.pdf"
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test']`
-  - fasta:
-      type: file
-      description: Input sequences in FASTA format
-      pattern: "*.{fa,fasta}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing tree information
-        e.g. `[ id:'test_tree']`
-  - tree:
-      type: file
-      description: Input guide tree in Newick format
-      pattern: "*.{dnd}"
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing tree information
-        e.g. `[ id:'test_infos']`
-  - template:
-      type: file
-      description: T_coffee template file that maps sequences to the accessory information files to be used.
-      pattern: "*"
-  - accessory_informations:
-      type: file
-      description: Accessory files to be used in the alignment. For example, it could be protein structures or secondary structures.
-      pattern: "*"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test']`
+    - fasta:
+        type: file
+        description: Input sequences in FASTA format
+        pattern: "*.{fa,fasta}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing tree information
+          e.g. `[ id:'test_tree']`
+    - tree:
+        type: file
+        description: Input guide tree in Newick format
+        pattern: "*.{dnd}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing tree information
+          e.g. `[ id:'test_infos']`
+    - template:
+        type: file
+        description: T_coffee template file that maps sequences to the accessory information
+          files to be used.
+        pattern: "*"
+    - accessory_information:
+        type: file
+        description: Accessory files to be used in the alignment. For example, it could
+          be protein structures or secondary structures.
+        pattern: "*"
+  - - compress:
+        type: boolean
+        description: Flag representing whether the output MSA should be compressed.
+          Set to true to enable/false to disable compression. Compression is done using
+          pigz, and is multithreaded.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test']`
   - alignment:
-      type: file
-      description: Alignment file.
-      pattern: "*.{aln}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test']`
+      - "*.aln{.gz,}":
+          type: file
+          description: Alignment file in FASTA format. May be gzipped.
+          pattern: "*.aln{.gz,}"
+  - lib:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test']`
+      - "*.*lib":
+          type: file
+          description: optional output, the library generated from the MSA file.
+          pattern: "*.*lib"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@luisas"
   - "@JoseEspinosa"
+  - "@alessiovignoli"
 maintainers:
   - "@luisas"
   - "@JoseEspinosa"
+  - "@lrauschning"
+  - "@alessiovignoli"

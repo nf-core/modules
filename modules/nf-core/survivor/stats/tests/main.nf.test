@@ -1,0 +1,71 @@
+// nf-core modules test survivor/stats
+nextflow_process {
+
+    name "Test Process SURVIVOR_STATS"
+    script "../main.nf"
+    process "SURVIVOR_STATS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "survivor"
+    tag "survivor/stats"
+
+    test("homo_sapiens - haplotc - vcfgz") {
+
+        when {
+            process {
+                """
+                    input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz', checkIfExists: true)
+                        ]
+                    input[1] = -1
+                    input[2] = -1
+                    input[3] = -1
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.stats,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - mutect - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                    input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz', checkIfExists: true)
+                        ]
+                    input[1] = -1
+                    input[2] = -1
+                    input[3] = -1
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.stats,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+}

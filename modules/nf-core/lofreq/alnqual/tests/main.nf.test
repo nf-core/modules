@@ -1,0 +1,71 @@
+nextflow_process {
+
+    name "Test Process LOFREQ_ALNQUAL"
+    script "../main.nf"
+    process "LOFREQ_ALNQUAL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "lofreq"
+    tag "lofreq/alnqual"
+
+    test("sarscov2 - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                    ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    def bam = file(process.out.bam.get(0).get(1))
+                    assert bam.exists()
+                },
+                { assert path(process.out.versions.get(0)).md5 == "d4c8b0faafccaeb9c47b25f73168f33c" }
+            )
+        }
+    }
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                    ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    def bam = file(process.out.bam.get(0).get(1))
+                    assert bam.exists()
+                },
+                { assert path(process.out.versions.get(0)).md5 == "d4c8b0faafccaeb9c47b25f73168f33c" }
+            )
+        }
+
+    }
+
+}

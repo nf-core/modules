@@ -12,7 +12,6 @@ nextflow_workflow {
     tag "fq/subsample"
     tag "salmon/quant"
 
-
     test("homo_sapiens paired-end [fastq]") {
 
         setup {
@@ -20,8 +19,8 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/salmon/index/main.nf"
                 process {
                 """
-                input[0] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)        // genome_fasta
-                input[1] = file(params.test_data['homo_sapiens']['genome']['transcriptome_fasta'], checkIfExists: true) // transcript_fasta
+                input[0] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true))        // genome_fasta
+                input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true)) // transcriptome_fasta
                 """
                 }
             }
@@ -30,31 +29,82 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = [
-                            [ id:'test', single_end:false ], // meta map
-                            [
-                             file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                             file(params.test_data['homo_sapiens']['illumina']['test_2_fastq_gz'], checkIfExists: true)
-                            ]
-                ]
-                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)        // genome_fasta
-                input[2] = file(params.test_data['homo_sapiens']['genome']['transcriptome_fasta'], checkIfExists: true) // transcript_fasta
-                input[3] = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)          // gtf
+                make_index = false
+
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
+                ])
+                input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true))        // genome_fasta
+                input[2] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true)) // transcriptome_fasta
+                input[3] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true))          // genome_gtf
                 input[4] = SALMON_INDEX.out.index
-                input[5] = false
+                input[5] = make_index
                 """
             }
         }
 
         then {
+            def readlines1 = path(workflow.out.reads[0][1][0]).linesGzip
+            def readlines2 = path(workflow.out.reads[0][1][1]).linesGzip
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out.reads).match("reads") },
-                { assert snapshot(workflow.out.versions).match("versions") },
-
                 { assert workflow.out.index },
+                { assert workflow.out.json_info },
                 { assert workflow.out.results },
-                { assert workflow.out.json_info }
+                { assert snapshot(
+                    readlines1[0..5],
+                    readlines1.size(),
+                    readlines2[0..5],
+                    readlines2.size(),
+                    workflow.out.lib_format_counts,
+                    workflow.out.versions).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens paired-end [fastq] - stub") {
+
+        options "-stub"
+
+        setup {
+            run("SALMON_INDEX") {
+                script "../../../../modules/nf-core/salmon/index/main.nf"
+                process {
+                """
+                input[0] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true))        // genome_fasta
+                input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true)) // transcriptome_fasta
+                """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                make_index = false
+
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
+                ])
+                input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true))        // genome_fasta
+                input[2] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true)) // transcriptome_fasta
+                input[3] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true))          // genome_gtf
+                input[4] = SALMON_INDEX.out.index
+                input[5] = make_index
+                """
+            }
+        }
+
+        then {
+            def readlines1 = path(workflow.out.reads[0][1][0]).linesGzip
+            def readlines2 = path(workflow.out.reads[0][1][1]).linesGzip
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
             )
         }
     }

@@ -1,0 +1,47 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "gnu_split"
+description: Split a file into consecutive or interleaved sections
+keywords:
+  - gnu
+  - split
+  - coreutils
+  - generic
+tools:
+  - "gnu":
+      description: "The GNU Core Utilities are the basic file, shell and text manipulation
+        utilities of the GNU operating system. These are the core utilities which are
+        expected to exist on every operating system."
+      homepage: "https://www.gnu.org/software/coreutils/"
+      documentation: "https://www.gnu.org/software/coreutils/manual/html_node/index.html"
+      tool_dev_url: "https://git.savannah.gnu.org/cgit/coreutils.git"
+      doi: "10.5281/zenodo.581670"
+      licence: ["GPL"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - input:
+        type: file
+        description: Text file, possibly gzip file
+output:
+  - split:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ' "*split*" ':
+          type: file
+          description: Split files
+          pattern: "*split*"
+  - versions:
+      - versions.yml:
+          type: file
+          description: The split files
+authors:
+  - "@k1sauce"
+maintainers:
+  - "@k1sauce"

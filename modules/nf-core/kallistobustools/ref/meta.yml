@@ -9,54 +9,64 @@ keywords:
   - index
 tools:
   - kb:
-      description: kallisto|bustools (kb) is a tool developed for fast and efficient processing of single-cell OMICS data.
+      description: kallisto|bustools (kb) is a tool developed for fast and efficient
+        processing of single-cell OMICS data.
       homepage: https://www.kallistobus.tools/
       documentation: https://kb-python.readthedocs.io/en/latest/index.html
       tool_dev_url: https://github.com/pachterlab/kb_python
       doi: "10.22002/D1.1876"
-      licence: MIT License
+      licence: ["MIT"]
+      identifier: ""
 input:
-  - fasta:
-      type: file
-      description: Genomic DNA fasta file
-      pattern: "*.{fasta,fasta.gz}"
-  - gtf:
-      type: file
-      description: Genomic gtf file
-      pattern: "*.{gtf,gtf.gz}"
-  - workflow_mode:
-      type: string
-      description: String value defining workflow to use, can be one of "standard", "lamanno", "nucleus"
-      pattern: "{standard,lamanno,nucleus}"
+  - - fasta:
+        type: file
+        description: Genomic DNA fasta file
+        pattern: "*.{fasta,fasta.gz}"
+  - - gtf:
+        type: file
+        description: Genomic gtf file
+        pattern: "*.{gtf,gtf.gz}"
+  - - workflow_mode:
+        type: string
+        description: String value defining workflow to use, can be one of "standard",
+          "nac", "lamanno" (obsolete)
+        pattern: "{standard,lamanno,nac}"
 output:
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - kb_ref_idx:
-      type: file
-      description: Index file from kb ref.
-      pattern: "*.{idx}"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+  - index:
+      - kb_ref_out.idx:
+          type: file
+          description: kb ref index file
+          pattern: "*kb_ref_out.idx"
   - t2g:
-      type: file
-      description: Transcript to gene table
-      pattern: "*t2g.{txt}"
+      - t2g.txt:
+          type: file
+          description: Transcript to gene table
+          pattern: "*t2g.{txt}"
   - cdna:
-      type: file
-      description: Cdna fasta file
-      pattern: "*cdna.{fa}"
+      - cdna.fa:
+          type: file
+          description: cDNA fasta file
+          pattern: "*cdna.{fa}"
   - intron:
-      type: file
-      description: intron fasta file
-      pattern: "*intron.{fa}"
+      - intron.fa:
+          type: file
+          description: Intron fasta file
+          pattern: "*intron.{fa}"
   - cdna_t2c:
-      type: file
-      description: cdna transcript to capture file
-      pattern: "*cdna_t2c.{txt}"
+      - cdna_t2c.txt:
+          type: file
+          description: cDNA transcript to capture file
+          pattern: "*cdna_t2c.{txt}"
   - intron_t2c:
-      type: file
-      description: intron transcript to capture file
-      pattern: "*intron_t2c.{txt}"
+      - intron_t2c.txt:
+          type: file
+          description: Intron transcript to capture file
+          pattern: "*intron_t2c.{txt}"
 authors:
   - "@flowuenne"
 maintainers:

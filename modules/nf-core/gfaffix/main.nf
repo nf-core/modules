@@ -5,8 +5,8 @@ process GFAFFIX {
     conda "${moduleDir}/environment.yml"
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gfaffix:0.1.5--h031d066_0 ' :
-        'biocontainers/gfaffix:0.1.5--h031d066_0' }"
+        'https://depot.galaxyproject.org/singularity/gfaffix:0.1.5b--h031d066_0' :
+        'biocontainers/gfaffix:0.1.5b--h031d066_0' }"
 
     input:
     tuple val(meta), path(gfa)
@@ -30,7 +30,19 @@ process GFAFFIX {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gfaffix: \$(gfaffix --version 2>&1 | grep -o 'gfaffix .*' | cut -f2 -d ' ')
+        gfaffix: \$(gfaffix --version | grep -o 'gfaffix .*' | cut -f2 -d ' ')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.gfaffix.gfa
+    touch ${prefix}.affixes.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gfaffix: \$(gfaffix --version | grep -o 'gfaffix .*' | cut -f2 -d ' ')
     END_VERSIONS
     """
 }

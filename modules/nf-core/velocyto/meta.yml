@@ -1,0 +1,88 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "velocyto"
+description: |
+  Velocyto is a library for the analysis of RNA velocity. velocyto.py CLI use
+  `Path(resolve_path=True)` and breaks the nextflow logic of symbolic links.
+  If in the work dir velocyto find a file named EXACTLY `cellsorted_[ORIGINAL_BAM_NAME]`
+  it will skip the samtools sort step.
+  Cellsorted bam file should be cell sorted with:
+  ```bash
+      samtools sort -t CB -O BAM -o cellsorted_input.bam input.bam
+  ```
+  See module test for an example with the SAMTOOLS_SORT nf-core module.
+  Config example to cellsort input bam using SAMTOOLS_SORT:
+  ```groovy
+      withName: SAMTOOLS_SORT {
+          ext.prefix = { "cellsorted_${bam.baseName}" }
+          ext.args = '-t CB -O BAM'
+      }
+  ```
+  Optional mask must be passed with `ext.args` and option `--mask`
+  This is why I need to stage in the work dir 2 bam files (cellsorted and original).
+  See also [velocyto tutorial](https://velocyto.org/velocyto.py/tutorial/cli.html#notes-on-first-runtime-and-parallelization)
+
+keywords:
+  - count
+  - rnaseq
+  - rna velocity
+  - bam
+
+tools:
+  - velocyto:
+      description: A library for the analysis of RNA velocity.
+      homepage: https://github.com/velocyto-team/velocyto.py
+      documentation: https://velocyto.org/velocyto.py
+      tool_dev_url: https://github.com/velocyto-team/velocyto.py
+      doi: "10.1038/s41586-018-0414-6"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  # Only when we have meta
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - barcodes:
+        type: file
+        description: Valid barcodes file, to filter the bam
+        pattern: "*.tsv.gz"
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+    - sorted_bam:
+        type: file
+        description: Cell sorted BAM/CRAM/SAM file generated with `samtools sort -t
+          CB -O BAM -o cellsorted_possorted_genome_bam.bam possorted_genome_bam.bam`
+        pattern: "*.bam"
+  - - gtf:
+        type: file
+        description: genome annotation file
+        pattern: "*.gtf"
+output:
+  #Only when we have meta
+  - loom:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.loom":
+          type: file
+          description: Loom file with counts divided in spliced/unspliced/ambiguous.
+          pattern: "*.loom"
+      - "*.velocyto.log":
+          type: file
+          description: Loom file with counts divided in spliced/unspliced/ambiguous.
+          pattern: "*.loom"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@tucano"
+maintainers:
+  - "@tucano"

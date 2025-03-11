@@ -32,15 +32,13 @@ input:
       type: string
       description: |
         The filename of the schema to validate against.
-
 output:
-  - summary_params:
-      type: file
+  - dummy_emit:
+      type: boolean
       description: |
-        A Groovy map constructed from parameters.
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.bam"
+        Dummy emit to make nf-core subworkflows lint happy
 authors:
   - "@adamrtalbot"
 maintainers:
   - "@adamrtalbot"
+  - "@maxulysse"

@@ -4,8 +4,8 @@ process CHROMOGRAPH {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/chromograph:1.3.1--pyhdfd78af_1':
-        'biocontainers/chromograph:1.3.1--pyhdfd78af_1' }"
+        'https://depot.galaxyproject.org/singularity/chromograph:1.3.1--pyhdfd78af_2':
+        'biocontainers/chromograph:1.3.1--pyhdfd78af_2' }"
 
     input:
     tuple val(meta), path(autozyg)

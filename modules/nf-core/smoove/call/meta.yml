@@ -1,5 +1,8 @@
 name: "smoove_call"
-description: smoove simplifies and speeds calling and genotyping SVs for short reads. It also improves specificity by removing many spurious alignment signals that are indicative of low-level noise and often contribute to spurious calls. Developped by Brent Pedersen.
+description: smoove simplifies and speeds calling and genotyping SVs for short reads.
+  It also improves specificity by removing many spurious alignment signals that are
+  indicative of low-level noise and often contribute to spurious calls. Developed
+  by Brent Pedersen.
 keywords:
   - structural variants
   - SV
@@ -7,51 +10,65 @@ keywords:
   - wgs
 tools:
   - "smoove":
-      description: "structural variant calling and genotyping with existing tools, but, smoothly"
+      description: "structural variant calling and genotyping with existing tools, but,
+        smoothly"
       homepage: https://github.com/brentp/smoove
       documentation: https://brentp.github.io/post/smoove/
       tool_dev_url: https://github.com/brentp/smoove
-      licence: "['Apache-2.0']"
+      licence: ["Apache-2.0"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - input:
-      type: file
-      description: BAM/CRAM file
-      pattern: "*.{bam,cram}"
-  - index:
-      type: file
-      description: Index of BAM/CRAM file
-      pattern: "*.{bai,crai}"
-  - exclude_beds:
-      type: file
-      description: A BED file containing the regions to exclude from the SV calling
-      pattern: "*.bed"
-  - fasta:
-      type: file
-      description: The reference fasta file
-      pattern: "*.{fasta,fna,fa}"
-  - fai:
-      type: file
-      description: Index of reference fasta file
-      pattern: "*.fai"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input:
+        type: file
+        description: BAM/CRAM file
+        pattern: "*.{bam,cram}"
+    - index:
+        type: file
+        description: Index of BAM/CRAM file
+        pattern: "*.{bai,crai}"
+    - exclude_beds:
+        type: file
+        description: A BED file containing the regions to exclude from the SV calling
+        pattern: "*.bed"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: The reference fasta file
+        pattern: "*.{fasta,fna,fa}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fai:
+        type: file
+        description: Index of reference fasta file
+        pattern: "*.fai"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - vcf:
-      type: file
-      description: Compressed VCF file
-      pattern: "*.vcf.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf.gz":
+          type: file
+          description: Compressed VCF file
+          pattern: "*.vcf.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@scorreard"
   - "@nvnieuwk"

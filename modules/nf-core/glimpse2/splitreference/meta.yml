@@ -4,56 +4,67 @@ keywords:
   - split
   - reference
   - phasing
+  - imputation
 tools:
   - "glimpse2":
-      description: "GLIMPSE2 is a phasing and imputation method for large-scale low-coverage sequencing studies."
+      description: "GLIMPSE2 is a phasing and imputation method for large-scale low-coverage
+        sequencing studies."
       homepage: "https://odelaneau.github.io/GLIMPSE"
       documentation: "https://odelaneau.github.io/GLIMPSE/commands.html"
       tool_dev_url: "https://github.com/odelaneau/GLIMPSE"
       doi: "10.1038/s41588-020-00756-0"
-      licence: "['MIT']"
+      licence: ["MIT"]
+      identifier: biotools:glimpse2
 requirements:
   - AVX2
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reference:
-      type: file
-      description: Reference panel of haplotypes in VCF/BCF format.
-      pattern: "*.{vcf.gz,bcf.gz}"
-  - reference_index:
-      type: file
-      description: Index file of the Reference panel file.
-      pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
-  - input_region:
-      type: string
-      description: Target region used for imputation, including left and right buffers (e.g. chr20:1000000-2000000).
-      pattern: "chrXX:leftBufferPosition-rightBufferPosition"
-  - output_region:
-      type: string
-      description: Target imputed region, excluding left and right buffers (e.g. chr20:1000000-2000000).
-      pattern: "chrXX:leftBufferPosition-rightBufferPosition"
-  - map:
-      type: file
-      description: File containing the genetic map.
-      pattern: "*.gmap"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reference:
+        type: file
+        description: Reference panel of haplotypes in VCF/BCF format.
+        pattern: "*.{vcf.gz,bcf.gz}"
+    - reference_index:
+        type: file
+        description: Index file of the Reference panel file.
+        pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
+    - input_region:
+        type: string
+        description: Target region used for imputation, including left and right buffers
+          (e.g. chr20:1000000-2000000).
+        pattern: "chrXX:leftBufferPosition-rightBufferPosition"
+    - output_region:
+        type: string
+        description: Target imputed region, excluding left and right buffers (e.g. chr20:1000000-2000000).
+        pattern: "chrXX:leftBufferPosition-rightBufferPosition"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing genomic map information
+          e.g. `[ map:'GRCh38' ]`
+    - map:
+        type: file
+        description: File containing the genetic map.
+        pattern: "*.gmap"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - bin_ref:
-      type: file
-      description: binary reference panel
-      pattern: "*.bin"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bin":
+          type: file
+          description: binary reference panel
+          pattern: "*.bin"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@LouisLeNezet"
 maintainers:

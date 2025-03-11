@@ -1,0 +1,49 @@
+name: cellrangerarc_mkfastq
+description: Module to create fastqs needed by the 10x Genomics Cell Ranger Arc tool.
+  Uses the cellranger-arc mkfastq command.
+keywords:
+  - reference
+  - mkfastq
+  - fastq
+  - illumina
+  - bcl2fastq
+tools:
+  - cellrangerarc:
+      description: Cell Ranger Arc by 10x Genomics is a set of analysis pipelines that
+        process Chromium single-cell data to align reads, generate feature-barcode matrices,
+        perform clustering and other secondary analysis, and more.
+      homepage: https://support.10xgenomics.com/single-cell-multiome-atac-gex/software/pipelines/latest/what-is-cell-ranger-arc
+      documentation: https://support.10xgenomics.com/single-cell-multiome-atac-gex/software/pipelines/latest/what-is-cell-ranger-arc
+      tool_dev_url: https://support.10xgenomics.com/single-cell-multiome-atac-gex/software/pipelines/latest/what-is-cell-ranger-arc
+      licence:
+        - 10x Genomics EULA
+      identifier: ""
+input:
+  - - bcl:
+        type: file
+        description: Base call files
+        pattern: "*.bcl.bgzf"
+  - - csv:
+        type: file
+        description: Sample sheet
+        pattern: "*.csv"
+output:
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software version
+          pattern: "versions.yml"
+  - fastq:
+      - ${bcl.getSimpleName(:
+          type: file
+          description: Unaligned FastQ files
+          pattern: "*.fastq.gz"
+      - /*.fastq.gz:
+          type: file
+          description: Unaligned FastQ files
+          pattern: "*.fastq.gz"
+authors:
+  - "@ggabernet"
+  - "@edmundmiller"
+  - "@RHReynolds"
+  - "@heylf"

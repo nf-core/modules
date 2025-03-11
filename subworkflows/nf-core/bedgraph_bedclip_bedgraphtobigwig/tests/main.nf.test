@@ -17,11 +17,11 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = [
-                            [ id:'test', single_end:false ], // meta map
-                            file(params.test_data['sarscov2']['illumina']['test_bedgraph'], checkIfExists: true)
-                ]
-                input[1] = file(params.test_data['sarscov2']['genome']['genome_sizes'], checkIfExists: true)
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bedgraph/test.bedgraph', checkIfExists: true)
+                ])
+                input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.sizes', checkIfExists: true))
                 """
             }
         }
@@ -32,7 +32,29 @@ nextflow_workflow {
                 { assert snapshot(workflow.out).match() }
             )
         }
-
     }
 
+    test("sarscov2 [bedgraph] [genome_sizes] - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bedgraph/test.bedgraph', checkIfExists: true)
+                ])
+                input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.sizes', checkIfExists: true))
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
 }

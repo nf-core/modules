@@ -13,44 +13,82 @@ tools:
       documentation: https://instrain.readthedocs.io/en/latest/
       tool_dev_url: https://github.com/MrOlm/instrain
       doi: 10.1038/s41587-020-00797-0
-      licence: "['MIT']"
+      licence: ["MIT"]
+      identifier: biotools:instrain
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - profiles:
-      type: directory
-      description: InStrain profile folders
-      pattern: "*.IS/"
-  - bams:
-      type: file
-      description: Path to .bam files that were profiled
-      pattern: "*.{bam,sam}"
-  - stb_file:
-      type: file
-      description: Path to .stb (scaffold to bin) file that was profiled
-      pattern: "*.stb"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - bams:
+        type: file
+        description: Path to .bam files that were profiled
+        pattern: "*.{bam,sam}"
+    - profiles:
+        type: directory
+        description: InStrain profile folders
+        pattern: "*.IS/"
+  - - stb_file:
+        type: file
+        description: Path to .stb (scaffold to bin) file that was profiled
+        pattern: "*.stb"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - compare:
-      type: directory
-      description: inStrain compare folders
-      pattern: "*.IS_compare/"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.IS_compare":
+          type: directory
+          description: inStrain compare folders
+          pattern: "*.IS_compare/"
+  - comparisons_table:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.IS_compare/output/*.IS_compare_comparisonsTable.tsv":
+          type: file
+          description: Comparisons table
+          pattern: "*.tsv"
+  - pooled_snv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.IS_compare/output/*.IS_compare_pooled_SNV_data.tsv":
+          type: file
+          description: Pooled SNV
+          pattern: "*.tsv"
+  - snv_keys:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.IS_compare/output/*.IS_compare_pooled_SNV_data_keys.tsv":
+          type: file
+          description: SNV keys
+          pattern: "*.tsv"
+  - snv_info:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.IS_compare/output/*.IS_compare_pooled_SNV_info.tsv":
+          type: file
+          description: SNV information
+          pattern: "*.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@margotl9"
   - "@CarsonJM"

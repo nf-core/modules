@@ -1,0 +1,31 @@
+nextflow_process {
+
+    name "Test Process ZIP"
+    script "../main.nf"
+    process "ZIP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "zip"
+
+    test("sarscov2 - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                           ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.zipped_archive.get(0).get(1)).exists() },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
+}

@@ -1,0 +1,92 @@
+nextflow_process {
+
+    name "Test Process GATK4_SPLITNCIGARREADS"
+    script "../main.nf"
+    process "GATK4_SPLITNCIGARREADS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gatk4"
+    tag "gatk4/splitncigarreads"
+
+    test("test_gatk4_splitncigarreads") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true), []]
+                input[1] = [ [ id:'reference' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+                input[2] = [ [ id:'reference' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true) ]
+                input[3] = [ [ id:'reference' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.bam[0][1]).name,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("test_gatk4_splitncigarreads_intervals") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)]
+                input[1] = [ [ id:'reference' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+                input[2] = [ [ id:'reference' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true) ]
+                input[3] = [ [ id:'reference' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.bam[0][1]).name,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("test_gatk4_splitncigarreads_stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true), [], []]
+                input[1] = [ [ id:'reference' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+                input[2] = [ [ id:'reference' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true) ]
+                input[3] = [ [ id:'reference' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.bam[0][1]).name,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+}

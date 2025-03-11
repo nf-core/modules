@@ -24,7 +24,7 @@ process FALCO {
     def prefix = task.ext.prefix ?: "${meta.id}"
     if ( reads.toList().size() == 1 ) {
         """
-        falco $args --threads $task.cpus ${reads} -D ${prefix}_data.txt -S ${prefix}_summary.txt -R ${prefix}_report.html
+        falco $args --threads $task.cpus ${reads} -D ${prefix}_fastqc_data.txt -S ${prefix}_summary.txt -R ${prefix}_report.html
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":

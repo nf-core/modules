@@ -2,6 +2,7 @@ name: "genmod_score"
 description: Score the variants of a vcf based on their annotation
 keywords:
   - score
+  - ranking
   - genmod
 tools:
   - "genmod":
@@ -9,39 +10,41 @@ tools:
       homepage: "https://github.com/Clinical-Genomics/genmod"
       documentation: "https://github.com/Clinical-Genomics/genmod"
       tool_dev_url: "https://github.com/moonso"
-      licence: "['MIT']"
+      licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - input_vcf:
-      type: file
-      description: vcf file
-      pattern: "*.{vcf}"
-  - family_file:
-      type: file
-      description: ped file
-      pattern: "*.{ped}"
-  - score_config:
-      type: file
-      description: rank model config file
-      pattern: "*.{ini}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input_vcf:
+        type: file
+        description: vcf file
+        pattern: "*.{vcf}"
+    - fam:
+        type: file
+        description: PED file with family information
+  - - score_config:
+        type: file
+        description: rank model config file
+        pattern: "*.{ini}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - vcf:
-      type: file
-      description: Output VCF file
-      pattern: "*.{vcf}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_score.vcf":
+          type: file
+          description: Output VCF file
+          pattern: "*.{vcf}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@ramprasadn"
 maintainers:

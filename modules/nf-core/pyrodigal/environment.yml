@@ -1,7 +1,8 @@
-name: pyrodigal
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
-  - defaults
 dependencies:
-  - bioconda::pyrodigal=2.1.0
+  - bioconda::pyrodigal=3.6.3
+  - conda-forge::pigz=2.8

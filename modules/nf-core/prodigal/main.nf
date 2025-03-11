@@ -33,7 +33,10 @@ process PRODIGAL {
         -a "${prefix}.faa" \\
         -s "${prefix}_all.txt"
 
-    pigz -nm ${prefix}*
+    pigz -nm ${prefix}.fna
+    pigz -nm ${prefix}.${output_format}
+    pigz -nm ${prefix}.faa
+    pigz -nm ${prefix}_all.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -41,4 +44,21 @@ process PRODIGAL {
         pigz: \$(pigz -V 2>&1 | sed 's/pigz //g')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.fna.gz
+    touch ${prefix}.${output_format}.gz
+    touch ${prefix}.faa.gz
+    touch ${prefix}_all.txt.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        prodigal: \$(prodigal -v 2>&1 | sed -n 's/Prodigal V\\(.*\\):.*/\\1/p')
+        pigz: \$(pigz -V 2>&1 | sed 's/pigz //g')
+    END_VERSIONS
+    """
+
 }

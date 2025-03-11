@@ -8,22 +8,18 @@ nextflow_process {
     tag "qualimap"
     tag "qualimap/rnaseq"
 
-    test("homo_sapiens [BAM]") {
-
+    test("homo_sapiens [bam]") {
         when {
-            params {
-                outdir   = "$outputDir"
-            }
             process {
                 """
-                input[0] = [
+                input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
-                ]
-                input[1] = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
                     [ id:'test_fasta_gtf' ], // meta map
-                    [ file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true) ]
-                ]
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
+                ])
                 """
             }
         }
@@ -31,8 +27,38 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert path(process.out.results.get(0).get(1)).exists() },
-                { assert path(process.out.versions.get(0)).getText().contains("qualimap") }
+                { assert snapshot(
+                    file("${process.out.results[0][1]}/qualimapReport.html").name,
+                    path("${process.out.results[0][1]}/rnaseq_qc_results.txt"),
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens [bam] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
+                    [ id:'test_fasta_gtf' ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
             )
         }
     }

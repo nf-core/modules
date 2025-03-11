@@ -4,8 +4,8 @@ process ODGI_STATS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/odgi:0.8.3--py310h6cc9453_0':
-        'biocontainers/odgi:0.8.3--py310h6cc9453_0' }"
+        'https://depot.galaxyproject.org/singularity/odgi:0.9.0--py312h5e9d817_1':
+        'biocontainers/odgi:0.9.0--py312h5e9d817_1' }"
 
     input:
     tuple val(meta), path(graph)
@@ -13,7 +13,7 @@ process ODGI_STATS {
     output:
     tuple val(meta), path("*.og.stats.tsv") , optional: true, emit: tsv
     tuple val(meta), path("*.og.stats.yaml"), optional: true, emit: yaml
-    path "versions.yml"                 , emit: versions
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,7 +21,7 @@ process ODGI_STATS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = ".og.stats.tsv"
+    def suffix = "og.stats.tsv"
     if (args.contains("--yaml") || args.contains("--multiqc")) {
         suffix = "og.stats.yaml"
     }

@@ -4,11 +4,13 @@ process SAMTOOLS_COVERAGE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.18--h50ea8bc_1' :
-        'biocontainers/samtools:1.18--h50ea8bc_1' }"
+        'https://depot.galaxyproject.org/singularity/samtools:1.21--h50ea8bc_0' :
+        'biocontainers/samtools:1.21--h50ea8bc_0' }"
 
     input:
     tuple val(meta), path(input), path(input_index)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
 
     output:
     tuple val(meta), path("*.txt"), emit: coverage
@@ -25,6 +27,7 @@ process SAMTOOLS_COVERAGE {
         coverage \\
         $args \\
         -o ${prefix}.txt \\
+        --reference ${fasta} \\
         $input
 
     cat <<-END_VERSIONS > versions.yml
@@ -34,7 +37,6 @@ process SAMTOOLS_COVERAGE {
     """
 
     stub:
-    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt

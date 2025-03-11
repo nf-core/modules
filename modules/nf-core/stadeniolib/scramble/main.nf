@@ -14,9 +14,9 @@ process STADENIOLIB_SCRAMBLE {
     path(gzi)
 
     output:
-    tuple val(meta), path("*.cram") ,emit: cram
-    path "*.gzi"                    ,emit: gzi, optional: true
-    path "versions.yml"             ,emit: versions
+    tuple val(meta), path("*.{cram,bam}")   , emit: cram
+    path "*.gzi"                            , emit: gzi         , optional: true
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,23 +25,24 @@ process STADENIOLIB_SCRAMBLE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def inputformat = reads.getExtension
+    def inputformat = reads.extension
     def outputformat = "cram"
-    if ("-O sam" in args) {
+    if ( "-O sam" in args ) {
         outputformat = "sam"
-    } else if ("-O bam" in args) {
+    } else if ( "-O bam" in args ) {
         outputformat = "bam"
     }
 
-    def reference = if fasta && fai : "--r ${fasta}" else ""
-    if (outputformat == "cram" && !reference) {
+    def reference = ( fasta && fai ) ? "-r ${fasta}" : ''
+    if ( outputformat == "cram" && !reference ) {
         error "Cannot convert to CRAM without a reference"
     }
 
-    def gz_index = if gzi : "--g ${gzi}" else ""
-    if (outputformat == "cram" || outputformat == "sam") {
-        gz_index = ""
-        warning "Cannot use gzip index for CRAM or SAM output"
+    def gz_index = gzi ? "-g ${gzi}" : ''
+
+    if ( ( outputformat == "cram" || outputformat == "sam" ) && gz_index ) {
+        gz_index = ''
+        error "Cannot use gzip index for CRAM or SAM output"
     }
 
     """
@@ -52,6 +53,39 @@ process STADENIOLIB_SCRAMBLE {
         -t $task.cpus \
         ${reads} \
         ${prefix}.${outputformat}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        stadeniolib: \$(echo \$(scramble -h | head -n 1 |sed 's/^.*version //'))
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    def inputformat = reads.extension
+    def outputformat = "cram"
+    if ( "-O sam" in args ) {
+        outputformat = "sam"
+    } else if ( "-O bam" in args ) {
+        outputformat = "bam"
+    }
+
+    def reference = ( fasta && fai ) ? "-r ${fasta}" : ''
+    if ( outputformat == "cram" && !reference ) {
+        error "Cannot convert to CRAM without a reference"
+    }
+
+    def gz_index = gzi ? "-g ${gzi}" : ''
+
+    if ( ( outputformat == "cram" || outputformat == "sam" ) && gz_index ) {
+        gz_index = ''
+        error "Cannot use gzip index for CRAM or SAM output"
+    }
+
+    """
+    touch ${prefix}.${outputformat}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

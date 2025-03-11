@@ -1,0 +1,50 @@
+name: "ale"
+description: "ALE: assembly likelihood estimator."
+keywords:
+  - reference-independent
+  - assembly
+  - evaluation
+tools:
+  - "ale":
+      description: "ALE is a generic assembly likelihood evaluation framework for assessing
+        the accuracy of genome and metagenome assemblies."
+      documentation: "https://portal.nersc.gov/dna/RD/Adv-Seq/ALE-doc/index.html#document-install"
+      tool_dev_url: "https://github.com/sc932/ALE"
+      doi: "10.1093/bioinformatics/bts723"
+      licence: ["NCSA"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - asm:
+        type: file
+        description: Assembly in FASTA format
+        pattern: "*.{fasta,fa}"
+    - bam:
+        type: file
+        description: BAM file containing sorted read mappings
+        pattern: "*.{bam}"
+output:
+  - ale:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_ALEoutput.txt":
+          type: file
+          description: Output TXT file containing ALE results
+          pattern: "*_ALEoutput.{txt}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@rodtheo"
+maintainers:
+  - "@rodtheo"

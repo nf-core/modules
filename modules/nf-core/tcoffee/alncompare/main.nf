@@ -4,8 +4,8 @@ process TCOFFEE_ALNCOMPARE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/t-coffee:13.46.0.919e8c6b--hfc96bf3_0':
-        'biocontainers/t-coffee:13.46.0.919e8c6b--hfc96bf3_0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-a76a981c07359a31ff55b9dc13bd3da5ce1909c1:84c8f17f1259b49e2f7783b95b7a89c6f2cb199e-0':
+        'biocontainers/mulled-v2-a76a981c07359a31ff55b9dc13bd3da5ce1909c1:84c8f17f1259b49e2f7783b95b7a89c6f2cb199e-0' }"
 
     input:
     tuple val(meta), path(msa), path(ref_msa)
@@ -25,10 +25,17 @@ process TCOFFEE_ALNCOMPARE {
     def values = meta.values().join(",")
 
     """
+    # check whether it is compressed
+    if [[ "${msa}" == *.gz ]]; then
+        unpigz -c ${msa} > uncompressed_msa.fa
+    else
+        ln ${msa} uncompressed_msa.fa
+    fi
+
     export TEMP='./'
     t_coffee -other_pg aln_compare \
         -al1 ${ref_msa} \
-        -al2 ${msa} \
+        -al2 uncompressed_msa.fa \
         ${args} \
         | grep -v "seq1" | grep -v '*' | \
         awk '{ print \$4}' ORS="\t" \
@@ -44,17 +51,21 @@ process TCOFFEE_ALNCOMPARE {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
     END_VERSIONS
     """
     stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    # Otherwise, tcoffee will crash when calling its version
+    export TEMP='./'
     touch "${prefix}.scores"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
     END_VERSIONS
     """
 }

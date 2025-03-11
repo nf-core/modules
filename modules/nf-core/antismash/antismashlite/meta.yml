@@ -22,111 +22,208 @@ tools:
       documentation: "https://docs.antismash.secondarymetabolites.org"
       tool_dev_url: "https://github.com/antismash/antismash"
       doi: "10.1093/nar/gkab335"
-      licence: "['AGPL v3']"
+      licence: ["AGPL v3"]
+      identifier: biotools:antismash
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - sequence_input:
-      type: file
-      description: nucleotide sequence file (annotated)
-      pattern: "*.{gbk, gb, gbff, genbank, embl, fasta, fna}"
-  - databases:
-      type: directory
-      description: |
-        Downloaded AntiSMASH databases (e.g. in the AntiSMASH installation directory
-        "data/databases")
-      pattern: "*/"
-  - antismash_dir:
-      type: directory
-      description: |
-        A local copy of an AntiSMASH installation folder. This is required when running with
-        docker and singularity (not required for conda), due to attempted 'modifications' of
-        files during database checks in the installation directory, something that cannot
-        be done in immutable docker/singularity containers. Therefore, a local installation
-        directory needs to be mounted (including all modified files from the downloading step)
-        to the container as a workaround.
-      pattern: "*/"
-  - gff:
-      type: file
-      description: Annotations in GFF3 format (only if sequence_input is in FASTA format)
-      pattern: "*.gff"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - sequence_input:
+        type: file
+        description: nucleotide sequence file (annotated)
+        pattern: "*.{gbk, gb, gbff, genbank, embl, fasta, fna}"
+  - - databases:
+        type: directory
+        description: |
+          Downloaded AntiSMASH databases (e.g. in the AntiSMASH installation directory
+          "data/databases")
+        pattern: "*/"
+  - - antismash_dir:
+        type: directory
+        description: |
+          A local copy of an AntiSMASH installation folder. This is required when running with
+          docker and singularity (not required for conda), due to attempted 'modifications' of
+          files during database checks in the installation directory, something that cannot
+          be done in immutable docker/singularity containers. Therefore, a local installation
+          directory needs to be mounted (including all modified files from the downloading step)
+          to the container as a workaround.
+        pattern: "*/"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - clusterblast_file:
-      type: file
-      description: Output of ClusterBlast algorithm
-      pattern: "clusterblast/*_c*.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/clusterblast/*_c*.txt:
+          type: file
+          description: Output of ClusterBlast algorithm
+          pattern: "clusterblast/*_c*.txt"
   - html_accessory_files:
-      type: directory
-      description: Accessory files for the HTML output
-      pattern: "{css/,images/,js/}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/{css,images,js}:
+          type: directory
+          description: Accessory files for the HTML output
+          pattern: "{css/,images/,js/}"
   - knownclusterblast_html:
-      type: file
-      description: Tables with MIBiG hits in HTML format
-      pattern: "knownclusterblast/region*/ctg*.html"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/knownclusterblast/region*/ctg*.html:
+          type: file
+          description: Tables with MIBiG hits in HTML format
+          pattern: "knownclusterblast/region*/ctg*.html"
   - knownclusterblast_dir:
-      type: directory
-      description: Directory with MIBiG hits
-      pattern: "knownclusterblast/"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/knownclusterblast/:
+          type: directory
+          description: Directory with MIBiG hits
+          pattern: "knownclusterblast/"
   - knownclusterblast_txt:
-      type: file
-      description: Tables with MIBiG hits
-      pattern: "knownclusterblast/*_c*.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/knownclusterblast/*_c*.txt:
+          type: file
+          description: Tables with MIBiG hits
+          pattern: "knownclusterblast/*_c*.txt"
   - svg_files_clusterblast:
-      type: file
-      description: SVG images showing the % identity of the aligned hits against their queries
-      pattern: "svg/clusterblast*.svg"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/svg/clusterblast*.svg:
+          type: file
+          description: SVG images showing the % identity of the aligned hits against their
+            queries
+          pattern: "svg/clusterblast*.svg"
   - svg_files_knownclusterblast:
-      type: file
-      description: SVG images showing the % identity of the aligned hits against their queries
-      pattern: "svg/knownclusterblast*.svg"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/svg/knownclusterblast*.svg:
+          type: file
+          description: SVG images showing the % identity of the aligned hits against their
+            queries
+          pattern: "svg/knownclusterblast*.svg"
   - gbk_input:
-      type: file
-      description: Nucleotide sequence and annotations in GenBank format; converted from input file
-      pattern: "*.gbk"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/*.gbk:
+          type: file
+          description: Nucleotide sequence and annotations in GenBank format; converted
+            from input file
+          pattern: "*.gbk"
   - json_results:
-      type: file
-      description: Nucleotide sequence and annotations in JSON format; converted from GenBank file (gbk_input)
-      pattern: "*.json"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/*.json:
+          type: file
+          description: Nucleotide sequence and annotations in JSON format; converted from
+            GenBank file (gbk_input)
+          pattern: "*.json"
   - log:
-      type: file
-      description: Contains all the logging output that antiSMASH produced during its run
-      pattern: "*.log"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/*.log:
+          type: file
+          description: Contains all the logging output that antiSMASH produced during
+            its run
+          pattern: "*.log"
   - zip:
-      type: file
-      description: Contains a compressed version of the output folder in zip format
-      pattern: "*.zip"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/*.zip:
+          type: file
+          description: Contains a compressed version of the output folder in zip format
+          pattern: "*.zip"
   - gbk_results:
-      type: file
-      description: Nucleotide sequence and annotations in GenBank format; one file per antiSMASH hit
-      pattern: "*region*.gbk"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/*region*.gbk:
+          type: file
+          description: Nucleotide sequence and annotations in GenBank format; one file
+            per antiSMASH hit
+          pattern: "*region*.gbk"
   - clusterblastoutput:
-      type: file
-      description: Raw BLAST output of known clusters previously predicted by antiSMASH using the built-in ClusterBlast algorithm
-      pattern: "clusterblastoutput.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/clusterblastoutput.txt:
+          type: file
+          description: Raw BLAST output of known clusters previously predicted by antiSMASH
+            using the built-in ClusterBlast algorithm
+          pattern: "clusterblastoutput.txt"
   - html:
-      type: file
-      description: Graphical web view of results in HTML format
-      patterN: "index.html"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/index.html:
+          type: file
+          description: Graphical web view of results in HTML format
+          patterN: "index.html"
   - knownclusterblastoutput:
-      type: file
-      description: Raw BLAST output of known clusters of the MIBiG database
-      pattern: "knownclusterblastoutput.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/knownclusterblastoutput.txt:
+          type: file
+          description: Raw BLAST output of known clusters of the MIBiG database
+          pattern: "knownclusterblastoutput.txt"
   - json_sideloading:
-      type: file
-      description: Sideloaded annotations of protoclusters and/or subregions (see antiSMASH documentation "Annotation sideloading")
-      pattern: "regions.js"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/regions.js:
+          type: file
+          description: Sideloaded annotations of protoclusters and/or subregions (see
+            antiSMASH documentation "Annotation sideloading")
+          pattern: "regions.js"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jasmezz"
 maintainers:

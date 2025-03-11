@@ -2,7 +2,7 @@ process SPACERANGER_COUNT {
     tag "$meta.id"
     label 'process_high'
 
-    container "docker.io/nfcore/spaceranger:2.1.0"
+    container "nf-core/modules/spaceranger:d71611e316a8614b"
 
     input:
     tuple val(meta), path(reads), path(image), path(cytaimage), path(darkimage), path(colorizedimage), path(alignment), path(slidefile)
@@ -10,7 +10,7 @@ process SPACERANGER_COUNT {
     path(probeset)
 
     output:
-    tuple val(meta), path("**/outs/**"), emit: outs
+    tuple val(meta), path("outs/**"), emit: outs
     path "versions.yml", emit: versions
 
     when:
@@ -46,6 +46,7 @@ process SPACERANGER_COUNT {
         $alignment \\
         $slidefile \\
         $args
+    mv ${prefix}/outs outs
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -58,10 +59,9 @@ process SPACERANGER_COUNT {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "SPACERANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p "${prefix}/outs/"
-    touch ${prefix}/outs/fake_file.txt
+    mkdir -p outs/
+    touch outs/fake_file.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

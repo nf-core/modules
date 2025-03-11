@@ -1,0 +1,45 @@
+name: "bedops_convert2bed"
+description: Convert BAM/GFF/GTF/GVF/PSL files to bed
+keywords:
+  - convert
+  - bed
+  - genomics
+tools:
+  - "bedops":
+      description: "High-performance genomic feature operations."
+      homepage: "https://bedops.readthedocs.io/en/latest/content/reference/file-management/conversion/convert2bed.html#convert2bed"
+      documentation: "https://bedops.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/bedops"
+      doi: "10.1093/bioinformatics/bts277"
+      licence: ["GNU v2"]
+      identifier: biotools:bedops
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - in_file:
+        type: file
+        description: Input file
+output:
+  - bed:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.bed":
+          type: file
+          description: Sorted BED file
+          pattern: "*.{bed}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@rannick"
+maintainers:
+  - "@rannick"

@@ -1,4 +1,3 @@
----
 name: "htseq_count"
 description: count how many reads map to each feature
 keywords:
@@ -8,44 +7,52 @@ keywords:
   - annotation
 tools:
   - "htseq/count":
-      description: "HTSeq is a Python library to facilitate processing and analysis of data from high-throughput sequencing (HTS) experiments."
+      description: "HTSeq is a Python library to facilitate processing and analysis
+        of data from high-throughput sequencing (HTS) experiments."
       homepage: "https://htseq.readthedocs.io/en/latest/"
       documentation: "https://htseq.readthedocs.io/en/latest/index.html"
       doi: "10.1093/bioinformatics/btu638"
-      licence: "['GPL v3']"
+      licence: ["GPL v3"]
+      identifier: biotools:htseq
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - meta2:
-      type: map
-      description: |
-        .gtf file information
-        e.g. `[ id:'test' ]`
-  - input:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-  - index:
-      type: file
-      description: Contains indexed bam file
-      pattern: "*.bai"
-  - gtf:
-      type: file
-      description: Contains the features in the GTF format
-      pattern: "*.gtf"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - input:
+        type: file
+        description: Sorted BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+    - index:
+        type: file
+        description: Contains indexed bam file
+        pattern: "*.bai"
+  - - meta2:
+        type: map
+        description: |
+          .gtf file information
+          e.g. `[ id:'test' ]`
+    - gtf:
+        type: file
+        description: Contains the features in the GTF format
+        pattern: "*.gtf"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
   - txt:
-      type: file
-      description: File containing feature counts output
-      pattern: ".txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.txt":
+          type: file
+          description: File containing feature counts output
+          pattern: ".txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@zehrahazalsezer"
 maintainers:

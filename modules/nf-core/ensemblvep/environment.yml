@@ -1,10 +1,7 @@
-# You can use this file to create a conda environment for this module:
-#   conda env create -f environment.yml
-name: nf-core-vep-108.2
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
-  - defaults
-
 dependencies:
-  - bioconda::ensembl-vep=108.2
+  - bioconda::ensembl-vep=111.0

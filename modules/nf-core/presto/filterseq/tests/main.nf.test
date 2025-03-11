@@ -2,10 +2,12 @@ nextflow_process {
 
     name "Test Process PRESTO_FILTERSEQ"
     script "../main.nf"
+    config "./nextflow.config"
     process "PRESTO_FILTERSEQ"
 
     tag "modules"
     tag "modules_nfcore"
+    tag "gunzip"
     tag "presto"
     tag "presto/filterseq"
 
@@ -19,7 +21,7 @@ nextflow_process {
                     """
                     input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_airrseq_1_fastq_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_airrseq_umi_R1.fastq.gz', checkIfExists: true)
                     ]
                     """
                 }
@@ -37,10 +39,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
+                { assert snapshot(process.out.versions,
+                                  process.out.reads,
+                                  process.out.log_tab).match() },
                 { assert path(process.out.log_tab.get(0)).getText().contains("QUALITY") },
-                { assert path(process.out.logs.get(0)).getText().contains("PASS") },
-                { assert process.out.reads.size() == 1 }
+                { assert path(process.out.logs.get(0)).getText().contains("PASS") }
             )
         }
 

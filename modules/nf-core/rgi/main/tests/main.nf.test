@@ -1,0 +1,94 @@
+nextflow_process {
+
+    name "Test Process RGI_MAIN"
+    script "../main.nf"
+    process "RGI_MAIN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "rgi"
+    tag "rgi/main"
+    tag "rgi/cardannotation"
+    tag "untar"
+
+    setup {
+        run("UNTAR") {
+            script "modules/nf-core/untar/main.nf"
+            process {
+            """
+            file('https://card.mcmaster.ca/latest/data', checkIfExists: true).copyTo('card-data.tar.bz2')
+
+            input[0] = [
+                [ ],
+                file("card-data.tar.bz2")
+            ]
+            """
+            }
+        }
+
+        run("RGI_CARDANNOTATION") {
+            script "modules/nf-core/rgi/cardannotation"
+            process {
+                """
+                input[0] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+    }
+
+
+    test("rgi/main - haemophilus_influenzae - genome_fna_gz") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['haemophilus_influenzae']['genome']['genome_fna_gz'], checkIfExists: true)
+                ]
+                input[1] = RGI_CARDANNOTATION.out.db
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.tsv,
+                    process.out.json,
+                    file(process.out.tmp.get(0).get(1)).list().sort(),
+                    process.out.tool_version,
+                    process.out.db_version,
+                    ).match() }
+            )
+        }
+    }
+
+    test("rgi/main - haemophilus_influenzae - genome_fna_gz - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['haemophilus_influenzae']['genome']['genome_fna_gz'], checkIfExists: true)
+                ]
+                input[1] = RGI_CARDANNOTATION.out.db
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

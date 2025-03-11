@@ -33,7 +33,7 @@ process PAIRTOOLS_FLIP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pairtools: \$(pairtools --version 2>&1 | sed 's/pairtools.*version //')
+        pairtools: \$(pairtools --version | tr '\\n' ',' | sed 's/.*pairtools.*version //' | sed 's/,\$/\\n/')
     END_VERSIONS
     """
 }

@@ -4,8 +4,8 @@ process BBMAP_INDEX {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bbmap:39.01--h5c4e2a8_0':
-        'biocontainers/bbmap:39.01--h5c4e2a8_0' }"
+        'https://depot.galaxyproject.org/singularity/bbmap:39.17--he5f24ec_0':
+        'biocontainers/bbmap:39.17--he5f24ec_0' }"
 
     input:
     path fasta
@@ -25,6 +25,17 @@ process BBMAP_INDEX {
         $args \\
         threads=$task.cpus \\
         -Xmx${task.memory.toGiga()}g
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
+    END_VERSIONS
+    """
+    stub:
+    """
+    mkdir -p ref
+    touch ref/info.txt
+    touch ref/summary.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

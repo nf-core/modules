@@ -1,0 +1,101 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "president"
+description: "Calculate pairwise nucleotide identity with respect to a reference sequence"
+keywords:
+  - fasta
+  - genome
+  - qc
+  - nucleotides
+tools:
+  - "president":
+      description: "Calculate pairwise nucleotide identity with respect to a reference
+        sequence"
+      homepage: "https://github.com/rki-mf1/president"
+      documentation: "https://github.com/rki-mf1/president"
+      tool_dev_url: "https://github.com/rki-mf1/president"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing information, e.g. [ id:'test', single_end:false
+          ]
+    - fasta:
+        type: file
+        description: One fasta file or a list of multiple fasta files to perform president
+          on. Has to be uncompressed!
+        pattern: "*.{fasta,fas,fa,fna,ffn,faa,mpfa,frn}"
+  - - meta2:
+        type: map
+        description: Groovy Map containing information about the reference genome
+    - reference:
+        type: file
+        description: Fasta of a reference genome. Has to be uncompressed!
+        pattern: "*.{fasta,fas,fa,fna,ffn,faa,mpfa,frn}"
+  - - compress:
+        type: boolean
+        description: Set to "true" if fasta output should be compressed
+output:
+  - valid_fasta:
+      - meta:
+          type: file
+          description: Fasta file containing sequences which passed the qc ("valid.fasta").
+            If true is set on the "compress" input value, the file is gz-compressed.
+          pattern: "*.{fasta.gz, fasta}"
+      - ${prefix}_valid.fasta*:
+          type: file
+          description: Fasta file containing sequences which passed the qc ("valid.fasta").
+            If true is set on the "compress" input value, the file is gz-compressed.
+          pattern: "*.{fasta.gz, fasta}"
+      - id_fasta:
+          type: file
+          description: Fasta file containing sequences which passed the qc ("valid.fasta").
+            If true is set on the "compress" input value, the file is gz-compressed.
+          pattern: "*.{fasta.gz, fasta}"
+  - invalid_fasta:
+      - meta:
+          type: file
+          description: Fasta file containing sequences which didn't pass the qc ("invalid.fasta").
+            If true is set on the "compress" input value, the files are gz-compressed.
+          pattern: "*_invalid.{fasta.gz, fasta}"
+      - ${prefix}_invalid.fasta*:
+          type: file
+          description: Fasta file containing sequences which didn't pass the qc ("invalid.fasta").
+            If true is set on the "compress" input value, the files are gz-compressed.
+          pattern: "*_invalid.{fasta.gz, fasta}"
+      - id_fasta:
+          type: file
+          description: Fasta file containing sequences which didn't pass the qc ("invalid.fasta").
+            If true is set on the "compress" input value, the files are gz-compressed.
+          pattern: "*_invalid.{fasta.gz, fasta}"
+  - report:
+      - meta:
+          type: file
+          description: Report with some information for every sample, like statistic values.
+            See docs for details
+          pattern: "*.tsv"
+      - "*.tsv":
+          type: file
+          description: Report with some information for every sample, like statistic values.
+            See docs for details
+          pattern: "*.tsv"
+  - log:
+      - meta:
+          type: file
+          description: Log file of president
+          pattern: "*.log"
+      - "*.log":
+          type: file
+          description: Log file of president
+          pattern: "*.log"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@paulwolk"
+maintainers:
+  - "@paulwolk"
+  - "@gallvp"

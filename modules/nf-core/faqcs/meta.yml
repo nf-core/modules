@@ -14,72 +14,95 @@ tools:
       tool_dev_url: https://github.com/LANL-Bioinformatics/FaQCs
       doi: "10.1186/s12859-014-0366-2"
       licence: ["GPLv3 License"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Metadata about the specific run.
-        I guess this can be used if you are running many different images in a single nextflow pass?
-        I have no clue.
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - image:
-      type: file
-      description: |
-        Obtained from cellpose documentation: Inputs
-        You can use tiffs or PNGs or JPEGs. We use the image loader from scikit-image.
-        Single plane images can read into data as nY x nX x channels or channels x nY x nX.
-        Then the channels settings will take care of reshaping the input appropriately for the network.
-        Note the model also rescales the input for each channel so that 0 = 1st percentile of image values and 1 = 99th percentile.
-  - image_metadata:
-      type: file
-      description: |
-        This file will let Cellpose know which channels to use for segmentation.
-        The default will be channel 0.
-  - Model_to_use:
-      type: string
-      description: |
-        This will define which model to use.
-        The default will be nuclear.
-        All models from the model zoo should be usable, the exact string has to be passed.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for
+          single-end and paired-end data, respectively.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - reads:
-      type: file
-      description: The trimmed/modified fastq reads
-      pattern: "*trimmed.fastq.gz"
-  - reads_fail:
-      type: file
-      description: Reads that failed the preprocessing (Optional with --discard args setting)
-      pattern: "*discard.fastq.gz"
-  - reads_unpaired:
-      type: file
-      description: Reads without matching mates in paired-end files (Optional)
-      pattern: "*trimmed.unpaired.fastq.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.trimmed.fastq.gz":
+          type: file
+          description: The trimmed/modified fastq reads
+          pattern: "*trimmed.fastq.gz"
   - stats:
-      type: file
-      description: trimming/qc text stats file
-      pattern: "*.stats.txt"
-  - txt:
-      type: file
-      description: trimming/qc text txt files from --debug option
-      pattern: "*.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.stats.txt":
+          type: file
+          description: trimming/qc text stats file
+          pattern: "*.stats.txt"
+  - debug:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ./debug:
+          type: directory
+          description: trimming/qc files from --debug option
+          pattern: "./debug"
   - statspdf:
-      type: file
-      description: trimming/qc pdf report file
-      pattern: "*_qc_report.pdf"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_qc_report.pdf":
+          type: file
+          description: trimming/qc pdf report file
+          pattern: "*_qc_report.pdf"
+  - reads_fail:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.discard.fastq.gz":
+          type: file
+          description: Reads that failed the preprocessing (Optional with --discard args
+            setting)
+          pattern: "*discard.fastq.gz"
+  - reads_unpaired:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.trimmed.unpaired.fastq.gz":
+          type: file
+          description: Reads without matching mates in paired-end files (Optional)
+          pattern: "*trimmed.unpaired.fastq.gz"
   - log:
-      type: file
-      description: fastq log file
-      pattern: "*.log"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: fastq log file
+          pattern: "*.log"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@mjcipriano"
   - "@sateeshperi"

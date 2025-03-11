@@ -1,0 +1,83 @@
+nextflow_process {
+
+    name "Test Process KAIJU_MKFMI"
+    script "../main.nf"
+    process "KAIJU_MKFMI"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "kaiju"
+    tag "kaiju/mkfmi"
+
+    test("sarscov2 - proteome - fasta") {
+
+        when {
+            process {
+                """
+                input[0] =  [
+                        [ id:'test', single_end:true ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
+                        ]
+                input[1] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - proteome - keep intermediates") {
+
+        when {
+            process {
+                """
+                input[0] =  [
+                        [ id:'test', single_end:true ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
+                        ]
+                input[1] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] =  [
+                        [ id:'test', single_end:true ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
+                        ]
+                input[1] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(file(process.out.fmi[0][1]).name).match() }
+            )
+        }
+
+    }
+
+}

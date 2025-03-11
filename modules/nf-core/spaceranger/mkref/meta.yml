@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "spaceranger_mkref"
-description: Module to build the reference needed by the 10x Genomics Spaceranger tool. Uses the spaceranger mkref command.
+description: Module to build the reference needed by the 10x Genomics Space Ranger
+  tool. Uses the spaceranger mkref command.
 keywords:
   - reference
   - mkref
@@ -19,28 +19,32 @@ tools:
       homepage: "https://support.10xgenomics.com/spatial-gene-expression/software/pipelines/latest/what-is-space-ranger"
       documentation: "https://support.10xgenomics.com/spatial-gene-expression/software/pipelines/latest/what-is-space-ranger"
       tool_dev_url: "https://support.10xgenomics.com/spatial-gene-expression/software/pipelines/latest/what-is-space-ranger"
-      licence: "10x Genomics EULA"
+      licence:
+        - "10x Genomics EULA"
+      identifier: ""
 input:
-  - fasta:
-      type: file
-      description: Reference genome FASTA file
-      pattern: "*.{fasta,fa}"
-  - gtf:
-      type: file
-      description: Reference transcriptome GTF file
-      pattern: "*.gtf"
-  - reference_name:
-      type: string
-      description: The name to give the new reference folder
-      pattern: str
+  - - fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fasta,fa}"
+  - - gtf:
+        type: file
+        description: Reference transcriptome GTF file
+        pattern: "*.gtf"
+  - - reference_name:
+        type: string
+        description: The name to give the new reference folder
+        pattern: str
 output:
   - reference:
-      type: directory
-      description: Folder containing all the reference indices needed by Cell Ranger
+      - ${reference_name}:
+          type: directory
+          description: Folder containing all the reference indices needed by Space Ranger
   - versions:
-      type: file
-      description: File containing software version
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software version
+          pattern: "versions.yml"
 authors:
   - "@grst"
 maintainers:

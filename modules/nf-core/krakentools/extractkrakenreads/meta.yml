@@ -1,0 +1,70 @@
+name: "krakentools_extractkrakenreads"
+description: Extract reads classified at any user-specified taxonomy IDs.
+keywords:
+  - kraken2
+  - krakentools
+  - metagenomics
+tools:
+  - "krakentools":
+      description: "KrakenTools is a suite of scripts to be used for post-analysis of
+        Kraken/KrakenUniq/Kraken2/Bracken results. Please cite the relevant paper if
+        using KrakenTools with any of the listed programs."
+      homepage: https://github.com/jenniferlu717/KrakenTools
+      documentation: https://github.com/jenniferlu717/KrakenTools?tab=readme-ov-file#extract_kraken_readspy
+      tool_dev_url: https://github.com/jenniferlu717/KrakenTools
+      doi: 10.1038/s41596-022-00738-y
+      licence: ["GPL v3"]
+      identifier: biotools:krakentools
+input:
+  - - taxid:
+        type: string
+        description: A list of taxid separated by spaces
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - classified_reads_assignment:
+        type: file
+        description: A file contains the taxonomic classification of each input read.
+        pattern: "*.{classifiedreads.txt}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - classified_reads_fastq:
+        type: file
+        description: Classified reads as belonging to any of the taxa on the kraken2
+          database.
+        pattern: "*.{fastq.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - report:
+        type: file
+        description: Optional Kraken2 report containing stats about classified and not
+          classified reads.
+        pattern: "*.{report.txt}"
+output:
+  - extracted_kraken2_reads:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.{fastq.gz,fasta.gz}":
+          type: file
+          description: Reads assigned to a taxid list.
+          pattern: "*.{fastq.gz,fasta.gz}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@LilyAnderssonLee"
+maintainers:
+  - "@LilyAnderssonLee"

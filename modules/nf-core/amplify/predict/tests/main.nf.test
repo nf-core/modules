@@ -8,18 +8,21 @@ nextflow_process {
     tag "modules_nfcore"
     tag "amplify"
     tag "amplify/predict"
+    tag "prodigal"
+    tag "gunzip"
 
-   test("AMPlify predict (with Pyrodigal) - sarscov2 - contigs fasta") {
+   test("AMPlify predict (with Prodigal) - sarscov2 - contigs.fasta") {
 
-        setup { 
-            run("PYRODIGAL") {
-                script "../../../pyrodigal/main.nf"
+        setup {
+            run("PRODIGAL") {
+                script "../../../prodigal/main.nf"
                 process {
                     """
-                    input[0] =  Channel.fromList([
+                    input[0] = Channel.fromList([
                         tuple([ id:'test', single_end:false ], // meta map
-                        file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true))
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true))
                     ])
+                    input[1] = "gbk"
                     """
                 }
             }
@@ -27,8 +30,8 @@ nextflow_process {
                 script "../../../gunzip/main.nf"
                 process {
                     """
-                    input[0] =  PYRODIGAL.out.faa
-                    
+                    input[0] =  PRODIGAL.out.amino_acid_fasta
+
                     """
                 }
             }
@@ -46,11 +49,34 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("versions") },
-                { assert snapshot(process.out.tsv).match("tsv") }
+                { assert snapshot(process.out).match() }
             )
         }
 
+    }
+
+    test("AMPlify predict (with Prodigal) - sarscov2 - contigs.fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.fromList([
+                    tuple([ id:'test', single_end:false ], // meta map
+                    file("test"))
+                    ])
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
     }
 
 }

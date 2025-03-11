@@ -1,9 +1,0 @@
-- name: peka test_peka
-  command: nextflow run ./tests/modules/nf-core/peka -entry test_peka -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/peka/nextflow.config
-  tags:
-    - peka
-  files:
-    - path: output/peka/chr21_HepG2-PCBP1-merged_4mer_cluster_distribution_genome.tsv
-    - path: output/peka/chr21_HepG2-PCBP1-merged_4mer_distribution_genome.tsv
-    - path: output/peka/chr21_HepG2-PCBP1-merged_4mer_genome.pdf
-    - path: output/peka/versions.yml

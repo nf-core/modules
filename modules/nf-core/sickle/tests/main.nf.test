@@ -1,0 +1,76 @@
+
+nextflow_process {
+
+    name "Test Process SICKLE"
+    script "../main.nf"
+    process "SICKLE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "sickle"
+
+    test("test-sickle-single-end") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true], // meta map
+				    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ],
+				    "sanger"
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					process.out.single_trimmed,
+					process.out.paired_trimmed,
+					process.out.singleton_trimmed,
+					file(process.out.log[0][1]).name,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-sickle-paired-end") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false, qual:'sanger' ], // meta map
+				    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ],
+				    "sanger"
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					process.out.single_trimmed,
+					process.out.paired_trimmed,
+					process.out.singleton_trimmed,
+					file(process.out.log[0][1]).name,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

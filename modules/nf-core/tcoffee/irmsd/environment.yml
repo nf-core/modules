@@ -1,7 +1,8 @@
-name: "tcoffee_irmsd"
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
-  - defaults
 dependencies:
   - bioconda::t-coffee=13.46.0.919e8c6b
+  - conda-forge::pigz=2.8

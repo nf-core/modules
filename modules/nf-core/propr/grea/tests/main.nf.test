@@ -1,0 +1,66 @@
+nextflow_process {
+
+    name "Test Process PROPR_GREA"
+    script "../main.nf"
+    process "PROPR_GREA"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "propr"
+    tag "propr/grea"
+    tag "propr/propd"
+
+    test("test grea chained to propd") {
+
+        tag "default"
+        config "./grea_test.config"
+
+        setup {
+            run("PROPR_PROPD") {
+                script "../../propd/main.nf"
+                process {
+                """
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                    .first()
+                ch_matrix = [
+                    [id: 'test'],
+                    file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = PROPR_PROPD.out.adjacency
+                input[1] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.results,
+                    process.out.versions
+                ).match()}
+            )
+        }
+    }
+}

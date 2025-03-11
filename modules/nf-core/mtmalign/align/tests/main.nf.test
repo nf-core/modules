@@ -7,20 +7,22 @@ nextflow_process {
         tag "modules_nfcore"
         tag "mtmalign"
         tag "mtmalign/align"
+        tag "untar"
 
-        test("Should run without failures") {
-            setup {
+        setup {
 
-                run("UNTAR") {
-                    script "../../../../../modules/nf-core/untar/main.nf"
-                        process {
-                            """
-                                archive = file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/structures/seatoxin-ref.tar.gz", checkIfExists: true)
-                                input[0] = Channel.of(tuple([id:'test'], archive))
-                            """
-                        }
-                }
+            run("UNTAR") {
+                script "../../../../../modules/nf-core/untar/main.nf"
+                    process {
+                        """
+                            archive = file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/structures/seatoxin-ref.tar.gz", checkIfExists: true)
+                            input[0] = Channel.of(tuple([id:'test'], archive))
+                        """
+                    }
             }
+        }
+
+        test("seatoxin - uncompressed") {
 
             when {
                 params {
@@ -28,6 +30,7 @@ nextflow_process {
                 process {
                     """
                         input[0] = UNTAR.out.untar.map { meta,dir -> [[ id:'test' ], file(dir).listFiles().collect()]}
+                        input[1] = false
                     """
                 }
             }
@@ -36,14 +39,64 @@ nextflow_process {
                 assertAll(
                     { assert process.success  },
                     // mTMalign may be nondeterministic, just check if the pdbs are all in there
-                    //assert snapshot(process.out).match()
-                    { assert file(process.out.alignment[0][1]).text.contains(">1.pdb")  },
-                    { assert file(process.out.alignment[0][1]).text.contains(">2.pdb")  },
-                    { assert file(process.out.alignment[0][1]).text.contains(">3.pdb") },
-                    { assert file(process.out.alignment[0][1]).text.contains(">4.pdb") },
-                    { assert file(process.out.alignment[0][1]).text.contains(">5.pdb") },
-                    { assert snapshot(process.out.versions).match("versions") }
+                    //{ assert snapshot(process.out).match() }
+                    { assert path(process.out.alignment[0][1]).getText().contains(">1ahl") },
+                    { assert path(process.out.alignment[0][1]).getText().contains(">1apf") },
+                    { assert path(process.out.alignment[0][1]).getText().contains(">1atx") },
+                    { assert path(process.out.alignment[0][1]).getText().contains(">1bds") },
+                    { assert path(process.out.alignment[0][1]).getText().contains(">1sh1") },
+                    { assert snapshot(process.out.versions).match("versions0") }
                     )
             }
         }
+
+        test("seatoxin - compressed") {
+
+            when {
+                params {
+                }
+                process {
+                    """
+                        input[0] = UNTAR.out.untar.map { meta,dir -> [[ id:'test' ], file(dir).listFiles().collect()]}
+                        input[1] = true
+                    """
+                }
+            }
+
+            then {
+                assertAll(
+                    { assert process.success  },
+                    // mTMalign may be nondeterministic, just check if the pdbs are all in there
+                    { assert path(process.out.alignment[0][1]).getTextGzip().contains(">1ahl") },
+                    { assert path(process.out.alignment[0][1]).getTextGzip().contains(">1apf") },
+                    { assert path(process.out.alignment[0][1]).getTextGzip().contains(">1atx") },
+                    { assert path(process.out.alignment[0][1]).getTextGzip().contains(">1bds") },
+                    { assert path(process.out.alignment[0][1]).getTextGzip().contains(">1sh1") },
+                    { assert snapshot(process.out.versions).match("versions1") }
+                    )
+            }
+        }
+
+        test("seatoxin - uncompressed - stub") {
+
+            options '-stub'
+            when {
+                params {
+                }
+                process {
+                    """
+                        input[0] = UNTAR.out.untar.map { meta,dir -> [[ id:'test' ], file(dir).listFiles().collect()]}
+                        input[1] = false
+                    """
+                }
+            }
+
+            then {
+                assertAll(
+                    { assert process.success  },
+                    { assert snapshot(process.out).match() }
+                    )
+            }
+        }
+
 }

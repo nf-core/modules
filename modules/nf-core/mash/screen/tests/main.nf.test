@@ -1,0 +1,96 @@
+nextflow_process {
+
+    name "Test Process MASH_SCREEN"
+    script "../main.nf"
+    process "MASH_SCREEN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mash"
+    tag "mash/screen"
+    tag "mash/sketch"
+
+    test("sarscov2 - illumina - fastq_gz") {
+        setup {
+            run("MASH_SKETCH") {
+                script "../../sketch/main.nf"
+                    process {
+                    """
+                    input[0] =
+                    [
+                        [ id: 'sars_db' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                    """
+                    }
+                }
+            }
+
+        when {
+            process {
+                """
+                input[0] =
+                [
+                    [ id:'test', single_end:false], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = MASH_SKETCH.out.mash
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - illumina - fastq_gz - stub") {
+
+        options "-stub"
+
+        setup {
+            run("MASH_SKETCH") {
+                script "../../sketch/main.nf"
+                    process {
+                    """
+                    input[0] =
+                    [
+                        [ id: 'sars_db' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                    """
+                    }
+                }
+            }
+
+        when {
+            process {
+                """
+                input[0] =
+                [
+                    [ id:'test', single_end:false], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = MASH_SKETCH.out.mash
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

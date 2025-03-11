@@ -33,11 +33,11 @@ workflow VCF_IMPUTE_GLIMPSE {
     GLIMPSE_PHASE ( phase_input ) // [meta, vcf, index, sample_infos, regionin, regionout, ref, ref_index, map]
     ch_versions = ch_versions.mix(GLIMPSE_PHASE.out.versions )
 
-    INDEX_PHASE ( GLIMPSE_PHASE.out.phased_variant )
+    INDEX_PHASE ( GLIMPSE_PHASE.out.phased_variants )
     ch_versions = ch_versions.mix( INDEX_PHASE.out.versions )
 
     // Ligate all phased files in one and index it
-    ligate_input = GLIMPSE_PHASE.out.phased_variant
+    ligate_input = GLIMPSE_PHASE.out.phased_variants
         .groupTuple( by: 0 )
         .combine( INDEX_PHASE.out.csi
             .groupTuple( by: 0 ),

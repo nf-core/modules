@@ -1,0 +1,60 @@
+nextflow_process {
+
+    name "Test Process MAGECK_COUNT"
+    script "../main.nf"
+    process "MAGECK_COUNT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mageck"
+    tag "mageck/count"
+
+    test("mus_musculus - fastq") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test,test2', single_end:true] , // meta map
+                [file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/ERR376998.small.fastq.gz', checkIfExists: true),
+                file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/ERR376999.small.fastq.gz', checkIfExists: true)]
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/yusa_library.csv')
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("mus_musculus - fastq - stub" ) {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test,test2', single_end:true] , // meta map
+                [file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/ERR376998.small.fastq.gz', checkIfExists: true),
+                file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/ERR376999.small.fastq.gz', checkIfExists: true)]
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/yusa_library.csv')
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match()
+                }
+            )
+        }
+
+    }
+}

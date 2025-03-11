@@ -1,0 +1,137 @@
+nextflow_process {
+
+    name "Test Process TCOFFEE_REGRESSIVE"
+    script "../main.nf"
+    process "TCOFFEE_REGRESSIVE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "tcoffee"
+    tag "tcoffee/regressive"
+    tag "famsa/guidetree"
+    tag "untar"
+
+    test("align_sequence - compressed - seatoxin") {
+
+        config "./sequence.config"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ],
+                             file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                           ]
+                input[1] = [[:],[]]
+                input[2] = [[:],[],[]]
+                input[3] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match()},
+                { assert path(process.out.alignment.get(0).get(1)).getTextGzip().contains("1ahl") },
+            )
+        }
+    }
+
+    test("align_sequence - uncompressed - seatoxin") {
+
+        config "./sequence.config"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ],
+                             file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                           ]
+                input[1] = [[:],[]]
+                input[2] = [[:],[],[]]
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match()},
+                { assert path(process.out.alignment.get(0).get(1)).getText().contains("1ahl") },
+            )
+        }
+    }
+
+    test("align_with_guide_tree - uncompressed - seatoxin") {
+
+        config "./tree.config"
+
+        setup {
+
+            run("FAMSA_GUIDETREE") {
+                script "../../../famsa/guidetree//main.nf"
+                process {
+                    """
+                    input[0] = [ [ id:'test' ],
+                             file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                               ]
+
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ],
+                             file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                           ]
+                input[1] = FAMSA_GUIDETREE.out.tree.collect{ meta, tree -> tree }.map{ tree -> [[ id: 'test'], tree]}
+                input[2] = [ [:], [], [] ]
+                input[3] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match()},
+                { assert path(process.out.alignment.get(0).get(1)).getTextGzip().contains("1ahl") },
+            )
+        }
+
+    }
+
+    test("align_sequence - uncompressed - seatoxin - stub") {
+        options "-stub"
+        config "./sequence.config"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ],
+                             file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                           ]
+                input[1] = [[:],[]]
+                input[2] = [[:],[],[]]
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.alignment,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+}

@@ -1,0 +1,38 @@
+nextflow_process {
+
+    name "Test Process ODGI_SQUEEZE"
+    script "../main.nf"
+    process "ODGI_SQUEEZE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "odgi"
+    tag "odgi/squeeze"
+
+    test("homo_sapiens - pangenome - odgi - pangenome_og") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/odgi/pangenome.og', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.graph[0][1]).name,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+}

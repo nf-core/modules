@@ -1,8 +1,10 @@
-name: bwa_samse
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
-  - defaults
+
 dependencies:
   - bioconda::bwa=0.7.17
+  - bioconda::htslib=1.18
   - bioconda::samtools=1.18

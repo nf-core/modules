@@ -1,0 +1,65 @@
+
+nextflow_process {
+
+    name "Test Process PEKA"
+    script "../main.nf"
+    process "PEKA"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "peka"
+
+    test("test-peka") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/peka/chr21_HepG2-PCBP1-merged.xl10_200_density2_peaks.bed", checkIfExists: true) ]
+				input[1] = [ [ id:'test' ], file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/peka/chr21_HepG2-PCBP1-merged.xl.bed", checkIfExists: true) ]
+				input[2] = file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/peka/chr21.GRCh38.p12.genome.masked.fa", checkIfExists: true)
+				input[3] = file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/peka/chr21.GRCh38.p12.genome.masked.fa.fai", checkIfExists: true)
+				input[4] = file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/peka/chr21_gencode_regions.gtf", checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.cluster[0][1]).name, // unstable
+                    file(process.out.distribution[0][1]).name, // unstable
+                    file(process.out.pdf[0][1]).name, // unstable
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-peka-stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/peka/chr21_HepG2-PCBP1-merged.xl10_200_density2_peaks.bed", checkIfExists: true) ]
+				input[1] = [ [ id:'test' ], file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/peka/chr21_HepG2-PCBP1-merged.xl.bed", checkIfExists: true) ]
+				input[2] = file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/peka/chr21.GRCh38.p12.genome.masked.fa", checkIfExists: true)
+				input[3] = file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/peka/chr21.GRCh38.p12.genome.masked.fa.fai", checkIfExists: true)
+				input[4] = file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/peka/chr21_gencode_regions.gtf", checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

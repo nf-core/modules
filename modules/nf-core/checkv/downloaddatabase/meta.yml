@@ -19,16 +19,19 @@ tools:
       documentation: https://bitbucket.org/berkeleylab/checkv/src/master/
       tool_dev_url: https://bitbucket.org/berkeleylab/checkv/src/master/
       doi: "10.1038/s41587-020-00774-7"
-      licence: "['BSD License']"
+      licence: ["BSD License"]
+      identifier: biotools:checkv
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - checkv_db:
-      type: directory
-      description: directory pointing to database
-      pattern: "${prefix}/"
+      - ${prefix}/*:
+          type: directory
+          description: directory pointing to database
+          pattern: "${prefix}/"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@Joon-Klaps"
 maintainers:

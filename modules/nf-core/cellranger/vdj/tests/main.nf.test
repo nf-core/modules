@@ -1,0 +1,89 @@
+// nf-core modules test cellranger/vdj
+nextflow_process {
+
+    name "Test Process CELLRANGER_VDJ"
+    script "../main.nf"
+    process "CELLRANGER_VDJ"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cellranger"
+    tag "cellranger/vdj"
+
+    test("cellranger - vdj - test_10x") {
+
+        when {
+            process {
+                """
+                reference_json      = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/references/vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0/reference.json', checkIfExists: true)
+                reference_fasta     = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/references/vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0/fasta/regions.fa', checkIfExists: true)
+                reference_suppfasta = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/references/vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0/fasta/supp_regions.fa', checkIfExists: true)
+
+                reference_json.copyTo("${workDir}/vdj_reference/reference.json")
+                reference_fasta.copyTo("${workDir}/vdj_reference/fasta/regions.fa")
+                reference_suppfasta.copyTo("${workDir}/vdj_reference/fasta/supp_regions.fa")
+
+                input[0] = [
+                        [ id:'subsampled_5k_human_antiCMV_T_TBNK_connect_VDJ', single_end:false, strandedness:'auto' ], // meta map
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/vdj/subsampled_5k_human_antiCMV_T_TBNK_connect_VDJ_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/vdj/subsampled_5k_human_antiCMV_T_TBNK_connect_VDJ_S1_L001_R2_001.fastq.gz', checkIfExists: true)
+                        ]
+                    ]
+                input[1] = file("${workDir}/vdj_reference/")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.outs[0][1].findAll {  file(it).name.contains('.pb')  },
+                    process.out.outs[0][1].findAll {  file(it).name.contains('metrics_summary.csv') },
+                    process.out.outs[0][1].findAll {  file(it).name.contains('reference.json') },
+                    process.out.outs[0][1].findAll {  file(it).name.contains('web_summary.html') }
+                ).match() },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+    test("cellranger - vdj - test_10x - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                reference_json      = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/references/vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0/reference.json', checkIfExists: true)
+                reference_fasta     = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/references/vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0/fasta/regions.fa', checkIfExists: true)
+                reference_suppfasta = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/references/vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0/fasta/supp_regions.fa', checkIfExists: true)
+
+                reference_json.copyTo("${workDir}/vdj_reference/reference.json")
+                reference_fasta.copyTo("${workDir}/vdj_reference/fasta/regions.fa")
+                reference_suppfasta.copyTo("${workDir}/vdj_reference/fasta/supp_regions.fa")
+
+                input[0] = [
+                        [ id:'subsampled_5k_human_antiCMV_T_TBNK_connect_VDJ', single_end:false, strandedness:'auto' ], // meta map
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/vdj/subsampled_5k_human_antiCMV_T_TBNK_connect_VDJ_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/vdj/subsampled_5k_human_antiCMV_T_TBNK_connect_VDJ_S1_L001_R2_001.fastq.gz', checkIfExists: true)
+                        ]
+                    ]
+                input[1] = file("${workDir}/vdj_reference/")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

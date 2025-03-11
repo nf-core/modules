@@ -1,0 +1,70 @@
+nextflow_process {
+
+    name "Test Process OPENMS_IDRIPPER"
+    script "../main.nf"
+    process "OPENMS_IDRIPPER"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "openms"
+    tag "openms/idmerger"
+    tag "openms/idripper"
+
+    setup {
+        run("OPENMS_IDMERGER") {
+            script "../../idmerger/main.nf"
+            process {
+                """
+                input[0] = Channel.fromList([
+                    tuple([id:'test'],
+                        [
+                         file(params.modules_testdata_base_path + 'proteomics/openms/HepG2_rep1_small.idXML', checkIfExists: true),
+                         file(params.modules_testdata_base_path + 'proteomics/openms/HepG2_rep2_small.idXML', checkIfExists: true)
+                        ]
+                    )
+                ])
+                """
+            }
+        }
+    }
+
+    test("proteomics - split - idxml") {
+
+        when {
+            process {
+                """
+                input[0] = OPENMS_IDMERGER.out.idxml
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("proteomics - split - idxml - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = OPENMS_IDMERGER.out.idxml
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

@@ -1,0 +1,64 @@
+nextflow_process {
+
+    name "Test Process HAMRONIZATION_DEEPARG"
+    script "../main.nf"
+    process "HAMRONIZATION_DEEPARG"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hamronization"
+    tag "hamronization/deeparg"
+
+    test("hamronization/deeparg - bacteroides_fragilis - genome_mapping_potential_arg") {
+
+        when {
+            process {
+                """
+                input[0] = [                                                                                                                                                                    
+                 [ id:'test', single_end:false ], // meta map                                                                                                                             
+                 file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/hamronization/genome.mapping.potential.ARG', checkIfExists: true),
+                ]
+                input[1] = 'tsv'
+                input[2] = '1.0.2'
+                input[3] = '2'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("hamronization/deeparg - bacteroides_fragilis - genome_mapping_potential_arg - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [                                                                                                                                                                    
+                 [ id:'test', single_end:false ], // meta map                                                                                                                             
+                 file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/hamronization/genome.mapping.potential.ARG', checkIfExists: true),
+                ]
+                input[1] = 'tsv'
+                input[2] = '1.0.2'
+                input[3] = '2'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

@@ -1,0 +1,112 @@
+nextflow_process {
+
+    name "Test Process SVYNC"
+    script "../main.nf"
+    process "SVYNC"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "svync"
+
+    test("sarscov2 - vcf, config") {
+
+        when {
+            process {
+                """
+                vcf = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz.tbi', checkIfExists: true)
+                    ])
+
+                config = Channel.of([
+                        "config.yaml",
+                        "info:",
+                        "  SVMETHOD:",
+                        "    value: svync",
+                        "    description: Type of approach used to detect SV",
+                        "    number: 1",
+                        "    type: string",
+                        "format:",
+                        "  GT:",
+                        "    value: 1/1",
+                        "    description: Genotype",
+                        "    number: 1",
+                        "    type: string"
+                    ])
+                    .collectFile(newLine:true, sort:'index')
+                    .map { [[ id:'test', single_end:false ], it] }
+
+                input[0] = vcf.join(config)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.collectEntries { key, value ->
+                        if(key.matches("^\\d+\$")) {
+                            return null
+                        }
+                        else if(key == "vcf") {
+                            return [
+                                key,
+                                value.collect { meta, vcf ->
+                                    [ meta, "${file(vcf).name},variantsMD5:${path(vcf).vcf.variantsMD5}" ]
+                                }
+                            ]
+                        }
+                        else if(key == "tbi") {
+                            return [
+                                key,
+                                value.collect { meta, tbi ->
+                                    [ meta, file(tbi).name ]
+                                }
+                            ]
+                        }
+                        return [key, value]
+                    }
+                    .findAll { it != null }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - vcf, config - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                vcf = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz.tbi', checkIfExists: true)
+                    ])
+
+                config = Channel.of(["config.yaml", "info:", "  SVMETHOD:", "    value: svync", "    description: Type of approach used to detect SV", "    number: 1", "    type: string"])
+                    .collectFile(newLine:true, sort:'index')
+                    .map { [[ id:'test', single_end:false ], it] }
+
+                input[0] = vcf.join(config)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.collectEntries { key, value -> key.matches("^\\d+\$") ? null : [ key, value ]}.findAll { it != null }
+                ).match() }
+            )
+        }
+
+    }
+
+}

@@ -2,13 +2,29 @@
     "test_trimgalore_single_end": {
         "content": [
             {
+                "TRIMGALORE": {
+                    "trimgalore": "0.6.10",
+                    "cutadapt": 4.9,
+                    "pigz": 2.8
+                }
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.3"
+        },
+        "timestamp": "2025-01-06T12:25:01.330769598"
+    },
+    "test_trimgalore_single_end - stub": {
+        "content": [
+            {
                 "0": [
                     [
                         {
                             "id": "test",
                             "single_end": true
                         },
-                        "test_trimmed.fq.gz:md5,e0a7516b8ea8d6467d6306acb2cd13c4"
+                        "test_trimmed.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "1": [
@@ -17,7 +33,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test.fastq.gz_trimming_report.txt:md5,a1ab3958205f1ddf48af623242b5b429"
+                        "test.fastq.gz_trimming_report.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "2": [
@@ -30,7 +46,7 @@
                     
                 ],
                 "5": [
-                    "versions.yml:md5,47d966cbb31c80eb8f7fe860d55659b7"
+                    "versions.yml:md5,5928323d579768de37e83c56c821757f"
                 ],
                 "html": [
                     
@@ -41,7 +57,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test.fastq.gz_trimming_report.txt:md5,a1ab3958205f1ddf48af623242b5b429"
+                        "test.fastq.gz_trimming_report.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "reads": [
@@ -50,23 +66,34 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test_trimmed.fq.gz:md5,e0a7516b8ea8d6467d6306acb2cd13c4"
+                        "test_trimmed.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "unpaired": [
                     
                 ],
                 "versions": [
-                    "versions.yml:md5,47d966cbb31c80eb8f7fe860d55659b7"
+                    "versions.yml:md5,5928323d579768de37e83c56c821757f"
                 ],
                 "zip": [
                     
                 ]
+            },
+            {
+                "TRIMGALORE": {
+                    "trimgalore": "0.6.10",
+                    "cutadapt": 4.9,
+                    "pigz": 2.8
+                }
             }
         ],
-        "timestamp": "2023-10-17T15:24:57.782141441"
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.3"
+        },
+        "timestamp": "2025-01-06T12:25:15.582246999"
     },
-    "test_trimgalore_paired_end": {
+    "test_trimgalore_paired_end - stub": {
         "content": [
             {
                 "0": [
@@ -76,8 +103,8 @@
                             "single_end": false
                         },
                         [
-                            "test_1_val_1.fq.gz:md5,e0a7516b8ea8d6467d6306acb2cd13c4",
-                            "test_2_val_2.fq.gz:md5,f3d61189e6d10202da7b8686f1dbb71b"
+                            "test_1_trimmed.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "test_2_trimmed.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                         ]
                     ]
                 ],
@@ -88,8 +115,8 @@
                             "single_end": false
                         },
                         [
-                            "test_1.fastq.gz_trimming_report.txt:md5,315d40465412f9909bbaabf52269274d",
-                            "test_2.fastq.gz_trimming_report.txt:md5,34436303da1c78811103427a2fb57f7b"
+                            "test_1.fastq.gz_trimming_report.txt:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test_2.fastq.gz_trimming_report.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                         ]
                     ]
                 ],
@@ -103,7 +130,7 @@
                     
                 ],
                 "5": [
-                    "versions.yml:md5,47d966cbb31c80eb8f7fe860d55659b7"
+                    "versions.yml:md5,5928323d579768de37e83c56c821757f"
                 ],
                 "html": [
                     
@@ -115,8 +142,8 @@
                             "single_end": false
                         },
                         [
-                            "test_1.fastq.gz_trimming_report.txt:md5,315d40465412f9909bbaabf52269274d",
-                            "test_2.fastq.gz_trimming_report.txt:md5,34436303da1c78811103427a2fb57f7b"
+                            "test_1.fastq.gz_trimming_report.txt:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test_2.fastq.gz_trimming_report.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                         ]
                     ]
                 ],
@@ -127,8 +154,8 @@
                             "single_end": false
                         },
                         [
-                            "test_1_val_1.fq.gz:md5,e0a7516b8ea8d6467d6306acb2cd13c4",
-                            "test_2_val_2.fq.gz:md5,f3d61189e6d10202da7b8686f1dbb71b"
+                            "test_1_trimmed.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "test_2_trimmed.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                         ]
                     ]
                 ],
@@ -136,13 +163,89 @@
                     
                 ],
                 "versions": [
-                    "versions.yml:md5,47d966cbb31c80eb8f7fe860d55659b7"
+                    "versions.yml:md5,5928323d579768de37e83c56c821757f"
                 ],
                 "zip": [
                     
                 ]
             }
         ],
-        "timestamp": "2023-10-17T15:25:08.513589909"
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.3"
+        },
+        "timestamp": "2025-01-06T12:26:05.201562315"
+    },
+    "versions": {
+        "content": [
+            {
+                "TRIMGALORE": {
+                    "trimgalore": "0.6.10",
+                    "cutadapt": 4.9,
+                    "pigz": 2.8
+                }
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.3"
+        },
+        "timestamp": "2025-01-06T12:26:05.229598492"
+    },
+    "test_trimgalore_paired_end": {
+        "content": [
+            {
+                "TRIMGALORE": {
+                    "trimgalore": "0.6.10",
+                    "cutadapt": 4.9,
+                    "pigz": 2.8
+                }
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.3"
+        },
+        "timestamp": "2025-01-06T12:25:33.510924538"
+    },
+    "test_trimgalore_paired_end_keep_unpaired": {
+        "content": [
+            {
+                "TRIMGALORE": {
+                    "trimgalore": "0.6.10",
+                    "cutadapt": 4.9,
+                    "pigz": 2.8
+                }
+            },
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    [
+                        "test_1_val_1.fq.gz:md5,75413e85910bbc2e1556e12f6479f935",
+                        "test_2_val_2.fq.gz:md5,d3c588c12646ebd36a0812fe02d0bda6"
+                    ]
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    [
+                        "test_1_unpaired_1.fq.gz:md5,17e0e878f6d0e93b9008a05f128660b6",
+                        "test_2_unpaired_2.fq.gz:md5,b09a064368a867e099e66df5ef69b044"
+                    ]
+                ]
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.3"
+        },
+        "timestamp": "2025-01-06T12:25:46.461002981"
     }
 }

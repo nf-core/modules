@@ -1,0 +1,60 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "seqfu_stats"
+description: Statistics for FASTA or FASTQ files
+keywords:
+  - seqfu
+  - stats
+  - n50
+tools:
+  - "seqfu":
+      description: "Cross-platform compiled suite of tools to manipulate and inspect
+        FASTA and FASTQ files"
+      homepage: "https://telatin.github.io/seqfu2/"
+      documentation: "https://telatin.github.io/seqfu2/"
+      tool_dev_url: "https://github.com/telatin/seqfu2"
+      doi: "10.3390/bioengineering8050059"
+      licence: ["GPL v3"]
+      identifier: biotools:seqfu
+
+input:
+  # Only when we have meta
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - files:
+        type: file
+        description: One or more FASTA or FASTQ files
+        pattern: "*.{fasta,fastq,fasta.gz,fastq.gz,fq,fq.gz}"
+output:
+  #Only when we have meta
+  - stats:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.tsv":
+          type: file
+          description: Tab-separated output file with basic sequence statistics.
+          pattern: "*.{tsv}"
+  - multiqc:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_mqc.txt":
+          type: file
+          description: MultiQC ready table
+          pattern: "*.{_mqc.txt}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@telatin"
+maintainers:
+  - "@telatin"

@@ -1,0 +1,56 @@
+nextflow_process {
+
+    name "Test Process SMOOTHXG"
+    script "../main.nf"
+    process "SMOOTHXG"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "smoothxg"
+
+    test("sarscov2 - illumina - assembly_gfa") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gfa/assembly.gfa', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+//                 { assert snapshot(process.out).match() } // SMOOTHXG is never deterministic
+            )
+        }
+
+    }
+
+    test("homo_sapiens - pangenome - pangenome_seqwish_gfa") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.seqwish.gfa', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+//                 { assert snapshot(process.out).match() } // SMOOTHXG is never deterministic
+            )
+        }
+
+    }
+
+}

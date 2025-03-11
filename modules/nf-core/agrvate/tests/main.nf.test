@@ -1,0 +1,63 @@
+nextflow_process {
+
+    name "Test Process AGRVATE"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "AGRVATE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "agrvate"
+
+    test("sarscov2 genome [fasta]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            def outputFiles = process.out.results_dir.collect { it }.flatten()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.summary,
+                                process.out.versions).match() },
+                { assert outputFiles.every { path(it).exists() } }
+            )
+        }
+
+    }
+
+    test("sarscov2 genome [fasta] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.summary.collect { file(it[1]).getName() } +
+                                process.out.results_dir.collect { file(it).getName() } +
+                                process.out.versions ).match() }
+            )
+        }
+
+    }
+
+}

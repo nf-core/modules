@@ -4,8 +4,8 @@ process WINDOWMASKER_MKCOUNTS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/blast:2.14.0--h7d5a4b4_1':
-        'biocontainers/blast:2.14.0--h7d5a4b4_1' }"
+        'https://depot.galaxyproject.org/singularity/blast:2.15.0--pl5321h6f7f691_1':
+        'biocontainers/blast:2.15.0--pl5321h6f7f691_1' }"
 
     input:
     tuple val(meta), path(ref)
@@ -21,11 +21,11 @@ process WINDOWMASKER_MKCOUNTS {
     def args    = task.ext.args     ?: ""
     def prefix  = task.ext.prefix   ?: "${meta.id}"
 
-    def memory = 3072
+    def memory  = 3072
     if (!task.memory) {
         log.info '[WINDOWMASKER: MK_COUNTS] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
     } else {
-        memory = (task.memory.toMega()).intValue()
+        memory  = (task.memory.toMega()).intValue()
     }
 
     """

@@ -1,0 +1,82 @@
+nextflow_process {
+
+    name "Test Process INSTRAIN_COMPARE"
+    script "../main.nf"
+    process "INSTRAIN_COMPARE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "instrain"
+    tag "instrain/compare"
+    tag "instrain/profile"
+
+    test("homo_sapiens - illumina - bam") {
+        setup {
+            run("INSTRAIN_PROFILE") {
+                script "../../profile/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of(
+                        [ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true) ],
+                        [ [ id:'test2' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true) ]
+                    )
+                    input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    input[2] = []
+                    input[3] = []
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true) ],
+                    [ [ id:'test2' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true) ]
+                )
+                .join( INSTRAIN_PROFILE.out.profile )
+                .map { [ [ id:'all_samples' ], it[1], it[2] ] }
+                .groupTuple( sort: 'deep' )
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.comparison_table,
+                    process.out.snv_info,
+                    process.out.versions
+                    ).match()
+                },
+                { assert path(process.out.pooled_snv[0][1]).text.contains("0\t0\t3412\t0\t0") },
+                { assert path(process.out.snv_keys[0][1]).text.contains(".paired_end.sorted.bam\tchr22") },
+            )
+        }
+    }
+
+    test("homo_sapiens - illumina - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of( [ [ id: 'all_samples' ], [], [] ] )
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

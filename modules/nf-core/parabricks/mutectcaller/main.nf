@@ -1,15 +1,10 @@
 process PARABRICKS_MUTECTCALLER {
     tag "$meta.id"
     label 'process_high'
+    label 'process_gpu'
+    stageInMode 'copy' // needed by the module to work properly - can be removed once fixed upstream
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.2.0-1"
-
-    /*
-    NOTE: Parabricks requires the files to be non-symlinked
-    Do not change the stageInMode to soft linked! This is default on Nextflow.
-    If you change this setting be careful.
-    */
-    stageInMode "copy"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.4.0-1"
 
     input:
     tuple val(meta), path(tumor_bam), path(tumor_bam_index),  path(normal_bam), path(normal_bam_index), path(interval_file)
@@ -37,6 +32,7 @@ process PARABRICKS_MUTECTCALLER {
     def interval_file_command = interval_file ? interval_file.collect{"--interval-file $it"}.join(' ') : ""
     def prepon_command = panel_of_normals ? "cp -L $panel_of_normals_index `readlink -f $panel_of_normals`.tbi && pbrun prepon --in-pon-file $panel_of_normals" : ""
     def postpon_command = panel_of_normals ? "pbrun postpon --in-vcf ${prefix}.vcf.gz --in-pon-file $panel_of_normals --out-vcf ${prefix}_annotated.vcf.gz" : ""
+    def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ""
     """
 
     # if panel of normals specified, run prepon
@@ -49,7 +45,7 @@ process PARABRICKS_MUTECTCALLER {
         --tumor-name ${meta.tumor_id} \\
         --out-vcf ${prefix}.vcf.gz \\
         $interval_file_command \\
-        --num-gpus $task.accelerator.request \\
+        $num_gpus \\
         $args
 
     # if panel of normals specified, run postpon
@@ -64,9 +60,9 @@ process PARABRICKS_MUTECTCALLER {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def postpon_command = panel_of_normals ? "touch ${prefix}_annotated.vcf.gz" : ""
+    def postpon_command = panel_of_normals ? "echo '' | gzip > ${prefix}_annotated.vcf.gz" : ""
     """
-    touch ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.stats
     $postpon_command
 

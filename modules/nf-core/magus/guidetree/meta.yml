@@ -1,0 +1,46 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "magus_guidetree"
+description: Multiple Sequence Alignment using Graph Clustering
+keywords:
+  - MSA
+  - guidetree
+  - genomics
+  - graph
+tools:
+  - "magus":
+      description: "Multiple Sequence Alignment using Graph Clustering"
+      homepage: "https://github.com/vlasmirnov/MAGUS"
+      documentation: "https://github.com/vlasmirnov/MAGUS"
+      tool_dev_url: "https://github.com/vlasmirnov/MAGUS"
+      doi: "10.1093/bioinformatics/btaa992"
+      licence: ["MIT"]
+      identifier: biotools:magus
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing fasta meta information
+          e.g. `[ id:'test', single_end:false ]`
+    - fasta:
+        type: file
+        description: Input sequences in FASTA format.
+        pattern: "*.{fa,fna,fasta}"
+output:
+  - tree:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.tree":
+          type: file
+          description: File containing the output guidetree, in newick format.
+          pattern: "*.tree"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@lrauschning"

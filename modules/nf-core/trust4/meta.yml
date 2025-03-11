@@ -1,0 +1,151 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "trust4"
+description: Run TRUST4 on RNA-seq data
+keywords:
+  - sort
+  - example
+  - genomics
+tools:
+  - "trust4":
+      description: "TCR and BCR assembly from bulk or single-cell RNA-seq data"
+      homepage: "https://github.com/liulab-dfci/TRUST4"
+      documentation: "https://github.com/liulab-dfci/TRUST4"
+      tool_dev_url: "https://github.com/liulab-dfci/TRUST4"
+      licence: ["GPL v3"]
+      identifier: biotools:trust4
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: BAM file from bulk or single-cell RNA-seq data
+        pattern: "*.bam"
+    - reads:
+        type: file
+        description: List of input FastQ files of size 1 and 2 for single-end and paired-end
+          data, respectively
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Path to the fasta file coordinate and sequence of V/D/J/C genes
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vdj_reference:
+        type: file
+        description: reference file of V/D/J genes
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - barcode_read:
+        type: file
+        description: barcode read file
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - umi_read:
+        type: file
+        description: umi read file
+output:
+  - tsv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.tsv":
+          type: file
+          description: tsv files created by TRUST4
+          pattern: "*.tsv"
+  - airr_files:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_airr.tsv":
+          type: file
+          description: TRUST4 results in AIRR format
+          pattern: "*_airr.tsv"
+  - airr_tsv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${meta.id}_airr.tsv:
+          type: file
+          description: TRUST4 results in AIRR format
+          pattern: "*_airr.tsv"
+  - report_tsv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_report.tsv":
+          type: file
+          description: TRUST4 report in tsv format
+          pattern: "*_report.tsv"
+  - fasta:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.fa":
+          type: file
+          description: Fasta files created by TRUST4
+          pattern: "*.fa"
+  - out:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.out":
+          type: file
+          description: Further report files
+          pattern: "*.out"
+  - fq:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.fq":
+          type: file
+          description: Fastq files created by TRUST4
+          pattern: "*.fq"
+  - outs:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "**":
+          type: file
+          description: outputt files
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@mapo9, @Joaodemeirelles"
+maintainers:
+  - "@mapo9"

@@ -1,0 +1,76 @@
+nextflow_process {
+
+    name "Test Process GLIMPSE2_LIGATE"
+    script "../main.nf"
+
+    process "GLIMPSE2_LIGATE"
+
+    tag "modules_nfcore"
+    tag "modules"
+    tag "glimpse2"
+    tag "glimpse2/ligate"
+    tag "bcftools/index"
+    tag "glimpse2/phase"
+
+    test("Should run glimpse ligate") {
+        setup {
+            run("GLIMPSE2_PHASE") {
+                script "../../phase/main.nf"
+                process {
+                """
+                input_vcf = Channel.of([
+                    [ id:'input' ], // meta map
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz.csi", checkIfExists: true),
+                    [], [],
+                    "chr21:16600000-16800000",
+                    "chr21:16650000-16750000"
+                ])
+
+                ref_panel = Channel.of([
+                        file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true)
+                ])
+
+                map_file = Channel.of([
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/chr21.b38.gmap.gz", checkIfExists: true)
+                ])
+
+                // [meta, vcf, index, sample_infos, regionin, regionout,ref, index, map] [meta, fasta, fai]
+                input[0] = input_vcf
+                    .combine(ref_panel)
+                    .combine(map_file)
+                input[1] = Channel.of([[],[],[]])
+                """
+                }
+            }
+            run("BCFTOOLS_INDEX") {
+                script "../../../bcftools/index/main.nf"
+                process {
+                """
+                input[0] = GLIMPSE2_PHASE.out.phased_variants
+                """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = GLIMPSE2_PHASE.out.phased_variants
+                    | groupTuple()
+                    | join (BCFTOOLS_INDEX.out.csi.groupTuple())
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert file(process.out.merged_variants[0][1]).name == "input.vcf.gz" }
+            )
+        }
+
+    }
+}

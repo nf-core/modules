@@ -1,0 +1,176 @@
+nextflow_process {
+
+    name "Test Process PROPR_PROPD"
+    script "../main.nf"
+    process "PROPR_PROPD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "propr"
+    tag "propr/propd"
+
+    test("Test propr/propd using default params") {
+
+        tag "default"
+        config "./default.config"
+
+        when {
+            process {
+                """
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                    .first()
+                ch_matrix = [
+                    [id: 'test'],
+                    file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.results_genewise,
+                    process.out.versions,
+                    file(process.out.genewise_plot[0][1]).name
+                ).match()}
+            )
+        }
+    }
+
+    test("Test propr/propd when saving all outputs") {
+
+        tag "save_all"
+        config "./save_all.config"
+
+        when {
+            process {
+                """
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                    .first()
+                ch_matrix = [
+                    [id: 'test'],
+                    file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.results_genewise,
+                    process.out.results_pairwise,
+                    process.out.results_pairwise_filtered,
+                    process.out.results_adjacency,
+                    process.out.versions,
+                    file(process.out.genewise_plot[0][1]).name,
+                    file(process.out.rdata[0][1]).name
+                ).match()}
+            )
+        }
+    }
+
+    test("Test propr/propd when using Box-cox transformation") {
+
+        tag "boxcox"
+        config "./boxcox.config"
+
+        when {
+            process {
+                """
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                    .first()
+                ch_matrix = [
+                    [id: 'test'],
+                    file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.results_genewise,
+                    process.out.versions,
+                    file(process.out.genewise_plot[0][1]).name
+                ).match()}
+            )
+        }
+    }
+
+    test("Test propr/propd when using permutation tests") {
+
+        tag "permutation"
+        config "./permutation.config"
+
+        when {
+            process {
+                """
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                    .first()
+                ch_matrix = [
+                    [id: 'test'],
+                    file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.results_genewise,
+                    process.out.fdr,
+                    process.out.versions,
+                    file(process.out.genewise_plot[0][1]).name
+                ).match()}
+            )
+        }
+    }
+}

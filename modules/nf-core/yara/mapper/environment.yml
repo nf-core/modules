@@ -1,8 +1,9 @@
-name: yara_mapper
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
-  - defaults
+
 dependencies:
-  - bioconda::yara=1.0.2
   - bioconda::samtools=1.16.1
+  - bioconda::yara=1.0.2

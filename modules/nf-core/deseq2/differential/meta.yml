@@ -7,102 +7,167 @@ keywords:
   - deseq2
 tools:
   - "deseq2":
-      description: "Differential gene expression analysis based on the negative binomial distribution"
+      description: "Differential gene expression analysis based on the negative binomial
+        distribution"
       homepage: "https://bioconductor.org/packages/release/bioc/html/DESeq2.html"
       documentation: "https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html"
       tool_dev_url: "https://github.com/mikelove/DESeq2"
       doi: "10.1186/s13059-014-0550-8"
       licence: ["LGPL >=3"]
+      identifier: biotools:deseq2
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing contrast information. This can be used at the
-        workflow level to pass optional parameters to the module, e.g.
-        [ id:'contrast1', blocking:'patient' ] passed in as ext.args like:
-        '--blocking_variable $meta.blocking'.
-  - contrast_variable:
-      type: string
-      description: |
-        The column in the sample sheet that should be used to define groups for
-        comparison
-  - reference:
-      type: string
-      description: |
-        The value within the contrast_variable column of the sample sheet that
-        should be used to derive the reference samples
-  - target:
-      type: string
-      description: |
-        The value within the contrast_variable column of the sample sheet that
-        should be used to derive the target samples
-  - meta2:
-      type: map
-      description: |
-        Groovy map containing study-wide metadata related to the sample sheet
-        and matrix
-  - samplesheet:
-      type: file
-      description: |
-        CSV or TSV format sample sheet with sample metadata
-  - counts:
-      type: file
-      description: |
-        Raw TSV or CSV format expression matrix as output from the nf-core
-        RNA-seq workflow
-  - meta3:
-      type: file
-      description: |
-        Meta map describing control genes, e.g. [ id: 'ERCC' ]
-  - control_genes_file:
-      type: file
-      description: |
-        Text file listing control genes, one per line
-  - meta4:
-      type: map
-      description: |
-        Groovy map containing study-wide metadata related to the transcript
-        lengths file
-  - transcript_lengths_file:
-      type: file
-      description: |
-        Optional file of transcript lengths, with the same sample columns as
-        counts. If supplied, lengths will be supplied to DESeq2 to correct for
-        differences in average transcript lengths across samples.
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing contrast information. This can be used at the
+          workflow level to pass optional parameters to the module, e.g.
+          [ id:'contrast1', blocking:'patient' ] passed in as ext.args like:
+          '--blocking_variable $meta.blocking'.
+    - contrast_variable:
+        type: string
+        description: |
+          The column in the sample sheet that should be used to define groups for
+          comparison
+    - reference:
+        type: string
+        description: |
+          The value within the contrast_variable column of the sample sheet that
+          should be used to derive the reference samples
+    - target:
+        type: string
+        description: |
+          The value within the contrast_variable column of the sample sheet that
+          should be used to derive the target samples
+  - - meta2:
+        type: map
+        description: |
+          Groovy map containing study-wide metadata related to the sample sheet
+          and matrix
+    - samplesheet:
+        type: file
+        description: |
+          CSV or TSV format sample sheet with sample metadata
+    - counts:
+        type: file
+        description: |
+          Raw TSV or CSV format expression matrix as output from the nf-core
+          RNA-seq workflow
+  - - meta3:
+        type: file
+        description: |
+          Meta map describing control genes, e.g. [ id: 'ERCC' ]
+    - control_genes_file:
+        type: file
+        description: |
+          Text file listing control genes, one per line
+  - - meta4:
+        type: map
+        description: |
+          Groovy map containing study-wide metadata related to the transcript
+          lengths file
+    - transcript_lengths_file:
+        type: file
+        description: |
+          Optional file of transcript lengths, with the same sample columns as
+          counts. If supplied, lengths will be supplied to DESeq2 to correct for
+          differences in average transcript lengths across samples.
 output:
   - results:
-      type: file
-      description: TSV-format table of differential expression information as output by DESeq2
-      pattern: "deseq2.results.tsv"
+      - meta:
+          type: file
+          description: TSV-format table of differential expression information as output
+            by DESeq2
+          pattern: "deseq2.results.tsv"
+      - "*.deseq2.results.tsv":
+          type: file
+          description: TSV-format table of differential expression information as output
+            by DESeq2
+          pattern: "deseq2.results.tsv"
   - dispersion_plot:
-      type: file
-      description: DESeq2 dispersion plot
-      pattern: "deseq2.dispersion.png"
+      - meta:
+          type: file
+          description: DESeq2 dispersion plot
+          pattern: "deseq2.dispersion.png"
+      - "*.deseq2.dispersion.png":
+          type: file
+          description: DESeq2 dispersion plot
+          pattern: "deseq2.dispersion.png"
   - rdata:
-      type: file
-      description: Serialised DESeq2 object
-      pattern: "dds.rld.rds"
-  - sizefactors:
-      type: file
-      description: Size factors
-      pattern: "deseq2.sizefactors.tsv"
+      - meta:
+          type: file
+          description: Serialised DESeq2 object
+          pattern: "dds.rld.rds"
+      - "*.dds.rld.rds":
+          type: file
+          description: Serialised DESeq2 object
+          pattern: "dds.rld.rds"
+  - size_factors:
+      - meta:
+          type: file
+          description: Size factors
+          pattern: "deseq2.sizefactors.tsv"
+      - "*.deseq2.sizefactors.tsv":
+          type: file
+          description: Size factors
+          pattern: "deseq2.sizefactors.tsv"
   - normalised_counts:
-      type: file
-      description: TSV-format counts matrix, normalised to size factors
-      pattern: "normalised_counts.tsv"
-  - variance_stabilised_counts:
-      type: file
-      description: TSV-format counts matrix, normalised to size factors, with variance stabilisation applied
-      pattern: "variance_stabilised_counts.tsv"
+      - meta:
+          type: file
+          description: TSV-format counts matrix, normalised to size factors
+          pattern: "normalised_counts.tsv"
+      - "*.normalised_counts.tsv":
+          type: file
+          description: TSV-format counts matrix, normalised to size factors
+          pattern: "normalised_counts.tsv"
+  - rlog_counts:
+      - meta:
+          type: file
+          description: |
+            Optional, TSV-format counts matrix, normalised to size factors, with
+            variance stabilisation applied via `rlog()`.
+          pattern: "rlog.tsv"
+      - "*.rlog.tsv":
+          type: file
+          description: |
+            Optional, TSV-format counts matrix, normalised to size factors, with
+            variance stabilisation applied via `rlog()`.
+          pattern: "rlog.tsv"
+  - vst_counts:
+      - meta:
+          type: file
+          description: |
+            Optional, TSV-format counts matrix, normalised to size factors, with
+            variance stabilisation applied via `vst()`.
+          pattern: "vst_counts.tsv"
+      - "*.vst.tsv":
+          type: file
+          description: |
+            Optional, TSV-format counts matrix, normalised to size factors, with
+            variance stabilisation applied via `vst()`.
+          pattern: "vst_counts.tsv"
   - model:
-      type: file
-      description: TXT-format DESeq2 model
-      pattern: "deseq2.model.tsv"
+      - meta:
+          type: file
+          description: TXT-format DESeq2 model
+          pattern: "deseq2.model.tsv"
+      - "*.deseq2.model.txt":
+          type: file
+          description: TXT-format DESeq2 model
+          pattern: "deseq2.model.tsv"
+  - session_info:
+      - meta:
+          type: file
+          description: dump of R SessionInfo
+          pattern: "*.log"
+      - "*.R_sessionInfo.log":
+          type: file
+          description: dump of R SessionInfo
+          pattern: "*.log"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@pinin4fjords"
 maintainers:

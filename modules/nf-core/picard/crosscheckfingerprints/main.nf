@@ -4,13 +4,12 @@ process PICARD_CROSSCHECKFINGERPRINTS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:3.1.1--hdfd78af_0' :
-        'biocontainers/picard:3.1.1--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/picard:3.3.0--hdfd78af_0' :
+        'biocontainers/picard:3.3.0--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(input1)
-    path input2
-    path haplotype_map
+    tuple val(meta),  path(input1), path(input1_index), path(input2), path(input2_index), path(haplotype_map)
+    tuple val(meta2), path(fasta)
 
     output:
     tuple val(meta), path("*.crosscheck_metrics.txt"), emit: crosscheck_metrics
@@ -23,8 +22,9 @@ process PICARD_CROSSCHECKFINGERPRINTS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def input1_string = input1.join(" --INPUT ")
-    def input2_string = input2 ? "--SECOND_INPUT " + input2.join(" --SECOND_INPUT ") : ""
+    def input1_cmd = input1.collect{"--INPUT $it"}.join(' ')
+    def input2_cmd = input2.collect{"--SECOND_INPUT $it"}.join(' ')
+    def reference_cmd = fasta ? "--REFERENCE_SEQUENCE $fasta" : ""
 
     def avail_mem = 3072
     if (!task.memory) {
@@ -36,16 +36,29 @@ process PICARD_CROSSCHECKFINGERPRINTS {
     picard \\
         -Xmx${avail_mem}M \\
         CrosscheckFingerprints \\
-        $args \\
-        --NUM_THREADS ${task.cpus} \\
-        --INPUT $input1_string \\
-        $input2_string \\
+        ${input1_cmd} \\
+        ${input2_cmd} \\
+        ${reference_cmd} \\
         --HAPLOTYPE_MAP ${haplotype_map} \\
-        --OUTPUT ${prefix}.crosscheck_metrics.txt
+        --OUTPUT ${prefix}.crosscheck_metrics.txt \\
+        --NUM_THREADS ${task.cpus} \\
+        $args
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         picard: \$( picard CrosscheckFingerprints --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d: )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.crosscheck_metrics.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        picard: \$(echo \$(picard CollectHsMetrics --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
     END_VERSIONS
     """
 }

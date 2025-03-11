@@ -4,8 +4,8 @@ process TABIX_BGZIP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/tabix:1.11--hdfd78af_0' :
-        'biocontainers/tabix:1.11--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/htslib:1.20--h5efdd21_2' :
+        'biocontainers/htslib:1.20--h5efdd21_2' }"
 
     input:
     tuple val(meta), path(input)
@@ -44,7 +44,8 @@ process TABIX_BGZIP {
     output   = in_bgzip ? input.getBaseName() : "${prefix}.${input.getExtension()}.gz"
 
     """
-    touch ${output}
+    echo "" | gzip > ${output}
+    touch ${output}.gzi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

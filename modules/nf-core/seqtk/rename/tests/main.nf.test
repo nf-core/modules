@@ -1,0 +1,76 @@
+nextflow_process {
+
+    name "Test Process SEQTK_RENAME"
+    script "modules/nf-core/seqtk/rename/main.nf"
+    process "SEQTK_RENAME"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "seqtk"
+    tag "seqtk/rename"
+
+    test("sarscov2_rename_fa") {
+
+        when {
+            process {
+                """
+                input[0] =  [
+                                [ id:'test' ],   // meta map
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2_rename_fq") {
+
+        when {
+            process {
+                """
+                input[0] =  [
+                                [ id:'test' ],
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2_rename_fq_stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] =  [
+                                [ id:'test' ],
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

@@ -15,86 +15,162 @@ tools:
       documentation: https://portal.nersc.gov/genomad/
       tool_dev_url: https://github.com/apcamargo/genomad/
       doi: 10.1101/2023.03.05.531206
-      licence: "['Lawrence Berkeley National Labs BSD variant license']"
+      licence: ["Lawrence Berkeley National Labs BSD variant license"]
+      identifier: biotools:genomad
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: FASTA file containing contigs/scaffolds/chromosomes
-      pattern: "*.{fasta,fna,fa}"
-  - genomad_db:
-      type: directory
-      description: Directory pointing to geNomad database
-  - score_calibration:
-      type: boolean
-      description: true/false value to indicate if score calibration should be enabled
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: FASTA file containing contigs/scaffolds/chromosomes
+        pattern: "*.{fasta,fna,fa}"
+  - - genomad_db:
+        type: directory
+        description: Directory pointing to geNomad database
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - aggregated_classification:
-      type: file
-      description: Combined classification scores for each contig/scaffold/chromosome
-      pattern: "*_aggregated_classification.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_aggregated_classification/*_aggregated_classification.tsv":
+          type: file
+          description: Combined classification scores for each contig/scaffold/chromosome
+          pattern: "*_aggregated_classification.tsv"
   - taxonomy:
-      type: file
-      description: Detailed output of geNomad's marker gene taxonomy analysis
-      pattern: "*_taxonomy.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_annotate/*_taxonomy.tsv":
+          type: file
+          description: Detailed output of geNomad's marker gene taxonomy analysis
+          pattern: "*_taxonomy.tsv"
   - provirus:
-      type: file
-      description: Detailed output of each provirus identified by geNomad's find_proviruses module
-      pattern: "*_provirus.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_find_proviruses/*_provirus.tsv":
+          type: file
+          description: Detailed output of each provirus identified by geNomad's find_proviruses
+            module
+          pattern: "*_provirus.tsv"
   - compositions:
-      type: file
-      description: OPTIONAL - Predicted sample composition when `--enable-score-calibration` is used
-      pattern: "*_compositions.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_score_calibration/*_compositions.tsv":
+          type: file
+          description: OPTIONAL - Predicted sample composition when `--enable-score-calibration`
+            is used
+          pattern: "*_compositions.tsv"
   - calibrated_classification:
-      type: file
-      description: OPTIONAL - Classification scores that have been adjusted based on sample composition when `--enable-score-calibration` is used`
-      pattern: "*_calibrated_aggregated_classification.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_score_calibration/*_calibrated_aggregated_classification.tsv":
+          type: file
+          description: OPTIONAL - Classification scores that have been adjusted based
+            on sample composition when `--enable-score-calibration` is used`
+          pattern: "*_calibrated_aggregated_classification.tsv"
   - plasmid_fasta:
-      type: file
-      description: FASTA file containing predicted plasmid sequences
-      pattern: "*_plasmid.fna"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_summary/*_plasmid.fna.gz":
+          type: file
+          description: FASTA file containing predicted plasmid sequences
+          pattern: "*_plasmid.fna"
   - plasmid_genes:
-      type: file
-      description: TSV file containing predicted plasmid genes and their annotations
-      pattern: "*_plasmid_genes.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_summary/*_plasmid_genes.tsv":
+          type: file
+          description: TSV file containing predicted plasmid genes and their annotations
+          pattern: "*_plasmid_genes.tsv"
   - plasmid_proteins:
-      type: file
-      description: FASTA file containing predicted plasmid protein sequences
-      pattern: "*_plasmid_proteins.faa"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_summary/*_plasmid_proteins.faa.gz":
+          type: file
+          description: FASTA file containing predicted plasmid protein sequences
+          pattern: "*_plasmid_proteins.faa"
   - plasmid_summary:
-      type: file
-      description: TSV file containing a summary of geNomad's plasmid predictions
-      pattern: "*_plasmid_summary.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_summary/*_plasmid_summary.tsv":
+          type: file
+          description: TSV file containing a summary of geNomad's plasmid predictions
+          pattern: "*_plasmid_summary.tsv"
   - virus_fasta:
-      type: file
-      description: FASTA file containing predicted virus sequences
-      pattern: "*_virus.fna"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_summary/*_virus.fna.gz":
+          type: file
+          description: FASTA file containing predicted virus sequences
+          pattern: "*_virus.fna"
   - virus_genes:
-      type: file
-      description: TSV file containing predicted virus genes and their annotations
-      pattern: "*_virus_genes.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_summary/*_virus_genes.tsv":
+          type: file
+          description: TSV file containing predicted virus genes and their annotations
+          pattern: "*_virus_genes.tsv"
   - virus_proteins:
-      type: file
-      description: FASTA file containing predicted virus protein sequences
-      pattern: "*_virus_proteins.faa"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_summary/*_virus_proteins.faa.gz":
+          type: file
+          description: FASTA file containing predicted virus protein sequences
+          pattern: "*_virus_proteins.faa"
   - virus_summary:
-      type: file
-      description: TSV file containing a summary of geNomad's virus predictions
-      pattern: "*_virus_summary.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_summary/*_virus_summary.tsv":
+          type: file
+          description: TSV file containing a summary of geNomad's virus predictions
+          pattern: "*_virus_summary.tsv"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@CarsonJM"
 maintainers:
   - "@CarsonJM"
+  - "@gallvp"

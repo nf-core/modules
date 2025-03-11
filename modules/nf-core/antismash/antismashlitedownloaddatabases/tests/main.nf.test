@@ -1,0 +1,142 @@
+nextflow_process {
+
+    name "Test Process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES"
+    script "../main.nf"
+    process "ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES"
+    config './nextflow.config'
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "antismash"
+    tag "antismash/antismashlitedownloaddatabases"
+    tag "untar"
+
+    test("antiSMASH-lite downloaddatabases") {
+
+        setup {
+
+            run("UNTAR", alias: "UNTAR_CSS") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                """
+                input[0] = [
+                    [ ],
+                    file('https://github.com/nf-core/test-datasets/raw/59ddeb5929f89ddddaff292d67f9025812762b87/data/delete_me/antismash/css.tar.gz', checkIfExists: true)
+                ]
+                """
+                }
+            }
+
+            run("UNTAR", alias: "UNTAR_DETECTION") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                """
+                input[0] = [
+                    [ ],
+                    file('https://github.com/nf-core/test-datasets/raw/59ddeb5929f89ddddaff292d67f9025812762b87/data/delete_me/antismash/detection.tar.gz', checkIfExists: true)
+                ]
+                """
+                }
+            }
+
+            run("UNTAR", alias: "UNTAR_MODULES") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                """
+                input[0] = [
+                    [ ],
+                    file('https://github.com/nf-core/test-datasets/raw/59ddeb5929f89ddddaff292d67f9025812762b87/data/delete_me/antismash/modules.tar.gz', checkIfExists: true)
+                ]
+                """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = UNTAR_CSS.out.untar.map{ it[1] }
+                input[1] = UNTAR_DETECTION.out.untar.map{ it[1] }
+                input[2] = UNTAR_MODULES.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.database.get(0)).list().sort(),
+                    path(process.out.versions[0]).yaml,
+                    file(process.out.versions[0]).name,
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("antiSMASH-lite downloaddatabases - stub") {
+
+        options "-stub"
+
+        setup {
+
+            run("UNTAR", alias: "UNTAR_CSS") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                """
+                input[0] = [
+                    [ ],
+                    file('https://github.com/nf-core/test-datasets/raw/59ddeb5929f89ddddaff292d67f9025812762b87/data/delete_me/antismash/css.tar.gz', checkIfExists: true)
+                ]
+                """
+                }
+            }
+
+            run("UNTAR", alias: "UNTAR_DETECTION") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                """
+                input[0] = [
+                    [ ],
+                    file('https://github.com/nf-core/test-datasets/raw/59ddeb5929f89ddddaff292d67f9025812762b87/data/delete_me/antismash/detection.tar.gz', checkIfExists: true)
+                ]
+                """
+                }
+            }
+
+            run("UNTAR", alias: "UNTAR_MODULES") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                """
+                input[0] = [
+                    [ ],
+                    file('https://github.com/nf-core/test-datasets/raw/59ddeb5929f89ddddaff292d67f9025812762b87/data/delete_me/antismash/modules.tar.gz', checkIfExists: true)
+                ]
+                """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = UNTAR_CSS.out.untar.map{ it[1] }
+                input[1] = UNTAR_DETECTION.out.untar.map{ it[1] }
+                input[2] = UNTAR_MODULES.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        file(process.out.database.get(0)).list().sort(),
+                        file(process.out.versions[0]).name,
+                    ).match()
+                }
+            )
+        }
+    }
+}

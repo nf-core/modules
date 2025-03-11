@@ -11,39 +11,49 @@ tools:
       documentation: https://github.com/FRED-2/OptiType
       doi: "10.1093/bioinformatics/btu548"
       licence: ["BSD-3-Clause"]
+      identifier: biotools:optitype
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: BAM file
-      pattern: "*.{bam}"
-  - bai:
-      type: file
-      description: BAM index file
-      pattern: "*.{bai}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM file
+        pattern: "*.{bam}"
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.{bai}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', seq_type:'DNA' ]
+  - hla_type:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', seq_type:'DNA' ]
+      - ${prefix}/*.tsv:
+          type: file
+          description: HLA type
+          pattern: "${prefix}/*.tsv"
+  - coverage_plot:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', seq_type:'DNA' ]
+      - ${prefix}/*.pdf:
+          type: file
+          description: OptiType coverage plot
+          pattern: "${prefix}/*.pdf"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - output:
-      type: file
-      description: OptiType Results Folder
-      pattern: "${prefix}"
-  - pdf:
-      type: file
-      description: OptiType PDF Plots
-      pattern: "*.pdf"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@apeltzer"
 maintainers:
   - "@apeltzer"
+  - "@christopher-mohr"

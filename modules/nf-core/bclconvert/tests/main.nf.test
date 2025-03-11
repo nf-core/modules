@@ -15,8 +15,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'test', lane:1 ],
-                    file(params.test_data['homo_sapiens']['illumina']['test_flowcell_samplesheet'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['illumina']['test_flowcell'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell.tar.gz', checkIfExists: true)
                 ]
                 """
             }
@@ -29,11 +29,11 @@ nextflow_process {
                     process.out.reports,
                     process.out.versions,
                     process.out.fastq,
-                    process.out.undetermined,
                     file(process.out.logs.get(0).get(1)).list().sort(),
                     process.out.interop.get(0).get(1).findAll { file(it).name != "IndexMetricsOut.bin" },
                     ).match()
                 },
+                { assert process.out.undetermined.get(0).get(1) ==~ ".*/Undetermined_S0_L001_R1_001.fastq.gz"},
                 { assert file(process.out.interop.get(0).get(1).find { file(it).name == "IndexMetricsOut.bin" }).exists() }
             )
         }

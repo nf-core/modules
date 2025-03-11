@@ -1,0 +1,134 @@
+nextflow_process {
+
+    name "Test Process ANTISMASH_ANTISMASHLITE"
+    script "../main.nf"
+    process "ANTISMASH_ANTISMASHLITE"
+    config './nextflow.config'
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "antismash"
+    tag "antismash/antismashlite"
+    tag "antismash/antismashlitedownloaddatabases"
+    tag "gunzip"
+    tag "untar"
+
+    setup {
+        run("UNTAR", alias: "UNTAR_CSS") {
+            script "modules/nf-core/untar/main.nf"
+            process {
+            """
+            input[0] = [
+                [ ],
+                file('https://github.com/nf-core/test-datasets/raw/59ddeb5929f89ddddaff292d67f9025812762b87/data/delete_me/antismash/css.tar.gz', checkIfExists: true)
+            ]
+            """
+            }
+        }
+
+        run("UNTAR", alias: "UNTAR_DETECTION") {
+            script "modules/nf-core/untar/main.nf"
+            process {
+            """
+            input[0] = [
+                [ ],
+                file('https://github.com/nf-core/test-datasets/raw/59ddeb5929f89ddddaff292d67f9025812762b87/data/delete_me/antismash/detection.tar.gz', checkIfExists: true)
+            ]
+            """
+            }
+        }
+
+        run("UNTAR", alias: "UNTAR_MODULES") {
+            script "modules/nf-core/untar/main.nf"
+            process {
+            """
+            input[0] = [
+                [ ],
+                file('https://github.com/nf-core/test-datasets/raw/59ddeb5929f89ddddaff292d67f9025812762b87/data/delete_me/antismash/modules.tar.gz', checkIfExists: true)
+            ]
+            """
+            }
+        }
+
+        run("ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES") {
+            script "modules/nf-core/antismash/antismashlitedownloaddatabases"
+            process {
+                """
+                input[0] = UNTAR_CSS.out.untar.map{ it[1] }
+                input[1] = UNTAR_DETECTION.out.untar.map{ it[1] }
+                input[2] = UNTAR_MODULES.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+        run("GUNZIP") {
+            script "modules/nf-core/gunzip/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.gbff.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("antismashlite - bacteroides_fragilis - genome") {
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES.out.database
+                input[2] = ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES.out.antismash_dir
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.gbk_results.get(0).get(1).get(0)).text.contains("##antiSMASH-Data-START##") },
+                { assert snapshot(process.out.html_accessory_files).match("html_accessory_files") },
+                { assert path(process.out.gbk_input.get(0).get(1).get(0)).text.contains("##antiSMASH-Data-END##") },
+                { assert path(process.out.zip.get(0).get(1)).exists() },
+                { assert path(process.out.html.get(0).get(1)).text.contains("https://antismash.secondarymetabolites.org/") },
+                { assert path(process.out.json_sideloading.get(0).get(1)).text.contains("\"seq_id\": \"NZ_CP069563.1\"") },
+                { assert path(process.out.log.get(0).get(1)).text.contains("antiSMASH status: SUCCESS") },
+                { assert snapshot(
+                    path(process.out.versions[0]).yaml,
+                    file(process.out.versions[0]).name,
+                    ).match("versions")
+                }
+            )
+        }
+    }
+
+    test("antismashlite - bacteroides_fragilis - genome - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES.out.database
+                input[2] = ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES.out.antismash_dir
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.versions[0]).name,
+                    ).match("versions_stub")
+                }
+            )
+        }
+    }
+}

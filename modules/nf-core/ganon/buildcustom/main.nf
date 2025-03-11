@@ -1,21 +1,21 @@
 process GANON_BUILDCUSTOM {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
-
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ganon:1.5.1--py310h8abeb55_0':
-        'biocontainers/ganon:1.5.1--py310h8abeb55_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/ganon:2.1.0--py310hab1bfa5_1'
+        : 'biocontainers/ganon:2.1.0--py310hab1bfa5_1'}"
 
     input:
     tuple val(meta), path(input)
+    path input_tsv
     path taxonomy_files
     path genome_size_files
 
     output:
-    tuple val(meta), path("*.{ibf,tax}")          , emit: db
-    tuple val(meta), path("*.info.tsv")           , emit: info            , optional: true
-    path "versions.yml"                           , emit: versions
+    tuple val(meta), path("*.{hibf,ibf,tax}"), emit: db
+    tuple val(meta), path("*.info.tsv"), emit: info, optional: true
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,17 +23,18 @@ process GANON_BUILDCUSTOM {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def taxonomy_args     = taxonomy_files    ? "--taxonomy-files ${taxonomy_files}" : ""
-    def genome_size_args  = genome_size_files ? "--genome-size-files ${genome_size_files}" : ""
+    def input_cmd = input_tsv ? "--input-file ${input_tsv}" : "--input ${input}"
+    def taxonomy_args = taxonomy_files ? "--taxonomy-files ${taxonomy_files}" : ""
+    def genome_size_args = genome_size_files ? "--genome-size-files ${genome_size_files}" : ""
     """
     ganon \\
         build-custom \\
         --threads ${task.cpus} \\
-        --input $input \\
+        ${input_cmd} \\
         --db-prefix ${prefix} \\
-        $taxonomy_args \\
-        $genome_size_args \\
-        $args
+        ${taxonomy_args} \\
+        ${genome_size_args} \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -44,10 +45,10 @@ process GANON_BUILDCUSTOM {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def taxonomy_args     = taxonomy_files    ? "--taxonomy-files ${taxonomy_files}" : ""
-    def genome_size_args  = genome_size_files ? "--genome-size-files ${genome_size_files}" : ""
+    def taxonomy_args = taxonomy_files ? "--taxonomy-files ${taxonomy_files}" : ""
+    def genome_size_args = genome_size_files ? "--genome-size-files ${genome_size_files}" : ""
     """
-    touch ${prefix}.ibf
+    touch ${prefix}.hibf
     touch ${prefix}.tax
     touch ${prefix}.info.tsv
 

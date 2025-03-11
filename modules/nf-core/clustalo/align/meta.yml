@@ -6,48 +6,79 @@ keywords:
   - genomics
 tools:
   - "clustalo":
-      description: "Latest version of Clustal: a multiple sequence alignment program for DNA or proteins"
+      description: "Latest version of Clustal: a multiple sequence alignment program
+        for DNA or proteins"
       homepage: "http://www.clustal.org/omega/"
       documentation: "http://www.clustal.org/omega/"
       tool_dev_url: "http://www.clustal.org/omega/"
       doi: "10.1038/msb.2011.75"
       licence: ["GPL v2"]
+      identifier: ""
+  - "pigz":
+      description: "Parallel implementation of the gzip algorithm."
+      homepage: "https://zlib.net/pigz/"
+      documentation: "https://zlib.net/pigz/pigz.pdf"
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test']`
-  - fasta:
-      type: file
-      description: Input sequences in FASTA format
-      pattern: "*.{fa,fasta}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing tree information
-        e.g. `[ id:'test_tree']`
-  - tree:
-      type: file
-      description: Input guide tree in Newick format
-      pattern: "*.{dnd}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test']`
+    - fasta:
+        type: file
+        description: Input sequences in FASTA format
+        pattern: "*.{fa,fasta,faa,fna}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing tree information
+          e.g. `[ id:'test_tree']`
+    - tree:
+        type: file
+        description: Input guide tree in Newick format
+        pattern: "*.{dnd}"
+  - - hmm_in:
+        type: file
+        description: HMM file for profile alignment
+        pattern: "*.hmm"
+  - - hmm_batch:
+        type: file
+        description: specify HMMs for individual sequences
+        pattern: "*"
+  - - profile1:
+        type: file
+        description: Pre-aligned multiple sequence file 1
+        pattern: "*.{alnfaa,faa,fa,fasta}"
+  - - profile2:
+        type: file
+        description: Pre-aligned multiple sequence file 2
+        pattern: "*.{alnfaa,faa,fa,fasta}"
+  - - compress:
+        type: boolean
+        description: Flag representing whether the output MSA should be compressed.
+          Set to true to enable/false to disable compression. Compression is done using
+          pigz, and is multithreaded.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test']`
   - alignment:
-      type: file
-      description: Alignment file.
-      pattern: "*.{aln}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test']`
+      - "*.aln{.gz,}":
+          type: file
+          description: Alignment file, in gzipped fasta format
+          pattern: "*.aln{.gz,}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@luisas"
   - "@joseespinosa"
 maintainers:
   - "@luisas"
   - "@joseespinosa"
+  - "@lrauschning"

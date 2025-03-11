@@ -1,0 +1,50 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "seqkit_concat"
+description: Concatenating multiple uncompressed sequence files together
+keywords:
+  - concat
+  - fasta
+  - fastq
+  - merge
+tools:
+  - seqkit:
+      description: |
+        Cross-platform and ultrafast toolkit for FASTA/Q file manipulation, written by Wei Shen.
+      homepage: https://github.com/shenwei356/seqkit
+      documentation: https://bioinf.shenwei.me/seqkit/
+      tool_dev_url: https://github.com/shenwei356/seqkit
+      doi: 10.1371/journal.pone.0163962
+      licence: ["MIT"]
+      identifier: biotools:seqkit
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - input:
+        type: file
+        description: Sequence file in fasta/q format
+        pattern: "*.{fasta,fastq,fa,fq,fas,fna,faa}"
+output:
+  #Only when we have meta
+  - fastx:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.{fasta,fastq,fa,fq,fas,fna,faa}":
+          type: file
+          description: A concatenated sequence file
+          pattern: "*.{fasta,fastq,fa,fq,fas,fna,faa}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@DLBPointon"
+maintainers:
+  - "@DLBPointon"

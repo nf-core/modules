@@ -1,0 +1,100 @@
+{
+    "genome.fasta + genome.gtf + '10X3' + 'standard' - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            [
+                                "cells_x_genes.mtx:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            ]
+                        ]
+                    ]
+                ],
+                "1": [
+                    "versions.yml:md5,6ec06270afe0a7572c41567160d927d9"
+                ],
+                "2": [
+                    "cells_x_genes.mtx:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "count": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            [
+                                "cells_x_genes.mtx:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            ]
+                        ]
+                    ]
+                ],
+                "matrix": [
+                    "cells_x_genes.mtx:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "versions": [
+                    "versions.yml:md5,6ec06270afe0a7572c41567160d927d9"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-03-01T15:48:45.775904562"
+    },
+    "genome.fasta + genome.gtf + '10X3' + 'standard'": {
+        "content": [
+            [
+                "versions.yml:md5,6ec06270afe0a7572c41567160d927d9"
+            ],
+            [
+                "cells_x_genes.mtx:md5,e12a45e7f7d6527f698dd9cb2e99ecd1"
+            ],
+            [
+                "10x_version3_whitelist.txt:md5,3d36d0a4021fd292b265e2b5e72aaaf3",
+                [
+                    "cells_x_genes.barcodes.txt:md5,41f7adaf43b60f2f4f62d6a7073688de",
+                    "cells_x_genes.genes.names.txt:md5,b29afa75be300c7f24fbd0740a66689b",
+                    "cells_x_genes.genes.txt:md5,fe6d5501923867b514a0447aa4b4995f",
+                    "cells_x_genes.mtx:md5,e12a45e7f7d6527f698dd9cb2e99ecd1"
+                ],
+                "inspect.json:md5,bafb47a58ac1bbf9be953f21c361d266",
+                "matrix.ec:md5,31a4c1a3e8e0c562b12f6569ffbf5459",
+                "output.bus:md5,d6fa0612a4a16eaf8a3e08bdc13ff49c",
+                "output.unfiltered.bus:md5,bf899b967657f612ba864188868d58cc",
+                "transcripts.txt:md5,23861cf43033e7c596e6989a88a3a373"
+            ],
+            [
+                "    \"commands\": [",
+                "        \"kallisto bus -i kb_ref_out.idx -o test.count -x 10XV3 -t 2 subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R1_001.fastq.gz subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R2_001.fastq.gz\",",
+                "        \"bustools sort -o test.count/tmp/output.s.bus -T test.count/tmp -t 2 -m 2G test.count/output.bus\",",
+                "        \"bustools inspect -o test.count/inspect.json -w test.count/10x_version3_whitelist.txt test.count/tmp/output.s.bus\",",
+                "        \"bustools correct -o test.count/tmp/output.s.c.bus -w test.count/10x_version3_whitelist.txt test.count/tmp/output.s.bus\",",
+                "        \"bustools sort -o test.count/output.unfiltered.bus -T test.count/tmp -t 2 -m 2G test.count/tmp/output.s.c.bus\",",
+                "        \"bustools count -o test.count/counts_unfiltered/cells_x_genes -g t2g.txt -e test.count/matrix.ec -t test.count/transcripts.txt --genecounts --umi-gene test.count/output.unfiltered.bus\"",
+                "    ],"
+            ],
+            [
+                "{",
+                "\t\"n_targets\": 12,",
+                "\t\"n_bootstraps\": 0,",
+                "\t\"n_processed\": 10000,",
+                "\t\"n_pseudoaligned\": 26,",
+                "\t\"n_unique\": 26,",
+                "\t\"p_pseudoaligned\": 0.3,",
+                "\t\"p_unique\": 0.3,",
+                "\t\"kallisto_version\": \"0.50.1\",",
+                "\t\"index_version\": 13,"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-03-01T15:48:24.476953631"
+    }
+}

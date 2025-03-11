@@ -1,0 +1,55 @@
+name: "survivor_stats"
+description: Report multiple stats over a VCF file
+keywords:
+  - survivor
+  - statistics
+  - vcf
+  - structural variants
+tools:
+  - "survivor":
+      description: "Toolset for SV simulation, comparison and filtering"
+      homepage: "https://github.com/fritzsedlazeck/SURVIVOR/wiki"
+      documentation: "https://github.com/fritzsedlazeck/SURVIVOR/wiki"
+      tool_dev_url: "https://github.com/fritzsedlazeck/SURVIVOR"
+      doi: "10.1038/NCOMMS14061"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: VCF file to filter
+        pattern: "*.{vcf}"
+  - - minsv:
+        type: integer
+        description: Min SV size (-1 to disable)
+  - - maxsv:
+        type: integer
+        description: Max SV size (-1 to disable)
+  - - minnumreads:
+        type: integer
+        description: Min number of reads support [RE flag (-1 to disable)]
+output:
+  - stats:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.stats":
+          type: file
+          description: File containing statistics given input VCF file
+          pattern: "*.{stats}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@kubranarci"
+maintainers:
+  - "@kubranarci"

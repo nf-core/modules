@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "geofetch"
+description: geofetch is a command-line tool that downloads and organizes data and
+  metadata from GEO and SRA
+keywords:
+  - GEO
+  - expression
+  - microarray
+  - sequencing
+tools:
+  - "geofetch":
+      description: "Downloads data and metadata from GEO and SRA and creates standard
+        PEPs."
+      homepage: "http://geofetch.databio.org/"
+      documentation: "http://geofetch.databio.org/"
+      tool_dev_url: "https://github.com/pepkit/geofetch"
+      licence: ["BSD-2-clause"]
+      args_id: "$args"
+
+      identifier: ""
+input:
+  - - geo_accession:
+        type: string
+        description: GEO accession ID
+output:
+  - samples:
+      - ${geo_accession}:
+          type: file
+          description: List of sample files fetched
+          pattern: "${geo_accession}/*.CEL.gz"
+      - ${geo_accession}/*.CEL.gz:
+          type: file
+          description: List of sample files fetched
+          pattern: "${geo_accession}/*.CEL.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@mribeirodantas"
+maintainers:
+  - "@mribeirodantas"

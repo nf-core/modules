@@ -1,0 +1,36 @@
+nextflow_process {
+
+    name "Test Process SPACERANGER_MKGTF"
+    script "../main.nf"
+    process "SPACERANGER_MKGTF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "spaceranger"
+    tag "spaceranger/mkgtf"
+
+    test("homo_sapiens - gtf") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.gtf,
+                    path(process.out.versions.get(0)).yaml,
+                ).match() }
+            )
+        }
+
+    }
+
+}

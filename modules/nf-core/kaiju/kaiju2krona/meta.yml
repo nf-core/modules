@@ -1,5 +1,6 @@
 name: kaiju_kaiju2krona
-description: Convert Kaiju's tab-separated output file into a tab-separated text file which can be imported into Krona.
+description: Convert Kaiju's tab-separated output file into a tab-separated text file
+  which can be imported into Krona.
 keywords:
   - taxonomy
   - visualisation
@@ -13,30 +14,36 @@ tools:
       tool_dev_url: https://github.com/bioinformatics-centre/kaiju
       doi: "10.1038/ncomms11257"
       licence: ["GNU GPL v3"]
+      identifier: biotools:kaiju
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - tsv:
-      type: file
-      description: Kaiju tab-separated output file
-      pattern: "*.{tsv,txt}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - tsv:
+        type: file
+        description: Kaiju tab-separated output file
+        pattern: "*.{tsv,txt}"
+  - - db:
+        type: file
+        description: Kaiju database file
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - txt:
-      type: file
-      description: Krona text-based input file converted from Kaiju report
-      pattern: "*.{txt,krona}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt":
+          type: file
+          description: Krona text-based input file converted from Kaiju report
+          pattern: "*.{txt,krona}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@MillironX"
 maintainers:

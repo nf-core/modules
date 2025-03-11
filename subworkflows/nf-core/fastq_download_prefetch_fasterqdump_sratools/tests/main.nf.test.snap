@@ -1,57 +1,97 @@
 {
-    "Parameters: default": {
+    "test_se_reads_size": {
         "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "test_paired_end",
-                            "single_end": false
-                        },
-                        [
-                            "test_paired_end_1.fastq.gz:md5,193809c784a4ea132ab2a253fa4f55b6",
-                            "test_paired_end_2.fastq.gz:md5,3e3b3af3413f50a1685fd7b3f1456d4e"
-                        ]
-                    ],
-                    [
-                        {
-                            "id": "test_single_end",
-                            "single_end": true
-                        },
-                        "test_single_end.fastq.gz:md5,19029a1132115b55277a0d79ee089b49"
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,98d78bba9f3da39a0b7db6e9c7dcc224",
-                    "versions.yml:md5,9c558ff624585a6eee82a19c8c0136db",
-                    "versions.yml:md5,db0e1352064b53c651661f43f2620765"
-                ],
-                "reads": [
-                    [
-                        {
-                            "id": "test_paired_end",
-                            "single_end": false
-                        },
-                        [
-                            "test_paired_end_1.fastq.gz:md5,193809c784a4ea132ab2a253fa4f55b6",
-                            "test_paired_end_2.fastq.gz:md5,3e3b3af3413f50a1685fd7b3f1456d4e"
-                        ]
-                    ],
-                    [
-                        {
-                            "id": "test_single_end",
-                            "single_end": true
-                        },
-                        "test_single_end.fastq.gz:md5,19029a1132115b55277a0d79ee089b49"
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,98d78bba9f3da39a0b7db6e9c7dcc224",
-                    "versions.yml:md5,9c558ff624585a6eee82a19c8c0136db",
-                    "versions.yml:md5,db0e1352064b53c651661f43f2620765"
-                ]
-            }
+            19996
         ],
-        "timestamp": "2023-10-12T20:09:55.255971"
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-28T12:02:56.176292"
+    },
+    "test_pe_reads_2_lines": {
+        "content": [
+            [
+                "@SRR11140744.1 M01472:285:000000000-CYHNP:1:1101:12117:3295 length=251",
+                "ACAGGACACGAGTAACTCGTCTATCTTCTGCTGGCTGCTTACGGTTTCGTCCGTGTTGCAGCCGATCATCAGCACATCTAGGTTTCGTCCGGGTGTGACCGAAAGGTAAGATGGAGAGCCTTGTCCCTGGTTTCAACGAGAAAACACACGTCCAACTCAGTTTGCCTGTTTTACAGGTTCGCGACGTGCTCGTACGTGGCTTTGGAGACTCCGTGGAGGAGGTCTTATCAGAGGCACGTCAACATCTTAAA",
+                "+SRR11140744.1 M01472:285:000000000-CYHNP:1:1101:12117:3295 length=251",
+                "ABAAAFBFFBDBGGGGGGGGGGHHHHHHHHHHCHGHGGGHHHGGHGGHGHGGGHFHHHHHHHHGGGGGHHHHHHHHHFHHHHGHHHGHGGGGGEFGDGHHGFGGGHHHHHGHHGGHHFHHHHGHHHHHHHHHHHHHHGFFGGHHHHHHGGHHGGHHHHHEGHHHHHHHGHHGHHFHHHHHGGGGGGGGGGGGAGGG9BEFFFFFFFFFFFFFFEEFFFFFFFA.FFFFFFFEFEFFFFFFF.BFFFFFFFB",
+                "@SRR11140744.2 M01472:285:000000000-CYHNP:1:1101:20752:3564 length=238",
+                "GTGCACTCACGCAGTATAATTAATAACTAATTACTGTCGTTGACAGGACACGAGTAACTCGTCTATCTTCTGCAGGCTGCTTACGGTTTCGTCCGTGTTGCAGCCGATCATCAGCACATCTAGGTTTCGTCCGGGTGTGACCGAAAGGTAAGATGGAGAGCCTTGTCCCTGGTTTCAACGAGAAAACACACGTCCAACTCAGTTTGCCTGTTTTACAGGTTCGCGACGTGCTCGTACG"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-28T12:02:56.166207"
+    },
+    "test_pe_reads_2_size": {
+        "content": [
+            2011460
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-28T12:02:56.168869"
+    },
+    "versions": {
+        "content": [
+            [
+                "versions.yml:md5,1a2218ff913fc33408bffccb081b5048",
+                "versions.yml:md5,53d6e983afde3a28add2ffc6b7eba4f3",
+                "versions.yml:md5,9c558ff624585a6eee82a19c8c0136db"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "24.01.0"
+        },
+        "timestamp": "2024-02-28T15:19:18.755939"
+    },
+    "test_pe_reads_1_size": {
+        "content": [
+            2011460
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "24.01.0"
+        },
+        "timestamp": "2024-02-28T15:19:18.677234"
+    },
+    "test_se_reads_lines": {
+        "content": [
+            [
+                "@DRR000774.1 1 length=421",
+                "ACGCAGGTGCCAGCAGCCGCGGTAATACGTAGGATCCGAGCGTTGTCCGGATTTATTGGGCGTAAAGGGTGCGTAGGCGGCTTGTCAAGTCTCATGTGAAATCTCCCGGCTCAACTGGGAGGGTCATGGGAAACTGATGAGCTCGAGGGCAGTAGAGGGAAGCGGAATTCCGAGAGTAGTGGTGAAATGCGTAGATACTCGGAGGAACACCAGTGGCGAAAGCGGCTTCCTGGACTGTACCTGACGCTGAGGCACGAAAGCGTGGGGAGCAAACCGGATTAGATACCCGGGTAGTCCACGCCCTAAACGATGGATACTAGATATAGGGGGTATCGACCCTCTGTGTCGAAGCTAACGCATTAAGTATCCCGCCTGAGGAGTACGGCCGCAAGGCTAAAACTTAAGGAATTGACGGCTGCGT",
+                "+DRR000774.1 1 length=421",
+                "FFFFFFFFFFFIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIHHFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF:88FFF888???DBBBBB666F222ADDDFFF::;FFFFFFFFFFFFFFFFFFFFFFFFFFFF9:::FFFFCCCFFFFDDDFFFFF<<<FFFFFFFFFFFFFFFFFFFFFDDDFFFFFCC???FFCAADD::9FFFFD;;;FFFFFFFFFFFFFFFGA?==BA==2221<6@;<<@@551?ADDDDD:::CC?DBABBA5552219;;87<7988?====BDD:::?57555??=<4/0004044???ABDDDDDDDDB><<<8888886623//38><83238@B@@<;855557,,,,,,,0/0;;8:==DDDDDDDDD9:",
+                "@DRR000774.2 2 length=126",
+                "ACGCAGGTGCCAGCAGCCGCGGTAATACGGAGGGAGCTAGCGTTGTTCGGAATTACTGGGCGTAAAGCGCACGTAGGCGGCTTTTCAAGTCAGGGGTGGAAATACCCGGGGCCGTCAACCCGACCG"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-28T12:02:56.171227"
+    },
+    "test_pe_reads_1_lines": {
+        "content": [
+            [
+                "@SRR11140744.1 M01472:285:000000000-CYHNP:1:1101:12117:3295 length=251",
+                "ACATAGGGCTGTTCAAGTTGAGGCAAAACGCCTTTTTCAACTTCTACTAAGCCACAAGTGCCATCTTTAAGATGTTGACGTGCCTCTGATAAGACCTCCTCCACGGAGTCTCCAAAGCCACGTACGAGCACGTCGCGAACCTGTAAAACAGGCAAACTGAGTTGGACGTGTGTTTTCTCGTTGAAACCAGGGACAAGGCTCTCCATCTTACCTTTCGGTCACACCCGGACGAAACCTAGATGTGCTGATGA",
+                "+SRR11140744.1 M01472:285:000000000-CYHNP:1:1101:12117:3295 length=251",
+                "BCCCCFFFFFCFGGGGGGGGGGHGGHHHHGGGHGHHHHHHHHHHHHHHHHHHHHHHHGHHHHHHHHHHHHHHHHHHHHHGGGHHHHHGHHGHHHHHHHHHHHHHGGGGGHHHHHHHHHHHHGHHHGGGGGHGHHGGGGGGGHHHHHHHHHHHGGHHHHHFHHHHHHHGGGHHHHHHHHHGGGHHHHHHHHGGGGGGGFGGGGGGGGGGGGGGGGGGGGGGFFFFFFFFFDFFFFFFFFFFFFFFFFFFFFB",
+                "@SRR11140744.2 M01472:285:000000000-CYHNP:1:1101:20752:3564 length=238",
+                "CGTACGAGCACGTCGCGAACCTGTAAAACAGGCAAACTGAGTTGGACGTGTGTTTTCTCGTTGAAACCAGGGACAAGGCTCTCCATCTTACCTTTCGGTCACACCCGGACGAAACCTAGATGTGCTGATGATCGGCTGCAACACGGACGAAACCGTAAGCAGCCTGCAGAAGATAGACGAGTTACTCGTGTCCTGTCAACGACAGTAATTAGTTATTAATTATACTGCGTGAGTGCAC"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-28T12:02:56.161354"
     }
 }

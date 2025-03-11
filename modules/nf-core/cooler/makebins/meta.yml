@@ -12,22 +12,34 @@ tools:
       tool_dev_url: https://github.com/open2c/cooler
       doi: "10.1093/bioinformatics/btz540"
       licence: ["BSD-3-Clause"]
+      identifier: ""
 input:
-  - chromsize:
-      type: file
-      description: Path to chromosome size file
-  - cool_bin:
-      type: integer
-      description: Resolution (bin size) in base pairs
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - chromsizes:
+        type: file
+        description: Path to a chromsizes file.
+    - cool_bin:
+        type: integer
+        description: Resolution (bin size) in base pairs
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - bed:
-      type: file
-      description: Genome segmentation at a fixed resolution as a BED file.
-      pattern: "*.bed"
+      - meta:
+          type: file
+          description: Genome segmentation at a fixed resolution as a BED file.
+          pattern: "*.bed"
+      - "*.bed":
+          type: file
+          description: Genome segmentation at a fixed resolution as a BED file.
+          pattern: "*.bed"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nservant"
   - "@muffato"

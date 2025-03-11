@@ -4,16 +4,16 @@ process AGAT_CONVERTSPGXF2GXF {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/agat:1.0.0--pl5321hdfd78af_0' :
-        'biocontainers/agat:1.0.0--pl5321hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/agat:1.4.2--pl5321hdfd78af_0' :
+        'biocontainers/agat:1.4.2--pl5321hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(gff)
+    tuple val(meta), path(gxf)
 
     output:
-    tuple val(meta), path("*.agat.gff"), emit: output_gff
-    tuple val(meta), path("*.log"), emit: log
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.agat.gff") , emit: output_gff
+    tuple val(meta), path("*.log")      , emit: log
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,16 +21,27 @@ process AGAT_CONVERTSPGXF2GXF {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     agat_convert_sp_gxf2gxf.pl \\
-        --gff $gff \\
+        --gxf $gxf \\
         --output ${prefix}.agat.gff \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        agat: \$(agat_convert_sp_gxf2gxf.pl --help | sed '4!d; s/.*v//')
+        agat: \$(agat_convert_sp_gxf2gxf.pl --help | sed -n 's/.*(AGAT) - Version: \\(.*\\) .*/\\1/p')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.agat.gff
+    touch ${gxf}.agat.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        agat: \$(agat_convert_sp_gxf2gxf.pl --help | sed -n 's/.*(AGAT) - Version: \\(.*\\) .*/\\1/p')
     END_VERSIONS
     """
 }

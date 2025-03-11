@@ -1,11 +1,11 @@
 process GATK4_MARKDUPLICATES {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-13342043031ce2dd38cd19135a0754154f3d5dcf:5b8e58304eeed40565ed7894b208444fc5c852fa-0':
-        'biocontainers/mulled-v2-13342043031ce2dd38cd19135a0754154f3d5dcf:5b8e58304eeed40565ed7894b208444fc5c852fa-0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-d9e7bad0f7fbc8f4458d5c3ab7ffaaf0235b59fb:7cc3d06cbf42e28c5e2ebfc7c858654c7340a9d5-0':
+        'biocontainers/mulled-v2-d9e7bad0f7fbc8f4458d5c3ab7ffaaf0235b59fb:7cc3d06cbf42e28c5e2ebfc7c858654c7340a9d5-0' }"
 
     input:
     tuple val(meta), path(bam)

@@ -1,0 +1,77 @@
+name: narfmap_align
+description: Performs fastq alignment to a reference using NARFMAP
+keywords:
+  - alignment
+  - map
+  - fastq
+  - bam
+  - sam
+tools:
+  - narfmap:
+      description: narfmap is a fork of the Dragen mapper/aligner Open Source Software.
+      homepage: https://github.com/edmundmiller/narfmap
+      documentation: https://github.com/edmundmiller/NARFMAP/blob/main/doc/usage.md#basic-command-line-usage
+      tool_dev_url: https://github.com/edmundmiller/narfmap
+      licence: ["GPL v3"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively.
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test', single_end:false ]
+    - hashmap:
+        type: file
+        description: NARFMAP hash table
+        pattern: "Directory containing NARFMAP hash table *.{cmp,.bin,.txt}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fasta:
+        type: file
+        description: Reference genome in FASTA format
+        pattern: "*.{fasta,fa,fna}"
+  - - sort_bam:
+        type: boolean
+        description: Sort the BAM file after alignment
+output:
+  - bam:
+      - meta:
+          type: file
+          description: Output BAM file containing read alignments
+          pattern: "*.{bam}"
+      - "*.bam":
+          type: file
+          description: Output BAM file containing read alignments
+          pattern: "*.{bam}"
+  - log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.log":
+          type: file
+          description: Log file of NARFMAP run
+          pattern: "*{.log}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@edmundmiller"
+maintainers:
+  - "@edmundmiller"

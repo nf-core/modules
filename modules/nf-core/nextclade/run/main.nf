@@ -4,8 +4,8 @@ process NEXTCLADE_RUN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/nextclade:2.12.0--h9ee0642_0' :
-        'biocontainers/nextclade:2.12.0--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/nextclade:3.8.2--h9ee0642_0' :
+        'biocontainers/nextclade:3.8.2--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -20,7 +20,8 @@ process NEXTCLADE_RUN {
     tuple val(meta), path("${prefix}.auspice.json")  , optional:true, emit: json_auspice
     tuple val(meta), path("${prefix}.ndjson")        , optional:true, emit: ndjson
     tuple val(meta), path("${prefix}.aligned.fasta") , optional:true, emit: fasta_aligned
-    tuple val(meta), path("*.translation.fasta")     , optional:true, emit: fasta_translation
+    tuple val(meta), path("*_translation.*.fasta")   , optional:true, emit: fasta_translation
+    tuple val(meta), path("${prefix}.nwk")           , optional:true, emit: nwk
     path "versions.yml"                              , emit: versions
 
     when:
@@ -38,6 +39,23 @@ process NEXTCLADE_RUN {
         --output-all ./ \\
         --output-basename ${prefix} \\
         $fasta
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        nextclade: \$(echo \$(nextclade --version 2>&1) | sed 's/^.*nextclade //; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.csv
+    touch ${prefix}.tsv
+    touch ${prefix}.json
+    touch ${prefix}.auspice.json
+    touch ${prefix}.aligned.fasta
+    touch ${prefix}.cds_translation.test.fasta
+    touch ${prefix}.nwk
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

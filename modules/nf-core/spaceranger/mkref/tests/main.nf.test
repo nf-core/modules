@@ -1,0 +1,40 @@
+nextflow_process {
+
+    name "Test Process SPACERANGER_MKREF"
+    script "../main.nf"
+    process "SPACERANGER_MKREF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "spaceranger"
+    tag "spaceranger/mkref"
+
+    test("homo_sapiens - fasta - gtf") {
+
+        when {
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                input[2] = 'homo_sapiens_chr22_reference'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.versions.get(0)).yaml,
+                    "${process.out.reference[0]}/fasta",
+                    "${process.out.reference[0]}/genes",
+                    "${process.out.reference[0]}/reference.json",
+                    path("${process.out.reference[0]}/star").list().findAll { it.getFileName().toString() != "genomeParameters.txt" }
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+}

@@ -1,0 +1,74 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fasta_explore_search_plot_tidk"
+description: |
+  Uses Telomere Identification toolKit (TIDK) to identify the frequency of telomeric repeats
+  along a sliding window for each sequence in the input fasta file. Results are presented in
+  TSV and SVG formats. The user can specify an a priori sequence for identification.
+  Possible a posteriori sequences are also explored and the most frequent sequence is
+  used for identification similar to the a priori sequence. seqkit/seq and seqkit/sort modules are
+  also included to filter out small sequences and sort sequences by length.
+keywords:
+  - genomics
+  - telomere
+  - repeat
+  - search
+  - plot
+components:
+  - seqkit/seq
+  - seqkit/sort
+  - tidk/explore
+  - tidk/plot
+  - tidk/search
+input:
+  - ch_fasta:
+      type: file
+      description: |
+        Input assembly
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.{fsa/fa/fasta}"
+  - ch_apriori_sequence:
+      type: string
+      description: |
+        A priori sequence
+        Structure: [ val(meta), val(sequence) ]
+output:
+  - apriori_tsv:
+      type: file
+      description: |
+        Frequency table for the identification of the a priori sequence
+        Structure: [ val(meta), path(tsv) ]
+      pattern: "*.tsv"
+  - apriori_svg:
+      type: file
+      description: |
+        Frequency graph for the identification of the a priori sequence
+        Structure: [ val(meta), path(svg) ]
+      pattern: "*.svg"
+  - aposteriori_sequence:
+      type: file
+      description: |
+        The most frequent a posteriori sequence
+        Structure: [ val(meta), path(txt) ]
+      pattern: "*.txt"
+  - aposteriori_tsv:
+      type: file
+      description: |
+        Frequency table for the identification of the a aposteriori sequence
+        Structure: [ val(meta), path(tsv) ]
+      pattern: "*.tsv"
+  - aposteriori_svg:
+      type: file
+      description: |
+        Frequency graph for the identification of the a aposteriori sequence
+        Structure: [ val(meta), path(svg) ]
+      pattern: "*.svg"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@GallVp"
+maintainers:
+  - "@GallVp"

@@ -1,0 +1,123 @@
+nextflow_process {
+
+    name "Test Process TRUST4"
+    script "../main.nf"
+    process "TRUST4"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "trust4"
+
+    test("sarscov2 - single_end") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true ], // meta map
+                    [], // bam
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)] // reads
+                ])
+                input[1] = [[ id:'test'],[file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)]] // fasta
+                input[2] = [[ id:'test'],[]] // ref
+                input[3] = [[ id:'test'],[]] // barcode
+                input[4] = [[ id:'test'],[]] // umi
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.airr_tsv,
+                                process.out.fq,
+                                process.out.fasta,
+                                process.out.report_tsv,
+                                process.out.versions,
+                                ).match() },
+                { assert process.out.out[0][1][0] ==~ ".*/test_cdr3.out" },
+                { assert process.out.out[0][1][1] ==~ ".*/test_final.out" },
+                { assert process.out.out[0][1][2] ==~ ".*/test_raw.out" },
+                { assert process.out.tsv[0][1][0] ==~ ".*/test_airr.tsv" },
+                { assert process.out.tsv[0][1][1] ==~ ".*/test_airr_align.tsv" },
+                { assert process.out.tsv[0][1][2] ==~ ".*/test_report.tsv" }
+            )
+        }
+
+    }
+
+    test("sarscov2 - paired_end") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [], // bam
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test2_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test2_2.fastq.gz', checkIfExists: true)] // reads
+                ])
+                input[1] = [[ id:'test'],[file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)]] // fasta
+                input[2] = [[ id:'test'],[]] // ref
+                input[3] = [[ id:'test'], null] // barcode
+                input[4] = [[ id:'test'], null] // umi
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.airr_tsv,
+                                process.out.fq,
+                                process.out.fasta,
+                                process.out.report_tsv,
+                                process.out.versions,
+                                ).match() },
+                { assert process.out.out[0][1][0] ==~ ".*/test_cdr3.out" },
+                { assert process.out.out[0][1][1] ==~ ".*/test_final.out" },
+                { assert process.out.out[0][1][2] ==~ ".*/test_raw.out" },
+                { assert process.out.tsv[0][1][0] ==~ ".*/test_airr.tsv" },
+                { assert process.out.tsv[0][1][1] ==~ ".*/test_airr_align.tsv" },
+                { assert process.out.tsv[0][1][2] ==~ ".*/test_report.tsv" }
+            )
+        }
+
+    }
+
+    test("sarscov2 - single_end - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true ], // meta map
+                    [],
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
+                ])
+                input[1] = [[ id:'test'],[file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)]]
+                input[2] = [[ id:'test'],[]] // ref
+                input[3] = [[ id:'test'],[]] // barcode
+                input[4] = [[ id:'test'],[]] // umi
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert process.out.out[0][1][0] ==~ ".*/test_cdr3.out" },
+                { assert process.out.out[0][1][1] ==~ ".*/test_final.out" },
+                { assert process.out.out[0][1][2] ==~ ".*/test_raw.out" },
+                { assert process.out.tsv[0][1][0] ==~ ".*/test_airr.tsv" },
+                { assert process.out.tsv[0][1][1] ==~ ".*/test_airr_align.tsv" },
+                { assert process.out.tsv[0][1][2] ==~ ".*/test_report.tsv" }
+            )
+        }
+
+    }
+
+}

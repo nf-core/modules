@@ -1,0 +1,134 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "ribotish_predict"
+description: Quality control of riboseq bam data
+keywords:
+  - riboseq
+  - predict
+  - bam
+tools:
+  - "ribotish":
+      description: "Ribo TIS Hunter (Ribo-TISH) identifies translation activities using
+        ribosome profiling data."
+      homepage: "https://github.com/zhpn1024/ribotish"
+      documentation: "https://github.com/zhpn1024/ribotish"
+      tool_dev_url: "https://github.com/zhpn1024/ribotish"
+      doi: "10.1038/s41467-017-01981-8"
+      licence: ["GPL v3"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing riboseq sample information
+          e.g. `[ id:'sample1', single_end:false ]
+    - bam_ribo:
+        type: file
+        description: Sorted riboseq BAM file(s)
+        pattern: "*.{bam}"
+    - bai_ribo:
+        type: file
+        description: Index for sorted riboseq bam file(s)
+        pattern: "*.{bai}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing TI-Seq sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam_ti:
+        type: file
+        description: Sorted TI-Seq BAM file(s)
+        pattern: "*.{bam}"
+    - bai_ti:
+        type: file
+        description: Index for sorted TI-Seq BAM file(s)
+        pattern: "*.{bai}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'Ensembl human v.111' ]`
+    - fasta:
+        type: file
+        description: |
+          Fasta-format sequence file for reference sequences used in the bam file
+        pattern: "*.gtf"
+    - gtf:
+        type: file
+        description: |
+          GTF-format annotation file for reference sequences used in the bam file
+        pattern: "*.gtf"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing information on candidate ORFs
+    - candidate_orfs:
+        type: file
+        description: |
+          3-column (transID<tab>start<tab>tstop) candidate ORFs file
+        pattern: "*.txt"
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing information on riboseq P-site offset parameter
+          files
+    - para_ribo:
+        type: file
+        description: |
+          Input P-site offset parameter files for riboseq bam files
+        pattern: "*.py"
+  - - meta6:
+        type: map
+        description: |
+          Groovy Map containing information on TI-seq P-site offset parameter
+          files
+    - para_ti:
+        type: file
+        description: |
+          Input P-site offset parameter files for TI-seq bam files
+        pattern: "*.py"
+output:
+  - predictions:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_pred.txt":
+          type: file
+          description: |
+            txt file all possible ORF results that fit the thresholds
+          pattern: "*.{txt}"
+  - all:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_all.txt":
+          type: file
+          description: |
+            txt file similar to the predictions but do not use FDR (q-value) cutoff
+          pattern: "*.{txt}"
+  - transprofile:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_transprofile.py":
+          type: file
+          description: |
+            Output RPF P-site profile for each transcript. The profile data is in
+            python dict format, recording non-zero read counts at different
+            positions on transcript.
+          pattern: "*.{py}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"

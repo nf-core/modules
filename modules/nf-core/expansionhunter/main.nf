@@ -14,9 +14,10 @@ process EXPANSIONHUNTER {
     tuple val(meta4), path(variant_catalog)
 
     output:
-    tuple val(meta), path("*.vcf.gz")   , emit: vcf
-    tuple val(meta), path("*.json.gz")  , emit: json
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.vcf.gz")        , emit: vcf
+    tuple val(meta), path("*.json.gz")       , emit: json
+    tuple val(meta), path("*_realigned.bam") , emit: bam
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,7 +40,7 @@ process EXPANSIONHUNTER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        expansionhunter: \$( echo \$(ExpansionHunter --version 2>&1) | sed 's/^.*ExpansionHunter v//')
+        expansionhunter: \$( echo \$(ExpansionHunter --version 2>&1) | head -1 | sed 's/^.*ExpansionHunter v//')
         bgzip: \$(echo \$(bgzip -h 2>&1) | sed 's/^.*Version: //;s/Usage:.*//')
     END_VERSIONS
     """
@@ -47,12 +48,13 @@ process EXPANSIONHUNTER {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.vcf.gz
-    touch ${prefix}.json.gz
+    echo "" | gzip > ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.json.gz
+    touch ${prefix}_realigned.bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        expansionhunter: \$( echo \$(ExpansionHunter --version 2>&1) | sed 's/^.*ExpansionHunter v//')
+        expansionhunter: \$( echo \$(ExpansionHunter --version 2>&1) | head -1 | sed 's/^.*ExpansionHunter v//')
         bgzip: \$(echo \$(bgzip -h 2>&1) | sed 's/^.*Version: //;s/Usage:.*//')
     END_VERSIONS
     """

@@ -10,51 +10,62 @@ tools:
       homepage: "https://gatk.broadinstitute.org/hc/en-us"
       tool_dev_url: "https://github.com/broadinstitute/gatk"
       doi: "10.1158/1538-7445.AM2017-3590"
-      licence: "['BSD-3-clause']"
+      licence: ["BSD-3-clause"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - depth_evidence:
-      type: file
-      description: The depth evidence file
-      pattern: "*.rd.txt.gz"
-  - depth_evidence_index:
-      type: file
-      description: The index of the depth evidence file
-      pattern: "*.rd.txt.gz.tbi"
-  - fasta:
-      type: file
-      description: Reference FASTA file needed when the input is a CRAM file
-      pattern: "*.{fasta,fa}"
-  - fasta_fai:
-      type: file
-      description: Index of the reference FASTA file needed when the input is a CRAM file
-      pattern: "*.fai"
-  - dict:
-      type: file
-      description: Sequence dictionary of the reference FASTA file needed when the input is a CRAM file
-      pattern: "*.dict"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - depth_evidence:
+        type: file
+        description: The depth evidence file
+        pattern: "*.rd.txt.gz"
+    - depth_evidence_index:
+        type: file
+        description: The index of the depth evidence file
+        pattern: "*.rd.txt.gz.tbi"
+  - - fasta:
+        type: file
+        description: Reference FASTA file needed when the input is a CRAM file
+        pattern: "*.{fasta,fa}"
+  - - fasta_fai:
+        type: file
+        description: Index of the reference FASTA file needed when the input is a CRAM
+          file
+        pattern: "*.fai"
+  - - dict:
+        type: file
+        description: Sequence dictionary of the reference FASTA file needed when the
+          input is a CRAM file
+        pattern: "*.dict"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - condensed_evidence:
-      type: file
-      description: The condensed depth evidence
-      pattern: "*.rd.txt.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.rd.txt.gz":
+          type: file
+          description: The condensed depth evidence
+          pattern: "*.rd.txt.gz"
   - condensed_evidence_index:
-      type: file
-      description: The condensed depth evidence
-      pattern: "*.rd.txt.gz.tbi"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.rd.txt.gz.tbi":
+          type: file
+          description: The condensed depth evidence
+          pattern: "*.rd.txt.gz.tbi"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

@@ -1,0 +1,73 @@
+nextflow_process {
+
+    name "Test Process BUSCO_GENERATEPLOT"
+    script "../main.nf"
+    process "BUSCO_GENERATEPLOT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "busco"
+    tag "busco/busco"
+    tag "busco/generateplot"
+
+    test("bacteroides_fragilis-genome_fna_gz") {
+
+        setup {
+            run("BUSCO_BUSCO") {
+                script "../../busco"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                    ]
+                    input[1] = 'genome'
+                    input[2] = 'bacteria_odb10'
+                    input[3] = []
+                    input[4] = []
+                    input[5] = false
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = BUSCO_BUSCO.out.short_summaries_txt.map { meta, summary -> summary }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert process.out.png != null } // PNGs with same data but different meta-data. Not sure how to get around this, yet!
+            )
+        }
+
+    }
+
+    test("stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

@@ -9,98 +9,107 @@ tools:
       description: "The full Genome Analysis Toolkit (GATK) framework, license restricted."
       homepage: "https://gatk.broadinstitute.org/hc/en-us"
       documentation: "https://github.com/broadinstitute/gatk-docs"
-      licence: "['https://software.broadinstitute.org/gatk/download/licensing', 'BSD', 'https://www.broadinstitute.org/gatk/about/#licensing']"
+      licence:
+        [
+          "https://software.broadinstitute.org/gatk/download/licensing",
+          "BSD",
+          "https://www.broadinstitute.org/gatk/about/#licensing",
+        ]
+      identifier: biotools:gatk
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: Sorted and indexed BAM/CRAM/SAM file
-      pattern: "*.bam"
-  - bai:
-      type: file
-      description: BAM index file
-      pattern: "*.bai"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information.
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: Reference file used to generate BAM file
-      pattern: ".{fasta,fa,fna}"
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing reference information.
-        e.g. [ id:'test', single_end:false ]
-  - fai:
-      type: file
-      description: Index of reference file used to generate BAM file
-      pattern: ".fai"
-  - meta4:
-      type: map
-      description: |
-        Groovy Map containing reference information.
-        e.g. [ id:'test', single_end:false ]
-  - dict:
-      type: file
-      description: GATK dict file for reference
-      pattern: ".dict"
-  - meta5:
-      type: map
-      description: |
-        Groovy Map containing reference information.
-        e.g. [ id:'test', single_end:false ]
-  - intervals:
-      type: file
-      description: Bed file with the genomic regions included in the library (optional)
-      pattern: "*.intervals"
-  - meta6:
-      type: map
-      description: |
-        Groovy Map containing file meta-information for the contamination file.
-        e.g. [ id:'test', single_end:false ]
-  - contamination:
-      type: file
-      description: Tab-separated file containing fraction of contamination in sequencing data (per sample) to aggressively remove
-      pattern: "*"
-  - meta7:
-      type: map
-      description: |
-        Groovy Map containing file meta-information for the dbsnps file.
-        e.g. [ id:'test', single_end:false ]
-  - dbsnps:
-      type: file
-      description: VCF file containing known sites (optional)
-      pattern: "*"
-  - meta8:
-      type: map
-      description: |
-        Groovy Map containing file meta-information for the VCF comparison file.
-        e.g. [ id:'test', single_end:false ]
-  - comp:
-      type: file
-      description: Comparison VCF file (optional)
-      pattern: "*"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: Sorted and indexed BAM/CRAM/SAM file
+        pattern: "*.bam"
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.bai"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information.
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Reference file used to generate BAM file
+        pattern: ".{fasta,fa,fna}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information.
+          e.g. [ id:'test', single_end:false ]
+    - fai:
+        type: file
+        description: Index of reference file used to generate BAM file
+        pattern: ".fai"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing reference information.
+          e.g. [ id:'test', single_end:false ]
+    - dict:
+        type: file
+        description: GATK dict file for reference
+        pattern: ".dict"
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing reference information.
+          e.g. [ id:'test', single_end:false ]
+    - intervals:
+        type: file
+        description: Bed file with the genomic regions included in the library (optional)
+        pattern: "*.intervals"
+  - - meta6:
+        type: map
+        description: |
+          Groovy Map containing file meta-information for the contamination file.
+          e.g. [ id:'test', single_end:false ]
+    - contamination:
+        type: file
+        description: Tab-separated file containing fraction of contamination in sequencing
+          data (per sample) to aggressively remove
+        pattern: "*"
+  - - meta7:
+        type: map
+        description: |
+          Groovy Map containing file meta-information for the dbsnps file.
+          e.g. [ id:'test', single_end:false ]
+    - dbsnp:
+        type: file
+        description: VCF file containing known sites (optional)
+        pattern: "*"
+  - - meta8:
+        type: map
+        description: |
+          Groovy Map containing file meta-information for the VCF comparison file.
+          e.g. [ id:'test', single_end:false ]
+    - comp:
+        type: file
+        description: Comparison VCF file (optional)
+        pattern: "*"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - vcf:
-      type: file
-      description: VCF file containing called variants
-      pattern: "*.vcf.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf.gz":
+          type: file
+          description: VCF file containing called variants
+          pattern: "*.vcf.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@ilight1542"
   - "@jfy133"

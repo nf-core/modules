@@ -1,0 +1,242 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "anota2seq_anota2seqrun"
+description: Generally applicable transcriptome-wide analysis of translational efficiency
+  using anota2seq
+keywords:
+  - riboseq
+  - rnaseq
+  - translation
+  - differential
+tools:
+  - "anota2seq":
+      description: "Generally applicable transcriptome-wide analysis of translational
+        efficiency using anota2seq"
+      homepage: "https://bioconductor.org/packages/release/bioc/html/anota2seq.html"
+      documentation: "https://bioconductor.org/packages/release/bioc/vignettes/anota2seq/inst/doc/anota2seq.pdf"
+      doi: "10.18129/B9.bioc.anota2seq"
+      licence: ["GPL v3"]
+      identifier: biotools:anota2seq
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing contrast information. e.g.  [ id:'contrast1',
+          blocking:'patient' ]
+    - sample_treatment_col:
+        type: string
+        description: |
+          The column in the sample sheet that should be used to define groups for
+          comparison
+    - reference:
+        type: string
+        description: |
+          The value within the contrast_variable column of the sample sheet that
+          should be used to derive the reference samples
+    - target:
+        type: string
+        description: |
+          The value within the contrast_variable column of the sample sheet that
+          should be used to derive the target samples
+  - - meta2:
+        type: map
+        description: |
+          Groovy map containing study-wide metadata related to the sample sheet
+          and matrix
+    - samplesheet:
+        type: file
+        description: |
+          CSV or TSV format sample sheet with sample metadata
+    - counts:
+        type: file
+        description: |
+          Raw TSV or CSV format expression matrix
+output:
+  - translated_mrna:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. e.g.  [ id:'contrast1',
+            blocking:'patient' ]
+      - "*.translated_mRNA.anota2seq.results.tsv":
+          type: file
+          description: anota2seq results for the 'translated mRNA' analysis, describing
+            differences in RNA levels across conditions for Ribo-seq samples. See https://rdrr.io/bioc/anota2seq/man/anota2seqGetOutput.html
+            for description of output columns.
+          pattern: ".translated_mRNA.anota2seq.results.tsv"
+  - total_mrna:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. e.g.  [ id:'contrast1',
+            blocking:'patient' ]
+      - "*.total_mRNA.anota2seq.results.tsv":
+          type: file
+          description: anota2seq results for the 'translated mRNA' analysis, describing
+            differences in RNA levels across conditions for RNA-seq samples. See https://rdrr.io/bioc/anota2seq/man/anota2seqGetOutput.html
+            for description of output columns.
+          pattern: ".total_mRNA.anota2seq.results.tsv"
+  - translation:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. e.g.  [ id:'contrast1',
+            blocking:'patient' ]
+      - "*.translation.anota2seq.results.tsv":
+          type: file
+          description: anota2seq results for the 'translated mRNA' analysis, describing
+            differences in translation across conditions, being differences in translated
+            RNA levels not explained by total RNA levels. See https://rdrr.io/bioc/anota2seq/man/anota2seqGetOutput.html
+            for description of output columns.
+          pattern: ".translation.anota2seq.results.tsv"
+  - buffering:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. e.g.  [ id:'contrast1',
+            blocking:'patient' ]
+      - "*.buffering.anota2seq.results.tsv":
+          type: file
+          description: anota2seq results for the 'translated mRNA' analysis, describing
+            buffering across conditions, being stable levels of translated RNA (from riboseq
+            samples) across conditions, despite changes in total mRNA.  See https://rdrr.io/bioc/anota2seq/man/anota2seqGetOutput.html
+            for description of output columns.
+          pattern: ".buffering.anota2seq.results.tsv"
+  - mrna_abundance:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. e.g.  [ id:'contrast1',
+            blocking:'patient' ]
+      - "*.mRNA_abundance.anota2seq.results.tsv":
+          type: file
+          description: anota2seq results for the 'mRNA abunance' analysis, describing
+            changes across conditions consistent between total mRNA and translated RNA
+            (RNA-seq and Riboseq samples).  See https://rdrr.io/bioc/anota2seq/man/anota2seqGetOutput.html
+            for description of output columns.
+          pattern: ".mRNA_abundance.anota2seq.results.tsv"
+  - rdata:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. e.g.  [ id:'contrast1',
+            blocking:'patient' ]
+      - "*.Anota2seqDataSet.rds":
+          type: file
+          description: Serialised Anota2seqDataSet object
+          pattern: ".Anota2seqDataSet.rds"
+  - fold_change_plot:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. e.g.  [ id:'contrast1',
+            blocking:'patient' ]
+      - "*.fold_change.png":
+          type: file
+          description: |
+            A fold change plot in PNG format, from anota2seq's anota2seqPlotFC()
+            method.
+          pattern: ".fold_change.png"
+  - interaction_p_distribution_plot:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. e.g.  [ id:'contrast1',
+            blocking:'patient' ]
+      - "*.interaction_p_distribution.pdf":
+          type: file
+          description: |
+            The distribution of p-values and adjusted p-values for the omnibus
+            interaction (both using densities and histograms). The second page of
+            the pdf displays the same plots but for the RVM statistics if RVM is
+            used.
+          pattern: ".interaction_p_distribution.pdf"
+  - residual_distribution_summary_plot:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. e.g.  [ id:'contrast1',
+            blocking:'patient' ]
+      - "*.residual_distribution_summary.jpeg":
+          type: file
+          description: |
+            Summary plot for assessing normal distribution of regression residuals.
+          pattern: ".residual_distribution_summary.jpeg"
+  - residual_vs_fitted_plot:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. e.g.  [ id:'contrast1',
+            blocking:'patient' ]
+      - "*.residual_vs_fitted.jpeg":
+          type: file
+          description: |
+            QC plot showing residuals against fitted values.
+          pattern: ".residual_vs_fitted.jpeg"
+  - rvm_fit_for_all_contrasts_group_plot:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. e.g.  [ id:'contrast1',
+            blocking:'patient' ]
+      - "*.rvm_fit_for_all_contrasts_group.jpg":
+          type: file
+          description: |
+            QC plot showing the CDF of variance (theoretical vs empirical), all
+            contrasts.
+          pattern: ".rvm_fit_for_all_contrasts_group.jpg"
+  - rvm_fit_for_interactions_plot:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. e.g.  [ id:'contrast1',
+            blocking:'patient' ]
+      - "*.rvm_fit_for_interactions.jpg":
+          type: file
+          description: |
+            QC plot showing the CDF of variance (theoretical vs empirical), for
+            interactions.
+          pattern: ".rvm_fit_for_interactions.jpg"
+  - rvm_fit_for_omnibus_group_plot:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. e.g.  [ id:'contrast1',
+            blocking:'patient' ]
+      - "*.rvm_fit_for_omnibus_group.jpg":
+          type: file
+          description: |
+            QC plot showing the CDF of variance (theoretical vs empirical), for
+            omnibus group.
+          pattern: ".rvm_fit_for_omnibus_group.jpg"
+  - simulated_vs_obt_dfbetas_without_interaction_plot:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. e.g.  [ id:'contrast1',
+            blocking:'patient' ]
+      - "*.simulated_vs_obt_dfbetas_without_interaction.pdf":
+          type: file
+          description: |
+            Bar graphs of the frequencies of outlier dfbetas using different
+            dfbetas thresholds.
+          pattern: ".simulated_vs_obt_dfbetas_without_interaction.pdf"
+  - session_info:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. e.g.  [ id:'contrast1',
+            blocking:'patient' ]
+      - "*.R_sessionInfo.log":
+          type: file
+          description: dump of R SessionInfo
+          pattern: "*.log"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"

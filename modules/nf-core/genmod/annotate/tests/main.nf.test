@@ -1,0 +1,61 @@
+nextflow_process {
+
+    name "Test Process GENMOD_ANNOTATE"
+    script "modules/nf-core/genmod/annotate/main.nf"
+    process "GENMOD_ANNOTATE"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "genmod"
+    tag "genmod/annotate"
+
+    test("genmod_annotate") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/genmod.vcf.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    path(process.out.vcf.get(0).get(1)).vcf.summary,
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("genmod_annotate - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/genmod.vcf.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
