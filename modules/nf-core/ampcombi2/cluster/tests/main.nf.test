@@ -1,0 +1,65 @@
+nextflow_process {
+
+    name "Test Process AMPCOMBI2_CLUSTER"
+    script "../main.nf"
+    process "AMPCOMBI2_CLUSTER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ampcombi2"
+    tag "ampcombi2/cluster"
+    tag "ampcombi2/complete"
+
+    setup {
+        run("AMPCOMBI2_COMPLETE") {
+            script "../../../ampcombi2/complete/main.nf"
+            process {
+                """
+                input[0] =
+                    [
+                        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/ampcombi2/sample_1_ampcombi.tsv', checkIfExists: true),
+                        file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/ampcombi/ampcombi2/sample_2_ampcombi.tsv', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+    }
+
+    test("ampcombi2_cluster - metagenome") {
+        when {
+            process {
+                """
+                input[0] = AMPCOMBI2_COMPLETE.out.tsv
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.cluster_tsv[0]).readLines()[0].contains("Linear/Cyclic/Branched"),
+                    file(process.out.rep_cluster_tsv[0]).readLines()[0].contains("total_cluster_members"),
+                    process.out.versions).match() }
+            )
+        }
+    }
+
+    test("ampcombi2_cluster - metagenome - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = AMPCOMBI2_COMPLETE.out.tsv
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

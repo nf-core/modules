@@ -2,6 +2,7 @@ nextflow_process {
 
     name "Test Process SPACERANGER_COUNT"
     script "../main.nf"
+    config "./nextflow.config"
     process "SPACERANGER_COUNT"
 
     tag "modules"
@@ -18,7 +19,7 @@ nextflow_process {
                 script "../../mkgtf/main.nf"
                 process {
                     """
-                    input[0] = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+                    input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
                     """
                 }
             }
@@ -29,8 +30,8 @@ nextflow_process {
                 script "../../mkref/main.nf"
                 process {
                     """
-                    input[0] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-                    input[1] = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+                    input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
                     input[2] = 'homo_sapiens_chr22_reference'
                     """
                 }
@@ -47,10 +48,10 @@ nextflow_process {
                         area: 'D1'
                     ], // Meta map
                     [
-                        file(params.test_data['homo_sapiens']['10xgenomics']['spaceranger']['test_10x_ffpe_v1_fastq_1_gz']),
-                        file(params.test_data['homo_sapiens']['10xgenomics']['spaceranger']['test_10x_ffpe_v1_fastq_2_gz'])
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/spaceranger/human-ovarian-cancer-1-standard_v1_ffpe/Visium_FFPE_Human_Ovarian_Cancer_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/spaceranger/human-ovarian-cancer-1-standard_v1_ffpe/Visium_FFPE_Human_Ovarian_Cancer_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                     ], // Reads
-                    file(params.test_data['homo_sapiens']['10xgenomics']['spaceranger']['test_10x_ffpe_v1_image']), // Image
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/spaceranger/human-ovarian-cancer-1-standard_v1_ffpe/Visium_FFPE_Human_Ovarian_Cancer_image.jpg', checkIfExists: true), // Image
                     [], // Cytaimage
                     [], // Darkimage
                     [], // Colorizedimage
@@ -67,7 +68,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
+                    path(process.out.versions.get(0)).yaml,
                     process.out.outs.get(0).get(1).findAll { file(it).name !in [
                         'web_summary.html',
                         'scalefactors_json.json',
@@ -93,7 +94,7 @@ nextflow_process {
                 script "../../mkgtf/main.nf"
                 process {
                     """
-                    input[0] = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+                    input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
                     """
                 }
             }
@@ -104,8 +105,8 @@ nextflow_process {
                 script "../../mkref/main.nf"
                 process {
                     """
-                    input[0] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-                    input[1] = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+                    input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
                     input[2] = 'homo_sapiens_chr22_reference'
                     """
                 }
@@ -124,10 +125,10 @@ nextflow_process {
                         area: 'D1'
                     ], // Meta map
                     [
-                        file(params.test_data['homo_sapiens']['10xgenomics']['spaceranger']['test_10x_ffpe_v1_fastq_1_gz']),
-                        file(params.test_data['homo_sapiens']['10xgenomics']['spaceranger']['test_10x_ffpe_v1_fastq_2_gz'])
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/spaceranger/human-ovarian-cancer-1-standard_v1_ffpe/Visium_FFPE_Human_Ovarian_Cancer_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/spaceranger/human-ovarian-cancer-1-standard_v1_ffpe/Visium_FFPE_Human_Ovarian_Cancer_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                     ], // Reads
-                    file(params.test_data['homo_sapiens']['10xgenomics']['spaceranger']['test_10x_ffpe_v1_image']), // Image
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/spaceranger/human-ovarian-cancer-1-standard_v1_ffpe/Visium_FFPE_Human_Ovarian_Cancer_image.jpg', checkIfExists: true), // Image
                     [], // Cytaimage
                     [], // Darkimage
                     [], // Colorizedimage
@@ -143,7 +144,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(path(process.out.versions.get(0)).yaml).match() },
             )
         }
     }
@@ -154,7 +155,7 @@ nextflow_process {
                 script "../../mkgtf/main.nf"
                 process {
                     """
-                    input[0] = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+                    input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
                     """
                 }
             }
@@ -165,8 +166,8 @@ nextflow_process {
                 script "../../mkref/main.nf"
                 process {
                     """
-                    input[0] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-                    input[1] = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+                    input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
                     input[2] = 'homo_sapiens_chr22_reference'
                     """
                 }
@@ -183,18 +184,18 @@ nextflow_process {
                         area: 'B1'
                     ], // Meta map
                     [
-                        file(params.test_data['homo_sapiens']['10xgenomics']['spaceranger']['test_10x_ffpe_cytassist_fastq_1_gz']),
-                        file(params.test_data['homo_sapiens']['10xgenomics']['spaceranger']['test_10x_ffpe_cytassist_fastq_2_gz'])
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/spaceranger/human-brain-cancer-11-mm-capture-area-ffpe-2-standard_v2_ffpe_cytassist/CytAssist_11mm_FFPE_Human_Glioblastoma_2_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/spaceranger/human-brain-cancer-11-mm-capture-area-ffpe-2-standard_v2_ffpe_cytassist/CytAssist_11mm_FFPE_Human_Glioblastoma_2_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                     ], // Reads
                     [], // Image
-                    file(params.test_data['homo_sapiens']['10xgenomics']['spaceranger']['test_10x_ffpe_cytassist_image']), // Cytaimage
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/spaceranger/human-brain-cancer-11-mm-capture-area-ffpe-2-standard_v2_ffpe_cytassist/CytAssist_11mm_FFPE_Human_Glioblastoma_image.tif', checkIfExists: true), // Cytaimage
                     [], // Darkimage
                     [], // Colorizedimage
                     [], // Manual alignment (default: automatic alignment)
                     file('https://s3.us-west-2.amazonaws.com/10x.spatial-slides/gpr/V52Y10/V52Y10-317.gpr') // Slide specification (default: automatic download)
                 ]
                 input[1] = SPACERANGER_MKREF.out.reference // Reference
-                input[2] = file(params.test_data['homo_sapiens']['10xgenomics']['spaceranger']['test_10x_ffpe_cytassist_probeset']) // Probeset (default: use the one included with Space Ranger)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/spaceranger/human-brain-cancer-11-mm-capture-area-ffpe-2-standard_v2_ffpe_cytassist/CytAssist_11mm_FFPE_Human_Glioblastoma_probe_set.csv', checkIfExists: true) // Probeset (default: use the one included with Space Ranger)
                 """
             }
         }
@@ -203,14 +204,15 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
+                    path(process.out.versions.get(0)).yaml,
                     process.out.outs.get(0).get(1).findAll { file(it).name !in [
                         'web_summary.html',
                         'scalefactors_json.json',
                         'molecule_info.h5',
                         'barcodes.tsv.gz',
                         'features.tsv.gz',
-                        'matrix.mtx.gz'
+                        'matrix.mtx.gz',
+                        'cloupe.cloupe'
                         ]}
                     ).match()
                 },

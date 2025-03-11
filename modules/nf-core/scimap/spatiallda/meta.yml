@@ -1,0 +1,76 @@
+name: "scimap_spatiallda"
+description: SpatialLDA uses an LDA based approach for the identification of cellular
+  neighborhoods, using cell type identities.
+keywords:
+  - spatial_neighborhoods
+  - scimap
+  - spatial_omics
+tools:
+  - "scimap":
+      description: "Scimap is a scalable toolkit for analyzing spatial molecular data.
+        The underlying framework is generalizable to spatial datasets mapped to XY coordinates.
+        The package uses the anndata framework making it easy to integrate with other
+        popular single-cell analysis toolkits. It includes preprocessing, phenotyping,
+        visualization, clustering, spatial analysis and differential spatial testing.
+        The Python-based implementation efficiently deals with large datasets of millions
+        of cells."
+      homepage: "https://scimap.xyz/"
+      documentation: "https://scimap.xyz/tutorials/1-scimap-tutorial-getting-started/"
+      tool_dev_url: "https://github.com/labsyspharm/scimap"
+      doi: "10.5281/zenodo.7854095"
+      licence: ["MIT licence"]
+      identifier: biotools:SCIMAP
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - phenotyped:
+        type: file
+        description: Phenotyped CSV file, it must contain the columns, sampleID, X,
+          Y and Phenotype.
+        pattern: "*.{csv}"
+output:
+  - spatial_lda_output:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.csv":
+          type: file
+          description: File with the motifs detected from SpatialLDA
+          pattern: "*.{csv}"
+  - composition_plot:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.png":
+          type: file
+          description: Plot with the motif composition and the cell type composition of
+            motifs.
+          pattern: "*.{png}"
+  - motif_location_plot:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.html":
+          type: file
+          description: Plot with the locations of the motifs.
+          pattern: "*.{html}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@migueLib"
+  - "@chiarasch"
+maintainers:
+  - "@migueLib"
+  - "@chiarasch"

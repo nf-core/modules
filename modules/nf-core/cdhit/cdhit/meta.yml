@@ -13,34 +13,43 @@ tools:
       tool_dev_url: "https://github.com/weizhongli/cdhit"
       doi: "10.1093/bioinformatics/btl158"
       licence: ["GPL v2"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - sequences:
-      type: file
-      description: fasta file of sequences to be clustered
-      pattern: "*.{fa,fasta}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - sequences:
+        type: file
+        description: fasta file of sequences to be clustered
+        pattern: "*.{fa,fasta}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - fasta:
-      type: file
-      description: fasta file of the representative sequences for each cluster
-      pattern: "*.{fasta}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fasta":
+          type: file
+          description: fasta file of the representative sequences for each cluster
+          pattern: "*.{fasta}"
   - clusters:
-      type: file
-      description: List of clusters
-      pattern: "*.{clstr}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.clstr":
+          type: file
+          description: List of clusters
+          pattern: "*.{clstr}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@timslittle"
   - "@Puumanamana"

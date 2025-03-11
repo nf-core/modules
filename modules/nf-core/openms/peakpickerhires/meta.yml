@@ -1,5 +1,6 @@
 name: "openms_peakpickerhires"
-description: A tool for peak detection in high-resolution profile data (Orbitrap or FTICR)
+description: A tool for peak detection in high-resolution profile data (Orbitrap or
+  FTICR)
 keywords:
   - peak picking
   - mzml
@@ -7,39 +8,41 @@ keywords:
   - proteomics
 tools:
   - "openms":
-      description: "OpenMS is an open-source software C++ library for LC-MS data management and analyses"
+      description: "OpenMS is an open-source software C++ library for LC-MS data management
+        and analyses"
       homepage: "https://openms.de"
       documentation: "https://openms.readthedocs.io/en/latest/index.html"
       tool_dev_url: "https://github.com/OpenMS/OpenMS"
-      doi: "10.1038/nmeth.3959"
-      licence: "['BSD']"
+      doi: "10.1038/s41592-024-02197-7"
+      licence: ["BSD"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - mzml:
-      type: file
-      description: Mass spectrometer output file in mzML format
-      pattern: "*.{mzML}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - mzml:
+        type: file
+        description: Mass spectrometer output file in mzML format
+        pattern: "*.{mzML}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - mzml:
-      type: file
-      description: Peak-picked mass spectrometer output file in mzML format
-      pattern: "*.{mzML}"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.mzML":
+          type: file
+          description: Peak-picked mass spectrometer output file in mzML format
+          pattern: "*.{mzML}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jonasscheid"
 maintainers:

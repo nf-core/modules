@@ -1,0 +1,245 @@
+// nf-core modules test angsd/gl
+nextflow_process {
+
+    name "Test Process ANGSD_GL"
+    script "../main.nf"
+    process "ANGSD_GL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "angsd"
+    tag "angsd/gl"
+
+    test("angsd - gl_samtools - bam") {
+
+        when {
+            config "./config_gl_1.conf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'test_fa' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [ [], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+
+    }
+
+    test("angsd - gl_gatk - bam") {
+
+        when {
+            config "./config_gl_2.conf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'test_fa' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [ [], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+
+    }
+
+    test("angsd - gl_soapsnp - bam") {
+
+        when {
+            config "./config_gl_3.conf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'test_fa' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [ [], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+
+    }
+
+    test("angsd - gl_syk - bam") {
+
+        when {
+            config "./config_gl_4.conf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'test_fa' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [ [], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+
+    }
+
+    test("angsd - gl_samtools - bam - stub") {
+
+        options "-stub"
+
+        when {
+            config "./config_gl_1.conf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'test_fa' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [ [], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+
+    }
+
+    test("angsd - gl_gatk - bam - stub") {
+
+        options "-stub"
+
+        when {
+            config "./config_gl_2.conf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'test_fa' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [ [], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+
+    }
+
+    test("angsd - gl_soapsnp - bam - stub") {
+
+        options "-stub"
+
+        when {
+            config "./config_gl_3.conf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'test_fa' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [ [], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+
+    }
+
+    test("angsd - gl_syk - bam - stub") {
+
+        options "-stub"
+
+        when {
+            config "./config_gl_4.conf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'test_fa' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [ [], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+
+    }
+
+}

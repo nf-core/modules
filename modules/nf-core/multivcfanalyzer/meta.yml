@@ -1,5 +1,6 @@
 name: "multivcfanalyzer"
-description: SNP table generator from GATK UnifiedGenotyper with functionality geared for aDNA
+description: SNP table generator from GATK UnifiedGenotyper with functionality geared
+  for aDNA
 keywords:
   - vcf
   - ancient DNA
@@ -9,111 +10,194 @@ keywords:
   - SNP table
 tools:
   - "multivcfanalyzer":
-      description: "MultiVCFAnalyzer is a VCF file post-processing tool tailored for aDNA. License on Github repository."
+      description: "MultiVCFAnalyzer is a VCF file post-processing tool tailored for
+        aDNA. License on Github repository."
       homepage: "https://github.com/alexherbig/MultiVCFAnalyzer"
       documentation: "https://github.com/alexherbig/MultiVCFAnalyzer"
       tool_dev_url: "https://github.com/alexherbig/MultiVCFAnalyzer"
       doi: "10.1038/nature13591"
-      licence: "['GPL >=3']"
+      licence: ["GPL >=3"]
+      identifier: ""
 input:
-  - vcfs:
-      type: file
-      description: One or a list of uncompressed VCF file
-      pattern: "*.vcf"
-  - fasta:
-      type: file
-      description: Reference genome VCF was generated against
-      pattern: "*.{fasta,fna,fa}"
-  - snpeff_results:
-      type: file
-      description: Results from snpEff in txt format (Optional)
-      pattern: "*.txt"
-  - gff:
-      type: file
-      description: GFF file corresponding to reference genome fasta (Optional)
-      pattern: "*.gff"
-  - allele_freqs:
-      type: boolean
-      description: |
-        Whether to include the percentage of reads a given allele is
-        present in in the SNP table.
-  - genotype_quality:
-      type: integer
-      description: |
-        Minimum GATK genotyping threshold threshold of which a SNP call
-        falling under is 'discarded'
-  - coverage:
-      type: integer
-      description: |
-        Minimum number of a reads that a position must be covered by to be
-        reported
-  - homozygous_freq:
-      type: number
-      description: Fraction of reads a base must have to be called 'homozygous'
-  - heterozygous_freq:
-      type: mumber
-      description: |
-        Fraction of which whereby if a call falls above this value, and lower
-        than the homozygous threshold, a base will be called 'heterozygous'.
-  - gff_exclude:
-      type: file
-      description: |
-        file listing positions that will be 'filtered' (i.e. ignored)
-        (Optional)
-      pattern: "*.vcf"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - vcfs:
+        type: file
+        description: One or a list of uncompressed VCF file
+        pattern: "*.vcf"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fasta:
+        type: file
+        description: Reference genome VCF was generated against
+        pattern: "*.{fasta,fna,fa}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - snpeff_results:
+        type: file
+        description: Results from snpEff in txt format (Optional)
+        pattern: "*.txt"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - gff:
+        type: file
+        description: GFF file corresponding to reference genome fasta (Optional)
+        pattern: "*.gff"
+  - - allele_freqs:
+        type: boolean
+        description: |
+          Whether to include the percentage of reads a given allele is
+          present in in the SNP table.
+  - - genotype_quality:
+        type: integer
+        description: |
+          Minimum GATK genotyping threshold threshold of which a SNP call
+          falling under is 'discarded'
+  - - coverage:
+        type: integer
+        description: |
+          Minimum number of a reads that a position must be covered by to be
+          reported
+  - - homozygous_freq:
+        type: integer
+        description: Fraction of reads a base must have to be called 'homozygous'
+  - - heterozygous_freq:
+        type: integer
+        description: |
+          Fraction of which whereby if a call falls above this value, and lower
+          than the homozygous threshold, a base will be called 'heterozygous'.
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - gff_exclude:
+        type: file
+        description: |
+          file listing positions that will be 'filtered' (i.e. ignored)
+          (Optional)
+        pattern: "*.vcf"
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
   - full_alignment:
-      type: file
-      description: Fasta a fasta file of all positions contained in the VCF files i.e. including ref calls
-      pattern: ".fasta.gz"
+      - meta:
+          type: file
+          description: Fasta a fasta file of all positions contained in the VCF files
+            i.e. including ref calls
+          pattern: ".fasta.gz"
+      - fullAlignment.fasta.gz:
+          type: file
+          description: Fasta a fasta file of all positions contained in the VCF files
+            i.e. including ref calls
+          pattern: ".fasta.gz"
   - info_txt:
-      type: file
-      description: Information about the run
-      pattern: ".txt"
+      - meta:
+          type: file
+          description: Information about the run
+          pattern: ".txt"
+      - info.txt:
+          type: file
+          description: Information about the run
+          pattern: ".txt"
   - snp_alignment:
-      type: file
-      description: A fasta file of just SNP positions with samples only
-      pattern: ".fasta.gz"
+      - meta:
+          type: file
+          description: A fasta file of just SNP positions with samples only
+          pattern: ".fasta.gz"
+      - snpAlignment.fasta.gz:
+          type: file
+          description: A fasta file of just SNP positions with samples only
+          pattern: ".fasta.gz"
   - snp_genome_alignment:
-      type: file
-      description: A fasta file of just SNP positions with reference genome
-      pattern: ".fasta.gz"
+      - meta:
+          type: file
+          description: A fasta file of just SNP positions with reference genome
+          pattern: ".fasta.gz"
+      - snpAlignmentIncludingRefGenome.fasta.gz:
+          type: file
+          description: A fasta file of just SNP positions with reference genome
+          pattern: ".fasta.gz"
   - snpstatistics:
-      type: file
-      description: Some basic statistics about the SNP calls of each sample
-      pattern: ".tsv"
+      - meta:
+          type: file
+          description: Some basic statistics about the SNP calls of each sample
+          pattern: ".tsv"
+      - snpStatistics.tsv:
+          type: file
+          description: Some basic statistics about the SNP calls of each sample
+          pattern: ".tsv"
   - snptable:
-      type: file
-      description: Basic SNP table of combined positions taken from each VCF file
-      pattern: ".tsv"
+      - meta:
+          type: file
+          description: Basic SNP table of combined positions taken from each VCF file
+          pattern: ".tsv"
+      - snpTable.tsv:
+          type: file
+          description: Basic SNP table of combined positions taken from each VCF file
+          pattern: ".tsv"
   - snptable_snpeff:
-      type: file
-      description: Input file for SnpEff
-      pattern: ".tsv"
+      - meta:
+          type: file
+          description: Input file for SnpEff
+          pattern: ".tsv"
+      - snpTableForSnpEff.tsv:
+          type: file
+          description: Input file for SnpEff
+          pattern: ".tsv"
   - snptable_uncertainty:
-      type: file
-      description: Same as above, but with lower case characters indicating uncertain calls
-      pattern: ".tsv"
+      - meta:
+          type: file
+          description: Same as above, but with lower case characters indicating uncertain
+            calls
+          pattern: ".tsv"
+      - snpTableWithUncertaintyCalls.tsv:
+          type: file
+          description: Same as above, but with lower case characters indicating uncertain
+            calls
+          pattern: ".tsv"
   - structure_genotypes:
-      type: file
-      description: Input file for STRUCTURE
-      pattern: ".tsv"
+      - meta:
+          type: file
+          description: Input file for STRUCTURE
+          pattern: ".tsv"
+      - structureGenotypes.tsv:
+          type: file
+          description: Input file for STRUCTURE
+          pattern: ".tsv"
   - structure_genotypes_nomissing:
-      type: file
-      description: Alternate input file for STRUCTURE
-      pattern: ".tsv"
+      - meta:
+          type: file
+          description: Alternate input file for STRUCTURE
+          pattern: ".tsv"
+      - structureGenotypes_noMissingData-Columns.tsv:
+          type: file
+          description: Alternate input file for STRUCTURE
+          pattern: ".tsv"
   - json:
-      type: file
-      description: Summary statistics in MultiQC JSON format
-      pattern: ".json"
+      - meta:
+          type: file
+          description: Summary statistics in MultiQC JSON format
+          pattern: ".json"
+      - MultiVCFAnalyzer.json:
+          type: file
+          description: Summary statistics in MultiQC JSON format
+          pattern: ".json"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jfy133"
 maintainers:

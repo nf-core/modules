@@ -1,7 +1,8 @@
-name: quilt_quilt
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
-  - defaults
 dependencies:
-  - bioconda::r-quilt=1.0.5
+  - bioconda::r-quilt=1.0.5=r43h06b5641_0
+  - r-base=4.3.1

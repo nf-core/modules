@@ -2,16 +2,16 @@ process CELLRANGER_MULTI {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/cellranger:7.1.0"
+    container "nf-core/cellranger:8.0.0"
 
     input:
     val meta
-    tuple val(meta_gex)        , path (gex_fastqs   , stageAs: "fastqs/gex/*")
-    tuple val(meta_vdj)        , path (vdj_fastqs   , stageAs: "fastqs/vdj/*")
-    tuple val(meta_ab)         , path (ab_fastqs    , stageAs: "fastqs/ab/*")
-    tuple val(meta_beam)       , path (beam_fastqs  , stageAs: "fastqs/beam/*")
-    tuple val(meta_cmo)        , path (cmo_fastqs   , stageAs: "fastqs/cmo/*")
-    tuple val(meta_crispr)     , path (crispr_fastqs, stageAs: "fastqs/crispr/*")
+    tuple val(meta_gex)        , path (gex_fastqs   , stageAs: "fastqs/gex/fastq_???/*")
+    tuple val(meta_vdj)        , path (vdj_fastqs   , stageAs: "fastqs/vdj/fastq_???/*")
+    tuple val(meta_ab)         , path (ab_fastqs    , stageAs: "fastqs/ab/fastq_???/*")
+    tuple val(meta_beam)       , path (beam_fastqs  , stageAs: "fastqs/beam/fastq_???/*")
+    tuple val(meta_cmo)        , path (cmo_fastqs   , stageAs: "fastqs/cmo/fastq_???/*")
+    tuple val(meta_crispr)     , path (crispr_fastqs, stageAs: "fastqs/crispr/fastq_???/*")
     path gex_reference         , stageAs: "references/gex/*"
     path gex_frna_probeset     , stageAs: "references/gex/probeset/*"
     path gex_targetpanel       , stageAs: "references/gex/targetpanel/*"
@@ -44,24 +44,23 @@ process CELLRANGER_MULTI {
 
     // if references + FASTQ are empty, then don't run corresponding analyses
     // get names of references, if they exist
-    // empty reference channels stage as "references"
+    // empty reference channels (all under references/) can stage as "[]" when skipped by the workflow
     // empty FASTQ channels stage as "fastqs"
-    // empty files stage as the file name, we check against 'EMPTY'
-    gex_reference_name      = gex_reference.getName() != 'references'     ? gex_reference.getName()          : ''
-    gex_frna_probeset_name  = gex_frna_probeset.getBaseName() != 'EMPTY'  ? gex_frna_probeset.getName()      : ''
-    gex_targetpanel_name    = gex_targetpanel.getBaseName() != 'EMPTY'    ? gex_targetpanel.getName()        : ''
-    fb_reference_name       = fb_reference.getBaseName() != 'EMPTY'       ? fb_reference.getName()           : ''
-    vdj_reference_name      = vdj_reference.getName() != 'references'     ? vdj_reference.getName()          : ''
-    cmo_reference_name      = cmo_reference.getName() != 'EMPTY'          ? cmo_reference.getName()          : ''
-    cmo_sample_assignment   = cmo_barcode_assignment.getName() != 'EMPTY' ? cmo_barcode_assignment.getName() : ''
-    beam_antigen_panel_name = beam_antigen_panel.getName() != 'EMPTY' ? beam_antigen_panel.getName() : ''
+    gex_reference_name      = gex_reference          ? gex_reference.getName()          : ''
+    gex_frna_probeset_name  = gex_frna_probeset      ? gex_frna_probeset.getName()      : ''
+    gex_targetpanel_name    = gex_targetpanel        ? gex_targetpanel.getName()        : ''
+    fb_reference_name       = fb_reference           ? fb_reference.getName()           : ''
+    vdj_reference_name      = vdj_reference          ? vdj_reference.getName()          : ''
+    cmo_reference_name      = cmo_reference          ? cmo_reference.getName()          : ''
+    cmo_sample_assignment   = cmo_barcode_assignment ? cmo_barcode_assignment.getName() : ''
+    beam_antigen_panel_name = beam_antigen_panel     ? beam_antigen_panel.getName()     : ''
 
-    include_gex  = gex_fastqs.first().getName() != 'fastqs' && gex_reference ? '[gene-expression]'     : ''
-    include_vdj  = vdj_fastqs.first().getName() != 'fastqs' && vdj_reference ? '[vdj]'                 : ''
-    include_beam = beam_fastqs.first().getName() != 'fastqs' && beam_control_panel ? '[antigen-specificity]' : ''
-    include_cmo  = cmo_fastqs.first().getName() != 'fastqs' && cmo_barcodes  ? '[samples]'             : ''
-    include_fb   = fb_reference.first().getName() != 'references'            ? '[feature]'             : ''
-    include_frna = gex_frna_probeset_name && frna_sampleinfo                 ? '[samples]'             : ''
+    include_gex  = gex_fastqs.first().getName() != 'fastqs' && gex_reference           ? '[gene-expression]'     : ''
+    include_vdj  = vdj_fastqs.first().getName() != 'fastqs' && vdj_reference           ? '[vdj]'                 : ''
+    include_beam = beam_fastqs.first().getName() != 'fastqs' && beam_control_panel     ? '[antigen-specificity]' : ''
+    include_cmo  = cmo_fastqs.first().getName() != 'fastqs' && cmo_barcodes            ? '[samples]'             : ''
+    include_fb = (ab_fastqs.first().getName() != 'fastqs' || crispr_fastqs.first().getName() != 'fastqs') && fb_reference ? '[feature]' : ''
+    include_frna = gex_frna_probeset_name && frna_sampleinfo                           ? '[samples]'             : ''
 
     gex_reference_path = include_gex ? "reference,./${gex_reference_name}" : ''
     fb_reference_path  = include_fb  ? "reference,./${fb_reference_name}"  : ''
@@ -71,13 +70,13 @@ process CELLRANGER_MULTI {
     target_panel = gex_targetpanel_name != '' ? "target-panel,./$gex_targetpanel_name" : ''
 
     // fixed RNA reference (not sample info!) also goes under GEX section
-    frna_probeset = include_frna && gex_frna_probeset_name != '' ? "probe-set,./references/gex/probeset/$gex_frna_probeset_name" : ''
+    frna_probeset = include_frna && gex_frna_probeset_name != '' ? "probe-set,./$gex_frna_probeset_name" : ''
 
     // VDJ inner primer set
-    primer_index = vdj_primer_index.getBaseName() != 'EMPTY' ? "inner-enrichment-primers,./references/primers/${vdj_primer_index.getName()}" : ''
+    primer_index = vdj_primer_index ? "inner-enrichment-primers,./references/primers/${vdj_primer_index.getName()}" : ''
 
     // BEAM antigen list, remember that this is a Feature Barcode file
-    beam_antigen_csv = include_beam && beam_antigen_panel_name != '' ? "reference,\$PWD/$beam_antigen_panel_name" : ''
+    beam_antigen_csv = include_beam && beam_antigen_panel_name != '' ? "reference,./$beam_antigen_panel_name" : ''
 
     // pull CSV text from these reference panels
     // these references get appended directly to config file
@@ -86,7 +85,7 @@ process CELLRANGER_MULTI {
     frna_csv_text  = include_frna && frna_sampleinfo.size() > 0    ? frna_sampleinfo    : ''
 
     // the feature barcodes section get options for either CRISPR or antibody capture assays
-    fb_options     = meta_ab?.options ? meta_ab.options : (meta_crispr?.options ? meta_crispr.options : [] )
+    fb_options     = meta_ab?.options ? meta_ab.options : (meta_crispr?.options ? meta_crispr.options : [])
 
     // collect options for each section
     // these are pulled from the meta maps
@@ -105,7 +104,7 @@ process CELLRANGER_MULTI {
     gex_options_expect_cells  = gex_options_use && meta_gex.options.containsKey("expect-cells")  ? "expect-cells,${meta_gex.options["expect-cells"]}"   : ''
     gex_options_force_cells   = gex_options_use && meta_gex.options.containsKey("force-cells")   ? "force-cells,${meta_gex.options["force-cells"]}"     : ''
     gex_options_no_secondary  = gex_options_use && meta_gex.options.containsKey("no-secondary")  ? "no-secondary,${meta_gex.options["no-secondary"]}"   : ''
-    gex_options_no_bam        = gex_options_use && meta_gex.options.containsKey("no-bam")        ? "no-bam,${meta_gex.options["no-bam"]}"               : ''
+    gex_options_no_bam        = gex_options_use && meta_gex.options.containsKey("create-bam")    ? "create-bam,${meta_gex.options["create-bam"]}"           : ''
     gex_options_no_target_umi_filter = gex_options_use && meta_gex.options.containsKey("no-target-umi-filter") ? "no-target-umi-filter,${meta_gex.options["no-target-umi-filter"]}" : ''
     gex_options_include_introns      = gex_options_use && meta_gex.options.containsKey("include-introns")      ? "include-introns,${meta_gex.options["include-introns"]}"           : ''
     gex_options_check_library_compatibility = gex_options_use && meta_gex.options.containsKey("check-library-compatibility") ? "check-library-compatibility,${meta_gex.options["check-library-compatibility"]}" : ''
@@ -125,7 +124,7 @@ process CELLRANGER_MULTI {
     fastq_gex      = include_gex                      ? "${meta_gex.id},./fastq_all/gex,,Gene Expression"            : ''
     fastq_vdj      = include_vdj                      ? "${meta_vdj.id},./fastq_all/vdj,,VDJ"                        : ''
     fastq_antibody = include_fb && ab_options_use     ? "${meta_ab.id},./fastq_all/ab,,Antibody Capture"             : ''
-    fastq_beam     = include_beam                     ? "${meta_beam.id},\$PWD/fastqs/beam,,Antigen Capture"         : ''
+    fastq_beam     = include_beam                     ? "${meta_beam.id},./fastq_all/beam,,Antigen Capture"         : ''
     fastq_crispr   = include_fb && crispr_options_use ? "${meta_crispr.id},./fastq_all/crispr,,CRISPR Guide Capture" : ''
     fastq_cmo      = include_cmo                      ? "${meta_cmo.id},./fastq_all/cmo,,Multiplexing Capture"       : ''
 

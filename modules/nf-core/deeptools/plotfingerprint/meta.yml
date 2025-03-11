@@ -7,50 +7,66 @@ keywords:
   - bam
 tools:
   - deeptools:
-      description: A set of user-friendly tools for normalization and visualization of deep-sequencing data
+      description: A set of user-friendly tools for normalization and visualization
+        of deep-sequencing data
       documentation: https://deeptools.readthedocs.io/en/develop/index.html
       tool_dev_url: https://github.com/deeptools/deepTools
       doi: "10.1093/nar/gku365"
       licence: ["GPL v3"]
+      identifier: biotools:deeptools
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - bam:
-      type: file
-      description: One or more BAM files
-      pattern: "*.{bam}"
-  - bais:
-      type: file
-      description: Corresponding BAM file indexes
-      pattern: "*.bam.bai"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - bams:
+        type: file
+        description: BAM files
+        pattern: "*.bam"
+    - bais:
+        type: file
+        description: Corresponding BAM file indexes
+        pattern: "*.bam.bai"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - pdf:
-      type: file
-      description: |
-        Output figure containing resulting plot
-      pattern: "*.{plotFingerprint.pdf}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.pdf":
+          type: file
+          description: |
+            Output figure containing resulting plot
+          pattern: "*.{plotFingerprint.pdf}"
   - matrix:
-      type: file
-      description: |
-        Output file summarizing the read counts per bin
-      pattern: "*.{plotFingerprint.raw.txt}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.raw.txt":
+          type: file
+          description: |
+            Output file summarizing the read counts per bin
+          pattern: "*.{plotFingerprint.raw.txt}"
   - metrics:
-      type: file
-      description: |
-        file containing BAM file quality metrics
-      pattern: "*.{qcmetrics.txt}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.qcmetrics.txt":
+          type: file
+          description: |
+            file containing BAM file quality metrics
+          pattern: "*.{qcmetrics.txt}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@edmundmiller"
   - "@drpatelh"

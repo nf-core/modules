@@ -1,5 +1,6 @@
 name: "purgedups_pbcstat"
-description: Create read depth histogram and base-level read depth for an assembly based on pacbio data
+description: Create read depth histogram and base-level read depth for an assembly
+  based on pacbio data
 keywords:
   - sort
   - genome assembly
@@ -7,40 +8,50 @@ keywords:
   - read depth
 tools:
   - "purgedups":
-      description: "Purge_dups is a package used to purge haplotigs and overlaps in an assembly based on read depth"
+      description: "Purge_dups is a package used to purge haplotigs and overlaps in
+        an assembly based on read depth"
       homepage: "https://github.com/dfguan/purge_dups"
       documentation: "https://github.com/dfguan/purge_dups"
       tool_dev_url: "https://github.com/dfguan/purge_dups"
       doi: "10.1093/bioinformatics/btaa025"
-      licence: "['MIT']"
+      licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - paf_alignment:
-      type: file
-      description: PAF alignment file
-      pattern: "*.paf"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - paf_alignment:
+        type: file
+        description: PAF alignment file
+        pattern: "*.paf"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - stat:
-      type: file
-      description: PacBio Statistic file
-      pattern: "*.PB.stat"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.PB.stat":
+          type: file
+          description: PacBio Statistic file
+          pattern: "*.PB.stat"
   - basecov:
-      type: file
-      description: PacBio Base coverage file
-      pattern: "*.PB.base.cov"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.PB.base.cov":
+          type: file
+          description: PacBio Base coverage file
+          pattern: "*.PB.base.cov"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@mahesh-panchal"
 maintainers:

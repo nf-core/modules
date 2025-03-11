@@ -1,0 +1,87 @@
+// nf-core modules test phispy
+nextflow_process {
+
+    name "Test Process PHISPY"
+    script "../main.nf"
+    process "PHISPY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "phispy"
+
+    test("bacteroides_fragilis - gbff") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file( params.modules_testdata_base_path + "/genomics/prokaryotes/bacteroides_fragilis/genome/genome.gbff.gz", checkIfExists: true )
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    with(process.out.log[0]) {
+                        assert path(get(1)).text.contains('NZ_CP069563.1')
+                        assert path(get(1)).text.contains('91')
+                        assert path(get(1)).text.contains('Kept')
+                    }
+                },
+                {
+                    with(process.out.coordinates[0]) {
+                        assert path(get(1)).text.contains('NZ_CP069563.1')
+                        assert path(get(1)).text.contains('pp1')
+                        assert path(get(1)).text.contains('Longest Repeat flanking phage and within 2000 bp')
+                    }
+                },
+                { assert path(process.out.gbk[0][1]).linesGzip.toString().contains('5150703 bp') },
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+
+    }
+
+    test("bacteroides_fragilis - gbff - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file( params.modules_testdata_base_path + "/genomics/prokaryotes/bacteroides_fragilis/genome/genome.gbff.gz", checkIfExists: true )
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.gbk[0][1]).exists() },
+                { assert snapshot(
+                        process.out.coordinates,
+                        process.out.log,
+                        process.out.information,
+                        process.out.bacteria_fasta,
+                        process.out.bacteria_gbk,
+                        process.out.phage_fasta,
+                        process.out.phage_gbk,
+                        process.out.prophage_gff,
+                        process.out.prophage_tbl,
+                        process.out.prophage_tsv,
+                        process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+}

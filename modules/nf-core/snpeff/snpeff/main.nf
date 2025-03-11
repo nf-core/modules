@@ -13,11 +13,11 @@ process SNPEFF_SNPEFF {
     tuple val(meta2), path(cache)
 
     output:
-    tuple val(meta), path("*.ann.vcf"), emit: vcf
-    path "*.csv"                      , emit: report
-    path "*.html"                     , emit: summary_html
-    path "*.genes.txt"                , emit: genes_txt
-    path "versions.yml"               , emit: versions
+    tuple val(meta), path("*.ann.vcf"),   emit: vcf
+    tuple val(meta), path("*.csv"),       emit: report
+    tuple val(meta), path("*.html"),      emit: summary_html
+    tuple val(meta), path("*.genes.txt"), emit: genes_txt
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -52,6 +52,9 @@ process SNPEFF_SNPEFF {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.ann.vcf
+    touch ${prefix}.csv
+    touch ${prefix}.html
+    touch ${prefix}.genes.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

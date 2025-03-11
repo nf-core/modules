@@ -1,0 +1,135 @@
+nextflow_process {
+
+    name "Test Process NGSCHECKMATE_FASTQ"
+    script "../main.nf"
+    process "NGSCHECKMATE_FASTQ"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ngscheckmate"
+    tag "ngscheckmate/fastq"
+    tag "ngscheckmate/patterngenerator"
+    tag "gawk"
+    tag "bedtools/makewindows"
+    tag "bowtie/build"
+
+    setup {
+
+        run("GAWK" , alias: "GAWK_FAI") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: 'sarscov2' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                    ]
+                input[1] = []
+                input[2] = false
+                """
+            }
+        }
+
+        run("BEDTOOLS_MAKEWINDOWS") {
+            script "../../../bedtools/makewindows/main.nf"
+            process {
+                """
+                input[0] = GAWK_FAI.out.output
+                """
+            }
+        }
+
+        run("GAWK" , alias: "GAWK_BED") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = BEDTOOLS_MAKEWINDOWS.out.bed
+                input[1] = []
+                input[2] = false
+                """
+            }
+        }
+
+        run("BOWTIE_BUILD") {
+            script "../../../bowtie/build/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: 'sarscov2' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        run("NGSCHECKMATE_PATTERNGENERATOR") {
+            script "../../patterngenerator/main.nf"
+            process {
+                """
+                input[0] = GAWK_BED.out.output
+                input[1] = [
+                    [ id: 'sarscov2' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = BOWTIE_BUILD.out.index
+                """
+            }
+        }
+
+    }
+
+    test("sarscov2 - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_paired', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = NGSCHECKMATE_PATTERNGENERATOR.out.pt
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_paired', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = NGSCHECKMATE_PATTERNGENERATOR.out.pt
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

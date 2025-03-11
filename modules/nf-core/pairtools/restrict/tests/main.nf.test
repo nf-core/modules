@@ -1,0 +1,40 @@
+
+nextflow_process {
+
+    name "Test Process PAIRTOOLS_RESTRICT"
+    script "../main.nf"
+    process "PAIRTOOLS_RESTRICT"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pairtools"
+    tag "pairtools/restrict"
+
+    test("test-pairtools-restrict") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pairtools/mock.4flip.pairs', checkIfExists: true)
+                ]
+				input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pairtools/frag.bed', checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					path(process.out.restrict[0][1]).linesGzip[3..7],
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

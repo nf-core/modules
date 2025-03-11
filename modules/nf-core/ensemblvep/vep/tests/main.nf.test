@@ -1,26 +1,31 @@
 nextflow_process {
 
     name "Test Process ENSEMBLVEP_VEP"
-    script "modules/nf-core/ensemblvep/vep/main.nf"
+    script "../main.nf"
     process "ENSEMBLVEP_VEP"
     config "./nextflow.config"
+
     tag "modules"
     tag "modules_nfcore"
     tag "ensemblvep"
     tag "ensemblvep/vep"
     tag "ensemblvep/download"
 
-
-    test("test_ensemblvep_vep_fasta_vcf") {
-
+    test("test_ensemblvep_vep_fasta_vcf - stub (not really but linting complains otherwise)") {
         config "./vcf.config"
 
         setup {
             run("ENSEMBLVEP_DOWNLOAD") {
                 script "../../download/main.nf"
+
                 process {
                     """
-                    input[0] = Channel.of([[id:"${params.vep_cache_version}_${params.vep_genome}"], params.vep_genome, params.vep_species, params.vep_cache_version])
+                    input[0] = Channel.of([
+                        [id:"113_WBcel235"],
+                        params.vep_genome,
+                        params.vep_species,
+                        params.vep_cache_version
+                    ])
                     """
                 }
             }
@@ -31,7 +36,7 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [ id:'test' ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
                     []
                 ])
                 input[1] = params.vep_genome
@@ -40,7 +45,7 @@ nextflow_process {
                 input[4] = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }
                 input[5] = Channel.value([
                     [id:"fasta"],
-                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ])
                 input[6] = []
                 """
@@ -49,23 +54,32 @@ nextflow_process {
 
         then {
             assertAll(
-            {assert process.success},
-            {assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2")}
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                    file(process.out.tbi.get(0).get(1)).name
+                ).match() }
             )
         }
 
     }
 
     test("test_ensemblvep_vep_fasta_tab_gz") {
-
         config "./tab.gz.config"
 
         setup {
             run("ENSEMBLVEP_DOWNLOAD") {
                 script "../../download/main.nf"
+
                 process {
                     """
-                    input[0] = Channel.of([[id:"${params.vep_cache_version}_${params.vep_genome}"], params.vep_genome, params.vep_species, params.vep_cache_version])
+                    input[0] = Channel.of([
+                        [id:"113_WBcel235"],
+                        params.vep_genome,
+                        params.vep_species,
+                        params.vep_cache_version
+                    ])
                     """
                 }
             }
@@ -76,7 +90,7 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [ id:'test' ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
                     []
                 ])
                 input[1] = params.vep_genome
@@ -85,7 +99,7 @@ nextflow_process {
                 input[4] = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }
                 input[5] = Channel.value([
                     [id:"fasta"],
-                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ])
                 input[6] = []
                 """
@@ -94,8 +108,9 @@ nextflow_process {
 
         then {
             assertAll(
-            {assert process.success},
-            {assert path(process.out.tab.get(0).get(1)).linesGzip.contains("## ENSEMBL VARIANT EFFECT PREDICTOR v110.0")}
+                { assert process.success },
+                { assert snapshot(process.out.versions).match() },
+                { assert path(process.out.tab.get(0).get(1)).linesGzip.contains("## ENSEMBL VARIANT EFFECT PREDICTOR v113.0") }
             )
         }
     }

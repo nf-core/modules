@@ -33,7 +33,7 @@ nextflow_process {
                 { assert process.success },
                 // File has a timestamp in it and is in binary format, so we can only check the name
                 { assert file(process.out.bin_ref[0][1]).name == "ref1000GP_chr21_16600000_16800000.bin" },
-                { assert snapshot(process.out.version).match()}
+                { assert snapshot(process.out.versions).match() }
             )
         }
 
@@ -61,7 +61,7 @@ nextflow_process {
                 { assert process.success },
                 // File has a timestamp in it and is in binary format, so we can only check the name
                 { assert file(process.out.bin_ref[0][1]).name == "ref1000GP_chr21_16600000_16800000.bin" },
-                { assert snapshot(process.out.version).match()}
+                { assert snapshot(process.out.versions).match() }
             )
         }
 

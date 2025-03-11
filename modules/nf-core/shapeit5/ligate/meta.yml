@@ -12,40 +12,43 @@ tools:
       homepage: "https://odelaneau.github.io/shapeit5/"
       documentation: "https://odelaneau.github.io/shapeit5/docs/documentation"
       tool_dev_url: "https://github.com/odelaneau/shapeit5"
-      doi: "10.1101/2022.10.19.512867 "
-      licence: "['MIT']"
+      doi: "10.1101/2022.10.19.512867"
+      licence: ["MIT"]
+      identifier: biotools:shapeit5
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - input_list:
-      type: file
-      description: |
-        VCF/BCF files containing genotype probabilities (GP field).
-        The files should be ordered by genomic position.
-      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-  - input_list_index:
-      type: file
-      description: VCF/BCF files index.
-      pattern: "*.csi"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input_list:
+        type: file
+        description: |
+          VCF/BCF files containing genotype probabilities (GP field).
+          The files should be ordered by genomic position.
+        pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+    - input_list_index:
+        type: file
+        description: VCF/BCF files index.
+        pattern: "*.csi"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - merged_variants:
-      type: file
-      description: |
-        Output VCF/BCF file for the merged regions.
-        Phased information (HS field) is updated accordingly for the full region.
-      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.{vcf,bcf,vcf.gz,bcf.gz}":
+          type: file
+          description: |
+            Output VCF/BCF file for the merged regions.
+            Phased information (HS field) is updated accordingly for the full region.
+          pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@louislenezet"
 maintainers:

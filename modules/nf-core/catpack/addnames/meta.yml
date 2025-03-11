@@ -1,0 +1,73 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "catpack_addnames"
+description: Taxonomic classification of long DNA sequences and metagenome assembled
+  genomes (e.g. MAGs / bins).
+keywords:
+  - taxonomic classification
+  - classification
+  - long reads
+  - mags
+  - assembly
+tools:
+  - "catpack":
+      description: "CAT/BAT: tool for taxonomic classification of contigs and metagenome-assembled
+        genomes (MAGs)"
+      homepage: "https://github.com/MGXlab/CAT_pack"
+      documentation: "https://github.com/MGXlab/CAT_pack"
+      tool_dev_url: "https://github.com/MGXlab/CAT_pack"
+      doi: "10.1186/s13059-019-1817-x"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+
+    - input:
+        type: file
+        description: Classification or ORF2LCA output file from CAT/BAT/RAT
+        pattern: "*.txt"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+
+    - taxonomy:
+        type: directory
+        description: "Directory containing taxonomy files: names.dmp, nodes.dmp, acc2taxid.txt"
+        pattern: "*/"
+        ontologies:
+          - edam: "http://edamontology.org/data_1049"
+
+output:
+  - txt:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+
+      - ${prefix}.txt:
+          type: map
+          description: |
+            CAT/BAT/RAT classification file with added taxonomic names
+          pattern: "*.{bam,cram,sam}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@jfy133"
+maintainers:
+  - "@jfy133"

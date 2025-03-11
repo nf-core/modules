@@ -8,14 +8,15 @@ nextflow_process {
     tag "modules_nfcore"
     tag "pyrodigal"
 
-    test("pyrodigal") {
+    test("pyrodigal - sarscov2 - gff") {
         when {
             process {
                 """
-                input[0] =  [
+                input[0] = [
                              [id:'test', single_end:false ], // meta map
-                             file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                             ]
+                 input[1] = 'gff'
                 """
             }
         }
@@ -28,15 +29,69 @@ nextflow_process {
         }
     }
 
-    test("pyrodigal - stub") {
+    test("pyrodigal - sarscov2 - gbk") {
+        when {
+            process {
+                """
+                input[0] = [
+                             [id:'test', single_end:false ], // meta map
+                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                            ]
+                 input[1] = 'gbk'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.annotations.get(0).get(1)).linesGzip[14..22],
+                    process.out.faa,
+                    process.out.fna,
+                    process.out.score,
+                    process.out.versions,
+                ).match() }
+            )
+        }
+    }
+
+    test("pyrodigal - sarscov2 - gff - stub") {
         options "-stub"
         when {
             process {
                 """
-                input[0] =  [
+                input[0] = [
                              [id:'test', single_end:false ], // meta map
-                             file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                             ]
+                input[1] = 'gff'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.gff.collect { file(it[1]).getName() } +
+                                    process.out.fna.collect { file(it[1]).getName() } +
+                                    process.out.faa.collect { file(it[1]).getName() } +
+                                    process.out.score.collect { file(it[1]).getName() } +
+                                    process.out.versions).match() }
+            )
+        }
+    }
+
+    test("pyrodigal - sarscov2 - gbk - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                             [id:'test', single_end:false ], // meta map
+                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                            ]
+                input[1] = 'gbk'
                 """
             }
         }

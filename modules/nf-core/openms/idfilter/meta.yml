@@ -7,43 +7,45 @@ keywords:
   - proteomics
 tools:
   - "openms":
-      description: "OpenMS is an open-source software C++ library for LC-MS data management and analyses"
+      description: "OpenMS is an open-source software C++ library for LC-MS data management
+        and analyses"
       homepage: "https://openms.de"
       documentation: "https://openms.readthedocs.io/en/latest/index.html"
       tool_dev_url: "https://github.com/OpenMS/OpenMS"
-      doi: "10.1038/nmeth.3959"
-      licence: "['BSD']"
+      doi: "10.1038/s41592-024-02197-7"
+      licence: ["BSD"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - id_file:
-      type: file
-      description: Peptide-spectrum matches.
-      pattern: "*.{idXML,consensusXML}"
-  - filter:
-      type: file
-      description: Optional idXML file to filter on/out peptides or proteins
-      patter: "*.{idXML,fasta}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - id_file:
+        type: file
+        description: Peptide-spectrum matches.
+        pattern: "*.{idXML,consensusXML}"
+    - filter_file:
+        type: file
+        description: Optional idXML file to filter on/out peptides or proteins
+        patter: "*.{idXML,fasta}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
+  - filtered:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.{idXML,consensusXML}":
+          type: file
+          description: Filtered peptide-spectrum matches.
+          pattern: "*.{idXML,consensusXML}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - id_file:
-      type: file
-      description: Filtered peptide-spectrum matches.
-      pattern: "*.{idXML,consensusXML}"
-
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jonasscheid"
 maintainers:

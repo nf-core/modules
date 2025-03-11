@@ -1,0 +1,47 @@
+name: "leviosam2_index"
+description: Index chain files for lift over
+keywords:
+  - leviosam2
+  - index
+  - lift
+tools:
+  - "leviosam2":
+      description: "Fast and accurate coordinate conversion between assemblies"
+      homepage: "https://github.com/milkschen/leviosam2/blob/main/workflow/README.md"
+      documentation: "https://github.com/milkschen/leviosam2/blob/main/workflow/README.md"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'reference' ]`
+    - fai:
+        type: file
+        description: FAI (FASTA index) file of the target reference
+        pattern: "*.{fai}"
+  - - chain:
+        type: file
+        description: Chain file to index.
+        pattern: "*.{chain}"
+output:
+  - clft:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'reference' ]`
+      - "*.clft":
+          type: file
+          description: Clft file of indexed chain
+          pattern: "*.{clft}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@lgrochowalski"
+maintainers:
+  - "@lgrochowalski"

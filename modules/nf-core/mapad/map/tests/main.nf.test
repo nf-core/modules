@@ -1,0 +1,55 @@
+nextflow_process {
+
+    name "Test Process MAPAD_MAP"
+    tag "modules_nfcore"
+    tag "modules"
+    tag "mapad"
+    tag "mapad/map"
+    tag "mapad/index"
+    script "../main.nf"
+    process "MAPAD_MAP"
+
+    test("Single-End") {
+
+        setup {
+            run("MAPAD_INDEX") {
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: 'test'],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([ [ id:'test', single_end:true ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists: true)
+                        ])
+                input[1] = MAPAD_INDEX.out.index
+                input[2] = 0.03
+                input[3] = false
+                input[4] = 0.5
+                input[5] = 0.5
+                input[6] = 0.02
+                input[7] = 1.0
+                input[8] = 0.001
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match() },
+                { assert file(process.out.bam.get(0).get(1)).exists() },
+            )
+        }
+
+    }
+}

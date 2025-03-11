@@ -4,8 +4,8 @@ process BAKTA_BAKTA {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bakta:1.9.2--pyhdfd78af_0' :
-        'biocontainers/bakta:1.9.2--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/bakta:1.10.4--pyhdfd78af_0' :
+        'biocontainers/bakta:1.10.4--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -35,8 +35,6 @@ process BAKTA_BAKTA {
     def proteins_opt = proteins ? "--proteins ${proteins[0]}" : ""
     def prodigal_tf = prodigal_tf ? "--prodigal-tf ${prodigal_tf[0]}" : ""
     """
-    amrfinder_update --force_update --database $db/amrfinderplus-db
-
     bakta \\
         $fasta \\
         $args \\

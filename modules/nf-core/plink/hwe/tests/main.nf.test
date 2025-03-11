@@ -1,0 +1,87 @@
+nextflow_process {
+
+    name "test Plink HWE function"
+    script "../main.nf"
+    process "PLINK_HWE"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "plink"
+    tag "plink/hwe"
+
+    test("plink - VCF") {
+
+        when {
+            params {
+                outdir = "test"
+            }
+            process {
+                """
+                input[0] = [ [id:"null"], [], [], []]
+                input[1] = [
+                    [id:"test"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.vcf.gz', checkIfExists: true)
+                ]
+                input[2] = [ [id:"null"], []]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("plink - binary") {
+
+        when {
+            params {
+                outdir = "test"
+            }
+            process {
+                """
+                input[0] = [
+                        [id:"test"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+                input[1] = [ [id:"null"], []]
+                input[2] = [ [id:"null"], []]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("plink - BCF") {
+
+        when {
+            params {
+                outdir = "test"
+            }
+            process {
+                """
+                input[0] = [ [id:"null"], [], [], []]
+                input[1] = [ [id:"null"], []]
+                input[2] = [
+                    [id:"test"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bcf.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

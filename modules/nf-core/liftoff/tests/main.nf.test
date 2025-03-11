@@ -1,0 +1,75 @@
+nextflow_process {
+
+    name "Test Process LIFTOFF"
+    script "../main.nf"
+    process "LIFTOFF"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "liftoff"
+
+    test("homo_sapiens-genome_21_fasta-genome_1_fasta-genome_1_gtf") {
+
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.fasta.gz', checkIfExists: true)
+                    ]
+                input[2] = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.gtf', checkIfExists: true)
+                ]
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.unmapped_txt).match("unmapped_txt") },
+                { assert file(process.out.gff3[0][1]).text.contains("chr21\tLiftoff\texon\t34608061\t34608118\t.\t+\t.") },
+                { assert file(process.out.polished_gff3[0][1]).text.contains("chr21\tLiftoff\texon\t34608061\t34608118\t.\t+\t.") },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+    test("homo_sapiens-genome_21_fasta-genome_1_fasta-genome_1_gtf-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = [ 
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.fasta.gz', checkIfExists: true) 
+                    ]
+                input[2] = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.gtf', checkIfExists: true)
+                ]
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

@@ -1,0 +1,68 @@
+nextflow_process {
+
+    name "Test Process POPSCLE_DSCPILEUP"
+    script "../main.nf"
+    process "POPSCLE_DSCPILEUP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "popscle"
+    tag "popscle/dscpileup"
+
+    test("demultiplexing - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'sample1' ], // meta map
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/donor_genotype_chr21.vcf', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("versions") },
+	            { assert path(process.out.cel.get(0).get(1)).exists() },
+		        { assert path(process.out.var.get(0).get(1)).exists() },
+		        { assert path(process.out.umi.get(0).get(1)).exists() },
+		        { assert path(process.out.plp.get(0).get(1)).exists() }
+            )
+        }
+
+    }
+
+    test("demultiplexing - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'sample1' ], // meta map
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/donor_genotype_chr21.vcf', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("stub-versions") },
+                { assert path(process.out.cel.get(0).get(1)).exists() },
+                { assert path(process.out.var.get(0).get(1)).exists() },
+                { assert path(process.out.umi.get(0).get(1)).exists() },
+                { assert path(process.out.plp.get(0).get(1)).exists() }
+            )
+        }
+
+    }
+
+}

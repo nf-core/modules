@@ -1,0 +1,44 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "bamstats_generalstats"
+description: write your description here
+keywords:
+  - bam
+  - statistics
+  - genomics
+tools:
+  - "bamstats":
+      description: "A command line tool to compute mapping statistics from a BAM file"
+      homepage: "https://github.com/guigolab/bamstats/"
+      documentation: "https://github.com/guigolab/bamstats/"
+      tool_dev_url: "https://github.com/guigolab"
+      licence: ["BSD-3-clause"]
+      identifier: biotools:bamstats-ip
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+output:
+  - json:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.json":
+          type: file
+          description: json containing bam statistics
+          pattern: "*.json"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@johnoooh"

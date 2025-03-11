@@ -1,0 +1,119 @@
+name: "fgbio_collectduplexseqmetrics"
+description: Collects a suite of metrics to QC duplex sequencing data.
+keywords:
+  - UMIs
+  - QC
+  - bam
+  - duplex
+tools:
+  - "fgbio":
+      description: "A set of tools for working with genomic and high throughput sequencing
+        data, including UMIs"
+      homepage: "http://fulcrumgenomics.github.io/fgbio/"
+      documentation: "http://fulcrumgenomics.github.io/fgbio/"
+      tool_dev_url: "https://github.com/fulcrumgenomics/fgbio"
+      licence: ["MIT"]
+      identifier: biotools:fgbio
+  - "r-ggplot2":
+      description: "ggplot2 is a system for declaratively creating graphics, based on
+        The Grammar of Graphics. "
+      homepage: "https://ggplot2.tidyverse.org/"
+      documentation: "https://ggplot2.tidyverse.org/"
+      tool_dev_url: "https://github.com/tidyverse/ggplot2"
+      licence: ["MIT"]
+      identifier: biotools:fgbio
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - grouped_bam:
+        type: file
+        description: It has to be either 1)The exact BAM output by the GroupReadsByUmi
+          tool (in the sort-order it was produced in) 2)A BAM file that has MI tags
+          present on all reads (usually set by GroupReadsByUmi and has been sorted with
+          SortBam into TemplateCoordinate order.
+        pattern: "*.bam"
+  - - interval_list:
+        type: file
+        description: Calculation of metrics may be restricted to a set of regions using
+          the --intervals parameter. The file format is descripted here
+          https://samtools.github.io/htsjdk/javadoc/htsjdk/index.html?htsjdk/samtools/util/Interval.html
+        pattern: "*.{tsv|txt|interval_list}"
+output:
+  - family_sizes:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "**.family_sizes.txt":
+          type: file
+          description: Metrics on the frequency of different types of families of different
+            sizes
+          pattern: "*.txt"
+  - duplex_family_sizes:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "**.duplex_family_sizes.txt":
+          type: file
+          description: Metrics on the frequency of duplex tag families by the number of
+            observations from each strand
+          pattern: "*.txt"
+  - duplex_yield_metrics:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "**.duplex_yield_metrics.txt":
+          type: file
+          description: Summary QC metrics produced using 5%, 10%, 15%...100% of the data
+          pattern: "*.txt"
+  - umi_counts:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "**.umi_counts.txt":
+          type: file
+          description: Metrics on the frequency of observations of UMIs within reads and
+            tag families
+          pattern: "*.txt"
+  - duplex_qc:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "**.duplex_qc.pdf":
+          type: file
+          description: A series of plots generated from the preceding metrics files for
+            visualization
+          pattern: "*.pdf"
+  - duplex_umi_counts:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "**.duplex_umi_counts.txt":
+          type: file
+          description: Metrics on the frequency of observations of duplex UMIs within
+            reads and tag families.
+          pattern: "*.txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@georgiakes"
+maintainers:
+  - "@georgiakes"

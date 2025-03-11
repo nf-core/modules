@@ -1,0 +1,56 @@
+nextflow_process {
+
+    name "Test Process LAST_POSTMASK"
+    script "../main.nf"
+    process "LAST_POSTMASK"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "last"
+    tag "last/postmask"
+
+    test("sarscov2 - contigs - genome") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'sarscov2.contigs.genome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - contigs - genome - stub") {
+
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'sarscov2.contigs.genome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+}

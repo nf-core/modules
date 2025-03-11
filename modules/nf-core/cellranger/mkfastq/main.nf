@@ -1,16 +1,19 @@
 process CELLRANGER_MKFASTQ {
-    tag "mkfastq"
+    tag {"$meta.lane" ? "$meta.id"+"."+"$meta.lane" : "$meta.id" }
     label 'process_medium'
 
-    container "docker.io/nfcore/cellrangermkfastq:7.1.0"
+    container "nf-core/cellrangermkfastq:8.0.0"
 
     input:
-    path bcl
-    path csv
+    tuple val(meta), path(csv), path(bcl)
 
     output:
-    path "**/outs/fastq_path/*.fastq.gz", emit: fastq
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*_outs/outs/fastq_path/**/*.fastq.gz")          , emit: fastq
+    tuple val(meta), path("*_outs/outs/fastq_path/Undetermined*.fastq.gz") , optional:true, emit: undetermined_fastq
+    tuple val(meta), path("*_outs/outs/fastq_path/Reports")                , optional:true, emit: reports
+    tuple val(meta), path("*_outs/outs/fastq_path/Stats")                  , optional:true, emit: stats
+    tuple val(meta), path("*_outs/outs/interop_path/*.bin")                , emit: interop
+    path "versions.yml"                                                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,13 +24,15 @@ process CELLRANGER_MKFASTQ {
         error "CELLRANGER_MKFASTQ module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${bcl.getSimpleName()}"
+    def prefix = task.ext.prefix ?: "${meta.id}" //run_dir (bcl) and id must be different because a folder is created with the id value
     """
     cellranger \\
         mkfastq \\
-        --id=${prefix} \\
+        --id=${prefix}_outs \\
         --run=$bcl \\
         --csv=$csv \\
+        --localcores=${task.cpus} \\
+        --localmem=${task.memory.toGiga()} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
@@ -41,10 +46,21 @@ process CELLRANGER_MKFASTQ {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "CELLRANGER_MKFASTQ module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def prefix = task.ext.prefix ?: "${bcl.getSimpleName()}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p "${prefix}/outs/fastq_path/"
-    touch ${prefix}/outs/fastq_path/fake_file.fastq.gz
+    # data for reports output channel
+    mkdir -p "${prefix}_outs/outs/fastq_path/Reports"
+    # data for stats output channel
+    mkdir -p "${prefix}_outs/outs/fastq_path/Stats"
+    # data for interops output channel
+    mkdir -p "${prefix}_outs/outs/interop_path/"
+    touch "${prefix}_outs/outs/interop_path/IndexMetricsOut.bin"
+    # data for fastq channels
+    mkdir -p "${prefix}_outs/outs/fastq_path/sample/files/"
+    touch "${prefix}_outs/outs/fastq_path/Undetermined_fake_file.fastq"
+    touch "${prefix}_outs/outs/fastq_path/sample/files/fake_file.fastq"
+    gzip "${prefix}_outs/outs/fastq_path/Undetermined_fake_file.fastq"
+    gzip "${prefix}_outs/outs/fastq_path/sample/files/fake_file.fastq"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

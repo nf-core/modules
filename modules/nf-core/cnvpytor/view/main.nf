@@ -42,7 +42,7 @@ process CNVPYTOR_VIEW {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/CNVpytor //' )
+        cnvpytor: \$(cnvpytor --version | sed -n 's/.*CNVpytor \\(.*\\)/\\1/p')
     END_VERSIONS
     """
 
@@ -54,7 +54,7 @@ process CNVPYTOR_VIEW {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/CNVpytor //' )
+        cnvpytor: \$(cnvpytor --version | sed -n 's/.*CNVpytor \\(.*\\)/\\1/p')
     END_VERSIONS
     """
 }

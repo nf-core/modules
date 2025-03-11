@@ -2,10 +2,10 @@ process OPENMS_PEAKPICKERHIRES {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::openms=3.0.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/openms:3.0.0--h8964181_1' :
-        'biocontainers/openms:3.0.0--h8964181_1' }"
+        'https://depot.galaxyproject.org/singularity/openms:3.3.0--h0656172_8' :
+        'biocontainers/openms:3.3.0--h0656172_8' }"
 
     input:
     tuple val(meta), path(mzml)

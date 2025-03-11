@@ -16,55 +16,64 @@ tools:
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
       doi: 10.1158/1538-7445.AM2017-3590
       licence: ["Apache-2.0"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: |
-        The vcf file to be normalized
-        e.g. 'file1.vcf.gz'
-  - tbi:
-      type: file
-      description: |
-        Index of the vcf file to be normalized
-        e.g. 'file1.vcf.gz.tbi'
-  - intervals:
-      type: file
-      description: Bed file with the genomic regions included in the library (optional)
-  - fasta:
-      type: file
-      description: The reference fasta file
-      pattern: "*.fasta"
-  - fai:
-      type: file
-      description: Index of reference fasta file
-      pattern: "*.fasta.fai"
-  - dict:
-      type: file
-      description: GATK sequence dictionary
-      pattern: "*.dict"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: |
+          The vcf file to be normalized
+          e.g. 'file1.vcf.gz'
+    - tbi:
+        type: file
+        description: |
+          Index of the vcf file to be normalized
+          e.g. 'file1.vcf.gz.tbi'
+    - intervals:
+        type: file
+        description: Bed file with the genomic regions included in the library (optional)
+  - - fasta:
+        type: file
+        description: The reference fasta file
+        pattern: "*.fasta"
+  - - fai:
+        type: file
+        description: Index of reference fasta file
+        pattern: "*.fasta.fai"
+  - - dict:
+        type: file
+        description: GATK sequence dictionary
+        pattern: "*.dict"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - vcf:
-      type: file
-      description: VCF normalized output file
-      pattern: "*.{vcf.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf.gz":
+          type: file
+          description: VCF normalized output file
+          pattern: "*.{vcf.gz}"
   - tbi:
-      type: file
-      description: Tbi index for VCF file
-      pattern: "*.tbi"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tbi":
+          type: file
+          description: Tbi index for VCF file
+          pattern: "*.tbi"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@adamrtalbot"
 maintainers:

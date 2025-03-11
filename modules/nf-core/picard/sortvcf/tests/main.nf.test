@@ -1,0 +1,44 @@
+
+nextflow_process {
+
+    name "Test Process PICARD_SORTVCF"
+    script "../main.nf"
+    process "PICARD_SORTVCF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "picard"
+    tag "picard/sortvcf"
+
+    test("test-picard-sortvcf") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true)
+				]
+				input[1] = [ [ id:'genome' ],
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+				]
+				input[2] = [ [ id:'genome' ],
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					path(process.out.vcf[0][1]).linesGzip[3..7],
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

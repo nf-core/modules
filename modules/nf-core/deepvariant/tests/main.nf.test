@@ -1,0 +1,45 @@
+nextflow_process {
+
+    name "Deprecated module DEEPVARIANT Test"
+    script "../main.nf"
+    process "DEEPVARIANT"
+
+    tag "deepvariant"
+    tag "modules"
+    tag "modules_nfcore"
+
+    test("DEEPVARIANT top-level process is deprecated and should fail") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                      []
+                ]
+                input[1] = [
+                    [ id:'genome'],
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'genome'],
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[3] = [
+                    [],[]
+                ]
+                input[4] = [
+                    [],[]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !process.success }
+            )
+        }
+    }
+}

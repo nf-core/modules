@@ -1,0 +1,65 @@
+name: "bamclipper"
+
+description: This module is used to clip primer sequences from your alignments.
+keywords:
+  - primer
+  - clipping
+  - genomics
+  - bam
+tools:
+  - "bamclipper":
+      description: "BAMClipper: removing primers from alignments to minimize false-negative
+        mutations in amplicon next-generation sequencing"
+      homepage: "https://github.com/tommyau/bamclipper"
+      documentation: "https://github.com/tommyau/bamclipper"
+      tool_dev_url: "https://github.com/tommyau/bamclipper"
+      doi: "10.1038/s41598-017-01703-6"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information `[ id:'sample1']`
+    - bam:
+        type: file
+        description: Sorted BAM file
+        pattern: "*.bam"
+    - bai:
+        type: file
+        description: BAI index of the input BAM file
+        pattern: "*.bam.bai"
+    - bedpe:
+        type: file
+        description: BEDPE file of primer pair locations
+        pattern: "*.bed"
+output:
+  - bam:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information `[ id:'sample1']`
+      - "*.primerclipped.bam":
+          type: file
+          description: Sorted BAM file containing clipped query sequences according to
+            the given primer pair locations
+          pattern: "*.primerclipped.bam"
+  - bai:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information `[ id:'sample1']`
+      - "*.primerclipped.bam.bai":
+          type: file
+          description: "BAI index of the output BAM file"
+          pattern: "*.primerclipped.bam.bai"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@krannich479"
+maintainers:
+  - "@krannich479"

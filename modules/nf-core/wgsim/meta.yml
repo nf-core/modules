@@ -10,31 +10,34 @@ tools:
       homepage: "https://github.com/lh3/wgsim"
       documentation: "https://github.com/lh3/wgsim"
       tool_dev_url: "https://github.com/lh3/wgsim"
-      licence: "['MIT']"
+      licence: ["MIT"]
+      identifier: biotools:wgsim
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: Genome fasta file
-      pattern: "*.{fa,fasta}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Genome fasta file
+        pattern: "*.{fa,fasta}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - fastq:
-      type: file
-      description: Simulated FASTQ read files
-      pattern: "*.{fastq}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fastq":
+          type: file
+          description: Simulated FASTQ read files
+          pattern: "*.{fastq}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@priyanka-surana"
 maintainers:

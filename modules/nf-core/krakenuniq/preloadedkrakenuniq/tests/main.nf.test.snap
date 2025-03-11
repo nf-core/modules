@@ -1,172 +1,236 @@
 {
-    "sarscov2 - Illumina FASTQ paired-end - stub-run": {
+    "fastq-single-stub": {
         "content": [
-            {
-                "0": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
                     [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.merged.classified.fasta.gz:md5,34ed306e94fa7eed00b1adccd2e0de20"
+                        "sample.2.classified.fastq.gz:md5,a5704c35e6b573a45e3a344768fe6975",
+                        "sample_1.classified.fastq.gz:md5,a5704c35e6b573a45e3a344768fe6975"
                     ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.merged.unclassified.fasta.gz:md5,34ed306e94fa7eed00b1adccd2e0de20"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.krakenuniq.classified.txt:md5,a5704c35e6b573a45e3a344768fe6975"
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.krakenuniq.report.txt:md5,a5704c35e6b573a45e3a344768fe6975"
-                    ]
-                ],
-                "4": [
-                    "versions.yml:md5,6abf6c733f53fa3b6aaaa6f06864ef0c"
-                ],
-                "classified_assignment": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.krakenuniq.classified.txt:md5,a5704c35e6b573a45e3a344768fe6975"
-                    ]
-                ],
-                "classified_reads_fasta": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.merged.classified.fasta.gz:md5,34ed306e94fa7eed00b1adccd2e0de20"
-                    ]
-                ],
-                "report": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.krakenuniq.report.txt:md5,a5704c35e6b573a45e3a344768fe6975"
-                    ]
-                ],
-                "unclassified_reads_fasta": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.merged.unclassified.fasta.gz:md5,34ed306e94fa7eed00b1adccd2e0de20"
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,6abf6c733f53fa3b6aaaa6f06864ef0c"
                 ]
-            }
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    [
+                        "sample.2.unclassified.fastq.gz:md5,a5704c35e6b573a45e3a344768fe6975",
+                        "sample_1.unclassified.fastq.gz:md5,a5704c35e6b573a45e3a344768fe6975"
+                    ]
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    [
+                        "sample.2.krakenuniq.classified.txt:md5,a5704c35e6b573a45e3a344768fe6975",
+                        "sample_1.krakenuniq.classified.txt:md5,a5704c35e6b573a45e3a344768fe6975"
+                    ]
+                ]
+            ],
+            [
+                "versions.yml:md5,6abf6c733f53fa3b6aaaa6f06864ef0c"
+            ]
         ],
-        "timestamp": "2023-11-21T15:38:47.810576872"
+        "meta": {
+            "nf-test": "0.9.1",
+            "nextflow": "24.10.0"
+        },
+        "timestamp": "2024-10-30T14:25:43.618168582"
     },
-    "sarscov2 - Illumina FASTQ single - stub-run": {
+    "fastq-single": {
         "content": [
-            {
-                "0": [
+            [
+                
+            ],
+            [
+                
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
                     [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test_1.classified.fasta.gz:md5,34ed306e94fa7eed00b1adccd2e0de20"
+                        "sample.2.krakenuniq.classified.txt:md5,f885fa1cdbfc5460af0772219991bf6d",
+                        "sample_1.krakenuniq.classified.txt:md5,88a734a9a9216cb0770a77f36c9f4e78"
                     ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test_1.unclassified.fasta.gz:md5,34ed306e94fa7eed00b1adccd2e0de20"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test_1.krakenuniq.classified.txt:md5,a5704c35e6b573a45e3a344768fe6975"
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test_1.krakenuniq.report.txt:md5,a5704c35e6b573a45e3a344768fe6975"
-                    ]
-                ],
-                "4": [
-                    "versions.yml:md5,6abf6c733f53fa3b6aaaa6f06864ef0c"
-                ],
-                "classified_assignment": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test_1.krakenuniq.classified.txt:md5,a5704c35e6b573a45e3a344768fe6975"
-                    ]
-                ],
-                "classified_reads_fasta": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test_1.classified.fasta.gz:md5,34ed306e94fa7eed00b1adccd2e0de20"
-                    ]
-                ],
-                "report": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test_1.krakenuniq.report.txt:md5,a5704c35e6b573a45e3a344768fe6975"
-                    ]
-                ],
-                "unclassified_reads_fasta": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test_1.unclassified.fasta.gz:md5,34ed306e94fa7eed00b1adccd2e0de20"
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,6abf6c733f53fa3b6aaaa6f06864ef0c"
                 ]
-            }
+            ],
+            [
+                "versions.yml:md5,6abf6c733f53fa3b6aaaa6f06864ef0c"
+            ]
         ],
-        "timestamp": "2023-11-21T15:38:42.894597091"
+        "meta": {
+            "nf-test": "0.9.1",
+            "nextflow": "24.10.0"
+        },
+        "timestamp": "2024-10-30T15:21:33.941412985"
+    },
+    "fastq-paired": {
+        "content": [
+            [
+                
+            ],
+            [
+                
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    [
+                        "sample.2.krakenuniq.classified.txt:md5,ed5e19c7a88312cc04e483ac5f2579cd",
+                        "sample_1.krakenuniq.classified.txt:md5,ed5e19c7a88312cc04e483ac5f2579cd"
+                    ]
+                ]
+            ],
+            [
+                "versions.yml:md5,6abf6c733f53fa3b6aaaa6f06864ef0c"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.1",
+            "nextflow": "24.10.0"
+        },
+        "timestamp": "2024-10-30T15:21:43.622100223"
+    },
+    "fasta-stub": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    [
+                        "sample.2.classified.fasta.gz:md5,a5704c35e6b573a45e3a344768fe6975",
+                        "sample_1.classified.fasta.gz:md5,a5704c35e6b573a45e3a344768fe6975"
+                    ]
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    [
+                        "sample.2.unclassified.fasta.gz:md5,a5704c35e6b573a45e3a344768fe6975",
+                        "sample_1.unclassified.fasta.gz:md5,a5704c35e6b573a45e3a344768fe6975"
+                    ]
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    [
+                        "sample.2.krakenuniq.classified.txt:md5,a5704c35e6b573a45e3a344768fe6975",
+                        "sample_1.krakenuniq.classified.txt:md5,a5704c35e6b573a45e3a344768fe6975"
+                    ]
+                ]
+            ],
+            [
+                "versions.yml:md5,6abf6c733f53fa3b6aaaa6f06864ef0c"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.1",
+            "nextflow": "24.10.0"
+        },
+        "timestamp": "2024-10-30T14:25:33.871634213"
+    },
+    "fastq-paired-stub": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    [
+                        "sample.2.merged.classified.fastq.gz:md5,a5704c35e6b573a45e3a344768fe6975",
+                        "sample_1.merged.classified.fastq.gz:md5,a5704c35e6b573a45e3a344768fe6975"
+                    ]
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    [
+                        "sample.2.merged.unclassified.fastq.gz:md5,a5704c35e6b573a45e3a344768fe6975",
+                        "sample_1.merged.unclassified.fastq.gz:md5,a5704c35e6b573a45e3a344768fe6975"
+                    ]
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    [
+                        "sample.2.krakenuniq.classified.txt:md5,a5704c35e6b573a45e3a344768fe6975",
+                        "sample_1.krakenuniq.classified.txt:md5,a5704c35e6b573a45e3a344768fe6975"
+                    ]
+                ]
+            ],
+            [
+                "versions.yml:md5,6abf6c733f53fa3b6aaaa6f06864ef0c"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.1",
+            "nextflow": "24.10.0"
+        },
+        "timestamp": "2024-10-30T14:25:54.663232573"
+    },
+    "fasta": {
+        "content": [
+            [
+                
+            ],
+            [
+                
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    [
+                        "sample.2.krakenuniq.classified.txt:md5,8aafacd89a6aac98aaf512df0a7493d1",
+                        "sample_1.krakenuniq.classified.txt:md5,2bea6c2195c400a909a2d4cca2e3045e"
+                    ]
+                ]
+            ],
+            [
+                "versions.yml:md5,6abf6c733f53fa3b6aaaa6f06864ef0c"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.1",
+            "nextflow": "24.10.0"
+        },
+        "timestamp": "2024-10-30T14:45:02.199077563"
     }
 }

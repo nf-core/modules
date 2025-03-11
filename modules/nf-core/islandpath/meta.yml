@@ -6,36 +6,47 @@ keywords:
   - prediction
 tools:
   - "islandpath":
-      description: "IslandPath-DIMOB is a standalone software to predict genomic islands (GIs - clusters of genes in prokaryotic genomes of probable horizontal origin) in bacterial and archaeal genomes based on the presence of dinucleotide biases and mobility genes."
+      description: "IslandPath-DIMOB is a standalone software to predict genomic islands
+        (GIs - clusters of genes in prokaryotic genomes of probable horizontal origin)
+        in bacterial and archaeal genomes based on the presence of dinucleotide biases
+        and mobility genes."
       homepage: https://github.com/brinkmanlab/islandpath
       documentation: https://github.com/brinkmanlab/islandpath#readme
       tool_dev_url: https://github.com/brinkmanlab/islandpath
       doi: "10.1093/bioinformatics/bty095"
-      licence: "['GPL v3']"
+      licence: ["GPL v3"]
+      identifier: biotools:islandpath
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - genome:
-      type: file
-      description: |
-        Genome file in .gbk or .embl format.
-        pattern: "*.{gbk, embl, gbff}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - genome:
+        type: file
+        description: |
+          Genome file in .gbk or .embl format.
+          pattern: "*.{gbk, embl, gbff}"
 output:
   - gff:
-      type: file
-      description: GFF file listing the predicted genomic islands and their coordinates
-      pattern: "*.gff"
+      - meta:
+          type: file
+          description: GFF file listing the predicted genomic islands and their coordinates
+          pattern: "*.gff"
+      - "*.gff":
+          type: file
+          description: GFF file listing the predicted genomic islands and their coordinates
+          pattern: "*.gff"
   - log:
-      type: file
-      description: Log file of the islandpath run
-      pattern: "*.log"
+      - Dimob.log:
+          type: file
+          description: Log file of the islandpath run
+          pattern: "*.log"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jvfe"
 maintainers:

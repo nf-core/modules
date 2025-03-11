@@ -15,39 +15,42 @@ tools:
       tool_dev_url: "https://github.com/etal/cnvkit"
       doi: 10.1371/journal.pcbi.1004873
       licence: ["Apache-2.0"]
+      identifier: biotools:cnvkit
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - baits:
-      type: file
-      description: BED or interval file listing the targeted regions.
-      pattern: "*.{bed}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - annotation:
-      type: file
-      description: Use gene models from this file to assign names to the target regions.
-      pattern: "*.{txt,bed,gff3,pil}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - baits:
+        type: file
+        description: BED or interval file listing the targeted regions.
+        pattern: "*.{bed}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - annotation:
+        type: file
+        description: Use gene models from this file to assign names to the target regions.
+        pattern: "*.{txt,bed,gff3,pil}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - bed:
-      type: file
-      description: File containing target regions
-      pattern: "*.{bed}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bed":
+          type: file
+          description: File containing target regions
+          pattern: "*.{bed}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@adamrtalbot"
   - "@priesgo"

@@ -1,0 +1,79 @@
+nextflow_process {
+
+    name "Test Process FGBIO_COLLECTDUPLEXSEQMETRICS"
+    script "../main.nf"
+    process "FGBIO_COLLECTDUPLEXSEQMETRICS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fgbio"
+    tag "fgbio/collectduplexseqmetrics"
+
+
+    test("homo_sapiens - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/umi/test.paired_end.duplex_umi_grouped.bam', checkIfExists: true)
+                ]
+                input[1]=[]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.family_sizes,
+                process.out.duplex_family_sizes,
+                process.out.duplex_yield_metrics,
+                process.out.umi_counts,
+                process.out.duplex_umi_counts,
+                process.out.versions,
+                file(process.out.duplex_qc[0][1]).name)
+                .match() }
+                
+            )
+        }
+
+    }
+
+    test("homo_sapiens - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/umi/test.paired_end.duplex_umi_grouped.bam', checkIfExists: true)
+                ]
+                input[1] = []
+
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.family_sizes,
+                process.out.duplex_family_sizes,
+                process.out.duplex_yield_metrics,
+                process.out.umi_counts,
+                process.out.duplex_umi_counts,
+                process.out.versions,
+                file(process.out.duplex_qc[0][1]).name)
+                .match() }
+            )
+        }
+
+    }
+
+}

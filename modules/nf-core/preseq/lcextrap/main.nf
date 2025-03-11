@@ -5,8 +5,8 @@ process PRESEQ_LCEXTRAP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/preseq:3.1.2--h445547b_2':
-        'biocontainers/preseq:3.1.2--h445547b_2' }"
+        'https://depot.galaxyproject.org/singularity/preseq:3.2.0--hdcf5f25_6':
+        'biocontainers/preseq:3.2.0--hdcf5f25_6' }"
 
     input:
     tuple val(meta), path(bam)
@@ -32,6 +32,18 @@ process PRESEQ_LCEXTRAP {
         -output ${prefix}.lc_extrap.txt \\
         $bam
     cp .command.err ${prefix}.command.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        preseq: \$(echo \$(preseq 2>&1) | sed 's/^.*Version: //; s/Usage:.*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.lc_extrap.txt
+    touch ${prefix}.command.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

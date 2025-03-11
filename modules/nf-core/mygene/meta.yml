@@ -1,0 +1,61 @@
+name: "mygene"
+description: Fetch the GO concepts for a list of genes
+keywords:
+  - mygene
+  - go
+  - annotation
+tools:
+  - "mygene":
+      description: "A python wrapper to query/retrieve gene annotation data from Mygene.info."
+      homepage: "https://mygene.info/"
+      documentation: "https://docs.mygene.info/projects/mygene-py/en/latest/"
+      tool_dev_url: "https://github.com/biothings/mygene.py"
+      doi: "10.1093/nar/gks1114"
+      licence: ["Apache-2.0"]
+      identifier: biotools:mygene
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - gene_list:
+        type: file
+        description: A tsv/csv file that contains a list of gene ids in one of the columns.
+          By default, the column name should be "gene_id", but this can be changed by
+          using "--columname gene_id" in ext.args.
+        pattern: "*.{csv,tsv}"
+output:
+  - gmt:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.gmt":
+          type: file
+          description: |
+            Each row contains the GO id, a description, and a list of gene ids.
+          pattern: "*.gmt"
+  - tsv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.tsv":
+          type: file
+          description: |
+            (optional) A tsv file with the following columns:
+            query, mygene_id, go_id, go_term, go_evidence, go_category, symbol, name, taxid
+          pattern: "*.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@suzannejin"
+maintainers:
+  - "@suzannejin"

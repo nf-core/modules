@@ -13,57 +13,61 @@ tools:
       documentation: "https://github.com/AstraZeneca-NGS/VarDictJava"
       tool_dev_url: "https://github.com/AstraZeneca-NGS/VarDictJava"
       doi: "10.1093/nar/gkw227 "
-      licence: "['MIT']"
+      licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bams:
-      type: file
-      description: One or two BAM files. Supply two BAM files to run Vardict in paired mode.
-      pattern: "*.bam"
-  - bais:
-      type: file
-      description: Index/indices of the BAM file(s)
-      pattern: "*.bai"
-  - bed:
-      type: file
-      description: BED with the regions of interest
-      pattern: "*.bed"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing fasta information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: FASTA of the reference genome
-      pattern: "*.{fa,fasta}"
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing fasta information
-        e.g. [ id:'test', single_end:false ]
-  - fasta_fai:
-      type: file
-      description: The index of the FASTA of the reference genome
-      pattern: "*.fai"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bams:
+        type: file
+        description: One or two BAM files. Supply two BAM files to run Vardict in paired
+          mode.
+        pattern: "*.bam"
+    - bais:
+        type: file
+        description: Index/indices of the BAM file(s)
+        pattern: "*.bai"
+    - bed:
+        type: file
+        description: BED with the regions of interest
+        pattern: "*.bed"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing fasta information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: FASTA of the reference genome
+        pattern: "*.{fa,fasta}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing fasta information
+          e.g. [ id:'test', single_end:false ]
+    - fasta_fai:
+        type: file
+        description: The index of the FASTA of the reference genome
+        pattern: "*.fai"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - vcf:
-      type: file
-      description: VCF file output
-      pattern: "*.vcf.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf.gz":
+          type: file
+          description: VCF file output
+          pattern: "*.vcf.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:
