@@ -8,8 +8,9 @@ process BASICPY {
     tuple val(meta), path(image)
 
     output:
-    tuple val(meta), path("*-dfp.tiff"), path("*-ffp.tiff"), emit: profiles
-    path "versions.yml"                                    , emit: versions
+    tuple val(meta), path("*-dfp.tiff"), emit: dfp, optional: true
+    tuple val(meta), path("*-ffp.tiff"), emit: ffp, optional: true
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
