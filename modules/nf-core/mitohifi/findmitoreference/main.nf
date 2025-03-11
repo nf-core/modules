@@ -18,6 +18,7 @@ process MITOHIFI_FINDMITOREFERENCE {
 
     script:
     def args = task.ext.args ?: ''
+    def VERSION = '3.2.3' // WARN: Incorrect version information is provided by tool on CLI. Please update this string when bumping container versions.
     """
     findMitoReference.py \\
         --species "$species" \\
@@ -26,7 +27,7 @@ process MITOHIFI_FINDMITOREFERENCE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mitohifi: \$( mitohifi.py -v | sed 's/.* //' )
+        mitohifi: ${VERSION}
     END_VERSIONS
     """
 

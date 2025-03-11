@@ -45,6 +45,7 @@ process MITOHIFI_MITOHIFI {
     if (! ["c", "r"].contains(input_mode)) {
         error "r for reads or c for contigs must be specified"
     }
+    def VERSION = '3.2.3' // WARN: Incorrect version information is provided by tool on CLI. Please update this string when bumping container versions.
     """
     mitohifi.py -${input_mode} ${input} \\
         -f ${ref_fa} \\
@@ -54,11 +55,12 @@ process MITOHIFI_MITOHIFI {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mitohifi: \$( mitohifi.py --version 2>&1 | head -n1 | sed 's/^.*MitoHiFi //; s/ .*\$//' )
+        mitohifi: ${VERSION}
     END_VERSIONS
     """
 
     stub:
+    def VERSION = '3.2.3' // WARN: Incorrect version information is provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch final_mitogenome.fasta
     touch final_mitogenome.fasta
@@ -66,7 +68,7 @@ process MITOHIFI_MITOHIFI {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mitohifi: \$( mitohifi.py --version 2>&1 | head -n1 | sed 's/^.*MitoHiFi //; s/ .*\$//' )
+        mitohifi: ${VERSION}
     END_VERSIONS
     """
 }
