@@ -44,8 +44,7 @@ nextflow_process {
                 """
                 input[0] = [
 				    [ id:'test', caller:'manta' ], // meta map
-                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/vcf/test.genome_21.somatic_sv.vcf.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/vcf/test.genome_21.somatic_sv.vcf.gz.tbi', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.genome_21.somatic_sv.vcf.gz', checkIfExists: true)
 				]
                 input[1] = [
                     [id:'fai'],
