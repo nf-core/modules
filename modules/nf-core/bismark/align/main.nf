@@ -9,7 +9,7 @@ process BISMARK_ALIGN {
 
     input:
     tuple val(meta), path(reads)
-    tuple val(meta2), path(fasta)
+    tuple val(meta2), path(fasta, stageAs: 'tmp/*') // This change mounts as directory containing the FASTA file to prevent nested symlinks
     tuple val(meta3), path(index)
 
     output:
@@ -45,7 +45,7 @@ process BISMARK_ALIGN {
 
         // Check that we have enough memory
         try {
-            def tmem = (task.memory as nextflow.util.MemoryUnit).toBytes()
+            def tmem = (task.memory as MemoryUnit).toBytes()
             def mcore = (tmem / mem_per_multicore) as int
             ccore = Math.min(ccore, mcore)
         } catch (all) {
@@ -56,13 +56,11 @@ process BISMARK_ALIGN {
         }
     }
     """
-    ln -sf \$(readlink $fasta) $index/$fasta
-
     bismark \\
-        $fastq \\
-        --genome $index \\
+        ${fastq} \\
+        --genome ${index} \\
         --bam \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
