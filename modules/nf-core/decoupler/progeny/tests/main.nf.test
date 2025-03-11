@@ -2,7 +2,6 @@ nextflow_process {
 
     name "Test Process DECOUPLER_PROGENY"
     script "../main.nf"
-    config "./nextflow.config"
     process "DECOUPLER_PROGENY"
 
     tag "modules"
@@ -13,15 +12,14 @@ nextflow_process {
     test("decoupler_progeny_test") {
 
         when {
-            params {
-                module_args = { """{"organism": "human", "top_genes": 1000}""" }
-            }
             process {
                 """
                 input[0] = [
                     [ id: 'test' ],
                     file("https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/scrnaseq/h5ad/pbmc3k.h5ad", checkIfExists: true)
                 ]
+                input[1] = Channel.value("human")
+                input[2] = Channel.value("1000")
                 """
             }
         }
@@ -47,15 +45,14 @@ nextflow_process {
         options "-stub"
 
         when {
-            params {
-                module_args = { """{"organism": "human", "top_genes": 1000}""" }
-            }
             process {
                 """
                 input[0] = [
                     [ id: 'test' ],
                     file("https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/scrnaseq/h5ad/pbmc3k.h5ad", checkIfExists: true)
                 ]
+                input[1] = Channel.value("human")
+                input[2] = Channel.value("1000")
                 """
             }
         }
