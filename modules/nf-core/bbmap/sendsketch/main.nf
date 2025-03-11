@@ -12,6 +12,7 @@ process BBMAP_SENDSKETCH {
 
     output:
     tuple val(meta), path("*.txt")  , emit: hits
+    tuple val(meta), env(DEPTH)     , emit: depth
     path "versions.yml"             , emit: versions
 
     when:
@@ -32,6 +33,8 @@ process BBMAP_SENDSKETCH {
         in=${file_used} \\
         out=${prefix}.txt \\
         $args
+
+    DEPTH=\$(sed -n -e 's/.*Depth: \\([0-9.]\\+\\).*/\\1/p' ${prefix}.txt)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
