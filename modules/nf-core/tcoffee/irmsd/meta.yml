@@ -28,7 +28,8 @@ input:
           e.g. [ id:'test', ... ]
     - msa:
         type: file
-        description: File containing the multiple sequence alignment
+        description: |
+          Multiple Sequence Alignment File
   - - meta2:
         type: map
         description: |
@@ -36,10 +37,12 @@ input:
           e.g. [ id:'test', single_end:false ]
     - template:
         type: file
-        description: File containing the template structure
+        description: |
+          Template file
     - structures:
         type: file
-        description: File containing the structures
+        description: |
+          Structure file
 output:
   - irmsd:
       - meta:
