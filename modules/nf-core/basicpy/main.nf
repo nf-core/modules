@@ -8,8 +8,8 @@ process BASICPY {
     tuple val(meta), path(image)
 
     output:
-    tuple val(meta), path("*-dfp.tiff"), emit: dfp, optional: true
-    tuple val(meta), path("*-ffp.tiff"), emit: ffp, optional: true
+    tuple val(meta), path("*-dfp.tiff"), emit: dfp
+    tuple val(meta), path("*-ffp.tiff"), emit: ffp
     path "versions.yml"                , emit: versions
 
     when:
