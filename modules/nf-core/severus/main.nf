@@ -4,7 +4,7 @@ process SEVERUS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/severus:1.--pyhdfd78af_0':
+        'https://depot.galaxyproject.org/singularity/severus:1.4--pyhdfd78af_0':
         'biocontainers/severus:1.4--pyhdfd78af_0' }"
 
     input:
