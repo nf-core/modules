@@ -6,8 +6,8 @@ process PURECN_COVERAGE {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-582ac26068889091d5e798347c637f8208d77a71:a29c64a63498b1ee8b192521fdf6ed3c65506994-0':
-        'biocontainers/mulled-v2-582ac26068889091d5e798347c637f8208d77a71:a29c64a63498b1ee8b192521fdf6ed3c65506994-0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/92/926f2b12a939f84566b934f3fd6136d33137130ed6563f70c3edf6664cdcc5c0/data':
+        'community.wave.seqera.io/library/bioconductor-org.hs.eg.db_bioconductor-purecn_bioconductor-txdb.hsapiens.ucsc.hg19.knowngene_bioconductor-txdb.hsapiens.ucsc.hg38.knowngene_r-optparse:53ad9839eb9a0de2' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
