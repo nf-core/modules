@@ -12,33 +12,42 @@ components:
   - samtools/sort
   - samtools/markdup
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test' ]`
-  - bam:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-  - fasta:
-      type: file
-      description: FASTA file
-      pattern: "*.{fasta,fa}"
+  - ch_bam:
+      description: "channel containing BAM/CRAM/SAM file"
+      structure:
+        - meta:
+            type: map
+            description: "groovy map"
+        - bam:
+            type: file
+            description: "BAM/CRAM/SAM file"
+  - ch_fasta:
+      description: "FASTA file"
+      structure:
+        - meta:
+            type: map
+            description: "groovy map"
+        - fasta:
+            type: file
+            description: "FASTA file"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test' ]`
   - bam:
-      type: file
-      description: Sorted and markduplicate BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: channel containig sorted and markduplicate BAM/CRAM/SAM file
+      structure:
+        - meta:
+            type: map
+            description: groovy map
+        - bam:
+            type: file
+            description: Sorted and markduplicate BAM/CRAM/SAM file
+            pattern: "*.{bam,cram,sam}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      description: channel containing software versions
+      structure:
+        - versions:
+            type: file
+            description: File containing software versions
+            pattern: "versions.yml"
 authors:
   - "@priyanka-surana"
 maintainers:
