@@ -28,9 +28,10 @@ process SYLPHTAX_TAXPROF {
         taxprof \\
         $sylph_results \\
         $args \\
-        -o ${prefix}.sylphmpa \\
         -t $taxonomy
 
+    mv *.sylphmpa ${prefix}.sylphmpa
+    
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         sylph-tax: \$(sylph-tax --version 2>&1 | sed -n 's/.*\\([0-9]\\+\\.[0-9]\\+\\.[0-9]\\+\\).*/\\1/p' | head -n 1)
