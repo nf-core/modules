@@ -47,6 +47,11 @@ repos:
     hooks:
       - id: editorconfig-checker
         alias: ec
+    # NOTE This runs with Docker instead of the binary. Hoping anyone messing with Dockerfiles has Docker installed
+  - repo: https://github.com/hadolint/hadolint
+    rev: v2.12.0
+    hooks:
+      - id: hadolint-docker
   - repo: https://github.com/nf-core/tools
     rev: pre-commit
     hooks:
