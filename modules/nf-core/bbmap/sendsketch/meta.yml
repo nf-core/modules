@@ -39,6 +39,15 @@ output:
           description: .txt file containing hits from a query seuqnce to various reference
             sequences output
           pattern: "*.{txt}"
+  - depth:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - DEPTH:
+          type: string
+          description: estimate of read depth
   - versions:
       - versions.yml:
           type: file
@@ -46,5 +55,6 @@ output:
           pattern: "versions.yml"
 authors:
   - "@phanhung2"
+  - "@zachary-foster"
 maintainers:
-  - "@phanhung2"
+  - "@zachary-foster"
