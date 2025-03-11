@@ -53,6 +53,7 @@ process MITOHIFI_MITOHIFI {
         -o ${mito_code} \\
         -t $task.cpus ${args}
 
+    ## old version command: \$(mitohifi.py -v | sed 's/.* //')
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         mitohifi: ${VERSION}
@@ -63,7 +64,7 @@ process MITOHIFI_MITOHIFI {
     def VERSION = '3.2.3' // WARN: Incorrect version information is provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch final_mitogenome.fasta
-    touch final_mitogenome.fasta
+    touch final_mitogenome.gb
     touch contigs_stats.tsv
 
     cat <<-END_VERSIONS > versions.yml

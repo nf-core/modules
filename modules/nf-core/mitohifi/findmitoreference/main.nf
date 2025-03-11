@@ -36,6 +36,7 @@ process MITOHIFI_FINDMITOREFERENCE {
     touch accession.fasta
     touch accession.gb
 
+    ## old version command: \$(mitohifi.py -v | sed 's/.* //')
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         mitohifi: \$( mitohifi.py -v | sed 's/.* //' )
