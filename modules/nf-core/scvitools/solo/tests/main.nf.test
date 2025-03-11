@@ -1,0 +1,58 @@
+nextflow_process {
+
+    name "Test Process SCVITOOLS_SOLO"
+    script "../main.nf"
+    process "SCVITOOLS_SOLO"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "scvitools"
+    tag "scvitools/solo"
+
+    test("solo") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: 'test'],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_custom_emptydrops_filter_matrix.h5ad", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("solo - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: 'test'],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_custom_emptydrops_filter_matrix.h5ad", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

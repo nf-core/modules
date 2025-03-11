@@ -26,9 +26,6 @@ input:
   - - barcode_file:
         type: file
         description: FASTQ file containing barcode sequences
-  - - adapter_seq:
-        type: string
-        description: adapter sequence
 output:
   - fastq:
       - meta:
@@ -36,9 +33,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*[!no_match].fastq.gz":
-          type: file
-          description: Demultiplexed sample FASTQ files
+          pattern: "*[!no_match].fastq.gz"
+      - "*_matched.fastq.gz":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*[!no_match].fastq.gz"
   - no_match_fastq:
       - meta:
@@ -46,9 +46,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*no_match.fastq.gz":
-          type: file
-          description: FASTQ file containing reads that could not be demultiplexed
+          pattern: "*no_match.fastq.gz"
+      - "*_no_match_*.fastq.gz":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*no_match.fastq.gz"
   - report:
       - "*.log":

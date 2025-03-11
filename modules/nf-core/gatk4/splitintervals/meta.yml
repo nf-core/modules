@@ -57,9 +57,18 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
+          pattern: "*.interval_list"
       - "**.interval_list":
-          type: file
-          description: interval files
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+          pattern: "*.interval_list"
+      - s:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
           pattern: "*.interval_list"
   - versions:
       - versions.yml:
