@@ -34,7 +34,7 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:true ], // meta map
                     [
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                     ],
                 ]
                 input[1] = BOWTIE2_BUILD.out.index.map{it[1]}
@@ -47,9 +47,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        process.out.fastqs,
+                        process.out.fastq,
                         process.out.versions,
-                        process.out.json[0][1].readLines().contains('"reads_removed": 200')
+                        path(process.out.json[0][1]).readLines().any{ it.contains('\"reads_removed\": 0')}
                     ).match() }
             )
         }
@@ -67,8 +67,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     [
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true),
                     ],
                 ]
                 input[1] = BOWTIE2_BUILD.out.index.map{it[1]}
@@ -81,9 +81,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        process.out.fastqs,
+                        file(process.out.fastq[0][1][0]).length(),
+                        file(process.out.fastq[0][1][1]).length(),
                         process.out.versions,
-                        process.out.json[0][1].readLines().contains('"reads_removed": 200')
+                        path(process.out.json[0][1]).readLines().any{ it.contains('\"reads_removed\": 0')}
                     ).match() }
             )
         }
@@ -102,7 +103,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:true ], // meta map
-                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)],
+                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true)],
                 ]
                 input[1] = BOWTIE2_BUILD.out.index.map{it[1]}
                 input[2] = 'genome'
