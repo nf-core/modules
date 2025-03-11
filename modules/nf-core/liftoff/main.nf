@@ -9,7 +9,7 @@ process LIFTOFF {
 
     input:
     tuple val(meta), path(target_fa)
-    path ref_fa, name: 'ref_assembly.fa'
+    path ref_fa, name: 'ref/*'
     path ref_annotation
     path ref_db
 
@@ -28,6 +28,22 @@ process LIFTOFF {
     def arg_db  = ref_db            ?   "-db $ref_db"           : ''
     prefix      = task.ext.prefix   ?:  "${meta.id}"
     """
+    if [[ ${target_fa} == *.gz ]]; then
+        zcat ${target_fa} > target.fasta
+    fi
+
+    if [[ ${target_fa} != *.gz ]]; then
+        ln -s ${target_fa} target.fasta
+    fi
+
+    if [[ ${ref_fa} == *.gz ]]; then
+        zcat ${ref_fa} > reference.fasta
+    fi
+
+    if [[ ${ref_fa} != *.gz  ]]; then
+        ln -s ${ref_fa} reference.fasta
+    fi
+
     liftoff \\
         $arg_g \\
         $arg_db \\
@@ -35,8 +51,8 @@ process LIFTOFF {
         -o "${prefix}.gff3" \\
         -u "${prefix}.unmapped.txt" \\
         $args \\
-        $target_fa \\
-        ref_assembly.fa
+        target.fasta \\
+        reference.fasta
 
     mv \\
         "${prefix}.gff3_polished" \\

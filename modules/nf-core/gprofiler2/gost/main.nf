@@ -4,13 +4,13 @@ process GPROFILER2_GOST {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-3712554873398d849d0d11b22440f41febbc4ede:aa19bb8afc0ec6456a4f3cd650f7577c3bbdd4f3-0':
-        'biocontainers/mulled-v2-3712554873398d849d0d11b22440f41febbc4ede:aa19bb8afc0ec6456a4f3cd650f7577c3bbdd4f3-0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e4/e4b0e10a72db4ad519c128c4e3cef6e10bc1a83440af31f105ab389a5532589a/data':
+        'community.wave.seqera.io/library/r-ggplot2_r-gprofiler2:fab855ea9f680400' }"
 
     input:
     tuple val(meta), path(de_file)
-    path(gmt_file)
-    path(background_file)
+    tuple val(meta2), path(gmt_file)
+    tuple val(meta3), path(background_file)
 
     output:
     tuple val(meta), path("*.gprofiler2.all_enriched_pathways.tsv")     , emit: all_enrich
@@ -28,4 +28,23 @@ process GPROFILER2_GOST {
 
     script:
     template 'gprofiler2_gost.R'
+
+    stub:
+    def prefix = task.ext.prefix ?: meta.id
+    """
+    touch ${prefix}.gprofiler2.all_enriched_pathways.tsv
+    touch ${prefix}.gprofiler2.gost_results.rds
+    touch ${prefix}.gprofiler2.gostplot.png
+    touch ${prefix}.gprofiler2.gostplot.html
+    touch ${prefix}.gprofiler2.*.sub_enriched_pathways.tsv
+    touch ${prefix}.gprofiler2.*.sub_enriched_pathways.png
+    touch ${prefix}.ENSG_filtered.gmt
+    touch ${prefix}.R_sessionInfo.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        r-ggplot2: \$(Rscript -e "library(ggplot2); cat(as.character(packageVersion('ggplot2')))")
+        r-gprofiler2: \$(Rscript -e "library(gprofiler2); cat(as.character(packageVersion('gprofiler2')))")
+    END_VERSIONS
+    """
 }
