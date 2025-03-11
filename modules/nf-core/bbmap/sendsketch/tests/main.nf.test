@@ -17,9 +17,9 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:true], // meta map
-				    [
+                    [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-				    ]
+                    ]
                 ]
 
                 """
@@ -30,11 +30,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-					file(process.out.hits[0][1]).readLines()[3..7],
-					process.out.versions,
+                    file(process.out.hits[0][1]).readLines()[3..7],
+                    process.out.versions,
                     process.out.depth
-					).match()
-				}
+                    ).match()
+                }
             )
         }
     }
@@ -46,11 +46,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false], // meta map
-				    [
+                    [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_1.fastq.gz', checkIfExists: true),
-				        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_2.fastq.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_2.fastq.gz', checkIfExists: true)
                     ]
-				]
+                ]
 
                 """
             }
@@ -60,11 +60,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-					file(process.out.hits[0][1]).readLines()[3..7],
-					process.out.versions,
+                    file(process.out.hits[0][1]).readLines()[3..7],
+                    process.out.versions,
                     process.out.depth
-					).match()
-				}
+                    ).match()
+                }
             )
         }
     }
