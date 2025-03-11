@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "hostile_clean"
 description: write your description here
@@ -53,9 +52,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "cleaned_reads/*.":
-          type: file
-          description: Paired or single end FASTQ files with reads aligned against the reference genome removed
+      - cleaned_reads/*.fastq.gz:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
           pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
           ontologies:
             - edam: "http://edamontology.org/format_1930"
@@ -65,18 +66,19 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.json.":
-          type: file
-          description: Log file with statistics on number of input and output reads post removal in JSON format
+      - "*.json":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
           pattern: "*.json"
           ontologies:
             - edam: "http://edamontology.org/format_3464"
   - versions:
-      - "versions.yml":
+      - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
-
 authors:
   - "@jfy133"
 maintainers:
