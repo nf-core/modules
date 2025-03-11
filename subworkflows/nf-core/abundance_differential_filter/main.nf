@@ -8,7 +8,7 @@ include { DESEQ2_DIFFERENTIAL                 } from '../../../modules/nf-core/d
 include { DESEQ2_DIFFERENTIAL as DESEQ2_NORM  } from '../../../modules/nf-core/deseq2/differential/main'
 include { PROPR_PROPD                         } from '../../../modules/nf-core/propr/propd/main'
 include { CUSTOM_FILTERDIFFERENTIALTABLE      } from '../../../modules/nf-core/custom/filterdifferentialtable/main'
-include { DREAM_DIFFERENTIAL                  } from '../../../modules/nf-core/dream/differential/main'
+include { VARIANCEPARTITION_DREAM             } from '../../../modules/nf-core/variancepartition/dream/main'
 
 // Combine meta maps, including merging non-identical values of shared keys (e.g. 'id')
 def mergeMaps(meta, meta2){
@@ -27,7 +27,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     ch_transcript_lengths    // [ meta_exp, transcript_lengths]
     ch_control_features      // [meta_exp, control_features]
     ch_contrasts             // [[ meta_contrast, contrast_variable, reference, target ]]
-    ch_contrasts_dream        // [meta_contrast, samplesheet, matrix]
+    ch_contrasts_dream       // [meta_contrast, samplesheet, matrix]
 
     main:
 
@@ -191,16 +191,18 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     )
     ch_versions = ch_versions.mix(CUSTOM_FILTERDIFFERENTIALTABLE.out.versions.first())
 
-    DREAM_DIFFERENTIAL (
-        ch_contrasts_dream
-    )
+    ch_dream_results = Channel.empty()
 
-    ch_versions = ch_versions.mix(DREAM_DIFFERENTIAL.out.versions.first())
+    VARIANCEPARTITION_DREAM(ch_contrasts_dream)
+    ch_versions = ch_versions.mix( VARIANCEPARTITION_DREAM.out.versions.first() )
+    ch_dream_results = VARIANCEPARTITION_DREAM.out.results
+
 
     emit:
     // main results
     results_genewise           = ch_results
     results_genewise_filtered  = CUSTOM_FILTERDIFFERENTIALTABLE.out.filtered
+    results_dream              = ch_dream_results
 
     // pairwise results
     adjacency                  = PROPR_PROPD.out.adjacency
