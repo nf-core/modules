@@ -4,8 +4,8 @@ process COOLER_CLOAD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cooler:0.9.2--pyh7cba7a3_0' :
-        'biocontainers/cooler:0.9.2--pyh7cba7a3_0' }"
+        'https://depot.galaxyproject.org/singularity/cooler:0.10.3--pyhdfd78af_0' :
+        'biocontainers/cooler:0.10.3--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(pairs), path(index), val(cool_bin)
