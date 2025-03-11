@@ -4,8 +4,8 @@ process SEQKIT_TRANSLATE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/seqkit:2.8.2--h9ee0642_1':
-        'biocontainers/seqkit:2.8.2--h9ee0642_1' }"
+        'https://depot.galaxyproject.org/singularity/seqkit:2.9.0--h9ee0642_0':
+        'biocontainers/seqkit:2.9.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(fastx)
