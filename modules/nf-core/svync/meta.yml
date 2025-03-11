@@ -44,6 +44,16 @@ output:
           type: file
           description: The standardized VCF file
           pattern: "*.vcf.gz"
+  - tbi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.tbi":
+          type: file
+          description: The index of the standardized VCF file
+          pattern: "*.tbi"
   - versions:
       - versions.yml:
           type: file
