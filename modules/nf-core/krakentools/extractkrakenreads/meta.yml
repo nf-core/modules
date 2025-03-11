@@ -46,7 +46,7 @@ input:
     - report:
         type: file
         description: Optional Kraken2 report containing stats about classified and not
-          classifed reads.
+          classified reads.
         pattern: "*.{report.txt}"
 output:
   - extracted_kraken2_reads:
@@ -55,10 +55,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.{fastq,fasta}":
+      - "*.{fastq.gz,fasta.gz}":
           type: file
           description: Reads assigned to a taxid list.
-          pattern: "*.{fastq,fasta}"
+          pattern: "*.{fastq.gz,fasta.gz}"
   - versions:
       - versions.yml:
           type: file

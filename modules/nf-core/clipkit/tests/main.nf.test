@@ -29,6 +29,7 @@ nextflow_process {
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
+                input[1] = []
                 """
             }
         }
@@ -36,7 +37,39 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.clipkit,
+                    path(process.out.log.get(0).get(1)).readLines().contains("Number of sites kept: 79"),
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("PF14720 - aln - gap threshold - ends only") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = "alnfaa"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.clipkit,
+                    path(process.out.log.get(0).get(1)).readLines().contains("Number of sites kept: 86"),
+                    process.out.versions
+                    ).match()
+                }
             )
         }
 
@@ -50,6 +83,7 @@ nextflow_process {
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
+                input[1] = ""
                 """
             }
         }

@@ -15,8 +15,54 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id : 'test'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true),
+                    []
                 ]
+                input[1] = [
+                    [],
+                    [],
+                    []
+                ]
+                input[2] = [
+                    [],
+                    [],
+                    []
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.corrected_reads.get(0).get(1)).exists() },
+                { assert file(process.out.source_overlaps.get(0).get(1)).exists() },
+                { assert file(process.out.reverse_overlaps.get(0).get(1)).exists() },
+                { assert file(process.out.log.get(0).get(1)).exists() },
+                { assert snapshot(
+                    process.out.raw_unitigs,
+                    process.out.processed_contigs,
+                    process.out.processed_unitigs,
+                    process.out.paternal_contigs,
+                    process.out.maternal_contigs,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens pacbio hifi [fastq x2, [,], [,] ]") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id : 'test'],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/alz.ccs.fastq', checkIfExists: true),
+                    ],
+                    []
+                ])
                 input[1] = [
                     [],
                     [],
@@ -55,7 +101,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id : 'test'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true),
+                    []
                 ]
                 input[1] = [
                     [ id : 'test' ],
@@ -94,7 +141,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id : 'test'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true),
+                    []
                 ]
                 input[1] = [
                     [ id : 'test' ],
@@ -132,7 +180,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id : 'test'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true),
+                    []
                 ]
                 input[1] = [
                     [ id : 'test' ],
@@ -158,7 +207,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id : 'test'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true),
+                    []
                 ]
                 input[1] = [
                     [ id : 'test'],
@@ -180,7 +230,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id : 'test'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true),
+                    []
                 ]
                 input[1] = []
                 input[2] = [
@@ -204,7 +255,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id : 'test'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true),
+                    []
                 ]
                 input[1] = [
                     [],
