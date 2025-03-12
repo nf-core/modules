@@ -63,17 +63,9 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                         file(workflow.out.merged_gene_rds[0][1]).name,
-                        file(workflow.out.merged_gene_rds_length_scaled[0][1]).name,
-                        file(workflow.out.merged_gene_rds_scaled[0][1]).name,
                         file(workflow.out.merged_transcript_rds[0][1]).name,
-                        workflow.out.counts_gene,
-                        workflow.out.counts_gene_length_scaled,
-                        workflow.out.lengths_gene,
-                        workflow.out.lengths_transcript,
-                        workflow.out.merged_counts_transcript,
-                        workflow.out.merged_tpm_transcript,
-                        workflow.out.tpm_gene,
-                        workflow.out.tpm_transcript,
+                        workflow.out.gene,
+                        workflow.out.transcript,
                         workflow.out.versions
                     ).match()
                 }
@@ -130,15 +122,9 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                         file(workflow.out.merged_gene_rds[0][1]).name,
-                        file(workflow.out.merged_gene_rds_length_scaled[0][1]).name,
-                        file(workflow.out.merged_gene_rds_scaled[0][1]).name,
                         file(workflow.out.merged_transcript_rds[0][1]).name,
-                        workflow.out.counts_gene,
-                        workflow.out.counts_gene_length_scaled,
-                        workflow.out.lengths_gene,
-                        workflow.out.lengths_transcript,
-                        workflow.out.tpm_gene,
-                        workflow.out.tpm_transcript,
+                        workflow.out.gene,
+                        workflow.out.transcript,
                         workflow.out.versions
                     ).match()
                 }
