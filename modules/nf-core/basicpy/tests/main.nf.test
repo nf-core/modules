@@ -24,10 +24,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert file(process.out.dfp.get(0).get(1)).exists() },
-                { assert file(process.out.dfp.get(0).get(1)).size() == 633904 },
-                { assert file(process.out.ffp.get(0).get(1)).exists() },
-                { assert file(process.out.ffp.get(0).get(1)).size() == 633904 },
+                { assert snapshot(
+                    process.out.versions,
+                    file(process.out.profiles.get(0).get(1)).exists(),
+                    file(process.out.profiles.get(0).get(2)).exists(),
+                    file(process.out.profiles.get(0).get(1)).size(),
+                    file(process.out.profiles.get(0).get(2)).size()
+                    ).match()
+                },
             )
         }
 

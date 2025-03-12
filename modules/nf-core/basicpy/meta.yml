@@ -29,7 +29,7 @@ input:
         description: Tiff file to be used for dark and flat field illumination correction
         pattern: "*.{tiff,tif}"
 output:
-  - dfp:
+  - profiles:
       - meta:
           type: map
           description: |
@@ -39,12 +39,6 @@ output:
           type: file
           description: Tiff fields for dark field illumination correction
           pattern: "*.{tiff}"
-  - ffp:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test' ]
       - "*-ffp.tiff":
           type: file
           description: Tiff fields for flat field illumination correction

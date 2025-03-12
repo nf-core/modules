@@ -8,9 +8,8 @@ process BASICPY {
     tuple val(meta), path(image)
 
     output:
-    tuple val(meta), path("*-dfp.tiff"), emit: dfp
-    tuple val(meta), path("*-ffp.tiff"), emit: ffp
-    path "versions.yml"                , emit: versions
+    tuple val(meta), path("*-dfp.tiff"), path("*-ffp.tiff"), emit: profiles
+    path "versions.yml"                                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,7 +20,6 @@ process BASICPY {
         error "Basicpy module does not support Conda. Please use Docker / Singularity instead."
     }
     def args    = task.ext.args   ?: ''
-    def prefix  = task.ext.prefix ?: "${meta.id}"
     def VERSION = "1.2.0-patch1" // WARN: Version information not provided by tool on CLI. Please update this string when bumping
     """
     /opt/main.py -i $image -o . $args
