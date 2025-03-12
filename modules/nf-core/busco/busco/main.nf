@@ -16,19 +16,21 @@ process BUSCO_BUSCO {
     val clean_intermediates               // Optional:    Remove intermediate files
 
     output:
-    tuple val(meta), path("*-busco.batch_summary.txt")                , emit: batch_summary
-    tuple val(meta), path("short_summary.*.txt")                      , emit: short_summaries_txt   , optional: true
-    tuple val(meta), path("short_summary.*.json")                     , emit: short_summaries_json  , optional: true
-    tuple val(meta), path("*-busco/logs/busco.log")                   , emit: log                   , optional: true
-    tuple val(meta), path("*-busco/*/run_*/full_table.tsv")           , emit: full_table            , optional: true
-    tuple val(meta), path("*-busco/*/run_*/missing_busco_list.tsv")   , emit: missing_busco_list    , optional: true
-    tuple val(meta), path("*-busco/*/run_*/single_copy_proteins.faa") , emit: single_copy_proteins  , optional: true
-    tuple val(meta), path("*-busco/*/run_*/busco_sequences")          , emit: seq_dir               , optional: true
-    tuple val(meta), path("*-busco/*/translated_proteins")            , emit: translated_dir        , optional: true
-    tuple val(meta), path("*-busco")                                  , emit: busco_dir
-    tuple val(meta), path("busco_downloads/lineages/*")               , emit: downloaded_lineages   , optional: true
+    tuple val(meta), path("*-busco.batch_summary.txt")                                        , emit: batch_summary
+    tuple val(meta), path("short_summary.*.txt")                                              , emit: short_summaries_txt   , optional: true
+    tuple val(meta), path("short_summary.*.json")                                             , emit: short_summaries_json  , optional: true
+    tuple val(meta), path("*-busco/logs/busco.log")                                           , emit: log                   , optional: true
+    tuple val(meta), path("*-busco/*/run_*/full_table.tsv")                                   , emit: full_table            , optional: true
+    tuple val(meta), path("*-busco/*/run_*/missing_busco_list.tsv")                           , emit: missing_busco_list    , optional: true
+    tuple val(meta), path("*-busco/*/run_*/single_copy_proteins.faa")                         , emit: single_copy_proteins  , optional: true
+    tuple val(meta), path("*-busco/*/run_*/busco_sequences")                                  , emit: seq_dir               , optional: true
+    tuple val(meta), path("*-busco/*/translated_proteins")                                    , emit: translated_dir        , optional: true
+    tuple val(meta), path("*-busco")                                                          , emit: busco_dir
+    tuple val(meta), path("busco_downloads/lineages/*")                                       , emit: downloaded_lineages   , optional: true
+    tuple val(meta), path("*-busco/*/run_*/busco_sequences/single_copy_busco_sequences/*.faa"), emit: single_copy_faa       , optional: true
+    tuple val(meta), path("*-busco/*/run_*/busco_sequences/single_copy_busco_sequences/*.fna"), emit: single_copy_fna       , optional: true
 
-    path "versions.yml"                                               , emit: versions
+    path "versions.yml"                                                                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
