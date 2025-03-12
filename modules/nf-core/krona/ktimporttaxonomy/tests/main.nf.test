@@ -1,0 +1,61 @@
+nextflow_process {
+
+    name "Test Process KRONA_KTIMPORTTAXONOMY"
+    script "../main.nf"
+    process "KRONA_KTIMPORTTAXONOMY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "krona"
+    tag "krona/ktimporttaxonomy"
+
+    test ("sarscov2 - metagenome - kraken report") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                   [id: 'test'],
+                   file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/test_1.kraken2.report.txt', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/krona_taxonomy.tab', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot ( process.out.versions ).match() },
+                { assert file(process.out.html.get(0).get(1)).exists() }
+            )
+        }
+    }
+
+    test ("sarscov2 - metagenome - kraken report - stub") {
+
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                   [id: 'test'],
+                   file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/test_1.kraken2.report.txt', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/krona_taxonomy.tab', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+    }
+}

@@ -9,6 +9,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "ariba"
     tag "ariba/run"
+    tag "ariba/getref"
 
     test("sarscov2 illumina  paired-end [fastq]") {
 
@@ -17,7 +18,9 @@ nextflow_process {
                     script "../../../ariba/getref/main.nf"
                     process {
                         """
-                        input[0] =  "card"
+                        input[0] = [ [ id:'test' ], // meta map
+                            "card"
+                            ]
                         """
                     }
                 }
@@ -27,8 +30,8 @@ nextflow_process {
                 """
 
                 input[0] = [ [ id:'test', single_end:false ], // meta map
-                        [   file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                            file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ],
+                        [   file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ],
                         ]
                 input[1] = ARIBA_GETREF.out.db
                 """

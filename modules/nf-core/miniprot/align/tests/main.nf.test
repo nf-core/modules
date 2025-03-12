@@ -1,0 +1,89 @@
+
+nextflow_process {
+
+    name "Test Process MINIPROT_ALIGN"
+    script "../main.nf"
+    process "MINIPROT_ALIGN"
+
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "miniprot"
+    tag "miniprot/align"
+    tag "miniprot/index"
+
+    setup {
+        run("MINIPROT_INDEX") {
+            script "../../index/main.nf"
+            process {
+                """
+                input[0] =[ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+                """
+            }
+        }
+    }
+
+    test("test-miniprot-align-gff") {
+        config "./nextflow.gff.config"
+
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)]
+				input[1] = MINIPROT_INDEX.out.index
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-miniprot-align-paf") {
+        config "./nextflow.paf.config"
+
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)]
+				input[1] = MINIPROT_INDEX.out.index
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-miniprot-align-paf-stub") {
+        config "./nextflow.paf.config"
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)]
+				input[1] = MINIPROT_INDEX.out.index
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

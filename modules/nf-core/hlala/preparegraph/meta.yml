@@ -12,19 +12,32 @@ tools:
       documentation: "https://github.com/DiltheyLab/HLA-LA#running-hlala"
       tool_dev_url: "https://github.com/DiltheyLab/HLA-LA"
       doi: "10.1093/bioinformatics/btz235"
-      licence: "['GPL']"
+      licence: ["GPL"]
+      identifier: ""
 input:
-  - graph:
-      type: directory
-      description: PRG graph directory
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - graph:
+        type: directory
+        description: PRG graph directory
 output:
+  - graph:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${graph}:
+          type: directory
+          description: PRG graph directory
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - folder:
-      type: directory
-      description: Directory containing indexed graph
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@mapo9"
 maintainers:

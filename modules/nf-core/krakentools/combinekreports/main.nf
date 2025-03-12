@@ -31,4 +31,17 @@ process KRAKENTOOLS_COMBINEKREPORTS {
         combine_kreports.py: ${VERSION}
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    touch ${prefix}.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        combine_kreports.py: ${VERSION}
+    END_VERSIONS
+    """
 }

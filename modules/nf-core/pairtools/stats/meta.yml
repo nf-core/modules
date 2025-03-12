@@ -11,29 +11,32 @@ tools:
       documentation: http://pairtools.readthedocs.io/
       tool_dev_url: https://github.com/mirnylab/pairtools
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - pairs:
-      type: file
-      description: pairs file
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - pairs:
+        type: file
+        description: pairs file
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+  - stats:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.pairs.stat":
+          type: file
+          description: Pairs statistics
+          pattern: "*{.pairs.stat}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - stat:
-      type: file
-      description: stats of the pairs
-      pattern: "*.{pairs.stat}"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nservant"
 maintainers:

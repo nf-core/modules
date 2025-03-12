@@ -6,52 +6,56 @@ keywords:
   - sortvcf
 tools:
   - picard:
-      description: Java tools for working with NGS data in the BAM/CRAM/SAM and VCF format
+      description: Java tools for working with NGS data in the BAM/CRAM/SAM and VCF
+        format
       homepage: https://broadinstitute.github.io/picard/
       documentation: https://broadinstitute.github.io/picard/command-line-overview.html#SortVcf
       licence: ["MIT"]
+      identifier: biotools:picard_tools
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: VCF file
-      pattern: "*.{vcf,vcf.gz}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'genome' ]
-  - fasta:
-      type: file
-      description: Reference genome fasta file
-      pattern: "*.{fasta,fa}"
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'genome' ]
-  - dict:
-      type: file
-      description: Reference genome dictionary file
-      pattern: "*.{dict}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: VCF file
+        pattern: "*.{vcf,vcf.gz}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: Reference genome fasta file
+        pattern: "*.{fasta,fa}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - dict:
+        type: file
+        description: Reference genome dictionary file
+        pattern: "*.{dict}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - vcf:
-      type: file
-      description: Sorted VCF file
-      pattern: "*.{vcf}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_sorted.vcf.gz":
+          type: file
+          description: Sorted VCF file
+          pattern: "*.{vcf}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@ramprasadn"
 maintainers:

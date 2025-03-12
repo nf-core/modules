@@ -1,0 +1,38 @@
+
+nextflow_process {
+
+    name "Test Process GATK4_COMPOSESTRTABLEFILE"
+    script "../main.nf"
+    process "GATK4_COMPOSESTRTABLEFILE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gatk4"
+    tag "gatk4/composestrtablefile"
+
+    test("test-gatk4-composestrtablefile") {
+
+        when {
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+				input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+				input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.str_table[0]).name,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+}

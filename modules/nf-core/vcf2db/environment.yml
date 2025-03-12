@@ -1,7 +1,12 @@
-name: vcf2db
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
-  - defaults
 dependencies:
+  # renovate: datasource=conda depName=conda-forge/python
+  - bioconda::cyvcf2=0.20.9
   - bioconda::vcf2db=2020.02.24
+  - conda-forge::python-snappy=0.5.4
+  - conda-forge::python=2.7
+  - conda-forge::snappy=1.1.8

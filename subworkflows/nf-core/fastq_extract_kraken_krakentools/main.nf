@@ -18,9 +18,8 @@ workflow FASTQ_EXTRACT_KRAKEN_KRAKENTOOLS {
     ch_versions = ch_versions.mix( KRAKENTOOLS_EXTRACTKRAKENREADS.out.versions.first() )
 
     emit:
-    kraken2_report = KRAKEN2_KRAKEN2.out.report                                          // channel: [ val(meta), path ]
-    extracted_kraken2_reads = KRAKENTOOLS_EXTRACTKRAKENREADS.out.extracted_kraken2_reads // channel: [ val(meta), [ fastq/fasta ] ]
-    multiqc_files = KRAKEN2_KRAKEN2.out.report                                           // channel: [ val(meta), path ]
-    versions = ch_versions                                                               // channel: [ versions.yml ]
+    kraken2_report          = KRAKEN2_KRAKEN2.out.report                                 // channel: [ val(meta), path ]
+    extracted_kraken2_reads = KRAKENTOOLS_EXTRACTKRAKENREADS.out.extracted_kraken2_reads // channel: [ val(meta), [ fastq.gz/fasta.gz ] ]
+    multiqc_files           = KRAKEN2_KRAKEN2.out.report.map{it[1]}                      // channel: [ path ]
+    versions                = ch_versions                                                // channel: [ versions.yml ]
 }
-

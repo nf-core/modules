@@ -3,9 +3,9 @@ process LAST_LASTDB {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/last:1542--h43eeafb_1' :
-        'biocontainers/last:1542--h43eeafb_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0d/0d27a2649f1291ff817dc8f73357ffac206424cd972d3855421e4258acc600f7/data'
+        : 'community.wave.seqera.io/library/last:1611--e1193b3871fa0975'}"
 
     input:
     tuple val(meta), path(fastx)

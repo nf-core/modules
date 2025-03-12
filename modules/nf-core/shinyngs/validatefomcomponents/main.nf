@@ -4,8 +4,8 @@ process SHINYNGS_VALIDATEFOMCOMPONENTS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-shinyngs:1.8.8--r43hdfd78af_0' :
-        'biocontainers/r-shinyngs:1.8.8--r43hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/78/78a62fc76571e1f1b6d3436967bef94de96f42107c7455ac10e2405bf228906c/data' :
+        'community.wave.seqera.io/library/r-shinyngs:2.2.0--d3069f31a8b211d5' }"
 
     input:
     tuple val(meta),  path(sample), path(assay_files)
@@ -40,7 +40,21 @@ process SHINYNGS_VALIDATEFOMCOMPONENTS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        r-base: \$(echo \$(R --version 2>&1) | sed 's/^.*R version //; s/ .*\$//')
+        r-shinyngs: \$(Rscript -e "library(shinyngs); cat(as.character(packageVersion('shinyngs')))")
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: meta.id
+    """
+    mkdir $prefix
+    touch $prefix/${prefix}.sample_metadata.tsv
+    touch $prefix/${prefix}.feature_metadata.tsv
+    touch $prefix/${prefix}.assay.tsv
+    touch $prefix/${prefix}.contrasts_file.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
         r-shinyngs: \$(Rscript -e "library(shinyngs); cat(as.character(packageVersion('shinyngs')))")
     END_VERSIONS
     """

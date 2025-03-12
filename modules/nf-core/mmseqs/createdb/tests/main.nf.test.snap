@@ -1,27 +1,5 @@
 {
-    "protein_gz_db": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    [
-                        "test:md5,4b494965ed7ab67da8ca3f39523eb104",
-                        "test.dbtype:md5,152afd7bf4dbe26f85032eee0269201a",
-                        "test.index:md5,46f9d884e9a7f442fe1cd2ce339734e3",
-                        "test.lookup:md5,3e27cb93d9ee875ad42a6f32f5651bdc",
-                        "test.source:md5,eaa64fc8a5f7ec1ee49b0dcbd1a72e9d",
-                        "test_h:md5,6e798b81c70d191f78939c2dd6223a7f",
-                        "test_h.dbtype:md5,8895d3d8e9322aedbf45249dfb3ddb0a",
-                        "test_h.index:md5,d5ac49ff56df064b980fa0eb5da57673"
-                    ]
-                ]
-            ]
-        ],
-        "timestamp": "2023-11-21T12:10:12.018974702"
-    },
-    "contig_db": {
+    "Should build an mmseqs db from a contigs fasta file": {
         "content": [
             [
                 [
@@ -30,18 +8,54 @@
                         "single_end": false
                     },
                     [
-                        "test:md5,7c3c2c5926cf8fa82e66b9628f680256",
-                        "test.dbtype:md5,c8ed20c23ba91f4577f84c940c86c7db",
-                        "test.index:md5,5b2fd8abd0ad3fee24738af7082e6a6e",
+                        "test:md5,a2cda8768736a7a317a09d61556194bd",
+                        "test.dbtype:md5,4352d88a78aa39750bf70cd6f27bcaa5",
+                        "test.index:md5,4ba298b011e2472ce9f6b99fe6b6e3d5",
                         "test.lookup:md5,32f88756dbcb6aaf7b239b0d61730f1b",
                         "test.source:md5,9ada5b3ea6e1a7e16c4418eb98ae8d9d",
-                        "test_h:md5,8c29f5ed94d83d7115e9c8a883ce358d",
-                        "test_h.dbtype:md5,8895d3d8e9322aedbf45249dfb3ddb0a",
-                        "test_h.index:md5,87c7c8c6d16018ebfaa6f408391a5ae2"
+                        "test_h:md5,21c399702a071bdeecce09f9d1df4531",
+                        "test_h.dbtype:md5,740bab4f9ec8808aedb68d6b1281aeb2",
+                        "test_h.index:md5,d767fb43b37c0a644c676b00f9f93477"
                     ]
                 ]
+            ],
+            [
+                "versions.yml:md5,c62b08152082097334109fe08ec6333a"
             ]
         ],
-        "timestamp": "2023-11-21T12:10:04.7348329"
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.3"
+        },
+        "timestamp": "2025-01-20T14:11:57.883871"
+    },
+    "Should build an mmseqs db from a zipped amino acid sequence file": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    [
+                        "test:md5,1162504bc65aacf734abdcb0cdbe87de",
+                        "test.dbtype:md5,f1d3ff8443297732862df21dc4e57262",
+                        "test.index:md5,8cdcbc06c2b99fdb09f3d1735a76def9",
+                        "test.lookup:md5,3e27cb93d9ee875ad42a6f32f5651bdc",
+                        "test.source:md5,eaa64fc8a5f7ec1ee49b0dcbd1a72e9d",
+                        "test_h:md5,f258f8cc04f83c270a75e8b00a6d2d89",
+                        "test_h.dbtype:md5,740bab4f9ec8808aedb68d6b1281aeb2",
+                        "test_h.index:md5,844bf1950bcd37284fdc5d7117ee4241"
+                    ]
+                ]
+            ],
+            [
+                "versions.yml:md5,c62b08152082097334109fe08ec6333a"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.3"
+        },
+        "timestamp": "2025-01-20T14:12:10.986433"
     }
 }

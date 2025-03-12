@@ -4,8 +4,8 @@ process FQTK {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fqtk:0.2.1--h9f5acd7_0' :
-        'biocontainers/fqtk:0.2.1--h9f5acd7_0' }"
+        'https://depot.galaxyproject.org/singularity/fqtk:0.3.1--ha6fb395_2' :
+        'biocontainers/fqtk:0.3.1--ha6fb395_2' }"
 
     input:
     tuple val(meta), path(sample_sheet), val(fastq_readstructure_pairs)
@@ -45,4 +45,3 @@ process FQTK {
         fqtk: \$(echo \$(fqtk --version 2>&1) | cut -d " " -f2)
     """
 }
-

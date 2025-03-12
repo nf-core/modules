@@ -1,5 +1,7 @@
 name: malt_build
-description: MALT, an acronym for MEGAN alignment tool, is a sequence alignment and analysis tool designed for processing high-throughput sequencing data, especially in the context of metagenomics.
+description: MALT, an acronym for MEGAN alignment tool, is a sequence alignment and
+  analysis tool designed for processing high-throughput sequencing data, especially
+  in the context of metagenomics.
 keywords:
   - malt
   - alignment
@@ -17,33 +19,43 @@ tools:
       documentation: https://software-ab.cs.uni-tuebingen.de/download/malt/manual.pdf
       doi: "10.1038/s41559-017-0446-6"
       licence: ["GPL v3"]
+      identifier: ""
 input:
-  - fastas:
-      type: file
-      description: Directory of, or list of FASTA reference files for indexing
-      pattern: "*/|*.fasta"
-  - gff:
-      type: file
-      description: Directory of, or GFF3 files of input FASTA files
-      pattern: "*/|*.gff|*.gff3"
-  - mapping_db:
-      type: file
-      description: MEGAN .db file from https://software-ab.cs.uni-tuebingen.de/download/megan6/welcome.html
-      pattern: "*.db"
+  - - fastas:
+        type: file
+        description: Directory of, or list of FASTA reference files for indexing
+        pattern: "*/|*.fasta"
+  - - gff:
+        type: file
+        description: Directory of, or GFF3 files of input FASTA files
+        pattern: "*/|*.gff|*.gff3"
+  - - mapping_db:
+        type: file
+        description: An uncompressed MEGAN mapping file from https://software-ab.cs.uni-tuebingen.de/download/megan6/welcome.html (either mapping db, or acc2* .abin file)
+        pattern: "*.{db,abin}"
+  - - map_type:
+        type: string
+        description: The type of map file provided to the pipeline. Must be a valid string corresponding to a single-dash parameter, for example '-a2tax' or '-a2interpro2go'
+        pattern: "mdb|a2t|s2t|a2ec|s2ec|t4ec|a2eggnog|s2eggnog|t4eggnog|a2gtdb|s2gtdb|t4gtdb|a2interpro2go|s2interpro2go|t4interprotogo|a2kegg|s2kegg|t4kegg|a2pgpt|s2pgpt|t4pgpt|a2seed|s2seed|t4seed"
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - index:
-      type: directory
-      description: Directory containing MALT database index directory
-      pattern: "malt_index/"
+      - malt_index/:
+          type: directory
+          description: Directory containing MALT database index directory
+          pattern: "malt_index/"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
   - log:
-      type: file
-      description: Log file from STD out of malt-build
-      pattern: "malt-build.log"
+      - malt-build.log:
+          type: file
+          description: Log file from STD out of malt-build
+          pattern: "malt-build.log"
 authors:
   - "@jfy133"
+  - "@LilyAnderssonLee"
 maintainers:
   - "@jfy133"
+  - "@LilyAnderssonLee"

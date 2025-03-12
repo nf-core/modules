@@ -19,8 +19,8 @@ nextflow_process {
                 input[0] = Channel.fromList([
                     tuple([id:'test'],
                         [
-                         file(params.test_data['proteomics']['openms']['idxml1'], checkIfExists: true),
-                         file(params.test_data['proteomics']['openms']['idxml2'], checkIfExists: true)
+                         file(params.modules_testdata_base_path + 'proteomics/openms/HepG2_rep1_small.idXML', checkIfExists: true),
+                         file(params.modules_testdata_base_path + 'proteomics/openms/HepG2_rep2_small.idXML', checkIfExists: true)
                         ]
                     )
                 ])

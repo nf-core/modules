@@ -1,5 +1,6 @@
 name: "cnvnator_cnvnator"
-description: CNVnator is a command line tool for CNV/CNA analysis from depth-of-coverage by mapped reads.
+description: CNVnator is a command line tool for CNV/CNA analysis from depth-of-coverage
+  by mapped reads.
 keywords:
   - cnvnator
   - cnv
@@ -10,66 +11,75 @@ tools:
       homepage: "https://github.com/abyzovlab/CNVnator"
       documentation: "https://github.com/abyzovlab/CNVnator/blob/master/README.md"
       tool_dev_url: "https://github.com/abyzovlab/CNVnator"
-      licence: "['MIT']"
+      licence: ["MIT"]
+      identifier: biotools:cnvnator
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. `[ id:'test' ]`
-  - meta4:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. `[ id:'test' ]`
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.bam"
-  - bai:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.bam"
-  - root:
-      type: file
-      description: ROOT file
-      pattern: "*.root"
-  - fasta:
-      type: file
-      description: Path to a directory containing fasta files or a fasta file
-      pattern: "*.fa"
-  - fai:
-      type: file
-      description: Path to a fasta file index
-      pattern: "*.fai"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM/SAM file
+        pattern: "*.bam"
+    - bai:
+        type: file
+        description: Sorted BAM/CRAM/SAM file
+        pattern: "*.bam"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - root:
+        type: file
+        description: ROOT file
+        pattern: "*.root"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'test' ]`
+    - fasta:
+        type: file
+        description: Path to a directory containing fasta files or a fasta file
+        pattern: "*.fa"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'test' ]`
+    - fai:
+        type: file
+        description: Path to a fasta file index
+        pattern: "*.fai"
 output:
-  - output_meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - root:
-      type: file
-      description: A ROOT file
-      pattern: "*.root"
+      - output_meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - ${prefix}.root:
+          type: file
+          description: A ROOT file
+          pattern: "*.root"
   - tab:
-      type: file
-      description: A tab file containing cnvnator calls
-      pattern: "*.tab"
+      - output_meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - ${prefix}.tab:
+          type: file
+          description: A tab file containing cnvnator calls
+          pattern: "*.tab"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@ramprasadn"
 maintainers:

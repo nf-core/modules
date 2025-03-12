@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "mmseqs_search"
-description: Search and calculate a score for similar sequences in a query and a target database.
+description: Search and calculate a score for similar sequences in a query and a target
+  database.
 keywords:
   - protein sequence
   - databases
@@ -11,42 +11,46 @@ keywords:
   - mmseqs2
 tools:
   - "mmseqs":
-      description: "MMseqs2: ultra fast and sensitive sequence search and clustering suite"
+      description: "MMseqs2: ultra fast and sensitive sequence search and clustering
+        suite"
       homepage: "https://github.com/soedinglab/MMseqs2"
       documentation: "https://mmseqs.com/latest/userguide.pdf"
       tool_dev_url: "https://github.com/soedinglab/MMseqs2"
       doi: "10.1093/bioinformatics/btw006"
       licence: ["GPL v3"]
+      identifier: biotools:mmseqs
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - query_db:
-      type: directory
-      description: an MMseqs2 database with query data
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - target_db:
-      type: directory
-      description: an MMseqs2 database with target data, e.g. uniref90
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - db_query:
+        type: file
+        description: Query database
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - db_target:
+        type: file
+        description: Target database
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - db_search:
-      type: directory
-      description: an MMseqs2 database with search results
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - ${prefix}/:
+          type: directory
+          description: an MMseqs2 database with search results
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@Joon-Klaps"
 maintainers:

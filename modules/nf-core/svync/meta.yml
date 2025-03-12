@@ -1,4 +1,3 @@
----
 name: "svync"
 description: A tool to standardize VCF files from structural variant callers
 keywords:
@@ -14,41 +13,52 @@ tools:
       documentation: "https://github.com/nvnieuwk/svync"
       tool_dev_url: "https://github.com/nvnieuwk/svync"
       licence: ["MIT"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - vcf:
-      type: file
-      description: The input VCF file containing structural variants
-      pattern: "*.{vcf,vcf.gz}"
-  - tbi:
-      type: file
-      description: The index of the input VCF file containing structural variants
-      pattern: "*.tbi"
-  - config:
-      type: file
-      description: The config stating how the standardization should happen
-      pattern: "*.{yml,yaml}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - vcf:
+        type: file
+        description: The input VCF file containing structural variants
+        pattern: "*.{vcf,vcf.gz}"
+    - tbi:
+        type: file
+        description: The index of the input VCF file containing structural variants
+        pattern: "*.tbi"
+    - config:
+        type: file
+        description: The config stating how the standardization should happen
+        pattern: "*.{yml,yaml}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - vcf:
-      type: file
-      description: The standardized VCF file
-      pattern: "*.vcf.gz"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.vcf.gz":
+          type: file
+          description: The standardized VCF file
+          pattern: "*.vcf.gz"
+  - tbi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.tbi":
+          type: file
+          description: The index of the standardized VCF file
+          pattern: "*.tbi"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

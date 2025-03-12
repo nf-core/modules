@@ -1,0 +1,60 @@
+name: "vsearch_dereplicate"
+description: Merge strictly identical sequences contained in filename. Identical sequences
+  are defined as having the same length and the same string of nucleotides (case insensitive,
+  T and U are considered the same).
+keywords:
+  - vsearch/dereplicate
+  - vsearch
+  - dereplicate
+  - amplicon sequences
+  - metagenomics
+  - genomics
+  - population genetics
+tools:
+  - "vsearch":
+      description: "A versatile open source tool for metagenomics (USEARCH alternative)"
+      homepage: https://github.com/torognes/vsearch
+      documentation: https://github.com/torognes/vsearch/releases/download/v2.21.1/vsearch_manual.pdf
+      tool_dev_url: https://github.com/torognes/vsearch
+      doi: 10.7717/peerj.2584
+      licence: ["GPL v3-or-later OR BSD-2-clause"]
+      identifier: biotools:vsearch
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: Sequences to be sorted in FASTA format
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz,.fna,.fna.gz}"
+output:
+  - fasta:
+      - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test' ]`
+      - "*.derep.fasta":
+          type: file
+          description: dereplicated fasta
+          pattern: "*.fasta"
+  - clustering:
+      - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test' ]`
+      - "*.derep.uc":
+          type: file
+          description: dereplicated derep.uc file
+          pattern: "*.uc"
+  - log:
+      - "*.derep.log":
+          type: file
+          description: a log file of the run
+          pattern: "*.derep.log"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@chriswyatt1"
+maintainers:
+  - "@chriswyatt1"

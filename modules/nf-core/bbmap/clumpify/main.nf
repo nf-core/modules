@@ -5,8 +5,8 @@ process BBMAP_CLUMPIFY {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bbmap:39.01--h5c4e2a8_0':
-        'biocontainers/bbmap:39.01--h5c4e2a8_0' }"
+        'https://depot.galaxyproject.org/singularity/bbmap:39.17--he5f24ec_0':
+        'biocontainers/bbmap:39.17--he5f24ec_0' }"
 
     input:
     tuple val(meta), path(reads)
