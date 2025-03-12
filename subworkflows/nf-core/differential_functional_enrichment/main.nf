@@ -41,7 +41,7 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     ch_input = ch_input
         .multiMap {
             meta_input, file, genesets, background, analysis_method ->
-            def meta_new = meta_input + [ 'method': analysis_method ]
+            def meta_new = meta_input + [ 'method_functional': analysis_method ]
             input:
                 [ meta_new, file ]
             genesets:
@@ -69,7 +69,7 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     }
     ch_preinput_for_gsea = ch_input.input
         .join(ch_input.genesets)
-        .filter{ it[0].method == 'gsea' }
+        .filter{ it[0].method_functional == 'gsea' }
         .combine(ch_samplesheet.join(ch_featuresheet))
         .combine(ch_contrasts)
         .multiMap(criteria)
@@ -79,9 +79,9 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     // ----------------------------------------------------
 
     GPROFILER2_GOST(
-        ch_input.input.filter{ it[0].method == 'gprofiler2' },
-        ch_input.genesets.filter{ it[0].method == 'gprofiler2'},
-        ch_input.background.filter{ it[0].method == 'gprofiler2'}
+        ch_input.input.filter{ it[0].method_functional == 'gprofiler2' },
+        ch_input.genesets.filter{ it[0].method_functional == 'gprofiler2'},
+        ch_input.background.filter{ it[0].method_functional == 'gprofiler2'}
     )
 
     // ----------------------------------------------------
@@ -116,8 +116,8 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     // ----------------------------------------------------
 
     PROPR_GREA(
-        ch_input.input.filter{ it[0].method == 'grea' },
-        ch_input.genesets.filter{ it[0].method == 'grea' }
+        ch_input.input.filter{ it[0].method_functional == 'grea' },
+        ch_input.genesets.filter{ it[0].method_functional == 'grea' }
     )
 
     // collect versions info

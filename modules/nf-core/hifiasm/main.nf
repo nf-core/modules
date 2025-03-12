@@ -32,7 +32,10 @@ process HIFIASM {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def ultralong = ul_reads ? "--ul ${ul_reads}" : ""
+
+    def long_reads_sorted = long_reads instanceof List ? long_reads.sort{ it.name } : long_reads
+    def ul_reads_sorted = ul_reads instanceof List ? ul_reads.sort{ it.name } : ul_reads
+    def ultralong = ul_reads ? "--ul ${ul_reads_sorted}" : ""
 
     if ((paternal_kmer_dump) && (maternal_kmer_dump) && (hic_read1) && (hic_read2)) {
         error "Hifiasm Trio-binning and Hi-C integrated should not be used at the same time"
@@ -49,7 +52,7 @@ process HIFIASM {
             -1 $paternal_kmer_dump \\
             -2 $maternal_kmer_dump \\
             $ultralong \\
-            $long_reads \\
+            $long_reads_sorted \\
             2> >( tee ${prefix}.stderr.log >&2 )
 
 

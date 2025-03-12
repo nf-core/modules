@@ -85,7 +85,8 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
         } else {
             SAMTOOLS_FAIDX(
                 ch_fasta,
-                [[:], []]
+                [[:], []],
+                false // No sizes generation
             )
             ch_fasta_index = SAMTOOLS_FAIDX.out.fai
             ch_versions    = ch_versions.mix(SAMTOOLS_FAIDX.out.versions)

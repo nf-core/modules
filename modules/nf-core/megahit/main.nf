@@ -28,9 +28,9 @@ process MEGAHIT {
     def reads_command = meta.single_end || !reads2 ? "-r ${reads1.join(',')}" : "-1 ${reads1.join(',')} -2 ${reads2.join(',')}"
     """
     megahit \\
-        ${reads_command} \\
         ${args} \\
         -t ${task.cpus} \\
+        ${reads_command} \\
         --out-prefix ${prefix}
 
     pigz \\

@@ -1,0 +1,63 @@
+
+nextflow_workflow {
+
+    name "Compare subworkflow DEEPVARIANT to the process DEEPVARIANT_RUNDEEPVARIANT"
+    script "./deepvariant-workflow-and-process-equality-tester.nf"
+    config "./nextflow.config"
+    workflow "DEEPVARIANT_WORKFLOW_AND_PROCESS_EQUALITY_TESTER"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/deepvariant"
+
+    tag "deepvariant"
+    tag "deepvariant/makeexamples"
+    tag "deepvariant/callvariants"
+    tag "deepvariant/postprocessvariants"
+    tag "deepvariant/rundeepvariant"
+
+    test("ensure that the subworkflow and DEEPVARIANT_RUNDEEPVARIANT have the same output") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                [
+                    [ id:'test', single_end:false ], // meta map
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true),
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
+                ],
+                [
+                    [ id:'test2', single_end:false ], // meta map
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true),
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam.bai', checkIfExists: true),
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
+                ]
+                )
+                input[1] = [
+                    [ id:'genome'],
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    ]
+                input[2] = [
+                    [ id:'genome'],
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[3] = [
+                    [],[]
+                ]
+                input[4] = [
+                    [],[]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert path(workflow.out.wf_vcf.get(0).get(1)).md5 == path(workflow.out.pc_vcf.get(0).get(1)).md5 },
+                { assert path(workflow.out.wf_gvcf.get(0).get(1)).md5 == path(workflow.out.pc_gvcf.get(0).get(1)).md5 },
+            )
+        }
+    }
+}

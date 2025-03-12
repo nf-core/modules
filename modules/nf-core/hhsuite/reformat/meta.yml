@@ -1,0 +1,55 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "hhsuite_reformat"
+description: Reformat a Multiple Sequence Alignment (MSA) file
+keywords:
+  - reformat
+  - MSA
+  - hhsuite
+tools:
+  - "hhsuite":
+      description: "HH-suite3 for fast remote homology detection and deep protein annotation"
+      homepage: "https://github.com/soedinglab/hh-suite"
+      documentation: "https://github.com/soedinglab/hh-suite/wiki"
+      tool_dev_url: "https://github.com/soedinglab/hh-suite"
+      doi: "10.1371/journal.pone.0082138"
+      licence: ['GPL v3']
+      identifier: biotools:hh-suite
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - aln:
+        type: file
+        description: Input MSA file
+        pattern: "*.{fa,fasta,fas,a2m,a3m,sto,psi,clu,fa.gz,fasta.gz,fas.gz,a2m.gz,a3m.gz,sto.gz,psi.gz,clu.gz}"
+  - - informat:
+        type: string
+        description: Format of the input MSA file
+        enum: ["fas", "a2m", "a3m", "sto", "psi", "clu"]
+  - - outformat:
+        type: string
+        description: Format of the output MSA file
+        enum: ["fas", "a2m", "a3m", "sto", "psi", "clu"]
+output:
+  - msa:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - "${prefix}.${outformat}.gz":
+          type: file
+          description: Gzipped reformatted output MSA file
+          pattern: "*.{fas.gz,a2m.gz,a3m.gz,sto.gz,psi.gz,clu.gz}"
+  - versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"

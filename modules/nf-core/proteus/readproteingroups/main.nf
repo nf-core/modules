@@ -27,4 +27,26 @@ process PROTEUS_READPROTEINGROUPS {
 
     script:
     template 'proteus_readproteingroups.R'
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}_dendrogram.png
+    touch ${prefix}_mean_variance_relationship.png
+    touch ${prefix}_raw_distributions.png
+    touch ${prefix}_normalized_distributions.png
+    touch ${prefix}_raw_proteingroups.rds
+    touch ${prefix}_normalized_proteingroups.rds
+    touch ${prefix}_raw_proteingroups_tab.tsv
+    touch ${prefix}_normalized_proteingroups_tab.tsv
+    touch ${prefix}_R_sessionInfo.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        r-base: \$(echo \$(R --version 2>&1) | sed 's/^.*R version //; s/ .*\$//')
+        r-proteus-bartongroup: \$(Rscript -e "library(r-proteus-bartongroup); cat(as.character(packageVersion('r-proteus-bartongroup')))")
+        r-plotly: \$(Rscript -e "library(r-plotly); cat(as.character(packageVersion('r-plotly')))")
+        bioconductor-limma: \$(Rscript -e "library(bioconductor-limma); cat(as.character(packageVersion('bioconductor-limma')))")
+    END_VERSIONS
+    """
 }

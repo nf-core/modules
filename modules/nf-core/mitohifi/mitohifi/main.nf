@@ -4,7 +4,7 @@ process MITOHIFI_MITOHIFI {
 
 
     // Docker image available at the project github repository
-    container 'ghcr.io/marcelauliano/mitohifi:master'
+    container 'ghcr.io/marcelauliano/mitohifi:3.2.3'
 
     input:
     tuple val(meta), path(input)
@@ -45,27 +45,31 @@ process MITOHIFI_MITOHIFI {
     if (! ["c", "r"].contains(input_mode)) {
         error "r for reads or c for contigs must be specified"
     }
+    def VERSION = '3.2.3' // WARN: Incorrect version information is provided by tool on CLI. Please update this string when bumping container versions.
     """
     mitohifi.py -${input_mode} ${input} \\
         -f ${ref_fa} \\
         -g ${ref_gb} \\
         -o ${mito_code} \\
         -t $task.cpus ${args}
+
+    ## old version command: \$(mitohifi.py -v | sed 's/.* //')
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mitohifi: \$( mitohifi.py --version 2>&1 | head -n1 | sed 's/^.*MitoHiFi //; s/ .*\$//' )
+        mitohifi: ${VERSION}
     END_VERSIONS
     """
 
     stub:
+    def VERSION = '3.2.3' // WARN: Incorrect version information is provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch final_mitogenome.fasta
-    touch final_mitogenome.fasta
+    touch final_mitogenome.gb
     touch contigs_stats.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mitohifi: \$( mitohifi.py --version 2>&1 | head -n1 | sed 's/^.*MitoHiFi //; s/ .*\$//')
+        mitohifi: ${VERSION}
     END_VERSIONS
     """
 }

@@ -31,8 +31,8 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
 
     // Set up how the channels crossed below will be used to generate channels for processing
     def criteria = multiMapCriteria { meta_input, abundance, analysis_method, fc_threshold, stat_threshold, meta_exp, samplesheet, meta_contrasts, variable, reference, target ->
-        def meta_for_diff = mergeMaps(meta_contrasts, meta_input) + [ 'method': analysis_method ]
-        def meta_input_new = meta_input + [ 'method': analysis_method ]
+        def meta_for_diff = mergeMaps(meta_contrasts, meta_input) + [ 'method_differential': analysis_method ]
+        def meta_input_new = meta_input + [ 'method_differential': analysis_method ]
         samples_and_matrix:
             [ meta_input_new, samplesheet, abundance ]
         contrasts_for_diff:
@@ -71,13 +71,13 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // LIMMA_NORM directly. It internally runs normalization + DE analysis.
 
     LIMMA_NORM(
-        norm_inputs.contrasts_for_norm.filter{it[0].method == 'limma'},
-        norm_inputs.samples_and_matrix.filter{it[0].method == 'limma'}
+        norm_inputs.contrasts_for_norm.filter{it[0].method_differential == 'limma'},
+        norm_inputs.samples_and_matrix.filter{it[0].method_differential == 'limma'}
     )
 
     LIMMA_DIFFERENTIAL(
-        inputs.contrasts_for_diff.filter{ it[0].method == 'limma' },
-        inputs.samples_and_matrix.filter{ it[0].method == 'limma' }
+        inputs.contrasts_for_diff.filter{ it[0].method_differential == 'limma' },
+        inputs.samples_and_matrix.filter{ it[0].method_differential == 'limma' }
     )
 
     // ----------------------------------------------------
@@ -92,15 +92,15 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // DESEQ2_NORM directly. It internally runs normalization + DE analysis.
 
     DESEQ2_NORM(
-        norm_inputs.contrasts_for_norm.filter{it[0].method == 'deseq2'},
-        norm_inputs.samples_and_matrix.filter{it[0].method == 'deseq2'},
+        norm_inputs.contrasts_for_norm.filter{it[0].method_differential == 'deseq2'},
+        norm_inputs.samples_and_matrix.filter{it[0].method_differential == 'deseq2'},
         ch_control_features.first(),
         ch_transcript_lengths.first()
     )
 
     DESEQ2_DIFFERENTIAL(
-        inputs.contrasts_for_diff.filter{it[0].method == 'deseq2'},
-        inputs.samples_and_matrix.filter{it[0].method == 'deseq2'},
+        inputs.contrasts_for_diff.filter{it[0].method_differential == 'deseq2'},
+        inputs.samples_and_matrix.filter{it[0].method_differential == 'deseq2'},
         ch_control_features.first(),
         ch_transcript_lengths.first()
     )
@@ -113,8 +113,8 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // not produce a normalized matrix.
 
     PROPR_PROPD(
-        inputs.contrasts_for_diff.filter{it[0].method == 'propd'},
-        inputs.samples_and_matrix.filter { it[0].method == 'propd' }
+        inputs.contrasts_for_diff.filter{it[0].method_differential == 'propd'},
+        inputs.samples_and_matrix.filter { it[0].method_differential == 'propd' }
     )
 
     // ----------------------------------------------------
@@ -130,6 +130,10 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
 
     ch_model = DESEQ2_DIFFERENTIAL.out.model
         .mix(LIMMA_DIFFERENTIAL.out.model)
+
+    ch_variance_stabilised_matrix = DESEQ2_NORM.out.rlog_counts
+        .mix(DESEQ2_NORM.out.vst_counts)
+        .groupTuple()
 
     ch_versions = DESEQ2_DIFFERENTIAL.out.versions
         .mix(LIMMA_DIFFERENTIAL.out.versions)
@@ -158,14 +162,14 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
             ]
             filter_input: [meta + filter_meta, results]
             fc_input: [
-                method_params[meta.method].fc_column,
+                method_params[meta.method_differential].fc_column,
                 filter_meta.fc_threshold,
-                method_params[meta.method].fc_cardinality
+                method_params[meta.method_differential].fc_cardinality
             ]
             stat_input: [
-                method_params[meta.method].stat_column,
+                method_params[meta.method_differential].stat_column,
                 filter_meta.stat_threshold,
-                method_params[meta.method].stat_cardinality
+                method_params[meta.method_differential].stat_cardinality
             ]
         }
 
@@ -186,7 +190,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
 
     // other
     normalised_matrix          = ch_normalised_matrix
-    variance_stabilised_matrix = DESEQ2_NORM.out.rlog_counts.mix(DESEQ2_NORM.out.vst_counts)
+    variance_stabilised_matrix = ch_variance_stabilised_matrix
     model                      = ch_model
     versions                   = ch_versions
 }

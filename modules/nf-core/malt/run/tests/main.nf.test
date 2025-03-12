@@ -15,6 +15,7 @@ nextflow_process {
         setup {
         run("UNZIP") {
             script "../../../unzip/main.nf"
+            config './nextflow.config'
             process {
                 """
                 input[0] = [[], file("https://ngi-igenomes.s3.eu-west-1.amazonaws.com/test-data/createtaxdb/taxonomy/megan-nucl-Feb2022.db.zip", checkIfExists: true)]
@@ -23,11 +24,13 @@ nextflow_process {
         }
         run("MALT_BUILD") {
             script "../../../malt/build/main.nf"
+            config './nextflow.config'
             process {
                 """
                 input[0] = file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
                 input[1] = []
                 input[2] = UNZIP.out.unzipped_archive.map { it[1] }
+                input[3] = 'mdb'
                 """
             }
         }
