@@ -115,7 +115,7 @@ jobs:
         with:
           python-version: "3.11"
 
-      - uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4
+      - uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf # v4
         id: cache-pip
         with:
           path: ~/.cache/pip
@@ -131,7 +131,7 @@ jobs:
           distribution: "temurin"
           java-version: "17"
 
-      - name: Setup Nextflow
+      - name: Set up Nextflow
         uses: nf-core/setup-nextflow@v2
 
       - name: Install nf-core tools development version
