@@ -80,10 +80,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*-busco/logs/busco.log":
+      - "*-busco.log":
           type: file
           description: BUSCO main log
-          pattern: "*-busco/logs/busco.log"
+          pattern: "*-busco.log"
   - full_table:
       - meta:
           type: map
