@@ -91,8 +91,14 @@ workflow QUANTIFY_PSEUDO_ALIGNMENT {
     results                       = ch_pseudo_results                              // channel: [ val(meta), results_dir ]
     multiqc                       = ch_pseudo_multiqc                              // channel: [ val(meta), files_for_multiqc ]
 
-    gene                          = TXIMETA_TXIMPORT.out.gene                      //    path: *gene*.tsv
-    transcript                    = TXIMETA_TXIMPORT.out.transcript                //    path: *transcript*.tsv
+    tpm_gene                      = TXIMETA_TXIMPORT.out.tpm_gene                  //    path: *gene_tpm.tsv
+    counts_gene                   = TXIMETA_TXIMPORT.out.counts_gene               //    path: *gene_counts.tsv
+    lengths_gene                  = TXIMETA_TXIMPORT.out.lengths_gene              //    path: *gene_lengths.tsv
+    counts_gene_length_scaled     = TXIMETA_TXIMPORT.out.counts_gene_length_scaled //    path: *gene_counts_length_scaled.tsv
+    counts_gene_scaled            = TXIMETA_TXIMPORT.out.counts_gene_scaled        //    path: *gene_counts_scaled.tsv
+    tpm_transcript                = TXIMETA_TXIMPORT.out.tpm_transcript            //    path: *gene_tpm.tsv
+    counts_transcript             = TXIMETA_TXIMPORT.out.counts_transcript         //    path: *transcript_counts.tsv
+    lengths_transcript            = TXIMETA_TXIMPORT.out.lengths_transcript        //    path: *transcript_lengths.tsv
 
     merged_gene_rds               = SE_GENE.out.rds                                //    path: *.rds
     merged_transcript_rds         = SE_TRANSCRIPT.out.rds                          //    path: *.rds

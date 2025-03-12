@@ -135,30 +135,14 @@ output:
   - merged_gene_rds:
       type: file
       description: |
-        Serialised SummarizedExperiment object containing gene level TPM
-        abundance values and counts generated from tximport with
-        `countsFromAbundance = 'no'`.
-      pattern: "*.rds"
-  - merged_gene_rds_length_scaled:
-      type: file
-      description: |
-        Serialised SummarizedExperiment object containing gene level TPM
-        abundance values and counts generated from tximport with
-        `countsFromAbundance='lengthScaledTPM'`.
-      pattern: "*.rds"
-  - merged_gene_rds_scaled:
-      type: file
-      description: |
-        Serialised SummarizedExperiment object containing gene level TPM
-        abundance values and counts generated from tximport with
-        `countsFromAbundance='scaledTPM'`.
+        Serialised SummarizedExperiment object containing all gene level
+        abundance values and counts generated from tximport.
       pattern: "*.rds"
   - merged_transcript_rds:
       type: file
       description: |
-        Serialised SummarizedExperiment object containing transcript level TPM
-        abundance values and counts generated from tximport with
-        `countsFromAbundance = 'no'`.
+        Serialised SummarizedExperiment object containing all transcript level
+        abundance values and counts generated from tximport.
       pattern: "*.rds"
   - versions:
       type: file

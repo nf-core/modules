@@ -41,6 +41,28 @@ input:
         type: string
         description: Quantification type, 'kallisto' or 'salmon'
 output:
+  - gene:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing information related to the experiment as a whole
+            e.g. `[ id:'SRP123456' ]`
+      - "*gene*.tsv":
+          type: file
+          description: |
+            All gene-related TSV files values derived from tximport output
+          pattern: "*gene*.tsv"
+  - transcript:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing information related to the experiment as a whole
+            e.g. `[ id:'SRP123456' ]`
+      - "*transcript*.tsv":
+          type: file
+          description: |
+            All transcript-related TSV files values derived from tximport output
+          pattern: "*transcript*.tsv"
   - tpm_gene:
       - meta:
           type: map

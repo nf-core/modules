@@ -12,9 +12,17 @@ process TXIMETA_TXIMPORT {
     val quant_type
 
     output:
-    tuple val(meta), path("*gene*.tsv")             , emit: gene
-    tuple val(meta), path("*transcript*.tsv")       , emit: transcript
-    path "versions.yml"                             , emit: versions
+    tuple val(meta), path("*gene*.tsv")                    , emit: gene
+    tuple val(meta), path("*transcript*.tsv")              , emit: transcript
+    tuple val(meta), path("*gene_tpm.tsv")                 , emit: tpm_gene
+    tuple val(meta), path("*gene_counts.tsv")              , emit: counts_gene
+    tuple val(meta), path("*gene_counts_length_scaled.tsv"), emit: counts_gene_length_scaled
+    tuple val(meta), path("*gene_counts_scaled.tsv")       , emit: counts_gene_scaled
+    tuple val(meta), path("*gene_lengths.tsv")             , emit: lengths_gene
+    tuple val(meta), path("*transcript_tpm.tsv")           , emit: tpm_transcript
+    tuple val(meta), path("*transcript_counts.tsv")        , emit: counts_transcript
+    tuple val(meta), path("*transcript_lengths.tsv")       , emit: lengths_transcript
+    path "versions.yml"                                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

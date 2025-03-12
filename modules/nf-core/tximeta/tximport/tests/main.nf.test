@@ -57,6 +57,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
+                    process.out.gene,
+                    process.out.transcript,
                     process.out.counts_gene,
                     process.out.counts_gene_length_scaled,
                     process.out.counts_gene_scaled,
@@ -169,6 +171,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
+                    process.out.gene,
+                    process.out.transcript,
                     process.out.counts_gene,
                     process.out.counts_gene_length_scaled,
                     process.out.counts_gene_scaled,
