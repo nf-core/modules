@@ -1,18 +1,18 @@
 process BUSCO_BUSCO {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/busco:5.8.2--pyhdfd78af_0':
-        'biocontainers/busco:5.8.2--pyhdfd78af_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c6/c607f319867d96a38c8502f751458aa78bbd18fe4c7c4fa6b9d8350e6ba11ebe/data'
+        : 'community.wave.seqera.io/library/busco_sepp:f2dbc18a2f7a5b64'}"
 
     input:
     tuple val(meta), path(fasta, stageAs:'tmp_input/*')
     val mode                              // Required:    One of genome, proteins, or transcriptome
     val lineage                           // Required:    lineage for checking against, or "auto/auto_prok/auto_euk" for enabling auto-lineage
-    path busco_lineages_path              // Recommended: busco lineages file - downloads if not set
-    path config_file                      // Optional:    busco configuration file
+    path busco_lineages_path              // Recommended: BUSCO lineages file - downloads if not set
+    path config_file                      // Optional:    BUSCO configuration file
     val clean_intermediates               // Optional:    Remove intermediate files
 
     output:
@@ -36,25 +36,30 @@ process BUSCO_BUSCO {
     task.ext.when == null || task.ext.when
 
     script:
-    if ( mode !in [ 'genome', 'proteins', 'transcriptome' ] ) {
-        error "Mode must be one of 'genome', 'proteins', or 'transcriptome'."
+    if (mode !in ['genome', 'proteins', 'transcriptome']) {
+        error("Mode must be one of 'genome', 'proteins', or 'transcriptome'.")
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}-${lineage}"
     def busco_config = config_file ? "--config ${config_file}" : ''
-    def busco_lineage = lineage in [ 'auto', 'auto_prok', 'auto_euk']
+    def busco_lineage = lineage in ['auto', 'auto_prok', 'auto_euk']
         ? lineage.replaceFirst('auto', '--auto-lineage').replaceAll('_', '-')
         : "--lineage_dataset ${lineage}"
     def busco_lineage_dir = busco_lineages_path ? "--download_path ${busco_lineages_path}" : ''
-    def clean_cmd = clean_intermediates ? 'rm -fr ./*-busco/*/auto_lineage ./*-busco/*/**/{miniprot,hmmer,.bbtools}_output' : ''
+    def intermediate_files = [
+        './*-busco/*/auto_lineage',
+        './*-busco/*/**/{miniprot,hmmer,.bbtools}_output',
+        './*-busco/*/prodigal_output/predicted_genes/tmp/',
+    ]
+    def clean_cmd = clean_intermediates ? "rm -fr ${intermediate_files.join(' ')}" : ''
     """
-    # Nextflow changes the container --entrypoint to /bin/bash (container default entrypoint: /usr/local/env-execute)
-    # Check for container variable initialisation script and source it.
-    if [ -f "/usr/local/env-activate.sh" ]; then
-        set +u  # Otherwise, errors out because of various unbound variables
-        . "/usr/local/env-activate.sh"
-        set -u
+    # Fix Augustus for Apptainer
+    ENV_AUGUSTUS=/opt/conda/etc/conda/activate.d/augustus.sh
+    set +u
+    if [ -z "\${AUGUSTUS_CONFIG_PATH}" ] && [ -f "\${ENV_AUGUSTUS}" ]; then
+        source "\${ENV_AUGUSTUS}"
     fi
+    set -u
 
     # If the augustus config directory is not writable, then copy to writeable area
     if [ ! -w "\${AUGUSTUS_CONFIG_PATH}" ]; then
@@ -79,22 +84,25 @@ process BUSCO_BUSCO {
     cd ..
 
     busco \\
-        --cpu $task.cpus \\
+        --cpu ${task.cpus} \\
         --in "\$INPUT_SEQS" \\
         --out ${prefix}-busco \\
-        --mode $mode \\
-        $busco_lineage \\
-        $busco_lineage_dir \\
-        $busco_config \\
-        $args
+        --mode ${mode} \\
+        ${busco_lineage} \\
+        ${busco_lineage_dir} \\
+        ${busco_config} \\
+        ${args}
 
     # clean up
     rm -rf "\$INPUT_SEQS"
     ${clean_cmd}
+    # find and remove broken symlinks from the cleanup
+    find . -xtype l -delete
 
     # Move files to avoid staging/publishing issues
     mv ${prefix}-busco/batch_summary.txt ${prefix}-busco.batch_summary.txt
     mv ${prefix}-busco/*/short_summary.*.{json,txt} . || echo "Short summaries were not available: No genes were found."
+    mv ${prefix}-busco/logs/busco.log ${prefix}-busco.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -103,11 +111,11 @@ process BUSCO_BUSCO {
     """
 
     stub:
-    def prefix      = task.ext.prefix ?: "${meta.id}-${lineage}"
-    def fasta_name  = files(fasta).first().name - '.gz'
+    def prefix = task.ext.prefix ?: "${meta.id}-${lineage}"
+    def fasta_name = files(fasta).first().name - '.gz'
     """
     touch ${prefix}-busco.batch_summary.txt
-    mkdir -p ${prefix}-busco/$fasta_name/run_${lineage}/busco_sequences
+    mkdir -p ${prefix}-busco/${fasta_name}/run_${lineage}/busco_sequences
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
