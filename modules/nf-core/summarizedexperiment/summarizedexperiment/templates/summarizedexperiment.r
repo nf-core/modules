@@ -155,41 +155,49 @@ if ('assay_names' %in% names(args_opt)){
 
 # Build and verify the main assays list for the summarisedexperiment
 
-assay_list <- lapply(matrix_files, function(m){
-    mat <- read_delim_flexible(m, row.names = 1, stringsAsFactors = FALSE)
-    mat[,sapply(mat, is.numeric), drop = FALSE]
-})
+assays_list <- list()
+for(file in matrix_files) {
+    if(grepl("gene_tpm", file)) {
+        assays_list[["tpm"]] <- as.matrix(read_delim_flexible(file))
+    } else if(grepl("gene_counts_length_scaled", file)) {
+        assays_list[["counts_length_scaled"]] <- as.matrix(read_delim_flexible(file))
+    } else if(grepl("gene_counts_scaled", file)) {
+        assays_list[["counts_scaled"]] <- as.matrix(read_delim_flexible(file))
+    } else if(grepl("gene_counts", file)) {
+        assays_list[["counts"]] <- as.matrix(read_delim_flexible(file))
+    } else if(grepl("gene_lengths", file)) {
+        assays_list[["gene_lengths"]] <- as.matrix(read_delim_flexible(file))
+    } else if(grepl("transcript_tpm", file)) {
+        assays_list[["tpm"]] <- as.matrix(read_delim_flexible(file))
+    } else if(grepl("transcript_counts", file)) {
+        assays_list[["counts"]] <- as.matrix(read_delim_flexible(file))
+    } else if(grepl("transcript_lengths", file)) {
+        assays_list[["lengths"]] <- as.matrix(read_delim_flexible(file))
+    }
+}
 
-checkRowColNames(assay_list)
-
-# Construct SummarizedExperiment
-se <- SummarizedExperiment(
-    assays = assay_list
-)
+checkRowColNames(assays_list)
 
 # Add column (sample) metadata if provided
 
 if ('$coldata' != ''){
-    coldata <- parse_metadata(
-        metadata_path = '$coldata',
-        ids = colnames(assay_list[[1]]),
-        metadata_id_col = args_opt\$coldata_id_col
-    )
-
-    colData(se) <- DataFrame(coldata)
+    coldata <- read_delim_flexible('$coldata', header = TRUE)
+    coldata <- DataFrame(coldata)
+} else {
+    coldata <- DataFrame()
 }
 
 # Add row (feature) metadata if provided
 
 if ('$rowdata' != ''){
-    rowdata <- parse_metadata(
-        metadata_path = '$rowdata',
-        ids = rownames(assay_list[[1]]),
-        metadata_id_col = args_opt\$rowdata_id_col
-    )
-
-    rowData(se) <- DataFrame(rowdata)
+    rowdata <- read_delim_flexible('$rowdata', header = TRUE)
+    rowdata <- DataFrame(rowdata)
+} else {
+    rowdata <- DataFrame()
 }
+
+# Construct SummarizedExperiment
+se <- SummarizedExperiment(assays = assays_list, colData = coldata, rowData = rowdata)
 
 # Write outputs as RDS files
 
