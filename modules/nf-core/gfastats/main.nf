@@ -4,8 +4,8 @@ process GFASTATS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gfastats:1.3.9--h077b44d_1':
-        'biocontainers/gfastats:1.3.9--h077b44d_1' }"
+        'https://depot.galaxyproject.org/singularity/gfastats:1.3.10--h077b44d_0':
+        'biocontainers/gfastats:1.3.10--h077b44d_0' }"
 
     input:
     tuple val(meta), path(assembly)
