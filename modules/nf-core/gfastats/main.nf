@@ -41,7 +41,7 @@ process GFASTATS {
         $ebed \\
         $sak \\
         --out-format ${prefix}.${out_fmt}.gz \\
-        $assembly \\
+        --input-sequence $assembly \\
         $genome_size \\
         $target \\
         > ${prefix}.assembly_summary
