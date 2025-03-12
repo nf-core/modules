@@ -15,16 +15,16 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id: 'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = 'gfa'
                 input[2] = ''
                 input[3] = ''
-                input[4] = []
-                input[5] = []
-                input[6] = []
-                input[7] = []
+                input[4] = [[],[]]
+                input[5] = [[],[]]
+                input[6] = [[],[]]
+                input[7] = [[],[]]
                 """
             }
         }
@@ -44,16 +44,16 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id: 'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = 'fasta'
                 input[2] = ''
                 input[3] = ''
-                input[4] = []
-                input[5] = []
-                input[6] = []
-                input[7] = []
+                input[4] = [[],[]]
+                input[5] = [[],[]]
+                input[6] = [[],[]]
+                input[7] = [[],[]]
                 """
             }
         }
@@ -73,16 +73,19 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id: 'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = 'fastq'
                 input[2] = ''
                 input[3] = ''
-                input[4] = []
-                input[5] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
-                input[6] = []
-                input[7] = []
+                input[4] = [[],[]]
+                input[5] = [
+                    [ id: 'bed' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
+                ]
+                input[6] = [[],[]]
+                input[7] = [[],[]]
                 """
             }
         }
@@ -102,16 +105,19 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id: 'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = 'fasta'
                 input[2] = ''
                 input[3] = ''
-                input[4] = []
-                input[5] = []
-                input[6] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
-                input[7] = []
+                input[4] = [[],[]]
+                input[5] = [[],[]]
+                input[6] = [
+                    [ id: 'bed' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
+                ]
+                input[7] = [[],[]]
                 """
             }
         }
@@ -131,18 +137,18 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id: 'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = 'fasta'
                 input[2] = ''
                 input[3] = ''
-                input[4] = []
-                input[5] = []
-                input[6] = []
+                input[4] = [[],[]]
+                input[5] = [[],[]]
+                input[6] = [[],[]]
                 input[7] = Channel.of(
                     'RVCP\tMT192765.1'
-                    ).collectFile(name:'assembly.sak')
+                    ).collectFile(name:'assembly.sak').map { file -> [ [ id: 'sak' ], file ] }
                 """
             }
         }
@@ -164,16 +170,16 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id: 'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = 'gfa'
                 input[2] = ''
                 input[3] = ''
-                input[4] = []
-                input[5] = []
-                input[6] = []
-                input[7] = []
+                input[4] = [[],[]]
+                input[5] = [[],[]]
+                input[6] = [[],[]]
+                input[7] = [[],[]]
                 """
             }
         }
@@ -195,16 +201,16 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id: 'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = 'fasta'
                 input[2] = ''
                 input[3] = ''
-                input[4] = []
-                input[5] = []
-                input[6] = []
-                input[7] = []
+                input[4] = [[],[]]
+                input[5] = [[],[]]
+                input[6] = [[],[]]
+                input[7] = [[],[]]
                 """
             }
         }
@@ -226,16 +232,19 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id: 'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = 'fastq'
                 input[2] = ''
                 input[3] = ''
-                input[4] = []
-                input[5] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
-                input[6] = []
-                input[7] = []
+                input[4] = [[],[]]
+                input[5] = [
+                    [ id: 'bed' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
+                ]
+                input[6] = [[],[]]
+                input[7] = [[],[]]
                 """
             }
         }
@@ -257,16 +266,19 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id: 'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = 'fasta'
                 input[2] = ''
                 input[3] = ''
-                input[4] = []
-                input[5] = []
-                input[6] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
-                input[7] = []
+                input[4] = [[],[]]
+                input[5] = [[],[]]
+                input[6] = [
+                    [ id: 'bed' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
+                ]
+                input[7] = [[],[]]
                 """
             }
         }
@@ -288,18 +300,18 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id: 'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = 'fasta'
                 input[2] = ''
                 input[3] = ''
-                input[4] = []
-                input[5] = []
-                input[6] = []
+                input[4] = [[],[]]
+                input[5] = [[],[]]
+                input[6] = [[],[]]
                 input[7] = Channel.of(
                     'RVCP\tMT192765.1'
-                    ).collectFile(name:'assembly.sak')
+                    ).collectFile(name:'assembly.sak').map { file -> [ [ id: 'sak' ], file ] }
                 """
             }
         }

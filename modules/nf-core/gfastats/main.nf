@@ -12,10 +12,10 @@ process GFASTATS {
     val out_fmt
     val genome_size
     val target
-    path agpfile
-    path include_bed
-    path exclude_bed
-    path instructions
+    tuple val(meta2), path(agpfile)
+    tuple val(meta3), path(include_bed)
+    tuple val(meta4), path(exclude_bed)
+    tuple val(meta5), path(instructions)
 
     output:
     tuple val(meta), path("*.assembly_summary"), emit: assembly_summary
