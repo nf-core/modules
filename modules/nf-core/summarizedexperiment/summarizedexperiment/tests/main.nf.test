@@ -26,7 +26,7 @@ nextflow_process {
                 """
             }
         }
-        run("CUSTOM_TX2GENE") { 
+        run("CUSTOM_TX2GENE") {
             script "../../../custom/tx2gene/main.nf"
             process {
                 """
@@ -36,7 +36,7 @@ nextflow_process {
                 ]
                 input[1] = UNTAR.out.untar.map { meta, dir -> [ meta, dir.listFiles().collect() ] }
                 input[2] = 'kallisto'
-                input[3] = 'gene_id' 
+                input[3] = 'gene_id'
                 input[4] = 'gene_name'
                 """
             }
@@ -50,17 +50,17 @@ nextflow_process {
                 input[2] = 'kallisto'
                 """
             }
-        } 
+        }
     }
 
     test("saccharomyces_cerevisiae - multi_matrix - rowdata - coldata") {
-    
+
         config "./multi_matrix.config"
-        
+
         when {
             process {
                 """
-                input[0] = TXIMETA_TXIMPORT.out.counts_gene.join(TXIMETA_TXIMPORT.out.tpm_gene).map{tuple(it[0], [it[1], it[2]])}
+                input[0] = TXIMETA_TXIMPORT.out.gene
                 input[1] = CUSTOM_TX2GENE.out.tx2gene
 		input[2] = [
                     [ id:'gene'], // meta map
@@ -81,15 +81,15 @@ nextflow_process {
             )
         }
     }
-    
+
     test("saccharomyces_cerevisiae - multi_matrix - rowdata") {
-        
+
         config "./multi_matrix.config"
-        
+
         when {
             process {
                 """
-                input[0] = TXIMETA_TXIMPORT.out.counts_gene.join(TXIMETA_TXIMPORT.out.tpm_gene).map{tuple(it[0], [it[1], it[2]])}
+                input[0] = TXIMETA_TXIMPORT.out.gene
                 input[1] = CUSTOM_TX2GENE.out.tx2gene
                 input[2] = Channel.of([ [], [] ])
                 """
@@ -107,15 +107,15 @@ nextflow_process {
             )
         }
     }
-    
+
     test("saccharomyces_cerevisiae - multi_matrix") {
-        
+
         config "./multi_matrix.config"
-        
+
         when {
             process {
                 """
-                input[0] = TXIMETA_TXIMPORT.out.counts_gene.join(TXIMETA_TXIMPORT.out.tpm_gene).map{tuple(it[0], [it[1], it[2]])}
+                input[0] = TXIMETA_TXIMPORT.out.gene
                 input[1] = Channel.of([ [], [] ])
                 input[2] = Channel.of([ [], [] ])
                 """
@@ -133,15 +133,15 @@ nextflow_process {
             )
         }
     }
-    
+
     test("saccharomyces_cerevisiae - single_matrix") {
-        
+
         config "./single_matrix.config"
-        
+
         when {
             process {
                 """
-                input[0] = TXIMETA_TXIMPORT.out.counts_gene
+                input[0] = TXIMETA_TXIMPORT.out.gene
                 input[1] = Channel.of([ [], [] ])
                 input[2] = Channel.of([ [], [] ])
                 """
@@ -161,14 +161,14 @@ nextflow_process {
     }
 
     test("saccharomyces_cerevisiae - multi_matrix - rowdata - coldata - stub") {
-    
+
         config "./multi_matrix.config"
         options "-stub"
-        
+
         when {
             process {
                 """
-                input[0] = TXIMETA_TXIMPORT.out.counts_gene.join(TXIMETA_TXIMPORT.out.tpm_gene).map{tuple(it[0], [it[1], it[2]])}
+                input[0] = TXIMETA_TXIMPORT.out.gene
                 input[1] = CUSTOM_TX2GENE.out.tx2gene
 		input[2] = [
                     [ id:'gene'], // meta map
@@ -186,16 +186,16 @@ nextflow_process {
             )
         }
     }
-    
+
     test("saccharomyces_cerevisiae - multi_matrix - rowdata - stub") {
-        
+
         config "./multi_matrix.config"
         options "-stub"
-        
+
         when {
             process {
                 """
-                input[0] = TXIMETA_TXIMPORT.out.counts_gene.join(TXIMETA_TXIMPORT.out.tpm_gene).map{tuple(it[0], [it[1], it[2]])}
+                input[0] = TXIMETA_TXIMPORT.out.gene
                 input[1] = CUSTOM_TX2GENE.out.tx2gene
                 input[2] = Channel.of([ [], [] ])
                 """
@@ -210,16 +210,16 @@ nextflow_process {
             )
         }
     }
-    
+
     test("saccharomyces_cerevisiae - multi_matrix - stub") {
-        
+
         config "./multi_matrix.config"
         options "-stub"
-        
+
         when {
             process {
                 """
-                input[0] = TXIMETA_TXIMPORT.out.counts_gene.join(TXIMETA_TXIMPORT.out.tpm_gene).map{tuple(it[0], [it[1], it[2]])}
+                input[0] = TXIMETA_TXIMPORT.out.gene
                 input[1] = Channel.of([ [], [] ])
                 input[2] = Channel.of([ [], [] ])
                 """
@@ -234,16 +234,16 @@ nextflow_process {
             )
         }
     }
-    
+
     test("saccharomyces_cerevisiae - single_matrix - stub") {
-        
+
         config "./single_matrix.config"
         options "-stub"
-        
+
         when {
             process {
                 """
-                input[0] = TXIMETA_TXIMPORT.out.counts_gene
+                input[0] = TXIMETA_TXIMPORT.out.gene
                 input[1] = Channel.of([ [], [] ])
                 input[2] = Channel.of([ [], [] ])
                 """
