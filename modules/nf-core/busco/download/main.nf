@@ -30,4 +30,19 @@ process BUSCO_DOWNLOAD {
         busco: \$( busco --version 2>&1 | sed 's/^BUSCO //' )
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    """
+    echo "busco \\
+        --download $lineage \\
+        $args"
+
+    mkdir busco_downloads
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        busco: \$( busco --version 2>&1 | sed 's/^BUSCO //' )
+    END_VERSIONS
+    """
 }
