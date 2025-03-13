@@ -17,7 +17,16 @@ import matplotlib.pyplot as plt
 import scanpy as sc
 import decoupler as dc
 
-adata = sc.read_h5ad('${mat}')
+mat = '${mat}'
+ext = os.path.splitext(mat)[1].lower()
+
+if ext == '.h5ad':
+    adata = sc.read_h5ad(mat)
+elif ext in ['.csv', '.txt', '.tsv']:
+    sep = "\t" if ext == '.txt' or 'tsv' in mat else ','
+    adata = pd.read_csv(mat, sep=sep, index_col=0)
+else:
+    raise ValueError(f"Unsupported file format: {ext}")
 
 progeny = dc.get_progeny(organism='${organism}', top=${top_genes})
 
