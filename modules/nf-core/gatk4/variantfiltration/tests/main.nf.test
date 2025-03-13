@@ -31,6 +31,10 @@ nextflow_process {
                     [ id:'genome' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                 ]
+                input[4] = [
+                    [ id:'genome' ], // meta map
+                    []
+                ]
                 """
             }
         }
@@ -68,6 +72,10 @@ nextflow_process {
                     [ id:'genome' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                 ]
+                input[4] = [
+                    [ id:'genome' ], // meta map
+                    []
+                ]
                 """
             }
         }
@@ -84,4 +92,3 @@ nextflow_process {
     }
 
 }
-
