@@ -17,10 +17,8 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
-
-                    // TODO add test data to nf-core repository
-                    file('/data/leuven/351/vsc35115/modules/hifi', checkIfExists: true),
-                    'ont',
+                    file(params.modules_testdata_base_path + 'generic/models/clair3_hifi', checkIfExists: true),
+                    'hifi',
                 ]
                 input[1] = [
                     [ id:'test'],
@@ -54,10 +52,8 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
-
-                    // TODO add test data to nf-core repository
-                    file('/data/leuven/351/vsc35115/modules/hifi', checkIfExists: true),
-                    'ont',
+                    file(params.modules_testdata_base_path + 'generic/models/clair3_hifi', checkIfExists: true),
+                    'hifi',
                 ]
                 input[1] = [
                     [ id:'test'],
