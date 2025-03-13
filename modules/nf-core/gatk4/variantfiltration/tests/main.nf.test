@@ -43,7 +43,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions,
-                                  file(process.out.vcf.get(0).get(1)).name,
+                                  path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
                                   file(process.out.tbi.get(0).get(1)).name).match() },
             )
         }
