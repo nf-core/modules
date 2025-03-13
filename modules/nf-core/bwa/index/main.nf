@@ -37,7 +37,7 @@ process BWA_INDEX {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${fasta.baseName}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}_bwa
 
