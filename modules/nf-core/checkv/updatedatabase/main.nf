@@ -42,6 +42,7 @@ process CHECKV_UPDATEDATABASE {
     def checkv_db = db ?: ''
     def update_sequence = fasta ?: ''
     """
+    echo "${args}"
     touch -p ${prefix}/**
 
     cat <<-END_VERSIONS > versions.yml
