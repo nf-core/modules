@@ -42,7 +42,12 @@ nextflow_process {
 
     test("Mus musculus - expression table - contrasts + blocking factors") {
 
+        config "./nextflow.config"
+
         when {
+            params {
+                module_args = "--formula '~ treatment + (1 | sample_number)'"
+            }
             process {
                 """
                 // contrast data + counts + samplesheet

@@ -54,28 +54,24 @@ opt <- list(
     contrast_reference    = "$meta.contrast_reference",# Reference level for the contrast
     contrast_target       = "$meta.contrast_target",   # Target level for the contrast (e.g., "mCherry")
     blocking_factors   = "$meta.blocking_factors",  # Blocking variables (e.g., "sample_number")
-    sample_id_col      = "sample",    # Column name for sample IDs
+    sample_id_col      = "sample",                  # Column name for sample IDs
     threads            = "$task.cpus",              # Number of threads for multithreading
     subset_to_contrast_samples = FALSE,            # Whether to subset to contrast samples
     exclude_samples_col = NULL,                    # Column for excluding samples
     exclude_samples_values = NULL,                 # Values for excluding samples
-    number             = Inf,                     # Maximum number of results
     adjust.method      = "BH",                    # Adjustment method for topTable
     p.value            = 1,                       # P-value threshold for topTable
     lfc                = 0,                       # Log fold-change threshold for topTable
     confint            = FALSE,                   # Whether to compute confidence intervals in topTable
-    ndups              = NULL,                    # Number of duplicates for lmFit
-    spacing            = NULL,                    # Spacing for lmFit
-    block              = NULL,                    # Block design for lmFit
-    correlation        = NULL,                    # Correlation for lmFit
-    method             = "ls",                    # Method for lmFit
     proportion         = 0.01,                    # Proportion for eBayes
     stdev_coef_lim     = "0.1,4",                 # Standard deviation coefficient limits for eBayes
     trend              = FALSE,                   # Whether to use trend in eBayes
     robust             = FALSE,                   # Whether to use robust method in eBayes
     winsor_tail_p      = "0.05,0.1",              # Winsor tail probabilities for eBayes
     ddf                = "adaptive",              # 'Satterthwaite', 'Kenward-Roger', or 'adaptive'
-    reml               = FALSE
+    reml               = FALSE,
+    formula            = NULL,                    # User-specified formula (e.g. "~ + (1 | sample_number)")
+    apply_voom         = FALSE                    # Whether to apply `voomWithDreamWeights`
 )
 
 # Load external arguments to opt list
@@ -112,29 +108,30 @@ countMatrix <- read_delim_flexible(opt\$count_file, header = TRUE, stringsAsFact
 rownames(countMatrix) <- countMatrix\$gene_id # count_file/matrix must have a gene_id column.
 countMatrix <- countMatrix[, rownames(metadata), drop = FALSE]
 
-# Standard usage of limma/voom
-dge <- DGEList(countMatrix)
-dge <- calcNormFactors(dge)
-
-# Print sample names
-cat("Response sample names (dge counts):\n")
-print(colnames(dge\$counts))
-cat("Metadata sample names (rownames(metadata)):\n")
-print(rownames(metadata))
-
-# Construct model formula using contrast and, if available, blocking variables
-if (!is.null(opt\$blocking_factors) && opt\$blocking_factors != "") {
-  form <- as.formula(paste0("~ ", opt\$contrast_variable, " + (1 | ", opt\$blocking_factors, ")"))
+# Construct model formula using user-provided formula if available; if not, default to contrast variable only
+if (!is.null(opt\$formula) && opt\$formula != "") {
+    form <- as.formula(opt\$formula)
 } else {
-  form <- as.formula(paste0("~ ", opt\$contrast_variable))
+    form <- as.formula(paste0("~ ", opt\$contrast_variable))
 }
+print(form)
 
 # Parallel processing setup
 threads <- as.numeric(opt\$threads)
 param <- SnowParam(threads, "SOCK", progressbar = TRUE)
 
-# Estimate weights using the linear mixed model of DREAM
-vobjDream <- voomWithDreamWeights(dge, form, metadata, BPPARAM = param)
+# Optionally apply voom
+if (as.logical(opt\$apply_voom)) {
+    # Standard usage of limma/voom
+    dge <- DGEList(countMatrix)
+    dge <- calcNormFactors(dge)
+    vobjDream <- voomWithDreamWeights(dge, form, metadata, BPPARAM = param)
+} else {
+    # Assume countMatrix roughly follows a normal distribution
+    vobjDream <- list(E = as.matrix(countMatrix),
+                    weights = matrix(1, nrow = nrow(countMatrix), ncol = ncol(countMatrix)))
+    class(vobjDream) <- "EList"
+}
 
 # Fit the DREAM model with ddf and reml options
 fitmm <- dream(vobjDream, form, metadata, ddf = opt\$ddf, reml = opt\$reml)
