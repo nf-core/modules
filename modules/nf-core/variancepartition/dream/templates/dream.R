@@ -70,7 +70,7 @@ opt <- list(
     winsor_tail_p      = "0.05,0.1",              # Winsor tail probabilities for eBayes
     ddf                = "adaptive",              # 'Satterthwaite', 'Kenward-Roger', or 'adaptive'
     reml               = FALSE,
-    formula            = NULL,                    # User-specified formula (e.g. "~ + (1 | sample_number)")
+    formula            = "$meta.formula",         # User-specified formula (e.g. "~ + (1 | sample_number)")
     apply_voom         = FALSE                    # Whether to apply `voomWithDreamWeights`
 )
 
@@ -86,6 +86,11 @@ for (ao in names(args_opt)) {
 # If there are no blocking factors, convert string "null" to NULL
 if (!is.null(opt\$blocking_factors) && tolower(opt\$blocking_factors) == "null") {
     opt\$blocking_factors <- NULL
+}
+
+# If there is no formula, convert string "null" to NULL
+if (!is.null(opt\$formula) && tolower(opt\$formula) == "null") {
+    opt\$formula <- NULL
 }
 
 # Load metadata

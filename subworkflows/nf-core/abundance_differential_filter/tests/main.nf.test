@@ -57,7 +57,8 @@ nextflow_workflow {
                             contrast_variable: 'treatment',
                             contrast_reference: 'mCherry',
                             contrast_target: 'hND6',
-                            blocking_factors: 'sample_number'
+                            blocking_factors: 'sample_number',
+                            formula: '~ treatment + (1 | sample_number)'
                         ],
                     file(testData.expression_test_data_dir + testData.samplesheet_file),
                     file(testData.expression_test_data_dir + testData.dream_matrix_file)

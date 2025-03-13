@@ -22,7 +22,8 @@ nextflow_process {
                             contrast_variable: 'treatment',
                             contrast_reference: 'mCherry',
                             contrast_target: 'hND6',
-                            blocking_factors: null
+                            blocking_factors: null,
+                            formula: null
                         ],
                         file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv", checkIfExists: true),
                         file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv", checkIfExists: true)
@@ -42,12 +43,7 @@ nextflow_process {
 
     test("Mus musculus - expression table - contrasts + blocking factors") {
 
-        config "./nextflow.config"
-
         when {
-            params {
-                module_args = "--formula '~ treatment + (1 | sample_number)'"
-            }
             process {
                 """
                 // contrast data + counts + samplesheet
@@ -58,7 +54,8 @@ nextflow_process {
                             contrast_variable: 'treatment',
                             contrast_reference: 'mCherry',
                             contrast_target: 'hND6',
-                            blocking_factors: 'sample_number'
+                            blocking_factors: 'sample_number',
+                            formula: '~ treatment + (1 | sample_number)'
                         ],
                         file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv", checkIfExists: true),
                         file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv", checkIfExists: true)
@@ -90,7 +87,8 @@ nextflow_process {
                             contrast_variable: 'treatment',
                             contrast_reference: 'mCherry',
                             contrast_target: 'hND6',
-                            blocking_factors: 'sample_number'
+                            blocking_factors: 'sample_number',
+                            formula: null
                         ],
                         file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv", checkIfExists: true),
                         file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv", checkIfExists: true)
