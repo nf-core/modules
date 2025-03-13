@@ -1,0 +1,84 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "hostile_clean"
+description: write your description here
+keywords:
+  - hostile
+  - decontamination
+  - human removal
+  - download
+  - host removal
+  - clean
+tools:
+  - "hostile":
+      description: "Hostile: accurate host decontamination"
+      homepage: "https://github.com/bede/hostile"
+      documentation: "https://github.com/bede/hostile"
+      tool_dev_url: "https://github.com/bede/hostile"
+      doi: "10.1093/bioinformatics/btad728"
+      licence: ["MIT"]
+      identifier: biotools:hostile
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - reads:
+        type: file
+        description: Paired or single end FASTQ files
+        pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1930"
+  - - reference_dir:
+        type: directory
+        description: |
+          Directory containing index file(s) corresponding to the preferred aligner (bowtie2 short reads or minimap for long reads).
+          Note that single end data is assumed to be long reads. If you have single-end short read you must supply both the BowTie2
+          indices AND explicitly specify `--aligner bowtie2`
+        ontologies:
+          - edam: "http://edamontology.org/data_1049"
+  - - reference_name:
+        type: string
+        description: |
+          Name of the reference to align against and thus remove mapped reads to.
+          Typically corresponds
+
+output:
+  - fastq:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - cleaned_reads/*.fastq.gz:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+          pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
+          ontologies:
+            - edam: "http://edamontology.org/format_1930"
+  - json:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.json":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+          pattern: "*.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@jfy133"
+maintainers:
+  - "@jfy133"
