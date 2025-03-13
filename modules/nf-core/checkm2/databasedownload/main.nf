@@ -18,7 +18,7 @@ process CHECKM2_DATABASEDOWNLOAD {
 
     script:
     def args        = task.ext.args ?: ''
-    zenodo_id       = db_zenodo_id ?: 5571251  // Default to latest version if no ID provided
+    zenodo_id       = db_zenodo_id ?: 14897628  // Default to version 3 if no ID provided
     api_data        = (new groovy.json.JsonSlurper()).parseText(file("https://zenodo.org/api/records/${zenodo_id}").text)
     db_version      = api_data.metadata.version
     checksum        = api_data.files[0].checksum.replaceFirst(/^md5:/, "md5=")
@@ -42,12 +42,14 @@ process CHECKM2_DATABASEDOWNLOAD {
     """
 
     stub:
+    db_version = 0
+    meta       = [id: 'checkm2_db', version: db_version]
     """
-    touch checkm_db.dmnd
+    touch checkm2_db_v${db_version}.dmnd
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        checkm2: \$(checkm2 --version)
+        aria2: \$(echo \$(aria2c --version 2>&1) | grep 'aria2 version' | cut -f3 -d ' ')
     END_VERSIONS
     """
 }

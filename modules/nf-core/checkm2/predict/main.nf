@@ -4,8 +4,8 @@ process CHECKM2_PREDICT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/checkm2:1.0.2--pyh7cba7a3_0':
-        'biocontainers/checkm2:1.0.2--pyh7cba7a3_0' }"
+        'https://depot.galaxyproject.org/singularity/checkm2:1.1.0--pyh7e72e81_1':
+        'biocontainers/checkm2:1.1.0--pyh7e72e81_1' }"
 
     input:
     tuple val(meta), path(fasta, stageAs: "input_bins/*")
@@ -42,8 +42,8 @@ process CHECKM2_PREDICT {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p ${prefix}/diamond_output ${prefix}/protein_files
-    touch ${prefix}/quality_report.tsv ${prefix}/checkm2.log
+    mkdir ${prefix}/
+    touch ${prefix}_checkm2_report.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
