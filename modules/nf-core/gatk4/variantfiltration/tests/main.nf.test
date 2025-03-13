@@ -9,7 +9,7 @@ nextflow_process {
     tag "gatk4"
     tag "gatk4/variantfiltration"
 
-    test("test_gatk4_variantfiltration_vcf_input") {
+    test("gatk4_variantfiltration - human - vcf - fasta") {
 
         when {
             process {
@@ -50,7 +50,7 @@ nextflow_process {
 
     }
 
-    test("test_gatk4_variantfiltration_vcf_input_gz_ref") {
+    test("gatk4_variantfiltration - human - vcf - fasta.gz") {
 
         when {
             process {
@@ -84,14 +84,14 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions,
-                                  file(process.out.vcf.get(0).get(1)).name,
+                                  path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
                                   file(process.out.tbi.get(0).get(1)).name).match() },
             )
         }
 
     }
 
-    test("test_gatk4_variantfiltration_gz_input") {
+    test("gatk4_variantfiltration - human - vcf.gz - fasta") {
 
         when {
             process {
@@ -125,7 +125,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions,
-                                  file(process.out.vcf.get(0).get(1)).name,
+                                  path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
                                   file(process.out.tbi.get(0).get(1)).name).match() },
             )
         }
