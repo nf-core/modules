@@ -1,4 +1,3 @@
-
 process CLAIR3 {
     tag "$meta.id"
     label 'process_high'
@@ -9,16 +8,16 @@ process CLAIR3 {
         'biocontainers/clair3:1.0.10--py39hd649744_1' }"
 
     input:
-    tuple val(meta), path(bam), path(bai), path(model), val(platform)
+    tuple val(meta), path(bam), path(bai), path(model),val(platform)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
 
     output:
-    tuple val(meta), path("*phased_merge_output.vcf.gz"),     emit: phased_vcf
-    tuple val(meta), path("*phased_merge_output.vcf.gz.tbi"), emit: phased_tbi
     tuple val(meta), path("*merge_output.vcf.gz"),            emit: vcf
     tuple val(meta), path("*merge_output.vcf.gz.tbi"),        emit: tbi
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*phased_merge_output.vcf.gz"),     emit: phased_vcf, optional: true
+    tuple val(meta), path("*phased_merge_output.vcf.gz.tbi"), emit: phased_tbi, optional: true
+    path "versions.yml",                                      emit: versions
 
     when:
     task.ext.when == null || task.ext.when
