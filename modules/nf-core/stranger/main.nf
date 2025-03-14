@@ -20,8 +20,10 @@ process STRANGER {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_stranger"
     def options_variant_catalog = variant_catalog ? "--repeats-file $variant_catalog" : ""
+
+    if ("${vcf}" == "${prefix}.vcf.gz") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     stranger \\
         $args \\
@@ -35,7 +37,9 @@ process STRANGER {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_stranger"
+    
+    if ("${vcf}" == "${prefix}.vcf.gz") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     echo "" | gzip > ${prefix}.vcf.gz
 
