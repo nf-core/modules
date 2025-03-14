@@ -9,8 +9,8 @@ process CLAIR3 {
 
     input:
     tuple val(meta), path(bam), path(bai), path(model),val(platform)
-    tuple val(meta2), path(fasta)
-    tuple val(meta3), path(fai)
+    tuple val(meta2), path(reference)
+    tuple val(meta3), path(index)
 
     output:
     tuple val(meta), path("*merge_output.vcf.gz"),            emit: vcf
@@ -28,7 +28,7 @@ process CLAIR3 {
     """
     run_clair3.sh \\
         --bam_fn=$bam \\
-        --ref_fn=$fasta \\
+        --ref_fn=$reference \\
         --threads=$task.cpus \\
         --output=\$PWD \\
         --platform=$platform \\
