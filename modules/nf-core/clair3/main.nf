@@ -34,6 +34,7 @@ process CLAIR3 {
         --platform=$platform \\
         --model=$model \\
         $args
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         clair3: \$(run_clair3.sh  --version |& sed '1!d ; s/Clair3 v//')
