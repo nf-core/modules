@@ -32,7 +32,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*.vcf.gz":
+      - ${prefix}.vcf.gz:
           type: file
           description: Concatenated VCF file
           pattern: "*.{vcf.gz}"
@@ -42,7 +42,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*.tbi":
+      - ${prefix}.vcf.gz.tbi:
           type: file
           description: Concatenated VCF file index
           pattern: "*.{tbi}"
