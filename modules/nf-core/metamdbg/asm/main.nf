@@ -22,19 +22,15 @@ process METAMDBG_ASM {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    switch(input_type) {
-        case "hifi": input = "--in-hifi ${reads}"; break
-        case "ont" : input = "--in-ont ${reads}" ; break
-        default:
-            error("ERROR: input_type must be one of either 'hifi' or 'ont'.")
-            break
+    if(!(input_type in ["hifi", "ont"])) {
+        error("ERROR: input_type must be one of either 'hifi' or 'ont'.")
     }
     """
     metaMDBG asm \\
         --threads ${task.cpus} \\
         --out-dir . \\
         ${args} \\
-        ${input}
+        --in-${input_type} ${reads}
 
     rm -r tmp/
 

@@ -55,8 +55,14 @@ nextflow_process {
                     ['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'],
                     file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/Condition_genotype_WT_KO.deseq2.results_filtered.tsv", checkIfExists: true)
                 ]
-                input[1] = file(params.modules_testdata_base_path + "genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt", checkIfExists: true)
-                input[2] = file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/study.filtered.tsv", checkIfExists: true)
+                input[1] = [
+                    ['id': 'test'],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt", checkIfExists: true)
+                ]
+                input[2] = [
+                    ['id': 'test'],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/study.filtered.tsv", checkIfExists: true)
+                ]
                 """
             }
         }
@@ -66,9 +72,9 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.all_enrich,
-                    process.out.plot_png,
                     process.out.sub_enrich,
-                    process.out.sub_plot,
+                    file(process.out.plot_png[0][1]).name, //assert unstable file
+                    process.out.sub_plot[0][1].collect{ file(it).name }, //assert unstable file
                     process.out.filtered_gmt,
                     process.out.session_info.collect{ meta,session_info -> file(session_info).name }, //assert unstable file
                     process.out.versions,
@@ -94,8 +100,14 @@ nextflow_process {
                     ['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'],
                     file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/Condition_genotype_WT_KO.deseq2.results_filtered.tsv", checkIfExists: true)
                 ]
-                input[1] = file(params.modules_testdata_base_path + "genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt", checkIfExists: true)
-                input[2] = file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/study.filtered.tsv", checkIfExists: true)
+                input[1] = [
+                    ['id': 'test'],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt", checkIfExists: true)
+                ]
+                input[2] = [
+                    ['id': 'test'],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/study.filtered.tsv", checkIfExists: true)
+                ]
                 """
             }
         }

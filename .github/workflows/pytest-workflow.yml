@@ -243,11 +243,11 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - name: Set up Python
-        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
+        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5
         with:
           python-version: "3.11"
 
-      - uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4
+      - uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf # v4
         id: cache-pip-pytest
         with:
           path: ~/.cache/pip
@@ -258,12 +258,12 @@ jobs:
       - name: Install Python dependencies
         run: python -m pip install --upgrade pip pytest-workflow cryptography
 
-      - uses: actions/setup-java@7a6d8a8234af8eb26422e24e3006232cccaa061b # v4
+      - uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4
         with:
           distribution: "temurin"
           java-version: "17"
 
-      - name: Setup Nextflow
+      - name: Set up Nextflow
         uses: nf-core/setup-nextflow@v2
         with:
           version: ${{ env.NXF_VER }}
@@ -278,7 +278,7 @@ jobs:
           mkdir -p $NXF_SINGULARITY_CACHEDIR
           mkdir -p $NXF_SINGULARITY_LIBRARYDIR
 
-      - name: Conda setup
+      - name: Set up Conda
         if: matrix.profile == 'conda'
         uses: conda-incubator/setup-miniconda@505e6394dae86d6a5c7fbb6e3fb8938e3e863830 # v3
         with:
@@ -308,7 +308,7 @@ jobs:
 
       - name: Upload logs on failure
         if: failure()
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         with:
           name: logs-${{ matrix.profile }}-${{ steps.parsed.outputs.result }}
           path: |

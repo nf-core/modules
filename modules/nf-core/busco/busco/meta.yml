@@ -40,6 +40,9 @@ input:
   - - config_file:
         type: file
         description: Path to BUSCO config file.
+  - - clean_intermediates:
+        type: boolean
+        description: Flag to remove intermediate files.
 output:
   - batch_summary:
       - meta:
@@ -71,6 +74,16 @@ output:
           type: file
           description: Short Busco summary in JSON format
           pattern: "short_summary.*.json"
+  - log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*-busco.log":
+          type: file
+          description: BUSCO main log
+          pattern: "*-busco.log"
   - full_table:
       - meta:
           type: map

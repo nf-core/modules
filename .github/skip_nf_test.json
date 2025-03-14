@@ -54,6 +54,8 @@
         "modules/nf-core/merquryfk/katgc",
         "modules/nf-core/merquryfk/merquryfk",
         "modules/nf-core/merquryfk/ploidyplot",
+        "modules/nf-core/mitohifi/mitohifi",
+        "modules/nf-core/mitohifi/findmitoreference",
         "modules/nf-core/molkartgarage/clahe",
         "modules/nf-core/parabricks",
         "modules/nf-core/quartonotebook",
@@ -83,13 +85,17 @@
         "subworkflows/nf-core/fastq_align_bwa",
         "subworkflows/nf-core/vcf_annotate_ensemblvep"
     ],
-    "docker_self_hosted": ["modules/nf-core/parabricks"],
+    "docker_self_hosted": [
+        "modules/nf-core/parabricks",
+        "subworkflows/nf-core/deepvariant/tests/equality"
+    ],
     "singularity": [
         "modules/nf-core/bases2fastq",
         "modules/nf-core/deepvariant/rundeepvariant",
         "modules/nf-core/deepvariant/vcfstatsreport",
         "modules/nf-core/deepsomatic",
         "modules/nf-core/parabricks",
-        "modules/nf-core/universc"
+        "modules/nf-core/universc",
+        "subworkflows/nf-core/deepvariant/tests/equality"
     ]
 }
