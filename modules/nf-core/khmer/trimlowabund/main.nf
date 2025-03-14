@@ -2,7 +2,7 @@ process KHMER_TRIMLOWABUND {
     tag "${meta.id}"
     label 'process_low'
 
-    conda "bioconda::khmer=3.0.0a2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/khmer:3.0.0a3--py37haa7609a_2' :
         'biocontainers/khmer:3.0.0a3--py37haa7609a_2' }"
