@@ -14,7 +14,10 @@ process CLAIR3 {
     tuple val(meta3), path(fai)
 
     output:
-    tuple val(meta), path("*merge_output.vcf.gz"), emit: vcf
+    tuple val(meta), path("*phased_merge_output.vcf.gz"),     emit: phased_vcf
+    tuple val(meta), path("*phased_merge_output.vcf.gz.tbi"), emit: phased_tbi
+    tuple val(meta), path("*merge_output.vcf.gz"),            emit: vcf
+    tuple val(meta), path("*merge_output.vcf.gz.tbi"),        emit: tbi
     path "versions.yml"           , emit: versions
 
     when:
@@ -23,7 +26,6 @@ process CLAIR3 {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    
     """
     run_clair3.sh \\
         --bam_fn=$bam \\
@@ -44,8 +46,10 @@ process CLAIR3 {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    touch ${prefix}.phased_merge_output.vcf.gz
-
+    echo "" | gzip > ${prefix}.phased_merge_output.vcf.gz
+    echo "" | gzip > ${prefix}.phased_merge_output.vcf.gz.tbi
+    echo "" | gzip > ${prefix}.merge_output.vcf.gz
+    echo "" | gzip > ${prefix}.merge_output.vcf.gz.tbi
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         clair3: \$(/opt/bin/run_clair3.sh --version |& sed '1!d ; s/Clair3 v//')
