@@ -30,7 +30,7 @@ process CLAIR3 {
         --bam_fn=$bam \\
         --ref_fn=$reference \\
         --threads=$task.cpus \\
-        --output=\$PWD \\
+        --output=. \\
         --platform=$platform \\
         --model=$model \\
         $args
