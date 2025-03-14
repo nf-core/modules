@@ -1,0 +1,80 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "bedtools_shuffle"
+description: bedtools shuffle will randomly permute the genomic locations of a feature file among a genome defined in a genome file
+keywords:
+  - bed
+  - shuffleBed
+  - region
+  - fai
+  - sizes
+  - genome
+  - bases
+tools:
+  - bedtools:
+      description: |
+        A set of tools for genomic analysis tasks, specifically enabling genome arithmetic (merge, count, complement) on various file types.
+      documentation: https://bedtools.readthedocs.io/en/latest/content/tools/slop.html
+      licence: ["MIT"]
+      identifier: biotools:bedtools
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing interval information
+          e.g. [ id:'test' ]
+    - intervals:
+        type: file
+        description: Input interval (BED/GFF/VCF) file
+        pattern: "*.{bed,gff,gff3,vcf}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
+          - edam: "http://edamontology.org/format_2305"
+          - edam: "http://edamontology.org/format_3016"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing genome information
+          e.g. [ id:'test' ]
+    - chrom_sizes:
+        type: file
+        description: Chromosome sizes file
+        pattern: "*{.genome,.sizes,.txt,.fai}"
+  - - exclude_file:
+        type: file
+        description: BED file containing regions to exclude
+        pattern: "*.{bed}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
+  - - include_file:
+        type: file
+        description: BED file containing regions to include
+        pattern: "*.{bed}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
+
+output:
+  - bam:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing interval information
+            e.g. `[ id:'sample1' ]`
+      - "*.bed":
+          type: file
+          description: BED file with shuffled intervals
+          pattern: "*.{bed}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3003"
+
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@itrujnara"
+maintainers:
+  - "@itrujnara"
