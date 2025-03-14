@@ -114,6 +114,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert file(process.out.log.get(0).get(1)).exists() },
+                { assert file(process.out.log.get(0).get(1)).readLines().first().contains("Reads has been loaded.") },
                 { assert snapshot(
                     process.out.raw_unitigs,
                     process.out.processed_unitigs,
