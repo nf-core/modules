@@ -28,9 +28,9 @@ input:
         pattern: "*.{bam,cram}"
     - bai:
         type: file
-        description: BAM index file. This is automatically found base on BAM input file
+        description: BAM index file. This is automatically found based on BAM input file
           name
-        pattern: "*.{bai}"
+        pattern: "*.{bai,csi}"
   - - meta2:
         type: map
         description: |
@@ -63,7 +63,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - results/*/*.vcf.gz:
+      - '*.vcf.gz':
           type: file
           description: VCF file with genotyped variants
           pattern: "*.{vcf.gz}"
@@ -73,7 +73,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - results/*/*.vcf.gz.tbi:
+      - '*.vcf.gz.tbi':
           type: file
           description: VCF index file
           pattern: "*.{vcf.gz.tbi}"
