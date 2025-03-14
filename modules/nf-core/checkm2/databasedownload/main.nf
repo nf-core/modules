@@ -3,8 +3,8 @@ process CHECKM2_DATABASEDOWNLOAD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/aria2:1.36.0':
-        'biocontainers/aria2:1.36.0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/95/95c0d3d867f5bc805b926b08ee761a993b24062739743eb82cc56363e0f7817d/data':
+        'community.wave.seqera.io/library/aria2:1.37.0--3a9ec328469995dd' }"
 
     input:
     val(db_zenodo_id)
