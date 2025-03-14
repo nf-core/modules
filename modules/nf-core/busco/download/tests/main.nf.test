@@ -1,0 +1,53 @@
+nextflow_process {
+
+    name "Test Process BUSCO_DOWNLOAD"
+    script "../main.nf"
+    process "BUSCO_DOWNLOAD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "busco"
+    tag "busco/download"
+
+    test("BUSCO database download") {
+
+        when {
+            process {
+                """
+                input[0] = [ 'eukaryota_odb10' ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.download_dir.get(0)).exists() },
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+
+    }
+
+    test("BUSCO database download - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ 'stub' ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
