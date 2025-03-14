@@ -21,7 +21,7 @@ nextflow_process {
         }
 
     test("test_checkm2_predict") {
-
+        config "./nextflow.config"
         when {
             params {
                 outdir = "${launchDir}/tests/results"
