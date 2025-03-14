@@ -208,14 +208,15 @@ nextflow_process {
                 { assert file(process.out.corrected_reads.get(0).get(1)).exists() },
                 { assert file(process.out.source_overlaps.get(0).get(1)).exists() },
                 { assert file(process.out.reverse_overlaps.get(0).get(1)).exists() },
+                { assert file(process.out.hap1_contigs.get(0).get(1)).exists() },
                 { assert file(process.out.hap1_contigs.get(0).get(1)).name == "test.dip.hap1.p_ctg.gfa" },
+                { assert file(process.out.hap2_contigs.get(0).get(1)).exists() },
                 { assert file(process.out.hap2_contigs.get(0).get(1)).name == "test.dip.hap2.p_ctg.gfa" },
                 { assert file(process.out.log.get(0).get(1)).exists() },
                 { assert snapshot(
                     process.out.raw_unitigs,
                     process.out.processed_unitigs,
                     process.out.hap1_contigs,
-                    process.out.hap2_contigs,
                     process.out.versions
                 ).match() }
             )
@@ -254,7 +255,9 @@ nextflow_process {
                 { assert file(process.out.corrected_reads.get(0).get(1)).exists() },
                 { assert file(process.out.source_overlaps.get(0).get(1)).exists() },
                 { assert file(process.out.reverse_overlaps.get(0).get(1)).exists() },
+                { assert file(process.out.hap1_contigs.get(0).get(1)).exists() },
                 { assert file(process.out.hap1_contigs.get(0).get(1)).name == "test.hic.hap1.p_ctg.gfa" },
+                { assert file(process.out.hap2_contigs.get(0).get(1)).exists() },
                 { assert file(process.out.hap2_contigs.get(0).get(1)).name == "test.hic.hap2.p_ctg.gfa" },
                 { assert file(process.out.log.get(0).get(1)).exists() },
                 { assert snapshot(
@@ -263,7 +266,6 @@ nextflow_process {
                     process.out.primary_contigs,
                     process.out.alternate_contigs,
                     process.out.hap1_contigs,
-                    process.out.hap2_contigs,
                     process.out.versions
                 ).match() }
             )

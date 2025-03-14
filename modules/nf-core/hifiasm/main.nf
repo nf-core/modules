@@ -1,4 +1,3 @@
-include { input_args } from '../simpleaf/index/main.nf'
 process HIFIASM {
     tag "$meta.id"
     label 'process_high'
