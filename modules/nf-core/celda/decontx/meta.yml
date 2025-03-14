@@ -1,0 +1,51 @@
+name: celda_decontx
+description: DecontX is a novel Bayesian method to computationally estimate and remove RNA contamination in individual cells without empty droplet information.
+keywords:
+  - single-cell
+  - decontamination
+  - transcriptomics
+tools:
+  - "decontx":
+      description: "Decontamination of single cell genomics data"
+      homepage: "https://bioconductor.org/packages/release/bioc/html/decontX.html"
+      documentation: "https://bioconductor.org/packages/release/bioc/manuals/decontX/man/decontX.pdf"
+      tool_dev_url: "https://git.bioconductor.org/packages/decontX"
+      doi: "10.18129/B9.bioc.decontX"
+      licence: ["MIT"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - h5ad:
+        type: file
+        description: Filtered H5AD file
+        pattern: "*.h5ad"
+    - raw:
+        type: file
+        description: Unfiltered H5AD file
+        pattern: "*.h5ad"
+
+output:
+  - h5ad:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.h5ad":
+          type: file
+          description: Decontaminated H5AD object
+          pattern: "*.h5ad"
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@lea-lenhardtackovic"
+maintainers:
+  - "@lea-lenhardtackovic"
