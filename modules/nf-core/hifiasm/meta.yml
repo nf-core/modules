@@ -25,9 +25,11 @@ input:
     - long_reads:
         type: file
         description: Long reads PacBio HiFi reads or ONT reads (requires ext.arg '--ont').
+        ontologies: []
     - ul_reads:
         type: file
         description: ONT long reads to use with --ul.
+        ontologies: []
   - - meta1:
         type: map
         description: |
@@ -36,10 +38,12 @@ input:
         type: file
         description: Yak kmer dump file for paternal reads (can be used for haplotype
           resolution). It can have an arbitrary extension.
+        ontologies: []
     - maternal_kmer_dump:
         type: file
         description: Yak kmer dump file for maternal reads (can be used for haplotype
           resolution). It can have an arbitrary extension.
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -47,9 +51,19 @@ input:
     - hic_read1:
         type: file
         description: Hi-C data Forward reads.
+        ontologies: []
     - hic_read2:
         type: file
         description: Hi-C data Reverse reads.
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing information about the input bin files
+    - bin_files:
+        type: file
+        description: bin files produced during a previous Hifiasm run
+        ontologies: []
 output:
   - raw_unitigs:
       - meta:
@@ -57,6 +71,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*.r_utg.gfa"
       - "*.r_utg.gfa":
           type: file
           description: Raw unitigs
@@ -67,6 +82,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*.ec.bin"
       - "*.ec.bin":
           type: file
           description: Corrected reads
@@ -77,6 +93,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*.ovlp.source.bin"
       - "*.ovlp.source.bin":
           type: file
           description: Source overlaps
@@ -87,26 +104,18 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*.ovlp.reverse.bin"
       - "*.ovlp.reverse.bin":
           type: file
           description: Reverse overlaps
           pattern: "*.ovlp.reverse.bin"
-  - processed_contigs:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.bp.p_ctg.gfa":
-          type: file
-          description: Processed contigs
-          pattern: "*.bp.p_ctg.gfa"
   - processed_unitigs:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*.p_utg.gfa"
       - "*.p_utg.gfa":
           type: file
           description: Processed unitigs
@@ -117,55 +126,61 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.asm.p_ctg.gfa":
+          pattern: "${prefix}.{p_ctg,bp.p_ctg,hic.p_ctg}.gfa"
+      - ${prefix}.{p_ctg,bp.p_ctg,hic.p_ctg}.gfa:
           type: file
           description: Primary contigs
-          pattern: "*.asm.p_ctg.gfa"
+          pattern: "${prefix}.{p_ctg,bp.p_ctg,hic.p_ctg}.gfa"
   - alternate_contigs:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.asm.a_ctg.gfa":
+          pattern: "${prefix}.{a_ctg,hic.a_ctg}.gfa"
+      - ${prefix}.{a_ctg,hic.a_ctg}.gfa:
           type: file
           description: Alternative contigs
-          pattern: "*.asm.a_ctg.gfa"
-  - paternal_contigs:
+          pattern: "${prefix}.{a_ctg,hic.a_ctg}.gfa"
+  - hap1_contigs:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.hap1.p_ctg.gfa":
+          pattern: "${prefix}.*.hap1.p_ctg.gfa"
+      - ${prefix}.*.hap1.p_ctg.gfa:
           type: file
           description: Paternal contigs
-          pattern: "*.hap1.p_ctg.gfa"
-  - maternal_contigs:
+          pattern: "${prefix}.*.hap1.p_ctg.gfa"
+  - hap2_contigs:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.hap2.p_ctg.gfa":
+          pattern: "${prefix}.*.hap2.p_ctg.gfa"
+      - ${prefix}.*.hap2.p_ctg.gfa:
           type: file
-          description: Maternal contigs
-          pattern: "*.hap2.p_ctg.gfa"
+          description: Paternal contigs
+          pattern: "${prefix}.*.hap2.p_ctg.gfa"
   - log:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.log":
+          pattern: "*.stderr.log"
+      - ${prefix}.stderr.log:
           type: file
           description: Stderr log
-          pattern: "*.log"
+          pattern: "*.stderr.log"
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies: []
 authors:
   - "@sidorov-si"
   - "@scorreard"
