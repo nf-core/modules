@@ -1,0 +1,51 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "khmer_trimlowabund"
+description: Removes low abundance k-mers from reads
+keywords:
+  - quality control
+  - genomics
+  - filtering
+  - reads
+  - khmer
+  - k-mer
+tools:
+  - "khmer":
+      description: khmer k-mer counting library
+      homepage: https://github.com/dib-lab/khmer
+      documentation: https://khmer.readthedocs.io/en/latest/
+      tool_dev_url: https://github.com/dib-lab/khmer
+      doi: "10.12688/f1000research.6924.1"
+      licence: ["BSD License"]
+      identifier: biotools:khmer
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fasta:
+        type: file
+        description: fasta file
+        pattern: "*.{fa,fasta,fas}"
+
+output:
+  - sequence:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - '*.abundtrim':
+        type: file
+        description: fasta file with low abundance k-mers removed.
+        pattern: "*.{fa,fasta,fas}"
+  - versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@zachary-foster"
+maintainers:
+  - "@zachary-foster"
