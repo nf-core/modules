@@ -5,12 +5,12 @@ process ILASTIK_PIXELCLASSIFICATION {
     container "docker.io/biocontainers/ilastik:1.4.0_cv1"
 
     input:
-    tuple val(meta), path(input_img)
-    tuple val(meta2), path(ilp)
+    tuple val(meta), path(input_img), val(output_format), val(export_source)
+    path(ilp)
 
     output:
-    tuple val(meta), path("*.${suffix}") , emit: output
-    path "versions.yml"                  , emit: versions
+    tuple val(meta), path("*.${output_format}") , emit: output
+    path "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,16 +22,20 @@ process ILASTIK_PIXELCLASSIFICATION {
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    suffix = task.ext.suffix ?: "h5"
-
     """
+    export MPLCONFIGDIR=\$PWD
+    export XDG_CACHE_HOME=\$PWD/.cache
+    export ILASTIK_LOG_DIR=\$PWD/.cache/ilastik_logs
+    mkdir -p \$XDG_CACHE_HOME \$ILASTIK_LOG_DIR
+
     /opt/ilastik-1.4.0-Linux/run_ilastik.sh \\
         --headless \\
         --readonly 1 \\
-        --project=$ilp \\
-        --output_filename_format=${prefix}.${suffix} \\
-        $args \\
-        $input_img
+        --project=${ilp} \\
+        --output_filename_format=${prefix}.${output_format} \\
+        --export_source=${export_source} \\
+        ${args} \\
+        ${input_img}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -45,10 +49,8 @@ process ILASTIK_PIXELCLASSIFICATION {
         error "ILASTIK_PIXELCLASSIFICATION module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def prefix = task.ext.prefix ?: "${meta.id}"
-    suffix = task.ext.suffix ?: "h5"
-
     """
-    touch ${prefix}.${suffix}
+    touch ${prefix}.${output_format}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

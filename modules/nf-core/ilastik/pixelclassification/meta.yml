@@ -42,7 +42,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.${suffix}":
+      - "*.${output_format}":
           type: file
           description: Output file from ilastik pixel classification.
   - versions:
