@@ -25,8 +25,6 @@ process ILASTIK_PIXELCLASSIFICATION {
     """
     export MPLCONFIGDIR=\$PWD
     export XDG_CACHE_HOME=\$PWD/.cache
-    export ILASTIK_LOG_DIR=\$PWD/.cache/ilastik_logs
-    mkdir -p \$XDG_CACHE_HOME \$ILASTIK_LOG_DIR
 
     /opt/ilastik-1.4.0-Linux/run_ilastik.sh \\
         --headless \\
