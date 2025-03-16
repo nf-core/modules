@@ -9,7 +9,7 @@ process ILASTIK_MULTICUT {
     path (ilp)
 
     output:
-    tuple val(meta), path("*.tiff") , emit: out_tiff
+    tuple val(meta), path("*.tiff") , emit: mask
     path "versions.yml"             , emit: versions
 
     when:
@@ -24,6 +24,9 @@ process ILASTIK_MULTICUT {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
+    export MPLCONFIGDIR=\$PWD
+    export XDG_CACHE_HOME=\$PWD/.cache
+
     /opt/ilastik-1.4.0-Linux/run_ilastik.sh \\
         --headless \\
         --readonly 1 \\
