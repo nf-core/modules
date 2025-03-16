@@ -22,29 +22,20 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test' ]
     - h5:
         type: file
         description: h5 file containing image stack to classify file
         pattern: "*.{h5,hdf5}"
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - ilp:
-        type: file
-        description: Trained ilastik .ilp project file
-        pattern: "*.{ilp}"
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
     - probs:
         type: file
-        description: Probability map for boundary based segmentation
-        pattern: "*.{h5,,hdf5}"
+        description: Probability map for boundary based segmentation as exported by the pixel classification workflow.
+        pattern: "*.{h5,hdf5}"
+  - - ilp:
+        type: file
+        description: Trained 'Boundary-based Segmentation with Multicut' .ilp project file
+        pattern: "*.{ilp}"
+
 output:
   - out_tiff:
       - meta:
