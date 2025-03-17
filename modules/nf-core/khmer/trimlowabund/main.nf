@@ -19,9 +19,15 @@ process KHMER_TRIMLOWABUND {
 
     script:
     def args = task.ext.args ?: ''
+    if (!task.memory) {
+        log.info '[KHMER_TRIMLOWABUND] Available memory not known - defaulting to 16GB. Specify process memory requirements to change this.'
+        avail_mem = 16
+    } else {
+        avail_mem = task.memory.toGiga()
+    }
     """
     trim-low-abund.py \\
-        -M ${task.memory.toGiga()}e9 \\
+        -M ${avail_mem}e9 \\
         $args \\
         $fasta
 
