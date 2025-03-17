@@ -59,7 +59,7 @@ input:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
+        e.g. `[ id:'sample1' ]`
   - index:
       type: file
       description: reference index file
@@ -70,20 +70,20 @@ output:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
+        e.g. `[ id:'sample1' ]`
       pattern: "*.{vcf,vcf.gz}"
   - '*merge_output.vcf.gz':
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
+        e.g. `[ id:'sample1' ]`
       pattern: "*.{vcf,vcf.gz}"
 - tbi:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
+        e.g. `[ id:'sample1' ]`
   - '*merge_output.vcf.gz.tbi':
       type: file
       description: index for vcf files
@@ -93,7 +93,7 @@ output:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
+        e.g. `[ id:'sample1' ]`
   - '*phased_merge_output.vcf.gz':
       type: file
       description: phased vcf
@@ -103,7 +103,7 @@ output:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
+        e.g. `[ id:'sample1' ]`
   - '*phased_merge_output.vcf.gz.tbi':
       type: file
       description: index for vcf files
