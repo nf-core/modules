@@ -11,6 +11,10 @@ nextflow_process {
 
     test("homo_sapiens pacbio hifi [fastq, [,], [,], [,]]") {
         when {
+            params {
+                extra_output = "--write-ec --write-paf"
+            }
+
             process {
                 """
                 input[0] = [
@@ -36,11 +40,16 @@ nextflow_process {
             }
         }
         then {
+            def bin_files = process.out.bin_files.get(0).get(1).collect { bin -> file(bin).name }
+            def expected_bin_files = [
+                "test.ec.bin",
+                "test.ovlp.reverse.bin",
+                "test.ovlp.source.bin"
+            ]
+
             assertAll(
                 { assert process.success },
-                { assert file(process.out.corrected_reads.get(0).get(1)).exists() },
-                { assert file(process.out.source_overlaps.get(0).get(1)).exists() },
-                { assert file(process.out.reverse_overlaps.get(0).get(1)).exists() },
+                { assertContainsInAnyOrder(bin_files, expected_bin_files) },
                 { assert file(process.out.log.get(0).get(1)).exists() },
                 { assert snapshot(
                     process.out.raw_unitigs,
@@ -48,6 +57,8 @@ nextflow_process {
                     process.out.primary_contigs,
                     process.out.hap1_contigs,
                     process.out.hap2_contigs,
+                    process.out.fasta,
+                    process.out.paf,
                     process.out.versions
                 ).match() }
             )
@@ -86,6 +97,10 @@ nextflow_process {
         }
 
         when {
+            params {
+                extra_output = ""
+            }
+
             process {
                 """
                 input[0] = [
@@ -103,10 +118,7 @@ nextflow_process {
                     [],
                     []
                 ]
-                input[3] = HIFIASM_INITIAL.out.corrected_reads
-                    .mix(HIFIASM_INITIAL.out.source_overlaps)
-                    .mix(HIFIASM_INITIAL.out.reverse_overlaps)
-                    .groupTuple(by: 0)
+                input[3] = HIFIASM_INITIAL.out.bin_files
                 """
             }
         }
@@ -130,6 +142,10 @@ nextflow_process {
     test("homo_sapiens pacbio hifi [fastq x2, [,], [,], [,] ]") {
 
         when {
+            params {
+                extra_output = ""
+            }
+
             process {
                 """
                 input[0] = Channel.of([
@@ -158,11 +174,16 @@ nextflow_process {
             }
         }
         then {
+            def bin_files = process.out.bin_files.get(0).get(1).collect { bin -> file(bin).name }
+            def expected_bin_files = [
+                "test.ec.bin",
+                "test.ovlp.reverse.bin",
+                "test.ovlp.source.bin"
+            ]
+
             assertAll(
                 { assert process.success },
-                { assert file(process.out.corrected_reads.get(0).get(1)).exists() },
-                { assert file(process.out.source_overlaps.get(0).get(1)).exists() },
-                { assert file(process.out.reverse_overlaps.get(0).get(1)).exists() },
+                { assertContainsInAnyOrder(bin_files, expected_bin_files) },
                 { assert file(process.out.log.get(0).get(1)).exists() },
                 { assert snapshot(
                     process.out.raw_unitigs,
@@ -178,6 +199,10 @@ nextflow_process {
 
     test("homo_sapiens pacbio hifi [fastq, [yak, yak], [,], [,] ]") {
         when {
+            params {
+                extra_output = ""
+            }
+
             process {
                 """
                 input[0] = [
@@ -203,11 +228,18 @@ nextflow_process {
             }
         }
         then {
+            def bin_files = process.out.bin_files.get(0).get(1).collect { bin -> file(bin).name }
+            def expected_bin_files = [
+                "test.ec.bin",
+                "test.ovlp.reverse.bin",
+                "test.ovlp.source.bin",
+                "test.hap1.phase.bin",
+                "test.hap2.phase.bin"
+            ]
+
             assertAll(
                 { assert process.success },
-                { assert file(process.out.corrected_reads.get(0).get(1)).exists() },
-                { assert file(process.out.source_overlaps.get(0).get(1)).exists() },
-                { assert file(process.out.reverse_overlaps.get(0).get(1)).exists() },
+                { assertContainsInAnyOrder(bin_files, expected_bin_files) },
                 { assert file(process.out.hap1_contigs.get(0).get(1)).exists() },
                 { assert file(process.out.hap1_contigs.get(0).get(1)).name == "test.dip.hap1.p_ctg.gfa" },
                 { assert file(process.out.hap2_contigs.get(0).get(1)).exists() },
@@ -225,6 +257,10 @@ nextflow_process {
 
     test("homo_sapiens pacbio hifi [fastq, [,], [fastq, fastq], [,] ]") {
         when {
+            params {
+                extra_output = ""
+            }
+
             process {
                 """
                 input[0] = [
@@ -250,11 +286,18 @@ nextflow_process {
             }
         }
         then {
+            def bin_files = process.out.bin_files.get(0).get(1).collect { bin -> file(bin).name }
+            def expected_bin_files = [
+                "test.ec.bin",
+                "test.ovlp.reverse.bin",
+                "test.ovlp.source.bin",
+                "test.hic.lk.bin",
+                "test.hic.tlb.bin"
+            ]
+
             assertAll(
                 { assert process.success },
-                { assert file(process.out.corrected_reads.get(0).get(1)).exists() },
-                { assert file(process.out.source_overlaps.get(0).get(1)).exists() },
-                { assert file(process.out.reverse_overlaps.get(0).get(1)).exists() },
+                { assertContainsInAnyOrder(bin_files, expected_bin_files) },
                 { assert file(process.out.hap1_contigs.get(0).get(1)).exists() },
                 { assert file(process.out.hap1_contigs.get(0).get(1)).name == "test.hic.hap1.p_ctg.gfa" },
                 { assert file(process.out.hap2_contigs.get(0).get(1)).exists() },
@@ -274,6 +317,10 @@ nextflow_process {
 
     test("homo_sapiens pacbio hifi [fastq, [yak, yak], [fastq, fastq], [,] ]") {
         when {
+            params {
+                extra_output = ""
+            }
+            process {
                 """
                 input[0] = [
                     [ id : 'test'],
@@ -295,6 +342,7 @@ nextflow_process {
                     []
                 ]
                 """
+            }
         }
         then {
             assertAll(
@@ -305,6 +353,11 @@ nextflow_process {
 
     test("homo_sapiens pacbio hifi [fastq, [yak, ], [,], [,] ]") {
         when {
+            params {
+                extra_output = ""
+            }
+
+            process {
                 """
                 input[0] = [
                     [ id : 'test'],
@@ -322,6 +375,7 @@ nextflow_process {
                     []
                 ]
                 """
+            }
         }
         then {
             assertAll(
@@ -332,6 +386,11 @@ nextflow_process {
 
     test("homo_sapiens pacbio hifi [fastq, [,], [, fastq], [,] ]") {
         when {
+            params {
+                extra_output = ""
+            }
+
+            process {
                 """
                 input[0] = [
                     [ id : 'test'],
@@ -349,6 +408,7 @@ nextflow_process {
                     []
                 ]
                 """
+            }
         }
         then {
             assertAll(
@@ -360,6 +420,10 @@ nextflow_process {
     test("homo_sapiens pacbio hifi [fastq, [,], [,], [,] ] - stub") {
         options "-stub"
         when {
+            params {
+                extra_output = ""
+            }
+
             process {
                 """
                 input[0] = [

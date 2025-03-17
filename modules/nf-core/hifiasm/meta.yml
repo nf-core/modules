@@ -71,51 +71,32 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.r_utg.gfa"
       - "*.r_utg.gfa":
           type: file
           description: Raw unitigs
           pattern: "*.r_utg.gfa"
-  - corrected_reads:
+  - bin_files:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.ec.bin"
-      - "*.ec.bin":
+      - "*.bin":
           type: file
-          description: Corrected reads
-          pattern: "*.ec.bin"
-  - source_overlaps:
-      - meta:
-          type: map
           description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-          pattern: "*.ovlp.source.bin"
-      - "*.ovlp.source.bin":
-          type: file
-          description: Source overlaps
-          pattern: "*.ovlp.source.bin"
-  - reverse_overlaps:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-          pattern: "*.ovlp.reverse.bin"
-      - "*.ovlp.reverse.bin":
-          type: file
-          description: Reverse overlaps
-          pattern: "*.ovlp.reverse.bin"
+            Binary files containing processed data for hifiasm, including
+            error-corrected reads, read overlaps, and Hi-C alignments. Can
+            be re-used as an input for subsequent re-runs of hifiasm with new
+            inputs or modified parameters in order to save recomputation of
+            initial results, which are the most computationally-expensive
+            steps.
+          pattern: "*.bin"
   - processed_unitigs:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.p_utg.gfa"
       - "*.p_utg.gfa":
           type: file
           description: Processed unitigs
@@ -126,10 +107,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "${prefix}.{p_ctg,bp.p_ctg,hic.p_ctg}.gfa"
       - ${prefix}.{p_ctg,bp.p_ctg,hic.p_ctg}.gfa:
           type: file
-          description: Primary contigs
+          description: Contigs representing the primary assembly
           pattern: "${prefix}.{p_ctg,bp.p_ctg,hic.p_ctg}.gfa"
   - alternate_contigs:
       - meta:
@@ -137,10 +117,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "${prefix}.{a_ctg,hic.a_ctg}.gfa"
       - ${prefix}.{a_ctg,hic.a_ctg}.gfa:
           type: file
-          description: Alternative contigs
+          description: Contigs representing the alternative assembly
           pattern: "${prefix}.{a_ctg,hic.a_ctg}.gfa"
   - hap1_contigs:
       - meta:
@@ -151,7 +130,13 @@ output:
           pattern: "${prefix}.*.hap1.p_ctg.gfa"
       - ${prefix}.*.hap1.p_ctg.gfa:
           type: file
-          description: Paternal contigs
+          description: |
+            Contigs for the first haplotype. How the haplotypes are represented
+            depends on the input mode; in standard HiFi-only mode, these
+            are partially-phased parental contigs. In Hi-C mode, they
+            are fully phased parental contigs, but the phasing is not maintained
+            between contigs. In trio mode, they are fully phased paternal contigs
+            all originating from a single parental haplotype.
           pattern: "${prefix}.*.hap1.p_ctg.gfa"
   - hap2_contigs:
       - meta:
@@ -162,8 +147,38 @@ output:
           pattern: "${prefix}.*.hap2.p_ctg.gfa"
       - ${prefix}.*.hap2.p_ctg.gfa:
           type: file
-          description: Paternal contigs
+          description: |
+            Contigs for the second haplotype. How the haplotypes are represented
+            depends on the input mode; in standard HiFi-only mode, these
+            are partially-phased parental contigs. In Hi-C mode, they
+            are fully phased parental contigs, but the phasing is not maintained
+            between contigs. In trio mode, they are fully phased paternal contigs
+            all originating from a single parental haplotype.
           pattern: "${prefix}.*.hap2.p_ctg.gfa"
+  - fasta:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.ec.fa.gz":
+          type: file
+          description: |
+            If option --write-ec specified, a gzipped fasta file containing the error corrected
+            reads produced by the hifiasm error correction module
+          pattern: "*.ec.fa.gz"
+  - paf:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.ovlp.paf.gz":
+          type: file
+          description: |
+            If option --write-paf specified, a gzipped paf file describing the overlaps
+            among all error-corrected reads
+          pattern: "*.ovlp.paf.gz"
   - log:
       - meta:
           type: map
@@ -186,6 +201,7 @@ authors:
   - "@scorreard"
   - "@mbeavitt"
   - "@schmytzi"
+  - "@prototaxites"
 maintainers:
   - "@sidorov-si"
   - "@scorreard"

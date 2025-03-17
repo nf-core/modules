@@ -15,14 +15,14 @@ process HIFIASM {
 
     output:
     tuple val(meta), path("*.r_utg.gfa")                             , emit: raw_unitigs
-    tuple val(meta), path("*.ec.bin")                                , emit: corrected_reads,   optional: true
-    tuple val(meta), path("*.ovlp.source.bin")                       , emit: source_overlaps,   optional: true
-    tuple val(meta), path("*.ovlp.reverse.bin")                      , emit: reverse_overlaps,  optional: true
+    tuple val(meta), path("*.bin")                                   , emit: bin_files        , optional: true
     tuple val(meta), path("*.p_utg.gfa")                             , emit: processed_unitigs, optional: true
     tuple val(meta), path("${prefix}.{p_ctg,bp.p_ctg,hic.p_ctg}.gfa"), emit: primary_contigs  , optional: true
     tuple val(meta), path("${prefix}.{a_ctg,hic.a_ctg}.gfa")         , emit: alternate_contigs, optional: true
     tuple val(meta), path("${prefix}.*.hap1.p_ctg.gfa")              , emit: hap1_contigs     , optional: true
     tuple val(meta), path("${prefix}.*.hap2.p_ctg.gfa")              , emit: hap2_contigs     , optional: true
+    tuple val(meta), path("*.ec.fa.gz")                              , emit: fasta            , optional: true
+    tuple val(meta), path("*.ovlp.paf.gz")                           , emit: paf              , optional: true
     tuple val(meta), path("${prefix}.stderr.log")                    , emit: log
     path  "versions.yml"                                             , emit: versions
 
@@ -69,6 +69,14 @@ process HIFIASM {
         ${long_reads_sorted} \\
         2> >( tee ${prefix}.stderr.log >&2 )
 
+    if [ -f ${prefix}.ec.fa ]; then
+        gzip ${prefix}.ec.fa
+    fi
+
+    if [ -f ${prefix}.ovlp.paf ]; then
+        gzip ${prefix}.ovlp.paf
+    fi
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         hifiasm: \$(hifiasm --version 2>&1)
@@ -82,12 +90,16 @@ process HIFIASM {
     touch ${prefix}.ec.bin
     touch ${prefix}.ovlp.source.bin
     touch ${prefix}.ovlp.reverse.bin
+    touch ${prefix}.hic.tlb.bin
+    touch ${prefix}.hic.lk.bin
     touch ${prefix}.bp.p_ctg.gfa
     touch ${prefix}.p_utg.gfa
     touch ${prefix}.p_ctg.gfa
     touch ${prefix}.a_ctg.gfa
     touch ${prefix}.hap1.p_ctg.gfa
     touch ${prefix}.hap2.p_ctg.gfa
+    echo "" | gzip > ${prefix}.ec.fa.gz
+    echo "" | gzip > ${prefix}.ovlp.paf.gz
     touch ${prefix}.stderr.log
 
     cat <<-END_VERSIONS > versions.yml
