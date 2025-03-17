@@ -1,10 +1,9 @@
-// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
-// nf-core modules test samtools/fixmate
 nextflow_process {
 
     name "Test Process SAMTOOLS_FIXMATE"
     script "../main.nf"
     process "SAMTOOLS_FIXMATE"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -14,6 +13,10 @@ nextflow_process {
     test("sarscov2 - bam") {
 
         when {
+            params {
+                module_args = ''
+                samtools_sort_args = ''
+            }
             process {
                 """
                 input[0] = Channel.of([
@@ -31,5 +34,78 @@ nextflow_process {
                 { assert snapshot(process.out.versions).match("versions") }
             )
         }
+    }
+
+    test("human - cram") {
+
+        setup {
+            run("SAMTOOLS_SORT") {
+                script "../../../samtools/sort/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:false ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
+                    ]
+                    input[1] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args         = '--output-fmt cram'
+                samtools_sort_args  = '--template-coordinate --output-fmt cram'
+            }
+            process {
+                """
+                input[0] = SAMTOOLS_SORT.out.cram
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.cram[0][1]).name,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("human - cram - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--output-fmt cram'
+                samtools_sort_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
     }
 }
