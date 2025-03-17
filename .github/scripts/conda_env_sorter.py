@@ -96,6 +96,36 @@ if "pytest" in sys.modules:
             ("dependencies:\n  - pip:\n    - b\n    - a\n  - python\n", ["python", {"pip": ["a", "b"]}]),
             # Test existing headers
             ("---\n# yaml-language-server: $schema=...\ndependencies:\n  - b\n  - a\n", ["a", "b"]),
+            # Test channel sorting
+            (
+                "channels:\n  - conda-forge\n  - bioconda\ndependencies:\n  - python\n",
+                {"channels": ["bioconda", "conda-forge"], "dependencies": ["python"]},
+            ),
+            # Test namespaced dependencies
+            (
+                "dependencies:\n  - bioconda::ngscheckmate=1.0.1\n  - bioconda::bcftools=1.21\n",
+                ["bioconda::bcftools=1.21", "bioconda::ngscheckmate=1.0.1"],
+            ),
+            # Test mixed dependencies
+            (
+                "dependencies:\n  - bioconda::ngscheckmate=1.0.1\n  - python\n  - bioconda::bcftools=1.21\n",
+                ["bioconda::bcftools=1.21", "bioconda::ngscheckmate=1.0.1", "python"],
+            ),
+            # Test full environment with channels and namespaced dependencies
+            (
+                """
+                channels:
+                  - conda-forge
+                  - bioconda
+                dependencies:
+                  - bioconda::ngscheckmate=1.0.1
+                  - bioconda::bcftools=1.21
+                """,
+                {
+                    "channels": ["bioconda", "conda-forge"],
+                    "dependencies": ["bioconda::bcftools=1.21", "bioconda::ngscheckmate=1.0.1"],
+                },
+            ),
         ],
     )
     def test_conda_sorter(tmp_path, input_content, expected):
@@ -115,7 +145,10 @@ if "pytest" in sys.modules:
         parsed = yaml.load("".join(result.splitlines(True)[2:]))
 
         # Compare the actual dependencies structure
-        assert parsed["dependencies"] == expected
+        if isinstance(expected, list):
+            assert parsed["dependencies"] == expected
+        else:
+            assert parsed == expected
 
     def test_invalid_file(tmp_path):
         test_file = tmp_path / "bad.yml"
@@ -124,40 +157,18 @@ if "pytest" in sys.modules:
         with pytest.raises(ruamel.yaml.scanner.ScannerError):
             main([str(test_file)])
 
-    def test_full_conda_env_with_channels(tmp_path):
-        """Test sorting a full conda environment file with channels and namespaced dependencies."""
-        test_file = tmp_path / "full_env.yml"
-        test_file.write_text(input_content.strip())
+    def test_empty_file(tmp_path):
+        """Test handling of empty files."""
+        test_file = tmp_path / "empty.yml"
+        test_file.write_text("")
 
-        # Run our sorter on the test file
-        main([str(test_file)])
+        with pytest.raises(ruamel.yaml.scanner.ScannerError):
+            main([str(test_file)])
 
-        # Read back the sorted file
-        result = test_file.read_text()
+    def test_missing_dependencies(tmp_path):
+        """Test handling of files without dependencies section."""
+        test_file = tmp_path / "no_deps.yml"
+        test_file.write_text("channels:\n  - conda-forge\n")
 
-        # Check that result matches the expected output
-        assert result.strip() == output_content.strip()
-
-# Test input and output for full conda environment with channels
-input_content = """
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
-channels:
-  - conda-forge
-  - bioconda
-dependencies:
-  - bioconda::ngscheckmate=1.0.1
-  - bioconda::bcftools=1.21
-"""
-
-# Should be sorted because it should sort the channels first, then the dependency names
-output_content = """
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
-channels:
-  - bioconda
-  - conda-forge
-dependencies:
-  - bioconda::bcftools=1.21
-  - bioconda::ngscheckmate=1.0.1
-"""
+        with pytest.raises(KeyError):
+            main([str(test_file)])
