@@ -101,8 +101,7 @@ jobs:
 
   nf-test:
     runs-on: ${{ matrix.os }}
-    # NOTE Try matrix.os | matrix.profile | matrix.shard
-    name: "${{ matrix.profile }} | ${{ matrix.os }} | ${{ matrix.shard }}"
+    name: "${{ matrix.os }} | ${{ matrix.profile }} | ${{ matrix.shard }}"
     needs: [nf-test-changes]
     if: ${{ needs.nf-test-changes.outputs.total_shards != '0' }}
     strategy:
