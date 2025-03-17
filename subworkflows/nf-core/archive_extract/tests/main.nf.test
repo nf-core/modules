@@ -1,10 +1,14 @@
 nextflow_workflow {
 
-    name "Test EXTRACT_ARCHIVE"
+    name "Test ARCHIVE_EXTRACT"
     script "../main.nf"
-    workflow "EXTRACT_ARCHIVE"
+    workflow "ARCHIVE_EXTRACT"
 
-    test(".gz && .tar.gz") {
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/archive_extract"
+
+    test(".gz && .tar.gz && .zip") {
 
         when {
             params {

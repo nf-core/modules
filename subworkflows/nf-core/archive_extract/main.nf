@@ -6,7 +6,7 @@ include { GUNZIP } from '../../../modules/nf-core/gunzip'
 include { UNTAR  } from '../../../modules/nf-core/untar'
 include { UNZIP  } from '../../../modules/nf-core/unzip'
 
-workflow EXTRACT_ARCHIVE {
+workflow ARCHIVE_EXTRACT {
     take:
     archive
 
@@ -22,7 +22,7 @@ workflow EXTRACT_ARCHIVE {
 
     // This is a confidence check
     not_extracted = archive_to_extract.non_assigned
-    not_extracted.view { log.warn("Archive not in the expected format: " + it) }
+    not_extracted.view { _meta, archive_ -> log.warn("Archive not in the expected format: " + archive_) }
 
     // extract archive
     GUNZIP(archive_to_extract.gz)
