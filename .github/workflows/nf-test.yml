@@ -173,7 +173,7 @@ jobs:
           SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
           SENTIEON_AUTH_MECH: "GitHub Actions - token"
         with:
-          profile: ${{ matrix.profile }}${{ contains(github.event.inputs.runners, 'ubuntu-24.04-arm') && ',arm' || '' }}
+          profile: ${{ matrix.profile }}${{ runner.arch == 'ARM64' && ',arm' || '' }}
           shard: ${{ matrix.shard }}
           total_shards: ${{ env.TOTAL_SHARDS }}
           paths: "${{ join(fromJson(steps.filter.outputs.filtered_paths), ' ') }}"
