@@ -15,7 +15,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ],
+                    [ id:'test'],
                     file(params.modules_testdata_base_path + 'generic/models/clair3.hifi.tar.gz', checkIfExists: true)
                 ]
                 """
@@ -29,7 +29,7 @@ nextflow_process {
                 """
                 def model_path = UNTAR.out.untar
                 input[0] = Channel.of([
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
                 ])
@@ -69,7 +69,7 @@ nextflow_process {
                 """
                 def model_path = UNTAR.out.untar
                 input[0] = Channel.of([
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
                 ])
