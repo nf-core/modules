@@ -46,7 +46,7 @@ process CLAIR3 {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}.phased_merge_output.vcf.gz
-    echo "" | gzip > ${prefix}.phased_merge_output.vcf.gz.tbi
+    touch ${prefix}.phased_merge_output.vcf.gz.tbi
     echo "" | gzip > ${prefix}.merge_output.vcf.gz
     echo "" | gzip > ${prefix}.merge_output.vcf.gz.tbi
     cat <<-END_VERSIONS > versions.yml
