@@ -129,6 +129,15 @@ if "pytest" in sys.modules:
                 },
             ),
         ],
+        ids=[
+            "basic_dependency_sorting",
+            "dict_dependency_sorting",
+            "existing_headers",
+            "channel_sorting",
+            "namespaced_dependencies",
+            "mixed_dependencies",
+            "full_environment",
+        ],
     )
     def test_conda_sorter(tmp_path, input_content, expected):
         test_file = tmp_path / "environment.yml"
