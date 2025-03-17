@@ -48,7 +48,7 @@ process CLAIR3 {
     echo "" | gzip > ${prefix}.phased_merge_output.vcf.gz
     touch ${prefix}.phased_merge_output.vcf.gz.tbi
     echo "" | gzip > ${prefix}.merge_output.vcf.gz
-    echo "" | gzip > ${prefix}.merge_output.vcf.gz.tbi
+    touch ${prefix}.merge_output.vcf.gz.tbi
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         clair3: \$(run_clair3.sh --version |& sed '1!d ; s/Clair3 v//')
