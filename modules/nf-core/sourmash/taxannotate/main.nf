@@ -4,8 +4,8 @@ process SOURMASH_TAXANNOTATE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sourmash:4.8.4--hdfd78af_0':
-        'biocontainers/sourmash:4.8.4--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/sourmash:4.8.14--hdfd78af_0':
+        'biocontainers/sourmash:4.8.14--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(gather_results)
