@@ -49,6 +49,8 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
 
         # Parse the YAML content
         doc = yaml.load(content)
+        if doc is None:
+            raise ruamel.yaml.scanner.ScannerError("Empty YAML file")
 
         # Sort channels if they exist
         if "channels" in doc:
