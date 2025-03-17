@@ -39,7 +39,7 @@ output:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-    - '*_subset.fastq.gz':
+    - '${prefix}_subset_*':
         type: file
         description: Subset FASTA/FASTQ files
         pattern: "*.{fa,fasta,fq,fastq}"
