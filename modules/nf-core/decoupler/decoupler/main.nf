@@ -2,8 +2,10 @@ process DECOUPLER {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "conda-forge::decoupler-py=1.6.0"
-    container = "ghcr.io/saezlab/publish-packages/decoupler:sha-5838309"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7d/7d304d1b25aa80ce8c44c8d34ea45d6b4f6f50697a4effcf1b9be4a54db19928/data' :
+        'community.wave.seqera.io/library/decoupler-py_matplotlib_pandas_pip_pruned:0d4681dad9987ec5' }"
 
     input:
     tuple val(meta), path(mat)
@@ -18,54 +20,12 @@ process DECOUPLER {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: "{}"
+    template 'decoupler.py'
+
+    stub:
     """
-    #!/usr/bin/env python3
-    import os
-    import pandas as pd
-
-    os.environ["NUMBA_CACHE_DIR"] = "./tmp"
-
-    import decoupler as dc
-
-    methods = ['aucell', 'gsea', 'gsva', 'mdt', 'mlm', 'ora', 'udt',
-        'ulm', 'viper', 'wmean', 'wsum']
-
-    mat = pd.read_csv("${mat}", sep="\t", index_col=0)
-    net = pd.read_csv("${net}", sep="\t", index_col=0)
-
-    # Parsing arguments
-    args = ${args}
-    parsedargs = {'args': {}}
-
-    for k, v in args.items():
-        # Specific method argument
-        if k.split('_')[0] in methods:
-            meth = k.split('_')[0]
-            arg = '_'.join(k.split('_')[1:])
-
-            if meth not in args['args'].keys():
-                parsedargs['args'][meth] = {arg: v}
-            else:
-                parsedargs['args'][meth].update({arg: v})
-
-        # Generic argument
-        else:
-            parsedargs[k] = v
-
-
-    results = dc.decouple(
-        mat=mat,
-        net=net,
-        **parsedargs
-    )
-
-    for result in results:
-        results[result].to_csv(result + "__decoupler.tsv", sep="\t")
-
-    ## VERSIONS FILE
-    with open('versions.yml', 'a') as version_file:
-        version_file.write('"${task.process}":' + "\\n")
-        version_file.write("\tdecoupler-py: " + dc.__version__ + "\\n")
+    touch mlm_estimate__decoupler.tsv
+    touch mlm_pvals__decoupler.tsv
+    touch versions.yml
     """
 }
