@@ -11,13 +11,14 @@ process SEQKIT_HEAD {
     tuple val(meta), path(fastqs), val(seq_count)
 
     output:
-    tuple val(meta), path("*_subset.fastq.gz"), emit: subset
-    path "versions.yml"                       , emit: versions
+    tuple val(meta), path("${prefix}_subset_*"), emit: subset
+    path "versions.yml"                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+    prefix = task.ext.prefix ?: "${meta.id}"
     def args = task.ext.args ?: ''
     """
     for f in ${fastqs.join(' ')}
@@ -26,7 +27,7 @@ process SEQKIT_HEAD {
             ${args} \\
             --threads $task.cpus \\
             -n ${seq_count} \\
-            -o "\$(basename \$f .fastq.gz)_subset.fastq.gz" \\
+            -o "${prefix}_subset_\$(basename \$f)" \\
             \$f
     done
 
@@ -37,10 +38,11 @@ process SEQKIT_HEAD {
     """
 
     stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     for f in ${fastqs.join(' ')}
     do
-       echo "" | gzip > "\$(basename \$f .fastq.gz)_subset.fastq.gz"
+       echo "" | gzip > "${prefix}_subset_\$(basename \$f)"
     done
 
     cat <<-END_VERSIONS > versions.yml
