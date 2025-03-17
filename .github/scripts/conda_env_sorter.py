@@ -8,7 +8,7 @@
 
 """Sort dependencies in conda environment files."""
 # Test with
-# uv run --with pytest -- pytest -v .github/scripts/conda_env_sorter.py
+# uv run --with pytest --with "ruamel.yaml" -- pytest -v .github/scripts/conda_env_sorter.py
 
 import argparse
 import sys
@@ -49,6 +49,12 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
 
         # Parse the YAML content
         doc = yaml.load(content)
+
+        # Sort channels if they exist
+        if "channels" in doc:
+            doc["channels"].sort(key=str)
+
+        # Sort dependencies
         dicts = []
         others = []
 
@@ -117,3 +123,41 @@ if "pytest" in sys.modules:
 
         with pytest.raises(ruamel.yaml.scanner.ScannerError):
             main([str(test_file)])
+
+    def test_full_conda_env_with_channels(tmp_path):
+        """Test sorting a full conda environment file with channels and namespaced dependencies."""
+        test_file = tmp_path / "full_env.yml"
+        test_file.write_text(input_content.strip())
+
+        # Run our sorter on the test file
+        main([str(test_file)])
+
+        # Read back the sorted file
+        result = test_file.read_text()
+
+        # Check that result matches the expected output
+        assert result.strip() == output_content.strip()
+
+# Test input and output for full conda environment with channels
+input_content = """
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - bioconda::ngscheckmate=1.0.1
+  - bioconda::bcftools=1.21
+"""
+
+# Should be sorted because it should sort the channels first, then the dependency names
+output_content = """
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - bioconda::bcftools=1.21
+  - bioconda::ngscheckmate=1.0.1
+"""
