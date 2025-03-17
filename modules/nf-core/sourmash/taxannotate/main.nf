@@ -36,4 +36,14 @@ process SOURMASH_TAXANNOTATE {
         sourmash: \$(echo \$(sourmash --version 2>&1) | sed 's/^sourmash //' )
     END_VERSIONS
     """
+
+    stub:
+    """
+    echo "" | gzip > test.with-lineages.csv.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        sourmash: \$(echo \$(sourmash --version 2>&1) | sed 's/^sourmash //' )
+    END_VERSIONS
+    """
 }
