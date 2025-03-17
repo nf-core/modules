@@ -38,22 +38,15 @@ runs:
         version: "${{ env.NFT_VER }}"
         install-pdiff: true
 
-    - name: Install dependencies from universe repo
+    - name: Setup apptainer for ARM64
       if: contains(inputs.profile, 'singularity')
       shell: bash
       run: |
-        sudo add-apt-repository universe
-        sudo apt-get update
-        sudo apt-get install -y uidmap squashfs-tools
-
-    - name: Setup apptainer
-      if: contains(inputs.profile, 'singularity')
-      uses: eWaterCycle/setup-apptainer@3f706d898c9db585b1d741b4692e66755f3a1b40 #v2
-
-    - name: Set up Singularity
-      if: contains(inputs.profile, 'singularity')
-      shell: bash
-      run: |
+        sudo apt update
+        sudo apt install -y software-properties-common
+        sudo add-apt-repository -y ppa:apptainer/ppa
+        sudo apt update
+        sudo apt install -y apptainer
         mkdir -p $NXF_SINGULARITY_CACHEDIR
         mkdir -p $NXF_SINGULARITY_LIBRARYDIR
 
