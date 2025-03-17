@@ -8,6 +8,10 @@ nextflow_workflow {
     tag "subworkflows_nfcore"
     tag "subworkflows/archive_extract"
 
+    tag "gunzip"
+    tag "untar"
+    tag "unzip"
+
     test(".gz && .tar.gz && .zip") {
 
         when {
