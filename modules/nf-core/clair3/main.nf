@@ -8,7 +8,7 @@ process CLAIR3 {
         'biocontainers/clair3:1.0.10--py39hd649744_1' }"
 
     input:
-    tuple val(meta), path(bam), path(bai), path(model),val(platform)
+    tuple val(meta), path(bam), path(bai), path(model), val(platform)
     tuple val(meta2), path(reference)
     tuple val(meta3), path(index)
 
