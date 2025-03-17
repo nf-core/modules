@@ -21,8 +21,8 @@ process HIFIASM {
     tuple val(meta), path("${prefix}.{a_ctg,hic.a_ctg}.gfa")         , emit: alternate_contigs, optional: true
     tuple val(meta), path("${prefix}.*.hap1.p_ctg.gfa")              , emit: hap1_contigs     , optional: true
     tuple val(meta), path("${prefix}.*.hap2.p_ctg.gfa")              , emit: hap2_contigs     , optional: true
-    tuple val(meta), path("*.ec.fa.gz")                              , emit: fasta            , optional: true
-    tuple val(meta), path("*.ovlp.paf.gz")                           , emit: paf              , optional: true
+    tuple val(meta), path("*.ec.fa.gz")                              , emit: corrected_reads  , optional: true
+    tuple val(meta), path("*.ovlp.paf.gz")                           , emit: read_overlaps    , optional: true
     tuple val(meta), path("${prefix}.stderr.log")                    , emit: log
     path  "versions.yml"                                             , emit: versions
 

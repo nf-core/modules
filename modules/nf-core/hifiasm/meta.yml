@@ -155,7 +155,7 @@ output:
             between contigs. In trio mode, they are fully phased paternal contigs
             all originating from a single parental haplotype.
           pattern: "${prefix}.*.hap2.p_ctg.gfa"
-  - fasta:
+  - corrected_reads:
       - meta:
           type: map
           description: |
@@ -167,7 +167,7 @@ output:
             If option --write-ec specified, a gzipped fasta file containing the error corrected
             reads produced by the hifiasm error correction module
           pattern: "*.ec.fa.gz"
-  - paf:
+  - read_overlaps:
       - meta:
           type: map
           description: |
