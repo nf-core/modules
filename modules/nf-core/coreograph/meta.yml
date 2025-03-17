@@ -25,42 +25,46 @@ input:
           Groovy Map containing sample information
     - image:
         type: file
-        description: ome.tif/tif file
-        pattern: "*.{ome.tif,tif}"
+        description: OME-TIFF or TIFF file for core detection and extraction.
+        pattern: "*.{ome.tif,tif,tiff}"
 output:
   #
   - cores:
       - meta:
-          type: file
-          description: Complete/Incomplete tissue cores
-          pattern: "*.{tif}"
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
       - "*[0-9]*.tif":
           type: file
           description: Complete/Incomplete tissue cores
           pattern: "*.{tif}"
   - masks:
       - meta:
-          type: file
-          description: Binary masks for the Complete/Incomplete tissue cores
-          pattern: "./masks/*.{tif}"
-      - ./masks/:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "masks/*.tif":
           type: file
           description: Binary masks for the Complete/Incomplete tissue cores
           pattern: "./masks/*.{tif}"
   - tma_map:
       - meta:
-          type: file
-          description: A TMA map showing labels and outlines
-          pattern: "TMA_MAP.tif"
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
       - TMA_MAP.tif:
           type: file
           description: A TMA map showing labels and outlines
           pattern: "TMA_MAP.tif"
   - centroids:
       - meta:
-          type: file
-          description: A text file listing centroids of each core in format Y, X
-          pattern: "centroidsY-X.txt"
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
       - centroidsY-X.txt:
           type: file
           description: A text file listing centroids of each core in format Y, X
