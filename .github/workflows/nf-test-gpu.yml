@@ -88,9 +88,7 @@ jobs:
           echo ${{ steps.set-shards.outputs.total_shards }}
 
   nf-test-gpu:
-    runs-on:
-      - runs-on=${{ github.run_id }}
-      - runner=ubuntu24-gpu-x64
+    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.xlarge/image=ubuntu24-gpu-x64"
     name: "GPU Test | ${{ matrix.profile }} | ${{ matrix.shard }}"
     needs: [nf-test-changes]
     if: ${{ needs.nf-test-changes.outputs.total_shards != '0' }}
