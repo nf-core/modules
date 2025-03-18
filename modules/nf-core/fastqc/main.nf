@@ -18,6 +18,9 @@ process FASTQC {
     when:
     task.ext.when == null || task.ext.when
 
+
+    //FIXME: Testing the new runners
+
     script:
     def args          = task.ext.args ?: ''
     def prefix        = task.ext.prefix ?: "${meta.id}"
