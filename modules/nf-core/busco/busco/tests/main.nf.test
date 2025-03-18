@@ -425,7 +425,7 @@ nextflow_process {
                 assert contains('Results from dataset')
                 assert contains('how to cite BUSCO')
             }
-            
+
             assert path("${process.out.busco_dir[0][1]}/*/auto_lineage").exists() == false
             assert path("${process.out.busco_dir[0][1]}/*/**/{miniprot,hmmer,.bbtools}_output").exists() == false
 
