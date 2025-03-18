@@ -18,7 +18,7 @@ workflow ARCHIVE_EXTRACT {
 
     // This is a confidence check
     not_extracted = archive_to_extract.non_assigned
-    not_extracted.view { _meta, archive_ -> log.warn("Archive not in the expected format: " + archive_) }
+    not_extracted.view { _meta, archive_ -> log.warn("Archive not in an expected format: " + archive_) }
 
     // Extract any archive with a recognized extension
     GUNZIP(archive_to_extract.gz)
