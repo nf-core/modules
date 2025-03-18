@@ -13,6 +13,7 @@ process CLAIRS {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
+    tuple val(meta), path("*.vcf.gz"), emit: tbi
     path "versions.yml"              , emit: versions
 
     when:

@@ -1,12 +1,12 @@
 nextflow_process {
 
-    name "Test Process CLAIR3"
+    name "Test Process CLAIRS"
     script "../main.nf"
-    process "CLAIR3"
+    process "CLAIRS"
 
     tag "modules"
     tag "modules_nfcore"
-    tag "clair3"
+    tag "clairs"
     tag "untar"
 
     setup {
@@ -30,9 +30,10 @@ nextflow_process {
                 def model_path = UNTAR.out.untar
                 input[0] = Channel.of([
                     [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
-                    [],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true),
                 ])
                 .join(UNTAR.out.untar)
                 .combine(Channel.of(['hifi']))
@@ -54,9 +55,7 @@ nextflow_process {
                 { assert snapshot(
                                 process.out.vcf.collect { file(it[1]).getName() },
                                 process.out.tbi.collect { file(it[1]).getName() },
-                                process.out.versions,
-                                process.out.phased_vcf.collect { file(it[1]).getName() },
-                                process.out.phased_tbi.collect { file(it[1]).getName() }).match()}
+                                process.out.versions).match()}
             )
         }
 
@@ -69,8 +68,10 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true),
                     'hifi_revio',
                     [],
                     'hifi',
@@ -93,9 +94,7 @@ nextflow_process {
                 { assert snapshot(
                                 process.out.vcf.collect { file(it[1]).getName() },
                                 process.out.tbi.collect { file(it[1]).getName() },
-                                process.out.versions,
-                                process.out.phased_vcf.collect { file(it[1]).getName() },
-                                process.out.phased_tbi.collect { file(it[1]).getName() }).match()}
+                                process.out.versions).match()}
             )
         }
 
@@ -108,8 +107,10 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true),
                     ['hifi_revio'],
                 ])
                 .join(UNTAR.out.untar)
@@ -132,9 +133,7 @@ nextflow_process {
                 { assert snapshot(
                                 process.out.vcf.collect { file(it[1]).getName() },
                                 process.out.tbi.collect { file(it[1]).getName() },
-                                process.out.versions,
-                                process.out.phased_vcf.collect { file(it[1]).getName() },
-                                process.out.phased_tbi.collect { file(it[1]).getName() }).match()}
+                                process.out.versions).match()}
             )
         }
 
@@ -151,9 +150,10 @@ nextflow_process {
                 def model_path = UNTAR.out.untar
                 input[0] = Channel.of([
                     [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
-                    [],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true),
                 ])
                 .join(UNTAR.out.untar)
                 .combine(Channel.of(['hifi']))
