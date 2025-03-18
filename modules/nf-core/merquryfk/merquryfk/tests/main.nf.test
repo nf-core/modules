@@ -12,7 +12,7 @@ nextflow_process {
     tag "fastk/fastk"
 
     setup {
-            run("FASTK_FASTK") {
+        run("FASTK_FASTK") {
             script "../../../fastk/fastk"
             process {
                 """
@@ -22,18 +22,19 @@ nextflow_process {
                 ]
                 """
             }
-            }
-            run("FASTK_FASTK", alias: "FASTK_MAT") {
+        }
+
+        run("FASTK_FASTK", alias: "FASTK_MAT") {
             script "../../../fastk/fastk"
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], 
+                    [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                 ]
                 """
             }
-            }
+        }
 
         run("FASTK_FASTK", alias: "FASTK_PAT") {
             script "../../../fastk/fastk"
@@ -45,10 +46,10 @@ nextflow_process {
                 ]
                 """
             }
-            }
         }
+    }
 
-   test("homo_sapiens - Illumina - png") {
+    test("homo_sapiens - Illumina - png") {
         config "./nextflow.png.config"
         when {
             process {
@@ -105,12 +106,12 @@ nextflow_process {
         }
 
     }
-    
+
     test("homo_sapiens - Illumina - trio") {
         config "./nextflow.trio.config"
         when {
             process {
-                """                
+                """
                 assembly = [
                     [ id:'test', single_end:true ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
@@ -166,5 +167,5 @@ nextflow_process {
     }
 
 
-    
+
 }

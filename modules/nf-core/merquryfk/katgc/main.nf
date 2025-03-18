@@ -3,32 +3,30 @@ process MERQURYFK_KATGC {
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    container 'ghcr.io/nbisweden/fastk_genescopefk_merquryfk:1.2'
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/89/8948281b792d1d6385f4cf1f5da6d6139f04467ee73c171c4d54f43b23f4f4f4/data' :
+        'community.wave.seqera.io/library/fastk_merquryfk:ea801837b4afd24b' }"
 
     input:
     tuple val(meta), path(fastk_hist), path(fastk_ktab)
 
     output:
-    tuple val(meta), path("*.fi.png"), emit: filled_gc_plot_png , optional: true
-    tuple val(meta), path("*.fi.pdf"), emit: filled_gc_plot_pdf , optional: true
-    tuple val(meta), path("*.ln.png"), emit: line_gc_plot_png   , optional: true
-    tuple val(meta), path("*.ln.pdf"), emit: line_gc_plot_pdf   , optional: true
-    tuple val(meta), path("*.st.png"), emit: stacked_gc_plot_png, optional: true
-    tuple val(meta), path("*.st.pdf"), emit: stacked_gc_plot_pdf, optional: true
-    path "versions.yml"              , emit: versions
+    tuple val(meta), path("*.fi.{png,pdf}"), emit: filled_gc_plot , optional: true
+    tuple val(meta), path("*.ln.{png,pdf}"), emit: line_gc_plot   , optional: true
+    tuple val(meta), path("*.st.{png,pdf}"), emit: stacked_gc_plot, optional: true
+    path "versions.yml"                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "MERQURYFK_KATGC module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def FASTK_VERSION   = 'f18a4e6d2207539f7b84461daebc54530a9559b0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    def MERQURY_VERSION = '8f3ab706e4cf4d7b7d1dfe5739859e3ebd26c494' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def FASTK_VERSION   = '1.1.0'
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def MERQURY_VERSION = '1.1.1'
     """
     KatGC \\
         $args \\
