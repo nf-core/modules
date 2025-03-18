@@ -101,6 +101,46 @@ nextflow_process {
 
     }
 
+    test("sarscov2 - bam - both") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    ['hifi_revio'],
+                ])
+                .join(UNTAR.out.untar)
+                .combine(Channel.of(['hifi']))
+                input[1] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                ]
+                input[2] = [
+                    [ id: 'test'],
+                    file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                                process.out.vcf.collect { file(it[1]).getName() },
+                                process.out.tbi.collect { file(it[1]).getName() },
+                                process.out.versions,
+                                process.out.phased_vcf.collect { file(it[1]).getName() },
+                                process.out.phased_tbi.collect { file(it[1]).getName() }).match()}
+            )
+        }
+
+    }
+
+
     test("sarscov2 - bam - stub") {
 
         options "-stub"
