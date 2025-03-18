@@ -6,7 +6,7 @@ process MERQURYFK_KATGC {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/89/8948281b792d1d6385f4cf1f5da6d6139f04467ee73c171c4d54f43b23f4f4f4/data' :
-        'community.wave.seqera.io/library/fastk_merquryfk:ea801837b4afd24b' }"
+        'ghcr.io/nbisweden/fastk_genescopefk_merquryfk:1.2' }"
 
     input:
     tuple val(meta), path(fastk_hist), path(fastk_ktab)

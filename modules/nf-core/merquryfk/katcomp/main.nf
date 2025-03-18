@@ -5,8 +5,8 @@ process MERQURYFK_KATCOMP {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        '/workspace/modules/.nf-test/tests/310dab7bb6d95f8568312500f359752e/work/df/c123d9edb1a8569c2f3d4f7aaf1b42' :
-        'community.wave.seqera.io/library/fastk_merquryfk:ea801837b4afd24b' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/89/8948281b792d1d6385f4cf1f5da6d6139f04467ee73c171c4d54f43b23f4f4f4/data' :
+        'ghcr.io/nbisweden/fastk_genescopefk_merquryfk:1.2' }"
 
     input:
     tuple val(meta), path(fastk1_hist), path(fastk1_ktab), path(fastk2_hist), path(fastk2_ktab)
