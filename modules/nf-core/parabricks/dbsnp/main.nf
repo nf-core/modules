@@ -15,7 +15,6 @@ process PARABRICKS_DBSNP {
 
     when:
     task.ext.when == null || task.ext.when
-    // FIXME: Testing the new runners
 
     script:
     // Exit if running this module with -profile conda / -profile mamba
