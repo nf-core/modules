@@ -90,10 +90,27 @@ jobs:
                 .join('/'))
               )
             ];
+      - name: Get subworkflow name
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
+        id: subworkflow_names
+        with:
+          script: |
+            return [...new Set(${{ steps.filter.outputs.subworkflows_files }}
+              .map(path => path
+                .replace('subworkflows/nf-core/', '')
+                .split('/')
+                .slice(0, 2)
+                .filter(x => !x.startsWith('main.nf') && x !== 'tests' && x !== 'templates' && x !== 'meta.yml' && x !== 'environment.yml' && !x.endsWith('.md'))
+                .join('/'))
+              )
+            ];
+
       - name: debug
         run: |
           echo ${{ steps.filter.outputs.modules_files }}
           echo ${{ steps.module_names.outputs.result }}
+          echo ${{ steps.filter.outputs.subworkflows_files }}
+          echo ${{ steps.subworkflow_names.outputs.result }}
 
   nf-core-lint-modules:
     runs-on: ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
@@ -103,7 +120,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        module: "${{ fromJson(needs.nf-core-changes.outputs.modules_files) }}"
+        module: ${{ fromJson(needs.nf-core-changes.outputs.modules_files || '[]') }}
     steps:
       - name: Clean workspace
         run: |
@@ -140,9 +157,38 @@ jobs:
       - name: Lint module ${{ matrix.module }}
         run: nf-core modules lint ${{ matrix.module }}
 
+  nf-core-lint-subworkflows:
+    runs-on: ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
+    name: nf-core lint subworkflows
+    needs: nf-core-changes
+    if: ${{ (needs.nf-core-changes.outputs.subworkflows == 'true') }}
+    strategy:
+      fail-fast: false
+      matrix:
+        subworkflow: ${{ fromJson(needs.nf-core-changes.outputs.subworkflows_files || '[]') }}
+    steps:
+      - name: Clean workspace
+        run: |
+          sudo rm -rf ./* || true
+          sudo rm -rf ./.* || true
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - name: Set up Python
+        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5
+        with:
+          python-version: "3.13"
+
+      - name: Set up Nextflow
+        uses: nf-core/setup-nextflow@v2
+
+      - name: Install nf-core tools development version
+        run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
+
+      - name: Lint subworkflow ${{ matrix.subworkflow }}
+        run: nf-core subworkflows lint ${{ matrix.subworkflow }}
+
   confirm-pass-lint:
     runs-on: ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
-    needs: [nf-core-lint-modules]
+    needs: [nf-core-lint-modules, nf-core-lint-subworkflows]
     if: always()
     steps:
       - name: All tests ok
