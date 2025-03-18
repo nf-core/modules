@@ -37,12 +37,6 @@ runs:
       with:
         version: "${{ env.NFT_VER }}"
         install-pdiff: true
-    - name: Debug package availability
-      if: contains(inputs.profile, 'singularity')
-      shell: bash
-      run: |
-        sudo apt-get update
-        apt-cache policy uidmap squashfs-tools
 
     - name: Install dependencies from universe repo
       if: contains(inputs.profile, 'singularity')
@@ -54,7 +48,7 @@ runs:
 
     - name: Setup apptainer
       if: contains(inputs.profile, 'singularity')
-      uses: eWaterCycle/setup-apptainer@main
+      uses: eWaterCycle/setup-apptainer@3f706d898c9db585b1d741b4692e66755f3a1b40 #v2
 
     - name: Set up Singularity
       if: contains(inputs.profile, 'singularity')
