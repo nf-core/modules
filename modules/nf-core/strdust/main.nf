@@ -22,6 +22,7 @@ process STRDUST {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     // If region defined in args, use that, otherwise use bed if available.
     // If that isn't there, either, use --pathogenic
