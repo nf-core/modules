@@ -10,12 +10,12 @@ tools:
 - "clairs":
       ## TODO nf-core: Add a description and other details for the software below
     description: ""
-    homepage: ""
-    documentation: ""
-    tool_dev_url: ""
-    doi: ""
-    licence:
-    identifier:
+    homepage: "https://github.com/HKU-BAL/ClairS"
+    documentation: "https://github.com/HKU-BAL/ClairS"
+    tool_dev_url: "https://github.com/HKU-BAL/ClairS"
+    doi: "10.1101/2023.08.17.553778 "
+    licence: ['BSD-3-clause']
+    identifier: biotools:clairs
 
 ## TODO nf-core: Add a description of all of the variables used as input
 input:
@@ -44,15 +44,15 @@ input:
       description: |
         index file for normal BAM file
       pattern: "*.bai"
+  - packaged_model:
+      type: string
+      description: |
+        string containing the name of a model prepackaged on ClairS container
   - user_model:
       type: directory
       description: |
         directory path to a downloaded model for somatic variant calling
         MUST BE BLANK IF PACKAGED MODEL IS used
-  - packaged_model:
-      type: string
-      description: |
-        string containing the name of a model prepackaged on ClairS container
 - - meta2:
       type: map
       description: |
@@ -71,7 +71,6 @@ input:
       description: |
         index file for the reference fasta file
       pattern: "*.fai"
-
 output:
 - vcf:
   - meta:
@@ -80,8 +79,7 @@ output:
         Groovy Map containing sample information
   - '*.vcf.gz':
       type: file
-      description:
-        VCF file contain small somatic variants
+      description: VCF file contain small somatic variants
       pattern: "*.vcf.gz"
 - versions:
   - versions.yml:
