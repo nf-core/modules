@@ -3,7 +3,9 @@ channels:
 - bioconda
 dependencies:
 - conda-forge::decoupler-py=1.8.0
-- conda-forge::matplotlib=3.10.0
+- conda-forge::matplotlib=3.10.1
 - conda-forge::pandas=2.2.3
-- conda-forge::pip=24.3.1
-- conda-forge::scanpy=1.10.4
+- conda-forge::scanpy=1.11.0
+- pip
+- pip:
+  - pybiomart==0.2.0

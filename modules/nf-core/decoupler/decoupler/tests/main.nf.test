@@ -10,9 +10,40 @@ nextflow_process {
     tag "decoupler"
     tag "decoupler/decoupler"
 
+    test("differential abundance data - normalized counts - mouse") {
+
+        when {
+            params {
+                module_args = "--min_n 2 --transpose TRUE --ensembl_ids TRUE"
+            }
+            process {
+                """
+                input[0] = [
+                    ['id':'SRP254919', 'method_differential':'deseq2', 'contrast':'treatment_mCherry_hND6_'],
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/treatment_mCherry_hND6_.deseq2.results.tsv", checkIfExists: true)
+                ]
+                input[1] = [
+                    file("https://github.com/atrigila/test-datasets/raw/differentialabundance/modules_testdata/progeny/mouse_network.tsv", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
     test("decoupler_test") {
 
         when {
+            params {
+                module_args = "--min_n 1"
+            }
+
             process {
                 """
                 input[0] = [
@@ -32,37 +63,15 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
-    }
-
-    test("progeny") {
-
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id: 'progeny' ],
-                    file("https://github.com/atrigila/test-datasets/raw/progeny/data/delete_me/decoupler/progeny/pbmc3k_1000rows.tsv", checkIfExists: true)
-                ]
-                input[1] = [
-                    file("https://github.com/atrigila/test-datasets/raw/progeny/data/delete_me/decoupler/progeny/progeny_data.tsv", checkIfExists: true)
-                ]
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
     }
 
     test("decoupler stub") {
         options "-stub"
 
         when {
+            params {
+                module_args = "--min_n 1"
+            }
             process {
                 """
                 input[0] = [

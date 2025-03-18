@@ -4,8 +4,8 @@ process DECOUPLER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7d/7d304d1b25aa80ce8c44c8d34ea45d6b4f6f50697a4effcf1b9be4a54db19928/data' :
-        'community.wave.seqera.io/library/decoupler-py_matplotlib_pandas_pip_pruned:0d4681dad9987ec5' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/53/5369022d8f91af004bd03759a30d463f48ba6e915b734938355018069b53e4e4/data' :
+        'community.wave.seqera.io/library/decoupler-py_matplotlib_pandas_scanpy_pruned:c1ac1f1e74a97858' }"
 
     input:
     tuple val(meta), path(mat)
