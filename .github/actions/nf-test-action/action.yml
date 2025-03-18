@@ -38,7 +38,7 @@ runs:
         version: "${{ env.NFT_VER }}"
         install-pdiff: true
 
-    - name: Setup apptainer for ARM64
+    - name: Set up Singularity
       if: contains(inputs.profile, 'singularity')
       shell: bash
       run: |
