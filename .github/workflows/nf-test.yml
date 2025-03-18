@@ -13,18 +13,7 @@ on:
   merge_group:
     types: [checks_requested]
     branches: [master]
-    paths-ignore:
-      - "**/meta.yml"
   workflow_dispatch:
-    inputs:
-      runners:
-        description: "Runners to test on"
-        type: choice
-        options:
-          - "ubuntu-latest"
-          - "ubuntu-24.04-arm"
-          - "self-hosted"
-        default: "self-hosted"
 
 # Cancel if a newer run is started
 concurrency:
@@ -100,18 +89,20 @@ jobs:
           echo ${{ steps.set-shards.outputs.total_shards }}
 
   nf-test:
-    runs-on: ${{ matrix.os }}
-    name: "${{ matrix.os }} | ${{ matrix.profile }} | ${{ matrix.shard }}"
+    runs-on:
+      - runs-on=${{ github.run_id }}
+      - runner=4cpu-linux-${{ matrix.arch }}
+    name: "${{ matrix.arch }} | ${{ matrix.profile }} | ${{ matrix.shard }}"
     needs: [nf-test-changes]
     if: ${{ needs.nf-test-changes.outputs.total_shards != '0' }}
     strategy:
       fail-fast: false
       matrix:
         shard: ${{ fromJson(needs.nf-test-changes.outputs.shard) }}
-        profile: [conda, docker_self_hosted, singularity]
-        os:
-          - ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
-          - ubuntu-24.04-arm
+        profile: [conda, docker, singularity]
+        arch:
+          - x64
+          - arm64
     env:
       NXF_ANSI_LOG: false
       TOTAL_SHARDS: ${{ needs.nf-test-changes.outputs.total_shards }}
