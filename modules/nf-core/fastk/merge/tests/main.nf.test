@@ -1,0 +1,120 @@
+nextflow_process {
+
+    name "Test Process FASTK_MERGE"
+    script "../main.nf"
+    process "FASTK_MERGE"
+    config './nextflow.config'
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fastk"
+    tag "fastk/fastk"
+    tag "fastk/merge"
+
+    test("homo_sapiens - Illumina - hist only") {
+
+        setup {
+            run("FASTK_FASTK", alias: "FASTK_HISTONLY") {
+                script "../../fastk/"
+                process {
+                    """
+                    input[0] = Channel.of(
+                        [
+                            [ id:'test', single_end:false ],
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                        ],
+                        [
+                            [ id:'test', single_end:false ],
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        ]
+                    )
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = FASTK_HISTONLY.out.hist.groupTuple()
+                    .join( FASTK_HISTONLY.out.ktab.groupTuple(), remainder: true )
+                    .join( FASTK_HISTONLY.out.prof.groupTuple(), remainder: true )
+                    .map { meta, hist, ktab, prof -> [meta, hist, ktab ? ktab.flatten() : [] , prof ? prof.flatten() : [] ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - Illumina - all files") {
+
+        setup {
+            run("FASTK_FASTK", alias: "FASTK_ALLFILES") {
+                script "../../fastk"
+                process {
+                    """
+                    input[0] = Channel.of(
+                        [
+                            [ id:'test', single_end:false ],
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                        ],
+                        [
+                            [ id:'test', single_end:false ],
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        ]
+                    )
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = FASTK_ALLFILES.out.hist.groupTuple()
+                    .join( FASTK_ALLFILES.out.ktab.groupTuple(), remainder: true )
+                    .join( FASTK_ALLFILES.out.prof.groupTuple(), remainder: true )
+                    .map { meta, hist, ktab, prof -> [meta, hist, ktab ? ktab.flatten() : [] , prof ? prof.flatten() : [] ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - Illumina - stub") {
+
+        options '-stub'
+
+        when {
+
+            process {
+                """
+                input[0] = FASTK_FASTK.out.hist
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
