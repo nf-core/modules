@@ -3,7 +3,9 @@ process MERQURYFK_PLOIDYPLOT {
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    container 'ghcr.io/nbisweden/fastk_genescopefk_merquryfk:1.2'
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/11/116bae9e8314713209c08c429a95bbf8ce77486872bede198bd86f8267cffb7b/data' :
+        'community.wave.seqera.io/library/fastk_merquryfk_r-argparse_r-base_pruned:ec47d7677abb1c46' }"
 
     input:
     tuple val(meta), path(fastk_hist), path(fastk_ktab)
@@ -28,8 +30,8 @@ process MERQURYFK_PLOIDYPLOT {
     PloidyPlot \\
         $args \\
         -T$task.cpus \\
-        -o$prefix \\
-        ${fastk_ktab.find{ it.toString().endsWith(".ktab") }}
+        ${fastk_ktab.find{ it.toString().endsWith(".ktab") }} \\
+        ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
