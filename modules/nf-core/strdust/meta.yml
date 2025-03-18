@@ -44,11 +44,16 @@ input:
         pattern: "*.{fa,fasta,fna}?(.gz)"
         ontologies:
           - edam: "http://edamontology.org/format_1929"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id: 'GRCh38' ]`
     - fai:
         type: file
         description: Index of reference genome
         pattern: "*.{fai,gzi}"
-  - - meta3:
+  - - meta4:
         type: map
         description: |
           Groovy Map containing interval information
@@ -59,7 +64,7 @@ input:
         pattern: "*.bed"
 
 output:
-  - bam:
+  - vcf:
       - meta:
           type: map
           description: |

@@ -4,13 +4,14 @@ process STRDUST {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e3/e330b3c33aeddc3110c97d1c7951dfc0a5336e28694655e1f453d7bdd67c64be/data':
-        'community.wave.seqera.io/library/htslib_strdust:fe4d33ac136bc679' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/22/221e56e37fd3e90c073638096d7baafbb7ff436c1b6aed0005b15e47a87a071b/data':
+        'community.wave.seqera.io/library/htslib_strdust:6994d409d546bb89' }"
 
     input:
-    tuple val(meta), path(bam)   , path(bai) // sample alignment (preferably phased)
-    tuple val(meta2), path(fasta), path(fai) // reference and index
-    tuple val(meta3), path(bed)              // BED of STR regions, optional
+    tuple val(meta) , path(bam), path(bai) // sample alignment (preferably phased)
+    tuple val(meta2), path(fasta)         // reference
+    tuple val(meta3), path(fai)           // reference index
+    tuple val(meta4), path(bed)           // BED of STR regions, optional
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf

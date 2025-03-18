@@ -29,6 +29,7 @@ nextflow_process {
                 """
                 input[0] = GUNZIP.out.gunzip
                 input[1] = [[],[]]
+                input[2] = [[],[]]
                 """
             }
         }
@@ -43,8 +44,9 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true)
                 ]
-                input[1] = GUNZIP.out.gunzip.join(SAMTOOLS_FAIDX.out.fai)
-                input[2] = Channel.of('chr22\t18890357\t18890451')
+                input[1] = GUNZIP.out.gunzip
+                input[2] = SAMTOOLS_FAIDX.out.fai
+                input[3] = Channel.of('chr22\t18890357\t18890451')
                             .collectFile(name : 'repeats.bed', newLine: false)
                             .map { file -> [ [ id : 'chr22' ], file ] }
                 """
@@ -77,37 +79,9 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true)
                 ]
-                input[1] = GUNZIP.out.gunzip.join(SAMTOOLS_FAIDX.out.fai)
-                input[2] = [[],[]]
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                {
-                    assert snapshot(
-                        path(process.out.vcf[0][1]).vcf.variantsMD5,
-                        process.out.versions
-                    ).match()
-                }
-            )
-        }
-    }
-
-    test("homo sapiens - bam, fasta, [] - pathogenic") {
-
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true)
-                ]
-                input[1] = GUNZIP.out.gunzip.join(SAMTOOLS_FAIDX.out.fai)
-                input[2] = [[],[]]
+                input[1] = GUNZIP.out.gunzip
+                input[2] = SAMTOOLS_FAIDX.out.fai
+                input[3] = [[],[]]
                 """
             }
         }
@@ -135,8 +109,9 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true)
                 ]
-                input[1] = GUNZIP.out.gunzip.join(SAMTOOLS_FAIDX.out.fai)
-                input[2] = [[],[]]
+                input[1] = GUNZIP.out.gunzip
+                input[2] = SAMTOOLS_FAIDX.out.fai
+                input[3] = [[],[]]
                 """
             }
         }
