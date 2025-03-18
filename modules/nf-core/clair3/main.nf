@@ -8,7 +8,7 @@ process CLAIR3 {
         'biocontainers/clair3:1.0.10--py39hd649744_1' }"
 
     input:
-    tuple val(meta), path(bam), path(bai), path(model), val(platform)
+    tuple val(meta), path(bam), path(bai), val(packaged_model), path(user_model), val(platform)
     tuple val(meta2), path(reference)
     tuple val(meta3), path(index)
 
@@ -23,6 +23,21 @@ process CLAIR3 {
     task.ext.when == null || task.ext.when
 
     script:
+    def model = ""
+    if (!user_model) {
+        if (workflow.containerEngine == 'conda') {
+            model = "\${CONDA_PREFIX}/bin/models/${packaged_model}"
+        }
+        else {
+            model = "/usr/local/bin/models/$packaged_model"
+        }
+    }
+    if (!packaged_model) {
+        model = "$user_model"
+    }
+    if (!packaged_model & !user_model) {
+        log.error "Two models specified $user_model and $packaged_model, defaulting to $user_model"
+    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
