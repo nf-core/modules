@@ -87,10 +87,7 @@
         "subworkflows/nf-core/fastq_align_bwa",
         "subworkflows/nf-core/vcf_annotate_ensemblvep"
     ],
-    "docker_self_hosted": [
-        "modules/nf-core/parabricks",
-        "subworkflows/nf-core/deepvariant/tests/equality"
-    ],
+    "docker": ["modules/nf-core/parabricks", "subworkflows/nf-core/deepvariant/tests/equality"],
     "singularity": [
         "modules/nf-core/bases2fastq",
         "modules/nf-core/deepvariant/rundeepvariant",
