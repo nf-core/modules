@@ -74,4 +74,29 @@ nextflow_process {
 
     }
 
+    test("homo_sapiens - Illumina - stub") {
+        config "./nextflow.config"
+        options '-stub'
+
+        when {
+            params {
+                outfmt = ""
+            }
+
+            process {
+                """
+                input[0] = FASTK_FASTK.out.hist
+                    .join(FASTK_FASTK.out.ktab)                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
 }
