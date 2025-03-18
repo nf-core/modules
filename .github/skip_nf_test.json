@@ -6,6 +6,7 @@
         "modules/nf-core/bakta/bakta",
         "modules/nf-core/bakta/baktadbdownload",
         "modules/nf-core/bases2fastq",
+        "modules/nf-core/basicpy",
         "modules/nf-core/bcl2fastq",
         "modules/nf-core/bclconvert",
         "modules/nf-core/celesta",
@@ -19,6 +20,7 @@
         "modules/nf-core/cellranger/vdj",
         "modules/nf-core/cellrangerarc/mkgtf",
         "modules/nf-core/checkqc",
+        "modules/nf-core/coreograph",
         "modules/nf-core/custom/dumpsoftwareversions",
         "modules/nf-core/deepcell/mesmer",
         "modules/nf-core/deepsomatic",
@@ -54,6 +56,8 @@
         "modules/nf-core/merquryfk/katgc",
         "modules/nf-core/merquryfk/merquryfk",
         "modules/nf-core/merquryfk/ploidyplot",
+        "modules/nf-core/mitohifi/mitohifi",
+        "modules/nf-core/mitohifi/findmitoreference",
         "modules/nf-core/molkartgarage/clahe",
         "modules/nf-core/parabricks",
         "modules/nf-core/quartonotebook",
@@ -83,10 +87,7 @@
         "subworkflows/nf-core/fastq_align_bwa",
         "subworkflows/nf-core/vcf_annotate_ensemblvep"
     ],
-    "docker_self_hosted": [
-        "modules/nf-core/parabricks",
-        "subworkflows/nf-core/deepvariant/tests/equality"
-    ],
+    "docker": ["modules/nf-core/parabricks", "subworkflows/nf-core/deepvariant/tests/equality"],
     "singularity": [
         "modules/nf-core/bases2fastq",
         "modules/nf-core/deepvariant/rundeepvariant",
