@@ -11,9 +11,9 @@ process SAMTOOLS_FIXMATE {
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path("*.bam")  ,  emit: bam    , optional: true
+    tuple val(meta), path("*.bam")  , emit: bam     , optional: true
     tuple val(meta), path("*.cram") , emit: cram    , optional: true
-    tuple val(meta), path("*.sam")  ,  emit: sam    ,  optional: true
+    tuple val(meta), path("*.sam")  , emit: sam     ,  optional: true
     path "versions.yml"             , emit: versions
 
     when:
