@@ -1,6 +1,8 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "archive_extract"
-description: Extracts an archive from any format
+description: |
+  Extract archive(s) from any format
+  Currently supported format are .gz, .tar.gz, .zip
 keywords:
   - archive
   - gzip
@@ -12,7 +14,7 @@ components:
   - unzip
 input:
   - archive:
-      description: Channel with input data for differential analysis
+      description: Channel with archive to extract
       structure:
         - meta:
             type: map
@@ -24,21 +26,32 @@ input:
               File containing the archive to extract
             pattern: "*{.tar.gz, .gz, .zip}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - extracted:
-      type: file
-      description: |
-        Structure: [ val(meta), path(extracted)]
-        File containing the extracted archive
+      description: Channel with extracted archive
+      structure:
+        - meta:
+          type: map
+          description: Metadata map
+        - "*":
+          type: file
+          description: |
+            Structure: [path]
+            Folder or file(s) extracted
   - not_extracted:
+      description: Channel with any not extracted (ie not recognized) archive
+      structure:
+        - meta:
+          type: map
+          description: Metadata map
+        - "*":
+          type: file
+          description: |
+            Structure: [path]
+            File(s) not extracted
+  - versions:
       type: file
-      description: |
-        Structure: [ val(meta), path(not_extracted)]
-        File containing the archive that was not extracted
+      description: File containing software versions
+      pattern: "versions.yml"
 authors:
   - "@maxulysse"
 maintainers:

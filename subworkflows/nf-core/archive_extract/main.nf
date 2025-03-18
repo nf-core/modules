@@ -1,14 +1,10 @@
-//
-// extract archive from any format
-//
-
 include { GUNZIP } from '../../../modules/nf-core/gunzip'
 include { UNTAR  } from '../../../modules/nf-core/untar'
 include { UNZIP  } from '../../../modules/nf-core/unzip'
 
 workflow ARCHIVE_EXTRACT {
     take:
-    archive
+    archive // Channel: [[meta], archive]
 
     main:
     versions = Channel.empty()
@@ -24,7 +20,7 @@ workflow ARCHIVE_EXTRACT {
     not_extracted = archive_to_extract.non_assigned
     not_extracted.view { _meta, archive_ -> log.warn("Archive not in the expected format: " + archive_) }
 
-    // extract archive
+    // Extract any archive with a recognized extension
     GUNZIP(archive_to_extract.gz)
     UNTAR(archive_to_extract.tar)
     UNZIP(archive_to_extract.zip)
@@ -43,6 +39,6 @@ workflow ARCHIVE_EXTRACT {
 
     emit:
     extracted     // channel: [ meta, extracted_archive ]
-    not_extracted // channel: [ meta, not_recognized_archive ]
+    not_extracted // channel: [ meta, not_extracted_archive ]
     versions      // channel: [ versions.yml ]
 }
