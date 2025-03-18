@@ -34,10 +34,6 @@ process BUSCO_DOWNLOAD {
     stub:
     def args = task.ext.args ?: ''
     """
-    echo "busco \\
-        --download $lineage \\
-        $args"
-
     mkdir busco_downloads
 
     cat <<-END_VERSIONS > versions.yml
