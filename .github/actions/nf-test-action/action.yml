@@ -38,11 +38,15 @@ runs:
         version: "${{ env.NFT_VER }}"
         install-pdiff: true
     - name: Debug package availability
+      if: contains(inputs.profile, 'singularity')
+      shell: bash
       run: |
         sudo apt-get update
         apt-cache policy uidmap squashfs-tools
 
     - name: Install dependencies from universe repo
+      if: contains(inputs.profile, 'singularity')
+      shell: bash
       run: |
         sudo add-apt-repository universe
         sudo apt-get update
