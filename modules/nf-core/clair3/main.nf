@@ -25,7 +25,7 @@ process CLAIR3 {
     script:
     def model = ""
     if (!user_model) {
-        if (workflow.containerEngine == 'conda') {
+        if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
             model = "\${CONDA_PREFIX}/bin/models/${packaged_model}"
         }
         else {
