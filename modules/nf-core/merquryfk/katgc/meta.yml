@@ -33,9 +33,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ".fi.{png,pdf}":
+          pattern: "*.fi.{png,pdf}"
+      - "*.fi.{png,pdf}":
           type: file
-          description: A filled GC content plot in PNG or PDF format
+          description: |
+            A filled GC content plot in PNG or PDF format
           pattern: "*.fi.{png,pdf}"
   - line_gc_plot:
       - meta:
@@ -43,9 +45,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ".ln.{png,pdf}":
+          pattern: "*.ln.{png,pdf}"
+      - "*.ln.{png,pdf}":
           type: file
-          description: A line GC content plot in PNG or PDF format
+          description: |
+            A filled GC content plot in PNG or PDF format
           pattern: "*.ln.{png,pdf}"
   - stacked_gc_plot:
       - meta:
@@ -53,9 +57,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*.st.{png,pdf}"
       - "*.st.{png,pdf}":
-          type: file
-          description: A stacked GC content plot in PNG or PDF format
+          type: map
+          description: |
+            A stacked GC content plot in PNG or PDF format
           pattern: "*.st.{png,pdf}"
   - versions:
       - versions.yml:

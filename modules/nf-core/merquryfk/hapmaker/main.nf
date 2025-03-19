@@ -15,9 +15,9 @@ process MERQURYFK_HAPMAKER {
     tuple val(meta3), path(childktab)
 
     output:
-    tuple val(meta) , path("*${input_mat}.hap.ktab*", hidden: true ), emit: mathap_ktab
-    tuple val(meta2), path("*${input_pat}.hap.ktab*", hidden: true) , emit: pathap_ktab
-    path "versions.yml"                                           , emit: versions
+    tuple val(meta) , path("*${input_mat}.hap.ktab*", hidden: true), emit: mathap_ktab
+    tuple val(meta2), path("*${input_pat}.hap.ktab*", hidden: true), emit: pathap_ktab
+    path "versions.yml"                                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

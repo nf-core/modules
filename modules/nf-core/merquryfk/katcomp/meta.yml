@@ -40,9 +40,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*.fi.{png,pdf}"
       - "*.fi.{png,pdf}":
           type: file
-          description: Comparison of Kmers between sample 1 and 2 in filled PNG or PDF format.
+          description: |
+            Comparison of Kmers between sample 1 and 2 in filled PNG or PDF format.
           pattern: "*.fi.{png,pdf}"
   - line:
       - meta:
@@ -50,9 +52,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*.ln.{png,pdf}"
       - "*.ln.{png,pdf}":
           type: file
-          description: Comparison of Kmers between sample 1 and 2 in line PNG or PDF format.
+          description: |
+            Comparison of Kmers between sample 1 and 2 in line PNG or PDF format.
           pattern: "*.ln.{png,pdf}"
   - stacked:
       - meta:
@@ -60,10 +64,13 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*.st.{png,pdf}"
       - "*.st.{png,pdf}":
           type: file
-          description: Comparison of Kmers between sample 1 and 2 in stacked PNG or PDF format.
+          description: |
+            Comparison of Kmers between sample 1 and 2 in stacked PNG or PDF format.
           pattern: "*.st.{png,pdf}"
+  - versions:
       - versions.yml:
           type: file
           description: File containing software versions
