@@ -57,7 +57,7 @@ process MOTUS_PREPLONG {
 
     ## mOTUs version number is not available from command line.
     ## mOTUs save the version number in index database folder.
-    ## mOTUs will check the database version is same version as exec version.
+    ## mOTUs will check if the database version is the same as the exec version.
     if [ "$db" == "" ]; then
         VERSION=\$(echo \$(motus -h 2>&1) | sed 's/^.*Version: //; s/References.*\$//')
     else
