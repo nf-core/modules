@@ -38,6 +38,7 @@ process FASTK_MERGE {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def FASTK_VERSION = '1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
@@ -46,6 +47,8 @@ process FASTK_MERGE {
     """
     touch ${prefix}.hist
     touch ${prefix}.ktab
+    ${touch_ktab}
+    ${touch_prof}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

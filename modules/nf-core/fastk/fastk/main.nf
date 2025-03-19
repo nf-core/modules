@@ -32,8 +32,7 @@ process FASTK_FASTK {
         -N${prefix}_fk \\
         $reads
 
-    find . -name '*.ktab*' \\
-        | xargs chmod a+r
+    find . -name '*.ktab*' -exec chmod a+r {} \\;
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
