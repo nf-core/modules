@@ -43,28 +43,26 @@ input:
         description: child ktab files from the program FastK
         pattern: "*.ktab*"
 output:
-  - mathap_ktab:
+  - mat_hap_ktab:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*${input_mat}.hap.ktab*"
-      - '*${input_mat}.hap.ktab*", hidden: true ':
-          type: file
+      - '*${input_mat}.hap.ktab*", hidden: true':
+          type: map
           description: |
             FastK kmer table containing the maternal kmers
             present in the child
           pattern: "*${input_mat}.hap.ktab*"
-  - pathap_ktab:
+  - pat_hap_ktab:
       - meta2:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*${input_pat}.hap.ktab*"
       - '*${input_pat}.hap.ktab*", hidden: true':
-          type: file
+          type: map
           description: |
             FastK kmer table containing the paternal kmers
             present in the child
