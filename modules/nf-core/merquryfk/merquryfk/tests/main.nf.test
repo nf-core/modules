@@ -29,7 +29,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ],
+                    [ id:'test_mat', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                 ]
                 """
@@ -41,7 +41,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ],
+                    [ id:'test_pat', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true),
                 ]
                 """
@@ -50,7 +50,7 @@ nextflow_process {
     }
 
     test("homo_sapiens - Illumina") {
-        config "./nextflow.png.config"
+        config "./nextflow.config"
         when {
             process {
                 """
@@ -79,7 +79,7 @@ nextflow_process {
     }
 
     test("homo_sapiens - Illumina - trio") {
-        config "./nextflow.trio.config"
+        config "./nextflow.config"
         when {
             process {
                 """
@@ -109,7 +109,7 @@ nextflow_process {
 
     test("homo_sapiens - Illumina - stub") {
         options "-stub"
-        config "./nextflow.png.config"
+        config "./nextflow.config"
         when {
             process {
                 """
