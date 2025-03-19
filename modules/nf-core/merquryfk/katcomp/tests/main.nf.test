@@ -37,41 +37,10 @@ nextflow_process {
         }
     }
 
-    test("homo_sapiens - Illumina - png") {
+    test("homo_sapiens - Illumina") {
         config "./nextflow.config"
 
         when {
-            params {
-                outfmt = ""
-            }
-
-            process {
-                """
-                input[0] = FASTK1.out.hist
-                    .join( FASTK1.out.ktab )
-                    .join( FASTK2.out.hist )
-                    .join( FASTK2.out.ktab )
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
-
-    }
-
-    test("homo_sapiens - Illumina - pdf") {
-        config "./nextflow.config"
-
-        when {
-            params {
-                outfmt = "-pdf"
-            }
-
             process {
                 """
                 input[0] = FASTK1.out.hist
@@ -96,10 +65,6 @@ nextflow_process {
         options '-stub'
 
         when {
-            params {
-                outfmt = ""
-            }
-
             process {
                 """
                 input[0] = FASTK1.out.hist
