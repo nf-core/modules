@@ -3,6 +3,7 @@ import os
 import argparse
 import shlex
 import sys
+import gzip
 
 os.environ["NUMBA_CACHE_DIR"] = "./tmp"
 os.environ["MPLCONFIGDIR"] = "./tmp"
@@ -29,7 +30,6 @@ def parse_ext_args(args_string: str):
       --transpose <str> (TRUE or FALSE)
       --contrast <str> (optional, e.g., treatment_vs_control)
       --column <str> (Column name to use for transposition; default: log2FoldChange)
-      --species <str> (Species to use for BioMart annotations; default: mmusculus)
       --ensembl_ids <str> (TRUE to convert ENSEMBL IDs to gene symbols, FALSE to skip)
     """
     if args_string == "null":
@@ -39,9 +39,38 @@ def parse_ext_args(args_string: str):
     parser.add_argument("--min_n", type=int, default=1, help="Minimum n value")
     parser.add_argument("--transpose", type=str, default="FALSE", help="Transpose DESeq2 data if TRUE")
     parser.add_argument("--column", type=str, default="log2FoldChange", help="Column name to use for transposition")
-    parser.add_argument("--species", type=str, default="mmusculus", help="Species for BioMart annotations")
     parser.add_argument("--ensembl_ids", type=str, default="FALSE", help="Convert ENSEMBL IDs to gene symbols if TRUE")
     return parser.parse_args(args_list)
+
+def parse_gtf(gtf_file: str):
+    """
+    Parse an optional GTF file to create a mapping of ENSEMBL gene IDs to gene symbols (required to use Progeny data).
+    """
+    mapping = {}
+    opener = gzip.open if gtf_file.endswith('.gz') else open
+    with opener(gtf_file, 'rt') as f:
+        for line in f:
+            if line.startswith("#"):
+                continue
+            fields = line.strip().split("\t")
+            if len(fields) < 9:
+                continue
+            attributes_field = fields[8]
+            attributes = {}
+            for attr in attributes_field.split(";"):
+                attr = attr.strip()
+                if not attr:
+                    continue
+                parts = attr.split(" ", 1)
+                if len(parts) != 2:
+                    continue
+                key, value = parts
+                attributes[key] = value.replace('"', '').strip()
+            gene_id = attributes.get("gene_id")
+            gene_symbol = attributes.get("gene_name") or attributes.get("gene_symbol") or attributes.get("external_gene_name")
+            if gene_id and gene_symbol:
+                mapping[gene_id] = gene_symbol
+    return mapping
 
 # Parse external arguments
 raw_args = "${task.ext.args}"
@@ -49,21 +78,14 @@ parsed_args = parse_ext_args(raw_args)
 
 if parsed_args.ensembl_ids.upper() == "TRUE":
     try:
-        annot = sc.queries.biomart_annotations(
-            "mmusculus",
-            ["ensembl_gene_id", "external_gene_name"],
-            host="http://www.ensembl.org",
-            use_cache=False
-        ).set_index("ensembl_gene_id")
+        gene_mapping = parse_gtf("${gtf}")
+        new_index = [gene_mapping.get(ens, None) for ens in mat.index]
+        mat.index = new_index
+        mat = mat[mat.index.notnull()]
+        mat = mat[~mat.index.duplicated(keep='first')]
     except Exception as e:
-        print("ERROR: Failed to retrieve annotations from BioMart:", e)
+        print("ERROR: Failed to parse GTF:", e)
         sys.exit(1)
-
-    new_index = [annot.loc[ens, "external_gene_name"] if ens in annot.index else None for ens in mat.index]
-    mat.index = new_index
-
-    mat = mat[mat.index.notnull()]
-    mat = mat[~mat.index.duplicated(keep='first')]
 
 if parsed_args.transpose.upper() == "TRUE":
     mat = mat[[parsed_args.column]].T.rename(index={parsed_args.column: "${meta.contrast}"})

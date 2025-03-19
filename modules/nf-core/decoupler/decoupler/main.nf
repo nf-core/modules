@@ -4,12 +4,13 @@ process DECOUPLER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/53/5369022d8f91af004bd03759a30d463f48ba6e915b734938355018069b53e4e4/data' :
-        'community.wave.seqera.io/library/decoupler-py_matplotlib_pandas_scanpy_pruned:c1ac1f1e74a97858' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/dc/dc0ee6d6033b9f04c6377ad3b1cf5f924e3243626ab8d7be836d9d6617f8da4e/data' :
+        'community.wave.seqera.io/library/decoupler-py_matplotlib_pandas_scanpy:369a5afe315b9b30' }"
 
     input:
     tuple val(meta), path(mat)
     path(net)
+    path(gtf)
 
     output:
     tuple val(meta), path("*estimate__decoupler.tsv"), emit: dc_estimate
