@@ -6,6 +6,7 @@ nextflow_process {
     process "ATAQV_ATAQV"
 
     tag "modules"
+    tag "modules_nfcore"
     tag "ataqv"
     tag "ataqv/ataqv"
 
@@ -70,7 +71,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.json.collect{ file(it[1]).name },
-                    process.out.problems,
+                    process.out.problems.collect{ file(it[1]).name },
                     process.out.versions
                 ).match() }
             )
