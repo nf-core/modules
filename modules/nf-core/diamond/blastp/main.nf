@@ -1,5 +1,5 @@
 process DIAMOND_BLASTP {
-    tag "$meta.id"
+    tag "${meta.id}.${meta2.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
@@ -27,8 +27,10 @@ process DIAMOND_BLASTP {
     task.ext.when == null || task.ext.when
 
     script:
+    meta = meta + [ db: meta2.id ]
+
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}.${meta2.id}"
 
     def columns = blast_columns ? "${blast_columns}" : ''
     def out_ext = ""
@@ -72,6 +74,8 @@ process DIAMOND_BLASTP {
     """
 
     stub:
+    meta = meta + [ db: meta2.id ]
+
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def out_ext = ""
