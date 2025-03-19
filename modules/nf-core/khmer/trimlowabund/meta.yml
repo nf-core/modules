@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "khmer_trimlowabund"
-description: Removes low abundance k-mers from reads
+description: Removes low abundance k-mers from FASTA/FASTQ files
 keywords:
   - quality control
   - genomics
@@ -23,22 +23,22 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - fasta:
+    - seq_file:
         type: file
-        description: fasta file
-        pattern: "*.{fa,fasta,fas}"
+        description: fasta/fastq file
+        pattern: "*.{fa,fasta,fas,fq,fastq}"
 
 output:
-  - sequence:
+  - trimmed:
     - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - '*.abundtrim':
+    - '${output_path}':
         type: file
-        description: fasta file with low abundance k-mers removed.
-        pattern: "*.{fa,fasta,fas}"
+        description: fasta/fastq file with low abundance k-mers removed.
+        pattern: "*.{fa,fasta,fas,fq,fastq}"
   - versions:
     - "versions.yml":
         type: file
