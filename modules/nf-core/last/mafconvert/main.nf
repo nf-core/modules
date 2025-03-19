@@ -37,15 +37,27 @@ process LAST_MAFCONVERT {
     set -o pipefail
 
     case $format in
+        sam)
+            maf-convert $args -d sam $maf |
+                samtools addreplacerg -r 'ID:${meta.id}' -r 'SM:${meta.id}' -O BAM -u - |
+                samtools sort -O sam |
+                gzip --no-name > ${prefix}.sam.gz
+            ;;
         bam)
-            maf-convert $args -d sam  $maf | samtools view -b -o ${prefix}.${format}
+            maf-convert $args -d sam $maf |
+                samtools addreplacerg -r 'ID:${meta.id}' -r 'SM:${meta.id}' -O BAM -u - |
+                samtools sort -o ${prefix}.bam
             ;;
         cram)
             # CRAM output is not supported if the genome is compressed with something else than bgzip
-            maf-convert $args -d sam  $maf | samtools view -Ct $fasta -o ${prefix}.${format}
+            maf-convert $args -d sam $maf |
+                samtools addreplacerg -r "ID:${meta.id}" -r 'SM:${meta.id}' -O BAM -u - |
+                samtools sort -u |
+                samtools view -Ct $fasta -o ${prefix}.cram
             ;;
         *)
-            maf-convert $args $format $maf | gzip --no-name > ${prefix}.${format}.gz
+            maf-convert $args $format $maf |
+                gzip --no-name > ${prefix}.${format}.gz
             ;;
     esac
 
