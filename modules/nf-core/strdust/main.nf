@@ -8,10 +8,10 @@ process STRDUST {
         'community.wave.seqera.io/library/htslib_strdust:6994d409d546bb89' }"
 
     input:
-    tuple val(meta) , path(bam), path(bai) // sample alignment (preferably phased)
-    tuple val(meta2), path(fasta)         // reference
-    tuple val(meta3), path(fai)           // reference index
-    tuple val(meta4), path(bed)           // BED of STR regions, optional
+    tuple val(meta) , path(bam), path(bai)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
+    tuple val(meta4), path(bed)
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
