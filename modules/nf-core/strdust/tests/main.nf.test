@@ -66,6 +66,40 @@ nextflow_process {
         }
     }
 
+    test("homo sapiens - bam, fasta, bed - sorted parameter") {
+        when {
+            params {
+                strdust_args = "--sorted"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[1] = GUNZIP.out.gunzip
+                input[2] = SAMTOOLS_FAIDX.out.fai
+                input[3] = Channel.of('chr22\t18890357\t18890451')
+                            .collectFile(name : 'repeats.bed', newLine: false)
+                            .map { file -> [ [ id : 'chr22' ], file ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        path(process.out.vcf[0][1]).vcf.variantsMD5,
+                        process.out.tbi,
+                        process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
     test("homo sapiens - bam, fasta, [] - region parameter") {
 
         when {

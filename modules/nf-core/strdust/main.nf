@@ -15,6 +15,7 @@ process STRDUST {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
+    tuple val(meta), path("*.tbi")   , optional: true, emit: tbi
     path "versions.yml"              , emit: versions
 
     when:
@@ -23,11 +24,17 @@ process STRDUST {
     script:
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
+    def args3 = task.ext.args3 ?: ''
+
     def prefix = task.ext.prefix ?: "${meta.id}"
     // If region defined in args, use that, otherwise use bed if available.
     // If that isn't there, either, use --pathogenic
     def regions = args.contains("-r ") || args.contains("--region ") || args.contains("-R ") || args.contains("--region-file ") || args.contains("--pathogenic") ? "" :
         bed ? "--region-file $bed" : "--pathogenic"
+
+    // If sorted output requested, index output
+    def tabix_cmd = args.contains("--sorted") ? "tabix $args3 ${prefix}.vcf.gz" : ''
+
     """
     STRdust \\
         $args \\
@@ -37,6 +44,7 @@ process STRDUST {
         $bam \\
         | bgzip $args2 --threads $task.cpus \\
         > ${prefix}.vcf.gz
+    $tabix_cmd
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

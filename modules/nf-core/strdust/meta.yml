@@ -22,16 +22,18 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - bam:
         type: file
-        description: Sorted (and preferably phased) BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
+        description: |
+          Sorted (and preferably phased) BAM/CRAM file.
+          Add command line argument `--unphased` if reads are not phased.
+        pattern: "*.{bam,cram}"
         ontologies:
           - edam: "http://edamontology.org/format_2572"
           - edam: "http://edamontology.org/format_2573"
           - edam: "http://edamontology.org/format_3462"
     - bai:
         type: file
-        description: Index of BAM/CRAM/SAM file
-        pattern: "*.{bai,crai,sai,csi}"
+        description: Index of BAM/CRAM file
+        pattern: "*.{bai,crai,csi}"
         ontologies:
           - edam: "http://edamontology.org/format_3327"
   - - meta2:
@@ -75,8 +77,20 @@ output:
           type: file
           description: |
             Called tandem repeats as VCF file.
-            Sorted only if run in single-threaded mode.
+            Sorted if `--sorted` command line argument was specified.
           pattern: "*.vcf.gz"
+  - tbi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.tbi":
+          type: file
+          description: |
+            Index of output VCF.
+            Output only if VCF is sorted (i.e. `--sorted` was specified).
+          pattern: "*.tbi"
 
   - versions:
       - "versions.yml":
