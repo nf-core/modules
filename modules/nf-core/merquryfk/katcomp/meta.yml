@@ -34,67 +34,36 @@ input:
         description: Histogram ktab files from the program FastK (option -t)
         pattern: "*.ktab*"
 output:
-  - filled_png:
+  - filled:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.fi.png":
+      - "*.fi.{png,pdf}":
           type: file
-          description: Comparison of Kmers between sample 1 and 2 in filled PNG format.
-          pattern: "*.fi.png"
-  - line_png:
+          description: Comparison of Kmers between sample 1 and 2 in filled PNG or PDF format.
+          pattern: "*.fi.{png,pdf}"
+  - line:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.ln.png":
+      - "*.ln.{png,pdf}":
           type: file
-          description: Comparison of Kmers between sample 1 and 2 in line PNG format.
-          pattern: "*.ln.png"
-  - stacked_png:
+          description: Comparison of Kmers between sample 1 and 2 in line PNG or PDF format.
+          pattern: "*.ln.{png,pdf}"
+  - stacked:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.st.png":
+      - "*.st.{png,pdf}":
           type: file
-          description: Comparison of Kmers between sample 1 and 2 in stacked PNG format.
-          pattern: "*.st.png"
-  - filled_pdf:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.fi.pdf":
-          type: file
-          description: Comparison of Kmers between sample 1 and 2 in filled PDF format.
-          pattern: "*.fi.pdf"
-  - line_pdf:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.ln.pdf":
-          type: file
-          description: Comparison of Kmers between sample 1 and 2 in line PDF format.
-          pattern: "*.ln.pdf"
-  - stacked_pdf:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.st.pdf":
-          type: file
-          description: Comparison of Kmers between sample 1 and 2 in stacked PDF format.
-          pattern: "*.st.pdf"
-  - versions:
+          description: Comparison of Kmers between sample 1 and 2 in stacked PNG or PDF format.
+          pattern: "*.st.{png,pdf}"
       - versions.yml:
           type: file
           description: File containing software versions
