@@ -3,8 +3,8 @@ process MOTUS_DOWNLOADDB {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/motus:3.0.3--pyhdfd78af_0':
-        'biocontainers/motus:3.0.3--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/motus:3.1.0--pyhdfd78af_0':
+        'biocontainers/motus:3.1.0--pyhdfd78af_0' }"
 
     input:
     path motus_downloaddb_script
@@ -36,4 +36,16 @@ process MOTUS_DOWNLOADDB {
         motus: \$(grep motus db_mOTU/db_mOTU_versions | sed 's/motus\\t//g')
     END_VERSIONS
     """
+
+    stub:
+    def args     = task.ext.args ?: ''
+    def software = "${motus_downloaddb_script.simpleName}_copy.py"
+
+    """
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        motus: \$(grep motus db_mOTU/db_mOTU_versions | sed 's/motus\\t//g')
+    END_VERSIONS
+    """
+
 }
