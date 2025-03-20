@@ -1,0 +1,104 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "STRdust"
+description: Tandem repeat genotyper for long reads
+keywords:
+  - long read
+  - tandem repeats
+  - genomics
+tools:
+  - "STRdust":
+      description: "Tandem repeat genotyper for long reads."
+      homepage: "https://github.com/wdecoster/STRdust/"
+      documentation: "https://github.com/wdecoster/STRdust/blob/main/README.md"
+      tool_dev_url: "https://github.com/wdecoster/STRdust"
+      doi: "10.1101/gr.279265.124 "
+      licence: ["MIT"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: |
+          Sorted (and preferably phased) BAM/CRAM file.
+          Add command line argument `--unphased` if reads are not phased.
+        pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+          - edam: "http://edamontology.org/format_2573"
+          - edam: "http://edamontology.org/format_3462"
+    - bai:
+        type: file
+        description: Index of BAM/CRAM file
+        pattern: "*.{bai,crai,csi}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id: 'GRCh38' ]`
+    - fasta:
+        type: file
+        description: Reference genome
+        pattern: "*.{fa,fasta,fna}?(.gz)"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id: 'GRCh38' ]`
+    - fai:
+        type: file
+        description: Index of reference genome
+        pattern: "*.{fai,gzi}"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing interval information
+          e.g. `[ id: "GRCh38_strs" ] `
+    - bed:
+        type: file
+        description: BED file containing STR regions to genotype (optional)
+        pattern: "*.bed"
+
+output:
+  - vcf:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.vcf.gz":
+          type: file
+          description: |
+            Called tandem repeats as VCF file.
+            Sorted if `--sorted` command line argument was specified.
+          pattern: "*.vcf.gz"
+  - tbi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.tbi":
+          type: file
+          description: |
+            Index of output VCF.
+            Output only if VCF is sorted (i.e. `--sorted` was specified).
+          pattern: "*.tbi"
+
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@Schmytzi"
+maintainers:
+  - "@Schmytzi"
