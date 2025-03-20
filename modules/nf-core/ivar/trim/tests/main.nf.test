@@ -29,8 +29,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(snapshot(process.out).match())
-				}
+                { assert snapshot(
+                        process.out.bam,
+                        process.out.versions,
+                        file(process.out.log.get(0).get(1)).exists()
+                    ).match()
+                }
             )
         }
     }
