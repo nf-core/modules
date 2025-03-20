@@ -11,9 +11,8 @@ process PLINK2_PCA {
     val(bed)
 
     output:
-    // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple path("*.eigenvec"), path("*.eigenval"), path("*.log"), emit: eigen
-    // TODO nf-core: List additional required output channels/values here
+    tuple val(meta), path("*.eigenvec")    , emit: eigenvec
+    tuple val(meta), path("*.eigenval")    , emit: eigenval
     path "versions.yml", emit: versions
 
     when:
@@ -40,7 +39,7 @@ process PLINK2_PCA {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.eigenvec ${prefix}.eigenval ${prefix}.log 
+    touch ${prefix}.eigenvec ${prefix}.eigenval
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -41,6 +41,10 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success }
+                { assert process.out.score.get(0).get(1) ==~ ".*.eigenvec" },
+                { assert process.out.score.get(0).get(1) ==~ ".*.eigenval" },
+                { assert snapshot(process.out.versions).match("versions") },
+
             )
         }
     }
