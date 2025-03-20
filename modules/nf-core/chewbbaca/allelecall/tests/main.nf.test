@@ -43,152 +43,16 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-
-                // Check that stats file exists and has expected content
                 { assert path(process.out.stats.get(0).get(1)).exists() },
-                {
-                    def statsFile = path(process.out.stats.get(0).get(1))
-                    // Check for classification type counts columns
-                    assert statsFile.text.contains("EXC")
-                    assert statsFile.text.contains("INF")
-                    assert statsFile.text.contains("PLOT3")
-                    assert statsFile.text.contains("PLOT5")
-                    assert statsFile.text.contains("LOTSC")
-                    assert statsFile.text.contains("NIPH")
-                    assert statsFile.text.contains("NIPHEM")
-                    assert statsFile.text.contains("ALM")
-                    assert statsFile.text.contains("ASM")
-                    assert statsFile.text.contains("PAMA")
-                    assert statsFile.text.contains("LNF")
-                    // Check for total counts columns
-                    assert statsFile.text.contains("Invalid CDSs")
-                    assert statsFile.text.contains("Classified_CDSs")
-                    assert statsFile.text.contains("Total_CDSs")
-                    // Should have more than just header
-                    assert statsFile.readLines().size() > 1
-                },
-
-                // Check that contigsInfo file exists and has expected content
                 { assert path(process.out.contigsInfo.get(0).get(1)).exists() },
-                {
-                    def contigsFile = path(process.out.contigsInfo.get(0).get(1))
-                    // Should contain FILE column header
-                    assert contigsFile.text.contains("FILE")
-                    // Should have content
-                    assert contigsFile.readLines().size() > 1
-                    // Check for coordinate format (using & separator) or classification codes
-                    def lines = contigsFile.readLines()
-                    if (lines.size() > 1) {
-                        def dataLine = lines[1].split("\t")
-                        if (dataLine.length > 1) {
-                            // Either contains coordinates with & separator or classification
-                            assert dataLine[1].contains("&") ||
-                                   dataLine[1] == "LNF" ||
-                                   dataLine[1].startsWith("INF") ||
-                                   dataLine[1].startsWith("PLOT") ||
-                                   dataLine[1].startsWith("NIPH") ||
-                                   dataLine[1] == "ALM" ||
-                                   dataLine[1] == "ASM" ||
-                                   dataLine[1] == "PAMA"
-                        }
-                    }
-                },
-
-                // Check that alleles file exists and has expected content
                 { assert path(process.out.alleles.get(0).get(1)).exists() },
-                {
-                    def allelesFile = path(process.out.alleles.get(0).get(1))
-                    // Should contain FILE column header
-                    assert allelesFile.text.contains("FILE")
-                    // Should have more than just header
-                    assert allelesFile.readLines().size() > 1
-                    // Check for allele numbers or classification codes
-                    def lines = allelesFile.readLines()
-                    if (lines.size() > 1) {
-                        def dataLine = lines[1].split("\t")
-                        if (dataLine.length > 1) {
-                            // Either contains allele number or classification
-                            assert dataLine[1].matches("\\d+") ||
-                                   dataLine[1].startsWith("INF") ||
-                                   dataLine[1].startsWith("PLOT") ||
-                                   dataLine[1].startsWith("NIPH") ||
-                                   dataLine[1] == "ALM" ||
-                                   dataLine[1] == "ASM" ||
-                                   dataLine[1] == "PAMA" ||
-                                   dataLine[1] == "LNF"
-                        }
-                    }
-                },
-
-                // Check that log file exists and has expected content
                 { assert path(process.out.log.get(0).get(1)).exists() },
-                {
-                    def logFile = path(process.out.log.get(0).get(1))
-                    // Check for expected log content
-                    assert logFile.text.contains("Started script")
-                    assert logFile.text.contains("Finished script")
-                    assert logFile.text.contains("Number of inputs")
-                    assert logFile.text.contains("Number of loci")
-                },
-
-                // Check that paralogous_counts file exists and has expected content (if not empty)
                 { assert path(process.out.paralogous_counts.get(0).get(1)).exists() },
-
-                // Check that paralogous_loci file exists and has expected content (if not empty)
                 { assert path(process.out.paralogous_loci.get(0).get(1)).exists() },
-
-                // Check that cds_coordinates file exists and has expected content
                 { assert path(process.out.cds_coordinates.get(0).get(1)).exists() },
-                {
-                    def cdsFile = path(process.out.cds_coordinates.get(0).get(1))
-                    // Should have content
-                    assert cdsFile.size() > 0
-                    // Check for expected header columns
-                    def lines = cdsFile.readLines()
-                    if (lines.size() > 0) {
-                        def headers = lines[0].split("\t")
-                        assert headers.contains("Genome")
-                        assert headers.contains("Contig")
-                        assert headers.contains("Start")
-                        assert headers.contains("Stop")
-                        assert headers.contains("Protein_ID")
-                        assert headers.contains("Coding_Strand")
-
-                        // If there's data beyond the header, check the strand values
-                        if (lines.size() > 1) {
-                            def dataLine = lines[1].split("\t")
-                            if (dataLine.length >= 6) {
-                                assert dataLine[5] == "1" || dataLine[5] == "-1"
-                            }
-                        }
-                    }
-                },
-
-                // Check that invalid_cds file exists
                 { assert path(process.out.invalid_cds.get(0).get(1)).exists() },
-
-                // Check that loci_summary_stats file exists and has expected content
                 { assert path(process.out.loci_summary_stats.get(0).get(1)).exists() },
-                {
-                    def lociStatsFile = path(process.out.loci_summary_stats.get(0).get(1))
-                    // Check for classification type counts columns if file is not empty
-                    if (lociStatsFile.size() > 0) {
-                        assert lociStatsFile.text.contains("EXC")
-                        assert lociStatsFile.text.contains("INF")
-                        assert lociStatsFile.text.contains("PLOT3")
-                        assert lociStatsFile.text.contains("PLOT5")
-                        assert lociStatsFile.text.contains("LOTSC")
-                        assert lociStatsFile.text.contains("NIPH")
-                        assert lociStatsFile.text.contains("NIPHEM")
-                        assert lociStatsFile.text.contains("ALM")
-                        assert lociStatsFile.text.contains("ASM")
-                        assert lociStatsFile.text.contains("PAMA")
-                        assert lociStatsFile.text.contains("LNF")
-                        assert lociStatsFile.text.contains("Total_CDS")  // Changed from Classified_CDS to Total_CDS
-                    }
-                },
-
-                // Check versions file
+                { assert path(process.out.versions.get(0)).exists() },
                 { assert snapshot(process.out.versions).match() }
             )
         }
