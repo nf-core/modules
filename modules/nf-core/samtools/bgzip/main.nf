@@ -37,7 +37,7 @@ process SAMTOOLS_BGZIP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | head -n1 | sed 's/^.*samtools //')
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 
@@ -49,7 +49,7 @@ process SAMTOOLS_BGZIP {
     cat <<-END_VERSIONS > versions.yml
 
     "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | head -n1 | sed 's/^.*samtools //')
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 }
