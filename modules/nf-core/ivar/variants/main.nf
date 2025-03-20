@@ -44,7 +44,7 @@ process IVAR_VARIANTS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        ivar: \$(ivar version | sed 's/^.*iVar version //; s/ .*\$//')
+        ivar: \$(ivar version | sed -n 's|iVar version \\(.*\\)|\\1|p')
     END_VERSIONS
     """
 
@@ -57,7 +57,7 @@ process IVAR_VARIANTS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        ivar: \$(ivar version | sed 's/^.*iVar version //; s/ .*\$//')
+        ivar: \$(ivar version | sed -n 's|iVar version \\(.*\\)|\\1|p')
     END_VERSIONS
     """
 }
