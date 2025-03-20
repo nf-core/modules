@@ -31,7 +31,6 @@ process TOPAS_GENCONS {
     def optionalfai = fai ? "-fai ${fai}" : ''
     def vcfoutput = vcf_output ? "-vcf_out ${prefix}.vcf" : ""
     def VERSION = '1.0.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     """
 
     topas \\
@@ -40,6 +39,7 @@ process TOPAS_GENCONS {
         -o ${prefix}.fasta \\
         -snps $vcf \\
         $optionalvcfindels \\
+        $optionalfai \\
         $vcfoutput \\
         -ref $reference
 
@@ -54,4 +54,21 @@ process TOPAS_GENCONS {
         topas: $VERSION
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def vcfoutput = vcf_output ? "echo | gzip > ${prefix}.vcf.gz" : ""
+    def VERSION = '1.0.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    echo | gzip > ${prefix}.fasta.gz
+    touch ${prefix}.fastq.ccf
+    touch ${prefix}.fastq.log
+    $vcfoutput
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        topas: $VERSION
+    END_VERSIONS
+    """
+
 }
