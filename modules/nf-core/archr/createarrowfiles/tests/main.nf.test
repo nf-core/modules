@@ -1,0 +1,67 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test archr/createarrowfiles
+nextflow_process {
+
+    name "Test Process ARCHR_CREATEARROWFILES"
+    script "../main.nf"
+    process "ARCHR_CREATEARROWFILES"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "archr"
+    tag "archr/createarrowfiles"
+
+    // TODO nf-core: Change the test name preferably indicating the test-data and file-format used
+    test("createarrowfiles scATAC") {
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test', genome:'hg19'], // meta map
+                    file("/workspace/gitpod/nf-training/modules/modules/nf-core/archr/data/fragments.tsv.gz", checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+                //TODO nf-core: Add all required assertions to verify the test output.
+                // See https://nf-co.re/docs/contributing/tutorials/nf-test_assertions for more information and examples.
+            )
+        }
+
+    }
+
+    // TODO nf-core: Change the test name preferably indicating the test-data and file-format used but keep the " - stub" suffix.
+    test("cellrangeratac - scATAC fragments - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file("/workspace/gitpod/nf-training/modules/modules/nf-core/archr/data/fragments.tsv.gz", checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+                //TODO nf-core: Add all required assertions to verify the test output.
+            )
+        }
+
+    }
+
+}
