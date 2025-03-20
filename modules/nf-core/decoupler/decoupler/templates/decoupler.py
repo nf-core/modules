@@ -5,6 +5,11 @@ import shlex
 import sys
 import gzip
 
+os.environ["MKL_NUM_THREADS"] = "1"
+os.environ["OPENBLAS_NUM_THREADS"] = "1"
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["NUMBA_NUM_THREADS"] = "1"
+
 os.environ["NUMBA_CACHE_DIR"] = "./tmp"
 os.environ["MPLCONFIGDIR"] = "./tmp"
 os.environ["NUMBA_DISABLE_CACHE"] = "1"
