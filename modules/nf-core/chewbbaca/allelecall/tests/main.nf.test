@@ -218,16 +218,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.stats.get(0).get(1)).exists() },
-                { assert path(process.out.contigsInfo.get(0).get(1)).exists() },
-                { assert path(process.out.alleles.get(0).get(1)).exists() },
-                { assert path(process.out.log.get(0).get(1)).exists() },
-                { assert path(process.out.paralogous_counts.get(0).get(1)).exists() },
-                { assert path(process.out.paralogous_loci.get(0).get(1)).exists() },
-                { assert path(process.out.cds_coordinates.get(0).get(1)).exists() },
-                { assert path(process.out.invalid_cds.get(0).get(1)).exists() },
-                { assert path(process.out.loci_summary_stats.get(0).get(1)).exists() },
-                { assert path(process.out.versions.get(0)).exists() },
+                { assert snapshot(process.out).match() }
                 {
                     def versionsFile = path(process.out.versions.get(0))
                     assert versionsFile.text.contains("chewbbaca") // Should contain tool name
