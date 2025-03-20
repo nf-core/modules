@@ -4,8 +4,8 @@ process IVAR_VARIANTS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ivar:1.4.3--h43eeafb_0' :
-        'biocontainers/ivar:1.4.3--h43eeafb_0' }"
+        'https://depot.galaxyproject.org/singularity/ivar:1.4.4--h077b44d_0' :
+        'biocontainers/ivar:1.4.4--h077b44d_0' }"
 
     input:
     tuple val(meta), path(bam)
