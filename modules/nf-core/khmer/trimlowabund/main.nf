@@ -19,7 +19,7 @@ process KHMER_TRIMLOWABUND {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}_trimmed"
     if (!task.memory) {
         log.info '[KHMER_TRIMLOWABUND] Available memory not known - defaulting to 16GB. Specify process memory requirements to change this.'
         avail_mem = 16
