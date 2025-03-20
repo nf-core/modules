@@ -54,9 +54,9 @@ process ATAQV_ATAQV {
     stub:
     def prefix        = task.ext.prefix ?: "${meta.id}"
     def args          = task.ext.args   ?: ''
-    def problems_cmd  = args.contains("--log-problematic-reads") ? "echo stub > 1.problems" : ""
+    def problems_cmd  = args.contains("--log-problematic-reads") ? "touch 1.problems" : ""
     """
-    echo stub > ${prefix}.ataqv.json
+    touch ${prefix}.ataqv.json
     ${problems_cmd}
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
