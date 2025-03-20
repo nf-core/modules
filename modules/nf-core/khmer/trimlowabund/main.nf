@@ -49,9 +49,9 @@ process KHMER_TRIMLOWABUND {
 
     stub:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}_trimmed"
     file_ext = seq_file.name - ~/\.gz$/ - ~/^[^\.]*\./
-    output_path = "${prefix}_trimmed.${file_ext}"
+    output_path = "${prefix}.${file_ext}"
     if (args ==~ '.*--gzip.*' || args ==~ '.*--bzip.*') {
         output_path = output_path + '.gz'
     }
