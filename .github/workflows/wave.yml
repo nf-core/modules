@@ -31,7 +31,7 @@ jobs:
 
       - name: Find conda differences
         id: conda-diff
-        uses: tj-actions/changed-files@d6e91a2266cdb9d62096cebf1e8546899c6aa18f # v45
+        uses: tj-actions/changed-files@2f7c5bfce28377bc069a65ba478de0a74aa0ca32 # v46
         with:
           json: true
           escape_json: false
@@ -40,7 +40,7 @@ jobs:
 
       - name: Find Dockerfile differences
         id: docker-diff
-        uses: tj-actions/changed-files@d6e91a2266cdb9d62096cebf1e8546899c6aa18f # v45
+        uses: tj-actions/changed-files@2f7c5bfce28377bc069a65ba478de0a74aa0ca32 # v46
         with:
           json: true
           escape_json: false

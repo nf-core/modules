@@ -4,8 +4,9 @@ process BBMAP_BBNORM {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/bbmap_samtools_pigz:2a066f0214cc5eb0' :
-        'community.wave.seqera.io/library/bbmap_samtools_pigz:79703e935236b43b' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5aae5977ff9de3e01ff962dc495bfa23f4304c676446b5fdf2de5c7edfa2dc4e/data' :
+        'community.wave.seqera.io/library/bbmap_pigz:07416fe99b090fa9' }"
+
     input:
     tuple val(meta), path(fastq)
 
@@ -24,13 +25,20 @@ process BBMAP_BBNORM {
     input  = meta.single_end ? "in=${fastq.join(',')}" : "in=${fastq[0]} in2=${fastq[1]}"
     output = meta.single_end ? "out=${prefix}.fastq.gz" : "out1=${prefix}_1.nm.fastq.gz out2=${prefix}_2.nm.fastq.gz"
 
+    memory = '-Xmx3g'
+    if ( ! task.memory ) {
+        log.info '[BBNorm]: Available memory not known, defaulting to 3 GB. Specify process memory requirements to change this.'
+    } else {
+        memory = "-Xmx${Math.round(Math.max(1, Math.floor(task.memory.toGiga() * 0.95)))}g"
+    }
+
     """
     bbnorm.sh \\
         $input \\
         $output \\
         $args \\
         threads=$task.cpus \\
-        -Xmx${task.memory.toGiga()}g \\
+        $memory \\
         &> ${prefix}.bbnorm.log
 
     cat <<-END_VERSIONS > versions.yml
