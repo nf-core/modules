@@ -36,9 +36,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.json.collect{ [
-                        file(it[1]).name, path(it[1]).json[0]["metrics"].toString().md5() 
-                    ] },
+                    process.out.json.collect{[
+                        file(it[1]).name,
+                        path(it[1]).json[0].findAll{it.key != "timestamp"}.toString().md5()
+                    ]},
                     process.out.problems,
                     process.out.versions
                 ).match() }
@@ -72,9 +73,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.json.collect{ [
-                        file(it[1]).name, path(it[1]).json[0]["metrics"].toString().md5() 
-                    ] },
+                    process.out.json.collect{[
+                        file(it[1]).name,
+                        path(it[1]).json[0].findAll{it.key != "timestamp"}.toString().md5()
+                    ]},
                     process.out.problems.collect{ file(it[1]).name },
                     process.out.versions
                 ).match() }
@@ -108,9 +110,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.json.collect{ [
-                        file(it[1]).name, path(it[1]).json[0]["metrics"].toString().md5() 
-                    ] },
+                    process.out.json.collect{[
+                        file(it[1]).name,
+                        path(it[1]).json[0].findAll{it.key != "timestamp"}.toString().md5()
+                    ]},
                     process.out.problems,
                     process.out.versions
                 ).match() }
@@ -144,9 +147,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.json.collect{ [
-                        file(it[1]).name, path(it[1]).json[0]["metrics"].toString().md5() 
-                    ] },
+                    process.out.json.collect{[
+                        file(it[1]).name,
+                        path(it[1]).json[0].findAll{it.key != "timestamp"}.toString().md5()
+                    ]},
                     process.out.problems,
                     process.out.versions
                 ).match() }
@@ -180,9 +184,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.json.collect{ [
-                        file(it[1]).name, path(it[1]).json[0]["metrics"].toString().md5() 
-                    ] },
+                    process.out.json.collect{[
+                        file(it[1]).name,
+                        path(it[1]).json[0].findAll{it.key != "timestamp"}.toString().md5()
+                    ]},
                     process.out.problems,
                     process.out.versions
                 ).match() }
