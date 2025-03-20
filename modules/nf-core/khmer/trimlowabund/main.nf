@@ -31,6 +31,9 @@ process KHMER_TRIMLOWABUND {
     if (args ==~ '--gzip' || args ==~ '--bzip') {
         output_path = output_path + '.gz'
     }
+    if (seq_file == output_path) {
+        error("Output filename is the same as input filename. Please specify a different prefix.")
+    }
     """
     trim-low-abund.py \\
         $args \\
@@ -51,6 +54,9 @@ process KHMER_TRIMLOWABUND {
     output_path = "${prefix}_trimmed.${file_ext}"
     if (args ==~ '--gzip' || args ==~ '--bzip') {
         output_path = output_path + '.gz'
+    }
+    if (seq_file == output_path) {
+        error("Output filename is the same as input filename. Please specify a different prefix.")
     }
     """
     echo "" | gzip > ${output_path}
