@@ -1,8 +1,7 @@
 process LJA {
     tag "$meta.id"
     label 'process_medium'
-    cpus 10
-    memory 15.GB
+
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     // container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ? "https://depot.galaxyproject.org/singularity/lja:${task.ext.version ?: '0.2--h5b5514e_2'}": "biocontainers/lja:${task.ext.version ?: '0.2--h5b5514e_2'}" }"
@@ -37,8 +36,8 @@ process LJA {
         --threads $task.cpus \\
         > ${prefix}.lja.stdout
 
-    gzip -c -n assembly.fasta > ${prefix}.assembly.fasta.gz
-    gzip -c -n mdbg.gfa > ${prefix}.mdbg.gfa.gz
+    gzip -c -n assembly.fasta > ${prefix}.fasta.gz
+    gzip -c -n mdbg.gfa > ${prefix}.gfa.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -52,8 +51,8 @@ process LJA {
     def VERSION = '0.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
-    echo stub | gzip -c > ${prefix}.assembly.fasta.gz
-    echo stub | gzip -c > ${prefix}.mdbg.gfa.gz
+    echo stub | gzip -c > ${prefix}.fasta.gz
+    echo stub | gzip -c > ${prefix}.gfa.gz
 
     cat <<-END_STDOUT > ${prefix}.lja.stdout
     00:00:00 0Mb  INFO: LJA pipeline finished
