@@ -27,7 +27,7 @@ process KHMER_TRIMLOWABUND {
         avail_mem = task.memory.toGiga()
     }
     file_ext = seq_file.name - ~/\.gz$/ - ~/^[^\.]*\./
-    output_path = "${prefix}_trimmed.${file_ext}"
+    output_path = "${prefix}.${file_ext}"
     if (args ==~ '.*--gzip.*' || args ==~ '.*--bzip.*') {
         output_path = output_path + '.gz'
     }
