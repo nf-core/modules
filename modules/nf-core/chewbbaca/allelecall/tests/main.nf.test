@@ -189,12 +189,7 @@ nextflow_process {
                 },
 
                 // Check versions file
-                { assert path(process.out.versions.get(0)).exists() },
-                {
-                    def versionsFile = path(process.out.versions.get(0))
-                    assert versionsFile.text.contains("chewbbaca") // Should contain tool name
-                    assert versionsFile.text.contains("3.") // Should contain version number
-                }
+                { assert snapshot(process.out.versions).match() }
             )
         }
     }
