@@ -4,15 +4,15 @@ process SAMTOOLS_BGZIP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/61/61be440cd54169fcefe5303238847dd466728453a130f4fbc5abd68b514f0b09/data' :
-        'community.wave.seqera.io/library/samtools_file:f35ca613dd912bed' }"
+        'https://depot.galaxyproject.org/singularity/samtools:1.21--h50ea8bc_0' :
+        'biocontainers/samtools:1.21--h50ea8bc_0' }"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
     tuple val(meta), path ("*.bgzip.fa.gz") , emit: fa
-    path "versions.yml"                       , emit: versions
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,39 +21,23 @@ process SAMTOOLS_BGZIP {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    COMPRESS_TYPE=\$(file -L -b $fasta)
-
-    case "\$COMPRESS_TYPE" in
-        "gzip compressed data, extra field"*)
-            # A well-behaved find installation should report:
-            # Blocked GNU Zip Format (BGZF; gzip compatible)
-            # But the one in anaconda does nt…
-            # Assuming the "extra field" implies BGZF, do nothing.
-            ln -s $fasta ${prefix}.bgzip.fa.gz
-            ;;
-        gzip*)
-            # Recompress non-BGZF gzipped files
-            zcat $fasta |
-                bgzip \\
-                    $args \\
-                    --threads ${task.cpu} \\
-                    > ${prefix}.bgzip.fa.gz
-            ;;
+    FILE_TYPE=\$(htsfile $fasta)
+    case "\$FILE_TYPE" in
+        *BGZF-compressed*)
+            ln -s $fasta ${prefix}.bgzip.fa.gz ;;
+        *gzip-compressed*)
+            zcat  $fasta | bgzip -c $args -@${task.cpus} > ${prefix}.bgzip.fa.gz ;;
+        *bzip2-compressed*)
+            bzcat $fasta | bgzip -c $args -@${task.cpus} > ${prefix}.bgzip.fa.gz ;;
+        *XZ-compressed*)
+            xzcat $fasta | bgzip -c $args -@${task.cpus} > ${prefix}.bgzip.fa.gz ;;
         *)
-            # Compress
-            bgzip \\
-                $args \\
-                --threads ${task.cpu} \\
-                --stdout \\
-                $fasta \\
-                > ${prefix}.bgzip.fa.gz
-            ;;
+            bgzip -c $args -@${task.cpus} $fasta > ${prefix}.bgzip.fa.gz ;;
     esac
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        file: \$(echo \$(file --version 2>&1 | head -n1 | sed 's/file-//'))
-        samtools: \$(echo \$(samtools --version 2>&1 | head -n1 | sed 's/^.*samtools //; s/Using.*\$//'))
+        samtools: \$(echo \$(samtools --version 2>&1) | head -n1 | sed 's/^.*samtools //')
     END_VERSIONS
     """
 
@@ -65,8 +49,7 @@ process SAMTOOLS_BGZIP {
     cat <<-END_VERSIONS > versions.yml
 
     "${task.process}":
-        file: \$(echo \$(file --version 2>&1 | head -n1 | sed 's/file-//'))
-        samtools: \$(echo \$(samtools --version 2>&1 | head -n1 | sed 's/^.*samtools //; s/Using.*\$//'))
+        samtools: \$(echo \$(samtools --version 2>&1) | head -n1 | sed 's/^.*samtools //')
     END_VERSIONS
     """
 }
