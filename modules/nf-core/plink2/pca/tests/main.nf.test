@@ -1,0 +1,47 @@
+nextflow_process {
+
+    name "Test Process PLINK2_PCA"
+    script "../main.nf"
+    process "PLINK2_PCA"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "plink2"
+    tag "plink2/pca"
+    tag "plink2/vcf"
+
+    test("pca") {
+        config "./nextflow.config"
+        setup {
+            run("PLINK2_VCF") {
+                script "../../vcf/main.nf"
+                process {
+                        """
+                    input[0] = [
+                        [ id: 'test', single_end:false ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/syntheticvcf_short.vcf.gz', checkIfExists: true)
+                        ]
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = PLINK2_VCF.out.pgen.concat(PLINK2_VCF.out.psam, PLINK2_VCF.out.pvar.concat(PLINK2_VCF.out.pvar.splitText(file: 'variants.keep', keepHeader: false, by: 10).last())).groupTuple().map{ meta, paths -> [meta, paths[0], paths[1], paths[2], paths[3]] }
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success }
+            )
+        }
+    }
+}
