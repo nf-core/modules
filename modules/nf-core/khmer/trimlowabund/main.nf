@@ -28,7 +28,7 @@ process KHMER_TRIMLOWABUND {
     }
     file_ext = seq_file.name - ~/\.gz$/ - ~/^[^\.]*\./
     output_path = "${prefix}_trimmed.${file_ext}"
-    if (args ==~ '--gzip' || args ==~ '--bzip') {
+    if (args ==~ '.*--gzip.*' || args ==~ '.*--bzip.*') {
         output_path = output_path + '.gz'
     }
     if (seq_file == output_path) {
@@ -52,7 +52,7 @@ process KHMER_TRIMLOWABUND {
     prefix = task.ext.prefix ?: "${meta.id}"
     file_ext = seq_file.name - ~/\.gz$/ - ~/^[^\.]*\./
     output_path = "${prefix}_trimmed.${file_ext}"
-    if (args ==~ '--gzip' || args ==~ '--bzip') {
+    if (args ==~ '.*--gzip.*' || args ==~ '.*--bzip.*') {
         output_path = output_path + '.gz'
     }
     if (seq_file == output_path) {
