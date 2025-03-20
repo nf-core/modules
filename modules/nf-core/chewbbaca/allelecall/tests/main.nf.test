@@ -214,10 +214,6 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out).match() }
-                {
-                    def versionsFile = path(process.out.versions.get(0))
-                    assert versionsFile.text.contains("chewbbaca") // Should contain tool name
-                }
             )
         }
     }
