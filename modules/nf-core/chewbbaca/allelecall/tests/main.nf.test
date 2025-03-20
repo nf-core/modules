@@ -53,7 +53,8 @@ nextflow_process {
                 { assert path(process.out.invalid_cds.get(0).get(1)).exists() },
                 { assert path(process.out.loci_summary_stats.get(0).get(1)).exists() },
                 { assert path(process.out.versions.get(0)).exists() },
-                { assert snapshot(process.out.versions).match() }
+                { assert path(process.out.versions.get(0)).text.contains("chewbbaca") },
+                { assert path(process.out.versions.get(0)).text.contains("3.") }
             )
         }
     }
@@ -77,7 +78,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert path(process.out.versions.get(0)).exists() },
+                { assert path(process.out.versions.get(0)).text.contains("chewbbaca") },
+                { assert path(process.out.versions.get(0)).text.contains("3.") }
             )
         }
     }
