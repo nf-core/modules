@@ -43,15 +43,17 @@ process MERQURYFK_PLOIDYPLOT {
     """
 
     stub:
+    def args            = task.ext.args ?: ''
     def prefix          = task.ext.prefix ?: "${meta.id}"
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def FASTK_VERSION   = '1.1.0'
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def MERQURY_VERSION = '1.1.1'
+    def outfmt          = args.contains('-pdf') ? "pdf" : "png"
     """
-    touch ${prefix}.fi.png
-    touch ${prefix}.ln.png
-    touch ${prefix}.st.png
+    touch ${prefix}.fi.${outfmt}
+    touch ${prefix}.ln.${outfmt}
+    touch ${prefix}.st.${outfmt}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

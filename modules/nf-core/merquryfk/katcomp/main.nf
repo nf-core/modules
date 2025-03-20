@@ -47,15 +47,17 @@ process MERQURYFK_KATCOMP {
     """
 
     stub:
+    def args            = task.ext.args ?: ''
     def prefix          = task.ext.prefix ?: "${meta.id}"
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def FASTK_VERSION   = '1.1.0'
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def MERQURY_VERSION = '1.1.1'
+    def outfmt          = args.contains('-pdf') ? "pdf" : "png"
     """
-    touch ${prefix}.test.fi.png
-    touch ${prefix}.test.ln.png
-    touch ${prefix}.test.st.png
+    touch ${prefix}.test.fi.${outfmt}
+    touch ${prefix}.test.ln.${outfmt}
+    touch ${prefix}.test.st.${outfmt}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

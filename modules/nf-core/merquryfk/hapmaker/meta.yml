@@ -18,7 +18,7 @@ input:
   - - meta:
         type: map
         description: |
-          Groovy Map containing sample information
+          Groovy Map containing maternal sample information
           e.g. [ id:'test', single_end:false ]
     - matktab:
         type: file
@@ -27,7 +27,7 @@ input:
   - - meta2:
         type: map
         description: |
-          Groovy Map containing sample information
+          Groovy Map containing paternal sample information
           e.g. [ id:'test', single_end:false ]
     - patktab:
         type: file
@@ -36,7 +36,7 @@ input:
   - - meta3:
         type: map
         description: |
-          Groovy Map containing sample information
+          Groovy Map containing child sample information
           e.g. [ id:'test', single_end:false ]
     - childktab:
         type: file
@@ -47,7 +47,7 @@ output:
       - meta:
           type: map
           description: |
-            Groovy Map containing sample information
+            Groovy Map containing maternal sample information
             e.g. [ id:'test', single_end:false ]
       - '*${input_mat}.hap.ktab*", hidden: true':
           type: map
@@ -59,7 +59,7 @@ output:
       - meta2:
           type: map
           description: |
-            Groovy Map containing sample information
+            Groovy Map containing paternal sample information
             e.g. [ id:'test', single_end:false ]
       - '*${input_pat}.hap.ktab*", hidden: true':
           type: map
