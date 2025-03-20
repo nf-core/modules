@@ -23,10 +23,11 @@ process MERQURYFK_HAPMAKER {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    input_mat = matktab ? "${matktab.find{ it.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}" : ''
-    input_pat = patktab ? "${patktab.find{ it.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}" : ''
+    def args        = task.ext.args ?: ''
+    input_mat       = matktab   ? "${matktab.find{ it.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}"   : ''
+    input_pat       = patktab   ? "${patktab.find{ it.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}"   : ''
     def input_child = childktab ? "${childktab.find{ it.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}" : ''
+
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def FASTK_VERSION   = '1.1.0'
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
@@ -47,9 +48,10 @@ process MERQURYFK_HAPMAKER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+    def args  = task.ext.args ?: ''
     input_mat = matktab ? "${matktab.find{ it.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}" : ''
     input_pat = patktab ? "${patktab.find{ it.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}" : ''
+
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def FASTK_VERSION   = '1.1.0'
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.

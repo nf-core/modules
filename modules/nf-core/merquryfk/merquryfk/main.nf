@@ -36,16 +36,16 @@ process MERQURYFK_MERQURYFK {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
-
     if([mathaptab, pathaptab].any() && ![mathaptab, pathaptab].every()) {
         log.error("Error: Only one of the maternal and paternal hap tabs have been provided!")
     }
 
-    fk_ktab     = fastk_ktab ? "${fastk_ktab.find{ it.toString().endsWith(".ktab") }}" : ''
-    mat_hapktab = mathaptab  ? "${mathaptab.find{ it.toString().endsWith(".ktab") }}" : ''
-    pat_hapktab = pathaptab  ? "${pathaptab.find{ it.toString().endsWith(".ktab") }}" : ''
+    def args        = task.ext.args ?: ''
+    prefix          = task.ext.prefix ?: "${meta.id}"
+    def fk_ktab     = fastk_ktab ? "${fastk_ktab.find{ it.toString().endsWith(".ktab") }}" : ''
+    def mat_hapktab = mathaptab  ? "${mathaptab.find{ it.toString().endsWith(".ktab") }}"  : ''
+    def pat_hapktab = pathaptab  ? "${pathaptab.find{ it.toString().endsWith(".ktab") }}"  : ''
+
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def FASTK_VERSION   = '1.1.0'
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
@@ -70,7 +70,7 @@ process MERQURYFK_MERQURYFK {
     """
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix              = task.ext.prefix ?: "${meta.id}"
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def FASTK_VERSION   = '1.1.0'
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.

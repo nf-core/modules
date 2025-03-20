@@ -21,8 +21,8 @@ process MERQURYFK_PLOIDYPLOT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args            = task.ext.args ?: ''
+    def prefix          = task.ext.prefix ?: "${meta.id}"
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def FASTK_VERSION   = '1.1.0'
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
@@ -43,7 +43,7 @@ process MERQURYFK_PLOIDYPLOT {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix          = task.ext.prefix ?: "${meta.id}"
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def FASTK_VERSION   = '1.1.0'
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.

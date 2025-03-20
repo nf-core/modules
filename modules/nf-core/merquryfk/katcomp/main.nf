@@ -21,10 +21,11 @@ process MERQURYFK_KATCOMP {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args      = task.ext.args ?: ''
+    def prefix    = task.ext.prefix ?: "${meta.id}"
     def input_fk1 = fastk1_ktab.find{ it.toString().endsWith(".ktab") }.getBaseName()
     def input_fk2 = fastk2_ktab.find{ it.toString().endsWith(".ktab") }.getBaseName()
+
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def FASTK_VERSION   = '1.1.0'
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
@@ -46,7 +47,7 @@ process MERQURYFK_KATCOMP {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix          = task.ext.prefix ?: "${meta.id}"
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def FASTK_VERSION   = '1.1.0'
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
