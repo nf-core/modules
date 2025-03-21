@@ -1,6 +1,7 @@
-process MERQURYFK_KATCOMP {
+
+process MERQURYFK_HAPMAKER {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
@@ -9,61 +10,62 @@ process MERQURYFK_KATCOMP {
         'community.wave.seqera.io/library/fastk_merquryfk_r-cowplot_r-ggplot2_r-viridis:f9994edc2270683c' }"
 
     input:
-    tuple val(meta), path(fastk1_hist), path(fastk1_ktab), path(fastk2_hist), path(fastk2_ktab)
+    tuple val(meta) , path(matktab)
+    tuple val(meta2), path(patktab)
+    tuple val(meta3), path(childktab)
 
     output:
-    tuple val(meta), path("*.fi.{png,pdf}"), emit: filled , optional: true
-    tuple val(meta), path("*.ln.{png,pdf}"), emit: line   , optional: true
-    tuple val(meta), path("*.st.{png,pdf}"), emit: stacked, optional: true
-    path "versions.yml"                    , emit: versions
+    tuple val(meta) , path("*${input_mat}.hap.ktab*", hidden: true), emit: mat_hap_ktab
+    tuple val(meta2), path("*${input_pat}.hap.ktab*", hidden: true), emit: pat_hap_ktab
+    path "versions.yml"                                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args      = task.ext.args ?: ''
-    def prefix    = task.ext.prefix ?: "${meta.id}"
-    def input_fk1 = fastk1_ktab.find{ it.toString().endsWith(".ktab") }.getBaseName()
-    def input_fk2 = fastk2_ktab.find{ it.toString().endsWith(".ktab") }.getBaseName()
+    def args        = task.ext.args ?: ''
+    input_mat       = matktab   ? "${matktab.find{ it.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}"   : ''
+    input_pat       = patktab   ? "${patktab.find{ it.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}"   : ''
+    def input_child = childktab ? "${childktab.find{ it.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}" : ''
 
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def FASTK_VERSION   = '1.1.0'
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def MERQURY_VERSION = '1.1.1'
     """
-    KatComp \\
+    HAPmaker \\
         $args \\
-        -T$task.cpus \\
-        ${input_fk1} \\
-        ${input_fk2} \\
-        $prefix
+        -T${task.cpus} \\
+        ${input_mat} \\
+        ${input_pat} \\
+        ${input_child}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        fastk: $FASTK_VERSION
-        merquryfk: $MERQURY_VERSION
-        r: \$( R --version | sed '1!d; s/.*version //; s/ .*//' )
+        FastK: $FASTK_VERSION
+        MerquryFK: $MERQURY_VERSION
     END_VERSIONS
     """
 
     stub:
-    def args            = task.ext.args ?: ''
-    def prefix          = task.ext.prefix ?: "${meta.id}"
+    def args  = task.ext.args ?: ''
+    input_mat = matktab ? "${matktab.find{ it.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}" : ''
+    input_pat = patktab ? "${patktab.find{ it.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}" : ''
+
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def FASTK_VERSION   = '1.1.0'
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def MERQURY_VERSION = '1.1.1'
-    def outfmt          = args.contains('-pdf') ? "pdf" : "png"
     """
-    touch ${prefix}.test.fi.${outfmt}
-    touch ${prefix}.test.ln.${outfmt}
-    touch ${prefix}.test.st.${outfmt}
+    touch ${input_mat}.hap.ktab
+    touch .${input_mat}.hap.ktab.1
+    touch ${input_pat}.hap.ktab
+    touch .${input_pat}.hap.ktab.1
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        fastk: $FASTK_VERSION
-        merquryfk: $MERQURY_VERSION
-        r: \$( R --version | sed '1!d; s/.*version //; s/ .*//' )
+        FastK: $FASTK_VERSION
+        MerquryFK: $MERQURY_VERSION
     END_VERSIONS
     """
 }
