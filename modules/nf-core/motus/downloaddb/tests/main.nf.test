@@ -30,6 +30,8 @@ nextflow_process {
 
     test("Should download mOTUs database - stub") {
 
+        options "-stub"
+
         when {
             process {
                 """
