@@ -1,0 +1,66 @@
+name: "variancepartition_dream"
+description: Runs a differential expression analysis with dream() from variancePartition
+  R package
+keywords:
+  - rnaseq
+  - dream
+  - variancepartition
+tools:
+  - "dream":
+      description: "Differential expression for repeated measures"
+      homepage: "https://www.bioconductor.org/packages/release/bioc/html/variancePartition.html"
+      documentation: "https://www.bioconductor.org/packages/release/bioc/manuals/variancePartition/man/variancePartition.pdf"
+      tool_dev_url: "https://github.com/DiseaseNeuroGenomics/variancePartition"
+      doi: "10.1093/bioinformatics/btaa687"
+      licence: ["GPL >=2"]
+      identifier: biotools:dream_database
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing run and contrast information. This can be used at the
+          workflow level to pass optional parameters to the module, e.g.
+          [
+            contrast_id: 'treatment_mCherry_hND6',
+            contrast_variable: 'treatment',
+            contrast_reference: 'mCherry',
+            contrast_target: 'hND6',
+            formula: '~ treatment + (1 | sample_number)'
+          ]
+          Plus mandatory `id` and other fields created along the run.
+    - samplesheet:
+        type: file
+        description: Sample sheet file containing sample metadata.
+        ontologies: []
+    - counts:
+        type: file
+        description: |
+          Raw TSV or CSV format expression matrix with count data by row and samples
+          by column
+        ontologies: []
+output:
+  - results:
+      - meta:
+          type: map
+          description: |
+            groovy array with metadata information for the contrast generated
+      - "*.dream.results.tsv":
+          type: file
+          description: |
+            TSV-format table of differential expression information as output by Dream
+          pattern: "*.dream.results.tsv"
+          ontologies: []
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+          ontologies: []
+authors:
+  - "@alanmmobbs03"
+  - "@nschcolnicov"
+  - "@atrigila"
+maintainers:
+  - "@alanmmobbs03"
+  - "@nschcolnicov"
+  - "@atrigila"
