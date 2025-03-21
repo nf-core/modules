@@ -1,18 +1,19 @@
 process DECOUPLER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
-
-    conda "conda-forge::decoupler-py=1.6.0"
-    container = "ghcr.io/saezlab/publish-packages/decoupler:sha-5838309"
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cf/cf3578c5f4a5ad40d10b535d496daa29f47e908fbbbc789f85e3341b8f9341ba/data'
+        : 'community.wave.seqera.io/library/decoupler-py:1.8.0--b139c6574c0ac2a6'}"
 
     input:
     tuple val(meta), path(mat)
-    path(net)
+    path net
 
     output:
-    tuple val(meta), path("*estimate__decoupler.tsv"), emit: dc_estimate
-    tuple val(meta), path("*pvals__decoupler.tsv"), emit: dc_pvals
-    path("versions.yml"), emit: versions
+    tuple val(meta), path("*estimate__decoupler.tsv")   , emit: dc_estimate
+    tuple val(meta), path("*pvals__decoupler.tsv")      , emit: dc_pvals
+    path("versions.yml")                                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -66,6 +67,25 @@ process DECOUPLER {
     ## VERSIONS FILE
     with open('versions.yml', 'a') as version_file:
         version_file.write('"${task.process}":' + "\\n")
-        version_file.write("\tdecoupler-py: " + dc.__version__ + "\\n")
+        version_file.write(f"    decoupler-py: {dc.__version__}\\n")
+    """
+
+    stub:
+    """
+    #!/usr/bin/env python3
+    import decoupler as dc
+
+    ## dc_estimate
+    with open('consensus_estimate__decoupler.tsv', 'a') as tsv_file:
+        tsv_file.write('')
+
+    ## dc_pvals
+    with open('consensus_pvals__decoupler.tsv', 'a') as tsv_file:
+        tsv_file.write('')
+
+    ## VERSIONS FILE
+    with open('versions.yml', 'a') as version_file:
+        version_file.write('"${task.process}":' + "\\n")
+        version_file.write(f"    decoupler-py: {dc.__version__}\\n")
     """
 }
