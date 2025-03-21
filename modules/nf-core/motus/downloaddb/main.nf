@@ -38,9 +38,6 @@ process MOTUS_DOWNLOADDB {
     """
 
     stub:
-    def args     = task.ext.args ?: ''
-    def software = "${motus_downloaddb_script.simpleName}_copy.py"
-
     """
     mkdir db_mOTU
     cat <<-END_VERSIONS > versions.yml
