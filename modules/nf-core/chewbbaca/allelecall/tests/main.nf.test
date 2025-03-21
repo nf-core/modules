@@ -17,7 +17,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'sarscov2' ],
-                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = []
                 input[2] = []
@@ -33,7 +33,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test'], // meta map
-                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = CHEWBBACA_CREATESCHEMA.out.schema
                 """
@@ -43,18 +43,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.stats.get(0).get(1)).exists() },
-                { assert path(process.out.contigsInfo.get(0).get(1)).exists() },
-                { assert path(process.out.alleles.get(0).get(1)).exists() },
-                { assert path(process.out.log.get(0).get(1)).exists() },
-                { assert path(process.out.paralogous_counts.get(0).get(1)).exists() },
-                { assert path(process.out.paralogous_loci.get(0).get(1)).exists() },
-                { assert path(process.out.cds_coordinates.get(0).get(1)).exists() },
-                { assert path(process.out.invalid_cds.get(0).get(1)).exists() },
-                { assert path(process.out.loci_summary_stats.get(0).get(1)).exists() },
-                { assert path(process.out.versions.get(0)).exists() },
-                { assert path(process.out.versions.get(0)).text.contains("chewbbaca") },
-                { assert path(process.out.versions.get(0)).text.contains("3.") }
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
             )
         }
     }
@@ -68,7 +60,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test'], // meta map
-                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = CHEWBBACA_CREATESCHEMA.out.schema
                 """
@@ -78,9 +70,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.versions.get(0)).exists() },
-                { assert path(process.out.versions.get(0)).text.contains("chewbbaca") },
-                { assert path(process.out.versions.get(0)).text.contains("3.") }
+                { assert snapshot(
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
             )
         }
     }
