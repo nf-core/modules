@@ -16,7 +16,6 @@ tools:
       licence: ["GPL v3"]
       identifier: ""
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - - meta:
         type: map
@@ -36,7 +35,6 @@ input:
         description: PLINK 2 variant information file
         pattern: "*.{pvar}"
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - eigenvec:
       - meta:
@@ -63,7 +61,6 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
       
-  #Only when we have meta
   - meta:
       type: 
       description: |
