@@ -11,17 +11,17 @@ process SAMTOOLS_FIXMATE {
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path("*.bam")  , emit: bam     , optional: true
-    tuple val(meta), path("*.cram") , emit: cram    , optional: true
-    tuple val(meta), path("*.sam")  , emit: sam     ,  optional: true
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path("${prefix}.bam") , emit: bam , optional: true
+    tuple val(meta), path("${prefix}.cram"), emit: cram, optional: true
+    tuple val(meta), path("${prefix}.sam") , emit: sam , optional: true
+    path "versions.yml"                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}_fixmate"
     def extension = args.contains("--output-fmt sam") ? "sam" :
                     args.contains("--output-fmt bam") ? "bam" :
                     args.contains("--output-fmt cram") ? "cram" :
@@ -43,7 +43,7 @@ process SAMTOOLS_FIXMATE {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}_fixmate"
     def extension = args.contains("--output-fmt sam") ? "sam" :
                     args.contains("--output-fmt bam") ? "bam" :
                     args.contains("--output-fmt cram") ? "cram" :
