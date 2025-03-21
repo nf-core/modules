@@ -28,4 +28,23 @@ nextflow_process {
 
     }
 
+    test("Should download mOTUs database - stub") {
+
+        when {
+            process {
+                """
+                input[0] = file("https://raw.githubusercontent.com/motu-tool/mOTUs/master/motus/downloadDB.py")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
 }
