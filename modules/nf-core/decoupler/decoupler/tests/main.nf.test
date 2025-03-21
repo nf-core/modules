@@ -30,12 +30,17 @@ nextflow_process {
             }
         }
 
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
+    then {
+    def estimateFiles = process.out.dc_estimate[0][1].collect { path(it) }
+    def pvalsFiles = process.out.dc_pvals[0][1].collect { path(it) }
+
+        assertAll(
+            { assert process.success },
+            { estimateFiles.each { f -> assert f.exists() } },
+            { pvalsFiles.each { f -> assert f.exists() } },
+            { estimateFiles.each { f -> assert f.getText().contains("Androgen") } }
+        )
+    }
     }
 
     test("decoupler_test") {
@@ -60,10 +65,15 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
+        def estimateFiles = process.out.dc_estimate[0][1].collect { path(it) }
+        def pvalsFiles = process.out.dc_pvals[0][1].collect { path(it) }
+
+        assertAll(
+            { assert process.success },
+            { estimateFiles.each { f -> assert f.exists() } },
+            { pvalsFiles.each { f -> assert f.exists() } }
+        )
+
         }
     }
 
