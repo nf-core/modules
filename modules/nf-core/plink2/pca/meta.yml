@@ -1,10 +1,11 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "plink2_pca"
 description: Perform PCA analysis using PLINK
 keywords:
   - plink2
   - pca
+  - plink2_pca
+
 tools:
   - plink2:
       description: |
@@ -42,9 +43,18 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*.{eigenvec}"
       - "*.eigenvec":
-          type: file
-          description: Eigenvectors file
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.{eigenvec}"
+      - ec:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*.{eigenvec}"
   - eigenval:
       - meta:
@@ -52,21 +62,26 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*.{eigenval}"
       - "*.eigenval":
-          type: file
-          description: Eigenvalues file
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.{eigenval}"
+      - al:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*.{eigenval}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-      
-  - meta:
-      type: 
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-
+      - versions.yml:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "versions.yml"
 authors:
   - "@bruno-ariano"
 maintainers:
