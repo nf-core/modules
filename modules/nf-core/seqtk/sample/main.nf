@@ -20,7 +20,7 @@ process SEQTK_SAMPLE {
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if (!(args ==~ /.*-s[0-9]+.*/)) {
+    if (!(args ==~ /.*\ -s\ ?[0-9]+.*/)) {
         args += " -s100"
     }
     if ( !sample_size ) {
