@@ -39,6 +39,10 @@ output:
         type: file
         description: fasta/fastq file with low abundance k-mers removed.
         pattern: "*.{fa,fasta,fas,fq,fastq}"
+        ontologies:
+          - edam: "http://edamontology.org/data_2044" # Sequence
+          - edam: "http://edamontology.org/format_1929" # FASTA
+          - edam: "http://edamontology.org/format_1930" # FASTQ
   - versions:
     - "versions.yml":
         type: file
