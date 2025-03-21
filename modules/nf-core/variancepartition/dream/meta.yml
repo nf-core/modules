@@ -23,7 +23,7 @@ input:
             contrast_variable: 'treatment',
             contrast_reference: 'mCherry',
             contrast_target: 'hND6',
-            blocking_factors: 'sample_number'
+            formula: '~ treatment + (1 | sample_number)'
           ]
           Plus mandatory `id` and other fields created along the run.
     - samplesheet:

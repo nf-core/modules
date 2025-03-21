@@ -53,7 +53,6 @@ opt <- list(
     contrast_variable  = "$meta.contrast_variable", # Variable for contrast (e.g., "treatment")
     contrast_reference    = "$meta.contrast_reference",# Reference level for the contrast
     contrast_target       = "$meta.contrast_target",   # Target level for the contrast (e.g., "mCherry")
-    blocking_factors   = "$meta.blocking_factors",  # Blocking variables (e.g., "sample_number")
     sample_id_col      = "sample",                  # Column name for sample IDs
     threads            = "$task.cpus",              # Number of threads for multithreading
     subset_to_contrast_samples = FALSE,            # Whether to subset to contrast samples
@@ -81,11 +80,6 @@ for (ao in names(args_opt)) {
         stop(paste("Invalid option:", ao))
     }
     opt[[ao]] <- args_opt[[ao]]
-}
-
-# If there are no blocking factors, convert string "null" to NULL
-if (!is.null(opt\$blocking_factors) && tolower(opt\$blocking_factors) == "null") {
-    opt\$blocking_factors <- NULL
 }
 
 # If there is no formula, convert string "null" to NULL
@@ -117,7 +111,7 @@ countMatrix <- countMatrix[, rownames(metadata), drop = FALSE]
 if (!is.null(opt\$formula) && opt\$formula != "") {
     form <- as.formula(opt\$formula)
 } else {
-    form <- as.formula(paste0("~ ", opt\$contrast_variable))
+        stop(paste("Invalid or absent formula:", opt\$formula))
 }
 print(form)
 
@@ -133,9 +127,7 @@ if (as.logical(opt\$apply_voom)) {
     vobjDream <- voomWithDreamWeights(dge, form, metadata, BPPARAM = param)
 } else {
     # Assume countMatrix roughly follows a normal distribution
-    vobjDream <- list(E = as.matrix(countMatrix),
-                    weights = matrix(1, nrow = nrow(countMatrix), ncol = ncol(countMatrix)))
-    class(vobjDream) <- "EList"
+    vobjDream<- DGEList(countMatrix)
 }
 
 # Fit the DREAM model with ddf and reml options

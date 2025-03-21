@@ -35,9 +35,8 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
+                { assert process.exitStatus == 1},
+                { assert process.errorReport.contains("Invalid or absent formula") })
         }
     }
 
