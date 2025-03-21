@@ -42,6 +42,7 @@ process MOTUS_DOWNLOADDB {
     def software = "${motus_downloaddb_script.simpleName}_copy.py"
 
     """
+    mkdir db_mOTU
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         motus: \$(grep motus db_mOTU/db_mOTU_versions | sed 's/motus\\t//g')
