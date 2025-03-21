@@ -1,0 +1,46 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "mdust"
+description: mdust from DFCI Gene Indices Software Tools
+keywords:
+  - genomics
+  - gene
+  - filter
+tools:
+  - "mdust":
+      description: ""
+      homepage: "https://github.com/lh3/mdust"
+      documentation: "https://github.com/lh3/mdust"
+      tool_dev_url: "https://github.com/lh3/mdust"
+      licence: ["The Artistic License"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Input fasta file
+        pattern: "*.{fa,fsa,faa,fas,fasta}"
+output:
+  - fasta:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.fasta":
+          type: file
+          description: Output fasta file
+          pattern: "*.fasta"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@GallVp"
+maintainers:
+  - "@GallVp"
