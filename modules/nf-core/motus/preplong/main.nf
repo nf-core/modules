@@ -45,7 +45,6 @@ process MOTUS_PREPLONG {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def refdb = db ? "-db ${db}" : ""
     """
