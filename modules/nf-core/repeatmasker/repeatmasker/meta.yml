@@ -1,0 +1,84 @@
+name: repeatmasker_repeatmasker
+description: |
+  Screening DNA sequences for interspersed repeats and low complexity DNA sequences
+
+keywords:
+  - genome
+  - annotation
+  - repeat
+  - mask
+
+tools:
+  - repeatmasker:
+      description: |
+        RepeatMasker is a program that screens DNA sequences for interspersed
+        repeats and low complexity DNA sequences
+      homepage: "https://www.repeatmasker.org/"
+      documentation: "https://www.repeatmasker.org/webrepeatmaskerhelp.html"
+      tool_dev_url: "https://github.com/rmhubley/RepeatMasker"
+      licence: ["Open Software License v. 2.1"]
+      identifier: biotools:repeatmasker
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: Genome assembly
+        pattern: "*.{fasta,fa,fas,fsa,faa,fna}"
+  - - lib:
+        type: file
+        description: Custom library (e.g. from another species)
+        pattern: "*.{fasta,fa,fas,fsa,faa,fna}"
+output:
+  - masked:
+      - meta:
+          type: file
+          description: Masked fasta
+          pattern: "*.masked"
+      - ${prefix}.masked:
+          type: file
+          description: Masked fasta
+          pattern: "*.masked"
+  - out:
+      - meta:
+          type: file
+          description: Out file
+          pattern: "*.out"
+      - ${prefix}.out:
+          type: file
+          description: Out file
+          pattern: "*.out"
+  - tbl:
+      - meta:
+          type: file
+          description: tbl file
+          pattern: "*.tbl"
+      - ${prefix}.tbl:
+          type: file
+          description: tbl file
+          pattern: "*.tbl"
+  - gff:
+      - meta:
+          type: file
+          description: GFF file
+          pattern: "*.gff"
+      - ${prefix}.gff:
+          type: file
+          description: GFF file
+          pattern: "*.gff"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@kherronism"
+  - "@gallvp"
+
+maintainers:
+  - "@kherronism"
+  - "@gallvp"
