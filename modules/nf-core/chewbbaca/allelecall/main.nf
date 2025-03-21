@@ -13,7 +13,7 @@ process CHEWBBACA_ALLELECALL {
 
     output:
     tuple val(meta), path("*_results_statistics.tsv")  , emit: stats
-    tuple val(meta), path("*_results_contigsInfo.tsv") , emit: contigsInfo
+    tuple val(meta), path("*_results_contigsInfo.tsv") , emit: contigs_info
     tuple val(meta), path("*_results_alleles.tsv")     , emit: alleles
     tuple val(meta), path("*_logging_info.txt")        , emit: log
     tuple val(meta), path("*_paralogous_counts.tsv")   , emit: paralogous_counts  , optional:true

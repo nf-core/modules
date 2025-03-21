@@ -44,7 +44,15 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
+                    process.out.stats,
+                    process.out.contigs_info,
+                    process.out.alleles,
+                    process.out.paralogous_counts,
+                    process.out.paralogous_loci,
+                    process.out.cds_coordinates,
+                    process.out.invalid_cds,
+                    process.out.loci_summary_stats,
+                    file(process.out.log[0][1]).name,
                     path(process.out.versions[0]).yaml
                     ).match() }
             )

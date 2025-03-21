@@ -25,6 +25,8 @@ input:
         description: FASTA file(s) to be staged in a directory for allele calling
         pattern: "*.{fasta,fa,fna}"
         stageAs: "input_dir/*"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - meta2:
         type: map
         description: |
@@ -40,99 +42,114 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+            e.g. `[ id:'test' ]`
       - "*_results_statistics.tsv":
           type: file
           description: File contains the total number of exact matches
           pattern: "*_results_statistics.tsv"
-  - contigsInfo:
+          ontologies: []
+  - contigs_info:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+            e.g. `[ id:'test' ]`
       - "*_results_contigsInfo.tsv":
           type: file
           description: File contains the loci coordinates in the genomes analyzed
           pattern: "*_results_contigsInfo.tsv"
+          ontologies: []
   - alleles:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+            e.g. `[ id:'test' ]`
       - "*_results_alleles.tsv":
           type: file
           description: File contains the allelic profiles determined for the input sample
           pattern: "*_results_alleles.tsv"
+          ontologies: []
   - log:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+            e.g. `[ id:'test' ]`
       - "*_logging_info.txt":
           type: file
           description: File contains the log information
           pattern: "*_logging_info.txt"
+          ontologies: []
   - paralogous_counts:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+            e.g. `[ id:'test' ]`
       - "*_paralogous_counts.tsv":
           type: file
-          description: File contains the list of paralogous loci and the number of times those loci matched a CDS that was also similar to other loci in the schema
+          description: File contains the list of paralogous loci and the number of times
+            those loci matched a CDS that was also similar to other loci in the schema
           pattern: "*_paralogous_counts.tsv"
+          ontologies: []
   - paralogous_loci:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+            e.g. `[ id:'test' ]`
       - "*_paralogous_loci.tsv":
           type: file
-          description: File contains the sets of paralogous loci identified in the input sample
+          description: File contains the sets of paralogous loci identified in the input
+            sample
           pattern: "*_paralogous_loci.tsv"
+          ontologies: []
   - cds_coordinates:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+            e.g. `[ id:'test' ]`
       - "*_cds_coordinates.tsv":
           type: file
           description: File contains the coordinates of the CDS in the input sample
           pattern: "*_cds_coordinates.tsv"
+          ontologies: []
   - invalid_cds:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+            e.g. `[ id:'test' ]`
       - "*_invalid_cds.txt":
           type: file
-          description: File contains the list of alleles predicted by Prodigal that were excluded
+          description: File contains the list of alleles predicted by Prodigal that were
+            excluded
           pattern: "*_invalid_cds.txt"
+          ontologies: []
       - id_cds:
           type: file
-          description: File contains the list of alleles predicted by Prodigal that were excluded
+          description: File contains the list of alleles predicted by Prodigal that were
+            excluded
           pattern: "*_invalid_cds.txt"
+          ontologies: []
   - loci_summary_stats:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+            e.g. `[ id:'test' ]`
       - "*_loci_summary_stats.tsv":
           type: file
           description: File contains summary statistics for each locus
           pattern: "*_loci_summary_stats.tsv"
+          ontologies: []
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies: []
 authors:
   - "@anwarMZ"
