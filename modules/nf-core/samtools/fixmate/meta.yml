@@ -47,8 +47,9 @@ output:
       - "*.bam":
           type: file
           description: A BAM file with mate information added and/or proper pairs recalled
-          pattern: "*.bam"
-          ontologies: []
+          pattern: "*.{bam}"
+          ontologies:
+            - edam: http://edamontology.org/format_2572
   - sam:
       - meta:
           type: map
@@ -58,8 +59,9 @@ output:
       - "*.sam":
           type: file
           description: A SAM file with mate information added and/or proper pairs recalled
-          pattern: "*.sam"
-          ontologies: []
+          pattern: "*.{sam}"
+          ontologies:
+            - edam: http://edamontology.org/format_2573
   - cram:
       - meta:
           type: map
@@ -69,9 +71,9 @@ output:
       - "*.cram":
           type: file
           description: A CRAM file with mate information added and/or proper pairs recalled
-          pattern: "*.cram"
-
-          ontologies: []
+          pattern: "*.{cram}"
+          ontologies:
+            - edam: http://edamontology.org/format_3462
   - versions:
       - versions.yml:
           type: file
