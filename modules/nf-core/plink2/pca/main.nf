@@ -8,7 +8,6 @@ process PLINK2_PCA {
 
     input:
     tuple val(meta), path(pgen), path(psam), path(pvar)
-    val(bed)
 
     output:
     tuple val(meta), path("*.eigenvec")    , emit: eigenvec
@@ -43,7 +42,7 @@ process PLINK2_PCA {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        plinkpca: \$(plink2 --version |& sed '1!d ; s/plink2 //')
+        plink2: \$(plink2 --version 2>&1 | sed 's/^PLINK v//; s/ 64.*\$//' )
     END_VERSIONS
     """
 }

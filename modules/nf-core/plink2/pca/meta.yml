@@ -1,6 +1,6 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "pca"
+name: "plink2_pca"
 description: Perform PCA analysis using PLINK
 keywords:
   - plink2
@@ -38,26 +38,38 @@ input:
 
 ## TODO nf-core: Add a description of all of the variables used as output
 output:
+  - eigenvec:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.eigenvec":
+          type: file
+          description: Eigenvectors file
+          pattern: "*.{eigenvec}"
+  - eigenval:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.eigenval":
+          type: file
+          description: Eigenvalues file
+          pattern: "*.{eigenval}"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+      
   #Only when we have meta
   - meta:
       type: 
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  ## TODO nf-core: Delete / customise this example output
-  - eigenvalues:
-      type: file
-      description: Eigenvalues file
-      pattern: "*.{eigenval}"
-  - eigenvectors:
-      type: file
-      description: Eigenvectors file
-      pattern: "*.{eigenvec}"
+
 authors:
   - "@bruno-ariano"
 maintainers:

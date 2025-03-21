@@ -9,7 +9,7 @@ nextflow_process {
     tag "plink2/pca"
     tag "plink2/vcf"
 
-    test("pca") {
+    test("plink2_pca") {
         config "./nextflow.config"
         setup {
             run("PLINK2_VCF") {
@@ -44,6 +44,7 @@ nextflow_process {
                 { assert process.out.score.get(0).get(1) ==~ ".*.eigenvec" },
                 { assert process.out.score.get(0).get(1) ==~ ".*.eigenval" },
                 { assert snapshot(process.out.versions).match("versions") },
+                { assert snapshot(process.out).match() }
 
             )
         }
