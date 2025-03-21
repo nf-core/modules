@@ -1,0 +1,163 @@
+nextflow_process {
+
+    name "Test Process ILASTIK_PIXELCLASSIFICATION"
+    script "../main.nf"
+    process "ILASTIK_PIXELCLASSIFICATION"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ilastik"
+    tag "ilastik/pixelclassification"
+
+    test("ilastik - export probabilities - h5") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'imaging/h5/plant_wga.h5', checkIfExists: true),
+                    'h5', // needs to perfectly match the output format in the provided model file
+                    'probabilities' // valid options are ['probabilities', 'simple segmentation', 'uncertainty', 'features', 'labels']
+                ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'imaging/ilp/plant_wga.pixel_prob.ilp', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("ilastik - export simple segmentation - h5") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'imaging/h5/plant_wga.h5', checkIfExists: true),
+                    'h5', // needs to perfectly match the output format in the provided model file
+                    '"simple segmentation"' // valid options are ['probabilities', 'simple segmentation', 'uncertainty', 'features', 'labels']
+                ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'imaging/ilp/plant_wga.pixel_prob.ilp', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    file(process.out.output.get(0).get(1)).exists(),
+                    file(process.out.output.get(0).get(1)).size(),
+                ).match() }
+            )
+        }
+
+    }
+
+    test("ilastik - export uncertainty - h5") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'imaging/h5/plant_wga.h5', checkIfExists: true),
+                    'h5', // needs to perfectly match the output format in the provided model file
+                    'uncertainty' // valid options are ['probabilities', 'simple segmentation', 'uncertainty', 'features', 'labels']
+                ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'imaging/ilp/plant_wga.pixel_prob.ilp', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    file(process.out.output.get(0).get(1)).exists(),
+                    file(process.out.output.get(0).get(1)).size(),
+                ).match() }
+            )
+        }
+
+    }
+
+
+    test("ilastik - export features - h5") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'imaging/h5/plant_wga.h5', checkIfExists: true),
+                    'h5', // needs to perfectly match the output format in the provided model file
+                    'features' // valid options are ['probabilities', 'simple segmentation', 'uncertainty', 'features', 'labels']
+                ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'imaging/ilp/plant_wga.pixel_prob.ilp', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    file(process.out.output.get(0).get(1)).exists(),
+                    file(process.out.output.get(0).get(1)).size(),
+                ).match() }
+            )
+        }
+
+    }
+
+
+    test("ilastik - pixelclassification - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'imaging/h5/plant_wga.h5', checkIfExists: true),
+                    'h5',
+                    'probabilities'
+                ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'imaging/ilp/plant_wga.pixel_prob.ilp', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
