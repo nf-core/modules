@@ -27,6 +27,10 @@ input:
         type: file
         description: fasta/fastq file
         pattern: "*.{fa,fasta,fas,fq,fastq}"
+        ontologies:
+          - edam: "http://edamontology.org/data_2044" # Sequence
+          - edam: "http://edamontology.org/format_1929" # FASTA
+          - edam: "http://edamontology.org/format_1930" # FASTQ
 
 output:
   - trimmed:
