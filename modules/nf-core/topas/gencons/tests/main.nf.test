@@ -12,139 +12,6 @@ nextflow_process {
     tag "topas"
     tag "topas/gencons"
 
-    test("test_topas_gencons") {
-
-        setup {
-            run("GATK_UNIFIEDGENOTYPER", alias: "GATK_UNIFIEDGENOTYPERSNPS") {
-                script "../../../gatk/unifiedgenotyper/main.nf"
-                params {
-                    module_args = "--genotype_likelihoods_model SNP -stand_call_conf 30 --sample_ploidy 2 -dcov 250 --output_mode EMIT_ALL_SITES"
-                }
-
-                process {
-                    """
-                    input[0] = [[id:'test'],// meta map
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
-                        ]
-                    input[1] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                        ]
-                    input[2] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
-                        ]
-                    input[3] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
-                        ]
-                    input[4] = [[],[]]
-                    input[5] = [[],[]]
-                    input[6] = [[],[]]
-                    input[7] = [[],[]]
-                    """
-                }
-            }
-        }
-        when {
-            params {
-                module_args = ''
-            }
-            process {
-                """
-                input[0] = GATK_UNIFIEDGENOTYPERSNPS.out.vcf
-                input[1] = [[],[]]
-                input[2] = [[id:'test'],// meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                    ]
-                input[3] = [[],[]]
-                input[4] = false
-                """
-            }
-        }
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.fasta,
-                    process.out.vcf,
-                    process.out.ccf,
-                    path(process.out.log[0][1]).name,
-                    process.out.versions
-                    ).match() }
-            )
-        }
-    }
-    test("test_topas_gencons_fai") {
-
-        setup {
-            run("GATK_UNIFIEDGENOTYPER", alias: "GATK_UNIFIEDGENOTYPERSNPS") {
-                script "../../../gatk/unifiedgenotyper/main.nf"
-                params {
-                    module_args = "--genotype_likelihoods_model SNP -stand_call_conf 30 --sample_ploidy 2 -dcov 250 --output_mode EMIT_ALL_SITES"
-                }
-
-                process {
-                    """
-                    input[0] = [[id:'test'],// meta map
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
-                        ]
-                    input[1] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                        ]
-                    input[2] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
-                        ]
-                    input[3] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
-                        ]
-                    input[4] = [[],[]]
-                    input[5] = [[],[]]
-                    input[6] = [[],[]]
-                    input[7] = [[],[]]
-                    """
-                }
-            }
-        }
-        when {
-            params {
-                module_args = ''
-            }
-            process {
-                """
-                input[0] = GATK_UNIFIEDGENOTYPERSNPS.out.vcf
-                input[1] = [[],[]]
-                input[2] = [[id:'test'],// meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                    ]
-                input[3] = [
-                    [id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
-                    ]
-                input[4] = false
-                """
-            }
-        }
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.fasta,
-                    process.out.vcf,
-                    process.out.ccf,
-                    path(process.out.log[0][1]).name,
-                    process.out.versions
-                    ).match() }
-            )
-        }
-    }
-    test("test_topas_gencons_indels") {
-
         setup {
             run("GATK_UNIFIEDGENOTYPER", alias: "GATK_UNIFIEDGENOTYPERSNPS") {
                 script "../../../gatk/unifiedgenotyper/main.nf"
@@ -210,6 +77,72 @@ nextflow_process {
                 }
             }
         }
+
+    test("test_topas_gencons") {
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = GATK_UNIFIEDGENOTYPERSNPS.out.vcf
+                input[1] = [[],[]]
+                input[2] = [[id:'test'],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                input[3] = [[],[]]
+                input[4] = false
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fasta,
+                    process.out.vcf,
+                    process.out.ccf,
+                    file(process.out.log[0][1]).name,
+                    process.out.versions
+                    ).match() }
+            )
+        }
+    }
+    test("test_topas_gencons_fai") {
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = GATK_UNIFIEDGENOTYPERSNPS.out.vcf
+                input[1] = [[],[]]
+                input[2] = [[id:'test'],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                input[3] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                    ]
+                input[4] = false
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fasta,
+                    process.out.vcf,
+                    process.out.ccf,
+                    file(process.out.log[0][1]).name,
+                    process.out.versions
+                    ).match() }
+            )
+        }
+    }
+    test("test_topas_gencons_indels") {
         when {
             params {
                 module_args = ''
@@ -233,7 +166,7 @@ nextflow_process {
                     process.out.fasta,
                     process.out.vcf,
                     process.out.ccf,
-                    path(process.out.log[0][1]).name,
+                    file(process.out.log[0][1]).name,
                     process.out.versions
                     ).match() }
             )
@@ -243,7 +176,7 @@ nextflow_process {
     test("test_topas_gencons - stub") {
         options "-stub"
         setup {
-            run("GATK_UNIFIEDGENOTYPER", alias: "GATK_UNIFIEDGENOTYPERSNPS") {
+            run("GATK_UNIFIEDGENOTYPER", alias: "GATK_UNIFIEDGENOTYPERSNPS_STUB") {
                 script "../../../gatk/unifiedgenotyper/main.nf"
                 params {
                     module_args = "--genotype_likelihoods_model SNP -stand_call_conf 30 --sample_ploidy 2 -dcov 250 --output_mode EMIT_ALL_SITES"
@@ -281,7 +214,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = GATK_UNIFIEDGENOTYPERSNPS.out.vcf
+                input[0] = GATK_UNIFIEDGENOTYPERSNPS_STUB.out.vcf
                 input[1] = [[],[]]
                 input[2] = [[id:'test'],// meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
