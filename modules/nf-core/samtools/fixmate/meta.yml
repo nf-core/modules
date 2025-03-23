@@ -44,36 +44,51 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.bam":
-          type: file
-          description: A BAM file with mate information added and/or proper pairs recalled
           pattern: "*.{bam}"
           ontologies:
             - edam: http://edamontology.org/format_2572
-  - sam:
-      - meta:
+      - ${prefix}.bam:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.sam":
-          type: file
-          description: A SAM file with mate information added and/or proper pairs recalled
-          pattern: "*.{sam}"
+          pattern: "*.{bam}"
           ontologies:
-            - edam: http://edamontology.org/format_2573
+            - edam: http://edamontology.org/format_2572
   - cram:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.cram":
-          type: file
-          description: A CRAM file with mate information added and/or proper pairs recalled
           pattern: "*.{cram}"
           ontologies:
             - edam: http://edamontology.org/format_3462
+      - ${prefix}.cram:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.{cram}"
+          ontologies:
+            - edam: http://edamontology.org/format_3462
+  - sam:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.{sam}"
+          ontologies:
+            - edam: http://edamontology.org/format_2573
+      - ${prefix}.sam:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.{sam}"
+          ontologies:
+            - edam: http://edamontology.org/format_2573
   - versions:
       - versions.yml:
           type: file
