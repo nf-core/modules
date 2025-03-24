@@ -30,7 +30,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - results/*:
+      - ${prefix}_results/*:
           type: directory
           description: Directory containing PIRATE result files
           pattern: "*/*"
@@ -40,7 +40,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - results/core_alignment.fasta:
+      - ${prefix}_results/core_alignment.fasta:
           type: file
           description: Core-genome alignment produced by PIRATE (Optional)
           pattern: "*.{fasta}"
@@ -51,5 +51,6 @@ output:
           pattern: "versions.yml"
 authors:
   - "@rpetit3"
+  - "@zachary-foster"
 maintainers:
   - "@rpetit3"
