@@ -25,6 +25,7 @@ nextflow_process {
     }
 
     test("homo_sapiens - [vcf, tbi, truth, truth_tbi, truth_bed, regions_bed], sdf") {
+        config "./squashploidy.config"
 
         when {
             process {

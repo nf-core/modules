@@ -38,6 +38,10 @@ process RTGTOOLS_VCFEVAL {
     def truth_index = truth_vcf_tbi ? "" : "rtg index ${truth_vcf}"
     def query_index = query_vcf_tbi ? "" : "rtg index ${query_vcf}"
     def avail_mem = task.memory.toGiga() + "G"
+    def all_records = task.ext.all_records ? "--all-records" : ""
+    def decompose = task.ext.decompose ? "--decompose" : ""
+    def ref_overlap = task.ext.ref_overlap ? "--ref-overlap" : ""
+    def squash_ploidy = task.ext.squash_ploidy ? "--squash-ploidy" : ""
 
     """
     ${truth_index}
@@ -51,6 +55,10 @@ process RTGTOOLS_VCFEVAL {
         --calls=${query_vcf} \\
         --output=output \\
         --template=${sdf} \\
+        ${all_records} \\
+        ${decompose} \\
+        ${ref_overlap} \\
+        ${squash_ploidy} \\
         --threads=${task.cpus}
 
     cd output/
