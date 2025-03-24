@@ -12,7 +12,7 @@ nextflow_process {
     tag "plink2/vcf2bgen"
 
     // TODO nf-core: Change the test name preferably indicating the test-data and file-format used
-    test("plink2 - vcf2bgen - vcf") {
+    test("plink2 - vcf2bgen - vcf - double-id") {
         config "./nextflow.config"
         // TODO nf-core: If you are created a test for a chained module
         // (the module requires running more than one process to generate the required output)
@@ -27,6 +27,68 @@ nextflow_process {
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true)
                     ]
+                    "DS",
+                    true,
+                    "double-id"
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert process.out.bgen_file.get(0).get(1) ==~ ".*.bgen" },
+                { assert process.out.sample_file.get(0).get(1) ==~ ".*.sample" },
+                { assert process.out.log_file.get(0).get(1) ==~ ".*.log" },
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("plink2 - vcf2bgen - vcf - const-fid") {
+        config "./nextflow.config"
+        // TODO nf-core: If you are created a test for a chained module
+        // (the module requires running more than one process to generate the required output)
+        // add the 'setup' method here.
+        // You can find more information about how to use a 'setup' method in the docs (https://nf-co.re/docs/contributing/modules#steps-for-creating-nf-test-for-chained-modules).
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true)
+                    ]
+                    "DS",
+                    true,
+                    "const-fid 1"
+                ]
+                """
+            }
+        }
+
+    test("plink2 - vcf2bgen - vcf - ref-last") {
+        config "./nextflow.config"
+        // TODO nf-core: If you are created a test for a chained module
+        // (the module requires running more than one process to generate the required output)
+        // add the 'setup' method here.
+        // You can find more information about how to use a 'setup' method in the docs (https://nf-co.re/docs/contributing/modules#steps-for-creating-nf-test-for-chained-modules).
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true)
+                    ]
+                    "DS",
+                    false,
+                    "double-id"
                 ]
                 """
             }
@@ -57,6 +119,9 @@ nextflow_process {
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true)
                     ]
+                    "DS",
+                    true,
+                    "double-id"
                 ]
                 """
             }

@@ -39,7 +39,7 @@ input:
     - sample_name_mode:
         type: string
         description: Option to use to set IID/FID in the BGEN file.
-          Can be: double-id, fixed-id <char>, or id-delim <char>.
+          Can be: double-id, const-fid <char>, or id-delim <char>.
 
 output:
   - bgen_file:
@@ -62,7 +62,7 @@ output:
           type: file
           description: Sample file defining samples in the BGEN
           pattern: "*.sample"
-  - sample_file:
+  - log_file:
       - meta:
           type: map
           description: |
