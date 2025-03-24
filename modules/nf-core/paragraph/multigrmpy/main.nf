@@ -67,8 +67,8 @@ process PARAGRAPH_MULTIGRMPY {
     if ("${variants}" == "${prefix}.json.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     """
-    touch ${prefix}.vcf.gz
-    touch ${prefix}.json.gz
+    echo "" | gzip > ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.json.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

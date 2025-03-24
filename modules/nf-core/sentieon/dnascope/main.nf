@@ -67,9 +67,9 @@ process SENTIEON_DNASCOPE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.unfiltered.vcf.gz
+    echo "" | gzip > ${prefix}.unfiltered.vcf.gz
     touch ${prefix}.unfiltered.vcf.gz.tbi
-    touch ${prefix}.g.vcf.gz
+    echo "" | gzip > ${prefix}.g.vcf.gz
     touch ${prefix}.g.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml

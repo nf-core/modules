@@ -39,7 +39,7 @@ process ICOUNTMINI_SIGXLS {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.sigxls.bed.gz
+    echo "" | gzip > ${prefix}.sigxls.bed.gz
     touch ${prefix}.scores.tsv
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

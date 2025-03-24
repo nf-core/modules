@@ -45,9 +45,9 @@ process GATK4_SAMTOFASTQ {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.fastq.gz
-    touch ${prefix}_1.fastq.gz
-    touch ${prefix}_2.fastq.gz
+    echo "" | gzip > ${prefix}.fastq.gz
+    echo "" | gzip > ${prefix}_1.fastq.gz
+    echo "" | gzip > ${prefix}_2.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

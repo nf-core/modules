@@ -50,7 +50,7 @@ process PICARD_SORTVCF {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_sorted.vcf.gz
+    echo "" | gzip > ${prefix}_sorted.vcf.gz
     touch ${prefix}.bam.bai
     touch ${prefix}.MarkDuplicates.metrics.txt
 
