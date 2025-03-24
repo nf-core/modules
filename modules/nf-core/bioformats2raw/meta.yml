@@ -4,7 +4,7 @@ name: "bioformats2raw"
 description: Java application to convert image file formats, including .mrxs, to an intermediate Zarr structure compatible with the OME-NGFF specification.
 keywords:
   - zarr
-  - OME-NGFF
+  - ome-ngff
   - imaging
 tools:
   - "bioformats2raw":
@@ -25,7 +25,11 @@ input:
         type: file
         description: bioformats supported image file format 
         pattern: "*.{tif,tiff,svs,mrxs}"
-          
+        ontologies:
+        - edam: "http://edamontology.org/format_3727"
+        - edam: "http://edamontology.org/format_3591"
+
+
 output:
   - omezarr:
     - meta:
@@ -37,6 +41,8 @@ output:
         type: directory
         description: OME-Zarr fileset for image data storage. Specification can be found at https://ngff.openmicroscopy.org/latest/#storage-format
         pattern: "*{ome.zarr}"
+        ontologies:
+        - edam: "http://edamontology.org/format_3915"
           
   - versions:
     - "versions.yml":
