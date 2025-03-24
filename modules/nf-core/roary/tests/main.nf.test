@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process ROARY"
     script "../main.nf"
     process "ROARY"
+    config "./nextflow.config"
     tag "modules"
     tag "modules_nfcore"
     tag "roary"
