@@ -24,6 +24,9 @@ input:
         type: file
         description: Input sequences in FASTA format
         pattern: "*.{fa,fasta}"
+        ontologies:
+          - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - meta2:
         type: map
         description: |
@@ -33,6 +36,8 @@ input:
         type: file
         description: Input guide tree in Newick format
         pattern: "*.{dnd}"
+        ontologies:
+          - edam: http://edamontology.org/format_2006 # PHYLOGENETIC TREE
   - - compress:
         type: boolean
         description: Flag representing whether the output MSA should be compressed.
@@ -50,11 +55,17 @@ output:
           description: Alignment file, in FASTA format. May be gzipped or uncompressed,
             depending on if compress is set to true or false
           pattern: "*.aln{.gz,}"
+          ontologies:
+            - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
+            - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
+            - edam: http://edamontology.org/format_1984 # FASTA-ALN
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@luisas"
   - "@JoseEspinosa"
