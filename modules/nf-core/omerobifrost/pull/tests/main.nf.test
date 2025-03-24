@@ -10,17 +10,19 @@ nextflow_process {
     tag "omerobifrost"
     tag "omerobifrost/pull"
 
+    // TODO: change file paths to 'params.modules_testdata_base_path'
+
     test("omero-bifrost pull ome-tiffs from OMERO") {
 
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test_stub'], // meta map
+                    [ id:'test_1'], // meta map
                     file('/Users/luiskuhn/research/nidavellir/bifrost-repo/test/' + 'img_list.tsv', checkIfExists: true),
-                ]
+                ] 
                 input[1] = [
-                    [ id:'test_stub_x'], // meta map
+                    [ id:'test_1'], // meta map
                     file('/Users/luiskuhn/research/nidavellir/bifrost-repo/test/' + 'imaging_config.properties', checkIfExists: true),
                 ]
                 """
@@ -48,7 +50,7 @@ nextflow_process {
                     file('/Users/luiskuhn/research/nidavellir/bifrost-repo/test/' + 'img_id_list.tsv', checkIfExists: true),
                 ]
                 input[1] = [
-                    [ id:'test_stub_x'], // meta map
+                    [ id:'test_stub'], // meta map
                     file('/Users/luiskuhn/research/nidavellir/bifrost-repo/test/' + 'imaging_config.properties', checkIfExists: true),
                 ]
                 """
