@@ -62,7 +62,7 @@ process PLATYPUS {
     """
     touch ${prefix}.log
     echo | bgzip > ${prefix}.vcf.gz
-    echo "" | gzip > ${prefix}.vcf.gz.tbi
+    touch ${prefix}.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
