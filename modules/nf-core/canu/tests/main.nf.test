@@ -32,7 +32,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.versions,
-                    process.out.report,
+                    process.out.report.collect{path(it[1]).readLines()},
                     process.out.contigs,
                     process.out.corrected_reads,
                     process.out.corrected_trimmed_reads,
