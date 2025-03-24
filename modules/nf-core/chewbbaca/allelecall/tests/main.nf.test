@@ -53,6 +53,7 @@ nextflow_process {
                     process.out.invalid_cds,
                     process.out.loci_summary_stats,
                     file(process.out.log[0][1]).name,
+                    process.out.versions,
                     path(process.out.versions[0]).yaml
                     ).match() }
             )
