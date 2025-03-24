@@ -70,7 +70,7 @@ process WITTYER {
     """
     touch ${prefix}.json
     echo "" | gzip > ${prefix}.vcf.gz
-    echo "" | gzip > ${prefix}.vcf.gz.tbi
+    touch ${prefix}.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
