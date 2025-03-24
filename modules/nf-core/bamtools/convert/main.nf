@@ -37,4 +37,19 @@ process BAMTOOLS_CONVERT {
         bamtools: \$( bamtools --version | grep -e 'bamtools' | sed 's/^.*bamtools //' )
     END_VERSIONS
     """
+
+    stub :
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def test = args ==~ /-format (bed|fasta|fastq|json|pileup|sam|yaml)/
+    if ( test == false ) error "-format option must be provided in args. Possible values: bed fasta fastq json pileup sam yaml"
+    m = args =~ /-format ([a-z]+)/
+    ext = m[0][1]
+
+    """
+    touch ${prefix}.${ext}
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bamtools: \$( bamtools --version | grep -e 'bamtools' | sed 's/^.*bamtools //' )
+    END_VERSIONS
+    """
 }
