@@ -12,15 +12,15 @@ process MDUST {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.fasta")    , emit: fasta
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.fasta"), emit: fasta
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_mdust"
     def VERSION = '2006.10.17' // WARN: Manually update when changing Bioconda assets
     if( "$fasta" == "${prefix}.fasta" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
@@ -36,7 +36,7 @@ process MDUST {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_mdust"
     def VERSION = '2006.10.17' // WARN: Manually update when changing Bioconda assets
     if( "$fasta" == "${prefix}.fasta" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """

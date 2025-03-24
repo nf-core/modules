@@ -1,13 +1,16 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "mdust"
-description: mdust from DFCI Gene Indices Software Tools
+description: mdust from DFCI Gene Indices Software Tools for masking low-complexity
+  DNA sequences
 keywords:
   - genomics
-  - gene
-  - filter
+  - dna
+  - low-complexity
+  - masking
 tools:
   - "mdust":
-      description: ""
+      description: "mdust from DFCI Gene Indices Software Tools for masking low-complexity
+        DNA sequences"
       homepage: "https://github.com/lh3/mdust"
       documentation: "https://github.com/lh3/mdust"
       tool_dev_url: "https://github.com/lh3/mdust"
@@ -24,6 +27,8 @@ input:
         type: file
         description: Input fasta file
         pattern: "*.{fa,fsa,faa,fas,fasta}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
 output:
   - fasta:
       - meta:
@@ -34,12 +39,15 @@ output:
       - "*.fasta":
           type: file
           description: Output fasta file
-          pattern: "*.fasta"
+          pattern: "*.{fasta}"
+          ontologies:
+            - edam: http://edamontology.org/format_1929
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies: []
 authors:
   - "@GallVp"
 maintainers:
