@@ -24,6 +24,9 @@ input:
         type: file
         description: FASTA file containing the sequences to be used to render the guidetree.
         pattern: "*.{fa,fasta}"
+        ontologies:
+          - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
+          - edam: http://edamontology.org/format_1929 # FASTA
 output:
   - tree:
       - meta:
@@ -35,11 +38,15 @@ output:
           type: file
           description: Guide tree in Newick format.
           pattern: "*.dnd"
+          ontologies:
+            - edam: http://edamontology.org/format_2006 # PHYLOGENETIC TREE
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@luisas"
 maintainers:
