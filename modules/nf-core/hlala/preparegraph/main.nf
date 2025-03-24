@@ -33,4 +33,12 @@ process HLALA_PREPAREGRAPH {
         hlala: 1.0.3
     END_VERSIONS
     """
+
+    stub:
+    """
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            hlala: 1.0.3
+    END_VERSIONS
+    """
 }
