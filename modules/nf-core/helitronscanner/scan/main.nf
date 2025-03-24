@@ -59,7 +59,6 @@ process HELITRONSCANNER_SCAN {
 
     stub:
     if ( command !in [ 'head', 'tail' ] ) error "[HELITRONSCANNER_SCAN] command argument should be 'head' or 'tail'"
-    def args        = task.ext.args     ?: ''
     def prefix      = task.ext.prefix   ?: "${meta.id}"
     """
     touch ${prefix}.${command}
