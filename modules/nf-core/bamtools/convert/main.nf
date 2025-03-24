@@ -38,7 +38,7 @@ process BAMTOOLS_CONVERT {
     END_VERSIONS
     """
 
-    stub :
+    stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     def test = args ==~ /-format (bed|fasta|fastq|json|pileup|sam|yaml)/
     if ( test == false ) error "-format option must be provided in args. Possible values: bed fasta fastq json pileup sam yaml"
