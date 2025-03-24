@@ -4,8 +4,8 @@ process CANU {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/canu:2.2--ha47f30e_0':
-        'biocontainers/canu:2.2--ha47f30e_0' }"
+        'https://depot.galaxyproject.org/singularity/canu:2.3--h3fb4750_1':
+        'biocontainers/canu:2.3--h3fb4750_1' }"
 
     input:
     tuple val(meta), path(reads)
@@ -34,11 +34,10 @@ process CANU {
     """
     canu \\
         -p ${prefix} \\
-        $mode \\
         genomeSize=${genomesize} \\
         $args \\
         maxThreads=$task.cpus \\
-        $reads
+        $mode $reads
 
     gzip *.fasta
 

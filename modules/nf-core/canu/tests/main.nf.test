@@ -4,15 +4,17 @@ nextflow_process {
     config "./nextflow.config"
     script "../main.nf"
     process "CANU"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "canu"
-   
+
     test("test_hicanu") {
         when {
             params {
-                module_args = "minOverlapLength=1 merylMemory=7 merylThreads=1 hapThreads=1 batMemory=7 corThreads=1 minInputCoverage=0 stopOnLowCoverage=0 maxMemory=7 redMemory=7 redThreads=1 oeaMemory=7 oeaThreads=1 obtovlThreads=1 utgovlThreads=1 batThreads=1"
+                module_args = "minOverlapLength=1 hapThreads=1 corThreads=1 minInputCoverage=0 stopOnLowCoverage=0 maxMemory=7" +
+                    " merylMemory=7 merylThreads=1 batMemory=7 batThreads=1 redMemory=7 redThreads=1 oeaMemory=7 oeaThreads=1" +
+                    " obtovlThreads=1 utgovlThreads=1"
             }
             process {
                 """
@@ -21,14 +23,23 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists:true)
                     ]
                 input[1] = "-pacbio-hifi"
-                input[2] = '1k'
+                input[2] = '10k'
                 """
             }
         }
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.report,
+                    process.out.contigs,
+                    process.out.corrected_reads,
+                    process.out.corrected_trimmed_reads,
+                    process.out.metadata,
+                    process.out.contig_position,
+                    process.out.contig_info
+                ).match() }
             )
         }
     }
