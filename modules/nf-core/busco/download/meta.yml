@@ -1,0 +1,38 @@
+name: busco_download
+description: Download database for BUSCO
+keywords:
+  - quality control
+  - genome
+  - transcriptome
+  - proteome
+tools:
+  - busco:
+      description: BUSCO provides measures for quantitative assessment of genome assembly,
+        gene set, and transcriptome completeness based on evolutionarily informed expectations
+        of gene content from near-universal single-copy orthologs selected from OrthoDB.
+      homepage: https://busco.ezlab.org/
+      documentation: https://busco.ezlab.org/busco_userguide.html
+      tool_dev_url: https://gitlab.com/ezlab/busco
+      doi: "10.1007/978-1-4939-9173-0_14"
+      licence: ["MIT"]
+      identifier: biotools:busco
+input:
+  - - lineage:
+        type: string
+        description: The BUSCO lineage to use, or "auto", "auto_prok" or "auto_euk"
+          to automatically select lineage
+output:
+  - download_dir:
+      - busco_downloads:
+          type: file
+          description: Directory with busco database
+          pattern: "busco_downloads"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@zachary-foster"
+maintainers:
+  - "@zachary-foster"

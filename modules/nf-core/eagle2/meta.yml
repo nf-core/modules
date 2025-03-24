@@ -1,0 +1,80 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "eagle2"
+description: Perform phasing of genotyped data with or without a reference panel
+keywords:
+  - phasing
+  - haplotypes
+  - reference panel
+  - genomics
+tools:
+  - "eagle2":
+      description: "The Eagle software estimates haplotype phase either within a genotyped cohort or using a phased reference panel."
+      homepage: "https://alkesgroup.broadinstitute.org/Eagle/"
+      documentation: "https://alkesgroup.broadinstitute.org/Eagle/"
+      tool_dev_url: "https://github.com/poruloh/Eagle"
+      doi: "10.1038/ng.3679"
+      licence: ['GPL v3-or-later']
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - input:
+        type: file
+        description: Vcf file containing genotyped cohort or target samples to phase
+        pattern: "*.{vcf,vcf.gz,bcf}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+          - edam: "http://edamontology.org/format_3020"
+    - index:
+        type: file
+        description: Input file index
+        pattern: "*.{csi,tbi}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3700"
+    - ref_vcf:
+        type: file
+        description: Reference panel to phase the genotyped cohort
+        pattern: "*.{vcf,vcf.gz,bcf}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+          - edam: "http://edamontology.org/format_3020"
+    - ref_index:
+        type: file
+        description: Reference panel index
+        pattern: "*.{csi,tbi}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3700"
+    - map:
+        type: file
+        description: Genetic map file
+        pattern: "*.{txt,txt.gz,map,map.gz}"
+
+output:
+  - phased_variants:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - "*.{vcf,vcf.gz,bcf}":
+        type: file
+        description: Input phased variants
+        pattern: "*.{vcf,vcf.gz,bcf}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+          - edam: "http://edamontology.org/format_3020"
+
+  - versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@LouisLeNezet"
+maintainers:
+  - "@LouisLeNezet"

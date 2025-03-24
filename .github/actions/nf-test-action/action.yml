@@ -22,7 +22,7 @@ runs:
         distribution: "temurin"
         java-version: "17"
 
-    - name: Setup Nextflow
+    - name: Set up Nextflow
       uses: nf-core/setup-nextflow@v2
       with:
         version: "${{ env.NXF_VERSION }}"
@@ -32,15 +32,23 @@ runs:
       with:
         python-version: "3.11"
 
-    - name: Install nf-test
+    - name: Set up nf-test
       uses: nf-core/setup-nf-test@v1
       with:
         version: "${{ env.NFT_VER }}"
         install-pdiff: true
 
+    - name: Install dependencies from universe repo
+      if: contains(inputs.profile, 'singularity')
+      shell: bash
+      run: |
+        sudo add-apt-repository universe
+        sudo apt-get update
+        sudo apt-get install -y uidmap squashfs-tools
+
     - name: Setup apptainer
       if: contains(inputs.profile, 'singularity')
-      uses: eWaterCycle/setup-apptainer@main
+      uses: eWaterCycle/setup-apptainer@3f706d898c9db585b1d741b4692e66755f3a1b40 #v2
 
     - name: Set up Singularity
       if: contains(inputs.profile, 'singularity')
@@ -49,7 +57,7 @@ runs:
         mkdir -p $NXF_SINGULARITY_CACHEDIR
         mkdir -p $NXF_SINGULARITY_LIBRARYDIR
 
-    - name: Conda setup
+    - name: Set up Conda
       if: ${{inputs.profile == 'conda'}}
       uses: conda-incubator/setup-miniconda@505e6394dae86d6a5c7fbb6e3fb8938e3e863830 # v3
       with:
@@ -58,7 +66,7 @@ runs:
         conda-remove-defaults: true
 
     # Set up secrets
-    - name: Set up nextflow secrets
+    - name: Set up Nextflow secrets
       if: env.SENTIEON_ENCRYPTION_KEY != '' && env.SENTIEON_LICENSE_MESSAGE != ''
       shell: bash
       run: |

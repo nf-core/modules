@@ -4,11 +4,17 @@ on:
     branches:
       # https://docs.renovatebot.com/key-concepts/automerge/#branch-vs-pr-automerging
       - "renovate/**" # branches Renovate creates
+    paths-ignore:
+      - "**/meta.yml"
   pull_request:
     branches: [master]
+    paths-ignore:
+      - "**/meta.yml"
   merge_group:
     types: [checks_requested]
     branches: [master]
+    paths-ignore:
+      - "**/meta.yml"
   workflow_dispatch:
     inputs:
       runners:
@@ -90,7 +96,10 @@ jobs:
           echo ${{ steps.set-shards.outputs.total_shards }}
 
   nf-test:
-    runs-on: ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
+    runs-on:
+      - runs-on=${{ github.run_id }}
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
     name: "Test | ${{ matrix.profile }} | ${{ matrix.shard }}"
     needs: [nf-test-changes]
     if: ${{ needs.nf-test-changes.outputs.total_shards != '0' }}
@@ -98,7 +107,7 @@ jobs:
       fail-fast: false
       matrix:
         shard: ${{ fromJson(needs.nf-test-changes.outputs.shard) }}
-        profile: [conda, docker_self_hosted, singularity]
+        profile: [conda, docker, singularity]
     env:
       NXF_ANSI_LOG: false
       TOTAL_SHARDS: ${{ needs.nf-test-changes.outputs.total_shards }}
@@ -165,7 +174,7 @@ jobs:
           paths: "${{ join(fromJson(steps.filter.outputs.filtered_paths), ' ') }}"
 
   confirm-pass-nf-test:
-    runs-on: ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
+    runs-on: "ubuntu-latest"
     needs: [nf-test]
     if: always()
     steps:

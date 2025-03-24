@@ -4,8 +4,8 @@ process STRANGER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/stranger:0.9.2--pyh7e72e81_0':
-        'biocontainers/stranger:0.9.2--pyh7e72e81_0' }"
+        'https://depot.galaxyproject.org/singularity/stranger:0.9.4--pyhdfd78af_0':
+        'biocontainers/stranger:0.9.4--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(vcf)
@@ -20,8 +20,10 @@ process STRANGER {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_stranger"
     def options_variant_catalog = variant_catalog ? "--repeats-file $variant_catalog" : ""
+
+    if ("${vcf}" == "${prefix}.vcf.gz") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     stranger \\
         $args \\
@@ -30,18 +32,20 @@ process STRANGER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        stranger: \$( stranger --version )
+        stranger: \$( stranger --version | sed 's/stranger, version //g' )
     END_VERSIONS
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_stranger"
+    
+    if ("${vcf}" == "${prefix}.vcf.gz") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     echo "" | gzip > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        stranger: \$( stranger --version )
+        stranger: \$( stranger --version | sed 's/stranger, version //g' )
     END_VERSIONS
     """
 }
