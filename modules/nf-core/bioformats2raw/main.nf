@@ -1,7 +1,7 @@
 
 process BIOFORMATS2RAW {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_high'
 
     conda "${moduleDir}/environment.yml"
     container "community.wave.seqera.io/library/bioformats2raw:0.9.4--3eec45888b3759e5"
@@ -24,11 +24,12 @@ process BIOFORMATS2RAW {
     bioformats2raw \\
         $image \\
         ${prefix}.ome.zarr \\
+        --max-workers $task.cpus \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bioformats2raw: \$(bioformats2raw --version |& sed '1!d ; s/bioformats2raw //')
+        bioformats2raw: \$(bioformats2raw --version |& sed -n '1s/Version = //p; 2, 3p; s/bioformats2raw //')
     END_VERSIONS
     """
 
@@ -37,11 +38,11 @@ process BIOFORMATS2RAW {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    touch ${prefix}.ome.zarr
+    mkdir ${prefix}.ome.zarr
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bioformats2raw: \$(bioformats2raw --version |& sed '1!d ; s/bioformats2raw //')
+        bioformats2raw: \$(bioformats2raw --version |& sed -n '1s/Version = //p; 2, 3p; s/bioformats2raw //')
     END_VERSIONS
     """
 }
