@@ -1,0 +1,67 @@
+// nf-core modules test omerobifrost/pull
+nextflow_process {
+
+    name "Test Process OMEROBIFROST_PULL"
+    script "../main.nf"
+    process "OMEROBIFROST_PULL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "omerobifrost"
+    tag "omerobifrost/pull"
+
+    test("omero-bifrost pull ome-tiffs from OMERO") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_stub'], // meta map
+                    file('/Users/luiskuhn/research/nidavellir/bifrost-repo/test/' + 'img_list.tsv', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'test_stub_x'], // meta map
+                    file('/Users/luiskuhn/research/nidavellir/bifrost-repo/test/' + 'imaging_config.properties', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("omero-bifrost pull ome-tiffs from OMERO - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_stub'], // meta map
+                    file('/Users/luiskuhn/research/nidavellir/bifrost-repo/test/' + 'img_id_list.tsv', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'test_stub_x'], // meta map
+                    file('/Users/luiskuhn/research/nidavellir/bifrost-repo/test/' + 'imaging_config.properties', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
