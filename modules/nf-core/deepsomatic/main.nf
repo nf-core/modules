@@ -59,9 +59,9 @@ process DEEPSOMATIC {
     def VERSION = '1.7.0'
     """
     echo "" | gzip > ${prefix}.vcf.gz
-    echo "" | gzip > ${prefix}.vcf.gz.tbi
+    touch ${prefix}.vcf.gz.tbi
     echo "" | gzip > ${prefix}.g.vcf.gz
-    echo "" | gzip > ${prefix}.g.vcf.gz.tbi
+    touch ${prefix}.g.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
