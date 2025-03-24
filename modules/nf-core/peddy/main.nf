@@ -26,7 +26,7 @@ process PEDDY {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def sites_arg = sites ? "--sites $sites" : ''
-    if (sites && args.contains('--sites')) error "--sites in args can't be used at the same time as sites"
+    if (sites && args.contains('--sites')) error "Double definition of --sites (in sites channel and in ext.args)"
     """
     peddy \\
         $args \\
