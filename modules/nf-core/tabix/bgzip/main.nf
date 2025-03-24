@@ -11,9 +11,9 @@ process TABIX_BGZIP {
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path("${output}")    , emit: output
-    tuple val(meta), path("${output}.gzi"), emit: gzi, optional: true
-    path  "versions.yml"                  , emit: versions
+    tuple val(meta), path("${output}"), emit: output
+    tuple val(meta), path("*.gzi")    , emit: gzi, optional: true
+    path  "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,7 +26,8 @@ process TABIX_BGZIP {
     output   = in_bgzip ? "${prefix}.${extension}" : "${prefix}.${extension}.gz"
     command = in_bgzip ? '-d' : ''
     // Name the index according to $prefix, unless a name has been requested
-    if ((args.matches("(^| )-i\\b") || args.matches("(^| )--index(\$| )")) && !args.matches("(^| )-I\\b") && !args.matches("(^| )--index-name\\b")) {
+    split_args = args.split(' +|=')
+    if ((split_args.contains('-i') || split_args.contains('--index')) && !split_args.contains('-I') && !split_args.contains('--index-name')) {
         args = args + " -I ${output}.gzi"
     }
     """

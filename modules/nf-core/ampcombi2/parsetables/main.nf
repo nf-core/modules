@@ -17,10 +17,10 @@ process AMPCOMBI2_PARSETABLES {
 
     output:
     tuple val(meta), path("${meta.id}/")                                , emit: sample_dir
-    tuple val(meta), path("${meta.id}/contig_gbks/")                    , emit: contig_gbks
-    tuple val(meta), path("${meta.id}/${meta.id}_mmseqs_matches.tsv")   , emit: db_tsv
-    tuple val(meta), path("${meta.id}/${meta.id}_ampcombi.tsv")         , emit: tsv
-    tuple val(meta), path("${meta.id}/${meta.id}_amp.faa")              , emit: faa
+    tuple val(meta), path("${meta.id}/contig_gbks/")                    , emit: contig_gbks  , optional:true
+    tuple val(meta), path("${meta.id}/${meta.id}_mmseqs_matches.tsv")   , emit: db_tsv       , optional:true
+    tuple val(meta), path("${meta.id}/${meta.id}_ampcombi.tsv")         , emit: tsv          , optional:true
+    tuple val(meta), path("${meta.id}/${meta.id}_amp.faa")              , emit: faa          , optional:true
     tuple val(meta), path("${meta.id}/${meta.id}_ampcombi.log")         , emit: sample_log   , optional:true
     tuple val(meta), path("Ampcombi_parse_tables.log")                  , emit: full_log     , optional:true
     tuple val(meta), path("amp_${opt_amp_db}_database/")                , emit: db           , optional:true
