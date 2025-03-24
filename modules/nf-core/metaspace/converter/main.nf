@@ -1,6 +1,6 @@
 process METASPACE_CONVERTER {
     label 'process_medium'
-    container 'bwadie/metaspace_converter:latest'
+    container 'docker.io/bwadie/metaspace_converter:latest'
 
     // container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
     //     'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
@@ -29,7 +29,7 @@ process METASPACE_CONVERTER {
     """
     cat <<-END_VERSIONS > versions.yml
     ${task.process}:
-        python: \$(python --version)
+        python: 3.11
         metaspace_converter: 1.1.1
     END_VERSIONS
     """
