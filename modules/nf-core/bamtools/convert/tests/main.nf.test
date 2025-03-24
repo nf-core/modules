@@ -41,8 +41,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [id:'test',single_end:false],// meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam',checkIfExists:true)
+                    [id:'test', single_end:false], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists:true)
                     ]
                 """
             }
