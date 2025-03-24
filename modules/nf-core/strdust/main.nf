@@ -56,7 +56,7 @@ process STRDUST {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def tabix_cmd = args.contains("--sorted") ? "echo "" | gzip > ${prefix}.vcf.gz.tbi" : ''
+    def tabix_cmd = args.contains("--sorted") ? "touch ${prefix}.vcf.gz.tbi" : ''
     """
     echo "" | bgzip > ${prefix}.vcf.gz
     $tabix_cmd
