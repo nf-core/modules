@@ -29,16 +29,38 @@ input:
         description: ENA/SRA accession to query
 
 output:
-  - db:
+  - fastq:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - test:
-          type: directory
-          description: Directory containing FASTQ files
-          pattern: "*"
+      - "*.fastq.gz":
+          type: file
+          description: FASTQ files downloaded from ENA or SRA
+          pattern: "*.fastq.gz"
+
+  - runinfo:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*-run-info.tsv":
+          type: file
+          description: Tab-delimited file containing metadata for each Run downloaded
+          pattern: "*-run-info.tsv"
+
+  - runmergers:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*-run-mergers.tsv":
+          type: file
+          description: Tab-delimited file merge information from --group-by-experiment or --group-by-sample
+          pattern: "*-run-mergers.tsv"
 
   - versions:
       - "versions.yml":
