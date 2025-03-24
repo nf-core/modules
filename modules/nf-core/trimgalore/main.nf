@@ -90,9 +90,9 @@ process TRIMGALORE {
     }
     else {
         output_command = "echo '' | gzip > ${prefix}_1_trimmed.fq.gz ;"
-        output_command += "echo "" | gzip > ${prefix}_1.fastq.gz_trimming_report.txt ;"
+        output_command += "touch ${prefix}_1.fastq.gz_trimming_report.txt ;"
         output_command += "echo '' | gzip > ${prefix}_2_trimmed.fq.gz ;"
-        output_command += "echo "" | gzip > ${prefix}_2.fastq.gz_trimming_report.txt"
+        output_command += "touch ${prefix}_2.fastq.gz_trimming_report.txt"
     }
     """
     ${output_command}
