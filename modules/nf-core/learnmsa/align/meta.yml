@@ -23,6 +23,9 @@ input:
         type: file
         description: Input sequences in FASTA format.
         pattern: "*.{fa,fasta}"
+        ontologies:
+          - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
+          - edam: http://edamontology.org/format_1929 # FASTA
 output:
   - alignment:
       - meta:
@@ -34,11 +37,17 @@ output:
           type: file
           description: Alignment file, in FASTA format.
           pattern: "*.aln"
+          ontologies:
+            - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
+            - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
+            - edam: http://edamontology.org/format_1984 # FASTA-ALN
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@luisas"
   - "@JoseEspinosa"
