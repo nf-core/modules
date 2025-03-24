@@ -43,7 +43,6 @@ process AUTHENTICT_DEAM2CONT {
     """
 
     stub :
-
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
