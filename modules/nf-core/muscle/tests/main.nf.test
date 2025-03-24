@@ -18,7 +18,7 @@ nextflow_process {
             process {
                 """
                     input[0] = [[id:'test'],// meta map
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas',checkIfExists:true)]
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists:true)]
                 """
             }
         }
@@ -48,7 +48,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = [[id:'test'],// meta map
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas',checkIfExists:true)]
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists:true)]
                     """
                 }
             }
@@ -83,7 +83,7 @@ nextflow_process {
             process {
                 """
                     input[0] = [[id:'test'],// meta map
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas',checkIfExists:true)]
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists:true)]
                 """
             }
         }
