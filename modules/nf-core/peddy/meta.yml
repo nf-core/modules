@@ -44,7 +44,7 @@ input:
           e.g. [ id:'test', single_end:false ]
     - sites:
         type: file
-        description: sites file
+        description: sites file. By defaults peddy uses hg19/GRCh37, "--sites hg38" can be specified in the process argument or a custom file following syntax https://github.com/brentp/peddy/blob/master/peddy/GRCH37.sites can be provided
         pattern: "*.{sites}"
 output:
   - html:
