@@ -73,7 +73,7 @@ process STITCH {
     def generate_input_only  = args2.contains( "--generateInputOnly TRUE" )
     def bgen_output          = args2.contains( "--output_format bgen" )
     def generate_plots_cmd   = !generate_input_only
-    def generate_file_cmd    = !generate_input_only ? bgen_output ? "echo "" | gzip > ${prefix}.bgen" : "echo '' | gzip > ${prefix}.vcf.gz"            : ""
+    def generate_file_cmd    = !generate_input_only ? bgen_output ? "touch ${prefix}.bgen" : "echo '' | gzip > ${prefix}.vcf.gz"            : ""
     def rsync_version_cmd    = rdata                ? "rsync: \$(rsync --version | head -n1 | sed 's/^rsync  version //; s/ .*\$//')" : ""
     """
     mkdir -p input
