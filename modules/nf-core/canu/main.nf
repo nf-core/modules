@@ -47,4 +47,30 @@ process CANU {
         canu: \$(echo \$(canu --version 2>&1) | sed 's/^.*canu //; s/Using.*\$//' )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    def trimmed_cmd = args.contains("-trimmed") ? "-trimmed" : ""
+    def corrected_cmd = args.contains("-corrected") ? "-corrected" : ""
+    """
+    echo "" | gzip > ${prefix}.contigs.fasta.gz
+    echo "" | gzip > ${prefix}.unassembled.fasta.gz
+    if [ "${corrected_cmd}" != "" ]; then
+        echo "" | gzip > ${prefix}.correctedReads.fasta.gz
+    fi
+
+    if [ "${trimmed_cmd}" != "" ]; then
+        echo "" | gzip > ${prefix}.trimmedReads.fasta.gz
+    fi
+    touch ${prefix}.contigs.layout
+    touch ${prefix}.contigs.layout.readToTig
+    touch ${prefix}.contigs.layout.tigInfo
+    touch ${prefix}.report
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        canu: \$(echo \$(canu --version 2>&1) | sed 's/^.*canu //; s/Using.*\$//' )
+    END_VERSIONS
+    """
 }

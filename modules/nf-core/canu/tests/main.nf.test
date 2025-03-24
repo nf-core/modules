@@ -1,0 +1,60 @@
+nextflow_process {
+
+    name "Test Process CANU"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "CANU"
+   
+    tag "modules"
+    tag "modules_nfcore"
+    tag "canu"
+   
+    test("test_hicanu") {
+        when {
+            params {
+                module_args = "minOverlapLength=1 merylMemory=7 merylThreads=1 hapThreads=1 batMemory=7 corThreads=1 minInputCoverage=0 stopOnLowCoverage=0 maxMemory=7 redMemory=7 redThreads=1 oeaMemory=7 oeaThreads=1 obtovlThreads=1 utgovlThreads=1 batThreads=1"
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:true],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists:true)
+                    ]
+                input[1] = "-pacbio-hifi"
+                input[2] = '1k'
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test_hicanu - stub") {
+        options "-stub"
+        when {
+            params {
+                module_args = "minOverlapLength=1 merylMemory=7 merylThreads=1 hapThreads=1 batMemory=7 corThreads=1 minInputCoverage=0 stopOnLowCoverage=0 maxMemory=7 redMemory=7 redThreads=1 oeaMemory=7 oeaThreads=1 obtovlThreads=1 utgovlThreads=1 batThreads=1"
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:true],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists:true)
+                    ]
+                input[1] = "-pacbio-hifi"
+                input[2] = '1k'
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
