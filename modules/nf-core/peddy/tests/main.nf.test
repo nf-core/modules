@@ -79,6 +79,7 @@ nextflow_process {
             task {
                 ext {
                     args = '--sites hg38'
+                }
             }
         }
 
@@ -86,6 +87,5 @@ nextflow_process {
             assert !process.success
             assert process.exitStatus != 0
         }
-
     }
-
+}
