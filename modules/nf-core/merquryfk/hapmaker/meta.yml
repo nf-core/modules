@@ -1,0 +1,80 @@
+name: "merquryfk_hapmaker"
+description: |
+  Produces maternal and paternal FastK kmer tables from maternal, paternal and child
+  FastK tables
+keywords:
+  - k-mer frequency
+  - trio binning
+  - reference-free
+  - assembly evaluation
+tools:
+  - "merquryfk":
+      description: "FastK based version of Merqury"
+      homepage: "https://github.com/thegenemyers/MERQURY.FK"
+      tool_dev_url: "https://github.com/thegenemyers/MERQURY.FK"
+      license: ["https://github.com/thegenemyers/MERQURY.FK/blob/main/LICENSE"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing maternal sample information
+          e.g. [ id:'test', single_end:false ]
+    - matktab:
+        type: file
+        description: maternal ktab files from the program FastK
+        pattern: "*.ktab*"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing paternal sample information
+          e.g. [ id:'test', single_end:false ]
+    - patktab:
+        type: file
+        description: paternal ktab files from the program FastK
+        pattern: "*.ktab*"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing child sample information
+          e.g. [ id:'test', single_end:false ]
+    - childktab:
+        type: file
+        description: child ktab files from the program FastK
+        pattern: "*.ktab*"
+output:
+  - mat_hap_ktab:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing maternal sample information
+            e.g. [ id:'test', single_end:false ]
+      - '*${input_mat}.hap.ktab*", hidden: true':
+          type: map
+          description: |
+            FastK kmer table containing the maternal kmers
+            present in the child
+          pattern: "*${input_mat}.hap.ktab*"
+  - pat_hap_ktab:
+      - meta2:
+          type: map
+          description: |
+            Groovy Map containing paternal sample information
+            e.g. [ id:'test', single_end:false ]
+      - '*${input_pat}.hap.ktab*", hidden: true':
+          type: map
+          description: |
+            FastK kmer table containing the paternal kmers
+            present in the child
+          pattern: "*${input_pat}.hap.ktab*"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@prototaxites"
+  - "@yumisims"
+maintainers:
+  - "@prototaxites"
+  - "@yumisims"

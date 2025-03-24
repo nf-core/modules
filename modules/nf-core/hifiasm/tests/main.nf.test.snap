@@ -1,12 +1,12 @@
 {
-    "homo_sapiens pacbio hifi [fastq, [,], [,] ]": {
+    "homo_sapiens pacbio hifi [fastq, [,], [fastq, fastq], [,] ]": {
         "content": [
             [
                 [
                     {
                         "id": "test"
                     },
-                    "test.asm.bp.r_utg.gfa:md5,6a200e4bcb5d8d8fa6ed75874d26edc6"
+                    "test.hic.r_utg.gfa:md5,6a200e4bcb5d8d8fa6ed75874d26edc6"
                 ]
             ],
             [
@@ -14,7 +14,7 @@
                     {
                         "id": "test"
                     },
-                    "test.asm.bp.p_ctg.gfa:md5,c3225425a73a8d6d46536dab72380650"
+                    "test.hic.p_utg.gfa:md5,6a200e4bcb5d8d8fa6ed75874d26edc6"
                 ]
             ],
             [
@@ -22,43 +22,38 @@
                     {
                         "id": "test"
                     },
-                    "test.asm.bp.p_utg.gfa:md5,6a200e4bcb5d8d8fa6ed75874d26edc6"
+                    "test.hic.p_ctg.gfa:md5,6d0ec1ec65b1d2b295ac94b6fef25a27"
                 ]
+            ],
+            [
+
             ],
             [
                 [
                     {
                         "id": "test"
                     },
-                    "test.asm.bp.hap1.p_ctg.gfa:md5,78a86b6d5741a680e22a427ca9faa74a"
+                    "test.hic.hap1.p_ctg.gfa:md5,f67a8fdfa756961360732c79d189054d"
                 ]
             ],
             [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.asm.bp.hap2.p_ctg.gfa:md5,ac2116fd2f22c67d4c304cbf9b9f7793"
-                ]
-            ],
-            [
-                "versions.yml:md5,4c02458be007ef6776c2991fbb13f879"
+                "versions.yml:md5,a2ea36e18c39850b1680302d9f6c950f"
             ]
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.1"
+            "nextflow": "24.10.5"
         },
-        "timestamp": "2024-11-28T10:51:30.175326435"
+        "timestamp": "2025-03-14T16:39:37.645315715"
     },
-    "homo_sapiens pacbio hifi [fastq, [,], [fastq, fastq] ]": {
+    "homo_sapiens pacbio hifi [fastq, [,], [,], [bin] ]": {
         "content": [
             [
                 [
                     {
                         "id": "test"
                     },
-                    "test.asm.hic.r_utg.gfa:md5,6a200e4bcb5d8d8fa6ed75874d26edc6"
+                    "test.bp.r_utg.gfa:md5,6a200e4bcb5d8d8fa6ed75874d26edc6"
                 ]
             ],
             [
@@ -66,7 +61,7 @@
                     {
                         "id": "test"
                     },
-                    "test.asm.hic.p_utg.gfa:md5,6a200e4bcb5d8d8fa6ed75874d26edc6"
+                    "test.bp.p_utg.gfa:md5,6a200e4bcb5d8d8fa6ed75874d26edc6"
                 ]
             ],
             [
@@ -74,20 +69,88 @@
                     {
                         "id": "test"
                     },
-                    "test.asm.hic.hap1.p_ctg.gfa:md5,f67a8fdfa756961360732c79d189054d"
+                    "test.bp.p_ctg.gfa:md5,c3225425a73a8d6d46536dab72380650"
                 ]
             ],
             [
-                "versions.yml:md5,4c02458be007ef6776c2991fbb13f879"
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.bp.hap1.p_ctg.gfa:md5,78a86b6d5741a680e22a427ca9faa74a"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.bp.hap2.p_ctg.gfa:md5,ac2116fd2f22c67d4c304cbf9b9f7793"
+                ]
+            ],
+            [
+                "versions.yml:md5,a2ea36e18c39850b1680302d9f6c950f"
             ]
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.1"
+            "nextflow": "24.10.5"
         },
-        "timestamp": "2024-11-28T10:52:15.111066189"
+        "timestamp": "2025-03-14T15:07:54.108750194"
     },
-    "homo_sapiens pacbio hifi [fastq, [,], [,] ] - stub": {
+    "homo_sapiens pacbio hifi [fastq x2, [,], [,], [,] ]": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.bp.r_utg.gfa:md5,e6e38ac76f6b73142c3fe403f71d27b0"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.bp.p_utg.gfa:md5,e6e38ac76f6b73142c3fe403f71d27b0"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.bp.p_ctg.gfa:md5,43890a1832d8f26de263e57dc5e3b8de"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.bp.hap1.p_ctg.gfa:md5,7d7ea2bed472de263f6ec3521959b0d9"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.bp.hap2.p_ctg.gfa:md5,ce096a66c9bba039c6a22ba9e9409d01"
+                ]
+            ],
+            [
+                "versions.yml:md5,a2ea36e18c39850b1680302d9f6c950f"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.5"
+        },
+        "timestamp": "2025-03-14T15:08:24.563745561"
+    },
+    "homo_sapiens pacbio hifi [fastq, [,], [,], [,] ] - stub": {
         "content": [
             {
                 "0": [
@@ -95,7 +158,7 @@
                         {
                             "id": "test"
                         },
-                        "test.asm.r_utg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.r_utg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "1": [
@@ -103,26 +166,24 @@
                         {
                             "id": "test"
                         },
-                        "test.asm.ec.bin:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        [
+                            "test.ec.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.hic.lk.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.hic.tlb.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.ovlp.reverse.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.ovlp.source.bin:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
                     ]
                 ],
                 "10": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.stderr.log:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "11": [
-                    "versions.yml:md5,4c02458be007ef6776c2991fbb13f879"
+                    "versions.yml:md5,a2ea36e18c39850b1680302d9f6c950f"
                 ],
                 "2": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.asm.ovlp.source.bin:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.p_utg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "3": [
@@ -130,7 +191,10 @@
                         {
                             "id": "test"
                         },
-                        "test.asm.ovlp.reverse.bin:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        [
+                            "test.bp.p_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.p_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
                     ]
                 ],
                 "4": [
@@ -138,31 +202,21 @@
                         {
                             "id": "test"
                         },
-                        "test.asm.bp.p_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.a_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "5": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.asm.p_utg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
+
                 ],
                 "6": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.asm.p_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
+
                 ],
                 "7": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.asm.a_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.ec.fa.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "8": [
@@ -170,7 +224,7 @@
                         {
                             "id": "test"
                         },
-                        "test.asm.hap1.p_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.ovlp.paf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "9": [
@@ -178,7 +232,7 @@
                         {
                             "id": "test"
                         },
-                        "test.asm.hap2.p_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.stderr.log:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "alternate_contigs": [
@@ -186,7 +240,21 @@
                         {
                             "id": "test"
                         },
-                        "test.asm.a_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.a_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "bin_files": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test.ec.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.hic.lk.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.hic.tlb.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.ovlp.reverse.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.ovlp.source.bin:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
                     ]
                 ],
                 "corrected_reads": [
@@ -194,8 +262,14 @@
                         {
                             "id": "test"
                         },
-                        "test.asm.ec.bin:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.ec.fa.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
+                ],
+                "hap1_contigs": [
+
+                ],
+                "hap2_contigs": [
+
                 ],
                 "log": [
                     [
@@ -205,36 +279,15 @@
                         "test.stderr.log:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "maternal_contigs": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.asm.hap2.p_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "paternal_contigs": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.asm.hap1.p_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
                 "primary_contigs": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.asm.p_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "processed_contigs": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.asm.bp.p_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        [
+                            "test.bp.p_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.p_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
                     ]
                 ],
                 "processed_unitigs": [
@@ -242,7 +295,7 @@
                         {
                             "id": "test"
                         },
-                        "test.asm.p_utg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.p_utg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "raw_unitigs": [
@@ -250,44 +303,36 @@
                         {
                             "id": "test"
                         },
-                        "test.asm.r_utg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.r_utg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "reverse_overlaps": [
+                "read_overlaps": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.asm.ovlp.reverse.bin:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "source_overlaps": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.asm.ovlp.source.bin:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.ovlp.paf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,4c02458be007ef6776c2991fbb13f879"
+                    "versions.yml:md5,a2ea36e18c39850b1680302d9f6c950f"
                 ]
             }
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.1"
+            "nextflow": "24.10.5"
         },
-        "timestamp": "2024-11-28T10:53:06.003871811"
+        "timestamp": "2025-03-17T13:55:35.007180089"
     },
-    "homo_sapiens pacbio hifi [fastq, [yak, yak], [,] ]": {
+    "homo_sapiens pacbio hifi [fastq, [,], [,], [,]]": {
         "content": [
             [
                 [
                     {
                         "id": "test"
                     },
-                    "test.asm.dip.r_utg.gfa:md5,68361ac3e8babd51f3891d1637ca0fdc"
+                    "test.bp.r_utg.gfa:md5,6a200e4bcb5d8d8fa6ed75874d26edc6"
                 ]
             ],
             [
@@ -295,7 +340,7 @@
                     {
                         "id": "test"
                     },
-                    "test.asm.dip.p_utg.gfa:md5,68361ac3e8babd51f3891d1637ca0fdc"
+                    "test.bp.p_utg.gfa:md5,6a200e4bcb5d8d8fa6ed75874d26edc6"
                 ]
             ],
             [
@@ -303,17 +348,71 @@
                     {
                         "id": "test"
                     },
-                    "test.asm.dip.hap1.p_ctg.gfa:md5,eed5da5f3dd415dbb711edb61a09802f"
+                    "test.bp.p_ctg.gfa:md5,c3225425a73a8d6d46536dab72380650"
                 ]
             ],
             [
-                "versions.yml:md5,4c02458be007ef6776c2991fbb13f879"
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.bp.hap1.p_ctg.gfa:md5,78a86b6d5741a680e22a427ca9faa74a"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.bp.hap2.p_ctg.gfa:md5,ac2116fd2f22c67d4c304cbf9b9f7793"
+                ]
+            ],
+            null,
+            null,
+            [
+                "versions.yml:md5,a2ea36e18c39850b1680302d9f6c950f"
             ]
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.1"
+            "nextflow": "24.10.5"
         },
-        "timestamp": "2024-11-28T10:51:45.301359171"
+        "timestamp": "2025-03-17T13:53:18.392096098"
+    },
+    "homo_sapiens pacbio hifi [fastq, [yak, yak], [,], [,] ]": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.dip.r_utg.gfa:md5,68361ac3e8babd51f3891d1637ca0fdc"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.dip.p_utg.gfa:md5,68361ac3e8babd51f3891d1637ca0fdc"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.dip.hap1.p_ctg.gfa:md5,eed5da5f3dd415dbb711edb61a09802f"
+                ]
+            ],
+            [
+                "versions.yml:md5,a2ea36e18c39850b1680302d9f6c950f"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.5"
+        },
+        "timestamp": "2025-03-14T16:39:20.650653593"
     }
 }

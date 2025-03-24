@@ -1,3 +1,17 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: abundance_differential_filter
+description: A subworkflow for filtering differential abundance results
+keywords:
+  - differential
+  - abundance
+  - expression
+  - count matrix
+  - fold-change
+components:
+  - limma/differential
+  - deseq2/differential
+  - propr/propd
+  - custom/filterdifferentialtable
 input:
   - ch_input:
       description: Channel with input data for differential analysis
@@ -10,13 +24,16 @@ input:
             description: Count matrix file
         - analysis_method:
             type: value
-            description: Analysis method (deseq2 or limma)
+            description: Analysis method (deseq2, limma, or propd)
         - fc_threshold:
             type: value
             description: Fold change threshold for filtering
-        - padj_threshold:
+        - stat_threshold:
             type: value
-            description: Adjusted p-value threshold for filtering
+            description: |
+              Threshold for filtering the significance statistics
+              (eg. adjusted p-values in the case of deseq2 or limma,
+              weighted connectivity in the case of propd)
   - ch_samplesheet:
       description: Channel with sample information
       structure:
@@ -113,10 +130,11 @@ output:
         - meta:
             type: map
             description: Metadata map
-        - matrix:
-            type: file
-            description: Variance stabilised count matrix file
+        - matrices:
+            type: list
+            description: A list of variance stabilised count matrix files
             pattern: "*.{csv,tsv}"
+
   - model:
       description: Channel containing statistical model object from differential analysis
       structure:
@@ -130,7 +148,7 @@ output:
 authors:
   - "@pinin4fjords"
   - "@bjlang"
-  - "@araiz2001"
+  - "@caraiz2001"
   - "@suzannejin"
 maintainers:
   - "@pinin4fjords"
