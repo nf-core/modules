@@ -28,11 +28,21 @@ input:
         type: file
         description: TBI file
         pattern: "*.{vcf.gz.tbi}"
-  - - ped:
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - ped:
         type: file
         description: PED/FAM file
         pattern: "*.{ped,fam}"
-  - - sites:
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - sites:
         type: file
         description: sites file
         pattern: "*.{sites}"
