@@ -14,7 +14,7 @@ def parse_vep_csq_transcripts(
     transcripts: list, allele_ind: int, csq_ind: int, hgnc_ind: int, var_csq: list
 ) -> Tuple[list, list, list, list]:
     """
-    Parse conseqences for each transcript and return HGNC IDs, alleles, and their severity rank
+    Parse consequences for each transcript and return HGNC IDs, alleles, and their severity rank
     based on the term's ranking in the ensembl consequences list.
 
     Args:
@@ -51,7 +51,7 @@ def construct_most_severe_consequence_info(
     line: str, allele_ind: int, csq_ind: int, hgnc_ind: int, var_csq: list
 ) -> list:
     """
-    Parse conseqences for each transcript and return HGNC IDs, alleles, and their severity rank
+    Parse consequences for each transcript and return HGNC IDs, alleles, and their severity rank
     based on the term's ranking in the ensembl consequences list.
 
     Args:
