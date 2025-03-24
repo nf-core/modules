@@ -27,7 +27,7 @@ process FASTQDL {
         $args \\
         --accession $accession \\
         --cpus $task.cpus \\
-        --outdir ${prefix}
+        --outdir .
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
