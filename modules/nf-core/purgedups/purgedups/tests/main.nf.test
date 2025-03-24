@@ -1,0 +1,59 @@
+nextflow_process {
+
+    name "Test Process PURGEDUPS_PURGEDUPS"
+    script "../main.nf"
+    process "PURGEDUPS_PURGEDUPS"
+   
+    tag "modules"
+    tag "modules_nfcore"
+    tag "purgedups"
+    tag "purgedups/pbcstat"
+    tag "purgedups/calcuts"
+    tag "purgedups/purgedups"
+   
+    test("test_purgedups_purgedups") {
+        
+        setup {
+            run("PURGEDUPS_PBCSTAT") {
+                script "../../pbcstat/main.nf"
+                
+                process {
+                    """
+                    input[0] = [
+                        [id:'test'],// meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.paf',checkIfExists:true)
+                        ]
+                    """
+                }
+            }
+            
+            run("PURGEDUPS_CALCUTS") {
+                script "../../calcuts/main.nf"
+                
+                process {
+                    """
+                    input[0] = PURGEDUPS_PBCSTAT.out.stat
+                    """
+                }
+            }
+        }
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = PURGEDUPS_PBCSTAT.out.basecov
+                    .join(PURGEDUPS_CALCUTS.out.cutoff)
+                    .join(Channel.value(input))
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match()}
+            )
+        }
+    }
+}
