@@ -89,7 +89,7 @@ process SORTMERNA {
         reads_input = paired_end ? reads.collect{"--reads $it"}.join(' ') : "--reads $reads"
         def n_fastq = paired_end ? reads.size() : 1
         if ( n_fastq == 1 ) {
-            mv_cmd = "echo "" | gzip > ${prefix}.non_rRNA.fastq.gz"
+            mv_cmd = "echo | gzip > ${prefix}.non_rRNA.fastq.gz"
         } else {
             mv_cmd = """
             echo "" | gzip > ${prefix}_1.non_rRNA.fastq.gz
