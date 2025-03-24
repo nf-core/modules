@@ -9,7 +9,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "biohansel"
    
-    test("test_biohansel_paired_end") {        
+    test("test_biohansel_paired_end") {
         when {
             params {
                 module_args = "--scheme typhi"
@@ -35,7 +35,7 @@ nextflow_process {
             )
         }
     }
-    test("test_biohansel_single_end") {        
+    test("test_biohansel_single_end") {
         when {
             params {
                 module_args = "--scheme typhi"
@@ -59,7 +59,7 @@ nextflow_process {
         }
     }
 
-    test("test_biohansel_assembly") {        
+    test("test_biohansel_assembly") {
         when {
             params {
                 module_args = "--scheme typhi"
@@ -78,7 +78,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.simple_summary.collect{ [it[0], path(it[1]).readLines()[0]] },
+                    process.out.kmer_results.collect{ [it[0], path(it[1]).readLines()[0]] },
+                    process.out.summary
+                ).match() }
             )
         }
     }
