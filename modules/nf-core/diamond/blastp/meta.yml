@@ -24,6 +24,8 @@ input:
         type: file
         description: Input fasta file containing query sequences
         pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - meta2:
         type: map
         description: |
@@ -33,6 +35,7 @@ input:
         type: file
         description: File of the indexed DIAMOND database
         pattern: "*.dmnd"
+        ontologies: []
   - - outfmt:
         type: integer
         description: |
@@ -135,6 +138,7 @@ output:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies: []
 authors:
   - "@spficklin"
   - "@jfy133"

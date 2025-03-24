@@ -27,6 +27,8 @@ input:
         type: file
         description: Input fasta file containing the amino acid or dna query sequences
         pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - interproscan_database:
         type: directory
         description: Path to the interproscan database (untarred
@@ -37,42 +39,59 @@ output:
           type: file
           description: Tab separated file containing with detailed hits
           pattern: "*.{tsv}"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
       - "*.tsv":
           type: file
           description: Tab separated file containing with detailed hits
           pattern: "*.{tsv}"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   - xml:
       - meta:
           type: file
           description: XML file containing with detailed hits
           pattern: "*.{xml}"
+          ontologies:
+            - edam: http://edamontology.org/format_2332 # XML
       - "*.xml":
           type: file
           description: XML file containing with detailed hits
           pattern: "*.{xml}"
+          ontologies:
+            - edam: http://edamontology.org/format_2332 # XML
   - gff3:
       - meta:
           type: file
           description: GFF3 file containing with detailed hits
           pattern: "*.{gff3}"
+          ontologies:
+            - edam: http://edamontology.org/format_1975 # GFF3
       - "*.gff3":
           type: file
           description: GFF3 file containing with detailed hits
           pattern: "*.{gff3}"
+          ontologies:
+            - edam: http://edamontology.org/format_1975 # GFF3
   - json:
       - meta:
           type: file
           description: JSON file containing with detailed hits
           pattern: "*.{json}"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
       - "*.json":
           type: file
           description: JSON file containing with detailed hits
           pattern: "*.{json}"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies: []
 authors:
   - "@toniher"
   - "@mahesh-panchal"
