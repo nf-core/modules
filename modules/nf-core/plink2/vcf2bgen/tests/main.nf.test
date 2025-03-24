@@ -75,10 +75,6 @@ nextflow_process {
 
     test("plink2 - vcf2bgen - vcf - ref-last") {
         config "./nextflow.config"
-        // TODO nf-core: If you are created a test for a chained module
-        // (the module requires running more than one process to generate the required output)
-        // add the 'setup' method here.
-        // You can find more information about how to use a 'setup' method in the docs (https://nf-co.re/docs/contributing/modules#steps-for-creating-nf-test-for-chained-modules).
 
         when {
             process {
