@@ -1,0 +1,42 @@
+nextflow_process {
+
+    name "Test Process ROARY"
+    script "../main.nf"
+    process "ROARY"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "roary"
+
+    test("test_roary") {
+
+        when {
+            process {
+                """
+                // meta map and gff files are required
+                input[0] = [
+                    [ id: "test_gff" ], // meta map with id
+                    [                       // List of paths to GFF files
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff'),
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test2.gff'),
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test3.gff')
+
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                {assert process.success},
+                // Check for key output files
+                {assert process.out.results[0][1].toString().contains("gene_presence_absence.csv")},
+                {assert process.out.results[0][1].toString().contains("gene_presence_absence.Rtab")},
+                {assert process.out.results[0][1].toString().contains("summary_statistics.txt")},
+                {assert snapshot(process.out.versions).match()}
+            )
+        }
+
+    }
+
+}
