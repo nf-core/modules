@@ -29,52 +29,67 @@ input:
         type: file
         description: Genome assembly
         pattern: "*.{fasta,fa,fas,fsa,faa,fna}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - lib:
         type: file
         description: Custom library (e.g. from another species)
         pattern: "*.{fasta,fa,fas,fsa,faa,fna}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
 output:
   - masked:
       - meta:
           type: file
           description: Masked fasta
-          pattern: "*.masked"
+          pattern: "*.{masked}"
+          ontologies: []
       - ${prefix}.masked:
           type: file
           description: Masked fasta
-          pattern: "*.masked"
+          pattern: "*.{masked}"
+          ontologies: []
   - out:
       - meta:
           type: file
           description: Out file
-          pattern: "*.out"
+          pattern: "*.{out}"
+          ontologies: []
       - ${prefix}.out:
           type: file
           description: Out file
-          pattern: "*.out"
+          pattern: "*.{out}"
+          ontologies: []
   - tbl:
       - meta:
           type: file
           description: tbl file
-          pattern: "*.tbl"
+          pattern: "*.{tbl}"
+          ontologies: []
       - ${prefix}.tbl:
           type: file
           description: tbl file
-          pattern: "*.tbl"
+          pattern: "*.{tbl}"
+          ontologies: []
   - gff:
       - meta:
           type: file
           description: GFF file
-          pattern: "*.gff"
+          pattern: "*.{gff}"
+          ontologies:
+            - edam: http://edamontology.org/format_2305
       - ${prefix}.gff:
           type: file
           description: GFF file
-          pattern: "*.gff"
+          pattern: "*.{gff}"
+          ontologies:
+            - edam: http://edamontology.org/format_2305
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies: []
 authors:
   - "@kherronism"
   - "@gallvp"
