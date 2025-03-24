@@ -1,7 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "plink2_vcf2bgen"
-description: Convert from VCF file to BGEN file version 1.2 format preserving dosages. 
+description: Convert from VCF file to BGEN file version 1.2 format preserving dosages.
 keywords:
   - plink2
   - bgen file
@@ -39,7 +39,7 @@ input:
     - sample_name_mode:
         type: string
         description: Option to use to set IID/FID in the BGEN file.
-          Can be: double-id, const-fid <char>, or id-delim <char>.
+          Allowed values are double-id, const-fid <char>, or id-delim <char>.
 
 output:
   - bgen_file:
