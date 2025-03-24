@@ -64,13 +64,13 @@ process MOSDEPTH {
     touch ${prefix}.summary.txt
     touch ${prefix}.per-base.d4
     echo "" | gzip > ${prefix}.per-base.bed.gz
-    echo "" | gzip > ${prefix}.per-base.bed.gz.csi
+    touch ${prefix}.per-base.bed.gz.csi
     echo "" | gzip > ${prefix}.regions.bed.gz
-    echo "" | gzip > ${prefix}.regions.bed.gz.csi
+    touch ${prefix}.regions.bed.gz.csi
     echo "" | gzip > ${prefix}.quantized.bed.gz
-    echo "" | gzip > ${prefix}.quantized.bed.gz.csi
+    touch ${prefix}.quantized.bed.gz.csi
     echo "" | gzip > ${prefix}.thresholds.bed.gz
-    echo "" | gzip > ${prefix}.thresholds.bed.gz.csi
+    touch ${prefix}.thresholds.bed.gz.csi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
