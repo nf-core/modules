@@ -33,9 +33,6 @@ nextflow_process {
 
     test("test_authentict_deam2cont") {
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = SAMTOOLS_CALMD.out.bam
