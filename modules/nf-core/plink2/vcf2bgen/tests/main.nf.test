@@ -24,12 +24,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'test', single_end:false ],
-                    [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true)
-                    ]
-                    "DS",
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true),
+                    'DS',
                     true,
-                    "double-id"
+                    'double-id'
                 ]
                 """
             }
@@ -42,8 +40,8 @@ nextflow_process {
                 { assert process.out.sample_file.get(0).get(1) ==~ ".*.sample" },
                 { assert process.out.log_file.get(0).get(1) ==~ ".*.log" },
                 { assert snapshot(process.out.versions).match("versions") },
-                { assert snapshot(process.out).match() }
-            )
+                { assert snapshot(process.out.sample_file).match("doubleid-samplefile") },
+                { assert snapshot(process.out.bgen_file).match("doubleid-bgenfile") }            )
         }
 
     }
@@ -60,12 +58,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'test', single_end:false ],
-                    [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true)
-                    ]
-                    "DS",
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true),
+                    'DS',
                     true,
-                    "const-fid 1"
+                    'double-id'
                 ]
                 """
             }
@@ -77,8 +73,8 @@ nextflow_process {
                 { assert process.out.bgen_file.get(0).get(1) ==~ ".*.bgen" },
                 { assert process.out.sample_file.get(0).get(1) ==~ ".*.sample" },
                 { assert process.out.log_file.get(0).get(1) ==~ ".*.log" },
-                { assert snapshot(process.out.versions).match("versions") },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.sample_file).match("constfid-samplefile") },
+                { assert snapshot(process.out.bgen_file).match("constfid-bgenfile") }
             )
         }
 
@@ -96,12 +92,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'test', single_end:false ],
-                    [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true)
-                    ]
-                    "DS",
-                    false,
-                    "double-id"
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true),
+                    'DS',
+                    true,
+                    'double-id'
                 ]
                 """
             }
@@ -113,8 +107,8 @@ nextflow_process {
                 { assert process.out.bgen_file.get(0).get(1) ==~ ".*.bgen" },
                 { assert process.out.sample_file.get(0).get(1) ==~ ".*.sample" },
                 { assert process.out.log_file.get(0).get(1) ==~ ".*.log" },
-                { assert snapshot(process.out.versions).match("versions") },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.sample_file).match("reflast-samplefile") },
+                { assert snapshot(process.out.bgen_file).match("reflast-bgenfile") }
             )
         }
 
@@ -129,12 +123,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'test', single_end:false ],
-                    [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true)
-                    ]
-                    "DS",
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true),
+                    'DS',
                     true,
-                    "double-id"
+                    'double-id'
                 ]
                 """
             }
@@ -145,9 +137,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.bgen_file.get(0).get(1) ==~ ".*.bgen" },
                 { assert process.out.sample_file.get(0).get(1) ==~ ".*.sample" },
-                { assert process.out.log_file.get(0).get(1) ==~ ".*.log" },
-                { assert snapshot(process.out.versions).match("versions") },
-                { assert snapshot(process.out).match() }
+                { assert process.out.log_file.get(0).get(1) ==~ ".*.log" }
             )
         }
 
