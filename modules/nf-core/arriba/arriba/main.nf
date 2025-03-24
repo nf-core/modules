@@ -27,10 +27,10 @@ process ARRIBA_ARRIBA {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def blacklist = blacklist ? "-b $blacklist" : "-f blacklist"
-    def known_fusions = known_fusions ? "-k $known_fusions" : ""
-    def cytobands = cytobands ? "-d $cytobands" : ""
-    def protein_domains = protein_domains ? "-p $protein_domains" : ""
+    def blacklist_arg = blacklist ? "-b $blacklist" : "-f blacklist"
+    def known_fusions_arg = known_fusions ? "-k $known_fusions" : ""
+    def cytobands_arg = cytobands ? "-d $cytobands" : ""
+    def protein_domains_arg = protein_domains ? "-p $protein_domains" : ""
 
     """
     arriba \\
@@ -39,10 +39,10 @@ process ARRIBA_ARRIBA {
         -g $gtf \\
         -o ${prefix}.fusions.tsv \\
         -O ${prefix}.fusions.discarded.tsv \\
-        $blacklist \\
-        $known_fusions \\
-        $cytobands \\
-        $protein_domains \\
+        $blacklist_arg \\
+        $known_fusions_arg \\
+        $cytobands_arg \\
+        $protein_domains_arg \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

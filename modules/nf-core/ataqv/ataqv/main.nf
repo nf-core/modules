@@ -50,4 +50,17 @@ process ATAQV_ATAQV {
         ataqv: \$( ataqv --version )
     END_VERSIONS
     """
+
+    stub:
+    def prefix        = task.ext.prefix ?: "${meta.id}"
+    def args          = task.ext.args   ?: ''
+    def problems_cmd  = args.contains("--log-problematic-reads") ? "touch 1.problems" : ""
+    """
+    touch ${prefix}.ataqv.json
+    ${problems_cmd}
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ataqv: \$( ataqv --version )
+    END_VERSIONS
+    """
 }
