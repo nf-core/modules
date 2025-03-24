@@ -29,7 +29,9 @@ process BIOFORMATS2RAW {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bioformats2raw: \$(bioformats2raw --version |& sed -n '1s/Version = //p; 2, 3p; s/bioformats2raw //')
+        bioformats2raw: \$(bioformats2raw --version |& sed -n '1s/Version = //p')
+        bio-formats: \$(bioformats2raw --version |& sed -n '2s/Bio-Formats version = //p')
+        ngff: \$(bioformats2raw --version |& sed -n '3s/NGFF specification version = //p')
     END_VERSIONS
     """
 
@@ -42,7 +44,9 @@ process BIOFORMATS2RAW {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bioformats2raw: \$(bioformats2raw --version |& sed -n '1s/Version = //p; 2, 3p; s/bioformats2raw //')
+        bioformats2raw: \$(bioformats2raw --version |& sed -n '1s/Version = //p')
+        bio-formats: \$(bioformats2raw --version |& sed -n '2s/Bio-Formats version = //p')
+        ngff: \$(bioformats2raw --version |& sed -n '3s/NGFF specification version = //p')
     END_VERSIONS
     """
 }
