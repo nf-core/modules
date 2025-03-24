@@ -11,6 +11,32 @@ nextflow_process {
     // Note: Regular tests have been commented out because Interproscan has a harded coded a requirement of 10G memory,
     // and so will therefore not run on the nf-core test runners without being killed.
 
+    test("test_interproscan") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file("${moduleDir}/tests/fixtures/test.fasta", checkIfExists: true)
+                ]
+                input[1] = [
+                    file("${moduleDir}/tests/fixtures/interproscan_db/data", type: 'dir', checkIfExists: true),
+                    "5.73-104.0"
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+
     // test("sarscov2 - proteome_fasta") {
 
     //     when {
