@@ -18,7 +18,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [id:'test',single_end:false], // meta map
+                    [id:'test', single_end:false],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists:true)
                 ]
                 """
@@ -32,8 +32,6 @@ nextflow_process {
         }
     }
     test("test_bamtools_convert_noext_error") {
-        
-        
         when {
             params {
                 module_args = ""
@@ -41,7 +39,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [id:'test', single_end:false], // meta map
+                    [id:'test', single_end:false],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists:true)
                     ]
                 """
@@ -55,8 +53,6 @@ nextflow_process {
         }
     }
     test("test_bamtools_convert_bed") {
-        
-        
         when {
             params {
                 module_args = "-format bed"
@@ -64,8 +60,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [id:'test',single_end:false],// meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam',checkIfExists:true)
+                    [id:'test', single_end:false],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists:true)
                     ]
                 """
             }
@@ -78,8 +74,6 @@ nextflow_process {
         }
     }
     test("test_bamtools_convert_fasta") {
-        
-        
         when {
             params {
                 module_args = "-format fasta"
@@ -87,8 +81,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [id:'test',single_end:false],// meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam',checkIfExists:true)
+                    [id:'test', single_end:false],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists:true)
                     ]
                 """
             }
@@ -101,8 +95,6 @@ nextflow_process {
         }
     }
     test("test_bamtools_convert_fastq") {
-        
-        
         when {
             params {
                 module_args = "-format fastq"
@@ -110,8 +102,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [id:'test',single_end:false],// meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam',checkIfExists:true)
+                    [id:'test', single_end:false],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists:true)
                     ]
                 """
             }
@@ -133,8 +125,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [id:'test',single_end:false],// meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam',checkIfExists:true)
+                    [id:'test', single_end:false],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists:true)
                     ]
                 """
             }
@@ -156,8 +148,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [id:'test',single_end:false],// meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam',checkIfExists:true)
+                    [id:'test', single_end:false],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists:true)
                     ]
                 """
             }
@@ -179,8 +171,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [id:'test',single_end:false],// meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam',checkIfExists:true)
+                    [id:'test', single_end:false],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists:true)
                     ]
                 """
             }
@@ -200,8 +192,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [id:'test',single_end:false],// meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam',checkIfExists:true)
+                    [id:'test', single_end:false],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists:true)
                     ]
                 """
             }
@@ -222,8 +214,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [id:'test',single_end:false],// meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam',checkIfExists:true)
+                    [id:'test', single_end:false],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists:true)
                     ]
                 """
             }
