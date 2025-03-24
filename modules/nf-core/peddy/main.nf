@@ -10,6 +10,7 @@ process PEDDY {
     input:
     tuple val(meta), path(vcf), path(vcf_tbi)
     path ped
+    path sites
 
     output:
     tuple val(meta), path("*.html")     , emit: html
@@ -24,6 +25,7 @@ process PEDDY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def sites_arg = sites ? "--sites ${sites}" : ''
     """
     peddy \\
         $args \\
@@ -31,6 +33,7 @@ process PEDDY {
         --plot \\
         -p $task.cpus \\
         $vcf \\
+        $sites_arg \\
         $ped
 
     cat <<-END_VERSIONS > versions.yml
