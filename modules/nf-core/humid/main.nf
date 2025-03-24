@@ -51,10 +51,10 @@ process HUMID {
     def VERSION = '1.0.4' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     mkdir -p ${prefix}
-    touch ${prefix}_1_dedup.fastq.gz
-    touch ${prefix}_2_dedup.fastq.gz
-    touch ${prefix}_1_annotated.fastq.gz
-    touch ${prefix}_2_annotated.fastq.gz
+    echo "" | gzip > ${prefix}_1_dedup.fastq.gz
+    echo "" | gzip > ${prefix}_2_dedup.fastq.gz
+    echo "" | gzip > ${prefix}_1_annotated.fastq.gz
+    echo "" | gzip > ${prefix}_2_annotated.fastq.gz
     touch ${prefix}/stats.dat
     touch ${prefix}/neigh.dat
     touch ${prefix}/counts.dat

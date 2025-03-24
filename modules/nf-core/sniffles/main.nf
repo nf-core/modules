@@ -50,7 +50,7 @@ process SNIFFLES {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def vcf = vcf_output ? "echo \"\" | gzip > ${prefix}.vcf.gz; touch ${prefix}.vcf.gz.tbi": ''
+    def vcf = vcf_output ? "echo \"\" | gzip > ${prefix}.vcf.gz; echo "" | gzip > ${prefix}.vcf.gz.tbi": ''
     def snf = snf_output ? "touch ${prefix}.snf": ''
 
     """

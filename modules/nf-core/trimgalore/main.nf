@@ -86,13 +86,13 @@ process TRIMGALORE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     if (meta.single_end) {
         output_command = "echo '' | gzip > ${prefix}_trimmed.fq.gz ;"
-        output_command += "touch ${prefix}.fastq.gz_trimming_report.txt"
+        output_command += "echo "" | gzip > ${prefix}.fastq.gz_trimming_report.txt"
     }
     else {
         output_command = "echo '' | gzip > ${prefix}_1_trimmed.fq.gz ;"
-        output_command += "touch ${prefix}_1.fastq.gz_trimming_report.txt ;"
+        output_command += "echo "" | gzip > ${prefix}_1.fastq.gz_trimming_report.txt ;"
         output_command += "echo '' | gzip > ${prefix}_2_trimmed.fq.gz ;"
-        output_command += "touch ${prefix}_2.fastq.gz_trimming_report.txt"
+        output_command += "echo "" | gzip > ${prefix}_2.fastq.gz_trimming_report.txt"
     }
     """
     ${output_command}

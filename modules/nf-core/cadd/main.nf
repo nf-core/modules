@@ -45,7 +45,7 @@ process CADD {
     def VERSION = "1.6.post1"
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     """
-    touch ${prefix}.tsv.gz
+    echo "" | gzip > ${prefix}.tsv.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
