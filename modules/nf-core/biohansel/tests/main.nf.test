@@ -66,6 +66,7 @@ nextflow_process {
     }
 
     test("test_biohansel_assembly") {
+        tag "test"
         when {
             params {
                 module_args = "--scheme typhi"
@@ -88,7 +89,9 @@ nextflow_process {
                     process.out.versions,
                     process.out.simple_summary.collect{ [it[0], path(it[1]).readLines()[0]] },
                     process.out.kmer_results.collect{ [it[0], path(it[1]).readLines()[0]] },
-                    process.out.summary.collect{ [it[0], path(it[1]).readLines()] }
+                    process.out.summary.collect{ [it[0], path(it[1]).readLines().collect { line -> 
+                        line.replaceAll(/[^\t]*\/genome\.fasta\.gz/, 'genome.fasta.gz') 
+                    }] }
                 ).match() }
             )
         }
