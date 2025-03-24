@@ -25,7 +25,7 @@ process FASTQDL {
     """
     fastq-dl \\
         $args \\
-        -- prefix ${prefix} \\
+        --prefix ${prefix} \\
         --accession $accession \\
         --cpus $task.cpus \\
         --outdir .
