@@ -1,7 +1,6 @@
 nextflow_process {
 
     name "Test Process PLINK_EXTRACT"
-    config "./nextflow.config"
     script "../main.nf"
     process "PLINK_EXTRACT"
 
@@ -13,6 +12,7 @@ nextflow_process {
     tag "gawk"
 
     test("homo sapiens - bed, bim, fam, txt") {
+        config "./nextflow.config"
 
         setup {
             run("PLINK_VCF") {
@@ -58,6 +58,33 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
+    }
+
+    test("homo sapiens - bed, bim, fam, txt - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                extract_file = Channel.of("").collectFile(name: "variants.txt")
+                input[0] = Channel.of([
+                        [ id:'test', single_end:false ], // meta map
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/plink/test.rnaseq.bed", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/plink/test.rnaseq.bim", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/plink/test.rnaseq.fam", checkIfExists: true)
+                    ]).combine(extract_file)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
     }
 
 }
