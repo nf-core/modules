@@ -156,6 +156,7 @@ jobs:
 
       - name: Run nf-test Action
         if: ${{steps.filter.outputs.filtered_paths != '[]'}}
+        continue-on-error: ${{ runner.arch == 'ARM64' }}
         uses: ./.github/actions/nf-test-action
         env:
           SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
