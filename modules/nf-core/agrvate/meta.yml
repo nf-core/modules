@@ -24,6 +24,9 @@ input:
         type: file
         description: A Staphylococcus aureus fasta file.
         pattern: "*.fasta"
+        ontologies: 
+          - edam: "http://edamontology.org/data_2044" # Sequence
+          - edam: "http://edamontology.org/format_1929" # FASTA
 output:
   - summary:
       - meta:
@@ -35,6 +38,8 @@ output:
           type: file
           description: A summary of the agrvate assessment
           pattern: "*-summary.tab"
+          ontologies: 
+            - edam: "http://edamontology.org/format_3475" # TAB
   - results_dir:
       - ${fasta.baseName}-results:
           type: directory
@@ -45,6 +50,8 @@ output:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies: 
+            - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@abhi18av"
 maintainers:
