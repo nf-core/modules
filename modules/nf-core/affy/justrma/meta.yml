@@ -24,10 +24,15 @@ input:
         type: file
         description: |
           CSV or TSV format sample sheet with sample metadata and CEL file names
+        ontologies: 
+          - edam: "http://edamontology.org/format_3475" # TSV
+          - edam: "http://edamontology.org/format_3752" # CSV
     - celfiles_dir:
         type: list
         description: Path to a directory containing CEL files
         pattern: "*.{CEL,CEL.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1930" # FASTQ
   - - meta2:
         type: map
         description: |
@@ -37,6 +42,7 @@ input:
         type: file
         description: |
           Optional description file in MIAME format
+        ontologies: []
 output:
   - rds:
       - meta:
@@ -48,6 +54,7 @@ output:
           type: file
           description: Serialised ExpressionSet object
           pattern: "*.rds"
+          ontologies: []
   - expression:
       - meta:
           type: map
@@ -58,6 +65,8 @@ output:
           type: file
           description: TSV-format intensity matrix
           pattern: "matrix.tsv"
+          ontologies: 
+            - edam: "http://edamontology.org/format_3475" # TSV
   - annotation:
       - meta:
           type: map
@@ -68,11 +77,15 @@ output:
           type: file
           description: TSV-format annotation table
           pattern: "*.annotation.tsv"
+          ontologies: 
+            - edam: "http://edamontology.org/format_3475" # TSV
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies: 
+            - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@pinin4fjords"
 maintainers:
