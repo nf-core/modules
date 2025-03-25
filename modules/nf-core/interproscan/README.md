@@ -12,11 +12,15 @@ ENV INTERPROSCAN_VER=<VERSION>
 
 3. Create and test the container:
 
+You can do `make build` from the Makefile or: 
+
 ```bash
 docker build . -t quay.io/nf-core/interproscan:<VERSION>
 ```
 
 4. Access rights are needed to push the container to the Dockerhub nfcore organization, please ask a core team member to do so.
+
+You can do `make push` from the Makefile or:
 
 ```bash
 docker push quay.io/nf-core/interproscan:<VERSION>
