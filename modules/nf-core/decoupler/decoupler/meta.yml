@@ -39,6 +39,7 @@ input:
           Path to the matrix file (e.g. gene/protein expression, etc.).
           Should be in in tab-separated format (`*.tab`)
         pattern: "*.tsv"
+        ontologies: []
   - - net:
         type: file
         description: |
@@ -46,6 +47,13 @@ input:
           expression matrix to a process/component (e.g. gene set,
           transcription factor, kinase, etc.)
         pattern: "*.tsv"
+        ontologies: []
+  - - gtf:
+        type: file
+        description: |
+          Annotation file in GTF format
+        pattern: "*.gtf"
+        ontologies: []
 output:
   - dc_estimate:
       - meta:
@@ -58,6 +66,7 @@ output:
           description: |
             The file containing the estimation results of the enrichment(s)
           pattern: "*estimate__decoupler.tsv"
+          ontologies: []
   - dc_pvals:
       - meta:
           type: map
@@ -70,17 +79,20 @@ output:
             The file containing the p-value associated to the estimation
             results of the enrichment(s)
           pattern: "*pvals__decoupler.tsv"
+          ontologies: []
       - s:
           type: file
           description: |
             The file containing the p-value associated to the estimation
             results of the enrichment(s)
           pattern: "*pvals__decoupler.tsv"
+          ontologies: []
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies: []
 authors:
   - "@gabora"
   - "@vicpaton"

@@ -17,7 +17,7 @@ process CADD {
 
     output:
     tuple val(meta), path("*.tsv.gz"), emit: tsv
-    path "versions.yml", emit: versions
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,6 +28,9 @@ process CADD {
     def VERSION = "1.6.post1"
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     """
+    export XDG_CACHE_HOME=\$PWD/snakemake_cache
+    mkdir -p \$XDG_CACHE_HOME
+
     cadd.sh \\
         -o ${prefix}.tsv.gz \\
         ${args} \\
@@ -40,7 +43,6 @@ process CADD {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = "1.6.post1"
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
