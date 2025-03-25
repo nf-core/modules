@@ -16,7 +16,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test'], // meta map
-                    file('/home/schwitalla/Documents/test-datasets/test_data/zarr', checkIfExists: true),
+                    file('./../../../modules/nf-core/raw2ometiff/tests/zarr', checkIfExists: true),
                 ]
                 """
             }
@@ -43,7 +43,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test'], // meta map
-                    file('/home/schwitalla/Documents/test-datasets/test_data/zarr', checkIfExists: true),
+                    file('./../../../modules/nf-core/raw2ometiff/tests/zarr', checkIfExists: true),
                 ]
                 """
             }
