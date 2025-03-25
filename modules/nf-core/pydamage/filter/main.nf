@@ -4,8 +4,8 @@ process PYDAMAGE_FILTER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pydamage:0.70--pyhdfd78af_0' :
-        'biocontainers/pydamage:0.70--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/pydamage:1.0--pyhdfd78af_0' :
+        'biocontainers/pydamage:1.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(csv)
@@ -21,6 +21,8 @@ process PYDAMAGE_FILTER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    export NUMBA_CACHE_DIR=./tmp
+    export MPLCONFIGDIR=./tmp
 
     pydamage \\
         filter \\
