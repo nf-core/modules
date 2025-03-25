@@ -1,5 +1,6 @@
 name: "anndata_getsize"
-description: Get the size (n_cells or n_genes) of an anndata object stored as a h5ad file
+description: Get the size (n_cells or n_genes) of an anndata object stored as a h5ad
+  file
 keywords:
   - anndata
   - single-cell
@@ -25,6 +26,8 @@ input:
         type: file
         description: H5AD file of anndata object
         pattern: "*.h5ad"
+        ontologies: 
+          - edam: "http://edamontology.org/format_3590" # HDF5
 
   - - size_type:
         type: string
@@ -41,12 +44,16 @@ output:
           type: file
           description: text file containing the requested size
           pattern: "*.txt"
+          ontologies: 
+            - edam: "http://edamontology.org/format_2330" # Text file
 
   - versions:
       - "versions.yml":
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies: 
+            - edam: "http://edamontology.org/format_3750" # YAML
 
 authors:
   - "@LeonHafner"
