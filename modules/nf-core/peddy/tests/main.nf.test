@@ -28,6 +28,7 @@ nextflow_process {
                     [ id:'sites_file' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/peddy.sites', checkIfExists: true)
                 ]
+                """
             }
         }
 
@@ -56,6 +57,7 @@ nextflow_process {
                     [ id:'sites_file' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/peddy.sites', checkIfExists: true)
                 ]
+                """
             }
         }
 
