@@ -1,0 +1,38 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test paml/codeml
+nextflow_process {
+
+    name "Test Process PAML_CODEML"
+    script "../main.nf"
+    process "PAML_CODEML"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "paml"
+    tag "paml/codeml"
+
+    test("complete config case_a") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'caseA' ], // meta map
+                    file('https://raw.githubusercontent.com/RiccPicc/test_data/refs/heads/main/case_a.ctl', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/RiccPicc/test_data/refs/heads/main/case_a.phy', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/RiccPicc/test_data/refs/heads/main/case_a.tree', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path("out.log").exists() }
+            )
+        }
+
+    }
+
+}

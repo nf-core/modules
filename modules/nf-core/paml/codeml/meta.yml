@@ -1,0 +1,60 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "paml_codeml"
+description: PAML (Phylogenetic Analysis Using Maximum Likelihood) is a package
+  of programs for maximum likelihood analysis of protein and DNA sequences (Yang 1997).
+  PAML is useful if you are interested in the process of sequence evolution.
+  codeml implements a number of sophisticated models, which you can use to construct
+  likelihood ratio tests of evolutionary hypotheses.
+keywords:
+  - evolution
+  - maximum likelihood
+  - selective pressure
+  - dNdS
+tools:
+  - "paml":
+      description: "CODEML is the main tool which uses maximum-likelihood to infer dNdS."
+      homepage: "https://evomics.org/resources/software/molecular-evolution-software/paml/"
+      documentation: "https://github.com/abacus-gene/paml/wiki/BASEML#baseml"
+      tool_dev_url: "https://github.com/abacus-gene/paml"
+      doi: 10.1093/molbev/msm088"
+      licence: ["GPL v3"]
+      identifier: biotools:paml
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+
+    - bam:
+        type: file
+        description: A control/configuration file containing information for codeml run
+        pattern: "*.{ctl,c,cfg,config}"
+
+output:
+  - results:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.out.txt":
+          type: file
+          description: CODEML output result file
+          pattern: "*.{out.txt}"
+      - "codeml.log":
+          type: file
+          description: CODEML output result file
+          pattern: "*.{log}"
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@RiccPicc"
+maintainers:
+  - "@RiccPicc"
