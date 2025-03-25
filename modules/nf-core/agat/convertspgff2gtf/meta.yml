@@ -26,30 +26,46 @@ input:
         type: file
         description: Annotation file in GFF3/GTF format
         pattern: "*.{gff, gtf}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1975" # GFF
+          - edam: "http://edamontology.org/format_2306" # GTF
 output:
   - output_gtf:
       - meta:
           type: file
           description: Annotation file in GTF format
           pattern: "*.{gtf}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2306" # GTF
       - "*.agat.gtf":
           type: file
           description: Annotation file in GTF format
           pattern: "*.{gtf}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2306" # GTF
   - log:
       - meta:
           type: file
           description: Log file of the conversion process
           pattern: "*.{log}"
+          ontologies: 
+            - edam: "http://edamontology.org/data_1678" # Log file
+            - edam: "http://edamontology.org/format_2330" # Plain text
+
       - "*.log":
           type: file
           description: Log file of the conversion process
           pattern: "*.{log}"
+          ontologies: 
+            - edam: "http://edamontology.org/data_1678" # Log file
+            - edam: "http://edamontology.org/format_2330" # Plain text
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/format_3750" # Ontology
 authors:
   - "@toniher"
 maintainers:
