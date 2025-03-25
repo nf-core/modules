@@ -1,0 +1,85 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "infernal_cmsearch"
+description: Search covariance models against a sequence database
+keywords:
+  - rrna
+  - covariance model
+  - sequence search
+tools:
+  - "infernal":
+      description: "Infernal is for searching DNA sequence databases for RNA structure and sequence similarities."
+      homepage: "http://eddylab.org/infernal/Userguide.pdf"
+      documentation: "http://eddylab.org/infernal/Userguide.pdf"
+      tool_dev_url: "https://github.com/EddyRivasLab/infernal"
+      doi: "10.1093/bioinformatics/btt509"
+      licence: ["BSD-3-clause"]
+      identifier: biotools:infernal
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - cmfile:
+        type: file
+        description: |
+          A calibrated Infernal covariance model file
+    - seqdb:
+        type: file
+        description: |
+          A FASTA file of sequences to search the covariance models
+          against. Can be gzipped.
+  - - write_align:
+        type: boolean
+        description: |
+          Flag to save optional alignment output in Stockholm
+          format. Specify with 'true' to save.
+  - - write_target:
+        type: boolean
+        description: |
+          Flag to save optional per target summary in a tabular
+          format. Specify with 'true' to save.
+
+output:
+  - output:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt.gz":
+          type: file
+          description: Human readable output summarizing hmmsearch results
+          pattern: "*.{txt.gz}"
+  - alignments:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.sto.gz":
+          type: file
+          description: Optional multiple sequence alignment (MSA) in Stockholm format
+          pattern: "*.{sto.gz}"
+  - target_summary:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tbl.gz":
+          type: file
+          description: Optional tabular (space-delimited) summary of per-target output
+          pattern: "*.{tbl.gz}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@prototaxites"
+maintainers:
+  - "@prototaxites"
