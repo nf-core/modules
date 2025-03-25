@@ -13,9 +13,9 @@ process PICARD_SETNMMDANDUQTAGS {
     tuple val(meta2), path(reference)
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
-    tuple val(meta), path("*.bai"), emit: bai
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.bam")                , emit: bam
+    tuple val(meta), path("*.bai"), optional: true, emit: bai
+    path "versions.yml"                           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
