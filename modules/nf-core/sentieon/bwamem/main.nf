@@ -2,6 +2,7 @@ process SENTIEON_BWAMEM {
     tag "$meta.id"
     label 'process_high'
     label 'sentieon'
+    label 'dummy_pr_for_testing'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
