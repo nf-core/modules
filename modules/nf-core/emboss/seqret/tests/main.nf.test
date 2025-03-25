@@ -1,0 +1,115 @@
+nextflow_process {
+
+    name "Test Process EMBOSS_SEQRET"
+    
+    script "../main.nf"
+    process "EMBOSS_SEQRET"
+   
+    tag "modules"
+    tag "modules_nfcore"
+    tag "emboss"
+    tag "emboss/seqret"
+    tag "gunzip"
+
+    setup {
+            run("GUNZIP") {
+                script "modules/nf-core/gunzip/main.nf"
+                
+                process {
+                    """
+                    input[0] = [
+                        [id:'test',single_end:false],// meta map
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.gbff.gz',checkIfExists:true)
+                        ]
+                    """
+                }
+            }
+        }
+   
+    test("test_emboss_seqret_gb2embl") {
+        
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = 'embl'
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test_emboss_seqret_gb2gff") {
+        
+        
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = 'gff'
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test_emboss_seqret_gb2pir") {
+        
+        
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = 'pir'
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test_emboss_seqret_gb2fasta") {
+        
+       
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = 'fasta'
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
