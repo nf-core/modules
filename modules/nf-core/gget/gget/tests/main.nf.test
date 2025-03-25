@@ -29,7 +29,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.output,
+                process.out.versions).match() }
             )
         }
     }
@@ -100,6 +101,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert snapshot(process.out.output,
+                process.out.versions).match() }
             )
         }
     }
@@ -122,6 +125,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert snapshot(process.out.output,
+                process.out.versions).match() }
             )
         }
     }
@@ -144,7 +149,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.output).match() }
+                { assert snapshot(process.out.output,
+                process.out.versions).match() }
             )
         }
     }
@@ -167,7 +173,32 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.output).match() }
+                { assert snapshot(process.out.output,
+                process.out.versions).match() }
+            )
+        }
+    }
+    test("test_gget_blat") {
+
+
+        when {
+            params {
+                module_args = 'blat -a taeGut2 MKWMFKEDHSLEHRCVESAKIRAKYPDRVPVIVEKVSGSQIVDIDKRKYLVPSDITVAQFMWIIRKRIQLPSEKAIFLFVDKTVPQSR'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],// meta map
+                    []
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.output,
+                process.out.versions).match() }
             )
         }
     }
@@ -190,7 +221,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.output).match() }
+                { assert snapshot(process.out.output,
+                process.out.versions).match() }
             )
         }
     }
@@ -213,7 +245,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.output).match() }
+                { assert snapshot(process.out.output,
+                process.out.versions).match() }
             )
         }
     }
@@ -236,7 +269,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.output).match() }
+                { assert snapshot(process.out.output,
+                process.out.versions).match() }
             )
         }
     }
@@ -259,7 +293,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.output).match() }
+                { assert snapshot(process.out.output,
+                process.out.versions).match() }
             )
         }
     }
