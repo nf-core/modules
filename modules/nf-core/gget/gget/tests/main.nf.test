@@ -10,7 +10,7 @@ nextflow_process {
     tag "gget"
     tag "gget/gget"
 
-    test("test_gget_ref") {
+    test("ref_json_mouse") {
 
 
         when {
@@ -34,7 +34,7 @@ nextflow_process {
             )
         }
     }
-    test("test_gget_ref_download") {
+    test("ref_json_ciona_intestinalis") {
 
 
         when {
@@ -58,7 +58,7 @@ nextflow_process {
             )
         }
     }
-    test("test_gget_search") {
+    test("search_json_human") {
 
 
         when {
@@ -82,7 +82,7 @@ nextflow_process {
             )
         }
     }
-    test("test_gget_search_csv") {
+    test("search_csv_human") {
 
 
         when {
@@ -106,7 +106,7 @@ nextflow_process {
             )
         }
     }
-    test("test_gget_info") {
+    test("gget_info") {
 
 
         when {
@@ -130,7 +130,7 @@ nextflow_process {
             )
         }
     }
-    test("test_gget_seq") {
+    test("seq_json_ENSG00000034713") {
 
 
         when {
@@ -154,7 +154,7 @@ nextflow_process {
             )
         }
     }
-    test("test_gget_blat") {
+    test("blat_json_taeGut2") {
 
 
         when {
@@ -178,31 +178,7 @@ nextflow_process {
             )
         }
     }
-    test("test_gget_blat") {
-
-
-        when {
-            params {
-                module_args = 'blat -a taeGut2 MKWMFKEDHSLEHRCVESAKIRAKYPDRVPVIVEKVSGSQIVDIDKRKYLVPSDITVAQFMWIIRKRIQLPSEKAIFLFVDKTVPQSR'
-            }
-            process {
-                """
-                input[0] = [
-                    [id:'test'],// meta map
-                    []
-                    ]
-                """
-            }
-        }
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.output,
-                process.out.versions).match() }
-            )
-        }
-    }
-    test("test_gget_muscle") {
+    test("muscle_proteome") {
 
 
         when {
@@ -226,7 +202,7 @@ nextflow_process {
             )
         }
     }
-    test("test_gget_enrichr") {
+    test("enrichr_json_ontology") {
 
 
         when {
@@ -250,7 +226,7 @@ nextflow_process {
             )
         }
     }
-    test("test_gget_archs4") {
+    test("archs4_json_ACE2") {
 
 
         when {
@@ -274,7 +250,7 @@ nextflow_process {
             )
         }
     }
-    test("test_gget_pdb") {
+    test("pdb_pdb_7S7U") {
 
 
         when {
