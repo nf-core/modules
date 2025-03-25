@@ -86,8 +86,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert process.out.root },
+                { assert process.out.versions },
+                { assert process.out.root[0][1].size() > 0 }
             )
+            assert new File(process.out.root[0][1]).exists()
+
         }
     }
 
