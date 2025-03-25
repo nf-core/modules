@@ -1,0 +1,44 @@
+name: fusioninspector
+description: Validation of Fusion Transcript Predictions
+keywords:
+  - fusioninspector
+tools:
+  - fusioninspector:
+      description: Validation of Fusion Transcript Predictions
+      homepage: https://github.com/FusionInspector/FusionInspector
+      documentation: https://github.com/FusionInspector/FusionInspector/wiki
+      tool_dev_url: https://github.com/FusionInspector/FusionInspector
+      doi: 10.1101/2021.08.02.454639"
+      licence: https://github.com/FusionInspector/FusionInspector/blob/master/LICENSE.txt
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: FASTQ file
+      pattern: "*.{fastq*}"
+  - reference:
+      type: directory
+      description: Path to ctat references
+      pattern: "*"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - reference:
+      type: directory
+      description: Genome resource path
+      pattern: "*"
+
+authors:
+  - "@rannick"
+  - "@delfiterradas"
+  - "@sofiromano"
+  - "@alanmmobbs93"
+  - "@martings"

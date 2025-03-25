@@ -1,0 +1,147 @@
+nextflow_process {
+
+    name "Test Process FUSIONINSPECTOR"
+    script "../main.nf"
+    process "FUSIONINSPECTOR"
+    tag "modules"
+    tag "modules_local"
+    tag "fusioninspector"
+
+    test("FUSIONINSPECTOR") {
+        config './nextflow.config'
+
+        setup {
+            run("STARFUSION_BUILD") {
+                script "../../starfusion/build/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'minigenome fasta' ],
+                        file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/master/minigenome.fa")
+                    ]
+                    input[1] = [
+                        [ id:'minigenome gtf' ],
+                        file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/master/minigenome.gtf")
+                    ]
+
+                    input[2] = file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/master/CTAT_HumanFusionLib.mini.dat.gz")
+                    input[3] = "human"
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/v0.0.1/rnaseq_1.fastq.gz"),
+                        file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/v0.0.1/rnaseq_2.fastq.gz")
+                    ], // reads
+                    [
+                        file("https://github.com/FusionInspector/FusionInspector/raw/master/test/fusion_targets.A.txt")
+                    ]
+                ]
+                input[1] = STARFUSION_BUILD.out.reference.map { it[1] }
+                """
+            }
+        }
+
+        then {
+
+            def unstableFiles = [
+                "test.bed",
+                "test.consolidated.bam",
+                "test.consolidated.bam.bai",
+                "test.junction_reads.bam",
+                "test.junction_reads.bam.bai",
+                "test.spanning_reads.bam",
+                "Log.final.out",
+                "Log.out",
+                "microH.dat",
+                "test.fusion_preds.coalesced.summary",
+                "test.fusion_preds.coalesced.summary.EMadj",
+                "test.fusion_preds.coalesced.summary.min_frag_thresh",
+                "test.fusion_preds.coalesced.summary.wSpliceInfo",
+                "test.fusion_preds.coalesced.summary.wSpliceInfo.post_blast_filter",
+                "test.fusion_preds.coalesced.summary.wSpliceInfo.post_blast_filter.post_promisc_filter",
+                "test.fusion_preds.coalesced.summary.fusion_junction_reads_acc",
+                "test.fusion_preds.coalesced.summary.fusion_spanning_reads_acc",
+                "test.post_blast_and_promiscuity_filter",
+                "test.post_blast_and_promiscuity_filter.EMadj",
+                "test.post_blast_and_promiscuity_filter.EMadj.FFPM",
+                "test.post_blast_and_promiscuity_filter.EMadj.FFPM.wMicroH",
+                "test.post_blast_and_promiscuity_filter.EMadj.FFPM.wMicroH.annotated",
+                "test.post_blast_and_promiscuity_filter.EMadj.FFPM.wMicroH.annotated.coding_effect",
+                "test.star.cSorted.dupsMarked.bam",
+                "test.star.cSorted.dupsMarked.bam.bai",
+                "test.star.cSorted.dupsMarked.bam.fusion_junction_info",
+                "test.star.cSorted.dupsMarked.bam.fusion_spanning_info",
+                "test.star.cSorted.dupsMarked.bam.read_align_counts",
+                "test.star.cSorted.dupsMarked.bam.read_align_counts.idx",
+                "test.star.cSorted.dupsMarked.bam.spanning_reads_want.idx",
+                "test.star.sortedByCoord.out.bam",
+                "test.star.sortedByCoord.out.bam.bai",
+                "test.fusion_preds.coalesced.summary.EMadj.min_frag_thresh",
+                "test.fusion_preds.coalesced.summary.fusion_junction_read_accs",
+                "test.fusion_preds.coalesced.summary.fusion_spanning_read_accs",
+                "test.fusion_preds.coalesced.summary.EMadj.min_frag_thresh.wSpliceInfo",
+                "test.fusion_preds.coalesced.summary.EMadj.min_frag_thresh.wSpliceInfo.post_blast_filter",
+                "test.fusion_preds.coalesced.summary.EMadj.min_frag_thresh.wSpliceInfo.post_blast_filter.post_promisc_filter"
+            ]
+
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.tsv[0][1]).name,
+                    process.out.tsv_coding_effect,  // TODO: These files do not seem to be produced. Consult Annick.
+                    process.out.out_gtf,            // TODO: These files do not seem to be produced. Consult Annick.
+                    file(process.out.log[0][1]).name,
+                    file(process.out.html[0][1]).name,
+                    file(process.out.abridged_tsv[0][1]).name,
+                    file(process.out.igv_inputs[0][1]).listFiles().findAll { file -> !unstableFiles.contains(file.name) },
+                    file(process.out.fi_workdir[0][1]).listFiles().findAll { file -> !unstableFiles.contains(file.name) },
+                    file(process.out.igv_inputs[0][1]).list().findAll { file -> !unstableFiles.contains(file) },
+                    file(process.out.fi_workdir[0][1]).list().findAll { file -> !unstableFiles.contains(file) },
+                    process.out.chckpts_dir,
+                    process.out.versions
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("FUSIONINSPECTOR stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/v0.0.1/rnaseq_1.fastq.gz"),
+                        file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/v0.0.1/rnaseq_2.fastq.gz")
+                    ], // reads
+                    [
+                        file("https://github.com/FusionInspector/FusionInspector/raw/master/test/fusion_targets.A.txt")
+                    ]
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out
+                    ).match() }
+            )
+        }
+
+    }
+
+}
