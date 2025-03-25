@@ -26,11 +26,16 @@ process METASPACE_CONVERTER {
 
     template 'run_metaspace_converter.py'
 
+    stub:
     """
+    touch  AnnData_${ds_id}.h5ad
+    touch  SpatialData_${ds_id}.zarr
+
     cat <<-END_VERSIONS > versions.yml
     ${task.process}:
         python: 3.11
         metaspace_converter: 1.1.1
     END_VERSIONS
     """
+
 }

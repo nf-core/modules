@@ -22,6 +22,22 @@ nextflow_process {
 
         then {
             assertAll(
+                { assert process.success }
+            )
+        }
+    }
+    test("metaspace_converter - stub") {
+
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = '2022-08-05_17h28m56s'
+                """
+            }
+        }
+        then {
+            assertAll(
                 { assert process.success },
                 { assert snapshot(process.out).match() }
             )

@@ -1,44 +1,43 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "metaspace_converter"
 description: Export METASPACE datasets to AnnData and SpatialData objects
 keywords:
-  - anndata
-  - spatialdata
-  - metabolomics
-  - mass spectrometry
-  - imaging
+- anndata
+- spatialdata
+- metabolomics
+- mass spectrometry
+- imaging
 tools:
-  - "metaspace_converter":
-      description: "Python package to download and convert datasets from the METASPACE knowledge base to common formats for single-cell and spatial omics analysis"
-      homepage: "https://metaspace2020.github.io/metaspace-converter/"
-      documentation: "https://metaspace2020.github.io/metaspace-converter/"
-      tool_dev_url: "https://github.com/metaspace2020/metaspace-converter"
-      licence: ["Apache 2.0 license"]
+- "metaspace_converter":
+    description: "Python package to download and convert datasets from the METASPACE
+      knowledge base to common formats for single-cell and spatial omics analysis"
+    homepage: "https://metaspace2020.github.io/metaspace-converter/"
+    documentation: "https://metaspace2020.github.io/metaspace-converter/"
+    tool_dev_url: "https://github.com/metaspace2020/metaspace-converter"
+    licence: ["Apache 2.0 license"]
+    identifier: biotools:metaspace
 
 input:
- - - ds_id:
-        type: string
-        description: METASPACE dataset ID
+- - ds_id:
+      type: string
+      description: METASPACE dataset ID
 
 output:
- - AnnData_object:
-   - "*.h5ad":
+- AnnData_object:
+  - AnnData_${ds_id}.h5ad:
       type: file
-      description: "AnnData object in .h5ad format. Obs are single pixels and vars are metabolites"
-
- - SpatialData_object:
-   - "*.zarr":
+      description: "AnnData object in .h5ad format. Obs are single pixels and vars
+        are metabolites"
+- SpatialData_object:
+  - SpatialData_${ds_id}.zarr:
       type: directory
       description: "SpatialData format in .zarr format"
-
- - versions:
-     - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
+- versions:
+  - versions.yml:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 authors:
-  - "@bisho2122"
+- "@bisho2122"
 maintainers:
-  - "@bisho2122"
+- "@bisho2122"

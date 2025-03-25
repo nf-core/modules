@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+import os
+os.environ[ 'NUMBA_CACHE_DIR' ] = '/tmp/'
+
 import metaspace_converter as mc
 from metaspace import SMInstance
 import argparse
@@ -53,3 +56,28 @@ sdata = mc.metaspace_to_spatialdata(
 
 adata.write_h5ad("AnnData_${ds_id}.h5ad")
 sdata.write("SpatialData_${ds_id}.zarr", overwrite=True)
+
+# Versions
+versions = {"${task.process}": {"python": "3.11", "metaspace_converter": "1.1.1"}}
+
+def format_yaml_like(data: dict, indent: int = 0) -> str:
+    """Formats a dictionary to a YAML-like string.
+
+    Args:
+        data (dict): The dictionary to format.
+        indent (int): The current indentation level.
+
+    Returns:
+        str: A string formatted as YAML.
+    """
+    yaml_str = ""
+    for key, value in data.items():
+        spaces = "    " * indent
+        if isinstance(value, dict):
+            yaml_str += f"{spaces}{key}:\\n{format_yaml_like(value, indent + 1)}"
+        else:
+            yaml_str += f"{spaces}{key}: {value}\\n"
+    return yaml_str
+
+with open("versions.yml", "w") as f:
+    f.write(format_yaml_like(versions))
