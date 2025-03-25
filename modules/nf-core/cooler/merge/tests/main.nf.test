@@ -1,0 +1,61 @@
+nextflow_process {
+
+    name "Test Process COOLER_MERGE"
+    
+    script "../main.nf"
+    process "COOLER_MERGE"
+   
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cooler"
+    tag "cooler/merge"
+    
+    test("test_cooler_merge") {
+        
+        when {
+            
+            process {
+                """
+                input[0] = [
+                    [id:'test'],// meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/merge/toy/toy.symm.upper.2.cool',checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/merge/toy/toy.symm.upper.2.cp2.cool',checkIfExists:true)
+                    ]
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    
+    
+    test("test_cooler_merge - stub") {
+        options '-stub'
+        when {
+            
+            process {
+                """
+                input[0] = [
+                    [id:'test'],// meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/merge/toy/toy.symm.upper.2.cool',checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/merge/toy/toy.symm.upper.2.cp2.cool',checkIfExists:true)
+                    ]
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
