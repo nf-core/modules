@@ -29,7 +29,7 @@ def convert_to_tensor(im) -> torch.Tensor:
     """
     Convert a numpy array to a torch tensor with padding for batch and channel.
     """
-    return torch.reshape(torch.from_numpy(im), [1] + [1] + list(im.shape))
+    return torch.reshape(torch.from_numpy(im), [1] + [1] + list(im.shape)).float()
 
 
 def load_dataset(path_ref, path_list_seg) -> tuple[torch.Tensor, torch.Tensor]:
@@ -79,9 +79,8 @@ class Metrics(Enum):
     HausdorffDistanceMetric = mmetrics.HausdorffDistanceMetric()
     SurfaceDistanceMetric = mmetrics.SurfaceDistanceMetric()
     SurfaceDiceMetric = mmetrics.SurfaceDiceMetric(class_thresholds = [2])
-    # PanopticQualityMetric = mmetrics.PanopticQualityMetric(num_classes = 2)
     MSEMetric = mmetrics.MSEMetric()
-    # MAEMetric = mmetrics.MAEMetric()
+    MAEMetric = mmetrics.MAEMetric()
     RMSEMetric = mmetrics.RMSEMetric()
     PSNRMetric = mmetrics.PSNRMetric(max_val = 1)
 
