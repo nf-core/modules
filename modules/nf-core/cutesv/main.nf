@@ -34,4 +34,14 @@ process CUTESV {
         cuteSV: \$( cuteSV --version 2>&1 | sed 's/cuteSV //g' )
     END_VERSIONS
     """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}" 
+    """
+    touch "${prefix}.vcf"
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        cuteSV: \$( cuteSV --version 2>&1 | sed 's/cuteSV //g' )
+    END_VERSIONS
+    """
 }
