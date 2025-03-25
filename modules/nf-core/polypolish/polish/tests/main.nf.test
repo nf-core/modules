@@ -1,0 +1,80 @@
+// nf-core modules test polypolish
+nextflow_process {
+
+    name "Test Process POLYPOLISH"
+    script "../main.nf"
+    process "POLYPOLISH"
+    config './nextflow.config'
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "samtools view"
+    tag "polypolish"
+
+    setup{
+        run("SAMTOOLS_VIEW") {
+            script "../../../samtools/view/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    []
+                ])
+                input[1] = [[],[]]
+                input[2] = []
+                input[3] = []
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - sam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = SAMTOOLS_VIEW.out.sam
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - sam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = SAMTOOLS_VIEW.out.sam
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
