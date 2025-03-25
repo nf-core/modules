@@ -13,7 +13,7 @@ tools:
       documentation: "https://github.com/jamiemcg/BUSCO_phylogenomics"
       tool_dev_url: "https://github.com/jamiemcg/BUSCO_phylogenomics"
       doi: "10.1371/journal.pgen.1011512"
-      licence: ['MIT']
+      licence: ["MIT"]
       identifier: ""
 input:
   - - meta:
@@ -27,30 +27,30 @@ input:
         pattern: "*"
 output:
   - gene_trees:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
-    - ${prefix}/gene_trees_single_copy/:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/gene_trees_single_copy/:
           type: directory
           description: Gene trees of BUSCO families
           pattern: "${prefix}/gene_trees_single_copy"
   - supermatrix:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
-    - ${prefix}/supermatrix/:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/supermatrix/:
           type: directory
           description: Concatenated supermatrix alignments of BUSCO families
           pattern: "${prefix}/supermatrix"
   - versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@vagkaratzas"
 maintainers:
