@@ -34,7 +34,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.eigenvec.get(0).get(1) ==~ ".*.eigenvec" },
                 { assert process.out.eigenval.get(0).get(1) ==~ ".*.eigenval" },
-                { assert process.out.eigenval.get(0).get(1) ==~ ".*.log" },
+                { assert process.out.logfile.get(0).get(1) ==~ ".*.log" },
                 { assert snapshot(process.out.versions).match("versions") }
 
             )
