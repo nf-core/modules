@@ -177,7 +177,10 @@ jobs:
           paths: "${{ join(fromJson(steps.filter.outputs.filtered_paths), ' ') }}"
 
   confirm-pass-nf-test:
-    runs-on: "ubuntu-latest"
+    runs-on:
+      - runs-on=${{ github.run_id }}-confirm-pass-nf-test
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
     needs: [nf-test]
     if: always()
     steps:
