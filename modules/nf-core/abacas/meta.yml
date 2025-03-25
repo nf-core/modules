@@ -25,10 +25,14 @@ input:
         type: file
         description: Fasta file containing scaffold
         pattern: "*.{fasta,fa}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
   - - fasta:
         type: file
         description: FASTA reference file
         pattern: "*.{fasta,fa}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
 output:
   - results:
       - meta:
@@ -46,11 +50,15 @@ output:
             'test.abacas.tab', 'test.abacas.unused.contigs.out',
             'test.abacas.MULTIFASTA.fa' ]
           pattern: "*.{abacas}*"
+          ontologies: 
+            - edam: "http://edamontology.org/format_1929" # FASTA
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies: 
+            - edam: "http://edamontology.org/format_3750" # Ontology data
 authors:
   - "@joseespinosa"
   - "@drpatelh"
