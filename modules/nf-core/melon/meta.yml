@@ -1,0 +1,61 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "melon"
+description: Melon command for taxonoming profiling
+keywords:
+  - profile
+  - metagenomics
+  - melon
+  - classification
+tools:
+  - "melon":
+      description: "Melon: metagenomic long-read-based taxonomic identification and
+        quantification using marker genes"
+      homepage: "https://github.com/xinehc/melon"
+      documentation: "https://github.com/xinehc/melon"
+      tool_dev_url: "https://github.com/xinehc/melon"
+      doi: "10.1186/s13059-024-03363-y"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:true ]`.
+    - reads:
+        type: file
+        description: Quality-controlled long reads.
+        pattern: "*.{fa,fasta,fq,fastq,fq.gz,fastq.gz}"
+  - - database:
+        type: directory
+        description: Melon database.
+output:
+  - tsv_output:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:true ]`.
+      - "**/*.tsv":
+          type: file
+          description: Melon output tsv file containing taxonomic profiling results.
+          pattern: "*.tsv"
+  - json_output:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:true ]`.
+      - "**/*.json":
+          type: file
+          description: Melon output json file containing per-read taxonomic classification results.
+          pattern: "*.json"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions.
+          pattern: "versions.yml"
+authors:
+  - "@eparisis"
+maintainers:
+  - "@eparisis"
