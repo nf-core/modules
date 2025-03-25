@@ -1,0 +1,82 @@
+nextflow_process {
+
+    name "Test Process ULTRA_ALIGN"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "ULTRA_ALIGN"
+   
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gunzip"
+    tag "gnu"
+    tag "gnu/sort"
+    tag "ultra"
+    tag "ultra/index"
+    tag "ultra/align"
+   
+    test("test_ultra_align") {
+        
+        setup {
+            run("GUNZIP") {
+                script "../../../gunzip/main.nf"
+                
+                process {
+                    """
+                    input[0] = [
+                        [id:'test',single_end:false],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz',checkIfExists:true)
+                        ]
+                    """
+                }
+            }
+            
+            run("GNU_SORT") {
+                script "../../../gnu/sort/main.nf"
+                params {
+                    module_args = '-k1,1 -k4,4n'
+                }
+                
+                process {
+                    """
+                    input[0] = [
+                        [id:'test',single_end:false],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf',checkIfExists:true)
+                        ]
+                    """
+                }
+            }
+            
+            run("ULTRA_INDEX") {
+                script "../../index/main.nf"
+                params {
+                    module_args = '--disable_infer'
+                }
+                
+                process {
+                    """
+                    input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',checkIfExists:true)
+                    input[1] = GNU_SORT.out.sorted.map{it[1]}
+                    """
+                }
+            }
+        }
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',checkIfExists:true)
+                input[2] = ULTRA_INDEX.out.index
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

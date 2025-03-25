@@ -83,15 +83,8 @@ nextflow_process {
         
         when {
             params {
-                module_args = {
-            [
-            "-p 0.9", 
-            "-k \${meta.id}.pileup.bedGraph",
-            "-f \${meta.id}.pvalues.bedGraph",
-            "-b \${meta.id}.intervals.bed",
-            "-R \${meta.id}.duplicates.txt"
-            ].join(' ').trim()
-            }
+                module_args = '-p 0.9  -k test.pileup.bedGraph -f test.pvalues.bedGraph -b test.intervals.bed -R test.duplicates.txt'
+                
             }
             process {
                 """
