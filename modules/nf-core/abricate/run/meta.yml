@@ -22,6 +22,10 @@ input:
         type: file
         description: FASTA, GenBank or EMBL formatted file
         pattern: "*.{fa,fasta,fna,fa.gz,fasta.gz,fna.gz,gbk,gbk.gz,embl,embl.gz}"
+        ontologies:
+          - edam: 'http://edamontology.org/format_1929' # FASTA
+          - edam: 'http://edamontology.org/format_1936' # GenBank
+          - edam: 'http://edamontology.org/format_2204' # EMBL format
   - - databasedir:
         type: directory
         description: Optional location of local copy of database files, possibly with
@@ -38,11 +42,15 @@ output:
           type: file
           description: Tab-delimited report of results
           pattern: "*.{txt}"
+          ontologies:
+            - edam: 'http://edamontology.org/format_2330' # Textual format
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: 'http://edamontology.org/format_3750' # Textual format
 authors:
   - "@rpetit3"
 maintainers:
