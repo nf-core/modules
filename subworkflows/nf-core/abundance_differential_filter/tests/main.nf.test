@@ -219,7 +219,7 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.results_genewise,
+                    path(workflow.out.results_genewise[0][1]).exists(),
                     workflow.out.results_genewise_filtered,
                     workflow.out.normalised_matrix,
                     workflow.out.model,
@@ -464,8 +464,8 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.results_genewise,
-                    workflow.out.results_genewise_filtered,
+                    path(workflow.out.results_genewise[0][1]).exists(),
+                    path(workflow.out.results_genewise_filtered[0][1]).exists(),
                     workflow.out.normalised_matrix,
                     workflow.out.variance_stabilised_matrix,
                     workflow.out.model,
@@ -539,8 +539,8 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.results_genewise,
-                    workflow.out.results_genewise_filtered,
+                    path(workflow.out.results_genewise[0][1]).exists(),
+                    path(workflow.out.results_genewise_filtered[0][1]).exists(),
                     workflow.out.adjacency,
                     workflow.out.normalised_matrix,
                     workflow.out.variance_stabilised_matrix,
