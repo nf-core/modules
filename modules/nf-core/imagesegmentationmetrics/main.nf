@@ -1,6 +1,6 @@
 process IMAGESEGMENTATIONMETRICS {
     label 'process_single'
-
+    nextflow.enable.moduleBinaries = true
     conda "${moduleDir}/environment.yml"
     container 'community.wave.seqera.io/library/fire_monai_rasterio_tifffile_pruned:106d8ac1dc78149c'
 
@@ -18,7 +18,7 @@ process IMAGESEGMENTATIONMETRICS {
     def args = task.ext.args ?: ''
 
     """
-    segmentation_metrics.py run --path_ref ${ref_img} --path_list_seg ${images2compare} --list_metrics ${metricname} ${args}
+    segmentation_metrics.py run --path_ref ${ref_img} --path_list_seg "${images2compare}" --list_metrics "${metricname}" ${args}
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process}:
