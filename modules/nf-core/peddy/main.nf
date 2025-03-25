@@ -44,7 +44,9 @@ process PEDDY {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    if (sites && args.contains('--sites')) error "Double definition of --sites (in sites channel and in ext.args)"
     """
     touch ${prefix}.ped_check.csv
     touch ${prefix}.vs.html
