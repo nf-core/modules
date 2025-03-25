@@ -24,6 +24,12 @@ input:
       description: |
         Structure: path(adapter_fasta)
         File in FASTA format containing possible adapters to remove.
+  - val_discard_trimmed_pass:
+      type: boolean
+      description: |
+        Structure: val(discard_trimmed_pass)
+        Specify true to not write any reads that pass trimming thresholds.
+        This can be used to use fastp for the output report only.
   - val_save_trimmed_fail:
       type: boolean
       description: |
