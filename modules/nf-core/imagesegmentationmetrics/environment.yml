@@ -4,4 +4,10 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - "YOUR-TOOL-HERE"
+  - conda-forge::fire=0.7.0
+  - conda-forge::monai=1.4.0
+  - conda-forge::rasterio=1.4.3
+  - conda-forge::tifffile=2025.3.13
+  - pip
+  - pip:
+    - seg-metrics==1.2.8

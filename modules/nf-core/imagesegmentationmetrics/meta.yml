@@ -1,51 +1,47 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "imagesegmentationmetrics"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Calculate segmentation metrics between two sets of images
 keywords:
-  - sort
-  - example
-  - genomics
+  - segmentation
+  - image
+  - metrics
+  - monai
 tools:
-  - "imagesegmentationmetrics":
-      ## TODO nf-core: Add a description and other details for the software below
+  - "monai":
       description: ""
-      homepage: ""
-      documentation: ""
-      tool_dev_url: ""
-      doi: ""
-      licence: 
-      identifier: 
+      homepage: "https://monai.io/"
+      documentation: "https://docs.monai.io/en/stable/"
+      tool_dev_url: "https://github.com/project-monai/monai"
+      doi: "10.48550/arXiv.2211.02701"
+      licence: ["Apache-2.0"]
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  #
-  ## TODO nf-core: Delete / customise this example input
-    - bam:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sampleID']
+    - ref_img:
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
-        ontologies:
-          - edam: "http://edamontology.org/format_25722"
-          - edam: "http://edamontology.org/format_2573"
-          - edam: "http://edamontology.org/format_3462"
-          
+        description: Reference image file
+        pattern: "*.{tif,tiff}"
+    - images2compare:
+        type: file
+        description: Images to compare against the reference image
+        pattern: "*.{tif,tiff}"
+    - metricname:
+        type: string
+        description: Metric name
 
-## TODO nf-core: Add a description of all of the variables used as output
+
 output:
-  - bam:
-  #
-  ## TODO nf-core: Delete / customise this example output
-    - "*.bam":
+  - segmentation_metrics:
+    - "*.csv":
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
-        ontologies:
-          - edam: "http://edamontology.org/format_25722"
-          - edam: "http://edamontology.org/format_2573"
-          - edam: "http://edamontology.org/format_3462"
-          
+        description: Metrics table
+        pattern: "*.csv"
+
   - versions:
     - "versions.yml":
         type: file
