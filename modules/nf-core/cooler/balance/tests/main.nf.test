@@ -1,0 +1,57 @@
+nextflow_process {
+
+    name "Test Process COOLER_BALANCE"
+    
+    script "../main.nf"
+    process "COOLER_BALANCE"
+   
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cooler"
+    tag "cooler/balance"
+   
+    test("test_cooler_balance") {
+        when {
+            
+            process {
+                """
+                input[0] = [
+                    [id:'test'],// meta map
+                    file(params.test_data['generic']['cooler']['test_merge_cool'],checkIfExists:true),
+                    ''
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test_cooler_balance - stub") {
+
+        options "-stub"
+
+        when {
+            
+            process {
+                """
+                input[0] = [
+                    [id:'test'],// meta map
+                    file(params.test_data['generic']['cooler']['test_merge_cool'],checkIfExists:true),
+                    ''
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

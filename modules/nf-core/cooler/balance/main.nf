@@ -1,3 +1,4 @@
+include { cellFilteringArgs } from '../../simpleaf/quant/main.nf'
 process COOLER_BALANCE {
     tag "$meta.id"
     label 'process_high'
@@ -31,6 +32,19 @@ process COOLER_BALANCE {
         -p ${task.cpus} \\
         ${prefix}.${extension}${suffix}
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        cooler: \$(cooler --version 2>&1 | sed 's/cooler, version //')
+    END_VERSIONS
+    """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    suffix = resolution ? "::/resolutions/$resolution" : ""
+    extension = cool.getExtension()
+    def creation_cmd = suffix.endsWith(".gz") ? "echo '' | gzip -c >" : "touch"
+    """
+    ${creation_cmd} ${prefix}.${extension}${suffix}
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         cooler: \$(cooler --version 2>&1 | sed 's/cooler, version //')
