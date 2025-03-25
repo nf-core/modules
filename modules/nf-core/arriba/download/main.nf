@@ -9,6 +9,7 @@ process ARRIBA_DOWNLOAD {
 
     input:
     val(genome)
+    val(arriba_database)
 
     output:
     path "blacklist*${genome}*.tsv.gz"       , emit: blacklist
@@ -22,15 +23,28 @@ process ARRIBA_DOWNLOAD {
 
     script:
     """
-    wget https://github.com/suhrig/arriba/releases/download/v2.4.0/arriba_v2.4.0.tar.gz -O arriba_v2.4.0.tar.gz --no-check-certificate
-    tar -xzvf arriba_v2.4.0.tar.gz
-    rm arriba_v2.4.0.tar.gz
-    mv arriba_v2.4.0/database/* .
-    rm -r arriba_v2.4.0
+    wget $arriba_database -O arriba_database.tar.gz --no-check-certificate
+    mkdir arriba_database
+    ## Ensures --strip-components only applied when top level of tar contents is a directory
+    ## If just files or multiple directories, place all in prefix
+    if [[ \$(tar -taf arriba_database.tar.gz | grep -o -P "^.*?\\/" | uniq | wc -l) -eq 1 ]]; then
+        tar \\
+            -xavf \\
+            arriba_database.tar.gz \\
+            -C arriba_database --strip-components 1
+    else
+        tar \\
+            -xavf \\
+            arriba_database.tar.gz \\
+            -C arriba_database
+    fi
+    rm arriba_database.tar.gz
+    mv arriba_database/database/* .
+    rm -r arriba_database
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        arriba_download: \$(arriba -h | grep 'Version:' 2>&1 |  sed 's/Version:\s//')
+        arriba_database: \$(arriba -h | grep 'Version:' 2>&1 |  sed 's/Version:\s//')
     END_VERSIONS
     """
 
@@ -43,7 +57,7 @@ process ARRIBA_DOWNLOAD {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        arriba_download: \$(arriba -h | grep 'Version:' 2>&1 |  sed 's/Version:\s//')
+        arriba_atabase: \$(arriba -h | grep 'Version:' 2>&1 |  sed 's/Version:\s//')
     END_VERSIONS
     """
 }
