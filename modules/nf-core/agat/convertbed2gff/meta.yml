@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: agat_convertbed2gff
 description: |
@@ -28,6 +27,8 @@ input:
         type: file
         description: Input bed12 file
         pattern: "*.bed"
+        ontologies: 
+          - edam: "http://edamontology.org/format_3586" # BED
 output:
   - gff:
       - meta:
@@ -37,11 +38,15 @@ output:
           type: file
           description: Output GFF3 file
           pattern: "*.{gff}"
+          ontologies:
+            - edam: "http://edamontology.org/format_1975" # GFF
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/format_3750" # Textual format
 
 authors:
   - "@GallVp"
