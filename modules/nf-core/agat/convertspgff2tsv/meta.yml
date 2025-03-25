@@ -27,21 +27,30 @@ input:
         type: file
         description: Annotation file in GFF3/GTF format
         pattern: "*.{gff, gtf}"
+        ontologies:
+          - edam: http://edamontology.org/format_1975 # GFF
+          - edam: http://edamontology.org/format_2306 # GTF
 output:
   - tsv:
       - meta:
           type: file
           description: Annotation file in TSV format
           pattern: "*.{gtf}"
+          ontologies:
+            - edam: http://edamontology.org/format_2306 # GTF
       - "*.tsv":
           type: file
           description: Annotation file in TSV format
           pattern: "*.{gtf}"
+          ontologies:
+            - edam: http://edamontology.org/format_2306 # GTF
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies: 
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@rannick"
 maintainers:
