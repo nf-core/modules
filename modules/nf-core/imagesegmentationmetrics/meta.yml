@@ -37,11 +37,15 @@ input:
 
 output:
   - segmentation_metrics:
-    - "*.csv":
+     - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sampleID']
+     - "*.csv":
         type: file
         description: Metrics table
         pattern: "*.csv"
-
   - versions:
     - "versions.yml":
         type: file
