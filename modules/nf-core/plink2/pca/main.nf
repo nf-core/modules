@@ -7,11 +7,12 @@ process PLINK2_PCA {
         'biocontainers/plink2:2.00a2.3--h712d239_1' }"
 
     input:
-    tuple val(meta), path(pgen), path(psam), path(pvar)
+    tuple val(meta), val(npcs), val(use_approx), path(pgen), path(psam), path(pvar)
 
     output:
     tuple val(meta), path("*.eigenvec")    , emit: eigenvec
     tuple val(meta), path("*.eigenval")    , emit: eigenval
+    tuple val(meta), path("*.log")         , emit: logfile
     path "versions.yml", emit: versions
 
     when:
@@ -20,10 +21,12 @@ process PLINK2_PCA {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
+    def approx_option = use_approx ? "approx" : ""
+    def n_pcs = npcs ? npcs : 10
     """
     plink2 \\
-        --pca \\
+        --pca ${n_pcs} ${approx_option} \\
+        --memory ${task.memory.toMega()} \\
         $args \\
         --threads $task.cpus \\
         --pfile ${pgen.baseName} \\

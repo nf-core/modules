@@ -35,6 +35,14 @@ input:
         type: file
         description: PLINK 2 variant information file
         pattern: "*.{pvar}"
+    - npcs:
+        type: value
+        description: Number of PCs to compute
+    - approx:
+        type: boolean
+        description: If true, use the approximate method
+
+
 
 output:
   - eigenvec:
@@ -42,46 +50,42 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
           pattern: "*.{eigenvec}"
       - "*.eigenvec":
-          type: map
+          type: file
           description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-          pattern: "*.{eigenvec}"
-      - ec:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            File containing the eigenvectors
           pattern: "*.{eigenvec}"
   - eigenval:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
           pattern: "*.{eigenval}"
       - "*.eigenval":
-          type: map
+          type: file
           description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-          pattern: "*.{eigenval}"
-      - al:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            File containing the eigenvalues
           pattern: "*.{eigenval}"
   - versions:
       - versions.yml:
+          type: file
+          description: |
+            Log file containing the output of the command 
+          pattern: "versions.yml"
+  - log:
+      - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-          pattern: "versions.yml"
+          pattern: "*.log"
+      - "*.log":
+          type: file
+          description: |
+            Log file containing the output of the command
+          pattern: "*.{log}"
+
+
 authors:
   - "@bruno-ariano"
 maintainers:

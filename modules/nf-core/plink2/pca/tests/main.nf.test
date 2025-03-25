@@ -19,6 +19,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'pca' ], // meta map!
+                    10,
+                    true,
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pgen', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true)
@@ -32,6 +34,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.eigenvec.get(0).get(1) ==~ ".*.eigenvec" },
                 { assert process.out.eigenval.get(0).get(1) ==~ ".*.eigenval" },
+                { assert process.out.eigenval.get(0).get(1) ==~ ".*.log" },
                 { assert snapshot(process.out.versions).match("versions") }
 
             )
