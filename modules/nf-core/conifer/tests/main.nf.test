@@ -72,11 +72,8 @@ nextflow_process {
             
             process {
                 """
-                input[0] = [
-                    [id:'test',single_end:false],// meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta',checkIfExists:true)
-                ]
-                input[1] = []
+                input[0] = KRAKEN2_KRAKEN2.out.report
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2/taxo.k2d', checkIfExists:true)
                 """
             }
         }
