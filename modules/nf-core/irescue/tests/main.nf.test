@@ -1,0 +1,71 @@
+nextflow_process {
+
+    name "Test Process IRESCUE"
+    script "../main.nf"
+    process "IRESCUE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "irescue"
+
+    test("homo_sapiens 10xgenomics - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/10x_cr12.bam', checkIfExists: true)
+                ]
+                input[1] = 'test'
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.counts,
+                    process.out.versions
+                ).match()
+                },
+                { assert file(process.out.log.get(0).get(1)).exists() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens 10xgenomics - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/10x_cr12.bam', checkIfExists: true)
+                ]
+                input[1] = 'test'
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.counts,
+                    process.out.versions
+                ).match()
+                },
+                { assert file(process.out.log.get(0).get(1)).exists() }
+            )
+        }
+
+    }
+
+}

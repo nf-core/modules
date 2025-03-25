@@ -8,24 +8,37 @@ keywords:
   - reference
 tools:
   - yara:
-      description: Yara is an exact tool for aligning DNA sequencing reads to reference genomes.
+      description: Yara is an exact tool for aligning DNA sequencing reads to reference
+        genomes.
       homepage: https://github.com/seqan/seqan
       documentation: https://github.com/seqan/seqan
       tool_dev_url: https://github.com/seqan/seqan
       licence: ["https://raw.githubusercontent.com/seqan/seqan/develop/apps/yara/LICENSE"]
+      identifier: biotools:yara
 input:
-  - fasta:
-      type: file
-      description: Input genome fasta file
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Input genome fasta file
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - index:
-      type: file
-      description: YARA genome index files
-      pattern: "yara.*"
+      - meta:
+          type: file
+          description: YARA genome index files
+          pattern: "yara.*"
+      - ${fasta}*:
+          type: file
+          description: YARA genome index files
+          pattern: "yara.*"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@apeltzer"
 maintainers:

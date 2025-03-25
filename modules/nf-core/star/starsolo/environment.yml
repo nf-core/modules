@@ -1,7 +1,11 @@
-name: starsolo
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
-  - defaults
+
 dependencies:
-  - bioconda::star=2.7.10b
+  - bioconda::htslib=1.21
+  - bioconda::samtools=1.21
+  - bioconda::star=2.7.11b
+  - conda-forge::gawk=5.1.0

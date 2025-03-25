@@ -9,41 +9,57 @@ tools:
       description: "A fast K-mer counter for high-fidelity shotgun datasets"
       homepage: "https://github.com/thegenemyers/FASTK"
       tool_dev_url: "https://github.com/thegenemyers/FASTK"
-      licence: "https://github.com/thegenemyers/FASTK/blob/master/LICENSE"
+      licence: ["https://github.com/thegenemyers/FASTK/blob/master/LICENSE"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: |
-        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-        respectively.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - hist:
-      type: file
-      description: Histogram of k-mers
-      pattern: "*.hist"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.hist":
+          type: file
+          description: Histogram of k-mers
+          pattern: "*.hist"
   - ktab:
-      type: file
-      description: A sorted table of all canonical k‑mers along with their counts.
-      pattern: "*.ktab"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - '*.ktab*", hidden: true':
+          type: file
+          description: A sorted table of all canonical k‑mers along with their counts.
+          pattern: "*.ktab"
   - prof:
-      type: file
-      description: A k‑mer count profile of each sequence in the input data set.
-      pattern: "*.prof"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - '*.{prof,pidx}*", hidden: true':
+          type: file
+          description: A k‑mer count profile of each sequence in the input data set.
+          pattern: "*.prof"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@mahesh-panchal"
 maintainers:
   - "@mahesh-panchal"
+  - "@gallvp"

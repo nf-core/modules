@@ -6,52 +6,80 @@ keywords:
   - serotype
 tools:
   - tbprofiler:
-      description: Profiling tool for Mycobacterium tuberculosis to detect drug resistance and lineage from WGS data
+      description: Profiling tool for Mycobacterium tuberculosis to detect drug resistance
+        and lineage from WGS data
       homepage: https://github.com/jodyphelan/TBProfiler
       documentation: https://jodyphelan.gitbook.io/tb-profiler/
       tool_dev_url: https://github.com/jodyphelan/TBProfiler
       doi: "10.1186/s13073-019-0650-x"
       licence: ["GPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: FASTQ file
-      pattern: "*.{fastq.gz,fq.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: FASTQ file
+        pattern: "*.{fastq.gz,fq.gz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - bam:
-      type: file
-      description: BAM file with alignment details
-      pattern: "*.bam"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - bam/*.bam:
+          type: file
+          description: BAM file with alignment details
+          pattern: "*.bam"
   - csv:
-      type: file
-      description: Optional CSV formated result file of resistance and strain type
-      pattern: "*.csv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - results/*.csv:
+          type: file
+          description: Optional CSV formatted result file of resistance and strain type
+          pattern: "*.csv"
   - json:
-      type: file
-      description: JSON formated result file of resistance and strain type
-      pattern: "*.json"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - results/*.json:
+          type: file
+          description: JSON formatted result file of resistance and strain type
+          pattern: "*.json"
   - txt:
-      type: file
-      description: Optional text file of resistance and strain type
-      pattern: "*.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - results/*.txt:
+          type: file
+          description: Optional text file of resistance and strain type
+          pattern: "*.txt"
   - vcf:
-      type: file
-      description: VCF with variant info again refernce genomes
-      pattern: "*.vcf"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - vcf/*.vcf.gz:
+          type: file
+          description: VCF with variant info again reference genomes
+          pattern: "*.vcf"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@rpetit3"
 maintainers:

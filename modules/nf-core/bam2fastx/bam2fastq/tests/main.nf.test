@@ -1,0 +1,37 @@
+
+nextflow_process {
+
+    name "Test Process BAM2FASTX_BAM2FASTQ"
+    script "../main.nf"
+    process "BAM2FASTX_BAM2FASTQ"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bam2fastx"
+    tag "bam2fastx/bam2fastq"
+
+    test("test-bam2fastx-bam2fastq") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.bam', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.bam.pbi', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match()
+				}
+            )
+        }
+    }
+
+}

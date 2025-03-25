@@ -37,7 +37,7 @@ input:
   - sort_bam:
       type: boolean
       description: |
-        Save reads that do not map to the reference (true) or discard them (false)
+        Use samtools sort (true) or samtools view (false)
       default: false
   - ch_fasta:
       type: file

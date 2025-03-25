@@ -1,8 +1,0 @@
-- name: bedtools getfasta
-  command: nextflow run ./tests/modules/nf-core/bedtools/getfasta -entry test_bedtools_getfasta -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bedtools/getfasta/nextflow.config
-  tags:
-    - bedtools
-    - bedtools/getfasta
-  files:
-    - path: ./output/bedtools/test.fa
-      md5sum: 41c3a45a57a16c04f828d8f8bb52df70

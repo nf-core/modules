@@ -14,27 +14,26 @@ tools:
       tool_dev_url: "https://github.com/Kinggerm/GetOrganelle"
       doi: "10.1186/s13059-020-02154-5"
       licence: ["GPL v3"]
+      identifier: biotools:getorganelle
 
 input:
-  - organelle_type:
-      type: string
-      description: |
-        Type of database, esp. embplant_pt (embryophyta plant plastome), other_pt (non-embryophyta plant plastome), embplant_mt (plant mitochondrion), embplant_nr (plant nuclear ribosomal RNA), animal_mt (animal mitochondrion), and fungus_mt (fungus mitochondrion), fungus_nr (fungus nuclear ribosomal RNA)
-
+  - - organelle_type:
+        type: string
+        description: |
+          Type of database, esp. embplant_pt (embryophyta plant plastome), other_pt (non-embryophyta plant plastome), embplant_mt (plant mitochondrion), embplant_nr (plant nuclear ribosomal RNA), animal_mt (animal mitochondrion), and fungus_mt (fungus mitochondrion), fungus_nr (fungus nuclear ribosomal RNA)
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
-  - organelle_type:
-      type: string
-      description: |
-        Type of database, esp. embplant_pt (embryophyta plant plastome), other_pt (non-embryophyta plant plastome), embplant_mt (plant mitochondrion), embplant_nr (plant nuclear ribosomal RNA), animal_mt (animal mitochondrion), and fungus_mt (fungus mitochondrion), fungus_nr (fungus nuclear ribosomal RNA)
-
   - db:
-      type: directory
-      description: Downloaded database for GetOrganelle
-
+      - organelle_type:
+          type: string
+          description: |
+            Type of database, esp. embplant_pt (embryophyta plant plastome), other_pt (non-embryophyta plant plastome), embplant_mt (plant mitochondrion), embplant_nr (plant nuclear ribosomal RNA), animal_mt (animal mitochondrion), and fungus_mt (fungus mitochondrion), fungus_nr (fungus nuclear ribosomal RNA)
+      - getorganelle:
+          type: directory
+          description: Downloaded database for GetOrganelle
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@erinyoung"

@@ -1,0 +1,90 @@
+nextflow_process {
+
+    name "Test Process SAMTOOLS_MARKDUP"
+    script "../main.nf"
+    process "SAMTOOLS_MARKDUP"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "samtools"
+    tag "samtools/fixmate"
+    tag "samtools/sort"
+    tag "samtools/markdup"
+
+    test("sarscov2 - bam") {
+        setup {
+            run("SAMTOOLS_FIXMATE") {
+                script "../../fixmate/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:false ],
+                        file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true),
+                    ]
+                    """
+                }
+            }
+            run("SAMTOOLS_SORT") {
+                script "../../sort/main.nf"
+                process {
+                    """
+                    input[0] = SAMTOOLS_FIXMATE.out.bam
+                    input[1] = [
+                        [ id:'fasta' ],
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = SAMTOOLS_SORT.out.bam
+                input[1] = [
+                    [ id:'fasta' ],
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'fasta' ],
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

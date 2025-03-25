@@ -1,0 +1,97 @@
+nextflow_process {
+
+    name "Test Process NACHO_QC"
+    script "../main.nf"
+    process "NACHO_QC"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "nacho"
+    tag "nacho/qc"
+
+    test("Salmon - RCC files") {
+
+        when {
+            process {
+                """
+                // RCC Files: Collect from sample sheet
+                input[0] =
+                    Channel.fromPath('https://raw.githubusercontent.com/nf-core/test-datasets/nanostring/samplesheets/samplesheet_test.csv', checkIfExists: true)
+                        .splitCsv( header: true )
+                        .map { row -> return file(row.RCC_FILE, checkIfExists: true) } // Select first column: path to file
+                        .collect()
+                        .map{ files ->
+                            return tuple( [id: 'test1'], files ) // Add meta component
+                        }
+
+                // Sample sheet
+                input[1] = Channel.of( [
+                        [ id: 'test_samplesheet'],
+                        [ file('https://raw.githubusercontent.com/nf-core/test-datasets/nanostring/samplesheets/samplesheet_test.csv', checkIfExists: true) ]
+                    ] )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { with(process.out) {
+                    assert nacho_qc_reports.get(0).get(1).size() == 2
+                    assert nacho_qc_png.get(0).get(1).size() == 16
+                    assert nacho_qc_txt.get(0).get(1).size() == 2
+                    assert snapshot(
+                        nacho_qc_reports.get(0).get(1).collect { file(it).name }, //indeterministic .html mqc files
+                        nacho_qc_png.get(0).get(1).collect { file(it).name },     //indeterministic .png mqc files
+                        nacho_qc_txt.get(0).get(1),                               //stable .txt mqc files
+                        versions
+                    ).match() }
+                }
+            )
+        }
+    }
+
+    test("Salmon - RCC files - stub") {
+
+        options "-stub"
+        when {
+            process {
+                """
+                // RCC Files: Collect from sample sheet
+                input[0] =
+                    Channel.fromPath('https://raw.githubusercontent.com/nf-core/test-datasets/nanostring/samplesheets/samplesheet_test.csv', checkIfExists: true)
+                        .splitCsv( header: true )
+                        .map{ row -> return file(row.RCC_FILE, checkIfExists: true) } // Select first column: path to file
+                        .collect()
+                        .map{ files ->
+                            tuple( [id: 'test_stub'], files ) // Add meta component
+                        }
+
+                // Sample sheet
+                input[1] = Channel.of( [
+                        [ id: 'test_samplesheet'],
+                        [ file('https://raw.githubusercontent.com/nf-core/test-datasets/nanostring/samplesheets/samplesheet_test.csv', checkIfExists: true) ]
+                    ] )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { with(process.out) {
+                    assert nacho_qc_reports.get(0).get(1).size() == 2
+                    assert nacho_qc_png.get(0).get(1).size() == 16
+                    assert nacho_qc_txt.get(0).get(1).size() == 2
+                    assert snapshot(
+                        nacho_qc_reports.get(0).get(1).collect { file(it).name }, //indeterministic .html mqc files
+                        nacho_qc_png.get(0).get(1).collect { file(it).name },     //indeterministic .png mqc files
+                        nacho_qc_txt.get(0).get(1),                               //stable .txt mqc files
+                        versions
+                    ).match() }
+                }
+            )
+        }
+    }
+}

@@ -29,5 +29,22 @@ process DESEQ2_DIFFERENTIAL {
     task.ext.when == null || task.ext.when
 
     script:
-    template 'deseq_de.R'
+    template 'deseq2_differential.R'
+
+    stub:
+    """
+    touch ${meta.id}.deseq2.results.tsv
+    touch ${meta.id}.deseq2.dispersion.png
+    touch ${meta.id}.dds.rld.rds
+    touch ${meta.id}.deseq2.sizefactors.tsv
+    touch ${meta.id}.normalised_counts.tsv
+    touch ${meta.id}.rlog.tsv
+    touch ${meta.id}.deseq2.model.txt
+    touch ${meta.id}.R_sessionInfo.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bioconductor-deseq2: \$(Rscript -e "library(DESeq2); cat(as.character(packageVersion('DESeq2')))")
+    END_VERSIONS
+    """
 }

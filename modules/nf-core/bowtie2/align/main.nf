@@ -1,6 +1,6 @@
 process BOWTIE2_ALIGN {
     tag "$meta.id"
-    label "process_high"
+    label 'process_high'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -90,7 +90,6 @@ process BOWTIE2_ALIGN {
     } else {
         create_unmapped = save_unaligned ? "touch ${prefix}.unmapped_1.fastq.gz && touch ${prefix}.unmapped_2.fastq.gz" : ""
     }
-    def reference = fasta && extension=="cram"  ? "--reference ${fasta}" : ""
     if (!fasta && extension=="cram") error "Fasta reference is required for CRAM output"
 
     def create_index = ""

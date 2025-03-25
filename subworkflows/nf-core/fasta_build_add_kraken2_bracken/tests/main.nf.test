@@ -1,0 +1,215 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTA_BUILD_ADD_KRAKEN2_BRACKEN"
+    script "../main.nf"
+    workflow "FASTA_BUILD_ADD_KRAKEN2_BRACKEN"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fasta_build_add_kraken2_bracken"
+    tag "gunzip"
+    tag "kraken2"
+    tag "kraken2/add"
+    tag "kraken2/build"
+    tag "bracken/build"
+
+    test("metagenome - nocleanup - nobracken - fasta") {
+
+        setup {
+            run("GUNZIP") {
+                script "modules/nf-core/gunzip/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                                [id:'db'],
+                                file(params.modules_testdata_base_path + '/genomics/prokaryotes/metagenome/fasta/haemophilus_influenzae.fna.gz', checkIfExists: true)
+                            ]
+                    )
+                    """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([[id:'db'], file(params.modules_testdata_base_path + '/genomics/prokaryotes/metagenome/fasta/sarscov2.fasta', checkIfExists: true)]).mix(GUNZIP.out.gunzip).groupTuple()
+                input[1] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdmp/names.dmp', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdmp/nodes.dmp', checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/accession2taxid/nucl_gb.accession2taxid', checkIfExists: true)
+                input[4] = false
+                input[5] = []
+                input[6] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot (
+                        workflow.out.versions,
+                        path("${workflow.out.db[0][1]}/hash.k2d"),
+                        path("${workflow.out.db[0][1]}/taxo.k2d"),
+                        file("${workflow.out.db[0][1]}/opts.k2d").name,
+                        ).match()
+                },
+                { assert path("${workflow.out.db[0][1]}/library/").exists() },
+                { assert path("${workflow.out.db[0][1]}/taxonomy/").exists() }
+            )
+        }
+    }
+
+    test("metagenome - withcleanup - nobracken - fasta") {
+
+        setup {
+            run("GUNZIP") {
+                script "modules/nf-core/gunzip/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([\
+                                [id:'db'],
+                                file(params.modules_testdata_base_path + '/genomics/prokaryotes/metagenome/fasta/haemophilus_influenzae.fna.gz', checkIfExists: true)
+                            ]
+                    )
+                    """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([[id:'db'], file(params.modules_testdata_base_path + '/genomics/prokaryotes/metagenome/fasta/sarscov2.fasta', checkIfExists: true)]).mix(GUNZIP.out.gunzip).groupTuple()
+                input[1] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdmp/names.dmp', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdmp/nodes.dmp', checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/accession2taxid/nucl_gb.accession2taxid', checkIfExists: true)
+                input[4] = true
+                input[5] = []
+                input[6] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert workflow.out.db.get(0).get(1) ==~ ".*/db" },
+                { assert snapshot (
+                        workflow.out.versions,
+                        path("${workflow.out.db[0][1]}/hash.k2d"),
+                        path("${workflow.out.db[0][1]}/taxo.k2d"),
+                        file("${workflow.out.db[0][1]}/opts.k2d").name,
+                        file("${workflow.out.db[0][1]}/unmapped.txt").name
+                        ).match()
+                },
+                { assert !path("${workflow.out.db[0][1]}/library/").exists() },
+                { assert !path("${workflow.out.db[0][1]}/taxonomy/").exists() }
+            )
+        }
+    }
+
+    test("metagenome - nocleanup - withbracken - fasta") {
+
+        setup {
+            run("GUNZIP") {
+                script "modules/nf-core/gunzip/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([\
+                                [id:'db'],
+                                file(params.modules_testdata_base_path + '/genomics/prokaryotes/metagenome/fasta/haemophilus_influenzae.fna.gz', checkIfExists: true)
+                            ]
+                    )
+                    """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([[id:'db'], file(params.modules_testdata_base_path + '/genomics/prokaryotes/metagenome/fasta/sarscov2.fasta', checkIfExists: true)]).mix(GUNZIP.out.gunzip).groupTuple()
+                input[1] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdmp/names.dmp', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdmp/nodes.dmp', checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/accession2taxid/nucl_gb.accession2taxid', checkIfExists: true)
+                input[4] = false
+                input[5] = []
+                input[6] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert workflow.out.db.get(0).get(1) ==~ ".*/db" },
+                { assert path("${workflow.out.db[0][1]}/library/").exists() },
+                { assert path("${workflow.out.db[0][1]}/taxonomy/").exists() },
+                { assert snapshot (
+                        workflow.out.versions,
+                        path("${workflow.out.db[0][1]}/hash.k2d"),
+                        path("${workflow.out.db[0][1]}/taxo.k2d"),
+                        file("${workflow.out.db[0][1]}/opts.k2d").name,
+                        file("${workflow.out.db[0][1]}/unmapped.txt").name,
+                        file("${workflow.out.db[0][1]}/database100mers.kmer_distrib").name,
+                        file("${workflow.out.db[0][1]}/database100mers.kraken").name,
+                        file("${workflow.out.db[0][1]}/database.kraken").name
+                        ).match()
+                }
+            )
+        }
+    }
+
+    test("metagenome - nocleanup - withbracken - fasta - custom seqid2taxid") {
+
+        setup {
+            run("GUNZIP") {
+                script "modules/nf-core/gunzip/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([\
+                                [id:'db'],
+                                file(params.modules_testdata_base_path + '/genomics/prokaryotes/metagenome/fasta/haemophilus_influenzae.fna.gz', checkIfExists: true)
+                            ]
+                    )
+                    """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([[id:'db'], file(params.modules_testdata_base_path + '/genomics/prokaryotes/metagenome/fasta/sarscov2.fasta', checkIfExists: true)]).mix(GUNZIP.out.gunzip).groupTuple()
+                input[1] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdmp/names.dmp', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdmp/nodes.dmp', checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/accession2taxid/nucl_gb.accession2taxid', checkIfExists: true)
+                input[4] = false
+                input[5] = Channel.of('MT192765.1	2697049', 'LS483480.1	1727').collectFile(name:'seqid2taxid.map', newLine: true)
+                input[6] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert workflow.out.db.get(0).get(1) ==~ ".*/db" },
+                { assert path("${workflow.out.db[0][1]}/library/").exists() },
+                { assert path("${workflow.out.db[0][1]}/taxonomy/").exists() },
+                { assert snapshot (
+                        workflow.out.versions,
+                        path("${workflow.out.db[0][1]}/hash.k2d"),
+                        path("${workflow.out.db[0][1]}/taxo.k2d"),
+                        file("${workflow.out.db[0][1]}/opts.k2d").name,
+                        file("${workflow.out.db[0][1]}/unmapped.txt").name,
+                        file("${workflow.out.db[0][1]}/database100mers.kmer_distrib").name,
+                        file("${workflow.out.db[0][1]}/database100mers.kraken").name,
+                        file("${workflow.out.db[0][1]}/database.kraken").name
+                        ).match()
+                }
+            )
+        }
+    }
+}

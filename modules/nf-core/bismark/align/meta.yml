@@ -19,44 +19,74 @@ tools:
       documentation: https://github.com/FelixKrueger/Bismark/tree/master/Docs
       doi: 10.1093/bioinformatics/btr167
       licence: ["GPL-3.0-or-later"]
+      identifier: biotools:bismark
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: |
-        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-        respectively.
-  - index:
-      type: dir
-      description: Bismark genome index directory
-      pattern: "BismarkIndex"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively.
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: |
+          Reference genome FASTA file
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - index:
+        type: directory
+        description: Bismark genome index directory
+        pattern: "BismarkIndex"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - bam:
-      type: file
-      description: Output BAM file containing read alignments
-      pattern: "*.{bam}"
-  - unmapped:
-      type: file
-      description: Output FastQ file(s) containing unmapped reads
-      pattern: "*.{fq.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*bam":
+          type: file
+          description: Output BAM file containing read alignments
+          pattern: "*.{bam}"
   - report:
-      type: file
-      description: Bismark alignment reports
-      pattern: "*{report.txt}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*report.txt":
+          type: file
+          description: Bismark alignment reports
+          pattern: "*{report.txt}"
+  - unmapped:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*fq.gz":
+          type: file
+          description: Output FastQ file(s) containing unmapped reads
+          pattern: "*.{fq.gz}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@phue"
 maintainers:
   - "@phue"
+  - "@sateeshperi"

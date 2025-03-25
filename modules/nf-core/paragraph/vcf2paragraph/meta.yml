@@ -11,31 +11,43 @@ tools:
       documentation: "https://github.com/Illumina/paragraph"
       tool_dev_url: "https://github.com/Illumina/paragraph"
       doi: "10.1101/635011"
-      licence: "['Apache License 2.0']"
+      licence: ["Apache License 2.0"]
+      identifier: biotools:Paragraph
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: The VCF/BCF file
-      pattern: "*.{vcf,bcf}(.gz)?"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: The VCF/BCF file
+        pattern: "*.{vcf,bcf}(.gz)?"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fasta:
+        type: file
+        description: Reference genome VCF was generated against
+        pattern: "*.{fasta,fna,fa}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - graph:
-      type: file
-      description: The created graph in BGZIP format
-      pattern: "*.json.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.json.gz":
+          type: file
+          description: The created graph in BGZIP format
+          pattern: "*.json.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

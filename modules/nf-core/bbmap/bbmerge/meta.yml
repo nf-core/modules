@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "bbmap_bbmerge"
 description: Merging overlapping paired reads into a single read.
@@ -8,61 +7,69 @@ keywords:
   - overlap-based merging
 tools:
   - bbmap:
-      description: BBMap is a short read aligner, as well as various other bioinformatic tools.
-      homepage: https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/
-      documentation: https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/
+      description: BBMap is a short read aligner, as well as various other bioinformatic
+        tools.
+      homepage: https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/
+      documentation: https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/
       licence: ["UC-LBL license (see package)"]
+      identifier: biotools:bbmap
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-
-  - reads:
-      type: file
-      description: |
-        List of input paired end fastq files
-      pattern: "*.{fastq,fq}.gz"
-
-  - interleave:
-      type: boolean
-      description: |
-        Indicates whether the input paired reads are interleaved or not
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - reads:
+        type: file
+        description: |
+          List of input paired end fastq files
+        pattern: "*.{fastq,fq}.gz"
+  - - interleave:
+        type: boolean
+        description: |
+          Indicates whether the input paired reads are interleaved or not
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-
   - merged:
-      type: file
-      description: merged reads
-      pattern: "*_merged.fastq"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_merged.fastq.gz":
+          type: file
+          description: merged reads
+          pattern: "*_merged.fastq"
   - unmerged:
-      type: file
-      description: unmerged reads
-      pattern: "*_unmerged.fastq"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_unmerged.fastq.gz":
+          type: file
+          description: unmerged reads
+          pattern: "*_unmerged.fastq"
   - ihist:
-      type: file
-      description: insert size histogram
-      pattern: "*_ihist.txt"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_ihist.txt":
+          type: file
+          description: insert size histogram
+          pattern: "*_ihist.txt"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
   - log:
-      type: file
-      description: log file containing stdout and stderr from bbmerge.sh
-      pattern: "*.log"
-
+      - "*.log":
+          type: file
+          description: log file containing stdout and stderr from bbmerge.sh
+          pattern: "*.log"
 authors:
   - "@guille0387"
 maintainers:

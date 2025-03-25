@@ -4,8 +4,8 @@ process AGAT_CONVERTSPGFF2GTF {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/agat:1.0.0--pl5321hdfd78af_0' :
-        'biocontainers/agat:1.0.0--pl5321hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/agat:1.4.2--pl5321hdfd78af_0' :
+        'biocontainers/agat:1.4.2--pl5321hdfd78af_0' }"
 
     input:
     tuple val(meta), path(gff)
@@ -29,12 +29,11 @@ process AGAT_CONVERTSPGFF2GTF {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        agat: \$(agat_convert_sp_gff2gtf.pl --help | sed '4!d; s/.*v//')
+        agat: \$(agat_convert_sp_gff2gtf.pl --help | sed -n 's/.*(AGAT) - Version: \\(.*\\) .*/\\1/p')
     END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.agat.gtf
@@ -42,7 +41,7 @@ process AGAT_CONVERTSPGFF2GTF {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        agat: \$(agat_convert_sp_gff2gtf.pl --help | sed '4!d; s/.*v//')
+        agat: \$(agat_convert_sp_gff2gtf.pl --help | sed -n 's/.*(AGAT) - Version: \\(.*\\) .*/\\1/p')
     END_VERSIONS
     """
 }

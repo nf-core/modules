@@ -1,7 +1,8 @@
-name: fgbio_sortbam
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
-  - defaults
 dependencies:
-  - bioconda::fgbio=2.0.2
+  # renovate: datasource=conda depName=bioconda/fgbio
+  - bioconda::fgbio=2.4.0

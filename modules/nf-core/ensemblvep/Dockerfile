@@ -2,7 +2,7 @@ FROM nfcore/base:1.14
 LABEL \
     author="Maxime Garcia" \
     description="VEP image for nf-core pipelines" \
-    maintainer="maxime.garcia@scilifelab.se"
+    maintainer="maxime.garcia@seqera.io"
 
 # Install the conda environment
 COPY environment.yml /

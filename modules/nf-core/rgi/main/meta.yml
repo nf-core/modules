@@ -6,59 +6,86 @@ keywords:
   - antibiotic resistance
 tools:
   - rgi:
-      description: This tool provides a preliminary annotation of your DNA sequence(s) based upon the data available in The Comprehensive Antibiotic Resistance Database (CARD). Hits to genes tagged with Antibiotic Resistance ontology terms will be highlighted. As CARD expands to include more pathogens, genomes, plasmids, and ontology terms this tool will grow increasingly powerful in providing first-pass detection of antibiotic resistance associated genes. See license at CARD website
+      description: This tool provides a preliminary annotation of your DNA sequence(s)
+        based upon the data available in The Comprehensive Antibiotic Resistance Database
+        (CARD). Hits to genes tagged with Antibiotic Resistance ontology terms will
+        be highlighted. As CARD expands to include more pathogens, genomes, plasmids,
+        and ontology terms this tool will grow increasingly powerful in providing first-pass
+        detection of antibiotic resistance associated genes. See license at CARD website
       homepage: https://card.mcmaster.ca
       documentation: https://github.com/arpcard/rgi
       tool_dev_url: https://github.com/arpcard/rgi
       doi: "10.1093/nar/gkz935"
       licence: ["https://card.mcmaster.ca/about"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: Nucleotide or protein sequences in FASTA format
-      pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
-  - card:
-      type: directory
-      description: Directory containing the CARD database. This is expected to be the unarchived but otherwise unaltered download folder (see RGI documentation for download instructions).
-      pattern: "*/"
-  - wildcard:
-      type: directory
-      description: Directory containing the WildCARD database (optional). This is expected to be the unarchived but otherwise unaltered download folder (see RGI documentation for download instructions).
-      pattern: "*/"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Nucleotide or protein sequences in FASTA format
+        pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
+  - - card:
+        type: directory
+        description: Directory containing the CARD database. This is expected to be
+          the unarchived but otherwise unaltered download folder (see RGI documentation
+          for download instructions).
+        pattern: "*/"
+  - - wildcard:
+        type: directory
+        description: Directory containing the WildCARD database (optional). This is
+          expected to be the unarchived but otherwise unaltered download folder (see
+          RGI documentation for download instructions).
+        pattern: "*/"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - json:
-      type: file
-      description: JSON formatted file with RGI results
-      pattern: "*.{json}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.json":
+          type: file
+          description: JSON formatted file with RGI results
+          pattern: "*.{json}"
   - tsv:
-      type: file
-      description: Tab-delimited file with RGI results
-      pattern: "*.{txt}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt":
+          type: file
+          description: Tab-delimited file with RGI results
+          pattern: "*.{txt}"
   - tmp:
-      type: directory
-      description: Directory containing various intermediate files
-      pattern: "temp/"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - temp/:
+          type: directory
+          description: Directory containing various intermediate files
+          pattern: "temp/"
   - tool_version:
-      type: string
-      description: The version of the tool in string format (useful for downstream tools such as hAMRronization)
+      - RGI_VERSION:
+          type: string
+          description: The version of the tool in string format (useful for downstream
+            tools such as hAMRronization)
   - db_version:
-      type: string
-      description: The version of the used database in string format (useful for downstream tools such as hAMRronization)
+      - DB_VERSION:
+          type: string
+          description: The version of the used database in string format (useful for downstream
+            tools such as hAMRronization)
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@rpetit3"
   - "@jfy133"

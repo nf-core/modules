@@ -1,0 +1,147 @@
+nextflow_process {
+
+    name "Test Process FAQCS"
+    script "../main.nf"
+    process "FAQCS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "faqcs"
+
+    test("sarscov2 single-end [fastq]") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id: 'test', single_end:true ],
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll (
+            { assert process.success },
+            { assert process.out.debug          == [] },
+            { assert process.out.reads_fail     == [] },
+            { assert process.out.reads_unpaired == [] },
+            { assert snapshot(file(process.out.statspdf[0][1]).name,
+                                process.out.reads,
+                                process.out.stats,
+                                process.out.log,
+                                process.out.versions).match() }
+            )
+        }
+    }
+
+    test("sarscov2 paired-end [fastq]") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id: 'test', single_end: false], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll (
+            { assert process.success },
+            { assert process.out.debug      == [] },
+            { assert process.out.reads_fail == [] },
+            { assert snapshot(file(process.out.statspdf[0][1]).name,
+                                process.out.reads,
+                                process.out.reads_unpaired,
+                                process.out.stats,
+                                process.out.log,
+                                process.out.versions).match() }
+            )
+        }
+    }
+
+    test("sarscov2 paired-end [fastq] options") {
+
+        config "./faqcs_options.config"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id: 'test', single_end: false], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll (
+            { assert process.success },
+            { assert snapshot(file(process.out.statspdf[0][1]).name,
+                                file(process.out.log[0][1]).name,
+                                process.out.reads,
+                                process.out.reads_unpaired,
+                                process.out.stats,
+                                process.out.debug,
+                                process.out.reads_fail,
+                                process.out.versions).match() }
+            )
+        }
+    }
+
+    test("sarscov2 single-end [fastq] qc_only") {
+
+        config "./faqcs_qc_only.config"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id: 'test', single_end:true ],
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll (
+            { assert process.success },
+            { assert process.out.reads          == [] },
+            { assert process.out.reads_unpaired == [] },
+            { assert process.out.reads_fail     == [] },
+            { assert process.out.debug          == [] },
+            { assert snapshot(file(process.out.statspdf[0][1]).name,
+                                process.out.stats,
+                                process.out.versions).match() }
+            )
+        }
+    }
+
+    test("stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id: 'test', single_end:true ], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+            { assert process.success },
+            { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

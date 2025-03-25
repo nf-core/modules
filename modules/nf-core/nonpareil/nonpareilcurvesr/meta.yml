@@ -1,0 +1,85 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "nonpareil_nonpareilcurvesr"
+description: Generate summary reports with raw data for Nonpareil NPO curves, including
+  MultiQC compatible JSON/TSV files
+keywords:
+  - metagenomics
+  - statistics
+  - coverage
+  - redundancy
+  - diversity
+  - complexity
+  - multiqc
+tools:
+  - "nonpareil":
+      description: "Estimate average coverage and create curves for metagenomic datasets"
+      homepage: "https://github.com/lmrodriguezr/nonpareil"
+      documentation: "https://nonpareil.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/lmrodriguezr/nonpareil"
+      doi: "10.1128/msystems.00039-"
+      licence: ["Artistic License 2.0"]
+      identifier: biotools:nonpareil
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - npos:
+        type: file
+        description: One or a list of Nonpareil NPO files (From nonpareil/nonpareil)
+        pattern: "*.{npo}"
+output:
+  - json:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.json":
+          type: file
+          description: Raw nonpareil data used for generating and plotting curves in JSON
+            format
+          pattern: "*.json"
+  - tsv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - '*.tsv" ':
+          type: file
+          description: Raw nonpareil data used for generating and plotting curves in JSON
+            format
+          pattern: "*.tsv"
+  - csv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - '*.csv" ':
+          type: file
+          description: Raw nonpareil data used for generating and plotting curves in JSON
+            format
+          pattern: "*.csv"
+  - pdf:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - '*.pdf" ':
+          type: file
+          description: Plotted nonpareil curves in PDF format
+          pattern: "*.pdf"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@jfy133"
+maintainers:
+  - "@jfy133"

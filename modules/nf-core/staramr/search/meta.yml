@@ -1,0 +1,139 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "staramr_search"
+description: "Scans genome contigs against the ResFinder, PlasmidFinder, and PointFinder
+  databases."
+keywords:
+  - amr
+  - plasmid
+  - mlst
+  - genomics
+tools:
+  - "staramr":
+      description: |
+        Scan genome contigs against the ResFinder and PointFinder databases. In order to use the PointFinder databases, you will have to add --pointfinder-organism ORGANISM to the ext.args options.
+      homepage: "https://github.com/phac-nml/staramr"
+      documentation: "https://github.com/phac-nml/staramr"
+      tool_dev_url: "https://github.com/phac-nml/staramr"
+      doi: "10.3390/microorganisms10020292"
+      licence: ["Apache Software License"]
+      identifier: biotools:staramr
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - genome_fasta:
+        type: file
+        description: |
+          Assembled/complete genome(s) in FASTA format to search for AMR/MLST/Plasmids.
+        pattern: "*.{fasta,fna,fsa,fa,fasta.gz,fna.gz,fsa.gz,fa.gz}"
+output:
+  - results_xlsx:
+      - meta:
+          type: file
+          description: Excel spreadsheet containing summary of StarAMR results.
+          pattern: "*_results/results.xlsx"
+      - "*_results/results.xlsx":
+          type: file
+          description: Excel spreadsheet containing summary of StarAMR results.
+          pattern: "*_results/results.xlsx"
+  - summary_tsv:
+      - meta:
+          type: file
+          description: |
+            A summary of all detected AMR genes/mutations/plasmids/sequence type in each genome, one genome per line.
+            A series of descriptive statistics is also provided for each genome,
+            as well as feedback for whether or not the genome passes several quality metrics and if not,
+            feedback on why the genome fails.
+          pattern: "*_results/summary.tsv"
+      - "*_results/summary.tsv":
+          type: file
+          description: |
+            A summary of all detected AMR genes/mutations/plasmids/sequence type in each genome, one genome per line.
+            A series of descriptive statistics is also provided for each genome,
+            as well as feedback for whether or not the genome passes several quality metrics and if not,
+            feedback on why the genome fails.
+          pattern: "*_results/summary.tsv"
+  - detailed_summary_tsv:
+      - meta:
+          type: file
+          description: |
+            A summary of all detected AMR genes/mutations/plasmids/sequence type in each genome, one genome per line.
+            A series of descriptive statistics is also provided for each genome,
+            as well as feedback for whether or not the genome passes several quality metrics and if not,
+            feedback on why the genome fails.
+          pattern: "*_results/detailed_summary.tsv"
+      - "*_results/detailed_summary.tsv":
+          type: file
+          description: |
+            A summary of all detected AMR genes/mutations/plasmids/sequence type in each genome, one genome per line.
+            A series of descriptive statistics is also provided for each genome,
+            as well as feedback for whether or not the genome passes several quality metrics and if not,
+            feedback on why the genome fails.
+          pattern: "*_results/detailed_summary.tsv"
+  - resfinder_tsv:
+      - meta:
+          type: file
+          description: A tabular file of each AMR gene and additional BLAST information
+            from the ResFinder database, one gene per line.
+          pattern: "*_results/resfinder.tsv"
+      - "*_results/resfinder.tsv":
+          type: file
+          description: A tabular file of each AMR gene and additional BLAST information
+            from the ResFinder database, one gene per line.
+          pattern: "*_results/resfinder.tsv"
+  - plasmidfinder_tsv:
+      - meta:
+          type: file
+          description: A tabular file of each AMR plasmid type and additional BLAST information
+            from the PlasmidFinder database, one plasmid type per line.
+          pattern: "*_results/plasmidfinder.tsv"
+      - "*_results/plasmidfinder.tsv":
+          type: file
+          description: A tabular file of each AMR plasmid type and additional BLAST information
+            from the PlasmidFinder database, one plasmid type per line.
+          pattern: "*_results/plasmidfinder.tsv"
+  - mlst_tsv:
+      - meta:
+          type: file
+          description: A tabular file of each multi-locus sequence type (MLST) and it's
+            corresponding locus/alleles, one genome per line.
+          pattern: "*_results/mlst.tsv"
+      - "*_results/mlst.tsv":
+          type: file
+          description: A tabular file of each multi-locus sequence type (MLST) and it's
+            corresponding locus/alleles, one genome per line.
+          pattern: "*_results/mlst.tsv"
+  - settings_txt:
+      - meta:
+          type: file
+          description: The command-line, database versions, and other settings used to
+            run staramr.
+          pattern: "*_results/settings.txt"
+      - "*_results/settings.txt":
+          type: file
+          description: The command-line, database versions, and other settings used to
+            run staramr.
+          pattern: "*_results/settings.txt"
+  - pointfinder_tsv:
+      - meta:
+          type: file
+          description: An optional tabular file of each AMR point mutation and additional
+            BLAST information from the PointFinder database, one gene per line.
+          pattern: "*_results/pointfinder.tsv"
+      - "*_results/pointfinder.tsv":
+          type: file
+          description: An optional tabular file of each AMR point mutation and additional
+            BLAST information from the PointFinder database, one gene per line.
+          pattern: "*_results/pointfinder.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@apetkau"
+maintainers:
+  - "@apetkau"

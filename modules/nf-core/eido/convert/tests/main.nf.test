@@ -1,0 +1,78 @@
+
+nextflow_process {
+
+    name "Test Process EIDO_CONVERT"
+    script "../main.nf"
+    process "EIDO_CONVERT"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "eido"
+    tag "eido/convert"
+
+    test("test-eido-convert-nextflow-samplesheet") {
+
+        when {
+            process {
+                """
+                input[0] = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/pep/test_nextflow_original_samplesheet.csv", checkIfExists: true)
+				input[1] = "csv"
+				input[2] = []
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-eido-convert-pep-project") {
+
+        when {
+            process {
+                """
+                input[0] = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/pep/test_pep_format_files/config.yaml", checkIfExists: true)
+				input[1] = "csv"
+				input[2] = []
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-eido-convert-pep-project-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/pep/test_pep_format_files/config.yaml", checkIfExists: true)
+				input[1] = "csv"
+				input[2] = []
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

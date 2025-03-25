@@ -12,46 +12,75 @@ tools:
       tool_dev_url: https://github.com/macs3-project/MACS
       doi: "10.1101/496521"
       licence: ["BSD"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - ipbam:
-      type: file
-      description: The ChIP-seq treatment file
-  - controlbam:
-      type: file
-      description: The control file
-  - macs2_gsize:
-      type: string
-      description: Effective genome size. It can be 1.0e+9 or 1000000000, or shortcuts:'hs' for human (2.7e9), 'mm' for mouse (1.87e9), 'ce' for C. elegans (9e7) and 'dm' for fruitfly (1.2e8)
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - ipbam:
+        type: file
+        description: The ChIP-seq treatment file
+    - controlbam:
+        type: file
+        description: The control file
+  - - macs2_gsize:
+        type: string
+        description: Effective genome size. It can be 1.0e+9 or 1000000000, or shortcuts:'hs'
+          for human (2.7e9), 'mm' for mouse (1.87e9), 'ce' for C. elegans (9e7) and
+          'dm' for fruitfly (1.2e8)
 output:
-  - versions:
-      type: file
-      description: File containing software version
-      pattern: "versions.yml"
   - peak:
-      type: file
-      description: BED file containing annotated peaks
-      pattern: "*.gappedPeak,*.narrowPeak}"
+      - meta:
+          type: file
+          description: BED file containing annotated peaks
+          pattern: "*.gappedPeak,*.narrowPeak}"
+      - "*.{narrowPeak,broadPeak}":
+          type: file
+          description: BED file containing annotated peaks
+          pattern: "*.gappedPeak,*.narrowPeak}"
   - xls:
-      type: file
-      description: xls file containing annotated peaks
-      pattern: "*.xls"
+      - meta:
+          type: file
+          description: xls file containing annotated peaks
+          pattern: "*.xls"
+      - "*.xls":
+          type: file
+          description: xls file containing annotated peaks
+          pattern: "*.xls"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software version
+          pattern: "versions.yml"
   - gapped:
-      type: file
-      description: Optional BED file containing gapped peak
-      pattern: "*.gappedPeak"
+      - meta:
+          type: file
+          description: Optional BED file containing gapped peak
+          pattern: "*.gappedPeak"
+      - "*.gappedPeak":
+          type: file
+          description: Optional BED file containing gapped peak
+          pattern: "*.gappedPeak"
   - bed:
-      type: file
-      description: Optional BED file containing peak summits locations for every peak
-      pattern: "*.bed"
+      - meta:
+          type: file
+          description: Optional BED file containing peak summits locations for every peak
+          pattern: "*.bed"
+      - "*.bed":
+          type: file
+          description: Optional BED file containing peak summits locations for every peak
+          pattern: "*.bed"
   - bdg:
-      type: file
-      description: Optional bedGraph files for input and treatment input samples
-      pattern: "*.bdg"
+      - meta:
+          type: file
+          description: Optional bedGraph files for input and treatment input samples
+          pattern: "*.bdg"
+      - "*.bdg":
+          type: file
+          description: Optional bedGraph files for input and treatment input samples
+          pattern: "*.bdg"
 authors:
   - "@ntoda03"
   - "@JoseEspinosa"

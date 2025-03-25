@@ -1,0 +1,96 @@
+nextflow_process {
+
+    name "Test Process MERQURYFK_HAPMAKER"
+    script "../main.nf"
+    process "MERQURYFK_HAPMAKER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "merquryfk"
+    tag "merquryfk/hapmaker"
+    tag "fastk"
+    tag "fastk/fastk"
+
+    setup {
+        run("FASTK_FASTK", alias: "FASTK_PAT") {
+            script "../../../fastk/fastk"
+            process {
+                """
+                input[0] = [
+                    [ id:'mat', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        run("FASTK_FASTK", alias: "FASTK_MAT") {
+            script "../../../fastk/fastk"
+            process {
+                """
+                input[0] = [
+                    [ id:'pat', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        run("FASTK_FASTK", alias: "FASTK_CHILD") {
+            script "../../../fastk/fastk"
+            process {
+                """
+                input[0] = [
+                    [ id:'child', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens - Illumina") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = FASTK_MAT.out.ktab
+                input[1] = FASTK_PAT.out.ktab
+                input[2] = FASTK_CHILD.out.ktab
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - Illumina - stub") {
+        config "./nextflow.config"
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = FASTK_MAT.out.ktab
+                input[1] = FASTK_PAT.out.ktab
+                input[2] = FASTK_CHILD.out.ktab
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+}

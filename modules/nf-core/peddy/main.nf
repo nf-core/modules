@@ -35,7 +35,7 @@ process PEDDY {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        peddy: \$( peddy --version 2>&1 | sed 's/peddy, version //' )
+        peddy: \$( peddy --version 2>&1 | tail -1 | sed 's/peddy, version //' )
     END_VERSIONS
     """
 
@@ -49,6 +49,9 @@ process PEDDY {
     touch ${prefix}.peddy.ped
     touch ${prefix}.html
 
-    touch versions.yml
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        peddy: \$( peddy --version 2>&1 | tail -1 | sed 's/peddy, version //' )
+    END_VERSIONS
     """
 }

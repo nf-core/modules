@@ -4,16 +4,16 @@ process HMMER_HMMALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hmmer:3.3.2--h1b792b2_1' :
-        'biocontainers/hmmer:3.3.2--h1b792b2_1' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/07/07c4cbd91c4459dc86b13b5cd799cacba96b27d66c276485550d299c7a4c6f8a/data' :
+        'community.wave.seqera.io/library/hmmer:3.4--cb5d2dd2e85974ca' }"
 
     input:
     tuple val(meta), path(fasta)
     path hmm
 
     output:
-    tuple val(meta), path("*.sthlm.gz"), emit: sthlm
-    path "versions.yml"                , emit: versions
+    tuple val(meta), path("*.sto.gz"), emit: sto
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,7 +25,18 @@ process HMMER_HMMALIGN {
     hmmalign \\
         $args \\
         $hmm \\
-        $fasta | gzip -c > ${prefix}.sthlm.gz
+        $fasta | gzip -c > ${prefix}.sto.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        hmmer: \$(hmmalign -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER *//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo | gzip > ${prefix}.sto.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

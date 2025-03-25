@@ -1,5 +1,6 @@
 name: cobrameta
-description: A tool to raise the quality of viral genomes assembled from short-read metagenomes via resolving and joining of contigs fragmented during de novo assembly.
+description: A tool to raise the quality of viral genomes assembled from short-read
+  metagenomes via resolving and joining of contigs fragmented during de novo assembly.
 keywords:
   - cobra
   - contig
@@ -10,111 +11,168 @@ keywords:
   - phage
 tools:
   - cobra-meta:
-      description: COBRA is a tool to get higher quality viral genomes assembled from metagenomes.
+      description: COBRA is a tool to get higher quality viral genomes assembled from
+        metagenomes.
       homepage: https://github.com/linxingchen/cobra
       documentation: https://github.com/linxingchen/cobra
       tool_dev_url: https://github.com/linxingchen/cobra
       doi: 10.1038/s41564-023-01598-2
       licence: ["MIT"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1' ]`
-  - fasta:
-      type: file
-      description: |
-        Assembly file (contigs/scaffolds) in FASTA format
-      pattern: "*.{fa,fasta,fna,fa.gz,fasta.gz,fna.gz}"
-  - coverage:
-      type: file
-      description: |
-        TSV file with 2 columns containing 1) the contig/scaffold id and
-        2) the coverage depth of the sequence specified in column 1
-      pattern: "*.{tsv,txt}"
-  - query:
-      type: file
-      description: |
-        File containing the query contigs that the user wants COBRA to extend. This
-        can be provided in one-column TXT or FASTA format. (The IDs must match the IDs
-        in the `--fasta` file exactly)
-      pattern: "*.{txt,fasta}"
-  - bam:
-      type: file
-      description: |
-        Sorted BAM/CRAM/SAM file resulting from mapping reads used in assembly
-        to the resulting assembly FASTA
-      pattern: "*.{bam,cram,sam}"
-  - assembler:
-      type: string
-      description: The name of the tool used to assemble contigs
-      pattern: "{metaspades,megahit,idba}"
-  - mink:
-      type: integer
-      description: The minimum kmer size used to assemble contigs
-      pattern: "[0-9]+"
-  - maxk:
-      type: integer
-      description: The maximum kmer size used to assemble contigs
-      pattern: "[0-9]+"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: |
+          Assembly file (contigs/scaffolds) in FASTA format
+        pattern: "*.{fa,fasta,fna,fa.gz,fasta.gz,fna.gz}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - coverage:
+        type: file
+        description: |
+          TSV file with 2 columns containing 1) the contig/scaffold id and
+          2) the coverage depth of the sequence specified in column 1
+        pattern: "*.{tsv,txt}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - query:
+        type: file
+        description: |
+          File containing the query contigs that the user wants COBRA to extend. This
+          can be provided in one-column TXT or FASTA format. (The IDs must match the IDs
+          in the `--fasta` file exactly)
+        pattern: "*.{txt,fasta}"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: |
+          Sorted BAM/CRAM/SAM file resulting from mapping reads used in assembly
+          to the resulting assembly FASTA
+        pattern: "*.{bam,cram,sam}"
+  - - assembler:
+        type: string
+        description: The name of the tool used to assemble contigs
+        pattern: "{metaspades,megahit,idba}"
+  - - mink:
+        type: integer
+        description: The minimum kmer size used to assemble contigs
+        pattern: "[0-9]+"
+  - - maxk:
+        type: integer
+        description: The maximum kmer size used to assemble contigs
+        pattern: "[0-9]+"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - extended_assemblies:
-      type: file
-      description: |
-        Gzipped FASTA file containing query contigs that are already circular
-      pattern: "${prefix}/COBRA_category_i_self_circular.fasta.gz"
+  - self_circular:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}/COBRA_category_i_self_circular.fasta.gz:
+          type: file
+          description: fasta file
+          pattern: "*/COBRA_category_i_self_circular.fasta.gz"
   - extended_circular:
-      type: file
-      description: |
-        Gzipped FASTA file containing query contigs that were joined and extended
-        into a circular genome
-      pattern: "${prefix}/COBRA_category_ii-a_extended_circular_unique.fasta.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}/COBRA_category_ii-a_extended_circular_unique.fasta.gz:
+          type: file
+          description: |
+            Gzipped FASTA file containing query contigs that were joined and extended
+            into a circular genome
+          pattern: "${prefix}/COBRA_category_ii-a_extended_circular_unique.fasta.gz"
   - extended_partial:
-      type: file
-      description: |
-        Gzipped FASTA file containing query contigs were joined and extended, but
-        not into circular sequences
-      pattern: "${prefix}/COBRA_category_ii-b_extended_partial_unique.fasta.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}/COBRA_category_ii-b_extended_partial_unique.fasta.gz:
+          type: file
+          description: |
+            Gzipped FASTA file containing query contigs were joined and extended, but
+            not into circular sequences
+          pattern: "${prefix}/COBRA_category_ii-b_extended_partial_unique.fasta.gz"
   - extended_failed:
-      type: file
-      description: |
-        Gzipped FASTA file containing query contigs that could not be extended due
-        to COBRA rules
-      pattern: "${prefix}/COBRA_category_ii-c_extended_failed.fasta.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}/COBRA_category_ii-c_extended_failed.fasta.gz:
+          type: file
+          description: |
+            Gzipped FASTA file containing query contigs that could not be extended due
+            to COBRA rules
+          pattern: "${prefix}/COBRA_category_ii-c_extended_failed.fasta.gz"
   - orphan_end:
-      type: file
-      description: |
-        Gzipped FASTA file containing query contigs that do not shared the
-        "expected overlap length" with other contigs
-      pattern: "${prefix}/COBRA_category_iii_orphan_end.fasta.gz"
-  - all_assemblies:
-      type: file
-      description: |
-        Gzipped FASTA file containing all FASTA outputs combined into one file
-      pattern: "${prefix}/COBRA_all_assemblies.fasta.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}/COBRA_category_iii_orphan_end.fasta.gz:
+          type: file
+          description: |
+            Gzipped FASTA file containing query contigs that do not shared the
+            "expected overlap length" with other contigs
+          pattern: "${prefix}/COBRA_category_iii_orphan_end.fasta.gz"
+  - all_cobra_assemblies:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}/COBRA_all_assemblies.fasta.gz:
+          type: file
+          description: Gzipped FASTA file containing all the assemblies generated by COBRA
+          pattern: "*/COBRA_all_assemblies.fasta.gz"
   - joining_summary:
-      type: file
-      description: |
-        TSV file containing information regarding COBRA's extension results
-      pattern: "${prefix}/COBRA_joining_summary.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}/COBRA_joining_summary.txt:
+          type: file
+          description: |
+            TSV file containing information regarding COBRA's extension results
+          pattern: "${prefix}/COBRA_joining_summary.txt"
   - log:
-      type: file
-      description: |
-        Log file containing the contents of each processing
-      pattern: "${prefix}/log"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}/log:
+          type: file
+          description: |
+            Log file containing the contents of each processing
+          pattern: "${prefix}/log"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@CarsonJM"
 maintainers:

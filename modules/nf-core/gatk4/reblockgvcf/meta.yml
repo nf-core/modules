@@ -14,59 +14,63 @@ tools:
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
       doi: 10.1158/1538-7445.AM2017-3590
       licence: ["Apache-2.0"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - gvcf:
-      type: file
-      description: GVCF file created using HaplotypeCaller using the '-ERC GVCF' or '-ERC BP_RESOLUTION' mode
-      pattern: "*.{vcf,gvcf}.gz"
-  - tbi:
-      type: file
-      description: Index of the GVCF file
-      pattern: "*.tbi"
-  - intervals:
-      type: file
-      description: Bed file with the genomic regions included in the library (optional)
-  - fasta:
-      type: file
-      description: The reference fasta file
-      pattern: "*.fasta"
-  - fai:
-      type: file
-      description: Index of reference fasta file
-      pattern: "fasta.fai"
-  - dict:
-      type: file
-      description: GATK sequence dictionary
-      pattern: "*.dict"
-  - dbsnp:
-      type: file
-      description: VCF file containing known sites (optional)
-  - dbsnp_tbi:
-      type: file
-      description: VCF index of dbsnp (optional)
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - gvcf:
+        type: file
+        description: GVCF file created using HaplotypeCaller using the '-ERC GVCF' or
+          '-ERC BP_RESOLUTION' mode
+        pattern: "*.{vcf,gvcf}.gz"
+    - tbi:
+        type: file
+        description: Index of the GVCF file
+        pattern: "*.tbi"
+    - intervals:
+        type: file
+        description: Bed file with the genomic regions included in the library (optional)
+  - - fasta:
+        type: file
+        description: The reference fasta file
+        pattern: "*.fasta"
+  - - fai:
+        type: file
+        description: Index of reference fasta file
+        pattern: "fasta.fai"
+  - - dict:
+        type: file
+        description: GATK sequence dictionary
+        pattern: "*.dict"
+  - - dbsnp:
+        type: file
+        description: VCF file containing known sites (optional)
+  - - dbsnp_tbi:
+        type: file
+        description: VCF index of dbsnp (optional)
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+  - vcf:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.rb.g.vcf.gz":
+          type: file
+          description: The reblocked GVCF file
+          pattern: "*.rb.g.vcf.gz"
+      - "*.tbi":
+          type: file
+          description: Index of the reblocked GVCF file
+          pattern: "*.tbi"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - gvcf:
-      type: file
-      description: Filtered GVCF
-      pattern: "*rb.g.vcf.gz"
-  - tbi:
-      type: file
-      description: Index of the filtered GVCF
-      pattern: "*rb.g.vcf.gz.tbi"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:
