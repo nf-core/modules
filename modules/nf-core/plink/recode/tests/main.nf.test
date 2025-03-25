@@ -1,0 +1,47 @@
+nextflow_process {
+
+    name "Test Process PLINK_RECODE"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "PLINK_RECODE"
+   
+    tag "modules"
+    tag "modules_nfcore"
+    tag "plink"
+    tag "plink/recode"
+    tag "plink/vcf"
+   
+    test("test_plink_recode") {
+        
+        setup {
+            run("PLINK_VCF") {
+                script "../../vcf/main.nf"
+                params {
+                    module_args = '--make-bed --set-missing-var-ids @:#:\\$1:\\$2'
+                }
+                
+                process {
+                    """
+                    input[0] = [
+                        [id:'test',single_end:false],// meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/syntheticvcf_short.vcf.gz',checkIfExists:true)
+                        ]
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = PLINK_VCF.out.bed.join(PLINK_VCF.out.bim).join(PLINK_VCF.out.fam)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

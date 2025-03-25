@@ -8,7 +8,7 @@ process PLINK_RECODE {
         'biocontainers/plink:1.90b6.21--h779adbc_1' }"
 
     input:
-    tuple val(meta), path(bed),  path(bim), path(fam)
+    tuple val(meta), path(bed), path(bim), path(fam)
 
     output:
     tuple val(meta), path("*.ped")                    , optional:true, emit: ped
@@ -49,10 +49,10 @@ process PLINK_RECODE {
         --bed ${bed}  \\
         --bim ${bim}  \\
         --fam ${fam}  \\
-        --threads $task.cpus \\
+        --threads ${task.cpus} \\
         --recode \\
-        $args \\
-        --out $prefix
+        ${args} \\
+        --out ${prefix}
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         plink: \$(echo \$(plink --version) | sed 's/^PLINK v//;s/64.*//')
