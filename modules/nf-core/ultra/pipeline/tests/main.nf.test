@@ -31,10 +31,6 @@ nextflow_process {
 
             run("GNU_SORT") {
                 script "../../../gnu/sort/main.nf"
-                params {
-                    module_args = '-k1,1 -k4,4n'
-                }
-
                 process {
                     """
                     input[0] = [
@@ -46,9 +42,6 @@ nextflow_process {
             }
         }
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
