@@ -5,10 +5,10 @@ process MCSTAGING_MACSIMA2MC {
     container "ghcr.io/schapirolabor/macsima2mc:v1.2.2"
 
     input:
-    tuple val(meta), path(input_dir)
+    tuple val(meta), path(input_dir), val (output_dir)
 
     output:
-    tuple val(meta), path(output_dir)   , emit: out
+    tuple val(meta), path("${output_dir}") , emit: out
     path "versions.yml"                 , emit: versions
 
     when:
@@ -37,7 +37,7 @@ process MCSTAGING_MACSIMA2MC {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "macsima2mc module in conda does not exist. Please use Docker / Singularity / Podman instead."
     }
-    def args    = task.ext.args   ?: ''
+    def args = task.ext.args   ?: ''
     // def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = 'v1.2.2'
 
