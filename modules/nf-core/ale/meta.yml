@@ -24,10 +24,14 @@ input:
         type: file
         description: Assembly in FASTA format
         pattern: "*.{fasta,fa}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
     - bam:
         type: file
         description: BAM file containing sorted read mappings
         pattern: "*.{bam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
 output:
   - ale:
       - meta:
@@ -39,11 +43,15 @@ output:
           type: file
           description: Output TXT file containing ALE results
           pattern: "*_ALEoutput.{txt}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # TXT
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@rodtheo"
 maintainers:
