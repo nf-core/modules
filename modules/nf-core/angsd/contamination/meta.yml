@@ -25,6 +25,7 @@ input:
         description: Internal format for dumping binary single chrs. Useful for ANGSD
           contamination
         pattern: "*.icnts.gz"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -33,6 +34,7 @@ input:
     - hapmap_file:
         type: file
         description: A list of variable sites to look for heterozygosity.
+        ontologies: []
 output:
   - txt:
       - meta:
@@ -44,11 +46,15 @@ output:
           type: file
           description: Contamination estimation output.
           pattern: "*.txt"
+          ontologies: 
+            - edam: "http://edamontology.org/format_2330" # Text file
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies: 
+            - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@jbv2"
 maintainers:
