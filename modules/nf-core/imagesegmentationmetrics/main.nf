@@ -31,7 +31,7 @@ process IMAGESEGMENTATIONMETRICS {
 
     stub:
     def args = task.ext.args ?: ''
-
+    def prefix = task.ext.prefix ?: "${meta}"
     // TODO nf-core: A stub section should mimic the execution of the original module as best as possible
     //               Have a look at the following examples:
     //               Simple example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bcftools/annotate/main.nf#L47-L63

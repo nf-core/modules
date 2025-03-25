@@ -11,7 +11,7 @@ nextflow_process {
     tag "imagesegmentationmetrics"
 
     // TODO nf-core: Change the test name preferably indicating the test-data and file-format used
-    test("sarscov2 - bam") {
+    test("imagesegmentationmetrics - csv") {
 
         // TODO nf-core: If you are created a test for a chained module
         // (the module requires running more than one process to generate the required output)
@@ -48,7 +48,7 @@ nextflow_process {
     }
 
     // TODO nf-core: Change the test name preferably indicating the test-data and file-format used but keep the " - stub" suffix.
-    test("sarscov2 - bam - stub") {
+    test("imagesegmentationmetrics - csv - stub") {
 
         options "-stub"
 
@@ -56,8 +56,15 @@ nextflow_process {
             process {
                 """
                 // TODO nf-core: define inputs of the process here. Example:
-                
-                input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                input[0] = [
+                    "meta",
+                    file('/lustre/scratch127/cellgen/cellgeni/yc6/Anno_UMAP/ref.tif', checkIfExists: true),
+                    [file('/lustre/scratch127/cellgen/cellgeni/yc6/Anno_UMAP/label_removed_10.tif', checkIfExists: true),
+                        file('/lustre/scratch127/cellgen/cellgeni/yc6/Anno_UMAP/label_removed_20.tif', checkIfExists: true),
+                        file('/lustre/scratch127/cellgen/cellgeni/yc6/Anno_UMAP/label_removed_50.tif', checkIfExists: true)
+                    ],
+                    "DiceMetric MeanIoU GeneralizedDiceScore HausdorffDistanceMetric SurfaceDistanceMetric SurfaceDiceMetric MSEMetric RMSEMetric PSNRMetric"
+                ]
                 """
             }
         }
