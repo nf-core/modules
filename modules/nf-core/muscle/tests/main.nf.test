@@ -41,10 +41,6 @@ nextflow_process {
         setup {
             run("MUSCLE", alias: "MUSCLE_SETUP") {
                 script "../main.nf"
-                params {
-                    module_args = '-fasta -verbose -phys -phyi -maxiters 2'
-                }
-
                 process {
                     """
                     input[0] = [[id:'test'],// meta map
@@ -55,6 +51,7 @@ nextflow_process {
         }
         when {
             params {
+                setup_args = '-fasta -verbose -phys -phyi -maxiters 2'
                 module_args = '-maketree'
             }
             process {
