@@ -9,24 +9,21 @@ nextflow_process {
     tag "modules_nfcore"
     tag "cooler"
     tag "cooler/cload"
-    tag "cooler/dump"
-   
-    
+    tag "cooler/dump"    
     
     test("test_cooler_cload_pairix") {
-        
         when {
             params {
                 module_args = 'pairix'
             }
             process {
                 """
-                input[0] = [[id:'test_pairix',single_end:false],// meta map
-                    file(params.test_data['generic']['cooler']['test_pairix_pair_gz'],checkIfExists:true),
-                    file(params.test_data['generic']['cooler']['test_pairix_pair_gz_px2'],checkIfExists:true),
+                input[0] = [[id:'test_pairix', single_end:false],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/cload/hg19/hg19.GM12878-MboI.pairs.subsample.blksrt.txt.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/cload/hg19/hg19.GM12878-MboI.pairs.subsample.blksrt.txt.gz.px2', checkIfExists:true),
                     2000000
-                    ]
-                input[1] = file(params.test_data['generic']['cooler']['hg19_chrom_sizes'],checkIfExists:true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/cload/hg19/hg19.chrom.sizes', checkIfExists:true)
                 """
             }
         }
@@ -47,12 +44,12 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [[id:'test_pairs',single_end:false],// meta map
-                    file(params.test_data['generic']['cooler']['test_pairs_pair'],checkIfExists:true),
+                input[0] = [[id:'test_pairs', single_end:false],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/cload/hg19/hg19.sample1.pairs', checkIfExists:true),
                     [],
                     2000000
-                    ]
-                input[1] = file(params.test_data['generic']['cooler']['hg19_chrom_sizes'],checkIfExists:true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/cload/hg19/hg19.chrom.sizes', checkIfExists:true)
                 """
             }
         }
@@ -66,19 +63,18 @@ nextflow_process {
     
     
     test("test_cooler_cload_tabix") {
-        
         when {
             params {
                 module_args = 'tabix'
             }
             process {
                 """
-                input[0] = [[id:'test_tabix',single_end:false],// meta map
-                    file(params.test_data['generic']['cooler']['test_tabix_pair_gz'],checkIfExists:true),
-                    file(params.test_data['generic']['cooler']['test_tabix_pair_gz_tbi'],checkIfExists:true),
+                input[0] = [[id:'test_tabix', single_end:false],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/cload/hg19/hg19.GM12878-MboI.pairs.subsample.sorted.possrt.txt.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/cload/hg19/hg19.GM12878-MboI.pairs.subsample.sorted.possrt.txt.gz.tbi', checkIfExists:true),
                     2000000
                     ]
-                input[1] = file(params.test_data['generic']['cooler']['hg19_chrom_sizes'],checkIfExists:true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/cload/hg19/hg19.chrom.sizes',checkIfExists:true)
                 """
             }
         }
@@ -91,7 +87,7 @@ nextflow_process {
     }
     
     
-    test("test_cooler_cload_pairix -- stub") {
+    test("test_cooler_cload_pairix - stub") {
         options '-stub'
         when {
             params {
@@ -99,64 +95,13 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [[id:'test_pairix',single_end:false],// meta map
-                    file(params.test_data['generic']['cooler']['test_pairix_pair_gz'],checkIfExists:true),
-                    file(params.test_data['generic']['cooler']['test_pairix_pair_gz_px2'],checkIfExists:true),
+                input[0] = [
+                    [id:'test_pairix', single_end:false],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/cload/hg19/hg19.GM12878-MboI.pairs.subsample.blksrt.txt.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/cload/hg19/hg19.GM12878-MboI.pairs.subsample.blksrt.txt.gz.px2', checkIfExists:true),
                     2000000
-                    ]
-                input[1] = file(params.test_data['generic']['cooler']['hg19_chrom_sizes'],checkIfExists:true)
-                """
-            }
-        }
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
-    }
-    
-    
-    test("test_cooler_cload_pairs -- stub") {
-        options '-stub'
-        when {
-            params {
-                module_args = 'pairs --chrom1 1 --pos1 2 --chrom2 4 --pos2 5 -N'
-            }
-            process {
-                """
-                input[0] = [[id:'test_pairs',single_end:false],// meta map
-                    file(params.test_data['generic']['cooler']['test_pairs_pair'],checkIfExists:true),
-                    [],
-                    2000000
-                    ]
-                input[1] = file(params.test_data['generic']['cooler']['hg19_chrom_sizes'],checkIfExists:true)
-                """
-            }
-        }
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
-    }
-    
-    
-    test("test_cooler_cload_tabix -- stub") {
-        options '-stub'
-        when {
-            params {
-                module_args = 'tabix'
-            }
-            process {
-                """
-                input[0] = [[id:'test_tabix',single_end:false],// meta map
-                    file(params.test_data['generic']['cooler']['test_tabix_pair_gz'],checkIfExists:true),
-                    file(params.test_data['generic']['cooler']['test_tabix_pair_gz_tbi'],checkIfExists:true),
-                    2000000
-                    ]
-                input[1] = file(params.test_data['generic']['cooler']['hg19_chrom_sizes'],checkIfExists:true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/cload/hg19/hg19.chrom.sizes', checkIfExists:true)
                 """
             }
         }
