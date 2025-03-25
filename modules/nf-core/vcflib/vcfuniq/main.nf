@@ -12,7 +12,7 @@ process VCFLIB_VCFUNIQ {
     tuple val(meta), path(vcf), path(tbi)
 
     output:
-    tuple val(meta), path("*.gz"), emit: vcf
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
     path "versions.yml"          , emit: versions
 
     when:
