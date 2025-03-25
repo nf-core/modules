@@ -29,7 +29,7 @@ nextflow_process {
                     process.out.aligned_fasta,
                     process.out.phyi,
                     process.out.phys,
-                    file(process.out.log[0][1]).name,
+                    file(process.out.log[0]).name,
                     process.out.versions
                     ).match() }
             )
