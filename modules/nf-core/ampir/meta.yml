@@ -26,6 +26,8 @@ input:
         type: file
         description: FASTA file containing amino acid sequences
         pattern: "*.{faa,fasta}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
   - - model:
         type: string
         description: Built-in model for AMP prediction
@@ -49,6 +51,8 @@ output:
           type: file
           description: File containing AMP predictions in amino acid FASTA format
           pattern: "*.{faa}"
+          ontologies:
+            - edam: "http://edamontology.org/format_1929" # FASTA
   - amps_tsv:
       - meta:
           type: map
@@ -59,11 +63,15 @@ output:
           type: file
           description: File containing AMP predictions in TSV format
           pattern: "*.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # Tabular
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@jasmezz"
 maintainers:
