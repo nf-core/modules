@@ -36,4 +36,18 @@ process PYDAMAGE_ANALYZE {
         pydamage: \$(pydamage --version | sed -n 's/pydamage, version \\(.*\\)/\\1/p')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir -p pydamage_results
+    touch pydamage_results/${prefix}_pydamage_results.csv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        pydamage: \$(echo \$(pydamage --version 2>&1) | sed -e 's/pydamage, version //g')
+    END_VERSIONS
+    """
+
 }

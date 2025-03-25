@@ -11,7 +11,7 @@ process PYDAMAGE_FILTER {
     tuple val(meta), path(csv)
 
     output:
-    tuple val(meta), path("pydamage_results/pydamage_filtered_results.csv"), emit: csv
+    tuple val(meta), path("pydamage_results/*_pydamage_filtered_results.csv"), emit: csv
     path "versions.yml"           , emit: versions
 
     when:
@@ -28,6 +28,21 @@ process PYDAMAGE_FILTER {
         filter \\
         $args \\
         $csv
+
+    mv pydamage_results/pydamage_filtered_results.csv pydamage_results/${prefix}_pydamage_filtered_results.csv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        pydamage: \$(echo \$(pydamage --version 2>&1) | sed -e 's/pydamage, version //g')
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir -p pydamage_results
+    touch pydamage_results/${prefix}_pydamage_filtered_results.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
