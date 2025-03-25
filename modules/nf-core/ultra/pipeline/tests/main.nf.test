@@ -42,6 +42,9 @@ nextflow_process {
             }
         }
         when {
+            params {
+                gnu_sort_args = '-k1,1 -k4,4n'
+            }
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
