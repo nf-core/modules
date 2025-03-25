@@ -33,4 +33,17 @@ process PURGEDUPS_PURGEDUPS {
         purgedups: \$( purge_dups -h |& sed '3!d; s/.*: //' )
     END_VERSIONS
     """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${prefix}.dups.bed
+    touch ${prefix}.purge_dups.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        purgedups: \$( purge_dups -h |& sed '3!d; s/.*: //' )
+    END_VERSIONS
+    """
 }
