@@ -24,10 +24,14 @@ input:
         type: file
         description: Nucleotide or protein sequences in FASTA format
         pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - db:
         type: file
         description: A compressed tarball of the AMRFinderPlus database to query
         pattern: "*.tar.gz"
+        ontologies: 
+          - edam: http://edamontology.org/format_3981 # Tarball
 output:
   - report:
       - meta:
@@ -54,6 +58,7 @@ output:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies: []
   - tool_version:
       - VER:
           type: string
