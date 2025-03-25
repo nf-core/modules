@@ -1,6 +1,6 @@
 process IMAGESEGMENTATIONMETRICS {
     label 'process_single'
-    nextflow.enable.moduleBinaries = true
+
     conda "${moduleDir}/environment.yml"
     container 'community.wave.seqera.io/library/fire_monai_rasterio_tifffile_pruned:106d8ac1dc78149c'
 
@@ -22,27 +22,18 @@ process IMAGESEGMENTATIONMETRICS {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process}:
-        python: \$(python3 -c 'import platform; print(platform.python_version())')
-        monai: \$(python3 -c 'import monai; print(monai.__version__)')
         seg-metrics: \$(segmentation_metrics.py version)
-
     END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta}"
-    // TODO nf-core: A stub section should mimic the execution of the original module as best as possible
-    //               Have a look at the following examples:
-    //               Simple example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bcftools/annotate/main.nf#L47-L63
-    //               Complex example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bedtools/split/main.nf#L38-L54
     """
     touch ${prefix}.csv
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process}:
-        python: \$(python3 -c 'import platform; print(platform.python_version())')
-        monai: \$(python3 -c 'import monai; print(monai.__version__)')
         seg-metrics: \$(segmentation_metrics.py version)
 
     END_VERSIONS
