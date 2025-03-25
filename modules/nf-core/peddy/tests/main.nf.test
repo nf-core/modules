@@ -66,7 +66,19 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.vs_html,
+                    process.out.html,
+                    process.out.ped,
+                    process.out.het_check_csv,
+                    process.out.ped_check_csv,
+                    process.out.sex_check_csv,
+                    process.out.ped_check_rel_difference_csv).match()
+                },
+                { assert path(process.out.het_check_png[0][1]).exists() },
+                { assert path(process.out.ped_check_png[0][1]).exists() },
+                { assert path(process.out.sex_check_png[0][1]).exists() }
             )
         }
 
