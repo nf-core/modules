@@ -9,7 +9,7 @@ keywords:
 tools:
   - agat:
       description: "AGAT is a toolkit for manipulation and getting information from
-        GFF/GTF files"
+        GFF/GTF annotation files"
       homepage: "https://github.com/NBISweden/AGAT"
       documentation: "https://agat.readthedocs.io/"
       tool_dev_url: "https://github.com/NBISweden/AGAT"
@@ -26,21 +26,29 @@ input:
         type: file
         description: Annotation file in GFF3/GTF format
         pattern: "*.{gff, gtf}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2305" # GFF
 output:
   - stats_txt:
       - meta:
           type: file
           description: Output of Statistics execution
           pattern: "*.{txt}"
+          ontologies: 
+            - edam: "http://edamontology.org/format_2330" # Plain text
       - "*.txt":
           type: file
           description: Output of Statistics execution
           pattern: "*.{txt}"
+          ontologies: 
+            - edam: "http://edamontology.org/format_2330" # Plain text
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/format_3750" # Yaml
 authors:
   - "@toniher"
 maintainers:
