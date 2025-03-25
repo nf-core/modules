@@ -18,13 +18,13 @@ process IMAGESEGMENTATIONMETRICS {
     def args = task.ext.args ?: ''
 
     """
-    segmentation_metrics.py ${args} --path_ref ${ref_img} --path_list_seg ${images2compare} --list_metrics ${metricname}
+    segmentation_metrics.py run --path_ref ${ref_img} --path_list_seg ${images2compare} --list_metrics ${metricname} ${args}
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process}:
         python: \$(python3 -c 'import platform; print(platform.python_version())')
         monai: \$(python3 -c 'import monai; print(monai.__version__)')
-        seg-metrics:
+        seg-metrics: \$(segmentation_metrics.py version)
 
     END_VERSIONS
     """
@@ -43,7 +43,7 @@ process IMAGESEGMENTATIONMETRICS {
     ${task.process}:
         python: \$(python3 -c 'import platform; print(platform.python_version())')
         monai: \$(python3 -c 'import monai; print(monai.__version__)')
-        seg-metrics:
+        seg-metrics: \$(segmentation_metrics.py version)
 
     END_VERSIONS
     """
