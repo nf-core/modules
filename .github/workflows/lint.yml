@@ -48,7 +48,10 @@ jobs:
   # https://github.com/nf-core/tools/pull/3141
   nf-core-changes:
     name: nf-core-changes
-    runs-on: ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
+    runs-on:
+      - runs-on=${{ github.run_id }}-nf-core-changes
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
     outputs:
       # https://github.com/dorny/paths-filter?tab=readme-ov-file#custom-processing-of-changed-files
       modules: ${{ steps.filter.outputs.modules }}
@@ -113,7 +116,10 @@ jobs:
           echo ${{ steps.subworkflow_names.outputs.result }}
 
   nf-core-lint-modules:
-    runs-on: ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
+    runs-on:
+      - runs-on=${{ github.run_id }}-nf-core-lint-modules
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
     name: nf-core lint modules
     needs: nf-core-changes
     if: ${{ (needs.nf-core-changes.outputs.modules == 'true') }}
@@ -158,7 +164,10 @@ jobs:
         run: nf-core modules lint ${{ matrix.module }}
 
   nf-core-lint-subworkflows:
-    runs-on: ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
+    runs-on:
+      - runs-on=${{ github.run_id }}-nf-core-lint-subworkflows
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
     name: nf-core lint subworkflows
     needs: nf-core-changes
     if: ${{ (needs.nf-core-changes.outputs.subworkflows == 'true') }}
@@ -187,7 +196,10 @@ jobs:
         run: nf-core subworkflows lint ${{ matrix.subworkflow }}
 
   confirm-pass-lint:
-    runs-on: ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
+    runs-on:
+      - runs-on=${{ github.run_id }}-confirm-pass-lint
+      - runner=2cpu-linux-x64
+      - image=ubuntu22-full-x64
     needs: [nf-core-lint-modules, nf-core-lint-subworkflows]
     if: always()
     steps:
