@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "agat_spkeeplongestisoform"
 description: Filters GFF records to keep only the longest isoform per gene
@@ -12,7 +11,8 @@ keywords:
   - agat
 tools:
   - "agat":
-      description: "Another Gff Analysis Toolkit (AGAT). Suite of tools to handle gene annotations in any GTF/GFF format."
+      description: "Another Gff Analysis Toolkit (AGAT). Suite of tools to handle gene
+        annotations in any GTF/GFF format."
       homepage: "https://agat.readthedocs.io/en/latest/"
       documentation: "https://agat.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/NBISweden/AGAT"
@@ -38,24 +38,16 @@ input:
           own AGAT config file (located elsewhere or named differently).
         pattern: "*.yaml"
 output:
-  - output_gff:
+  - gff:
       - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.gff":
           type: file
-          description: Filtered annotation file in GFF3 format
-          pattern: "*.{gff}"
-      - "*.agat.gff":
-          type: file
-          description: Filtered annotation file in GFF3 format
-          pattern: "*.{gff}"
-  - log:
-      - meta:
-          type: file
-          description: Log file of the process
-          pattern: "*.{log}"
-      - "*.log":
-          type: file
-          description: Log file of the process
-          pattern: "*.{log}"
+          description: Output GFF file.
+          pattern: "*.gff"
   - versions:
       - versions.yml:
           type: file
