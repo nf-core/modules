@@ -1,0 +1,119 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "trnascanse"
+description: Detection of tRNA sequences using covariance models
+keywords:
+  - covariance models
+  - trna
+  - genome annotation
+tools:
+  - "trnascanse":
+      description: "tRNA detection in large-scale genomic sequences"
+      homepage: "http://lowelab.ucsc.edu/tRNAscan-SE/help.html"
+      documentation: "http://lowelab.ucsc.edu/tRNAscan-SE/help.html"
+      tool_dev_url: "https://github.com/UCSC-LoweLab/tRNAscan-SE"
+      doi: "10.1093/nar/gkab688"
+      licence: ["GPL v3", "GPL v3-or-later"]
+      identifier: biotools:trnascan-se
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: |
+          Fasta file for tRNA annotation. Can be gzipped.
+        ontologies: []
+  - - write_fasta:
+        type: boolean
+        description: |
+          Flag to enable FASTA output of identified tRNA sequences
+  - - write_gff:
+        type: boolean
+        description: Flag to enable GFF output of tRNA annotations of input sequences
+  - - write_bed:
+        type: boolean
+        description: Flag to enable BED output of tRNA annotations of input sequences
+
+output:
+  - tsv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+          pattern: "*.tsv"
+      - "*.tsv":
+          type: file
+          description: TSV summary output of tRNA annotations
+          pattern: "*.tsv"
+  - log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+          pattern: "*.log"
+      - "*.log":
+          type: file
+          description: tRNAScan-SE log file
+          pattern: "*.log"
+  - stats:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+          pattern: "*.stats"
+      - "*.stats":
+          type: file
+          description: Unstructured results file describing tRNA annotations
+          pattern: "*.stats"
+  - fasta:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+          pattern: "*.fasta.gz"
+      - "*.fasta":
+          type: file
+          description: |
+            (optional) FASTA output of annotated tRNA sequences
+          pattern: "*.fasta.gz"
+  - gff:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+          pattern: "*.gff"
+      - "*.gff":
+          type: file
+          description: |
+            (optional) GFF annotation of tRNA sequences in input fasta
+          pattern: "*.gff"
+  - bed:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+          pattern: "*.bed"
+      - "*.bed":
+          type: file
+          description: |
+            (optional) BED annotation of tRNA sequences in input fasta
+          pattern: "*.bed"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+          ontologies: []
+authors:
+  - "@prototaxites"
+maintainers:
+  - "@prototaxites"

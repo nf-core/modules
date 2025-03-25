@@ -1,0 +1,71 @@
+nextflow_process {
+
+    name "Test Process TRNASCANSE"
+    script "../main.nf"
+    process "TRNASCANSE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "trnascanse"
+
+    test("bacteroides fragilis - write all") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                ]
+                input[1] = true
+                input[2] = true
+                input[3] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.log[0][1]).readLines().first().contains("Application: tRNAscan-SE") }, // timestamped log
+                { assert snapshot(
+                    process.out.tsv,
+                    process.out.stats,
+                    process.out.fasta,
+                    process.out.gff,
+                    process.out.bed,
+                    process.out.versions
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("bacteroides fragilis - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                ]
+                input[1] = true
+                input[2] = true
+                input[3] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
