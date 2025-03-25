@@ -1,19 +1,19 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "paml_codeml"
+name: "paml_buildctl"
 description: PAML (Phylogenetic Analysis Using Maximum Likelihood) is a package
   of programs for maximum likelihood analysis of protein and DNA sequences (Yang 1997).
   PAML is useful if you are interested in the process of sequence evolution.
-  codeml implements a number of sophisticated models, which you can use to construct
-  likelihood ratio tests of evolutionary hypotheses.
+  buildctl aims at building the settings file needed to run paml codeml providing
+  directly parameter values.
 keywords:
   - evolution
   - maximum likelihood
   - selective pressure
   - dNdS
 tools:
-  - "codeml":
-      description: "CODEML is the main tool which uses maximum-likelihood to infer dNdS."
+  - "paml":
+      description: "BUILDCTL is the main tool used to create the control file for CODEML"
       homepage: "https://evomics.org/resources/software/molecular-evolution-software/paml/"
       documentation: "https://github.com/abacus-gene/paml/wiki/BASEML#baseml"
       tool_dev_url: "https://github.com/abacus-gene/paml"
@@ -27,11 +27,6 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-
-    - ctl:
-        type: file
-        description: A control/configuration file containing information for codeml run
-        pattern: "*.{ctl,c,cfg,config}"
 
     - phy:
         type: file
@@ -50,14 +45,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "result.txt":
+      - "settings.ctl":
           type: file
-          description: CODEML output result file
-          pattern: "*.{txt}"
-      - "out.log":
-          type: file
-          description: CODEML run log file
-          pattern: "*.{log}"
+          description: CODEML control file
+          pattern: "*.{ctl}"
   - versions:
       - "versions.yml":
           type: file
