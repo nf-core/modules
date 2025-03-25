@@ -25,13 +25,15 @@ process TOPAS_GENCONS {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def optionalvcfindels = vcf_indels ? "-indels ${vcf_indels}" : ''
-    def optionalfai = fai ? "-fai ${fai}" : ''
-    def vcfoutput = vcf_output ? "-vcf_out ${prefix}.vcf" : ""
-    def VERSION = '1.0.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def args              = task.ext.args   ?: ''
+    def prefix            = task.ext.prefix ?: "${meta.id}"
+    def vcfoutput         = vcf_output      ? "-vcf_out ${prefix}.vcf" : ""
+    def optionalfai       = fai             ? "-fai ${fai}"            : ""
+    def optionalvcfindels = vcf_indels      ? "-indels ${vcf_indels}"  : ""
 
+    if ("$reference" == "${prefix}.fasta" || "$reference" == "${prefix}.fasta.gz")
+        error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    def VERSION = '1.0.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
 
     topas \\
@@ -40,6 +42,7 @@ process TOPAS_GENCONS {
         -o ${prefix}.fasta \\
         -snps $vcf \\
         $optionalvcfindels \\
+        $optionalfai \\
         $vcfoutput \\
         -ref $reference
 
@@ -54,4 +57,24 @@ process TOPAS_GENCONS {
         topas: $VERSION
     END_VERSIONS
     """
+
+    stub:
+    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def vcfoutput = vcf_output      ? "echo | gzip > ${prefix}.vcf.gz" : ""
+
+    if ("$reference" == "${prefix}.fasta" || "$reference" == "${prefix}.fasta.gz")
+        error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    def VERSION   = '1.0.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    echo | gzip > ${prefix}.fasta.gz
+    touch ${prefix}.fastq.ccf
+    touch ${prefix}.fastq.log
+    $vcfoutput
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        topas: $VERSION
+    END_VERSIONS
+    """
+
 }
