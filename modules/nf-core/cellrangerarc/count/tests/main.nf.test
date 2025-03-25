@@ -22,7 +22,6 @@ nextflow_process {
                 """
             }
         }
-        
         run("CELLRANGERARC_MKREF") {
             script "../../mkref/main.nf"
             
@@ -37,9 +36,8 @@ nextflow_process {
             }
         }
     }
-    
     test("test_cellrangerarc_count") {
-        
+
         when {
             params {
                 module_args = ''
@@ -65,7 +63,6 @@ nextflow_process {
             )
         }
     }
-    
     
     test("test_cellrangerarc_count -- stub") {
         options '-stub'
