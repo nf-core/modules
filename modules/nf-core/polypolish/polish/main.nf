@@ -8,14 +8,14 @@ process POLYPOLISH {
         'biocontainers/polypolish:0.6.0' }"
 
     input:
-    // input:  polypolish polish [OPTIONS] <ASSEMBLY> [SAM]
     tuple val(meta), path(fasta)
-    tuple val(meta), path(sam)
+    tuple val(meta2), path(sam)
+    val save_debug
 
     output:
-    // polypolish polish draft.fasta filtered_1.sam filtered_2.sam > polished.fasta
     tuple val(meta), path("*.fasta"), emit: fasta
     path "versions.yml"           , emit: versions
+    tuple val (meta), path(*.txt), optional: true, emit: debug
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,16 +23,20 @@ process POLYPOLISH {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("$fasta" == "${prefix}.fasta") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    def debug_mode = save_debug ? "--debug ${prefix}.txt" : ''
+
     """
     polypolish \\
         polish \\
         $args \\
+        $debug_mode \\
         ${fasta} \\
-        $sam > ${prefix}_polished.fasta
+        $sam > ${prefix}.fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        polypolish: \$(polypolish polish --version |& sed '1!d ; s/polypolish polish //')
+        polypolish: \$(polypolish polish --version |& sed '1!d ; s/Polypolish-polish //')
     END_VERSIONS
     """
 

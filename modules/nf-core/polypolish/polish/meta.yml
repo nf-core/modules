@@ -24,13 +24,13 @@ input:
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
 
-    - "*.fasta":
+    - fasta:
         type: file
         description: FASTA file
-        pattern: "*.{fasta,fna,fa}"
+        pattern: "*.{fasta,fna,fa,fas}"
         ontologies:
           - edam: "http://edamontology.org/format_1929"
-  - - meta:
+  - - meta2:
         type: map
         description: |
           Groovy Map containing sample information
@@ -39,7 +39,7 @@ input:
     - sam:
         type: file
         description: List of alignment SAM file
-        pattern: "*.{sam}"
+        pattern: "*.sam"
         ontologies:
           - edam: "http://edamontology.org/format_2573"
 output:
@@ -53,7 +53,7 @@ output:
     - "*.fasta":
         type: file
         description: FASTA file
-        pattern: "*.{fasta,fna,fa}"
+        pattern: "*.{fasta,fna,fa,fas}"
         ontologies:
           - edam: "http://edamontology.org/format_1929"
 
