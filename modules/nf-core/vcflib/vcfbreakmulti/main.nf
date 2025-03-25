@@ -21,7 +21,7 @@ process VCFLIB_VCFBREAKMULTI {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.0.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '1.0.12' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     vcfbreakmulti \\
@@ -37,7 +37,7 @@ process VCFLIB_VCFBREAKMULTI {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.0.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '1.0.12' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     echo | gzip > ${prefix}.breakmulti.vcf.gz
 
