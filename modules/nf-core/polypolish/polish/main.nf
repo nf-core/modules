@@ -1,4 +1,5 @@
 process POLYPOLISH {
+
     tag "$meta.id"
     label 'process_high_memory'
 
@@ -15,7 +16,7 @@ process POLYPOLISH {
     output:
     tuple val(meta), path("*.fasta"), emit: fasta
     path "versions.yml"           , emit: versions
-    tuple val (meta), path(*.txt), optional: true, emit: debug
+    tuple val(meta), path("*.txt"), optional: true, emit: debug
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,7 +32,7 @@ process POLYPOLISH {
         polish \\
         $args \\
         $debug_mode \\
-        ${fasta} \\
+        $fasta \\
         $sam > ${prefix}.fasta
 
     cat <<-END_VERSIONS > versions.yml

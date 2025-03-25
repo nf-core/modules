@@ -39,6 +39,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = SAMTOOLS_VIEW.out.sam
+                input[2] = []
                 """
             }
         }
@@ -64,6 +65,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = SAMTOOLS_VIEW.out.sam
+                input[2] = []
                 """
             }
         }

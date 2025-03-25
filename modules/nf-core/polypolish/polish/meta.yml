@@ -17,7 +17,6 @@ tools:
       identifier: biotools:polypolish
 
 input:
-  # Only when we have meta
   - - meta:
         type: map
         description: |
@@ -44,7 +43,6 @@ input:
           - edam: "http://edamontology.org/format_2573"
 output:
   - fasta:
-  #Only when we have meta
     - meta:
         type: map
         description: |
