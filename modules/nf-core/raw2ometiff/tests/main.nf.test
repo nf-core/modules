@@ -1,0 +1,63 @@
+// nf-core modules test raw2ometiff
+nextflow_process {
+
+    name "Test Process RAW2OMETIFF"
+    script "../main.nf"
+    process "RAW2OMETIFF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "raw2ometiff"
+
+    test("raw2ometiff - zarr") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file('/home/schwitalla/Documents/test-datasets/test_data/zarr', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.tiff[0][1].toString().endsWith(".tiff")
+                  assert process.out.versions[0].toString().endsWith("versions.yml")},
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+
+    }
+
+
+    test("raw2ometiff - zarr - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file('/home/schwitalla/Documents/test-datasets/test_data/zarr', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.tiff[0][1].toString().endsWith(".tiff")
+                  assert process.out.versions[0].toString().endsWith("versions.yml")},
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+
+    }
+
+}
