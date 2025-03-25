@@ -1,0 +1,58 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "mcstaging_macsima2mc"
+description: Staging module for MCMICRO transforming MACSima data sets for being registerd with ASHLAR in MCMICRO.
+keywords:
+  - imaging
+  - ome-tif
+  - mcmicro
+  - staging
+  - spatial-omics
+  - macsima
+tools:
+  - "mcstaging":
+      description: "Staging modules for MCMICRO"
+      homepage: "https://github.com/SchapiroLabor/macsima2mc"
+      documentation: "https://github.com/SchapiroLabor/macsima2mc/README.md"
+      tool_dev_url: "https://github.com/SchapiroLabor/macsima2mc"
+      licence: ["BSD-3-Clause"]
+      identifier: ""
+
+input:
+  # Only when we have meta
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+
+    - input_path:
+        type: directory
+        description: Absolute path to the the parent folder of the raw tiles, whose name follows the pattern X_Cycle_N,where N represents the cycle number
+        pattern: "*Cycle*"
+
+
+output:
+  - bam:
+      #Only when we have meta
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - output_path:
+          type: directory
+          description: Absolute path to the output folder
+
+
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@EfraMP"
+maintainers:
+  - "@EfraMP"
+  - "@VictorDidier"
