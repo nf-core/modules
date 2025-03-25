@@ -86,8 +86,10 @@ nextflow_process {
         }
 
         then {
-            assert !process.success
-            assert process.exitStatus != 0
+            assertAll(
+                { assert !process.success },
+                { assert process.exitStatus != 0 }
+            )
         }
     }
 }
