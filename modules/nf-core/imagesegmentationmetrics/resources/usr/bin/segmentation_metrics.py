@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import monai.metrics as mmetrics
 import tifffile
 import torch
@@ -6,6 +8,8 @@ import pandas as pd
 from enum import Enum
 import fire
 from time import time
+
+VERSION = "0.0.1"
 
 def read_image(path) -> np.ndarray:
     """
@@ -95,4 +99,8 @@ def main(path_ref, path_list_seg, list_metrics):
     get_results(results, path_list_seg, list_metrics)
 
 if __name__ == '__main__':
-    fire.Fire(main)
+    options = {
+        "run" : main,
+        "version" : VERSION
+    }
+    fire.Fire(options)
