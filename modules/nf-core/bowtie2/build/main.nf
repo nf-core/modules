@@ -4,8 +4,8 @@ process BOWTIE2_BUILD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bowtie2:2.5.2--py39h6fed5c7_0' :
-        'biocontainers/bowtie2:2.5.2--py39h6fed5c7_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/70/70d15831a22809fefc5509f0d0fe718c1cc2d68d02b2526c336e3ea944a184c0/data' :
+        'community.wave.seqera.io/library/bowtie2_samtools_pigz:2094d7c53a8b941d' }"
 
     input:
     tuple val(meta), path(fasta)
