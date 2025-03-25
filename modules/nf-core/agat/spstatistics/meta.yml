@@ -26,21 +26,29 @@ input:
         type: file
         description: Annotation file in GFF3/GTF format
         pattern: "*.{gff, gtf}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2305" # GFF
 output:
   - stats_txt:
       - meta:
           type: file
           description: Output of Statistics execution
           pattern: "*.{txt}"
+          ontologies: 
+            - edam: "http://edamontology.org/format_2330" # Plain text
       - "*.txt":
           type: file
           description: Output of Statistics execution
           pattern: "*.{txt}"
+          ontologies: 
+            - edam: "http://edamontology.org/format_2330" # Plain text
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@toniher"
 maintainers:
