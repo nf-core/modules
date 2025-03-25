@@ -35,7 +35,10 @@ env:
 jobs:
   nf-test-changes:
     name: nf-test-changes
-    runs-on: ubuntu-latest
+    runs-on:
+      - runs-on=${{ github.run_id }}-nf-test-changes-gpu
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
     outputs:
       # Expose detected tags as 'modules' and 'workflows' output variables
       paths: ${{ steps.list.outputs.components }}
@@ -119,7 +122,10 @@ jobs:
           paths: "${{ join(fromJson(needs.nf-test-changes.outputs.paths), ' ') }}"
 
   confirm-pass-gpu:
-    runs-on: ubuntu-latest
+    runs-on:
+      - runs-on=${{ github.run_id }}-confirm-pass-gpu
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
     needs: [nf-test-gpu]
     if: always()
     steps:

@@ -34,7 +34,10 @@ env:
 jobs:
   pytest-changes:
     name: pytest-changes
-    runs-on: ubuntu-latest
+    runs-on:
+      - runs-on=${{ github.run_id }}-pytest-changes
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
     outputs:
       tags: ${{ steps.filter.outputs.changes }}
       modules: ${{ steps.tags.outputs.modules }}
@@ -317,7 +320,10 @@ jobs:
             !${{ github.workspace }}/.singularity
 
   confirm-pass-pytest:
-    runs-on: ubuntu-latest
+    runs-on:
+      - runs-on=${{ github.run_id }}-confirm-pass-pytest
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
     needs: [pytest-changes, pytest]
     if: always()
     steps:
