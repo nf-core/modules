@@ -9,7 +9,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "genrich"
    
-    test("test_genrich") {
+    test("homo_sapiens - bam - pe - p0.1") {
         
         
         when {
@@ -32,7 +32,7 @@ nextflow_process {
             )
         }
     }
-    test("test_genrich_ctrl") {
+    test("homo_sapiens - bam - pe - ctrl - p0.9") {
         
         
         when {
@@ -55,7 +55,7 @@ nextflow_process {
             )
         }
     }
-    test("test_genrich_se") {
+    test("homo_sapiens - bam - se - ctrl - p0.9") {
         
         
         when {
@@ -78,7 +78,7 @@ nextflow_process {
             )
         }
     }
-    test("test_genrich_all_outputs") {
+    test("homo_sapiens - bam - pe - p0.9 - all_output") {
         
         
         when {
@@ -109,7 +109,7 @@ nextflow_process {
             )
         }
     }
-    test("test_genrich_blacklist") {
+    test("homo_sapiens - blacklist") {
         
         
         when {
@@ -132,7 +132,7 @@ nextflow_process {
             )
         }
     }
-    test("test_genrich_atacseq") {
+    test("homo_sapiens - bam - pe - atacseq - p0.1") {
         
         
         when {
@@ -155,7 +155,7 @@ nextflow_process {
             )
         }
     }
-    test("test_genrich_list") {
+    test("homo_sapiens - bam - pe - bed - p0.9") {
         
         
         when {
