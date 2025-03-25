@@ -34,7 +34,7 @@ process PEDDY {
         --plot \\
         -p $task.cpus \\
         $vcf \\
-        $sites_arg
+        $sites_arg \\
         $ped
 
     cat <<-END_VERSIONS > versions.yml
