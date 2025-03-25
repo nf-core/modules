@@ -90,7 +90,8 @@ output:
           type: file
           description: File containing hits in tabular BLAST format.
           pattern: "*.{txt,txt.gz}"
-          ontologies: []
+          ontologies: 
+              - edam: http://edamontology.org/format_1333 # BLAST results
   - daa:
       - meta:
           type: map
