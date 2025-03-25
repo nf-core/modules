@@ -53,6 +53,20 @@ process PLINK_RECODE {
         --recode \\
         ${args} \\
         --out ${prefix}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        plink: \$(echo \$(plink --version) | sed 's/^PLINK v//;s/64.*//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${prefix}.ped
+    touch ${prefix}.map
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         plink: \$(echo \$(plink --version) | sed 's/^PLINK v//;s/64.*//')

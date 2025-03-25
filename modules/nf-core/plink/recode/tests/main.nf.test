@@ -1,7 +1,6 @@
 nextflow_process {
 
     name "Test Process PLINK_RECODE"
-    config "./nextflow.config"
     script "../main.nf"
     process "PLINK_RECODE"
    
@@ -12,7 +11,9 @@ nextflow_process {
     tag "plink/vcf"
    
     test("test_plink_recode") {
-        
+
+        config "./nextflow.config"
+
         setup {
             run("PLINK_VCF") {
                 script "../../vcf/main.nf"
@@ -34,6 +35,30 @@ nextflow_process {
             process {
                 """
                 input[0] = PLINK_VCF.out.bed.join(PLINK_VCF.out.bim).join(PLINK_VCF.out.fam)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test_plink_recode - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file("test.bed"),
+                    file("test.bim"),
+                    file("test.fam")
+                    ]
                 """
             }
         }
