@@ -27,12 +27,12 @@ nextflow_process {
 
         then {
             assertAll (
-                {assert process.success},
-                {assert path(process.out.results[0][1].find { it.toString().contains("gene_presence_absence.csv") }).exists()},
-                {assert path(process.out.results[0][1].find { it.toString().contains("accessory_binary_genes.fa.newick") }).exists()},
-                {assert path(process.out.results[0][1].find { it.toString().contains("summary_statistics.txt") }).exists()},
-                {assert path(process.out.results[0][1].find { it.toString().contains("accessory_binary_genes.fa") }).exists()},
-                {assert snapshot(process.out.versions).match("versions")}
+                { assert process.success},
+                { assert path(process.out.results[0][1].find { it.toString().contains("gene_presence_absence.csv") }).exists() },
+                { assert path(process.out.results[0][1].find { it.toString().contains("accessory_binary_genes.fa.newick") }).exists() },
+                { assert path(process.out.results[0][1].find { it.toString().contains("summary_statistics.txt") }).exists() },
+                { assert path(process.out.results[0][1].find { it.toString().contains("accessory_binary_genes.fa") }).exists() },
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
 
