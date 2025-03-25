@@ -36,12 +36,16 @@ input:
           for each sample processed or a list of files corresponding to each file generated
           by AMP tools.
         pattern: "[*amptool.tsv, *amptool.tsv]"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
   - - faa_input:
         type: file
         description: The path to the file corresponding to the respective protein fasta
           files with '.faa' extension. File names have to contain the corresponding
           sample name, i.e. sample_1.faa
         pattern: "*.faa"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
   - - opt_amp_db:
         type: directory
         description: The path to the folder containing the fasta and tsv database files.
@@ -69,6 +73,8 @@ output:
           description: An alignment file containing the results from the DIAMOND alignment
             step done on all AMP hits.
           pattern: "/*/*_diamond_matches.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Text file
   - csv:
       - meta:
           type: map
@@ -81,6 +87,8 @@ output:
             from all AMP tools given as input and the corresponding taxonomic and functional
             classification from the alignment step.
           pattern: "/*/*_ampcombi.csv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3752" # CSV
   - faa:
       - meta:
           type: map
@@ -92,6 +100,8 @@ output:
           description: A fasta file containing the amino acid sequences of all predicted
             AMP hits.
           pattern: "/*/*_amp.faa"
+          ontologies:
+            - edam: "http://edamontology.org/format_1929" # FASTA
   - summary_csv:
       - meta:
           type: map
@@ -103,6 +113,8 @@ output:
           description: A file that concatenates all samples ampcombi summaries. This is
             activated with `--complete_summary true`.
           pattern: "AMPcombi_summary.csv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3752" # CSV
   - summary_html:
       - meta:
           type: map
@@ -114,6 +126,8 @@ output:
           description: A file that concatenates all samples ampcombi summaries. This is
             activated with `--complete_summary true`.
           pattern: "AMPcombi_summary.html"
+          ontologies:
+            - edam: "http://edamontology.org/format_2331" # HTML
   - log:
       - meta:
           type: map
@@ -125,6 +139,8 @@ output:
           description: A log file that captures the standard output ina log file. Can
             be activated by `--log`.
           pattern: "*.log"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Text file
   - results_db:
       - meta:
           type: map
@@ -147,6 +163,7 @@ output:
           type: file
           description: AMP reference database converted to DIAMOND database format.
           pattern: "/amp_ref_database/*.dmnd"
+          ontologies: []
   - results_db_fasta:
       - meta:
           type: map
@@ -158,6 +175,8 @@ output:
           description: AMP reference database fasta file, cleaned of diamond-incompatible
             characters.
           pattern: "/amp_ref_database/*.clean.fasta"
+          ontologies:
+            - edam: "http://edamontology.org/format_1929" # FASTA
   - results_db_tsv:
       - meta:
           type: map
@@ -169,11 +188,15 @@ output:
           description: AMP reference database in tsv-format with two columns containing
             header and sequence.
           pattern: "/amp_ref_database/*.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@darcy220606"
   - "@louperelo"
