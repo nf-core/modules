@@ -21,11 +21,15 @@ output:
           type: file
           description: The latest AMRFinder+ database in a compressed tarball
           pattern: "*.tar.gz"
+          ontologies: 
+            - edam: "http://edamontology.org/format_3981" # Compressed archive
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies: 
+            - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@rpetit3"
 maintainers:
