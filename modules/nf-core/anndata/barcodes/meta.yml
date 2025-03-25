@@ -1,5 +1,6 @@
 name: anndata_barcodes
-description: Module to subset AnnData object to cells with matching barcodes from the csv file
+description: Module to subset AnnData object to cells with matching barcodes from
+  the csv file
 keywords:
   - single-cell
   - barcodes
@@ -25,12 +26,15 @@ input:
         type: file
         description: Anndata object as H5AD file
         pattern: "*.h5ad"
+        ontologies:
+          - edam: "http://edamontology.org/format_3590" # HDF5
     - barcodes:
         type: file
         description: |
           CSV file containing barcodes. Barcodes are written in plain text. One column, no header
         pattern: "*.csv"
-
+        ontologies:
+          - edam: "http://edamontology.org/format_3752" # CSV
 output:
   - h5ad:
       - meta:
@@ -44,11 +48,15 @@ output:
           description: |
             AnnData file containing all cells with barcodes that match those in the input barcodes csv file
           pattern: "*.h5ad"
+          ontologies:
+            - edam: "http://edamontology.org/format_3590" # HDF5
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/format_3750" # Yaml
 authors:
   - "@nictru"
   - "@chaochaowong"
