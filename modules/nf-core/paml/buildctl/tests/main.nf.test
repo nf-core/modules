@@ -1,0 +1,67 @@
+nextflow_process {
+
+    name "Test Process PAML_BUILDCTL"
+    script "../main.nf"
+    process "PAML_BUILDCTL"
+    config "../nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "paml"
+    tag "paml/buildctl"
+
+    test("create config default") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'default' ], // meta map
+                    file('https://raw.githubusercontent.com/RiccPicc/test_data/refs/heads/main/case_a.phy', checkIfExists: true)
+                ]
+                input[1] = file('https://raw.githubusercontent.com/RiccPicc/test_data/refs/heads/main/case_a.tree', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.ctl.get(0).get(1)).exists() },
+                { assert path(process.out.versions.get(0)).exists() },
+                { assert path(process.out.ctl.get(0).get(1)).toString().contains("settings.ctl") },
+                { assert path(process.out.versions.get(0)).toString().contains("versions.yml") },
+                { assert path(process.out.versions.get(0)).text.contains("GNU bash") },
+                { assert path(process.out.ctl.get(0).get(1)).text.contains("icode") }
+            )
+        }
+
+    }
+
+    test("stub test default") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'default' ], // meta map
+                    file('https://raw.githubusercontent.com/RiccPicc/test_data/refs/heads/main/case_a.phy', checkIfExists: true)
+                ]
+                input[1] = file('https://raw.githubusercontent.com/RiccPicc/test_data/refs/heads/main/case_a.tree', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.ctl.get(0).get(1)).exists() },
+                { assert path(process.out.versions.get(0)).exists() },
+                { assert path(process.out.ctl.get(0).get(1)).toString().contains("settings.ctl") },
+                { assert path(process.out.versions.get(0)).toString().contains("versions.yml") },
+                { assert path(process.out.versions.get(0)).text.contains("GNU bash") }
+            )
+        }
+    }
+
+}
