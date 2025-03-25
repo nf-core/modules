@@ -2,15 +2,15 @@
 
 As of March 2025, the latest version of [InterProScan on Bioconda](https://bioconda.github.io/recipes/interproscan/README.html) is 5.59_91, which is from [October 17, 2022](https://github.com/ebi-pf-team/interproscan/releases/tag/5.59-91.0). This Dockerfile builds a new version of InterProScan.
 
-1. Navigate to the appropriate download page. - [Cell Ranger](https://support.10xgenomics.com/single-cell-gene-expression/software/downloads/latest): download the tar ball of the desired Cell Ranger version with `curl` or `wget`. Place this file in the same folder where the Dockerfile lies.
-
-2. Edit the Dockerfile. Update the Cell Ranger versions in this line:
+2. Edit the Dockerfile. Update the InterProScan versions in this line:
 
 ```bash
 ENV INTERPROSCAN_VER=<VERSION>
 ```
 
 3. Create and test the container:
+
+Make sure to `export INTERPROSCAN_VER=<VERSION>` so that the build uses the right tags.
 
 You can do `make build` from the Makefile or:
 
