@@ -28,9 +28,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.log[0][1]).readLines().first().contains("Application: tRNAscan-SE") }, // timestamped log
+                { assert path(process.out.stats[0][1]).getText().contains("scan results") }, // timestamped log
                 { assert snapshot(
                     process.out.tsv,
-                    process.out.stats,
                     process.out.fasta,
                     process.out.gff,
                     process.out.bed,
