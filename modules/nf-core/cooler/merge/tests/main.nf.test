@@ -29,7 +29,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.cool.collect{file(it[1]).name}
+                ).match() }
             )
         }
     }
@@ -54,7 +57,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{path(it).yaml}
+                ).match() }
             )
         }
     }
