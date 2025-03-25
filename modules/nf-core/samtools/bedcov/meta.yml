@@ -1,0 +1,94 @@
+name: "samtools_bedcov"
+description: reports coverage over regions in a supplied BED file
+keywords:
+  - bedcov
+  - samtools
+  - coverage
+  - bed
+  - bam
+  - cram
+  - sam
+  - regions
+tools:
+  - "samtools":
+      description: "Tools for dealing with SAM, BAM and CRAM files"
+      homepage: "http://www.htslib.org/"
+      documentation: "http://www.htslib.org/doc/samtools-bedcov.html"
+      tool_dev_url: "https://github.com/samtools/samtools"
+      doi: "10.1093/bioinformatics/btp352"
+      licence: ['MIT']
+      identifier: biotools:samtools
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - input:
+        type: file
+        description: Sorted BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2573" # SAM
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: http://edamontology.org/format_3462 # CRAM
+    - input_index:
+        type: file
+        description: BAM/CRAM index file
+        pattern: "*.{bai,crai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327" # BAI
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'bed']`
+    - bed:
+        type: file
+        description: Interval BED file
+        pattern: "*.bed"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'genome']`
+    - fasta:
+        type: file
+        description: Reference genome file
+        pattern: "*.{fa,fasta}"
+        ontologies:
+          - edam: "http://edamontology.org/data_2044" # Sequence
+          - edam: "http://edamontology.org/format_1929" # FASTA
+    - fasta_index:
+        type: file
+        description: Reference genome index file
+        pattern: "*.fai"
+output:
+  - coverage:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - "*.tsv":
+        type: file
+        description: |
+          Reports the total read base count (i.e. the sum of per base read depths)
+          for each genomic region specified in the supplied BED file.
+          The regions are output as they appear in the BED file and are 0-based.
+          Columns 1-3 are chrom/start/end as per the input BED file, followed by N columns of coverages (for N input BAMs),
+          then (if given -d), N columns of bases-at-depth-X, then (if given -c) N columns of read counts.
+        pattern: "*.tsv"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+  - versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+authors:
+  - "@ToonRosseel"
+maintainers:
+  - "@ToonRosseel"
