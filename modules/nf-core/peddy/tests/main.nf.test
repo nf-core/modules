@@ -20,11 +20,14 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/FAM_snvs_annotated_ranked.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/FAM_snvs_annotated_ranked.vcf.gz.tbi', checkIfExists: true)
                 ]
-                input[1] = [ id:'ped_file' ],
+                input[1] = [
+                    [ id:'ped_file' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/FAM.ped', checkIfExists: true)
-                input[2] = [ id:'sites_file' ],
+                ]
+                input[2] = [
+                    [ id:'sites_file' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/peddy.sites', checkIfExists: true)
-                """
+                ]
             }
         }
 
@@ -45,11 +48,14 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/FAM_snvs_annotated_ranked.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/FAM_snvs_annotated_ranked.vcf.gz.tbi', checkIfExists: true)
                 ]
-                input[1] = [ id:'ped_file' ],
+                input[1] = [
+                    [ id:'ped_file' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/FAM.ped', checkIfExists: true)
-                input[2] = [ id:'sites_file' ],
+                ]
+                input[2] = [
+                    [ id:'sites_file' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/peddy.sites', checkIfExists: true)
-                """
+                ]
             }
         }
 
@@ -70,10 +76,14 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/FAM_snvs_annotated_ranked.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/FAM_snvs_annotated_ranked.vcf.gz.tbi', checkIfExists: true)
                 ]
-                input[1] = [ id:'ped_file' ],
+                input[1] = [
+                    [ id:'ped_file' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/FAM.ped', checkIfExists: true)
-                input[2] = [ id:'sites_file' ],
+                ]
+                input[2] = [
+                    [ id:'sites_file' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/peddy.sites', checkIfExists: true)
+                ]
                 """
             }
             task {
