@@ -1,0 +1,68 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "agat"
+## TODO nf-core: Add a description of the module and list keywords
+description: Filters GFF records to keep only the longest isoform per gene
+keywords:
+  - gff
+  - gtf
+  - filter
+  - isoform
+  - gene
+  - longest
+  - agat
+tools:
+  - "agat":
+      description: "Another Gff Analysis Toolkit (AGAT). Suite of tools to handle gene annotations in any GTF/GFF format."
+      homepage: "https://agat.readthedocs.io/en/latest/"
+      documentation: "https://agat.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/NBISweden/AGAT"
+      doi: "10.5281/zenodo.3552717"
+      licence: ['GPL v3']
+      identifier: biotools:AGAT
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - gxf:
+        type: file
+        description: Annotation file in GFF/GTF format
+        pattern: "*.{gff, gtf}"
+  - - config:
+        type: file
+        description: |
+          Input agat config file. By default AGAT takes as input agat_config.yaml file from the working directory if any,
+          otherwise it takes the original agat_config.yaml shipped with AGAT. To get the agat_config.yaml
+          locally type: "agat config --expose". The --config option gives you the possibility to use your
+          own AGAT config file (located elsewhere or named differently).
+        pattern: "*.yaml"
+output:
+  - output_gff:
+      - meta:
+          type: file
+          description: Filtered annotation file in GFF3 format
+          pattern: "*.{gff}"
+      - "*.agat.gff":
+          type: file
+          description: Filtered annotation file in GFF3 format
+          pattern: "*.{gff}"
+  - log:
+      - meta:
+          type: file
+          description: Log file of the process
+          pattern: "*.{log}"
+      - "*.log":
+          type: file
+          description: Log file of the process
+          pattern: "*.{log}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@Juke34"
+maintainers:
+  - "@Juke34"

@@ -1,0 +1,61 @@
+nextflow_process {
+
+    name "Test Process AGAT_SPKEEPLONGESTISOFORM"
+    script "../main.nf"
+    process "AGAT_SPKEEPLONGESTISOFORM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "agat"
+    tag "agat/spkeeplongestisoform"
+
+    test("homo_sapiens - gtf") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - gtf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.gff.collect { file(it[1]).getName() } +
+                                process.out.versions ).match() }
+            )
+        }
+
+    }
+
+}
