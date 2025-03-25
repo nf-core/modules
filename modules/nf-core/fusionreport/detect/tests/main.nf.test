@@ -1,0 +1,106 @@
+nextflow_process {
+
+    name "Test Process FUSIONREPORT"
+    script "../main.nf"
+    process "FUSIONREPORT"
+    tag "modules"
+    tag "fusionreport"
+
+
+    test("FUSIONREPORT - arriba - starfusion - fusioncatcher") {
+        config './nextflow.config'
+
+        setup {
+            run("FUSIONREPORT_DOWNLOAD") {
+                script "../../../fusionreport/download/main.nf"
+                process {
+                    """
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test_sample' ], // meta map
+                    file("https://github.com/nf-core/test-datasets/raw/rnafusion/testdata/human/reads_1.fq.gz"),
+                    file("https://github.com/Clinical-Genomics/fusion-report/raw/master/tests/test_data/arriba.tsv"),
+                    file("https://github.com/Clinical-Genomics/fusion-report/raw/master/tests/test_data/starfusion.tsv"),
+                    file("https://github.com/Clinical-Genomics/fusion-report/raw/master/tests/test_data/fusioncatcher.txt")
+                ]
+
+                input[1] = FUSIONREPORT_DOWNLOAD.out.fusionreport_ref
+                input[2] = 1
+                """
+            }
+            params {
+                arriba          = true
+                starfusion      = true
+                fusioncatcher   = true
+                no_cosmic       = true
+                outdir          = "$outputDir"
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success }
+            )
+        }
+
+    }
+
+    test("FUSIONREPORT - arriba - starfusion - fusioncatcher - stub") {
+        config './nextflow.config'
+
+        setup {
+            run("FUSIONREPORT_DOWNLOAD") {
+                script "../../../fusionreport/download/main.nf"
+                process {
+                    """
+                    """
+                }
+            }
+        }
+
+        options "-stub"
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test_sample' ], // meta map
+                    file("https://github.com/nf-core/test-datasets/raw/rnafusion/testdata/human/reads_1.fq.gz"),
+                    file("https://github.com/Clinical-Genomics/fusion-report/raw/master/tests/test_data/arriba.tsv"),
+                    file("https://github.com/Clinical-Genomics/fusion-report/raw/master/tests/test_data/starfusion.tsv"),
+                    file("https://github.com/Clinical-Genomics/fusion-report/raw/master/tests/test_data/fusioncatcher.txt")
+                ]
+
+                input[1] = FUSIONREPORT_DOWNLOAD.out.fusionreport_ref
+
+                input[2] = 1
+                """
+            }
+        params {
+                arriba          = true
+                starfusion      = true
+                fusioncatcher   = true
+                no_cosmic       = true
+                outdir          = "$outputDir"
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+
+}
