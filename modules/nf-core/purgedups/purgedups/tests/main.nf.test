@@ -11,32 +11,33 @@ nextflow_process {
     tag "purgedups/calcuts"
     tag "purgedups/purgedups"
    
-    test("test_purgedups_purgedups") {
-        
-        setup {
-            run("PURGEDUPS_PBCSTAT") {
-                script "../../pbcstat/main.nf"
-                
-                process {
-                    """
-                    input[0] = [
-                        [id:'test'],// meta map
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.paf',checkIfExists:true)
-                        ]
-                    """
-                }
-            }
+    setup {
+        run("PURGEDUPS_PBCSTAT") {
+            script "../../pbcstat/main.nf"
             
-            run("PURGEDUPS_CALCUTS") {
-                script "../../calcuts/main.nf"
-                
-                process {
-                    """
-                    input[0] = PURGEDUPS_PBCSTAT.out.stat
-                    """
-                }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.paf',checkIfExists:true)
+                    ]
+                """
             }
         }
+        
+        run("PURGEDUPS_CALCUTS") {
+            script "../../calcuts/main.nf"
+            
+            process {
+                """
+                input[0] = PURGEDUPS_PBCSTAT.out.stat
+                """
+            }
+        }
+    }
+
+    test("test_purgedups_purgedups") {
+   
         when {
             params {
                 module_args = ''
@@ -56,33 +57,11 @@ nextflow_process {
             )
         }
     }
-     test("test_purgedups_purgedups_stub") {
+
+    test("test_purgedups_purgedups_stub") {
+     
         options "-stub"
 
-                setup {
-            run("PURGEDUPS_PBCSTAT") {
-                script "../../pbcstat/main.nf"
-                
-                process {
-                    """
-                    input[0] = [
-                        [id:'test'],// meta map
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.paf',checkIfExists:true)
-                        ]
-                    """
-                }
-            }
-            
-            run("PURGEDUPS_CALCUTS") {
-                script "../../calcuts/main.nf"
-                
-                process {
-                    """
-                    input[0] = PURGEDUPS_PBCSTAT.out.stat
-                    """
-                }
-            }
-        }
         when {
             params {
                 module_args = ''
