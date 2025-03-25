@@ -32,4 +32,16 @@ process VCFLIB_VCFUNIQ {
         vcflib: $VERSION
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.0.12' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    touch ${prefix}.uniq.vcf.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        vcflib: $VERSION
+    END_VERSIONS
+    """
 }
