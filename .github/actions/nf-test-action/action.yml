@@ -69,6 +69,7 @@ runs:
       # TODO Skip failing conda tests and document their failures
       # https://github.com/nf-core/modules/issues/7017
     - name: Run nf-test
+      id: run-nf-test
       shell: bash
       env:
         SENTIEON_LICSRVR_IP: ${{ env.SENTIEON_LICSRVR_IP }}
@@ -91,7 +92,7 @@ runs:
           echo "tap_file_path=$(realpath test.tap)" >> $GITHUB_OUTPUT
 
     - name: Generate test summary
-      if: always()
+      if: ${{ failure() && steps.run-nf-test.conclusion == 'failure' }}
       shell: bash
       run: |
         # Add header if it doesn't exist (using a token file to track this)
