@@ -40,12 +40,16 @@ input:
           for each processed sample or a list of files corresponding to each file generated
           by AMP tools.
         pattern: "[*amptool.tsv, *amptool.tsv]"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
   - - faa_input:
         type: file
         description: The path to the file corresponding to the respective protein fasta
           files with '.faa' extension. File names have to contain the corresponding
           sample name, i.e. sample_1.faa
         pattern: "*.faa"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
   - - gbk_input:
         type: file
         description: The path to the file corresponding to the respective annotated
@@ -53,9 +57,12 @@ input:
           corresponding sample name, i.e. sample_1.faa where "sample_1" is the sample
           name.
         pattern: "*.gbk"
+        ontologies:
+          - edam: "http://edamontology.org/format_1936" # GenBank
   - - opt_amp_db:
         type: string
-        description: The name of the database to download and set up. This can either be 'DRAMP', 'APD' or 'UniRef100'.
+        description: The name of the database to download and set up. This can either
+          be 'DRAMP', 'APD' or 'UniRef100'.
         pattern: "DRAMP|APD|UniRef100"
   - - opt_amp_db_dir:
         type: directory
@@ -63,8 +70,12 @@ input:
         pattern: "path/to/amp_*_database"
   - - opt_interproscan:
         type: directory
-        description: A path to a file corresponding to the respective tsv files containing protein classifications of the annotated CDSs. The file must be the raw output from InterProScan.
+        description: A path to a file corresponding to the respective tsv files containing
+          protein classifications of the annotated CDSs. The file must be the raw output
+          from InterProScan.
         pattern: "*.tsv"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
 output:
   - sample_dir:
       - meta:
@@ -99,6 +110,8 @@ output:
           description: An alignment file containing the results from the MMseqs2 alignment
             step done on all AMP hits.
           pattern: "/*/*_mmseqs_matches.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   - tsv:
       - meta:
           type: map
@@ -111,6 +124,8 @@ output:
             from all AMP tools given as input, the corresponding taxonomic and functional
             classification from the alignment step and the estimated physiochemical properties.
           pattern: "/*/*_ampcombi.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   - faa:
       - meta:
           type: map
@@ -122,6 +137,8 @@ output:
           description: A fasta file containing the amino acid sequences of all predicted
             AMP hits.
           pattern: "/*/*_amp.faa"
+          ontologies:
+            - edam: "http://edamontology.org/format_1929" # FASTA
   - sample_log:
       - meta:
           type: map
@@ -167,6 +184,8 @@ output:
           description: AMP reference database in tsv-format with two columns containing
             header and sequence.
           pattern: "/amp_*_database/*.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Text file
   - db_fasta:
       - meta:
           type: map
@@ -177,6 +196,8 @@ output:
           type: file
           description: AMP reference database fasta file in clean format.
           pattern: "/amp_*_database/*.fasta"
+          ontologies:
+            - edam: "http://edamontology.org/format_1929" # FASTA
   - db_mmseqs:
       - meta:
           type: map
@@ -193,6 +214,8 @@ output:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@darcy220606"
 maintainers:
