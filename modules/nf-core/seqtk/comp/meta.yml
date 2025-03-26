@@ -25,8 +25,7 @@ input:
     - fastx:
         type: file
         description: A FASTQ or FASTA file
-        pattern: "*.{fastq.gz, fastq, fq, fq.gz, fasta, fastq.gz, fa, fa.gz, fas, fas.gz,\
-          \ fna, fna.gz}"
+        pattern: "*.{fastq,fq,fasta,fa,fas,fna}{,.gz}"
 
 output:
   - seqtk_stats:
