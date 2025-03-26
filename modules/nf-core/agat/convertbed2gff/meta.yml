@@ -28,7 +28,7 @@ input:
         description: Input bed12 file
         pattern: "*.bed"
         ontologies: 
-          - edam: "http://edamontology.org/format_3586" # BED
+          - edam: "http://edamontology.org/format_3586" # bed12
 output:
   - gff:
       - meta:
@@ -39,14 +39,14 @@ output:
           description: Output GFF3 file
           pattern: "*.{gff}"
           ontologies:
-            - edam: "http://edamontology.org/format_1975" # GFF
+            - edam: "http://edamontology.org/format_1975" # GFF3
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
           ontologies:
-            - edam: "http://edamontology.org/format_3750" # Textual format
+            - edam: "http://edamontology.org/format_3750" # YAML
 
 authors:
   - "@GallVp"

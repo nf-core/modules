@@ -31,7 +31,7 @@ input:
           an empty channel.
         pattern: "*.{bed}"
         ontologies:
-          - edam: "http://edamontology.org/format_3586" # BED
+          - edam: "http://edamontology.org/format_3586" # bed12
     - bim_map:
         type: file
         description: Mandatory accompanying file. One of PLINK ".bim" file or PLINK
@@ -81,7 +81,7 @@ output:
           description: File containing software versions
           pattern: "versions.yml"
           ontologies:
-            - edam: "http://edamontology.org/format_3750" # XML
+            - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@atrigila"
 maintainers:

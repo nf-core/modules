@@ -23,9 +23,9 @@ input:
         description: FASTA, GenBank or EMBL formatted file
         pattern: "*.{fa,fasta,fna,fa.gz,fasta.gz,fna.gz,gbk,gbk.gz,embl,embl.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_1929 # FASTA
-          - edam: http://edamontology.org/format_2204 # EMBL format (XML)
-          - edam: http://edamontology.org/format_1936 # GenBank
+          - edam: "http://edamontology.org/format_1929" # FASTA
+          - edam: "http://edamontology.org/format_1936" # GenBank
+          - edam: "http://edamontology.org/format_2204" # EMBL format (XML)
 output:
   - report:
       - meta:
@@ -38,14 +38,14 @@ output:
           description: Tab-delimited report of aggregated results
           pattern: "*.{txt}"
           ontologies:
-            - edam: http://edamontology.org/format_2330 # Textual format
+            - edam: "http://edamontology.org/format_2330" # Textual format
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
           ontologies:
-            - edam: http://edamontology.org/format_3750 # YAML
+            - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@rpetit3"
 maintainers:

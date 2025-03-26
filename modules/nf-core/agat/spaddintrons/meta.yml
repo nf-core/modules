@@ -25,15 +25,15 @@ input:
         description: Input gtf/gff file
         pattern: "*.{gff,gff3,gtf}"
         ontologies:
-          - edam: http://edamontology.org/format_2305 # GFF
-          - edam: http://edamontology.org/format_1975 # GFF3
-          - edam: http://edamontology.org/format_2306 # GTF
+          - edam: "http://edamontology.org/format_2305" # GFF
+          - edam: "http://edamontology.org/format_1975" # GFF3
+          - edam: "http://edamontology.org/format_2306" # GTF
   - - config:
         type: file
         description: Optional input agat config file
         pattern: "*.{yaml,yml}"
         ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+          - edam: "http://edamontology.org/format_3750" # YAML
 output:
   - gff:
       - meta:
@@ -41,20 +41,20 @@ output:
           description: Output gff3 file with introns
           pattern: "*.gff"
           ontologies: 
-            - edam: http://edamontology.org/format_1975 # GFF
+            - edam: "http://edamontology.org/format_1975" # GFF
       - ${output}:
           type: file
           description: Output gff3 file with introns
           pattern: "*.gff"
           ontologies: 
-            - edam: http://edamontology.org/format_1975 # GFF
+            - edam: "http://edamontology.org/format_1975" # GFF
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
           ontologies: 
-            - edam: http://edamontology.org/format_3750 # YAML
+            - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@anoronh4"
 maintainers:

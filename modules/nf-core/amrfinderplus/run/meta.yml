@@ -25,13 +25,13 @@ input:
         description: Nucleotide or protein sequences in FASTA format
         pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: "http://edamontology.org/format_1929" # FASTA
   - - db:
         type: file
         description: A compressed tarball of the AMRFinderPlus database to query
         pattern: "*.tar.gz"
         ontologies: 
-          - edam: http://edamontology.org/format_3981 # Tarball
+          - edam: "http://edamontology.org/format_3981" # TAR format
 output:
   - report:
       - meta:
@@ -43,6 +43,8 @@ output:
           type: file
           description: AMRFinder+ final report
           pattern: "*.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   - mutation_report:
       - meta:
           type: map
@@ -53,12 +55,15 @@ output:
           type: file
           description: Report of organism-specific point-mutations
           pattern: "*-mutations.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3750" # YAML
   - tool_version:
       - VER:
           type: string
