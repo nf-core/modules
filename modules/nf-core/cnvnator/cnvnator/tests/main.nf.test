@@ -72,7 +72,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = ''
+                module_args = '-call 1000'
             }
             process {
                 """
@@ -87,11 +87,13 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert process.out.root },
+                { assert process.out.tab },
                 { assert process.out.versions },
-                { assert process.out.root[0][1].size() > 0 }
+                { assert process.out.root[0][1].size() > 0 },
+                { assert process.out.tab[0][1].size() > 0 }
             )
             assert new File(process.out.root[0][1]).exists()
-
+            assert new File(process.out.tab[0][1]).exists()
         }
     }
 
@@ -100,7 +102,7 @@ nextflow_process {
         options '-stub'
         when {
             params {
-                module_args = ''
+                module_args = '-call 1000'
             }
             process {
                 """
