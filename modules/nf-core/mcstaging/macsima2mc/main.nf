@@ -2,7 +2,7 @@ process MCSTAGING_MACSIMA2MC {
     tag "$meta.id"
     label 'process_single'
 
-    container "ghcr.io/schapirolabor/macsima2mc:v1.2.2"
+    container "ghcr.io/schapirolabor/macsima2mc:v1.2.12"
 
     input:
     tuple val(meta), path(input_dir), val (output_dir)
@@ -15,9 +15,14 @@ process MCSTAGING_MACSIMA2MC {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "macsima2mc module in conda does not exist. Please use Docker / Singularity / Podman instead."
+    }
+
     def args = task.ext.args ?: ''
     // def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = 'v1.2.2'
+    def VERSION = '1.2.12'
 
 
     """
@@ -39,7 +44,7 @@ process MCSTAGING_MACSIMA2MC {
     }
     def args = task.ext.args   ?: ''
     // def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = 'v1.2.2'
+    def VERSION = '1.2.12'
 
     """
     mkdir input_dir
