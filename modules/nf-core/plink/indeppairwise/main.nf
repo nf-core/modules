@@ -1,4 +1,3 @@
-
 process PLINK_INDEPPAIRWISE {
     tag "$meta.id"
     label 'process_low'
@@ -31,10 +30,23 @@ process PLINK_INDEPPAIRWISE {
         --bed ${bed}  \\
         --bim ${bim}  \\
         --fam ${fam}  \\
-        --threads $task.cpus \\
+        --threads ${task.cpus} \\
         --indep-pairwise ${window_size} ${variant_count} ${r2_threshold} \\
-        $args \\
-        --out $prefix
+        ${args} \\
+        --out ${prefix}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        plink: \$(echo \$(plink --version) | sed 's/^PLINK v//;s/64.*//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${meta.id}.prune.in
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         plink: \$(echo \$(plink --version) | sed 's/^PLINK v//;s/64.*//')
