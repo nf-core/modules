@@ -36,6 +36,44 @@ process HLALA_PREPAREGRAPH {
 
     stub:
     """
+    mkdir -p ${graph}/translation
+    mkdir -p ${graph}/mapping_PRGonly
+    mkdir -p ${graph}/referenceGenomeSimulations
+    mkdir -p ${graph}/extendedReferenceGenome
+    mkdir -p ${graph}/sampledReferenceGenomes
+    mkdir -p ${graph}/knownReferences
+    mkdir -p ${graph}/mapping
+    mkdir -p ${graph}/PRG
+
+    touch ${graph}/translation/100.txt
+    touch ${graph}/mapping_PRGonly/referenceGenome.fa_bowtie2idx.1.bt2
+    touch ${graph}/mapping_PRGonly/referenceGenome.fa_bowtie2idx.3.bt2
+    touch ${graph}/mapping_PRGonly/referenceGenome.fa_bowtie2idx.rev.2.bt2
+    touch ${graph}/mapping_PRGonly/check_refSequence_length.pl
+    touch ${graph}/mapping_PRGonly/referenceGenome.fa_bowtie2idx.2.bt2
+    touch ${graph}/mapping_PRGonly/referenceGenome.fa.amb
+    touch ${graph}/mapping_PRGonly/referenceGenome.fa_bowtie2idx.rev.1.bt2
+    touch ${graph}/mapping_PRGonly/referenceGenome.fa.bwt
+    touch ${graph}/mapping_PRGonly/referenceGenome.fa.pac
+    touch ${graph}/mapping_PRGonly/referenceGenome.fa
+    touch ${graph}/mapping_PRGonly/referenceGenome.fa.sa
+    touch ${graph}/mapping_PRGonly/referenceGenome.fa.ann
+    touch ${graph}/mapping_PRGonly/referenceGenome.fa_bowtie2idx.4.bt2
+    touch ${graph}/extendedReferenceGenome/extendedReferenceGenome.fa
+    touch ${graph}/serializedGRAPH_preGapPathIndex
+    touch ${graph}/knownReferences/1000G_B38.txt
+    touch ${graph}/knownReferences/1000G_B37_noChr.txt
+    touch ${graph}/knownReferences/PRG_MHC_GRCh38_withIMGT.txt
+    touch ${graph}/knownReferences/B37_generic_noChr.txt
+    touch ${graph}/mapping/100.fa
+    touch ${graph}/sequences.txt
+    touch ${graph}/serializedGRAPH
+    touch ${graph}/PRG/100_gene_HLA-A_9_exon_5.txt
+    touch ${graph}/PRG/100_gene_HLA-A_9_exon_5.txt.graph
+    touch ${graph}/PRG/graph.txt
+    touch ${graph}/PRG/segments.txt
+    touch ${graph}/PRG/positions.txt
+
     cat <<-END_VERSIONS > versions.yml
         "${task.process}":
             hlala: 1.0.3
