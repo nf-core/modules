@@ -19,7 +19,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = [
-                        [ id:'test', single_end:false ], // meta map
+                        [ id:'test' ], // meta map
                         file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                     ]
                     """
@@ -31,7 +31,7 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of([
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'delete_me/infernal/rRNA.cm', checkIfExists: true)
                 ]).combine(GUNZIP.out.gunzip, by: 0)
                 input[1] = true
@@ -68,7 +68,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'delete_me/infernal/rRNA.cm', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                 ]
@@ -109,7 +109,7 @@ nextflow_process {
                 """
 
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'delete_me/infernal/rRNA.cm', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                 ]

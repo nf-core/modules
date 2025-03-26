@@ -57,13 +57,9 @@ process INFERNAL_CMSEARCH {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch "${prefix}.txt"
-    ${write_align ? "touch ${prefix}.sto" : ''} \\
-    ${write_target ? "touch ${prefix}.tbl" : ''}
-
-    gzip --no-name *.txt \\
-        ${write_align ? '*.sto' : ''} \\
-        ${write_target ? '*.tbl' : ''}
+    echo "" | gzip > ${prefix}.txt.gz
+    ${write_align  ? "echo '' | gzip > ${prefix}.sto.gz" : ''} \\
+    ${write_target ? "echo '' | gzip > ${prefix}.tbl.gz" : ''}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

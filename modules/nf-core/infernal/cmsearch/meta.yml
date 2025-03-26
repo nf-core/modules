@@ -26,11 +26,15 @@ input:
         type: file
         description: |
           A calibrated Infernal covariance model file
+        ontologies:
+          - edam: "http://edamontology.org/data_1364"
     - seqdb:
         type: file
         description: |
           A FASTA file of sequences to search the covariance models
           against. Can be gzipped.
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
   - - write_align:
         type: boolean
         description: |
@@ -53,6 +57,8 @@ output:
           type: file
           description: Human readable output summarizing hmmsearch results
           pattern: "*.{txt.gz}"
+          ontologies:
+            - edam: "http://edamontology.org/data_3671"
   - alignments:
       - meta:
           type: map
@@ -63,6 +69,8 @@ output:
           type: file
           description: Optional multiple sequence alignment (MSA) in Stockholm format
           pattern: "*.{sto.gz}"
+          ontologies:
+            - edam: "http://edamontology.org/format_1961"
   - target_summary:
       - meta:
           type: map
@@ -73,11 +81,15 @@ output:
           type: file
           description: Optional tabular (space-delimited) summary of per-target output
           pattern: "*.{tbl.gz}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/format_3750"
 
 authors:
   - "@prototaxites"
