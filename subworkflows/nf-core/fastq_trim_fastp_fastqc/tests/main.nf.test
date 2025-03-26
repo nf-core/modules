@@ -1,0 +1,65 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTQ_TRIM_FASTP_FASTQC"
+    script "../main.nf"
+    workflow "FASTQ_TRIM_FASTP_FASTQC"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fastq_trim_fastp_fastqc"
+    tag "fastp"
+    tag "fastqc"
+
+
+    test("sarscov2 paired-end [fastq]") {
+
+        when {
+            params {
+                adapter_fasta        = []
+                save_trimmed_fail    = false
+                discard_trimmed_pass = false
+                save_merged          = false
+                skip_fastp           = false
+                skip_fastqc          = false
+            }
+
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1]=params.adapter_fasta
+                input[2]=params.save_trimmed_fail
+                input[3]=params.discard_trimmed_pass
+                input[4]=params.save_merged
+                input[5]=params.skip_fastp
+                input[6]=params.skip_fastqc
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert workflow.out.fastqc_raw_html },
+                { assert workflow.out.fastqc_raw_zip },
+                { assert workflow.out.fastqc_trim_html },
+                { assert workflow.out.fastqc_trim_zip },
+                { assert workflow.out.trim_html },
+                { assert workflow.out.trim_log },
+                { assert snapshot(
+                    workflow.out.reads,
+                    workflow.out.trim_json,
+                    workflow.out.trim_reads_fail,
+                    workflow.out.trim_reads_merged,
+                    workflow.out.versions
+                    ).match()}
+            )
+        }
+    }
+
+}
