@@ -1,0 +1,139 @@
+nextflow_process {
+
+    name "Test Process SNAPALIGNER_ALIGN"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "SNAPALIGNER_ALIGN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "snapaligner"
+    tag "snapaligner/index"
+    tag "snapaligner/align"
+
+    test("test_snapaligner_single") {
+
+        setup {
+            run("SNAPALIGNER_INDEX") {
+                script "../../index/main.nf"
+
+                process {
+                    """
+                    input[0] = [
+                        [id:"test"],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta',checkIfExists:true),
+                        [],
+                        [],
+                        []
+                        ]
+                    """
+                }
+            }
+        }
+        when {
+            params {
+                module_args = "-so"
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test',single_end:true],// meta map
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz',checkIfExists:true)]
+                    ]
+                input[1] = SNAPALIGNER_INDEX.out.index
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    test("test_snapaligner_paired") {
+
+        setup {
+            run("SNAPALIGNER_INDEX") {
+                script "../../index/main.nf"
+
+                process {
+                    """
+                    input[0] = [
+                        [id:"test"],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta',checkIfExists:true),
+                        [],
+                        [],
+                        []
+                        ]
+                    """
+                }
+            }
+        }
+        when {
+            params {
+                module_args = "-so"
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test',single_end:false],// meta map
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz',checkIfExists:true),file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz',checkIfExists:true)]
+                    ]
+                input[1] = SNAPALIGNER_INDEX.out.index
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test_snapaligner_stub") {
+        options '-stub'
+
+        setup {
+            run("SNAPALIGNER_INDEX") {
+                script "../../index/main.nf"
+
+                process {
+                    """
+                    input[0] = [
+                        [id:"test"],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta',checkIfExists:true),
+                        [],
+                        [],
+                        []
+                        ]
+                    """
+                }
+            }
+        }
+        
+        when {
+            params {
+                module_args = "-so"
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test',single_end:true],// meta map
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz',checkIfExists:true)]
+                    ]
+                input[1] = SNAPALIGNER_INDEX.out.index
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
