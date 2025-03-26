@@ -35,8 +35,8 @@ then {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    stablefiles,
-                    unstablefiles,
+                    stablefiles.sort(),
+                    unstablefiles.sort(),
                     process.out.versions
                     ).match() }
             )
