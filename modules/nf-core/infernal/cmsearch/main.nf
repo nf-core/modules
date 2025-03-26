@@ -58,7 +58,7 @@ process INFERNAL_CMSEARCH {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}.txt.gz
-    ${write_align  ? "echo '' | gzip > ${prefix}.sto.gz" : ''} \\
+    ${write_align  ? "echo '' | gzip > ${prefix}.sto.gz" : ''}
     ${write_target ? "echo '' | gzip > ${prefix}.tbl.gz" : ''}
 
     cat <<-END_VERSIONS > versions.yml
