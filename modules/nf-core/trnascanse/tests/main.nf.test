@@ -17,9 +17,6 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                 ]
-                input[1] = true
-                input[2] = true
-                input[3] = true
                 """
             }
         }
@@ -31,9 +28,6 @@ nextflow_process {
                 { assert path(process.out.stats[0][1]).getText().contains("scan results") }, // timestamped log
                 { assert snapshot(
                     process.out.tsv,
-                    process.out.fasta,
-                    process.out.gff,
-                    process.out.bed,
                     process.out.versions
                     ).match() }
             )
@@ -52,9 +46,6 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                 ]
-                input[1] = true
-                input[2] = true
-                input[3] = true
                 """
             }
         }

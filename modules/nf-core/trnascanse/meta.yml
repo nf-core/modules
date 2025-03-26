@@ -25,17 +25,8 @@ input:
         type: file
         description: |
           Fasta file for tRNA annotation. Can be gzipped.
-        ontologies: []
-  - - write_fasta:
-        type: boolean
-        description: |
-          Flag to enable FASTA output of identified tRNA sequences
-  - - write_gff:
-        type: boolean
-        description: Flag to enable GFF output of tRNA annotations of input sequences
-  - - write_bed:
-        type: boolean
-        description: Flag to enable BED output of tRNA annotations of input sequences
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
 
 output:
   - tsv:
@@ -44,57 +35,61 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*.tsv"
       - "*.tsv":
           type: file
           description: TSV summary output of tRNA annotations
           pattern: "*.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
   - log:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*.log"
       - "*.log":
           type: file
           description: tRNAScan-SE log file
           pattern: "*.log"
+          ontologies:
+            - edam: "http://edamontology.org/data_3671"
   - stats:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*.stats"
       - "*.stats":
           type: file
           description: Unstructured results file describing tRNA annotations
           pattern: "*.stats"
+          ontologies:
+            - edam: "http://edamontology.org/data_3671"
   - fasta:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*.fasta.gz"
       - "*.fasta":
           type: file
           description: |
             (optional) FASTA output of annotated tRNA sequences
           pattern: "*.fasta.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_1929"
   - gff:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*.gff"
       - "*.gff":
           type: file
           description: |
             (optional) GFF annotation of tRNA sequences in input fasta
-          pattern: "*.gff"
+          ontologies:
+            - edam: "http://edamontology.org/format_1975"
   - bed:
       - meta:
           type: map
@@ -106,13 +101,15 @@ output:
           type: file
           description: |
             (optional) BED annotation of tRNA sequences in input fasta
-          pattern: "*.bed"
+          ontologies:
+            - edam: "http://edamontology.org/format_3003"
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3750"
 authors:
   - "@prototaxites"
 maintainers:

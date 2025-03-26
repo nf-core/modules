@@ -9,9 +9,6 @@ process TRNASCANSE {
 
     input:
     tuple val(meta), path(fasta)
-    val(write_fasta)
-    val(write_gff)
-    val(write_bed)
 
     output:
     tuple val(meta), path("*.tsv")   , emit: tsv
@@ -28,9 +25,6 @@ process TRNASCANSE {
     script:
     def args      = task.ext.args   ?: ''
     def prefix    = task.ext.prefix ?: "${meta.id}"
-    def fasta_out = write_fasta     ? "-a ${prefix}.fasta" : ""
-    def gff       = write_gff       ? "-j ${prefix}.gff" : ""
-    def bed       = write_bed       ? "-a ${prefix}.bed" : ""
     def input     = fasta.toString() - ~/\.gz$/
     def unzip     = fasta.getExtension() == "gz" ? "gunzip -c ${fasta} > ${input}" : ""
     def cleanup   = fasta.getExtension() == "gz" ? "rm ${input}" : ""
@@ -51,14 +45,9 @@ process TRNASCANSE {
         -o ${prefix}.tsv \\
         -l ${prefix}.log \\
         -m ${prefix}.stats \\
-        ${fasta_out} \\
-        ${gff} \\
-        ${bed} \\
         ${input}
 
-    if [ -f ${prefix}.fasta ]; then
-        ${prefix}.fasta
-    fi
+    find . -name "*.fasta" -exec gzip {} \\;
 
     ${cleanup}
 
@@ -70,16 +59,13 @@ process TRNASCANSE {
 
     stub:
     def prefix      = task.ext.prefix ?: "${meta.id}"
-    def touch_fasta = write_fasta ? "echo '' | gzip > ${prefix}.fasta.gz" : ""
-    def touch_gff   = write_gff ? "touch ${prefix}.gff" : ""
-    def touch_bed   = write_bed ? "touch ${prefix}.bed" : ""
     """
     touch ${prefix}.tsv
     touch ${prefix}.log
     touch ${prefix}.stats
-    ${touch_fasta}
-    ${touch_gff}
-    ${touch_bed}
+    echo '' | gzip > ${prefix}.fasta.gz
+    touch ${prefix}.gff
+    touch ${prefix}.bed
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
