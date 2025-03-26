@@ -1,11 +1,14 @@
 nextflow_process {
-
     name "Test Process STARFUSION_BUILD"
     script "../main.nf"
     process "STARFUSION_BUILD"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "starfusion"
+    tag "starfusion/build"
+    tag "fusioninspector"
 
     test("STARFUSION_BUILD - human - minigenome") {
-
         when {
             process {
                 """
@@ -20,94 +23,91 @@ nextflow_process {
 
                 input [2] = file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/master/CTAT_HumanFusionLib.mini.dat.gz")
                 input [3] = "human"
-
                 """
             }
         }
 
         then {
             assert snapshot(
-                    path(process.out.reference[0][1]).resolve("AnnotFilterRule.pm"),
-                    path(process.out.reference[0][1]).resolve("blast_pairs.dat.gz").exists(),
-                    path(process.out.reference[0][1]).resolve("blast_pairs.idx").exists(),
-                    path(process.out.reference[0][1]).resolve("__chkpts/annotfiltrule_cp.ok"),
-                    path(process.out.reference[0][1]).resolve("__chkpts/blast_pairs.idx.ok"),
-                    path(process.out.reference[0][1]).resolve("__chkpts/cp_gene_blast_pairs.ok"),
-                    path(process.out.reference[0][1]).resolve("__chkpts/cp_pfam_dat.ok"),
-                    path(process.out.reference[0][1]).resolve("__chkpts/cp_ref_annot_cdna.ok"),
-                    path(process.out.reference[0][1]).resolve("__chkpts/fusion_annot_lib.cp.ok"),
-                    path(process.out.reference[0][1]).resolve("__chkpts/_fusion_annot_lib.idx.ok"),
-                    path(process.out.reference[0][1]).resolve("__chkpts/index_pfam_hits.ok"),
-                    path(process.out.reference[0][1]).resolve("__chkpts/index_ref_annot_cdna.ok"),
-                    path(process.out.reference[0][1]).resolve("__chkpts/makeblastdb.ok"),
-                    path(process.out.reference[0][1]).resolve("__chkpts/mm2_genome_idx.ok"),
-                    path(process.out.reference[0][1]).resolve("__chkpts/mm2.splice_bed.ok"),
-                    path(process.out.reference[0][1]).resolve("__chkpts/_prot_info_db.ok"),
-                    path(process.out.reference[0][1]).resolve("__chkpts/ref_annot.cdsplus.dfam_masked.fa.cp.ok"),
-                    path(process.out.reference[0][1]).resolve("__chkpts/ref_annot.cdsplus.dfam_masked.fa.idx.ok"),
-                    path(process.out.reference[0][1]).resolve("__chkpts/ref_annot.gtf.gene_spans.ok"),
-                    path(process.out.reference[0][1]).resolve("__chkpts/ref_annot.gtf.mini.sortu.ok"),
-                    path(process.out.reference[0][1]).resolve("__chkpts/ref_annot.gtf.ok"),
-                    path(process.out.reference[0][1]).resolve("__chkpts/ref_genome_fai.ok"),
-                    path(process.out.reference[0][1]).resolve("__chkpts/ref_genome.fa.ok"),
-                    path(process.out.reference[0][1]).resolve("__chkpts/trans.blast.dat.cp.ok"),
-                    path(process.out.reference[0][1]).resolve("__chkpts/trans.blast.dat.index.ok"),
-                    path(process.out.reference[0][1]).resolve("__chkpts/validate_ctat_genome_lib.ok"),
-                    path(process.out.reference[0][1]).resolve("fusion_annot_lib.gz"),
-                    path(process.out.reference[0][1]).resolve("fusion_annot_lib.idx").exists(),
-                    path(process.out.reference[0][1]).resolve("pfam_domains.dbm").exists(),
-                    path(process.out.reference[0][1]).resolve("PFAM.domtblout.dat.gz").exists(),
-                    path(process.out.reference[0][1]).resolve("ref_annot.cdna.fa").exists(),
-                    path(process.out.reference[0][1]).resolve("ref_annot.cdna.fa.idx").exists(),
-                    path(process.out.reference[0][1]).resolve("ref_annot.cds").exists(),
-                    path(process.out.reference[0][1]).resolve("ref_annot.cdsplus.fa").exists(),
-                    path(process.out.reference[0][1]).resolve("ref_annot.cdsplus.fa.idx").exists(),
-                    path(process.out.reference[0][1]).resolve("ref_annot.gtf"),
-                    path(process.out.reference[0][1]).resolve("ref_annot.gtf.gene_spans").exists(),
-                    path(process.out.reference[0][1]).resolve("ref_annot.gtf.mini.sortu"),
-                    path(process.out.reference[0][1]).resolve("ref_annot.gtf.mm2.splice.bed"),
-                    path(process.out.reference[0][1]).resolve("ref_annot.pep").exists(),
-                    path(process.out.reference[0][1]).resolve("ref_annot.prot_info.dbm").exists(),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa"),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa.fai"),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa.mm2"),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa.ndb"),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa.nhr"),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa.nin").exists(),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa.njs").exists(),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa.not"),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa.nsq"),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa.ntf"),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa.nto"),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx").exists(),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/build.ok"),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/chrLength.txt"),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/chrNameLength.txt"),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/chrName.txt"),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/chrStart.txt"),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/exonGeTrInfo.tab"),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/exonInfo.tab"),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/geneInfo.tab"),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/Genome"),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/genomeParameters.txt").exists(),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/Log.out").exists(),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/SA"),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/SAindex"),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/sjdbInfo.txt"),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/sjdbList.fromGTF.out.tab"),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/sjdbList.out.tab"),
-                    path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/transcriptInfo.tab"),
-                    path(process.out.reference[0][1]).resolve("trans.blast.align_coords.align_coords.dat"),
-                    path(process.out.reference[0][1]).resolve("trans.blast.align_coords.align_coords.dbm").exists(),
-                    path(process.out.reference[0][1]).resolve("trans.blast.dat.gz"),
-                    process.out.versions
-                ).match()
+                path(process.out.reference[0][1]).resolve("AnnotFilterRule.pm"),
+                path(process.out.reference[0][1]).resolve("blast_pairs.dat.gz").exists(),
+                path(process.out.reference[0][1]).resolve("blast_pairs.idx").exists(),
+                path(process.out.reference[0][1]).resolve("__chkpts/annotfiltrule_cp.ok").exists(),
+                path(process.out.reference[0][1]).resolve("__chkpts/blast_pairs.idx.ok").exists(),
+                path(process.out.reference[0][1]).resolve("__chkpts/cp_gene_blast_pairs.ok").exists(),
+                path(process.out.reference[0][1]).resolve("__chkpts/cp_pfam_dat.ok").exists(),
+                path(process.out.reference[0][1]).resolve("__chkpts/cp_ref_annot_cdna.ok").exists(),
+                path(process.out.reference[0][1]).resolve("__chkpts/fusion_annot_lib.cp.ok").exists(),
+                path(process.out.reference[0][1]).resolve("__chkpts/_fusion_annot_lib.idx.ok").exists(),
+                path(process.out.reference[0][1]).resolve("__chkpts/index_pfam_hits.ok").exists(),
+                path(process.out.reference[0][1]).resolve("__chkpts/index_ref_annot_cdna.ok").exists(),
+                path(process.out.reference[0][1]).resolve("__chkpts/makeblastdb.ok").exists(),
+                path(process.out.reference[0][1]).resolve("__chkpts/mm2_genome_idx.ok").exists(),
+                path(process.out.reference[0][1]).resolve("__chkpts/mm2.splice_bed.ok").exists(),
+                path(process.out.reference[0][1]).resolve("__chkpts/_prot_info_db.ok").exists(),
+                path(process.out.reference[0][1]).resolve("__chkpts/ref_annot.cdsplus.dfam_masked.fa.cp.ok").exists(),
+                path(process.out.reference[0][1]).resolve("__chkpts/ref_annot.cdsplus.dfam_masked.fa.idx.ok").exists(),
+                path(process.out.reference[0][1]).resolve("__chkpts/ref_annot.gtf.gene_spans.ok").exists(),
+                path(process.out.reference[0][1]).resolve("__chkpts/ref_annot.gtf.mini.sortu.ok").exists(),
+                path(process.out.reference[0][1]).resolve("__chkpts/ref_annot.gtf.ok").exists(),
+                path(process.out.reference[0][1]).resolve("__chkpts/ref_genome_fai.ok").exists(),
+                path(process.out.reference[0][1]).resolve("__chkpts/ref_genome.fa.ok").exists(),
+                path(process.out.reference[0][1]).resolve("__chkpts/trans.blast.dat.cp.ok").exists(),
+                path(process.out.reference[0][1]).resolve("__chkpts/trans.blast.dat.index.ok").exists(),
+                path(process.out.reference[0][1]).resolve("__chkpts/validate_ctat_genome_lib.ok").exists(),
+                path(process.out.reference[0][1]).resolve("fusion_annot_lib.gz"),
+                path(process.out.reference[0][1]).resolve("fusion_annot_lib.idx").exists(),
+                path(process.out.reference[0][1]).resolve("pfam_domains.dbm").exists(),
+                path(process.out.reference[0][1]).resolve("PFAM.domtblout.dat.gz").exists(),
+                path(process.out.reference[0][1]).resolve("ref_annot.cdna.fa").exists(),
+                path(process.out.reference[0][1]).resolve("ref_annot.cdna.fa.idx").exists(),
+                path(process.out.reference[0][1]).resolve("ref_annot.cds").exists(),
+                path(process.out.reference[0][1]).resolve("ref_annot.cdsplus.fa").exists(),
+                path(process.out.reference[0][1]).resolve("ref_annot.cdsplus.fa.idx").exists(),
+                path(process.out.reference[0][1]).resolve("ref_annot.gtf"),
+                path(process.out.reference[0][1]).resolve("ref_annot.gtf.gene_spans").exists(),
+                path(process.out.reference[0][1]).resolve("ref_annot.gtf.mini.sortu"),
+                path(process.out.reference[0][1]).resolve("ref_annot.gtf.mm2.splice.bed"),
+                path(process.out.reference[0][1]).resolve("ref_annot.pep").exists(),
+                path(process.out.reference[0][1]).resolve("ref_annot.prot_info.dbm").exists(),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.fai"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.mm2"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.ndb"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.nhr"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.nin").exists(),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.njs").exists(),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.not"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.nsq"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.ntf"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.nto"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx").exists(),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/build.ok").exists(),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/chrLength.txt"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/chrNameLength.txt"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/chrName.txt"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/chrStart.txt"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/exonGeTrInfo.tab"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/exonInfo.tab"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/geneInfo.tab"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/Genome"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/genomeParameters.txt").exists(),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/Log.out").exists(),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/SA"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/SAindex"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/sjdbInfo.txt"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/sjdbList.fromGTF.out.tab"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/sjdbList.out.tab"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/transcriptInfo.tab"),
+                path(process.out.reference[0][1]).resolve("trans.blast.align_coords.align_coords.dat"),
+                path(process.out.reference[0][1]).resolve("trans.blast.align_coords.align_coords.dbm").exists(),
+                path(process.out.reference[0][1]).resolve("trans.blast.dat.gz"),
+                process.out.versions
+            ).match()
         }
-
     }
 
     test("STARFUSION_BUILD - human - minigenome - stub") {
-
         options "-stub"
 
         when {
@@ -124,7 +124,6 @@ nextflow_process {
 
                 input [2] = file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/master/CTAT_HumanFusionLib.mini.dat.gz")
                 input [3] = "human"
-
                 """
             }
         }
@@ -132,7 +131,5 @@ nextflow_process {
         then {
             assert snapshot(process.out).match()
         }
-
     }
-
 }

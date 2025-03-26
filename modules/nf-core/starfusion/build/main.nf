@@ -17,10 +17,12 @@ process STARFUSION_BUILD {
     tuple val(meta), path("ctat_genome_lib_build_dir"), emit: reference
     path "versions.yml"   , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     """
-    echo $PATH
     prep_genome_lib.pl \\
         --genome_fa $fasta \\
         --gtf $gtf \\
