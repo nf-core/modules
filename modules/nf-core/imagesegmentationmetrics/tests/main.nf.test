@@ -15,12 +15,12 @@ nextflow_process {
                 """
                 input[0] = [
                     "meta",
-                    file('/lustre/scratch127/cellgen/cellgeni/yc6/Anno_UMAP/ref.tif', checkIfExists: true),
-                    [file('/lustre/scratch127/cellgen/cellgeni/yc6/Anno_UMAP/label_removed_10.tif', checkIfExists: true),
-                        file('/lustre/scratch127/cellgen/cellgeni/yc6/Anno_UMAP/label_removed_20.tif', checkIfExists: true),
-                        file('/lustre/scratch127/cellgen/cellgeni/yc6/Anno_UMAP/label_removed_50.tif', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'ref.tif'),
+                    [file(params.modules_testdata_base_path + 'label_removed_10.tif'),
+                        file(params.modules_testdata_base_path + 'label_removed_20.tif'),
+                        file(params.modules_testdata_base_path + 'label_removed_50.tif')
                     ],
-                    "DiceMetric,MeanIoU,GeneralizedDiceScore,HausdorffDistanceMetric,SurfaceDistanceMetric,SurfaceDiceMetric,MSEMetric,MAEMetric,RMSEMetric,PSNRMetric"
+                    "DiceMetric MeanIoU GeneralizedDiceScore HausdorffDistanceMetric SurfaceDistanceMetric SurfaceDiceMetric MSEMetric MAEMetric RMSEMetric PSNRMetric"
                 ]
                 """
             }
@@ -44,12 +44,12 @@ nextflow_process {
                 """
                 input[0] = [
                     "meta",
-                    file('/lustre/scratch127/cellgen/cellgeni/yc6/Anno_UMAP/ref.tif', checkIfExists: true),
-                    [file('/lustre/scratch127/cellgen/cellgeni/yc6/Anno_UMAP/label_removed_10.tif', checkIfExists: true),
-                        file('/lustre/scratch127/cellgen/cellgeni/yc6/Anno_UMAP/label_removed_20.tif', checkIfExists: true),
-                        file('/lustre/scratch127/cellgen/cellgeni/yc6/Anno_UMAP/label_removed_50.tif', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'ref.tif'),
+                    [file(params.modules_testdata_base_path + 'label_removed_10.tif'),
+                        file(params.modules_testdata_base_path + 'label_removed_20.tif'),
+                        file(params.modules_testdata_base_path + 'label_removed_50.tif')
                     ],
-                    "DiceMetric,MeanIoU,GeneralizedDiceScore,HausdorffDistanceMetric,SurfaceDistanceMetric,SurfaceDiceMetric,MSEMetric,MAEMetric,RMSEMetric,PSNRMetric"
+                    "DiceMetric MeanIoU GeneralizedDiceScore HausdorffDistanceMetric SurfaceDistanceMetric SurfaceDiceMetric MSEMetric MAEMetric RMSEMetric PSNRMetric"
                 ]
                 """
             }
