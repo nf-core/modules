@@ -2,7 +2,7 @@ process UNIFIRE {
     tag "$meta.id"
     label 'process_medium'
 
-    container "dockerhub.ebi.ac.uk/uniprot-public/unifire:2025.1"
+    container "dockerhub.ebi.ac.uk/uniprot-public/unifire:2025.1" // TODO: Update once Bioconda is available
     containerOptions {
         if (workflow.containerEngine in ['singularity', 'apptainer']) {
             return "--bind unifire:/volume"
