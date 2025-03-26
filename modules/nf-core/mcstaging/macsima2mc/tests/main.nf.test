@@ -52,11 +52,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                {
-                    assert process.out.out_dir.get(0).get(1).isDirectory()
-                    def files = process.out.out_dir.get(0).get(1).list().sort()
-                    assert snapshot(files).match()
-                },
+                { assert snapshot(process.out).match() },
                 { assert snapshot(process.out.versions).match("versions") }
             )
         }

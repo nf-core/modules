@@ -8,8 +8,8 @@ process MCSTAGING_MACSIMA2MC {
     tuple val(meta), path(input_dir), val(output_dir)
 
     output:
-    tuple val(meta), path("${output_dir}"), emit: out_dir
-    path "versions.yml"                   , emit: versions
+    tuple val(meta), path("${output_dir}/*")    , emit: out_dir
+    path "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,6 +46,10 @@ process MCSTAGING_MACSIMA2MC {
     """
     mkdir input_dir
     mkdir output_dir
+    mkdir output_dir/well-rack-roi-exp
+    touch output_dir/markers.csv
+    mkdir output_dir/well-rack-roi-exp/raw
+    touch output_dir/well-rack-roi-exp/raw/well-rack-roi-exp.ome.tif
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
