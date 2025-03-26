@@ -22,23 +22,20 @@ process METABULI_BUILD {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     make_merged = taxonomy_merged ? "" : "touch taxonomy/merged.dmp"
-
-
     """
     $make_merged
     realpath $fasta > fasta.txt
 
     metabuli build \\
-        ${prefix} \\
+        "${prefix}" \\
         fasta.txt \\
         $accession2taxid \\
         --taxonomy-path taxonomy \\
-        --threads $task.cpus \\ 
         --max-ram ${task.memory.toGiga()} \\
-        $args 
-
+        $args
+        
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         metabuli: \$(metabuli version)
@@ -50,7 +47,7 @@ process METABULI_BUILD {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    
+    mkdir -p "$prefix"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
