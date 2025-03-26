@@ -31,6 +31,9 @@ input:
         type: directory
         description: Path to the interproscan database (untarred
           http://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/${version_major}-${version_minor}/interproscan-${version_major}-${version_minor}-64-bit.tar.gz)
+    - db_version:
+        type: string
+        description: Version of the interproscan database for the versions.yml
 output:
   - tsv:
       - meta:
