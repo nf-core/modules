@@ -27,8 +27,11 @@ process GATK4_MARKDUPLICATES {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}.bam"
+    
     def output_format = prefix.tokenize('.')[-1] == 'cram' ? "cram" : "bam"
     def output_flag = output_format == 'cram' ? "-Ch" : "-bh"
+
+    def output_index = output_format == 'cram' ? "${prefix}.crai" : "${prefix}.bai"
 
     def input_list = bam.collect{"--INPUT $it"}.join(' ')
     def reference = fasta ? "--REFERENCE_SEQUENCE ${fasta}" : ""
@@ -55,10 +58,7 @@ process GATK4_MARKDUPLICATES {
         --TMP_DIR . \\
         ${reference} \\
         $args \\
-        | samtools view $args2 ${output_flag} ${reference2} -o ${prefix}
-
-    # Create index for BAM/CRAM
-    samtools index ${prefix}
+        | samtools view $args2 ${output_flag} ${reference2} -o ${prefix}##idx##${output_index} --write-index
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
