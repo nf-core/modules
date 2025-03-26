@@ -44,7 +44,6 @@ process PLINK2_INDEPPAIRWISE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    
     touch ${prefix}.prune.in
     touch ${prefix}.prune.out
     cat <<-END_VERSIONS > versions.yml
