@@ -10,6 +10,7 @@ process MELON {
     input:
     tuple val(meta), path(reads)
     path(database)
+    path(k2_db)
 
     output:
     tuple val(meta), path("${prefix}/*.tsv")    , emit: tsv_output
@@ -22,6 +23,7 @@ process MELON {
     script:
     def args = task.ext.args ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
+    def k2_db_arg = k2_db ? "--db-kraken $k2_db" : ''
 
     """
     melon \\
@@ -29,6 +31,7 @@ process MELON {
         --db $database \\
         --output ${prefix} \\
         --threads $task.cpus \\
+        $k2_db_arg \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
