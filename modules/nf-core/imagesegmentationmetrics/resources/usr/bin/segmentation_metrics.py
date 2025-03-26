@@ -33,19 +33,38 @@ def convert_to_tensor(im) -> torch.Tensor:
     return torch.reshape(torch.from_numpy(im), [1] + [1] + list(im.shape)).float()
 
 
-def load_dataset(path_ref, path_list_seg) -> tuple[torch.Tensor, torch.Tensor]:
+def load_dataset(path_ref, path_list_seg) -> tuple[torch.Tensor, torch.Tensor, np.ndarray, np.ndarray]:
     """
     Load the dataset and return a list of torch tensors.
     """
-    imref1 = read_image(path_ref)
-    imarray1 = []
+    imref = read_image(path_ref)
+    imarray = []
     for path_seg in path_list_seg.split(' '):
-        imarray1.append(read_image(path_seg))
-    imref = torch.cat([convert_to_tensor(binarize(imref1))] * len(imarray1), 0)
-    imarray = torch.cat([convert_to_tensor(binarize(im)) for im in imarray1], 0)
-    imref_np = binarize(imref1)
-    imarray_np = [binarize(im) for im in imarray1]
-    return imref, imarray, imref_np, imarray_np
+        imarray.append(read_image(path_seg))
+    imref_tor = torch.cat([convert_to_tensor(binarize(imref))] * len(imarray), 0)
+    imarray_tor = torch.cat([convert_to_tensor(binarize(im)) for im in imarray], 0)
+    imref_np = binarize(imref)
+    imarray_np = [binarize(im) for im in imarray]
+    return imref_tor, imarray_tor, imref_np, imarray_np
+
+def parse_metrics(str_metrics) -> list[tuple[str, str]]:
+    """
+    Parse the metrics from the list of metrics.
+    """
+    if str_metrics == "":
+        return [('monai', i) for i in Metrics.__members__] + [('sgm', i) for i in sgm_metrics]
+    list_metrics = []
+    for i in str_metrics.split(' '):
+        if i == "monai":
+            list_metrics += [(i, j) for j in Metrics.__members__]
+        elif i == "sgm":    
+            list_metrics += [(i, j) for j in sgm_metrics]
+        else:
+            pkg_met = i.split('_')
+            if len(pkg_met) == 1:
+                list_metrics.append(('monai',pkg_met[0]))
+            list_metrics.append((pkg_met[0], pkg_met[1]))
+    return list_metrics
 
 def benchmark_metrics(ref, seg, ref_np, seg_np, list_metrics) -> list[torch.Tensor]:
     """
@@ -55,12 +74,12 @@ def benchmark_metrics(ref, seg, ref_np, seg_np, list_metrics) -> list[torch.Tens
     list_results = []
     print(type(list_metrics))
     print(list_metrics)
-    for i in list_metrics.split(' '):
+    for i,j in list_metrics:
         ts = time() # Start timing the operation
-        if i[:3] == 'sgm':
-            list_results.append(get_sgm_metrics(ref_np, seg_np, i[4:]))
-        else:
-            list_results.append(getattr(Metrics, i)(ref,seg))
+        if i == 'monai':
+            list_results.append(getattr(monai_metrics, i)(ref,seg))
+        elif i == 'sgm':
+            list_results.append(get_sgm_metrics(ref_np, seg_np, j))
         print(f"{i} runtime: {(time()-ts)} sec")
     return(list_results)
 
@@ -86,8 +105,9 @@ def get_sgm_metrics(ref_np, seg_np_list, metric_name):
         empty_tensor_res[i][0] = metrics[0][metric_name][0]
     return empty_tensor_res
     
+sgm_metrics = ['dice', 'jaccard', 'precision', 'recall', 'fpr', 'fnr', 'hd', 'msd', 'stdsd']
 
-class Metrics(Enum):
+class monai_metrics(Enum):
     """
     Enum class for the metrics.
     Add function to change metrics specific parameters here.
@@ -106,7 +126,7 @@ class Metrics(Enum):
     PSNRMetric = mmetrics.PSNRMetric(max_val = 1)
     
 
-def main(path_ref, path_list_seg, list_metrics=""):
+def main(path_ref, path_list_seg, str_metrics=""):
     """
     Main function to compute the metrics.
     input:
@@ -116,11 +136,8 @@ def main(path_ref, path_list_seg, list_metrics=""):
     current metrics: DiceMetric MeanIoU GeneralizedDiceScore HausdorffDistanceMetric SurfaceDistanceMetric SurfaceDiceMetric MSEMetric RMSEMetric PSNRMetric sgm_dice sgm_jaccard sgm_precision sgm_recall sgm_fpr sgm_fnr sgm_hd sgm_msd sgm_stdsd
     
     """
-    
-    if list_metrics == "":
-        list_metrics = 'DiceMetric MeanIoU GeneralizedDiceScore HausdorffDistanceMetric SurfaceDistanceMetric SurfaceDiceMetric MSEMetric RMSEMetric PSNRMetric sgm_dice sgm_jaccard sgm_precision sgm_recall sgm_fpr sgm_fnr sgm_hd sgm_msd sgm_stdsd'
-    
     ref, seg, ref_np, seg_np = load_dataset(path_ref, path_list_seg)
+    list_metrics = parse_metrics(str_metrics)
     results = benchmark_metrics(ref, seg, ref_np, seg_np, list_metrics)
     get_results(results, path_list_seg, list_metrics)
 
