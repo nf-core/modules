@@ -1,0 +1,47 @@
+name: viper
+description: Run Virtual Inference of Protein-activity by Enriched Regulon analysis.
+keywords:
+  - Viper
+  - Regulators
+  - Protein Activity
+  - RNA-seq
+tools:
+  - viper:
+      description: |
+        The viper R package infers protein activity from gene expression data, 
+        and includes the VIPER and msVIPER algorithms developed by the Califano lab.
+      homepage: https://www.bioconductor.org/packages/release/bioc/html/viper.html
+      documentation: https://www.bioconductor.org/packages/release/bioc/vignettes/viper/inst/doc/viper.pdf
+      doi: 10.1038/ng.3593
+input:
+  - - meta:
+      type: map
+      description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - network:
+        type: file
+        description: 3 column ARACNe network file.
+        pattern: "*.tsv"
+    - expression_matrix:
+        type: file
+        description: Expression matrix with samples as columns and genes as rows.
+        pattern: "*.tsv"
+output:
+  - viper_results:
+    -"viper_results.tsv":
+      type: file
+      description: Viper output matrix of regulator activity per sample.
+  - versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+authors:
+  - "@ddomenico"
+  - "@juanesarango"
+  - "@stikos"
+maintainers:
+  - "@ddomenico"
+  - "@juanesarango"
+  - "@stikos"
