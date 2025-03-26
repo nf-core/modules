@@ -43,23 +43,23 @@ input:
           - edam: "http://edamontology.org/format_2573"
 output:
   - fasta:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - "*.fasta":
-        type: file
-        description: FASTA file
-        pattern: "*.{fasta,fna,fa,fas}"
-        ontologies:
-          - edam: "http://edamontology.org/format_1929"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.fasta":
+          type: file
+          description: FASTA file
+          pattern: "*.{fasta,fna,fa,fas}"
+          ontologies:
+            - edam: "http://edamontology.org/format_1929"
 
   - versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 
 authors:
   - "@ktrappe"

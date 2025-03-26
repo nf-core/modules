@@ -12,7 +12,7 @@ tools:
   - "svtools":
       description: "Tools for processing and analyzing structural variants"
       tool_dev_url: "https://github.com/hall-lab/svtools"
-      licence: ['MIT License']
+      licence: ["MIT License"]
 
 input:
   - - meta:
@@ -27,21 +27,21 @@ input:
 
 output:
   - bedpe:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - "*.bedpe":
-        type: file
-        description: The converted BEDPE file
-        pattern: "*.bedpe"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.bedpe":
+          type: file
+          description: The converted BEDPE file
+          pattern: "*.bedpe"
 
   - versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 
 authors:
   - "@nvnieuwk"
