@@ -58,9 +58,6 @@ nextflow_process {
         options '-stub'
 
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = [
