@@ -37,7 +37,7 @@ output:
           type: file
           description: Tab separated file containing with detailed hits
           pattern: "*.{tsv}"
-      - "*.tsv":
+      - "*.tsv.gz":
           type: file
           description: Tab separated file containing with detailed hits
           pattern: "*.{tsv}"
@@ -46,7 +46,7 @@ output:
           type: file
           description: XML file containing with detailed hits
           pattern: "*.{xml}"
-      - "*.xml":
+      - "*.xml.gz":
           type: file
           description: XML file containing with detailed hits
           pattern: "*.{xml}"
@@ -55,7 +55,7 @@ output:
           type: file
           description: GFF3 file containing with detailed hits
           pattern: "*.{gff3}"
-      - "*.gff3":
+      - "*.gff3.gz":
           type: file
           description: GFF3 file containing with detailed hits
           pattern: "*.{gff3}"
@@ -64,7 +64,7 @@ output:
           type: file
           description: JSON file containing with detailed hits
           pattern: "*.{json}"
-      - "*.json":
+      - "*.json.gz":
           type: file
           description: JSON file containing with detailed hits
           pattern: "*.{json}"
@@ -76,6 +76,7 @@ output:
 authors:
   - "@toniher"
   - "@mahesh-panchal"
+  - "@olgabot"
 maintainers:
   - "@toniher"
   - "@vagkaratzas"
