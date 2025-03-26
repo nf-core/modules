@@ -1,0 +1,75 @@
+name: aracne3
+description: Run ARACNe3 for protein regulatory interactions inference tool
+keywords:
+  - ARACNe3
+  - RNA-seq
+  - Protein Activity
+  - Networks
+tools:
+  - aracne3:
+      description: >
+        ARACNe3 is an implementation of ARACNe which presents computational improvements
+        and theoretical changes to the recent ARACNe-AP implementation. Given a list of
+        regulators and a gene expression profile, ARACNe3 is used to infer irreducibly
+        dependent regulatory interactions and output a Gene Regulatory Network (GRN).
+        The mainstream analysis generates many GRNs of subsamples of the profile (called
+        "subnetworks") and then consolidates the subnetworks into a robust GRN. The
+        consolidated output is a GRN whose edge strengths can be quantified by several
+        statistical metrics.
+      homepage: https://github.com/califano-lab/ARACNe3
+      documentation: https://github.com/califano-lab/ARACNe3/blob/main/README.md
+      tool_dev_url: https://github.com/califano-lab/ARACNe3/tree/main
+      doi: 10.1093/bioinformatics/btw21
+
+input:
+  - - meta:
+      type: map
+      description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - expression_matrix:
+        type: file
+        description: Normalized (TPM, CPM etc) gene expression matrix with genes as rows and samples as columns.
+        pattern: "*.tsv"
+    - regulators:
+        type: file
+        description: List of genes (regulators) to be used for interactions network inference.
+        pattern: "*.txt"
+
+output:
+  - consensus_network:
+    - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+    - "consolidated-net_<runid>.tsv":
+        type: file
+        description: Consolidated Mutual Information estimation and significance per regulator/gene pair.
+        pattern: "consolidated-net_<runid>.tsv"
+
+  - subnets:
+    - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+    - "subnets":
+        type: directory
+        description: Mutual Information estimation per regulator/gene pair, per subnetwork generated.
+        pattern: "consolidated-net_<runid>.tsv"
+
+  - versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@stikos"
+  - "@ddomenico"
+  - "@juanesarango"
+maintainers:
+  - "@stikos"
+  - "@ddomenico"
+  - "@juanesarango"
