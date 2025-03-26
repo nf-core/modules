@@ -10,7 +10,8 @@ process SAMTOOLS_BEDCOV {
     input:
     tuple val(meta), path(input), path(input_index)
     tuple val(meta2), path(bed)
-    tuple val(meta3), path(fasta), path(fasta_index)
+    tuple val(meta3), path(fasta)
+    tuple val(meta4), path(fasta_index)
 
     output:
     tuple val(meta), path("*.tsv"), emit: coverage
@@ -22,12 +23,13 @@ process SAMTOOLS_BEDCOV {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def reference = fasta ? "--reference ${fasta}" : ""
 
     """
     samtools \\
         bedcov \\
         $args \\
-        --reference ${fasta} \\
+        ${reference} \\
         $bed \\
         $input \\
         > ${prefix}.tsv
