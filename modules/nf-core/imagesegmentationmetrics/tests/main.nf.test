@@ -21,7 +21,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'label_removed_20.tif'),
                         file(params.modules_testdata_base_path + 'label_removed_50.tif')
                     ],
-                    "DiceMetric MeanIoU GeneralizedDiceScore HausdorffDistanceMetric SurfaceDistanceMetric SurfaceDiceMetric MSEMetric MAEMetric RMSEMetric PSNRMetric sgm_dice sgm_jaccard sgm_precision sgm_recall sgm_fpr sgm_fnr sgm_hd sgm_msd sgm_stdsd"
+                    ""
                 ]
                 """
             }
@@ -45,7 +45,7 @@ nextflow_process {
                     "meta",
                     file(params.modules_testdata_base_path + 'ref.tif'),
                     [file(params.modules_testdata_base_path + 'label_removed_10.tif')],
-                    "DiceMetric MeanIoU GeneralizedDiceScore HausdorffDistanceMetric SurfaceDistanceMetric SurfaceDiceMetric MSEMetric MAEMetric RMSEMetric PSNRMetric sgm_dice sgm_jaccard sgm_precision sgm_recall sgm_fpr sgm_fnr sgm_hd sgm_msd sgm_stdsd"
+                    "monai sgm"
                 ]
                 """
             }
@@ -69,7 +69,7 @@ nextflow_process {
                     "meta",
                     file(params.modules_testdata_base_path + 'ref.tif'),
                     [file(params.modules_testdata_base_path + 'label_removed_10.tif')],
-                    "DiceMetric"
+                    "monai_DiceMetric"
                 ]
                 """
             }

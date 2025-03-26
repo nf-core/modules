@@ -24,7 +24,7 @@ process IMAGESEGMENTATIONMETRICS {
     export MPLCONFIGDIR=\$PWD/matplotlib_cache
     mkdir -p \$MPLCONFIGDIR
 
-    segmentation_metrics.py run --path_ref ${ref_img} --path_list_seg "${images2compare}" --list_metrics "${metricname}" ${args}
+    segmentation_metrics.py run --path_ref ${ref_img} --path_list_seg "${images2compare}" --str_metrics "${metricname}" ${args}
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process}:
