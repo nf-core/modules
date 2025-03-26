@@ -36,7 +36,7 @@ process RTGTOOLS_VCFFILTER {
     def output_vcf = "${prefix}_${task.ext.output_name}_filtered.vcf.gz"
 
     """
-    rtg vcffilter -i ${vcf_input} -o ${output_vcf} ${args} ${filter_func_arg} ${bed_regions}
+    rtg vcffilter -i ${vcf} -o ${output_vcf} ${args} ${filter_func_arg} ${bed_regions}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
