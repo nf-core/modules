@@ -11,24 +11,23 @@ nextflow_process {
     tag "sequencetools/pileupcaller"
     tag "eigenstratdatabasetools"
     tag "eigenstratdatabasetools/eigenstratsnpcoverage"
-   
-    setup {
-        run("SEQUENCETOOLS_PILEUPCALLER") {
-            script "../../../sequencetools/pileupcaller/main.nf"            
-            process {
-                """
-                input[0] = [
-                    [id:'test',single_end:false],// meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/mpileup/test.mpileup.gz',checkIfExists:true)
-                ]
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr_21.snp',checkIfExists:true)
-                input[2] = []
-                """
-            }
-        }
-    }
 
     test("homo_sapiens - eigenstrat") {
+        setup {
+            run("SEQUENCETOOLS_PILEUPCALLER") {
+                script "../../../sequencetools/pileupcaller/main.nf"            
+                process {
+                    """
+                    input[0] = [
+                        [id:'test', single_end:false],// meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/mpileup/test.mpileup.gz', checkIfExists:true)
+                    ]
+                    input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr_21.snp', checkIfExists:true)
+                    input[2] = []
+                    """
+                }
+            }
+        }
         when {
             params {
                 module_args = "-j test.json"
@@ -51,6 +50,7 @@ nextflow_process {
     test("homo_sapiens - eigenstrat - output json - stub") {
 
         options '-stub'
+        tag "stub"
 
         when {
             params {
@@ -59,7 +59,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = SEQUENCETOOLS_PILEUPCALLER.out.eigenstrat
+                input[0] = [[id: "test"], [], [], []]
                 """
             }
         }
@@ -75,6 +75,7 @@ nextflow_process {
     }
 
     test("homo_sapiens - eigenstrat - output tsv only - stub") {
+        tag "stub"
 
         options '-stub'
 
@@ -85,7 +86,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = SEQUENCETOOLS_PILEUPCALLER.out.eigenstrat
+                input[0] = [[id: "test"], [], [], []]
                 """
             }
         }
