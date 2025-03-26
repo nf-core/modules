@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "polypolish_polish"
 description: Polishing genome assemblies with short reads.
@@ -22,7 +21,6 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-
     - fasta:
         type: file
         description: FASTA file
@@ -34,13 +32,16 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-
     - sam:
         type: file
         description: List of alignment SAM file
         pattern: "*.sam"
         ontologies:
           - edam: "http://edamontology.org/format_2573"
+  - - save_debug:
+        type: boolean
+        description: "Turn debug output on"
+        pattern: "true|false"
 output:
   - fasta:
       - meta:
@@ -54,13 +55,21 @@ output:
           pattern: "*.{fasta,fna,fa,fas}"
           ontologies:
             - edam: "http://edamontology.org/format_1929"
-
   - versions:
-      - "versions.yml":
+      - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
-
+  - debug:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.txt":
+          type: file
+          description: "File with debug base information"
+          pattern: "*.txt"
 authors:
   - "@ktrappe"
 maintainers:
