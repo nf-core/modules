@@ -1,0 +1,75 @@
+nextflow_process {
+
+    name "Test Process UNIFIRE"
+    script "../main.nf"
+    process "UNIFIRE"
+    config './nextflow.config'
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "unifire"
+    tag "seqkit"
+    tag "seqkit/head"
+
+    setup {
+        run("SEQKIT_HEAD") {
+            script "modules/nf-core/seqkit/head/main.nf"
+            process {
+            """
+            input[0] = Channel.fromList([
+                tuple([ id:'test1'], // meta map
+                [file(params.modules_testdata_base_path + 'proteomics/database/UP000005640_9606.fasta', checkIfExists: true)],
+                1)
+            ])
+            """
+            }
+        }
+    }
+
+    test("human - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = SEQKIT_HEAD.out.subset
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.arba).match("arba") },
+                { assert snapshot(process.out.unirule).match("unirule") },
+                { assert snapshot(process.out.pirsr).match("pirsr") },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+    test("human - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = SEQKIT_HEAD.out.subset
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.arba).match("arba_stub") },
+                { assert snapshot(process.out.unirule).match("unirule_stub") },
+                { assert snapshot(process.out.pirsr).match("pirsr_stub") },
+                { assert snapshot(process.out.versions).match("versions_stub") }
+            )
+        }
+
+    }
+
+}

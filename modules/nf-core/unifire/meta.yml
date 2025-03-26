@@ -1,0 +1,65 @@
+name: "unifire"
+description: Runs the UniFIRE workflow for protein function prediction
+keywords:
+  - uniprot
+  - unifire
+  - protein function prediction
+  - functional annotation
+  - proteomics
+tools:
+  - "unifire":
+      description: "UniFIRE: Unified Function Inference and Rule Extraction"
+      homepage: "https://gitlab.ebi.ac.uk/uniprot-public/unifire"
+      documentation: "https://gitlab.ebi.ac.uk/uniprot-public/unifire/-/blob/master/README.md?ref_type=heads"
+      tool_dev_url: "https://gitlab.ebi.ac.uk/uniprot-public/unifire"
+      licence: ["Apache-2.0"]
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample1', single_end:false ]
+    - faa:
+        type: file
+        description: A protein sequence file in FASTA format
+        pattern: "*.{faa,faa.gz,fasta,fasta.gz,fas,fas.gz,fa,fa.gz}"
+output:
+  - arba:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "unifire/predictions_arba.out":
+          type: file
+          description: Predictions from the Arba method
+          pattern: "unifire/predictions_arba.out"
+  - unirule:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "unifire/predictions_unirule.out":
+          type: file
+          description: Predictions from the Unirule method
+          pattern: "unifire/predictions_unirule.out"
+  - pirsr:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "unifire/predictions_unirule-pirsr.out":
+          type: file
+          description: Predictions from the Pirsr method
+          pattern: "unifire/predictions_unirule-pirsr.out"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@tntly"
+maintainers:
+  - "@tntly"
