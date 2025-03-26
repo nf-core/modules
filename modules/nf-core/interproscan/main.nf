@@ -4,7 +4,7 @@ process INTERPROSCAN {
     label 'process_long'
 
     conda "${moduleDir}/environment.yml"
-    container "quay.io/nf-core/interproscan:5.73-104.0"
+    container "nf-core/interproscan:5.73-104.0"
 
     input:
     tuple val(meta), path(fasta)
