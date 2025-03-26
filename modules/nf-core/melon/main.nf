@@ -12,8 +12,8 @@ process MELON {
     path(database)
 
     output:
-    tuple val(meta), path("**/*.tsv")    , emit: tsv_output
-    tuple val(meta), path("**/*.json")   , emit: json_output
+    tuple val(meta), path("${prefix}/*.tsv")    , emit: tsv_output
+    tuple val(meta), path("${prefix}/*.json")   , emit: json_output
     path "versions.yml"                  , emit: versions
 
     when:
@@ -21,7 +21,7 @@ process MELON {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     melon \\
@@ -40,7 +40,7 @@ process MELON {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     
     """
     mkdir -p ${prefix}
