@@ -5,9 +5,6 @@ process INTERPROSCAN {
 
     conda "${moduleDir}/environment.yml"
     container "quay.io/nf-core/interproscan:5.73-104.0"
-    // container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-    //     'https://depot.galaxyproject.org/singularity/interproscan:5.59_91.0--hec16e2b_1' :
-    //     'biocontainers/interproscan:5.59_91.0--hec16e2b_1' }"
 
     input:
     tuple val(meta), path(fasta)
