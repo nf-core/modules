@@ -1,5 +1,7 @@
 process METASPACE_SUBMIT {
     label 'process_low'
+
+    conda "${moduleDir}/environment.yml"
     container 'community.wave.seqera.io/library/pip_pyyaml_metaspace2020:b73515b03b3ba7b9'
 
     // container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
