@@ -27,8 +27,6 @@ process GATK4_MARKDUPLICATES {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     suffix = task.ext.suffix ?: "bam"
-    // If the extension is CRAM, then change it to BAM
-    //prefix_bam = prefix.tokenize('.')[-1] == 'cram' ? "${prefix.substring(0, prefix.lastIndexOf('.'))}.bam" : prefix
 
     def input_list = bam.collect{"--INPUT $it"}.join(' ')
     file_extension = bam.first().getExtension()
@@ -52,7 +50,6 @@ process GATK4_MARKDUPLICATES {
         --TMP_DIR . \\
         ${reference} \\
         $args
-    ls -l 
     
     # If cram files are wished as output, the run samtools for conversion
     if [[ ${suffix}  == cram ]]; then
