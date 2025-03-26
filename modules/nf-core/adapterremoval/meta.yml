@@ -33,7 +33,7 @@ input:
           (see AdapterRemoval man page), or can be modified to remove user-specified
           adapters via ext.args.
         ontologies: 
-          - edam: "http://edamontology.org/format_3750" # Textual format
+          - edam: "http://edamontology.org/format_2330" # Textual format
 output:
   - singles_truncated:
       - meta:
@@ -145,13 +145,13 @@ output:
           description: AdapterRemoval log file
           pattern: "*.settings"
           ontologies:
-            - edam: "http://edamontology.org/format_3750" # Textual format
+            - edam: "http://edamontology.org/format_2330" # Textual format
       - "*.settings":
           type: file
           description: AdapterRemoval log file
           pattern: "*.settings"
           ontologies:
-            - edam: "http://edamontology.org/format_3750" # Textual format
+            - edam: "http://edamontology.org/format_2330" # Textual format
   - versions:
       - versions.yml:
           type: file

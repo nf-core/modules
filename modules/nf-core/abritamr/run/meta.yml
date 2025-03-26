@@ -36,14 +36,14 @@ output:
             functional drug classes
           pattern: "*.summary_matches.txt"
           ontologies: 
-            - edam: "http://edamontology.org/format_2330" # Tabular text
+            - edam: "http://edamontology.org/format_2330" # Textual format
       - ${prefix}.summary_matches.txt:
           type: file
           description: Tab-delimited file, with a row per sequence, and columns representing
             functional drug classes
           pattern: "*.summary_matches.txt"
           ontologies: 
-            - edam: "http://edamontology.org/format_2330" # Tabular text
+            - edam: "http://edamontology.org/format_2330" # Textual format
   - partials:
       - meta:
           type: file
@@ -51,14 +51,14 @@ output:
             partial hits to functional drug classes
           pattern: "*.summary_partials.txt"
           ontologies: 
-            - edam: "http://edamontology.org/format_2330" # Tabular text
+            - edam: "http://edamontology.org/format_2330" # Textual format
       - ${prefix}.summary_partials.txt:
           type: file
           description: Tab-delimited file, with a row per sequence, and columns representing
             partial hits to functional drug classes
           pattern: "*.summary_partials.txt"
           ontologies: 
-            - edam: "http://edamontology.org/format_2330" # Tabular text
+            - edam: "http://edamontology.org/format_2330" # Textual format
   - virulence:
       - meta:
           type: string
@@ -66,40 +66,40 @@ output:
             AMRFinderPlus virulence gene classification
           pattern: "*.summary_virulence.txt"
           ontologies: 
-            - edam: "http://edamontology.org/format_2330" # Tabular text
+            - edam: "http://edamontology.org/format_2330" # Textual format
       - ${prefix}.summary_virulence.txt:
           type: string
           description: Tab-delimited file, with a row per sequence, and columns representing
             AMRFinderPlus virulence gene classification
           pattern: "*.summary_virulence.txt"
           ontologies: 
-            - edam: "http://edamontology.org/format_2330" # Tabular text
+            - edam: "http://edamontology.org/format_2330" # Textual format
   - out:
       - meta:
           type: string
           description: raw output from AMRFinder plus (per sequence)
           pattern: "*.amrfinder.txt"
           ontologies: 
-            - edam: "http://edamontology.org/format_2330" # Tabular text
+            - edam: "http://edamontology.org/format_2330" # Textual format
       - ${prefix}.amrfinder.out:
           type: string
           description: raw output from AMRFinder plus (per sequence)
           pattern: "*.amrfinder.txt"
           ontologies: 
-            - edam: "http://edamontology.org/format_2330" # Tabular text
+            - edam: "http://edamontology.org/format_2330" # Textual format
   - txt:
       - meta:
           type: string
           description: Tab-delimited file, combining non-empty summary files
           pattern: "*.abritamr.txt"
           ontologies: 
-            - edam: "http://edamontology.org/format_2330" # Tabular text
+            - edam: "http://edamontology.org/format_2330" # Textual format
       - ${prefix}.abritamr.txt:
           type: string
           description: Tab-delimited file, combining non-empty summary files
           pattern: "*.abritamr.txt"
           ontologies: 
-            - edam: "http://edamontology.org/format_2330" # Tabular text
+            - edam: "http://edamontology.org/format_2330" # Textual format
   - versions:
       - versions.yml:
           type: file
