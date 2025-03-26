@@ -8,15 +8,15 @@ LABEL description="InterProScan is a search engine for InterPro is ae database w
 LABEL website="https://github.com/ebi-pf-team/interproscan"
 LABEL license="Apache 2.0"
 
-COPY --chown=$MAMBA_USER:$MAMBA_USER env.lock /tmp/env.lock
+COPY --chown=$MAMBA_USER:$MAMBA_USER environment.lock /tmp/environment.lock
 
-RUN micromamba install --name base --yes --file /tmp/env.lock \
+RUN micromamba install --name base --yes --file /tmp/environment.lock \
     && micromamba clean --all --yes
 
 # This is to install libgomp - installing this with conda doesn't work for bin/cdd/rpsblast
 USER root
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libgomp1==12.2.0-14 \
+    libgomp1=12.2.0-14 \
     && rm -rf /var/lib/apt/lists/*
 USER $MAMBA_USER
 
@@ -26,8 +26,8 @@ USER root
 
 WORKDIR /opt
 
-RUN wget --progress ftp://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/${VERSION}/alt/interproscan-core-${VERSION}.tar.gz && \
-    wget --progress ftp://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/${VERSION}/alt/interproscan-core-${VERSION}.tar.gz.md5 && \
+RUN wget --progress=dot:giga ftp://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/${VERSION}/alt/interproscan-core-${VERSION}.tar.gz && \
+    wget --progress=dot:giga ftp://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/${VERSION}/alt/interproscan-core-${VERSION}.tar.gz.md5 && \
     md5sum -c interproscan-core-${VERSION}.tar.gz.md5 && \
     tar -zxf interproscan-core-${VERSION}.tar.gz && \
     rm interproscan-core-${VERSION}.tar.gz* && \
