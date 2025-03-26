@@ -4,8 +4,8 @@ process SOURMASH_GATHER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sourmash:4.8.4--hdfd78af_0':
-        'biocontainers/sourmash:4.8.4--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/sourmash:4.8.14--hdfd78af_0':
+        'biocontainers/sourmash:4.8.14--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(signature)
@@ -33,7 +33,6 @@ process SOURMASH_GATHER {
     def matches     = save_matches_sig  ? "--save-matches ${prefix}_matches.sig.zip"         : ''
     def prefetch    = save_prefetch     ? "--save-prefetch ${prefix}_prefetch.sig.zip"       : ''
     def prefetchcsv = save_prefetch_csv ? "--save-prefetch-csv ${prefix}_prefetch.csv.gz"    : ''
-
     """
     sourmash gather \\
         $args \\
@@ -50,4 +49,20 @@ process SOURMASH_GATHER {
         sourmash: \$(echo \$(sourmash --version 2>&1) | sed 's/^sourmash //' )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.csv.gz
+    touch ${prefix}_unassigned.sig.zip
+    touch ${prefix}_matches.sig.zip
+    touch ${prefix}_prefetch.sig.zip
+    echo "" | gzip > ${prefix}_prefetch.csv.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        sourmash: \$(echo \$(sourmash --version 2>&1) | sed 's/^sourmash //' )
+    END_VERSIONS
+    """
+
 }

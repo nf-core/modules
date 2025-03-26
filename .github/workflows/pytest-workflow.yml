@@ -34,7 +34,10 @@ env:
 jobs:
   pytest-changes:
     name: pytest-changes
-    runs-on: ubuntu-latest
+    runs-on:
+      - runs-on=${{ github.run_id }}-pytest-changes
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
     outputs:
       tags: ${{ steps.filter.outputs.changes }}
       modules: ${{ steps.tags.outputs.modules }}
@@ -116,8 +119,6 @@ jobs:
           - profile: conda
             tags: controlfreec/makegraph2
           - profile: conda
-            tags: coreograph
-          - profile: conda
             tags: deepcell/mesmer
           - profile: conda
             tags: deepvariant
@@ -149,8 +150,6 @@ jobs:
             tags: happy/sompy
           - profile: conda
             tags: hlala/preparegraph
-          - profile: conda
-            tags: ilastik/multicut
           - profile: conda
             tags: ilastik/pixelclassification
           - profile: conda
@@ -245,9 +244,9 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5
         with:
-          python-version: "3.11"
+          python-version: "3.13"
 
-      - uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf # v4
+      - uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
         id: cache-pip-pytest
         with:
           path: ~/.cache/pip
@@ -308,7 +307,7 @@ jobs:
 
       - name: Upload logs on failure
         if: failure()
-        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: logs-${{ matrix.profile }}-${{ steps.parsed.outputs.result }}
           path: |
@@ -321,7 +320,10 @@ jobs:
             !${{ github.workspace }}/.singularity
 
   confirm-pass-pytest:
-    runs-on: ubuntu-latest
+    runs-on:
+      - runs-on=${{ github.run_id }}-confirm-pass-pytest
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
     needs: [pytest-changes, pytest]
     if: always()
     steps:

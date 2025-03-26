@@ -16,11 +16,6 @@ on:
     paths-ignore:
       - "**/meta.yml"
   workflow_dispatch:
-    inputs:
-      runners:
-        description: "Runners to test on"
-        type: string
-        default: "gpu"
 
 # Cancel if a newer run is started
 concurrency:
@@ -40,7 +35,10 @@ env:
 jobs:
   nf-test-changes:
     name: nf-test-changes
-    runs-on: ubuntu-latest
+    runs-on:
+      - runs-on=${{ github.run_id }}-nf-test-changes-gpu
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
     outputs:
       # Expose detected tags as 'modules' and 'workflows' output variables
       paths: ${{ steps.list.outputs.components }}
@@ -93,7 +91,7 @@ jobs:
           echo ${{ steps.set-shards.outputs.total_shards }}
 
   nf-test-gpu:
-    runs-on: "gpu"
+    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.xlarge/image=ubuntu24-gpu-x64"
     name: "GPU Test | ${{ matrix.profile }} | ${{ matrix.shard }}"
     needs: [nf-test-changes]
     if: ${{ needs.nf-test-changes.outputs.total_shards != '0' }}
@@ -101,7 +99,7 @@ jobs:
       fail-fast: false
       matrix:
         shard: ${{ fromJson(needs.nf-test-changes.outputs.shard) }}
-        profile: [docker_self_hosted, singularity]
+        profile: [docker, singularity]
     env:
       NXF_ANSI_LOG: false
       TOTAL_SHARDS: ${{ needs.nf-test-changes.outputs.total_shards }}
@@ -124,7 +122,10 @@ jobs:
           paths: "${{ join(fromJson(needs.nf-test-changes.outputs.paths), ' ') }}"
 
   confirm-pass-gpu:
-    runs-on: ubuntu-latest
+    runs-on:
+      - runs-on=${{ github.run_id }}-confirm-pass-gpu
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
     needs: [nf-test-gpu]
     if: always()
     steps:
