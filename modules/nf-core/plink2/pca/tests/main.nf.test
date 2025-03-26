@@ -7,7 +7,6 @@ nextflow_process {
     tag "modules_nfcore"
     tag "plink2"
     tag "plink2/pca"
-    tag "plink2/vcf"
 
     test("plink2_pca") {
         config "./nextflow.config"
@@ -32,8 +31,8 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert process.out.eigenvec.get(0).get(1) ==~ ".*.eigenvec" },
-                { assert process.out.eigenval.get(0).get(1) ==~ ".*.eigenval" },
+                { assert process.out.evecfile.get(0).get(1) ==~ ".*.eigenvec" },
+                { assert process.out.evalfile.get(0).get(1) ==~ ".*.eigenval" },
                 { assert process.out.logfile.get(0).get(1) ==~ ".*.log" },
                 { assert snapshot(process.out.versions).match("versions") }
 

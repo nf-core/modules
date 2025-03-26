@@ -23,6 +23,12 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
+    - npcs:
+        type: integer
+        description: Number of PCs to compute
+    - use_approx:
+        type: boolean
+        description: If true, use the approximate method
     - pgen:
         type: file
         description: PLINK 2 binary genotype table
@@ -35,56 +41,45 @@ input:
         type: file
         description: PLINK 2 variant information file
         pattern: "*.{pvar}"
-    - npcs:
-        type: value
-        description: Number of PCs to compute
-    - approx:
-        type: boolean
-        description: If true, use the approximate method
-
 
 
 output:
-  - eigenvec:
+  - evalfile:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
-          pattern: "*.{eigenvec}"
       - "*.eigenvec":
           type: file
           description: |
             File containing the eigenvectors
-          pattern: "*.{eigenvec}"
-  - eigenval:
+          pattern: "*.eigenvec"
+  - evecfile:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
-          pattern: "*.{eigenval}"
       - "*.eigenval":
           type: file
           description: |
             File containing the eigenvalues
-          pattern: "*.{eigenval}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: |
-            Log file containing the output of the command 
-          pattern: "versions.yml"
-  - log:
+          pattern: "*.eigenval"
+  - logfile:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
-          pattern: "*.log"
       - "*.log":
           type: file
           description: |
             Log file containing the output of the command
-          pattern: "*.{log}"
-
+          pattern: "*.log"
+  - versions:
+      - versions.yml:
+          type: file
+          description: |
+            File containing the version of the program
+          pattern: "versions.yml"
 
 authors:
   - "@bruno-ariano"

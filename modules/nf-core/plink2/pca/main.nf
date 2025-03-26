@@ -2,18 +2,19 @@ process PLINK2_PCA {
     tag "$meta.id"
     label 'process_single'
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/plink2:2.00a2.3--h712d239_1' :
-        'biocontainers/plink2:2.00a2.3--h712d239_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/plink2:2.00a5.10--h4ac6f70_0'
+        : 'biocontainers/plink2:2.00a5.10--h4ac6f70_0'}"
 
     input:
     tuple val(meta), val(npcs), val(use_approx), path(pgen), path(psam), path(pvar)
 
     output:
-    tuple val(meta), path("*.eigenvec")    , emit: eigenvec
-    tuple val(meta), path("*.eigenval")    , emit: eigenval
-    tuple val(meta), path("*.log")         , emit: logfile
+    tuple val(meta), path("*.eigenvec"), emit: evecfile
+    tuple val(meta), path("*.eigenval"), emit: evalfile
+    tuple val(meta), path("*.log"), emit: logfile
     path "versions.yml", emit: versions
+
 
     when:
     task.ext.when == null || task.ext.when
