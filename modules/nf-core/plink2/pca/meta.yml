@@ -49,21 +49,21 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-      - "*.eigenvec":
+      - "*.eigenval":
           type: file
           description: |
             File containing the eigenvectors
-          pattern: "*.eigenvec"
+          pattern: "*.eigenval"
   - evecfile:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
-      - "*.eigenval":
+      - "*.eigenvec":
           type: file
           description: |
             File containing the eigenvalues
-          pattern: "*.eigenval"
+          pattern: "*.eigenvec"
   - logfile:
       - meta:
           type: map
