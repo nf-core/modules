@@ -1,0 +1,86 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test fqtk
+nextflow_process {
+
+    name "Test Process FQTK"
+    script "../main.nf"
+    process "FQTK"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fqtk"
+
+    test("tsv - fastq") {
+        setup {
+            run("UNTAR"){
+                script "../../../../modules/nf-core/untar/main.nf"
+                process {
+                        """
+                        input[0] = [
+                            [ id:'sim-data' ],
+                            file("https://github.com/nf-core/test-datasets/raw/demultiplex/testdata/sim-data/fastq.tar.gz", checkIfExists: true)
+                        ]
+                        """
+                    }
+            }
+        }
+        when {
+            process {
+                """
+                ch_input = Channel.of ([
+                    [ id:'sim-data'], // meta map
+                    file("https://github.com/nf-core/test-datasets/raw/demultiplex/testdata/sim-data/fqtk_sample_metadata_subset.tsv", checkIfExists: true),
+                ])
+                .combine( UNTAR.out.untar.collect{it[1]} )
+                .map { meta, sample_sheet, fastq_folder -> 
+                    def fastqs = "out_L001_I1_001.fastq.gz out_L001_I2_001.fastq.gz out_L001_R1_001.fastq.gz out_L001_R2_001.fastq.gz".split("\\s+")
+                    def read_structures = "8B 8B 150T 150T".split("\\s+")
+                    def paired = []
+                    for (int i = 0; i < fastqs.size(); i++) {
+                        paired.add([fastqs[i], read_structures[i]])
+                    }
+                    [meta, sample_sheet, fastq_folder, paired]
+                }
+                input[0] = ch_input
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("tsv - fastq - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: "test"],
+                    file("https://github.com/nf-core/test-datasets/raw/demultiplex/testdata/sim-data/fqtk_sample_metadata_subset.tsv", checkIfExists: true),
+                    [], []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+
+    }
+
+}
