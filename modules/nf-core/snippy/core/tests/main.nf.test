@@ -69,8 +69,7 @@ nextflow_process {
             }
             process {
                 """
-                ch_snippy_core = SNIPPY_RUN.out.vcf.join(SNIPPY_RUN.out.aligned_fa)
-                input[0] = ch_snippy_core
+                input[0] = SNIPPY_RUN.out.vcf.join(SNIPPY_RUN.out.aligned_fa)
                 input[1] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta',checkIfExists:true)
                 """
             }
