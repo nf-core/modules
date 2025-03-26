@@ -1,0 +1,51 @@
+---
+name: "seqtk_comp"
+description: Computes sequence statistics from FASTQ or FASTA files
+keywords:
+  - sort
+  - example
+  - genomics
+tools:
+  - "seqtk_comp":
+      description: "Seqtk is a fast and lightweight tool for processing sequences in the FASTA or FASTQ format. The seqtk comp command computes base composition, sequence length, and GC content for quality control."
+      homepage: https://github.com/lh3/seqtk
+      documentation: https://docs.csc.fi/apps/seqtk/
+      tool_dev_url: https://github.com/lh3/seqtk
+      licence: ["MIT"]
+      identifier: biotools:seqtk
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - fastx:
+        type: file
+        description: A FASTQ or FASTA file
+        pattern: "*.{fastq.gz, fastq, fq, fq.gz, fasta, fastq.gz, fa, fa.gz, fas, fas.gz,
+          fna, fna.gz}"
+          
+
+output:
+  - tsv:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+
+    - "*.tsv":
+        type: file
+        description: The output TSV file summarizing sequence statistics with columns for sequence name, length, counts of A, C, G, T, and N bases, and GC content percentage."
+        pattern: "*.tsv"
+  - versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@sainsachiko"
+maintainers:
+  - "@sainsachiko"
