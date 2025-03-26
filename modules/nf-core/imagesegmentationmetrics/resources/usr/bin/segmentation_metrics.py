@@ -50,7 +50,7 @@ def benchmark_metrics(ref, seg, list_metrics) -> list[torch.Tensor]:
     Add RAM/CPU benchmark
     """
     list_results = []
-    for i in list_metrics.split(' '):
+    for i in list_metrics:
         ts = time() # Start timing the operation
         list_results.append(getattr(Metrics, i)(ref,seg))
         print(f"{i} runtime: {(time()-ts)} sec")
@@ -61,7 +61,7 @@ def get_results(results, path_list_seg, list_metrics) -> pd.DataFrame:
     Get the results of the metrics.
     """
     out = pd.DataFrame(torch.cat(results, 1).numpy(),
-        index = path_list_seg.split(' '), columns = list_metrics.split(' '))
+        index = path_list_seg.split(' '), columns = list_metrics)
     out.to_csv('segmentation_benchmark_results.csv')
     return out
 
