@@ -14,12 +14,6 @@ nextflow_process {
 
     test("It runs") {
 
-        setup {
-            println "Creating test files"
-            Files.createFile(Paths.get("test.js"))
-            Files.createFile(Paths.get("empty_test.txt"))
-        }
-
         when {
             process {
                 """
@@ -29,8 +23,8 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true)
                 ]
                 input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
-                input[2] = file('./test.js', checkIfExists: true)
-                input[3] = file('./emtpy_test.txt', checkIfExists: true)
+                input[2] = []
+                input[3] = []
                 """
             }
         }
