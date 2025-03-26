@@ -1,0 +1,67 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "gcta_gsmr"
+description: Module that performs a Mendelian Randomization analysis with summary data and plink bfile
+keywords:
+  - Mendelian Randomization
+  - GWAS
+  - gsmr
+tools:
+  - "gcta":
+      description: "GCTA (Genome-wide Complex Trait Analysis) estimates the proportion of phenotypic variance explained by all genome-wide SNPs for complex traits."
+      homepage: "https://yanglab.westlake.edu.cn/software/gcta"
+      documentation: "https://yanglab.westlake.edu.cn/software/gcta/"
+      tool_dev_url: "https://github.com/jianyangqt/gcta"
+      doi: "10.1038/s41467-017-02317-2"
+      licence: ['GPL v3']
+      identifier: biotools:gcta
+
+input:
+  - meta:
+      type: map
+      description: Groovy Map containing sample information e.g. `[ id:'sample1' ]`
+  - exposure:
+      type: file
+      description: Exposure data file for GSMR analysis
+      pattern: "*.txt"
+  - meta2:
+      type: map
+      description: Groovy Map containing sample information for outcome e.g. `[ id:'sample2' ]`
+  - outcome:
+      type: file
+      description: Outcome data file for GSMR analysis
+      pattern: "*.txt"
+  - reference:
+      type: directory
+      description: Directory containing reference files (BED, BIM, FAM) for GCTA analysis
+      pattern: "*"
+
+output:
+  - gsmr_log:
+      type: file
+      description: Log file from GSMR analysis
+      pattern: "*.log"
+  - gsmr_res:
+      type: file
+      description: Results file from GSMR analysis
+      pattern: "*.gsmr"
+  - gsmr_effplot:
+      type: file
+      description: Effect plot from GSMR analysis (optional)
+      pattern: "*.eff_plot.gz"
+  - mono_badsnps:
+      type: file
+      description: File containing bad SNPs identified in GSMR analysis (optional)
+      pattern: "*.mono.badsnps"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@juliaapolonio"
+maintainers:
+  - "@juliaapolonio"
+
+thread_id:
+  - 1d3cb393-7630-45b3-b965-4cf5d1fc7272

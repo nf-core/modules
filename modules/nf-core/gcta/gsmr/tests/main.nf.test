@@ -1,0 +1,102 @@
+// nf-core modules test gcta/gsmr
+nextflow_process {
+
+    name "Test Process GCTA_GSMR"
+    script "../main.nf"
+    process "GCTA_GSMR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gcta"
+    tag "gcta/gsmr"
+
+    test("homo_sapiens - gsmr") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_exposure' ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/gsmr/sumstats.tsv")
+                ]
+                input[1] = [
+                    [ id:'test_outcome' ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/gsmr/sumstats_copy.tsv")
+                ]
+
+                // Stage individual files
+                def bedFile = file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.bed")
+                def bimFile = file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.bim")
+                def famFile = file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.fam")
+
+                // Create a folder and move files into it
+                def referenceDir = file("reference")
+                referenceDir.mkdirs()
+                bedFile.copyTo(referenceDir.resolve("reference.bed"))
+                bimFile.copyTo(referenceDir.resolve("reference.bim"))
+                famFile.copyTo(referenceDir.resolve("reference.fam"))
+
+                // Pass the folder as input
+                input[2] = referenceDir                 """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(
+                process.out.gsmr,
+                process.out.eff_plot,
+                process.out.mono_badsnps
+            ).match()
+            assert path(process.out.versions.get(0)).text.contains("GSMR")
+        }
+
+    }
+
+    test("homo_sapiens - gsmr - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_exposure' ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/gsmr/sumstats.tsv")
+                ]
+                input[1] = [
+                    [ id:'test_outcome' ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/gsmr/sumstats_copy.tsv")
+                ]
+
+                // Stage individual files
+                def bedFile = file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.bed")
+                def bimFile = file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.bim")
+                def famFile = file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.fam")
+
+                // Create a folder and move files into it
+                def referenceDir = file("reference")
+                referenceDir.mkdirs()
+                bedFile.copyTo(referenceDir.resolve("reference.bed"))
+                bimFile.copyTo(referenceDir.resolve("reference.bim"))
+                famFile.copyTo(referenceDir.resolve("reference.fam"))
+
+                // Pass the folder as input
+                input[2] = referenceDir                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(
+                process.out.gsmr,
+                process.out.eff_plot,
+                process.out.mono_badsnps
+            ).match()
+
+            assert path(process.out.versions.get(0)).text.contains("GSMR")
+        }
+
+    }
+
+}
