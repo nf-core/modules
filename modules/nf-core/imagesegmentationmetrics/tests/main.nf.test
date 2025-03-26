@@ -3,12 +3,13 @@ nextflow_process {
     name "Test Process IMAGESEGMENTATIONMETRICS"
     script "../main.nf"
     process "IMAGESEGMENTATIONMETRICS"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "imagesegmentationmetrics"
 
-    test("imagesegmentationmetrics - csv") {
+    test("imagesegmentationmetrics - tif - multiple file - multiple metrics") {
 
         when {
             process {
@@ -21,6 +22,54 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'label_removed_50.tif')
                     ],
                     "DiceMetric MeanIoU GeneralizedDiceScore HausdorffDistanceMetric SurfaceDistanceMetric SurfaceDiceMetric MSEMetric MAEMetric RMSEMetric PSNRMetric sgm_dice sgm_jaccard sgm_precision sgm_recall sgm_fpr sgm_fnr sgm_hd sgm_msd sgm_stdsd"
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("imagesegmentationmetrics - tif - single file - multiple metrics") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    "meta",
+                    file(params.modules_testdata_base_path + 'ref.tif'),
+                    [file(params.modules_testdata_base_path + 'label_removed_10.tif')],
+                    "DiceMetric MeanIoU GeneralizedDiceScore HausdorffDistanceMetric SurfaceDistanceMetric SurfaceDiceMetric MSEMetric MAEMetric RMSEMetric PSNRMetric sgm_dice sgm_jaccard sgm_precision sgm_recall sgm_fpr sgm_fnr sgm_hd sgm_msd sgm_stdsd"
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("imagesegmentationmetrics - tif - single file - single metric") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    "meta",
+                    file(params.modules_testdata_base_path + 'ref.tif'),
+                    [file(params.modules_testdata_base_path + 'label_removed_10.tif')],
+                    "DiceMetric"
                 ]
                 """
             }
