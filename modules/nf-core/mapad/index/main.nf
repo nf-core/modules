@@ -4,8 +4,8 @@ process MAPAD_INDEX {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mapad:0.43.0--hc9368f3_0':
-        'biocontainers/mapad:0.43.0--hc9368f3_0' }"
+        'https://depot.galaxyproject.org/singularity/mapad:0.44.1--ha96b9cd_0':
+        'biocontainers/mapad:0.44.1--ha96b9cd_0' }"
 
     input:
     tuple val(meta), path(fasta, stageAs: "mapad/*")
