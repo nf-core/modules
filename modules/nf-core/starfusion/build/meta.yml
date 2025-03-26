@@ -1,0 +1,45 @@
+name: starfusion_build
+description: Download STAR-fusion genome resource required to run STAR-Fusion caller
+keywords:
+  - download
+tools:
+  - star-fusion:
+      description: Fusion calling algorithm for RNAseq data
+      homepage: https://github.com/STAR-Fusion/
+      documentation: https://github.com/STAR-Fusion/STAR-Fusion/wiki/installing-star-fusion
+      tool_dev_url: https://github.com/STAR-Fusion/STAR-Fusion
+      doi: "10.1186/s13059-019-1842-9"
+      licence: ["GPL v3"]
+
+input:
+  - fasta:
+      type: file
+      description: genome fasta file
+      pattern: "*.{fasta}"
+  - gtf:
+      type: file
+      description: genome gtf file
+      pattern: "*.{gtf}"
+  - fusion_annot_lib:
+      type: file
+      description: Fusion annotation library (key/val pairs, tab-delimited).
+      pattern: "*.dat.gz"
+  - dfam_species:
+      type: string
+      description: DNA transposable element database (Dfam.hmm), required for repeat masking. Only 'human' or 'mouse' are accepted (will automatically pull the resources from dfam).
+
+output:
+  - reference:
+      type: directory
+      description: Reference dir
+      pattern: "ctat_genome_lib_build_dir"
+
+authors:
+  - "@praveenraj2018"
+  - "@martings"
+  - "@alanmmobbs93"
+  - "@delfiterradas"
+  - "@sofiromano"
+
+maintainer:
+  - "@praveenraj2018"
