@@ -41,53 +41,40 @@ output:
       - meta:
           type: file
           description: Tab separated file containing with detailed hits
-          pattern: "*.{tsv}"
       - "*.tsv.gz":
-          ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
-      - "*.tsv":
           type: file
           description: Tab separated file containing with detailed hits
-          pattern: "*.{tsv}"
+          pattern: "*.{tsv}.gz"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   - xml:
       - meta:
           type: file
           description: XML file containing with detailed hits
-          pattern: "*.{xml}"
       - "*.xml.gz":
-          ontologies:
-            - edam: http://edamontology.org/format_2332 # XML
           type: file
           description: XML file containing with detailed hits
-          pattern: "*.{xml}"
+          pattern: "*.{xml}.gz"
           ontologies:
             - edam: http://edamontology.org/format_2332 # XML
   - gff3:
       - meta:
           type: file
           description: GFF3 file containing with detailed hits
-          pattern: "*.{gff3}"
       - "*.gff3.gz":
-          ontologies:
-            - edam: http://edamontology.org/format_1975 # GFF3
           type: file
           description: GFF3 file containing with detailed hits
-          pattern: "*.{gff3}"
+          pattern: "*.{gff3}.gz"
           ontologies:
             - edam: http://edamontology.org/format_1975 # GFF3
   - json:
       - meta:
           type: file
           description: JSON file containing with detailed hits
-          pattern: "*.{json}"
       - "*.json.gz":
-          ontologies:
-            - edam: http://edamontology.org/format_3464 # JSON
           type: file
           description: JSON file containing with detailed hits
-          pattern: "*.{json}"
+          pattern: "*.{json}.gz"
           ontologies:
             - edam: http://edamontology.org/format_3464 # JSON
   - versions:
@@ -95,8 +82,8 @@ output:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
-          ontologies: 
-              - edam: http://edamontology.org/format_3750 # YAML
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@toniher"
   - "@mahesh-panchal"
