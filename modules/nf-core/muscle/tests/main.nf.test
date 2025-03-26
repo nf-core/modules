@@ -1,0 +1,95 @@
+nextflow_process {
+
+    name "Test Process MUSCLE"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "MUSCLE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "muscle"
+
+    test("test_muscle") {
+
+        when {
+            params {
+                module_args = '-fasta -verbose -phys -phyi -maxiters 2'
+            }
+            process {
+                """
+                    input[0] = [[id:'test'],// meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists:true)]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.aligned_fasta,
+                    process.out.phyi,
+                    process.out.phys,
+                    file(process.out.log[0]).name,
+                    process.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+    test("test_muscle_maketree") {
+
+        setup {
+            run("MUSCLE", alias: "MUSCLE_SETUP") {
+                script "../main.nf"
+                process {
+                    """
+                    input[0] = [[id:'test'],// meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists:true)]
+                    """
+                }
+            }
+        }
+        when {
+            params {
+                setup_args = '-fasta -verbose -phys -phyi -maxiters 2'
+                module_args = '-maketree'
+            }
+            process {
+                """
+                input[0] = MUSCLE_SETUP.out.aligned_fasta
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.tree,
+                    process.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+    test("test_muscle - stub") {
+        options '-stub'
+        when {
+            params {
+                module_args = '-fasta -verbose -phys -phyi -maxiters 2'
+            }
+            process {
+                """
+                    input[0] = [[id:'test'],// meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists:true)]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}
