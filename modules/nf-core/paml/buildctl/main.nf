@@ -2,6 +2,12 @@ process PAML_BUILDCTL {
     tag "$meta.id"
     label 'process_single'
 
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'oras://community.wave.seqera.io/library/bash:5.2.21--67f53ad0451dfdce':
+        'community.wave.seqera.io/library/bash:5.2.21--5bc877f5b6cf0654' }"
+
+
     input:
     tuple val(meta), path(phy)
     path tree

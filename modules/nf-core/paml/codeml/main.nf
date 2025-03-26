@@ -5,7 +5,7 @@ process PAML_CODEML {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/paml:4.10.7--h7b50bb2_2':
-        'quay.io/biocontainers/paml:4.10.7--h7b50bb2_2' }"
+        'biocontainers/paml:4.10.7--h7b50bb2_2' }"
 
     input:
     tuple val(meta), path(phy)
@@ -24,9 +24,9 @@ process PAML_CODEML {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    cat  ${ctl} | awk '/outfile/ { print "outfile = result.txt"; next }{ print }' | tee ${ctl} 2>&1
+    cat  ${ctl} | awk '/outfile/ { print "outfile = result.txt"; next }{ print }' | tee settings.ctl 2>&1
 
-    codeml "${ctl}" | tee out.log 2>&1
+    codeml settings.ctl | tee out.log 2>&1
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

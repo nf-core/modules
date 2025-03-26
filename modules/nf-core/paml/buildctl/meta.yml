@@ -31,26 +31,28 @@ input:
     - phy:
         type: file
         description: A file containing the alignment. High preference for PHYLIP format.
-        pattern: "*.{phy,nuc,aa,nex}"
+        pattern: "*.{phy,nuc,aa,nex,phylip}"
 
-    - tree:
+  - - tree:
         type: file
         description: A file containing the phylogenetic tree of the sequences.
         pattern: "*.{tree,tre,aa,nex}"
 
 output:
-  - results:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "settings.ctl":
-          type: file
-          description: CODEML control file
-          pattern: "*.{ctl}"
+  - ctl:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+
+    - settings.ctl:
+        type: file
+        description: CODEML control file
+        pattern: "*.{ctl}"
+
   - versions:
-      - "versions.yml":
+      - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"

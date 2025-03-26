@@ -28,38 +28,39 @@ input:
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
 
-    - ctl:
-        type: file
-        description: A control/configuration file containing information for codeml run
-        pattern: "*.{ctl,c,cfg,config}"
-
     - phy:
         type: file
         description: A file containing the alignment. High preference for PHYLIP format.
         pattern: "*.{phy,nuc,aa,nex}"
 
-    - tree:
+  - - tree:
         type: file
         description: A file containing the phylogenetic tree of the sequences.
         pattern: "*.{tree,tre,aa,nex}"
 
+  - - ctl:
+        type: file
+        description: A control/configuration file containing information for codeml run
+        pattern: "*.{ctl,c,cfg,config}"
+
 output:
-  - results:
+  - out_txt:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "result.txt":
+      - result.txt:
           type: file
           description: CODEML output result file
           pattern: "*.{txt}"
-      - "out.log":
+  - log:
+      - out.log:
           type: file
           description: CODEML run log file
           pattern: "*.{log}"
   - versions:
-      - "versions.yml":
+      - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
