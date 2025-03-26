@@ -13,7 +13,7 @@ process GATK4_MERGEBAMALIGNMENT {
     tuple val(meta3), path(dict)
 
     output:
-    tuple val(meta), path('*.bam'), emit: bam
+    tuple val(meta), path("${prefix}.bam"), emit: bam
     path  "versions.yml"          , emit: versions
 
     when:
@@ -21,7 +21,7 @@ process GATK4_MERGEBAMALIGNMENT {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     def avail_mem = 3072
     if (!task.memory) {
@@ -46,7 +46,7 @@ process GATK4_MERGEBAMALIGNMENT {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bam
 
