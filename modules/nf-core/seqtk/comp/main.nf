@@ -24,12 +24,12 @@ process SEQTK_COMP {
 
     """
     seqtk comp \\
-    ${args} \\
-    ${fastx} > ${prefix}.seqtk_stats.tsv
+        ${args} \\
+        ${fastx} > ${prefix}.seqtk_stats.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        seqtk: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
+        seqtk: \$(seqtk |& sed '/Version/!d; s/.* //')
     END_VERSIONS
     """
 
@@ -42,7 +42,7 @@ process SEQTK_COMP {
     
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        seqtk: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
+        seqtk: \$(seqtk |& sed '/Version/!d; s/.* //')
     END_VERSIONS
     """
 }
