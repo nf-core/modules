@@ -1,0 +1,35 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://raw.githubusercontent.com/nf-core/seqinspector/master/assets/schema_fastq_screen_references.json",
+    "title": "nf-core/seqinspector pipeline - params.fastq_screen_references schema",
+    "description": "Schema for the file provided with params.fastq_screen_references",
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "name": {
+                "type": "string",
+                "pattern": "^\\S+$",
+                "errorMessage": "The reference name as referred to by FastQ Screen."
+            },
+            "dir": {
+                "type": "string",
+                "format": "file-path",
+                "exists": true,
+                "pattern": "^\\S+$",
+                "errorMessage": "Path to the dir containing the aligner reference and index. Can be remote."
+            },
+            "basename": {
+                "type": "string",
+                "pattern": "^\\S+$",
+                "errorMessage": "The shared basename of the reference and index files contained in the dir."
+            },
+            "aligner": {
+                "type": "string",
+                "enum": ["bowtie", "bowtie2", "bwa", "minimap2"],
+                "errorMessage": "Specify the aligner to use for the mapping. Valid arguments are 'bowtie', bowtie2' (default), 'bwa' or 'minimap2'."
+            }
+        },
+        "required": ["name", "dir", "basename", "aligner"]
+    }
+}
