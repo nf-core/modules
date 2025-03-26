@@ -1,4 +1,3 @@
-include { cellFilteringArgs } from '../../simpleaf/quant/main.nf'
 process COOLER_BALANCE {
     tag "$meta.id"
     label 'process_high'
