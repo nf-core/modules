@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: peddy
 description: Manipulation, validation and exploration of pedigrees
 keywords:
@@ -125,7 +126,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.het_check.png":
+      - "*.het_check.csv":
           type: file
           description: |
             CSV file containing heterozygosity check.
@@ -139,7 +140,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.ped_check.png":
+      - "*.ped_check.csv":
           type: file
           description: |
             CSV file containing pedigree check between reported
@@ -169,7 +170,7 @@ output:
           type: file
           description: |
             CSV file with the comparison between inferred and given relatedness
-          pattern: "*.{ped_check.rel-difference.csv}"
+          pattern: "*.ped_check.rel-difference.csv"
   - versions:
       - versions.yml:
           type: file
