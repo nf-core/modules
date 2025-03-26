@@ -9,12 +9,12 @@ process PAML_CODEML {
 
     input:
     tuple val(meta), path(phy)
-    path tree
-    path ctl
+    tuple val(meta), path(tree)
+    tuple val(meta), path(ctl)
 
     output:
     tuple val(meta), path("result.txt")  , emit: out_txt
-    path "out.log"                       , emit: log
+    tuple val(meta), path("out.log")     , emit: log
     path "versions.yml"                  , emit: versions
 
     when:
@@ -37,7 +37,7 @@ process PAML_CODEML {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch result.txt
-    echo "CODONML in paml version 4.10.7, June 2023" > out.log
+    touch out.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
