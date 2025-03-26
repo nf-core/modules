@@ -1,70 +1,70 @@
 name: gatk4_mergebamalignment
 description: Merge unmapped with mapped BAM files
 keywords:
-  - alignment
-  - bam
-  - gatk4
-  - merge
-  - mergebamalignment
+- alignment
+- bam
+- gatk4
+- merge
+- mergebamalignment
 tools:
-  - gatk4:
-      description: |
-        Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools
-        with a primary focus on variant discovery and genotyping. Its powerful processing engine
-        and high-performance computing features make it capable of taking on projects of any size.
-      homepage: https://gatk.broadinstitute.org/hc/en-us
-      documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
-      doi: 10.1158/1538-7445.AM2017-3590
-      licence: ["Apache-2.0"]
-      identifier: ""
+- gatk4:
+    description: |
+      Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools
+      with a primary focus on variant discovery and genotyping. Its powerful processing engine
+      and high-performance computing features make it capable of taking on projects of any size.
+    homepage: https://gatk.broadinstitute.org/hc/en-us
+    documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
+    doi: 10.1158/1538-7445.AM2017-3590
+    licence: ["Apache-2.0"]
+    identifier: ""
 input:
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test']
-    - aligned:
-        type: file
-        description: The aligned bam file
-        pattern: "*.{bam}"
-    - unmapped:
-        type: file
-        description: The unmapped bam file
-        pattern: "*.{bam}"
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing reference information
-          e.g. [ id:'genome' ]
-    - fasta:
-        type: file
-        description: The reference fasta file
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing reference information
-          e.g. [ id:'genome' ]
-    - dict:
-        type: file
-        description: GATK sequence dictionary
+- - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test']
+  - aligned:
+      type: file
+      description: The aligned bam file
+      pattern: "*.{bam}"
+  - unmapped:
+      type: file
+      description: The unmapped bam file
+      pattern: "*.{bam}"
+- - meta2:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - fasta:
+      type: file
+      description: The reference fasta file
+- - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference information
+        e.g. [ id:'genome' ]
+  - dict:
+      type: file
+      description: GATK sequence dictionary
 output:
-  - bam:
-      - meta:
-          type: file
-          description: The merged bam file
-          pattern: "*.bam"
-      - "*.bam":
-          type: file
-          description: The merged bam file
-          pattern: "*.bam"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+- bam:
+  - meta:
+      type: file
+      description: The merged bam file
+      pattern: "*.bam"
+  - ${prefix}.bam:
+      type: file
+      description: The merged bam file
+      pattern: "*.bam"
+- versions:
+  - versions.yml:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 authors:
-  - "@kevinmenden"
-  - "@ramprasadn"
+- "@kevinmenden"
+- "@ramprasadn"
 maintainers:
-  - "@kevinmenden"
-  - "@ramprasadn"
+- "@kevinmenden"
+- "@ramprasadn"
