@@ -42,12 +42,15 @@ process CHEWBBACA_ALLELECALL {
     mv results/results_statistics.tsv ${prefix}_results_statistics.tsv
     mv results/results_contigsInfo.tsv ${prefix}_results_contigsInfo.tsv
     mv results/results_alleles.tsv ${prefix}_results_alleles.tsv
-    mv results/paralogous_counts.tsv ${prefix}_paralogous_counts.tsv
-    mv results/paralogous_loci.tsv ${prefix}_paralogous_loci.tsv
     mv results/logging_info.txt ${prefix}_logging_info.txt
-    mv results/cds_coordinates.tsv ${prefix}_cds_coordinates.tsv
-    mv results/invalid_cds.txt ${prefix}_invalid_cds.txt
-    mv results/loci_summary_stats.tsv ${prefix}_loci_summary_stats.tsv
+
+    # Handle optional output files
+    [ -f results/paralogous_counts.tsv ] && mv results/paralogous_counts.tsv ${prefix}_paralogous_counts.tsv
+    [ -f results/paralogous_loci.tsv ] && mv results/paralogous_loci.tsv ${prefix}_paralogous_loci.tsv
+    [ -f results/cds_coordinates.tsv ] && mv results/cds_coordinates.tsv ${prefix}_cds_coordinates.tsv
+    [ -f results/invalid_cds.txt ] && mv results/invalid_cds.txt ${prefix}_invalid_cds.txt
+    [ -f results/loci_summary_stats.tsv ] && mv results/loci_summary_stats.tsv ${prefix}_loci_summary_stats.tsv
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -63,9 +66,11 @@ process CHEWBBACA_ALLELECALL {
     touch ${prefix}_results_statistics.tsv
     touch ${prefix}_results_contigsInfo.tsv
     touch ${prefix}_results_alleles.tsv
+    touch ${prefix}_logging_info.txt
+
+    # Optional files
     touch ${prefix}_paralogous_counts.tsv
     touch ${prefix}_paralogous_loci.tsv
-    touch ${prefix}_logging_info.txt
     touch ${prefix}_cds_coordinates.tsv
     touch ${prefix}_invalid_cds.txt
     touch ${prefix}_loci_summary_stats.tsv
