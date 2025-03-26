@@ -1,99 +1,86 @@
-nextflow_process {
-
-    name "Test Process DAMAGEPROFILER"
-
-    script "../main.nf"
-    process "DAMAGEPROFILER"
-
-    tag "modules"
-    tag "modules_nfcore"
-    tag "damageprofiler"
-
-    test("test_damageprofiler") {
-
-
-        when {
-            params {
-                module_args = ''
-            }
-            process {
-                """
-                input[0] = [[id:'test',single_end:false],// meta map
-                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam',checkIfExists:true)]]
-                input[1] = []
-                input[2] = []
-                input[3] = []
-                """
-            }
+test("test_damageprofiler") {
+    when {
+        params {
+            module_args = ''
         }
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    process.out.results.collect{ it[1].collect{
-                        file(it).name.endsWith("svg|pdf") ? file(it).name : file(it)
-                }}
-           ).match() }
-            )
+        process {
+            """
+            input[0] = [[id:'test',single_end:false],// meta map
+                [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam',checkIfExists:true)]]
+            input[1] = []
+            input[2] = []
+            input[3] = []
+            """
         }
     }
-    test("test_damageprofiler_reference") {
-
-
-        when {
-            params {
-                module_args = ''
-            }
-            process {
-                """
-                input[0] = [[id:'test',single_end:false],// meta map
-                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam',checkIfExists:true)]]
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',checkIfExists:true)
-                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai',checkIfExists:true)
-                input[3] = []
-                """
-            }
-        }
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    process.out.results.collect{ it[1].collect{
-                        file(it).name.endsWith("svg|pdf") ? file(it).name : file(it)
+    then {
+        assertAll(
+            { assert process.success },
+            { assert snapshot(
+                process.out.versions,
+                process.out.results.collect{ it[1].collect{
+                    def fileName = file(it).name
+                    (fileName.endsWith("svg") || fileName.endsWith("pdf")) ? fileName : file(it)
                 }}
            ).match() }
-            )
+        )
+    }
+}
+
+test("test_damageprofiler_reference") {
+    when {
+        params {
+            module_args = ''
+        }
+        process {
+            """
+            input[0] = [[id:'test',single_end:false],// meta map
+                [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam',checkIfExists:true)]]
+            input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',checkIfExists:true)
+            input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai',checkIfExists:true)
+            input[3] = []
+            """
         }
     }
-    test("test_damageprofiler_specieslist") {
-
-
-        when {
-            params {
-                module_args = ''
-            }
-            process {
-                """
-                input[0] = [[id:'test',single_end:false],// meta map
-                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam',checkIfExists:true)]]
-                input[1] = []
-                input[2] = []
-                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.header',checkIfExists:true)
-                """
-            }
-        }
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    process.out.results.collect{ it[1].collect{
-                        file(it).name.endsWith("svg|pdf") ? file(it).name : file(it)
+    then {
+        assertAll(
+            { assert process.success },
+            { assert snapshot(
+                process.out.versions,
+                process.out.results.collect{ it[1].collect{
+                    def fileName = file(it).name
+                    (fileName.endsWith("svg") || fileName.endsWith("pdf")) ? fileName : file(it)
                 }}
            ).match() }
-            )
+        )
+    }
+}
+
+test("test_damageprofiler_specieslist") {
+    when {
+        params {
+            module_args = ''
         }
+        process {
+            """
+            input[0] = [[id:'test',single_end:false],// meta map
+                [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam',checkIfExists:true)]]
+            input[1] = []
+            input[2] = []
+            input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.header',checkIfExists:true)
+            """
+        }
+    }
+    then {
+        assertAll(
+            { assert process.success },
+            { assert snapshot(
+                process.out.versions,
+                process.out.results.collect{ it[1].collect{
+                    def fileName = file(it).name
+                    (fileName.endsWith("svg") || fileName.endsWith("pdf")) ? fileName : file(it)
+                }}
+           ).match() }
+        )
     }
 }
