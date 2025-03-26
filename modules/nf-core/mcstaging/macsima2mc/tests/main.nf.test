@@ -16,7 +16,6 @@ nextflow_process {
             process {
                 """
                 // Input files
-
                 input_files = [
                     file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-001_ST-B_R-01_W-C01_ROI-001_F-001_A-Laminin_C-_D-FITC_EXP-1200.tif', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-001_ST-B_R-01_W-C01_ROI-001_F-001_A-Laminin_C-_D-FITC_EXP-150.tif', checkIfExists: true),
@@ -32,10 +31,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-002_ST-S_R-01_W-C01_ROI-001_F-002_D-DAPI_EXP-50.tif', checkIfExists: true)
                 ]
 
-                // input_dir = file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1', checkIfExists: true, type: 'dir')
-
                 // Creates the input directory
-
                 def dir = new File('8_Cycle1')
                 dir.mkdir()
 
@@ -56,23 +52,24 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                {
+                    assert process.out.out_dir.get(0).get(1).isDirectory()
+                    def files = process.out.out_dir.get(0).get(1).list().sort()
+                    assert snapshot(files).match()
+                },
                 { assert snapshot(process.out.versions).match("versions") }
             )
         }
-
     }
 
     test("macsima2mc - input_dir - stub") {
 
         options "-stub"
 
-
         when {
             process {
                 """
                 // Input files
-
                 input_files = [
                     file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-001_ST-B_R-01_W-C01_ROI-001_F-001_A-Laminin_C-_D-FITC_EXP-1200.tif', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-001_ST-B_R-01_W-C01_ROI-001_F-001_A-Laminin_C-_D-FITC_EXP-150.tif', checkIfExists: true),
@@ -88,10 +85,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-002_ST-S_R-01_W-C01_ROI-001_F-002_D-DAPI_EXP-50.tif', checkIfExists: true)
                 ]
 
-                // input_dir = file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1', checkIfExists: true, type: 'dir')
-
                 // Creates the input directory
-
                 def dir = new File('8_Cycle1')
                 dir.mkdir()
 
@@ -108,7 +102,6 @@ nextflow_process {
                 """
             }
         }
-
 
         then {
             assertAll(
@@ -117,7 +110,5 @@ nextflow_process {
                 { assert snapshot(process.out.versions).match("versions_stub") }
             )
         }
-
     }
-
 }
