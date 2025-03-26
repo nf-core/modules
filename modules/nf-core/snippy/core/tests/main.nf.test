@@ -48,6 +48,7 @@ nextflow_process {
     }
 
     test("test_snippy_core_stub") {
+        options '-stub'
         setup {
             run("SNIPPY_RUN") {
                 script "../../run/main.nf"
