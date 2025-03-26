@@ -3,7 +3,7 @@ process FASTCOV {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' ? 'docker://raverjay/fastcov:0.1.3--ba8c8cf6ae19': 'raverjay/fastcov:0.1.3--ba8c8cf6ae19' }"
+    container "${ workflow.containerEngine == 'singularity' ? 'community.wave.seqera.io/library/fastcov:0.1.3--84def91a6ef27f61': 'oras://community.wave.seqera.io/library/fastcov:0.1.3--e8503352127532b6' }"
 
     input:
     tuple val(meta), path(bam), path(index)
