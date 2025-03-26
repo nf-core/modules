@@ -39,14 +39,16 @@ nextflow_process {
     test("test_purgedups_purgedups") {
    
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
+                pbstat_input = [
+                    [id:'test'],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.paf',checkIfExists:true)
+                    ]
+
                 input[0] = PURGEDUPS_PBCSTAT.out.basecov
                     .join(PURGEDUPS_CALCUTS.out.cutoff)
-                    .join(Channel.value(input))
+                    .join(Channel.value(pbstat_input))
                 """
             }
         }
@@ -63,14 +65,16 @@ nextflow_process {
         options "-stub"
 
         when {
-            params {
-                module_args = ''
-                }
             process {
                 """
+                pbstat_input = [
+                    [id:'test'],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.paf',checkIfExists:true)
+                    ]
+                    
                 input[0] = PURGEDUPS_PBCSTAT.out.basecov
                     .join(PURGEDUPS_CALCUTS.out.cutoff)
-                    .join(Channel.value(input))
+                    .join(Channel.value(pbstat_input))
                 """
             }
         }

@@ -28,6 +28,7 @@ process PURGEDUPS_PURGEDUPS {
         -c $basecov \\
         $paf > ${prefix}.dups.bed 2> >(tee ${prefix}.purge_dups.log >&2)
 
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         purgedups: \$( purge_dups -h |& sed '3!d; s/.*: //' )
