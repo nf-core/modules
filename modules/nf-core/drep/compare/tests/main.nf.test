@@ -1,0 +1,74 @@
+nextflow_process {
+
+    name "Test Process DREP_COMPARE"
+    script "../main.nf"
+    process "DREP_COMPARE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "drep"
+    tag "drep/compare"
+
+    test("sarscov2 - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/haemophilus_influenzae/genome/genome.fna.gz", checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+then {
+
+            def stablefiles = []
+            file(process.out.directory.get(0).get(1)).eachFileRecurse{ file -> if (!file.isDirectory() && ["Secondary_clustering_MDS.pdf", "Secondary_clustering_dendrograms.pdf", "cluster_arguments.json", "warnings.txt", "Cdb.csv", "Mdb.csv", "Ndb.csv"].find {file.toString().endsWith(it)}) {stablefiles.add(file)} }
+            def unstablefiles = []
+            file(process.out.directory.get(0).get(1)).eachFileRecurse{ file -> if (["chunk0_MASH_table.tsv", "chunk_all.msh", "genome.fasta.msh", "genome.fna.gz.msh", "Clustering_scatterplots.pdf", "Primary_clustering_dendrogram.pdf", "logger.log", "Bdb.csv"].find {file.toString().endsWith(it)}) {unstablefiles.add(file.getName().toString())} }
+
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    stablefiles,
+                    unstablefiles,
+                    process.out.versions
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/haemophilus_influenzae/genome/genome.fna.gz", checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
