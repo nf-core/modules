@@ -38,4 +38,31 @@ nextflow_process {
         }
     }
 
+    test("test-vcflib-vcffilter-stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.vcf[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
 }
