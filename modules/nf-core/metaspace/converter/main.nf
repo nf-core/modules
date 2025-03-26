@@ -32,7 +32,7 @@ process METASPACE_CONVERTER {
     cat <<-END_VERSIONS > versions.yml
     ${task.process}:
         python: \$(python3 -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}")')
-        metaspace_converter: 1.1.1
+        metaspace_converter: 1.1.1 // TODO: Will be automatically populated once the version is added to the metaspace-converter package
     END_VERSIONS
     """
 

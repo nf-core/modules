@@ -47,6 +47,7 @@ adata.write_h5ad("AnnData_${ds_id}.h5ad")
 sdata.write("SpatialData_${ds_id}.zarr", overwrite=True)
 
 # Versions
+# TODO: version for metaspace-converter will be automatically populated once the version attribute is added to the package
 versions = {"${task.process}": {"python": f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
                                 "metaspace_converter": "1.1.1"}}
 
