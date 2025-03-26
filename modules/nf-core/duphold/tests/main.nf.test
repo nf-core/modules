@@ -31,7 +31,10 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.versions,
-                    process.out.vcf.collect{ path(it[1]).vcf.summary }
+                    process.out.vcf.collect{ [
+                        path(it[1]).vcf.summary,
+                        path(it[1]).vcf.variantsMD5
+                    ] }
                 ).match() }
             )
         }
@@ -61,7 +64,10 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.versions,
-                    process.out.vcf.collect{ path(it[1]).vcf.summary }
+                    process.out.vcf.collect{ [
+                        path(it[1]).vcf.summary,
+                        path(it[1]).vcf.variantsMD5
+                    ] }
                 ).match() }
             )
         }
@@ -89,7 +95,10 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.versions,
-                    process.out.vcf.collect{ path(it[1]).vcf.summary }
+                    process.out.vcf.collect{ [
+                        path(it[1]).vcf.summary,
+                        path(it[1]).vcf.variantsMD5
+                    ] }
                 ).match() }
             )
         }
