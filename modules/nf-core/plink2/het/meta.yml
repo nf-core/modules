@@ -1,9 +1,11 @@
 name: "plink2_het"
-description: Calculate Inbreeding data in plink2
+description: Calculate Inbreeding data with plink2
 keywords:
   - plink2
   - inbreeding
-  - het
+  - heterozygous genotypes
+  - homozygous genotypes
+  - F coefficient
 tools:
   - plink2:
       description: |
@@ -20,15 +22,15 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test' ]
-    - plink_file1:
+    - plink_genotype_file:
         type: file
-        description: PLINK binary genotype table file or PLINK 2 binary genotype table
+        description: PLINK binary genotype table file or PLINK 2 binary genotype table file
         pattern: "*.{bed,pgen}"
-    - plink_file2:
+    - plink_variant_file:
         type: file
         description: PLINK extended MAP file or PLINK 2 variant information file
         pattern: "*.{bim,pvar}"
-    - plink_file3:
+    - plink_sample_file:
         type: file
         description: PLINK sample information file or PLINK 2 sample information file
         pattern: "*.{fam,psam}"
@@ -43,7 +45,7 @@ output:
          type: file
          description: observed and expected homozygous/heterozygous genotype counts for each
           sample and method-of-moments F coefficient estimates
-         pattern: "*.{het}"
+         pattern: "*.het"
   - versions:
       - "versions.yml":
           type: file

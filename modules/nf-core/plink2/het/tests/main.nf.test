@@ -27,8 +27,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("versions") },
-                { assert process.out.het.get(0).get(1) ==~ ".*.het" },
                 { assert snapshot(process.out).match() }
             )
         }
@@ -43,8 +41,8 @@ nextflow_process {
                  input[0] = [
                         [id:"test"],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pgen', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true)
                 ]
                 """
             }
@@ -54,8 +52,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("versions2") },
-                { assert process.out.het.get(0).get(1) ==~ ".*.het" },
                 { assert snapshot(process.out).match() }
             )
         }
@@ -83,8 +79,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("versions3") },
-                { assert process.out.het.get(0).get(1) ==~ ".*.het" },
                 { assert snapshot(process.out).match() }
             )
         }
@@ -101,8 +95,8 @@ nextflow_process {
                  input[0] = [
                         [id:"test"],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pgen', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true)
                 ]
                 """
             }
@@ -111,8 +105,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("versions4") },
-                { assert process.out.het.get(0).get(1) ==~ ".*.het" },
                 { assert snapshot(process.out).match() }
             )
         }

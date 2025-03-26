@@ -9,7 +9,7 @@ process PLINK2_HET {
         'biocontainers/plink2:2.00a5.10--h4ac6f70_0' }"
 
     input:
-    tuple val(meta), path(plink_file1), path(plink_file2), path(plink_file3)
+    tuple val(meta), path(plink_genotype_file), path(plink_variant_file), path(plink_sample_file)
 
     output:
     tuple val(meta), path("*.het")  , emit: het
@@ -21,8 +21,8 @@ process PLINK2_HET {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def mode = ([plink_file1.extension, plink_file2.extension, plink_file3.extension].any { it.contains('pgen') }) ? '--pfile' : '--bfile'
-    def input = "${plink_file1.getBaseName()}"
+    def mode = plink_genotype_file.extension == "pgen" ? '--pfile' : '--bfile'
+    def input = "${plink_genotype_file.getBaseName()}"
     """
     plink2 \\
         $mode $input \\
@@ -41,7 +41,6 @@ process PLINK2_HET {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    
     touch ${prefix}.het
 
     cat <<-END_VERSIONS > versions.yml
