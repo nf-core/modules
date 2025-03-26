@@ -32,7 +32,9 @@ process MELON {
         --output ${prefix} \\
         --threads $task.cpus \\
         $k2_db_arg \\
-        $args
+        $args \\
+        2> >( tee ${prefix}.stderr.log >&2 ) \\
+        | tee ${prefix}.stdout.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
