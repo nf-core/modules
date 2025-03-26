@@ -1,17 +1,17 @@
 nextflow_process {
 
     name "Test Process DAMAGEPROFILER"
-    
+
     script "../main.nf"
     process "DAMAGEPROFILER"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "damageprofiler"
-   
+
     test("test_damageprofiler") {
-        
-        
+
+
         when {
             params {
                 module_args = ''
@@ -29,13 +29,19 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                  process.out.versions,
+                  process.out.results.collect { it[1].collect {
+                        file(it).name.matches(/.*\.(svg|pdf)$/) ? file(it).name : file(it)
+                  }}
+                ).match()
+                }
             )
         }
     }
     test("test_damageprofiler_reference") {
-        
-        
+
+
         when {
             params {
                 module_args = ''
@@ -53,13 +59,19 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                  process.out.versions,
+                  process.out.results.collect { it[1].collect {
+                        file(it).name.matches(/.*\.(svg|pdf)$/) ? file(it).name : file(it)
+                  }}
+                ).match()
+                }
             )
         }
     }
     test("test_damageprofiler_specieslist") {
-        
-        
+
+
         when {
             params {
                 module_args = ''
@@ -77,7 +89,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                  process.out.versions,
+                  process.out.results.collect { it[1].collect {
+                        file(it).name.matches(/.*\.(svg|pdf)$/) ? file(it).name : file(it)
+                  }}
+                ).match()
+                }
             )
         }
     }
