@@ -14,7 +14,7 @@ regul <- aracne2regulon(network_file, exp_mat)
 vpres <- viper(exp_mat, regul, verbose = FALSE)
 
 # Output result
-output_file <- file.path("viper_results.tsv")
+output_file <- file.path("${meta_exp.id}_vs_${meta_net.id}.viper_matrix.tsv")
 write.table(vpres, file = output_file, sep = "\t", quote = FALSE)
 
 ################################################

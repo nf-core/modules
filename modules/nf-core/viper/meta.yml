@@ -14,29 +14,32 @@ tools:
       documentation: https://www.bioconductor.org/packages/release/bioc/vignettes/viper/inst/doc/viper.pdf
       doi: 10.1038/ng.3593
 input:
-  - - meta:
+  - meta_net:
       type: map
       description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - network:
+        Groovy Map containing network information
+        e.g. `[ id:'network1' ]`
+  - network:
         type: file
         description: 3 column ARACNe network file.
         pattern: "*.tsv"
-    - expression_matrix:
+  - meta_exp:
+      type: map
+      description: |
+        Groovy Map containing expression matrix information
+        e.g. `[ id:'expression1' ]`
+  - expression_matrix:
         type: file
         description: Expression matrix with samples as columns and genes as rows.
         pattern: "*.tsv"
 output:
-  - viper_results:
-    -"viper_results.tsv":
+  - viper_matrix:
       type: file
-      description: Viper output matrix of regulator activity per sample.
+      description: Viper output matrix of inferred protein activity.
   - versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
 authors:
   - "@ddomenico"
   - "@juanesarango"
