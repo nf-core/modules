@@ -45,12 +45,10 @@ output:
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
           pattern: "*.gff"
-      - ${output}:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-          pattern: "*.gff"
+      - output:
+          type: file
+          description: Output GFF3 file
+          pattern: "*.longest.gff"
   - versions:
       - versions.yml:
           type: file
