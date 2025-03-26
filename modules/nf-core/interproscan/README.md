@@ -10,7 +10,7 @@ ENV INTERPROSCAN_VER=<VERSION>
 
 3. Create and test the container:
 
-Make sure to `export INTERPROSCAN_VER=<VERSION>` so that the build uses the right tags.
+Make sure to `export INTERPROSCAN_VER=<VERSION>` so that the build uses the right tags. If you're on arm64 architecture (e.g. Apple Silicon), you may need to run `export DOCKER_DEFAULT_PLATFORM=linux/amd64` to "force" the architecture to be `x86_64`/`amd64`.
 
 You can do `make build` from the Makefile or:
 
