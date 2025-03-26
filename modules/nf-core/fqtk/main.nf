@@ -10,7 +10,7 @@ process FQTK {
     input:
     tuple val(meta), path(sample_sheet), path(fastq_folder, stageAs: "input"), val(fastq_readstructure_pairs)
     // fastq_readstructure_pairs example:
-    // [[<fastq name: string>, <read structure: string>, <path to fastqs: path>], [example_R1.fastq.gz, 150T, ./work/98/30bc..78y/fastqs/]]
+    // [[<fastq name: string>, <read structure: string>], [example_R1.fastq.gz, 150T]]
 
     output:
     // Demultiplexed file name changes depending on the arg '--output-types'
