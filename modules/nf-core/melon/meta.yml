@@ -36,7 +36,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:true ]`.
-      - "**/*.tsv":
+      - ${prefix}/*.tsv:
           type: file
           description: Melon output tsv file containing taxonomic profiling results.
           pattern: "*.tsv"
@@ -46,7 +46,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:true ]`.
-      - "**/*.json":
+      - ${prefix}/*.json:
           type: file
           description: Melon output json file containing per-read taxonomic classification results.
           pattern: "*.json"
