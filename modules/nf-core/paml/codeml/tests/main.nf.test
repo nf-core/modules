@@ -59,6 +59,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert snapshot(process.out).match() },
                 { assert path(process.out.out_txt.get(0).get(1)).exists() },
                 { assert path(process.out.log.get(0)).exists() },
                 { assert path(process.out.versions.get(0)).exists() },
