@@ -23,7 +23,7 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - fasta:
         type: file
-        description: FASTA file
+        description: FASTA file with draft assembly of ONT data
         pattern: "*.{fasta,fna,fa,fas}"
         ontologies:
           - edam: "http://edamontology.org/format_1929"
@@ -34,7 +34,7 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - sam:
         type: file
-        description: List of alignment SAM file
+        description: List of SAM files of short reads mapped against the FASTA input file
         pattern: "*.sam"
         ontologies:
           - edam: "http://edamontology.org/format_2573"
@@ -51,7 +51,7 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.fasta":
           type: file
-          description: FASTA file
+          description: FASTA file with polished draft assembly
           pattern: "*.{fasta,fna,fa,fas}"
           ontologies:
             - edam: "http://edamontology.org/format_1929"
