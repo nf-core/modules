@@ -1,0 +1,79 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "expression_proteinactivity"
+description: Infer protein activity interactions
+keywords:
+  - expression
+  - protein
+  - activity
+  - network
+components:
+  - salmon/index
+  - salmon/quant
+  - aracne
+  - viper
+## TODO nf-core: List all of the channels used as input with a description and their structure
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - ch_reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+  - ch_genome_fasta:
+      type: file
+      description: Genome fasta file
+      pattern: "Path to genome sequence in fasta format"
+  - ch_transcript_fasta:
+      type: file
+      description: Transcript fasta file
+      pattern: "Path to transcript sequence in fasta format"
+  - ch_gtf:
+      type: file
+      description: GTF features file
+      pattern: "Path features in GTF format"
+  - ch_index:
+      type: file
+      description: Salmon index files
+      pattern: "Directory containing Salmon index"
+  - make_index:
+      type: boolean
+      description: Whether to create salmon index before running salmon quant
+output:
+  ## Salmon Results
+  - index:
+      type: directory
+      description: Directory containing salmon index
+      pattern: "salmon"
+  - expression:
+      type: directory
+      description: Folder containing the salmon quantification results for a specific sample
+      pattern: "${prefix}"
+  - salmon_json_info:
+      type: file
+      description: |
+        File containing meta information from Salmon quant
+        Which could be used to infer strandedness among other things
+      pattern: "*info.json"
+  - expression:
+      type: directory
+      description: Folder containing the salmon quantification results for a specific sample
+      pattern: "${prefix}"
+  ## Aracne Results
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@juanesarango"
+  - "@stikos"
+  - "@ddomenico"
+maintainers:
+  - "@juanesarango"
+  - "@stikos"
+  - "@ddomenico"
