@@ -31,7 +31,7 @@ output:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - "*.*":
+    - "${prefix}.${suffix}":
         type: file
         description: Downloaded file
         pattern: "*.*"
