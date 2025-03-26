@@ -35,4 +35,14 @@ process EXPANSIONHUNTERDENOVO_MERGE {
         expansionhunterdenovo: \$(echo \$(ExpansionHunterDenovo --help 2>&1) | sed -e "s/ExpansionHunter Denovo v//;s/ Usage.*//")
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.multisample_profile.json
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        expansionhunterdenovo: \$(echo \$(ExpansionHunterDenovo --help 2>&1) | sed -e "s/ExpansionHunter Denovo v//;s/ Usage.*//")
+    END_VERSIONS
+    """
 }
