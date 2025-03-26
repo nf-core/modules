@@ -1,4 +1,4 @@
-process POLYPOLISH {
+process POLYPOLISH_POLISH {
 
     tag "$meta.id"
     label 'process_high_memory'

@@ -1,14 +1,14 @@
-// nf-core modules test polypolish
 nextflow_process {
 
-    name "Test Process POLYPOLISH"
+    name "Test Process POLYPOLISH_POLISH"
     script "../main.nf"
-    process "POLYPOLISH"
+    process "POLYPOLISH_POLISH"
     config './nextflow.config'
 
     tag "modules"
     tag "modules_nfcore"
     tag "samtools/view"
+    tag "polypolish"
     tag "polypolish/polish"
 
     setup{
