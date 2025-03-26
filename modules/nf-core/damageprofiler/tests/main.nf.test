@@ -30,12 +30,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                  process.out.versions,
-                  process.out.results.collect { it[1].collect {
-                        file(it).name.matches(/.*\.(svg|pdf)$/) ? file(it).name : file(it)
-                  }}
-                ).match()
-                }
+                    process.out.versions,
+                    process.out.results.collect{ it[1].collect{
+                        file(it).name.endsWith("svg|pdf") ? file(it).name : file(it)
+                }}
+           ).match() }
             )
         }
     }
@@ -60,12 +59,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                  process.out.versions,
-                  process.out.results.collect { it[1].collect {
-                        file(it).name.matches(/.*\.(svg|pdf)$/) ? file(it).name : file(it)
-                  }}
-                ).match()
-                }
+                    process.out.versions,
+                    process.out.results.collect{ it[1].collect{
+                        file(it).name.endsWith("svg|pdf") ? file(it).name : file(it)
+                }}
+           ).match() }
             )
         }
     }
@@ -90,12 +88,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                  process.out.versions,
-                  process.out.results.collect { it[1].collect {
-                        file(it).name.matches(/.*\.(svg|pdf)$/) ? file(it).name : file(it)
-                  }}
-                ).match()
-                }
+                    process.out.versions,
+                    process.out.results.collect{ it[1].collect{
+                        file(it).name.endsWith("svg|pdf") ? file(it).name : file(it)
+                }}
+           ).match() }
             )
         }
     }
