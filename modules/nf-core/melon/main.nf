@@ -31,7 +31,6 @@ process MELON {
         --threads $task.cpus \\
         $args
 
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         melon: \$(melon -v)
