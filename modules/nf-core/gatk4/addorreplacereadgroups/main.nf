@@ -23,7 +23,7 @@ process GATK4_ADDORREPLACEREADGROUPS {
 
     script:
     def args = task.ext.args        ?: ''
-    def prefix = task.ext.prefix    ?: "${meta.id}"
+    prefix = task.ext.prefix    ?: "${meta.id}"
     def suffix = task.ext.suffix    ?: "${bam.getExtension()}"
     def reference = fasta ? "--REFERENCE_SEQUENCE ${fasta}" : ""
     def create_index = ( suffix == "bam" )? "--CREATE_INDEX" : ""
