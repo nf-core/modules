@@ -3,7 +3,9 @@ process STIMULUS_CHECKTORCHMODEL {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "community.wave.seqera.io/library/stimulus-py:0.2.6--41ca4e25d23aeadd"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/27/270c887d85de0e07232dfc3b8f7a69c727a752f2ae414d3eed19d5cefcb4315d/data':
+        'community.wave.seqera.io/library/stimulus-py:0.2.6--41ca4e25d23aeadd' }"
 
     input:
     tuple val(meta) , path(data) , path(data_config)
