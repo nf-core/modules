@@ -36,7 +36,6 @@ nextflow_process {
                 { assert snapshot(
                     process.out.versions,
                     process.out.vs_html,
-                    process.out.ped,
                     process.out.het_check_csv,
                     process.out.ped_check_csv,
                     process.out.sex_check_csv,
@@ -45,6 +44,7 @@ nextflow_process {
                 { assert path(process.out.het_check_png[0][1]).exists() },
                 { assert path(process.out.ped_check_png[0][1]).exists() },
                 { assert path(process.out.sex_check_png[0][1]).exists() },
+                { assert path(process.out.ped[0][1]).exists() }, // rounding discrepancies between conda and docker/singularity containers
                 { assert path(process.out.html[0][1]).exists() }
 
             )
