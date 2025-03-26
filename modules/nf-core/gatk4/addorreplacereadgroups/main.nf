@@ -13,7 +13,7 @@ process GATK4_ADDORREPLACEREADGROUPS {
     tuple val(meta3), path(fasta_index)
 
     output:
-    tuple val(meta), path("*.bam") , emit: bam,  optional: true
+    tuple val(meta), path("${prefix}.bam") , emit: bam,  optional: true
     tuple val(meta), path("*.bai") , emit: bai,  optional: true
     tuple val(meta), path("*.cram"), emit: cram, optional: true
     path "versions.yml"            , emit: versions
