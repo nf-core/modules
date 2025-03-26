@@ -35,9 +35,6 @@ nextflow_process {
     test("sarscov2 - fasta.gz") {
 
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = [
