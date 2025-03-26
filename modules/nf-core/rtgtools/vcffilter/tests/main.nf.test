@@ -11,6 +11,12 @@ nextflow_process {
 
     test("It runs") {
 
+        setup {
+            """
+                touch test.js empty_test.txt
+            """
+        }
+
         when {
             process {
                 """
