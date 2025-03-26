@@ -1,0 +1,67 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "polypolish"
+description: Polishing genome assemblies with short reads.
+keywords:
+  - assembly polishing
+  - genome polishing
+  - ont
+tools:
+  - "polypolish":
+      description: "Polishing genome assemblies with short reads."
+      homepage: "https://github.com/rrwick/Polypolish"
+      documentation: "https://github.com/rrwick/Polypolish/wiki"
+      tool_dev_url: "https://github.com/rrwick/Polypolish"
+      doi: "https://doi.org/10.1099/mgen.0.001254"
+      licence:
+      identifier: biotools:polypolish
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+
+    - fasta:
+        type: file
+        description: FASTA file
+        pattern: "*.{fasta,fna,fa,fas}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+
+    - sam:
+        type: file
+        description: List of alignment SAM file
+        pattern: "*.sam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2573"
+output:
+  - fasta:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.fasta":
+          type: file
+          description: FASTA file
+          pattern: "*.{fasta,fna,fa,fas}"
+          ontologies:
+            - edam: "http://edamontology.org/format_1929"
+
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@ktrappe"
+maintainers:
+  - "@ktrappe"
