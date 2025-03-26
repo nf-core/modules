@@ -25,7 +25,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [id:'test',single_end:false],// meta map
-                        file("https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/genome/vcf/ped/justhusky_minimal.vcf.gz",checkIfExists:true)
+                        file("https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/genome/vcf/ped/justhusky_minimal.vcf.gz", checkIfExists:true)
                         ]
                     """
                 }
