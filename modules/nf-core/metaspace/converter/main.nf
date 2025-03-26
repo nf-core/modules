@@ -1,5 +1,7 @@
 process METASPACE_CONVERTER {
     label 'process_medium'
+
+    conda "${moduleDir}/environment.yml"
     container 'docker.io/bwadie/metaspace_converter:latest'
 
     // container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
