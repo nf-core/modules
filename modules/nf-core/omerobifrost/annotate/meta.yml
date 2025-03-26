@@ -1,0 +1,62 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "omerobifrost_pull"
+description: A simplified CLI tool to query and transfer image data/metadata from/to an OMERO server. Pull operation.
+keywords:
+  - omero
+  - ome-tiff
+  - bioimaging
+tools:
+  - "omerobifrost":
+      description: "A simplified CLI tool to query and transfer image data/metadata from/to an OMERO server."
+      homepage: "https://github.com/qbicsoftware/omero-bifrost"
+      documentation: "https://github.com/qbicsoftware/omero-bifrost"
+      tool_dev_url: "https://github.com/qbicsoftware/omero-bifrost"
+      doi: ""
+      licence: ["MIT"]
+      identifier: 
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - image_id_list:
+        type: file
+        description: Image ID list of the OME-TIFF files to be downloaded from the OMERO server.
+    - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - omero_config_file:
+        type: file
+        description: Config file containing the OMERO server address and credentials.
+
+output:
+  - ometiff:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+
+    - "*.ome.tiff":
+        type: file
+        description: Downloaded OME-TIFF files.
+        pattern: "*.{ome.tiff}"
+        ontologies:
+        - edam: "http://edamontology.org/format_3727"
+        - edam: "http://edamontology.org/format_3591"
+          
+  - versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@luiskuhn"
+maintainers:
+  - "@luiskuhn"
