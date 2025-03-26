@@ -34,9 +34,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.prune_in.get(0).get(1) ==~ ".*.prune.in" },
-                { assert process.out.prune_out.get(0).get(1) ==~ ".*.prune.out" },
-                { assert snapshot(process.out.versions).match("versions1") },
                 { assert snapshot(process.out).match() }
             )
         }
@@ -56,8 +53,8 @@ nextflow_process {
                 input[0] = [
                         [id:"test"],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pgen', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true)
                 ]
                 input[1] = window_size
                 input[2] = step
@@ -69,9 +66,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.prune_in.get(0).get(1) ==~ ".*.prune.in" },
-                { assert process.out.prune_out.get(0).get(1) ==~ ".*.prune.out" },
-                { assert snapshot(process.out.versions).match("versions2") },
                 { assert snapshot(process.out).match() }
             )
         }
@@ -106,9 +100,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.prune_in.get(0).get(1) ==~ ".*.prune.in" },
-                { assert process.out.prune_out.get(0).get(1) ==~ ".*.prune.out" },
-                { assert snapshot(process.out.versions).match("versions3") },
                 { assert snapshot(process.out).match() }
             )
         }
@@ -128,8 +119,8 @@ nextflow_process {
                 input[0] = [
                         [id:"test"],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pgen', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true)
                 ]
                 input[1] = window_size
                 input[2] = step
@@ -142,9 +133,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.prune_in.get(0).get(1) ==~ ".*.prune.in" },
-                { assert process.out.prune_out.get(0).get(1) ==~ ".*.prune.out" },
-                { assert snapshot(process.out.versions).match("versions4") },
                 { assert snapshot(process.out).match() }
             )
         }

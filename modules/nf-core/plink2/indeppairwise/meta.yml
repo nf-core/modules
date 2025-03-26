@@ -22,18 +22,18 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - plink_file1:
+    - plink_genotype_file:
         type: file
-        description: PLINK binary genotype table file or PLINK 2 binary genotype table
+        description: PLINK binary genotype table file or PLINK 2 binary genotype table file
         pattern: "*.{bed,pgen}"
         ontologies:
           - edam: http://edamontology.org/format_3003 # BED
-    - plink_file2:
+    - plink_variant_file:
         type: file
         description: PLINK extended MAP file or PLINK 2 variant information file
         pattern: "*.{bim,pvar}"
         ontologies: []
-    - plink_file3:
+    - plink_sample_file:
         type: file
         description: PLINK sample information file or PLINK 2 sample information file
         pattern: "*.{fam,psam}"
@@ -62,7 +62,7 @@ output:
       - "*.prune.in":
           type: file
           description: Variants in linkage equilibrium
-          pattern: "*.{prune.in}"
+          pattern: "*.prune.in"
           ontologies: []
   - prune_out:
       - meta:
@@ -73,7 +73,7 @@ output:
       - "*.prune.out":
           type: file
           description: Excluded variants
-          pattern: "*.{prune.out}"
+          pattern: "*.prune.out"
           ontologies: []
   - versions:
       - "versions.yml":
