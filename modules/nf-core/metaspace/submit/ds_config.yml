@@ -1,0 +1,39 @@
+#Please check https://metaspace2020.org/upload for more information on the fields and their values
+
+User_info:
+  API_key: "" # your Metaspace API key
+
+Dataset_name: "Human Brain Tissue" # Name of the dataset
+
+Sample_Information:
+  Organism: "Homo sapiens (Human)" #Check most frequent popup option for more info
+  Organism_Part: "Brain" # Tissue part
+  Condition: "Wildtype" #Make it brief
+  Sample_Growth_Conditions: ""  # this is optional
+
+Sample_Preparation:
+  Sample_Stabilisation: "Fresh Frozen" # This can include processes like freezing, chemical fixation, or other preservation techniques
+  Tissue_Modification: "None" #These changes may include embedding, dehydration, or enzymatic treatments or None
+  MALDI_Matrix: "2,5-dihydroxybenzoic acid (DHB)" #Add only if you're using MALDI, otherwise pass None
+  MALDI_Matrix_Application: "None" #The method by which the MALDI matrix is applied to the sample
+  Solvent: "None"  # this is optional. The solution used to dissolve or dilute the MALDI matrix
+
+MS_Analysis:
+  Polarity: "Positive" #Choose either Positive or Negative. Otherwise it will return an error
+  Ionisation_Source: "MALDI" # Common ionization sources include MALDI, DESI, and SIMS
+  Analyzer: "Orbitrap" #Analyzer used (e.g. FTICR, Orbitrap, TOF)
+  Detector_Resolving_Power:
+    mz: 200
+    Resolving_Power: 140000
+  Pixel_Size: #This is in micrometer
+    Xaxis: 10
+    Yaxis: 10
+
+Annotation_settings:
+  Metabolite_database: #You can choose multiple databases. Please provide as a list of name and version
+    - ["HMDB", "v4"]
+    - ["CoreMetabolome","v3"]
+  Adducts: [] #Adducts to be considered during annotation. It will be determined based on the polarity, unless specified.
+  Chemical_modifications: []  #This is optional. Add any chemical modifications that are present in the sample
+  Analysis_version: "MSM" #Choose either "MSM", "METASPACE_ML_Animal", or "METASPACE_ML_Plant"
+  ppm: 3 #The mass tolerance for annotation in parts per million (ppm)
