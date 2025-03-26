@@ -16,13 +16,6 @@ nextflow_process {
                 outdir = "./output"
                 aracne3_args = "--threads 5 --alpha 1"
             }
-            // process {
-            //     """
-            //     input[0] = file("/data1/papaemme/isabl/home/liosisk/repos/nf-core-modules/modules/nf-core/aracne3/exp_mat_short.txt", checkIfExists: true)
-            //     input[1] = file("/data1/papaemme/isabl/home/liosisk/repos/nf-core-modules/modules/nf-core/aracne3/regulators_short.txt", checkIfExists: true)
-            //     input[2] = "test"
-            //     """
-            // }
             process {
                 """
                 input[0] = [
