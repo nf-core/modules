@@ -2,7 +2,7 @@ process MCSTAGING_MACSIMA2MC {
     tag "$meta.id"
     label 'process_single'
 
-    container "ghcr.io/schapirolabor/macsima2mc:v1.2.12"
+    container "ghcr.io/schapirolabor/macsima2mc:v1.2.13"
 
     input:
     tuple val(meta), path(input_dir), val (output_dir)
@@ -22,7 +22,7 @@ process MCSTAGING_MACSIMA2MC {
 
     def args = task.ext.args ?: ''
     // def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.2.12'
+    def VERSION = '1.2.13'
 
 
     """
@@ -44,7 +44,7 @@ process MCSTAGING_MACSIMA2MC {
     }
     def args = task.ext.args   ?: ''
     // def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.2.12'
+    def VERSION = '1.2.13'
 
     """
     mkdir input_dir
