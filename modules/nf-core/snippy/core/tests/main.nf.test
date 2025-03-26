@@ -20,7 +20,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = [[id:'test',single_end:false],// meta map
-                        [file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/illumina/fastq/test_1.fastq.gz',checkIfExists:true),
+                        [file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/illumina/fastq/test_1.fastq.gz', checkIfExists:true),
                         file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/illumina/fastq/test_2.fastq.gz',checkIfExists:true)]
                         ]
                     input[1] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta',checkIfExists:true)
