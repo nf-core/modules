@@ -42,37 +42,39 @@ input:
         description: PLINK 2 variant information file
         pattern: "*.{pvar}"
 
-
 output:
-  - evalfile:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-      - "*.eigenval":
-          type: file
-          description: |
-            File containing the eigenvectors
-          pattern: "*.eigenval"
   - evecfile:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
-      - "*.eigenvec":
-          type: file
-          description: |
-            File containing the eigenvalues
           pattern: "*.eigenvec"
+      - "*.eigenvec":
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*.eigenvec"
+  - evfile:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*.eigenval"
+      - "*.eigenval":
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*.eigenval"
   - logfile:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
+          pattern: "*.log"
       - "*.log":
-          type: file
+          type: map
           description: |
-            Log file containing the output of the command
+            Groovy Map containing sample information
           pattern: "*.log"
   - versions:
       - versions.yml:
@@ -80,7 +82,6 @@ output:
           description: |
             File containing the version of the program
           pattern: "versions.yml"
-
 authors:
   - "@bruno-ariano"
 maintainers:

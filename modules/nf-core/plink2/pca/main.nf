@@ -11,7 +11,7 @@ process PLINK2_PCA {
 
     output:
     tuple val(meta), path("*.eigenvec"), emit: evecfile
-    tuple val(meta), path("*.eigenval"), emit: evalfile
+    tuple val(meta), path("*.eigenval"), emit: evfile
     tuple val(meta), path("*.log"), emit: logfile
     path "versions.yml", emit: versions
 
