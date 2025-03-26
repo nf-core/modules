@@ -13,10 +13,10 @@ process GATK4_MARKDUPLICATES {
     path  fasta_fai
 
     output:
-    tuple val(meta), path("*cram"),     emit: cram,  optional: true
-    tuple val(meta), path("*bam"),      emit: bam,   optional: true
-    tuple val(meta), path("*.crai"),    emit: crai,  optional: true
-    tuple val(meta), path("*.bai"),     emit: bai,   optional: true
+    tuple val(meta), path("${prefix}.cram"),     emit: cram,  optional: true
+    tuple val(meta), path("${prefix}.md.bam"),      emit: bam,   optional: true
+    tuple val(meta), path("${prefix}*crai"),    emit: crai,  optional: true
+    tuple val(meta), path("${prefix}*bai"),     emit: bai,   optional: true
     tuple val(meta), path("*.metrics"), emit: metrics
     path "versions.yml",                emit: versions
 
@@ -25,13 +25,14 @@ process GATK4_MARKDUPLICATES {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}.bam"
-
+    prefix = task.ext.prefix ?: "${meta.id}"
+    suffix = task.ext.suffix ?: "bam"
     // If the extension is CRAM, then change it to BAM
-    prefix_bam = prefix.tokenize('.')[-1] == 'cram' ? "${prefix.substring(0, prefix.lastIndexOf('.'))}.bam" : prefix
+    //prefix_bam = prefix.tokenize('.')[-1] == 'cram' ? "${prefix.substring(0, prefix.lastIndexOf('.'))}.bam" : prefix
 
     def input_list = bam.collect{"--INPUT $it"}.join(' ')
-    def reference = fasta ? "--REFERENCE_SEQUENCE ${fasta}" : ""
+    file_extension = bam.first().getExtension()
+    reference = fasta ? "--REFERENCE_SEQUENCE ${fasta}" : ""
 
     def avail_mem = 3072
     if (!task.memory) {
@@ -46,17 +47,18 @@ process GATK4_MARKDUPLICATES {
     gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         MarkDuplicates \\
         $input_list \\
-        --OUTPUT ${prefix_bam} \\
+        --OUTPUT ${prefix}.md.bam \\
         --METRICS_FILE ${prefix}.metrics \\
         --TMP_DIR . \\
         ${reference} \\
         $args
-
+    ls -l 
+    
     # If cram files are wished as output, the run samtools for conversion
-    if [[ ${prefix} == *.cram ]]; then
-        samtools view -Ch -T ${fasta} -o ${prefix} ${prefix_bam}
-        rm ${prefix_bam}
-        samtools index ${prefix}
+    if [[ ${suffix}  == cram ]]; then
+        samtools view -Ch -T ${fasta} -o ${prefix}.cram ${prefix}.md.bam 
+        rm ${prefix}.md.bam
+        samtools index ${prefix}.cram
     fi
 
     cat <<-END_VERSIONS > versions.yml
