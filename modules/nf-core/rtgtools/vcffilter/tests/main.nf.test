@@ -1,0 +1,36 @@
+nextflow_process {
+
+    name "Test Process RTGTOOLS_VCFFILTER"
+    script "../main.nf"
+    process "RTGTOOLS_VCFFILTER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "rtgtools"
+    tag "rtgtools/vcffilter"
+
+    test("It runs") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
+                input[2] = file('./test.js', checkIfExists: true)
+                input[3] = file('./emtpy_test.txt', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+            )
+        }
+
+    }
+}
