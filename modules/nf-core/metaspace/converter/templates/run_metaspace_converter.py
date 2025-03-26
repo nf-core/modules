@@ -5,7 +5,7 @@ os.environ[ 'NUMBA_CACHE_DIR' ] = '/tmp/'
 
 import metaspace_converter as mc
 from metaspace import SMInstance
-import argparse
+import sys
 
 def str_to_bool(value):
     if value.lower() in ['true', '1', 't', 'y', 'yes']:
@@ -13,18 +13,7 @@ def str_to_bool(value):
     elif value.lower() in ['false', '0', 'f', 'n', 'no']:
         return False
     else:
-        raise argparse.ArgumentTypeError('Boolean value expected.')
-
-# parser = argparse.ArgumentParser(description="Convert a METASPACE dataset to AnnData and SpatialData")
-
-# parser.add_argument('--fdr', type=int, help='FDR threshold')
-# parser.add_argument('--use_tic', type=str_to_bool, help='Normalize by TIC')
-# parser.add_argument('--metadata_as_obs', type=str_to_bool, help='Add metaspace metadata as obs')
-# parser.add_argument('--database_name', type=str, help='Database name')
-# parser.add_argument('--database_version', type=str, help='Database version')
-
-# # Parse the arguments
-# args = parser.parse_args()
+        raise ValueError('Boolean value expected.')
 
 sm = SMInstance()
 ds = sm.dataset(id = "${ds_id}")
@@ -58,7 +47,8 @@ adata.write_h5ad("AnnData_${ds_id}.h5ad")
 sdata.write("SpatialData_${ds_id}.zarr", overwrite=True)
 
 # Versions
-versions = {"${task.process}": {"python": "3.11", "metaspace_converter": "1.1.1"}}
+versions = {"${task.process}": {"python": f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
+                                "metaspace_converter": "1.1.1"}}
 
 def format_yaml_like(data: dict, indent: int = 0) -> str:
     """Formats a dictionary to a YAML-like string.

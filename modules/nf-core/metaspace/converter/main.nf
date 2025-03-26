@@ -2,29 +2,25 @@ process METASPACE_CONVERTER {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container 'docker.io/bwadie/metaspace_converter:latest'
-
-    // container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-    //     'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-    //     'biocontainers/YOUR-TOOL-HERE' }"
+    container 'community.wave.seqera.io/library/python_pip_metaspace-converter:958b8906de66e072'
 
     input:
     val(ds_id)
 
     output:
-    path("AnnData_${ds_id}.h5ad"), emit: AnnData_object
+    path("AnnData_${ds_id}.h5ad")    , emit: AnnData_object
     path("SpatialData_${ds_id}.zarr"), emit: SpatialData_object
-    path("versions.yml"), emit: versions
+    path("versions.yml")             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    database_name = params.database_name
+    database_name    = params.database_name
     database_version = params.database_version
-    fdr = params.fdr
-    use_tic = params.use_tic
-    metadata_as_obs = params.metadata_as_obs
+    fdr              = params.fdr
+    use_tic          = params.use_tic
+    metadata_as_obs  = params.metadata_as_obs
 
     template 'run_metaspace_converter.py'
 
@@ -35,7 +31,7 @@ process METASPACE_CONVERTER {
 
     cat <<-END_VERSIONS > versions.yml
     ${task.process}:
-        python: 3.11
+        python: \$(python3 -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}")')
         metaspace_converter: 1.1.1
     END_VERSIONS
     """
