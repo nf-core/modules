@@ -8,8 +8,9 @@ import pandas as pd
 from enum import Enum
 import fire
 from time import time
+import seg_metrics.seg_metrics as sg
 
-VERSION = "0.0.1"
+VERSION = "0.1.0"
 
 def read_image(path) -> np.ndarray:
     """
@@ -36,23 +37,30 @@ def load_dataset(path_ref, path_list_seg) -> tuple[torch.Tensor, torch.Tensor]:
     """
     Load the dataset and return a list of torch tensors.
     """
-    imref = read_image(path_ref)
-    imarray = []
+    imref1 = read_image(path_ref)
+    imarray1 = []
     for path_seg in path_list_seg.split(' '):
-        imarray.append(read_image(path_seg))
-    imref = torch.cat([convert_to_tensor(binarize(imref))] * len(imarray), 0)
-    imarray = torch.cat([convert_to_tensor(binarize(im)) for im in imarray], 0)
-    return imref, imarray
+        imarray1.append(read_image(path_seg))
+    imref = torch.cat([convert_to_tensor(binarize(imref1))] * len(imarray1), 0)
+    imarray = torch.cat([convert_to_tensor(binarize(im)) for im in imarray1], 0)
+    imref_np = binarize(imref1)
+    imarray_np = [binarize(im) for im in imarray1]
+    return imref, imarray, imref_np, imarray_np
 
-def benchmark_metrics(ref, seg, list_metrics) -> list[torch.Tensor]:
+def benchmark_metrics(ref, seg, ref_np, seg_np, list_metrics) -> list[torch.Tensor]:
     """
     Compute the benchmark metrics.
     Add RAM/CPU benchmark
     """
     list_results = []
-    for i in list_metrics:
+    print(type(list_metrics))
+    print(list_metrics)
+    for i in list_metrics.split(' '):
         ts = time() # Start timing the operation
-        list_results.append(getattr(Metrics, i)(ref,seg))
+        if i[:3] == 'sgm':
+            list_results.append(get_sgm_metrics(ref_np, seg_np, i[4:]))
+        else:
+            list_results.append(getattr(Metrics, i)(ref,seg))
         print(f"{i} runtime: {(time()-ts)} sec")
     return(list_results)
 
@@ -61,10 +69,23 @@ def get_results(results, path_list_seg, list_metrics) -> pd.DataFrame:
     Get the results of the metrics.
     """
     out = pd.DataFrame(torch.cat(results, 1).numpy(),
-        index = path_list_seg.split(' '), columns = list_metrics)
+        index = path_list_seg.split(' '), columns = list_metrics.split(' '))
     out.to_csv('segmentation_benchmark_results.csv')
     return out
 
+def get_sgm_metrics(ref_np, seg_np_list, metric_name):
+    """
+    Getting score for seg-metrics library metrics
+    """
+    empty_tensor_res = torch.empty(len(seg_np_list),1)
+    for i,seg_np in zip(range(len(seg_np_list)), seg_np_list):
+        metrics = sg.write_metrics(labels=[1],  # exclude background if needed
+                      gdth_img=ref_np,
+                      pred_img=seg_np,
+                      metrics=[metric_name])
+        empty_tensor_res[i][0] = metrics[0][metric_name][0]
+    return empty_tensor_res
+    
 
 class Metrics(Enum):
     """
@@ -83,18 +104,24 @@ class Metrics(Enum):
     MAEMetric = mmetrics.MAEMetric()
     RMSEMetric = mmetrics.RMSEMetric()
     PSNRMetric = mmetrics.PSNRMetric(max_val = 1)
+    
 
-def main(path_ref, path_list_seg, list_metrics):
+def main(path_ref, path_list_seg, list_metrics=""):
     """
     Main function to compute the metrics.
     input:
     path_ref: path to the ground truth segmentation (as TIFF file)
     path_list_seg: space separated list of paths to the segmentations to compare
     list_metrics: space separated list of metrics to compute
-    current metrics: DiceMetric MeanIoU GeneralizedDiceScore HausdorffDistanceMetric SurfaceDistanceMetric SurfaceDiceMetric MSEMetric RMSEMetric PSNRMetric
+    current metrics: DiceMetric MeanIoU GeneralizedDiceScore HausdorffDistanceMetric SurfaceDistanceMetric SurfaceDiceMetric MSEMetric RMSEMetric PSNRMetric sgm_dice sgm_jaccard sgm_precision sgm_recall sgm_fpr sgm_fnr sgm_hd sgm_msd sgm_stdsd
+    
     """
-    ref, seg = load_dataset(path_ref, path_list_seg)
-    results = benchmark_metrics(ref, seg, list_metrics)
+    
+    if list_metrics == "":
+        list_metrics = 'DiceMetric MeanIoU GeneralizedDiceScore HausdorffDistanceMetric SurfaceDistanceMetric SurfaceDiceMetric MSEMetric RMSEMetric PSNRMetric sgm_dice sgm_jaccard sgm_precision sgm_recall sgm_fpr sgm_fnr sgm_hd sgm_msd sgm_stdsd'
+    
+    ref, seg, ref_np, seg_np = load_dataset(path_ref, path_list_seg)
+    results = benchmark_metrics(ref, seg, ref_np, seg_np, list_metrics)
     get_results(results, path_list_seg, list_metrics)
 
 if __name__ == '__main__':
