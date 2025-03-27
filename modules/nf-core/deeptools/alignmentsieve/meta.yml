@@ -1,0 +1,56 @@
+name: deeptools_alignmentSieve
+description: This tool filters alignments in a BAM/CRAM file according the the specified parameters.
+keywords:
+  - ATACseq
+  - filter
+  - shift
+  - ATACshift
+tools:
+  - deeptools:
+      description: A set of user-friendly tools for normalization and visualization of
+        deep-sequencing data
+      homepage: https://deeptools.readthedocs.io/en/develop/content/tools/alignmentSieve.html
+      documentation: https://deeptools.readthedocs.io/en/develop/content/tools/alignmentSieve.html
+      tool_dev_url: https://github.com/deeptools/deepTools/
+      doi: "10.1093/nar/gkw257"
+      licence: ["GPL v3"]
+      identifier: biotools:deeptools
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input:
+        type: file
+        description: BAM file
+        pattern: "*.{bam}"
+    - input_index:
+        type: file
+        description: BAM index file
+        pattern: "*.{bai}"
+output:
+  - bam:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_as.bam":
+          type: file
+          description: BAM file
+          pattern: "*.bam"
+  - logs:
+      - "*_log.txt":
+          type: file
+          description: TXT file
+          pattern: "*.txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@lpantano"
+maintainers:
+  - "@lpantano"

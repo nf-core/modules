@@ -24,13 +24,26 @@ process COOLER_BALANCE {
     extension = cool.getExtension()
     if ("$cool" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
-    cp ${cool} ${prefix}.${extension}
+    ln -s ${cool} ${prefix}.${extension}
 
     cooler balance \\
         $args \\
         -p ${task.cpus} \\
         ${prefix}.${extension}${suffix}
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        cooler: \$(cooler --version 2>&1 | sed 's/cooler, version //')
+    END_VERSIONS
+    """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    suffix = resolution ? "::/resolutions/$resolution" : ""
+    extension = cool.getExtension()
+    def creation_cmd = suffix.endsWith(".gz") ? "echo '' | gzip -c >" : "touch"
+    """
+    ${creation_cmd} ${prefix}.${extension}${suffix}
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         cooler: \$(cooler --version 2>&1 | sed 's/cooler, version //')

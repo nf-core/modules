@@ -1,0 +1,64 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "fcsgx_cleangenome"
+description: Runs FCS-GX (Foreign Contamination Screen - Genome eXtractor) to
+  remove foreign contamination from genome assemblies
+keywords:
+  - genome
+  - assembly
+  - contamination
+  - screening
+  - cleaning
+  - fcs-gx
+tools:
+  - "fcsgx":
+      description: "The NCBI Foreign Contamination Screen. Genomic cross-species aligner,
+        for contamination detection."
+      homepage: "https://github.com/ncbi/fcs-gx"
+      documentation: "https://github.com/ncbi/fcs/wiki/"
+      tool_dev_url: "https://github.com/ncbi/fcs-gx"
+      doi: "10.1186/s13059-024-03198-7"
+      licence: ["NCBI-PD"]
+      identifier: "biotools:ncbi_fcs"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fasta:
+        type: file
+        description: Input genome assembly file in FASTA format
+        pattern: "*.{fa,fasta,fna}"
+    - fcsgx_report:
+        type: file
+        description: Final contamination report with contaminant cleaning actions. Generated using FCSGX_RUNGX
+output:
+  - cleaned:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.cleaned.fasta":
+          type: file
+          description: The fasta file after cleaning, where sequences annotated as ACTION_EXCLUDE or ACTION_TRIM are excluded
+  - contaminants:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.contaminants.fasta":
+          type: file
+          description: Sequences annotated as ACTION_EXCLUDE which are marked as contaminants.
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@mahesh-panchal"
+  - "@LaurenHuet"
+maintainers:
+  - "@mahesh-panchal"

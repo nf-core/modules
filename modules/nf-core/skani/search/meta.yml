@@ -1,0 +1,58 @@
+name: "skani_search"
+description: Memory-efficient ANI database queries with skani.
+keywords:
+  - skani
+  - metagenomics
+  - genome
+  - alignment
+  - search
+tools:
+  - "skani":
+      description: "skani is a fast and robust tool for calculating ANI between metagenome assembled genomes and contigs."
+      homepage: "https://github.com/bluenote-1577/skani"
+      documentation: "https://github.com/bluenote-1577/skani/wiki"
+      tool_dev_url: "https://github.com/bluenote-1577/skani"
+      doi: "10.1038/s41592-023-02018-3"
+      licence: ["MIT"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - query:
+        type: file
+        description: Input FASTA/skani sketch to search with.
+        pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - sketch_dir:
+        type: directory
+        description: Directory containing the genome sketches and markers.
+        pattern: "*"
+
+output:
+  - search:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.tsv":
+          type: file
+          description: TSV file containing ANI and AF as predicted by skani.
+          pattern: "*.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@CarsonJM"
+maintainers:
+  - "@CarsonJM"

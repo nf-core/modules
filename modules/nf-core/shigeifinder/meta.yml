@@ -7,36 +7,40 @@ keywords:
   - serotype
 tools:
   - "shigeifinder":
-      description: "Cluster informed Shigella and EIEC serotyping tool from Illumina reads and assemblies"
+      description: "Cluster informed Shigella and EIEC serotyping tool from Illumina
+        reads and assemblies"
       homepage: "https://mgtdb.unsw.edu.au/ShigEiFinder/"
       documentation: "https://github.com/LanLab/ShigEiFinder"
       tool_dev_url: "https://github.com/LanLab/ShigEiFinder"
       doi: "10.1099/mgen.0.000704"
-      licence: "['GPL v3']"
+      licence: ["GPL v3"]
+      identifier: biotools:shigeifinder
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - seqs:
-      type: file
-      description: Assembly or paired-end Illumina reads
-      pattern: "*.{fasta,fasta.gz,fastq.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - seqs:
+        type: file
+        description: Assembly or paired-end Illumina reads
+        pattern: "*.{fasta,fasta.gz,fastq.gz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - tsv:
-      type: file
-      description: A TSV formatted file with ShigEiFinder results
-      pattern: "*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: A TSV formatted file with ShigEiFinder results
+          pattern: "*.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@rpetit3"
 maintainers:

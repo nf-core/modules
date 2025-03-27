@@ -13,34 +13,44 @@ tools:
       homepage: https://github.com/vgteam/vg
       documentation: https://github.com/vgteam/vg/wiki
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - input:
-      type: list
-      description: One or more input graph files created with `vg/construct`
-      pattern: "*.vg"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input:
+        type: list
+        description: One or more input graph files created with `vg/construct`
+        pattern: "*.vg"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - xg:
-      type: file
-      description: File containing a succint, queryable version of the input graph(s) or read for GCSA or distance indexing
-      pattern: "*.xg"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.xg":
+          type: file
+          description: File containing a succinct, queryable version of the input graph(s)
+            or read for GCSA or distance indexing
+          pattern: "*.xg"
   - vg_index:
-      type: file
-      description: An index of the graph(s) created when `--index-sorted-vg` is supplied.
-      pattern: "*.vgi"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vgi":
+          type: file
+          description: An index of the graph(s) created when `--index-sorted-vg` is supplied.
+          pattern: "*.vgi"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

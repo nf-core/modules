@@ -1,11 +1,9 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
-name: "kraken2_buildstandard"
 channels:
   - conda-forge
   - bioconda
-  - defaults
 dependencies:
-  - "bioconda::kraken2=2.1.3"
-  - "coreutils=9.4"
-  - "pigz=2.8"
+  - bioconda::kraken2=2.1.3
+  - coreutils=9.4
+  - pigz=2.8

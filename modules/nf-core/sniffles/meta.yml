@@ -11,60 +11,84 @@ tools:
       documentation: https://github.com/fritzsedlazeck/Sniffles#readme
       tool_dev_url: https://github.com/fritzsedlazeck/Sniffles
       licence: ["MIT"]
+      identifier: biotools:sniffles
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - input:
-      type: file
-      description: A single .bam/.cram file - OR - one or more .snf files - OR - a single .tsv file containing a list of .snf files and optional sample ids as input
-      pattern: "*.{bam,cram,snf,tsv}"
-  - index:
-      type: file
-      description: Index of BAM/CAM file
-      pattern: "*.{bai,crai}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'fasta' ]
-  - fasta:
-      type: file
-      description: |
-        Reference database in FASTA format
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing tandem repeat information
-        e.g. [ id:'hg38' ]
-  - tandem_file:
-      type: file
-      description: Tandem repeat file
-      pattern: "*.bed"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - input:
+        type: file
+        description: A single .bam/.cram file - OR - one or more .snf files - OR - a
+          single .tsv file containing a list of .snf files and optional sample ids as
+          input
+        pattern: "*.{bam,cram,snf,tsv}"
+    - index:
+        type: file
+        description: Index of BAM/CAM file
+        pattern: "*.{bai,crai}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'fasta' ]
+    - fasta:
+        type: file
+        description: |
+          Reference database in FASTA format
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing tandem repeat information
+          e.g. [ id:'hg38' ]
+    - tandem_file:
+        type: file
+        description: Tandem repeat file
+        pattern: "*.bed"
+  - - vcf_output:
+        type: file
+        description: VCF output file
+        pattern: "*.vcf.gz"
+  - - snf_output:
+        type: file
+        description: SNF output file
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - vcf:
-      type: file
-      description: Compressed VCF file
-      pattern: "*.vcf.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.vcf.gz":
+          type: file
+          description: Compressed VCF file
+          pattern: "*.vcf.gz"
   - tbi:
-      type: file
-      description: Compressed VCF file index
-      pattern: "*.tbi"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.vcf.gz.tbi":
+          type: file
+          description: Compressed VCF file index
+          pattern: "*.tbi"
   - snf:
-      type: file
-      description: SNF file
-      pattern: "*.snf"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.snf":
+          type: file
+          description: SNF file
+          pattern: "*.snf"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@christopher-hakkaart"
   - "@yuukiiwa"

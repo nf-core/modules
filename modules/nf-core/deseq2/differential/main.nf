@@ -1,5 +1,5 @@
 process DESEQ2_DIFFERENTIAL {
-    tag "$meta"
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -29,7 +29,7 @@ process DESEQ2_DIFFERENTIAL {
     task.ext.when == null || task.ext.when
 
     script:
-    template 'deseq_de.R'
+    template 'deseq2_differential.R'
 
     stub:
     """

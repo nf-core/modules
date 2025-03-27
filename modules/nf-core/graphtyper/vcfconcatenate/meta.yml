@@ -7,40 +7,50 @@ keywords:
   - vcf
 tools:
   - "graphtyper":
-      description: A graph-based variant caller capable of genotyping population-scale short read data sets while incoperating previously discovered variants.
+      description: A graph-based variant caller capable of genotyping population-scale
+        short read data sets while incorporating previously discovered variants.
       homepage: "https://github.com/DecodeGenetics/graphtyper"
       documentation: "https://github.com/DecodeGenetics/graphtyper/wiki/User-guide"
       tool_dev_url: "https://github.com/DecodeGenetics/graphtyper"
       doi: "10.1038/ng.3964"
-      licence: "['MIT']"
+      licence: ["MIT"]
+      identifier: biotools:Graphtyper
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - vcf:
-      type: file
-      description: VCF files
-      pattern: "*.{vcf,vcf.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - vcf:
+        type: file
+        description: VCF files
+        pattern: "*.{vcf,vcf.gz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - vcf:
-      type: file
-      description: Concatenated VCF file
-      pattern: "*.{vcf.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}.vcf.gz:
+          type: file
+          description: Concatenated VCF file
+          pattern: "*.{vcf.gz}"
   - tbi:
-      type: file
-      description: Concatenated VCF file index
-      pattern: "*.{tbi}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}.vcf.gz.tbi:
+          type: file
+          description: Concatenated VCF file index
+          pattern: "*.{tbi}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@zachary-foster"
 maintainers:

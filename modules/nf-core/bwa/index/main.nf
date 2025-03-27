@@ -1,6 +1,8 @@
 process BWA_INDEX {
     tag "$fasta"
-    label 'process_single'
+    // NOTE requires 5.37N memory where N is the size of the database
+    // source: https://bio-bwa.sourceforge.net/bwa.shtml#8
+    memory { 6.B * fasta.size() }
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -11,8 +13,8 @@ process BWA_INDEX {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path(bwa) , emit: index
-    path "versions.yml"        , emit: versions
+    tuple val(meta), path("bwa")  , emit: index
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
