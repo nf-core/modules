@@ -79,7 +79,7 @@ jobs:
         env:
           NFT_VER: ${{ env.NFT_VER }}
         with:
-          max_shards: 2
+          max_shards: 1
           paths: "${{ join(fromJson(steps.list.outputs.components), ' ') }}"
           tags: "gpu"
       - name: debug
