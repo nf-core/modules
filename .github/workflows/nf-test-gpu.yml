@@ -91,7 +91,7 @@ jobs:
           echo ${{ steps.set-shards.outputs.total_shards }}
 
   nf-test-gpu:
-    runs-on: "runs-on=${{ github.run_id }}/runner=gpu-nvidia"
+    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.xlarge/image=ubuntu24-gpu-x64"
     name: "GPU Test | ${{ matrix.profile }} | ${{ matrix.shard }}"
     needs: [nf-test-changes]
     if: ${{ needs.nf-test-changes.outputs.total_shards != '0' }}
@@ -108,6 +108,9 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           fetch-depth: 0
+      - name: test cuda
+        run: |
+          nvidia-smi -L
       - name: Run nf-test Action
         uses: ./.github/actions/nf-test-action
         env:
