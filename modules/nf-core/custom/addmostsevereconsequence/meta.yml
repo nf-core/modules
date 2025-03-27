@@ -1,0 +1,59 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "custom_addmostsevereconsequence"
+description: Annotate a VEP annotated VCF with the most severe consequence field
+keywords:
+  - sort
+  - example
+  - genomics
+tools:
+  - "custom":
+      description: "Custom module to annotate a VEP annotated VCF with the most severe consequence field"
+      tool_dev_url: "https://github.com/nf-core/modules/blob/master/modules/nf-core/custom/addmostsevereconsequence/main.nf"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - vcf:
+        type: file
+        description: VEP annotated VCF file
+        pattern: "*.{vcf,vcf.gz}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - variant_consequences:
+        type: file
+        description: File with VEP variant consequences, one per line.
+        pattern: "*"
+
+output:
+  - vcf:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - "*.vcf.gz":
+        type: file
+        description: Annotated VCF file
+        pattern: "*.vcf.gz"
+
+  - versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@ramprasadn"
+  - "@fellen31"
+maintainers:
+  - "@ramprasadn"
+  - "@fellen31"
