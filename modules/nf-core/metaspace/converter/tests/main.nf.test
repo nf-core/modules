@@ -20,9 +20,11 @@ nextflow_process {
         }
 
         then {
+            def sdata_zarr = file(process.out.sdata_object.get(0))
+            def metafile = sdata_zarr.listFiles().find { it.name == 'zmetadata' }
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.adata_object,metafile.getAbsolutePath()).match() }
             )
         }
     }

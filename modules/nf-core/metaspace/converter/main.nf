@@ -10,8 +10,8 @@ process METASPACE_CONVERTER {
     val(ds_id)
 
     output:
-    path("AnnData_${ds_id}.h5ad")    , emit: AnnData_object
-    path("SpatialData_${ds_id}.zarr"), emit: SpatialData_object
+    path("AnnData_${ds_id}.h5ad")    , emit: adata_object
+    path("SpatialData_${ds_id}.zarr"), emit: sdata_object
     path("versions.yml")             , emit: versions
 
     when:
