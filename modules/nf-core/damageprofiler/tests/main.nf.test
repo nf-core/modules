@@ -1,86 +1,102 @@
-test("test_damageprofiler") {
-    when {
-        params {
-            module_args = ''
-        }
-        process {
-            """
-            input[0] = [[id:'test',single_end:false],// meta map
-                [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam',checkIfExists:true)]]
-            input[1] = []
-            input[2] = []
-            input[3] = []
-            """
-        }
-    }
-    then {
-        assertAll(
-            { assert process.success },
-            { assert snapshot(
-                process.out.versions,
-                process.out.results.collect{ it[1].collect{
-                    def fileName = file(it).name
-                    (fileName.endsWith("svg") || fileName.endsWith("pdf")) ? fileName : file(it)
-                }}
-           ).match() }
-        )
-    }
-}
+nextflow_process {
 
-test("test_damageprofiler_reference") {
-    when {
-        params {
-            module_args = ''
-        }
-        process {
-            """
-            input[0] = [[id:'test',single_end:false],// meta map
-                [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam',checkIfExists:true)]]
-            input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',checkIfExists:true)
-            input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai',checkIfExists:true)
-            input[3] = []
-            """
-        }
-    }
-    then {
-        assertAll(
-            { assert process.success },
-            { assert snapshot(
-                process.out.versions,
-                process.out.results.collect{ it[1].collect{
-                    def fileName = file(it).name
-                    (fileName.endsWith("svg") || fileName.endsWith("pdf")) ? fileName : file(it)
-                }}
-           ).match() }
-        )
-    }
-}
+    name "Test Process DAMAGEPROFILER"
 
-test("test_damageprofiler_specieslist") {
-    when {
-        params {
-            module_args = ''
+    script "../main.nf"
+    process "DAMAGEPROFILER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "damageprofiler"
+
+    test("test_damageprofiler") {
+
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [[id:'test',single_end:false],// meta map
+                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam',checkIfExists:true)]]
+                input[1] = []
+                input[2] = []
+                input[3] = []
+                """
+            }
         }
-        process {
-            """
-            input[0] = [[id:'test',single_end:false],// meta map
-                [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam',checkIfExists:true)]]
-            input[1] = []
-            input[2] = []
-            input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.header',checkIfExists:true)
-            """
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.results.collect{ it[1].collect{
+                        def fileName = file(it).name
+                        (fileName.endsWith("svg") || fileName.endsWith("pdf")) ? fileName : file(it)
+                    }}
+               ).match() }
+            )
         }
     }
-    then {
-        assertAll(
-            { assert process.success },
-            { assert snapshot(
-                process.out.versions,
-                process.out.results.collect{ it[1].collect{
-                    def fileName = file(it).name
-                    (fileName.endsWith("svg") || fileName.endsWith("pdf")) ? fileName : file(it)
-                }}
-           ).match() }
-        )
+    test("test_damageprofiler_reference") {
+
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [[id:'test',single_end:false],// meta map
+                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam',checkIfExists:true)]]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',checkIfExists:true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai',checkIfExists:true)
+                input[3] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.results.collect{ it[1].collect{
+                        def fileName = file(it).name
+                        (fileName.endsWith("svg") || fileName.endsWith("pdf")) ? fileName : file(it)
+                    }}
+               ).match() }
+            )
+        }
+    }
+    test("test_damageprofiler_specieslist") {
+
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [[id:'test',single_end:false],// meta map
+                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam',checkIfExists:true)]]
+                input[1] = []
+                input[2] = []
+                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.header',checkIfExists:true)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.results.collect{ it[1].collect{
+                        def fileName = file(it).name
+                        (fileName.endsWith("svg") || fileName.endsWith("pdf")) ? fileName : file(it)
+                    }}
+               ).match() }
+            )
+        }
     }
 }
