@@ -14,16 +14,16 @@ process GATK4_ADDORREPLACEREADGROUPS {
 
     output:
     tuple val(meta), path("${prefix}.bam") , emit: bam,  optional: true
-    tuple val(meta), path("*.bai") , emit: bai,  optional: true
-    tuple val(meta), path("*.cram"), emit: cram, optional: true
-    path "versions.yml"            , emit: versions
+    tuple val(meta), path("*.bai")         , emit: bai,  optional: true
+    tuple val(meta), path("*.cram")        , emit: cram, optional: true
+    path "versions.yml"                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args        ?: ''
-    prefix = task.ext.prefix    ?: "${meta.id}"
+    prefix = task.ext.prefix        ?: "${meta.id}"
     def suffix = task.ext.suffix    ?: "${bam.getExtension()}"
     def reference = fasta ? "--REFERENCE_SEQUENCE ${fasta}" : ""
     def create_index = ( suffix == "bam" )? "--CREATE_INDEX" : ""
