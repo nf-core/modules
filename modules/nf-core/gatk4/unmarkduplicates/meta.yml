@@ -30,20 +30,20 @@ output:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - "*.bam":
+    - "*_UnmarkDuplicates.bam":
         type: file
         description: Unmarked duplicates BAM file
-        pattern: "*.{bam}"
+        pattern: "*_UnmarkDuplicates.{bam}"
   - bai:
     - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - "*.bai":
+    - "*_UnmarkDuplicates.bai":
         type: file
         description: BAM index file
-        pattern: "*.{bam.bai}"
+        pattern: "*_UnmarkDuplicates.{bam.bai}"
   - versions:
       - versions.yml:
           type: file
