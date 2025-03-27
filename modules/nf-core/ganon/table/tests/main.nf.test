@@ -22,7 +22,7 @@ nextflow_process {
                                 [ id:'test' ], // meta map
                                 file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                             ]
-                    input[1] = 'fasta'
+                    input[1] = []
                     input[2] = []
                     input[3] = []
                     """

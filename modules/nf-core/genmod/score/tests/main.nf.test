@@ -15,10 +15,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test_models.vcf.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test_models.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky.ped', checkIfExists: true)
                 ]
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky.ped', checkIfExists: true)
-                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/genmod/svrank_model_-v1.8-.ini', checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/genmod/svrank_model_-v1.8-.ini', checkIfExists: true)
                 """
             }
         }
@@ -44,10 +44,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test_models.vcf.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test_models.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky.ped', checkIfExists: true)
                 ]
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky.ped', checkIfExists: true)
-                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/genmod/svrank_model_-v1.8-.ini', checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/genmod/svrank_model_-v1.8-.ini', checkIfExists: true)
                 """
             }
         }

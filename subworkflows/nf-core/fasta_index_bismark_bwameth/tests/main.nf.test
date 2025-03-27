@@ -1,0 +1,227 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTA_INDEX_BISMARK_BWAMETH"
+    script "../main.nf"
+    workflow "FASTA_INDEX_BISMARK_BWAMETH"
+    config "./nextflow.config"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fasta_index_bismark_bwameth"
+    tag "untar"
+    tag "gunzip"
+    tag "bismark/genomepreparation"
+    tag "bwameth/index"
+    tag "samtools/faidx"
+
+    test("Params: bismark | download bismark index (bowtie2)") {
+
+        when {
+            params {
+                aligner = "bismark"
+            }
+            workflow {
+                """
+                input[0] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.gz', checkIfExists: true)
+                input[1] = [] // fasta_index
+                input[2] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Bowtie2_Index.tar.gz', checkIfExists: true)
+                input[3] = [] // bwameth_index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.fasta,
+                    workflow.out.fasta_index,
+                    workflow.out.bismark_index,
+                    workflow.out.bwameth_index,
+                    workflow.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+    test("Params: bismark | generate bismark index (bowtie2)") {
+
+        when {
+            params {
+                aligner = "bismark"
+            }
+            workflow {
+                """
+                input[0] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.gz', checkIfExists: true)
+                input[1] = [] // fasta_index
+                input[2] = [] // bismark_index
+                input[3] = [] // bwameth_index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.fasta,
+                    workflow.out.fasta_index,
+                    workflow.out.bismark_index,
+                    workflow.out.bwameth_index,
+                    workflow.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+    test("Params: bismark_hisat | download bismark index (hisat2)") {
+
+        when {
+            params {
+                aligner = "bismark_hisat"
+            }
+            workflow {
+                """
+                input[0] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.gz', checkIfExists: true)
+                input[1] = [] // fasta_index
+                input[2] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Hisat2_Index.tar.gz', checkIfExists: true)
+                input[3] = [] // bwameth_index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.fasta,
+                    workflow.out.fasta_index,
+                    workflow.out.bismark_index,
+                    workflow.out.bwameth_index,
+                    workflow.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+    test("Params: bismark_hisat | generate bismark index (hisat2)") {
+
+        when {
+            params {
+                aligner = "bismark_hisat"
+            }
+            workflow {
+                """
+                input[0] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.gz', checkIfExists: true)
+                input[1] = [] // fasta_index
+                input[2] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Hisat2_Index.tar.gz', checkIfExists: true)
+                input[3] = [] // bwameth_index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.fasta,
+                    workflow.out.fasta_index,
+                    workflow.out.bismark_index,
+                    workflow.out.bwameth_index,
+                    workflow.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+    test("Params: bwameth | download fasta index | download bwameth index") {
+
+        when {
+            params {
+                aligner = "bwameth"
+            }
+            workflow {
+                """
+                input[0] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.gz', checkIfExists: true)
+                input[1] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
+                input[2] = [] // bismark index
+                input[3] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Bwameth_Index.tar.gz', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.fasta,
+                    workflow.out.fasta_index,
+                    workflow.out.bismark_index,
+                    workflow.out.bwameth_index,
+                    workflow.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+    test("Params: bwameth | generate fasta index | download bwameth index") {
+
+        when {
+            params {
+                aligner = "bwameth"
+            }
+            workflow {
+                """
+                input[0] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.gz', checkIfExists: true)
+                input[1] = [] //fasta index
+                input[2] = [] // bismark index
+                input[3] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Bwameth_Index.tar.gz', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.fasta,
+                    workflow.out.fasta_index,
+                    workflow.out.bismark_index,
+                    workflow.out.bwameth_index,
+                    workflow.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+    test("Params: bwameth | generate fasta index | generate bwameth index") {
+
+        when {
+            params {
+                aligner = "bwameth"
+            }
+            workflow {
+                """
+                input[0] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.gz', checkIfExists: true)
+                input[1] = [] // fasta_index
+                input[2] = [] // bismark index
+                input[3] = [] // bwameth index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.fasta,
+                    workflow.out.fasta_index,
+                    workflow.out.bismark_index,
+                    workflow.out.bwameth_index,
+                    workflow.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+}

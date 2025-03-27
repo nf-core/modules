@@ -34,6 +34,11 @@ input:
     - custom_seqid2taxid:
         type: file
         description: custom seqid2taxid
+  - - keep_intermediate:
+        type: boolean
+        description: "Keep intermediate files that are not used by the database itself"
+        pattern: true|false
+
 output:
   - db:
       - meta:
@@ -41,7 +46,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - $prefix/:
+      - ${prefix}/:
           type: directory
           description: Directory containing KrakenUniq database
           pattern: "*/"

@@ -33,21 +33,31 @@ process MOTUS_PREPLONG {
         -o ${prefix}.gz \\
         2> >(tee ${prefix}.log >&2)
 
+    if [ "$db" == "" ]; then
+        VERSION=\$(echo \$(motus -h 2>&1) | sed 's/^.*Version: //; s/References.*\$//')
+    else
+        VERSION=\$(grep motus $db/db_mOTU_versions | sed 's/motus\\t//g')
+    fi
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        motus: \$(motus --version 2>&1 | sed 's/.* \\([0-9]*\\.[0-9]*\\.[0-9]*\\) .*/\\1/')
+        motus: \$VERSION
     END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def refdb = db ? "-db ${db}" : ""
     """
     echo '' | gzip > ${prefix}.gz
 
+    if [ "$db" == "" ]; then
+        VERSION=\$(echo \$(motus -h 2>&1) | sed 's/^.*Version: //; s/References.*\$//')
+    else
+        VERSION=\$(grep motus $db/db_mOTU_versions | sed 's/motus\\t//g')
+    fi
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        motus: \$(motus --version 2>&1 | sed 's/.* \\([0-9]*\\.[0-9]*\\.[0-9]*\\) .*/\\1/')
+        motus: \$VERSION
     END_VERSIONS
     """
 }
