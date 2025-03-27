@@ -1,0 +1,117 @@
+nextflow_process {
+
+    name "Test Process ENTREZDIRECT_ESEARCH"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "ENTREZDIRECT_ESEARCH"
+   
+    tag "modules"
+    tag "modules_nfcore"
+    tag "entrezdirect"
+    tag "entrezdirect/esearch"
+   
+    test("pubmed") {
+        when {
+            params {
+                module_args = '-sort pub+date -datetype pdat -mindate 2021/06/20 -maxdate 2022/06/20 -spell'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test_pubmed'],// meta map
+                    "selective serotonin reuptake inhibitor"
+                ]
+                input[1] = "pubmed"
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.xml.collect{ [it[0], file(it[1]).name] }
+                ).match() }
+            )
+        }
+    }
+    test("genome") {
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test_genome'],// meta map,
+                    "Danio+rerio"
+                ]
+                input[1] = "genome"
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.xml.collect{ [it[0], file(it[1]).name] }
+                ).match() }
+            )
+        }
+    }
+    test("assembly") {
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test_assembly'],// meta map
+                    "GCA_000001635.9"
+                ]
+                input[1] = "assembly"
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.xml.collect{ [it[0], file(it[1]).name] }
+                ).match() }
+            )
+        }
+    }
+
+    test("assembly - stub") {
+
+        options '-stub'
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test_assembly'],// meta map
+                    "GCA_000001635.9"
+                ]
+                input[1] = "assembly"
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}

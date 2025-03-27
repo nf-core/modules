@@ -1,0 +1,63 @@
+nextflow_process {
+
+    name "Test Process CNVPYTOR_HISTOGRAM"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "CNVPYTOR_HISTOGRAM"
+   
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cnvpytor"
+    tag "cnvpytor/histogram"
+   
+    
+    
+    test("test_cnvpytor_histogram") {
+        
+        when {
+            params {
+                module_args = '10000 100000'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pytor/test.pytor',checkIfExists:true),
+                    ]
+                input[1] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    
+    
+    test("test_cnvpytor_histogram -- stub") {
+        options '-stub'
+        when {
+            params {
+                module_args = '10000 100000'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pytor/test.pytor',checkIfExists:true),
+                    ]
+                input[1] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
