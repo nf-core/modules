@@ -9,14 +9,14 @@ process GCTA_GSMR {
 
     input:
 
-    tuple val(meta), path(exposure)
+    tuple val(meta),  path(exposure)
     tuple val(meta2), path(outcome)
     path(reference)
 
     output:
-    path "${meta.id}_${meta2.id}.log", emit: log
-    path "${meta.id}_${meta2.id}.gsmr", emit: gsmr
-    path "${meta.id}_${meta2.id}.eff_plot.gz", emit: eff_plot, optional: true
+    path "${meta.id}_${meta2.id}.log"         , emit: log
+    path "${meta.id}_${meta2.id}.gsmr"        , emit: gsmr
+    path "${meta.id}_${meta2.id}.eff_plot.gz" , emit: eff_plot, optional: true
     path "${meta.id}_${meta2.id}.mono.badsnps", emit: mono_badsnps, optional: true
     path "versions.yml"           , emit: versions
 
@@ -24,8 +24,8 @@ process GCTA_GSMR {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args   = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}_${meta2.id}"
 
     """
     echo "${meta.id} ${exposure}" > ${meta.id}.input.txt
@@ -36,7 +36,7 @@ process GCTA_GSMR {
     gcta  \
     --mbfile reference.txt  \
     --gsmr-file ${meta.id}.input.txt outcome.txt \
-    --out "${meta.id}_${meta2.id}"
+    --out "${prefix}"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -45,14 +45,14 @@ process GCTA_GSMR {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args   = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}_${meta2.id}"
 
     """
-    touch ${meta.id}_${meta2.id}.log
-    touch ${meta.id}_${meta2.id}.gsmr
-    touch ${meta.id}_${meta2.id}.mono.badsnps
-    echo "" | gzip > ${meta.id}_${meta2.id}.eff_plot.gz
+    touch ${prefix}.log
+    touch ${prefix}.gsmr
+    touch ${prefix}.mono.badsnps
+    echo "" | gzip > ${prefix}.eff_plot.gz
 
 
     cat <<-END_VERSIONS > versions.yml
