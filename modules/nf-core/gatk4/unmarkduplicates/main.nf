@@ -11,8 +11,8 @@ process GATK4_UNMARKDUPLICATES {
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path("*_UnmarkDuplicates.bam"),     emit: bam,   optional: true
-    tuple val(meta), path("*_UnmarkDuplicates.bai"),     emit: bai,   optional: true
+    tuple val(meta), path("${prefix}.bam"),     emit: bam,   optional: true
+    tuple val(meta), path("${prefix}.bai"),     emit: bai,   optional: true
     path "versions.yml",                emit: versions
 
     when:
@@ -20,7 +20,7 @@ process GATK4_UNMARKDUPLICATES {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}_UnmarkDuplicates"
     def input_list = bam.collect{"--input $it"}.join(' ')
     def avail_mem = 3072
     if (!task.memory) {
@@ -33,7 +33,7 @@ process GATK4_UNMARKDUPLICATES {
     gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         UnmarkDuplicates \\
         $input_list \\
-        --output ${prefix}_UnmarkDuplicates.bam \\
+        --output ${prefix}.bam \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
@@ -43,11 +43,11 @@ process GATK4_UNMARKDUPLICATES {
     """
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}.bam"
+    prefix = task.ext.prefix ?: "${meta.id}_UnmarkDuplicates"
     prefix_no_suffix = task.ext.prefix ? prefix.tokenize('.')[0] : "${meta.id}"
     """
-    touch ${prefix_no_suffix}_UnmarkDuplicates.bam
-    touch ${prefix_no_suffix}_UnmarkDuplicates.bai
+    touch ${prefix}.bam
+    touch ${prefix}.bai
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
