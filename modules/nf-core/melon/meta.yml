@@ -26,13 +26,13 @@ input:
     - reads:
         type: file
         description: Quality-controlled long reads.
-        pattern: "*.{fa,fasta,fq,fastq}{,.gz}"
+        pattern: "*.{fa,fasta,fas,fna,fq,fastq}{,.gz}"
   - - database:
         type: directory
         description: Melon database.
   - - k2_db:
         type: directory
-        description: Kraken2 database for prefiltering reads.
+        description: Kraken2 database for pre-filtering of non-prokaryotic reads (needs to include at least human and fungi).
 output:
   - tsv_output:
       - meta:
@@ -54,6 +54,16 @@ output:
           type: file
           description: Melon output json file containing per-read taxonomic classification results.
           pattern: "*.json"
+  - log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:true ]`.
+      - ${prefix}.log:
+          type: file
+          description: |
+            Log file containing Melon standard output.
   - versions:
       - versions.yml:
           type: file

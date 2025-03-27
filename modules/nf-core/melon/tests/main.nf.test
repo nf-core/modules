@@ -45,7 +45,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.tsv_output,
+                                process.out.json_output,
+                                process.out.versions).match() },
+                { assert path(process.out.log[0][1]).exists() }
             )
         }
 
@@ -72,7 +75,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.tsv_output,
+                                process.out.json_output,
+                                process.out.versions).match() },
+                { assert path(process.out.log[0][1]).exists() }
             )
         }
 
