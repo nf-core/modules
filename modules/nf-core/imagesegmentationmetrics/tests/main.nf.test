@@ -84,6 +84,54 @@ nextflow_process {
 
     }
 
+    test("imagesegmentationmetrics - tif - single file - monai only") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    "meta",
+                    file(params.modules_testdata_base_path + 'ref.tif'),
+                    [file(params.modules_testdata_base_path + 'label_removed_10.tif')],
+                    "monai"
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("imagesegmentationmetrics - tif - single file - seg_metric only") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    "meta",
+                    file(params.modules_testdata_base_path + 'ref.tif'),
+                    [file(params.modules_testdata_base_path + 'label_removed_10.tif')],
+                    "sgm"
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
     test("imagesegmentationmetrics - csv - stub") {
 
         options "-stub"
