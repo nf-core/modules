@@ -2,10 +2,11 @@ process ANNOSINE {
     tag "$meta.id"
     label 'process_medium'
 
+    // WARN: Manually update when changing Bioconda assets
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/annosine2:2.0.7--pyh7cba7a3_0':
-        'biocontainers/annosine2:2.0.7--pyh7cba7a3_0' }"
+        'https://depot.galaxyproject.org/singularity/annosine2:2.0.8--pyh7e72e81_0':
+        'biocontainers/annosine2:2.0.8--pyh7e72e81_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -22,7 +23,7 @@ process ANNOSINE {
     script:
     def args    = task.ext.args ?: ''
     prefix      = task.ext.prefix ?: "${meta.id}_annosine"
-    def VERSION = '2.0.7' // WARN: Manually update when changing Bioconda assets
+    def VERSION = '2.0.8' // WARN: Manually update when changing Bioconda assets
     if ( "$fasta" == "${prefix}.fa" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     AnnoSINE_v2 \\
@@ -46,7 +47,7 @@ process ANNOSINE {
 
     stub:
     prefix      = task.ext.prefix ?: "${meta.id}_annosine"
-    def VERSION = '2.0.7' // WARN: Manually update when changing Bioconda assets
+    def VERSION = '2.0.8' // WARN: Manually update when changing Bioconda assets
     if ( "$fasta" == "${prefix}.fa" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     touch ${prefix}.log
