@@ -55,8 +55,7 @@ output:
           pattern: "*.{bam}"
       - ${prefix}.bam:
           type: map
-          description: |
-            Output BAM file
+          description: Output BAM file
           pattern: "*.{bam}"
   - bai:
       - meta:
@@ -67,8 +66,7 @@ output:
           pattern: "*.{bai}"
       - "*.bai":
           type: map
-          description: |
-            Output BAI file
+          description: Output BAI file
           pattern: "*.{bai}"
   - cram:
       - meta:
@@ -79,8 +77,7 @@ output:
           pattern: "*.{cram}"
       - "*.cram":
           type: map
-          description: |
-            Output CRAM file
+          description: Output CRAM file
           pattern: "*.{cram}"
   - versions:
       - versions.yml:
