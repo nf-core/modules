@@ -88,6 +88,15 @@ output:
           type: list
           description: |
             Tuple containing sample metadata and the GVCF data in tfrecord format
+  - small_model_calls:
+      - meta:
+          type: list
+          description: |
+            Tuple containing sample metadata
+      - '${prefix}_call_variant_outputs.examples.tfrecord-*-of-*.gz",  arity: "0..*':
+          type: list
+          description: |
+            Optional variant calls from the small model, if enabled, in tfrecord format
   - versions:
       - versions.yml:
           type: file

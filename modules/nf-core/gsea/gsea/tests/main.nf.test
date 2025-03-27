@@ -12,6 +12,8 @@ nextflow_process {
 
     test("test") {
 
+        config "./nextflow.config"
+
         when {
             process {
                 """

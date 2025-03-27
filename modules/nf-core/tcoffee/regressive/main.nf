@@ -23,7 +23,7 @@ process TCOFFEE_REGRESSIVE {
     script:
     def args          = task.ext.args ?: ''
     def prefix        = task.ext.prefix ?: "${meta.id}"
-    def tree_args     = tree ? "-regtree $tree" : ""
+    def tree_args     = tree ? "-reg_tree $tree" : ""
     def template_args = template ? "-template_file $template" : ""
     def outfile       = compress ? "stdout" : "${prefix}.aln"
     """

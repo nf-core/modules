@@ -17,6 +17,8 @@ nextflow_workflow {
     tag "custom/tabulartogseagct"
     tag "custom/tabulartogseacls"
     tag "custom/tabulartogseachip"
+    tag "subworkflows/abundance_differential_filter"
+    tag "abundance_differential_filter"
 
     test("test gprofiler2 - mouse") {
         tag 'gprofiler2_basic'
@@ -98,6 +100,7 @@ nextflow_workflow {
                 input[2] = ch_transcript_lengths
                 input[3] = ch_control_features
                 input[4] = ch_contrasts
+                input[5] = Channel.empty()
                 """
                 }
             }
@@ -108,9 +111,7 @@ nextflow_workflow {
                 """
                 ch_input = ABUNDANCE_DIFFERENTIAL_FILTER.out.results_genewise_filtered
                     .map { meta, results ->
-                        def meta_new = meta - ['method': meta.method]
-                        meta_new.method_de = meta.method
-                        [meta_new, results, [], [], 'gprofiler2']
+                        [meta, results, [], [], 'gprofiler2']
                     }
 
                 input[0] = ch_input
@@ -177,6 +178,7 @@ nextflow_workflow {
                 input[2] = ch_transcript_lengths
                 input[3] = ch_control_features
                 input[4] = ch_contrasts
+                input[5] = Channel.empty()
                 """
                 }
             }
@@ -198,9 +200,7 @@ nextflow_workflow {
                 ch_input = ABUNDANCE_DIFFERENTIAL_FILTER.out.normalised_matrix
                     .combine(Channel.fromPath(testData.genesets_file))
                     .map { meta, matrix, genesets ->
-                        def meta_new = meta - ['method': meta.method]
-                        meta_new.method_de = meta.method
-                        [meta_new, matrix, genesets, [], 'gsea']
+                        [meta, matrix, genesets, [], 'gsea']
                     }
                 ch_contrasts = Channel.fromPath(file(testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
@@ -280,6 +280,7 @@ nextflow_workflow {
                 input[2] = ch_transcript_lengths
                 input[3] = ch_control_features
                 input[4] = ch_contrasts
+                input[5] = Channel.empty()
                 """
                 }
             }
@@ -291,9 +292,7 @@ nextflow_workflow {
                 ch_input = ABUNDANCE_DIFFERENTIAL_FILTER.out.adjacency
                     .combine(Channel.fromPath(params.modules_testdata_base_path + 'genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt'))
                     .map { meta, results, genesets ->
-                        def meta_new = meta - ['method': meta.method]
-                        meta_new.method_de = meta.method
-                        [meta_new, results, genesets, [], 'grea']
+                        [meta, results, genesets, [], 'grea']
                     }
 
                 input[0] = ch_input
@@ -374,6 +373,7 @@ nextflow_workflow {
                 input[2] = ch_transcript_lengths
                 input[3] = ch_control_features
                 input[4] = ch_contrasts
+                input[5] = Channel.empty()
                 """
                 }
             }
@@ -393,23 +393,11 @@ nextflow_workflow {
 
                 // define input channels
                 ch_input_for_gprofiler2 = ABUNDANCE_DIFFERENTIAL_FILTER.out.results_genewise_filtered
-                    .map { meta, results ->
-                        def meta_new = meta - ['method': meta.method]
-                        meta_new.method_de = meta.method
-                        [meta_new, results, 'gprofiler2']
-                    }
+                    .combine(Channel.of('gprofiler2'))
                 ch_input_for_gsea = ABUNDANCE_DIFFERENTIAL_FILTER.out.normalised_matrix
-                    .map { meta, results ->
-                        def meta_new = meta - ['method': meta.method]
-                        meta_new.method_de = meta.method
-                        [meta_new, results, 'gsea']
-                    }
+                    .combine(Channel.of('gsea'))
                 ch_input_for_grea = ABUNDANCE_DIFFERENTIAL_FILTER.out.adjacency
-                    .map { meta, results ->
-                        def meta_new = meta - ['method': meta.method]
-                        meta_new.method_de = meta.method
-                        [meta_new, results, 'grea']
-                    }
+                    .combine(Channel.of('grea'))
                 ch_input = ch_input_for_gprofiler2
                     .mix(ch_input_for_gsea)
                     .mix(ch_input_for_grea)
@@ -447,7 +435,7 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(
-                    workflow.out.gprofiler2_all_enrich,
+                    path(workflow.out.gprofiler2_all_enrich[0][1]).exists(), // This generates empty md5sums and linting fails
                     workflow.out.gprofiler2_sub_enrich,
                     workflow.out.gprofiler2_plot_html.collect{ meta, html -> file(html).name }, //assert unstable file
                     workflow.out.gsea_report,
