@@ -31,11 +31,13 @@ process HLALA_TYPING {
 
     """
     mkdir $prefix
+    mkdir -p PRG_MHC_GRCh38_withIMGT
+    mv $graph/* PRG_MHC_GRCh38_withIMGT/
 
     HLA-LA.pl \\
         --BAM $bam \\
-        --graph \$(basename $graph) \\
-        --customGraphDir $graph \\
+        --graph PRG_MHC_GRCh38_withIMGT \\
+        --customGraphDir \$(pwd) \\
         --sampleID $prefix \\
         --workingDir . \\
         --maxThreads $task.cpus \\

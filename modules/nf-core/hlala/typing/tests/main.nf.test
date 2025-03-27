@@ -24,6 +24,18 @@ nextflow_process {
                 """
             }
         }
+        run ("HLALA_PREPAREGRAPH") {
+            script ("../../preparegraph/main.nf")
+            process {
+                """
+                input[0] = UNZIP.out.unzipped_archive
+                    .map{ id, path ->
+                        def folderName = path.toString().split("/").last()
+                        [ id, "\${path}/\${folderName}" ] 
+                    }
+                """
+            }
+        }
     }
 
     test("homo_sapiens - bai") {
@@ -37,8 +49,8 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
                 ]).combine(
-                    UNZIP.out.unzipped_archive.map{ it[1] }
-                ).view()
+                    HLALA_PREPAREGRAPH.out.graph.map{ it[1] }
+                )
                 """
             }
         }
