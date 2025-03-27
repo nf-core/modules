@@ -13,8 +13,9 @@ import logging
 
 VERSION = "0.1.1"
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 def read_image(path) -> np.ndarray:
     """
