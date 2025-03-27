@@ -9,8 +9,12 @@ from enum import Enum
 import fire
 from time import time
 import seg_metrics.seg_metrics as sg
+import logging
 
 VERSION = "0.1.1"
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def read_image(path) -> np.ndarray:
     """
@@ -73,15 +77,13 @@ def benchmark_metrics(ref_tor, seg_tor, ref_np, seg_np, list_metrics) -> list[to
     Add RAM/CPU benchmark
     """
     list_results = []
-    print(type(list_metrics))
-    print(list_metrics)
     for i,j in list_metrics:
         ts = time() # Start timing the operation
         if i == 'monai':
             list_results.append(getattr(monai_metrics, j)(ref_tor,seg_tor))
         elif i == 'sgm':
             list_results.append(get_sgm_metrics(ref_np, seg_np, j))
-        print(f"{i} runtime: {(time()-ts)} sec")
+        logger.info(f"{j}({i}) runtime: {(time()-ts)} sec")
     return(list_results)
 
 def get_results(results, path_list_seg, list_metrics) -> pd.DataFrame:
