@@ -27,7 +27,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert path(process.out.log[0][1]).text.contains('AnnoSINE COMPLETE!') },
+                { assert snapshot(
+                    process.out.fa,
+                    process.out.versions,
+                    ).match()
+                }
             )
         }
 
