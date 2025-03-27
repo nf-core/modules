@@ -9,7 +9,7 @@ process GCTA_GSMR {
 
     input:
 
-    tuple val(meta),  path(exposure)
+    tuple val(meta) , path(exposure)
     tuple val(meta2), path(outcome)
     path(reference)
 
@@ -18,7 +18,7 @@ process GCTA_GSMR {
     path "${meta.id}_${meta2.id}.gsmr"        , emit: gsmr
     path "${meta.id}_${meta2.id}.eff_plot.gz" , emit: eff_plot, optional: true
     path "${meta.id}_${meta2.id}.mono.badsnps", emit: mono_badsnps, optional: true
-    path "versions.yml"           , emit: versions
+    path "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
