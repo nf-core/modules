@@ -46,7 +46,8 @@ nextflow_process {
             assert snapshot(
                 process.out.gsmr,
                 process.out.eff_plot,
-                process.out.mono_badsnps
+                process.out.mono_badsnps,
+                process.out.versions
             ).match()
             assert path(process.out.versions.get(0)).text.contains("GSMR")
         }
@@ -91,7 +92,8 @@ nextflow_process {
             assert snapshot(
                 process.out.gsmr,
                 process.out.eff_plot,
-                process.out.mono_badsnps
+                process.out.mono_badsnps,
+                process.out.versions
             ).match()
 
             assert path(process.out.versions.get(0)).text.contains("GSMR")

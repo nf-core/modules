@@ -5,7 +5,7 @@ process GCTA_GSMR {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gcta:1.94.1--h9ee0642_0':
-        'quay.io/biocontainers/gcta:1.94.1--h9ee0642_0' }"
+        'biocontainers/gcta:1.94.1--h9ee0642_0' }"
 
     input:
 

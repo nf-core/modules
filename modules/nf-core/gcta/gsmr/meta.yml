@@ -32,20 +32,21 @@ input:
       description: Outcome data file for GSMR analysis
       pattern: "*.txt"
   - reference:
-      type: directory
-      description: Directory containing reference files (BED, BIM, FAM) for GCTA analysis
-      pattern: "*"
+      type: file
+      description: Reference files (BED, BIM, FAM) for GCTA analysis
+      pattern: "*.{bed,bim,fam}"
+      multiple: true
 
 output:
-  - gsmr_log:
+  - gsmr:
       type: file
       description: Log file from GSMR analysis
       pattern: "*.log"
-  - gsmr_res:
+  - gsmr:
       type: file
       description: Results file from GSMR analysis
       pattern: "*.gsmr"
-  - gsmr_effplot:
+  - eff_plot:
       type: file
       description: Effect plot from GSMR analysis (optional)
       pattern: "*.eff_plot.gz"
@@ -63,5 +64,4 @@ authors:
 maintainers:
   - "@juliaapolonio"
 
-thread_id:
-  - 1d3cb393-7630-45b3-b965-4cf5d1fc7272
+
